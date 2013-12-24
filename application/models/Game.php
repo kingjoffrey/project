@@ -66,9 +66,8 @@ class Application_Model_Game extends Coret_Db_Table_Abstract
     {
         $mPlayersInGame = new Application_Model_PlayersInGame($this->_gameId);
         $select = $this->_db->select()
-            ->from(array('a' => $this->_name), array('gameMasterId', 'turnNumber', $this->_primary, 'numberOfPlayers', 'begin', 'turnPlayerId'))
+            ->from(array('a' => $this->_name), array('gameMasterId', 'turnNumber', $this->_primary, 'numberOfPlayers', 'begin', 'end', 'turnsLimit', 'turnTimeLimit', 'timeLimit', 'turnPlayerId'))
             ->join(array('b' => 'playersingame'), 'a."gameId" = b."gameId"', null)
-//            ->join(array('c' => 'mapplayers'), 'b . "mapPlayerId" = c . "mapPlayerId"', null)
             ->where('"isOpen" = false')
             ->where('"isActive" = true')
             ->where('a."gameId" IN ?', $mPlayersInGame->getSelectForMyGames($playerId))

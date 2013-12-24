@@ -8,11 +8,24 @@
                 <hr style="border: 1px solid #878967">
                 <div></div><?php echo $this->translate('Player turn') ?>
             </th>
-            <th><?php echo $this->translate('Turn nr') ?></th>
-            <th><?php echo $this->translate('Number of Players') ?></th>
+            <th>
+                <?php echo $this->translate('Turn nr') ?>
+                <br>
+                <?php echo $this->translate('Number of Players') ?>
+                <br>
+                <?php echo $this->translate('Time limit') ?>
+                <br>
+                <?php echo $this->translate('Turns limit') ?>
+                <br>
+                <?php echo $this->translate('Time limit per turn') ?>
+            </th>
             <th><?php echo $this->translate('Player name') ?></th>
             <th><?php echo $this->translate('Player color') ?></th>
-            <th><?php echo $this->translate('Start date') ?></th>
+            <th>
+                <?php echo $this->translate('Start date') ?>
+                <br>
+                <?php echo $this->translate('Pause date') ?>
+            </th>
         </tr>
         <?php if (count($this->myGames)): ?>
             <?php foreach ($this->myGames as $game): ?>
@@ -24,14 +37,15 @@
                         <hr style="border: 1px solid #878967">
                         <div><?php echo $game['playerTurn']['firstName'] . ' ' . $game['playerTurn']['lastName'] ?></div>
                     </td>
-                    <td><?php echo $game['turnNumber'] ?></td>
-                    <td><?php echo $game['numberOfPlayers'] ?></td>
-                    <td style="width: 180px">
+                    <td>
+                        <?php echo $game['turnNumber'] ?> / <?php echo $game['numberOfPlayers'] ?> / <?php echo $game['timeLimit'] ?> / <?php echo $game['turnsLimit'] ?> / <?php echo $game['turnTimeLimit'] ?>
+                    </td>
+                    <td style="min-width: 200px">
                         <?php foreach ($game['players'] as $v): ?>
                             <div style="height: 28px;"><?php echo $v['firstName'] . ' ' . $v['lastName'] ?></div>
                         <?php endforeach ?>
                     </td>
-                    <td style="width: 190px">
+                    <td style="min-width: 190px">
                         <?php foreach ($game['players'] as $v): ?>
                             <div style="height: 28px;">
                                 <div class="left"><img src="/img/game/heroes/<?php echo $v['color'] ?>.png"/></div>
