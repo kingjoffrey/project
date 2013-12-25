@@ -33,45 +33,6 @@ class Cli_GameHandler extends Cli_WofHandler
         if ($dataIn['type'] == 'open') {
             $open = new Cli_Model_Open($dataIn, $user, $db, $this);
             $user->parameters = $open->getParameters();
-
-            $mGame = new Application_Model_Game($user->parameters['gameId'], $db);
-            $mPlayersInGame = new Application_Model_PlayersInGame($user->parameters['gameId'], $db);
-
-            $mapId = $mGame->getMapId();
-
-            $mMapFields = new Application_Model_MapFields($mapId, $db);
-            $mMapCastles = new Application_Model_MapCastles($mapId, $db);
-            $mMapRuins = new Application_Model_MapRuins($mapId, $db);
-            $mMapTowers = new Application_Model_MapTowers($mapId, $db);
-            $mMapUnits = new Application_Model_MapUnits($mapId, $db);
-            $mMapPlayers = new Application_Model_MapPlayers($mapId, $db);
-            $mMapTerrain = new Application_Model_MapTerrain($mapId, $db);
-
-            Zend_Registry::set('id_lang', $user->parameters['langId']);
-            Zend_Registry::set('terrain', $mMapTerrain->getTerrain());
-            $units = $mMapUnits->getUnits();
-            Zend_Registry::set('units', $units);
-            $specialUnits = array();
-            foreach ($units as $unit) {
-                if ($unit['special']) {
-                    $specialUnits[] = $unit;
-                }
-            }
-            Zend_Registry::set('specialUnits', $specialUnits);
-            reset($units);
-            Zend_Registry::set('firstUnitId', key($units));
-            Zend_Registry::set('fields', $mMapFields->getMapFields());
-            $castles = $mMapCastles->getMapCastles();
-            $mCastleProduction = new Application_Model_CastleProduction($db);
-            foreach (array_keys($castles) as $castleId) {
-                $castles[$castleId]['production'] = $mCastleProduction->getCastleProduction($castleId);
-            }
-            Zend_Registry::set('castles', $castles);
-            Zend_Registry::set('ruins', $mMapRuins->getMapRuins());
-            Zend_Registry::set('towers', $mMapTowers->getMapTowers());
-            Zend_Registry::set('playersInGameColors', $mPlayersInGame->getAllColors());
-            Zend_Registry::set('capitals', $mMapPlayers->getCapitals());
-
             return;
         }
 
@@ -79,6 +40,8 @@ class Cli_GameHandler extends Cli_WofHandler
             $this->sendError($user, 'No "gameId" or "playerId". Not authorized.');
             return;
         }
+
+
 
         if ($dataIn['type'] == 'chat') {
             new Cli_Model_Chat($dataIn['msg'], $user, $db, $this);
