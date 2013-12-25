@@ -21,7 +21,7 @@ class Cli_Model_Computer
 
         $mPlayersInGame = new Application_Model_PlayersInGame($user->parameters['gameId'], $db);
         if (!$mPlayersInGame->playerTurnActive($playerId)) {
-            $mTurn = new Cli_Model_Turn($user->parameters['gameId'], $db, $gameHandler);
+            $mTurn = new Cli_Model_Turn($user, $db, $gameHandler);
             $mTurn->start($playerId, true);
         } else {
             if (Cli_Model_ComputerMainBlocks::handleHeroResurrection($user->parameters['gameId'], $playerId, $db, $gameHandler)) {
