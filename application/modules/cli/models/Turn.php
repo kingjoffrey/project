@@ -2,36 +2,35 @@
 
 class Cli_Model_Turn
 {
-    private $_gameId;
     private $_db;
 
-    public function __construct($gameId, $db, $gameHandler)
+    public function __construct($user, $db, $gameHandler)
     {
-        $this->_gameId = $gameId;
         $this->_db = $db;
         $this->_gameHandler = $gameHandler;
+        $this->_user = $user;
     }
 
-    public function next($playerId, $turnsLimit)
+    public function next($playerId)
     {
-        if ($turnsLimit) {
+        if ($this->_user->parameters['turnsLimit']) {
             $mGame = new Application_Model_Game($this->_gameId, $this->_db);
             $turnNumber = $mGame->getTurnNumber();
-            if ($turnNumber >= $turnsLimit) {
-
+            if ($turnNumber >= $this->_user->parameters['turnsLimit']) {
+                $this->_gameHandler->sendError($this->_user, '!');
+                return;
             }
         }
 
-
-        $mPlayersInGame = new Application_Model_PlayersInGame($this->_gameId, $this->_db);
+        $mPlayersInGame = new Application_Model_PlayersInGame($this->_user->parameters['gameId'], $this->_db);
 
         if ($mPlayersInGame->playerLost($playerId)) {
             return;
         }
 
         $playersInGameColors = Zend_Registry::get('playersInGameColors');
-        $mArmy = new Application_Model_Army($this->_gameId, $this->_db);
-        $mCastlesInGame = new Application_Model_CastlesInGame($this->_gameId, $this->_db);
+        $mArmy = new Application_Model_Army($this->_user->parameters['gameId'], $this->_db);
+        $mCastlesInGame = new Application_Model_CastlesInGame($this->_user->parameters['gameId'], $this->_db);
 
         $playerCastlesExists = $mCastlesInGame->playerCastlesExists($playerId);
         $playerArmiesExists = $mArmy->playerArmiesExists($playerId);
@@ -40,7 +39,7 @@ class Cli_Model_Turn
                 'type' => 'dead',
                 'color' => $playersInGameColors[$playerId]
             );
-            $this->_gameHandler->sendToChannel($this->_db, $token, $this->_gameId);
+            $this->_gameHandler->sendToChannel($this->_db, $token, $this->_user->parameters['gameId']);
             $mPlayersInGame->setPlayerLostGame($playerId);
             sleep(3);
         }
@@ -49,7 +48,7 @@ class Cli_Model_Turn
         $loop = null;
 
         if (!isset($mGame)) {
-            $mGame = new Application_Model_Game($this->_gameId, $this->_db);
+            $mGame = new Application_Model_Game($this->_user->parameters['gameId'], $this->_db);
         }
 
         while (empty($loop)) {
@@ -67,46 +66,59 @@ class Cli_Model_Turn
                         'type' => 'end'
                     );
 
-                    $this->_gameHandler->sendToChannel($this->_db, $token, $this->_gameId);
+                    $this->_gameHandler->sendToChannel($this->_db, $token, $this->_user->parameters['gameId']);
                 } else { // zmieniam turę
                     $loop = true;
 
                     $mGame->updateTurnNumber($nextPlayerId, $playersInGameColors[$nextPlayerId]);
                     $mCastlesInGame->increaseAllCastlesProductionTurn($playerId);
 
+                    $turnNumber = $mGame->getTurnNumber();
+
+                    if ($this->_user->parameters['turnsLimit'] && $turnNumber >= $this->_user->parameters['turnsLimit']) {
+                        $mGame->endGame(); // koniec gry
+                        $this->saveResults();
+
+                        $token = array(
+                            'type' => 'end'
+                        );
+
+                        $this->_gameHandler->sendToChannel($this->_db, $token, $this->_user->parameters['gameId']);
+                        return;
+                    }
+
                     $token = array(
                         'type' => 'nextTurn',
-                        'nr' => $mGame->getTurnNumber(),
+                        'nr' => $turnNumber,
                         'color' => $playersInGameColors[$nextPlayerId]
                     );
-                    $mTurnHistory = new Application_Model_TurnHistory($this->_gameId, $this->_db);
+                    $mTurnHistory = new Application_Model_TurnHistory($this->_user->parameters['gameId'], $this->_db);
                     $mTurnHistory->add($nextPlayerId, $token['nr']);
 
-                    $this->_gameHandler->sendToChannel($this->_db, $token, $this->_gameId);
+                    $this->_gameHandler->sendToChannel($this->_db, $token, $this->_user->parameters['gameId']);
                 }
             } else {
                 $token = array(
                     'type' => 'dead',
                     'color' => $playersInGameColors[$nextPlayerId]
                 );
-                $this->_gameHandler->sendToChannel($this->_db, $token, $this->_gameId);
+                $this->_gameHandler->sendToChannel($this->_db, $token, $this->_user->parameters['gameId']);
                 $mPlayersInGame->setPlayerLostGame($nextPlayerId);
                 sleep(3);
             }
         }
     }
 
-    public
-    function start($playerId, $computer = null)
+    public function start($playerId, $computer = null)
     {
         $playersInGameColors = Zend_Registry::get('playersInGameColors');
         $color = $playersInGameColors[$playerId];
 
-        $mPlayersInGame = new Application_Model_PlayersInGame($this->_gameId, $this->_db);
+        $mPlayersInGame = new Application_Model_PlayersInGame($this->_user->parameters['gameId'], $this->_db);
         $mPlayersInGame->turnActivate($playerId);
 
-        $mArmy = new Application_Model_Army($this->_gameId, $this->_db);
-        $mSoldier = new Application_Model_UnitsInGame($this->_gameId, $this->_db);
+        $mArmy = new Application_Model_Army($this->_user->parameters['gameId'], $this->_db);
+        $mSoldier = new Application_Model_UnitsInGame($this->_user->parameters['gameId'], $this->_db);
         $mSoldier->resetMovesLeft($mArmy->getSelectForPlayerAll($playerId));
 
         $gold = $mPlayersInGame->getPlayerGold($playerId);
@@ -116,7 +128,7 @@ class Cli_Model_Turn
         } else {
             $type = 'startTurn';
         }
-        $mHeroesInGame = new Application_Model_HeroesInGame($this->_gameId, $this->_db);
+        $mHeroesInGame = new Application_Model_HeroesInGame($this->_user->parameters['gameId'], $this->_db);
         $mHeroesInGame->resetMovesLeftForAll($playerId);
 
         $income = 0;
@@ -124,11 +136,11 @@ class Cli_Model_Turn
         $mapCastles = Zend_Registry::get('castles');
         $units = Zend_Registry::get('units');
 
-        $mCastlesInGame = new Application_Model_CastlesInGame($this->_gameId, $this->_db);
+        $mCastlesInGame = new Application_Model_CastlesInGame($this->_user->parameters['gameId'], $this->_db);
         $playerCastles = $mCastlesInGame->getPlayerCastles($playerId);
 
-        $mSoldier = new Application_Model_UnitsInGame($this->_gameId, $this->_db);
-        $mSoldiersCreated = new Application_Model_SoldiersCreated($this->_gameId, $this->_db);
+        $mSoldier = new Application_Model_UnitsInGame($this->_user->parameters['gameId'], $this->_db);
+        $mSoldiersCreated = new Application_Model_SoldiersCreated($this->_user->parameters['gameId'], $this->_db);
 
         foreach ($playerCastles as $castleId => $castleInGame) {
             $income += $mapCastles[$castleId]['income'];
@@ -138,7 +150,7 @@ class Cli_Model_Turn
 
             if ($computer) {
                 if (!isset($turnNumber)) {
-                    $mGame = new Application_Model_Game($this->_gameId, $this->_db);
+                    $mGame = new Application_Model_Game($this->_user->parameters['gameId'], $this->_db);
                     $turnNumber = $mGame->getTurnNumber();
                 }
 
@@ -191,7 +203,7 @@ class Cli_Model_Turn
         $armies = $mArmy->getPlayerArmiesWithUnits($playerId);
 
         $costs = $mSoldier->calculateCostsOfSoldiers($mArmy->getSelectForPlayerAll($playerId));
-        $mTowersInGame = new Application_Model_TowersInGame($this->_gameId, $this->_db);
+        $mTowersInGame = new Application_Model_TowersInGame($this->_user->parameters['gameId'], $this->_db);
         $income += $mTowersInGame->calculateIncomeFromTowers($playerId);
         $gold = $gold + $income - $costs;
 
@@ -206,11 +218,10 @@ class Cli_Model_Turn
             'castles' => $playerCastles,
             'color' => $color
         );
-        $this->_gameHandler->sendToChannel($this->_db, $token, $this->_gameId);
+        $this->_gameHandler->sendToChannel($this->_db, $token, $this->_user->parameters['gameId']);
     }
 
-    public
-    function getExpectedNextTurnPlayer($playerColor)
+    public function getExpectedNextTurnPlayer($playerColor)
     {
         $find = false;
         $playerColors = Zend_Registry::get('playersInGameColors');
@@ -236,7 +247,7 @@ class Cli_Model_Turn
             $nextPlayerColor = $firstColor;
         }
 
-        $mPlayersInGame = new Application_Model_PlayersInGame($this->_gameId, $this->_db);
+        $mPlayersInGame = new Application_Model_PlayersInGame($this->_user->parameters['gameId'], $this->_db);
         $playersInGame = $mPlayersInGame->getPlayersInGameReady();
 
         /* przypisuję playerId do koloru */
@@ -273,24 +284,24 @@ class Cli_Model_Turn
 
     public function saveResults()
     {
-        $mGameScore = new Application_Model_GameScore($this->_gameId, $this->_db);
+        $mGameScore = new Application_Model_GameScore($this->_user->parameters['gameId'], $this->_db);
 
         if ($mGameScore->gameScoreExists()) {
             return;
         }
 
-        $mGameResults = new Application_Model_GameResults($this->_gameId, $this->_db);
+        $mGameResults = new Application_Model_GameResults($this->_user->parameters['gameId'], $this->_db);
         $mPlayer = new Application_Model_Player($this->_db);
 
-        $mCastlesConquered = new Application_Model_CastlesConquered($this->_gameId, $this->_db);
-        $mCastlesDestroyed = new Application_Model_CastlesDestroyed($this->_gameId, $this->_db);
-        $mHeroesKilled = new Application_Model_HeroesKilled($this->_gameId, $this->_db);
-        $mSoldiersKilled = new Application_Model_SoldiersKilled($this->_gameId, $this->_db);
-        $mSoldiersCreated = new Application_Model_SoldiersCreated($this->_gameId, $this->_db);
-        $mPlayersInGame = new Application_Model_PlayersInGame($this->_gameId, $this->_db);
-        $mUnitsInGame = new Application_Model_UnitsInGame($this->_gameId, $this->_db);
-        $mHeroesInGame = new Application_Model_HeroesInGame($this->_gameId, $this->_db);
-        $mCastlesInGame = new Application_Model_CastlesInGame($this->_gameId, $this->_db);
+        $mCastlesConquered = new Application_Model_CastlesConquered($this->_user->parameters['gameId'], $this->_db);
+        $mCastlesDestroyed = new Application_Model_CastlesDestroyed($this->_user->parameters['gameId'], $this->_db);
+        $mHeroesKilled = new Application_Model_HeroesKilled($this->_user->parameters['gameId'], $this->_db);
+        $mSoldiersKilled = new Application_Model_SoldiersKilled($this->_user->parameters['gameId'], $this->_db);
+        $mSoldiersCreated = new Application_Model_SoldiersCreated($this->_user->parameters['gameId'], $this->_db);
+        $mPlayersInGame = new Application_Model_PlayersInGame($this->_user->parameters['gameId'], $this->_db);
+        $mUnitsInGame = new Application_Model_UnitsInGame($this->_user->parameters['gameId'], $this->_db);
+        $mHeroesInGame = new Application_Model_HeroesInGame($this->_user->parameters['gameId'], $this->_db);
+        $mCastlesInGame = new Application_Model_CastlesInGame($this->_user->parameters['gameId'], $this->_db);
 
         $playersInGameColors = Zend_Registry::get('playersInGameColors');
         $units = Zend_Registry::get('units');

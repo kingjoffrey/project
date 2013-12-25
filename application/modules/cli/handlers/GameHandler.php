@@ -169,8 +169,8 @@ class Cli_GameHandler extends Cli_WofHandler
                 break;
 
             case 'nextTurn':
-                $mTurn = new Cli_Model_Turn($user->parameters['gameId'], $db, $this);
-                $mTurn->next($user->parameters['playerId'], $user->parameters['turnsLimit']);
+                $mTurn = new Cli_Model_Turn($user, $db, $this);
+                $mTurn->next($user->parameters['playerId']);
                 break;
 
             case 'startTurn':

@@ -35,7 +35,7 @@ class Cli_Model_Computer
                 $token['type'] = 'computer';
                 $gameHandler->sendToChannel($db, $token, $user->parameters['gameId']);
             } else {
-                $mTurn = new Cli_Model_Turn($user->parameters['gameId'], $db, $gameHandler);
+                $mTurn = new Cli_Model_Turn($user, $db, $gameHandler);
                 $mTurn->next($playerId);
             }
         }
