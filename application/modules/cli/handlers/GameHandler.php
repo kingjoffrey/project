@@ -63,7 +63,41 @@ class Cli_GameHandler extends Cli_WofHandler
         Cli_Model_Database::addTokensIn($db, $user->parameters['gameId'], $user->parameters['playerId'], $dataIn);
 
         if ($dataIn['type'] == 'computer') {
-            new Cli_Model_Computer($user, $db, $this);
+            $mGame = new Application_Model_Game($user->parameters['gameId'], $db);
+            if (!$mGame->isGameMaster($user->parameters['playerId'])) {
+                $this->sendError($user, 'Nie Twoja gra!');
+                return;
+            }
+
+            $playerId = $mGame->getTurnPlayerId();
+
+            $mPlayer = new Application_Model_Player($db);
+            if (!$mPlayer->isComputer($playerId)) {
+                $this->sendError($user, 'To nie komputer!');
+                return;
+            }
+
+            $mPlayersInGame = new Application_Model_PlayersInGame($user->parameters['gameId'], $db);
+            if (!$mPlayersInGame->playerTurnActive($playerId)) {
+                $mTurn = new Cli_Model_Turn($user, $db, $this);
+                $mTurn->start($playerId, true);
+            } else {
+                if (Cli_Model_ComputerMainBlocks::handleHeroResurrection($user->parameters['gameId'], $playerId, $db, $this)) {
+                    return;
+                }
+
+                $mArmy2 = new Application_Model_Army($user->parameters['gameId'], $db);
+                $army = $mArmy2->getComputerArmyToMove($playerId);
+                if (!empty($army['armyId'])) {
+                    $token = Cli_Model_ComputerMainBlocks::moveArmy($user->parameters['gameId'], $playerId, new Cli_Model_Army($army), $db, $user, $this);
+                    $token['type'] = 'computer';
+                    $this->sendToChannel($db, $token, $user->parameters['gameId']);
+                } else {
+                    $mTurn = new Cli_Model_Turn($user, $db, $this);
+                    $user->parameters['turnStart'] =  $mTurn->next($playerId);
+                }
+            }
+//            new Cli_Model_Computer($user, $db, $this);
             return;
         }
 
