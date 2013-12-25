@@ -41,6 +41,14 @@ class Cli_GameHandler extends Cli_WofHandler
             return;
         }
 
+        if($user->parameters['timeLimit']){
+
+        }
+
+        if($user->parameters['turnTimeLimit']){
+
+        }
+
 
 
         if ($dataIn['type'] == 'chat') {

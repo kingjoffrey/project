@@ -19,6 +19,8 @@ class Cli_Model_Open
             return;
         }
 
+        $mPlayersInGame->updatePlayerInGameWSSUId($dataIn['playerId'], $user->getId());
+
         $mGame = new Application_Model_Game($dataIn['gameId'], $db);
 
         $game = $mGame->getGame();
@@ -56,7 +58,8 @@ class Cli_Model_Open
         Zend_Registry::set('playersInGameColors', $mPlayersInGame->getAllColors());
         Zend_Registry::set('capitals', $mMapPlayers->getCapitals());
 
-        $mPlayersInGame->updatePlayerInGameWSSUId($dataIn['playerId'], $user->getId());
+        $mTurn = new Application_Model_TurnHistory($dataIn['gameId'], $db);
+        $turn = $mTurn->getCurrentStatus();
 
         $this->_parameters = array(
             'gameId' => $dataIn['gameId'],
@@ -65,6 +68,8 @@ class Cli_Model_Open
             'turnsLimit' => $game['turnsLimit'],
             'turnTimeLimit' => $game['turnTimeLimit'],
             'timeLimit' => $game['timeLimit'],
+            'turnNumber' => $turn['number'],
+            'turnStart' => $turn['date'],
         );
 
         $token = array(

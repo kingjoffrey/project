@@ -16,6 +16,15 @@ class Application_Model_TurnHistory extends Coret_Db_Table_Abstract
         }
     }
 
+    public function getCurrentStatus()
+    {
+        $select = $this->_db->select()
+            ->from($this->_name, array('number', 'date'))
+            ->where('"gameId" = ?', $this->_gameId)
+            ->where('date = ?',  new Zend_Db_Expr($this->_db->select()->from($this->_name, 'max(date)')->where('"gameId" = ?', $this->_gameId)));
+        return $this->selectRow($select);
+    }
+
     public function getTurnHistory()
     {
         $select = $this->_db->select()
