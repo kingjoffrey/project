@@ -36,7 +36,7 @@ class Cli_Model_Computer
                 $gameHandler->sendToChannel($db, $token, $user->parameters['gameId']);
             } else {
                 $mTurn = new Cli_Model_Turn($user, $db, $gameHandler);
-                $mTurn->next($playerId);
+                return $mTurn->next($playerId);
             }
         }
     }

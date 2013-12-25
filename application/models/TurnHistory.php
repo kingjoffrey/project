@@ -21,7 +21,7 @@ class Application_Model_TurnHistory extends Coret_Db_Table_Abstract
         $select = $this->_db->select()
             ->from($this->_name, array('number', 'date'))
             ->where('"gameId" = ?', $this->_gameId)
-            ->where('date = ?',  new Zend_Db_Expr($this->_db->select()->from($this->_name, 'max(date)')->where('"gameId" = ?', $this->_gameId)));
+            ->where('date = (?)', new Zend_Db_Expr($this->_db->select()->from($this->_name, 'max(date)')->where('"gameId" = ?', $this->_gameId)));
         return $this->selectRow($select);
     }
 
@@ -39,12 +39,17 @@ class Application_Model_TurnHistory extends Coret_Db_Table_Abstract
 
     public function add($playerId, $number)
     {
+        $date = date('Y-m-d H:i:s');
+
         $data = array(
             'number' => $number,
-            'date' => new Zend_Db_Expr('now()'),
+            'date' => $date,
             'playerId' => $playerId,
             'gameId' => $this->_gameId
         );
+
         $this->insert($data);
+
+        return $date;
     }
 }

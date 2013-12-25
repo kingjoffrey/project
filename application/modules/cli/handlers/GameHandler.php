@@ -37,7 +37,7 @@ class Cli_GameHandler extends Cli_WofHandler
         }
 
         if (!Zend_Validate::is($user->parameters['gameId'], 'Digits') || !Zend_Validate::is($user->parameters['playerId'], 'Digits')) {
-            $this->sendError($user, 'No "gameId" or "playerId". Not authorized.');
+            $this->sendError($user, 'No game ID or player ID. Not authorized.');
             return;
         }
 
@@ -46,7 +46,12 @@ class Cli_GameHandler extends Cli_WofHandler
         }
 
         if ($user->parameters['turnTimeLimit']) {
-
+            if (time() - strtotime($user->parameters['turnStart']) > $user->parameters['turnTimeLimit'] * 60) {
+                $mGame = new Application_Model_Game($user->parameters['gameId'], $db);
+                $mTurn = new Cli_Model_Turn($user, $db, $this);
+                $user->parameters['turnStart'] = $mTurn->next($mGame->getTurnPlayerId());
+                return;
+            }
         }
 
 
@@ -170,7 +175,10 @@ class Cli_GameHandler extends Cli_WofHandler
 
             case 'nextTurn':
                 $mTurn = new Cli_Model_Turn($user, $db, $this);
-                $mTurn->next($user->parameters['playerId']);
+                $date = $mTurn->next($user->parameters['playerId']);
+                if ($date) {
+                    $user->parameters['turnStart'] = $date;
+                }
                 break;
 
             case 'startTurn':

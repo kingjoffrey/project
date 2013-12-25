@@ -14,7 +14,7 @@ class Cli_Model_Turn
     public function next($playerId)
     {
         if ($this->_user->parameters['turnsLimit']) {
-            $mGame = new Application_Model_Game($this->_gameId, $this->_db);
+            $mGame = new Application_Model_Game($this->_user->parameters['gameId'], $this->_db);
             $turnNumber = $mGame->getTurnNumber();
             if ($turnNumber >= $this->_user->parameters['turnsLimit']) {
                 $this->_gameHandler->sendError($this->_user, '!');
@@ -45,20 +45,17 @@ class Cli_Model_Turn
         }
 
         $nextPlayerId = $playerId;
-        $loop = null;
 
         if (!isset($mGame)) {
             $mGame = new Application_Model_Game($this->_user->parameters['gameId'], $this->_db);
         }
 
-        while (empty($loop)) {
+        while (true) {
             $nextPlayerId = $this->getExpectedNextTurnPlayer($playersInGameColors[$nextPlayerId]);
             $playerCastlesExists = $mCastlesInGame->playerCastlesExists($nextPlayerId);
             $playerArmiesExists = $mArmy->playerArmiesExists($nextPlayerId);
             if ($playerCastlesExists || $playerArmiesExists) {
                 if ($nextPlayerId == $playerId) { // następny gracz to ten sam gracz, który zainicjował zmianę tury
-                    $loop = true;
-
                     $mGame->endGame(); // koniec gry
                     $this->saveResults();
 
@@ -67,9 +64,8 @@ class Cli_Model_Turn
                     );
 
                     $this->_gameHandler->sendToChannel($this->_db, $token, $this->_user->parameters['gameId']);
+                    return;
                 } else { // zmieniam turę
-                    $loop = true;
-
                     $mGame->updateTurnNumber($nextPlayerId, $playersInGameColors[$nextPlayerId]);
                     $mCastlesInGame->increaseAllCastlesProductionTurn($playerId);
 
@@ -93,9 +89,11 @@ class Cli_Model_Turn
                         'color' => $playersInGameColors[$nextPlayerId]
                     );
                     $mTurnHistory = new Application_Model_TurnHistory($this->_user->parameters['gameId'], $this->_db);
-                    $mTurnHistory->add($nextPlayerId, $token['nr']);
+                    $date = $mTurnHistory->add($nextPlayerId, $token['nr']);
 
                     $this->_gameHandler->sendToChannel($this->_db, $token, $this->_user->parameters['gameId']);
+
+                    return $date;
                 }
             } else {
                 $token = array(
