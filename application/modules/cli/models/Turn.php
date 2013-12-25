@@ -12,8 +12,17 @@ class Cli_Model_Turn
         $this->_gameHandler = $gameHandler;
     }
 
-    public function next($playerId)
+    public function next($playerId, $turnsLimit)
     {
+        if ($turnsLimit) {
+            $mGame = new Application_Model_Game($this->_gameId, $this->_db);
+            $turnNumber = $mGame->getTurnNumber();
+            if ($turnNumber >= $turnsLimit) {
+
+            }
+        }
+
+
         $mPlayersInGame = new Application_Model_PlayersInGame($this->_gameId, $this->_db);
 
         if ($mPlayersInGame->playerLost($playerId)) {
@@ -39,7 +48,9 @@ class Cli_Model_Turn
         $nextPlayerId = $playerId;
         $loop = null;
 
-        $mGame = new Application_Model_Game($this->_gameId, $this->_db);
+        if (!isset($mGame)) {
+            $mGame = new Application_Model_Game($this->_gameId, $this->_db);
+        }
 
         while (empty($loop)) {
             $nextPlayerId = $this->getExpectedNextTurnPlayer($playersInGameColors[$nextPlayerId]);
@@ -63,11 +74,9 @@ class Cli_Model_Turn
                     $mGame->updateTurnNumber($nextPlayerId, $playersInGameColors[$nextPlayerId]);
                     $mCastlesInGame->increaseAllCastlesProductionTurn($playerId);
 
-                    $turnNumber = $mGame->getTurnNumber();
-
                     $token = array(
                         'type' => 'nextTurn',
-                        'nr' => $turnNumber,
+                        'nr' => $mGame->getTurnNumber(),
                         'color' => $playersInGameColors[$nextPlayerId]
                     );
                     $mTurnHistory = new Application_Model_TurnHistory($this->_gameId, $this->_db);
@@ -87,7 +96,8 @@ class Cli_Model_Turn
         }
     }
 
-    public function start($playerId, $computer = null)
+    public
+    function start($playerId, $computer = null)
     {
         $playersInGameColors = Zend_Registry::get('playersInGameColors');
         $color = $playersInGameColors[$playerId];
@@ -199,7 +209,8 @@ class Cli_Model_Turn
         $this->_gameHandler->sendToChannel($this->_db, $token, $this->_gameId);
     }
 
-    public function getExpectedNextTurnPlayer($playerColor)
+    public
+    function getExpectedNextTurnPlayer($playerColor)
     {
         $find = false;
         $playerColors = Zend_Registry::get('playersInGameColors');

@@ -41,14 +41,13 @@ class Cli_GameHandler extends Cli_WofHandler
             return;
         }
 
-        if($user->parameters['timeLimit']){
+        if ($user->parameters['timeLimit']) {
 
         }
 
-        if($user->parameters['turnTimeLimit']){
+        if ($user->parameters['turnTimeLimit']) {
 
         }
-
 
 
         if ($dataIn['type'] == 'chat') {
@@ -171,7 +170,7 @@ class Cli_GameHandler extends Cli_WofHandler
 
             case 'nextTurn':
                 $mTurn = new Cli_Model_Turn($user->parameters['gameId'], $db, $this);
-                $mTurn->next($user->parameters['playerId']);
+                $mTurn->next($user->parameters['playerId'], $user->parameters['turnsLimit']);
                 break;
 
             case 'startTurn':
