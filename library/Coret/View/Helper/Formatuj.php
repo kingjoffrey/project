@@ -22,7 +22,8 @@ class Coret_View_Helper_Formatuj extends Zend_View_Helper_Abstract
             return date($format, strtotime($data));
         }
         if ($data) {
-            return date('Y-m-d H:i:s', strtotime($data));
+//            return date('Y-m-d H:i:s', strtotime($data));
+            return strftime('%F %H:%M:%S', strtotime($data));
         }
     }
 

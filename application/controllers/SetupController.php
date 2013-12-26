@@ -40,10 +40,11 @@ class SetupController extends Game_Controller_Gui
         $mMapPlayers = new Application_Model_MapPlayers($game['mapId']);
 
         $this->view->mapPlayers = $mMapPlayers->getAll();
-        $this->view->numberOfPlayers = $game['numberOfPlayers'];
-        $this->view->timeLimit = $game['timeLimit'];
-        $this->view->turnsLimit = $game['turnsLimit'];
-        $this->view->turnTimeLimit = $game['turnTimeLimit'];
+        $this->view->game = $game;
+//        $this->view->numberOfPlayers = $game['numberOfPlayers'];
+//        $this->view->timeLimit = $game['timeLimit'];
+//        $this->view->turnsLimit = $game['turnsLimit'];
+//        $this->view->turnTimeLimit = $game['turnTimeLimit'];
         $this->view->accessKey = $mPlayersInGame->getAccessKey($this->_namespace->player['playerId']);
         $this->view->gameId = $gameId;
         $this->view->player = $this->_namespace->player;
@@ -52,6 +53,9 @@ class SetupController extends Game_Controller_Gui
         $map = $mMap->getMap();
 
         $this->view->map = $map['name'];
+
+        $this->view->timeLimits = Application_Model_Limit::timeLimits();
+        $this->view->turnTimeLimit = Application_Model_Limit::turnTimeLimit();
     }
 
     public function startAction()

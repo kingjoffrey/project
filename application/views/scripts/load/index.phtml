@@ -44,7 +44,8 @@
                         <br>
                         <?php echo $this->translate($this->timeLimits[$game['timeLimit']]) ?>
                         <br>
-                        <?php echo $game['turnsLimit'] ?>
+                        <?php if ($game['turnsLimit']): echo $game['turnsLimit'];
+                        else: echo $this->translate('no limit'); endif ?>
                         <br>
                         <?php echo $this->translate($this->turnTimeLimit[$game['turnTimeLimit']]) ?>
                     </td>
@@ -62,9 +63,9 @@
                         <?php endforeach ?>
                     </td>
                     <td>
-                        <div><?php echo strftime('%F %H:%M:%S', strtotime($game['begin'])) ?></div>
+                        <div><?php echo Coret_View_Helper_Formatuj::date($game['begin']) ?></div>
                         <hr style="border: 1px solid #878967">
-                        <div><?php echo strftime('%F %H:%M:%S', strtotime($game['end'])) ?></div>
+                        <div><?php echo Coret_View_Helper_Formatuj::date($game['end']) ?></div>
                     </td>
                 </tr>
             <?php endforeach ?>

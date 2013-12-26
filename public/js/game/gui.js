@@ -333,17 +333,22 @@ var Gui = {
         $('#armyBox').css({
             top: parseInt($('#playersBox').css('height')) + 19 + 'px',
             'left': left + 'px'
-        });
+        })
 
         $('#terrain').css('top', mapBoxHeight + 19 + 'px');
 
         $('#mapBox .close').css({
             left: parseInt($('#mapImage').css('width')) + 16 + 'px'
-        });
+        })
 
         $('#timerBox').css({
             top: mapBoxHeight + 52 + 'px'
-        });
+        })
+
+
+        $('#limitBox').css({
+            top: mapBoxHeight + 52 + parseInt($('#timerBox').css('height')) + 'px'
+        })
 
         Message.adjust()
         Message.setOverflowHeight()

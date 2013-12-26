@@ -653,6 +653,13 @@
     padding: 0 3px;
 }
 
+#limitBox {
+    left: -1px;
+    border-top-right-radius: 10px;
+    border-bottom-right-radius: 10px;
+    width: 230px;
+}
+
 #goldBox {
     min-width: 200px;
     border-top: none;
