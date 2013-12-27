@@ -73,9 +73,6 @@ class Cli_PublicHandler extends Cli_WofHandler
                 $mapId = $mGame->getMapId();
 
                 $mMapCastles = new Application_Model_MapCastles($mapId, $db);
-//                $mMapPlayers = new Application_Model_MapPlayers($mapId, $db);
-
-//                $playerColors = $mMapPlayers->getMapPlayerIds();
                 $startPositions = $mMapCastles->getDefaultStartPositions();
 
                 foreach ($players as $player) {

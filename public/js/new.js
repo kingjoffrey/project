@@ -61,6 +61,8 @@ function getNumberOfPlayersForm() {
     var mapId = $('#mapId').val();
     $.getJSON('/' + lang + '/newajax/nop/mapId/' + mapId, function (result) {
         var html = $.parseHTML(result);
-        $('#numberOfPlayers').html($(html[0][0]).html());
+        console.log($($(html)[0][0]).val())
+        $('#x').val($($(html)[0][0]).val())
+        $('#numberOfPlayers').val($($(html)[0][1]).val())
     });
 }

@@ -5,7 +5,7 @@ class NewController extends Game_Controller_Gui
 
     public function indexAction()
     {
-        $this->view->form = new Application_Form_Creategame ();
+        $this->view->form = new Application_Form_Creategame(array('mapId' => $this->_request->getParam('mapId')));
         if ($this->_request->isPost()) {
             if ($this->view->form->isValid($this->_request->getPost())) {
                 $modelGame = new Application_Model_Game ();

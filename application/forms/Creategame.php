@@ -9,10 +9,16 @@ class Application_Form_Creategame extends Zend_Form
 
         $mMap = new Application_Model_Map();
 
+        if (isset($this->_attribs['mapId'])) {
+            $mapId = $this->_attribs['mapId'];
+        } else {
+            $mapId = $mMap->getMinMapId();
+        }
+
         $f = new Coret_Form_Select(array('name' => 'mapId', 'label' => $this->getView()->translate('Select map'), 'opt' => $mMap->getAllMapsList()));
         $this->addElements($f->getElements());
 
-        $f = new Application_Form_NumberOfPlayers();
+        $f = new Application_Form_NumberOfPlayers(array('mapId' => $mapId));
         $this->addElements($f->getElements());
 
         $timeLimits = Application_Model_Limit::timeLimits();
