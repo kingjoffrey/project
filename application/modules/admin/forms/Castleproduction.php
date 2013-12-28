@@ -6,7 +6,7 @@ class Admin_Form_Castleproduction extends Zend_Form
     public function init()
     {
         $mCastle = new Admin_Model_Castle();
-        $castles = $mCastle->getCastles();
+        $castles = $mCastle->getCastlesNames();
 
         $this->addElement('select', 'castleId',
             array(

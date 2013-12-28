@@ -20,8 +20,8 @@ class Application_Model_MapCastles extends Coret_Db_Table_Abstract
     public function getMapCastles()
     {
         $select = $this->_db->select()
-            ->from(array('a' => $this->_name), null)
-            ->join(array('b' => 'castle'), 'a."castleId"=b."castleId"', array('castleId', 'x', 'y', 'name', 'income', 'capital', 'defense'))
+            ->from(array('a' => $this->_name), array('x', 'y'))
+            ->join(array('b' => 'castle'), 'a."castleId"=b."castleId"', array('castleId', 'name', 'income', 'capital', 'defense'))
             ->where($this->_db->quoteIdentifier('mapId') . ' = ?', $this->mapId);
 
         $castles = $this->selectAll($select);
@@ -40,8 +40,8 @@ class Application_Model_MapCastles extends Coret_Db_Table_Abstract
     public function getDefaultStartPositions()
     {
         $select = $this->_db->select()
-            ->from(array('a' => $this->_name), null)
-            ->join(array('b' => 'castle'), 'a."castleId"=b."castleId"', array('castleId', 'x', 'y'))
+            ->from(array('a' => $this->_name), array('x', 'y'))
+            ->join(array('b' => 'castle'), 'a."castleId"=b."castleId"', array('castleId'))
             ->where($this->_db->quoteIdentifier('mapId') . ' = ?', $this->mapId)
             ->where('capital = true')
             ->order('mapCastleId');

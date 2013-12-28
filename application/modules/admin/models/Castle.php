@@ -14,7 +14,7 @@ class Admin_Model_Castle extends Coret_Model_ParentDb
         'y' => array('label' => 'Y', 'type' => 'number'),
     );
 
-    public function getCastles()
+    public function getCastlesNames()
     {
         $select = $this->_db->select()
             ->from($this->_name, array('castleId', 'name'))
@@ -29,5 +29,12 @@ class Admin_Model_Castle extends Coret_Model_ParentDb
         return $castles;
     }
 
+    public function getCastles()
+    {
+        $select = $this->_db->select()
+            ->from($this->_name, array('castleId', 'x','y'));
+
+        return $this->selectAll($select);
+    }
 }
 

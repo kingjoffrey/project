@@ -10,5 +10,27 @@ class Admin_Model_Mapcastles extends Coret_Model_ParentDb
         'mapId' => array('label' => 'Map ID', 'type' => 'number'),
     );
 
+    public function castles($mapId)
+    {
+        $mCastle = new Admin_Model_Castle();
+        $castles = $mCastle->getCastles();
+
+        foreach ($castles as $castle) {
+            $data = array(
+                'x' => $castle['x'],
+//                'y' => $castle['y'] - 79,
+                'y' => $castle['y'],
+            );
+
+            $where = array(
+                $this->_db->quoteInto('"mapId" = ?', $mapId),
+                $this->_db->quoteInto('"castleId" = ?', $castle['castleId'])
+            );
+
+            $this->update($data, $where);
+
+        }
+    }
+
 }
 

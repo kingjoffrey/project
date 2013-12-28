@@ -21,7 +21,7 @@ class Admin_Form_Mapcastles extends Zend_Form
         );
 
         $mCastle = new Admin_Model_Castle();
-        $castles = $mCastle->getCastles();
+        $castles = $mCastle->getCastlesNames();
 
         $this->addElement('select', 'castleId',
             array(
