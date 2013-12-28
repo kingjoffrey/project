@@ -176,7 +176,6 @@ class Cli_Model_ComputerSubBlocks
         }
 
 
-
         return $move;
     }
 
@@ -242,6 +241,9 @@ class Cli_Model_ComputerSubBlocks
     static public function getEnemiesInRange($enemies, $mArmy, $fields)
     {
         $army = $mArmy->getArmy();
+        if (!isset($army['movesLeft'])) {
+            $army['movesLeft'] = Cli_Model_Army::calculateMaxArmyMoves($army);
+        }
         $enemiesInRange = array();
         foreach ($enemies as $enemy) {
             $mHeuristics = new Cli_Model_Heuristics($army['x'], $army['y']);
@@ -259,8 +261,6 @@ class Cli_Model_ComputerSubBlocks
 
                 $move = $mArmy->calculateMovesSpend($aStar->getPath($enemy['x'] . '_' . $enemy['y']));
                 if ($move['currentPosition']['x'] == $enemy['x'] && $move['currentPosition']['y'] == $enemy['y']) {
-//                    $enemy['aStar'] = $aStar;
-//                    $enemy['key'] = $enemy['x'] . '_' . $enemy['y'];
                     $enemiesInRange[] = $enemy;
                 }
             }
@@ -276,6 +276,9 @@ class Cli_Model_ComputerSubBlocks
     static public function getNearestRuin($fields, $ruins, $mArmy)
     {
         $army = $mArmy->getArmy();
+        if (!isset($army['movesLeft'])) {
+            $army['movesLeft'] = Cli_Model_Army::calculateMaxArmyMoves($army);
+        }
         foreach ($ruins as $ruinId => $ruin) {
             $mHeuristics = new Cli_Model_Heuristics($ruin['x'], $ruin['y']);
             $h = $mHeuristics->calculateH($army['x'], $army['y']);
@@ -371,6 +374,9 @@ class Cli_Model_ComputerSubBlocks
     static public function getWeakerEnemyArmyInRange($gameId, $playerId, $enemies, $mArmy, $castlesAndFields, $db)
     {
         $army = $mArmy->getArmy();
+        if (!isset($army['movesLeft'])) {
+            $army['movesLeft'] = Cli_Model_Army::calculateMaxArmyMoves($army);
+        }
         foreach ($enemies as $enemy) {
             $mHeuristics = new Cli_Model_Heuristics($enemy['x'], $enemy['y']);
             $h = $mHeuristics->calculateH($army['x'], $army['y']);
@@ -410,6 +416,9 @@ class Cli_Model_ComputerSubBlocks
     static public function getStrongerEnemyArmyInRange($gameId, $playerId, $enemies, $mArmy, $castlesAndFields, $db)
     {
         $army = $mArmy->getArmy();
+        if (!isset($army['movesLeft'])) {
+            $army['movesLeft'] = Cli_Model_Army::calculateMaxArmyMoves($army);
+        }
         foreach ($enemies as $enemy) {
             $mHeuristics = new Cli_Model_Heuristics($enemy['x'], $enemy['y']);
             $h = $mHeuristics->calculateH($army['x'], $army['y']);

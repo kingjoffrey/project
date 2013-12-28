@@ -207,14 +207,16 @@ class Cli_Model_ComputerMainBlocks
                             $l->log('ŁĄCZĘ ARMIE, KTÓRE PÓJDĄ DALEJ');
 
                             $firstArmy = current($notGarrison);
-                            $path = array(
+                            $path = array(0 => array(
                                 'x' => $firstArmy['x'],
                                 'y' => $firstArmy['y'],
-                                'tt' => 'c'
+                                'tt' => 'c')
                             );
                             $secondArmy = next($notGarrison);
 
-                            return self::endMove($playerId, $db, $gameId, $secondArmy['armyId'], $firstArmy, $path);
+                            $cliModelArmy = new Cli_Model_Army($secondArmy);
+                            Cli_Model_Army::updateArmyPosition($playerId, $path, $castlesAndFields['fields'], $cliModelArmy->getArmy(), $gameId, $db);
+                            return self::endMove($playerId, $db, $gameId, $secondArmy['armyId'], $path[0], $path);
                         } elseif (count($notGarrison) == 1) {
                             $l->log('TA ARMIA IDZIE DALEJ');
 
