@@ -128,83 +128,21 @@ var Message = {
                 })
         )
     },
+    simple: function (message) {
+        var id = this.show($('<div>').html(message));
+        this.ok(id)
+    },
+    error: function (message) {
+        var div = $('<div>')
+            .append($('<h3>').html('Error'))
+            .append($('<div>').html(message))
+        var id = this.show(div);
+        this.ok(id)
+    },
     surrender: function () {
         var id = this.show($('<div>').append($('<h3>').html('Surrender')).append($('<div>').html('Are you sure?')))
         this.ok(id, Websocket.surrender);
         this.cancel(id)
-    },
-    showArtifacts: function () {
-        var htmlChest = $('<div>').attr('id', 'chest');
-        for (i in players[my.color].chest) {
-            htmlChest.append(
-                $('<div>')
-                    .attr('id', players[my.color].chest[i].artifactId)
-                    .html(artifacts[players[my.color].chest[i].artifactId].name + ' ' + players[my.color].chest[i].quantity)
-                    .click(function () {
-                        Websocket.inventoryAdd(Army.selected.heroes[0].heroId, $(this).attr('id'));
-                    })
-                    .mousemove(function (e) {
-                        $('.zoomWindow #des' + $(this).attr('id')).remove();
-                        $('.zoomWindow').append(
-                            $('<div>')
-                                .attr('id', 'des' + $(this).attr('id'))
-                                .addClass('artifactDescription')
-                                .css({
-                                    top: e.pageY + 'px',
-                                    left: e.pageX + 'px'
-
-                                })
-                                .append(
-                                    '<h3>' + artifacts[$(this).attr('id')].name + '</h3><div>' + artifacts[$(this).attr('id')].description + '</div>'
-                                )
-                        );
-                    })
-                    .mouseleave(function () {
-                        $('.zoomWindow #des' + $(this).attr('id')).remove();
-                    })
-            );
-        }
-
-        var htmlInventory = $('<div>').attr('id', 'inventory');
-
-        for (i in Army.selected.heroes[0].artifacts) {
-            htmlInventory.append(
-                $('<div>')
-                    .attr('id', Army.selected.heroes[0].artifacts[i].artifactId)
-                    .html(artifacts[Army.selected.heroes[0].artifacts[i].artifactId].name)
-                    .click(function () {
-                        Websocket.inventoryDel(Army.selected.heroes[0].heroId, $(this).attr('id'));
-                    })
-                    .mousemove(function (e) {
-                        $('.zoomWindow #des' + $(this).attr('id')).remove();
-                        $('.zoomWindow').append(
-                            $('<div>')
-                                .attr('id', 'des' + $(this).attr('id'))
-                                .addClass('artifactDescription')
-                                .css({
-                                    top: e.pageY + 'px',
-                                    left: e.pageX + 'px'
-
-                                })
-                        );
-                    })
-                    .mouseleave(function () {
-                        $('.zoomWindow #des' + $(this).attr('id')).remove();
-                    })
-            );
-        }
-
-
-        var div = $('<div>')
-            .addClass('message')
-            .addClass('center')
-            .append($('<h3>').html('Chest'))
-            .append(htmlChest)
-            .append($('<h3>').html('Inventory'))
-            .append(htmlInventory)
-
-        var id = this.show(div)
-        this.ok(id)
     },
     turn: function () {
         this.remove();
@@ -439,10 +377,6 @@ var Message = {
         this.ok(id, Websocket.nextTurn);
         this.cancel(id)
     },
-    simple: function (message) {
-        var id = this.show($('<div>').html(message));
-        this.ok(id)
-    },
     disband: function () {
         var id = this.show($('<div>').append($('<h3>').html('Disband army')).append($('<div>').html('Are you sure?')))
         this.ok(id, Websocket.disband);
@@ -650,6 +584,7 @@ var Message = {
         var attackerColor = data.attackerColor;
         var defenderColor = data.defenderColor;
         var newBattle = new Array();
+
         var attack = $('<div>').addClass('battle attack');
 
         for (i in battle.attack.soldiers) {
@@ -710,9 +645,11 @@ var Message = {
         }
 
         var div = $('<div>')
-            .append(attack)
-            .append($('<p id="vs">').html('VS').addClass('center'))
+            .append($('<h3>').html('Defense'))
             .append(defense)
+            .append($('<p id="vs">').html('VS').addClass('center'))
+            .append($('<h3>').html('Attack'))
+            .append(attack)
 
         var id = this.show(div);
         if (!players[data.attackerColor].computer) {
@@ -803,7 +740,7 @@ var Message = {
         var newDefense = castles[castleId].defense + 1;
 
         var div = $('<div>')
-            .html('Do you want to build castle defense?')
+            .append($('<h3>').html('Do you want to build castle defense?'))
             .append($('<div>').html('Current defense: ' + castles[castleId].defense))
             .append($('<div>').html('New defense: ' + newDefense))
             .append($('<div>').html('Cost: ' + costBuildDefense + ' gold'))
@@ -917,7 +854,10 @@ var Message = {
         this.ok(id)
     },
     end: function () {
-        var id = this.show($('<div>').append($('<h3>').html('GAME OVER')).append($('<div>').html('This is THE END')))
+        var div = $('<div>')
+            .append($('<h3>').html('GAME OVER'))
+            .append($('<div>').html('This is THE END'))
+        var id = this.show(div)
         this.ok(id, Gui.exit)
     },
     treasury: function () {

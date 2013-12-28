@@ -1,6 +1,7 @@
 var Move = {
+    stepTime: 0,
     start: function (r) {
-        console.log('move start 0')
+        console.log('move.start() 0')
         switch (players[r.attackerColor].armies[r.attackerArmy.armyId].movementType) {
             case 'flying':
                 Sound.play('fly');
@@ -24,11 +25,17 @@ var Move = {
 
         Army.unfortify(r.attackerArmy.armyId);
 
-        this.loop(r, null);
-        console.log('move start 1')
+        if (players[r.attackerColor].computer) {
+            this.stepTime = 100
+        } else {
+            this.stepTime = 200
+        }
+
+        this.loop(r);
+        console.log('move.start() 1')
     },
-    loop: function (r, xy) {
-        console.log('move loop 0')
+    loop: function (r) {
+        console.log('move.loop() 0')
         for (step in r.path) {
             break;
         }
@@ -36,18 +43,31 @@ var Move = {
         if (isSet(r.path[step])) {
             zoomer.setCenterIfOutOfScreen(r.path[step].x * 40, r.path[step].y * 40);
 
-            $('#army' + r.oldArmyId)
-                .animate({
-                    left: (r.path[step].x * 40) + 'px',
-                    top: (r.path[step].y * 40) + 'px'
-                }, 200, function () {
-                    searchTower(r.path[step].x, r.path[step].y);
-                    xy = r.path[step];
-                    delete r.path[step];
-                    Move.loop(r, xy);
-                });
+            if (Gui.show) {
+                $('#army' + r.oldArmyId)
+                    .animate({
+                        left: (r.path[step].x * 40) + 'px',
+                        top: (r.path[step].y * 40) + 'px'
+                    }, Move.stepTime, function () {
+                        if (typeof r.path[step] == 'undefined') {
+                            throw(r)
+                        }
+                        searchTower(r.path[step].x, r.path[step].y);
+                        delete r.path[step];
+                        Move.loop(r);
+                    })
+            } else {
+                $('#army' + r.oldArmyId)
+                    .css({
+                        left: (r.path[step].x * 40) + 'px',
+                        top: (r.path[step].y * 40) + 'px'
+                    })
+                searchTower(r.path[step].x, r.path[step].y);
+                delete r.path[step];
+                Move.loop(r);
+            }
         } else {
-            if (isTruthful(r.battle)) {
+            if (isTruthful(r.battle) && Gui.show) {
                 Sound.play('fight');
 
                 if (isTruthful(r.castleId)) {
@@ -70,11 +90,11 @@ var Move = {
             } else {
                 Move.end(r);
             }
+            console.log('move.loop() 1')
         }
-        console.log('move loop 1')
     },
     end: function (r) {
-        console.log('move end 0')
+        console.log('move.end() 0')
 
         AStar.x = players[r.attackerColor].armies[r.attackerArmy.armyId].x;
         AStar.y = players[r.attackerColor].armies[r.attackerArmy.armyId].y;
@@ -128,6 +148,6 @@ var Move = {
         }
 
         setTimeout('$(".war").remove()', 100);
-        console.log('move end 1')
+        console.log('move.end() 1')
     }
 }

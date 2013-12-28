@@ -17,7 +17,7 @@ Websocket = {
 
                     case 'error':
                         Sound.play('error');
-                        Message.simple(r.msg);
+                        Message.error(r.msg);
                         unlock();
                         break;
 

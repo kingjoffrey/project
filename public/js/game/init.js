@@ -33,8 +33,6 @@ var enemyCastles = false;
 var gameWidth;
 var gameHeight;
 
-var show = true;
-
 var stop = 0;
 
 var shipId;

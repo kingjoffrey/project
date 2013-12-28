@@ -1,5 +1,6 @@
 var Gui = {
     lock: true,
+    show: true,
     armyBox: {'close': 0},
     chatBox: {'close': 0},
     playerBox: {'close': 0},
@@ -67,8 +68,8 @@ var Gui = {
 
         $('#show').click(function () {
             Sound.play('click');
-            show = !show;
-            if (show) {
+            Gui.show = !Gui.show;
+            if (Gui.show) {
                 $(this).children().attr('src', '/img/game/show.png')
             } else {
                 $(this).children().attr('src', '/img/game/show_off.png')
