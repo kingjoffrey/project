@@ -132,6 +132,13 @@ var Message = {
         var id = this.show($('<div>').html(message));
         this.ok(id)
     },
+    simpleNew: function (title, message) {
+        var div = $('<div>')
+            .append($('<h3>').html(title))
+            .append($('<div>').html(message))
+        var id = this.show(div);
+        this.ok(id)
+    },
     error: function (message) {
         var div = $('<div>')
             .append($('<h3>').html('Error'))
@@ -248,6 +255,9 @@ var Message = {
             }
             table.append(tr);
         }
+
+        // stop & relocation
+
         table.append(
             $('<tr>')
                 .append(
@@ -289,12 +299,18 @@ var Message = {
             }
 
             for (relocatedCastleId in castles[castleId].relocatedProduction) {
+                var relocatedCastle = castles[castleId].relocatedProduction[relocatedCastleId]
+
                 relocatingProductionElement.append(
                     $('<tr>')
                         .append(
                             $('<td>').append(
-                                $('<img>').attr('src', Unit.getImage(castles[castleId].relocatedProduction[relocatedCastleId].currentProductionId, my.color))
+                                $('<img>').attr('src', Unit.getImage(relocatedCastle.currentProductionId, my.color))
                             )
+                        )
+                        .append(
+                            $('<td>')
+                                .html(relocatedCastle.currentProductionTurn + ' / ' + castles[relocatedCastleId].production[relocatedCastle.currentProductionId].time)
                         )
                         .append(
                             $('<td>')
@@ -322,8 +338,13 @@ var Message = {
                         $('<tr>')
                             .append(
                                 $('<td>').append(
-                                    $('<img>').attr('src', Unit.getImage(castles[players[my.color].castles[castleId].relocationCastleId].relocatedProduction[castleId].currentProductionId, my.color))
+//                                    $('<img>').attr('src', Unit.getImage(castles[players[my.color].castles[castleId].relocationCastleId].relocatedProduction[castleId].currentProductionId, my.color))
+                                    $('<img>').attr('src', Unit.getImage(castles[castleId].currentProductionId, my.color))
                                 )
+                            )
+                            .append(
+                                $('<td>')
+                                    .html(castles[castleId].currentProductionTurn + ' / ' + castles[castleId].production[castles[castleId].currentProductionId].time)
                             )
                             .append(
                                 $('<td>')
@@ -347,6 +368,12 @@ var Message = {
         this.ok(id, Castle.handle);
         this.cancel(id)
 
+        $('.production .unit input[type=radio]:checked').parent().parent().css({
+            background: 'url(/img/bg_1.jpg)',
+            color: '#fff'
+        })
+
+        // click
 
         $('.production .unit').click(function (e) {
 
@@ -357,17 +384,28 @@ var Message = {
                     } else {
                         $('td#' + $(this).attr('id') + '.unit input').prop('checked', true);
                     }
+                    Castle.handle()
                 }
             } else {
                 $('.production .unit :radio').each(function () {
-                    $(this).prop('checked', false);
+                    $(this)
+                        .prop('checked', false)
+                        .parent().parent().css({
+                            background: '#fff',
+                            color: '#000'
+                        })
                 })
 
                 if ($(this).attr('id') == 'stop') {
                     $('td#relocation.unit input').prop('checked', false);
                 }
 
-                $('td#' + $(this).attr('id') + '.unit input').prop('checked', true);
+                $('td#' + $(this).attr('id') + '.unit input')
+                    .prop('checked', true)
+                    .parent().parent().css({
+                        background: 'url(/img/bg_1.jpg)',
+                        color: '#fff'
+                    })
             }
 
         });

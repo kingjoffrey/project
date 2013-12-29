@@ -6,7 +6,7 @@ var Castle = {
 
         if (!castleId) {
             Sound.play('error');
-            Message.simple('Error');
+            Message.error('No castle ID');
             return;
         }
 
@@ -18,7 +18,10 @@ var Castle = {
         var unitId = $('input:radio[name=production]:checked').val();
 
         if ($('input[name=relocation]').is(':checked')) {
-            Message.simple('Select castle to which you want to relocate this production');
+            var div = $('<div>')
+                .append($('<h3>').html('Relocation'))
+                .append('Select castle to which you want to relocate this production')
+            Message.simple(div)
             $('.castle.' + my.color)
                 .unbind('click')
                 .click(function () {
@@ -39,12 +42,12 @@ var Castle = {
         }
 
         if (isTruthful(relocationCastleId)) {
-            Message.simple('Production relocated')
+            Message.simpleNew('Production', 'Production relocated')
         } else {
             if (unitId === null) {
-                Message.simple('Production stopped')
+                Message.simpleNew('Production', 'Production stopped')
             } else {
-                Message.simple('Production set')
+                Message.simpleNew('Production', 'Production set')
             }
         }
 

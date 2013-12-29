@@ -975,7 +975,7 @@ table.statistics th.Players {
 
 .relocatedProduction td {
     line-height: 30px;
-    background: #CECEb0;
+    /*background: #CECEb0;*/
     border: none;
 }
 
@@ -1022,4 +1022,8 @@ table.treasury td.c {
 
 #vs {
     margin-top: 10px;
+}
+
+.production tr {
+    background: none !important;
 }
