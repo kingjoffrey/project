@@ -130,19 +130,19 @@ Websocket = {
                     case 'disband':
                         if (isSet(r.armyId) && isSet(r.color)) {
                             Message.remove();
-                            Army.delete(r.armyId, r.color);
                             if (my.turn) {
                                 var upkeep = 0;
                                 for (i in players[my.color].armies[r.armyId].soldiers) {
                                     upkeep += units[players[my.color].armies[r.armyId].soldiers[i].unitId].cost
                                 }
 
-                                costsUpdate(-upkeep)
+                                costIncrement(-upkeep)
 
                                 if (!Hero.findMy()) {
                                     $('#heroResurrection').removeClass('buttonOff')
                                 }
                             }
+                            Army.delete(r.armyId, r.color);
                         }
                         break;
 
@@ -237,7 +237,7 @@ Websocket = {
                         break;
 
                     case 'dead':
-                        Message.simple(mapPlayersColors[r.color].longName + ' have been defeated');
+                        console.log(r.color)
                         break;
 
                     case 'end':

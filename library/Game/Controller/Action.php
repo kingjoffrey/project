@@ -1,13 +1,17 @@
 <?php
 
-abstract class Game_Controller_Action extends Zend_Controller_Action {
+abstract class Game_Controller_Action extends Zend_Controller_Action
+{
 
     protected $_namespace;
 
-    public function init() {
+    public function init()
+    {
         parent::init();
 
         $this->_namespace = Game_Namespace::getNamespace(); // default namespace
+
+//        $this->view->headScript()->appendFile('/js/jquery.mobile-1.3.1.min.js');
 
         // Wywołujemy funkcję _init w klasie kontrolera
         if (method_exists($this, '_init')) {
@@ -15,7 +19,8 @@ abstract class Game_Controller_Action extends Zend_Controller_Action {
         }
     }
 
-    public function __construct(Zend_Controller_Request_Abstract $request, Zend_Controller_Response_Abstract $response, array $invokeArgs = array()) {
+    public function __construct(Zend_Controller_Request_Abstract $request, Zend_Controller_Response_Abstract $response, array $invokeArgs = array())
+    {
         // Konstruktor klasy nadrzędnej
         parent::__construct($request, $response, $invokeArgs);
     }

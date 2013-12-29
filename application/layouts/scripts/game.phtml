@@ -16,21 +16,21 @@
             <div class="zoomPup"></div>
             <?php echo $this->placeholder('map') ?>
         </div>
-        <div class="close buttonColors">&#x25C0</div>
+        <div class="close">&#x25C0</div>
         <div id="terrain">
             <?php echo $this->translate('Terrain') ?>: <span id="coord" class="font-yellow"></span>
         </div>
     </div>
+    <div id="limitBox" class="box">
+        <div class="close">&#x25C0</div>
+        <div id="turnTimeLimit">00:00:00</div>
+        <div id="timeLimit">00:00:00</div>
+    </div>
     <div id="timerBox" class="box">
-        <div class="close buttonColors">&#x25C0</div>
+        <div class="close">&#x25C0</div>
         <div id="timerScroll">
             <div id="timerRows"></div>
         </div>
-    </div>
-    <div id="limitBox" class="box">
-        <div class="close buttonColors">&#x25C0</div>
-        <div id="turnTimeLimit"></div>
-        <div id="timeLimit"></div>
     </div>
     <div id="goldBox" class="box">
         <table>
@@ -79,10 +79,10 @@
             <a id="nextArmy"
                class="button buttonColors buttonOff">(n) <?php echo $this->translate('Next army') ?> &raquo;</a>
         </div>
-        <div class="close buttonColors">&#x25B6</div>
+        <div class="close">&#x25B6</div>
     </div>
     <div id="armyBox" class="box">
-        <div class="close buttonColors">&#x25B6</div>
+        <div class="close">&#x25B6</div>
         <div id="nameBox"><span id="name" class="font-yellow"></span></div>
         <div id="attrBox">
             <div class="left">
@@ -123,7 +123,7 @@
         </div>
     </div>
     <div id="chatBox" class="box">
-        <div class="close buttonColors">&#x25B6</div>
+        <div class="close">&#x25B6</div>
         <div id="chatWindow">
             <div></div>
         </div>

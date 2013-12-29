@@ -286,8 +286,6 @@
 .message .production table {
     padding: 2px;
     width: auto;
-    min-width: 0;
-
 }
 
 .message .production td.unit {
@@ -729,9 +727,9 @@
     position: absolute;
     z-index: 27000;
     background: transparent url('/img/game/message_bg.png');
-    border: 1px solid green;
+    border: 2px solid orange;
     box-shadow: 5px 5px 20px #000;
-    padding: 3px;
+    padding: 5px;
     color: #fff;
 }
 
@@ -772,41 +770,6 @@
 
 html {
     background: #000;
-}
-
-.close {
-    position: absolute;
-    width: 19px;
-    height: 19px;
-    box-shadow: 5px 5px 20px #000;
-    border-radius: 12px;
-    line-height: 20px;
-    text-align: center;
-    text-shadow: none;
-}
-
-#mapBox .close {
-    top: 12px;
-}
-
-#timerBox .close {
-    left: 225px;
-    top: -10px;
-}
-
-#playersBox .close {
-    left: -10px;
-    /*top: -10px;*/
-}
-
-#chatBox .close {
-    left: -10px;
-    top: -10px;
-}
-
-#armyBox .close {
-    left: -10px;
-    top: -10px;
 }
 
 .font-yellow {
@@ -947,6 +910,11 @@ html {
     z-index: 99999;
 }
 
+table.statistics tr {
+    background: none;
+    color: #D7DAA4;
+}
+
 table.statistics td {
     border: none;
     text-shadow: none;
@@ -957,15 +925,11 @@ table.statistics td {
 table.statistics th {
     background: none;
     border: none;
-    padding: 0;
+    padding: 5px;
 }
 
 table.statistics td.shortName {
     background: none;
-}
-
-table.statistics th.Players {
-    border: none;
 }
 
 .relocatedProduction table {
@@ -1027,3 +991,67 @@ table.treasury td.c {
 .production tr {
     background: none !important;
 }
+
+.showCastle tr td:not(.button) {
+    border: none !important;
+}
+
+.statistics tr:first-of-type {
+    background: none;
+}
+
+.close {
+    position: absolute;
+    width: 19px;
+    height: 19px;
+    line-height: 20px;
+    text-align: center;
+    text-shadow: none;
+    color: orange;
+    border: 2px solid orange;
+    cursor: pointer;
+    /*background: #000;*/
+}
+
+.close:hover {
+    color: #fff;
+}
+
+#mapBox .close {
+    top: 12px;
+    border-top-right-radius: 5px;
+    border-bottom-right-radius: 5px;
+}
+
+#limitBox .close {
+    top: 8px;
+    border-top-right-radius: 5px;
+    border-bottom-right-radius: 5px;
+}
+
+#timerBox .close {
+    top: 8px;
+    border-top-right-radius: 5px;
+    border-bottom-right-radius: 5px;
+}
+
+#playersBox .close {
+    left: -23px;
+    border-top-left-radius: 5px;
+    border-bottom-left-radius: 5px;
+}
+
+#armyBox .close {
+    left: -23px;
+    top: 8px;
+    border-top-left-radius: 5px;
+    border-bottom-left-radius: 5px;
+}
+
+#chatBox .close {
+    left: -23px;
+    top: 8px;
+    border-top-left-radius: 5px;
+    border-bottom-left-radius: 5px;
+}
+

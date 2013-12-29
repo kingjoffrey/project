@@ -41,7 +41,6 @@ class Cli_Model_Turn
             );
             $this->_gameHandler->sendToChannel($this->_db, $token, $this->_user->parameters['gameId']);
             $mPlayersInGame->setPlayerLostGame($playerId);
-            sleep(3);
         }
 
         $nextPlayerId = $playerId;
@@ -102,7 +101,6 @@ class Cli_Model_Turn
                 );
                 $this->_gameHandler->sendToChannel($this->_db, $token, $this->_user->parameters['gameId']);
                 $mPlayersInGame->setPlayerLostGame($nextPlayerId);
-                sleep(3);
             }
         }
     }

@@ -38,6 +38,9 @@ var Message = {
                     $(this).css('cursor', 'url(/img/game/cursor_hand.png) 15 15, default')
                 })
                 .mouseout(function () {
+                    if (Message.drag) {
+                        return
+                    }
                     Message.drag = 0
                     $(this).css('cursor', 'url(/img/game/cursor_hand.png) 15 15, default')
                 })
@@ -58,7 +61,6 @@ var Message = {
     },
     adjust: function (id) {
         if (isSet(id)) {
-            var left = gameWidth / 2 - $('#' + id).outerWidth() / 2;
             var maxHeight = gameHeight - 120
             if (maxHeight < parseInt($('#' + id).css('min-height'))) {
                 maxHeight = parseInt($('#' + id).css('min-height'))
@@ -70,11 +72,15 @@ var Message = {
             $('#' + id)
                 .css({
                     'max-width': maxWidth + 'px',
-                    'max-height': maxHeight + 'px',
+                    'max-height': maxHeight + 'px'
+                })
+//                .jScrollPane()
+            var left = gameWidth / 2 - $('#' + id).outerWidth() / 2;
+            $('#' + id)
+                .css({
                     left: left + 'px'
                 })
-        } else {
-            var left = gameWidth / 2 - $('.message').outerWidth() / 2;
+        } else if ($('.message').length) {
             var maxHeight = gameHeight - 120
             if (maxHeight < parseInt($('.message').css('min-height'))) {
                 maxHeight = parseInt($('.message').css('min-height'))
@@ -86,7 +92,13 @@ var Message = {
             $('.message')
                 .css({
                     'max-width': maxWidth + 'px',
-                    'max-height': maxHeight + 'px',
+                    'max-height': maxHeight + 'px'
+                })
+//                .jScrollPane()
+            $('.message')
+            var left = gameWidth / 2 - $('.message').outerWidth() / 2;
+            $('.message')
+                .css({
                     left: left + 'px'
                 })
         }
@@ -129,6 +141,7 @@ var Message = {
         )
     },
     simple: function (message) {
+        console.log(message)
         var id = this.show($('<div>').html(message));
         this.ok(id)
     },
@@ -413,6 +426,11 @@ var Message = {
             }
 
         });
+
+        $('.relocatedProduction').css({
+            width: parseInt($('.production').css('width')) + 'px'
+        })
+
     },
     nextTurn: function () {
         var id = this.show($('<div>').append($('<h3>').html('Next turn')).append($('<div>').html('Are you sure?')))

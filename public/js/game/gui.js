@@ -341,17 +341,24 @@ var Gui = {
 
         $('#terrain').css('top', mapBoxHeight + 19 + 'px');
 
+        var closeLeft = parseInt($('#mapImage').css('width')) + 30
+
         $('#mapBox .close').css({
-            left: parseInt($('#mapImage').css('width')) + 16 + 'px'
+            left: closeLeft + 'px'
+        })
+        $('#limitBox .close').css({
+            left: closeLeft - 8 + 'px'
+        })
+        $('#timerBox .close').css({
+            left: closeLeft - 8 + 'px'
         })
 
-        $('#timerBox').css({
+        $('#limitBox').css({
             top: mapBoxHeight + 52 + 'px'
         })
 
-
-        $('#limitBox').css({
-            top: mapBoxHeight + 52 + parseInt($('#timerBox').css('height')) + 'px'
+        $('#timerBox').css({
+            top: mapBoxHeight + 77 + parseInt($('#limitBox').css('height')) + 'px'
         })
 
         Message.adjust()
