@@ -17,6 +17,9 @@ var Gui = {
                 Message.remove();
                 Army.deselect();
                 break;
+            case 66: //b
+                Message.build()
+                break;
             case 67: //c
                 Castle.show();
                 break;

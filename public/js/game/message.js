@@ -331,16 +331,20 @@ var Message = {
             .append($('<fieldset>').addClass('production').append($('<label>').html('Production')).append(table).attr('id', castleId))
 
         if (isSet(players[my.color].castles[castleId]) && players[my.color].castles[castleId].relocationCastleId) {
+            if (isSet(castles[castleId].currentProductionId)) {
+                var img = $('<img>').attr('src', Unit.getImage(castles[castleId].currentProductionId, my.color))
+            } else {
+                var img = $('<img>').attr('src', Unit.getImage(castles[players[my.color].castles[castleId].relocationCastleId].relocatedProduction[castleId].currentProductionId, my.color))
+            }
+
+
             div
                 .append($('<br>'))
                 .append($('<fieldset>').addClass('relocatedProduction').append($('<label>').html('Relocating to')).append(
                     $('<table>').append(
                         $('<tr>')
                             .append(
-                                $('<td>').append(
-//                                    $('<img>').attr('src', Unit.getImage(castles[players[my.color].castles[castleId].relocationCastleId].relocatedProduction[castleId].currentProductionId, my.color))
-                                    $('<img>').attr('src', Unit.getImage(castles[castleId].currentProductionId, my.color))
-                                )
+                                $('<td>').append(img)
                             )
                             .append(
                                 $('<td>')

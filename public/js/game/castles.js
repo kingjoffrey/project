@@ -18,16 +18,17 @@ var Castle = {
         var unitId = $('input:radio[name=production]:checked').val();
 
         if ($('input[name=relocation]').is(':checked')) {
-            var div = $('<div>')
-                .append($('<h3>').html('Relocation'))
-                .append('Select castle to which you want to relocate this production')
-            Message.simple(div)
-            $('.castle.' + my.color)
-                .unbind('click')
-                .click(function () {
-                    var relocationCastleId = $(this).attr('id').substring(6);
-                    Websocket.production(castleId, unitId, relocationCastleId);
-                });
+            if (!unitId) {
+                Message.error('No unit selected')
+            } else {
+                Message.simpleNew('Relocation', 'Select castle to which you want to relocate this production')
+                $('.castle.' + my.color)
+                    .unbind('click')
+                    .click(function () {
+                        var relocationCastleId = $(this).attr('id').substring(6);
+                        Websocket.production(castleId, unitId, relocationCastleId);
+                    });
+            }
             return;
         }
 
