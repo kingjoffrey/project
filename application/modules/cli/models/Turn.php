@@ -25,7 +25,8 @@ class Cli_Model_Turn
         $mPlayersInGame = new Application_Model_PlayersInGame($this->_user->parameters['gameId'], $this->_db);
 
         if ($mPlayersInGame->playerLost($playerId)) {
-            return;
+            echo 'vvv111';
+//            return;
         }
 
         $playersInGameColors = Zend_Registry::get('playersInGameColors');
@@ -34,7 +35,7 @@ class Cli_Model_Turn
 
         $playerCastlesExists = $mCastlesInGame->playerCastlesExists($playerId);
         $playerArmiesExists = $mArmy->playerArmiesExists($playerId);
-        if (!$playerCastlesExists || !$playerArmiesExists) {
+        if (!$playerCastlesExists && !$playerArmiesExists) {
             $token = array(
                 'type' => 'dead',
                 'color' => $playersInGameColors[$playerId]
@@ -48,7 +49,6 @@ class Cli_Model_Turn
         if (!isset($mGame)) {
             $mGame = new Application_Model_Game($this->_user->parameters['gameId'], $this->_db);
         }
-
         while (true) {
             $nextPlayerId = $this->getExpectedNextTurnPlayer($playersInGameColors[$nextPlayerId]);
             $playerCastlesExists = $mCastlesInGame->playerCastlesExists($nextPlayerId);

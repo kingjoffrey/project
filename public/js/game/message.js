@@ -639,10 +639,10 @@ var Message = {
         var id = this.show(div);
         this.ok(id)
     },
-    battle: function (data) {
-        var battle = data.battle;
-        var attackerColor = data.attackerColor;
-        var defenderColor = data.defenderColor;
+    battle: function (r) {
+        var battle = r.battle;
+        var attackerColor = r.attackerColor;
+        var defenderColor = r.defenderColor;
         var newBattle = new Array();
 
         var attack = $('<div>').addClass('battle attack');
@@ -712,8 +712,8 @@ var Message = {
             .append(attack)
 
         var id = this.show(div);
-        if (!players[data.attackerColor].computer) {
-            this.ok(id)// add Move.end(data)
+        if (!players[r.attackerColor].computer) {
+            this.ok(id)// add Move.end(r)
         } else {
             this.ok(id)
         }
@@ -721,59 +721,67 @@ var Message = {
         $('.go').css('display', 'none')
 
         if (newBattle) {
-            setTimeout(function () {
-                Message.kill(newBattle, data);
-            }, 2500);
+            if (players[r.attackerColor].computer) {
+                Message.kill(newBattle, r);
+            } else {
+                setTimeout(function () {
+                    Message.kill(newBattle, r);
+                }, 2500);
+            }
         }
     },
-    kill: function (b, data) {
+    kill: function (b, r) {
         console.log('kill 0')
         for (i in b) {
             break
         }
 
         if (notSet(b[i])) {
-            if (!players[data.attackerColor].computer) {
+            if (!players[r.attackerColor].computer) {
                 $('.go').fadeIn(100)
             }
-            Move.end(data)
+            Move.end(r)
             return
         }
 
         if (isSet(b[i].soldierId)) {
             $('#unit' + b[i].soldierId).append($('<div>').addClass('killed'));
-            setTimeout(function () {
-                Sound.play('error');
-            }, 500);
+            if (!players[r.attackerColor].computer) {
+                setTimeout(function () {
+                    Sound.play('error');
+                }, 500)
+            }
             $('#unit' + b[i].soldierId + ' .killed').fadeIn(1000, function () {
-                if (data.attackerColor == my.color) {
-                    for (k in players[my.color].armies[data.attackerArmy.armyId].soldiers) {
-                        if (players[my.color].armies[data.attackerArmy.armyId].soldiers[k].soldierId == b[i].soldierId) {
-                            costIncrement(-units[players[my.color].armies[data.attackerArmy.armyId].soldiers[k].unitId].cost)
+                if (r.attackerColor == my.color) {
+                    for (k in players[my.color].armies[r.attackerArmy.armyId].soldiers) {
+                        if (players[my.color].armies[r.attackerArmy.armyId].soldiers[k].soldierId == b[i].soldierId) {
+                            costIncrement(-units[players[my.color].armies[r.attackerArmy.armyId].soldiers[k].unitId].cost)
                         }
                     }
                 }
 
-                if (data.defenderColor == my.color) {
-                    for (j in data.defenderArmy) {
-                        for (k in players[my.color].armies[data.defenderArmy[j].armyId].soldiers) {
-                            if (players[my.color].armies[data.defenderArmy[j].armyId].soldiers[k].soldierId == b[i].soldierId) {
-                                costIncrement(-units[players[my.color].armies[data.defenderArmy[j].armyId].soldiers[k].unitId].cost)
+                if (r.defenderColor == my.color) {
+                    for (j in r.defenderArmy) {
+                        for (k in players[my.color].armies[r.defenderArmy[j].armyId].soldiers) {
+                            if (players[my.color].armies[r.defenderArmy[j].armyId].soldiers[k].soldierId == b[i].soldierId) {
+                                costIncrement(-units[players[my.color].armies[r.defenderArmy[j].armyId].soldiers[k].unitId].cost)
                             }
                         }
                     }
                 }
                 delete b[i];
-                Message.kill(b, data);
+                Message.kill(b, r);
             });
         } else if (isSet(b[i].heroId)) {
             $('#hero' + b[i].heroId).append($('<div>').addClass('killed'));
-            setTimeout(function () {
-                Sound.play('error');
-            }, 500);
+            if (!players[r.attackerColor].computer) {
+                setTimeout(function () {
+                    Sound.play('error');
+                }, 500)
+            }
             $('#hero' + b[i].heroId + ' .killed').fadeIn(1000, function () {
                 delete b[i];
-                Message.kill(b, data);
+                Message.kill(b, r);
             });
         }
         console.log('kill 1')

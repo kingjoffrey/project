@@ -22,6 +22,7 @@
     min-width: 0;
     border-spacing: 1px;
     font-size: 12px;
+    border: none !important;
 }
 
 #board {
@@ -1010,7 +1011,7 @@ table.treasury td.c {
     color: orange;
     border: 2px solid orange;
     cursor: pointer;
-    /*background: #000;*/
+    background: url("/img/game/message_bg.png");
 }
 
 .close:hover {
