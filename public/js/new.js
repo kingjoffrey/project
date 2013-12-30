@@ -1,7 +1,7 @@
 var myGames;
 
 $().ready(function () {
-    myGames = $('.table table');
+    myGames = $('#join.table table');
 
     refresh();
     setInterval('refresh()', 5000);
@@ -49,7 +49,10 @@ function refresh() {
             });
         }
         if (j == 0) {
-            $('#info').html(info);
+            myGames.append(
+                $('<tr>')
+                    .append($('<td colspan="3">').html(info).css('padding', '15px'))
+            )
         }
     });
 }

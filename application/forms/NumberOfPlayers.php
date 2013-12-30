@@ -11,7 +11,7 @@ class Application_Form_NumberOfPlayers extends Zend_Form
         $f = new Coret_Form_Varchar(
             array(
                 'name' => 'x',
-                'label' => $this->getView()->translate('Number of players'),
+                'label' => $this->getView()->translate('Number of players').':',
                 'value' => $numberOfPlayers,
                 'attr' => array('disabled' => 'disabled')
             )

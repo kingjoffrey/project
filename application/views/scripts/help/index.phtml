@@ -1,11 +1,11 @@
 <h1><?php echo $this->translate('Help') ?></h1>
-<h2><?php echo $this->translate('') ?></h2>
 <div class="table">
+    <h2><?php echo $this->translate('Units') ?></h2>
     <?php if (count($this->list)): ?>
         <?php foreach ($this->list as $row): ?>
-            <div style="border: 1px solid #c0c0c0;border-radius:5px;padding: 10px">
+            <div class="box">
                 <div style="position: relative;width: 738px;height: 150px">
-                    <div style="border-radius:5px;width: 60px;background: #000">
+                    <div class="frame">
                         <img style="margin: 10px;padding: 10px;border: none"
                              src="/img/game/units/white/<?php echo str_replace(' ', '_', strtolower($row['name'])) ?>.png"/>
                     </div>
@@ -45,7 +45,7 @@
                             <?php endif ?></span>
                         </div>
                     </div>
-                    <div style="position: absolute;top: 80px;left:330px">
+                    <div class="third">
                         <div><?php echo $this->translate('Movement cost through the forest') ?>: <span
                                 class="yellow"><?php echo $row['modMovesForest'] ?></span></div>
                         <div><?php echo $this->translate('Movement cost through the swamp') ?>: <span

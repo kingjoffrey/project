@@ -1,12 +1,15 @@
 html {
     background: #000 url('/img/login_bg.jpg') 0px -214px no-repeat !important;
 }
-
+body{
+    background: none !important;
+}
 #page {
     height: 500px !important;
     min-height: 500px !important;
     vertical-align: middle;
     position: relative;
+    background: none !important;
 }
 
 #login form {

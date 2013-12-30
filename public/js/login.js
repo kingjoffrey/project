@@ -15,7 +15,7 @@ var Login = {
         if (top < 0) {
             top = 0
         }
-        console.log(top)
+
         $('#page').css({
             top: top + 'px'
         })
