@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: WOF\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-12-29 13:03+0100\n"
-"PO-Revision-Date: 2013-12-29 13:04+0100\n"
+"POT-Creation-Date: 2013-12-30 04:10+0100\n"
+"PO-Revision-Date: 2013-12-30 04:11+0100\n"
 "Last-Translator: Bartosz Krzeszewski <bartek@core-t.pl>\n"
 "Language-Team: \n"
 "Language: pl\n"
@@ -36,6 +36,7 @@ msgid "Logout"
 msgstr "Wyloguj"
 
 #: application/views/helpers/MainMenu.php:17
+#: application/views/scripts/new/index.phtml:1
 msgid "Play"
 msgstr "Graj"
 
@@ -69,7 +70,7 @@ msgid "Version number"
 msgstr "Numer wersji"
 
 #: application/forms/NumberOfPlayers.php:14
-#: application/views/scripts/new/index.phtml:29
+#: application/views/scripts/new/index.phtml:31
 msgid "Number of players"
 msgstr "Ilość graczy"
 
@@ -208,9 +209,10 @@ msgstr "Pierwszy"
 
 #: application/modules/admin/views/scripts/pagination_control.phtml:7
 #: application/views/scripts/setup/index.phtml:35
-#: application/views/scripts/new/index.phtml:22
+#: application/views/scripts/new/index.phtml:23
+#: application/views/scripts/hero/index.phtml:36
 #: application/views/scripts/load/index.phtml:82
-#: application/views/scripts/halloffame/index.phtml:23
+#: application/views/scripts/halloffame/index.phtml:24
 #: application/views/scripts/help/index.phtml:66
 msgid "Back"
 msgstr "Cofnij"
@@ -292,27 +294,27 @@ msgstr "Człowiek"
 msgid "computer"
 msgstr "Komputer"
 
-#: application/views/scripts/new/index.phtml:2
-msgid "Create new game"
-msgstr "Utwórz nową grę"
-
-#: application/views/scripts/new/index.phtml:14
+#: application/views/scripts/new/index.phtml:3
 msgid "Join one of the games listed below"
 msgstr "Dołącz do jednej z gier z listy poniżej"
 
-#: application/views/scripts/new/index.phtml:25
+#: application/views/scripts/new/index.phtml:8
+msgid "Create new game"
+msgstr "Utwórz nową grę"
+
+#: application/views/scripts/new/index.phtml:26
 msgid "Refresh"
 msgstr "Odśwież"
 
-#: application/views/scripts/new/index.phtml:29
+#: application/views/scripts/new/index.phtml:31
 msgid "Map name"
 msgstr "Nazwa mapy"
 
-#: application/views/scripts/new/index.phtml:29
+#: application/views/scripts/new/index.phtml:31
 msgid "Date"
 msgstr "Data"
 
-#: application/views/scripts/new/index.phtml:31
+#: application/views/scripts/new/index.phtml:33
 msgid "There are no open games"
 msgstr "Brak otwartych gier"
 
@@ -320,29 +322,33 @@ msgstr "Brak otwartych gier"
 msgid "Change your data"
 msgstr "Zmień swoje dane"
 
-#: application/views/scripts/profile/index.phtml:6
+#: application/views/scripts/profile/index.phtml:8
 msgid "Change your password"
 msgstr "Zmień swoje hasło"
 
-#: application/views/scripts/hero/index.phtml:2
+#: application/views/scripts/hero/index.phtml:4
 msgid "Hero statistics"
 msgstr "Statystyki bohatera"
 
-#: application/views/scripts/hero/index.phtml:4
+#: application/views/scripts/hero/index.phtml:6
 msgid "Attack points"
 msgstr "Punkty ataku"
 
-#: application/views/scripts/hero/index.phtml:5
+#: application/views/scripts/hero/index.phtml:7
 msgid "Defense points"
 msgstr "Punkty obrony"
 
-#: application/views/scripts/hero/index.phtml:6
+#: application/views/scripts/hero/index.phtml:8
 msgid "Number of moves"
 msgstr "Ilość ruchów"
 
-#: application/views/scripts/load/index.phtml:2
-msgid "Select which game you want to load"
-msgstr "Wybierz, którą grę chcesz wczytać"
+#: application/views/scripts/hero/index.phtml:14
+msgid "Change name"
+msgstr "Zmień nazwę"
+
+#: application/views/scripts/load/index.phtml:3
+msgid "Games list"
+msgstr "Lista gier"
 
 #: application/views/scripts/load/index.phtml:7
 msgid "Game master"
@@ -361,7 +367,7 @@ msgid "Number of Players"
 msgstr "Ilość graczy"
 
 #: application/views/scripts/load/index.phtml:22
-#: application/views/scripts/halloffame/index.phtml:6
+#: application/views/scripts/halloffame/index.phtml:7
 msgid "Player name"
 msgstr "Nazwa gracza"
 
@@ -381,15 +387,15 @@ msgstr "Data wstrzymania"
 msgid "There are no games to load"
 msgstr "Brak gry do załadowania"
 
-#: application/views/scripts/halloffame/index.phtml:2
+#: application/views/scripts/halloffame/index.phtml:4
 msgid "Players list"
 msgstr "Lista graczy"
 
-#: application/views/scripts/halloffame/index.phtml:7
+#: application/views/scripts/halloffame/index.phtml:8
 msgid "Score"
 msgstr "Punkty"
 
-#: application/views/scripts/help/index.phtml:2
+#: application/views/scripts/help/index.phtml:3
 msgid "Units"
 msgstr "Jednostki"
 
@@ -540,6 +546,9 @@ msgstr "Pomiń w tej turze"
 #: application/layouts/scripts/game.phtml:133
 msgid "Send"
 msgstr "Wyślij"
+
+#~ msgid "Select which game you want to load"
+#~ msgstr "Wybierz, którą grę chcesz wczytać"
 
 #~ msgid "Color"
 #~ msgstr "Kolor"
