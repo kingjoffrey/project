@@ -343,21 +343,14 @@ var Message = {
             .append($('<br>'))
             .append($('<fieldset>').addClass('production').append($('<label>').html('Production')).append(table).attr('id', castleId))
 
-        if (isSet(players[my.color].castles[castleId]) && players[my.color].castles[castleId].relocationCastleId) {
-            if (isSet(castles[castleId].currentProductionId)) {
-                var img = $('<img>').attr('src', Unit.getImage(castles[castleId].currentProductionId, my.color))
-            } else {
-                var img = $('<img>').attr('src', Unit.getImage(castles[players[my.color].castles[castleId].relocationCastleId].relocatedProduction[castleId].currentProductionId, my.color))
-            }
-
-
+        if (isSet(players[my.color].castles[castleId]) && castles[castleId].relocationCastleId && castles[castleId].currentProductionId) {
             div
                 .append($('<br>'))
                 .append($('<fieldset>').addClass('relocatedProduction').append($('<label>').html('Relocating to')).append(
                     $('<table>').append(
                         $('<tr>')
                             .append(
-                                $('<td>').append(img)
+                                $('<td>').append($('<img>').attr('src', Unit.getImage(castles[castleId].currentProductionId, my.color)))
                             )
                             .append(
                                 $('<td>')
@@ -365,10 +358,10 @@ var Message = {
                             )
                             .append(
                                 $('<td>')
-                                    .html(castles[players[my.color].castles[castleId].relocationCastleId].name)
+                                    .html(castles[castles[castleId].relocationCastleId].name)
                                     .addClass('button buttonColors')
                                     .click(function () {
-                                        Message.castle(players[my.color].castles[castleId].relocationCastleId)
+                                        Message.castle(castles[castleId].relocationCastleId)
                                     })
                             )
                     )

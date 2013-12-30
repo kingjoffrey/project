@@ -77,6 +77,8 @@ var Castle = {
             Castle.addRelocationOut(castleId)
             Castle.addRelocationIn(relocationCastleId, castleId)
 
+            castles[castleId].relocationCastleId = relocationCastleId
+
             $('.castle.' + my.color).each(function () {
                 var thisCastleId = $(this).attr('id').substring(6);
 
@@ -110,6 +112,8 @@ var Castle = {
         var relocationCastleId = players[my.color].castles[castleId].relocationCastleId;
 
         if (relocationCastleId) {
+            castles[castleId].relocationCastleId = relocationCastleId
+
             if (notSet(castles[relocationCastleId].relocatedProduction)) {
                 castles[relocationCastleId].relocatedProduction = {};
             }
