@@ -46,7 +46,7 @@ class Application_Model_CastlesInGame extends Coret_Db_Table_Abstract
             'productionTurn' => 0,
             'relocationCastleId' => $relocationCastleId
         );
-var_dump($data);
+
         return $this->update($data, $where);
     }
 

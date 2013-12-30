@@ -14,7 +14,9 @@ var Move = {
                 break;
         }
 
-        Message.remove();
+        if (my.turn) {
+            Message.remove()
+        }
 
         if (notSet(r.path[1])) {
             zoomer.lensSetCenter(r.attackerArmy.x * 40, r.attackerArmy.y * 40);
