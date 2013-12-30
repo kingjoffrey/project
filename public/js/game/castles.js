@@ -52,14 +52,18 @@ var Castle = {
             }
         }
 
-        if (unitId === null) {
-            for (i in castles) {
-                Castle.removeRelocationIn(i, castleId)
-                if (isSet(castles[i].relocatedProduction) && isSet(castles[i].relocatedProduction[castleId])) {
-                    delete castles[i].relocatedProduction[castleId]
-                }
+        for (i in castles) {
+            Castle.removeRelocationIn(i, castleId)
+            if (isSet(castles[i].relocatedProduction) && isSet(castles[i].relocatedProduction[castleId])) {
+                delete castles[i].relocatedProduction[castleId]
             }
+        }
 
+        if (isSet(castles[castleId].relocationCastleId)) {
+            delete castles[castleId].relocationCastleId
+        }
+
+        if (unitId === null) {
             Castle.removeHammer(castleId)
         } else {
             Castle.addHammer(castleId)
