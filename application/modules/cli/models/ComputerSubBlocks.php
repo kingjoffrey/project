@@ -458,6 +458,9 @@ class Cli_Model_ComputerSubBlocks
     static public function getMyArmyInRange($gameId, $playerId, $mArmy, $fields, $db)
     {
         $army = $mArmy->getArmy();
+        if (!isset($army['movesLeft'])) {
+            $army['movesLeft'] = Cli_Model_Army::calculateMaxArmyMoves($army);
+        }
         $mArmy2 = new Application_Model_Army($gameId, $db);
         $myArmies = $mArmy2->getAllPlayerArmiesExceptOne($army['armyId'], $playerId);
         foreach ($myArmies as $a) {
