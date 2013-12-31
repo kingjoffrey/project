@@ -45,13 +45,12 @@ class Cli_Model_Turn
         }
 
         $nextPlayerId = $playerId;
-        echo $nextPlayerId . " a\n";
+
         if (!isset($mGame)) {
             $mGame = new Application_Model_Game($this->_user->parameters['gameId'], $this->_db);
         }
         while (true) {
             $nextPlayerId = $this->getExpectedNextTurnPlayer($playersInGameColors[$nextPlayerId]);
-            echo $nextPlayerId . " b\n"; //exit;
             $playerCastlesExists = $mCastlesInGame->playerCastlesExists($nextPlayerId);
             $playerArmiesExists = $mArmy->playerArmiesExists($nextPlayerId);
             if ($playerCastlesExists || $playerArmiesExists) {
@@ -104,6 +103,69 @@ class Cli_Model_Turn
                 $mPlayersInGame->setPlayerLostGame($nextPlayerId);
             }
         }
+    }
+
+    private function getExpectedNextTurnPlayer($playerColor)
+    {
+        $find = false;
+        $playersInGameColors = Zend_Registry::get('playersInGameColors');
+        reset($playersInGameColors);
+        $firstColor = current($playersInGameColors);
+
+        /* szukam następnego koloru w dostępnych kolorach */
+        foreach ($playersInGameColors as $color) {
+            /* znajduję kolor gracza, który ma aktualnie turę i przewijam na następny */
+            if ($playerColor == $color) {
+                $find = true;
+                continue;
+            }
+
+            /* to jest przewinięty kolor gracza */
+            if ($find) {
+                $nextPlayerColor = $color;
+                break;
+            }
+        }
+
+        /* jeśli nie znalazłem następnego gracza to następnym graczem jest gracz pierwszy */
+        if (!isset($nextPlayerColor)) {
+            $nextPlayerColor = $firstColor;
+        }
+
+        $mPlayersInGame = new Application_Model_PlayersInGame($this->_user->parameters['gameId'], $this->_db);
+        $playersInGame = $mPlayersInGame->getPlayersInGame();
+
+        /* przypisuję playerId do koloru */
+        foreach ($playersInGame as $player) {
+            if ($player['color'] == $nextPlayerColor) {
+                if ($player['color'] == $firstColor) {
+                    $mGame = new Application_Model_Game($this->_user->parameters['gameId'], $this->_db);
+                    $mGame->updateTurnNumber($player['playerId'], $player['color']);
+                }
+                return $player['playerId'];
+            }
+        }
+
+        throw new Exception('czy ten kod jest potrzebny?');
+
+        /* jeśli nie znalazłem następnego gracza to następnym graczem jest gracz pierwszy */
+        foreach ($playersInGame as $k => $player) {
+            if ($player['color'] == $firstColor) {
+                $mGame = new Application_Model_Game($this->_user->parameters['gameId'], $this->_db);
+                $mGame->updateTurnNumber($player['playerId'], $player['color']);
+
+                if ($player['lost']) {
+                    return $playersInGame[$k + 1]['playerId'];
+                } else {
+                    return $player['playerId'];
+                }
+            }
+        }
+
+        $l = new Coret_Model_Logger('cli');
+        $l->log('Błąd! Nie znalazłem gracza');
+
+        return;
     }
 
     public function start($playerId, $computer = null)
@@ -216,70 +278,6 @@ class Cli_Model_Turn
             'color' => $color
         );
         $this->_gameHandler->sendToChannel($this->_db, $token, $this->_user->parameters['gameId']);
-    }
-
-    public function getExpectedNextTurnPlayer($playerColor)
-    {
-        $find = false;
-        $playersInGameColors = Zend_Registry::get('playersInGameColors');
-        reset($playersInGameColors);
-        $firstColor = current($playersInGameColors);
-
-        /* szukam następnego koloru w dostępnych kolorach */
-        foreach ($playersInGameColors as $color) {
-            /* znajduję kolor gracza, który ma aktualnie turę i przewijam na następny */
-            if ($playerColor == $color) {
-                $find = true;
-                continue;
-            }
-
-            /* to jest przewinięty kolor gracza */
-            if ($find) {
-                $nextPlayerColor = $color;
-                break;
-            }
-        }
-
-        if (!isset($nextPlayerColor)) {
-            $nextPlayerColor = $firstColor;
-        }
-
-        $mPlayersInGame = new Application_Model_PlayersInGame($this->_user->parameters['gameId'], $this->_db);
-        $playersInGame = $mPlayersInGame->getPlayersInGame();
-
-        /* przypisuję playerId do koloru */
-        foreach ($playersInGame as $player) {
-            if ($player['color'] == $nextPlayerColor) {
-                $nextPlayerId = $player['playerId'];
-                break;
-            }
-        }
-
-        /* jeśli nie znalazłem następnego gracza to następnym graczem jest gracz pierwszy */
-        if (!isset($nextPlayerId)) {
-            foreach ($playersInGame as $k => $player) {
-                if ($player['color'] == $firstColor) {
-                    $mGame = new Application_Model_Game($this->_user->parameters['gameId'], $this->_db);
-                    $mGame->updateTurnNumber($player['playerId'], $player['color']);
-
-                    if ($player['lost']) {
-                        $nextPlayerId = $playersInGame[$k + 1]['playerId'];
-                    } else {
-                        $nextPlayerId = $player['playerId'];
-                    }
-                    break;
-                }
-            }
-        }
-
-        if (!isset($nextPlayerId)) {
-            $l = new Coret_Model_Logger('cli');
-            $l->log('Błąd! Nie znalazłem gracza');
-
-            return;
-        }
-
-        return $nextPlayerId;
     }
 
     public function saveResults()
