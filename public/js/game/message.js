@@ -818,6 +818,7 @@ var Message = {
             .append($('<tr>')
                 .append($('<th>').addClass('Players'))
                 .append($('<th>').addClass('Players'))
+                .append($('<th>').html('Castles held'))
                 .append($('<th>').html('Castles conquered'))
                 .append($('<th>').html('Castles lost'))
                 .append($('<th>').html('Castles razed'))
@@ -834,6 +835,21 @@ var Message = {
 
             var td = $('<td>').addClass('shortName');
             tr.append(td.html(mapPlayersColors[i].longName))
+
+            var td = $('<td>').css({
+                border: '1px solid ' + mapPlayersColors[i].backgroundColor
+            })
+            var numberOfCastlesHeld = 0
+            for (castleId in castles) {
+                if (castles[castleId].color == mapPlayersColors[i].shortName) {
+                    numberOfCastlesHeld++
+                }
+            }
+            if (numberOfCastlesHeld > 0) {
+                tr.append(td.html(numberOfCastlesHeld))
+            } else {
+                tr.append(td.html('0'))
+            }
 
             var td = $('<td>').css({
                 border: '1px solid ' + mapPlayersColors[i].backgroundColor

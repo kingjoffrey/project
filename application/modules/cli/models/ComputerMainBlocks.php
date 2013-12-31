@@ -186,6 +186,9 @@ class Cli_Model_ComputerMainBlocks
             $mGame = new Application_Model_Game($gameId, $db);
             $turnNumber = $mGame->getTurnNumber();
             $numberOfUnits = floor($turnNumber / 7);
+            if ($numberOfUnits > 4) {
+                $numberOfUnits = 4;
+            }
 
             if ($numberOfUnits) {
                 $garrison = Cli_Model_Army::getArmiesFromCastlePosition($castlePosition, $gameId, $db);
