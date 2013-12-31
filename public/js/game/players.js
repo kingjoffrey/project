@@ -56,13 +56,6 @@ var Players = {
 
         var i = 0;
         for (shortName in players) {
-//            $('#playersBox').append($('<img>').attr({
-//                    'src': Hero.getImage(shortName),
-//                    'id': 'aaa'+shortName
-//                }
-//            ));
-
-
             this.ctx.beginPath();
 
             var r_start_angle = i * r_angle;
@@ -78,20 +71,16 @@ var Players = {
             this.ctx.fillStyle = players[shortName].backgroundColor;
             this.ctx.fill();
 
-//            var img = document.getElementById('aaa'+shortName);
-//console.log(img);
-//            var img = new Image;
-//            if (players[shortName].computer) {
-//                img.src = '/img/game/computer.png';
-//            } else {
-//                img.src = Hero.getImage(shortName);
-//            }
-//            img.onload = function () {
-//            this.ctx.drawImage(img, 0,0);
-//            }
-//            img.src = '/img/game/computer.png';
+            var img = new Image;
+            if (players[shortName].computer) {
+                img.src = '/img/game/computer.png';
+            } else {
+                img.src = Hero.getImage(shortName);
+            }
+            img.onload = function () {
+                Players.ctx.drawImage(img, 0, 0);
+            }
             i++;
-//            break;
         }
     },
     turn: function () {
