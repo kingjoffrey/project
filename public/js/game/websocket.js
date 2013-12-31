@@ -10,7 +10,7 @@ Websocket = {
 
         ws.onmessage = function (e) {
             var r = $.parseJSON(e.data);
-console.log(r)
+
             if (isSet(r['type'])) {
 
                 switch (r.type) {

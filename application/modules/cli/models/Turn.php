@@ -148,24 +148,24 @@ class Cli_Model_Turn
 
         throw new Exception('czy ten kod jest potrzebny?');
 
-        /* jeśli nie znalazłem następnego gracza to następnym graczem jest gracz pierwszy */
-        foreach ($playersInGame as $k => $player) {
-            if ($player['color'] == $firstColor) {
-                $mGame = new Application_Model_Game($this->_user->parameters['gameId'], $this->_db);
-                $mGame->updateTurnNumber($player['playerId'], $player['color']);
-
-                if ($player['lost']) {
-                    return $playersInGame[$k + 1]['playerId'];
-                } else {
-                    return $player['playerId'];
-                }
-            }
-        }
-
-        $l = new Coret_Model_Logger('cli');
-        $l->log('Błąd! Nie znalazłem gracza');
-
-        return;
+//        /* jeśli nie znalazłem następnego gracza to następnym graczem jest gracz pierwszy */
+//        foreach ($playersInGame as $k => $player) {
+//            if ($player['color'] == $firstColor) {
+//                $mGame = new Application_Model_Game($this->_user->parameters['gameId'], $this->_db);
+//                $mGame->updateTurnNumber($player['playerId'], $player['color']);
+//
+//                if ($player['lost']) {
+//                    return $playersInGame[$k + 1]['playerId'];
+//                } else {
+//                    return $player['playerId'];
+//                }
+//            }
+//        }
+//
+//        $l = new Coret_Model_Logger('cli');
+//        $l->log('Błąd! Nie znalazłem gracza');
+//
+//        return;
     }
 
     public function start($playerId, $computer = null)

@@ -82,9 +82,9 @@ var Players = {
 //console.log(img);
 //            var img = new Image;
 //            if (players[shortName].computer) {
-//                img.src = '../img/game/computer.png';
+//                img.src = '/img/game/computer.png';
 //            } else {
-//                img.src = '../' + Hero.getImage(shortName);
+//                img.src = Hero.getImage(shortName);
 //            }
 //            img.onload = function () {
 //            this.ctx.drawImage(img, 0,0);
