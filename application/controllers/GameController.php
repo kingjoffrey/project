@@ -85,7 +85,7 @@ class GameController extends Game_Controller_Game
 
         $this->view->towers = $towers;
 
-        $players = $mPlayersInGame->getPlayersInGameReady();
+        $players = $mPlayersInGame->getPlayersInGame();
 
         $this->view->players = array();
         $colors = array();

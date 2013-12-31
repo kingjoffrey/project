@@ -73,7 +73,7 @@ class Cli_GameHandler extends Cli_WofHandler
 
             $mPlayer = new Application_Model_Player($db);
             if (!$mPlayer->isComputer($playerId)) {
-                $this->sendError($user, 'To nie komputer!');
+                $this->sendError($user, 'To (' . $playerId . ') nie komputer!');
                 return;
             }
 
@@ -94,7 +94,7 @@ class Cli_GameHandler extends Cli_WofHandler
                     $this->sendToChannel($db, $token, $user->parameters['gameId']);
                 } else {
                     $mTurn = new Cli_Model_Turn($user, $db, $this);
-                    $user->parameters['turnStart'] =  $mTurn->next($playerId);
+                    $user->parameters['turnStart'] = $mTurn->next($playerId);
                 }
             }
 //            new Cli_Model_Computer($user, $db, $this);

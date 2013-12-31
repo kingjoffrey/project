@@ -358,7 +358,7 @@ class Cli_Model_ComputerMainBlocks
                         $mArmy2->fortify($army['armyId'], 1);
                         return self::endMove($playerId, $db, $gameId, $army['armyId'], array('x' => $army['x'], 'y' => $army['y']));
                     } else {
-                        $l->log('TYLKO JEDEN WRÓGÓW Z ZASIĘGIEM');
+                        $l->log('TYLKO JEDEN Z WRÓGÓW Z ZASIĘGIEM');
 
                         $enemy = Cli_Model_ComputerSubBlocks::canAttackAllEnemyHaveRange($gameId, $playerId, $enemiesHaveRange, $army, $castlesAndFields['hostileCastles'], $db);
                         if (!$enemy) {
@@ -372,7 +372,7 @@ class Cli_Model_ComputerMainBlocks
                                 $l->log('ATAKUJĘ WRÓGA Z ZASIĘGIEM - ATAKUJ!');
 
                                 $fightEnemy = Cli_Model_ComputerSubBlocks::fightEnemy($gameId, $army, $range['path'], $castlesAndFields['fields'], $enemy, $playerId, $range['castleId'], $db);
-                                return self::endMove($playerId, $db, $gameId, $army['armyId'], $range['currentPosition'], $range['path'], $fightEnemy);
+                                return self::endMove($playerId, $db, $gameId, $army['armyId'], $range['currentPosition'], $range['path'], $fightEnemy, $range['castleId']);
                             } else {
                                 $l->log('WRÓG Z ZASIĘGIEM POZA ZASIĘGIEM - ZOSTAŃ!');
 

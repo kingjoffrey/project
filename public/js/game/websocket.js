@@ -105,7 +105,9 @@ Websocket = {
                         break;
 
                     case 'split':
-                        Message.remove();
+                        if (my.turn) {
+                            Message.remove()
+                        }
                         Army.init(r.parentArmy, r.color);
                         Army.init(r.childArmy, r.color);
 
@@ -119,7 +121,9 @@ Websocket = {
                         break;
 
                     case 'join':
-                        Message.remove();
+                        if (my.turn) {
+                            Message.remove()
+                        }
                         zoomer.lensSetCenter(r.army.x * 40, r.army.y * 40);
                         for (i in r.deletedIds) {
                             Army.delete(r.deletedIds[i].armyId, r.color);
@@ -129,8 +133,8 @@ Websocket = {
 
                     case 'disband':
                         if (isSet(r.armyId) && isSet(r.color)) {
-                            Message.remove();
                             if (my.turn) {
+                                Message.remove()
                                 var upkeep = 0;
                                 for (i in players[my.color].armies[r.armyId].soldiers) {
                                     upkeep += units[players[my.color].armies[r.armyId].soldiers[i].unitId].cost
@@ -148,10 +152,10 @@ Websocket = {
 
                     case 'resurrection':
                         Sound.play('resurrection');
-                        Message.remove();
                         zoomer.lensSetCenter(r.data.army.x * 40, r.data.army.y * 40);
                         Army.init(r.data.army, r.color);
                         if (my.turn) {
+                            Message.remove()
                             goldUpdate(r.data.gold);
                             if (Hero.findMy()) {
                                 $('#heroResurrection').addClass('buttonOff')
@@ -178,9 +182,9 @@ Websocket = {
                     case 'raze':
                         $('#razeCastle').addClass('buttonOff');
                         Castle.raze(r.castleId);
-                        if (r.color == my.color) {
+                        if (my.turn) {
                             Sound.play('gold1');
-                            Message.remove();
+                            Message.remove()
                             goldUpdate(r.gold);
                         } else {
                             Sound.play('raze');
@@ -189,7 +193,7 @@ Websocket = {
 
                     case 'defense':
                         Castle.updateDefense(r.castleId, r.defenseMod);
-                        if (r.color == my.color) {
+                        if (my.turn) {
                             Message.remove();
                             goldUpdate(r.gold);
                         }

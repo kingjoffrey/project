@@ -45,12 +45,13 @@ class Cli_Model_Turn
         }
 
         $nextPlayerId = $playerId;
-
+        echo $nextPlayerId . " a\n";
         if (!isset($mGame)) {
             $mGame = new Application_Model_Game($this->_user->parameters['gameId'], $this->_db);
         }
         while (true) {
             $nextPlayerId = $this->getExpectedNextTurnPlayer($playersInGameColors[$nextPlayerId]);
+            echo $nextPlayerId . " b\n"; //exit;
             $playerCastlesExists = $mCastlesInGame->playerCastlesExists($nextPlayerId);
             $playerArmiesExists = $mArmy->playerArmiesExists($nextPlayerId);
             if ($playerCastlesExists || $playerArmiesExists) {
@@ -66,7 +67,7 @@ class Cli_Model_Turn
                     return;
                 } else { // zmieniam turę
                     $mGame->updateTurnNumber($nextPlayerId, $playersInGameColors[$nextPlayerId]);
-                    $mCastlesInGame->increaseAllCastlesProductionTurn($playerId);
+                    $mCastlesInGame->increaseAllCastlesProductionTurn($nextPlayerId);
 
                     $turnNumber = $mGame->getTurnNumber();
 
@@ -220,12 +221,12 @@ class Cli_Model_Turn
     public function getExpectedNextTurnPlayer($playerColor)
     {
         $find = false;
-        $playerColors = Zend_Registry::get('playersInGameColors');
-        reset($playerColors);
-        $firstColor = current($playerColors);
+        $playersInGameColors = Zend_Registry::get('playersInGameColors');
+        reset($playersInGameColors);
+        $firstColor = current($playersInGameColors);
 
         /* szukam następnego koloru w dostępnych kolorach */
-        foreach ($playerColors as $color) {
+        foreach ($playersInGameColors as $color) {
             /* znajduję kolor gracza, który ma aktualnie turę i przewijam na następny */
             if ($playerColor == $color) {
                 $find = true;
@@ -244,7 +245,7 @@ class Cli_Model_Turn
         }
 
         $mPlayersInGame = new Application_Model_PlayersInGame($this->_user->parameters['gameId'], $this->_db);
-        $playersInGame = $mPlayersInGame->getPlayersInGameReady();
+        $playersInGame = $mPlayersInGame->getPlayersInGame();
 
         /* przypisuję playerId do koloru */
         foreach ($playersInGame as $player) {
@@ -258,6 +259,9 @@ class Cli_Model_Turn
         if (!isset($nextPlayerId)) {
             foreach ($playersInGame as $k => $player) {
                 if ($player['color'] == $firstColor) {
+                    $mGame = new Application_Model_Game($this->_user->parameters['gameId'], $this->_db);
+                    $mGame->updateTurnNumber($player['playerId'], $player['color']);
+
                     if ($player['lost']) {
                         $nextPlayerId = $playersInGame[$k + 1]['playerId'];
                     } else {

@@ -45,14 +45,14 @@ class Application_Model_Game extends Coret_Db_Table_Abstract
         foreach ($result as $k => $game) {
             $select = $this->_db->select()
                 ->from('playersingame', 'count(*)')
-                ->where('"gameId" = ?', $game['gameId'])
+                ->where($this->_db->quoteIdentifier($this->_primary) . ' = ?', $game['gameId'])
                 ->where('"webSocketServerUserId" IS NOT NULL');
             $playersInGame = $this->_db->query($select)->fetchAll();
             if ($playersInGame[0]['count'] > 0) {
                 $result[$k]['playersingame'] = $playersInGame[0]['count'];
                 $select = $this->_db->select()
                     ->from('player', array('firstName', 'lastName'))
-                    ->where('"playerId" = ?', $result[$k]['gameMasterId']);
+                    ->where($this->_db->quoteIdentifier('playerId') . ' = ?', $result[$k]['gameMasterId']);
                 $gameMaster = $this->_db->query($select)->fetchAll();
                 $result[$k]['gameMaster'] = $gameMaster[0]['firstName'] . ' ' . $gameMaster[0]['lastName'];
             } else {
@@ -119,7 +119,7 @@ class Application_Model_Game extends Coret_Db_Table_Abstract
     {
         $select = $this->_db->select()
             ->from($this->_name)
-            ->where('"' . $this->_primary . '" = ?', $this->_gameId);
+            ->where($this->_db->quoteIdentifier($this->_primary) . ' = ?', $this->_gameId);
 
         return $this->selectRow($select);
     }
@@ -128,7 +128,7 @@ class Application_Model_Game extends Coret_Db_Table_Abstract
     {
         $select = $this->_db->select()
             ->from($this->_name, 'gameMasterId')
-            ->where('"' . $this->_primary . '" = ?', $this->_gameId);
+            ->where($this->_db->quoteIdentifier($this->_primary) . ' = ?', $this->_gameId);
         return $this->selectOne($select);
     }
 
@@ -136,8 +136,8 @@ class Application_Model_Game extends Coret_Db_Table_Abstract
     {
         $select = $this->_db->select()
             ->from('playersingame', 'gameId')
-            ->where('"gameId" = ?', $this->_gameId)
-            ->where('"playerId" = ?', $this->getGameMasterId())
+            ->where($this->_db->quoteIdentifier($this->_primary) . ' = ?', $this->_gameId)
+            ->where($this->_db->quoteIdentifier('playerId') . ' = ?', $this->getGameMasterId())
             ->where('"webSocketServerUserId" IS NOT NULL');
 
         if (!$this->_db->fetchOne($select)) {
@@ -152,7 +152,7 @@ class Application_Model_Game extends Coret_Db_Table_Abstract
     {
         $select = $this->_db->select()
             ->from($this->_name, array('gameMasterId'))
-            ->where('"' . $this->_primary . '" = ?', $this->_gameId)
+            ->where($this->_db->quoteIdentifier($this->_primary) . ' = ?', $this->_gameId)
             ->where('"gameMasterId" = ?', $playerId);
 
         return $this->selectOne($select);
@@ -179,7 +179,7 @@ class Application_Model_Game extends Coret_Db_Table_Abstract
         $select = $this->_db->select()
             ->from($this->_name, 'turnPlayerId')
             ->where('"turnPlayerId" = ?', $playerId)
-            ->where('"' . $this->_primary . '" = ?', $this->_gameId);
+            ->where($this->_db->quoteIdentifier($this->_primary) . ' = ?', $this->_gameId);
 
         return $this->selectOne($select);
     }
@@ -188,7 +188,7 @@ class Application_Model_Game extends Coret_Db_Table_Abstract
     {
         $select = $this->_db->select()
             ->from($this->_name, 'turnPlayerId')
-            ->where('"' . $this->_primary . '" = ?', $this->_gameId);
+            ->where($this->_db->quoteIdentifier($this->_primary) . ' = ?', $this->_gameId);
 
         return $this->selectOne($select);
     }
@@ -201,12 +201,10 @@ class Application_Model_Game extends Coret_Db_Table_Abstract
         if (current($playerColors) == $nextPlayerColor) { //first color, turn number increment
             $select = $this->_db->select()
                 ->from('game', array('turnNumber' => '("turnNumber" + 1)'))
-                ->where('"gameId" = ?', $this->_gameId);
-
-            $turnNumber = $this->selectOne($select);
+                ->where($this->_db->quoteIdentifier($this->_primary) . ' = ?', $this->_gameId);
 
             $data = array(
-                'turnNumber' => $turnNumber, // zamienić na new Zend_Db_Expr($select->_toString()),
+                'turnNumber' => new Zend_Db_Expr('(' . $select->__toString() . ')'),
                 'end' => new Zend_Db_Expr('now()'),
                 'turnPlayerId' => $nextPlayerId
             );
@@ -230,7 +228,7 @@ class Application_Model_Game extends Coret_Db_Table_Abstract
     {
         $select = $this->_db->select()
             ->from($this->_name, 'turnNumber')
-            ->where('"' . $this->_primary . '" = ?', $this->_gameId);
+            ->where($this->_db->quoteIdentifier($this->_primary) . ' = ?', $this->_gameId);
 
         return $this->selectOne($select);
     }
@@ -239,7 +237,7 @@ class Application_Model_Game extends Coret_Db_Table_Abstract
     {
         $select = $this->_db->select()
             ->from($this->_name, 'numberOfPlayers')
-            ->where('"' . $this->_primary . '" = ?', $this->_gameId);
+            ->where($this->_db->quoteIdentifier($this->_primary) . ' = ?', $this->_gameId);
         return $this->_db->fetchOne($select);
     }
 

@@ -14,7 +14,7 @@ var Move = {
                 break;
         }
 
-        if (my.turn) {
+        if (my.turn || Gui.show) {
             Message.remove()
         }
 
