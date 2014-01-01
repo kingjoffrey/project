@@ -459,7 +459,7 @@ class Cli_Model_Army
 
     static public function countUnitValue($unit, $productionTime)
     {
-        return ($unit['attackPoints'] + $unit['defensePoints'] + $unit['canFly']) / $productionTime;
+        return ($unit['attackPoints'] + $unit['defensePoints'] + $unit['canFly']) / ($productionTime + $unit['cost']);
     }
 
     static public function findBestCastleProduction(array $units, array $production)

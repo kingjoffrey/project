@@ -78,6 +78,7 @@ var Players = {
             var x = this.circle_center_x + Math.cos(r_start_angle + r_angle / 2) * 70;
             var y = this.circle_center_y + Math.sin(r_start_angle + r_angle / 2) * 70;
             this.drawImage(shortName, x, y)
+//            this.drawSkull(x, y)
             i++;
         }
         this.rotate += r_angle / this.length
@@ -98,7 +99,14 @@ var Players = {
         var img = new Image;
         img.src = Hero.getImage(shortName)
         img.onload = function () {
-            Players.ctx.drawImage(img, x - 11, y - 14)
+            Players.ctx.drawImage(img, x - 22, y - 14)
+        }
+    },
+    drawSkull: function (x, y) {
+        var img = new Image;
+        img.src = '/img/game/skull_and_crossbones.png'
+        img.onload = function () {
+            Players.ctx.drawImage(img, x, y-16)
         }
     },
     drawTurn: function () {
