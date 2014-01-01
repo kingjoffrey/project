@@ -73,9 +73,6 @@ $(document).ready(function () {
 
     shipId = Unit.getShipId();
     Players.init()
-    Players.draw()
-    Players.turn()
-
 });
 
 function startGame() {
