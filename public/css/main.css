@@ -47,6 +47,10 @@ html, body {
     width: 900px;
 }
 
+#content {
+    clear: both;
+}
+
 hr {
     margin-bottom: 10px;
 }
@@ -145,15 +149,6 @@ input[type="radio"], input[type="checkbox"] {
 .block {
     display: block;
     width: 50px;
-}
-
-ul {
-    list-style-type: none;
-    height: 40px;
-}
-
-li {
-    float: left;
 }
 
 h1 {

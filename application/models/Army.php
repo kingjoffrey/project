@@ -457,7 +457,7 @@ class Application_Model_Army extends Coret_Db_Table_Abstract
     {
 
         $select = $this->_db->select()
-            ->from($this->_name, array('x', 'y'))
+            ->from($this->_name, array('x', 'y', 'armyId'))
             ->where('"gameId" = ?', $this->_gameId)
             ->where('"armyId" != ?', $armyId)
             ->where('"playerId" = ?', $playerId)

@@ -9,9 +9,8 @@ class zend_View_Helper_MainMenu extends Zend_View_Helper_Abstract
         $controllerName = Zend_Controller_Front::getInstance()->getRequest()->getControllerName();
 
         $this->view->placeholder('mainMenu')
-            ->setPrefix('<div><ul><li>')
-            ->setSeparator('</li><li>')
-            ->setPostfix('</li></ul></div>');
+            ->setPrefix('<div>')
+            ->setPostfix('</div>');
 
         $menu = array(
             'new' => $this->view->translate('Play'),

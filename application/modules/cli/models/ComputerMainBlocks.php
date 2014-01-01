@@ -356,8 +356,8 @@ class Cli_Model_ComputerMainBlocks extends Cli_Model_ComputerSubBlocks
             } else {
                 $this->_l->log('JEST WRÓG Z ZASIĘGIEM');
 
-                if (!$enemiesInRange) {
-                    $this->_l->log('BRAK WROGA W ZASIĘGU - ZOSTAŃ!');
+                if ($turnNumber <= 7 && !$enemiesInRange) {
+                    $this->_l->log('BRAK WROGA W ZASIĘGU I TURA < 8 - ZOSTAŃ!');
 
                     $this->_modelArmy->fortify($army['armyId'], 1);
                     return $this->endMove($army['armyId'], array('x' => $army['x'], 'y' => $army['y']));

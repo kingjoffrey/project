@@ -221,5 +221,15 @@ class Application_Model_UnitsInGame extends Coret_Db_Table_Abstract
 
         return $this->selectOne($select);
     }
+
+    public function count($armyId)
+    {
+        $select = $this->_db->select()
+            ->from($this->_name, 'count(*)')
+            ->where('"gameId" = ?', $this->_gameId)
+            ->where('"armyId" = ?', $armyId);
+
+        return $this->selectOne($select);
+    }
 }
 
