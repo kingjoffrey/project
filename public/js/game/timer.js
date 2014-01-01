@@ -2,8 +2,14 @@ var timer = {
     height: 32,
     timestamp: 0,
     difference: 0,
+    divHour: null,
+    divMinute: null,
+    divSecond: null,
     start: function () {
         $('#timerScroll').css('height', Players.length * this.height + 'px');
+        this.divHour = $('#timerBox #' + Turn.color + Turn.number + ' #hour')
+        this.divMinute = $('#timerBox #' + Turn.color + Turn.number + ' #minute')
+        this.divSecond = $('#timerBox #' + Turn.color + Turn.number + ' #second')
         timer.countdown();
     },
     countdown: function () {
@@ -30,18 +36,21 @@ var timer = {
                 hours = '0' + hours;
             }
 
-            $('#timerBox #' + Turn.color + Turn.number + ' #hour').html(hours);
-            $('#timerBox #' + Turn.color + Turn.number + ' #minute').html(minutes);
-            $('#timerBox #' + Turn.color + Turn.number + ' #second').html(seconds);
+            this.divHour.html(hours)
+            this.divMinute.html(minutes)
+            this.divSecond.html(seconds)
         }
 
         setTimeout(function () {
             timer.countdown()
-        }, 10);
+        }, 1000);
     },
     update: function () {
         this.timestamp = (new Date()).getTime()
         this.append(Turn.color, Turn.number)
+        this.divHour = $('#timerBox #' + Turn.color + Turn.number + ' #hour')
+        this.divMinute = $('#timerBox #' + Turn.color + Turn.number + ' #minute')
+        this.divSecond = $('#timerBox #' + Turn.color + Turn.number + ' #second')
         this.scroll()
     },
     append: function (color, number, start, end) {

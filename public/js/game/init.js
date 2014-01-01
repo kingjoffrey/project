@@ -72,9 +72,9 @@ $(document).ready(function () {
     }
 
     shipId = Unit.getShipId();
-    Players.init();
-    Players.draw();
-    Players.turn();
+    Players.init()
+    Players.draw()
+    Players.turn()
 
 });
 

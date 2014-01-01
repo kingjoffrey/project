@@ -40,6 +40,7 @@ class Cli_Model_Astar extends Cli_Model_Heuristics
     private $myCastles;
     private $movementType;
 
+    private $outOfReach = false;
 
     /**
      * Constructor
@@ -292,6 +293,7 @@ class Cli_Model_Astar extends Cli_Model_Heuristics
     public function getReturnPath($key)
     {
         if (!isset($this->close[$key])) {
+            $this->outOfReach = true;
             $l = new Coret_Model_Logger();
             $l->log('W ścieżce nie ma podanego jako parametr klucza: ' . $key . ' (getPath)');
             return;
@@ -304,5 +306,9 @@ class Cli_Model_Astar extends Cli_Model_Heuristics
         return $path;
     }
 
+    public function outOfReach()
+    {
+        return $this->outOfReach;
+    }
 }
 

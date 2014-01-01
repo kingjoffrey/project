@@ -23,10 +23,28 @@ class Cli_Model_ComputerMainBlocks extends Cli_Model_ComputerSubBlocks
             return self::secondBlock($enemies, $mArmy, $castlesAndFields);
         } else {
             $this->_l->log('SĄ ZAMKI WROGA');
+
+            $castleIds = array();
             $castleId = $this->getWeakerEnemyCastle($castlesAndFields['hostileCastles'], $army);
-            if ($castleId !== null) {
-                $this->_l->log('JEST SŁABSZY ZAMEK WROGA');
+            if ($castleId) {
                 $castleRange = $this->isEnemyCastleInRange($castlesAndFields, $castleId, $mArmy);
+                while (true) {
+                    if (empty($castleRange)) {
+                        $castleIds[] = $castleId;
+                        $castleId = $this->getWeakerEnemyCastle($castlesAndFields['hostileCastles'], $army, $castleIds);
+                        if ($castleId) {
+                            $castleRange = $this->isEnemyCastleInRange($castlesAndFields, $castleId, $mArmy);
+                        } else {
+                            break;
+                        }
+                    }
+                    break;
+                }
+            }
+
+            if ($castleId) {
+                $this->_l->log('JEST SŁABSZY ZAMEK WROGA: ' . $castleId);
+
                 if ($castleRange['in']) {
                     //atakuj
                     $this->_l->log('SŁABSZY ZAMEK WROGA W ZASIĘGU - ATAKUJĘ!');
@@ -37,14 +55,14 @@ class Cli_Model_ComputerMainBlocks extends Cli_Model_ComputerSubBlocks
                     $enemy = $this->getWeakerEnemyArmyInRange($enemies, $mArmy, $castlesAndFields);
                     if ($enemy) {
                         //atakuj
-                        $this->_l->log('JEST SŁABSZA ARMIA WROGA W ZASIĘGU - ATAKUJĘ!');
+                        $this->_l->log('JEST SŁABSZA ARMIA WROGA W ZASIĘGU (' . $enemy['armyId'] . ') - ATAKUJĘ!');
                         $fightEnemyResults = $this->fightEnemy($army, $enemy['path'], $castlesAndFields['fields'], $enemy, $enemy['castleId']);
                         return $this->endMove($army['armyId'], $enemy['currentPosition'], $enemy['path'], $fightEnemyResults, $enemy['castleId']);
                     } else {
                         $this->_l->log('BRAK SŁABSZEJ ARMII WROGA W ZASIĘGU');
                         $enemy = $this->getStrongerEnemyArmyInRange($enemies, $mArmy, $castlesAndFields);
                         if ($enemy) {
-                            $this->_l->log('JEST SILNIEJSZA ARMIA WROGA W ZASIĘGU');
+                            $this->_l->log('JEST SILNIEJSZA ARMIA WROGA W ZASIĘGU: ' . $enemy['armyId']);
                             $join = $this->getMyArmyInRange($mArmy, $castlesAndFields);
                             if ($join) {
                                 $this->_l->log('JEST MOJA ARMIA W ZASIĘGU - DOŁĄCZ!');
@@ -389,6 +407,7 @@ class Cli_Model_ComputerMainBlocks extends Cli_Model_ComputerSubBlocks
                                 $this->_l->log('WRÓG Z ZASIĘGIEM POZA ZASIĘGIEM - IDŹ DO WROGA!');
 
                                 Cli_Model_Army::updateArmyPosition($this->_playerId, $range['path'], $castlesAndFields['fields'], $army, $this->_gameId, $this->_db);
+                                $this->_modelArmy->fortify($army['armyId'], 1);
                                 return $this->endMove($army['armyId'], $range['currentPosition'], $range['path']);
                             }
                         }

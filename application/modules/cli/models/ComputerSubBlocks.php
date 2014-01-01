@@ -2,27 +2,30 @@
 
 class Cli_Model_ComputerSubBlocks extends Cli_Model_ComputerFight
 {
-    public function getWeakerEnemyCastle($castles, $army)
+    public function getWeakerEnemyCastle($castles, $army, $castlesIds = array())
     {
         $heuristics = array();
-        foreach ($castles as $castleId => $castle) {
+        foreach ($castles as $id => $castle) {
+            if (in_array($id, $castlesIds)) {
+                continue;
+            }
             $mHeuristics = new Cli_Model_Heuristics($castle['position']['x'], $castle['position']['y']);
-            $heuristics[$castleId] = $mHeuristics->calculateH($army['x'], $army['y']);
+            $heuristics[$id] = $mHeuristics->calculateH($army['x'], $army['y']);
         }
         asort($heuristics, SORT_NUMERIC);
 
-        foreach (array_keys($heuristics) as $castleId) {
-            $position = $castles[$castleId]['position'];
+        foreach (array_keys($heuristics) as $id) {
+            $position = $castles[$id]['position'];
             $mCastlesInGame = new Application_Model_CastlesInGame($this->_gameId, $this->_db);
-            if ($mCastlesInGame->isEnemyCastle($castleId, $this->_playerId)) {
+            if ($mCastlesInGame->isEnemyCastle($id, $this->_playerId)) {
                 $enemy = Cli_Model_Army::getCastleGarrisonFromCastlePosition($position, $this->_gameId, $this->_db);
             } else {
                 $enemy = Cli_Model_Battle::getNeutralCastleGarrison($this->_gameId, $this->_db);
             }
             $enemy = array_merge($enemy, $position);
 
-            if (!$this->isEnemyStronger($army, $enemy, $castleId)) {
-                return $castleId;
+            if (!$this->isEnemyStronger($army, $enemy, $id)) {
+                return $id;
             }
         }
         return null;
@@ -34,6 +37,7 @@ class Cli_Model_ComputerSubBlocks extends Cli_Model_ComputerFight
         $army = $mArmy->getArmy();
         $position = $mapCastles[$castleId]['position'];
         $fields = Application_Model_Board::changeCasteFields($castlesAndFields['fields'], $position['x'], $position['y'], 'E');
+
         try {
             $aStar = new Cli_Model_Astar($army, $position['x'], $position['y'], $fields);
         } catch (Exception $e) {
@@ -41,7 +45,13 @@ class Cli_Model_ComputerSubBlocks extends Cli_Model_ComputerFight
             return;
         }
 
-        $move = $mArmy->calculateMovesSpend($aStar->getPath($position['x'] . '_' . $position['y']));
+        $path = $aStar->getPath($position['x'] . '_' . $position['y']);
+
+        if (empty($path)) {
+            return;
+        }
+
+        $move = $mArmy->calculateMovesSpend($path);
         if (Application_Model_Board::isCastleField($move['currentPosition'], $position)) {
             $move['in'] = true;
         } else {

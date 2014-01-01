@@ -254,12 +254,12 @@ Websocket = {
 
                 }
             }
-        };
+        }
 
         ws.onclose = function () {
-            this.closed = true;
-            setTimeout('Websocket.init()', 1000);
-        };
+            this.closed = true
+            setTimeout('Websocket.init()', 1000)
+        }
 
     },
     open: function () {
