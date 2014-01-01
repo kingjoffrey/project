@@ -78,6 +78,8 @@ class Application_Model_Board
             $x = $castleSchema['position']['x'];
             $y = $castleSchema['position']['y'];
             if (isset($myCastles[$castleId])) {
+                $myCastles[$castleId] = $castleSchema;
+                $myCastles[$castleId]['castleId'] = $castleId;
                 $fields = self::changeCasteFields($fields, $x, $y, 'c');
             } else {
                 $hostileCastles[$castleId] = $castleSchema;
@@ -85,7 +87,11 @@ class Application_Model_Board
                 $fields = self::changeCasteFields($fields, $x, $y, 'e');
             }
         }
-        return array('hostileCastles' => $hostileCastles, 'fields' => $fields);
+        return array(
+            'myCastles' => $myCastles,
+            'hostileCastles' => $hostileCastles,
+            'fields' => $fields
+        );
     }
 
     static public function isCastleAtPosition($x, $y, $castles)
