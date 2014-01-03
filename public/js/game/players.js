@@ -9,6 +9,8 @@ var Players = {
     rotate: 0,
     wedges: {},
     anim: null,
+    turnCircle: null,
+    turnNumber: null,
     init: function () {
         this.stage = new Kinetic.Stage({
             container: 'playersCanvas',
@@ -67,44 +69,59 @@ var Players = {
 
         var i = 0;
         for (shortName in players) {
-            var start_angle = i * angle
-            var r_start_angle = i * r_angle - Math.PI + r_angle
+            var rotation = i * angle
+            var r_rotation = i * r_angle + r_angle / 2
 
-            if (Turn.color == shortName) {
-                var x = this.center_x + Math.cos(r_start_angle) * 32
-                var y = this.center_y + Math.sin(r_start_angle) * 32
-            } else {
-                var x = this.center_x
-                var y = this.center_y
-            }
+//            if (Turn.color == shortName) {
+//                var x = this.center_x + Math.cos(r_rotation) * 32
+//                var y = this.center_y + Math.sin(r_rotation) * 32
+//            } else {
+            var x = this.center_x
+            var y = this.center_y
+//            }
 
             this.wedges[shortName] = {}
+            this.wedges[shortName].x = this.center_x + Math.cos(r_rotation) * 77 - 11;
+            this.wedges[shortName].y = this.center_y + Math.sin(r_rotation) * 77 - 14;
+            this.wedges[shortName].rotation = r_rotation
             this.wedges[shortName].kinetic = new Kinetic.Wedge({
                 x: x,
                 y: y,
                 radius: 60,
                 angleDeg: angle,
                 fill: players[shortName].backgroundColor,
-                stroke: 'none',
-                strokeWidth: 0,
-                rotationDeg: start_angle - 157.5
+                stroke: 'grey',
+                strokeWidth: 2,
+                rotationDeg: rotation
             });
 
             this.layer.add(this.wedges[shortName].kinetic);
-
-            this.wedges[shortName].x = this.center_x + Math.cos(r_start_angle) * 77 - 11;
-            this.wedges[shortName].y = this.center_y + Math.sin(r_start_angle) * 77 - 14;
-
             this.drawImage(shortName)
+            if (players[shortName].lost) {
+                this.drawSkull(shortName)
+            }
             i++;
         }
         this.stage.add(this.layer);
         this.drawTurn()
     },
-    animate: function () {
+    animate: function (slide) {
+//        (x2 - x1)(y - y1) = (y2 - y1)(x - x1)
+
+//        var x1 = Players.wedges[Turn.color].kinetic.getPosition().x
+//        var x2 = Players.center_x
+//        var y1 = Players.wedges[Turn.color].kinetic.getPosition().y
+//        var y2 = Players.center_y
+//
+//        y = (y2 - y1)(x - x1) / (x2 - x1) + y1
+
         Players.anim = new Kinetic.Animation(function (frame) {
-            Players.wedges[Turn.color].kinetic.move(0.1, 0.1)
-            if (Players.wedges[Turn.color].kinetic.getPosition().x >= Players.center_x || Players.wedges[Turn.color].kinetic.getPosition().y >= Players.center_y) {
+            var x = Math.cos(Players.wedges[Turn.color].rotation) * 0.1
+            var y = Math.sin(Players.wedges[Turn.color].rotation) * 0.1
+            console.log(x)
+            console.log(y)
+            Players.wedges[Turn.color].kinetic.move(-x, -y)
+            if (Players.wedges[Turn.color].kinetic.getPosition().x == Players.center_x || Players.wedges[Turn.color].kinetic.getPosition().y == Players.center_y) {
                 Players.anim.stop()
             }
         }, this.layer);
@@ -124,49 +141,61 @@ var Players = {
                 height: 28
             });
             Players.layer.add(img);
-            Players.stage.add(Players.layer);
+            Players.layer.draw()
         };
         imageObj.src = Hero.getImage(shortName)
     },
-    drawSkull: function (x, y) {
-        var img = new Image;
-        img.src = '/img/game/skull_and_crossbones.png'
-        img.onload = function () {
-            Players.ctx.drawImage(img, x, y - 16)
-        }
+    drawSkull: function (shortName) {
+        var imageObj = new Image();
+        imageObj.onload = function () {
+            var img = new Kinetic.Image({
+                x: Players.wedges[shortName].x + 3,
+                y: Players.wedges[shortName].y + 7,
+                image: imageObj,
+                width: 16,
+                height: 16
+            });
+            Players.layer.add(img);
+            Players.layer.draw()
+        };
+        imageObj.src = '/img/game/skull_and_crossbones.png'
     },
-    drawComputer: function (x, y) {
-        var img = new Image;
-        img.src = '/img/game/computer.png'
-        img.onload = function () {
-            Players.ctx.drawImage(img, x, y - 16)
-        }
-    },
+//    drawComputer: function (x, y) {
+//        var img = new Image;
+//        img.src = '/img/game/computer.png'
+//        img.onload = function () {
+//            Players.ctx.drawImage(img, x, y - 16)
+//        }
+//    },
     drawTurn: function () {
-        var circle = new Kinetic.Circle({
-            x: this.center_x,
-            y: this.center_y,
-            radius: 55,
-            fill: players[Turn.color].backgroundColor,
-            stroke: players[Turn.color].backgroundColor,
-//            fill: 'grey',
-//            stroke: 'grey',
-            strokeWidth: 0
-        });
-        this.layer.add(circle);
+        if (this.turnCircle) {
+            this.turnCircle.setFill(players[Turn.color].backgroundColor)
+            this.turnNumber.setFill(players[Turn.color].textColor)
+            this.turnNumber.setText(Turn.number)
+            this.layer.draw()
+        } else {
+            this.turnCircle = new Kinetic.Circle({
+                x: this.center_x,
+                y: this.center_y,
+                radius: 53,
+                fill: players[Turn.color].backgroundColor,
+                strokeWidth: 0
+            });
+            this.layer.add(this.turnCircle);
+            this.turnNumber = new Kinetic.Text({
+                x: this.center_x - 70,
+                y: this.center_y - 15,
+                text: Turn.number,
+                fontSize: 30,
+                fontFamily: 'fantasy',
+                fill: players[Turn.color].textColor,
+                width: 140,
+                align: 'center'
+            });
 
-        var turnNumber = new Kinetic.Text({
-            x: this.center_x - 70,
-            y: this.center_y - 15,
-            text: Turn.number,
-            fontSize: 30,
-            fontFamily: 'fantasy',
-            fill: players[Turn.color].textColor,
-            width: 140,
-            align: 'center'
-        });
-        this.layer.add(turnNumber);
-        this.stage.add(this.layer);
+            this.layer.add(this.turnNumber);
+            this.layer.draw()
+        }
     },
     turn: function () {
         this.drawTurn()
@@ -180,3 +209,4 @@ Object.size = function (obj) {
     }
     return size;
 };
+

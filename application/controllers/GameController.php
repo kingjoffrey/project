@@ -5,15 +5,14 @@ class GameController extends Game_Controller_Game
 
     public function indexAction()
     {
+        $this->_helper->layout->setLayout('game');
+
         $mGame = new Application_Model_Game($this->_namespace->gameId);
 //        if (!$mGame->isActive()) {
 //            throw new Exception('Game initialization error');
 //        }
 
         $this->view->headLink()->appendStylesheet('/css/game.css?v=' . Zend_Registry::get('config')->version);
-
-        $this->view->headScript()->appendFile('/js/kinetic-v4.7.4.min.js');
-        $this->view->headScript()->appendFile('/js/date.js');
 
         $this->view->headScript()->appendFile('/js/game/init.js?v=' . Zend_Registry::get('config')->version);
         $this->view->headScript()->appendFile('/js/game/castles.js?v=' . Zend_Registry::get('config')->version);
@@ -35,7 +34,6 @@ class GameController extends Game_Controller_Game
         $this->view->headScript()->appendFile('/js/game/turn.js?v=' . Zend_Registry::get('config')->version);
         $this->view->headScript()->appendFile('/js/game/sound.js?v=' . Zend_Registry::get('config')->version);
 
-        $this->_helper->layout->setLayout('game');
         $this->view->sound();
 
         $mCastlesInGame = new Application_Model_CastlesInGame($this->_namespace->gameId);
@@ -196,7 +194,7 @@ class GameController extends Game_Controller_Game
 //         $this->view->headScript()->appendFile('/js/jwsChannelPlugIn.js');
 //         $this->_helper->layout->setLayout('game');
 //         $castles = array();
-        $this->_helper->layout->disableLayout();
+//        $this->_helper->layout->disableLayout();
 //         $str = Application_Model_Board::production();
 //         $model = new Application_Model_Board();
 //         $Schema = $model->getCastlesSchema();
