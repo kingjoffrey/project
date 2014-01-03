@@ -11,10 +11,8 @@ class GameController extends Game_Controller_Game
 //        }
 
         $this->view->headLink()->appendStylesheet('/css/game.css?v=' . Zend_Registry::get('config')->version);
-//        $this->view->headLink()->appendStylesheet('/css/jquery.jscrollpane.css');
 
-//        $this->view->headScript()->appendFile('/js/jquery.mousewheel.js');
-//        $this->view->headScript()->appendFile('/js/jquery.jscrollpane.min.js');
+        $this->view->headScript()->appendFile('/js/kinetic-v4.7.4.min.js');
         $this->view->headScript()->appendFile('/js/date.js');
 
         $this->view->headScript()->appendFile('/js/game/init.js?v=' . Zend_Registry::get('config')->version);

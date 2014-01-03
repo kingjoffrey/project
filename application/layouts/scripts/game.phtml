@@ -51,7 +51,6 @@
         </table>
     </div>
     <div id="playersBox" class="box">
-        <!--                <img id="aaawhite" src="/img/game/heroes/white.png">-->
         <div id="turn"><span id="turnNumber"></span></div>
         <div id="exit" class="iconButton buttonColors">
             <span class="Centerer"></span>
@@ -69,7 +68,7 @@
         <div id="statistics" class="iconButton buttonColors">
             <img src="/img/game/statistics.png" alt="<?php echo $this->translate('Statistics') ?>"/>
         </div>
-        <canvas id="playersCanvas" width="180px" height="180px"></canvas>
+        <div id="playersCanvas"></div>
         <div id="buttons">
             <a id="nextTurn" class="button buttonColors">(e) <?php echo $this->translate('Next turn') ?> &raquo;</a>
             <a id="heroResurrection"

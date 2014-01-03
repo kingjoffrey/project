@@ -736,9 +736,9 @@
 
 #playersCanvas {
     position: absolute;
-    /*top: 30px;*/
     left: 10px;
-    /*background: white;*/
+    width: 180px;
+    height: 180px;
 }
 
 #chest {

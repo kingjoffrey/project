@@ -1,15 +1,24 @@
 // *** PLAYERS ***
 
 var Players = {
-    circle_center_x: 90,
-    circle_center_y: 90,
-    canvas: null,
-    ctx: null,
+    center_x: 0,
+    center_y: 0,
+    stage: null,
+    layer: null,
     length: 0,
     rotate: 0,
+    wedges: {},
+    anim: null,
     init: function () {
-        this.canvas = $('#playersCanvas');
-        this.ctx = this.canvas[0].getContext('2d');
+        this.stage = new Kinetic.Stage({
+            container: 'playersCanvas',
+            width: 180,
+            height: 180
+        });
+        this.center_x = this.stage.getWidth() / 2
+        this.center_y = this.stage.getHeight() / 2
+        this.layer = new Kinetic.Layer();
+
         this.length = Object.size(players);
 
         for (color in players) {
@@ -53,71 +62,114 @@ var Players = {
         this.draw()
     },
     draw: function () {
-        this.ctx.clearRect(0, 0, 180, 180)
-
-        var r_length = 60;
-        var r_angle = Math.PI * 2 / this.length;
+        var angle = 360 / this.length;
+        var r_angle = Math.PI * 2 / this.length
 
         var i = 0;
         for (shortName in players) {
-            this.ctx.beginPath();
-            var r_start_angle = i * r_angle + this.rotate + Math.PI;
-            console.log(r_start_angle)
-            var r_end_angle = r_start_angle + r_angle + this.rotate + Math.PI;
-            console.log(r_end_angle)
-            var x = this.circle_center_x + Math.cos(r_start_angle) * r_length;
-            var y = this.circle_center_y + Math.sin(r_start_angle) * r_length;
+            var start_angle = i * angle
+            var r_start_angle = i * r_angle - Math.PI + r_angle
 
-            this.ctx.moveTo(this.circle_center_x, this.circle_center_y);
-            this.ctx.lineTo(x, y);
-            this.ctx.arc(this.circle_center_x, this.circle_center_y, r_length, r_start_angle, r_end_angle, false);
-            this.ctx.lineTo(this.circle_center_x, this.circle_center_y);
-            this.ctx.fillStyle = players[shortName].backgroundColor;
-            this.ctx.fill();
+            if (Turn.color == shortName) {
+                var x = this.center_x + Math.cos(r_start_angle) * 32
+                var y = this.center_y + Math.sin(r_start_angle) * 32
+            } else {
+                var x = this.center_x
+                var y = this.center_y
+            }
 
-            var x = this.circle_center_x + Math.cos(r_start_angle + r_angle / 2) * 70;
-            var y = this.circle_center_y + Math.sin(r_start_angle + r_angle / 2) * 70;
-            this.drawImage(shortName, x, y)
-//            this.drawSkull(x, y)
+            this.wedges[shortName] = {}
+            this.wedges[shortName].kinetic = new Kinetic.Wedge({
+                x: x,
+                y: y,
+                radius: 60,
+                angleDeg: angle,
+                fill: players[shortName].backgroundColor,
+                stroke: 'none',
+                strokeWidth: 0,
+                rotationDeg: start_angle - 157.5
+            });
+
+            this.layer.add(this.wedges[shortName].kinetic);
+
+            this.wedges[shortName].x = this.center_x + Math.cos(r_start_angle) * 77 - 11;
+            this.wedges[shortName].y = this.center_y + Math.sin(r_start_angle) * 77 - 14;
+
+            this.drawImage(shortName)
             i++;
         }
-        this.rotate += r_angle / this.length
+        this.stage.add(this.layer);
         this.drawTurn()
     },
-    animate: function (time) {
-        if (this.rotate > 1) {
-            return
-        }
-        Players.draw(time);
-        requestAnimationFrame(Players.animate)
+    animate: function () {
+        Players.anim = new Kinetic.Animation(function (frame) {
+            Players.wedges[Turn.color].kinetic.move(0.1, 0.1)
+            if (Players.wedges[Turn.color].kinetic.getPosition().x >= Players.center_x || Players.wedges[Turn.color].kinetic.getPosition().y >= Players.center_y) {
+                Players.anim.stop()
+            }
+        }, this.layer);
+        Players.anim.start()
     },
-    drawImage: function (shortName, x, y) {
-//        if (players[shortName].computer) {
-//            img.src = '/img/game/computer.png';
-//        } else {
-//        }
-        var img = new Image;
-        img.src = Hero.getImage(shortName)
-        img.onload = function () {
-            Players.ctx.drawImage(img, x - 22, y - 14)
-        }
+    rotate: function () {
+
+    },
+    drawImage: function (shortName) {
+        var imageObj = new Image();
+        imageObj.onload = function () {
+            var img = new Kinetic.Image({
+                x: Players.wedges[shortName].x,
+                y: Players.wedges[shortName].y,
+                image: imageObj,
+                width: 22,
+                height: 28
+            });
+            Players.layer.add(img);
+            Players.stage.add(Players.layer);
+        };
+        imageObj.src = Hero.getImage(shortName)
     },
     drawSkull: function (x, y) {
         var img = new Image;
         img.src = '/img/game/skull_and_crossbones.png'
         img.onload = function () {
-            Players.ctx.drawImage(img, x, y-16)
+            Players.ctx.drawImage(img, x, y - 16)
+        }
+    },
+    drawComputer: function (x, y) {
+        var img = new Image;
+        img.src = '/img/game/computer.png'
+        img.onload = function () {
+            Players.ctx.drawImage(img, x, y - 16)
         }
     },
     drawTurn: function () {
-        this.ctx.beginPath();
-        this.ctx.arc(this.circle_center_x, this.circle_center_y, 50, 0, Math.PI * 2, true);
-        this.ctx.fillStyle = players[Turn.color].backgroundColor;
-        this.ctx.fill();
+        var circle = new Kinetic.Circle({
+            x: this.center_x,
+            y: this.center_y,
+            radius: 55,
+            fill: players[Turn.color].backgroundColor,
+            stroke: players[Turn.color].backgroundColor,
+//            fill: 'grey',
+//            stroke: 'grey',
+            strokeWidth: 0
+        });
+        this.layer.add(circle);
+
+        var turnNumber = new Kinetic.Text({
+            x: this.center_x - 70,
+            y: this.center_y - 15,
+            text: Turn.number,
+            fontSize: 30,
+            fontFamily: 'fantasy',
+            fill: players[Turn.color].textColor,
+            width: 140,
+            align: 'center'
+        });
+        this.layer.add(turnNumber);
+        this.stage.add(this.layer);
     },
     turn: function () {
         this.drawTurn()
-        $('#turnNumber').css('color', players[Turn.color].textColor).html(Turn.number);
     }
 }
 
