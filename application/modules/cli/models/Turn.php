@@ -65,7 +65,7 @@ class Cli_Model_Turn
                     $this->_gameHandler->sendToChannel($this->_db, $token, $this->_user->parameters['gameId']);
                     return;
                 } else { // zmieniam turę
-                    $mGame->updateTurnNumber($nextPlayerId, $playersInGameColors[$nextPlayerId]);
+                    $mGame->updateTurnPlayer($nextPlayerId);
                     $mCastlesInGame->increaseAllCastlesProductionTurn($nextPlayerId);
 
                     $turnNumber = $mGame->getTurnNumber();

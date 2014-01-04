@@ -360,18 +360,6 @@
     margin-top: 7px;
 }
 
-.message .cancel {
-    /*     float:left; */
-}
-
-.message .right {
-    float: right;
-}
-
-.message p.h {
-    /*line-height: 24px;*/
-}
-
 .message p.h input {
     margin: 5px 6px;
 }
@@ -436,15 +424,33 @@
 .message .status div.row {
     clear: both;
     height: 75px;
-    width: 478px;
+    width: 530px;
     margin: 1px;
     padding: 3px;
     border: 1px solid grey;
     border-radius: 3px;
 }
 
+.message .status div.rowContent {
+    position: relative;
+}
+
 .message .status table {
     width: auto;
+    display: inline-table;
+}
+
+.message .status table.leftTable {
+    margin-left: 30px;
+}
+
+.message .status table.rightTable {
+    margin-left: 5px;
+}
+
+.message .status tr {
+    background: none !important;
+    color: #fff;
 }
 
 .message .status td {
@@ -453,6 +459,7 @@
     height: 14px;
     padding: 0;
     margin: 0;
+    background: #000;
 }
 
 .message .status .value {
@@ -461,7 +468,7 @@
 
 .message .status .value div {
     float: left;
-    width: 20px;
+    /*width: 20px;*/
 }
 
 .message .status .plus {
@@ -469,28 +476,22 @@
 }
 
 .message .status div.row div.nr {
-    position: relative;
-    top: 2px;
-    left: 2px;
+    position: absolute;
+    top: 4px;
+    left: 4px;
     width: 20px;
     height: 20px;
-    float: left;
-    border: 1px solid #fff;
     border-radius: 10px;
-    line-height: 21px;
-}
-
-.message .status div.row img {
-    margin: 10px 5px;
+    line-height: 22px;
+    background: #fff;
+    color: #000;
+    text-shadow: none;
 }
 
 .message .status div.row div.img {
-    width: 43px;
-    height: 30px;
-    float: left;
-    position: relative;
-    top: 0px;
-    left: 0px;
+    position: absolute;
+    top: 30px;
+    left: 5px;
 }
 
 .message .go {
@@ -503,6 +504,12 @@
     text-align: center;
     margin-top: 4px;
     min-height: 31px;
+}
+
+.message .grass {
+    background: url(/img/game/grass.png);
+    border-radius: 5px;
+    padding: 5px;
 }
 
 .center {

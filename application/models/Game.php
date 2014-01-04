@@ -208,11 +208,15 @@ class Application_Model_Game extends Coret_Db_Table_Abstract
                 'end' => new Zend_Db_Expr('now()'),
                 'turnPlayerId' => $nextPlayerId
             );
-        } else {
-            $data = array(
-                'turnPlayerId' => $nextPlayerId
-            );
+            $this->updateGame($data);
         }
+    }
+
+    public function updateTurnPlayer($nextPlayerId)
+    {
+        $data = array(
+            'turnPlayerId' => $nextPlayerId
+        );
 
         $this->updateGame($data);
     }

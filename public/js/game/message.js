@@ -495,97 +495,109 @@ var Message = {
             return;
         }
 
-        var div = $('<div>').addClass('status')
-        var numberOfUnits = 0;
-        var bonusTower = 0;
-        var castleDefense = getMyCastleDefenseFromPosition(Army.selected.x, Army.selected.y);
-        var attackPoints;
-        var defensePoints;
+        var div = $('<div>').addClass('status'),
+            numberOfUnits = 0,
+            bonusTower = 0,
+            castleDefense = getMyCastleDefenseFromPosition(Army.selected.x, Army.selected.y),
+            attackPoints = 0,
+            defensePoints = 0,
+            attackFlyBonus = $('<div>'),
+            defenseFlyBonus = $('<div>'),
+            attackHeroBonus = $('<div>'),
+            defenseHeroBonus = $('<div>'),
+            defenseTowerBonus = $('<div>'),
+            defenseCastleBonus = $('<div>')
 
         if (isTowerAtPosition(Army.selected.x, Army.selected.y)) {
             bonusTower = 1;
         }
+
+        if (Army.selected.flyBonus) {
+            attackFlyBonus.html(' +1').addClass('value plus')
+            defenseFlyBonus.html(' +1').addClass('value plus')
+        }
+        if (Army.selected.heroKey) {
+            attackHeroBonus.html(' +1').addClass('value plus')
+            defenseHeroBonus.html(' +1').addClass('value plus')
+        }
+        if (bonusTower) {
+            defenseTowerBonus.html(' +1').addClass('value plus')
+        }
+        if (castleDefense) {
+            defenseCastleBonus.html(' +' + castleDefense).addClass('value plus')
+        }
+
         for (i in Army.selected.soldiers) {
+            console.log(defenseCastleBonus)
             numberOfUnits++;
-            var img = units[Army.selected.soldiers[i].unitId].name.replace(' ', '_').toLowerCase();
-            if (Army.selected.flyBonus && !Army.selected.soldiers[i].canFly) {
-                var attackFlyBonus = $('<div>').html(' +1').addClass('value plus')
-                var defenseFlyBonus = $('<div>').html(' +1').addClass('value plus')
-            }
-            if (Army.selected.heroKey) {
-                var attackHeroBonus = $('<div>').html(' +1').addClass('value plus')
-                var defenseHeroBonus = $('<div>').html(' +1').addClass('value plus')
-            }
-            if (bonusTower) {
-                var defenseTowerBonus = $('<div>').html(' +1').addClass('value plus')
-            }
-            if (castleDefense) {
-                var defenseCastleBonus = $('<div>').html(' +' + castleDefense).addClass('value plus')
-            }
             div.append(
                 $('<div>')
                     .addClass('row')
-                    .append($('<div>').addClass('nr').html(numberOfUnits))
-                    .append($('<div>').addClass('img').html(
-                        $('<img>').attr({
-                            'src': Unit.getImageByName(img, Army.selected.color),
-                            'id': 'unit' + Army.selected.soldiers[i].soldierId
-                        })
-                    ))
                     .append(
-                        $('<table>')
-                            .addClass('left')
+                        $('<div>')
+                            .addClass('rowContent')
+                            .append($('<div>').addClass('nr').html(numberOfUnits))
+                            .append($('<div>').addClass('img').html(
+                                $('<img>').attr({
+                                    'src': Unit.getImage(Army.selected.soldiers[i].unitId, Army.selected.color),
+                                    'id': 'unit' + Army.selected.soldiers[i].soldierId
+                                })
+                            ))
                             .append(
-                                $('<tr>')
-                                    .append($('<td>').html('Moves left: '))
-                                    .append($('<td>').html(Army.selected.soldiers[i].movesLeft).addClass('value'))
-                            )
-                            .append(
-                                $('<tr>')
-                                    .append($('<td>').html('Default moves: '))
-                                    .append($('<td>').html(units[Army.selected.soldiers[i].unitId].numberOfMoves).addClass('value'))
-                            )
-                            .append(
-                                $('<tr>')
-                                    .append($('<td>').html('Attack points: '))
+                                $('<table>')
+                                    .addClass('leftTable')
                                     .append(
-                                        $('<td>')
-                                            .append($('<div>').html(units[Army.selected.soldiers[i].unitId].attackPoints))
-                                            .append(attackFlyBonus)
-                                            .append(attackHeroBonus)
-                                            .addClass('value')
+                                        $('<tr>')
+                                            .append($('<td>').html('Current moves: '))
+                                            .append($('<td>').html(Army.selected.soldiers[i].movesLeft).addClass('value'))
+                                    )
+                                    .append(
+                                        $('<tr>')
+                                            .append($('<td>').html('Default moves: '))
+                                            .append($('<td>').html(units[Army.selected.soldiers[i].unitId].numberOfMoves).addClass('value'))
+                                    )
+                                    .append(
+                                        $('<tr>')
+                                            .append($('<td>').html('Attack points: '))
+                                            .append(
+                                                $('<td>')
+                                                    .append($('<div>').html(units[Army.selected.soldiers[i].unitId].attackPoints))
+                                                    .append(attackFlyBonus)
+                                                    .append(attackHeroBonus)
+                                                    .addClass('value')
+                                            )
+                                    )
+                                    .append(
+                                        $('<tr>')
+                                            .append($('<td>').html('Defense points: '))
+                                            .append(
+                                                $('<td>')
+                                                    .append($('<div>').html(units[Army.selected.soldiers[i].unitId].defensePoints))
+                                                    .append(defenseFlyBonus)
+                                                    .append(defenseHeroBonus)
+                                                    .append(defenseTowerBonus)
+                                                    .append(defenseCastleBonus)
+                                                    .addClass('value')
+                                            )
                                     )
                             )
                             .append(
-                                $('<tr>')
-                                    .append($('<td>').html('Defense points: '))
+                                $('<table>')
+                                    .addClass('rightTable')
                                     .append(
-                                        $('<td>')
-                                            .append($('<div>').html(units[Army.selected.soldiers[i].unitId].defensePoints))
-                                            .append(defenseFlyBonus)
-                                            .append(defenseHeroBonus)
-                                            .append(defenseTowerBonus)
-                                            .append(defenseCastleBonus)
-                                            .addClass('value')
+                                        $('<tr>')
+                                            .append($('<td>').html('Movement cost through the forest: '))
+                                            .append($('<td>').html(units[Army.selected.soldiers[i].unitId].f).addClass('value'))
                                     )
-                            )
-                    )
-                    .append(
-                        $('<table>')
-                            .addClass('right')
-                            .append(
-                                $('<tr>')
-                                    .append($('<td>').html('Movement cost through the forest: '))
-                                    .append($('<td>').html(units[Army.selected.soldiers[i].unitId].f).addClass('value'))
-                            )
-                            .append(
-                                $('<tr>')
-                                    .append($('<td>').html('Movement cost through the swamp: '))
-                                    .append($('<p>').html(units[Army.selected.soldiers[i].unitId].s).addClass('value')))
-                            .append(
-                                $('<tr>')
-                                    .append($('<td>').html('Movement cost through the hills: '))
-                                    .append($('<p>').html(units[Army.selected.soldiers[i].unitId].m).addClass('value'))
+                                    .append(
+                                        $('<tr>')
+                                            .append($('<td>').html('Movement cost through the swamp: '))
+                                            .append($('<p>').html(units[Army.selected.soldiers[i].unitId].s).addClass('value')))
+                                    .append(
+                                        $('<tr>')
+                                            .append($('<td>').html('Movement cost through the hills: '))
+                                            .append($('<p>').html(units[Army.selected.soldiers[i].unitId].m).addClass('value'))
+                                    )
                             )
                     )
             );
@@ -593,39 +605,60 @@ var Message = {
 
         for (i in Army.selected.heroes) {
             numberOfUnits++;
-            attackPoints = $('<p>').html(Army.selected.heroes[i].attackPoints).css('color', '#da8');
-            defensePoints = $('<p>').html(Army.selected.heroes[i].defensePoints).css('color', '#da8');
-            if (bonusTower) {
-                defensePoints.append($('<span>').html(' +1').css('color', '#d00000'));
-            }
-            if (castleDefense) {
-                defensePoints.append($('<span>').html(' +' + castleDefense).css('color', '#d00000'));
-            }
             div.append(
                 $('<div>')
                     .addClass('row')
-                    .append($('<div>').addClass('nr').html(numberOfUnits))
-                    .append($('<div>').addClass('img').html(
-                        $('<img>').attr({
-                            'src': Hero.getImage(Army.selected.color),
-                            'id': 'hero' + Army.selected.heroes[i].heroId
-                        })
-                    ))
                     .append(
-                        $('<div>').addClass('left')
-                            .append($('<p>').html('Current moves: '))
-                            .append($('<p>').html('Default moves: '))
-                            .append($('<p>').html('Attack points: '))
-                            .append($('<p>').html('Defense points: '))
+                        $('<div>')
+                            .addClass('rowContent')
+                            .append($('<div>').addClass('nr').html(numberOfUnits))
+                            .append($('<div>').addClass('img').html(
+                                $('<img>').attr({
+                                    'src': Hero.getImage(Army.selected.color),
+                                    'id': 'hero' + Army.selected.heroes[i].heroId
+                                })
+                            ))
+                            .append(
+                                $('<table>').addClass('leftTable')
+                                    .append(
+                                        $('<tr>')
+                                            .append($('<td>').html('Current moves: '))
+                                            .append($('<td>').html(Army.selected.heroes[i].movesLeft).addClass('value'))
+                                    )
+                                    .append(
+                                        $('<tr>')
+                                            .append($('<td>').html('Default moves: '))
+                                            .append($('<td>').html(Army.selected.heroes[i].numberOfMoves).addClass('value'))
+                                    )
+                                    .append(
+                                        $('<tr>')
+                                            .append($('<td>').html('Attack points: '))
+                                            .append(
+                                                $('<td>')
+                                                    .append($('<div>').html(Army.selected.heroes[i].attackPoints))
+                                                    .append(attackFlyBonus)
+//                                                    .append(attackHeroBonus)
+                                                    .addClass('value')
+                                            )
+                                    )
+                                    .append(
+                                        $('<tr>')
+                                            .append($('<td>').html('Defense points: '))
+                                            .append(
+                                                $('<td>')
+                                                    .append($('<div>').html(Army.selected.heroes[i].defensePoints))
+                                                    .append(defenseFlyBonus)
+//                                                    .append(defenseHeroBonus)
+                                                    .append(defenseTowerBonus)
+                                                    .append(defenseCastleBonus)
+                                                    .addClass('value')
+                                            )
+                                    )
+                            )
+                            .append(
+                                $('<table>').addClass('rightTable')
+                            )
                     )
-                    .append(
-                        $('<div>').addClass('left')
-                            .append($('<p>').html(Army.selected.heroes[i].movesLeft).css('color', '#da8'))
-                            .append($('<p>').html(Army.selected.heroes[i].numberOfMoves).css('color', '#da8'))
-                            .append(attackPoints)
-                            .append(defensePoints)
-                    )
-
             );
         }
 
@@ -667,6 +700,10 @@ var Message = {
             );
         }
 
+        var attackGrass = $('<div>')
+            .addClass('grass')
+            .append(attack)
+
         var defense = $('<div>').addClass('battle defense');
 
         for (i in battle.defense.soldiers) {
@@ -697,12 +734,29 @@ var Message = {
             );
         }
 
+        var defenseGrass = $('<div>')
+            .addClass('grass')
+
+        if (isDigit(r.castleId)) {
+            defenseGrass.append(
+                $('<div>')
+                    .addClass('castle')
+                    .css({
+                        position: 'static',
+                        background: 'url(/img/game/castles/' + defenderColor + '.png) center center no-repeat',
+                        margin: '0 auto'
+                    })
+            )
+        }
+
+        defenseGrass.append(defense)
+
         var div = $('<div>')
             .append($('<h3>').html('Defense'))
-            .append(defense)
+            .append(defenseGrass)
             .append($('<p id="vs">').html('VS').addClass('center'))
             .append($('<h3>').html('Attack'))
-            .append(attack)
+            .append(attackGrass)
 
         var id = this.show(div);
         if (!players[r.attackerColor].computer) {

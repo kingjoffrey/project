@@ -67,26 +67,40 @@ var Players = {
         this.angle = 360 / this.length;
         var r_angle = Math.PI * 2 / this.length
 
+        var circle = new Kinetic.Circle({
+            x: this.centerX,
+            y: this.centerY,
+            radius: 51,
+            fill: 'grey',
+            strokeWidth: 0
+        })
+        this.layer.add(circle)
+        var circle = new Kinetic.Circle({
+            x: this.centerX,
+            y: this.centerY,
+            radius: 90,
+            fill: 'none',
+            stroke: 'grey',
+            strokeWidth: 1
+        })
+        this.layer.add(circle)
+
         var i = 0;
         for (shortName in players) {
             var rotation = i * this.angle
             var r_rotation = i * r_angle + r_angle / 2
 
-            var x = this.centerX
-            var y = this.centerY
-
             this.wedges[shortName] = {}
-            this.wedges[shortName].x = this.centerX + Math.cos(r_rotation) * 77 - 11;
-            this.wedges[shortName].y = this.centerY + Math.sin(r_rotation) * 77 - 14;
+            this.wedges[shortName].x = this.centerX + Math.cos(r_rotation) * 70 - 11;
+            this.wedges[shortName].y = this.centerY + Math.sin(r_rotation) * 70 - 14;
             this.wedges[shortName].rotation = r_rotation
             this.wedges[shortName].kinetic = new Kinetic.Wedge({
-                x: x,
-                y: y,
-                radius: 55,
+                x: this.centerX,
+                y: this.centerY,
+                radius: 50,
                 angleDeg: this.angle,
                 fill: players[shortName].backgroundColor,
-                stroke: 'grey',
-                strokeWidth: 2,
+                strokeWidth: 0,
                 rotationDeg: rotation
             });
 
@@ -101,38 +115,6 @@ var Players = {
         this.stage.add(this.layer);
         this.drawTurn()
         this.drawPlayerCircle()
-    },
-    animate: function (slide) {
-        Players.anim = new Kinetic.Animation(function (frame) {
-            var x = Math.cos(Players.wedges[Turn.color].rotation) * 0.1
-            var y = Math.sin(Players.wedges[Turn.color].rotation) * 0.1
-            console.log(x)
-            console.log(y)
-            Players.wedges[Turn.color].kinetic.move(-x, -y)
-            if (Players.wedges[Turn.color].kinetic.getPosition().x == Players.centerX || Players.wedges[Turn.color].kinetic.getPosition().y == Players.centerY) {
-                Players.anim.stop()
-            }
-        }, this.layer);
-        Players.anim.start()
-    },
-    dc: function (angle) {
-        var c = new Kinetic.Wedge({
-            x: this.centerX,
-            y: this.centerY,
-            radius: 40,
-            angle: angle,
-            fill: 'orange',
-            strokeWidth: 0
-        });
-
-        this.layer.add(c)
-        this.layer.draw()
-    },
-    countAngle: function (p12, p13, p23) {
-        return Math.acos((Math.pow(p12, 2) + Math.pow(p13, 2) - Math.pow(p23, 2)) / (2 * p12 * p13))
-    },
-    countVectorLength: function (x1, y1, x2, y2) {
-        return Math.sqrt(Math.pow(x1 - x2, 2) + Math.pow(y1 - y2, 2))
     },
     rotate: function (color) {
         var i = 0,
@@ -172,14 +154,14 @@ var Players = {
     drawImage: function (shortName) {
         var imageObj = new Image();
         imageObj.onload = function () {
-            var img = new Kinetic.Image({
+            Players.wedges[shortName].img = new Kinetic.Image({
                 x: Players.wedges[shortName].x,
                 y: Players.wedges[shortName].y,
                 image: imageObj,
                 width: 22,
                 height: 28
             });
-            Players.layer.add(img);
+            Players.layer.add(Players.wedges[shortName].img);
             Players.layer.draw()
         };
         imageObj.src = Hero.getImage(shortName)
@@ -187,14 +169,15 @@ var Players = {
     drawSkull: function (shortName) {
         var imageObj = new Image();
         imageObj.onload = function () {
-            var img = new Kinetic.Image({
+            Players.wedges[shortName].skull = new Kinetic.Image({
                 x: Players.wedges[shortName].x + 3,
                 y: Players.wedges[shortName].y + 7,
                 image: imageObj,
                 width: 16,
                 height: 16
-            });
-            Players.layer.add(img);
+            })
+            Players.wedges[shortName].img.remove()
+            Players.layer.add(Players.wedges[shortName].skull);
             Players.layer.draw()
         };
         imageObj.src = '/img/game/skull_and_crossbones.png'
@@ -221,7 +204,7 @@ var Players = {
             this.turnCircle = new Kinetic.Circle({
                 x: this.centerX,
                 y: this.centerY,
-                radius: 50,
+                radius: 40,
                 fill: players[Turn.color].backgroundColor,
                 strokeWidth: 0
             });
