@@ -134,9 +134,24 @@ var Players = {
     countVectorLength: function (x1, y1, x2, y2) {
         return Math.sqrt(Math.pow(x1 - x2, 2) + Math.pow(y1 - y2, 2))
     },
-    rotate: function () {
+    rotate: function (color) {
+        var i = 0,
+            start = 0,
+            end = 0
 
-        var angle = Math.atan2(Players.wedges['yellow'].x - Players.wedges['white'].x, Players.wedges['yellow'].y - Players.wedges['white'].y)
+        for (shortName in players) {
+            i++
+            if (color == shortName) {
+                end = i
+            }
+            if (Turn.color == shortName) {
+                start = i
+            }
+        }
+
+        var angle = (end - start) * (Math.PI * 2 / this.length)
+
+//        var angle = Math.atan2(Players.wedges[color].x - Players.wedges[Turn.color].x, Players.wedges[color].y - Players.wedges[Turn.color].y)
         this.dc(angle)
 //        return
 
@@ -148,7 +163,7 @@ var Players = {
         if (angle < 0) {
             angle = 2 * Math.PI + angle
         }
-        console.log(angle)
+        console.log(angle * 180 / Math.PI)
 //        this.dc(angle)
 //        return
 
@@ -160,9 +175,6 @@ var Players = {
             if (currentAngle >= angle) {
                 Players.circle.rotate(angle - (currentAngle - angleDiff))
                 anim.stop()
-
-                console.log(currentAngle)
-                console.log(angle - (currentAngle - angleDiff))
             } else {
                 Players.circle.rotate(angleDiff)
             }
