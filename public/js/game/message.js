@@ -702,6 +702,7 @@ var Message = {
 
         var attackGrass = $('<div>')
             .addClass('grass')
+            .append($('<div>').html(mapPlayersColors[attackerColor].longName))
             .append(attack)
 
         var defense = $('<div>').addClass('battle defense');
@@ -736,6 +737,7 @@ var Message = {
 
         var defenseGrass = $('<div>')
             .addClass('grass')
+            .append($('<div>').html(mapPlayersColors[defenderColor].longName))
 
         if (isDigit(r.castleId)) {
             defenseGrass.append(
@@ -744,6 +746,18 @@ var Message = {
                     .css({
                         position: 'static',
                         background: 'url(/img/game/castles/' + defenderColor + '.png) center center no-repeat',
+                        margin: '0 auto'
+                    })
+            )
+        }
+
+        if (isTowerAtPosition(players[r.attackerColor].armies[r.attackerArmy.armyId].x, players[r.attackerColor].armies[r.attackerArmy.armyId].y)) {
+            defenseGrass.append(
+                $('<div>')
+                    .addClass('tower')
+                    .css({
+                        position: 'static',
+                        background: 'url(/img/game/towers/' + defenderColor + '.png) center center no-repeat',
                         margin: '0 auto'
                     })
             )
