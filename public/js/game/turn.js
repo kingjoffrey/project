@@ -61,13 +61,15 @@ var Turn = {
             return;
         }
 
+        Players.rotate(color)
+
         Turn.color = color;
 
         if (isSet(nr)) {
             Turn.number = nr;
         }
 
-        Players.turn();
+        Players.drawTurn();
 
         timer.update();
 

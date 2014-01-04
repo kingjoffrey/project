@@ -151,21 +151,9 @@ var Players = {
 
         var angle = (end - start) * (Math.PI * 2 / this.length)
 
-//        var angle = Math.atan2(Players.wedges[color].x - Players.wedges[Turn.color].x, Players.wedges[color].y - Players.wedges[Turn.color].y)
-        this.dc(angle)
-//        return
-
-//        var p12 = this.countVectorLength(this.centerX, this.centerY, Players.wedges['yellow'].x, Players.wedges['yellow'].y)
-//        var p13 = this.countVectorLength(this.centerX, this.centerY, Players.wedges['white'].x, Players.wedges['white'].y)
-//        var p23 = this.countVectorLength(Players.wedges['white'].x, Players.wedges['white'].y, Players.wedges['yellow'].x, Players.wedges['yellow'].y)
-
-//        var angle = this.countAngle(p12, p13, p23)
         if (angle < 0) {
             angle = 2 * Math.PI + angle
         }
-        console.log(angle * 180 / Math.PI)
-//        this.dc(angle)
-//        return
 
         var angularSpeed = Math.PI / 2
         var currentAngle = 0;
