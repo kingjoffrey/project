@@ -1,8 +1,8 @@
 // *** PLAYERS ***
 
 var Players = {
-    center_x: 0,
-    center_y: 0,
+    centerX: 0,
+    centerY: 0,
     stage: null,
     layer: null,
     length: 0,
@@ -17,8 +17,8 @@ var Players = {
             width: 180,
             height: 180
         });
-        this.center_x = this.stage.getWidth() / 2
-        this.center_y = this.stage.getHeight() / 2
+        this.centerX = this.stage.getWidth() / 2
+        this.centerY = this.stage.getHeight() / 2
         this.layer = new Kinetic.Layer();
 
         this.length = Object.size(players);
@@ -64,31 +64,26 @@ var Players = {
         this.draw()
     },
     draw: function () {
-        var angle = 360 / this.length;
+        this.angle = 360 / this.length;
         var r_angle = Math.PI * 2 / this.length
 
         var i = 0;
         for (shortName in players) {
-            var rotation = i * angle
+            var rotation = i * this.angle
             var r_rotation = i * r_angle + r_angle / 2
 
-//            if (Turn.color == shortName) {
-//                var x = this.center_x + Math.cos(r_rotation) * 32
-//                var y = this.center_y + Math.sin(r_rotation) * 32
-//            } else {
-            var x = this.center_x
-            var y = this.center_y
-//            }
+            var x = this.centerX
+            var y = this.centerY
 
             this.wedges[shortName] = {}
-            this.wedges[shortName].x = this.center_x + Math.cos(r_rotation) * 77 - 11;
-            this.wedges[shortName].y = this.center_y + Math.sin(r_rotation) * 77 - 14;
+            this.wedges[shortName].x = this.centerX + Math.cos(r_rotation) * 77 - 11;
+            this.wedges[shortName].y = this.centerY + Math.sin(r_rotation) * 77 - 14;
             this.wedges[shortName].rotation = r_rotation
             this.wedges[shortName].kinetic = new Kinetic.Wedge({
                 x: x,
                 y: y,
-                radius: 60,
-                angleDeg: angle,
+                radius: 55,
+                angleDeg: this.angle,
                 fill: players[shortName].backgroundColor,
                 stroke: 'grey',
                 strokeWidth: 2,
@@ -102,33 +97,77 @@ var Players = {
             }
             i++;
         }
+
         this.stage.add(this.layer);
         this.drawTurn()
+        this.drawPlayerCircle()
     },
     animate: function (slide) {
-//        (x2 - x1)(y - y1) = (y2 - y1)(x - x1)
-
-//        var x1 = Players.wedges[Turn.color].kinetic.getPosition().x
-//        var x2 = Players.center_x
-//        var y1 = Players.wedges[Turn.color].kinetic.getPosition().y
-//        var y2 = Players.center_y
-//
-//        y = (y2 - y1)(x - x1) / (x2 - x1) + y1
-
         Players.anim = new Kinetic.Animation(function (frame) {
             var x = Math.cos(Players.wedges[Turn.color].rotation) * 0.1
             var y = Math.sin(Players.wedges[Turn.color].rotation) * 0.1
             console.log(x)
             console.log(y)
             Players.wedges[Turn.color].kinetic.move(-x, -y)
-            if (Players.wedges[Turn.color].kinetic.getPosition().x == Players.center_x || Players.wedges[Turn.color].kinetic.getPosition().y == Players.center_y) {
+            if (Players.wedges[Turn.color].kinetic.getPosition().x == Players.centerX || Players.wedges[Turn.color].kinetic.getPosition().y == Players.centerY) {
                 Players.anim.stop()
             }
         }, this.layer);
         Players.anim.start()
     },
+    dc: function (angle) {
+        var c = new Kinetic.Wedge({
+            x: this.centerX,
+            y: this.centerY,
+            radius: 40,
+            angle: angle,
+            fill: 'orange',
+            strokeWidth: 0
+        });
+
+        this.layer.add(c)
+        this.layer.draw()
+    },
+    countAngle: function (p12, p13, p23) {
+        return Math.acos((Math.pow(p12, 2) + Math.pow(p13, 2) - Math.pow(p23, 2)) / (2 * p12 * p13))
+    },
+    countVectorLength: function (x1, y1, x2, y2) {
+        return Math.sqrt(Math.pow(x1 - x2, 2) + Math.pow(y1 - y2, 2))
+    },
     rotate: function () {
 
+        var angle = Math.atan2(Players.wedges['yellow'].x - Players.wedges['white'].x, Players.wedges['yellow'].y - Players.wedges['white'].y)
+        this.dc(angle)
+//        return
+
+//        var p12 = this.countVectorLength(this.centerX, this.centerY, Players.wedges['yellow'].x, Players.wedges['yellow'].y)
+//        var p13 = this.countVectorLength(this.centerX, this.centerY, Players.wedges['white'].x, Players.wedges['white'].y)
+//        var p23 = this.countVectorLength(Players.wedges['white'].x, Players.wedges['white'].y, Players.wedges['yellow'].x, Players.wedges['yellow'].y)
+
+//        var angle = this.countAngle(p12, p13, p23)
+        if (angle < 0) {
+            angle = 2 * Math.PI + angle
+        }
+        console.log(angle)
+//        this.dc(angle)
+//        return
+
+        var angularSpeed = Math.PI / 2
+        var currentAngle = 0;
+        var anim = new Kinetic.Animation(function (frame) {
+            var angleDiff = frame.timeDiff * angularSpeed / 1000;
+            currentAngle += angleDiff
+            if (currentAngle >= angle) {
+                Players.circle.rotate(angle - (currentAngle - angleDiff))
+                anim.stop()
+
+                console.log(currentAngle)
+                console.log(angle - (currentAngle - angleDiff))
+            } else {
+                Players.circle.rotate(angleDiff)
+            }
+        }, Players.layer)
+        anim.start()
     },
     drawImage: function (shortName) {
         var imageObj = new Image();
@@ -160,13 +199,18 @@ var Players = {
         };
         imageObj.src = '/img/game/skull_and_crossbones.png'
     },
-//    drawComputer: function (x, y) {
-//        var img = new Image;
-//        img.src = '/img/game/computer.png'
-//        img.onload = function () {
-//            Players.ctx.drawImage(img, x, y - 16)
-//        }
-//    },
+    drawPlayerCircle: function () {
+        this.circle = new Kinetic.Circle({
+            x: this.centerX,
+            y: this.centerY,
+            radius: 18,
+            fill: 'grey',
+            offset: [this.centerX - Players.wedges[Turn.color].x - 11, this.centerY - Players.wedges[Turn.color].y - 14],
+            strokeWidth: 0
+        });
+
+        this.layer.add(this.circle)
+    },
     drawTurn: function () {
         if (this.turnCircle) {
             this.turnCircle.setFill(players[Turn.color].backgroundColor)
@@ -175,16 +219,18 @@ var Players = {
             this.layer.draw()
         } else {
             this.turnCircle = new Kinetic.Circle({
-                x: this.center_x,
-                y: this.center_y,
-                radius: 53,
+                x: this.centerX,
+                y: this.centerY,
+                radius: 50,
                 fill: players[Turn.color].backgroundColor,
                 strokeWidth: 0
             });
+
             this.layer.add(this.turnCircle);
+
             this.turnNumber = new Kinetic.Text({
-                x: this.center_x - 70,
-                y: this.center_y - 15,
+                x: this.centerX - 70,
+                y: this.centerY - 15,
                 text: Turn.number,
                 fontSize: 30,
                 fontFamily: 'fantasy',
@@ -197,9 +243,30 @@ var Players = {
             this.layer.draw()
         }
     },
-    turn: function () {
-        this.drawTurn()
+    degreesFromTwelveOclock: function (x, y) {
+        // calculate the angle(theta)
+        var theta = Math.atan2(y - this.centerY, x - this.centerX);
+        // be sure theta is positive
+        if (theta < 0) {
+            theta += 2 * Math.PI
+        }
+        ;
+        // convert to degrees and rotate so 0 degrees = 12 o'clock
+        var degrees = (theta * 180 / Math.PI + 90) % 360;
+        return (degrees);
+    },
+    radians: function (x, y) {
+        // calculate the angle(theta)
+        var theta = Math.atan2(y - this.centerY, x - this.centerX);
+        // be sure theta is positive
+        if (theta < 0) {
+            theta += 2 * Math.PI
+        }
+        return theta
     }
+//    turn: function () {
+//        this.drawTurn()
+//    }
 }
 
 Object.size = function (obj) {
