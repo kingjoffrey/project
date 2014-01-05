@@ -65,6 +65,10 @@ var Gui = {
             Message.upkeep()
         })
 
+        $('#battleSettings').click(function () {
+            Message.battleConfiguration()
+        })
+
         $('#exit').click(function () {
             Gui.exit()
         });

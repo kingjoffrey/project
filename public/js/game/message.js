@@ -1255,17 +1255,48 @@ var Message = {
         this.cancel(id)
     },
     battleConfiguration: function () {
-        var div = $('<div>')
-            .append($('<h3>').html('Battle sequence'))
-
-        var sequence = $('<div>')
+        var sequence = $('<div>'),
+            i = 0
         for (unitId in units) {
+            i++
+            if (isSet(units[unitId].name_lang)) {
+                var name = units[unitId].name_lang
+            } else {
+                var name = units[unitId].name
+            }
             sequence
                 .append(
                     $('<div>')
-                        .html($('<img>').attr('src', 'url(' + Unit.getImage(unitId, my.color) + ')'))
+                        .append($('<div>').html(i).addClass('number'))
+                        .append($('<img>').attr({
+                            src: Unit.getImage(unitId, my.color),
+                            id: unitId,
+                            alt: name
+                        }))
                         .addClass('battleUnit')
                 )
         }
+        i++
+        sequence
+            .append(
+                $('<div>')
+                    .append($('<div>').html(i).addClass('number'))
+                    .append($('<img>').attr({
+                        src: Hero.getImage(my.color),
+                        id: 0
+                    }))
+                    .addClass('battleUnit')
+            )
+
+        var div = $('<div>')
+            .append($('<h3>').html('Battle sequence'))
+            .append($('<div>').html('Change battle sequence by moving units'))
+            .append($('<br>'))
+            .append(sequence)
+
+
+        var id = this.show(div)
+        this.ok(id, Websocket.battleConfiguration)
+        this.cancel(id)
     }
 }

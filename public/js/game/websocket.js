@@ -689,5 +689,18 @@ Websocket = {
         };
 
         ws.send(JSON.stringify(token));
+    },
+    battleConfiguration: function () {
+        if (this.closed) {
+            Message.simple('Sorry, server is disconnected.');
+            return;
+        }
+
+        var token = {
+            type: 'bConf',
+            conf: {}
+        }
+
+        ws.send(JSON.stringify(token));
     }
 }
