@@ -709,6 +709,14 @@
     line-height: 14px;
 }
 
+#battleSettingsBox {
+    border-top: none;
+}
+
+#battleSettingsBox #battleSettings {
+    padding: 1px 4px;
+}
+
 #armyBox {
     border-top-left-radius: 10px;
     border-bottom-left-radius: 10px;
@@ -820,11 +828,14 @@ html {
     color: gray !important;
 }
 
+.button, #submit {
+    line-height: 27px;
+    height: 27px;
+}
+
 .iconButton, .button, #submit {
     border-radius: 5px;
     font-size: 12px;
-    line-height: 27px;
-    height: 27px;
 }
 
 .iconButton {
@@ -915,7 +926,7 @@ html {
     background: url("/img/game/war.png");
     width: 111px;
     height: 120px;
-    z-index: 26999;
+    z-index: 26998;
 }
 
 .ruinSearch {
@@ -923,7 +934,7 @@ html {
     background: url("/img/game/ruinSearch.png");
     width: 38px;
     height: 40px;
-    z-index: 99999;
+    z-index: 26998;
 }
 
 table.statistics tr {

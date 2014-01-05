@@ -768,9 +768,15 @@ var Message = {
             );
         }
 
+        if (isSet(mapPlayersColors[defenderColor])) {
+            var longName = mapPlayersColors[defenderColor].longName
+        } else {
+            var longName = 'Shadow'
+        }
+
         var defenseGrass = $('<div>')
             .addClass('grass')
-            .append($('<div>').html(mapPlayersColors[defenderColor].longName))
+            .append($('<div>').html(longName))
 
         if (isDigit(r.castleId)) {
             defenseGrass.append(
@@ -1247,5 +1253,19 @@ var Message = {
         var id = this.show(div)
         this.ok(id, Websocket.resurrection)
         this.cancel(id)
+    },
+    battleConfiguration: function () {
+        var div = $('<div>')
+            .append($('<h3>').html('Battle sequence'))
+
+        var sequence = $('<div>')
+        for (unitId in units) {
+            sequence
+                .append(
+                    $('<div>')
+                        .html($('<img>').attr('src', 'url(' + Unit.getImage(unitId, my.color) + ')'))
+                        .addClass('battleUnit')
+                )
+        }
     }
 }

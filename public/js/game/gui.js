@@ -325,9 +325,15 @@ var Gui = {
             $('#chatBox').css({display: 'none'});
         }
 
+        var goldBoxLeft = gameWidth / 2 - $('#goldBox').outerWidth() / 2
+
         $('#goldBox').css({
-            'left': gameWidth / 2 - $('#goldBox').outerWidth() / 2 + 'px'
-        });
+            'left': goldBoxLeft + 'px'
+        })
+
+        $('#battleSettingsBox').css({
+            'left': 20 + goldBoxLeft + parseInt($('#goldBox').width()) + 'px'
+        })
 
         var left = gameWidth - 237;
 
