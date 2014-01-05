@@ -178,6 +178,14 @@
     clear: both;
 }
 
+#playersBox .iconButton {
+    width: 32px;
+    line-height: 32px;
+    height: 32px;
+    position: absolute;
+    left: 198px;
+}
+
 #playersBox #buttons {
     position: absolute;
     top: 190px;
@@ -244,8 +252,13 @@
     margin: 4px;
 }
 
-.message .showCastle. h3.name {
+.message .showCastle h3.name {
     font-family: "alpine", Verdana, Tahoma;
+}
+
+.message .showCastle #center {
+    padding: 3px 3px 0 3px;
+    float: right;
 }
 
 .message h4 {
@@ -815,12 +828,7 @@ html {
 }
 
 .iconButton {
-    width: 32px;
-    line-height: 32px;
-    height: 32px;
     cursor: url(/img/game/cursor_pointer.png), pointer;
-    position: absolute;
-    left: 198px;
     text-align: center;
 }
 
@@ -1000,7 +1008,7 @@ table.treasury td.c {
     background: none !important;
 }
 
-.showCastle tr td:not(.button) {
+.showCastle tr td:not(.button .iconButton) {
     border: none !important;
 }
 

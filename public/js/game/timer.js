@@ -6,6 +6,7 @@ var timer = {
     divMinute: null,
     divSecond: null,
     start: function () {
+        return
         $('#timerScroll').css('height', Players.length * this.height + 'px');
         this.divHour = $('#timerBox #' + Turn.color + Turn.number + ' #hour')
         this.divMinute = $('#timerBox #' + Turn.color + Turn.number + ' #minute')
@@ -13,6 +14,7 @@ var timer = {
         timer.countdown();
     },
     countdown: function () {
+        return
         var difference = (new Date()).getTime() - this.timestamp - 3600000;
 
         if (this.difference != difference) {
@@ -46,6 +48,7 @@ var timer = {
         }, 1000);
     },
     update: function () {
+        return
         this.timestamp = (new Date()).getTime()
         this.append(Turn.color, Turn.number)
         this.divHour = $('#timerBox #' + Turn.color + Turn.number + ' #hour')

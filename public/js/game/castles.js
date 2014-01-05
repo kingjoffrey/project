@@ -290,7 +290,8 @@ var Castle = {
                     Message.castle(castleId)
                 });
         } else {
-            Castle.changeFields(castleId, 'e');
+            Castle.changeFields(castleId, 'e')
+
             castle
                 .unbind()
                 .mouseover(function () {
@@ -302,6 +303,11 @@ var Castle = {
                 .mouseout(function () {
                     Castle.onMouse(this.id, 'e');
                 })
+
+            if (isSet(castles[castleId].relocationCastleId)) {
+                delete castles[castles[castleId].relocationCastleId].relocatedProduction[castleId]
+                delete castles[castleId].relocationCastleId
+            }
         }
 
         castle.removeClass()

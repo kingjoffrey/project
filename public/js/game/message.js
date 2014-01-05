@@ -169,7 +169,7 @@ var Message = {
         if (my.turn && Turn.number == 1 && castles[firstCastleId].currentProductionId === null) {
             Message.castle(firstCastleId);
         } else {
-            var id = this.show($('<div>').append($('<h3>').html('Your turn')))
+            var id = this.show($('<div>').append($('<h3>').html('Your turn')).append($('<div>').html('This is your turn now')))
             this.ok(id)
         }
     },
@@ -303,45 +303,35 @@ var Message = {
                 )
         );
 
-        if (isSet(castles[castleId].relocatedProduction)) {
-            var relocatingProductionElement = $('<table>')
-            var click = function (i) {
-                return function () {
-                    Message.castle(i)
-                }
-            }
-
-            for (relocatedCastleId in castles[castleId].relocatedProduction) {
-                var relocatedCastle = castles[castleId].relocatedProduction[relocatedCastleId]
-
-                relocatingProductionElement.append(
-                    $('<tr>')
-                        .append(
-                            $('<td>').append(
-                                $('<img>').attr('src', Unit.getImage(relocatedCastle.currentProductionId, my.color))
-                            )
-                        )
-                        .append(
-                            $('<td>')
-                                .html(relocatedCastle.currentProductionTurn + ' / ' + castles[relocatedCastleId].production[relocatedCastle.currentProductionId].time)
-                        )
-                        .append(
-                            $('<td>')
-                                .html(castles[relocatedCastleId].name)
-                                .addClass('button buttonColors')
-                                .click(click(relocatedCastleId))
-                        )
-                )
+        var center = function (i) {
+            return function () {
+                zoomer.lensSetCenter(castles[i].x * 40, castles[i].y * 40)
             }
         }
 
         var div = $('<div>')
             .addClass('showCastle')
+            .append(
+                $('<div>')
+                    .html(
+                        $('<img>')
+                            .attr({
+                                src: '/img/game/center.png',
+                                width: '23px',
+                                height: '23px'
+                            })
+                    )
+                    .addClass('iconButton buttonColors')
+                    .click(center(castleId))
+                    .attr('id', 'center')
+            )
             .append($('<h3>').append(castles[castleId].name).append(capital).addClass('name'))
             .append($('<h5>').append('Castle defense: ' + castles[castleId].defense))
             .append($('<h5>').append('Income: ' + castles[castleId].income + ' gold/turn'))
             .append($('<br>'))
             .append($('<fieldset>').addClass('production').append($('<label>').html('Production')).append(table).attr('id', castleId))
+
+        // relocation to
 
         if (isSet(players[my.color].castles[castleId]) && castles[castleId].relocationCastleId && castles[castleId].currentProductionId) {
             div
@@ -364,14 +354,57 @@ var Message = {
                                         Message.castle(castles[castleId].relocationCastleId)
                                     })
                             )
+                            .append(
+                                $('<td>')
+                                    .html($('<img>').attr('src', '/img/game/center.png'))
+                                    .addClass('iconButton buttonColors')
+                                    .click(center(castles[castleId].relocationCastleId))
+                            )
                     )
                 ))
         }
 
+        // relocation from
+
         if (isSet(castles[castleId].relocatedProduction) && !$.isEmptyObject(castles[castleId].relocatedProduction)) {
+            var relocatingFrom = $('<table>'),
+                click = function (i) {
+                    return function () {
+                        Message.castle(i)
+                    }
+                }
+
+
+            for (castleIdFrom in castles[castleId].relocatedProduction) {
+                var currentProductionId = castles[castleIdFrom].currentProductionId
+                relocatingFrom.append(
+                    $('<tr>')
+                        .append(
+                            $('<td>').append(
+                                $('<img>').attr('src', Unit.getImage(currentProductionId, my.color))
+                            )
+                        )
+                        .append(
+                            $('<td>')
+                                .html(castles[castleIdFrom].currentProductionTurn + ' / ' + castles[castleIdFrom].production[currentProductionId].time)
+                        )
+                        .append(
+                            $('<td>')
+                                .html(castles[castleIdFrom].name)
+                                .addClass('button buttonColors')
+                                .click(click(castleIdFrom))
+                        )
+                        .append(
+                            $('<td>')
+                                .html($('<img>').attr('src', '/img/game/center.png'))
+                                .addClass('iconButton buttonColors')
+                                .click(center(castleIdFrom))
+                        )
+                )
+            }
             div
                 .append($('<br>'))
-                .append($('<fieldset>').addClass('relocatedProduction').append($('<label>').html('Relocating from')).append(relocatingProductionElement))
+                .append($('<fieldset>').addClass('relocatedProduction').append($('<label>').html('Relocating from')).append(relocatingFrom))
         }
 
         var id = this.show(div);
