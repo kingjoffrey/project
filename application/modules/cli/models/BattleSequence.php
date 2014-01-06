@@ -7,15 +7,20 @@ class Cli_Model_BattleSequence
     {
         $mBattleSequence = new Application_Model_BattleSequence($user->parameters['gameId'], $db);
 
-        foreach ($data as $sequence => $unitId) {
-            $mBattleSequence->add($user->parameters['playerId'], $unitId, $sequence);
+        $result = 0;
+
+        foreach ($data['sequence'] as $sequence => $unitId) {
+            $result += $mBattleSequence->edit($user->parameters['playerId'], $unitId, $sequence);
         }
 
-        $playersInGameColors = Zend_Registry::get('playersInGameColors');
+        if ($result != count($data['sequence'])) {
+            $gameHandler->sendError($user, 'Error 1001');
+            return;
+        }
 
         $token = array(
             'type' => 'bSequence',
-            'color' => $playersInGameColors[$user->parameters['playerId']]
+            'sequence' => $data['sequence']
         );
 
         $gameHandler->sendToUser($user, $db, $token, $user->parameters['gameId']);

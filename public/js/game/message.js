@@ -23,38 +23,37 @@ var Message = {
         this.element().after(
             $('<div>')
                 .addClass('message box')
-                .append($(txt).addClass('overflow')
-                )
+                .append($(txt).addClass('overflow'))
                 .attr('id', id)
                 .fadeIn(200)
-                .mousedown(function (e) {
-                    Message.drag = 1
-                    Message.x = e.pageX - parseInt($(this).css('left'))
-                    Message.y = e.pageY - parseInt($(this).css('top'))
-                    $(this).css('cursor', 'url(/img/game/cursor_hand_drag.png) 15 15, default')
-                })
-                .mouseup(function () {
-                    Message.drag = 0
-                    $(this).css('cursor', 'url(/img/game/cursor_hand.png) 15 15, default')
-                })
-                .mouseout(function () {
-                    if (Message.drag) {
-                        return
-                    }
-                    Message.drag = 0
-                    $(this).css('cursor', 'url(/img/game/cursor_hand.png) 15 15, default')
-                })
-                .mousemove(function (e) {
-                    if (Message.drag == 0) {
-                        return
-                    }
-                    var top = e.pageY - Message.y
-                    var left = e.pageX - Message.x
-                    $(this).css({
-                        top: top,
-                        left: left
-                    })
-                })
+//                .mousedown(function (e) {
+//                    Message.drag = 1
+//                    Message.x = e.pageX - parseInt($(this).css('left'))
+//                    Message.y = e.pageY - parseInt($(this).css('top'))
+//                    $(this).css('cursor', 'url(/img/game/cursor_hand_drag.png) 15 15, default')
+//                })
+//                .mouseup(function () {
+//                    Message.drag = 0
+//                    $(this).css('cursor', 'url(/img/game/cursor_hand.png) 15 15, default')
+//                })
+//                .mouseout(function () {
+//                    if (Message.drag) {
+//                        return
+//                    }
+//                    Message.drag = 0
+//                    $(this).css('cursor', 'url(/img/game/cursor_hand.png) 15 15, default')
+//                })
+//                .mousemove(function (e) {
+//                    if (Message.drag == 0) {
+//                        return
+//                    }
+//                    var top = e.pageY - Message.y
+//                    var left = e.pageX - Message.x
+//                    $(this).css({
+//                        top: top,
+//                        left: left
+//                    })
+//                })
         )
         this.adjust(id)
         return id
@@ -1255,19 +1254,40 @@ var Message = {
         this.cancel(id)
     },
     battleConfiguration: function () {
-        var sequence = $('<div>'),
+        var sequenceNumber = $('<div>'),
+            sequenceImage = $('<div>').attr('id', 'sortable'),
             i = 0
-        for (unitId in units) {
+
+        for (i in my.battleSequence) {
+            var unitId = my.battleSequence[i]
+            if (parseInt(unitId) == shipId) {
+                continue
+            }
             i++
+            if (parseInt(unitId) == 0) {
+                sequenceNumber
+                    .append($('<div>').html(i).addClass('battleNumber'))
+                sequenceImage
+                    .append(
+                        $('<div>')
+                            .append($('<img>').attr({
+                                src: Hero.getImage(my.color),
+                                id: 0
+                            }))
+                            .addClass('battleUnit')
+                    )
+                continue
+            }
             if (isSet(units[unitId].name_lang)) {
                 var name = units[unitId].name_lang
             } else {
                 var name = units[unitId].name
             }
-            sequence
+            sequenceNumber
+                .append($('<div>').html(i).addClass('battleNumber'))
+            sequenceImage
                 .append(
                     $('<div>')
-                        .append($('<div>').html(i).addClass('number'))
                         .append($('<img>').attr({
                             src: Unit.getImage(unitId, my.color),
                             id: unitId,
@@ -1276,27 +1296,20 @@ var Message = {
                         .addClass('battleUnit')
                 )
         }
-        i++
-        sequence
-            .append(
-                $('<div>')
-                    .append($('<div>').html(i).addClass('number'))
-                    .append($('<img>').attr({
-                        src: Hero.getImage(my.color),
-                        id: 0
-                    }))
-                    .addClass('battleUnit')
-            )
 
         var div = $('<div>')
             .append($('<h3>').html('Battle sequence'))
             .append($('<div>').html('Change battle sequence by moving units'))
             .append($('<br>'))
-            .append(sequence)
+            .append(sequenceNumber)
+            .append(sequenceImage)
 
 
         var id = this.show(div)
         this.ok(id, Websocket.battleConfiguration)
         this.cancel(id)
+
+        $("#sortable").sortable()
+        $("#sortable").disableSelection()
     }
 }

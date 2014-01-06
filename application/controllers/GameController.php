@@ -14,6 +14,8 @@ class GameController extends Game_Controller_Game
 
         $this->view->headLink()->appendStylesheet('/css/game.css?v=' . Zend_Registry::get('config')->version);
 
+        $this->view->headScript()->appendFile('/js/jquery-ui-1.10.3.custom.js');
+
         $this->view->headScript()->appendFile('/js/game/init.js?v=' . Zend_Registry::get('config')->version);
         $this->view->headScript()->appendFile('/js/game/castles.js?v=' . Zend_Registry::get('config')->version);
         $this->view->headScript()->appendFile('/js/game/armies.js?v=' . Zend_Registry::get('config')->version);
@@ -175,6 +177,13 @@ class GameController extends Game_Controller_Game
             $this->view->chatHistory[$k]['color'] = $colors[$v['playerId']];
         }
         $this->view->gameId = $this->_namespace->gameId;
+
+        $mBattleSequence = new Application_Model_BattleSequence($this->_namespace->gameId);
+        $this->view->battleSequence = $mBattleSequence->get($this->_namespace->player['playerId']);
+        if (empty($this->view->battleSequence)) {
+            $mBattleSequence->initiate($this->_namespace->player['playerId'], $this->view->units);
+            $this->view->battleSequence = $mBattleSequence->get($this->_namespace->player['playerId']);
+        }
     }
 
     public function boardAction()

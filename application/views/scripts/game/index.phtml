@@ -13,7 +13,8 @@ var my = {
     id: <?php echo $this->id ?>,
     turn: <?php echo $this->myTurn ?>,
     game: <?php echo $this->myGame ?>,
-    gold: <?php echo $this->gold ?>
+    gold: <?php echo $this->gold ?>,
+    battleSequence: <?php echo Zend_Json::encode($this->battleSequence) ?>
 }
 
 var ruins = <?php echo Zend_Json::encode($this->ruins); ?>;

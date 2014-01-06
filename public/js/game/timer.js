@@ -6,12 +6,11 @@ var timer = {
     divMinute: null,
     divSecond: null,
     start: function () {
-        return
         $('#timerScroll').css('height', Players.length * this.height + 'px');
         this.divHour = $('#timerBox #' + Turn.color + Turn.number + ' #hour')
         this.divMinute = $('#timerBox #' + Turn.color + Turn.number + ' #minute')
         this.divSecond = $('#timerBox #' + Turn.color + Turn.number + ' #second')
-        timer.countdown();
+//        timer.countdown();
     },
     countdown: function () {
         return

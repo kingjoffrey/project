@@ -251,6 +251,11 @@ Websocket = {
                         Message.end();
                         break;
 
+                    case 'bSequence':
+                        Message.simpleNew('Battle sequence', 'Attack sequence successfully updated')
+                        my.battleSequence = r.sequence
+                        break
+
                     default:
                         console.log(r);
 
@@ -699,9 +704,9 @@ Websocket = {
         var sequence = {},
             i = 0
 
-        $('.battleUnit').each(function () {
+        $('.battleUnit img').each(function () {
             i++
-            sequence[i] = $(this).children('img').attr('id')
+            sequence[i] = $(this).attr('id')
         })
 
         var token = {

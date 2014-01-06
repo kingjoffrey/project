@@ -913,6 +913,11 @@ html {
     height: 30px;
 }
 
+.battleNumber {
+    display: inline-block;
+    width: 30px;
+}
+
 .killed {
     position: absolute;
     background: url("/img/game/killed.png");
