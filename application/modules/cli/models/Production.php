@@ -59,7 +59,7 @@ class Cli_Model_Production
                 'relocationCastleId' => $relocationCastleId
             );
 
-            $gameHandler->sendToChannel($db, $token, $user->parameters['gameId']);
+            $gameHandler->sendToUser($user, $db, $token, $user->parameters['gameId']);
         }
 
     }

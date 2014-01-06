@@ -28,7 +28,7 @@ class Application_Model_Army extends Coret_Db_Table_Abstract
             'y' => $position['y']
         );
         try {
-            $this->_db->insert($this->_name, $data);
+            $this->insert($data);
             return $armyId;
         } catch (Exception $e) {
             if ($sleep > 10) {
@@ -45,11 +45,7 @@ class Application_Model_Army extends Coret_Db_Table_Abstract
         $select = $this->_db->select()
             ->from($this->_name, 'max("armyId")')
             ->where('"gameId" = ?', $this->_gameId);
-        try {
-            return $this->_db->fetchOne($select) + 1;
-        } catch (PDOException $e) {
-            throw new Exception($select->__toString());
-        }
+        return $this->selectOne($select) + 1;
     }
 
     public function getPlayerArmies($playerId)

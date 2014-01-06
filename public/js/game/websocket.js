@@ -696,9 +696,17 @@ Websocket = {
             return;
         }
 
+        var sequence = {},
+            i = 0
+
+        $('.battleUnit').each(function () {
+            i++
+            sequence[i] = $(this).children('img').attr('id')
+        })
+
         var token = {
-            type: 'bConf',
-            conf: {}
+            type: 'bSequence',
+            sequence: sequence
         }
 
         ws.send(JSON.stringify(token));

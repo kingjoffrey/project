@@ -244,6 +244,10 @@ class Cli_GameHandler extends Cli_WofHandler
             case 'surrender':
                 new Cli_Model_Surrender($user, $db, $this);
                 break;
+
+            case 'bSequence':
+                new Cli_Model_BattleSequence($dataIn, $user, $db, $this);
+                break;
         }
     }
 
@@ -273,5 +277,24 @@ class Cli_GameHandler extends Cli_WofHandler
         }
 
         Cli_Model_Database::addTokensOut($db, $gameId, $token);
+    }
+
+    /**
+     * @param $user
+     * @param $db
+     * @param $token
+     * @param $gameId
+     * @param null $debug
+     */
+    public function sendToUser($user, $db, $token, $gameId, $debug = null)
+    {
+        if ($debug || Zend_Registry::get('config')->debug) {
+            print_r('ODPOWIEDŹ');
+            print_r($token);
+        }
+
+        Cli_Model_Database::addTokensOut($db, $gameId, $token);
+
+        $this->send($user, Zend_Json::encode($token));
     }
 }
