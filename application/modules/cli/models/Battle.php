@@ -13,34 +13,56 @@ class Cli_Model_Battle
             'soldiers' => array(),
         ),
     );
-    private $attacker;
-    private $defender;
+    private $attacker = array();
+    private $defender = array();
     private $succession = 0;
     private $units;
 
     public function __construct($attacker, $defender)
     {
         $this->units = Zend_Registry::get('units');
+        $battleSequence = Zend_Registry::get('battleSequence');
 
-        $defender['ships'] = array();
-        foreach ($defender['soldiers'] as $k => $soldier) {
-            if ($this->units[$soldier['unitId']]['canSwim']) {
-                $defender['ships'][] = $soldier;
-                unset($defender['soldiers'][$k]);
+        $this->defender = array(
+            'soldiers' => array(),
+            'ships' => array(),
+            'defenseModifier' => $defender['defenseModifier'],
+            'heroes' => $defender['heroes']
+        );
+
+        foreach ($battleSequence['defence'] as $unitId) {
+            foreach ($defender['soldiers'] as $k => $soldier) {
+                if ($this->units[$soldier['unitId']]['canSwim']) {
+                    $this->defender['ships'][] = $soldier;
+                    unset($defender['soldiers'][$k]);
+                    continue;
+                }
+                if ($soldier['unitId'] == $unitId) {
+                    $this->defender['soldiers'][] = $soldier;
+                    unset($defender['soldiers'][$k]);
+                }
             }
         }
-        $this->defender = $defender;
 
-        $attacker['ships'] = array();
-        foreach ($attacker['soldiers'] as $k => $soldier) {
-            if ($this->units[$soldier['unitId']]['canSwim']) {
-                $attacker['ships'][] = $soldier;
-                unset($attacker['soldiers'][$k]);
+        $this->attacker = array(
+            'soldiers' => array(),
+            'ships' => array(),
+            'attackModifier' => $attacker['attackModifier'],
+            'heroes' => $attacker['heroes']
+        );
+
+        foreach ($battleSequence['attack'] as $unitId) {
+            foreach ($attacker['soldiers'] as $k => $soldier) {
+                if ($this->units[$soldier['unitId']]['canSwim']) {
+                    $this->attacker['ships'][] = $soldier;
+                    unset($attacker['soldiers'][$k]);
+                    continue;
+                }
+                if ($soldier['unitId'] == $unitId) {
+                    $this->attacker['soldiers'][] = $soldier;
+                    unset($attacker['soldiers'][$k]);
+                }
             }
-        }
-        $this->attacker = $attacker;
-        if (!isset($this->attacker['attackModifier'])) {
-            throw new Exception('aaa');
         }
     }
 
@@ -223,10 +245,7 @@ class Cli_Model_Battle
         }
 
         $unitAttacking['attackPoints'] += $this->attacker['attackModifier'];
-
-        if (isset($this->defender['defenseModifier'])) {
-            $unitDefending['defensePoints'] += $this->defender['defenseModifier'];
-        }
+        $unitDefending['defensePoints'] += $this->defender['defenseModifier'];
 
         while ($attackHits AND $defenseHits) {
             $maxDie = $unitAttacking['attackPoints'] + $unitDefending['defensePoints'];

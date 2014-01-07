@@ -9,8 +9,14 @@ class Cli_Model_BattleSequence
 
         $result = 0;
 
+        if ($data['attack']) {
+            $attack = 'true';
+        } else {
+            $attack = 'false';
+        }
+
         foreach ($data['sequence'] as $sequence => $unitId) {
-            $result += $mBattleSequence->edit($user->parameters['playerId'], $unitId, $sequence);
+            $result += $mBattleSequence->edit($user->parameters['playerId'], $unitId, $sequence, $attack);
         }
 
         if ($result != count($data['sequence'])) {
@@ -20,7 +26,8 @@ class Cli_Model_BattleSequence
 
         $token = array(
             'type' => 'bSequence',
-            'sequence' => $data['sequence']
+            'sequence' => $data['sequence'],
+            'attack' => $attack
         );
 
         $gameHandler->sendToUser($user, $db, $token, $user->parameters['gameId']);

@@ -18,7 +18,6 @@ class Application_Model_Unit extends Coret_Db_Table_Abstract
     public function getAll()
     {
         $units = array();
-//        $units = array(null);
 
         $select = $this->_db->select()
             ->from(array('a' => 'unit'))

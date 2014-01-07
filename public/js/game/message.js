@@ -1253,31 +1253,17 @@ var Message = {
         this.ok(id, Websocket.resurrection)
         this.cancel(id)
     },
-    battleConfiguration: function () {
+    battleConfiguration: function (type) {
         var sequenceNumber = $('<div>'),
             sequenceImage = $('<div>').attr('id', 'sortable'),
             i = 0
 
-        for (i in my.battleSequence) {
-            var unitId = my.battleSequence[i]
+        for (k in my.battleSequence[type]) {
+            var unitId = my.battleSequence[type][k]
             if (parseInt(unitId) == shipId) {
                 continue
             }
             i++
-            if (parseInt(unitId) == 0) {
-                sequenceNumber
-                    .append($('<div>').html(i).addClass('battleNumber'))
-                sequenceImage
-                    .append(
-                        $('<div>')
-                            .append($('<img>').attr({
-                                src: Hero.getImage(my.color),
-                                id: 0
-                            }))
-                            .addClass('battleUnit')
-                    )
-                continue
-            }
             if (isSet(units[unitId].name_lang)) {
                 var name = units[unitId].name_lang
             } else {
@@ -1297,19 +1283,38 @@ var Message = {
                 )
         }
 
-        var div = $('<div>')
-            .append($('<h3>').html('Battle sequence'))
-            .append($('<div>').html('Change battle sequence by moving units'))
-            .append($('<br>'))
-            .append(sequenceNumber)
-            .append(sequenceImage)
+        return sequenceNumber.add(sequenceImage)
+    },
+    battleAttack: function () {
 
+        var div = $('<div>')
+            .append($('<h3>').html('Battle configuration'))
+            .append($('<div>').html('Change battle attack sequence by moving units'))
+            .append($('<br>'))
+            .append(this.battleConfiguration('attack'))
 
         var id = this.show(div)
-        this.ok(id, Websocket.battleConfiguration)
+        this.ok(id, Websocket.battleAttack)
         this.cancel(id)
 
         $("#sortable").sortable()
         $("#sortable").disableSelection()
+
+    },
+    battleDefence: function () {
+
+        var div = $('<div>')
+            .append($('<h3>').html('Battle configuration'))
+            .append($('<div>').html('Change battle defence sequence by moving units'))
+            .append($('<br>'))
+            .append(this.battleConfiguration('defence'))
+
+        var id = this.show(div)
+        this.ok(id, Websocket.battleDefence)
+        this.cancel(id)
+
+        $("#sortable").sortable()
+        $("#sortable").disableSelection()
+
     }
 }

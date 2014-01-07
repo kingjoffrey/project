@@ -22,6 +22,7 @@ class Cli_Model_Open
         $mPlayersInGame->updatePlayerInGameWSSUId($dataIn['playerId'], $user->getId());
 
         $mGame = new Application_Model_Game($dataIn['gameId'], $db);
+        $mBattleSequence = new Application_Model_BattleSequence($dataIn['gameId'], $db);
 
         $game = $mGame->getGame();
 
@@ -33,6 +34,7 @@ class Cli_Model_Open
         $mMapPlayers = new Application_Model_MapPlayers($game['mapId'], $db);
         $mMapTerrain = new Application_Model_MapTerrain($game['mapId'], $db);
 
+        Zend_Registry::set('battleSequence', $mBattleSequence->get($dataIn['playerId']));
         Zend_Registry::set('id_lang', $dataIn['langId']);
         Zend_Registry::set('terrain', $mMapTerrain->getTerrain());
         $units = $mMapUnits->getUnits();

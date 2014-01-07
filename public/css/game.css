@@ -713,8 +713,9 @@
     border-top: none;
 }
 
-#battleSettingsBox #battleSettings {
+#battleSettingsBox .iconButton {
     padding: 1px 4px;
+    display: inline-block;
 }
 
 #armyBox {
