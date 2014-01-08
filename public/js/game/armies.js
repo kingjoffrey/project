@@ -696,9 +696,6 @@ var Unit = {
     getImage: function (unitId, color) {
         return '/img/game/units/' + color + '/' + units[unitId].name.replace(' ', '_').toLowerCase() + '.png'
     },
-    getImageByName: function (name, color) {
-        return '/img/game/units/' + color + '/' + name + '.png';
-    },
     getShipId: function () {
         for (i in units) {
             if (units[i] == null) {

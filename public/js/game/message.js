@@ -197,7 +197,6 @@ var Message = {
         }
 
         for (unitId in castles[castleId].production) {
-            var img = units[unitId].name.replace(' ', '_').toLowerCase();
             var travelBy = '';
             if (unitId == castles[castleId].currentProductionId) {
                 attr = {
@@ -243,7 +242,7 @@ var Message = {
                 )
                 .append(
                     $('<div>')
-                        .append($('<img>').attr('src', Unit.getImageByName(img, my.color)))
+                        .append($('<img>').attr('src', Unit.getImage(unitId, my.color)))
                         .addClass('img')
                 )
                 .append(
@@ -476,7 +475,6 @@ var Message = {
         var numberOfUnits = 0;
 
         for (i in Army.selected.soldiers) {
-            var img = units[Army.selected.soldiers[i].unitId].name.replace(' ', '_').toLowerCase();
             numberOfUnits++;
             div.append(
                 $('<div>')
@@ -484,7 +482,7 @@ var Message = {
                     .append($('<div>').addClass('nr').html(numberOfUnits))
                     .append($('<div>').addClass('img').html(
                         $('<img>').attr({
-                            'src': Unit.getImageByName(img, Army.selected.color),
+                            'src': Unit.getImage(Army.selected.soldiers[i].unitId, Army.selected.color),
                             'id': 'unit' + Army.selected.soldiers[i].soldierId
                         })
                     ))
@@ -496,6 +494,7 @@ var Message = {
                     })))
             );
         }
+
         for (i in Army.selected.heroes) {
             numberOfUnits++;
             div.append(

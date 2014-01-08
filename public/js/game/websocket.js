@@ -578,6 +578,10 @@ Websocket = {
             }
         });
 
+        if (!s && !h) {
+            return;
+        }
+
         var token = {
             type: 'split',
             armyId: Army.selected.armyId,

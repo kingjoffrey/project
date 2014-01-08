@@ -39,6 +39,7 @@ var Move = {
     },
     loop: function (r, ii) {
         console.log('move.loop(' + ii + ') 0')
+        var step
         for (step in r.path) {
             break;
         }
