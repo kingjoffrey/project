@@ -143,7 +143,7 @@ var Army = {
     getSoldierMovesLeft: function (a, key) {
         return a.soldiers[key].movesLeft
     },
-    getImg: function (army, heroKey, soldierKey) {
+    setImg: function (army, heroKey, soldierKey) {
         if (army.canSwim) {
             if (units[shipId].name_lang) {
                 army.name = units[shipId].name_lang;
@@ -214,7 +214,7 @@ var Army = {
                     }
 
                     if (newHeroKey !== null) {
-                        Army.getImg(Army.selected, newHeroKey, null);
+                        Army.setImg(Army.selected, newHeroKey, null);
                         Army.changeImg(Army.selected)
                         Army.updateInfo(Army.selected)
                         $('#moves').html(Army.getHeroMovesLeft(Army.selected, newHeroKey));
@@ -232,14 +232,14 @@ var Army = {
                     }
 
                     if (newSoldierKey !== null) {
-                        Army.getImg(Army.selected, null, newSoldierKey);
+                        Army.setImg(Army.selected, null, newSoldierKey);
                         Army.changeImg(Army.selected)
                         Army.updateInfo(Army.selected)
                         $('#moves').html(Army.getSoldierMovesLeft(Army.selected, newSoldierKey));
                         return;
                     }
 
-                    Army.getImg(Army.selected, Army.selected.heroKey, Army.selected.soldierKey);
+                    Army.setImg(Army.selected, Army.selected.heroKey, Army.selected.soldierKey);
                     Army.changeImg(Army.selected)
                     Army.getMovementType(Army.selected);
                     Army.updateInfo(Army.selected)
@@ -305,7 +305,7 @@ var Army = {
 
         army = this.getFlySwim(army);
         army = this.getMovementType(army);
-        army = this.getImg(army, army.heroKey, army.soldierKey);
+        army = this.setImg(army, army.heroKey, army.soldierKey);
 
         var element = $('<div>')
             .addClass('army ' + color)
@@ -539,11 +539,8 @@ var Army = {
     },
     halfDeselect: function () {
         if (Army.selected) {
-            if (Army.selected.heroKey) {
-                $('#army' + Army.selected.armyId + ' .unit img').attr('src', Hero.getImage(Army.selected.color));
-            } else {
-                $('#army' + Army.selected.armyId + ' .unit img').attr('src', Unit.getImage(Army.selected.soldiers[Army.selected.soldierKey].unitId, Army.selected.color));
-            }
+
+            $('#army' + Army.selected.armyId + ' .unit img').attr('src', Army.selected.img);
 
             Army.selected.heroSplitKey = null
             Army.selected.soldierSplitKey = null
