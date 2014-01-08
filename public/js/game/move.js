@@ -1,7 +1,8 @@
 var Move = {
     stepTime: 0,
-    start: function (r) {
-        console.log('move.start() 0')
+    start: function (r, ii) {
+        console.log('move.start(' + ii + ') 0')
+        console.log(r)
         switch (players[r.attackerColor].armies[r.attackerArmy.armyId].movementType) {
             case 'flying':
                 Sound.play('fly');
@@ -33,11 +34,11 @@ var Move = {
             this.stepTime = 200
         }
 
-        this.loop(r);
-        console.log('move.start() 1')
+        this.loop(r, ii);
+        console.log('move.start(' + ii + ') 1')
     },
-    loop: function (r) {
-        console.log('move.loop() 0')
+    loop: function (r, ii) {
+        console.log('move.loop(' + ii + ') 0')
         for (step in r.path) {
             break;
         }
@@ -56,7 +57,7 @@ var Move = {
                         }
                         searchTower(r.path[step].x, r.path[step].y);
                         delete r.path[step];
-                        Move.loop(r);
+                        Move.loop(r, ii);
                     })
             } else {
                 $('#army' + r.oldArmyId)
@@ -66,7 +67,7 @@ var Move = {
                     })
                 searchTower(r.path[step].x, r.path[step].y);
                 delete r.path[step];
-                Move.loop(r);
+                Move.loop(r, ii);
             }
         } else {
             if (isTruthful(r.battle) && Gui.show) {
@@ -88,15 +89,15 @@ var Move = {
                         }));
                 }
 
-                Message.battle(r);
+                Message.battle(r, ii);
             } else {
-                Move.end(r);
+                Move.end(r, ii);
             }
-            console.log('move.loop() 1')
+            console.log('move.loop(' + ii + ') 1')
         }
     },
-    end: function (r) {
-        console.log('move.end() 0')
+    end: function (r, ii) {
+        console.log('move.end(' + ii + ') 0')
 
         AStar.x = players[r.attackerColor].armies[r.attackerArmy.armyId].x;
         AStar.y = players[r.attackerColor].armies[r.attackerArmy.armyId].y;
@@ -150,6 +151,6 @@ var Move = {
         }
 
         setTimeout('$(".war").remove()', 100);
-        console.log('move.end() 1')
+        console.log('move.end(' + ii + ') 1')
     }
 }

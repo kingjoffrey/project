@@ -5,12 +5,9 @@ class Cli_Model_ComputerMainBlocks extends Cli_Model_ComputerSubBlocks
 
     public function __construct($gameId, $playerId, $db)
     {
-        $this->_gameId = $gameId;
-        $this->_playerId = $playerId;
-        $this->_db = $db;
+        parent::__construct($gameId, $playerId, $db);
 
         $this->_l = new Coret_Model_Logger();
-        $this->_modelArmy = new Application_Model_Army($this->_gameId, $this->_db);
         $this->_mGame = new Application_Model_Game($this->_gameId, $this->_db);
     }
 

@@ -1,5 +1,6 @@
 Websocket = {
     close: true,
+    i: 0,
     init: function () {
         ws = new WebSocket(wsURL + '/game');
 
@@ -22,12 +23,14 @@ Websocket = {
                         break;
 
                     case 'move':
-                        Move.start(r);
+                        Websocket.i++
+                        Move.start(r, Websocket.i);
                         break;
 
                     case 'computer':
                         if (isTruthful(r.path)) {
-                            Move.start(r);
+                            Websocket.i++
+                            Move.start(r, Websocket.i)
                         } else {
                             Websocket.computer();
                         }

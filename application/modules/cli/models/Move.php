@@ -178,12 +178,14 @@ class Cli_Model_Move
             $fight = true;
             if ($defenderColor == 'neutral') {
                 $enemy = Cli_Model_Battle::getNeutralCastleGarrison($user->parameters['gameId'], $db);
+                $enemy['defenseModifier'] = 0;
                 $defenderId = 0;
             } else { // kolor wrogiego zamku sprawdzam dopiero wtedy gdy wiem, że armia ma na niego zasięg
                 $defenderId = $mCastlesInGame->getPlayerIdByCastleId($castleId);
                 $defenderColor = $playersInGameColors[$defenderId];
                 $enemy = Cli_Model_Army::getCastleGarrisonFromCastlePosition($castlesSchema[$castleId]['position'], $user->parameters['gameId'], $db);
                 $enemy = Cli_Model_Army::addCastleDefenseModifier($enemy, $user->parameters['gameId'], $castleId, $db);
+                $enemy = Cli_Model_Army::setCombatDefenseModifiers($enemy);
             }
         } elseif ($move['currentPosition']['x'] == $x && $move['currentPosition']['y'] == $y && $defenderId) { // enemy army
             $fight = true;
@@ -202,7 +204,7 @@ class Cli_Model_Move
          * ------------------------------------ */
 
         if ($fight) {
-            $battle = new Cli_Model_Battle($army, $enemy);
+            $battle = new Cli_Model_Battle($army, $enemy, Cli_Model_Army::getAttackSequence($user->parameters['gameId'], $db, $user->parameters['playerId']), Cli_Model_Army::getDefenceSequence($user->parameters['gameId'], $db, $defenderId));
             $battle->fight();
             $battle->updateArmies($user->parameters['gameId'], $db, $user->parameters['playerId'], $defenderId);
 

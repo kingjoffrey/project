@@ -16,7 +16,6 @@ class Cli_Model_Army
 
         $numberOfHeroes = count($army['heroes']);
         if ($numberOfHeroes) {
-            $this->army['defenseModifier']++;
             $this->army['attackModifier']++;
             $modMovesForest = 3;
             $modMovesSwamp = 4;
@@ -28,6 +27,8 @@ class Cli_Model_Army
         }
         $this->army['canFly'] = -$numberOfHeroes + 1;
         $this->army['canSwim'] = 0;
+
+        $attackFlyModifier = 0;
 
         foreach ($army['soldiers'] as $soldier) {
             $unit = $this->units[$soldier['unitId']];
@@ -43,6 +44,7 @@ class Cli_Model_Army
             }
 
             if ($unit['canFly']) {
+                $attackFlyModifier++;
                 $this->army['canFly']++;
             } else {
                 $this->army['canFly'] -= 200;
@@ -50,6 +52,10 @@ class Cli_Model_Army
             if ($unit['canSwim']) {
                 $this->army['canSwim']++;
             }
+        }
+
+        if ($attackFlyModifier) {
+            $this->army['attackModifier']++;
         }
     }
 
@@ -277,13 +283,18 @@ class Cli_Model_Army
 
     static public function setCombatDefenseModifiers($army)
     {
-        if ($army['heroes']) {
-            if (isset($army['defenseModifier'])) {
-                $army['defenseModifier']++;
-            } else {
-                $army['defenseModifier'] = 1;
-            }
+        if (!isset($army['defenseModifier'])) {
+            $army['defenseModifier'] = 0;
         }
+
+        if ($army['heroes']) {
+            $army['defenseModifier']++;
+        }
+
+        if (isset($army['canFly']) && $army['canFly']) {
+            $army['defenseModifier']++;
+        }
+
         return $army;
     }
 
@@ -709,5 +720,28 @@ class Cli_Model_Army
         $mArmy = new Application_Model_Army($gameId, $db);
 
         return $mArmy->updateArmyPosition($playerId, $end, $army['armyId']);
+    }
+
+    static public function getAttackSequence($gameId, $db, $playerId)
+    {
+        $mBattleSequence = new Application_Model_BattleSequence($gameId, $db);
+        $sequence = $mBattleSequence->getAttack($playerId);
+        if (empty($sequence)) {
+            $sequence = Zend_Registry::get('units');
+        }
+        return $sequence;
+    }
+
+    static public function getDefenceSequence($gameId, $db, $playerId)
+    {
+        if (empty($playerId)) {
+            $playerId = 0;
+        }
+        $mBattleSequence = new Application_Model_BattleSequence($gameId, $db);
+        $sequence = $mBattleSequence->getDefence($playerId);
+        if (empty($sequence)) {
+            $sequence = Zend_Registry::get('units');
+        }
+        return $sequence;
     }
 }

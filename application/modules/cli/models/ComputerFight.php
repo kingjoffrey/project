@@ -7,6 +7,8 @@ class Cli_Model_ComputerFight
         $this->_gameId = $gameId;
         $this->_playerId = $playerId;
         $this->_db = $db;
+
+        $this->_modelArmy = new Application_Model_Army($this->_gameId, $this->_db);
     }
 
     public function fightEnemy($army, $path, $fields, $enemy, $castleId)
@@ -29,7 +31,9 @@ class Cli_Model_ComputerFight
                 $result['defenderColor'] = $playersInGameColors[$defenderId];
                 $enemy = Cli_Model_Army::getCastleGarrisonFromCastlePosition($mapCastles[$castleId]['position'], $this->_gameId, $this->_db);
                 $enemy = Cli_Model_Army::addCastleDefenseModifier($enemy, $this->_gameId, $castleId, $this->_db);
-                $battle = new Cli_Model_Battle($army, $enemy);
+                $enemy = Cli_Model_Army::setCombatDefenseModifiers($enemy);
+
+                $battle = new Cli_Model_Battle($army, $enemy, Cli_Model_Army::getAttackSequence($this->_gameId, $this->_db, $this->_playerId), Cli_Model_Army::getDefenceSequence($this->_gameId, $this->_db, $defenderId));
                 $battle->fight();
                 $battle->updateArmies($this->_gameId, $this->_db, $this->_playerId, $defenderId);
                 $defender = $mArmy2->getDefender($enemy['ids']);
@@ -48,7 +52,8 @@ class Cli_Model_ComputerFight
                 }
             } else { // neutral castle
                 $enemy = Cli_Model_Battle::getNeutralCastleGarrison($this->_gameId, $this->_db);
-                $battle = new Cli_Model_Battle($army, $enemy);
+                $enemy['defenseModifier'] = 0;
+                $battle = new Cli_Model_Battle($army, $enemy, Cli_Model_Army::getAttackSequence($this->_gameId, $this->_db, $this->_playerId), Cli_Model_Army::getDefenceSequence($this->_gameId, $this->_db, 0));
                 $battle->fight();
                 $battle->updateArmies($this->_gameId, $this->_db, $this->_playerId, 0);
                 $defender = $battle->getDefender();
@@ -74,9 +79,9 @@ class Cli_Model_ComputerFight
             $enemy = Cli_Model_Army::setCombatDefenseModifiers($enemy);
             $enemy = Cli_Model_Army::addTowerDefenseModifier($enemy);
             $enemy['ids'][] = $enemy['armyId'];
-            $battle = new Cli_Model_Battle($army, $enemy);
-            $battle->fight();
             $defenderId = $mArmy2->getPlayerIdFromPosition($this->_playerId, $enemy);
+            $battle = new Cli_Model_Battle($army, $enemy, Cli_Model_Army::getAttackSequence($this->_gameId, $this->_db, $this->_playerId), Cli_Model_Army::getDefenceSequence($this->_gameId, $this->_db, $defenderId));
+            $battle->fight();
             $battle->updateArmies($this->_gameId, $this->_db, $this->_playerId, $defenderId);
             $defender = $mArmy2->getDefender($enemy['ids']);
 
@@ -116,8 +121,13 @@ class Cli_Model_ComputerFight
             $enemy = Cli_Model_Army::addTowerDefenseModifier($enemy);
         }
 
+        $defenderId = $this->_modelArmy->getPlayerIdFromPosition($this->_playerId, $enemy);
+
+        $attackerBattleSequence = Cli_Model_Army::getAttackSequence($this->_gameId, $this->_db, $this->_playerId);
+        $defenderBattleSequence = Cli_Model_Army::getDefenceSequence($this->_gameId, $this->_db, $defenderId);
+
         for ($i = 0; $i < $max; $i++) {
-            $battle = new Cli_Model_Battle($army, $enemy);
+            $battle = new Cli_Model_Battle($army, $enemy, $attackerBattleSequence, $defenderBattleSequence);
             $battle->fight();
             if ($battle->getAttacker()) {
                 $attackerWinsCount++;
