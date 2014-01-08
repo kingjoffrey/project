@@ -255,10 +255,11 @@ Websocket = {
                         break;
 
                     case 'bSequence':
-                        Message.simpleNew('Battle sequence', 'Attack sequence successfully updated')
                         if (r.attack == 'true') {
+                            Message.simpleNew('Battle sequence', 'Attack sequence successfully updated')
                             my.battleSequence['attack'] = r.sequence
                         } else {
+                            Message.simpleNew('Battle sequence', 'Defence sequence successfully updated')
                             my.battleSequence['defence'] = r.sequence
                         }
                         break

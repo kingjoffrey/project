@@ -175,7 +175,8 @@ class Application_Model_Army extends Coret_Db_Table_Abstract
             ->where($this->_db->quoteIdentifier('gameId') . ' = ?', $this->_gameId)
             ->where('"playerId" = ?', $playerId)
             ->where('destroyed = false')
-            ->where('fortified = false');
+            ->where('fortified = false')
+            ->where('random() < 0.01');
 
         $result = $this->selectAll($select);
 
@@ -184,10 +185,6 @@ class Application_Model_Army extends Coret_Db_Table_Abstract
 
         foreach ($result as $army) {
             $army['heroes'] = $mHeroesInGame->getForMove($army['armyId']);
-//            foreach ($army['heroes'] as $k => $row) {
-//                $mInventory = new Application_Model_Inventory($row['heroId'], $gameId, $db);
-//                $army['heroes'][$k]['artifacts'] = $mInventory->getAll();
-//            }
             $army['soldiers'] = $mSoldier->getForMove($army['armyId']);
             if (empty($army['heroes']) AND empty($army['soldiers'])) {
                 $this->destroyArmy($army['armyId'], $playerId);
