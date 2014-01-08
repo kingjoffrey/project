@@ -726,9 +726,6 @@ class Cli_Model_Army
     {
         $mBattleSequence = new Application_Model_BattleSequence($gameId, $db);
         $sequence = $mBattleSequence->getAttack($playerId);
-        if (empty($sequence)) {
-            $sequence = Zend_Registry::get('units');
-        }
         return $sequence;
     }
 
@@ -739,9 +736,6 @@ class Cli_Model_Army
         }
         $mBattleSequence = new Application_Model_BattleSequence($gameId, $db);
         $sequence = $mBattleSequence->getDefence($playerId);
-        if (empty($sequence)) {
-            $sequence = Zend_Registry::get('units');
-        }
         return $sequence;
     }
 }

@@ -243,7 +243,7 @@ class Cli_Model_Move
                     $defender = null;
                 }
             }
-            $battleResult = $battle->getResult($army, $enemy);
+            $battleResult = $battle->getResult();
         } else {
             Cli_Model_Army::updateArmyPosition($user->parameters['playerId'], $move['path'], $fields, $army, $user->parameters['gameId'], $db);
             $armiesIds = Cli_Model_Army::joinArmiesAtPosition($move['currentPosition'], $user->parameters['playerId'], $user->parameters['gameId'], $db);

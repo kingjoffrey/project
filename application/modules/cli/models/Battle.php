@@ -15,12 +15,22 @@ class Cli_Model_Battle
     );
     private $attacker = array();
     private $defender = array();
+    private $attackerCopy = array();
+    private $defenderCopy = array();
     private $succession = 0;
     private $units;
 
     public function __construct($attacker, $defender, $attackerBattleSequence, $defenderBattleSequence)
     {
         $this->units = Zend_Registry::get('units');
+
+        if (empty($defenderBattleSequence)) {
+            $defenderBattleSequence = array_keys($this->units);
+        }
+
+        if (empty($attackerBattleSequence)) {
+            $attackerBattleSequence = array_keys($this->units);
+        }
 
         $this->defender = array(
             'soldiers' => array(),
@@ -63,6 +73,9 @@ class Cli_Model_Battle
                 }
             }
         }
+
+        $this->defenderCopy = $this->defender;
+        $this->attackerCopy = $this->attacker;
     }
 
     public function updateArmies($gameId, $db, $attackerId = null, $defenderId = null)
@@ -301,7 +314,7 @@ class Cli_Model_Battle
         return rand(1, $maxDie);
     }
 
-    public function getResult($army, $enemy)
+    public function getResult()
     {
         $battle = array(
             'defense' => array(
@@ -313,7 +326,8 @@ class Cli_Model_Battle
                 'soldiers' => array(),
             ),
         );
-        foreach ($enemy['heroes'] as $unit) {
+
+        foreach ($this->defenderCopy['heroes'] as $unit) {
             $succession = null;
             foreach ($this->_result['defense']['heroes'] as $battleUnit) {
                 if ($battleUnit['heroId'] == $unit['heroId']) {
@@ -325,7 +339,8 @@ class Cli_Model_Battle
                 'succession' => $succession
             );
         }
-        foreach ($enemy['soldiers'] as $unit) {
+
+        foreach ($this->defenderCopy['soldiers'] as $unit) {
             $succession = null;
             foreach ($this->_result['defense']['soldiers'] as $battleUnit) {
                 if ($battleUnit['soldierId'] == $unit['soldierId']) {
@@ -338,7 +353,22 @@ class Cli_Model_Battle
                 'unitId' => $unit['unitId'],
             );
         }
-        foreach ($army['heroes'] as $unit) {
+
+        foreach ($this->defenderCopy['ships'] as $unit) {
+            $succession = null;
+            foreach ($this->_result['defense']['soldiers'] as $battleUnit) {
+                if ($battleUnit['soldierId'] == $unit['soldierId']) {
+                    $succession = $battleUnit['succession'];
+                }
+            }
+            $battle['defense']['soldiers'][] = array(
+                'soldierId' => $unit['soldierId'],
+                'succession' => $succession,
+                'unitId' => $unit['unitId'],
+            );
+        }
+
+        foreach ($this->attackerCopy['heroes'] as $unit) {
             $succession = null;
             foreach ($this->_result['attack']['heroes'] as $battleUnit) {
                 if ($battleUnit['heroId'] == $unit['heroId']) {
@@ -350,7 +380,22 @@ class Cli_Model_Battle
                 'succession' => $succession,
             );
         }
-        foreach ($army['soldiers'] as $unit) {
+
+        foreach ($this->attackerCopy['soldiers'] as $unit) {
+            $succession = null;
+            foreach ($this->_result['attack']['soldiers'] as $battleUnit) {
+                if ($battleUnit['soldierId'] == $unit['soldierId']) {
+                    $succession = $battleUnit['succession'];
+                }
+            }
+            $battle['attack']['soldiers'][] = array(
+                'soldierId' => $unit['soldierId'],
+                'succession' => $succession,
+                'unitId' => $unit['unitId'],
+            );
+        }
+
+        foreach ($this->attackerCopy['ships'] as $unit) {
             $succession = null;
             foreach ($this->_result['attack']['soldiers'] as $battleUnit) {
                 if ($battleUnit['soldierId'] == $unit['soldierId']) {
@@ -390,18 +435,5 @@ class Cli_Model_Battle
             'defenseModifier' => 0
         );
     }
-
-//    public function setCombatAttackModifiers($army) {
-//        if ($army['heroes']) {
-//            echo '
-//                hero!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-//                ';
-//            $this->attackModifier++;
-//        }
-//        if ($army['canFly'] > 0) {
-//            $this->attackModifier++;
-//        }
-//    }
-
 }
 

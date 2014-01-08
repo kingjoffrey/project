@@ -102,7 +102,7 @@ class Cli_Model_ComputerFight
         }
 
         $result['defenderArmy'] = $defender;
-        $result['battle'] = $battle->getResult($army, $enemy);
+        $result['battle'] = $battle->getResult();
 
         return $result;
     }
