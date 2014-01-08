@@ -73,7 +73,7 @@ var timer = {
                 seconds = time.getSeconds();
 
             if (seconds < 10) {
-                seconds = '0' + seconds;
+                seconds = '+0' + seconds;
             }
 
             if (minutes < 10) {
@@ -83,6 +83,10 @@ var timer = {
             if (hours < 10) {
                 hours = '0' + hours;
             }
+        } else {
+            seconds = '--'
+            minutes = '--'
+            hours = '--'
         }
 
         $('#timerRows')
