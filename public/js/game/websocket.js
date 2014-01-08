@@ -74,30 +74,30 @@ Websocket = {
                                 case 'gold':
                                     Sound.play('gold1');
                                     goldIncrement(r.find[1]);
-                                    Message.simple('You have found ' + r.find[1] + ' gold.');
+                                    Message.simpleNew('Ruins', 'You have found ' + r.find[1] + ' gold.');
                                     break;
                                 case 'death':
                                     Sound.play('death');
-                                    Message.simple('You have found death.');
+                                    Message.simpleNew('Ruins', 'You have found death.');
                                     if (!Hero.findMy()) {
                                         $('#heroResurrection').removeClass('buttonOff')
                                     }
                                     break
                                 case 'allies':
                                     Sound.play('allies');
-                                    Message.simple(r.find[1] + ' alies joined your army.');
+                                    Message.simpleNew('Ruins', r.find[1] + ' alies joined your army.');
                                     break
                                 case 'null':
                                     Sound.play('click');
-                                    Message.simple('You have found nothing.');
+                                    Message.simpleNew('Ruins', 'You have found nothing.');
                                     break
                                 case 'artifact':
-                                    Message.simple('You have found an ancient artifact - "' + artifacts[r.find[1]].name + '".');
+                                    Message.simpleNew('Ruins', 'You have found an ancient artifact - "' + artifacts[r.find[1]].name + '".');
                                     Chest.update(r.color, r.find[1]);
                                     break
                                 case 'empty':
                                     Sound.play('error');
-                                    Message.simple('Ruins are empty.');
+                                    Message.simpleNew('Ruins', 'Ruins are empty.');
                                     break;
 
                             }

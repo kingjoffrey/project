@@ -47,7 +47,6 @@ var timer = {
         }, 1000);
     },
     update: function () {
-        return
         this.timestamp = (new Date()).getTime()
         this.append(Turn.color, Turn.number)
         this.divHour = $('#timerBox #' + Turn.color + Turn.number + ' #hour')
@@ -73,7 +72,7 @@ var timer = {
                 seconds = time.getSeconds();
 
             if (seconds < 10) {
-                seconds = '+0' + seconds;
+                seconds = '0' + seconds;
             }
 
             if (minutes < 10) {

@@ -176,7 +176,8 @@ class Application_Model_Army extends Coret_Db_Table_Abstract
             ->where('"playerId" = ?', $playerId)
             ->where('destroyed = false')
             ->where('fortified = false')
-            ->where('random() < 0.01');
+            ->order('random()')
+            ->limit(1);
 
         $result = $this->selectAll($select);
 
