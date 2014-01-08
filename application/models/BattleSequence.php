@@ -81,5 +81,41 @@ class Application_Model_BattleSequence extends Coret_Db_Table_Abstract
 
         return $sequence;
     }
+
+    public function getAttack($playerId)
+    {
+        $select = $this->_db->select()
+            ->from($this->_name, array('unitId', 'attack'))
+            ->where('"gameId" = ?', $this->_gameId)
+            ->where('"playerId" = ?', $playerId)
+            ->where('attack = true')
+            ->order('sequence');
+
+        $sequence = array();
+
+        foreach ($this->selectAll($select) as $row) {
+            $sequence[] = $row['unitId'];
+        }
+
+        return $sequence;
+    }
+
+    public function getDefence($playerId)
+    {
+        $select = $this->_db->select()
+            ->from($this->_name, array('unitId', 'attack'))
+            ->where('"gameId" = ?', $this->_gameId)
+            ->where('"playerId" = ?', $playerId)
+            ->where('attack = false')
+            ->order('sequence');
+
+        $sequence = array();
+
+        foreach ($this->selectAll($select) as $row) {
+            $sequence[] = $row['unitId'];
+        }
+
+        return $sequence;
+    }
 }
 

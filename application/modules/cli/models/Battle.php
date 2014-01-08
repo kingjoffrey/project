@@ -18,10 +18,9 @@ class Cli_Model_Battle
     private $succession = 0;
     private $units;
 
-    public function __construct($attacker, $defender)
+    public function __construct($attacker, $defender, $attackerBattleSequence, $defenderBattleSequence)
     {
         $this->units = Zend_Registry::get('units');
-        $battleSequence = Zend_Registry::get('battleSequence');
 
         $this->defender = array(
             'soldiers' => array(),
@@ -30,7 +29,14 @@ class Cli_Model_Battle
             'heroes' => $defender['heroes']
         );
 
-        foreach ($battleSequence['defence'] as $unitId) {
+        $this->attacker = array(
+            'soldiers' => array(),
+            'ships' => array(),
+            'attackModifier' => $attacker['attackModifier'],
+            'heroes' => $attacker['heroes']
+        );
+
+        foreach ($defenderBattleSequence as $unitId) {
             foreach ($defender['soldiers'] as $k => $soldier) {
                 if ($this->units[$soldier['unitId']]['canSwim']) {
                     $this->defender['ships'][] = $soldier;
@@ -44,14 +50,7 @@ class Cli_Model_Battle
             }
         }
 
-        $this->attacker = array(
-            'soldiers' => array(),
-            'ships' => array(),
-            'attackModifier' => $attacker['attackModifier'],
-            'heroes' => $attacker['heroes']
-        );
-
-        foreach ($battleSequence['attack'] as $unitId) {
+        foreach ($attackerBattleSequence as $unitId) {
             foreach ($attacker['soldiers'] as $k => $soldier) {
                 if ($this->units[$soldier['unitId']]['canSwim']) {
                     $this->attacker['ships'][] = $soldier;

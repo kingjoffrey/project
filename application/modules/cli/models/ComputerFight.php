@@ -49,7 +49,6 @@ class Cli_Model_ComputerFight
             } else { // neutral castle
                 $enemy = Cli_Model_Battle::getNeutralCastleGarrison($this->_gameId, $this->_db);
                 $battle = new Cli_Model_Battle($army, $enemy);
-//                $battle->setCombatAttackModifiers($army);
                 $battle->fight();
                 $battle->updateArmies($this->_gameId, $this->_db, $this->_playerId, 0);
                 $defender = $battle->getDefender();
