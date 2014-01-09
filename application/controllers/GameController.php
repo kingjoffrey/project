@@ -8,9 +8,6 @@ class GameController extends Game_Controller_Game
         $this->_helper->layout->setLayout('game');
 
         $mGame = new Application_Model_Game($this->_namespace->gameId);
-//        if (!$mGame->isActive()) {
-//            throw new Exception('Game initialization error');
-//        }
 
         $this->view->headLink()->appendStylesheet('/css/game.css?v=' . Zend_Registry::get('config')->version);
 
@@ -42,14 +39,13 @@ class GameController extends Game_Controller_Game
         $mArmy = new Application_Model_Army($this->_namespace->gameId);
         $mRuin = new Application_Model_RuinsInGame($this->_namespace->gameId);
         $mTower = new Application_Model_TowersInGame($this->_namespace->gameId);
-//        $mArtifact = new Application_Model_Artifact();
         $mChat = new Application_Model_Chat($this->_namespace->gameId);
         $mPlayersInGame = new Application_Model_PlayersInGame($this->_namespace->gameId);
         $playersInGameColors = $mPlayersInGame->getAllColors();
 
         $game = $mGame->getGame();
+        $this->view->gameBegin = $game['begin'];
 
-//        $this->view->artifacts = $mArtifact->getArtifacts();
         $mMapPlayers = new Application_Model_MapPlayers($game['mapId']);
         $this->view->capitals = $mMapPlayers->getCapitals();
         $this->view->mapPlayersColors = $mMapPlayers->getAllColors();

@@ -62,6 +62,7 @@ var Turn = {
         }
 
         Players.rotate(color)
+        timer.update();
 
         Turn.color = color;
 
@@ -69,9 +70,8 @@ var Turn = {
             Turn.number = nr;
         }
 
+        timer.append(Turn.color, Turn.number)
         Players.drawTurn();
-
-        timer.update();
 
         if (Turn.color == my.color) {
             Turn.on();

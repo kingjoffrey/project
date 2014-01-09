@@ -23,8 +23,16 @@
     </div>
     <div id="limitBox" class="box">
         <div class="close">&#x25C0</div>
-        <div id="turnTimeLimit">00:00:00</div>
-        <div id="timeLimit">00:00:00</div>
+        <div><?php echo $this->translate('Turn') ?> <span id="turnTimeLimit" class="font-yellow">
+                <span id="hour">00</span> :
+                <span id="minute">00</span> :
+                <span id="second">00</span>
+                </span></div>
+        <div><?php echo $this->translate('Game') ?> <span id="timeLimit" class="font-yellow">
+                <span id="hour">00</span> :
+                <span id="minute">00</span> :
+                <span id="second">00</span>
+        </span></div>
     </div>
     <div id="timerBox" class="box">
         <div class="close">&#x25C0</div>
@@ -51,10 +59,12 @@
         </table>
     </div>
     <div id="battleSettingsBox" class="box">
-        <div id="battleAttack" class="iconButton buttonColors" title="<?php echo $this->translate('Battle attack sequence') ?>">
+        <div id="battleAttack" class="iconButton buttonColors"
+             title="<?php echo $this->translate('Battle attack sequence') ?>">
             <img src="/img/game/attack_settings.png" alt="<?php echo $this->translate('Battle attack sequence') ?>"/>
         </div>
-        <div id="battleDefence" class="iconButton buttonColors" title="<?php echo $this->translate('Battle defence sequence') ?>">
+        <div id="battleDefence" class="iconButton buttonColors"
+             title="<?php echo $this->translate('Battle defence sequence') ?>">
             <img src="/img/game/defence_settings.png" alt="<?php echo $this->translate('Battle defence sequence') ?>"/>
         </div>
     </div>

@@ -1,25 +1,39 @@
 var timer = {
     height: 32,
     timestamp: 0,
-    difference: 0,
-    divHour: null,
-    divMinute: null,
-    divSecond: null,
+    difference1: 0,
+    difference2: 0,
+    elHour1: null,
+    elMinute1: null,
+    elSecond1: null,
+    hour1: 0,
+    minute1: 0,
+    second1: 0,
+    elHour2: null,
+    elMinute2: null,
+    elSecond2: null,
+    hour2: 0,
+    minute2: 0,
+    second2: 0,
     start: function () {
         $('#timerScroll').css('height', Players.length * this.height + 'px');
-        this.divHour = $('#timerBox #' + Turn.color + Turn.number + ' #hour')
-        this.divMinute = $('#timerBox #' + Turn.color + Turn.number + ' #minute')
-        this.divSecond = $('#timerBox #' + Turn.color + Turn.number + ' #second')
-//        timer.countdown();
+        this.elHour1 = $('#turnTimeLimit #hour')
+        this.elMinute1 = $('#turnTimeLimit #minute')
+        this.elSecond1 = $('#turnTimeLimit #second')
+        this.elHour2 = $('#timeLimit #hour')
+        this.elMinute2 = $('#timeLimit #minute')
+        this.elSecond2 = $('#timeLimit #second')
+        timer.countdown();
     },
     countdown: function () {
-        return
-        var difference = (new Date()).getTime() - this.timestamp - 3600000;
+        var time = (new Date()).getTime()
+        var difference1 = time - this.timestamp - 3600000
+        var difference2 = time - Date.parse(gameBegin.substr(0, 19)).getTime() - 3600000
 
-        if (this.difference != difference) {
-            this.difference = difference;
+        if (this.difference1 != difference1) {
+            this.difference1 = difference1
 
-            var time = new Date(difference),
+            time = new Date(difference1),
                 hours = time.getHours(),
                 minutes = time.getMinutes(),
                 seconds = time.getSeconds();
@@ -37,9 +51,53 @@ var timer = {
                 hours = '0' + hours;
             }
 
-            this.divHour.html(hours)
-            this.divMinute.html(minutes)
-            this.divSecond.html(seconds)
+            if (this.hour1 != hours) {
+                this.hour1 = hours
+                this.elHour1.html(hours)
+            }
+            if (this.minute1 != minutes) {
+                this.minute1 = minutes
+                this.elMinute1.html(minutes)
+            }
+            if (this.second1 != seconds) {
+                this.second1 = seconds
+                this.elSecond1.html(seconds)
+            }
+        }
+
+        if (this.difference2 != difference2) {
+            this.difference2 = difference2
+
+            time = new Date(difference2),
+                hours = time.getHours(),
+                minutes = time.getMinutes(),
+                seconds = time.getSeconds();
+
+
+            if (seconds < 10) {
+                seconds = '0' + seconds;
+            }
+
+            if (minutes < 10) {
+                minutes = '0' + minutes;
+            }
+
+            if (hours < 10) {
+                hours = '0' + hours;
+            }
+
+            if (this.hour2 != hours) {
+                this.hour2 = hours
+                this.elHour2.html(hours)
+            }
+            if (this.minute2 != minutes) {
+                this.minute2 = minutes
+                this.elMinute2.html(minutes)
+            }
+            if (this.second2 != seconds) {
+                this.second2 = seconds
+                this.elSecond2.html(seconds)
+            }
         }
 
         setTimeout(function () {
@@ -47,12 +105,11 @@ var timer = {
         }, 1000);
     },
     update: function () {
-        this.timestamp = (new Date()).getTime()
-        this.append(Turn.color, Turn.number)
-        this.divHour = $('#timerBox #' + Turn.color + Turn.number + ' #hour')
-        this.divMinute = $('#timerBox #' + Turn.color + Turn.number + ' #minute')
-        this.divSecond = $('#timerBox #' + Turn.color + Turn.number + ' #second')
+        $('#timerBox #' + Turn.color + Turn.number + ' #hour').html(this.elHour1.html())
+        $('#timerBox #' + Turn.color + Turn.number + ' #minute').html(this.elMinute1.html())
+        $('#timerBox #' + Turn.color + Turn.number + ' #second').html(this.elSecond1.html())
         this.scroll()
+        this.timestamp = (new Date()).getTime()
     },
     append: function (color, number, start, end) {
         var difference = 0,
@@ -61,7 +118,6 @@ var timer = {
             seconds = 0
 
         if (isSet(start) && isSet(end)) {
-
             var end = Date.parse(end).getTime();
             difference = end - Date.parse(start).getTime() - 3600000
             this.timestamp = end
