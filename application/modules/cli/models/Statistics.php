@@ -31,7 +31,7 @@ class Cli_Model_Statistics
             'castlesDestroyed' => $mCastlesDestroyed->countAll($playersInGameColors)
         );
 
-        $this->sendToChannel($db, $token, $user->parameters['gameId']);
+        $gameHandler->sendToUser($user, $db, $token, $user->parameters['gameId']);
     }
 
 }

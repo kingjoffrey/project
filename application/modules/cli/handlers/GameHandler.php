@@ -42,11 +42,21 @@ class Cli_GameHandler extends Cli_WofHandler
         }
 
         if ($user->parameters['timeLimit']) {
-
+            if (time() - $user->parameters['begin'] > $user->parameters['timeLimit'] * 60) {
+                $mGame = new Application_Model_Game($user->parameters['gameId'], $db);
+                $mGame->endGame();
+                $mTurn = new Cli_Model_Turn($user, $db, $this);
+                $mTurn->saveResults();
+                $token = array(
+                    'type' => 'end'
+                );
+                $this->sendToChannel($db, $token, $user->parameters['gameId']);
+                return;
+            }
         }
 
         if ($user->parameters['turnTimeLimit']) {
-            if (time() - strtotime($user->parameters['turnStart']) > $user->parameters['turnTimeLimit'] * 60) {
+            if (time() - $user->parameters['turnStart'] > $user->parameters['turnTimeLimit'] * 60) {
                 $mGame = new Application_Model_Game($user->parameters['gameId'], $db);
                 $mTurn = new Cli_Model_Turn($user, $db, $this);
                 $user->parameters['turnStart'] = $mTurn->next($mGame->getTurnPlayerId());

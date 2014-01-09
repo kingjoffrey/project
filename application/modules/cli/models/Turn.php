@@ -22,14 +22,8 @@ class Cli_Model_Turn
             }
         }
 
-        $mPlayersInGame = new Application_Model_PlayersInGame($this->_user->parameters['gameId'], $this->_db);
-
-        if ($mPlayersInGame->playerLost($playerId)) {
-            echo 'vvv111';
-//            return;
-        }
-
         $playersInGameColors = Zend_Registry::get('playersInGameColors');
+        $mPlayersInGame = new Application_Model_PlayersInGame($this->_user->parameters['gameId'], $this->_db);
         $mArmy = new Application_Model_Army($this->_user->parameters['gameId'], $this->_db);
         $mCastlesInGame = new Application_Model_CastlesInGame($this->_user->parameters['gameId'], $this->_db);
 

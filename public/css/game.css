@@ -242,7 +242,7 @@
     display: none;
     border-radius: 10px;
     text-align: center;
-    cursor: url(/img/game/cursor_hand.png) 15 15, default;
+    /*cursor: url(/img/game/cursor_hand.png) 15 15, default;*/
     z-index: 26999 !important;
 }
 

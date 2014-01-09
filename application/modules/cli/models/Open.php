@@ -67,11 +67,12 @@ class Cli_Model_Open
             'gameId' => $dataIn['gameId'],
             'playerId' => $dataIn['playerId'],
             'langId' => $dataIn['langId'],
+            'begin' => strtotime($game['begin']),
             'turnsLimit' => $game['turnsLimit'],
             'turnTimeLimit' => $game['turnTimeLimit'],
             'timeLimit' => $game['timeLimit'],
             'turnNumber' => $turn['number'],
-            'turnStart' => $turn['date'],
+            'turnStart' => strtotime($turn['date']),
         );
 
         $token = array(
