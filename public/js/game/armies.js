@@ -596,6 +596,7 @@ var Army = {
         }
     },
     computerLoop: function (armies, color) {
+        var armyId;
         for (armyId in armies) {
             break;
         }

@@ -20,7 +20,7 @@ class Application_Model_BattleSequence extends Coret_Db_Table_Abstract
     {
         $sequence = 0;
         foreach ($units as $unitId => $unit) {
-            if ($unit['canSwimm']) {
+            if (isset($unit['canSwimm']) && $unit['canSwimm']) {
                 continue;
             }
             $sequence++;

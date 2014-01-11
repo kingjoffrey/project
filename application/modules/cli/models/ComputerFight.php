@@ -110,7 +110,7 @@ class Cli_Model_ComputerFight
     public function isEnemyStronger($army, $enemy, $castleId, $max = 30)
     {
         $attackerWinsCount = 0;
-        $attackerCourage = 2;
+        $attackerCourage = 3;
 
         $enemy = Cli_Model_Army::setCombatDefenseModifiers($enemy);
         $mCastlesInGame = new Application_Model_CastlesInGame($this->_gameId, $this->_db);

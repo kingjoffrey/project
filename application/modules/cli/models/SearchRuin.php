@@ -6,7 +6,7 @@ class Cli_Model_SearchRuin
     public function __construct($armyId, $user, $db, $gameHandler)
     {
         if (!Zend_Validate::is($armyId, 'Digits')) {
-            $gameHandler->sendError($user, 'Brak "armyId"!');
+            $gameHandler->sendError($user, 'Brak armii!');
             return;
         }
 
@@ -14,7 +14,7 @@ class Cli_Model_SearchRuin
         $heroId = $mHeroesInGame->getHeroIdByArmyIdPlayerId($armyId, $user->parameters['playerId']);
 
         if (empty($heroId)) {
-            $gameHandler->sendError($user, 'Tylko Hero może przeszukiwać ruiny!');
+            $gameHandler->sendError($user, 'Tylko Heros może przeszukiwać ruiny!');
             return;
         }
 
@@ -23,7 +23,7 @@ class Cli_Model_SearchRuin
         $ruinId = Application_Model_Board::confirmRuinPosition($position);
 
         if (!Zend_Validate::is($ruinId, 'Digits')) {
-            $gameHandler->sendError($user, 'Brak ruinId na pozycji');
+            $gameHandler->sendError($user, 'Brak ruin');
             return;
         }
 

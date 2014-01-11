@@ -331,7 +331,7 @@ var Message = {
 
         // relocation to
 
-        if (isSet(players[my.color].castles[castleId]) && castles[castleId].relocationCastleId && castles[castleId].currentProductionId) {
+        if (castles[castleId].color == my.color && castles[castleId].relocationCastleId && castles[castleId].currentProductionId) {
             div
                 .append($('<br>'))
                 .append($('<fieldset>').addClass('relocatedProduction').append($('<label>').html('Relocating to')).append(
@@ -371,7 +371,6 @@ var Message = {
                         Message.castle(i)
                     }
                 }
-
 
             for (castleIdFrom in castles[castleId].relocatedProduction) {
                 var currentProductionId = castles[castleIdFrom].currentProductionId
@@ -697,77 +696,74 @@ var Message = {
         this.ok(id)
     },
     battle: function (r) {
-        var battle = r.battle;
-        var attackerColor = r.attackerColor;
-        var defenderColor = r.defenderColor;
         var newBattle = new Array();
 
         var attack = $('<div>').addClass('battle attack');
 
-        for (i in battle.attack.soldiers) {
-            if (battle.attack.soldiers[i].succession) {
-                newBattle[battle.attack.soldiers[i].succession] = {
-                    'soldierId': battle.attack.soldiers[i].soldierId
+        for (i in r.battle.attack.soldiers) {
+            if (r.battle.attack.soldiers[i].succession) {
+                newBattle[r.battle.attack.soldiers[i].succession] = {
+                    'soldierId': r.battle.attack.soldiers[i].soldierId
                 };
             }
             attack.append(
                 $('<div>')
-                    .attr('id', 'unit' + battle.attack.soldiers[i].soldierId)
-                    .css('background', 'url(' + Unit.getImage(battle.attack.soldiers[i].unitId, attackerColor) + ') no-repeat')
+                    .attr('id', 'unit' + r.battle.attack.soldiers[i].soldierId)
+                    .css('background', 'url(' + Unit.getImage(r.battle.attack.soldiers[i].unitId, r.attackerColor) + ') no-repeat')
                     .addClass('battleUnit')
             );
         }
-        for (i in battle.attack.heroes) {
-            if (battle.attack.heroes[i].succession) {
-                newBattle[battle.attack.heroes[i].succession] = {
-                    'heroId': battle.attack.heroes[i].heroId
+        for (i in r.battle.attack.heroes) {
+            if (r.battle.attack.heroes[i].succession) {
+                newBattle[r.battle.attack.heroes[i].succession] = {
+                    'heroId': r.battle.attack.heroes[i].heroId
                 };
             }
             attack.append(
                 $('<div>')
-                    .attr('id', 'hero' + battle.attack.heroes[i].heroId)
-                    .css('background', 'url(' + Hero.getImage(attackerColor) + ') no-repeat')
+                    .attr('id', 'hero' + r.battle.attack.heroes[i].heroId)
+                    .css('background', 'url(' + Hero.getImage(r.attackerColor) + ') no-repeat')
                     .addClass('battleUnit')
             );
         }
 
         var attackGrass = $('<div>')
             .addClass('grass')
-            .append($('<div>').html(mapPlayersColors[attackerColor].longName))
+            .append($('<div>').html(mapPlayersColors[r.attackerColor].longName))
             .append(attack)
 
         var defense = $('<div>').addClass('battle defense');
 
-        for (i in battle.defense.soldiers) {
-            if (battle.defense.soldiers[i].succession) {
-                newBattle[battle.defense.soldiers[i].succession] = {
-                    'soldierId': battle.defense.soldiers[i].soldierId
+        for (i in r.battle.defense.soldiers) {
+            if (r.battle.defense.soldiers[i].succession) {
+                newBattle[r.battle.defense.soldiers[i].succession] = {
+                    'soldierId': r.battle.defense.soldiers[i].soldierId
                 };
             }
             defense.append(
                 $('<div>')
-                    .attr('id', 'unit' + battle.defense.soldiers[i].soldierId)
-                    .css('background', 'url(' + Unit.getImage(battle.defense.soldiers[i].unitId, defenderColor) + ') no-repeat')
+                    .attr('id', 'unit' + r.battle.defense.soldiers[i].soldierId)
+                    .css('background', 'url(' + Unit.getImage(r.battle.defense.soldiers[i].unitId, r.defenderColor) + ') no-repeat')
                     .addClass('battleUnit')
             );
         }
 
-        for (i in battle.defense.heroes) {
-            if (battle.defense.heroes[i].succession) {
-                newBattle[battle.defense.heroes[i].succession] = {
-                    'heroId': battle.defense.heroes[i].heroId
+        for (i in r.battle.defense.heroes) {
+            if (r.battle.defense.heroes[i].succession) {
+                newBattle[r.battle.defense.heroes[i].succession] = {
+                    'heroId': r.battle.defense.heroes[i].heroId
                 };
             }
             defense.append(
                 $('<div>')
-                    .attr('id', 'hero' + battle.defense.heroes[i].heroId)
-                    .css('background', 'url(' + Hero.getImage(defenderColor) + ') no-repeat')
+                    .attr('id', 'hero' + r.battle.defense.heroes[i].heroId)
+                    .css('background', 'url(' + Hero.getImage(r.defenderColor) + ') no-repeat')
                     .addClass('battleUnit')
             );
         }
 
-        if (isSet(mapPlayersColors[defenderColor])) {
-            var longName = mapPlayersColors[defenderColor].longName
+        if (isSet(mapPlayersColors[r.defenderColor])) {
+            var longName = mapPlayersColors[r.defenderColor].longName
         } else {
             var longName = 'Shadow'
         }
@@ -782,19 +778,19 @@ var Message = {
                     .addClass('castle')
                     .css({
                         position: 'static',
-                        background: 'url(/img/game/castles/' + defenderColor + '.png) center center no-repeat',
+                        background: 'url(/img/game/castles/' + r.defenderColor + '.png) center center no-repeat',
                         margin: '0 auto'
                     })
             )
         }
 
-        if (isTowerAtPosition(players[r.attackerColor].armies[r.attackerArmy.armyId].x, players[r.attackerColor].armies[r.attackerArmy.armyId].y)) {
+        if (r.defenderColor != 'neutral' && isTowerAtPosition(players[r.defenderColor].armies[r.defenderArmy[0].armyId].x, players[r.defenderColor].armies[r.defenderArmy[0].armyId].y)) {
             defenseGrass.append(
                 $('<div>')
                     .addClass('tower')
                     .css({
                         position: 'static',
-                        background: 'url(/img/game/towers/' + defenderColor + '.png) center center no-repeat',
+                        background: 'url(/img/game/towers/' + r.defenderColor + '.png) center center no-repeat',
                         margin: '0 auto'
                     })
             )

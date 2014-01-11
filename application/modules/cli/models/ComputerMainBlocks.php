@@ -68,6 +68,7 @@ class Cli_Model_ComputerMainBlocks extends Cli_Model_ComputerSubBlocks
                             } else {
                                 $this->_l->log('BRAK MOJEJ ARMII W ZASIĘGU - IDŹ W KIERUNKU ZAMKU!');
                                 Cli_Model_Army::updateArmyPosition($this->_playerId, $castleRange['path'], $castlesAndFields['fields'], $army, $this->_gameId, $this->_db);
+                                $this->_modelArmy->fortify($army['armyId'], 1);
                                 return $this->endMove($army['armyId'], $castleRange['currentPosition'], $castleRange['path']);
                             }
                         } else {

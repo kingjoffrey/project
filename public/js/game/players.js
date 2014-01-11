@@ -40,10 +40,6 @@ var Players = {
                 }
             }
 
-            if (players[color].armies == "" && players[color].castles == "") {
-                $('.nr.' + color).html('<img src="/img/game/skull_and_crossbones.png" />');
-            }
-
             for (i in players[color].castles) {
                 Castle.updateDefense(i, players[color].castles[i].defenseMod);
                 Castle.owner(i, color);

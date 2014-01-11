@@ -26,7 +26,7 @@ class Application_Model_Mapper
         $this->_width = $this->_numberOfFields * 40;
         $this->_height = $this->_width;
 
-        $this->_startX = 39;
+        $this->_startX = 29;
         $this->_endX = $this->_startX + $this->_numberOfFields;
         $this->_startY = 80;
         $this->_endY = $this->_startY + $this->_numberOfFields;
@@ -120,17 +120,17 @@ class Application_Model_Mapper
 //        $this->normalize(0);
 //        $this->normalize(1);
 //        $this->normalize(1);
+        $this->normalize(1);
+        $this->test();
+//        $this->test();
 //        $this->normalize(1);
-        $this->test();
-        $this->test();
-        $this->normalize(1);
-        $this->normalize(1);
-        $this->normalize(1);
-        $this->normalize(1);
-        $this->normalize(1);
-        $this->normalize(1);
-        $this->normalize(1);
-        $this->normalize(1);
+//        $this->normalize(1);
+//        $this->normalize(1);
+//        $this->normalize(1);
+//        $this->normalize(1);
+//        $this->normalize(1);
+//        $this->normalize(1);
+//        $this->normalize(1);
 
         $this->drawColors();
     }

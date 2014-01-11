@@ -66,6 +66,7 @@ Websocket = {
                         break;
 
                     case 'ruin':
+                        board.append($('<div>').addClass('ruinSearch').css({'top': 40 * Army.deselected.y + 'px', 'left': 40 * Army.deselected.x + 'px'}));
                         zoomer.lensSetCenter(r.army.x * 40, r.army.y * 40);
                         Army.init(r.army, r.color);
                         Ruin.update(r.ruin.ruinId, r.ruin.empty);
@@ -400,11 +401,15 @@ Websocket = {
         }
 
         if (!players[Turn.color].computer) {
-            return;
+            return
         }
 
         if (stop) {
-            return;
+            return
+        }
+
+        if (Move.moving) {
+            return
         }
 
         var token = {
@@ -427,8 +432,6 @@ Websocket = {
         }
 
         Army.deselect();
-
-        board.append($('<div>').addClass('ruinSearch').css({'top': 40 * Army.deselected.y + 'px', 'left': 40 * Army.deselected.x + 'px'}));
 
         var token = {
             type: 'ruin',

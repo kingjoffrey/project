@@ -1,6 +1,8 @@
 var Move = {
     stepTime: 0,
+    moving: 0,
     start: function (r, ii) {
+        this.moving = 1
         console.log('move.start(' + ii + ') 0')
         console.log(r)
         switch (players[r.attackerColor].armies[r.attackerArmy.armyId].movementType) {
@@ -133,6 +135,7 @@ var Move = {
         }
 
         if (players[r.attackerColor].computer) {
+            this.moving = 0
             Websocket.computer();
         } else if (r.attackerColor == my.color) {
             if (!r.castleId && isSet(players[r.attackerColor].armies[r.attackerArmy.armyId]) && players[r.attackerColor].armies[r.attackerArmy.armyId].moves) {
@@ -153,5 +156,6 @@ var Move = {
 
         setTimeout('$(".war").remove()', 100);
         console.log('move.end(' + ii + ') 1')
+        this.moving = 0
     }
 }
