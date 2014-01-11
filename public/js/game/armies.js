@@ -374,6 +374,8 @@ var Army = {
         );
 
         players[color].armies[army.armyId] = army;
+
+        return
     },
     showFirst: function (color) {
         for (i in players[color].armies) {

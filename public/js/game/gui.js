@@ -4,6 +4,7 @@ var Gui = {
     armyBox: {'close': 0},
     chatBox: {'close': 0},
     playerBox: {'close': 0},
+    limitBox: {'close': 0},
     timerBox: {'close': 0},
     mapBox: {'close': 0},
     speed: 200,
@@ -203,6 +204,22 @@ var Gui = {
                 Gui.changeCloseArrowLR(Gui.mapBox['move'], Gui.mapBox['el']);
             });
         });
+        $('#limitBox .close').click(function () {
+            var left = parseInt($('#limitBox').css('left'));
+            var move = -220;
+            Gui.limitBox['el'] = this;
+
+            if (Gui.limitBox['close']) {
+                move = -move;
+            }
+
+            Gui.limitBox['move'] = move;
+
+            $('#limitBox').animate({'left': left + move + 'px'}, Gui.speed, function () {
+                Gui.limitBox['close'] = !Gui.limitBox['close'];
+                Gui.changeCloseArrowLR(Gui.limitBox['move'], Gui.limitBox['el']);
+            });
+        });
         $('#timerBox .close').click(function () {
             var left = parseInt($('#timerBox').css('left'));
             var move = -220;
@@ -283,11 +300,12 @@ var Gui = {
         }
     },
     adjust: function () {
-        this.armyBox.close = 0;
-        this.chatBox.close = 0;
-        this.playerBox.close = 0;
-        this.timerBox.close = 0;
-        this.mapBox.close = 0;
+        this.armyBox.close = 0
+        this.chatBox.close = 0
+        this.playerBox.close = 0
+        this.limitBox.close = 0
+        this.timerBox.close = 0
+        this.mapBox.close = 0
         gameWidth = $(window).width()
         gameHeight = $(window).height()
 

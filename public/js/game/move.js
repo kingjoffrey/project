@@ -157,5 +157,6 @@ var Move = {
         setTimeout('$(".war").remove()', 100);
         console.log('move.end(' + ii + ') 1')
         this.moving = 0
+        Websocket.executing = 0
     }
 }

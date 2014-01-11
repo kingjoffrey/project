@@ -1,6 +1,214 @@
 Websocket = {
     close: true,
     i: 0,
+    queue: {},
+    executing: 0,
+    addQueue: function (r) {
+        this.i++
+        this.queue[this.i] = r
+        this.wait()
+    },
+    wait: function () {
+        if (this.executing) {
+            setTimeout('Websocket.wait()', 500);
+        } else {
+            var ii
+            for (ii in this.queue) {
+                this.execute(this.queue[ii])
+                delete this.queue[ii]
+                return
+            }
+        }
+    },
+    execute: function (r) {
+        this.executing = 1
+
+        switch (r.type) {
+            case 'move':
+                Move.start(r, Websocket.i);
+                break;
+
+            case 'computer':
+                if (isTruthful(r.path)) {
+                    Move.start(r, this.i)
+                } else {
+                    this.computer()
+                    this.executing = 0
+                }
+                break;
+
+            case 'computerStart':
+                var s = Army.computerLoop(r.armies, r.color)
+                this.executing = 0
+                break;
+
+            case 'nextTurn':
+                Army.deselect()
+                Turn.change(r.color, r.nr)
+                this.computer()
+                this.executing = 0
+                break;
+
+            case 'startTurn':
+                if (r.color == my.color) {
+                    Army.quitedArmies = {};
+                    Sound.play('startturn');
+                    goldUpdate(r.gold)
+                    costsUpdate(r.costs)
+                    incomeUpdate(r.income)
+                    unlock();
+                }
+
+                for (i in r.armies) {
+                    var status = Army.init(r.armies[i], r.color);
+                }
+                for (i in r.castles) {
+                    var status = Castle.updateCurrentProductionTurn(i, r.castles[i].productionTurn);
+                }
+                this.executing = 0
+                break;
+
+            case 'ruin':
+                board.append($('<div>').addClass('ruinSearch').css({'top': 40 * Army.deselected.y + 'px', 'left': 40 * Army.deselected.x + 'px'}));
+                zoomer.lensSetCenter(r.army.x * 40, r.army.y * 40);
+                Army.init(r.army, r.color);
+                Ruin.update(r.ruin.ruinId, r.ruin.empty);
+                if (my.color == r.color) {
+                    switch (r.find[0]) {
+                        case 'gold':
+                            Sound.play('gold1');
+                            goldIncrement(r.find[1]);
+                            Message.simpleNew('Ruins', 'You have found ' + r.find[1] + ' gold.');
+                            break;
+                        case 'death':
+                            Sound.play('death');
+                            Message.simpleNew('Ruins', 'You have found death.');
+                            if (!Hero.findMy()) {
+                                $('#heroResurrection').removeClass('buttonOff')
+                            }
+                            break
+                        case 'allies':
+                            Sound.play('allies');
+                            Message.simpleNew('Ruins', r.find[1] + ' alies joined your army.');
+                            break
+                        case 'null':
+                            Sound.play('click');
+                            Message.simpleNew('Ruins', 'You have found nothing.');
+                            break
+                        case 'artifact':
+                            Message.simpleNew('Ruins', 'You have found an ancient artifact - "' + artifacts[r.find[1]].name + '".');
+                            Chest.update(r.color, r.find[1]);
+                            break
+                        case 'empty':
+                            Sound.play('error');
+                            Message.simpleNew('Ruins', 'Ruins are empty.');
+                            break;
+
+                    }
+                }
+                $('.ruinSearch').animate({'display': 'none'}, 1000, function () {
+                    $('.ruinSearch').remove()
+                    Websocket.executing = 0
+                })
+                break;
+
+            case 'split':
+                Army.init(r.parentArmy, r.color);
+                Army.init(r.childArmy, r.color);
+
+                Army.parent = players[r.color].armies[r.parentArmy.armyId];
+
+                if (my.turn) {
+                    Message.remove()
+                    Army.select(players[r.color].armies[r.childArmy.armyId], 0);
+                } else {
+                    zoomer.setCenterIfOutOfScreen(r.parentArmy.x * 40, r.parentArmy.y * 40);
+                }
+                this.executing = 0
+                break;
+
+            case 'join':
+                if (my.turn) {
+                    Message.remove()
+                }
+                zoomer.setCenterIfOutOfScreen(r.army.x * 40, r.army.y * 40);
+                for (i in r.deletedIds) {
+                    Army.delete(r.deletedIds[i].armyId, r.color);
+                }
+                Army.init(r.army, r.color);
+                this.executing = 0
+                break;
+
+            case 'disband':
+                if (my.turn) {
+                    Message.remove()
+                    var upkeep = 0;
+                    for (i in players[my.color].armies[r.armyId].soldiers) {
+                        upkeep += units[players[my.color].armies[r.armyId].soldiers[i].unitId].cost
+                    }
+
+                    costIncrement(-upkeep)
+
+                    if (!Hero.findMy()) {
+                        $('#heroResurrection').removeClass('buttonOff')
+                    }
+                }
+                Army.delete(r.armyId, r.color);
+                this.executing = 0
+                break;
+
+            case 'resurrection':
+                Sound.play('resurrection');
+                zoomer.lensSetCenter(r.data.army.x * 40, r.data.army.y * 40);
+                Army.init(r.data.army, r.color);
+                if (my.turn) {
+                    Message.remove()
+                    goldUpdate(r.data.gold);
+                    if (Hero.findMy()) {
+                        $('#heroResurrection').addClass('buttonOff')
+                    }
+                } else if (players[r.color].computer) {
+                    Websocket.computer()
+                }
+                this.executing = 0
+                break;
+
+            case 'raze':
+                $('#razeCastle').addClass('buttonOff');
+                Castle.raze(r.castleId);
+                if (my.turn) {
+                    Sound.play('gold1');
+                    Message.remove()
+                    goldUpdate(r.gold);
+                } else {
+                    Sound.play('raze');
+                }
+                this.executing = 0
+                break;
+
+            case 'defense':
+                Castle.updateDefense(r.castleId, r.defenseMod);
+                if (my.turn) {
+                    Message.remove();
+                    goldUpdate(r.gold);
+                }
+                this.executing = 0
+                break;
+
+            case 'surrender':
+                Army.deselect();
+                for (i in players[r.color].armies) {
+                    Army.delete(i, r.color, 1);
+                }
+                for (i in players[r.color].castles) {
+                    Castle.raze(i);
+                }
+                this.nextTurn()
+                this.executing = 0
+                break;
+
+        }
+    },
     init: function () {
         ws = new WebSocket(wsURL + '/game');
 
@@ -16,157 +224,62 @@ Websocket = {
 
                 switch (r.type) {
 
+                    case 'move':
+                        Websocket.addQueue(r)
+                        break;
+
+                    case 'computer':
+                        Websocket.addQueue(r)
+                        break;
+
+                    case 'computerStart':
+                        Websocket.addQueue(r)
+                        break;
+
+                    case 'nextTurn':
+                        Websocket.addQueue(r)
+                        break;
+
+                    case 'startTurn':
+                        Websocket.addQueue(r)
+                        break;
+
+                    case 'ruin':
+                        Websocket.addQueue(r)
+                        break;
+
+                    case 'split':
+                        Websocket.addQueue(r)
+                        break;
+
+                    case 'join':
+                        Websocket.addQueue(r)
+                        break;
+
+                    case 'disband':
+                        Websocket.addQueue(r)
+                        break;
+
+                    case 'resurrection':
+                        Websocket.addQueue(r)
+                        break;
+
+                    case 'raze':
+                        Websocket.addQueue(r)
+                        break;
+
+                    case 'defense':
+                        Websocket.addQueue(r)
+                        break;
+
+                    case 'surrender':
+                        Websocket.addQueue(r)
+                        break;
+
                     case 'error':
                         Sound.play('error');
                         Message.error(r.msg);
                         unlock();
-                        break;
-
-                    case 'move':
-                        Websocket.i++
-                        Move.start(r, Websocket.i);
-                        break;
-
-                    case 'computer':
-                        if (isTruthful(r.path)) {
-                            Websocket.i++
-                            Move.start(r, Websocket.i)
-                        } else {
-                            Websocket.computer();
-                        }
-                        break;
-
-                    case 'computerStart':
-                        Army.computerLoop(r.armies, r.color);
-                        break;
-
-                    case 'nextTurn':
-                        Army.deselect();
-                        Turn.change(r.color, r.nr);
-                        Websocket.computer();
-                        break;
-
-                    case 'startTurn':
-                        Army.quitedArmies = {};
-
-                        if (r.color == my.color) {
-                            Sound.play('startturn');
-                            goldUpdate(r.gold)
-                            costsUpdate(r.costs)
-                            incomeUpdate(r.income)
-                            unlock();
-                        }
-
-                        for (i in r.armies) {
-                            Army.init(r.armies[i], r.color);
-                        }
-                        for (i in r.castles) {
-                            Castle.updateCurrentProductionTurn(i, r.castles[i].productionTurn);
-                        }
-                        break;
-
-                    case 'ruin':
-                        board.append($('<div>').addClass('ruinSearch').css({'top': 40 * Army.deselected.y + 'px', 'left': 40 * Army.deselected.x + 'px'}));
-                        zoomer.lensSetCenter(r.army.x * 40, r.army.y * 40);
-                        Army.init(r.army, r.color);
-                        Ruin.update(r.ruin.ruinId, r.ruin.empty);
-                        if (my.color == r.color) {
-                            switch (r.find[0]) {
-                                case 'gold':
-                                    Sound.play('gold1');
-                                    goldIncrement(r.find[1]);
-                                    Message.simpleNew('Ruins', 'You have found ' + r.find[1] + ' gold.');
-                                    break;
-                                case 'death':
-                                    Sound.play('death');
-                                    Message.simpleNew('Ruins', 'You have found death.');
-                                    if (!Hero.findMy()) {
-                                        $('#heroResurrection').removeClass('buttonOff')
-                                    }
-                                    break
-                                case 'allies':
-                                    Sound.play('allies');
-                                    Message.simpleNew('Ruins', r.find[1] + ' alies joined your army.');
-                                    break
-                                case 'null':
-                                    Sound.play('click');
-                                    Message.simpleNew('Ruins', 'You have found nothing.');
-                                    break
-                                case 'artifact':
-                                    Message.simpleNew('Ruins', 'You have found an ancient artifact - "' + artifacts[r.find[1]].name + '".');
-                                    Chest.update(r.color, r.find[1]);
-                                    break
-                                case 'empty':
-                                    Sound.play('error');
-                                    Message.simpleNew('Ruins', 'Ruins are empty.');
-                                    break;
-
-                            }
-                        }
-                        $('.ruinSearch').animate({'display': 'none'}, 1000, function () {
-                            $('.ruinSearch').remove();
-                        });
-                        break;
-
-                    case 'split':
-                        if (my.turn) {
-                            Message.remove()
-                        }
-                        Army.init(r.parentArmy, r.color);
-                        Army.init(r.childArmy, r.color);
-
-                        Army.parent = players[r.color].armies[r.parentArmy.armyId];
-
-                        if (my.color == Turn.color) {
-                            Army.select(players[r.color].armies[r.childArmy.armyId], 0);
-                        } else {
-                            zoomer.lensSetCenter(r.parentArmy.x * 40, r.parentArmy.y * 40);
-                        }
-                        break;
-
-                    case 'join':
-                        if (my.turn) {
-                            Message.remove()
-                        }
-                        zoomer.lensSetCenter(r.army.x * 40, r.army.y * 40);
-                        for (i in r.deletedIds) {
-                            Army.delete(r.deletedIds[i].armyId, r.color);
-                        }
-                        Army.init(r.army, r.color);
-                        break;
-
-                    case 'disband':
-                        if (isSet(r.armyId) && isSet(r.color)) {
-                            if (my.turn) {
-                                Message.remove()
-                                var upkeep = 0;
-                                for (i in players[my.color].armies[r.armyId].soldiers) {
-                                    upkeep += units[players[my.color].armies[r.armyId].soldiers[i].unitId].cost
-                                }
-
-                                costIncrement(-upkeep)
-
-                                if (!Hero.findMy()) {
-                                    $('#heroResurrection').removeClass('buttonOff')
-                                }
-                            }
-                            Army.delete(r.armyId, r.color);
-                        }
-                        break;
-
-                    case 'resurrection':
-                        Sound.play('resurrection');
-                        zoomer.lensSetCenter(r.data.army.x * 40, r.data.army.y * 40);
-                        Army.init(r.data.army, r.color);
-                        if (my.turn) {
-                            Message.remove()
-                            goldUpdate(r.data.gold);
-                            if (Hero.findMy()) {
-                                $('#heroResurrection').addClass('buttonOff')
-                            }
-                        } else if (players[r.color].computer) {
-                            Websocket.computer()
-                        }
                         break;
 
                     case 'open':
@@ -183,56 +296,8 @@ Websocket = {
                         chat(r.color, r.msg, makeTime());
                         break;
 
-                    case 'raze':
-                        $('#razeCastle').addClass('buttonOff');
-                        Castle.raze(r.castleId);
-                        if (my.turn) {
-                            Sound.play('gold1');
-                            Message.remove()
-                            goldUpdate(r.gold);
-                        } else {
-                            Sound.play('raze');
-                        }
-                        break;
-
-                    case 'defense':
-                        Castle.updateDefense(r.castleId, r.defenseMod);
-                        if (my.turn) {
-                            Message.remove();
-                            goldUpdate(r.gold);
-                        }
-                        break;
-
                     case 'production':
                         Castle.updateMyProduction(r.unitId, r.castleId, r.relocationCastleId);
-                        break;
-
-                    case 'surrender':
-                        Army.deselect();
-                        for (i in players[r.color].armies) {
-                            Army.delete(i, r.color, 1);
-                        }
-                        for (i in players[r.color].castles) {
-                            Castle.raze(i);
-                        }
-                        Websocket.nextTurn();
-                        break;
-
-                    case 'inventoryAdd':
-                        $('#inventory').append(
-                            $('<div>')
-                                .html(artifacts[r.artifactId].name)
-                                .click(function () {
-                                    Websocket.inventoryDel(Army.selected.heroes[0].heroId);
-                                })
-                        );
-                        for (a in players[my.color].armies) {
-                            for (h in players[my.color].armies[a].heroes) {
-                                if (players[my.color].armies[a].heroes[h].heroId == r.heroId) {
-                                    players[my.color].armies[a].heroes[h].artifacts.push({artifactId: r.artifactId});
-                                }
-                            }
-                        }
                         break;
 
                     case 'statistics':
