@@ -196,17 +196,29 @@ Websocket = {
                 break;
 
             case 'surrender':
-                Army.deselect();
+                Army.deselect()
                 for (i in players[r.color].armies) {
-                    Army.delete(i, r.color, 1);
+                    var s = Army.delete(i, r.color, 1)
                 }
                 for (i in players[r.color].castles) {
-                    Castle.raze(i);
+                    var s = Castle.raze(i)
                 }
                 this.nextTurn()
                 this.executing = 0
                 break;
 
+            case 'end':
+                Turn.off()
+                Message.end()
+                this.executing = 0
+                break;
+
+            case 'dead':
+                if (notSet(Players.wedges[r.color].skull)) {
+                    Players.drawSkull(r.color)
+                }
+                this.executing = 0
+                break;
         }
     },
     init: function () {
@@ -276,6 +288,14 @@ Websocket = {
                         Websocket.addQueue(r)
                         break;
 
+                    case 'end':
+                        Websocket.addQueue(r)
+                        break;
+
+                    case 'dead':
+                        Websocket.addQueue(r)
+                        break;
+
                     case 'error':
                         Sound.play('error');
                         Message.error(r.msg);
@@ -307,17 +327,6 @@ Websocket = {
                         soldiersCreated = r.soldiersCreated;
                         soldiersKilled = r.soldiersKilled;
                         Message.statistics();
-                        break;
-
-                    case 'dead':
-                        if (notSet(Players.wedges[r.color].skull)) {
-                            Players.drawSkull(r.color)
-                        }
-                        break;
-
-                    case 'end':
-                        Turn.off();
-                        Message.end();
                         break;
 
                     case 'bSequence':
