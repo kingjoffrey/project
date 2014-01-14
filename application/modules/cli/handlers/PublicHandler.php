@@ -37,7 +37,7 @@ class Cli_PublicHandler extends Cli_WofHandler
                 'playerId' => $dataIn['playerId']
             );
 
-            $mPlayersInGame->updatePlayerInGameWSSUId($dataIn['playerId'], $user->getId());
+            $mPlayersInGame->updateWSSUId($dataIn['playerId'], $user->getId());
             $this->update($dataIn['gameId'], $db);
 
             $mGame = new Application_Model_Game($user->parameters['gameId'], $db);
@@ -56,6 +56,16 @@ class Cli_PublicHandler extends Cli_WofHandler
         }
 
         switch ($dataIn['type']) {
+            case 'team':
+                $token = array(
+                    'type' => 'team',
+                    'mapPlayerId' => $dataIn['mapPlayerId'],
+                    'teamId' => $dataIn['teamId']
+                );
+
+                $this->sendToChannel($db, $token, $user->parameters['gameId']);
+                break;
+
             case 'start':
                 $mGame = new Application_Model_Game($user->parameters['gameId'], $db);
 
@@ -76,6 +86,8 @@ class Cli_PublicHandler extends Cli_WofHandler
                 $startPositions = $mMapCastles->getDefaultStartPositions();
 
                 foreach ($players as $player) {
+                    $mPlayersInGame->setTeam($player['playerId'], $dataIn['team'][$player['mapPlayerId']]);
+
                     $mHero = new Application_Model_Hero($player['playerId'], $db);
                     $playerHeroes = $mHero->getHeroes();
                     if (empty($playerHeroes)) {

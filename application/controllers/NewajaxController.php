@@ -18,8 +18,7 @@ class NewajaxController extends Game_Controller_Action
 
     public function nopAction()
     {
-        $mapId = $this->_request->getParam('mapId');
-        $form = new Application_Form_NumberOfPlayers(array('mapId' => $mapId));
+        $form = new Application_Form_NumberOfPlayers(array('mapId' => $this->_request->getParam('mapId')));
         echo Zend_Json::encode($form->__toString());
     }
 }

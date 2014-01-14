@@ -26,22 +26,6 @@ class Application_Model_MapPlayers extends Coret_Db_Table_Abstract
         return $this->selectOne($select);
     }
 
-    public function getColors()
-    {
-        $select = $this->_db->select()
-            ->from($this->_name, 'shortName')
-            ->where($this->_db->quoteIdentifier('mapId') . ' = ?', $this->mapId)
-            ->order('startOrder');
-
-        $array = array();
-
-        foreach ($this->selectAll($select) as $row) {
-            $array[] = $row['shortName'];
-        }
-
-        return $array;
-    }
-
     public function getMapPlayerIds()
     {
         $select = $this->_db->select()
@@ -68,6 +52,38 @@ class Application_Model_MapPlayers extends Coret_Db_Table_Abstract
 
         foreach ($this->selectAll($select) as $row) {
             $array[$row['shortName']] = $row['mapPlayerId'];
+        }
+
+        return $array;
+    }
+
+    public function getColors()
+    {
+        $select = $this->_db->select()
+            ->from($this->_name, 'shortName')
+            ->where($this->_db->quoteIdentifier('mapId') . ' = ?', $this->mapId)
+            ->order('startOrder');
+
+        $array = array();
+
+        foreach ($this->selectAll($select) as $row) {
+            $array[] = $row['shortName'];
+        }
+
+        return $array;
+    }
+
+    public function getLongNames()
+    {
+        $select = $this->_db->select()
+            ->from($this->_name, array('mapPlayerId', 'longName'))
+            ->where($this->_db->quoteIdentifier('mapId') . ' = ?', $this->mapId)
+            ->order('startOrder');
+
+        $array = array();
+
+        foreach ($this->selectAll($select) as $row) {
+            $array[$row['mapPlayerId']] = $row['longName'];
         }
 
         return $array;

@@ -19,7 +19,7 @@ class Cli_Model_Open
             return;
         }
 
-        $mPlayersInGame->updatePlayerInGameWSSUId($dataIn['playerId'], $user->getId());
+        $mPlayersInGame->updateWSSUId($dataIn['playerId'], $user->getId());
 
         $mGame = new Application_Model_Game($dataIn['gameId'], $db);
         $mBattleSequence = new Application_Model_BattleSequence($dataIn['gameId'], $db);

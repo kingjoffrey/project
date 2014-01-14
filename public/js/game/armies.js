@@ -11,12 +11,12 @@ var Army = {
     isNextSelected: null,
     getHeroKey: function (heroes) {
         for (heroId in heroes) {
-            return heroId;
+            return heroId
         }
     },
     getSoldierKey: function (soldiers) {
         for (key in soldiers) {
-            return key;
+            return key
         }
     },
     getFlySwim: function (army) {
@@ -31,6 +31,7 @@ var Army = {
             }
 
             if (units[army.soldiers[key].unitId].canSwim) {
+                army.soldierKey = key
                 army.canSwim++;
                 army.moves = army.soldiers[key].movesLeft;
             }
@@ -144,17 +145,7 @@ var Army = {
         return a.soldiers[key].movesLeft
     },
     setImg: function (army, heroKey, soldierKey) {
-        if (army.canSwim) {
-            if (units[shipId].name_lang) {
-                army.name = units[shipId].name_lang;
-            } else {
-                army.name = units[shipId].name;
-            }
-
-            army.img = Unit.getImage(shipId, army.color);
-            army.attack = units[shipId].attackPoints;
-            army.defense = units[shipId].defensePoints;
-        } else if (heroKey) {
+        if (heroKey) {
             if (army.heroes[heroKey].name) {
                 army.name = army.heroes[heroKey].name;
             } else {
@@ -191,7 +182,7 @@ var Army = {
             if (Army.selected) {
                 if (Army.selected.armyId == army.armyId) {
                     if (Army.selected.heroes.length + Army.selected.soldiers.length == 1) {
-                        return;
+                        return
                     }
 
                     $('#army' + Army.selected.armyId).css('background', 'none');
@@ -303,9 +294,9 @@ var Army = {
             this.unfortify(army.armyId);
         }
 
-        army = this.getFlySwim(army);
-        army = this.getMovementType(army);
-        army = this.setImg(army, army.heroKey, army.soldierKey);
+        army = this.getFlySwim(army)
+        army = this.getMovementType(army)
+        army = this.setImg(army, army.heroKey, army.soldierKey)
 
         var element = $('<div>')
             .addClass('army ' + color)

@@ -1,7 +1,17 @@
-var start = 0;
-var gameMaster = 0;
-var playersReady = 0;
+var Setup = {
+    team: function (mapPlayerId) {
+        var token = {
+            type: 'team',
+            mapPlayerId: mapPlayerId,
+            teamId: $('tr#' + mapPlayerId + ' select').val()
+        }
 
+        ws.send(JSON.stringify(token));
+    }
+}
+
+var start = 0,
+    select = null
 
 $(document).ready(function () {
     initWebSocket();
@@ -23,13 +33,15 @@ function initWebSocket() {
         }
 
         switch (r.type) {
+            case 'team':
+                $('tr#' + r.mapPlayerId + ' select').val(r.teamId)
+                break
 
             case 'start':
                 top.location.replace(urlGemesetupStart);
                 break;
 
             case 'update':
-//                                console.log(r);
                 if (typeof r.gameMasterId == 'undefined') {
                     return;
                 }
@@ -79,6 +91,9 @@ function initWebSocket() {
 
                 prepareStartButton(r.gameMasterId, playersReady);
                 break;
+
+            default:
+                console.log(r)
         }
     };
 
@@ -119,6 +134,11 @@ function wsComputer(mapPlayerId) {
 }
 
 function prepareButtons(gameMasterId) {
+    var click = function (i) {
+        return function () {
+            Setup.team(i)
+        }
+    }
     for (i = 0; i < numberOfPlayers; i++) {
         $('#' + mapPlayers[i].mapPlayerId + ' .td1 div.left').html('');
 
@@ -143,6 +163,12 @@ function prepareButtons(gameMasterId) {
         } else {
             $('#' + mapPlayers[i].mapPlayerId + ' .td3').html('');
         }
+
+        $('#' + mapPlayers[i].mapPlayerId + ' .td4').html($(form).children('dl').children('dd').children('select'))
+        $('#' + mapPlayers[i].mapPlayerId + ' .td4 select')
+            .val(mapPlayers[i].mapPlayerId)
+            .attr('id', mapPlayers[i].mapPlayerId)
+            .change(click(mapPlayers[i].mapPlayerId))
     }
 }
 
@@ -166,8 +192,18 @@ function prepareStartButton(gameMasterId, playersReady) {
 }
 
 function wsStart() {
+    var team = {}
+
+    $('#playersingame tr').each(function () {
+        var id = $(this).attr('id')
+        if (typeof id != 'undefined') {
+            team[id] = $(this).find('select').val()
+        }
+    })
+
     var token = {
-        type: 'start'
+        type: 'start',
+        team: team
     };
 
     ws.send(JSON.stringify(token));

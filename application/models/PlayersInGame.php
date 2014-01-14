@@ -22,7 +22,7 @@ class Application_Model_PlayersInGame extends Coret_Db_Table_Abstract
         $select = $this->_db->select()
             ->from(array('a' => $this->_name), 'playerId')
             ->join(array('b' => 'player'), 'a."playerId" = b."playerId"', 'computer')
-            ->join(array('c' => 'mapplayers'), 'a . "mapPlayerId" = c . "mapPlayerId"', 'castleId')
+            ->join(array('c' => 'mapplayers'), 'a . "mapPlayerId" = c . "mapPlayerId"', array('mapPlayerId', 'castleId'))
             ->where('a . ' . $this->_db->quoteIdentifier('gameId') . ' = ?', $this->_gameId)
             ->where('a . ' . $this->_db->quoteIdentifier('mapPlayerId') . ' IS NOT NULL');
 
@@ -369,11 +369,26 @@ class Application_Model_PlayersInGame extends Coret_Db_Table_Abstract
         return $this->selectOne($select);
     }
 
-    public function updatePlayerInGameWSSUId($playerId, $wssuid)
+    public function updateWSSUId($playerId, $wssuid)
     {
 
         $data = array(
             'webSocketServerUserId' => $wssuid
+        );
+
+        $where = array(
+            $this->_db->quoteInto($this->_db->quoteIdentifier('playerId') . ' = ?', $playerId),
+            $this->_db->quoteInto($this->_db->quoteIdentifier('gameId') . ' = ?', $this->_gameId)
+        );
+
+        $this->update($data, $where);
+    }
+
+    public function setTeam($playerId, $teamId)
+    {
+
+        $data = array(
+            'team' => $teamId
         );
 
         $where = array(

@@ -49,6 +49,8 @@ class SetupController extends Game_Controller_Gui
 
         $this->view->timeLimits = Application_Model_Limit::timeLimits();
         $this->view->turnTimeLimit = Application_Model_Limit::turnTimeLimit();
+
+        $this->view->form = new Application_Form_Team(array('mapId' => $game['mapId']));
     }
 }
 

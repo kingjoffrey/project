@@ -240,7 +240,7 @@ class Cli_GameHandler extends Cli_WofHandler
             $db = Cli_Model_Database::getDb();
 
             $mPlayersInGame = new Application_Model_PlayersInGame($user->parameters['gameId'], $db);
-            $mPlayersInGame->updatePlayerInGameWSSUId($user->parameters['playerId'], null);
+            $mPlayersInGame->updateWSSUId($user->parameters['playerId'], null);
 
 //            Game_Cli_Database::disconnectFromGame($user->parameters['gameId'], $user->parameters['playerId'], $db);
 //            $this->update($user->parameters['gameId'], $db);
