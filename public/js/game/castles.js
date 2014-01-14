@@ -325,8 +325,8 @@ var Castle = {
         castles[castleId].color = color;
 
         $('#c' + castleId).css({
-            'background': mapPlayersColors[color].minimapColor,
-            'border-color': mapPlayersColors[color].textColor
+            'background': players[color].minimapColor,
+            'border-color': players[color].textColor
         })
     },
     raze: function (castleId) {

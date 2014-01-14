@@ -14,7 +14,8 @@ var start = 0,
     select = null
 
 $(document).ready(function () {
-    initWebSocket();
+    initWebSocket()
+    prepareTeams()
 });
 
 function initWebSocket() {
@@ -134,11 +135,6 @@ function wsComputer(mapPlayerId) {
 }
 
 function prepareButtons(gameMasterId) {
-    var click = function (i) {
-        return function () {
-            Setup.team(i)
-        }
-    }
     for (i = 0; i < numberOfPlayers; i++) {
         $('#' + mapPlayers[i].mapPlayerId + ' .td1 div.left').html('');
 
@@ -163,7 +159,17 @@ function prepareButtons(gameMasterId) {
         } else {
             $('#' + mapPlayers[i].mapPlayerId + ' .td3').html('');
         }
+    }
+}
 
+function prepareTeams() {
+    var click = function (i) {
+        return function () {
+            Setup.team(i)
+        }
+    }
+
+    for (i = 0; i < numberOfPlayers; i++) {
         $('#' + mapPlayers[i].mapPlayerId + ' .td4').html($(form).children('dl').children('dd').children('select'))
         $('#' + mapPlayers[i].mapPlayerId + ' .td4 select')
             .val(mapPlayers[i].mapPlayerId)

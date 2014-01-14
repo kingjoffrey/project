@@ -90,17 +90,38 @@ var Players = {
             this.wedges[shortName].x = this.centerX + Math.cos(r_rotation) * 70 - 11;
             this.wedges[shortName].y = this.centerY + Math.sin(r_rotation) * 70 - 14;
             this.wedges[shortName].rotation = r_rotation
-            this.wedges[shortName].kinetic = new Kinetic.Wedge({
+
+            var team = new Kinetic.Wedge({
                 x: this.centerX,
                 y: this.centerY,
                 radius: 50,
                 angleDeg: this.angle,
+                fill: players[players[shortName].team].backgroundColor,
+                strokeWidth: 0,
+                rotationDeg: rotation
+            })
+            this.layer.add(team)
+            var aaa = new Kinetic.Wedge({
+                x: this.centerX,
+                y: this.centerY,
+                radius: 46,
+                angleDeg: this.angle,
+                fill: 'grey',
+                strokeWidth: 0,
+                rotationDeg: rotation
+            })
+            this.layer.add(aaa)
+
+            this.wedges[shortName].kinetic = new Kinetic.Wedge({
+                x: this.centerX,
+                y: this.centerY,
+                radius: 45,
+                angleDeg: this.angle,
                 fill: players[shortName].backgroundColor,
                 strokeWidth: 0,
                 rotationDeg: rotation
-            });
-
-            this.layer.add(this.wedges[shortName].kinetic);
+            })
+            this.layer.add(this.wedges[shortName].kinetic)
             this.drawImage(shortName)
             if (players[shortName].lost) {
                 this.drawSkull(shortName)

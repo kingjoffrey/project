@@ -3,6 +3,7 @@
 var Turn = {
     number: null,
     color: null,
+    beginDate: null,
     init: function () {
         var j = 0,
             history = {}
@@ -22,13 +23,14 @@ var Turn = {
             j++;
         }
 
-        for(i in history){
-            timer.append(history[i].shortName, history[i].number,  history[i].start, history[i].end)
+        for (i in history) {
+            timer.append(history[i].shortName, history[i].number, history[i].start, history[i].end)
         }
 
         timer.scroll()
-        this.number = turnHistory[i].number;
-        this.color = turnHistory[i].shortName;
+        this.number = turnHistory[i].number
+        this.color = turnHistory[i].shortName
+        this.beginDate = turnHistory[i].date
     },
     on: function () {
         makeMyCursorUnlock();
@@ -42,7 +44,7 @@ var Turn = {
         if (!Hero.findMy()) {
             $('#heroResurrection').removeClass('buttonOff')
         }
-        if(my.gold > 1000){
+        if (my.gold > 1000) {
             $('#heroHire').removeClass('buttonOff')
         }
     },
@@ -62,7 +64,8 @@ var Turn = {
         }
 
         Players.rotate(color)
-        timer.update();
+        this.beginDate = (new Date()).getTime()
+        timer.update()
 
         Turn.color = color;
 

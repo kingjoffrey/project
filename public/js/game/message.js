@@ -729,7 +729,7 @@ var Message = {
 
         var attackGrass = $('<div>')
             .addClass('grass')
-            .append($('<div>').html(mapPlayersColors[r.attackerColor].longName))
+            .append($('<div>').html(players[r.attackerColor].longName))
             .append(attack)
 
         var defense = $('<div>').addClass('battle defense');
@@ -762,8 +762,8 @@ var Message = {
             );
         }
 
-        if (isSet(mapPlayersColors[r.defenderColor])) {
-            var longName = mapPlayersColors[r.defenderColor].longName
+        if (isSet(players[r.defenderColor])) {
+            var longName = players[r.defenderColor].longName
         } else {
             var longName = 'Shadow'
         }
@@ -932,17 +932,17 @@ var Message = {
         for (i in players) {
             var tr = $('<tr>');
 
-            tr.append($('<td>').addClass('shortName').html($('<img>').attr('src', Hero.getImage(mapPlayersColors[i].shortName))))
+            tr.append($('<td>').addClass('shortName').html($('<img>').attr('src', Hero.getImage(players[i].shortName))))
 
             var td = $('<td>').addClass('shortName');
-            tr.append(td.html(mapPlayersColors[i].longName))
+            tr.append(td.html(players[i].longName))
 
             var td = $('<td>').css({
-                border: '1px solid ' + mapPlayersColors[i].backgroundColor
+                border: '1px solid ' + players[i].backgroundColor
             })
             var numberOfCastlesHeld = 0
             for (castleId in castles) {
-                if (castles[castleId].color == mapPlayersColors[i].shortName) {
+                if (castles[castleId].color == players[i].shortName) {
                     numberOfCastlesHeld++
                 }
             }
@@ -953,7 +953,7 @@ var Message = {
             }
 
             var td = $('<td>').css({
-                border: '1px solid ' + mapPlayersColors[i].backgroundColor
+                border: '1px solid ' + players[i].backgroundColor
             })
             if (isSet(castlesConquered.winners[i])) {
                 tr.append(td.html(castlesConquered.winners[i]))
@@ -962,7 +962,7 @@ var Message = {
             }
 
             var td = $('<td>').css({
-                border: '1px solid ' + mapPlayersColors[i].backgroundColor
+                border: '1px solid ' + players[i].backgroundColor
             })
             if (isSet(castlesConquered.losers[i])) {
                 tr.append(td.html(castlesConquered.losers[i]))
@@ -971,7 +971,7 @@ var Message = {
             }
 
             var td = $('<td>').css({
-                border: '1px solid ' + mapPlayersColors[i].backgroundColor
+                border: '1px solid ' + players[i].backgroundColor
             })
             if (isSet(castlesDestroyed[i])) {
                 tr.append(td.html(castlesConquered[i]))
@@ -980,7 +980,7 @@ var Message = {
             }
 
             var td = $('<td>').css({
-                border: '1px solid ' + mapPlayersColors[i].backgroundColor
+                border: '1px solid ' + players[i].backgroundColor
             })
             if (isSet(soldiersCreated[i])) {
                 tr.append(td.html(soldiersCreated[i]))
@@ -989,7 +989,7 @@ var Message = {
             }
 
             var td = $('<td>').css({
-                border: '1px solid ' + mapPlayersColors[i].backgroundColor
+                border: '1px solid ' + players[i].backgroundColor
             })
             if (isSet(soldiersKilled.winners[i])) {
                 tr.append(td.html(soldiersKilled.winners[i]))
@@ -998,7 +998,7 @@ var Message = {
             }
 
             var td = $('<td>').css({
-                border: '1px solid ' + mapPlayersColors[i].backgroundColor
+                border: '1px solid ' + players[i].backgroundColor
             })
             if (isSet(soldiersKilled.losers[i])) {
                 tr.append(td.html(soldiersKilled.losers[i]))
@@ -1007,7 +1007,7 @@ var Message = {
             }
 
             var td = $('<td>').css({
-                border: '1px solid ' + mapPlayersColors[i].backgroundColor
+                border: '1px solid ' + players[i].backgroundColor
             })
             if (isSet(heroesKilled.winners[i])) {
                 tr.append(td.html(heroesKilled.winners[i]))
@@ -1016,7 +1016,7 @@ var Message = {
             }
 
             var td = $('<td>').css({
-                border: '1px solid ' + mapPlayersColors[i].backgroundColor
+                border: '1px solid ' + players[i].backgroundColor
             })
             if (isSet(heroesKilled.losers[i])) {
                 tr.append(td.html(heroesKilled.losers[i]))

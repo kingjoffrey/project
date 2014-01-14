@@ -173,7 +173,7 @@ class Application_Model_PlayersInGame extends Coret_Db_Table_Abstract
         $select = $this->_db->select()
             ->from(array('a' => $this->_name))
             ->join(array('b' => 'player'), 'a."playerId" = b."playerId"', array('computer'))
-            ->join(array('c' => 'mapplayers'), 'a . "mapPlayerId" = c . "mapPlayerId"', array('color' => 'shortName', 'backgroundColor', 'textColor'))
+            ->join(array('c' => 'mapplayers'), 'a . "mapPlayerId" = c . "mapPlayerId"', array('color' => 'shortName', 'minimapColor', 'backgroundColor', 'textColor', 'longName'))
             ->where('a . ' . $this->_db->quoteIdentifier('mapPlayerId') . ' IS NOT NULL')
             ->where($this->_db->quoteIdentifier('gameId') . ' = ?', $this->_gameId)
             ->order('startOrder');
@@ -371,7 +371,6 @@ class Application_Model_PlayersInGame extends Coret_Db_Table_Abstract
 
     public function updateWSSUId($playerId, $wssuid)
     {
-
         $data = array(
             'webSocketServerUserId' => $wssuid
         );
@@ -386,7 +385,6 @@ class Application_Model_PlayersInGame extends Coret_Db_Table_Abstract
 
     public function setTeam($playerId, $teamId)
     {
-
         $data = array(
             'team' => $teamId
         );

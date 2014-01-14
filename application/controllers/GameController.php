@@ -41,14 +41,12 @@ class GameController extends Game_Controller_Game
         $mTower = new Application_Model_TowersInGame($this->_namespace->gameId);
         $mChat = new Application_Model_Chat($this->_namespace->gameId);
         $mPlayersInGame = new Application_Model_PlayersInGame($this->_namespace->gameId);
-        $playersInGameColors = $mPlayersInGame->getAllColors();
 
         $game = $mGame->getGame();
         $this->view->gameBegin = $game['begin'];
 
         $mMapPlayers = new Application_Model_MapPlayers($game['mapId']);
         $this->view->capitals = $mMapPlayers->getCapitals();
-        $this->view->mapPlayersColors = $mMapPlayers->getAllColors();
 
         $mUnit = new Application_Model_MapUnits($game['mapId']);
         $this->view->units = $mUnit->getUnits();
@@ -89,10 +87,7 @@ class GameController extends Game_Controller_Game
         $this->view->map($game['mapId']);
 
         foreach ($players as $player) {
-            $mChest = new Application_Model_Chest($player['playerId']);
-
             $colors[$player['playerId']] = $player['color'];
-            $this->view->players[$player['color']]['chest'] = $mChest->getAll();
             $this->view->players[$player['color']]['armies'] = array();
 
             $mHeroesInGame = new Application_Model_HeroesInGame($this->_namespace->gameId);
@@ -121,13 +116,7 @@ class GameController extends Game_Controller_Game
             $this->view->players[$player['color']]['lost'] = $player['lost'];
             $this->view->players[$player['color']]['backgroundColor'] = $player['backgroundColor'];
             $this->view->players[$player['color']]['textColor'] = $player['textColor'];
-
-//            if ($game['turnPlayerId'] == $player['playerId']) {
-//                $this->view->turn['playerId'] = $player['playerId'];
-//                $this->view->turn['color'] = $player['color'];
-//                $this->view->turn['nr'] = $game['turnNumber'];
-//                $this->_namespace->turn = $this->view->turn;
-//            }
+            $this->view->players[$player['color']]['team'] = $mMapPlayers->getColorByMapPlayerId($player['team']);
 
             if ($this->_namespace->player['playerId'] == $player['playerId']) {
                 $this->view->gold = $player['gold'];
@@ -181,199 +170,5 @@ class GameController extends Game_Controller_Game
             $this->view->battleSequence = $mBattleSequence->get($this->_namespace->player['playerId']);
         }
     }
-
-    public function boardAction()
-    {
-        $this->view->headLink()->prependStylesheet($this->view->baseUrl() . '/css/main.css');
-        $this->view->headLink()->appendStylesheet($this->view->baseUrl() . '/css/board.css');
-        $this->view->headScript()->prependFile('/js/jquery.min.js');
-
-        $this->view->headScript()->appendFile('/js/game/zoom.js');
-
-        $this->_helper->layout->setLayout('board');
-    }
-
-    public function testAction()
-    {
-//         $this->view->headScript()->appendFile('/js/jWebSocket.js');
-//         $this->view->headScript()->appendFile('/js/jwsChannelPlugIn.js');
-//         $this->_helper->layout->setLayout('game');
-//         $castles = array();
-//        $this->_helper->layout->disableLayout();
-//         $str = Application_Model_Board::production();
-//         $model = new Application_Model_Board();
-//         $Schema = $model->getCastlesSchema();
-//         $arr = explode("\n", $str);
-//         unset($arr[0], $arr[1]);
-//         foreach($arr as $k => $line) {
-//             if(trim(substr($line,0,1))) {
-//                 $lineExp = explode('(', $line);
-//                 $name = trim($lineExp[0]);
-//                 $castles[$name] = array();
-//                 $castles[$name]['defense'] = substr($lineExp[1],0,1);
-//                 if(!strpos($lineExp[1],'-')) {
-//                     $castles[$name]['capital'] = true;
-//                 }
-//                 $units = substr($line,33);//echo $units.'<br/>';
-//                 if(($pos = strpos($units,'Light Infantry')) !== false) {
-//                     $data = trim(substr($units,$pos+14));
-//                     $data = substr($data,1,strpos($data,')')-1);
-//                     $data = explode('/', $data);
-//                     $castles[$name]['production']['Light Infantry'] = array('time' => $data[0], 'cost' => $data[1]);
-//                     $pos = false;
-//                 }
-//                 if(($pos = strpos($units,'Heavy Infantry')) !== false) {
-//                     $data = trim(substr($units,$pos+14));
-//                     $data = substr($data,1,strpos($data,')')-1);
-//                     $data = explode('/', $data);
-//                     $castles[$name]['production']['Heavy Infantry'] = array('time' => $data[0], 'cost' => $data[1]);
-//                     $pos = false;
-//                 }
-//                 if(($pos = strpos($units,'Dwarves')) !== false) {
-//                     $data = trim(substr($units,$pos+7));
-//                     $data = substr($data,1,strpos($data,')')-1);
-//                     $data = explode('/', $data);
-//                     $castles[$name]['production']['Dwarves'] = array('time' => $data[0], 'cost' => $data[1]);
-//                     $pos = false;
-//                 }
-//                 if(($pos = strpos($units,'Giants')) !== false) {
-//                     $data = trim(substr($units,$pos+6));
-//                     $data = substr($data,1,strpos($data,')')-1);
-//                     $data = explode('/', $data);
-//                     $castles[$name]['production']['Giants'] = array('time' => $data[0], 'cost' => $data[1]);
-//                     $pos = false;
-//                 }
-//                 if(($pos = strpos($units,'Archers')) !== false) {
-//                     $data = trim(substr($units,$pos+7));
-//                     $data = substr($data,1,strpos($data,')')-1);
-//                     $data = explode('/', $data);
-//                     $castles[$name]['production']['Archers'] = array('time' => $data[0], 'cost' => $data[1]);
-//                     $pos = false;
-//                 }
-//                 if(($pos = strpos($units,'Navy')) !== false) {
-//                     $data = trim(substr($units,$pos+4));
-//                     $data = substr($data,1,strpos($data,')')-1);
-//                     $data = explode('/', $data);
-//                     $castles[$name]['production']['Navy'] = array('time' => $data[0], 'cost' => $data[1]);
-//                     $pos = false;
-//                 }
-//                 if(($pos = strpos($units,'Wolves')) !== false) {
-//                     $data = trim(substr($units,$pos+6));
-//                     $data = substr($data,1,strpos($data,')')-1);
-//                     $data = explode('/', $data);
-//                     $castles[$name]['production']['Wolves'] = array('time' => $data[0], 'cost' => $data[1]);
-//                     $pos = false;
-//                 }
-//                 if(($pos = strpos($units,'Cavalry')) !== false) {
-//                     $data = trim(substr($units,$pos+7));
-//                     $data = substr($data,1,strpos($data,')')-1);
-//                     $data = explode('/', $data);
-//                     $castles[$name]['production']['Cavalry'] = array('time' => $data[0], 'cost' => $data[1]);
-//                     $pos = false;
-//                 }
-//                 if($pos = strpos($units,'Griffins') !== false) {
-//                     $data = trim(substr($units,$pos+8));
-//                     $data = substr($data,1,strpos($data,')')-1);
-//                     $data = explode('/', $data);
-//                     $castles[$name]['production']['Griffins'] = array('time' => $data[0], 'cost' => $data[1]);
-//                     $pos = false;
-//                 }
-//                 if(!trim(substr($arr[$k+1],0,1))) {
-//                     $units2 = $arr[$k+1];
-//                     if(($pos = strpos($units2,'Light Infantry')) !== false) {
-//                         $data = trim(substr($units2,$pos+14));
-//                     $data = substr($data,1,strpos($data,')')-1);
-//                     $data = explode('/', $data);
-//                         $castles[$name]['production']['Light Infantry'] = array('time' => $data[0], 'cost' => $data[1]);
-//                         $pos = false;
-//                     }
-//                     if(($pos = strpos($units2,'Heavy Infantry')) !== false) {
-//                         $data = trim(substr($units2,$pos+14));
-//                     $data = substr($data,1,strpos($data,')')-1);
-//                     $data = explode('/', $data);
-//                         $castles[$name]['production']['Heavy Infantry'] = array('time' => $data[0], 'cost' => $data[1]);
-//                         $pos = false;
-//                     }
-//                     if(($pos = strpos($units2,'Dwarves')) !== false) {
-//                         $data = trim(substr($units2,$pos+7));
-//                     $data = substr($data,1,strpos($data,')')-1);
-//                     $data = explode('/', $data);
-//                         $castles[$name]['production']['Dwarves'] = array('time' => $data[0], 'cost' => $data[1]);
-//                         $pos = false;
-//                     }
-//                     if(($pos = strpos($units2,'Giants')) !== false) {
-//                         $data = trim(substr($units2,$pos+6));
-//                     $data = substr($data,1,strpos($data,')')-1);
-//                     $data = explode('/', $data);
-//                         $castles[$name]['production']['Giants'] = array('time' => $data[0], 'cost' => $data[1]);
-//                         $pos = false;
-//                     }
-//                     if(($pos = strpos($units2,'Archers')) !== false) {
-//                         $data = trim(substr($units2,$pos+7));
-//                     $data = substr($data,1,strpos($data,')')-1);
-//                     $data = explode('/', $data);
-//                         $castles[$name]['production']['Archers'] = array('time' => $data[0], 'cost' => $data[1]);
-//                         $pos = false;
-//                     }
-//                     if(($pos = strpos($units2,'Wolves')) !== false) {
-//                         $data = trim(substr($units2,$pos+6));
-//                     $data = substr($data,1,strpos($data,')')-1);
-//                     $data = explode('/', $data);
-//                         $castles[$name]['production']['Wolves'] = array('time' => $data[0], 'cost' => $data[1]);
-//                         $pos = false;
-//                     }
-//                     if(($pos = strpos($units2,'Cavalry')) !== false) {
-//                         $data = trim(substr($units2,$pos+7));
-//                     $data = substr($data,1,strpos($data,')')-1);
-//                     $data = explode('/', $data);
-//                         $castles[$name]['production']['Cavalry'] = array('time' => $data[0], 'cost' => $data[1]);
-//                         $pos = false;
-//                     }
-//                     if(($pos = strpos($units2,'Griffins')) !== false) {
-//                         $data = trim(substr($units2,$pos+8));
-//                     $data = substr($data,1,strpos($data,')')-1);
-//                     $data = explode('/', $data);
-//                         $castles[$name]['production']['Griffins'] = array('time' => $data[0], 'cost' => $data[1]);
-//                         $pos = false;
-//                     }
-//                     if(($pos = strpos($units2,'Navy')) !== false) {
-//                         $data = trim(substr($units2,$pos+4));
-//                     $data = substr($data,1,strpos($data,')')-1);
-//                     $data = explode('/', $data);
-//                         $castles[$name]['production']['Navy'] = array('time' => $data[0], 'cost' => $data[1]);
-//                         $pos = false;
-//                     }
-//                     if(($pos = strpos($units2,'Pegasi')) !== false) {
-//                         $data = trim(substr($units2,$pos+6));
-//                     $data = substr($data,1,strpos($data,')')-1);
-//                     $data = explode('/', $data);
-//                         $castles[$name]['production']['Pegasi'] = array('time' => $data[0], 'cost' => $data[1]);
-//                         $pos = false;
-//                     }
-//                 }
-//             }
-//         }
-//         foreach($Schema as $k => $castle) {
-//             if($castles[$castle['name']]) {
-//                 echo '$this->_castles['.$k.'] = array(<br/>';
-//                 echo '\'name\' => \''.$castle['name'].'\',<br/>';
-//                 echo '\'income\' => '.$castle['income'].',<br/>';
-//                 echo '\'defensePoints\' => '.$castles[$castle['name']]['defense'].',<br/>';
-//                 echo '\'position\' => array(\'x\' => '.$castle['position']['x'].', \'y\' => '.$castle['position']['y'].'),<br/>';
-//                 if(isset($castles[$castle['name']]['capital']))
-//                     echo '\'capital\' => true,<br/>';
-//                 else
-//                     echo '\'capital\' => false,<br/>';
-//                 echo '\'production\' => array(<br/>';
-//
-//                     foreach($castles[$castle['name']]['production'] as $k=>$p) {
-//                         echo '\''.$k.'\' => array(\'time\' => \''.$p['time'].'\', \'cost\' => \''.$p['cost'].'\'),<br/>';
-//                     }
-//                     echo ')<br/>';
-//                 echo ');<br/>';
-//             }
-//         }
-    }
-
 }
 

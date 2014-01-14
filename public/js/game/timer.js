@@ -26,18 +26,17 @@ var timer = {
         timer.countdown();
     },
     countdown: function () {
-        var time = (new Date()).getTime()
-        var difference1 = time - this.timestamp - 3600000
-        var difference2 = time - Date.parse(gameBegin.substr(0, 19)).getTime() - 3600000
+        var time = (new Date()).getTime() - 3600000
+        var difference1 = time - Date.parse(Turn.beginDate.substr(0, 19)).getTime()
+        var difference2 = time - Date.parse(gameBegin.substr(0, 19)).getTime()
 
         if (this.difference1 != difference1) {
             this.difference1 = difference1
 
-            time = new Date(difference1),
-                hours = time.getHours(),
+            time = new Date(difference1)
+            var hours = time.getHours(),
                 minutes = time.getMinutes(),
                 seconds = time.getSeconds();
-
 
             if (seconds < 10) {
                 seconds = '0' + seconds;
@@ -68,8 +67,8 @@ var timer = {
         if (this.difference2 != difference2) {
             this.difference2 = difference2
 
-            time = new Date(difference2),
-                hours = time.getHours(),
+            time = new Date(difference2)
+            var hours = time.getHours(),
                 minutes = time.getMinutes(),
                 seconds = time.getSeconds();
 
@@ -109,7 +108,6 @@ var timer = {
         $('#timerBox #' + Turn.color + Turn.number + ' #minute').html(this.elMinute1.html())
         $('#timerBox #' + Turn.color + Turn.number + ' #second').html(this.elSecond1.html())
         this.scroll()
-        this.timestamp = (new Date()).getTime()
     },
     append: function (color, number, start, end) {
         var difference = 0,
