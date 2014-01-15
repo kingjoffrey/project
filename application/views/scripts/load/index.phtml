@@ -75,10 +75,5 @@
         <p id="info"><?php echo $this->translate('There are no games to load') ?></p>
     <?php endif ?>
 </div>
-<br/>
 <?php echo $this->paginationControl($this->myGames, 'Sliding', 'pagination_control.phtml'); ?>
-<ul>
-    <li>
-        <a href="/" class="button">&laquo; <?php echo $this->translate('Back') ?></a>
-    </li>
-</ul>
+<a href="/" class="button">&laquo; <?php echo $this->translate('Back') ?></a>

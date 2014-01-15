@@ -3,7 +3,8 @@
     <h2><?php echo $this->translate('Join one of the games listed below') ?></h2>
     <table></table>
 </div>
-<br/>
+<a class="button" href="javascript:refresh()"><?php echo $this->translate('Refresh') ?></a>
+
 <div class="table">
     <h2><?php echo $this->translate('Create new game') ?></h2>
     <table id="new">
@@ -17,15 +18,7 @@
         </tr>
     </table>
 </div>
-<br/>
-<ul>
-    <li>
-        <a class="button" href="/">&laquo; <?php echo $this->translate('Back') ?></a>
-    </li>
-    <li>
-        <a class="button" href="javascript:refresh()"><?php echo $this->translate('Refresh') ?></a>
-    </li>
-</ul>
+<a class="button" href="/">&laquo; <?php echo $this->translate('Back') ?></a>
 
 <?php $this->headScript()->captureStart() ?>
 var th = '<th><?php echo $this->translate('Map name') ?></th><th><?php echo $this->translate('Number of players') ?></th><th><?php echo $this->translate('Date') ?></th>';
