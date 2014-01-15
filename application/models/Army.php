@@ -132,40 +132,14 @@ class Application_Model_Army extends Coret_Db_Table_Abstract
         return $this->update($data, $where);
     }
 
-    public function getAllEnemiesArmies($playerId)
+    public function getAllEnemiesArmies($playerId, $select)
     {
-        $select = $this->_db->select()
+        return $this->selectAll($this->_db->select()
             ->from($this->_name, Cli_Model_Army::armyArray())
             ->where($this->_db->quoteIdentifier('gameId') . ' = ?', $this->_gameId)
             ->where('"playerId" != ?', $playerId)
-            ->where('destroyed = false');
-
-        $result = $this->selectAll($select);
-
-        $armies = array();
-
-        $mSoldier = new Application_Model_UnitsInGame($this->_gameId, $this->_db);
-        $mHeroesInGame = new Application_Model_HeroesInGame($this->_gameId, $this->_db);
-
-        foreach ($result as $army) {
-            $armies[$army['armyId']] = $army;
-            $armies[$army['armyId']]['heroes'] = $mHeroesInGame->getForMove($army['armyId']);
-
-//            foreach ($armies[$army['armyId']]['heroes'] as $k => $row) {
-//                $mInventory = new Application_Model_Inventory($row['heroId'], $gameId, $db);
-//                $armies[$army['armyId']]['heroes'][$k]['artifacts'] = $mInventory->getAll();
-//            }
-
-            $armies[$army['armyId']]['soldiers'] = $mSoldier->getForMove($army['armyId']);
-            if (empty($armies[$army['armyId']]['heroes']) AND empty($armies[$army['armyId']]['soldiers'])) {
-                $this->destroyArmy($armies[$army['armyId']]['armyId'], $playerId);
-                unset($armies[$army['armyId']]);
-            } else {
-                $armies[$army['armyId']]['movesLeft'] = Cli_Model_Army::calculateMaxArmyMoves($armies[$army['armyId']]);
-            }
-        }
-
-        return $armies;
+            ->where('"playerId" NOT IN (?)', new Zend_Db_Expr($select))
+            ->where('destroyed = false'));
     }
 
     public function getComputerArmyToMove($playerId)
@@ -326,28 +300,25 @@ class Application_Model_Army extends Coret_Db_Table_Abstract
 
     public function getArmyIdsByPositionPlayerId($position, $playerId)
     {
-        $select = $this->_db->select()
+        return $this->selectAll($this->_db->select()
             ->from($this->_name, 'armyId')
             ->where($this->_db->quoteIdentifier('gameId') . ' = ?', $this->_gameId)
             ->where('"playerId" = ?', $playerId)
             ->where('destroyed = false')
             ->where('x = ?', $position['x'])
-            ->where('y = ?', $position['y']);
-
-        return $this->selectAll($select);
+            ->where('y = ?', $position['y']));
     }
 
-    public function getPlayerIdFromPosition($playerId, $position)
+    public function getEnemyPlayerIdFromPosition($playerId, $position, $select)
     {
-        $select = $this->_db->select()
+        return $this->selectOne($this->_db->select()
             ->from($this->_name, 'playerId')
             ->where('"gameId" = ?', $this->_gameId)
             ->where('"playerId" != ?', $playerId)
+            ->where('"playerId" NOT IN (?)', new Zend_Db_Expr($select))
             ->where('destroyed = false')
             ->where('x = ?', $position['x'])
-            ->where('y = ?', $position['y']);
-
-        return $this->selectOne($select);
+            ->where('y = ?', $position['y']));
     }
 
     public function getAllEnemyUnitsFromPosition($position, $playerId)
@@ -460,21 +431,14 @@ class Application_Model_Army extends Coret_Db_Table_Abstract
         return $this->selectAll($select);
     }
 
-    public function getEnemyArmiesFieldsPositions($playerId)
+    public function getEnemyArmiesFieldsPositions($playerId, $select)
     {
-        $fields = Zend_Registry::get('fields');
-
-        $select = $this->_db->select()
+        return $this->selectAll($this->_db->select()
             ->from($this->_name, array('x', 'y'))
             ->where('"gameId" = ?', $this->_gameId)
             ->where('"playerId" != ?', $playerId)
-            ->where('destroyed = false');
-
-        foreach ($this->selectAll($select) as $row) {
-            $fields[$row['y']][$row['x']] = 'e';
-        }
-
-        return $fields;
+            ->where('"playerId" NOT IN (?)', new Zend_Db_Expr($select))
+            ->where('destroyed = false'));
     }
 
     public function getArmyByArmyIdPlayerId($armyId, $playerId)

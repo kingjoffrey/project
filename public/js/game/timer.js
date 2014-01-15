@@ -27,7 +27,7 @@ var timer = {
     },
     countdown: function () {
         var time = (new Date()).getTime() - 3600000
-        var difference1 = time - Date.parse(Turn.beginDate.substr(0, 19)).getTime()
+        var difference1 = time - Turn.beginDate
         var difference2 = time - Date.parse(gameBegin.substr(0, 19)).getTime()
 
         if (this.difference1 != difference1) {

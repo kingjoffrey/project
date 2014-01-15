@@ -784,7 +784,7 @@ var Message = {
             )
         }
 
-        if (r.defenderColor != 'neutral' && isTowerAtPosition(players[r.defenderColor].armies[r.defenderArmy[0].armyId].x, players[r.defenderColor].armies[r.defenderArmy[0].armyId].y)) {
+        if (r.defenderColor != 'neutral' && isSet(r.defenderArmy[0]) && isTowerAtPosition(players[r.defenderColor].armies[r.defenderArmy[0].armyId].x, players[r.defenderColor].armies[r.defenderArmy[0].armyId].y)) {
             defenseGrass.append(
                 $('<div>')
                     .addClass('tower')
@@ -929,20 +929,22 @@ var Message = {
                 .append($('<th>').html('Heroes killed'))
                 .append($('<th>').html('Heroes lost'))
             );
-        for (i in players) {
+        var color
+        for (color in players) {
             var tr = $('<tr>');
 
-            tr.append($('<td>').addClass('shortName').html($('<img>').attr('src', Hero.getImage(players[i].shortName))))
+            tr.append($('<td>').addClass('shortName').html($('<img>').attr('src', Hero.getImage(color))))
 
             var td = $('<td>').addClass('shortName');
-            tr.append(td.html(players[i].longName))
+            tr.append(td.html(players[color].longName))
 
             var td = $('<td>').css({
-                border: '1px solid ' + players[i].backgroundColor
+                border: '1px solid ' + players[color].backgroundColor
             })
-            var numberOfCastlesHeld = 0
+            var numberOfCastlesHeld = 0,
+                castleId
             for (castleId in castles) {
-                if (castles[castleId].color == players[i].shortName) {
+                if (castles[castleId].color == players[color].shortName) {
                     numberOfCastlesHeld++
                 }
             }
@@ -953,73 +955,73 @@ var Message = {
             }
 
             var td = $('<td>').css({
-                border: '1px solid ' + players[i].backgroundColor
+                border: '1px solid ' + players[color].backgroundColor
             })
-            if (isSet(castlesConquered.winners[i])) {
-                tr.append(td.html(castlesConquered.winners[i]))
+            if (isSet(castlesConquered.winners[color])) {
+                tr.append(td.html(castlesConquered.winners[color]))
             } else {
                 tr.append(td.html('0'))
             }
 
             var td = $('<td>').css({
-                border: '1px solid ' + players[i].backgroundColor
+                border: '1px solid ' + players[color].backgroundColor
             })
-            if (isSet(castlesConquered.losers[i])) {
-                tr.append(td.html(castlesConquered.losers[i]))
+            if (isSet(castlesConquered.losers[color])) {
+                tr.append(td.html(castlesConquered.losers[color]))
             } else {
                 tr.append(td.html('0'))
             }
 
             var td = $('<td>').css({
-                border: '1px solid ' + players[i].backgroundColor
+                border: '1px solid ' + players[color].backgroundColor
             })
-            if (isSet(castlesDestroyed[i])) {
-                tr.append(td.html(castlesConquered[i]))
+            if (isSet(castlesDestroyed[color])) {
+                tr.append(td.html(castlesConquered[color]))
             } else {
                 tr.append(td.html('0'))
             }
 
             var td = $('<td>').css({
-                border: '1px solid ' + players[i].backgroundColor
+                border: '1px solid ' + players[color].backgroundColor
             })
-            if (isSet(soldiersCreated[i])) {
-                tr.append(td.html(soldiersCreated[i]))
+            if (isSet(soldiersCreated[color])) {
+                tr.append(td.html(soldiersCreated[color]))
             } else {
                 tr.append(td.html('0'))
             }
 
             var td = $('<td>').css({
-                border: '1px solid ' + players[i].backgroundColor
+                border: '1px solid ' + players[color].backgroundColor
             })
-            if (isSet(soldiersKilled.winners[i])) {
-                tr.append(td.html(soldiersKilled.winners[i]))
+            if (isSet(soldiersKilled.winners[color])) {
+                tr.append(td.html(soldiersKilled.winners[color]))
             } else {
                 tr.append(td.html('0'))
             }
 
             var td = $('<td>').css({
-                border: '1px solid ' + players[i].backgroundColor
+                border: '1px solid ' + players[color].backgroundColor
             })
-            if (isSet(soldiersKilled.losers[i])) {
-                tr.append(td.html(soldiersKilled.losers[i]))
+            if (isSet(soldiersKilled.losers[color])) {
+                tr.append(td.html(soldiersKilled.losers[color]))
             } else {
                 tr.append(td.html('0'))
             }
 
             var td = $('<td>').css({
-                border: '1px solid ' + players[i].backgroundColor
+                border: '1px solid ' + players[color].backgroundColor
             })
-            if (isSet(heroesKilled.winners[i])) {
-                tr.append(td.html(heroesKilled.winners[i]))
+            if (isSet(heroesKilled.winners[color])) {
+                tr.append(td.html(heroesKilled.winners[color]))
             } else {
                 tr.append(td.html('0'))
             }
 
             var td = $('<td>').css({
-                border: '1px solid ' + players[i].backgroundColor
+                border: '1px solid ' + players[color].backgroundColor
             })
-            if (isSet(heroesKilled.losers[i])) {
-                tr.append(td.html(heroesKilled.losers[i]))
+            if (isSet(heroesKilled.losers[color])) {
+                tr.append(td.html(heroesKilled.losers[color]))
             } else {
                 tr.append(td.html('0'))
             }
@@ -1045,6 +1047,7 @@ var Message = {
             myUnits = 0,
             myUnitsGold = 0
 
+        var i
         for (i in towers) {
             if (towers[i].color == my.color) {
                 myTowers++

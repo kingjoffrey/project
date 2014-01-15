@@ -30,7 +30,7 @@ var Turn = {
         timer.scroll()
         this.number = turnHistory[i].number
         this.color = turnHistory[i].shortName
-        this.beginDate = turnHistory[i].date
+        this.beginDate = Date.parse(turnHistory[i].date.substr(0, 19)).getTime()
     },
     on: function () {
         makeMyCursorUnlock();

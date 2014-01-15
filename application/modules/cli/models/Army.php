@@ -738,4 +738,52 @@ class Cli_Model_Army
         $sequence = $mBattleSequence->getDefence($playerId);
         return $sequence;
     }
+
+    static public function getAllEnemiesArmies($gameId, $db, $playerId)
+    {
+        $mArmy = new Application_Model_Army($gameId, $db);
+        $mSoldier = new Application_Model_UnitsInGame($gameId, $db);
+        $mHeroesInGame = new Application_Model_HeroesInGame($gameId, $db);
+        $mPlayersInGame = new Application_Model_PlayersInGame($gameId, $db);
+
+        $result = $mArmy->getAllEnemiesArmies($playerId, $mPlayersInGame->getTeamSelect($playerId));
+
+        $armies = array();
+
+        foreach ($result as $army) {
+            $armies[$army['armyId']] = $army;
+            $armies[$army['armyId']]['heroes'] = $mHeroesInGame->getForMove($army['armyId']);
+            $armies[$army['armyId']]['soldiers'] = $mSoldier->getForMove($army['armyId']);
+            if (empty($armies[$army['armyId']]['heroes']) AND empty($armies[$army['armyId']]['soldiers'])) {
+                $mArmy->destroyArmy($armies[$army['armyId']]['armyId'], $playerId);
+                unset($armies[$army['armyId']]);
+            } else {
+                $armies[$army['armyId']]['movesLeft'] = Cli_Model_Army::calculateMaxArmyMoves($armies[$army['armyId']]);
+            }
+        }
+
+        return $armies;
+    }
+
+    static public function getEnemyArmiesFieldsPositions($gameId, $db, $playerId)
+    {
+        $mArmy = new Application_Model_Army($gameId, $db);
+        $mPlayersInGame = new Application_Model_PlayersInGame($gameId, $db);
+
+        $fields = Zend_Registry::get('fields');
+
+        foreach ($mArmy->getEnemyArmiesFieldsPositions($playerId, $mPlayersInGame->getTeamSelect($playerId)) as $row) {
+            $fields[$row['y']][$row['x']] = 'e';
+        }
+
+        return $fields;
+    }
+
+    static public function getEnemyPlayerIdFromPosition($gameId, $db, $playerId, $position)
+    {
+        $mArmy = new Application_Model_Army($gameId, $db);
+        $mPlayersInGame = new Application_Model_PlayersInGame($gameId, $db);
+
+        return $mArmy->getEnemyPlayerIdFromPosition($playerId, $position, $mPlayersInGame->getTeamSelect($playerId));
+    }
 }

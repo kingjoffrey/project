@@ -2,11 +2,15 @@
 
 class Cli_Model_ComputerMainBlocks extends Cli_Model_ComputerSubBlocks
 {
+    protected $_gameHandler;
+    protected $_l;
+    protected $_mGame;
 
-    public function __construct($gameId, $playerId, $db)
+    public function __construct($gameId, $playerId, $db, $gameHandler)
     {
         parent::__construct($gameId, $playerId, $db);
 
+        $this->_gameHandler = $gameHandler;
         $this->_l = new Coret_Model_Logger();
         $this->_mGame = new Application_Model_Game($this->_gameId, $this->_db);
     }
@@ -182,7 +186,7 @@ class Cli_Model_ComputerMainBlocks extends Cli_Model_ComputerSubBlocks
         }
     }
 
-    public function moveArmy($mArmy, $user, $gameHandler)
+    public function moveArmy($mArmy, $user)
     {
         $army = $mArmy->getArmy();
         $this->_l->log('');
@@ -191,18 +195,13 @@ class Cli_Model_ComputerMainBlocks extends Cli_Model_ComputerSubBlocks
         $mCastlesInGame = new Application_Model_CastlesInGame($this->_gameId, $this->_db);
         $myCastles = $mCastlesInGame->getPlayerCastles($this->_playerId);
 
-//        $mapCastles = Zend_Registry::get('castles');
-//        foreach ($myCastles as $myCastleId => $myCastle) {
-//            $myCastles[$myCastleId]['position'] = $mapCastles[$myCastleId]['position'];
-//        }
-
-        $fields = $this->_modelArmy->getEnemyArmiesFieldsPositions($this->_playerId);
+        $fields = Cli_Model_Army::getEnemyArmiesFieldsPositions($this->_gameId, $this->_db, $this->_playerId);
         $razed = $mCastlesInGame->getRazedCastles();
         $castlesAndFields = Application_Model_Board::prepareCastlesAndFields($fields, $razed, $myCastles);
         $myCastleId = Application_Model_Board::isCastleAtPosition($army['x'], $army['y'], $castlesAndFields['myCastles']);
 
 
-        $enemies = $this->_modelArmy->getAllEnemiesArmies($this->_playerId);
+        $enemies = Cli_Model_Army::getAllEnemiesArmies($this->_gameId, $this->_db, $this->_playerId);
 
         if ($myCastleId !== null) {
             $this->_l->log('W ZAMKU');
@@ -302,7 +301,7 @@ class Cli_Model_ComputerMainBlocks extends Cli_Model_ComputerSubBlocks
                         }
 
                         $mSplitArmy = new Cli_Model_SplitArmy();
-                        $newArmyId = $mSplitArmy->split($army['armyId'], $s, $h, $user, $this->_playerId, $this->_db, $gameHandler);
+                        $newArmyId = $mSplitArmy->split($army['armyId'], $s, $h, $user, $this->_playerId, $this->_db, $this->_gameHandler);
 
                         if ($army['x'] == $castlePosition['x'] && $army['y'] == $castlePosition['y']) {
                             $path = array(0 => array(
@@ -464,7 +463,7 @@ class Cli_Model_ComputerMainBlocks extends Cli_Model_ComputerSubBlocks
 
         $playersInGameColors = Zend_Registry::get('playersInGameColors');
 
-        return array(
+        $token = array(
             'defenderColor' => $fightEnemyResults['defenderColor'],
             'defenderArmy' => $defenderArmy,
             'attackerColor' => $playersInGameColors[$this->_playerId],
@@ -476,8 +475,10 @@ class Cli_Model_ComputerMainBlocks extends Cli_Model_ComputerSubBlocks
             'ruinId' => $ruinId,
             'deletedIds' => $armiesIds['deletedIds'],
             'oldArmyId' => $oldArmyId,
-            'action' => 'continue'
+            'type' => 'computer'
         );
+
+        $this->_gameHandler->sendToChannel($this->_db, $token, $this->_gameId);
     }
 
     static public function handleHeroResurrection($gameId, $playerId, $db, $gameHandler)

@@ -36,6 +36,7 @@ class Cli_Model_Move
 
         $defenderColor = null;
         $defender = null;
+        $defenderId = null;
         $enemy = null;
         $attacker = null;
         $battleResult = null;
@@ -56,7 +57,7 @@ class Cli_Model_Move
             $army = $mArmy->getArmy();
         }
 
-        $fields = $mArmy2->getEnemyArmiesFieldsPositions($user->parameters['playerId']);
+        $fields = Cli_Model_Army::getEnemyArmiesFieldsPositions($user->parameters['gameId'], $db, $user->parameters['playerId']);
 
         if ($fields[$army['y']][$army['x']] == 'w') {
             if ($army['canSwim'] || $army['canFly']) {
@@ -87,6 +88,8 @@ class Cli_Model_Move
         $castlesSchema = Zend_Registry::get('castles');
         $mCastlesInGame = new Application_Model_CastlesInGame($user->parameters['gameId'], $db);
         $allCastles = $mCastlesInGame->getAllCastles();
+        $mPlayersInGame = new Application_Model_PlayersInGame($user->parameters['gameId'], $db);
+        $teamPlayerIds = $mPlayersInGame->getTeamPlayerIds($user->parameters['playerId']);
         $myCastles = array();
         foreach ($allCastles as $castle) {
             if ($castle['playerId'] == $user->parameters['playerId']) {
@@ -119,6 +122,8 @@ class Cli_Model_Move
 
             if ($user->parameters['playerId'] == $allCastles[$cId]['playerId']) { // my castle
                 $fields = Application_Model_Board::changeCasteFields($fields, $castle['position']['x'], $castle['position']['y'], 'c');
+            } elseif (isset($teamPlayerIds[$allCastles[$cId]['playerId']])) { // team castle
+                $fields = Application_Model_Board::changeCasteFields($fields, $castle['position']['x'], $castle['position']['y'], 'c');
             } else { // enemy castle
                 if (Application_Model_Board::isCastleField($aP, $castle['position'])) { // trakuję zamek wroga jak własny ponieważ go atakuję i jeśli wygram to będę mógł po nim chodzić
                     $fields = Application_Model_Board::changeCasteFields($fields, $castle['position']['x'], $castle['position']['y'], 'E');
@@ -130,7 +135,7 @@ class Cli_Model_Move
         }
 
         if ($castleId === null) {
-            $defenderId = $mArmy2->getPlayerIdFromPosition($user->parameters['playerId'], array('x' => $x, 'y' => $y));
+            $defenderId = Cli_Model_Army::getEnemyPlayerIdFromPosition($user->parameters['gameId'], $db, $user->parameters['playerId'], array('x' => $x, 'y' => $y));
             if ($defenderId) { // enemy army
                 $fields = Application_Model_Board::changeArmyField($fields, $x, $y, 'E');
             } else { // idziemy nie walczymy
@@ -174,7 +179,8 @@ class Cli_Model_Move
 
         $playersInGameColors = Zend_Registry::get('playersInGameColors');
 
-        if (Zend_Validate::is($castleId, 'Digits') && Application_Model_Board::isCastleField($move['currentPosition'], $castlesSchema[$castleId]['position'])) { // castle
+        if (Zend_Validate::is($castleId, 'Digits') && Application_Model_Board::isCastleField($move['currentPosition'], $castlesSchema[$castleId]['position'])) { // enemy castle
+//        if (Zend_Validate::is($castleId, 'Digits')) { // enemy castle (ZAMIENIĆ?)
             $fight = true;
             if ($defenderColor == 'neutral') {
                 $enemy = Cli_Model_Battle::getNeutralCastleGarrison($user->parameters['gameId'], $db);
@@ -187,7 +193,7 @@ class Cli_Model_Move
                 $enemy = Cli_Model_Army::addCastleDefenseModifier($enemy, $user->parameters['gameId'], $castleId, $db);
                 $enemy = Cli_Model_Army::setCombatDefenseModifiers($enemy);
             }
-        } elseif ($move['currentPosition']['x'] == $x && $move['currentPosition']['y'] == $y && $defenderId) { // enemy army
+        } elseif ($defenderId && $move['currentPosition']['x'] == $x && $move['currentPosition']['y'] == $y) { // enemy army
             $fight = true;
             $defenderColor = $playersInGameColors[$defenderId];
             $enemy = $mArmy2->getAllEnemyUnitsFromPosition(array('x' => $x, 'y' => $y), $user->parameters['playerId']);

@@ -79,7 +79,7 @@ class Cli_Model_ComputerFight
             $enemy = Cli_Model_Army::setCombatDefenseModifiers($enemy);
             $enemy = Cli_Model_Army::addTowerDefenseModifier($enemy);
             $enemy['ids'][] = $enemy['armyId'];
-            $defenderId = $mArmy2->getPlayerIdFromPosition($this->_playerId, $enemy);
+            $defenderId = Cli_Model_Army::getEnemyPlayerIdFromPosition($this->_gameId, $this->_db, $this->_playerId, $enemy);
             $battle = new Cli_Model_Battle($army, $enemy, Cli_Model_Army::getAttackSequence($this->_gameId, $this->_db, $this->_playerId), Cli_Model_Army::getDefenceSequence($this->_gameId, $this->_db, $defenderId));
             $battle->fight();
             $battle->updateArmies($this->_gameId, $this->_db, $this->_playerId, $defenderId);
@@ -121,7 +121,7 @@ class Cli_Model_ComputerFight
             $enemy = Cli_Model_Army::addTowerDefenseModifier($enemy);
         }
 
-        $defenderId = $this->_modelArmy->getPlayerIdFromPosition($this->_playerId, $enemy);
+        $defenderId = Cli_Model_Army::getEnemyPlayerIdFromPosition($this->_gameId, $this->_db, $this->_playerId, $enemy);
 
         $attackerBattleSequence = Cli_Model_Army::getAttackSequence($this->_gameId, $this->_db, $this->_playerId);
         $defenderBattleSequence = Cli_Model_Army::getDefenceSequence($this->_gameId, $this->_db, $defenderId);

@@ -114,8 +114,10 @@ class GameController extends Game_Controller_Game
             $this->view->players[$player['color']]['turnActive'] = $player['turnActive'];
             $this->view->players[$player['color']]['computer'] = $player['computer'];
             $this->view->players[$player['color']]['lost'] = $player['lost'];
+            $this->view->players[$player['color']]['minimapColor'] = $player['minimapColor'];
             $this->view->players[$player['color']]['backgroundColor'] = $player['backgroundColor'];
             $this->view->players[$player['color']]['textColor'] = $player['textColor'];
+            $this->view->players[$player['color']]['longName'] = $player['longName'];
             $this->view->players[$player['color']]['team'] = $mMapPlayers->getColorByMapPlayerId($player['team']);
 
             if ($this->_namespace->player['playerId'] == $player['playerId']) {
