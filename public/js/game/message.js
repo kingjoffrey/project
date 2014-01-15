@@ -784,7 +784,7 @@ var Message = {
             )
         }
 
-        if (r.defenderColor != 'neutral' && isSet(r.defenderArmy[0]) && isTowerAtPosition(players[r.defenderColor].armies[r.defenderArmy[0].armyId].x, players[r.defenderColor].armies[r.defenderArmy[0].armyId].y)) {
+        if (r.defenderArmy && r.defenderColor != 'neutral' && isTowerAtPosition(players[r.defenderColor].armies[r.defenderArmy[0].armyId].x, players[r.defenderColor].armies[r.defenderArmy[0].armyId].y)) {
             defenseGrass.append(
                 $('<div>')
                     .addClass('tower')
@@ -944,7 +944,7 @@ var Message = {
             var numberOfCastlesHeld = 0,
                 castleId
             for (castleId in castles) {
-                if (castles[castleId].color == players[color].shortName) {
+                if (castles[castleId].color == color) {
                     numberOfCastlesHeld++
                 }
             }

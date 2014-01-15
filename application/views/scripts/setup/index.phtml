@@ -34,15 +34,9 @@
     </table>
 </div>
 
-<ul style="float: right">
-    <li id="start"></li>
-</ul>
+<div id="start"></div>
 
-<ul>
-    <li><a class="button"
-           href="/<?php echo Zend_Registry::get('lang') ?>/new">&laquo; <?php echo $this->translate('Back') ?></a>
-    </li>
-</ul>
+<a class="button" href="/<?php echo Zend_Registry::get('lang') ?>/new">&laquo; <?php echo $this->translate('Back') ?></a>
 
 <?php $this->headScript()->captureStart() ?>
 var numberOfPlayers = <?php echo (int)$this->game['numberOfPlayers'] ?>;

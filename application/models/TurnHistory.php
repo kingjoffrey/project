@@ -50,6 +50,6 @@ class Application_Model_TurnHistory extends Coret_Db_Table_Abstract
 
         $this->insert($data);
 
-        return $date;
+        return strtotime($date);
     }
 }

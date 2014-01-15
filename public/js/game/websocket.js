@@ -69,8 +69,10 @@ Websocket = {
                 break;
 
             case 'ruin':
-                board.append($('<div>').addClass('ruinSearch').css({'top': 40 * Army.deselected.y + 'px', 'left': 40 * Army.deselected.x + 'px'}));
-                zoomer.lensSetCenter(r.army.x * 40, r.army.y * 40);
+                var X = 40 * r.army.x,
+                    Y = 40 * r.army.y
+                board.append($('<div>').addClass('ruinSearch').css({'top': Y + 'px', 'left': X + 'px'}));
+                zoomer.lensSetCenter(X, Y);
                 Army.init(r.army, r.color);
                 Ruin.update(r.ruin.ruinId, r.ruin.empty);
                 if (my.color == r.color) {
