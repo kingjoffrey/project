@@ -56,6 +56,7 @@ var Players = {
                 }
             }
         }
+
         timer.start()
         this.draw()
     },
@@ -90,34 +91,12 @@ var Players = {
             this.wedges[shortName].x = this.centerX + Math.cos(r_rotation) * 70 - 11;
             this.wedges[shortName].y = this.centerY + Math.sin(r_rotation) * 70 - 14;
             this.wedges[shortName].rotation = r_rotation
-
-            var team = new Kinetic.Wedge({
+            this.wedges[shortName].kinetic = new Kinetic.Wedge({
                 x: this.centerX,
                 y: this.centerY,
                 radius: 50,
                 angleDeg: this.angle,
                 fill: players[players[shortName].team].backgroundColor,
-                strokeWidth: 0,
-                rotationDeg: rotation
-            })
-            this.layer.add(team)
-            var aaa = new Kinetic.Wedge({
-                x: this.centerX,
-                y: this.centerY,
-                radius: 46,
-                angleDeg: this.angle,
-                fill: 'grey',
-                strokeWidth: 0,
-                rotationDeg: rotation
-            })
-            this.layer.add(aaa)
-
-            this.wedges[shortName].kinetic = new Kinetic.Wedge({
-                x: this.centerX,
-                y: this.centerY,
-                radius: 45,
-                angleDeg: this.angle,
-                fill: players[shortName].backgroundColor,
                 strokeWidth: 0,
                 rotationDeg: rotation
             })
@@ -128,6 +107,16 @@ var Players = {
             }
             i++;
         }
+
+        var turnCircle = new Kinetic.Circle({
+            x: this.centerX,
+            y: this.centerY,
+            radius: 40,
+            fill: 'lightgrey',
+            stroke: 'grey',
+            strokeWidth: 1
+        })
+        this.layer.add(turnCircle);
 
         this.stage.add(this.layer);
         this.drawTurn()
@@ -212,29 +201,17 @@ var Players = {
         this.layer.add(this.circle)
     },
     drawTurn: function () {
-        if (this.turnCircle) {
-            this.turnCircle.setFill(players[Turn.color].backgroundColor)
-            this.turnNumber.setFill(players[Turn.color].textColor)
+        if (this.turnNumber) {
             this.turnNumber.setText(Turn.number)
             this.layer.draw()
         } else {
-            this.turnCircle = new Kinetic.Circle({
-                x: this.centerX,
-                y: this.centerY,
-                radius: 40,
-                fill: players[Turn.color].backgroundColor,
-                strokeWidth: 0
-            });
-
-            this.layer.add(this.turnCircle);
-
             this.turnNumber = new Kinetic.Text({
                 x: this.centerX - 70,
                 y: this.centerY - 15,
                 text: Turn.number,
                 fontSize: 30,
                 fontFamily: 'fantasy',
-                fill: players[Turn.color].textColor,
+                fill: 'graphite',
                 width: 140,
                 align: 'center'
             });

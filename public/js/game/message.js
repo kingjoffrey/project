@@ -330,17 +330,17 @@ var Message = {
                     .attr('id', 'center')
             )
             .append($('<h3>').append(castles[castleId].name).append(capital).addClass('name'))
-            .append($('<h5>').append('Castle defense: ' + castles[castleId].defense))
-            .append($('<h5>').append('Income: ' + castles[castleId].income + ' gold/turn'))
+            .append($('<h5>').append(translations.castleDefense + ': ' + castles[castleId].defense))
+            .append($('<h5>').append(translations.income + ': ' + castles[castleId].income + ' ' + translations.gold_turn))
             .append($('<br>'))
-            .append($('<fieldset>').addClass('production').append($('<label>').html('Production')).append(table).attr('id', castleId))
+            .append($('<fieldset>').addClass('production').append($('<label>').html(translations.production)).append(table).attr('id', castleId))
 
         // relocation to
 
         if (castles[castleId].color == my.color && castles[castleId].relocationCastleId && castles[castleId].currentProductionId) {
             div
                 .append($('<br>'))
-                .append($('<fieldset>').addClass('relocatedProduction').append($('<label>').html('Relocating to')).append(
+                .append($('<fieldset>').addClass('relocatedProduction').append($('<label>').html(translations.relocatingTo)).append(
                     $('<table>').append(
                         $('<tr>')
                             .append(
@@ -407,7 +407,7 @@ var Message = {
             }
             div
                 .append($('<br>'))
-                .append($('<fieldset>').addClass('relocatedProduction').append($('<label>').html('Relocating from')).append(relocatingFrom))
+                .append($('<fieldset>').addClass('relocatedProduction').append($('<label>').html(translations.relocatingFrom)).append(relocatingFrom))
         }
 
         var id = this.show(div);
@@ -447,12 +447,12 @@ var Message = {
 
     },
     nextTurn: function () {
-        var id = this.show($('<div>').append($('<h3>').html('Next turn')).append($('<div>').html('Are you sure?')))
+        var id = this.show($('<div>').append($('<h3>').html(translations.nextTurn)).append($('<div>').html(translations.areYouSure)))
         this.ok(id, Websocket.nextTurn);
         this.cancel(id)
     },
     disband: function () {
-        var id = this.show($('<div>').append($('<h3>').html('Disband army')).append($('<div>').html('Are you sure?')))
+        var id = this.show($('<div>').append($('<h3>').html(translations.disbandArmy)).append($('<div>').html(translations.areYouSure)))
         this.ok(id, Websocket.disband);
         this.cancel(id)
     },
@@ -1095,7 +1095,7 @@ var Message = {
                             .append($('<td>').html(myUnitsGold + ' ' + translations.gold).addClass('r'))
                     )
             )
-            .append($('<h3>').html(translations.Summation))
+            .append($('<h3>').html(translations.summation))
             .append($('<div>').html(myTowers * 5 + myCastlesGold - myUnitsGold + ' ' + translations.goldPerTurn))
         var id = this.show(div);
         this.ok(id)

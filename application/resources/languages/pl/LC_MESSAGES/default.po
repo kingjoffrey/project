@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: WOF\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-01-16 05:36+0100\n"
-"PO-Revision-Date: 2014-01-16 05:37+0100\n"
+"POT-Creation-Date: 2014-01-16 08:23+0100\n"
+"PO-Revision-Date: 2014-01-16 08:23+0100\n"
 "Last-Translator: Bartosz Krzeszewski <bartek@core-t.pl>\n"
 "Language-Team: \n"
 "Language: pl\n"
@@ -159,7 +159,7 @@ msgstr "Poddaj się"
 
 #: application/views/helpers/Translations.php:39
 msgid "Are you sure?"
-msgstr "Czy jesteś pewien"
+msgstr "Czy aby na pewno chcesz to zrobić?"
 
 #: application/views/helpers/Translations.php:40
 msgid "Your turn"
@@ -209,6 +209,44 @@ msgstr "Relokacja"
 #: application/views/helpers/Translations.php:52
 msgid "Select castle to which you want to relocate this production"
 msgstr "Wybierz zamek, do którego chcesz relokować produkcję"
+
+#: application/views/helpers/Translations.php:53
+msgid "Production relocated"
+msgstr "Produkcja została przeniesiona"
+
+#: application/views/helpers/Translations.php:54
+msgid "Production stopped"
+msgstr "Produkcja została zatrzymana"
+
+#: application/views/helpers/Translations.php:55
+msgid "Production set"
+msgstr "Ustawiono produkcję"
+
+#: application/views/helpers/Translations.php:56
+msgid "Relocating to"
+msgstr "Relokacja do"
+
+#: application/views/helpers/Translations.php:57
+msgid "Relocating from"
+msgstr "Relokacja z"
+
+#: application/views/helpers/Translations.php:58
+#: application/layouts/scripts/game.phtml:97
+msgid "Next turn"
+msgstr "Następna tura"
+
+#: application/views/helpers/Translations.php:59
+#: application/layouts/scripts/game.phtml:125
+msgid "Disband army"
+msgstr "Rozwiąż armię"
+
+#: application/views/helpers/Translations.php:60
+msgid "Castle defense"
+msgstr "Obrona zamku"
+
+#: application/views/helpers/Translations.php:61
+msgid "gold/turn"
+msgstr "złoto/turę"
 
 #: application/views/helpers/Logout.php:8
 msgid "Logout"
@@ -668,17 +706,9 @@ msgstr "Pokaż innych"
 msgid "Sound"
 msgstr "Dźwięk"
 
-#: application/layouts/scripts/game.phtml:97
-msgid "Next turn"
-msgstr "Następna tura"
-
 #: application/layouts/scripts/game.phtml:103
 msgid "Next army"
 msgstr "Następna armia"
-
-#: application/layouts/scripts/game.phtml:125
-msgid "Disband army"
-msgstr "Rozwiąż armię"
 
 #: application/layouts/scripts/game.phtml:127
 msgid "Deselect army"
