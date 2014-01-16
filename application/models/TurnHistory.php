@@ -39,17 +39,12 @@ class Application_Model_TurnHistory extends Coret_Db_Table_Abstract
 
     public function add($playerId, $number)
     {
-        $date = date('Y-m-d H:i:s');
-
         $data = array(
             'number' => $number,
-            'date' => $date,
             'playerId' => $playerId,
             'gameId' => $this->_gameId
         );
 
         $this->insert($data);
-
-        return strtotime($date);
     }
 }

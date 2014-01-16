@@ -82,11 +82,10 @@ class Cli_Model_Turn
                         'color' => $playersInGameColors[$nextPlayerId]
                     );
                     $mTurnHistory = new Application_Model_TurnHistory($this->_user->parameters['gameId'], $this->_db);
-                    $date = $mTurnHistory->add($nextPlayerId, $token['nr']);
+                    $mTurnHistory->add($nextPlayerId, $token['nr']);
 
                     $this->_gameHandler->sendToChannel($this->_db, $token, $this->_user->parameters['gameId']);
-
-                    return $date;
+                    return;
                 }
             } else {
                 $token = array(

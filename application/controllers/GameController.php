@@ -43,7 +43,11 @@ class GameController extends Game_Controller_Game
         $mPlayersInGame = new Application_Model_PlayersInGame($this->_namespace->gameId);
 
         $game = $mGame->getGame();
-        $this->view->gameBegin = $game['begin'];
+        $this->view->game = array();
+        $this->view->game['begin'] = $game['begin'];
+        $this->view->game['turnsLimit'] = $game['turnsLimit'];
+        $this->view->game['turnTimeLimit'] = $game['turnTimeLimit'];
+        $this->view->game['timeLimit'] = $game['timeLimit'];
 
         $mMapPlayers = new Application_Model_MapPlayers($game['mapId']);
         $this->view->capitals = $mMapPlayers->getCapitals();

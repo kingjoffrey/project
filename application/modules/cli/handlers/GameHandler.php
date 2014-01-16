@@ -56,10 +56,12 @@ class Cli_GameHandler extends Cli_WofHandler
         }
 
         if ($user->parameters['turnTimeLimit']) {
-            if (time() - $user->parameters['turnStart'] > $user->parameters['turnTimeLimit'] * 60) {
+            $mTurn = new Application_Model_TurnHistory($user->parameters['gameId'], $db);
+            $turn = $mTurn->getCurrentStatus();
+            if (time() - strtotime($turn['date']) > $user->parameters['turnTimeLimit'] * 60) {
                 $mGame = new Application_Model_Game($user->parameters['gameId'], $db);
                 $mTurn = new Cli_Model_Turn($user, $db, $this);
-                $user->parameters['turnStart'] = $mTurn->next($mGame->getTurnPlayerId());
+                $mTurn->next($mGame->getTurnPlayerId());
                 return;
             }
         }
@@ -103,7 +105,7 @@ class Cli_GameHandler extends Cli_WofHandler
                     $mMain->moveArmy(new Cli_Model_Army($army), $user);
                 } else {
                     $mTurn = new Cli_Model_Turn($user, $db, $this);
-                    $user->parameters['turnStart'] = $mTurn->next($playerId);
+                    $mTurn->next($playerId);
                 }
             }
 
@@ -191,10 +193,7 @@ class Cli_GameHandler extends Cli_WofHandler
 
             case 'nextTurn':
                 $mTurn = new Cli_Model_Turn($user, $db, $this);
-                $date = $mTurn->next($user->parameters['playerId']);
-                if ($date) {
-                    $user->parameters['turnStart'] = $date;
-                }
+                $mTurn->next($user->parameters['playerId']);
                 break;
 
             case 'startTurn':

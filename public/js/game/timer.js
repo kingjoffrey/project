@@ -16,6 +16,8 @@ var timer = {
     minute2: 0,
     second2: 0,
     start: function () {
+        $('#turnTimeLimit2').html(game.turnTimeLimit)
+        $('#timeLimit2').html(game.timeLimit)
         $('#timerScroll').css('height', Players.length * this.height + 'px');
         this.elHour1 = $('#turnTimeLimit #hour')
         this.elMinute1 = $('#turnTimeLimit #minute')
@@ -28,7 +30,7 @@ var timer = {
     countdown: function () {
         var time = (new Date()).getTime() - 3600000
         var difference1 = time - Turn.beginDate
-        var difference2 = time - Date.parse(gameBegin.substr(0, 19)).getTime()
+        var difference2 = time - Date.parse(game.begin.substr(0, 19)).getTime()
 
         if (this.difference1 != difference1) {
             this.difference1 = difference1
