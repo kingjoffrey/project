@@ -23,22 +23,22 @@
     </div>
     <div id="limitBox" class="box">
         <div class="close">&#x25C0</div>
-        <div>
-            <?php echo $this->translate('Turn') ?> <span id="turnTimeLimit" class="font-yellow">
-                <span id="hour">00</span> :
-                <span id="minute">00</span> :
-                <span id="second">00</span>
-            </span>/
-            <span id="turnTimeLimit2" class="font-yellow"></span>
-        </div>
-        <div>
-            <?php echo $this->translate('Game') ?> <span id="timeLimit" class="font-yellow">
-                <span id="hour">00</span> :
-                <span id="minute">00</span> :
-                <span id="second">00</span>
-            </span>/
-            <span id="timeLimit2" class="font-yellow"></span>
-        </div>
+        <table>
+            <tr>
+                <td><?php echo $this->translate('Turn') ?></td>
+                <td id="turnTimeLimit" class="font-yellow">
+                    <span id="hour">00</span>:<span id="minute">00</span>:<span id="second">00</span>
+                </td>
+                <td id="turnTimeLimit2" class="font-yellow"></td>
+            </tr>
+            <tr>
+                <td><?php echo $this->translate('Game') ?></td>
+                <td id="timeLimit" class="font-yellow">
+                    <span id="hour">00</span>:<span id="minute">00</span>:<span id="second">00</span>
+                </td>
+                <td id="timeLimit2" class="font-yellow"></td>
+            </tr>
+        </table>
     </div>
     <div id="timerBox" class="box">
         <div class="close">&#x25C0</div>

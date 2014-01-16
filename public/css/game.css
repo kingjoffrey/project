@@ -305,12 +305,21 @@
 .message .production td.unit {
     background: #fff;
     color: #000;
-    border: none;
     margin: 0;
     padding: 5px;
     text-align: center;
     width: 158px;
     cursor: url(/img/game/cursor_pointer.png), pointer;
+}
+
+.message .production td {
+    border: none;
+    padding: 0;
+}
+
+.message .production td a.button {
+    padding: 0 5px;
+    display: block;
 }
 
 .message .production tr:first-of-type td.unit:first-of-type {
@@ -677,6 +686,12 @@
     border-top-right-radius: 10px;
     border-bottom-right-radius: 10px;
     width: 230px;
+}
+
+#limitBox span {
+    width: 20px;
+    display: inline-block;
+    text-align: right;
 }
 
 #goldBox {

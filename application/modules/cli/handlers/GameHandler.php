@@ -85,7 +85,8 @@ class Cli_GameHandler extends Cli_WofHandler
 
             $mPlayer = new Application_Model_Player($db);
             if (!$mPlayer->isComputer($playerId)) {
-                $this->sendError($user, 'To (' . $playerId . ') nie komputer!');
+                echo 'To (' . $playerId . ') nie komputer!' . "\n";
+//                $this->sendError($user, 'To (' . $playerId . ') nie komputer!');
                 return;
             }
 

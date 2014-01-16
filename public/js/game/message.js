@@ -115,7 +115,7 @@ var Message = {
         $('#' + id).append(
             $('<div>')
                 .addClass('button buttonColors go')
-                .html('Ok')
+                .html(translations.ok)
                 .click(function () {
                     if (isSet(func)) {
                         func();
@@ -130,7 +130,7 @@ var Message = {
         $('#' + id).append(
             $('<div>')
                 .addClass('button buttonColors cancel')
-                .html('Cancel')
+                .html(translations.cancel)
                 .click(function () {
                     if (isSet(func)) {
                         func();
@@ -153,13 +153,13 @@ var Message = {
     },
     error: function (message) {
         var div = $('<div>')
-            .append($('<h3>').html('Error'))
+            .append($('<h3>').html(translations.error))
             .append($('<div>').html(message))
         var id = this.show(div);
         this.ok(id)
     },
     surrender: function () {
-        var id = this.show($('<div>').append($('<h3>').html('Surrender')).append($('<div>').html('Are you sure?')))
+        var id = this.show($('<div>').append($('<h3>').html(translations.surrender)).append($('<div>').html(translations.areYouSure)))
         this.ok(id, Websocket.surrender);
         this.cancel(id)
     },
@@ -168,7 +168,7 @@ var Message = {
         if (my.turn && Turn.number == 1 && castles[firstCastleId].currentProductionId === null) {
             Message.castle(firstCastleId);
         } else {
-            var id = this.show($('<div>').append($('<h3>').html('Your turn')).append($('<div>').html('This is your turn now')))
+            var id = this.show($('<div>').append($('<h3>').html(translations.yourTurn)).append($('<div>').html(translations.thisIsYourTurnNow)))
             this.ok(id)
         }
     },
@@ -193,7 +193,7 @@ var Message = {
             td = new Array()
 
         if (castles[castleId].capital) {
-            capital = ' - capital city';
+            capital = ' - ' + translations.capitalCity;
         }
 
         for (unitId in castles[castleId].production) {
@@ -216,11 +216,11 @@ var Message = {
             }
 
             if (units[unitId].canFly) {
-                travelBy = 'ground / air';
+                travelBy = translations.ground + ' / ' + translations.air;
             } else if (units[unitId].canSwim) {
-                travelBy = 'water';
+                travelBy = translations.water;
             } else {
-                travelBy = 'ground';
+                travelBy = translations.ground;
             }
             if (units[unitId].name_lang) {
                 var name = units[unitId].name_lang;
@@ -248,8 +248,8 @@ var Message = {
                 .append(
                     $('<div>')
                         .addClass('attributes')
-                        .append($('<p>').html('Time:&nbsp;' + time + castles[castleId].production[unitId].time + 't'))
-                        .append($('<p>').html('Cost:&nbsp;' + units[unitId].cost + 'g'))
+                        .append($('<p>').html(translations.time + ':&nbsp;' + time + castles[castleId].production[unitId].time + 't'))
+                        .append($('<p>').html(translations.cost + ':&nbsp;' + units[unitId].cost + 'g'))
                         .append($('<p>').html('M ' + units[unitId].numberOfMoves + ' . A ' + units[unitId].attackPoints + ' . D ' + units[unitId].defensePoints))
                 );
             j++;
@@ -269,35 +269,41 @@ var Message = {
 
         // stop & relocation
 
+        if (castles[castleId].currentProductionId) {
+            var buttonOff = ''
+        } else {
+            var buttonOff = ' buttonOff'
+        }
+
         table.append(
             $('<tr>')
                 .append(
                     $('<td>')
-                        .addClass('unit')
-                        .attr('id', 'stop')
-                        .append(
-                            $('<input>').attr({
-                                type: 'radio',
-                                name: 'production',
-                                value: 'stop'
-                            })
+                        .html(
+                            $('<a>')
+                                .html(translations.stopProduction)
+                                .addClass('button buttonColors' + buttonOff)
+                                .attr('id', 'stop')
+                                .click(function () {
+                                    if ($('input:radio[name=production]:checked').val()) {
+                                        Castle.handle(1, 0)
+                                    }
+                                })
                         )
-                        .append(' Stop production')
                 )
                 .append(
                     $('<td>')
-                        .addClass('unit')
-                        .attr('id', 'relocation')
-                        .append(
-                            $('<input>')
-                                .attr({
-                                    type: 'checkbox',
-                                    name: 'relocation',
-                                    value: 1
+                        .html(
+                            $('<a>')
+                                .html(translations.productionRelocation)
+                                .addClass('button buttonColors' + buttonOff)
+                                .attr('id', 'relocation')
+                                .click(function () {
+                                    if ($('input:radio[name=production]:checked').val()) {
+                                        Castle.handle(0, 1)
+                                    }
                                 })
-                                .unbind()
                         )
-                        .append(' Production relocation')
                 )
         );
 
@@ -416,39 +422,24 @@ var Message = {
         // click
 
         $('.production .unit').click(function (e) {
+            $('.production .unit :radio').each(function () {
+                $(this)
+                    .prop('checked', false)
+                    .parent().parent().css({
+                        background: '#fff',
+                        color: '#000'
+                    })
+            })
 
-            if ($(this).attr('id') == 'relocation') {
-                if ($(e.target).closest('input[type="checkbox"]').length <= 0) {
-                    if ($('td#' + $(this).attr('id') + '.unit input').is(':checked')) {
-                        $('td#' + $(this).attr('id') + '.unit input').prop('checked', false);
-                    } else {
-                        $('td#' + $(this).attr('id') + '.unit input').prop('checked', true);
-                    }
-                    Castle.handle()
-                }
-            } else {
-                $('.production .unit :radio').each(function () {
-                    $(this)
-                        .prop('checked', false)
-                        .parent().parent().css({
-                            background: '#fff',
-                            color: '#000'
-                        })
+            $('td#' + $(this).attr('id') + '.unit input')
+                .prop('checked', true)
+                .parent().parent().css({
+                    background: 'url(/img/bg_1.jpg)',
+                    color: '#fff'
                 })
 
-                if ($(this).attr('id') == 'stop') {
-                    $('td#relocation.unit input').prop('checked', false);
-                }
-
-                $('td#' + $(this).attr('id') + '.unit input')
-                    .prop('checked', true)
-                    .parent().parent().css({
-                        background: 'url(/img/bg_1.jpg)',
-                        color: '#fff'
-                    })
-            }
-
-        });
+            $('.production #relocation').removeClass('buttonOff')
+        })
 
         $('.relocatedProduction').css({
             width: parseInt($('.production').css('width')) + 'px'
@@ -913,21 +904,21 @@ var Message = {
     },
     statistics: function () {
         var statistics = $('<div>')
-            .append($('<h3>').html('Statistics'));
+            .append($('<h3>').html(translations.statistics));
         var table = $('<table>')
             .addClass('statistics')
             .append($('<tr>')
                 .append($('<th>').addClass('Players'))
                 .append($('<th>').addClass('Players'))
-                .append($('<th>').html('Castles held'))
-                .append($('<th>').html('Castles conquered'))
-                .append($('<th>').html('Castles lost'))
-                .append($('<th>').html('Castles razed'))
-                .append($('<th>').html('Units created'))
-                .append($('<th>').html('Units killed'))
-                .append($('<th>').html('Units lost'))
-                .append($('<th>').html('Heroes killed'))
-                .append($('<th>').html('Heroes lost'))
+                .append($('<th>').html(translations.castlesHeld))
+                .append($('<th>').html(translations.castlesConquered))
+                .append($('<th>').html(translations.castlesLost))
+                .append($('<th>').html(translations.castlesRazed))
+                .append($('<th>').html(translations.unitsCreated))
+                .append($('<th>').html(translations.unitsKilled))
+                .append($('<th>').html(translations.unitsLost))
+                .append($('<th>').html(translations.heroesKilled))
+                .append($('<th>').html(translations.heroesLost))
             );
         var color
         for (color in players) {
@@ -1035,8 +1026,8 @@ var Message = {
     },
     end: function () {
         var div = $('<div>')
-            .append($('<h3>').html('GAME OVER'))
-            .append($('<div>').html('This is THE END'))
+            .append($('<h3>').html(translations.gameOver))
+            .append($('<div>').html(translations.thisIsTheEnd))
         var id = this.show(div)
         this.ok(id, Gui.exit)
     },
@@ -1077,35 +1068,35 @@ var Message = {
                     .append(
                         $('<tr>')
                             .append($('<td>').html(myTowers).addClass('r'))
-                            .append($('<td>').html('towers').addClass('c'))
-                            .append($('<td>').html(myTowers * 5 + ' gold').addClass('r'))
+                            .append($('<td>').html(translations.towers).addClass('c'))
+                            .append($('<td>').html(myTowers * 5 + ' ' + translations.gold).addClass('r'))
                     )
                     .append(
                         $('<tr>')
                             .append($('<td>').html(myCastles).addClass('r'))
-                            .append($('<td>').html('castles').addClass('c'))
-                            .append($('<td>').html(myCastlesGold + ' gold').addClass('r'))
+                            .append($('<td>').html(translations.castles).addClass('c'))
+                            .append($('<td>').html(myCastlesGold + ' ' + translations.gold).addClass('r'))
                     )
                     .append(
                         $('<tr>')
                             .append($('<td>'))
                             .append($('<td>'))
-                            .append($('<td>').html(myTowers * 5 + myCastlesGold + ' gold').addClass('r'))
+                            .append($('<td>').html(myTowers * 5 + myCastlesGold + ' ' + translations.gold).addClass('r'))
                     )
             )
-            .append($('<h3>').html('Upkeep'))
+            .append($('<h3>').html(translations.upkeep))
             .append(
                 $('<table>')
                     .addClass('treasury')
                     .append(
                         $('<tr>')
                             .append($('<td>').html(myUnits).addClass('r'))
-                            .append($('<td>').html('units').addClass('c'))
-                            .append($('<td>').html(myUnitsGold + ' gold').addClass('r'))
+                            .append($('<td>').html(translations.units).addClass('c'))
+                            .append($('<td>').html(myUnitsGold + ' ' + translations.gold).addClass('r'))
                     )
             )
-            .append($('<h3>').html('Summation'))
-            .append($('<div>').html(myTowers * 5 + myCastlesGold - myUnitsGold + ' gold per turn'))
+            .append($('<h3>').html(translations.Summation))
+            .append($('<div>').html(myTowers * 5 + myCastlesGold - myUnitsGold + ' ' + translations.goldPerTurn))
         var id = this.show(div);
         this.ok(id)
     },
@@ -1138,7 +1129,7 @@ var Message = {
                     $('<tr>')
                         .append($('<td>'))
                         .append($('<td>').html(castles[i].name))
-                        .append($('<td>').html(castles[i].income + ' gold').addClass('r'))
+                        .append($('<td>').html(castles[i].income + ' ' + translations.gold).addClass('r'))
                         .click(click(i))
                         .mouseover(function () {
                             $(this).children().css({
@@ -1159,24 +1150,24 @@ var Message = {
         table.append(
                 $('<tr>')
                     .append($('<td>').html(myCastles).addClass('r'))
-                    .append($('<td>').html('castles').addClass('c'))
-                    .append($('<td>').html(myCastlesGold + ' gold').addClass('r'))
+                    .append($('<td>').html(translations.castles).addClass('c'))
+                    .append($('<td>').html(myCastlesGold + ' ' + translations.gold).addClass('r'))
             ).append(
                 $('<tr>')
                     .append($('<td>').html(myTowers).addClass('r'))
-                    .append($('<td>').html('towers').addClass('c'))
-                    .append($('<td>').html(myTowers * 5 + ' gold').addClass('r'))
+                    .append($('<td>').html(translations.towers).addClass('c'))
+                    .append($('<td>').html(myTowers * 5 + ' ' + translations.gold).addClass('r'))
             ).append(
                 $('<tr>')
                     .append($('<td>'))
                     .append($('<td>'))
-                    .append($('<td>').html(myTowers * 5 + myCastlesGold + ' gold').addClass('r'))
+                    .append($('<td>').html(myTowers * 5 + myCastlesGold + ' ' + translations.gold).addClass('r'))
             )
 
 
         var div = $('<div>')
             .addClass('overflow')
-            .append($('<h3>').html('Income'))
+            .append($('<h3>').html(translations.income))
             .append(table)
         var id = this.show(div);
         this.ok(id)
@@ -1224,29 +1215,29 @@ var Message = {
         table.append(
             $('<tr>')
                 .append($('<td>').html(myUnits).addClass('r'))
-                .append($('<td>').html('units').addClass('c'))
-                .append($('<td>').html(myUnitsGold + ' gold').addClass('r'))
+                .append($('<td>').html(translations.units).addClass('c'))
+                .append($('<td>').html(myUnitsGold + ' ' + translations.gold).addClass('r'))
         )
 
         var div = $('<div>')
             .addClass('overflow')
-            .append($('<h3>').html('Upkeep'))
+            .append($('<h3>').html(translations.upkeep))
             .append(table)
         var id = this.show(div);
         this.ok(id)
     },
     hire: function () {
         var div = $('<div>')
-            .append($('<h3>').html('Hire hero'))
-            .append('Do you want to hire new hero for 1000 gold?')
+            .append($('<h3>').html(translations.hireHero))
+            .append(translations.doYouWantToHireNewHeroFor1000Gold)
         var id = this.show(div)
         this.ok(id, Websocket.hire)
         this.cancel(id)
     },
     resurrection: function () {
         var div = $('<div>')
-            .append($('<h3>').html('Resurrect hero'))
-            .append('Do you want to resurrect hero for 100 gold?')
+            .append($('<h3>').html(translations.resurrectHero))
+            .append(translations.doYouWantToResurrectHeroFor100Gold)
         var id = this.show(div)
         this.ok(id, Websocket.resurrection)
         this.cancel(id)
@@ -1286,8 +1277,8 @@ var Message = {
     battleAttack: function () {
 
         var div = $('<div>')
-            .append($('<h3>').html('Battle configuration'))
-            .append($('<div>').html('Change battle attack sequence by moving units'))
+            .append($('<h3>').html(translations.battleConfiguration))
+            .append($('<div>').html(translations.changeBattleAttackSequenceByMovingUnits))
             .append($('<br>'))
             .append(this.battleConfiguration('attack'))
 
@@ -1302,8 +1293,8 @@ var Message = {
     battleDefence: function () {
 
         var div = $('<div>')
-            .append($('<h3>').html('Battle configuration'))
-            .append($('<div>').html('Change battle defence sequence by moving units'))
+            .append($('<h3>').html(translations.battleConfiguration))
+            .append($('<div>').html(translations.changeBattleDefenceSequenceByMovingUnits))
             .append($('<br>'))
             .append(this.battleConfiguration('defence'))
 

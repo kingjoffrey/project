@@ -356,7 +356,7 @@ Websocket = {
     },
     open: function () {
         if (Websocket.closed) {
-            Message.simple('Sorry, server is disconnected.');
+            Message.error(translations.sorryServerIsDisconnected)
             return;
         }
 
@@ -372,7 +372,7 @@ Websocket = {
     },
     inventoryAdd: function (heroId, artifactId) {
         if (Websocket.closed) {
-            Message.simple('Sorry, server is disconnected.');
+            Message.error(translations.sorryServerIsDisconnected)
             return;
         }
 
@@ -380,13 +380,13 @@ Websocket = {
             type: 'inventoryAdd',
             heroId: heroId,
             artifactId: artifactId
-        };
+        };sorryServerIsDisconnected
 
         ws.send(JSON.stringify(token));
     },
     inventoryDel: function (heroId) {
         if (Websocket.closed) {
-            Message.simple('Sorry, server is disconnected.');
+            Message.error(translations.sorryServerIsDisconnected)
             return;
         }
 
@@ -399,17 +399,13 @@ Websocket = {
     },
     production: function (castleId, unitId, relocationCastleId) {
         if (Websocket.closed) {
-            Message.simple('Sorry, server is disconnected.');
+            Message.error(translations.sorryServerIsDisconnected)
             return;
-        }
-
-        if (unitId == 'stop') {
-            unitId = -1;
         }
 
         if (!unitId) {
             Sound.play('error');
-            Message.simple('Error');
+            Message.error('Error');
             return;
         }
 
@@ -424,7 +420,7 @@ Websocket = {
     },
     tower: function (towerId) {
         if (Websocket.closed) {
-            Message.simple('Sorry, server is disconnected.');
+            Message.error(translations.sorryServerIsDisconnected)
             return;
         }
 
@@ -437,7 +433,7 @@ Websocket = {
     },
     surrender: function () {
         if (Websocket.closed) {
-            Message.simple('Sorry, server is disconnected.');
+            Message.error(translations.sorryServerIsDisconnected)
             return;
         }
 
@@ -449,7 +445,7 @@ Websocket = {
     },
     chat: function () {
         if (Websocket.closed) {
-            Message.simple('Sorry, server is disconnected.');
+            Message.error(translations.sorryServerIsDisconnected)
             return;
         }
 
@@ -468,7 +464,7 @@ Websocket = {
     },
     computer: function () {
         if (Websocket.closed) {
-            Message.simple('Sorry, server is disconnected.');
+            Message.error(translations.sorryServerIsDisconnected)
             return;
         }
 
@@ -496,7 +492,7 @@ Websocket = {
     },
     ruin: function () {
         if (Websocket.closed) {
-            Message.simple('Sorry, server is disconnected.');
+            Message.error(translations.sorryServerIsDisconnected)
             return;
         }
 
@@ -518,7 +514,7 @@ Websocket = {
     },
     fortify: function (armyId) {
         if (Websocket.closed) {
-            Message.simple('Sorry, server is disconnected.');
+            Message.error(translations.sorryServerIsDisconnected)
             return;
         }
 
@@ -536,7 +532,7 @@ Websocket = {
     },
     unfortify: function (armyId) {
         if (Websocket.closed) {
-            Message.simple('Sorry, server is disconnected.');
+            Message.error(translations.sorryServerIsDisconnected)
             return;
         }
 
@@ -554,7 +550,7 @@ Websocket = {
     },
     join: function (armyId) {
         if (Websocket.closed) {
-            Message.simple('Sorry, server is disconnected.');
+            Message.error(translations.sorryServerIsDisconnected)
             return;
         }
 
@@ -572,7 +568,7 @@ Websocket = {
     },
     disband: function () {
         if (Websocket.closed) {
-            Message.simple('Sorry, server is disconnected.');
+            Message.error(translations.sorryServerIsDisconnected)
             return;
         }
 
@@ -593,12 +589,12 @@ Websocket = {
     },
     move: function (x, y) {
         if (Websocket.closed) {
-            Message.simple('Sorry, server is disconnected.');
+            Message.error(translations.sorryServerIsDisconnected)
             return;
         }
 
         if (!my.turn) {
-            Message.simple('It is not your turn.');
+            Message.error('It is not your turn.');
             return;
         }
 
@@ -632,12 +628,12 @@ Websocket = {
     },
     split: function () {
         if (Websocket.closed) {
-            Message.simple('Sorry, server is disconnected.');
+            Message.error(translations.sorryServerIsDisconnected)
             return;
         }
 
         if (!my.turn) {
-            Message.simple('It is not your turn.');
+            Message.error('It is not your turn.');
             return;
         }
         var h = '';
@@ -672,7 +668,7 @@ Websocket = {
     },
     resurrection: function () {
         if (Websocket.closed) {
-            Message.simple('Sorry, server is disconnected.');
+            Message.error(translations.sorryServerIsDisconnected)
             return;
         }
 
@@ -694,7 +690,7 @@ Websocket = {
     },
     hire: function () {
         if (Websocket.closed) {
-            Message.simple('Sorry, server is disconnected.');
+            Message.error(translations.sorryServerIsDisconnected)
             return;
         }
 
@@ -712,14 +708,14 @@ Websocket = {
     },
     raze: function () {
         if (Websocket.closed) {
-            Message.simple('Sorry, server is disconnected.');
+            Message.error(translations.sorryServerIsDisconnected)
             return;
         }
 
         var castleId = Castle.getMy(Army.selected.x, Army.selected.y);
 
         if (!castleId) {
-            Message.simple('No castle to destroy.');
+            Message.error('No castle to destroy.');
             return;
         }
 
@@ -732,14 +728,14 @@ Websocket = {
     },
     defense: function () {
         if (Websocket.closed) {
-            Message.simple('Sorry, server is disconnected.');
+            Message.error(translations.sorryServerIsDisconnected)
             return;
         }
 
         var castleId = Castle.getMy(Army.selected.x, Army.selected.y);
 
         if (!castleId) {
-            Message.simple('No castle to build defense.');
+            Message.error('No castle to build defense.');
             return;
         }
 
@@ -752,7 +748,7 @@ Websocket = {
     },
     startMyTurn: function () {
         if (Websocket.closed) {
-            Message.simple('Sorry, server is disconnected.');
+            Message.error(translations.sorryServerIsDisconnected)
             return;
         }
 
@@ -764,7 +760,7 @@ Websocket = {
     },
     nextTurn: function () {
         if (Websocket.closed) {
-            Message.simple('Sorry, server is disconnected.');
+            Message.error(translations.sorryServerIsDisconnected)
             return;
         }
 
@@ -776,7 +772,7 @@ Websocket = {
     },
     statistics: function () {
         if (Websocket.closed) {
-            Message.simple('Sorry, server is disconnected.');
+            Message.error(translations.sorryServerIsDisconnected)
             return;
         }
 
@@ -794,7 +790,7 @@ Websocket = {
     },
     battleConfiguration: function (attack) {
         if (Websocket.closed) {
-            Message.simple('Sorry, server is disconnected.');
+            Message.error(translations.sorryServerIsDisconnected)
             return;
         }
 

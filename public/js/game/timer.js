@@ -16,8 +16,8 @@ var timer = {
     minute2: 0,
     second2: 0,
     start: function () {
-        $('#turnTimeLimit2').html(game.turnTimeLimit)
-        $('#timeLimit2').html(game.timeLimit)
+        $('#turnTimeLimit2').html(turnTimeLimit[game.turnTimeLimit])
+        $('#timeLimit2').html(timeLimits[game.timeLimit])
         $('#timerScroll').css('height', Players.length * this.height + 'px');
         this.elHour1 = $('#turnTimeLimit #hour')
         this.elMinute1 = $('#turnTimeLimit #minute')

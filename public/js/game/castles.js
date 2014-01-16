@@ -1,7 +1,7 @@
 // *** CASTLES ***
 
 var Castle = {
-    handle: function () {
+    handle: function (stop, relocation) {
         var castleId = $('.production').attr('id');
 
         if (!castleId) {
@@ -15,13 +15,13 @@ var Castle = {
             return;
         }
 
-        var unitId = $('input:radio[name=production]:checked').val();
+        var unitId = $('input:radio[name=production]:checked').val()
 
-        if ($('input[name=relocation]').is(':checked')) {
+        if (relocation) {
             if (!unitId) {
                 Message.error('No unit selected')
             } else {
-                Message.simpleNew('Relocation', 'Select castle to which you want to relocate this production')
+                Message.simpleNew(translations.relocation, translations.selectCastleToWhichYouWantToRelocateThisProduction)
                 $('.castle.' + my.color)
                     .unbind('click')
                     .click(function () {
@@ -30,6 +30,10 @@ var Castle = {
                     });
             }
             return;
+        }
+
+        if (stop) {
+            var unitId = -1
         }
 
         if (unitId) {
@@ -43,12 +47,12 @@ var Castle = {
         }
 
         if (isTruthful(relocationCastleId)) {
-            Message.simpleNew('Production', 'Production relocated')
+            Message.simpleNew(translations.production, translations.productionRelocated)
         } else {
             if (unitId === null) {
-                Message.simpleNew('Production', 'Production stopped')
+                Message.simpleNew(translations.production, translations.productionStopped)
             } else {
-                Message.simpleNew('Production', 'Production set')
+                Message.simpleNew(translations.production, translations.productionSet)
             }
         }
 
