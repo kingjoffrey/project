@@ -50,6 +50,10 @@ class Cli_Model_Production
             $unitId = null;
         }
 
+        $production = $mCastlesInGame->getProduction($castleId, $user->parameters['playerId']);
+        if ($production['productionId'] == $unitId) {
+            return;
+        }
 
         if ($mCastlesInGame->setProduction($user->parameters['playerId'], $castleId, $unitId, $relocationCastleId)) {
             $token = array(

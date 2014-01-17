@@ -30,7 +30,7 @@ class Application_Model_Limit
         $translator = Zend_Registry::get('Zend_Translate');
         $adapter = $translator->getAdapter();
         return array(
-            0 => 'no limit',
+            0 => $adapter->translate('no limit'),
             1 => $adapter->translate('1 minute'),
             2 => $adapter->translate('2 minutes'),
             3 => $adapter->translate('3 minutes'),
@@ -39,8 +39,8 @@ class Application_Model_Limit
             20 => '20 ' . $adapter->translate('minutes'),
             30 => '30 ' . $adapter->translate('minutes'),
             60 => '1 ' . $adapter->translate('hour'),
-            120 => '2 hours',
-            180 => '3 hours',
+            120 => $adapter->translate('2 hours'),
+            180 => $adapter->translate('3 hours'),
             1440 => $adapter->translate('1 day')
         );
     }

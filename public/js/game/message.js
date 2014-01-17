@@ -152,6 +152,7 @@ var Message = {
         this.ok(id)
     },
     error: function (message) {
+        Sound.play('error');
         var div = $('<div>')
             .append($('<h3>').html(translations.error))
             .append($('<div>').html(message))
@@ -461,7 +462,28 @@ var Message = {
             return;
         }
 
-        var div = $('<div>').addClass('split')
+        var div = $('<div>')
+            .addClass('split')
+            .append($('<h3>').html(translations.split))
+            .append(
+                $('<div>')
+                    .html(
+                        $('<input>')
+                            .attr({
+                                type: 'checkbox'
+                            })
+                            .change(function () {
+                                $('.message .row input').each(function () {
+                                    if ($(this).is(':checked')) {
+                                        $(this).prop('checked', false)
+                                    } else {
+                                        $(this).prop('checked', true)
+                                    }
+                                })
+                            })
+                    )
+                    .attr('id', 'selectAll')
+            )
         var numberOfUnits = 0;
 
         for (i in Army.selected.soldiers) {
@@ -476,7 +498,7 @@ var Message = {
                             'id': 'unit' + Army.selected.soldiers[i].soldierId
                         })
                     ))
-                    .append($('<span>').html(' Moves left: ' + Army.selected.soldiers[i].movesLeft + ' '))
+                    .append($('<span>').html(translations.movesLeft + ': ' + Army.selected.soldiers[i].movesLeft + ' '))
                     .append($('<div>').addClass('right').html($('<input>').attr({
                         type: 'checkbox',
                         name: 'soldierId',
@@ -497,7 +519,7 @@ var Message = {
                             'id': 'hero' + Army.selected.heroes[i].heroId
                         })
                     ))
-                    .append($('<span>').html(' Moves left: ' + Army.selected.heroes[i].movesLeft + ' '))
+                    .append($('<span>').html(translations.movesLeft + ': ' + Army.selected.heroes[i].movesLeft + ' '))
                     .append($('<div>').addClass('right').html($('<input>').attr({
                         type: 'checkbox',
                         name: 'heroId',
@@ -516,7 +538,9 @@ var Message = {
             return;
         }
 
-        var div = $('<div>').addClass('status'),
+        var div = $('<div>')
+                .addClass('status')
+                .append($('<h3>').html(translations.status)),
             numberOfUnits = 0,
             bonusTower = 0,
             castleDefense = getMyCastleDefenseFromPosition(Army.selected.x, Army.selected.y),

@@ -391,6 +391,11 @@
     overflow-y: auto;
 }
 
+.message .split #selectAll{
+    text-align: right;
+    margin: 4px;
+}
+
 .message .split div.row {
     clear: both;
     height: 31px;

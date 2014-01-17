@@ -5,13 +5,7 @@ var Castle = {
         var castleId = $('.production').attr('id');
 
         if (!castleId) {
-            Sound.play('error');
             Message.error('No castle ID');
-            return;
-        }
-
-        if ($('input[name=resurrection]').is(':checked')) {
-            Websocket.resurrection();
             return;
         }
 
