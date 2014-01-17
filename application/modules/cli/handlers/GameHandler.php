@@ -42,7 +42,7 @@ class Cli_GameHandler extends Cli_WofHandler
         }
 
         if ($user->parameters['timeLimit']) {
-            if (time() - $user->parameters['begin'] > $user->parameters['timeLimit'] * 60) {
+            if (time() - $user->parameters['begin'] > $user->parameters['timeLimit'] * 600) {
                 $mGame = new Application_Model_Game($user->parameters['gameId'], $db);
                 $mGame->endGame();
                 $mTurn = new Cli_Model_Turn($user, $db, $this);

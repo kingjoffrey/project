@@ -241,13 +241,10 @@ var Castle = {
                     top: (castles[castleId].y * 40) + 'px'
                 })
                 .mouseover(function () {
-                    Castle.onMouse(this.id, 'g');
-                })
-                .mousemove(function () {
-                    Castle.onMouse(this.id, 'g')
+                    Castle.changeFields(this.id.substring(6), 'g')
                 })
                 .mouseout(function () {
-                    Castle.onMouse(this.id, 'e')
+                    Castle.changeFields(this.id.substring(6), 'e')
                 })
         );
 
@@ -266,7 +263,10 @@ var Castle = {
         );
     },
     owner: function (castleId, color) {
-        var castle = $('#castle' + castleId);
+        var castle = $('#castle' + castleId)
+            .removeClass()
+            .addClass('castle ' + color)
+            .css('background', 'url(/img/game/castles/' + color + '.png) center center no-repeat');
 
         if (castles[castleId].color) {
             castles[castleId].defense -= 1;
@@ -278,39 +278,39 @@ var Castle = {
         }
 
         if (color == my.color) {
-            Castle.changeFields(castleId, 'c');
+            Castle.changeFields(castleId, 'c')
             castle
                 .css({
                     'cursor': 'url(/img/game/cursor_castle.png), default'
                 })
                 .unbind()
+                .removeClass('team')
                 .click(function () {
                     Message.castle(castleId)
                 });
         } else {
-            Castle.changeFields(castleId, 'e')
-
-            castle
-                .unbind()
-                .mouseover(function () {
-                    Castle.onMouse(this.id, 'g');
-                })
-                .mousemove(function () {
-                    Castle.onMouse(this.id, 'g')
-                })
-                .mouseout(function () {
-                    Castle.onMouse(this.id, 'e');
-                })
-
-            if (isSet(castles[castleId].relocationCastleId)) {
-                delete castles[castles[castleId].relocationCastleId].relocatedProduction[castleId]
-                delete castles[castleId].relocationCastleId
+            if (players[color].team == my.color) {
+                Castle.changeFields(castleId, 'c')
+                castle
+                    .unbind()
+                    .addClass('team')
+            } else {
+                Castle.changeFields(castleId, 'e')
+                castle
+                    .unbind()
+                    .removeClass('team')
+                    .mouseover(function () {
+                        Castle.changeFields(this.id.substring(6), 'g')
+                    })
+                    .mouseout(function () {
+                        Castle.changeFields(this.id.substring(6), 'e')
+                    })
+                if (isSet(castles[castleId].relocationCastleId)) {
+                    delete castles[castles[castleId].relocationCastleId].relocatedProduction[castleId]
+                    delete castles[castleId].relocationCastleId
+                }
             }
         }
-
-        castle.removeClass()
-            .addClass('castle ' + color)
-            .css('background', 'url(/img/game/castles/' + color + '.png) center center no-repeat');
 
         Castle.removeCrown(castleId)
         Castle.removeHammer(castleId)
@@ -347,9 +347,6 @@ var Castle = {
             Army.showFirst(my.color);
         }
     },
-    onMouse: function (id, type) {
-        Castle.changeFields(id.substring(6), type);
-    },
     updateDefense: function (castleId, defenseMod) {
         castles[castleId].defense = castles[castleId].defensePoints + defenseMod;
         if (castles[castleId].defense < 1) {
@@ -360,18 +357,19 @@ var Castle = {
     },
     updateCurrentProductionTurn: function (castleId, productionTurn) {
         castles[castleId].currentProductionTurn = productionTurn;
+    },
+    selectedArmyCursor: function () {
+//        $('.castle:not(.' + my.color + '), .castle:not(.team)').css('cursor', 'url(/img/game/cursor_attack.png), crosshair')
+//        $('.castle:not(.' + my.color + ') .name, .castle:not(.team) .name').css('cursor', 'url(/img/game/cursor.png), default')
+        $('.castle:not(.team)').css('cursor', 'url(/img/game/cursor_attack.png), crosshair')
+        $('.castle:not(.team) .name').css('cursor', 'url(/img/game/cursor.png), default')
+    },
+    deselectedArmyCursor: function () {
+        $('.castle:not(.' + my.color + ' .team)').css('cursor', 'url(/img/game/cursor.png), default');
     }
+
 }
 
-
-function castlesAddCursorWhenSelectedArmy() {
-    $('.castle:not(.' + my.color + ')').css('cursor', 'url(/img/game/cursor_attack.png), crosshair')
-    $('.castle:not(.' + my.color + ') .name').css('cursor', 'url(/img/game/cursor.png), crosshair')
-}
-
-function castlesAddCursorWhenUnselectedArmy() {
-    $('.castle:not(.' + my.color + ')').css('cursor', 'url(/img/game/cursor.png), default');
-}
 
 function myCastlesAddCursor() {
     $('.castle.' + my.color).css('cursor', 'url(/img/game/cursor_castle.png), crosshair');
@@ -382,6 +380,7 @@ function myCastlesRemoveCursor() {
 }
 
 function getMyCastleDefenseFromPosition(x, y) {
+    var castleId
     for (castleId in castles) {
         if (castles[castleId].color == my.color) {
             var pos = castles[castleId].position;
