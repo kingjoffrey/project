@@ -475,10 +475,9 @@ var Army = {
 
         Castle.selectedArmyCursor();
         this.enemyCursorWhenSelected();
-        myCastlesRemoveCursor();
+        Castle.myRemoveCursor();
 
         this.removeFromSkipped(a.armyId);
-
         this.unfortify(a.armyId);
 
         $('#army' + a.armyId)
@@ -520,9 +519,9 @@ var Army = {
             }
         }
 
-        Castle.deselectedArmyCursor();
+        Castle.deselectedArmyCursor()
         this.enemyCursorWhenUnselected()
-        myCastlesAddCursor();
+        Castle.myCursor()
 
         $('#name').html('');
         $('#moves').html('');
@@ -636,7 +635,8 @@ var Army = {
         $('.army:not(.team) *').css('cursor', 'url(/img/game/cursor_attack.png) 13 16, crosshair')
     },
     enemyCursorWhenUnselected: function () {
-        $('.army:not(.' + my.color + ') *').css('cursor', 'url(/img/game/cursor.png), default');
+//        $('.army:not(.' + my.color + ') *').css('cursor', 'url(/img/game/cursor.png), default');
+        $('.army:not(.team) *').css('cursor', 'url(/img/game/cursor.png), default');
     },
     enemyMouse: function (element, x, y) {
         element

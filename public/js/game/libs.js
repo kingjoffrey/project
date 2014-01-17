@@ -73,15 +73,15 @@ function makeMyCursorUnlock() {
     $('.castle').css('cursor', 'url(/img/game/cursor.png), auto')
     $('.army').css('cursor', 'url(/img/game/cursor.png), auto')
 
-    myCastlesAddCursor();
+    Castle.myCursor()
 }
 
 function makeMyCursorLock() {
     board.css('cursor', 'url(/img/game/cursor_hourglass.png), wait')
-    $('.tower').css('cursor', 'url(/img/game/cursor_hourglass.png), auto')
-    $('.ruin').css('cursor', 'url(/img/game/cursor_hourglass.png), auto')
-    $('.castle').css('cursor', 'url(/img/game/cursor_hourglass.png), auto')
-    $('.army').css('cursor', 'url(/img/game/cursor_hourglass.png), auto')
+    $('.tower').css('cursor', 'url(/img/game/cursor_hourglass.png), wait')
+    $('.ruin').css('cursor', 'url(/img/game/cursor_hourglass.png), wait')
+    $('.castle').css('cursor', 'url(/img/game/cursor_hourglass.png), wait')
+    $('.army').css('cursor', 'url(/img/game/cursor_hourglass.png), wait')
 }
 
 function titleBlink(msg) {

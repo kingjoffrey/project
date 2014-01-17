@@ -366,18 +366,15 @@ var Castle = {
     },
     deselectedArmyCursor: function () {
         $('.castle:not(.' + my.color + ' .team)').css('cursor', 'url(/img/game/cursor.png), default');
+    },
+    myCursor: function () {
+        $('.castle.' + my.color).css('cursor', 'url(/img/game/cursor_castle.png), crosshair');
+    },
+    myRemoveCursor: function () {
+        $('.castle.' + my.color).css('cursor', 'url(/img/game/cursor.png), default');
     }
-
 }
 
-
-function myCastlesAddCursor() {
-    $('.castle.' + my.color).css('cursor', 'url(/img/game/cursor_castle.png), crosshair');
-}
-
-function myCastlesRemoveCursor() {
-    $('.castle.' + my.color).css('cursor', 'url(/img/game/cursor.png), default');
-}
 
 function getMyCastleDefenseFromPosition(x, y) {
     var castleId

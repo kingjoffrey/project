@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: WOF\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-01-16 08:23+0100\n"
-"PO-Revision-Date: 2014-01-16 08:23+0100\n"
+"POT-Creation-Date: 2014-01-17 08:44+0100\n"
+"PO-Revision-Date: 2014-01-17 08:45+0100\n"
 "Last-Translator: Bartosz Krzeszewski <bartek@core-t.pl>\n"
 "Language-Team: \n"
 "Language: pl\n"
@@ -223,30 +223,57 @@ msgid "Production set"
 msgstr "Ustawiono produkcję"
 
 #: application/views/helpers/Translations.php:56
+msgid "Production"
+msgstr "Produkcja"
+
+#: application/views/helpers/Translations.php:57
 msgid "Relocating to"
 msgstr "Relokacja do"
 
-#: application/views/helpers/Translations.php:57
+#: application/views/helpers/Translations.php:58
 msgid "Relocating from"
 msgstr "Relokacja z"
 
-#: application/views/helpers/Translations.php:58
+#: application/views/helpers/Translations.php:59
 #: application/layouts/scripts/game.phtml:97
 msgid "Next turn"
 msgstr "Następna tura"
 
-#: application/views/helpers/Translations.php:59
+#: application/views/helpers/Translations.php:60
 #: application/layouts/scripts/game.phtml:125
 msgid "Disband army"
 msgstr "Rozwiąż armię"
 
-#: application/views/helpers/Translations.php:60
+#: application/views/helpers/Translations.php:61
 msgid "Castle defense"
 msgstr "Obrona zamku"
 
-#: application/views/helpers/Translations.php:61
+#: application/views/helpers/Translations.php:62
 msgid "gold/turn"
 msgstr "złoto/turę"
+
+#: application/views/helpers/Translations.php:63
+msgid "Moves left"
+msgstr "Pozostałe ruchy"
+
+#: application/views/helpers/Translations.php:64
+msgid "Status"
+msgstr "Status"
+
+#: application/views/helpers/Translations.php:65
+msgid "Split"
+msgstr "Podziel"
+
+#: application/views/helpers/Translations.php:66
+#: application/views/scripts/help/index.phtml:25
+#: application/layouts/scripts/game.phtml:115
+msgid "Attack"
+msgstr "Atak"
+
+#: application/views/helpers/Translations.php:67
+#, fuzzy
+msgid "Defence"
+msgstr "Obrona"
 
 #: application/views/helpers/Logout.php:8
 msgid "Logout"
@@ -342,7 +369,7 @@ msgstr "Imię"
 msgid "Last name"
 msgstr "Nazwisko"
 
-#: application/models/Limit.php:11
+#: application/models/Limit.php:11 application/models/Limit.php:33
 #: application/views/scripts/setup/index.phtml:10
 #: application/views/scripts/load/index.phtml:48
 msgid "no limit"
@@ -359,11 +386,11 @@ msgstr "minut"
 msgid "hour"
 msgstr "godzina"
 
-#: application/models/Limit.php:18
+#: application/models/Limit.php:18 application/models/Limit.php:42
 msgid "2 hours"
 msgstr "2 godziny"
 
-#: application/models/Limit.php:19
+#: application/models/Limit.php:19 application/models/Limit.php:43
 msgid "3 hours"
 msgstr "3 godziny"
 
@@ -624,11 +651,6 @@ msgstr "Jednostki"
 msgid "Special unit"
 msgstr "Jednostka specjalna"
 
-#: application/views/scripts/help/index.phtml:25
-#: application/layouts/scripts/game.phtml:115
-msgid "Attack"
-msgstr "Atak"
-
 #: application/views/scripts/help/index.phtml:27
 #: application/layouts/scripts/game.phtml:118
 msgid "Defense"
@@ -758,9 +780,6 @@ msgstr "Wyślij"
 
 #~ msgid "Time spend"
 #~ msgstr "Czas"
-
-#~ msgid "Stats"
-#~ msgstr "Statystyki"
 
 #~ msgid "Map editor"
 #~ msgstr "Edytor map"

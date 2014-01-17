@@ -814,10 +814,10 @@ var Message = {
         defenseGrass.append(defense)
 
         var div = $('<div>')
-            .append($('<h3>').html('Defense'))
+            .append($('<h3>').html(translations.defence))
             .append(defenseGrass)
             .append($('<p id="vs">').html('VS').addClass('center'))
-            .append($('<h3>').html('Attack'))
+            .append($('<h3>').html(translations.attack))
             .append(attackGrass)
 
         var id = this.show(div);
@@ -932,8 +932,8 @@ var Message = {
         var table = $('<table>')
             .addClass('statistics')
             .append($('<tr>')
-                .append($('<th>').addClass('Players'))
-                .append($('<th>').addClass('Players'))
+                .append($('<th>'))
+                .append($('<th>'))
                 .append($('<th>').html(translations.castlesHeld))
                 .append($('<th>').html(translations.castlesConquered))
                 .append($('<th>').html(translations.castlesLost))
