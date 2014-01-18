@@ -5,6 +5,7 @@ class Cli_Model_ComputerMainBlocks extends Cli_Model_ComputerSubBlocks
     protected $_gameHandler;
     protected $_l;
     protected $_mGame;
+    protected $_turnNumber;
 
     public function __construct($gameId, $playerId, $db, $gameHandler)
     {
@@ -13,6 +14,8 @@ class Cli_Model_ComputerMainBlocks extends Cli_Model_ComputerSubBlocks
         $this->_gameHandler = $gameHandler;
         $this->_l = new Coret_Model_Logger();
         $this->_mGame = new Application_Model_Game($this->_gameId, $this->_db);
+
+        $this->_turnNumber = $this->_mGame->getTurnNumber();
     }
 
     private function firstBlock($enemies, $mArmy, $castlesAndFields)
@@ -210,8 +213,7 @@ class Cli_Model_ComputerMainBlocks extends Cli_Model_ComputerSubBlocks
 
             $castlePosition = $castlesAndFields['myCastles'][$myCastleId]['position'];
 
-            $turnNumber = $this->_mGame->getTurnNumber();
-            $numberOfUnits = floor($turnNumber / 7);
+            $numberOfUnits = floor($this->_turnNumber / 7);
             if ($numberOfUnits > 4) {
                 $numberOfUnits = 4;
             }
@@ -373,7 +375,7 @@ class Cli_Model_ComputerMainBlocks extends Cli_Model_ComputerSubBlocks
             } else {
                 $this->_l->log('JEST WRÓG Z ZASIĘGIEM');
 
-                if ($turnNumber <= 7 && !$enemiesInRange) {
+                if ($this->_turnNumber <= 7 && !$enemiesInRange) {
                     $this->_l->log('BRAK WROGA W ZASIĘGU I TURA < 8 - ZOSTAŃ!');
 
                     $this->_modelArmy->fortify($army['armyId'], 1);
@@ -381,7 +383,7 @@ class Cli_Model_ComputerMainBlocks extends Cli_Model_ComputerSubBlocks
                 } else {
                     $this->_l->log('JEST WRÓG W ZASIĘGU');
 
-                    if ($turnNumber <= 7 && count($enemiesHaveRange) > 1) {
+                    if ($this->_turnNumber <= 7 && count($enemiesHaveRange) > 1) {
                         $this->_l->log('WRÓGÓW Z ZASIĘGIEM > WRÓGÓW W ZASIĘGU - ZOSTAŃ!');
 
                         $this->_modelArmy->fortify($army['armyId'], 1);

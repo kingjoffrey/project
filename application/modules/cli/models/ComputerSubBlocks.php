@@ -354,22 +354,37 @@ class Cli_Model_ComputerSubBlocks extends Cli_Model_ComputerFight
             $army['movesLeft'] = Cli_Model_Army::calculateMaxArmyMoves($army);
         }
 
-        $turnNumber = $this->_mGame->getTurnNumber();
-        $numberOfUnits = floor($turnNumber / 7);
+        if ($this->_turnNumber < 5) {
+            return;
+        }
+
+        $numberOfUnits = floor($this->_turnNumber / 7);
         if ($numberOfUnits > 4) {
             $numberOfUnits = 4;
         }
+
+        $armyNumber = count($army['soldiers']) + count($army['heroes']);
 
         $myArmies = $this->_modelArmy->getAllPlayerArmiesExceptOne($army['armyId'], $this->_playerId);
 
         $mSoldier = new Application_Model_UnitsInGame($this->_gameId, $this->_db);
 
         foreach ($myArmies as $a) {
+            $numberOfSoldiers = $mSoldier->count($a['armyId']);
+
             $castleId = Application_Model_Board::isCastleAtPosition($a['x'], $a['y'], $castlesAndFields['myCastles']);
             if ($castleId) {
-                if ($numberOfUnits == $mSoldier->count($a['armyId'])) {
+                if ($numberOfUnits == $numberOfSoldiers) {
                     continue;
                 }
+            }
+
+            if ($armyNumber > 3 * $numberOfSoldiers) {
+                continue;
+            }
+
+            if ($numberOfSoldiers > 3 * $armyNumber) {
+                continue;
             }
 
             $mHeuristics = new Cli_Model_Heuristics($a['x'], $a['y']);

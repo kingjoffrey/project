@@ -51,7 +51,7 @@ class Cli_Model_Production
         }
 
         $production = $mCastlesInGame->getProduction($castleId, $user->parameters['playerId']);
-        if ($production['productionId'] == $unitId) {
+        if (empty($relocationCastleId) && $production['productionId'] == $unitId) {
             return;
         }
 
