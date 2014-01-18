@@ -41,6 +41,11 @@ class Cli_GameHandler extends Cli_WofHandler
             return;
         }
 
+        if ($dataIn['type'] == 'chat') {
+            new Cli_Model_Chat($dataIn['msg'], $user, $db, $this);
+            return;
+        }
+
         if ($user->parameters['timeLimit']) {
             if (time() - $user->parameters['begin'] > $user->parameters['timeLimit'] * 600) {
                 $mGame = new Application_Model_Game($user->parameters['gameId'], $db);
@@ -66,11 +71,6 @@ class Cli_GameHandler extends Cli_WofHandler
             }
         }
 
-
-        if ($dataIn['type'] == 'chat') {
-            new Cli_Model_Chat($dataIn['msg'], $user, $db, $this);
-            return;
-        }
 
         Cli_Model_Database::addTokensIn($db, $user->parameters['gameId'], $user->parameters['playerId'], $dataIn);
 
@@ -110,6 +110,11 @@ class Cli_GameHandler extends Cli_WofHandler
                 }
             }
 
+            return;
+        }
+
+        if ($dataIn['type'] == 'production') {
+            new Cli_Model_Production($dataIn, $user, $db, $this);
             return;
         }
 
@@ -200,10 +205,6 @@ class Cli_GameHandler extends Cli_WofHandler
             case 'startTurn':
                 $mTurn = new Cli_Model_Turn($user, $db, $this);
                 $mTurn->start($user->parameters['playerId']);
-                break;
-
-            case 'production':
-                new Cli_Model_Production($dataIn, $user, $db, $this);
                 break;
 
             case 'raze':

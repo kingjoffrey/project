@@ -854,7 +854,12 @@ var Message = {
         }
 
         if (isSet(b[i].soldierId)) {
-            $('#unit' + b[i].soldierId).append($('<div>').addClass('killed'));
+            var unitElement = $('#unit' + b[i].soldierId)
+            if (!unitElement.length) {
+                Move.end(r)
+            }
+
+            unitElement.append($('<div>').addClass('killed'));
             if (!players[r.attackerColor].computer) {
                 setTimeout(function () {
                     Sound.play('error');
@@ -882,7 +887,12 @@ var Message = {
                 Message.kill(b, r);
             });
         } else if (isSet(b[i].heroId)) {
-            $('#hero' + b[i].heroId).append($('<div>').addClass('killed'));
+            var heroElement = $('#hero' + b[i].heroId)
+            if (!heroElement.length) {
+                Move.end(r)
+            }
+
+            heroElement.append($('<div>').addClass('killed'));
             if (!players[r.attackerColor].computer) {
                 setTimeout(function () {
                     Sound.play('error');
@@ -1198,12 +1208,13 @@ var Message = {
     },
     upkeep: function () {
         var myUnits = 0,
-            myUnitsGold = 0
+            myUnitsGold = 0,
+            i
 
         var table = $('<table>')
             .addClass('treasury')
 
-        var click = function (i) {
+        var center = function (i) {
             return function () {
                 zoomer.lensSetCenter(players[my.color].armies[i].x * 40, players[my.color].armies[i].y * 40)
             }
@@ -1218,20 +1229,12 @@ var Message = {
                         .append($('<td>').html($('<img>').attr('src', Unit.getImage(players[my.color].armies[i].soldiers[j].unitId, my.color))))
                         .append($('<td>').html(units[players[my.color].armies[i].soldiers[j].unitId].name))
                         .append($('<td>').html(units[players[my.color].armies[i].soldiers[j].unitId].cost + ' gold').addClass('r'))
-                        .click(click(i))
-                        .mouseover(function () {
-                            $(this).children().css({
-                                background: 'lime',
-                                color: '#000'
-                            })
-                        })
-                        .mouseout(function () {
-                            $(this).children().css({
-                                background: '#000',
-                                color: 'lime'
-                            })
-                        })
-                        .css('color', 'lime')
+                        .append(
+                            $('<td>')
+                                .html($('<img>').attr('src', '/img/game/center.png'))
+                                .addClass('iconButton buttonColors')
+                                .click(center(i))
+                        )
                 )
             }
         }

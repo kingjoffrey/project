@@ -15,6 +15,10 @@ class Application_Form_Auth extends Zend_Form {
             'required' => true,
             'filters' => array('StringTrim')
         ));
+
+        $f = new Coret_Form_Checkbox(array('name' => 'rememberMe', 'label' => $this->getView()->translate('Remember me')));
+        $this->addElements($f->getElements());
+
         $this->addElement('submit', 'submit', array('label' => $this->getView()->translate('Sign in')));
         $this->setDecorators(array(
             'FormElements',

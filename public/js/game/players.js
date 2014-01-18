@@ -201,14 +201,18 @@ var Players = {
         this.layer.add(this.circle)
     },
     drawTurn: function () {
+        var turnNumber = Turn.number
+        if (game.turnsLimit) {
+            turnNumber = Turn.number + '/' + game.turnsLimit
+        }
         if (this.turnNumber) {
-            this.turnNumber.setText(Turn.number)
+            this.turnNumber.setText(turnNumber)
             this.layer.draw()
         } else {
             this.turnNumber = new Kinetic.Text({
                 x: this.centerX - 70,
                 y: this.centerY - 15,
-                text: Turn.number,
+                text: turnNumber,
                 fontSize: 30,
                 fontFamily: 'fantasy',
                 fill: 'graphite',
@@ -219,31 +223,7 @@ var Players = {
             this.layer.add(this.turnNumber);
             this.layer.draw()
         }
-    },
-    degreesFromTwelveOclock: function (x, y) {
-        // calculate the angle(theta)
-        var theta = Math.atan2(y - this.centerY, x - this.centerX);
-        // be sure theta is positive
-        if (theta < 0) {
-            theta += 2 * Math.PI
-        }
-        ;
-        // convert to degrees and rotate so 0 degrees = 12 o'clock
-        var degrees = (theta * 180 / Math.PI + 90) % 360;
-        return (degrees);
-    },
-    radians: function (x, y) {
-        // calculate the angle(theta)
-        var theta = Math.atan2(y - this.centerY, x - this.centerX);
-        // be sure theta is positive
-        if (theta < 0) {
-            theta += 2 * Math.PI
-        }
-        return theta
     }
-//    turn: function () {
-//        this.drawTurn()
-//    }
 }
 
 Object.size = function (obj) {
