@@ -114,6 +114,24 @@ class Application_Model_CastlesInGame extends Coret_Db_Table_Abstract
         return $playersCastles;
     }
 
+    public function getTeamCastles($playerId, $subSelect)
+    {
+        $teamCastles = array();
+
+        $select = $this->_db->select()
+            ->from($this->_name, 'castleId')
+            ->where('"playerId" != ?', $playerId)
+            ->where('"playerId" IN (?)', new Zend_Db_Expr($subSelect))
+            ->where('"gameId" = ?', $this->_gameId)
+            ->where('razed = false');
+
+        foreach ($this->selectAll($select) as $val) {
+            $teamCastles[$val['castleId']] = true;
+        }
+
+        return $teamCastles;
+    }
+
     public function buildDefense($castleId, $playerId, $defenseMod)
     {
         $where = array(

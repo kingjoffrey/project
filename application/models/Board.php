@@ -68,7 +68,7 @@ class Application_Model_Board
         return $fields;
     }
 
-    static public function prepareCastlesAndFields($fields, $razed, $myCastles)
+    static public function prepareCastlesAndFields($fields, $razed, $myCastles, $teamCastles)
     {
         $castlesSchema = Zend_Registry::get('castles');
         foreach ($castlesSchema as $castleId => $castleSchema) {
@@ -82,6 +82,10 @@ class Application_Model_Board
                 $myCastles[$castleId]['castleId'] = $castleId;
                 $fields = self::changeCasteFields($fields, $x, $y, 'c');
             } else {
+                if (isset($teamCastles[$castleId])) {
+                    $fields = self::changeCasteFields($fields, $x, $y, 'c');
+                    continue;
+                }
                 $hostileCastles[$castleId] = $castleSchema;
                 $hostileCastles[$castleId]['castleId'] = $castleId;
                 $fields = self::changeCasteFields($fields, $x, $y, 'e');

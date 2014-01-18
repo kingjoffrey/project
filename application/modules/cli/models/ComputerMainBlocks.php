@@ -194,10 +194,12 @@ class Cli_Model_ComputerMainBlocks extends Cli_Model_ComputerSubBlocks
 
         $mCastlesInGame = new Application_Model_CastlesInGame($this->_gameId, $this->_db);
         $myCastles = $mCastlesInGame->getPlayerCastles($this->_playerId);
+        $mPlayersInGame = new Application_Model_PlayersInGame($this->_gameId, $this->_db);
+        $teamCastles = $mCastlesInGame->getTeamCastles($this->_playerId, $mPlayersInGame->getTeamSelect($this->_playerId));
 
         $fields = Cli_Model_Army::getEnemyArmiesFieldsPositions($this->_gameId, $this->_db, $this->_playerId);
         $razed = $mCastlesInGame->getRazedCastles();
-        $castlesAndFields = Application_Model_Board::prepareCastlesAndFields($fields, $razed, $myCastles);
+        $castlesAndFields = Application_Model_Board::prepareCastlesAndFields($fields, $razed, $myCastles, $teamCastles);
         $myCastleId = Application_Model_Board::isCastleAtPosition($army['x'], $army['y'], $castlesAndFields['myCastles']);
 
 
