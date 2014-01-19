@@ -25,6 +25,11 @@ class LoginController extends Zend_Controller_Action
                 $modelPlayer = new Application_Model_Player(null, false);
                 $playerId = $modelPlayer->auth($this->_request->getParam('login'), $this->_request->getParam('password'));
                 if ($playerId) {
+                    if ($this->_request->getParam('rememberMe')) {
+                        Zend_Session::rememberMe(31556940);
+                    } else {
+                        Zend_Session::forgetMe();
+                    }
                     $this->_namespace->player = $modelPlayer->getPlayer($playerId);
                     $this->_redirect($this->view->url(array('controller' => 'index')));
                 } else {

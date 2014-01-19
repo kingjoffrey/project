@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: WOF\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-01-17 08:44+0100\n"
-"PO-Revision-Date: 2014-01-17 08:45+0100\n"
+"POT-Creation-Date: 2014-01-19 00:46+0100\n"
+"PO-Revision-Date: 2014-01-19 00:47+0100\n"
 "Last-Translator: Bartosz Krzeszewski <bartek@core-t.pl>\n"
 "Language-Team: \n"
 "Language: pl\n"
@@ -351,7 +351,11 @@ msgstr "Utwórz grę"
 msgid "Email"
 msgstr "Email"
 
-#: application/forms/Auth.php:18
+#: application/forms/Auth.php:19
+msgid "Remember me"
+msgstr "Zapamiętaj mnie"
+
+#: application/forms/Auth.php:22
 #: application/views/scripts/login/registration.phtml:4
 msgid "Sign in"
 msgstr "Zaloguj się"

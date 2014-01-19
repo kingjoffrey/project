@@ -5,7 +5,6 @@ class Coret_Form_Number extends Zend_Form
 
     public function init()
     {
-
         if (isset($this->_attribs['validators']) && $this->_attribs['validators']) {
             $this->_attribs['validators'][] = array('Digit');
         } else {

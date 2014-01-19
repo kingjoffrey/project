@@ -174,14 +174,6 @@ var Message = {
         }
     },
     castle: function (castleId) {
-        if (Gui.lock) {
-            return;
-        }
-
-        if (!my.turn) {
-            return;
-        }
-
         if (notSet(castles[castleId])) {
             return;
         }

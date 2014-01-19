@@ -463,7 +463,10 @@ class Cli_Model_ComputerMainBlocks extends Cli_Model_ComputerSubBlocks
             $defenderArmy = null;
         }
 
-//        print_r(debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 4));
+        if (!$attackerArmy) {
+            print_r(debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 4));
+            exit;
+        }
 
         $playersInGameColors = Zend_Registry::get('playersInGameColors');
 
