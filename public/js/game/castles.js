@@ -36,10 +36,6 @@ var Castle = {
         }
     },
     updateMyProduction: function (unitId, castleId, relocationCastleId) {
-        if (!my.turn) {
-            return;
-        }
-
         if (isTruthful(relocationCastleId)) {
             Message.simpleNew(translations.production, translations.productionRelocated)
         } else {

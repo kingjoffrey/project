@@ -35,10 +35,14 @@ var timer = {
         if (this.difference1 != difference1) {
             this.difference1 = difference1
 
-            time = new Date(difference1)
-            var hours = time.getHours(),
-                minutes = time.getMinutes(),
-                seconds = time.getSeconds();
+            var date = new Date(difference1),
+                hours = date.getHours() + Math.floor(difference1 / 3600000) + 1,
+                minutes = date.getMinutes(),
+                seconds = date.getSeconds();
+
+            if (hours * 60 + minutes >= game.turnTimeLimit) {
+                Websocket.nextTurn()
+            }
 
             if (seconds < 10) {
                 seconds = '0' + seconds;
@@ -69,10 +73,10 @@ var timer = {
         if (this.difference2 != difference2) {
             this.difference2 = difference2
 
-            time = new Date(difference2)
-            var hours = time.getHours(),
-                minutes = time.getMinutes(),
-                seconds = time.getSeconds();
+            var date = new Date(difference2),
+                hours = date.getHours() + Math.floor(difference2 / 3600000) + 1,
+                minutes = date.getMinutes(),
+                seconds = date.getSeconds();
 
 
             if (seconds < 10) {

@@ -1,5 +1,5 @@
 Websocket = {
-    close: true,
+    closed: true,
     i: 0,
     queue: {},
     executing: 0,
@@ -299,7 +299,6 @@ Websocket = {
                         break;
 
                     case 'error':
-                        Sound.play('error');
                         Message.error(r.msg);
                         unlock();
                         break;
@@ -404,7 +403,6 @@ Websocket = {
         }
 
         if (!unitId) {
-            Sound.play('error');
             Message.error('Error');
             return;
         }
