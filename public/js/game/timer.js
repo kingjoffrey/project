@@ -15,7 +15,9 @@ var timer = {
     hour2: 0,
     minute2: 0,
     second2: 0,
+    gameBegin: 0,
     start: function () {
+        this.gameBegin = Date.parse(game.begin.substr(0, 19)).getTime()
         $('#turnTimeLimit2').html(turnTimeLimit[game.turnTimeLimit])
         $('#timeLimit2').html(timeLimits[game.timeLimit])
         $('#timerScroll').css('height', Players.length * this.height + 'px');
@@ -28,19 +30,19 @@ var timer = {
         timer.countdown();
     },
     countdown: function () {
-        var time = (new Date()).getTime() - 3600000
-        var difference1 = time - Turn.beginDate
-        var difference2 = time - Date.parse(game.begin.substr(0, 19)).getTime()
+        var time = (new Date()).getTime(),
+            difference1 = time - Turn.beginDate,
+            difference2 = time - this.gameBegin
 
         if (this.difference1 != difference1) {
             this.difference1 = difference1
 
             var date = new Date(difference1),
-                hours = date.getHours() + Math.floor(difference1 / 3600000) + 1,
+                hours = date.getHours() + Math.floor(difference1 / 3600000) - 1,
                 minutes = date.getMinutes(),
-                seconds = date.getSeconds();
+                seconds = date.getSeconds()
 
-            if (hours * 60 + minutes >= game.turnTimeLimit) {
+            if (game.turnTimeLimit && hours * 60 + minutes >= game.turnTimeLimit) {
                 Websocket.nextTurn()
             }
 
@@ -74,7 +76,7 @@ var timer = {
             this.difference2 = difference2
 
             var date = new Date(difference2),
-                hours = date.getHours() + Math.floor(difference2 / 3600000) + 1,
+                hours = date.getHours() + Math.floor(difference2 / 3600000) - 1,
                 minutes = date.getMinutes(),
                 seconds = date.getSeconds();
 
