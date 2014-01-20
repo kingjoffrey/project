@@ -405,6 +405,9 @@ var Gui = {
     },
     exit: function () {
         window.location = '/' + lang + '/index'
+    },
+    end: function () {
+        window.location = '/' + lang + '/over/index/id/' + gameId
     }
 
 }

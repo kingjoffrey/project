@@ -13,9 +13,7 @@ class OverController extends Game_Controller_Gui
         $mGameScore = new Application_Model_GameScore($gameId);
         $mPlayersInGame = new Application_Model_PlayersInGame($gameId);
         $this->view->score = $mGameScore->get();
-        $this->view->players = $mPlayersInGame->getAllColors();
-//        var_dump($this->view->players);exit;
-//        $this->_namespace->player['playerId'];
+        $this->view->players = $mPlayersInGame->getGamePlayers();
     }
 
 }

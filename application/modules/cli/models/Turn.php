@@ -13,15 +13,15 @@ class Cli_Model_Turn
 
     public function next($playerId)
     {
-        if ($this->_user->parameters['turnsLimit']) {
-            $mGame = new Application_Model_Game($this->_user->parameters['gameId'], $this->_db);
-            $turnNumber = $mGame->getTurnNumber();
-            if ($turnNumber >= $this->_user->parameters['turnsLimit']) {
-                $this->_gameHandler->sendError($this->_user, '!');
-                return;
-            }
-        }
-
+//        if ($this->_user->parameters['turnsLimit']) {
+//            $mGame = new Application_Model_Game($this->_user->parameters['gameId'], $this->_db);
+//            $turnNumber = $mGame->getTurnNumber();
+//            if ($turnNumber >= $this->_user->parameters['turnsLimit']) {
+//                $this->_gameHandler->sendError($this->_user, '!');
+//                return;
+//            }
+//        }
+//
         $playersInGameColors = Zend_Registry::get('playersInGameColors');
         $mPlayersInGame = new Application_Model_PlayersInGame($this->_user->parameters['gameId'], $this->_db);
         $mArmy = new Application_Model_Army($this->_user->parameters['gameId'], $this->_db);
@@ -64,7 +64,7 @@ class Cli_Model_Turn
 
                     $turnNumber = $mGame->getTurnNumber();
 
-                    if ($this->_user->parameters['turnsLimit'] && $turnNumber >= $this->_user->parameters['turnsLimit']) {
+                    if ($this->_user->parameters['turnsLimit'] && $turnNumber > $this->_user->parameters['turnsLimit']) {
                         $mGame->endGame(); // koniec gry
                         $this->saveResults();
 
@@ -223,10 +223,10 @@ class Cli_Model_Turn
             if ($unitId && $mapCastles[$castleId]['production'][$unitId]['time'] <= $castleProduction['productionTurn'] && $units[$unitId]['cost'] <= $gold) {
                 if ($mCastlesInGame->resetProductionTurn($castleId, $playerId) == 1) {
                     $unitCastleId = null;
-                    if ($castleProduction['relocationToCastleId']) {
+                    if ($castleProduction['relocationCastleId']) {
                         foreach ($playerCastles as $castle) {
-                            if ($castleProduction['relocationToCastleId'] == $castle['castleId']) {
-                                $unitCastleId = $castleProduction['relocationToCastleId'];
+                            if ($castleProduction['relocationCastleId'] == $castle['castleId']) {
+                                $unitCastleId = $castleProduction['relocationCastleId'];
                                 break;
                             }
                         }
@@ -304,8 +304,8 @@ class Cli_Model_Turn
         $heroesLost = $mHeroesKilled->countLost($playersInGameColors);
 
 
-        $soldiersKilled = $mSoldiersKilled->countKilled($playersInGameColors);
-        $soldiersLost = $mSoldiersKilled->countLost($playersInGameColors);
+        $soldiersKilled = $mSoldiersKilled->getKilled();
+        $soldiersLost = $mSoldiersKilled->getLost();
 
         $soldiersCreated = $mSoldiersCreated->getCreated();
 
@@ -318,7 +318,7 @@ class Cli_Model_Turn
             $sumPoints = 0;
 
             if (isset($castlesConquered[$shortName])) {
-                $playerCastlesConquered = $castlesConquered[$shortName];
+                $playerCastlesConquered = $castlesConquered[$shortName] - 1;
             } else {
                 $playerCastlesConquered = 0;
             }
@@ -356,8 +356,8 @@ class Cli_Model_Turn
 
             $playerSoldiersKilled = 0;
             $points['soldiersKilled'] = 0;
-            if (isset($soldiersKilled[$shortName])) {
-                foreach ($soldiersKilled[$shortName] as $unitId) {
+            if (isset($soldiersKilled[$playerId])) {
+                foreach ($soldiersKilled[$playerId] as $unitId) {
                     $playerSoldiersKilled++;
                     $points['soldiersKilled'] += $units[$unitId]['attackPoints'] + $units[$unitId]['defensePoints'];
                 }
@@ -366,8 +366,8 @@ class Cli_Model_Turn
 
             $playerSoldiersLost = 0;
             $points['soldiersLost'] = 0;
-            if (isset($soldiersLost[$shortName])) {
-                foreach ($soldiersLost[$shortName] as $unitId) {
+            if (isset($soldiersLost[$playerId])) {
+                foreach ($soldiersLost[$playerId] as $unitId) {
                     $playerSoldiersLost++;
                     $points['soldiersLost'] -= $units[$unitId]['attackPoints'];
                 }

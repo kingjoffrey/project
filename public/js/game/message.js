@@ -1055,7 +1055,7 @@ var Message = {
             .append($('<h3>').html(translations.gameOver))
             .append($('<div>').html(translations.thisIsTheEnd))
         var id = this.show(div)
-        this.ok(id, Gui.exit)
+        this.ok(id, Gui.end)
     },
     treasury: function () {
         var myTowers = 0,

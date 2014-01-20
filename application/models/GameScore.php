@@ -60,7 +60,8 @@ class Application_Model_GameScore extends Coret_Db_Table_Abstract
     {
         $select = $this->_db->select()
             ->from($this->_name)
-            ->where('"gameId" = ?', $this->_gameId);
+            ->where('"gameId" = ?', $this->_gameId)
+            ->order('score desc');
 
         return $this->selectAll($select);
     }

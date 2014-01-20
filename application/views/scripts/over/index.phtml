@@ -1,13 +1,31 @@
-<table>
-    <?php
-
-    foreach ($this->score as $k => $v) {
-        echo '<tr>';
-        var_dump($this->players[$v['playerId']]);
-        foreach ($v as $vv) {
-            echo '<td>' . $vv . '</td>';
-        }
-        echo '</tr>';
-    }
-    ?>
-</table>
+<h1><?php echo $this->translate('Game score') ?></h1>
+<div class="table">
+    <?php foreach ($this->score as $k => $v): ?>
+        <h2><?php echo $this->players[$v['playerId']]['longName'] . ' - ' . $v['score'] ?></h2>
+        <table>
+            <tr>
+                <th><?php echo $this->translate('Castles conquered') ?></th>
+                <th><?php echo $this->translate('Castles lost') ?></th>
+                <th><?php echo $this->translate('Castles razed') ?></th>
+                <th><?php echo $this->translate('Units created') ?></th>
+                <th><?php echo $this->translate('Units killed') ?></th>
+                <th><?php echo $this->translate('Units lost') ?></th>
+                <th><?php echo $this->translate('Heroes killed') ?></th>
+                <th><?php echo $this->translate('Heroes lost') ?></th>
+                <th><?php echo $this->translate('Gold') ?></th>
+            </tr>
+            <tr>
+                <td><?php echo $v['castlesConquered'] ?></td>
+                <td><?php echo $v['castlesLost'] ?></td>
+                <td><?php echo $v['castlesDestroyed'] ?></td>
+                <td><?php echo $v['soldiersCreated'] ?></td>
+                <td><?php echo $v['soldiersKilled'] ?></td>
+                <td><?php echo $v['soldiersLost'] ?></td>
+                <td><?php echo $v['heroesKilled'] ?></td>
+                <td><?php echo $v['heroesLost'] ?></td>
+                <td><?php echo $v['gold'] ?></td>
+            </tr>
+        </table>
+    <?php endforeach ?>
+</div>
+<a href="/" class="button">&laquo; <?php echo $this->translate('Back') ?></a>
