@@ -113,6 +113,11 @@ class Cli_GameHandler extends Cli_WofHandler
             return;
         }
 
+        if ($dataIn['type'] == 'bSequence') {
+            new Cli_Model_BattleSequence($dataIn, $user, $db, $this);
+            return;
+        }
+
         if ($dataIn['type'] == 'production') {
             new Cli_Model_Production($dataIn, $user, $db, $this);
             return;
@@ -225,10 +230,6 @@ class Cli_GameHandler extends Cli_WofHandler
 
             case 'surrender':
                 new Cli_Model_Surrender($user, $db, $this);
-                break;
-
-            case 'bSequence':
-                new Cli_Model_BattleSequence($dataIn, $user, $db, $this);
                 break;
         }
     }

@@ -33,7 +33,7 @@ class Application_Model_CastlesInGame extends Coret_Db_Table_Abstract
         return $this->update($data, $where);
     }
 
-    public function setProduction($playerId, $castleId, $unitId, $relocationCastleId = null)
+    public function setProduction($playerId, $castleId, $unitId, $relocationToCastleId = null)
     {
         $where = array(
             $this->_db->quoteInto('"gameId" = ?', $this->_gameId),
@@ -44,7 +44,7 @@ class Application_Model_CastlesInGame extends Coret_Db_Table_Abstract
         $data = array(
             'productionId' => $unitId,
             'productionTurn' => 0,
-            'relocationCastleId' => $relocationCastleId
+            'relocationCastleId' => $relocationToCastleId
         );
 
         return $this->update($data, $where);

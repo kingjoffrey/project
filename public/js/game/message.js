@@ -330,7 +330,7 @@ var Message = {
 
         // relocation to
 
-        if (castles[castleId].color == my.color && castles[castleId].relocationCastleId && castles[castleId].currentProductionId) {
+        if (castles[castleId].color == my.color && castles[castleId].relocationToCastleId && castles[castleId].currentProductionId) {
             div
                 .append($('<br>'))
                 .append($('<fieldset>').addClass('relocatedProduction').append($('<label>').html(translations.relocatingTo)).append(
@@ -345,17 +345,17 @@ var Message = {
                             )
                             .append(
                                 $('<td>')
-                                    .html(castles[castles[castleId].relocationCastleId].name)
+                                    .html(castles[castles[castleId].relocationToCastleId].name)
                                     .addClass('button buttonColors')
                                     .click(function () {
-                                        Message.castle(castles[castleId].relocationCastleId)
+                                        Message.castle(castles[castleId].relocationToCastleId)
                                     })
                             )
                             .append(
                                 $('<td>')
                                     .html($('<img>').attr('src', '/img/game/center.png'))
                                     .addClass('iconButton buttonColors')
-                                    .click(center(castles[castleId].relocationCastleId))
+                                    .click(center(castles[castleId].relocationToCastleId))
                             )
                     )
                 ))

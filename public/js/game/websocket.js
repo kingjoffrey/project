@@ -318,7 +318,7 @@ Websocket = {
                         break;
 
                     case 'production':
-                        Castle.updateMyProduction(r.unitId, r.castleId, r.relocationCastleId);
+                        Castle.updateMyProduction(r.unitId, r.castleId, r.relocationToCastleId);
                         break;
 
                     case 'statistics':
@@ -396,7 +396,7 @@ Websocket = {
 
         ws.send(JSON.stringify(token));
     },
-    production: function (castleId, unitId, relocationCastleId) {
+    production: function (castleId, unitId, relocationToCastleId) {
         if (Websocket.closed) {
             Message.error(translations.sorryServerIsDisconnected)
             return;
@@ -411,7 +411,7 @@ Websocket = {
             type: 'production',
             castleId: castleId,
             unitId: unitId,
-            relocationCastleId: relocationCastleId
+            relocationToCastleId: relocationToCastleId
         };
 
         ws.send(JSON.stringify(token));

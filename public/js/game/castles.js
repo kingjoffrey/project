@@ -19,8 +19,8 @@ var Castle = {
                 $('.castle.' + my.color)
                     .unbind('click')
                     .click(function () {
-                        var relocationCastleId = $(this).attr('id').substring(6);
-                        Websocket.production(castleId, unitId, relocationCastleId);
+                        var relocationToCastleId = $(this).attr('id').substring(6);
+                        Websocket.production(castleId, unitId, relocationToCastleId);
                     });
             }
             return;
@@ -35,8 +35,8 @@ var Castle = {
             return;
         }
     },
-    updateMyProduction: function (unitId, castleId, relocationCastleId) {
-        if (isTruthful(relocationCastleId)) {
+    updateMyProduction: function (unitId, castleId, relocationToCastleId) {
+        if (isTruthful(relocationToCastleId)) {
             Message.simpleNew(translations.production, translations.productionRelocated)
         } else {
             if (unitId === null) {
@@ -47,14 +47,14 @@ var Castle = {
         }
 
         for (i in castles) {
-            Castle.removeRelocationIn(i, castleId)
+            Castle.removeRelocationFrom(i, castleId)
             if (isSet(castles[i].relocatedProduction) && isSet(castles[i].relocatedProduction[castleId])) {
                 delete castles[i].relocatedProduction[castleId]
             }
         }
 
-        if (isSet(castles[castleId].relocationCastleId)) {
-            delete castles[castleId].relocationCastleId
+        if (isSet(castles[castleId].relocationToCastleId)) {
+            delete castles[castleId].relocationToCastleId
         }
 
         if (unitId === null) {
@@ -66,16 +66,16 @@ var Castle = {
         castles[castleId].currentProductionId = unitId;
         castles[castleId].currentProductionTurn = 0;
 
-        if (relocationCastleId) {
+        if (relocationToCastleId) {
 
             for (i in castles) {
-                Castle.removeRelocationIn(i, relocationCastleId)
+                Castle.removeRelocationFrom(i, relocationToCastleId)
             }
 
-            Castle.addRelocationOut(castleId)
-            Castle.addRelocationIn(relocationCastleId, castleId)
+            Castle.addRelocationTo(castleId)
+            Castle.addRelocationFrom(relocationToCastleId, castleId)
 
-            castles[castleId].relocationCastleId = relocationCastleId
+            castles[castleId].relocationToCastleId = relocationToCastleId
 
             $('.castle.' + my.color).each(function () {
                 var thisCastleId = $(this).attr('id').substring(6);
@@ -91,38 +91,38 @@ var Castle = {
                 }
             })
 
-            if (notSet(castles[relocationCastleId].relocatedProduction)) {
-                castles[relocationCastleId].relocatedProduction = {};
+            if (notSet(castles[relocationToCastleId].relocatedProduction)) {
+                castles[relocationToCastleId].relocatedProduction = {};
             }
-            castles[relocationCastleId].relocatedProduction[castleId] = {
+            castles[relocationToCastleId].relocatedProduction[castleId] = {
                 'currentProductionId': castles[castleId].currentProductionId,
                 'currentProductionTurn': castles[castleId].currentProductionTurn
             }
         } else {
-            Castle.removeRelocationOut(castleId)
-            Castle.removeRelocationIn(relocationCastleId)
+            Castle.removeRelocationTo(castleId)
+            Castle.removeRelocationFrom(relocationToCastleId)
         }
     },
     initMyProduction: function (castleId) {
         castles[castleId].currentProductionId = players[my.color].castles[castleId].productionId;
         castles[castleId].currentProductionTurn = players[my.color].castles[castleId].productionTurn;
 
-        var relocationCastleId = players[my.color].castles[castleId].relocationCastleId;
+        var relocationToCastleId = players[my.color].castles[castleId].relocationToCastleId;
 
-        if (relocationCastleId) {
-            castles[castleId].relocationCastleId = relocationCastleId
+        if (relocationToCastleId) {
+            castles[castleId].relocationToCastleId = relocationToCastleId
 
-            if (notSet(castles[relocationCastleId].relocatedProduction)) {
-                castles[relocationCastleId].relocatedProduction = {};
+            if (notSet(castles[relocationToCastleId].relocatedProduction)) {
+                castles[relocationToCastleId].relocatedProduction = {};
             }
 
-            castles[relocationCastleId].relocatedProduction[castleId] = {
+            castles[relocationToCastleId].relocatedProduction[castleId] = {
                 'currentProductionId': castles[castleId].currentProductionId,
                 'currentProductionTurn': castles[castleId].currentProductionTurn
             }
 
-            Castle.addRelocationOut(castleId)
-            Castle.addRelocationIn(relocationCastleId, castleId)
+            Castle.addRelocationTo(castleId)
+            Castle.addRelocationFrom(relocationToCastleId, castleId)
         }
 
         if (castles[castleId].currentProductionId) {
@@ -147,13 +147,13 @@ var Castle = {
     removeHammer: function (castleId) {
         $('#castle' + castleId + ' .hammer').remove();
     },
-    addRelocationOut: function (castleId) {
+    addRelocationTo: function (castleId) {
         $('#castle' + castleId).append($('<img>').attr('src', '/img/game/relocation_out.png').addClass('relocation_out'))
     },
-    removeRelocationOut: function (castleId) {
+    removeRelocationTo: function (castleId) {
         $('#castle' + castleId + ' .relocation_out').remove();
     },
-    addRelocationIn: function (castleId, fromCastleId) {
+    addRelocationFrom: function (castleId, fromCastleId) {
         $('#castle' + castleId).append(
             $('<img>')
                 .attr({
@@ -163,7 +163,7 @@ var Castle = {
                 .addClass('relocation_in')
         )
     },
-    removeRelocationIn: function (castleId, fromCastleId) {
+    removeRelocationFrom: function (castleId, fromCastleId) {
         if (isSet(fromCastleId)) {
             $('#castle' + castleId + ' #' + fromCastleId + '.relocation_in').remove();
         } else {
@@ -265,6 +265,26 @@ var Castle = {
             .css('background', 'url(/img/game/castles/' + color + '.png) center center no-repeat');
 
         if (castles[castleId].color) {
+            Castle.removeCrown(castleId)
+            Castle.removeHammer(castleId)
+            Castle.removeRelocationTo(castleId)
+            Castle.removeRelocationFrom(castleId)
+
+            if (isTruthful(castles[castleId].currentProductionId)) {
+                castles[castleId].currentProductionId = null
+            }
+            if (isTruthful(castles[castleId].relocationToCastleId)) {
+                Castle.removeRelocationFrom(castles[castleId].relocationToCastleId, castleId)
+                castles[castleId].relocationToCastleId = null
+            }
+
+            if (isTruthful(castles[castleId].relocatedProduction)) {
+                var relocationFromCastleId
+                for (relocationFromCastleId in castles[castleId].relocatedProduction) {
+                    Castle.removeRelocationTo(relocationFromCastleId)
+                }
+            }
+
             castles[castleId].defense -= 1;
             if (castles[castleId].defense < 1) {
                 castles[castleId].defense = 1;
@@ -301,16 +321,12 @@ var Castle = {
                     .mouseout(function () {
                         Castle.changeFields(this.id.substring(6), 'e')
                     })
-                if (isSet(castles[castleId].relocationCastleId)) {
-                    delete castles[castles[castleId].relocationCastleId].relocatedProduction[castleId]
-                    delete castles[castleId].relocationCastleId
+                if (isSet(castles[castleId].relocationToCastleId)) {
+                    delete castles[castles[castleId].relocationToCastleId].relocatedProduction[castleId]
+                    delete castles[castleId].relocationToCastleId
                 }
             }
         }
-
-        Castle.removeCrown(castleId)
-        Castle.removeHammer(castleId)
-        Castle.removeRelocationOut(castleId)
 
         if (castles[castleId].capital && capitals[color] == castleId) {
             Castle.addCrown(castleId);

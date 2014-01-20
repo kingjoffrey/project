@@ -1,0 +1,13 @@
+<table>
+    <?php
+
+    foreach ($this->score as $k => $v) {
+        echo '<tr>';
+        var_dump($this->players[$v['playerId']]);
+        foreach ($v as $vv) {
+            echo '<td>' . $vv . '</td>';
+        }
+        echo '</tr>';
+    }
+    ?>
+</table>

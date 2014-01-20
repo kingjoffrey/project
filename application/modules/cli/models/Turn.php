@@ -223,10 +223,10 @@ class Cli_Model_Turn
             if ($unitId && $mapCastles[$castleId]['production'][$unitId]['time'] <= $castleProduction['productionTurn'] && $units[$unitId]['cost'] <= $gold) {
                 if ($mCastlesInGame->resetProductionTurn($castleId, $playerId) == 1) {
                     $unitCastleId = null;
-                    if ($castleProduction['relocationCastleId']) {
+                    if ($castleProduction['relocationToCastleId']) {
                         foreach ($playerCastles as $castle) {
-                            if ($castleProduction['relocationCastleId'] == $castle['castleId']) {
-                                $unitCastleId = $castleProduction['relocationCastleId'];
+                            if ($castleProduction['relocationToCastleId'] == $castle['castleId']) {
+                                $unitCastleId = $castleProduction['relocationToCastleId'];
                                 break;
                             }
                         }
@@ -356,8 +356,8 @@ class Cli_Model_Turn
 
             $playerSoldiersKilled = 0;
             $points['soldiersKilled'] = 0;
-            if (isset($soldiersKilled[$playerId])) {
-                foreach ($soldiersKilled[$playerId] as $unitId) {
+            if (isset($soldiersKilled[$shortName])) {
+                foreach ($soldiersKilled[$shortName] as $unitId) {
                     $playerSoldiersKilled++;
                     $points['soldiersKilled'] += $units[$unitId]['attackPoints'] + $units[$unitId]['defensePoints'];
                 }
@@ -366,8 +366,8 @@ class Cli_Model_Turn
 
             $playerSoldiersLost = 0;
             $points['soldiersLost'] = 0;
-            if (isset($soldiersLost[$playerId])) {
-                foreach ($soldiersLost[$playerId] as $unitId) {
+            if (isset($soldiersLost[$shortName])) {
+                foreach ($soldiersLost[$shortName] as $unitId) {
                     $playerSoldiersLost++;
                     $points['soldiersLost'] -= $units[$unitId]['attackPoints'];
                 }

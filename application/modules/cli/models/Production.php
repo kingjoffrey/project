@@ -6,14 +6,14 @@ class Cli_Model_Production
     {
         $castleId = $dataIn['castleId'];
         $unitId = $dataIn['unitId'];
-        if (isset($dataIn['relocationCastleId'])) {
-            if ($dataIn['relocationCastleId'] == $castleId) {
+        if (isset($dataIn['relocationToCastleId'])) {
+            if ($dataIn['relocationToCastleId'] == $castleId) {
                 $gameHandler->sendError($user, 'Can\'t relocate production to the same castle!');
                 return;
             }
-            $relocationCastleId = $dataIn['relocationCastleId'];
+            $relocationToCastleId = $dataIn['relocationToCastleId'];
         } else {
-            $relocationCastleId = null;
+            $relocationToCastleId = null;
         }
 
         if ($castleId === null) {
@@ -33,7 +33,7 @@ class Cli_Model_Production
             return;
         }
 
-        if ($relocationCastleId && !$mCastlesInGame->isPlayerCastle($relocationCastleId, $user->parameters['playerId'])) {
+        if ($relocationToCastleId && !$mCastlesInGame->isPlayerCastle($relocationToCastleId, $user->parameters['playerId'])) {
             $gameHandler->sendError($user, 'To nie jest Twój zamek!');
             return;
         }
@@ -51,16 +51,16 @@ class Cli_Model_Production
         }
 
         $production = $mCastlesInGame->getProduction($castleId, $user->parameters['playerId']);
-        if (empty($relocationCastleId) && $production['productionId'] == $unitId) {
+        if (empty($relocationToCastleId) && $production['productionId'] == $unitId) {
             return;
         }
 
-        if ($mCastlesInGame->setProduction($user->parameters['playerId'], $castleId, $unitId, $relocationCastleId)) {
+        if ($mCastlesInGame->setProduction($user->parameters['playerId'], $castleId, $unitId, $relocationToCastleId)) {
             $token = array(
                 'type' => $dataIn['type'],
                 'unitId' => $unitId,
                 'castleId' => $castleId,
-                'relocationCastleId' => $relocationCastleId
+                'relocationToCastleId' => $relocationToCastleId
             );
 
             $gameHandler->sendToUser($user, $db, $token, $user->parameters['gameId']);

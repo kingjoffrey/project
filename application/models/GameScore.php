@@ -45,5 +45,24 @@ class Application_Model_GameScore extends Coret_Db_Table_Abstract
 
         return $this->selectOne($select);
     }
+
+    public function getPlayer($playerId)
+    {
+        $select = $this->_db->select()
+            ->from($this->_name)
+            ->where('"playerId" = ?', $playerId)
+            ->where('"gameId" = ?', $this->_gameId);
+
+        return $this->selectAll($select);
+    }
+
+    public function get()
+    {
+        $select = $this->_db->select()
+            ->from($this->_name)
+            ->where('"gameId" = ?', $this->_gameId);
+
+        return $this->selectAll($select);
+    }
 }
 

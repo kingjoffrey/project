@@ -130,7 +130,6 @@ var Move = {
         }
 
         if (isDigit(r.castleId) && isTruthful(r.victory)) {
-            Castle.removeRelocationIn(r.castleId)
             Castle.owner(r.castleId, r.attackerColor)
         }
 
