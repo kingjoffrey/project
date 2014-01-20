@@ -746,7 +746,7 @@ class Cli_Model_Army
         $mHeroesInGame = new Application_Model_HeroesInGame($gameId, $db);
         $mPlayersInGame = new Application_Model_PlayersInGame($gameId, $db);
 
-        $result = $mArmy->getAllEnemiesArmies($playerId, $mPlayersInGame->getTeamSelect($playerId));
+        $result = $mArmy->getAllEnemiesArmies($playerId, $mPlayersInGame->selectPlayerTeamExceptPlayer($playerId));
 
         $armies = array();
 
@@ -772,7 +772,7 @@ class Cli_Model_Army
 
         $fields = Zend_Registry::get('fields');
 
-        foreach ($mArmy->getEnemyArmiesFieldsPositions($playerId, $mPlayersInGame->getTeamSelect($playerId)) as $row) {
+        foreach ($mArmy->getEnemyArmiesFieldsPositions($playerId, $mPlayersInGame->selectPlayerTeamExceptPlayer($playerId)) as $row) {
             $fields[$row['y']][$row['x']] = 'e';
         }
 
@@ -784,6 +784,6 @@ class Cli_Model_Army
         $mArmy = new Application_Model_Army($gameId, $db);
         $mPlayersInGame = new Application_Model_PlayersInGame($gameId, $db);
 
-        return $mArmy->getEnemyPlayerIdFromPosition($playerId, $position, $mPlayersInGame->getTeamSelect($playerId));
+        return $mArmy->getEnemyPlayerIdFromPosition($playerId, $position, $mPlayersInGame->selectPlayerTeamExceptPlayer($playerId));
     }
 }

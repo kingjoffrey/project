@@ -71,6 +71,9 @@ class Application_Model_Board
     static public function prepareCastlesAndFields($fields, $razed, $myCastles, $teamCastles)
     {
         $castlesSchema = Zend_Registry::get('castles');
+
+        $hostileCastles = array();
+
         foreach ($castlesSchema as $castleId => $castleSchema) {
             if (isset($razed[$castleId])) {
                 continue;

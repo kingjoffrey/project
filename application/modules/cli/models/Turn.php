@@ -43,36 +43,30 @@ class Cli_Model_Turn
         if (!isset($mGame)) {
             $mGame = new Application_Model_Game($this->_user->parameters['gameId'], $this->_db);
         }
+
+        if (!$mPlayersInGame->isEnemyAlive($playerId)) {
+            $this->endGame($mGame);
+            return;
+        }
+
         while (true) {
             $nextPlayerId = $this->getExpectedNextTurnPlayer($playersInGameColors[$nextPlayerId]);
-            $playerCastlesExists = $mCastlesInGame->playerCastlesExists($nextPlayerId);
-            $playerArmiesExists = $mArmy->playerArmiesExists($nextPlayerId);
-            if ($playerCastlesExists || $playerArmiesExists) {
-                if ($nextPlayerId == $playerId) { // następny gracz to ten sam gracz, który zainicjował zmianę tury
-                    $mGame->endGame(); // koniec gry
-                    $this->saveResults();
-
-                    $token = array(
-                        'type' => 'end'
-                    );
-
-                    $this->_gameHandler->sendToChannel($this->_db, $token, $this->_user->parameters['gameId']);
-                    return;
-                } else { // zmieniam turę
+            if (!$mPlayersInGame->isEnemyAlive($nextPlayerId)) {
+                $this->endGame($mGame);
+                return;
+            }
+            if ($mCastlesInGame->playerCastlesExists($nextPlayerId) || $mArmy->playerArmiesExists($nextPlayerId)) {
+//                if ($nextPlayerId == $playerId) { // następny gracz to ten sam gracz, który zainicjował zmianę tury
+//                    $this->endGame($mGame);
+//                    return;
+//                } else { // zmieniam turę
                     $mGame->updateTurnPlayer($nextPlayerId);
                     $mCastlesInGame->increaseAllCastlesProductionTurn($nextPlayerId);
 
                     $turnNumber = $mGame->getTurnNumber();
 
                     if ($this->_user->parameters['turnsLimit'] && $turnNumber > $this->_user->parameters['turnsLimit']) {
-                        $mGame->endGame(); // koniec gry
-                        $this->saveResults();
-
-                        $token = array(
-                            'type' => 'end'
-                        );
-
-                        $this->_gameHandler->sendToChannel($this->_db, $token, $this->_user->parameters['gameId']);
+                        $this->endGame($mGame);
                         return;
                     }
 
@@ -86,7 +80,7 @@ class Cli_Model_Turn
 
                     $this->_gameHandler->sendToChannel($this->_db, $token, $this->_user->parameters['gameId']);
                     return;
-                }
+//                }
             } else {
                 $token = array(
                     'type' => 'dead',
@@ -290,9 +284,9 @@ class Cli_Model_Turn
         $mSoldiersKilled = new Application_Model_SoldiersKilled($this->_user->parameters['gameId'], $this->_db);
         $mSoldiersCreated = new Application_Model_SoldiersCreated($this->_user->parameters['gameId'], $this->_db);
         $mPlayersInGame = new Application_Model_PlayersInGame($this->_user->parameters['gameId'], $this->_db);
-        $mUnitsInGame = new Application_Model_UnitsInGame($this->_user->parameters['gameId'], $this->_db);
-        $mHeroesInGame = new Application_Model_HeroesInGame($this->_user->parameters['gameId'], $this->_db);
-        $mCastlesInGame = new Application_Model_CastlesInGame($this->_user->parameters['gameId'], $this->_db);
+//        $mUnitsInGame = new Application_Model_UnitsInGame($this->_user->parameters['gameId'], $this->_db);
+//        $mHeroesInGame = new Application_Model_HeroesInGame($this->_user->parameters['gameId'], $this->_db);
+//        $mCastlesInGame = new Application_Model_CastlesInGame($this->_user->parameters['gameId'], $this->_db);
 
         $playersInGameColors = Zend_Registry::get('playersInGameColors');
         $units = Zend_Registry::get('units');
@@ -413,6 +407,19 @@ class Cli_Model_Turn
 
             $mPlayer->addScore($playerId, $sumPoints);
         }
+
+    }
+
+    public function endGame($mGame)
+    {
+        $mGame->endGame(); // koniec gry
+        $this->saveResults();
+
+        $token = array(
+            'type' => 'end'
+        );
+
+        $this->_gameHandler->sendToChannel($this->_db, $token, $this->_user->parameters['gameId']);
 
     }
 }

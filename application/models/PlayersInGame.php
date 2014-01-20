@@ -455,17 +455,12 @@ class Application_Model_PlayersInGame extends Coret_Db_Table_Abstract
         return $this->_db->fetchOne($select);
     }
 
-    public function getTeamSelect($playerId)
+    public function selectPlayerTeamExceptPlayer($playerId)
     {
-        $select = $this->_db->select()
-            ->from($this->_name, 'team')
-            ->where('"playerId" = ?', $playerId)
-            ->where('"gameId" = ?', $this->_gameId);
-
         return $this->_db->select()
             ->from($this->_name, 'playerId')
             ->where('"playerId" != ?', $playerId)
-            ->where('"team" = (?)', new Zend_Db_Expr($select))
+            ->where('"team" = (?)', new Zend_Db_Expr($this->selectPlayerTeam($playerId)))
             ->where('"gameId" = ?', $this->_gameId);
     }
 
@@ -473,11 +468,28 @@ class Application_Model_PlayersInGame extends Coret_Db_Table_Abstract
     {
         $ids = array();
 
-        foreach ($this->selectAll($this->getTeamSelect($playerId)) as $row) {
+        foreach ($this->selectAll($this->selectPlayerTeamExceptPlayer($playerId)) as $row) {
             $ids[$row['playerId']] = true;
         }
 
         return $ids;
+    }
+
+    public function selectPlayerTeam($playerId)
+    {
+        return $this->_db->select()
+            ->from($this->_name, 'team')
+            ->where('"playerId" = ?', $playerId)
+            ->where('"gameId" = ?', $this->_gameId);
+    }
+
+    public function isEnemyAlive($playerId)
+    {
+        return $this->_db->fetchOne($this->_db->select()
+            ->from($this->_name, 'team')
+            ->where('lost = false')
+            ->where('team != (?)', new Zend_Db_Expr($this->selectPlayerTeam($playerId)))
+            ->where('"gameId" = ?', $this->_gameId));
     }
 }
 

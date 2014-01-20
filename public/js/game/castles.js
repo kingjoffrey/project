@@ -213,6 +213,16 @@ var Castle = {
         }
         return null;
     },
+    countMyCastles: function () {
+        var castleId,
+            myCastles = 0
+        for (castleId in castles) {
+            if (castles[castleId].color == my.color) {
+                myCastles++
+            }
+        }
+        return myCastles
+    },
     changeFields: function (castleId, type) {
         x = castles[castleId].x;
         y = castles[castleId].y;

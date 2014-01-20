@@ -311,11 +311,12 @@ class Application_Model_CastlesInGame extends Coret_Db_Table_Abstract
         return $this->selectOne($select);
     }
 
-    public function enemiesCastlesExist($playerId)
+    public function enemiesCastlesExist($playerId, $select)
     {
         $select = $this->_db->select()
             ->from($this->_name, 'castleId')
             ->where('"playerId" != ?', $playerId)
+            ->where('"playerId" NOT IN (?)', new Zend_Db_Expr($select))
             ->where('"gameId" = ?', $this->_gameId)
             ->where('razed = false');
 

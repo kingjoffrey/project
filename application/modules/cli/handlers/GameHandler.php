@@ -102,8 +102,8 @@ class Cli_GameHandler extends Cli_WofHandler
                 $mArmy2 = new Application_Model_Army($user->parameters['gameId'], $db);
                 $army = $mArmy2->getComputerArmyToMove($playerId);
                 if (!empty($army['armyId'])) {
-                    $mMain = new Cli_Model_ComputerMainBlocks($user->parameters['gameId'], $playerId, $db, $this);
-                    $mMain->moveArmy(new Cli_Model_Army($army), $user);
+                    $mMain = new Cli_Model_ComputerMainBlocks($user, $playerId, $db, $this);
+                    $mMain->moveArmy(new Cli_Model_Army($army));
                 } else {
                     $mTurn = new Cli_Model_Turn($user, $db, $this);
                     $mTurn->next($playerId);

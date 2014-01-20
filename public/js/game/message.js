@@ -262,10 +262,13 @@ var Message = {
 
         // stop & relocation
 
+        var stopButtonOff = ' buttonOff'
+        var relocationButtonOff = ' buttonOff'
         if (castles[castleId].currentProductionId) {
-            var buttonOff = ''
-        } else {
-            var buttonOff = ' buttonOff'
+            if (Castle.countMyCastles() > 1) {
+                var relocationButtonOff = ''
+            }
+            var stopButtonOff = ''
         }
 
         table.append(
@@ -275,7 +278,7 @@ var Message = {
                         .html(
                             $('<a>')
                                 .html(translations.stopProduction)
-                                .addClass('button buttonColors' + buttonOff)
+                                .addClass('button buttonColors' + stopButtonOff)
                                 .attr('id', 'stop')
                                 .click(function () {
                                     if ($('input:radio[name=production]:checked').val()) {
@@ -289,7 +292,7 @@ var Message = {
                         .html(
                             $('<a>')
                                 .html(translations.productionRelocation)
-                                .addClass('button buttonColors' + buttonOff)
+                                .addClass('button buttonColors' + relocationButtonOff)
                                 .attr('id', 'relocation')
                                 .click(function () {
                                     if ($('input:radio[name=production]:checked').val()) {
@@ -431,7 +434,9 @@ var Message = {
                     color: '#fff'
                 })
 
-            $('.production #relocation').removeClass('buttonOff')
+            if (Castle.countMyCastles() > 1) {
+                $('.production #relocation').removeClass('buttonOff')
+            }
         })
 
         $('.relocatedProduction').css({
