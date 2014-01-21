@@ -1,18 +1,5 @@
 <h1 xmlns="http://www.w3.org/1999/html"><?php echo $this->translate('New game') ?></h1>
 <div class="table">
-    <h2><?php echo $this->translate('Game settings') ?></h2>
-    <div class="box">
-        <p><?php echo $this->translate('Map') ?>: <?php echo $this->map ?></p>
-        <p><?php echo $this->translate('Required number of players') ?>: <?php echo $this->game['numberOfPlayers'] ?></p>
-        <p><?php echo $this->translate('Time limit') ?>: <?php echo $this->timeLimits[$this->game['timeLimit']] ?></p>
-        <p><?php echo $this->translate('Limit of the number of turns') ?>:
-            <?php  if ($this->game['turnsLimit']): echo $this->game['turnsLimit'];
-            else: echo $this->translate('no limit'); endif ?></p>
-        <p><?php echo $this->translate('Time limit per turn') ?>: <?php echo $this->translate($this->turnTimeLimit[$this->game['turnTimeLimit']]) ?></p>
-    </div>
-</div>
-<br>
-<div class="table">
     <h2><?php echo $this->translate('Select your color and team') ?></h2>
     <table id="playersingame">
         <th><?php echo $this->translate('Player name & color') ?></th>
@@ -22,9 +9,13 @@
         <?php for ($i = 0; $i < $this->game['numberOfPlayers']; $i++): ?>
             <tr id="<?php echo $this->mapPlayers[$i]['mapPlayerId'] ?>">
                 <td class="td1">
-                    <div class="left"></div>
-                    <div class="right"
-                         style="background: <?php echo $this->mapPlayers[$i]['backgroundColor'] ?>;color: <?php echo $this->mapPlayers[$i]['textColor'] ?>"><?php echo $this->mapPlayers[$i]['longName'] ?></div>
+                    <div class="longName"></div>
+                    <div>
+                        <span style="color:<?php echo $this->mapPlayers[$i]['backgroundColor'] ?>;text-shadow: 2px 2px 0 <?php echo $this->mapPlayers[$i]['textColor'] ?>">
+                            <?php echo $this->mapPlayers[$i]['longName'] ?>
+                        </span>
+                        <img src="/img/game/heroes/<?php echo $this->mapPlayers[$i]['shortName'] ?>.png" />
+                    </div>
                 </td>
                 <td class="td2"></td>
                 <td class="td3"></td>
@@ -32,10 +23,23 @@
             </tr>
         <?php endfor; ?>
     </table>
+    <h2><?php echo $this->translate('Undecided') ?></h2>
+    <table id="playersout"></table>
 </div>
-
 <div id="start"></div>
-
+<br>
+<div class="table">
+    <h2><?php echo $this->translate('Game settings') ?></h2>
+    <div class="box">
+        <p><?php echo $this->translate('Map') ?>: <span class="yellow"><?php echo $this->map ?></span></p>
+        <p><?php echo $this->translate('Required number of players') ?>: <span class="yellow"><?php echo $this->game['numberOfPlayers'] ?></span></p>
+        <p><?php echo $this->translate('Time limit') ?>: <span class="yellow"><?php echo $this->timeLimits[$this->game['timeLimit']] ?></span></p>
+        <p><?php echo $this->translate('Limit of the number of turns') ?>:
+            <span class="yellow"><?php  if ($this->game['turnsLimit']): echo $this->game['turnsLimit'];
+            else: echo $this->translate('no limit'); endif ?></p></span>
+        <p><?php echo $this->translate('Time limit per turn') ?>: <span class="yellow"><?php echo $this->translate($this->turnTimeLimit[$this->game['turnTimeLimit']]) ?></span></p>
+    </div>
+</div>
 <a class="button" href="/<?php echo Zend_Registry::get('lang') ?>/new">&laquo; <?php echo $this->translate('Back') ?></a>
 
 <?php $this->headScript()->captureStart() ?>
@@ -43,14 +47,13 @@ var numberOfPlayers = <?php echo (int)$this->game['numberOfPlayers'] ?>;
 var mapPlayers = <?php echo Zend_Json::encode($this->mapPlayers) ?>;
 
 var gameId = <?php echo (int)$this->gameId ?>;
-var playerId = <?php echo (int)$this->player['playerId'] ?>;
+var myId = <?php echo (int)$this->player['playerId'] ?>;
 var accessKey = '<?php echo $this->accessKey ?>';
 
-var urlGemesetupStart = '/<?php echo Zend_Registry::get('lang') ?>/start';
-var select = '<?php echo $this->translate('Select') ?>';
-var deselect = '<?php echo $this->translate('Deselect') ?>';
-var kick = '<?php echo $this->translate('Kick') ?>';
-var human = '<?php echo $this->translate('Human') ?>';
-var computer = '<?php echo $this->translate('computer') ?>';
+var lang = '<?php echo Zend_Registry::get('lang') ?>'
+var langId = <?php echo Zend_Registry::get('id_lang') ?>
+
+var translations = <?php echo $this->translations() ?>;
+
 var form = '<?php echo str_replace("\n", '', $this->form) ?>';
 <?php $this->headScript()->captureEnd() ?>

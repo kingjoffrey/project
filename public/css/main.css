@@ -327,6 +327,10 @@ p#info {
     color: yellow;
 }
 
+.font-yellow {
+    color: yellow;
+}
+
 .box_pagination {
     width: 530px;
     margin: 0 auto;
@@ -343,5 +347,6 @@ p#info {
     padding: 10px;
     background: url(/img/bg_1.jpg);
     box-shadow: 2px 2px 5px #000;
+    font-family: fantasy;
 }
 

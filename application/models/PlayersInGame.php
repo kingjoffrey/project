@@ -52,7 +52,6 @@ class Application_Model_PlayersInGame extends Coret_Db_Table_Abstract
         $select = $this->_db->select()
             ->from(array('a' => $this->_name), array('mapPlayerId', 'playerId'))
             ->join(array('b' => 'player'), 'a . "playerId" = b . "playerId"', array('firstName', 'lastName', 'computer'))
-//            ->join(array('c' => 'mapplayers'), 'a . "mapPlayerId" = c . "mapPlayerId"', array('color' => 'shortName'))
             ->where('a."gameId" = ?', $this->_gameId)
             ->where($this->_db->quoteIdentifier('webSocketServerUserId') . ' IS NOT NULL OR computer = true');
 

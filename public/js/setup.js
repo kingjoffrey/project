@@ -1,4 +1,12 @@
+$(document).ready(function () {
+    Setup.init()
+})
+
 var Setup = {
+    closed: true,
+    ws: false,
+    playersOutElement: null,
+    start: 0,
     team: function (mapPlayerId) {
         var token = {
             type: 'team',
@@ -7,113 +15,127 @@ var Setup = {
         }
 
         ws.send(JSON.stringify(token));
-    }
-}
-
-var start = 0,
-    select = null
-
-$(document).ready(function () {
-    initWebSocket()
-    prepareTeams()
-});
-
-function initWebSocket() {
-    ws = new WebSocket(wsURL + '/public');
-
-    ws.onopen = function () {
-        wsClosed = false;
-        wsRegister();
-    };
-
-    ws.onmessage = function (e) {
-        var r = $.parseJSON(e.data);
-
-        if (typeof r.type == 'undefined') {
+    },
+    open: function () {
+        if (Setup.closed) {
+            console.log(translations.sorryServerIsDisconnected)
             return;
         }
 
-        switch (r.type) {
-            case 'team':
-                $('tr#' + r.mapPlayerId + ' select').val(r.teamId)
-                break
+        var token = {
+            type: 'open',
+            gameId: gameId,
+            playerId: myId,
+            langId: langId,
+            accessKey: accessKey
+        }
 
-            case 'start':
-                top.location.replace(urlGemesetupStart);
-                break;
+        Setup.ws.send(JSON.stringify(token));
+    },
+    init: function () {
+        prepareTeams()
+        this.ws = new WebSocket(wsURL + '/public')
+        this.playersOutElement = $('#playersout')
 
-            case 'update':
-                if (typeof r.gameMasterId == 'undefined') {
-                    return;
-                }
+        this.ws.onopen = function () {
+            Setup.closed = false
+            Setup.open()
+        };
 
-                $('#playersout').html('');
+        this.ws.onmessage = function (e) {
+            var r = $.parseJSON(e.data);
 
-                prepareButtons(r.gameMasterId);
+            if (typeof r.type == 'undefined') {
+                return;
+            }
 
-                var playersReady = 0;
+            switch (r.type) {
+                case 'team':
+                    $('tr#' + r.mapPlayerId + ' select').val(r.teamId)
+                    break
 
-                for (i in r) {
-                    if (typeof r[i].mapPlayerId == 'undefined') {
-                        continue;
+                case 'start':
+                    top.location.replace('/' + lang + '/start')
+                    break;
+
+                case 'update':
+                    if (typeof r.gameMasterId == 'undefined') {
+                        console.log('aaa')
+                        return;
                     }
 
-                    if (r[i].mapPlayerId) {
-                        playersReady++;
-                        $('#' + r[i].mapPlayerId + ' .td1 div.left').html(r[i].firstName + ' ' + r[i].lastName);
+                    Setup.playersOutElement.html('')
+                    prepareButtons(r.gameMasterId)
 
+                    var playersReady = 0,
+                        i = null,
+                        j = null
 
-                        if (r[i].playerId == playerId) {
-                            $('#' + r[i].mapPlayerId + ' .td2 a').html(deselect);
-                        } else {
-                            if (r.gameMasterId == playerId) {
-                                $('#' + r[i].mapPlayerId + ' .td2 a').html(kick);
-                            } else {
-                                if (r[i].computer) {
-                                    $('#' + r[i].mapPlayerId + ' .td2 a').html(select);
+                    for (i in r.players) { // undecided
+                        if (!r.players[i].mapPlayerId && r.players[i].computer) {
+                            continue
+                        }
+
+                        var firstName = r.players[i].firstName,
+                            lastName = r.players[i].lastName
+                        
+                        Setup.playersOutElement.append('<tr><td>' + firstName + ' ' + lastName + '</td></tr>');
+                    }
+
+                    for (j in mapPlayers) {
+                        var mapPlayerId = mapPlayers[j].mapPlayerId
+
+                        $('#' + mapPlayerId + ' .td3').html(translations.computer)
+
+                        for (i in r.players) {
+                            if (r.players[i].mapPlayerId != mapPlayerId) {
+                                continue
+                            }
+
+                            var firstName = r.players[i].firstName,
+                                lastName = r.players[i].lastName,
+                                computer = r.players[i].computer,
+                                playerId = r.players[i].playerId
+
+                            if (r.players[i].mapPlayerId) {
+                                playersReady++;
+                                if (!computer) {
+                                    $('#' + mapPlayerId + ' .td1 div.longName').html(firstName + ' ' + lastName);
+                                    $('#' + mapPlayerId + ' .td3').html(translations.human);
+                                }
+
+                                if (playerId == myId) {
+                                    $('#' + mapPlayerId + ' .td2 a').html(translations.deselect);
                                 } else {
-                                    $('#' + r[i].mapPlayerId + ' .td2 a').remove();
+                                    if (r.gameMasterId == myId) {
+                                        $('#' + mapPlayerId + ' .td2 a').html(translations.select);
+                                    } else {
+                                        if (computer) {
+                                            $('#' + mapPlayerId + ' .td2 a').html(translations.select);
+                                        } else {
+                                            $('#' + mapPlayerId + ' .td2 a').remove();
+                                        }
+                                    }
                                 }
                             }
+                            delete r.players[i]
                         }
-
-                        if (r[i].computer) {
-                            $('#' + r[i].mapPlayerId + ' .td3').html(computer);
-                        } else {
-                            $('#' + r[i].mapPlayerId + ' .td3').html(human);
-                        }
-                    } else {
-                        if (r[i].computer) {
-                            continue;
-                        }
-                        $('#playersout').append('<tr><td># ' + r[i].firstName + ' ' + r[i].lastName + '</td></tr>');
                     }
-                }
 
-                prepareStartButton(r.gameMasterId, playersReady);
-                break;
+                    prepareStartButton(r.gameMasterId, playersReady);
+                    break;
 
-            default:
-                console.log(r)
-        }
-    };
+                default:
+                    console.log(r)
+            }
+        };
 
-    ws.onclose = function () {
-        wsClosed = true;
-        setTimeout('initWebSocket()', 1000);
-    };
+        this.ws.onclose = function () {
+            Setup.closed = true;
+            setTimeout('Setup.init()', 1000);
+        };
 
-}
-
-function wsRegister() {
-    var token = {
-        type: 'register',
-        gameId: gameId,
-        playerId: playerId,
-        accessKey: accessKey
-    };
-
-    ws.send(JSON.stringify(token));
+    }
 }
 
 function wsChange(mapPlayerId) {
@@ -122,43 +144,25 @@ function wsChange(mapPlayerId) {
         mapPlayerId: mapPlayerId
     };
 
-    ws.send(JSON.stringify(token));
-}
-
-function wsComputer(mapPlayerId) {
-    var token = {
-        type: 'computer',
-        mapPlayerId: mapPlayerId
-    };
-
-    ws.send(JSON.stringify(token));
+    Setup.ws.send(JSON.stringify(token));
 }
 
 function prepareButtons(gameMasterId) {
     for (i = 0; i < numberOfPlayers; i++) {
-        $('#' + mapPlayers[i].mapPlayerId + ' .td1 div.left').html('');
+        var mapPlayerId = mapPlayers[i].mapPlayerId
 
-        $('#' + mapPlayers[i].mapPlayerId + ' .td2').html(
-            $('<a>')
-                .addClass('button')
-                .html(select)
-                .attr('id', mapPlayers[i].mapPlayerId)
-                .click(function () {
-                    wsChange(this.id)
-                }));
+        $('#' + mapPlayerId + ' .td1 div.longName').html('');
 
-        if (gameMasterId == playerId) {
-            $('#' + mapPlayers[i].mapPlayerId + ' .td3').html(
+        $('#' + mapPlayerId + ' .td2')
+            .html(
                 $('<a>')
                     .addClass('button')
-                    .html('Set computer')
-                    .attr('id', mapPlayers[i].mapPlayerId)
+                    .html(translations.select)
+                    .attr('id', mapPlayerId)
                     .click(function () {
-                        wsComputer(this.id)
-                    }));
-        } else {
-            $('#' + mapPlayers[i].mapPlayerId + ' .td3').html('');
-        }
+                        wsChange(this.id)
+                    })
+            )
     }
 }
 
@@ -170,31 +174,39 @@ function prepareTeams() {
     }
 
     for (i = 0; i < numberOfPlayers; i++) {
-        $('#' + mapPlayers[i].mapPlayerId + ' .td4').html($(form).children('dl').children('dd').children('select'))
-        $('#' + mapPlayers[i].mapPlayerId + ' .td4 select')
-            .val(mapPlayers[i].mapPlayerId)
-            .attr('id', mapPlayers[i].mapPlayerId)
-            .change(click(mapPlayers[i].mapPlayerId))
+        var mapPlayerId = mapPlayers[i].mapPlayerId
+
+        $('#' + mapPlayerId + ' .td4').html($(form).children('dl').children('dd').children('select'))
+        $('#' + mapPlayerId + ' .td4 select')
+            .val(mapPlayerId)
+            .attr('id', mapPlayerId)
+            .change(click(mapPlayerId))
     }
 }
 
 function prepareStartButton(gameMasterId, playersReady) {
-    if (gameMasterId == playerId) {
-        $('#start').html($('<a>').addClass('button').html('Start game'));
-        $('#start a').click(function () {
-            if (start) {
-                wsStart();
-            }
-        });
-        if (numberOfPlayers <= playersReady) {
-            $('#start a').removeClass('buttonOff');
-            start = 1;
-        } else {
-            $('#start a').addClass('buttonOff');
-            start = 0;
-        }
+    if (gameMasterId != myId) {
+        return
     }
 
+    $('#start').html(
+        $('<a>')
+            .addClass('button')
+            .html(translations.startGame)
+            .click(function () {
+                if (Setup.start) {
+                    wsStart();
+                }
+            })
+    )
+
+    if (numberOfPlayers <= playersReady) {
+        $('#start a').removeClass('buttonOff');
+        Setup.start = 1;
+    } else {
+        $('#start a').addClass('buttonOff');
+        Setup.start = 0;
+    }
 }
 
 function wsStart() {

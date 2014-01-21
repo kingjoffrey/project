@@ -140,7 +140,7 @@ class Application_Model_Game extends Coret_Db_Table_Abstract
             ->where($this->_db->quoteIdentifier('playerId') . ' = ?', $this->getGameMasterId())
             ->where('"webSocketServerUserId" IS NOT NULL');
 
-        if (!$this->_db->fetchOne($select)) {
+        if (!$this->selectOne($select)) {
             $data = array(
                 'gameMasterId' => $playerId
             );

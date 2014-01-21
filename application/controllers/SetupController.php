@@ -20,19 +20,17 @@ class SetupController extends Game_Controller_Gui
         $this->_namespace->gameId = $gameId; // zapisuję gemeId do sesji
 
         $mGame = new Application_Model_Game($gameId);
+        $mPlayersInGame = new Application_Model_PlayersInGame($gameId);
+
         $mGame->updateGameMaster($this->_namespace->player['playerId']);
 
         $game = $mGame->getGame();
 
-        $mPlayersInGame = new Application_Model_PlayersInGame($gameId);
-        if ($game['gameMasterId'] != $this->_namespace->player['playerId']) {
-            if ($mPlayersInGame->isPlayerInGame($this->_namespace->player['playerId'])) {
-                $mPlayersInGame->disconnectFromGame($this->_namespace->player['playerId']);
-            }
-            $mPlayersInGame->joinGame($this->_namespace->player['playerId']);
-        } elseif (!$mPlayersInGame->isPlayerInGame($this->_namespace->player['playerId'])) {
-            $mPlayersInGame->joinGame($this->_namespace->player['playerId']);
+        if($mPlayersInGame->isPlayerInGame($this->_namespace->player['playerId'])){
+            $mPlayersInGame->disconnectFromGame($this->_namespace->player['playerId']);
         }
+
+        $mPlayersInGame->joinGame($this->_namespace->player['playerId']);
 
         $mMapPlayers = new Application_Model_MapPlayers($game['mapId']);
 

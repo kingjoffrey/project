@@ -365,7 +365,7 @@ Websocket = {
             playerId: my.id,
             langId: langId,
             accessKey: accessKey
-        };
+        }
 
         ws.send(JSON.stringify(token));
     },

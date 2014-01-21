@@ -12,14 +12,15 @@ class Cli_PublicHandler extends Cli_WofHandler
 
     public function onMessage(IWebSocketConnection $user, IWebSocketMessage $msg)
     {
-
         $dataIn = Zend_Json::decode($msg->getData());
-//        print_r('ZAPYTANIE ');
-//        print_r($dataIn);
+        if (Zend_Registry::get('config')->debug) {
+            print_r('ZAPYTANIE ');
+            print_r($dataIn);
+        }
 
         $db = Cli_Model_Database::getDb();
 
-        if ($dataIn['type'] == 'register') {
+        if ($dataIn['type'] == 'open') {
             if (!isset($dataIn['gameId']) || !isset($dataIn['playerId'])) {
                 $this->sendError($user, 'Brak "gameId" lub "playerId"');
                 return;
@@ -42,9 +43,7 @@ class Cli_PublicHandler extends Cli_WofHandler
 
             $mGame = new Application_Model_Game($user->parameters['gameId'], $db);
 
-            $mapId = $mGame->getMapId();
-
-            $mMapPlayers = new Application_Model_MapPlayers($mapId, $db);
+            $mMapPlayers = new Application_Model_MapPlayers($mGame->getMapId(), $db);
             Zend_Registry::set('mapPlayerIdToShortNameRelations', $mMapPlayers->getMapPlayerIdToShortNameRelations());
 
             return;
@@ -196,7 +195,7 @@ class Cli_PublicHandler extends Cli_WofHandler
         }
 
         $mPlayersInGame = new Application_Model_PlayersInGame($user->parameters['gameId'], $db);
-        $mPlayersInGame->disconnectFromGame($user->parameters['playerId']);
+        $mPlayersInGame->updateWSSUId($user->parameters['playerId'], null);
 
         $mGame->setNewGameMaster($mPlayersInGame->findNewGameMaster());
         $this->update($user->parameters['gameId'], $db);
@@ -205,10 +204,13 @@ class Cli_PublicHandler extends Cli_WofHandler
     private function update($gameId, $db)
     {
         $mPlayersInGame = new Application_Model_PlayersInGame($gameId, $db);
-        $token = $mPlayersInGame->getPlayersWaitingForGame();
         $mGame = new Application_Model_Game($gameId, $db);
-        $token['gameMasterId'] = $mGame->getGameMasterId();
-        $token['type'] = 'update';
+
+        $token = array(
+            'players' => $mPlayersInGame->getPlayersWaitingForGame(),
+            'gameMasterId' => $mGame->getGameMasterId(),
+            'type' => 'update'
+        );
 
         $this->sendToChannel($db, $token, $gameId);
     }
