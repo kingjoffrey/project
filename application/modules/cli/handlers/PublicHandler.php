@@ -76,7 +76,6 @@ class Cli_PublicHandler extends Cli_WofHandler
                 $mPlayersInGame = new Application_Model_PlayersInGame($user->parameters['gameId'], $db);
                 $mPlayersInGame->disconnectNotActive();
 
-                $mGame->startGame($mPlayersInGame->getPlayerIdByColor('white'));
                 $players = $mPlayersInGame->getAll();
 
                 $mapId = $mGame->getMapId();
@@ -84,24 +83,48 @@ class Cli_PublicHandler extends Cli_WofHandler
                 $mMapCastles = new Application_Model_MapCastles($mapId, $db);
                 $startPositions = $mMapCastles->getDefaultStartPositions();
 
-                foreach ($players as $player) {
-                    $mPlayersInGame->setTeam($player['playerId'], $dataIn['team'][$player['mapPlayerId']]);
+                $mMapPlayers = new Application_Model_MapPlayers($mapId, $db);
+                $mapPlayers = $mMapPlayers->getAll();
 
-                    $mHero = new Application_Model_Hero($player['playerId'], $db);
+                $first = true;
+
+                foreach ($mapPlayers as $mapPlayer) {
+                    if (isset($players[$mapPlayer['mapPlayerId']])) {
+                        $playerId = $players[$mapPlayer['mapPlayerId']]['playerId'];
+                    } else {
+                        $playerId = $mPlayersInGame->getComputerPlayerId();
+                        if (!$playerId) {
+                            $modelPlayer = new Application_Model_Player(null, false);
+                            $playerId = $modelPlayer->createComputerPlayer();
+                            $modelHero = new Application_Model_Hero($playerId);
+                            $modelHero->createHero();
+                        }
+                        $mPlayersInGame->joinGame($playerId);
+                        $mPlayersInGame->updatePlayerReady($playerId, $mapPlayer['mapPlayerId']);
+                    }
+
+                    if ($first) {
+                        $mGame->startGame($playerId);
+                        $first = false;
+                    }
+
+                    $mPlayersInGame->setTeam($playerId, $dataIn['team'][$mapPlayer['mapPlayerId']]);
+
+                    $mHero = new Application_Model_Hero($playerId, $db);
                     $playerHeroes = $mHero->getHeroes();
                     if (empty($playerHeroes)) {
                         $mHero->createHero();
-                        $playerHeroes = $mHero->getHeroes($player['playerId'], $db);
+                        $playerHeroes = $mHero->getHeroes($playerId, $db);
                     }
                     $mArmy = new Application_Model_Army($user->parameters['gameId'], $db);
 
-                    $armyId = $mArmy->createArmy($startPositions[$player['castleId']], $player['playerId']);
+                    $armyId = $mArmy->createArmy($startPositions[$mapPlayer['castleId']], $playerId);
 
                     $mHeroesInGame = new Application_Model_HeroesInGame($user->parameters['gameId'], $db);
                     $mHeroesInGame->add($armyId, $playerHeroes[0]['heroId']);
 
                     $mCastlesInGame = new Application_Model_CastlesInGame($user->parameters['gameId'], $db);
-                    $mCastlesInGame->addCastle($player['castleId'], $player['playerId']);
+                    $mCastlesInGame->addCastle($mapPlayer['castleId'], $playerId);
                 }
 
                 $token = array('type' => 'start');

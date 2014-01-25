@@ -26,7 +26,13 @@ class Application_Model_PlayersInGame extends Coret_Db_Table_Abstract
             ->where('a . ' . $this->_db->quoteIdentifier('gameId') . ' = ?', $this->_gameId)
             ->where('a . ' . $this->_db->quoteIdentifier('mapPlayerId') . ' IS NOT NULL');
 
-        return $this->selectAll($select);
+        $players = array();
+
+        foreach ($this->selectAll($select) as $row) {
+            $players[$row['mapPlayerId']] = $row;
+        }
+
+        return $players;
     }
 
     public function getAllColors()

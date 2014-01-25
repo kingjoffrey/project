@@ -60,7 +60,6 @@ var Setup = {
 
                 case 'update':
                     if (typeof r.gameMasterId == 'undefined') {
-                        console.log('aaa')
                         return;
                     }
 
@@ -190,6 +189,7 @@ function prepareStartButton(gameMasterId, playersReady) {
         $('#start')
             .html(translations.startGame)
             .addClass('button')
+            .unbind()
             .click(function () {
                 wsStart()
             })
@@ -215,7 +215,9 @@ function wsStart() {
     var token = {
         type: 'start',
         team: team
-    };
+    }
+
+    console.log(token)
 
     Setup.ws.send(JSON.stringify(token));
 }

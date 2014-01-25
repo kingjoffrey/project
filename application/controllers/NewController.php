@@ -16,18 +16,6 @@ class NewController extends Game_Controller_Gui
                     $mPlayersInGame = new Application_Model_PlayersInGame($gameId);
                     $mPlayersInGame->joinGame($this->_namespace->player['playerId']);
                     $mPlayersInGame->updatePlayerReady($this->_namespace->player['playerId'], $colors[0]['mapPlayerId']);
-                    $mPlayersInGame = new Application_Model_PlayersInGame($gameId);
-                    for ($i = 1; $i < $this->_request->getParam('numberOfPlayers'); $i++) {
-                        $playerId = $mPlayersInGame->getComputerPlayerId();
-                        if (!$playerId) {
-                            $modelPlayer = new Application_Model_Player(null, false);
-                            $playerId = $modelPlayer->createComputerPlayer();
-                            $modelHero = new Application_Model_Hero($playerId);
-                            $modelHero->createHero();
-                        }
-                        $mPlayersInGame->joinGame($playerId);
-                        $mPlayersInGame->updatePlayerReady($playerId, $colors[$i]['mapPlayerId']);
-                    }
                     $this->_redirect('/' . Zend_Registry::get('lang') . '/setup/index/gameId/' . $gameId);
                 }
             }
