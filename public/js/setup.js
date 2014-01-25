@@ -6,7 +6,7 @@ var Setup = {
     closed: true,
     ws: false,
     playersOutElement: null,
-    start: 0,
+    gameMasterId: null,
     team: function (mapPlayerId) {
         var token = {
             type: 'team',
@@ -14,7 +14,7 @@ var Setup = {
             teamId: $('tr#' + mapPlayerId + ' select').val()
         }
 
-        ws.send(JSON.stringify(token));
+        this.ws.send(JSON.stringify(token));
     },
     open: function () {
         if (Setup.closed) {
@@ -30,7 +30,7 @@ var Setup = {
             accessKey: accessKey
         }
 
-        Setup.ws.send(JSON.stringify(token));
+        this.ws.send(JSON.stringify(token));
     },
     init: function () {
         prepareTeams()
@@ -55,7 +55,7 @@ var Setup = {
                     break
 
                 case 'start':
-                    top.location.replace('/' + lang + '/start')
+                    top.location.replace('/' + lang + '/game/index/id/' + gameId)
                     break;
 
                 case 'update':
@@ -64,6 +64,7 @@ var Setup = {
                         return;
                     }
 
+                    Setup.gameMasterId = r.gameMasterId
                     Setup.playersOutElement.html('')
                     prepareButtons(r.gameMasterId)
 
@@ -72,13 +73,13 @@ var Setup = {
                         j = null
 
                     for (i in r.players) { // undecided
-                        if (!r.players[i].mapPlayerId && r.players[i].computer) {
+                        if (r.players[i].computer || r.players[i].mapPlayerId) {
                             continue
                         }
 
                         var firstName = r.players[i].firstName,
                             lastName = r.players[i].lastName
-                        
+
                         Setup.playersOutElement.append('<tr><td>' + firstName + ' ' + lastName + '</td></tr>');
                     }
 
@@ -185,31 +186,23 @@ function prepareTeams() {
 }
 
 function prepareStartButton(gameMasterId, playersReady) {
-    if (gameMasterId != myId) {
-        return
-    }
-
-    $('#start').html(
-        $('<a>')
-            .addClass('button')
+    if (gameMasterId == myId) {
+        $('#start')
             .html(translations.startGame)
+            .addClass('button')
             .click(function () {
-                if (Setup.start) {
-                    wsStart();
-                }
+                wsStart()
             })
-    )
-
-    if (numberOfPlayers <= playersReady) {
-        $('#start a').removeClass('buttonOff');
-        Setup.start = 1;
     } else {
-        $('#start a').addClass('buttonOff');
-        Setup.start = 0;
+        $('#start').css('display', 'none')
     }
 }
 
 function wsStart() {
+    if (Setup.gameMasterId != myId) {
+        return
+    }
+
     var team = {}
 
     $('#playersingame tr').each(function () {
@@ -224,5 +217,5 @@ function wsStart() {
         team: team
     };
 
-    ws.send(JSON.stringify(token));
+    Setup.ws.send(JSON.stringify(token));
 }
