@@ -52,6 +52,7 @@ var Setup = {
             switch (r.type) {
                 case 'team':
                     $('tr#' + r.mapPlayerId + ' select').val(r.teamId)
+                    $('tr#' + r.mapPlayerId + ' .td4 img').attr('src', '/img/game/heroes/' + mapPlayers[r.teamId].shortName + '.png')
                     break
 
                 case 'start':
@@ -82,9 +83,11 @@ var Setup = {
                         Setup.playersOutElement.append('<tr><td>' + firstName + ' ' + lastName + '</td></tr>');
                     }
 
-                    for (j in mapPlayers) {
-                        var mapPlayerId = mapPlayers[j].mapPlayerId
+                    var mapPlayerId
 
+                    for (mapPlayerId in mapPlayers) {
+
+                        $('#' + mapPlayerId).removeClass('selected')
                         $('#' + mapPlayerId + ' .td3').html(translations.computer)
 
                         for (i in r.players) {
@@ -106,6 +109,7 @@ var Setup = {
 
                                 if (playerId == myId) {
                                     $('#' + mapPlayerId + ' .td2 a').html(translations.deselect);
+                                    $('#' + mapPlayerId).addClass('selected')
                                 } else {
                                     if (r.gameMasterId == myId) {
                                         $('#' + mapPlayerId + ' .td2 a').html(translations.select);
@@ -148,11 +152,10 @@ function wsChange(mapPlayerId) {
 }
 
 function prepareButtons(gameMasterId) {
-    for (i = 0; i < numberOfPlayers; i++) {
-        var mapPlayerId = mapPlayers[i].mapPlayerId
+    var mapPlayerId = 0
 
+    for (mapPlayerId in mapPlayers) {
         $('#' + mapPlayerId + ' .td1 div.longName').html('');
-
         $('#' + mapPlayerId + ' .td2')
             .html(
                 $('<a>')
@@ -173,10 +176,12 @@ function prepareTeams() {
         }
     }
 
-    for (i = 0; i < numberOfPlayers; i++) {
-        var mapPlayerId = mapPlayers[i].mapPlayerId
+    var mapPlayerId = 0
 
-        $('#' + mapPlayerId + ' .td4').html($(form).children('dl').children('dd').children('select'))
+    for (mapPlayerId in mapPlayers) {
+        $('#' + mapPlayerId + ' .td4')
+            .html($(form).children('dl').children('dd').children('select'))
+            .append($('<img>').attr('src', '/img/game/heroes/' + mapPlayers[mapPlayerId].shortName + '.png'))
         $('#' + mapPlayerId + ' .td4 select')
             .val(mapPlayerId)
             .attr('id', mapPlayerId)

@@ -6,41 +6,51 @@
         <th><?php echo $this->translate('Select your color') ?></th>
         <th><?php echo $this->translate('Human/AI') ?></th>
         <th><?php echo $this->translate('Select your team') ?></th>
-        <?php for ($i = 0; $i < $this->game['numberOfPlayers']; $i++): ?>
-            <tr id="<?php echo $this->mapPlayers[$i]['mapPlayerId'] ?>">
+        <?php foreach ($this->mapPlayers as $mapPlayerId => $mapPlayer): ?>
+            <tr id="<?php echo $mapPlayerId ?>">
                 <td class="td1">
                     <div class="longName"></div>
                     <div>
-                        <span style="color:<?php echo $this->mapPlayers[$i]['backgroundColor'] ?>;text-shadow: 2px 2px 0 <?php echo $this->mapPlayers[$i]['textColor'] ?>">
-                            <?php echo $this->mapPlayers[$i]['longName'] ?>
+                        <span
+                            style="color:<?php echo $mapPlayer['backgroundColor'] ?>;text-shadow: 2px 2px 0 <?php echo $mapPlayer['textColor'] ?>">
+                            <?php echo $mapPlayer['longName'] ?>
                         </span>
-                        <img src="/img/game/heroes/<?php echo $this->mapPlayers[$i]['shortName'] ?>.png" />
+                        <img src="/img/game/heroes/<?php echo $mapPlayer['shortName'] ?>.png"/>
                     </div>
                 </td>
                 <td class="td2"></td>
                 <td class="td3"></td>
                 <td class="td4"></td>
             </tr>
-        <?php endfor; ?>
+        <?php endforeach ?>
     </table>
     <h2><?php echo $this->translate('Undecided') ?></h2>
     <table id="playersout"></table>
 </div>
-<div id="start"</div>
+<div id="start"></div>
 <br>
 <div class="table">
     <h2><?php echo $this->translate('Game settings') ?></h2>
+
     <div class="box">
         <p><?php echo $this->translate('Map') ?>: <span class="yellow"><?php echo $this->map ?></span></p>
-        <p><?php echo $this->translate('Required number of players') ?>: <span class="yellow"><?php echo $this->game['numberOfPlayers'] ?></span></p>
-        <p><?php echo $this->translate('Time limit') ?>: <span class="yellow"><?php echo $this->timeLimits[$this->game['timeLimit']] ?></span></p>
+
+        <p><?php echo $this->translate('Required number of players') ?>: <span
+                class="yellow"><?php echo $this->game['numberOfPlayers'] ?></span></p>
+
+        <p><?php echo $this->translate('Time limit') ?>: <span
+                class="yellow"><?php echo $this->timeLimits[$this->game['timeLimit']] ?></span></p>
+
         <p><?php echo $this->translate('Limit of the number of turns') ?>:
             <span class="yellow"><?php  if ($this->game['turnsLimit']): echo $this->game['turnsLimit'];
             else: echo $this->translate('no limit'); endif ?></p></span>
-        <p><?php echo $this->translate('Time limit per turn') ?>: <span class="yellow"><?php echo $this->translate($this->turnTimeLimit[$this->game['turnTimeLimit']]) ?></span></p>
+        <p><?php echo $this->translate('Time limit per turn') ?>: <span
+                class="yellow"><?php echo $this->translate($this->turnTimeLimit[$this->game['turnTimeLimit']]) ?></span>
+        </p>
     </div>
 </div>
-<a class="button" href="/<?php echo Zend_Registry::get('lang') ?>/new">&laquo; <?php echo $this->translate('Back') ?></a>
+<a class="button"
+   href="/<?php echo Zend_Registry::get('lang') ?>/new">&laquo; <?php echo $this->translate('Back') ?></a>
 
 <?php $this->headScript()->captureStart() ?>
 var numberOfPlayers = <?php echo (int)$this->game['numberOfPlayers'] ?>;
