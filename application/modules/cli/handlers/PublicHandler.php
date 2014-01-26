@@ -88,9 +88,9 @@ class Cli_PublicHandler extends Cli_WofHandler
 
                 $first = true;
 
-                foreach ($mapPlayers as $mapPlayer) {
-                    if (isset($players[$mapPlayer['mapPlayerId']])) {
-                        $playerId = $players[$mapPlayer['mapPlayerId']]['playerId'];
+                foreach ($mapPlayers as $mapPlayerId => $mapPlayer) {
+                    if (isset($players[$mapPlayerId])) {
+                        $playerId = $players[$mapPlayerId]['playerId'];
                     } else {
                         $playerId = $mPlayersInGame->getComputerPlayerId();
                         if (!$playerId) {
@@ -100,15 +100,17 @@ class Cli_PublicHandler extends Cli_WofHandler
                             $modelHero->createHero();
                         }
                         $mPlayersInGame->joinGame($playerId);
-                        $mPlayersInGame->updatePlayerReady($playerId, $mapPlayer['mapPlayerId']);
+                        $mPlayersInGame->updatePlayerReady($playerId, $mapPlayerId);
                     }
 
                     if ($first) {
+                        $mTurn = new Application_Model_TurnHistory($user->parameters['gameId'], $db);
+                        $mTurn->add($playerId, 1);
                         $mGame->startGame($playerId);
                         $first = false;
                     }
 
-                    $mPlayersInGame->setTeam($playerId, $dataIn['team'][$mapPlayer['mapPlayerId']]);
+                    $mPlayersInGame->setTeam($playerId, $dataIn['team'][$mapPlayerId]);
 
                     $mHero = new Application_Model_Hero($playerId, $db);
                     $playerHeroes = $mHero->getHeroes();

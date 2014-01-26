@@ -92,7 +92,7 @@ class Application_Model_MapPlayers extends Coret_Db_Table_Abstract
     public function getAll()
     {
         $select = $this->_db->select()
-            ->from($this->_name, array('backgroundColor','castleId','longName','mapPlayerId','minimapColor','shortName','textColor'))
+            ->from($this->_name, array('backgroundColor', 'castleId', 'longName', 'mapPlayerId', 'minimapColor', 'shortName', 'textColor'))
             ->where($this->_db->quoteIdentifier('mapId') . ' = ?', $this->mapId)
             ->order('startOrder');
 
@@ -103,6 +103,16 @@ class Application_Model_MapPlayers extends Coret_Db_Table_Abstract
         }
 
         return $array;
+    }
+
+    public function getFirstMapPlayerId()
+    {
+        $select = $this->_db->select()
+            ->from($this->_name, 'mapPlayerId')
+            ->where($this->_db->quoteIdentifier('mapId') . ' = ?', $this->mapId)
+            ->order('startOrder');
+
+        return $this->selectOne($select);
     }
 
     public function getCapitals()

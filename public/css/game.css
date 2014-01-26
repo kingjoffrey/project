@@ -1,4 +1,4 @@
-* {
+ * {
     -webkit-touch-callout: none;
     -webkit-user-select: none;
     -khtml-user-select: none;
@@ -875,7 +875,7 @@ html {
 
 .iconButton, .button, #submit {
     border-radius: 5px;
-    font-size: 12px;
+    font-size: 10px;
 }
 
 .iconButton {

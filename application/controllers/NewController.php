@@ -12,10 +12,9 @@ class NewController extends Game_Controller_Gui
                 $gameId = $modelGame->createGame($this->_request->getParams(), $this->_namespace->player['playerId']);
                 if ($gameId) {
                     $mMapPlayers = new Application_Model_MapPlayers($this->_request->getParam('mapId'));
-                    $colors = $mMapPlayers->getAll();
                     $mPlayersInGame = new Application_Model_PlayersInGame($gameId);
                     $mPlayersInGame->joinGame($this->_namespace->player['playerId']);
-                    $mPlayersInGame->updatePlayerReady($this->_namespace->player['playerId'], $colors[0]['mapPlayerId']);
+                    $mPlayersInGame->updatePlayerReady($this->_namespace->player['playerId'], $mMapPlayers->getFirstMapPlayerId());
                     $this->_redirect('/' . Zend_Registry::get('lang') . '/setup/index/gameId/' . $gameId);
                 }
             }
