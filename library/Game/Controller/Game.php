@@ -8,7 +8,7 @@ abstract class Game_Controller_Game extends Game_Controller_Action
         parent::init();
 
         if (empty($this->_namespace->player['playerId'])) {
-            $this->_redirect('/login');
+            $this->_redirect('/' . Zend_Registry::get('lang') . '/login');
         }
 
         $this->_namespace->gameId = $this->_request->getParam('id');

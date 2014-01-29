@@ -1,5 +1,6 @@
-<script type="text/javascript">
-var board = $("#board");
-
-zoomer = new zoom(760, 670);
-</script>
+<?php $this->headScript()->captureStart() ?>
+var mapWidth = <?php echo $this->map['mapWidth'] ?>,
+mapHeight = <?php echo $this->map['mapHeight'] ?>,
+maxPlayers = <?php echo $this->map['maxPlayers'] ?>,
+name = '<?php echo $this->map['name'] ?>'
+<?php $this->headScript()->captureEnd() ?>

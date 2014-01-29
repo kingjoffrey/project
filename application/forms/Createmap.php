@@ -5,45 +5,91 @@ class Application_Form_Createmap extends Zend_Form
 
     public function init()
     {
-        /* Form Elements & Other Definitions Here ... */
-        $this->setMethod('post');
-        $this->setAction('/editor/create');
+        $dimensions = array(33 => 33, 65 => 65, 129 => 129, 257 => 257);
+        $numberOfPlayers = array(2 => 2, 3 => 3, 4 => 4, 5 => 5, 6 => 6, 7 => 7, 8 => 8);
 
-        $this->addElement('text', 'name',
+        $this->setMethod('post');
+
+        $f = new Coret_Form_Varchar(
             array(
-                'label' => 'Map name',
-                'required' => true,
-                'filters' => array('StringTrim'),
-                'validators' => array(
-                    array('Alnum')
-                )
-            )
-        );
-        $this->addElement('text', 'mapWidth',
-            array(
-                'label' => 'Map width (50 - 200)',
+                'name' => 'name',
+                'label' => $this->getView()->translate('Map name'),
                 'required' => true,
                 'filters' => array('StringTrim'),
                 'validators' => array(
                     array('Alnum'),
-                    new Zend_Validate_Between(array('min' => 50, 'max' => 200))
                 )
             )
         );
-        $this->addElement('text', 'mapHeight',
+        $this->addElements($f->getElements());
+
+        $f = new Coret_Form_Select(
             array(
-                'label' => 'Map height (50 - 200)',
+                'name' => 'mapWidth',
+                'label' => $this->getView()->translate('Map width'),
                 'required' => true,
+                'opt' => $dimensions,
                 'filters' => array('StringTrim'),
                 'validators' => array(
-                    array('Alnum'),
-                    new Zend_Validate_Between(array('min' => 50, 'max' => 200))
+                    array('Digit'),
+                    array(
+                        new Zend_Validate_InArray(
+                            array('haystack' => $dimensions)
+                        ),
+                        'presence' => 'required',
+                        'messages' => array(
+                            "'%value%' is not a valid.",
+                        )
+                    )
                 )
             )
         );
+        $this->addElements($f->getElements());
+
+        $f = new Coret_Form_Select(array(
+            'name' => 'mapHeight',
+            'label' => $this->getView()->translate('Map height'),
+            'required' => true,
+            'opt' => $dimensions,
+            'filters' => array('StringTrim'),
+            'validators' => array(
+                array('Digit'),
+                array(
+                    new Zend_Validate_InArray(
+                        array('haystack' => $dimensions)
+                    ),
+                    'presence' => 'required',
+                    'messages' => array(
+                        "'%value%' is not a valid.",
+                    )
+                )
+            )
+        ));
+        $this->addElements($f->getElements());
+
+        $f = new Coret_Form_Select(
+            array(
+                'name' => 'maxPlayers',
+                'label' => $this->getView()->translate('Number of players'),
+                'required' => true,
+                'opt' => $numberOfPlayers,
+                'filters' => array('StringTrim'),
+                'validators' => array(
+                    array('Digit'),
+                    array(
+                        new Zend_Validate_InArray(
+                            array('haystack' => $numberOfPlayers)
+                        ),
+                        'presence' => 'required',
+                        'messages' => array(
+                            "'%value%' is not a valid.",
+                        )
+                    )
+                )
+            )
+        );
+        $this->addElements($f->getElements());
+
         $this->addElement('submit', 'submit', array('label' => 'Create map'));
     }
-
-
 }
-

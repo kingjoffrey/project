@@ -1,57 +1,1129 @@
+* {
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
 #game {
-    width:760px;
-    height:800px;
-    background: transparent url(../img/bg_1.jpg) repeat scroll top left;
+    position: relative;
+    left: 0;
+    top: 0;
+    background: #000;
+    font-size: 12px;
+    display: block;
+    /*overflow: hidden;*/
+    clear: both;
+}
+
+#game table {
+    min-width: 0;
+    border-spacing: 1px;
+    font-size: 12px;
+    border: none !important;
 }
 
 #board {
-    position:absolute;
-    top:0px;
-    left:0px;
-}
-
-.zoomPad{
-    float:left;
-    position:relative;
-    left:0;
-    top:0px;
-    cursor: default;
-    z-index:10000;
-    background-color: red;
-}
-
-.zoomPup{
-    background-color: #FFF;
-    opacity: 0.6;
-    border:1px solid #f00;
-    z-index:1000;
-    cursor: move;
-    top: 0;
-    left: 0;
-    position: inherit;
-    width:38px;
-    height:34px;
+    position: absolute;
+    top: 0px;
+    left: 0px;
 }
 
 #map {
-    position:absolute;
-    top: 0px;
-    left: 0px;
-    border-right:1px solid #444;
-    border-bottom:1px solid #444;
-}
-.zoomWindow{
-    position:relative;
-    left:0;
-    top:0;
-    background:#000;
-    display:block;
-    overflow:hidden;
-    width: 760px;
-    height: 660px;
-    clear:both;
+    position: absolute;
+    top: 10px;
+    left: 10px;
 }
 
-#editorMenu{
-    height:138px;
+#map * {
+    cursor: url(/img/game/lupa.png) 13 13, crosshair
 }
+
+#mapBox {
+    border-bottom-right-radius: 10px;
+    top: -10px;
+    left: -10px;
+}
+
+.zoomPup {
+    border: 1px solid #fff;
+    top: 0;
+    left: 0;
+    position: absolute;
+    z-index: 21001;
+}
+
+#mapImage {
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    border-bottom-right-radius: 3px;
+}
+
+.castle {
+    position: absolute;
+    width: 80px;
+    height: 80px;
+    background: url('/img/game/castles/neutral.png') center center no-repeat;
+    border: none;
+    cursor: crosshair;
+    z-index: 2202;
+}
+
+#map .c {
+    width: 4px;
+    height: 4px;
+    border-bottom: 1px solid #000;
+    border-right: 1px solid #000;
+    position: absolute;
+    background: #9F9F9F;
+}
+
+.ruin {
+    position: absolute;
+    width: 40px;
+    height: 40px;
+    background: url(/img/game/ruin.png) center center no-repeat;
+    border: none;
+    cursor: crosshair;
+    z-index: 2200;
+}
+
+.tower {
+    position: absolute;
+    width: 40px;
+    height: 40px;
+    background: url(/img/game/towers/neutral.png) center center no-repeat;
+    border: none;
+    cursor: crosshair;
+    z-index: 2200;
+}
+
+.army {
+    position: absolute;
+    width: 41px;
+    height: 41px;
+    border: none;
+    z-index: 10000;
+}
+
+.flag {
+    width: 37px;
+    height: 37px;
+    border: none;
+    margin: 3px 3px 3px 4px;
+}
+
+#map .a {
+    width: 1px;
+    height: 1px;
+    border-bottom: 1px solid #000;
+    border-right: 1px solid #000;
+    position: absolute;
+}
+
+.army .unit {
+    position: relative;
+    top: 6px;
+    left: 8px;
+    width: 31px;
+    height: 31px;
+    text-align: center;
+}
+
+.path {
+    position: inherit;
+    width: 34px;
+    height: 34px;
+    margin: 1px;
+    padding: 2px;
+    border: none;
+    border-radius: 20px;
+    z-index: 2200;
+    color: white;
+    text-align: center;
+    line-height: 36px;
+    text-shadow: none;
+    background: #000;
+    opacity: 0.66;
+}
+
+.path1 {
+    opacity: 0.66;
+}
+
+.path2 {
+    opacity: 0.33;
+}
+
+.field {
+    position: absolute;
+    width: 34px;
+    height: 34px;
+    margin: 1px;
+    padding: 2px;
+    border: none;
+    z-index: 1700;
+    color: #000;
+    text-shadow: none;
+}
+
+#playersBox {
+    border-top: none;
+    border-bottom-left-radius: 10px;
+    width: 230px;
+    height: 318px;
+    clear: both;
+}
+
+#playersBox .iconButton {
+    width: 32px;
+    line-height: 32px;
+    height: 32px;
+    position: absolute;
+    left: 198px;
+}
+
+#playersBox #buttons {
+    position: absolute;
+    top: 190px;
+}
+
+#playersLabel {
+    float: left;
+    font-size: 20px;
+}
+
+#exit.iconButton {
+    top: 4px;
+}
+
+#show.iconButton {
+    top: 41px;
+}
+
+#show img {
+    margin-top: 5px;
+}
+
+#sound.iconButton {
+    top: 78px;
+}
+
+#surrender.iconButton {
+    top: 115px;
+}
+
+#statistics.iconButton {
+    top: 152px;
+}
+
+#turn {
+    width: 80px;
+    position: absolute;
+    top: 75px;
+    left: 60px;
+    z-index: 28000;
+}
+
+#turnNumber {
+    font-size: 30px;
+    text-shadow: none;
+    text-align: center;
+    display: block;
+}
+
+.message {
+    min-width: 321px;
+    min-height: 70px;
+    top: 60px;
+    display: none;
+    border-radius: 10px;
+    text-align: center;
+    /*cursor: url(/img/game/cursor_hand.png) 15 15, default;*/
+    z-index: 26999 !important;
+}
+
+.message h3 {
+    text-align: left;
+    color: orange;
+    margin: 4px;
+}
+
+.message .showCastle h3.name {
+    font-family: "alpine", Verdana, Tahoma;
+}
+
+.message .showCastle #center {
+    padding: 3px 3px 0 3px;
+    float: right;
+}
+
+.message h4 {
+    color: #ddd;
+    margin: 3px 3px 3px 4px;
+    float: right;
+}
+
+.message h5 {
+    text-align: left;
+    margin: 2px 2px 2px 4px;
+    color: #d6d6d6;
+}
+
+.message fieldset {
+    border: 1px solid yellow;
+    border-radius: 5px;
+    padding: 5px;
+}
+
+.message label {
+    font-size: 20px;
+    color: yellow;
+    text-shadow: none;
+    margin: 10px 0 5px 0;
+}
+
+.message div.overflow {
+    overflow: hidden;
+    overflow-y: auto;
+    padding-right: 17px;
+}
+
+.message .production {
+    text-shadow: none;
+    color: #000;
+}
+
+.message .production table {
+    padding: 2px;
+    width: auto;
+}
+
+.message .production td.unit {
+    background: #fff;
+    color: #000;
+    margin: 0;
+    padding: 5px;
+    text-align: center;
+    width: 158px;
+    cursor: url(/img/game/cursor_pointer.png), pointer;
+}
+
+.message .production td {
+    border: none;
+    padding: 0;
+}
+
+.message .production td a.button {
+    padding: 0 5px;
+    display: block;
+}
+
+.message .production tr:first-of-type td.unit:first-of-type {
+    border-top-left-radius: 5px;
+}
+
+.message .production tr:first-of-type td.unit:last-of-type {
+    border-top-right-radius: 5px;
+}
+
+.message .production tr:last-of-type td.unit:first-of-type {
+    border-bottom-left-radius: 5px;
+}
+
+.message .production tr:last-of-type td.unit:last-of-type {
+    border-bottom-right-radius: 5px;
+}
+
+.message .production .unit:hover {
+    background: lime;
+}
+
+.message .production .empty {
+    border: none;
+    width: 158px;
+}
+
+.message .production #blank {
+    border: none;
+}
+
+.message .production input[type="radio"] {
+    margin: 5px;
+}
+
+.message .production .unit .img {
+    float: left;
+    padding: 5px 0 5px 5px;
+    width: 30px;
+    height: 30px;
+    text-align: center;
+}
+
+.message .production .unit .name {
+    float: right;
+}
+
+.message .production .unit div.attributes {
+    float: right;
+    padding: 1px;
+    width: 156px;
+}
+
+.message .production .unit div p {
+    text-align: right;
+    height: 15px;
+}
+
+.message .production .unit div input {
+    margin-top: 7px;
+}
+
+.message p.h input {
+    margin: 5px 6px;
+}
+
+.message .split {
+    overflow: hidden;
+    overflow-y: auto;
+}
+
+.message .split #selectAll{
+    text-align: right;
+    margin: 4px;
+}
+
+.message .split div.row {
+    clear: both;
+    height: 31px;
+    margin: 1px;
+    padding: 3px;
+    border: 1px solid #222;
+    border-radius: 3px;
+}
+
+.message .split div.row div {
+    width: 30px;
+    height: 30px;
+    position: relative;
+    top: 9px;
+    left: 9px;
+}
+
+.message .split div.row div.nr {
+    position: relative;
+    top: 2px;
+    left: 2px;
+    width: 20px;
+    height: 15px;
+    float: left;
+    display: block;
+}
+
+.message .split div.row span {
+    /*position: relative;*/
+    /*top: 17px;*/
+    /*left: 0px;*/
+    line-height: 30px;
+}
+
+.message .split div.row img {
+    margin: 1px 12px;
+}
+
+.message .split div.row div.img {
+    width: 50px;
+    height: 30px;
+    float: left;
+    position: relative;
+    top: 0px;
+    left: 0px;
+}
+
+.message .status {
+    overflow: hidden;
+    overflow-y: scroll;
+}
+
+.message .status div.row {
+    clear: both;
+    height: 75px;
+    width: 530px;
+    margin: 1px;
+    padding: 3px;
+    border: 1px solid grey;
+    border-radius: 3px;
+}
+
+.message .status div.rowContent {
+    position: relative;
+}
+
+.message .status table {
+    width: auto;
+    display: inline-table;
+}
+
+.message .status table.leftTable {
+    margin-left: 30px;
+}
+
+.message .status table.rightTable {
+    margin-left: 5px;
+}
+
+.message .status tr {
+    background: none !important;
+    color: #fff;
+}
+
+.message .status td {
+    border: none;
+    text-align: right;
+    height: 14px;
+    padding: 0;
+    margin: 0;
+    background: #000;
+}
+
+.message .status .value {
+    color: yellow;
+}
+
+.message .status .value div {
+    float: left;
+    /*width: 20px;*/
+}
+
+.message .status .plus {
+    color: lime;
+}
+
+.message .status div.row div.nr {
+    position: absolute;
+    top: 4px;
+    left: 4px;
+    width: 20px;
+    height: 20px;
+    border-radius: 10px;
+    line-height: 22px;
+    background: #fff;
+    color: #000;
+    text-shadow: none;
+}
+
+.message .status div.row div.img {
+    position: absolute;
+    top: 30px;
+    left: 5px;
+}
+
+.message .go {
+    margin: 20px auto;
+    min-width: 50px;
+}
+
+.message .battle {
+    width: 100%;
+    text-align: center;
+    margin-top: 4px;
+    min-height: 31px;
+}
+
+.message .grass {
+    background: url(/img/game/grass.png);
+    border-radius: 5px;
+    padding: 5px;
+}
+
+.center {
+    text-align: center;
+}
+
+.split p {
+    text-align: center;
+    margin: 2px;
+    background: #CECECE;
+    padding: 1px;
+}
+
+#log {
+    width: 150px;
+    height: 29px;
+}
+
+#turnBox {
+    position: absolute;
+    top: 185px;
+    /*margin: 2px;*/
+    /*height: 12px;*/
+    width: 220px;
+}
+
+#turnBox div {
+    /*    width:90px;*/
+}
+
+#chatBox {
+    width: 502px;
+    border-top-left-radius: 10px;
+    text-transform: none;
+}
+
+#chatBox #chatWindow {
+    height: 124px;
+    border: none;
+    overflow: hidden;
+    overflow-y: scroll;
+    color: #fff;
+    text-shadow: none;
+    margin: 2px;
+}
+
+#chatBox #chatWindow #chatContent {
+    position: relative;
+    left: 0;
+    width: 100%;
+    border: none;
+    line-height: 12px;
+    font-size: 10px;
+    font-family: fantasy;
+}
+
+#chatBox #chatContent div.chatCloud {
+    margin: 5px 5px 5px 0;
+    border-radius: 4px;
+    padding: 4px;
+    display: inline-block;
+    box-shadow: 0 1px 0 0 rgba(255, 255, 255, .5);
+    color: white;
+    background: grey;
+    border: 1px solid darkgray;
+    /*text-shadow: 0 1px 0 rgba(255, 255, 255, 1);*/
+}
+
+#chatBox #chatContent div.chatCloud span {
+    font-weight: bold;
+}
+
+#chatBox #chatContent div.chatCloudContainer {
+}
+
+#chatBox #chatContent div.chatCloudContainer img {
+    margin-right: 5px;
+}
+
+#chatBox input {
+    width: 382px;
+    line-height: 25px;
+    border: 1px solid #000;
+    border-radius: 5px;
+    margin: 2px;
+
+    -webkit-touch-callout: text;
+    -webkit-user-select: text;
+    -khtml-user-select: text;
+    -moz-user-select: text;
+    -ms-user-select: text;
+    user-select: text;
+}
+
+#chatBox .send .right {
+    padding: 3px;
+}
+
+#chatBox .button {
+    margin: 0;
+    padding: 0;
+    width: 92px;
+}
+
+#timerBox {
+    left: -1px;
+    border-top-right-radius: 10px;
+    border-bottom-right-radius: 10px;
+    width: 230px;
+}
+
+#timerBox .row {
+    height: 30px;
+}
+
+#timerBox .left {
+    padding: 1px;
+    background: none;
+    text-align: center;
+    line-height: 30px;
+}
+
+#timerBox #timerScroll {
+    overflow: hidden;
+    overflow-y: scroll;
+    width: 230px;
+    margin-bottom: 5px;
+}
+
+#timerBox #timerRows {
+    width: 230px;
+}
+
+#timerBox .color {
+    width: 37px;
+}
+
+#timerBox .nr {
+    width: 50px;
+}
+
+#timerBox .time {
+    width: 122px;
+    overflow: hidden;
+}
+
+#timerBox .time {
+    overflow: hidden;
+}
+
+#timerBox .time div {
+    float: right;
+}
+
+#timerBox #second {
+    width: 20px;
+    text-align: left;
+    padding: 0 3px;
+}
+
+#timerBox #minute {
+    width: 20px;
+    text-align: left;
+    padding: 0 3px;
+}
+
+#timerBox #hour {
+    min-width: 20px;
+    text-align: left;
+    padding: 0 3px;
+}
+
+#limitBox {
+    left: -1px;
+    border-top-right-radius: 10px;
+    border-bottom-right-radius: 10px;
+    width: 230px;
+}
+
+#limitBox span {
+    width: 20px;
+    display: inline-block;
+    text-align: right;
+}
+
+#goldBox {
+    min-width: 200px;
+    border-top: none;
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
+    text-shadow: none;
+}
+
+#goldBox table {
+    width: auto;
+    min-width: 0;
+    border-spacing: 0;
+}
+
+#goldBox table tr:nth-child(odd) {
+    background: none;
+}
+
+#goldBox td {
+    height: 25px;
+    padding: 0 5px;
+    width: 116px;
+    text-align: center;
+    border: none !important;
+}
+
+#goldBox td div {
+    line-height: 14px;
+}
+
+#battleSettingsBox {
+    border-top: none;
+}
+
+#battleSettingsBox .iconButton {
+    padding: 1px 4px;
+    display: inline-block;
+}
+
+#armyBox {
+    border-top-left-radius: 10px;
+    border-bottom-left-radius: 10px;
+    width: 230px;
+}
+
+#armyBox #nameBox {
+    height: 14px;
+    line-height: 14px;
+    margin: 5px;
+    text-align: center;
+    /*background: url("/img/bg_0.jpg");*/
+}
+
+#armyBox #attrBox {
+    height: 26px;
+    margin: 5px;
+}
+
+#armyBox #attrBox div {
+    width: 73px;
+    /*background: url("/img/bg_0.jpg");*/
+}
+
+.text-right {
+    text-align: right;
+}
+
+#terrain {
+    position: absolute;
+    color: white;
+    z-index: 27000;
+    left: 13px;
+}
+
+.box {
+    position: absolute;
+    z-index: 27000;
+    background: transparent url('/img/game/message_bg.png');
+    border: 2px solid orange;
+    box-shadow: 5px 5px 20px #000;
+    padding: 5px;
+    color: #fff;
+}
+
+#playersCanvas {
+    position: absolute;
+    left: 10px;
+    width: 180px;
+    height: 180px;
+}
+
+#chest {
+    background: #fff;
+    text-shadow: none;
+}
+
+#chest div {
+    border: 1px solid #ccc;
+}
+
+#inventory {
+    background: #fff;
+    text-shadow: none;
+}
+
+#inventory div {
+    border: 1px solid #ccc;
+}
+
+.artifactDescription {
+    position: absolute;
+    background: #555;
+    text-shadow: none;
+    color: #fff;
+    min-width: 200px;
+    min-height: 200px;
+    z-index: 28000;
+}
+
+html {
+    background: #000;
+}
+
+.buttonColors {
+    border: 1px solid lime !important;
+    background: #000 !important;
+    color: lime !important;
+    cursor: url(/img/game/cursor_pointer.png), pointer;
+}
+
+.buttonColors:hover {
+    color: #000 !important;
+    background: lime !important;
+}
+
+#buttons .button, .armyButtons .button {
+    padding: 0;
+    width: 224px;
+}
+
+#buttons .button.buttonOff, .armyButtons .button.buttonOff {
+    background: #000 !important;
+    border: 1px solid gray;
+    color: gray !important;
+}
+
+.button, #submit {
+    line-height: 27px;
+    height: 27px;
+}
+
+.iconButton, .button, #submit {
+    border-radius: 5px;
+    font-size: 10px;
+}
+
+.iconButton {
+    cursor: url(/img/game/cursor_pointer.png), pointer;
+    text-align: center;
+}
+
+.iconButton img {
+    display: inline-block;
+    vertical-align: middle;
+}
+
+.iconButton .Centerer {
+    display: inline-block;
+    height: 100%;
+    vertical-align: middle;
+}
+
+.buttonOff {
+    border: 1px solid #444 !important;
+    color: #444 !important;
+}
+
+.castle .name {
+    position: absolute;
+    top: 80px;
+    left: -4px;
+    width: 100px;
+    text-align: center;
+    color: #000;
+    text-shadow: 1px 1px 1px #fff;
+    text-transform: uppercase;
+    font-family: "alpine", Verdana, Tahoma;
+}
+
+.castle .crown {
+    position: absolute;
+    top: -7px;
+    left: 33px
+}
+
+.castle .shield {
+    position: absolute;
+    top: -10px;
+    left: -4px;
+    color: #fff;
+    font-size: 14px;
+    text-align: center;
+    width: 17px;
+    height: 20px;
+    font-family: "alpine", Verdana, Tahoma;
+}
+
+.castle .hammer {
+    position: absolute;
+    top: -10px;
+    left: 70px;
+}
+
+.castle .relocation_out {
+    position: absolute;
+    top: 13px;
+    left: 77px;
+}
+
+.castle .relocation_in {
+    position: absolute;
+    top: 13px;
+    left: 84px;
+}
+
+.battleUnit {
+    display: inline-block;
+    width: 30px;
+    height: 30px;
+}
+
+.battleNumber {
+    display: inline-block;
+    width: 30px;
+}
+
+.killed {
+    position: absolute;
+    background: url("/img/game/killed.png");
+    width: 25px;
+    height: 28px;
+    display: none;
+}
+
+.war {
+    position: absolute;
+    background: url("/img/game/war.png");
+    width: 111px;
+    height: 120px;
+    z-index: 26998;
+}
+
+.ruinSearch {
+    position: absolute;
+    background: url("/img/game/ruinSearch.png");
+    width: 38px;
+    height: 40px;
+    z-index: 26998;
+}
+
+table.statistics tr {
+    background: none;
+    color: #D7DAA4;
+}
+
+table.statistics td {
+    border: none;
+    text-shadow: none;
+    padding: 1px;
+    height: 36px;
+}
+
+table.statistics th {
+    background: none;
+    border: none;
+    padding: 5px;
+}
+
+table.statistics td.shortName {
+    background: none;
+}
+
+.relocatedProduction table {
+    padding: 2px;
+    width: 100%;
+}
+
+.relocatedProduction td {
+    line-height: 30px;
+    /*background: #CECEb0;*/
+    border: none;
+}
+
+.relocatedProduction .button {
+    font-family: "alpine", Verdana, Tahoma;
+}
+
+table.treasury {
+    width: 250px;
+    margin: 0 auto;
+    text-shadow: none;
+}
+
+table.treasury td {
+    border: 1px solid gray;
+    background: #000;
+    border-radius: 0;
+    padding: 0 5px;
+}
+
+table.treasury tr:first-of-type td:first-of-type {
+    border-top-left-radius: 5px;
+}
+
+table.treasury tr:first-of-type td:last-of-type {
+    border-top-right-radius: 5px;
+}
+
+table.treasury tr:last-of-type td:first-of-type {
+    border-bottom-left-radius: 5px;
+}
+
+table.treasury tr:last-of-type td:last-of-type {
+    border-bottom-right-radius: 5px;
+}
+
+table.treasury td.r {
+    text-align: right;
+}
+
+table.treasury td.c {
+    text-align: center;
+}
+
+#vs {
+    margin-top: 10px;
+}
+
+.production tr {
+    background: none !important;
+}
+
+.showCastle tr td:not(.button .iconButton) {
+    border: none !important;
+}
+
+.statistics tr:first-of-type {
+    background: none;
+}
+
+.close {
+    position: absolute;
+    width: 19px;
+    height: 19px;
+    line-height: 20px;
+    text-align: center;
+    text-shadow: none;
+    color: orange;
+    border: 2px solid orange;
+    cursor: pointer;
+    background: url("/img/game/message_bg.png");
+}
+
+.close:hover {
+    color: #fff;
+}
+
+#mapBox .close {
+    top: 12px;
+    border-top-right-radius: 5px;
+    border-bottom-right-radius: 5px;
+}
+
+#limitBox .close {
+    top: 8px;
+    border-top-right-radius: 5px;
+    border-bottom-right-radius: 5px;
+}
+
+#timerBox .close {
+    top: 8px;
+    border-top-right-radius: 5px;
+    border-bottom-right-radius: 5px;
+}
+
+#playersBox .close {
+    left: -23px;
+    border-top-left-radius: 5px;
+    border-bottom-left-radius: 5px;
+}
+
+#armyBox .close {
+    left: -23px;
+    top: 8px;
+    border-top-left-radius: 5px;
+    border-bottom-left-radius: 5px;
+}
+
+#chatBox .close {
+    left: -23px;
+    top: 8px;
+    border-top-left-radius: 5px;
+    border-bottom-left-radius: 5px;
+}
+

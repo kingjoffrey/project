@@ -1,7 +1,7 @@
-<h2>Create new map</h2>
-<?php echo $this->form; ?>
-<ul>
-    <li>
-        <a class="button" href="<?php echo $this->url(array('controller' => 'editor', 'action' => 'index', 'mapId' => null)) ?>">< Back</a>
-    </li>
-</ul>
+<h1><?php echo $this->translate('Map editor') ?></h1>
+<div class="table">
+    <h2><?php echo $this->translate('Create new map') ?></h2>
+    <?php echo $this->form; ?>
+</div>
+<a class="button"
+   href="<?php echo $this->url(array('controller' => 'editor', 'action' => 'index', 'mapId' => null)) ?>">&laquo; <?php echo $this->translate('Back') ?></a>

@@ -39,6 +39,7 @@ class Coret_Form_Varchar extends Zend_Form
 
         if (isset($this->_attribs['validators']) && $this->_attribs['validators']) {
             $validators = $this->_attribs['validators'];
+            $validators[] = array('StringLength', false, array(1, 256));
         } else {
             $validators = array(array('StringLength', false, array(1, 256)));
         }

@@ -21,14 +21,15 @@ class Application_Model_Map extends Coret_Db_Table_Abstract
     {
         $data = array(
             'name' => $params['name'],
-            'mapWidth' => $params['mapWidth'],
-            'mapHeight' => $params['mapHeight'],
+            'mapWidth' => $params['mapWidth']*40,
+            'mapHeight' => $params['mapHeight']*40,
+            'maxPlayers' => $params['maxPlayers'],
             'playerId' => $playerId
         );
 
         $this->_db->insert($this->_name, $data);
-        $seq = $this->_db->quoteIdentifier($this->_sequence);
-        return $this->_db->lastSequenceId($seq);
+
+        return $this->_db->lastSequenceId($this->_db->quoteIdentifier($this->_sequence));
     }
 
     public function getPlayerMapList($playerId)

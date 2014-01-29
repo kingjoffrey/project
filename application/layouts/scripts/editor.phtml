@@ -1,34 +1,19 @@
 <?php echo $this->doctype() ?>
 <html>
-    <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-        <?php
-        echo $this->headTitle() . "\n";
-        echo $this->headLink() . "\n";
-        echo $this->headScript() . "\n";
-        echo $this->headMeta() . "\n";
-        ?>
-    </head>
-    <body>
-        <div id="page">
-            <div id="menuTop">
-                <p>Server status: <span id="wsStatus"></span></p>
-                <?php echo $this->placeholder('logout') ?>
-            </div>
-            <div id="game">
-                <div id="editorMenu">
-                    
-                </div>
-                
-                <div class="zoomWindow">
-                <div class="zoomPad">
-                    <div class="zoomPup"></div>
-                    <?php echo $this->placeholder('miniMap') ?>
-                </div>
-                    <div id="board" style="<?php echo $this->placeholder('board') ?>"></div>
-                </div>
-            </div>
-        </div>
-    </body>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <?php
+    echo $this->headTitle() . "\n";
+    echo $this->headLink() . "\n";
+    echo $this->headScript() . "\n";
+    echo $this->headMeta() . "\n";
+    ?>
+</head>
+<body>
+    <div id="game">
+        <div id="editorMenu"></div>
+        <div id="board"></div>
+    </div>
+</body>
 </html>
 <?php echo $this->layout()->content; ?>

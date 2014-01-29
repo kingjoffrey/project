@@ -7,8 +7,8 @@ class EditorController extends Game_Controller_Gui
         if ($this->_namespace->mapId) {
             unset($this->_namespace->mapId);
         }
-        $modelMap = new Application_Model_Map ();
-        $this->view->mapList = $modelMap->getPlayerMapList($this->_namespace->player['playerId']);
+        $mMap = new Application_Model_Map ();
+        $this->view->mapList = $mMap->getPlayerMapList($this->_namespace->player['playerId']);
     }
 
     public function createAction()
@@ -16,52 +16,23 @@ class EditorController extends Game_Controller_Gui
         $this->view->form = new Application_Form_Createmap ();
         if ($this->_request->isPost()) {
             if ($this->view->form->isValid($this->_request->getPost())) {
-                $modelMap = new Application_Model_Map ();
-                $mapId = $modelMap->createMap($this->view->form->getValues(), $this->_namespace->player['playerId']);
-                if ($mapId) {
-                    $this->_namespace->mapId = $mapId;
-                    $this->_helper->redirector('edit', 'editor', null, array('mapId' => $mapId));
-                }
+                $mMap = new Application_Model_Map ();
+                $mapId = $mMap->createMap($this->view->form->getValues(), $this->_namespace->player['playerId']);
+                $this->_redirect($this->view->url(array('action' => 'edit', 'mapId' => $mapId)));
             }
         }
     }
 
     public function editAction()
     {
-        $mapId = $armyId = $this->_request->getParam('mapId');
-        $this->view->headLink()->appendStylesheet($this->view->baseUrl() . '/css/editor.css');
-        $this->view->headScript()->appendFile('/js/game/zoom.js');
         $this->_helper->layout->setLayout('editor');
+        $this->view->headLink()->appendStylesheet($this->view->baseUrl() . '/css/editor.css?v=' . Zend_Registry::get('config')->version);
+//        $this->view->headScript()->appendFile('/js/kinetic-v4.7.4.min.js');
+        $this->view->headScript()->appendFile('http://d3lp1msu2r81bx.cloudfront.net/kjs/js/lib/kinetic-v5.0.1.min.js');
+        $this->view->headScript()->appendFile('/js/editor.js?v=' . Zend_Registry::get('config')->version);
 
-        $modelMap = new Application_Model_Map($mapId);
-        $map = $modelMap->getMap($this->_namespace->player['playerId']);
-        $map['width'] = $map['mapWidth'] * 40;
-        $map['height'] = $map['mapHeight'] * 40;
-
-        echo $map['width'] * $map['height'] . '<br/>';
-
-//        Zend_Debug::dump($map);
-//        $img = imagecreatetruecolor($map['width'], $map['height']);
-        $img = imagecreate($map['width'], $map['height']);
-
-        if ($img) {
-            imagesavealpha($img, true);
-
-            // Fill the image with transparent color
-            $color = imagecolorallocatealpha($img, 0x00, 0x00, 0x00, 127);
-            $color_background = imagecolorallocate($img, 255, 255, 255);
-            $color_normal = imagecolorallocate($img, 200, 200, 200);
-            $color_marked = imagecolorallocate($img, 255, 0, 0);
-            imagefill($img, 0, 0, $color_background);
-
-            // Save the image to file.png
-            imagepng($img, APPLICATION_PATH . '/../public/img/maps/' . $map['mapId'] . 'test.png');
-
-            // Destroy image
-            imagedestroy($img);
-        }
-
-        $this->view->map($map['mapId']);
+        $mMap = new Application_Model_Map($this->_request->getParam('mapId'));
+        $this->view->map = $mMap->getMap();
     }
 
     public function testAction()

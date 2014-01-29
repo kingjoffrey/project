@@ -1,26 +1,23 @@
-<h2>Map editor</h2>
+<h1><?php echo $this->translate('Map editor') ?></h1>
 <div class="table">
-<table>
-    <th>Map name</th><th>Width</th><th>Height</th><th>Map author</th><th>Creation date</th>
-<?php
-if(is_array($this->mapList)){
-    foreach($this->mapList as $map){
-        $url = $this->url(array('controller'=>'editor', 'action'=>'edit', 'mapId'=>$map['mapId']));
-        echo '<tr id="gid'.$map['mapId'].'" onclick="'.$url.'" class="trlink">
-        <td><a href="'.$url.'">'.$map['name'].'</a></td>
-        <td><a href="'.$url.'">'.$map['mapWidth'].'</a></td>
-        <td><a href="'.$url.'">'.$map['mapHeight'].'</a></td>
-        </tr>';
-    }
-}
-?>
+    <h2><?php echo $this->translate('Map list') ?></h2>
+    <table>
+        <th>Map name</th>
+        <th>Width</th>
+        <th>Height</th>
+        <th>Map author</th>
+        <th>Creation date</th>
+        <?php if (is_array($this->mapList)): ?>
+            <?php foreach ($this->mapList as $map): ?>
+                <tr id="<?php echo $map['mapId'] ?>" onclick="url()" class="trlink">
+                    <td><?php echo $map['name'] ?></td>
+                    <td><?php echo $map['mapWidth'] ?></td>
+                    <td><?php echo $map['mapHeight'] ?></td>
+                </tr>
+            <?php endforeach ?>
+        <?php endif ?>
     </table>
 </div>
-<ul>
-    <li>
-        <a class="button" href="/">&laquo; Back</a>
-    </li>
-    <li>
-        <a class="button" href="/editor/create">Create</a>
-    </li>
-</ul>
+<a class="button" href="/">&laquo; <?php echo $this->translate('Back') ?></a>
+<a class="button"
+   href="<?php echo $this->url(array('action' => 'create')) ?>"><?php echo $this->translate('Create') ?></a>
