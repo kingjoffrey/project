@@ -5,124 +5,146 @@ $(document).ready(function () {
 var Editor = {
     layer: new Kinetic.Layer(),
     map: null,
+    ctx: null,
     init: function () {
+        mapHeight = mapWidth = 1025
         var stage = new Kinetic.Stage({
             container: 'board',
-            width: 1600,
-            height: 800
+            width: $(window).width(),
+            height: $(window).height()
         })
-        this.map = new Kinetic.Shape({
-            drawFunc: function (context) {
-                context.beginPath();
-                context.moveTo(0, 0);
-                context.lineTo(mapWidth, 0);
-                context.lineTo(mapWidth, mapHeight);
-                context.lineTo(0, mapHeight);
-                context.closePath();
-                context.fillStrokeShape(this);
-            },
+
+        var pixelCanvas = document.createElement("canvas");
+        var ctx = pixelCanvas.getContext("2d");
+        pixelCanvas.width = mapWidth;
+        pixelCanvas.height = mapHeight;
+        pixelCanvas.pixels = []
+        pixelCanvas.setPixel = function (x, y, color) {
+            ctx.fillStyle = color;
+            ctx.fillRect(x, y, 1, 1);
+        };
+
+        var pixels = new Kinetic.Image({
             x: 0,
             y: 0,
-            fill: 'green',
+            image: pixelCanvas,
             draggable: true
-        })
+        });
 
-        this.layer.add(this.map)
+        this.layer.add(pixels);
         stage.add(this.layer)
 
-        var ctx = this.layer.getContext()._context
-        ctx.fillRect(10, 10, 1, 1)
-    },
-    Displace: function (num) {
-        var max = num / (getSize().width + getSize().height) * 3;
-        return (Math.random() - 0.5) * max;
-    },
+//        this.ctx = this.layer.getContext()._context
+        var data = this.diamondSquare(mapWidth)
 
-    //Returns a color based on a color value, c.
-    ComputeColor: function (c) {
-        var Red = 0,
-            Green = 0,
-            Blue = 0
-
-        if (c < 0.5) {
-            Red = c * 2;
-        }
-        else {
-            Red = (1.0 - c) * 2;
-        }
-
-        if (c >= 0.3 && c < 0.8) {
-            Green = (c - 0.3) * 2;
-        }
-        else if (c < 0.3) {
-            Green = (0.3 - c) * 2;
-        }
-        else {
-            Green = (1.3 - c) * 2;
-        }
-
-        if (c >= 0.5) {
-            Blue = (c - 0.5) * 2;
-        }
-        else {
-            Blue = (0.5 - c) * 2;
-        }
-
-        return new Color(Red, Green, Blue);
-    },
-
-    //This is something of a "helper function" to create an initial grid
-    //before the recursive function is called.
-    drawPlasma: function (width, height) {
-        var c1, c2, c3, c4
-
-        //Assign the four corners of the intial grid random color values
-        //These will end up being the colors of the four corners of the applet.
-        c1 = Math.random();
-        c2 = Math.random();
-        c3 = Math.random();
-        c4 = Math.random();
-
-        DivideGrid(0, 0, width, height, c1, c2, c3, c4)
-    },
-
-    //This is the recursive function that implements the random midpoint
-    //displacement algorithm.  It will call itself until the grid pieces
-    //become smaller than one pixel.
-    DivideGrid: function (x, y, width, height, c1, c2, c3, c4) {
-        var Edge1, Edge2, Edge3, Edge4, Middle
-        newWidth = width / 2,
-            newHeight = height / 2
-
-        if (width > 2 || height > 2) {
-            Middle = (c1 + c2 + c3 + c4) / 4 + Displace(newWidth + newHeight);        //Randomly displace the midpoint!
-            Edge1 = (c1 + c2) / 2;        //Calculate the edges by averaging the two corners of each edge.
-            Edge2 = (c2 + c3) / 2;
-            Edge3 = (c3 + c4) / 2;
-            Edge4 = (c4 + c1) / 2;
-
-            //Make sure that the midpoint doesn't accidentally "randomly displaced" past the boundaries!
-            if (Middle < 0) {
-                Middle = 0;
+        for (i in data) {
+            for (j in data[i]) {
+                var rgb = (parseInt(data[i][j])).toString(16)
+                pixelCanvas.setPixel(i, j, "#" + rgb + rgb + rgb)
+//                Editor.drawDot("#" + rgb + rgb + rgb, i, j)
             }
-            else if (Middle > 1.0) {
-                Middle = 1.0;
+        }
+        pixels.draw();
+    },
+    drawDot: function (color, x, y) {
+
+        this.ctx.fillStyle = color
+        this.ctx.fillRect(x, y, 1, 1)
+    },
+    diamondSquare: function (DATA_SIZE) {
+        //DATA_SIZE is the size of grid to generate, note this must be a
+        //value 2^n+1
+
+
+        //an initial seed value for the corners of the data
+        var SEED = 128.0;
+        var data = [];
+        for (var i = 0; i < DATA_SIZE; ++i) {
+            data[i] = [];
+        }
+        //seed the data
+        data[0][0] = data[0][DATA_SIZE - 1] = data[DATA_SIZE - 1][0] =
+            data[DATA_SIZE - 1][DATA_SIZE - 1] = SEED;
+
+        var h = 128.0;//the range (-h -> +h) for the average offset
+
+        //side length is distance of a single square side
+        //or distance of diagonal in diamond
+        for (var sideLength = DATA_SIZE - 1;
+            //side length must be >= 2 so we always have
+            //a new value (if its 1 we overwrite existing values
+            //on the last iteration)
+             sideLength >= 2;
+            //each iteration we are looking at smaller squares
+            //diamonds, and we decrease the variation of the offset
+             sideLength /= 2, h /= 2.0) {
+            //half the length of the side of a square
+            //or distance from diamond center to one corner
+            //(just to make calcs below a little clearer)
+            var halfSide = sideLength / 2;
+
+            //generate the new square values
+            for (var x = 0; x < DATA_SIZE - 1; x += sideLength) {
+                for (var y = 0; y < DATA_SIZE - 1; y += sideLength) {
+                    //x, y is upper left corner of square
+                    //calculate average of existing corners
+                    var avg = data[x][y] + //top left
+                        data[x + sideLength][y] +//top right
+                        data[x][y + sideLength] + //lower left
+                        data[x + sideLength][y + sideLength];//lower right
+                    avg /= 4.0;
+
+                    //center is average plus random offset
+                    data[x + halfSide][y + halfSide] =
+                        //We calculate random value in range of 2h
+                        //and then subtract h so the end value is
+                        //in the range (-h, +h)
+                        avg + (Math.random() * 2 * h) - h;
+                }
             }
 
-            //Do the operation over again for each of the four new grids.
-            DivideGrid(g, x, y, newWidth, newHeight, c1, Edge1, Middle, Edge4);
-            DivideGrid(g, x + newWidth, y, newWidth, newHeight, Edge1, c2, Edge2, Middle);
-            DivideGrid(g, x + newWidth, y + newHeight, newWidth, newHeight, Middle, Edge2, c3, Edge3);
-            DivideGrid(g, x, y + newHeight, newWidth, newHeight, Edge4, Middle, Edge3, c4);
-        }
-        else        //This is the "base case," where each grid piece is less than the size of a pixel.
-        {
-            //The four corners of the grid piece will be averaged and drawn as a single pixel.
-            var c = (c1 + c2 + c3 + c4) / 4;
+            //generate the diamond values
+            //since the diamonds are staggered we only move x
+            //by half side
+            //NOTE: if the data shouldn't wrap then x < DATA_SIZE
+            //to generate the far edge values
+            for (var x = 0; x < DATA_SIZE - 1; x += halfSide) {
+                //and y is x offset by half a side, but moved by
+                //the full side length
+                //NOTE: if the data shouldn't wrap then y < DATA_SIZE
+                //to generate the far edge values
+                for (var y = (x + halfSide) % sideLength; y < DATA_SIZE - 1; y += sideLength) {
+                    //x, y is center of diamond
+                    //note we must use mod  and add DATA_SIZE for subtraction
+                    //so that we can wrap around the array to find the corners
+                    var avg =
+                        data[(x - halfSide + DATA_SIZE - 1) % (DATA_SIZE - 1)][y] + //left of center
+                            data[(x + halfSide) % (DATA_SIZE - 1)][y] + //right of center
+                            data[x][(y + halfSide) % (DATA_SIZE - 1)] + //below center
+                            data[x][(y - halfSide + DATA_SIZE - 1) % (DATA_SIZE - 1)]; //above center
 
-//                        g.setColor(ComputeColor(c));
-//                        g.drawRect((int)x, (int)y, 1, 1);        //Java doesn't have a function to draw a single pixel, so
-            //a 1 by 1 rectangle is used.
+                    avg /= 4.0;
+
+                    //new value = average plus random offset
+                    //We calculate random value in range of 2h
+                    //and then subtract h so the end value is
+                    //in the range (-h, +h)
+                    avg = avg + (Math.random() * 2 * h) - h;
+                    //update value for center of diamond
+                    data[x][y] = avg;
+
+                    //wrap values on the edges, remove
+                    //this and adjust loop condition above
+                    //for non-wrapping values.
+                    if (x == 0) data[DATA_SIZE - 1][y] = avg;
+                    if (y == 0) data[x][DATA_SIZE - 1] = avg;
+                }
+            }
         }
+
+        //return the data
+        return data;
+
     }
+
 }

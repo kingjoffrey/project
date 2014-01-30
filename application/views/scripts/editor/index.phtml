@@ -9,7 +9,7 @@
         <th>Creation date</th>
         <?php if (is_array($this->mapList)): ?>
             <?php foreach ($this->mapList as $map): ?>
-                <tr id="<?php echo $map['mapId'] ?>" onclick="url()" class="trlink">
+                <tr id="<?php echo $map['mapId'] ?>" onclick="url(<?php echo $map['mapId'] ?>)" class="trlink">
                     <td><?php echo $map['name'] ?></td>
                     <td><?php echo $map['mapWidth'] ?></td>
                     <td><?php echo $map['mapHeight'] ?></td>
@@ -21,3 +21,9 @@
 <a class="button" href="/">&laquo; <?php echo $this->translate('Back') ?></a>
 <a class="button"
    href="<?php echo $this->url(array('action' => 'create')) ?>"><?php echo $this->translate('Create') ?></a>
+<?php $this->headScript()->captureStart() ?>
+var lang = '<?php echo Zend_Registry::get('lang') ?>';
+function url(mapId){
+    window.location = '/' + lang + '/editor/edit/mapId/' + mapId
+}
+<?php $this->headScript()->captureEnd() ?>
