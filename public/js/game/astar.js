@@ -226,6 +226,7 @@ var AStar = {
                 if (g > 6) {
                     continue;
                 }
+
                 if (isSet(open[key])) {
                     this.calculatePath(x + '_' + y, open, close, g, key);
                 } else {

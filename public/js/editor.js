@@ -8,6 +8,8 @@ var Editor = {
     ctx: null,
     init: function () {
         mapHeight = mapWidth = 1025
+//        mapHeight = mapWidth = 2049
+//        mapHeight = mapWidth = 8193
         var stage = new Kinetic.Stage({
             container: 'board',
             width: $(window).width(),
@@ -31,92 +33,87 @@ var Editor = {
             draggable: true
         });
 
+        var drugi = new Kinetic.Image({
+            x: mapWidth,
+            y: 0,
+            image: pixelCanvas,
+            draggable: true
+        });
+
         this.layer.add(pixels);
+        this.layer.add(drugi)
         stage.add(this.layer)
 
-//        this.ctx = this.layer.getContext()._context
         var data = this.diamondSquare(mapWidth)
 
-        for (i in data) {
-            for (j in data[i]) {
-                var rgb = (parseInt(data[i][j])).toString(16)
-                pixelCanvas.setPixel(i, j, "#" + rgb + rgb + rgb)
-//                Editor.drawDot("#" + rgb + rgb + rgb, i, j)
+        for (var i in data) {
+            for (var j in data[i]) {
+                if (data[i][parseInt(j) + 1] < data[i][j]) {
+                    var shadow = 10
+                } else {
+                    var shadow = 0
+                }
+                if (data[i][j] < 120) { // water
+                    var rgb = (parseInt(data[i][j]) + shadow).toString(16)
+                    var color = '#0000' + rgb + ''
+                } else { // land
+                    if (data[i][j] < 121) { // beach
+                        var rgb = (parseInt(data[i][j]) + 50 + shadow).toString(16)
+                        var color = '#' + rgb + rgb + '00'
+                    } else {
+                        if (data[i][j] < 175) { // grass
+                            var rgb = (256 - parseInt(data[i][j]) + shadow).toString(16)
+                            var color = '#00' + rgb + '00'
+                        } else {
+                            if (data[i][j] < 210) { // hills
+                                var rgb = (256 - parseInt(data[i][j]) + shadow).toString(16)
+                                var color = '#' + rgb + rgb + '00'
+                            } else { // mountains
+                                if (data[i][j] < 220) {
+                                    var rgb = (parseInt(data[i][j]) - 150 + shadow).toString(16)
+                                    var color = '#' + rgb + rgb + rgb
+                                } else { // snow
+                                    var rgb = (parseInt(data[i][j]) + shadow).toString(16)
+                                    var color = '#' + rgb + rgb + rgb
+                                }
+                            }
+                        }
+                    }
+                }
+//                var color = '#' + rgb + rgb + rgb
+                pixelCanvas.setPixel(i, j, color)
             }
         }
         pixels.draw();
-    },
-    drawDot: function (color, x, y) {
-
-        this.ctx.fillStyle = color
-        this.ctx.fillRect(x, y, 1, 1)
+        drugi.draw()
     },
     diamondSquare: function (DATA_SIZE) {
-        //DATA_SIZE is the size of grid to generate, note this must be a
-        //value 2^n+1
-
-
-        //an initial seed value for the corners of the data
         var SEED = 128.0;
         var data = [];
         for (var i = 0; i < DATA_SIZE; ++i) {
             data[i] = [];
         }
-        //seed the data
-        data[0][0] = data[0][DATA_SIZE - 1] = data[DATA_SIZE - 1][0] =
-            data[DATA_SIZE - 1][DATA_SIZE - 1] = SEED;
+        data[0][0] = data[0][DATA_SIZE - 1] = data[DATA_SIZE - 1][0] = data[DATA_SIZE - 1][DATA_SIZE - 1] = SEED;
 
         var h = 128.0;//the range (-h -> +h) for the average offset
 
-        //side length is distance of a single square side
-        //or distance of diagonal in diamond
-        for (var sideLength = DATA_SIZE - 1;
-            //side length must be >= 2 so we always have
-            //a new value (if its 1 we overwrite existing values
-            //on the last iteration)
-             sideLength >= 2;
-            //each iteration we are looking at smaller squares
-            //diamonds, and we decrease the variation of the offset
-             sideLength /= 2, h /= 2.0) {
-            //half the length of the side of a square
-            //or distance from diamond center to one corner
-            //(just to make calcs below a little clearer)
+        for (var sideLength = DATA_SIZE - 1; sideLength >= 2; sideLength /= 2, h /= 2.0) {
             var halfSide = sideLength / 2;
 
-            //generate the new square values
             for (var x = 0; x < DATA_SIZE - 1; x += sideLength) {
                 for (var y = 0; y < DATA_SIZE - 1; y += sideLength) {
-                    //x, y is upper left corner of square
-                    //calculate average of existing corners
                     var avg = data[x][y] + //top left
                         data[x + sideLength][y] +//top right
                         data[x][y + sideLength] + //lower left
                         data[x + sideLength][y + sideLength];//lower right
                     avg /= 4.0;
 
-                    //center is average plus random offset
-                    data[x + halfSide][y + halfSide] =
-                        //We calculate random value in range of 2h
-                        //and then subtract h so the end value is
-                        //in the range (-h, +h)
-                        avg + (Math.random() * 2 * h) - h;
+                    data[x + halfSide][y + halfSide] = avg + (Math.random() * 2 * h) - h;
                 }
             }
 
-            //generate the diamond values
-            //since the diamonds are staggered we only move x
-            //by half side
-            //NOTE: if the data shouldn't wrap then x < DATA_SIZE
-            //to generate the far edge values
             for (var x = 0; x < DATA_SIZE - 1; x += halfSide) {
-                //and y is x offset by half a side, but moved by
-                //the full side length
-                //NOTE: if the data shouldn't wrap then y < DATA_SIZE
-                //to generate the far edge values
                 for (var y = (x + halfSide) % sideLength; y < DATA_SIZE - 1; y += sideLength) {
-                    //x, y is center of diamond
-                    //note we must use mod  and add DATA_SIZE for subtraction
-                    //so that we can wrap around the array to find the corners
                     var avg =
                         data[(x - halfSide + DATA_SIZE - 1) % (DATA_SIZE - 1)][y] + //left of center
                             data[(x + halfSide) % (DATA_SIZE - 1)][y] + //right of center
@@ -125,26 +122,20 @@ var Editor = {
 
                     avg /= 4.0;
 
-                    //new value = average plus random offset
-                    //We calculate random value in range of 2h
-                    //and then subtract h so the end value is
-                    //in the range (-h, +h)
                     avg = avg + (Math.random() * 2 * h) - h;
-                    //update value for center of diamond
                     data[x][y] = avg;
 
-                    //wrap values on the edges, remove
-                    //this and adjust loop condition above
-                    //for non-wrapping values.
-                    if (x == 0) data[DATA_SIZE - 1][y] = avg;
-                    if (y == 0) data[x][DATA_SIZE - 1] = avg;
+                    if (x == 0) {
+                        data[DATA_SIZE - 1][y] = avg;
+                    }
+
+                    if (y == 0) {
+                        data[x][DATA_SIZE - 1] = avg;
+                    }
                 }
             }
         }
 
-        //return the data
         return data;
-
     }
-
 }
