@@ -5,87 +5,154 @@ $(document).ready(function () {
 var Editor = {
     layer: new Kinetic.Layer(),
     map: null,
-    ctx: null,
+    pixels: [],
+    water: 10,
+    grass: 70,
+    hills: 95,
+    mountains: 99,
+    snow: 100,
+    pixelCanvas: null,
     init: function () {
-        mapHeight = mapWidth = 1025
+//        mapHeight = mapWidth = 1025
 //        mapHeight = mapWidth = 2049
-//        mapHeight = mapWidth = 8193
+        mapHeight = mapWidth = 8193
         var stage = new Kinetic.Stage({
             container: 'board',
             width: $(window).width(),
             height: $(window).height()
         })
 
-        var pixelCanvas = document.createElement("canvas");
-        var ctx = pixelCanvas.getContext("2d");
-        pixelCanvas.width = mapWidth;
-        pixelCanvas.height = mapHeight;
-        pixelCanvas.pixels = []
-        pixelCanvas.setPixel = function (x, y, color) {
+        this.pixelCanvas = document.createElement("canvas");
+        var ctx = this.pixelCanvas.getContext("2d");
+        this.pixelCanvas.width = mapWidth;
+        this.pixelCanvas.height = mapHeight;
+        this.pixelCanvas.pixels = []
+        this.pixelCanvas.setPixel = function (x, y, color) {
             ctx.fillStyle = color;
             ctx.fillRect(x, y, 1, 1);
         };
 
-        var pixels = new Kinetic.Image({
+        this.map = new Kinetic.Image({
             x: 0,
             y: 0,
-            image: pixelCanvas,
+            image: this.pixelCanvas,
             draggable: true
         });
 
-        var drugi = new Kinetic.Image({
-            x: mapWidth,
-            y: 0,
-            image: pixelCanvas,
-            draggable: true
-        });
+        this.layer.add(this.map);
 
-        this.layer.add(pixels);
-        this.layer.add(drugi)
         stage.add(this.layer)
 
-        var data = this.diamondSquare(mapWidth)
-
+        this.pixels = this.diamondSquare(mapWidth)
+        var keys = this.findMinMax(this.pixels)
+        this.render(this.pixels, keys)
+    },
+    findMinMax: function (data) {
+        var values = [],
+            keys = {}
         for (var i in data) {
             for (var j in data[i]) {
-                if (data[i][parseInt(j) + 1] < data[i][j]) {
-                    var shadow = 10
+                var v = data[i][j]
+                if (typeof values[v] == 'undefined') {
+                    values[v] = 1
                 } else {
-                    var shadow = 0
+                    values[v]++
                 }
-                if (data[i][j] < 120) { // water
-                    var rgb = (parseInt(data[i][j]) + shadow).toString(16)
-                    var color = '#0000' + rgb + ''
-                } else { // land
-                    if (data[i][j] < 121) { // beach
-                        var rgb = (parseInt(data[i][j]) + 50 + shadow).toString(16)
-                        var color = '#' + rgb + rgb + '00'
-                    } else {
-                        if (data[i][j] < 175) { // grass
-                            var rgb = (256 - parseInt(data[i][j]) + shadow).toString(16)
-                            var color = '#00' + rgb + '00'
-                        } else {
-                            if (data[i][j] < 210) { // hills
-                                var rgb = (256 - parseInt(data[i][j]) + shadow).toString(16)
-                                var color = '#' + rgb + rgb + '00'
-                            } else { // mountains
-                                if (data[i][j] < 220) {
-                                    var rgb = (parseInt(data[i][j]) - 150 + shadow).toString(16)
-                                    var color = '#' + rgb + rgb + rgb
-                                } else { // snow
-                                    var rgb = (parseInt(data[i][j]) + shadow).toString(16)
-                                    var color = '#' + rgb + rgb + rgb
-                                }
-                            }
-                        }
-                    }
-                }
-//                var color = '#' + rgb + rgb + rgb
-                pixelCanvas.setPixel(i, j, color)
             }
         }
-        pixels.draw();
-        drugi.draw()
+
+        var summation = 0,
+            all = mapWidth * mapHeight,
+            water = all * (this.water / 100),
+            grass = all * (this.grass / 100),
+            hills = all * (this.hills / 100),
+            mountains = all * (this.mountains / 100),
+            snow = all * (this.snow / 100)
+
+        for (var i in values) {
+            if (typeof keys['min'] == 'undefined') {
+                keys['min'] = i
+            }
+            summation += values[i]
+            if (summation < water) {
+                keys['water'] = i
+            } else if (summation < grass) {
+                keys['grass'] = i
+            } else if (summation < hills) {
+                keys['hills'] = i
+            } else if (summation < mountains) {
+                keys['mountains'] = i
+            } else if (summation < snow) {
+                keys['snow'] = i
+            } else {
+                keys['max'] = i
+            }
+        }
+        return keys
+    },
+    render: function (data, keys) {
+        if (keys['max'] < 0) {
+            return
+        }
+
+        var beach = parseInt(keys['water']) + 1
+        console.log(keys)
+
+        var minus = {
+            water: 139 - parseInt(keys['water']),
+            grass: 220 - parseInt(keys['grass']),
+            hills: 240 - parseInt(keys['hills']),
+            mountains: 45 - parseInt(keys['mountains']),
+            snow: 190 - parseInt(keys['snow'])
+        }
+
+
+        for (var i in data) {
+            i = parseInt(i)
+            for (var j in data[i]) {
+                j = parseInt(j)
+//                if (data[i][parseInt(j) + 1] < data[i][j]) {
+//                    var shadow = 30
+//                } else {
+                    var shadow = 0
+//                }
+
+                if (data[i][j] < keys['water']) { // water
+                    var rgb = (parseInt(data[i][j]) + minus.water).toString(16)
+                    var color = '#0000' + rgb
+                } else if (data[i][j] < beach) { // beach
+                    if (typeof data[i - 1] == 'undefined' || typeof data[i + 1] == 'undefined' || typeof data[i - 1][j - 1] == 'undefined' || typeof data[i - 1][j] == 'undefined' || typeof data[i - 1][j + 1] == 'undefined' || typeof data[i][j - 1] == 'undefined' || typeof data[i][j + 1] == 'undefined' || typeof data[i + 1][j - 1] == 'undefined' || typeof data[i + 1][j] == 'undefined' || typeof data[i + 1][j + 1] == 'undefined') {
+                        var color = '#d9d900'
+                    } else if (data[i - 1][j - 1] < keys['water'] && data[i - 1][j] < keys['water'] && data[i - 1][j + 1] < keys['water'] && data[i][j - 1] < keys['water'] && data[i][j + 1] < keys['water'] && data[i + 1][j - 1] < keys['water'] && data[i + 1][j] < keys['water'] && data[i + 1][j + 1] < keys['water']) {
+                        var rgb = (parseInt(data[i][j]) + minus.water).toString(16)
+                        var color = '#0000' + rgb
+                    } else if (data[i - 1][j - 1] > keys['grass'] && data[i - 1][j] > keys['grass'] && data[i - 1][j + 1] > keys['grass'] && data[i][j - 1] > keys['grass'] && data[i][j + 1] > keys['grass'] && data[i + 1][j - 1] > keys['grass'] && data[i + 1][j] > keys['grass'] && data[i + 1][j + 1] > keys['grass']) {
+                        var rgb = (256 - parseInt(data[i][j]) - minus.grass).toString(16)
+                        var color = '#00' + rgb + '00'
+                    } else {
+                        var color = '#d9d900'
+                    }
+                } else if (data[i][j] < keys['grass']) { // grass
+                    var rgb = (256 - parseInt(data[i][j]) + shadow - minus.grass).toString(16)
+                    var color = '#00' + rgb + '00'
+                } else if (data[i][j] < keys['hills']) { // hills
+                    var rgb = (256 - parseInt(data[i][j]) + shadow - minus.hills).toString(16)
+                    var color = '#' + rgb + rgb + '00'
+                } else
+                if (data[i][j] < keys['mountains'])
+                {// mountains
+                    var rgb = (parseInt(data[i][j]) + shadow + minus.mountains).toString(16)
+                    var color = '#' + rgb + rgb + rgb
+                }
+        else { // snow
+                    var rgb = (parseInt(data[i][j]) + shadow + minus.snow).toString(16)
+                    var color = '#' + rgb + rgb + rgb
+                }
+
+                this.pixelCanvas.setPixel(i, j, color)
+            }
+        }
+        this.map.draw()
     },
     diamondSquare: function (DATA_SIZE) {
         var SEED = 128.0;
@@ -108,7 +175,7 @@ var Editor = {
                         data[x + sideLength][y + sideLength];//lower right
                     avg /= 4.0;
 
-                    data[x + halfSide][y + halfSide] = avg + (Math.random() * 2 * h) - h;
+                    data[x + halfSide][y + halfSide] = parseInt(avg + (Math.random() * 2 * h) - h)
                 }
             }
 
@@ -122,7 +189,7 @@ var Editor = {
 
                     avg /= 4.0;
 
-                    avg = avg + (Math.random() * 2 * h) - h;
+                    avg = parseInt(avg + (Math.random() * 2 * h) - h)
                     data[x][y] = avg;
 
                     if (x == 0) {
