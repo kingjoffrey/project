@@ -29,7 +29,10 @@ class EditorController extends Game_Controller_Gui
         $this->view->headLink()->appendStylesheet($this->view->baseUrl() . '/css/editor.css?v=' . Zend_Registry::get('config')->version);
 //        $this->view->headScript()->appendFile('/js/kinetic-v4.7.4.min.js');
         $this->view->headScript()->appendFile('http://d3lp1msu2r81bx.cloudfront.net/kjs/js/lib/kinetic-v5.0.1.min.js');
-        $this->view->headScript()->appendFile('/js/editor.js?v=' . Zend_Registry::get('config')->version);
+        $this->view->headScript()->appendFile('/js/editor/editor.js?v=' . Zend_Registry::get('config')->version);
+        $this->view->headScript()->appendFile('/js/editor/diamondsquare.js?v=' . Zend_Registry::get('config')->version);
+        $this->view->headScript()->appendFile('/js/editor/gui.js?v=' . Zend_Registry::get('config')->version);
+        $this->view->headScript()->appendFile('/js/editor/init.js?v=' . Zend_Registry::get('config')->version);
 
         $mMap = new Application_Model_Map($this->_request->getParam('mapId'));
         $this->view->map = $mMap->getMap();

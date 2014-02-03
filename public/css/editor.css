@@ -857,7 +857,11 @@ html {
     background: lime !important;
 }
 
-#buttons .button, .armyButtons .button {
+#editorMenu {
+    width: 230px;
+}
+
+#editorMenu .button, .armyButtons .button {
     padding: 0;
     width: 224px;
 }
