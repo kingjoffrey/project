@@ -28,7 +28,7 @@ class Cli_PublicHandler extends Cli_WofHandler
 
             $mPlayersInGame = new Application_Model_PlayersInGame($dataIn['gameId'], $db);
 
-            if (!$mPlayersInGame->checkAccessKey($dataIn['playerId'], $dataIn['accessKey'], $db)) {
+            if (!$mPlayersInGame->checkAccessKey($dataIn['playerId'], $dataIn['accessKey'])) {
                 $this->sendError($user, 'Brak uprawnień!');
                 return;
             }

@@ -2,7 +2,7 @@
 
 class Zend_View_Helper_Websocket extends Zend_View_Helper_Abstract {
 
-    public function Websocket() {
+    public function websocket() {
 
         $this->view->headScript()->appendFile($this->view->baseUrl() . '/js/swfobject.js');
         $this->view->headScript()->appendFile($this->view->baseUrl() . '/js/web_socket.js');

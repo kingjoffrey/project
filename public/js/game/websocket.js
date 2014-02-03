@@ -379,7 +379,7 @@ Websocket = {
             type: 'inventoryAdd',
             heroId: heroId,
             artifactId: artifactId
-        };sorryServerIsDisconnected
+        }
 
         ws.send(JSON.stringify(token));
     },

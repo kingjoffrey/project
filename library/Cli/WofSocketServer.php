@@ -30,9 +30,11 @@ class Cli_WofSocketServer implements IWebSocketServerObserver
         $this->server = new WebSocket_Server('tcp://' . Zend_Registry::get('config')->websockets->aHost . ':' . Zend_Registry::get('config')->websockets->aPort, 'superdupersecretkey');
         $this->server->addObserver($this);
 
+        include_once(APPLICATION_PATH . '/modules/cli/handlers/EditorHandler.php');
         include_once(APPLICATION_PATH . '/modules/cli/handlers/GameHandler.php');
         include_once(APPLICATION_PATH . '/modules/cli/handlers/PublicHandler.php');
 
+        $this->server->addUriHandler('editor', new Cli_EditorHandler());
         $this->server->addUriHandler('game', new Cli_GameHandler());
         $this->server->addUriHandler('public', new Cli_PublicHandler());
     }

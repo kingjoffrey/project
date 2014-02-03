@@ -33,9 +33,13 @@ class EditorController extends Game_Controller_Gui
         $this->view->headScript()->appendFile('/js/editor/diamondsquare.js?v=' . Zend_Registry::get('config')->version);
         $this->view->headScript()->appendFile('/js/editor/gui.js?v=' . Zend_Registry::get('config')->version);
         $this->view->headScript()->appendFile('/js/editor/init.js?v=' . Zend_Registry::get('config')->version);
+        $this->view->Websocket();
 
         $mMap = new Application_Model_Map($this->_request->getParam('mapId'));
-        $this->view->map = $mMap->getMap();
+        $this->view->map = $mMap->getMap($this->_namespace->player['playerId']);
+
+        $mWebSocket = new Application_Model_Websocket($this->_namespace->player['playerId']);
+        $this->view->websocketId = $mWebSocket->connect('editor');
     }
 
     public function testAction()
