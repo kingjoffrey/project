@@ -1,5 +1,5 @@
 var Editor = {
-    layer: new Kinetic.Layer(),
+    group: null,
     map: null,
     pixels: [],
     water: 10,
@@ -9,15 +9,13 @@ var Editor = {
     snow: 100,
     pixelCanvas: null,
     init: function () {
-        mapHeight = mapWidth = 1025
-//        mapHeight = mapWidth = 2049
-//        mapHeight = mapWidth = 8193
         var stage = new Kinetic.Stage({
             container: 'board',
             width: $(window).width(),
             height: $(window).height()
         })
 
+        var layer = new Kinetic.Layer()
         this.pixelCanvas = document.createElement("canvas");
         var ctx = this.pixelCanvas.getContext("2d");
         this.pixelCanvas.width = mapWidth;
@@ -28,24 +26,38 @@ var Editor = {
             ctx.fillRect(x, y, 1, 1);
         };
 
+        this.group = new Kinetic.Group({
+            x: 0,
+            y: 0,
+            width: mapWidth,
+            height: mapHeight,
+            draggable: true
+        })
+
         this.map = new Kinetic.Image({
             x: 0,
             y: 0,
-            image: this.pixelCanvas,
-            draggable: true
-        });
+            image: this.pixelCanvas
+        })
 
-        this.layer.add(this.map);
-
-        stage.add(this.layer)
+        this.group.add(this.map)
+        layer.add(this.group)
+        stage.add(layer)
     },
-    generate:function(){
+    generate: function () {
         DiamondSquare.pixels = DiamondSquare.make(mapWidth)
         var keys = this.findMinMax(DiamondSquare.pixels)
         Gui.render(DiamondSquare.pixels, keys)
     },
-    grid:function(){
-
+    grid: function (size) {
+        var grid = []
+        for (var y = 0; y < size; y++) {
+            data[y] = []
+            for (var x = 0; x < size; x++) {
+                if (size)
+                    data[y][x]
+            }
+        }
     },
     findMinMax: function (data) {
         var values = [],

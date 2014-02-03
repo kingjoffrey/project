@@ -4,10 +4,21 @@ var Gui = {
             Editor.generate()
         })
     },
-    showGrid:function(){
+    showGrid: function (size) {
+        var max = size / 40
 
+        var rect = new Kinetic.Rect({
+            x: 0,
+            y: 0,
+            width: 38,
+            height: 38,
+            stroke: 'black',
+            strokeWidth: 1
+        })
+
+        Editor.group.add(rect)
     },
-    hideGrid:function(){
+    hideGrid: function () {
 
     },
     render: function (data, keys) {
