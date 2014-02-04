@@ -38,9 +38,6 @@ class Cli_EditorHandler extends Cli_WofHandler
                 'playerId' => $dataIn['playerId']
             );
 
-//            $mPlayersInGame->updateWSSUId($dataIn['playerId'], $user->getId());
-//            $this->update($dataIn['gameId'], $db);
-
             return;
         }
 
@@ -50,14 +47,19 @@ class Cli_EditorHandler extends Cli_WofHandler
         }
 
         switch ($dataIn['type']) {
+            case 'save':
+                echo 'aaa';
+                break;
         }
     }
 
     public function onDisconnect(IWebSocketConnection $user)
     {
-        $db = Cli_Model_Database::getDb();
-        $mWebSocket = new Application_Model_Websocket($user->parameters['playerId'], $db);
-        $mWebSocket->disconnect($user->parameters['websocketId']);
+        if ($user->parameters['playerId'] && $user->parameters['websocketId']) {
+            $db = Cli_Model_Database::getDb();
+            $mWebSocket = new Application_Model_Websocket($user->parameters['playerId'], $db);
+            $mWebSocket->disconnect($user->parameters['websocketId']);
+        }
     }
 
     private function update($gameId, $db)

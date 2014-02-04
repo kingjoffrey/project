@@ -3,6 +3,9 @@ var Gui = {
         $('#generate').click(function () {
             Editor.generate()
         })
+        $('#save').click(function () {
+            EditorWS.save()
+        })
     },
     showGrid: function (size) {
         var max = size / 40

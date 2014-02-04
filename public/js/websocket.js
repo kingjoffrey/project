@@ -1,80 +1,82 @@
-Websocket = function () {
-    this.closed = true,
-        queue = {},
-        executing = 0,
-        i = 0,
-        ws = null
-}
+var Websocket = {
+    closed: true,
+    queue: {},
+    executing: 0,
+    i: 0,
+    handler: '',
+    init: function (handler) {
+        this.handler = handler
+        ws = new WebSocket(wsURL + '/' + handler)
 
-Websocket.prototype.addQueue = function (r) {
-    this.i++
-    this.queue[this.i] = r
-    this.wait()
-}, wait = function () {
-    if (this.executing) {
-        setTimeout('Websocket.wait()', 500);
-    } else {
-        for (var ii in this.queue) {
-            this.execute(this.queue[ii])
-            delete this.queue[ii]
-            return
-        }
-    }
-}, execute = function (r) {
-    this.executing = 1
+        ws.onopen = function () {
+            Websocket.closed = false;
+            Websocket.open();
+        };
 
-    switch (r.type) {
-        case 'dead':
-            if (notSet(Players.wedges[r.color].skull)) {
-                Players.drawSkull(r.color)
-            }
-            this.executing = 0
-            break;
-    }
-}, init = function (handler) {
-    this.ws = new WebSocket(wsURL + '/' + handler)
+        ws.onmessage = function (e) {
+            var r = $.parseJSON(e.data);
 
-    this.ws.onopen = function () {
-        Websocket.closed = false;
-        Websocket.open();
-    };
+            if (isSet(r['type'])) {
 
-    this.ws.onmessage = function (e) {
-        var r = $.parseJSON(e.data);
+                switch (r.type) {
 
-        if (isSet(r['type'])) {
+                    case 'move':
+                        Websocket.addQueue(r)
+                        break;
 
-            switch (r.type) {
+                    default:
+                        console.log(r);
 
-                case 'move':
-                    Websocket.addQueue(r)
-                    break;
-
-                default:
-                    console.log(r);
-
+                }
             }
         }
-    }
 
-    this.ws.onclose = function () {
-        Websocket.closed = true
-        setTimeout('Websocket.init()', 1000)
-    }
+        ws.onclose = function () {
+            Websocket.closed = true
+            setTimeout('Websocket.init(Websocket.handler)', 1000)
+        }
 
-}, open = function () {
-    if (Websocket.closed) {
-        Message.error(translations.sorryServerIsDisconnected)
-        return;
-    }
+    },
+    addQueue: function (r) {
+        this.i++
+        this.queue[this.i] = r
+        this.wait()
+    },
+    wait: function () {
+        if (this.executing) {
+            setTimeout('Websocket.wait()', 500);
+        } else {
+            for (var ii in this.queue) {
+                this.execute(this.queue[ii])
+                delete this.queue[ii]
+                return
+            }
+        }
+    },
+    execute: function (r) {
+        this.executing = 1
 
-    var token = {
-        type: 'open',
-        playerId: my.id,
-        langId: langId,
-        accessKey: accessKey,
-        websocketId: websocketId
-    }
+        switch (r.type) {
+            case 'dead':
 
-    this.ws.send(JSON.stringify(token));
+                this.executing = 0
+                break;
+        }
+    },
+    open: function () {
+        if (Websocket.closed) {
+            Message.error(translations.sorryServerIsDisconnected)
+            return;
+        }
+
+        var token = {
+            type: 'open',
+            playerId: my.id,
+            langId: langId,
+            accessKey: websocket.accessKey,
+            websocketId: websocket.websocketId
+        }
+
+        ws.send(JSON.stringify(token));
+    }
 }

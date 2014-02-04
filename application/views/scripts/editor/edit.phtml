@@ -3,5 +3,7 @@ var mapWidth = <?php echo $this->map['mapWidth'] ?>+1,
 mapHeight = <?php echo $this->map['mapHeight'] ?>+1,
 maxPlayers = <?php echo $this->map['maxPlayers'] ?>,
 name = '<?php echo $this->map['name'] ?>',
-websocketId = '<?php echo $this->websocketId ?>'
+websocket = <?php echo Zend_Json::encode($this->websocket) ?>,
+langId = <?php echo Zend_Registry::get('id_lang') ?>;
+var my = {id:<?php echo $this->playerId ?>}
 <?php $this->headScript()->captureEnd() ?>

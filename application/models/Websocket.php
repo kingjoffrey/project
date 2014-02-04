@@ -50,14 +50,20 @@ class Application_Model_Websocket extends Coret_Db_Table_Abstract
 
     public function connect($handler)
     {
+        $accessKey = $this->generateKey();
+
         $data = array(
             'playerId' => $this->_playerId,
             'handler' => $handler,
-            'accessKey' => $this->generateKey(),
+            'accessKey' => $accessKey,
         );
 
         $this->insert($data);
-        return $this->_db->lastSequenceId($this->_db->quoteIdentifier($this->_sequence));
+
+        return array(
+            'accessKey' => $accessKey,
+            'websocketId' => $this->_db->lastSequenceId($this->_db->quoteIdentifier($this->_sequence))
+        );
     }
 
     public function disconnect($websocketId)
