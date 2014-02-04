@@ -16,15 +16,30 @@ var Editor = {
         })
 
         var layer = new Kinetic.Layer()
+
         this.pixelCanvas = document.createElement("canvas");
         var ctx = this.pixelCanvas.getContext("2d");
-        this.pixelCanvas.width = mapWidth;
-        this.pixelCanvas.height = mapHeight;
+        this.pixelCanvas.width = mapWidth
+        this.pixelCanvas.height = mapHeight
         this.pixelCanvas.pixels = []
         this.pixelCanvas.setPixel = function (x, y, color) {
             ctx.fillStyle = color;
             ctx.fillRect(x, y, 1, 1);
-        };
+        }
+
+        var imgURL = '/img/maps/' + mapId + '.png'
+
+        $.get(imgURL)
+            .done(function () {
+                var img = new Image()
+                img.src = imgURL
+                img.onload = function () {
+                    ctx.drawImage(img, 0, 0)
+                    Editor.group.draw()
+                }
+            }).fail(function () {
+                console.log('Image doesn\'t exist - do something else.')
+            })
 
         this.group = new Kinetic.Group({
             x: 0,
@@ -45,7 +60,7 @@ var Editor = {
         stage.add(layer)
     },
     generate: function () {
-        DiamondSquare.pixels = DiamondSquare.make(mapWidth)
+        DiamondSquare.pixels = DiamondSquare.make(1025)
         var keys = this.findMinMax(DiamondSquare.pixels)
         Gui.render(DiamondSquare.pixels, keys)
     },

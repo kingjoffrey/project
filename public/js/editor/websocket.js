@@ -2,7 +2,8 @@ var EditorWS = {
     save: function () {
         var token = {
             type: 'save',
-            pixels: Editor.pixels
+            mapId: mapId,
+            map: Editor.pixelCanvas.toDataURL('image/png')
         }
 
         ws.send(JSON.stringify(token));
