@@ -6,6 +6,12 @@ var Gui = {
         $('#save').click(function () {
             EditorWS.save()
         })
+        $('#castle').click(function (e) {
+            Editor.brush = 'castle'
+        })
+        $('#eraser').click(function () {
+            Editor.brush = 'eraser'
+        })
     },
     showGrid: function (size) {
         var max = size / 40

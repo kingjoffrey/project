@@ -48,13 +48,24 @@ class Cli_EditorHandler extends Cli_WofHandler
 
         switch ($dataIn['type']) {
             case 'save':
-                echo 'aaa';
-
                 $map = str_replace('data:image/png;base64,', '', $dataIn['map']);
                 $map = str_replace(' ', '+', $map);
                 $data = base64_decode($map);
                 $file = APPLICATION_PATH . '/../public/img/maps/' . $dataIn['mapId'] . '.png';
                 $success = file_put_contents($file, $data);
+                break;
+
+            case 'castleAdd':
+                $mCastle = new Application_Model_Castle($db);
+                $mMapCastles = new Application_Model_MapCastles($dataIn['mapId'], $db);
+                $mapCastles = $mMapCastles->getMapCastles();
+                var_dump($mapCastles);
+
+
+                break;
+
+            case 'castleRemove':
+
                 break;
         }
     }

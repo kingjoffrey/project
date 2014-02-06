@@ -8,6 +8,7 @@ var Editor = {
     mountains: 99,
     snow: 100,
     pixelCanvas: null,
+    brush: null,
     init: function () {
         var stage = new Kinetic.Stage({
             container: 'board',
@@ -34,7 +35,7 @@ var Editor = {
                 var img = new Image()
                 img.src = imgURL
                 img.onload = function () {
-                    ctx.drawImage(img, 0, 0)
+                    ctx.drawImage(img, 0, 0, this.width, this.height, 0, 0, mapWidth, mapHeight)
                     Editor.group.draw()
                 }
             }).fail(function () {
@@ -49,6 +50,10 @@ var Editor = {
             draggable: true
         })
 
+        this.group.on('mouseup touchend', function (e) {
+            Editor.click(e)
+        })
+
         this.map = new Kinetic.Image({
             x: 0,
             y: 0,
@@ -58,6 +63,54 @@ var Editor = {
         this.group.add(this.map)
         layer.add(this.group)
         stage.add(layer)
+    },
+    click: function (e) {
+        if (!this.brush) {
+            return
+        }
+
+        if (e.which == 3) {
+            this.brush = null
+            return
+        }
+
+        switch (this.brush) {
+            case 'castle':
+                var x = parseInt((e.x - this.group.getPosition().x) / 40)
+                var X = x * 40
+                var y = parseInt((e.y - this.group.getPosition().y) / 40)
+                var Y = y * 40
+
+                var img = new Image()
+                img.src = '/img/game/castles/neutral.png'
+                img.onload = function () {
+                    var castle = new Kinetic.Image({
+                        x: X,
+                        y: Y,
+                        image: img
+                    })
+
+                    castle.on('mouseup touchend', function (e) {
+                        if (e.which == 1) {
+                            castle.remove()
+                            Editor.group.draw()
+                            EditorWS.castleRemove(x, y)
+                        }
+                    })
+
+                    Editor.group.add(castle)
+                    Editor.group.draw()
+
+                    EditorWS.castleAdd(x, y)
+                }
+                break;
+            case 'eraser':
+                var X = parseInt((e.x - this.group.getPosition().x) / 40) * 40
+                var Y = parseInt((e.y - this.group.getPosition().y) / 40) * 40
+
+
+                break;
+        }
     },
     generate: function () {
         DiamondSquare.pixels = DiamondSquare.make(1025)
