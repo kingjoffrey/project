@@ -10,15 +10,18 @@ abstract class Coret_Controller_Backend extends Zend_Controller_Action
     {
         parent::init();
 
-        Zend_Session::start();
-        Zend_Auth::getInstance()->setStorage(new Zend_Auth_Storage_Session($this->getRequest()->getParam('module')));
+        Zend_Auth::getInstance()->setStorage(new Zend_Auth_Storage_Session('admin'));
         if (!Zend_Auth::getInstance()->hasIdentity()) {
             $this->_redirect('/admin/login');
         }
 
         $session = new Zend_Session_Namespace('admin');
         if (!isset($session->adminId)) {
-            $mAdmin = new Admin_Model_Player();
+            $adminClassName = Zend_Registry::get('config')->adminClassName;
+            if (!$adminClassName) {
+                throw new Zend_Exception('Admin class name not enabled in application.ini');
+            }
+            $mAdmin = new $adminClassName();
             $session->adminId = $mAdmin->getPrimaryIdByLogin(Zend_Auth::getInstance()->getIdentity());
         }
 
