@@ -37,6 +37,24 @@ class Application_Model_MapCastles extends Coret_Db_Table_Abstract
         return $mapCastles;
     }
 
+    public function getMapCastlesIds()
+    {
+        $select = $this->_db->select()
+            ->from($this->_name, 'castleId')
+            ->where($this->_db->quoteIdentifier('mapId') . ' = ?', $this->mapId);
+
+        $ids = '';
+
+        foreach ($this->selectAll($select) as $row) {
+            if ($ids) {
+                $ids .= ',';
+            }
+            $ids .= $row['castleId'];
+        }
+
+        return $ids;
+    }
+
     public function getDefaultStartPositions()
     {
         $select = $this->_db->select()
@@ -55,17 +73,27 @@ class Application_Model_MapCastles extends Coret_Db_Table_Abstract
         return $startPositions;
     }
 
-    public function add($x, $y)
+    public function add($x, $y, $castleId)
     {
         $data = array(
             'mapId' => $this->mapId,
+            'castleId' => $castleId,
             'x' => $x,
-            'y' => $y,
-            'name' => 'a',
-            'income' => 1,
-            'defense' => 1
+            'y' => $y
         );
+
         $this->insert($data);
+    }
+
+    public function remove($x, $y)
+    {
+        $where = array(
+            $this->_db->quoteInto($this->_db->quoteIdentifier('mapId') . ' = ?', $this->mapId),
+            $this->_db->quoteInto('x = ?', $x),
+            $this->_db->quoteInto('y = ?', $y),
+        );
+
+        $this->delete($where);
     }
 
 }

@@ -31,18 +31,24 @@ class EditorController extends Game_Controller_Gui
 //        $this->view->headScript()->appendFile('/js/kinetic-v4.7.4.min.js');
         $this->view->headScript()->appendFile('http://d3lp1msu2r81bx.cloudfront.net/kjs/js/lib/kinetic-v5.0.1.min.js');
         $this->view->Websocket();
-        $this->view->headScript()->appendFile('/js/editor/editor.js?v=' . Zend_Registry::get('config')->version);
+        $this->view->headScript()->appendFile('/js/editor/castle.js?v=' . Zend_Registry::get('config')->version);
         $this->view->headScript()->appendFile('/js/editor/diamondsquare.js?v=' . Zend_Registry::get('config')->version);
+        $this->view->headScript()->appendFile('/js/editor/editor.js?v=' . Zend_Registry::get('config')->version);
         $this->view->headScript()->appendFile('/js/editor/gui.js?v=' . Zend_Registry::get('config')->version);
         $this->view->headScript()->appendFile('/js/editor/init.js?v=' . Zend_Registry::get('config')->version);
         $this->view->headScript()->appendFile('/js/editor/websocket.js?v=' . Zend_Registry::get('config')->version);
 
-        $mMap = new Application_Model_Map($this->_request->getParam('mapId'));
+        $mapId = $this->_request->getParam('mapId');
+
+        $mMap = new Application_Model_Map($mapId);
         $this->view->map = $mMap->getMap($this->_namespace->player['playerId']);
 
         $mWebSocket = new Application_Model_Websocket($this->_namespace->player['playerId']);
         $this->view->websocket = $mWebSocket->connect('editor');
         $this->view->playerId = $this->_namespace->player['playerId'];
+
+        $mMapCastles = new Application_Model_MapCastles($mapId);
+        $this->view->mapCastles = $mMapCastles->getMapCastles();
     }
 
     public function testAction()

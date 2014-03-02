@@ -58,14 +58,14 @@ class Cli_EditorHandler extends Cli_WofHandler
             case 'castleAdd':
                 $mCastle = new Application_Model_Castle($db);
                 $mMapCastles = new Application_Model_MapCastles($dataIn['mapId'], $db);
-                $mapCastles = $mMapCastles->getMapCastles();
-                var_dump($mapCastles);
-
-
+                $mapCastlesIds = $mMapCastles->getMapCastlesIds();
+                $castleId = $mCastle->getNextFreeCastleId($mapCastlesIds);
+                $mMapCastles->add($dataIn['x'], $dataIn['y'], $castleId);
                 break;
 
             case 'castleRemove':
-
+                $mMapCastles = new Application_Model_MapCastles($dataIn['mapId'], $db);
+                $mMapCastles->remove($dataIn['x'], $dataIn['y']);
                 break;
         }
     }

@@ -61,6 +61,11 @@ var Editor = {
         })
 
         this.group.add(this.map)
+
+        for (var castleId in mapCastles) {
+            Castle.create(mapCastles[castleId].x * 40, mapCastles[castleId].y * 40)
+        }
+
         layer.add(this.group)
         stage.add(layer)
     },
@@ -81,34 +86,7 @@ var Editor = {
                 var y = parseInt((e.y - this.group.getPosition().y) / 40)
                 var Y = y * 40
 
-                var img = new Image()
-                img.src = '/img/game/castles/neutral.png'
-                img.onload = function () {
-                    var castle = new Kinetic.Image({
-                        x: X,
-                        y: Y,
-                        image: img
-                    })
-
-                    castle.on('mouseup touchend', function (e) {
-                        if (e.which == 1) {
-                            castle.remove()
-                            Editor.group.draw()
-                            EditorWS.castleRemove(x, y)
-                        }
-                    })
-
-                    Editor.group.add(castle)
-                    Editor.group.draw()
-
-                    EditorWS.castleAdd(x, y)
-                }
-                break;
-            case 'eraser':
-                var X = parseInt((e.x - this.group.getPosition().x) / 40) * 40
-                var Y = parseInt((e.y - this.group.getPosition().y) / 40) * 40
-
-
+                Castle.create(X, Y, x, y)
                 break;
         }
     },
