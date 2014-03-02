@@ -16,9 +16,12 @@ class Coret_Controller_Plugin_Language extends Zend_Controller_Plugin_Abstract
         if (!$translate->isAvailable($countryCode)) {
             $countryCode = Zend_Registry::get('config')->lang;
             $id_lang = Zend_Registry::get('config')->id_lang;
+            if (!$countryCode || !$id_lang) {
+                throw new Zend_Exception('Lang not enabled in application.ini');
+            }
         }
 
-        if(!$id_lang){
+        if (!$id_lang) {
             $mLanguage = new Admin_Model_Language();
             $id_lang = $mLanguage->getLanguageIdByCountryCode($countryCode);
         }
