@@ -256,10 +256,23 @@ class Coret_Model_ParentDb extends Coret_Db_Table_Abstract
 
         $result = $this->_db->fetchRow($select);
         if (is_array($result)) {
+            $result = $this->_db->fetchRow($select);
+            if (isset($result['adminId'])) {
+                $result['author'] = $this->getAuthorById($result['adminId']);
+            }
             return $result;
         }
 
         return array();
+    }
+
+    protected function getAuthorById($id_administrator)
+    {
+        $select = $this->_db->select()
+            ->from('Administrator', 'identyfikator')
+            ->where('id = ?', $id_administrator);
+
+        return $this->_db->fetchOne($select);
     }
 
     /**
