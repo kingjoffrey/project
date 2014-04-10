@@ -37,10 +37,9 @@ class Coret_Form_Date extends Zend_Form
             $id = $this->_attribs['name'];
         }
 
+        $validators = array(new Zend_Validate_Date(array('format' => 'yyyy-mm-dd', 'locale' => 'pl')));
         if (isset($this->_attribs['validators']) && $this->_attribs['validators']) {
-            $validators = $this->_attribs['validators'];
-        } else {
-            $validators = array(array('StringLength', false, array(1, 256)));
+            $validators[] = $this->_attribs['validators'];
         }
 
         $this->addElement('text', $this->_attribs['name'], array(
@@ -49,7 +48,7 @@ class Coret_Form_Date extends Zend_Form
                 'class' => $class,
                 'id' => $id,
                 'required' => $required,
-                'filters' => array('StringTrim'),
+                'filters' => array('StringTrim', 'StripTags'),
                 'validators' => $validators
             )
         );

@@ -21,10 +21,41 @@ class Coret_Form_Select extends Zend_Form
             $required = false;
         }
 
+        if (isset($this->_attribs['validators']) && $this->_attribs['validators']) {
+            $validators = $this->_attribs['validators'];
+            $validators[] = array(
+                new Zend_Validate_InArray(
+                    array('haystack' => array_keys($options))
+                ),
+                'presence' => 'required',
+                'messages' => array(
+                    "'%value%' is not a valid.",
+                )
+            );
+        } else {
+            $validators = array(array(
+                new Zend_Validate_InArray(
+                    array('haystack' => array_keys($options))
+                ),
+                'presence' => 'required',
+                'messages' => array(
+                    "'%value%' is not a valid.",
+                )
+            ));
+        }
+
+        if (isset($this->_attribs['value'])) {
+            $value = $this->_attribs['value'];
+        } else {
+            $value = null;
+        }
+
         $this->addElement('select', $name, array(
                 'label' => $label,
                 'required' => $required,
-                'multiOptions' => $options
+                'multiOptions' => $options,
+                'value' => $value,
+                'validators' => $validators,
             )
         );
     }

@@ -1,6 +1,6 @@
 <?php
 
-class Admin_View_Helper_TabelkaBezUsun extends Admin_View_Helper_Tabelka
+class Coret_View_Helper_TabelkaBezUsun extends Coret_View_Helper_Tabelka
 {
 
     public function tabelkaBezUsun(array $kolumny, $kontroler, $primary)

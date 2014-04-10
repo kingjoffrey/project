@@ -10,31 +10,20 @@ abstract class Coret_Controller_Backend extends Zend_Controller_Action
     {
         parent::init();
 
-        Zend_Auth::getInstance()->setStorage(new Zend_Auth_Storage_Session('admin'));
-        if (!Zend_Auth::getInstance()->hasIdentity()) {
-            $this->_redirect('/admin/login');
+        $auth = Zend_Auth::getInstance()->setStorage(new Zend_Auth_Storage_Session($this->getRequest()->getParam('module')));
+        if (!$auth->hasIdentity()) {
+            $this->redirect('/admin/login');
         }
-
-        $session = new Zend_Session_Namespace('admin');
-        if (!isset($session->adminId)) {
-            $adminClassName = Zend_Registry::get('config')->adminClassName;
-            if (!$adminClassName) {
-                throw new Zend_Exception('Admin class name not enabled in application.ini');
-            }
-            $mAdmin = new $adminClassName();
-            $session->adminId = $mAdmin->getPrimaryIdByLogin(Zend_Auth::getInstance()->getIdentity());
-        }
-
 
         $this->_helper->layout->setLayout('admin');
 
-        $this->view->headLink()->prependStylesheet($this->view->baseUrl() . '/css/core-t_admin.css');
-        $this->view->headLink()->prependStylesheet($this->view->baseUrl() . '/css/sceditor/themes/default.min.css');
+        $this->view->headLink()->prependStylesheet($this->view->baseUrl('/css/core-t_admin.css'));
+        $this->view->headLink()->prependStylesheet($this->view->baseUrl('/css/sceditor/themes/default.min.css'));
 
         $this->view->jquery();
 
-        $this->view->headScript()->appendFile($this->view->baseUrl() . '/js/core-t_admin.js');
-        $this->view->headScript()->appendFile($this->view->baseUrl() . '/js/jquery.sceditor.min.js');
+        $this->view->headScript()->appendFile($this->view->baseUrl('/js/core-t_admin.js'));
+        $this->view->headScript()->appendFile($this->view->baseUrl('/js/jquery.sceditor.min.js'));
 
         $this->view->headMeta()->appendHttpEquiv('Content-Language', 'pl');
 
@@ -51,6 +40,9 @@ abstract class Coret_Controller_Backend extends Zend_Controller_Action
 
     public function indexAction()
     {
+        $this->view->headScript()->appendFile($this->view->baseUrl('/js/adminajax.js'));
+        $this->view->headScript()->appendScript('var controller = "' . $this->view->controllerName . '"');
+
         $className = 'Admin_Model_' . ucfirst($this->view->controllerName);
         $this->indexEnding($className);
     }
@@ -78,7 +70,7 @@ abstract class Coret_Controller_Backend extends Zend_Controller_Action
         if (class_exists($className)) {
             $this->view->form = new $className();
         } else {
-            $this->addForm($model->getColumnsAll(), $model->isLang());
+            $this->addForm($model);
         }
 
         if ($this->_request->isPost()) {
@@ -124,7 +116,7 @@ abstract class Coret_Controller_Backend extends Zend_Controller_Action
     {
         $id = $this->_request->getParam('id');
         if (!Zend_Validate::is($id, 'Digits')) {
-            throw new Exception('Brak id');
+            throw new Exception('No valid ID');
         }
 
         $className = 'Admin_Form_' . ucfirst($this->view->controllerName);
@@ -146,7 +138,7 @@ abstract class Coret_Controller_Backend extends Zend_Controller_Action
         $className = 'Admin_Model_' . ucfirst($this->view->controllerName);
         $model = new $className($this->params, $id);
 
-        $this->addForm($model->getColumnsAll(), $model->isLang(), $id);
+        $this->addForm($model, $id);
 
         if ($this->view->form->isValid($this->_request->getPost())) {
             try {
@@ -166,7 +158,7 @@ abstract class Coret_Controller_Backend extends Zend_Controller_Action
         $className = 'Admin_Model_' . ucfirst($this->view->controllerName);
         $model = new $className($this->params, $id);
 
-        $this->addForm($model->getColumnsAll(), $model->isLang(), $id);
+        $this->addForm($model, $id);
 
         $element = $model->getElement();
         $this->view->form->populate($element);
@@ -183,11 +175,14 @@ abstract class Coret_Controller_Backend extends Zend_Controller_Action
         }
     }
 
-    protected function addForm($columns, $isLang, $id = null)
+    protected function addForm($model, $id = null)
     {
         if (isset($this->view->form)) {
             return;
         }
+
+        $columns = $model->getColumnsAll();
+
         $this->view->form = new Zend_Form();
 
         foreach ($columns as $key => $row) {
@@ -205,6 +200,10 @@ abstract class Coret_Controller_Backend extends Zend_Controller_Action
             if (isset($row['validators'])) {
                 $attributes['validators'] = $row['validators'];
             }
+            if ($row['type'] == 'select') {
+                $methodName = 'get' . ucfirst($key) . 'Array';
+                $attributes['opt'] = $model->$methodName();
+            }
             $f = new $className($attributes);
             $this->view->form->addElements($f->getElements());
         }
@@ -216,7 +215,7 @@ abstract class Coret_Controller_Backend extends Zend_Controller_Action
             $this->view->form->setDefault('id', $id);
         }
 
-        if ($isLang) {
+        if ($model->isLang()) {
             $f = new Coret_Form_IdLang();
             $this->view->form->addElements($f->getElements());
             $this->view->form->setDefault('id_lang', 1);
@@ -259,6 +258,7 @@ abstract class Coret_Controller_Backend extends Zend_Controller_Action
         $text = str_replace('ł', 'l', $text);
         $text = str_replace('ś', 's', $text);
         $text = str_replace('ć', 'c', $text);
+        $text = str_replace('ó', 'o', $text);
 
         // transliterate
         if (function_exists('iconv')) {

@@ -108,6 +108,7 @@ var Editor = {
     findMinMax: function (data) {
         var values = [],
             keys = {}
+
         for (var i in data) {
             for (var j in data[i]) {
                 var v = data[i][j]
@@ -126,6 +127,8 @@ var Editor = {
             hills = all * (this.hills / 100),
             mountains = all * (this.mountains / 100),
             snow = all * (this.snow / 100)
+
+        console.log(summation)
 
         for (var i in values) {
             if (typeof keys['min'] == 'undefined') {

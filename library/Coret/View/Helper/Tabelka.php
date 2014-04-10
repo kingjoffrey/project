@@ -1,98 +1,141 @@
 <?php
 
-class Admin_View_Helper_Tabelka extends Zend_View_Helper_Abstract
+class Coret_View_Helper_Tabelka extends Zend_View_Helper_Abstract
 {
 
     private $j = 0;
     protected $_options = array();
 
-    public function tabelka(array $kolumny, $kontroler, $primary)
+    public function tabelka(array $columns, $controller, $primary)
     {
-        return $this->create($kolumny, $kontroler, $primary);
+        return $this->create($columns, $controller, $primary);
     }
 
-    protected function create(array $kolumny, $kontroler, $primary)
+    protected function create(array $columns, $controller, $primary)
     {
-        if (!is_array($kolumny)) {
-            throw new Exception('$kolumny nie jest typu array');
+        if (!is_array($columns)) {
+            throw new Exception('$columns is not array type');
         }
-        if (empty($kontroler)) {
-            throw new Exception('Brak parametru $kontroler');
+        if (empty($controller)) {
+            throw new Exception('No $controller parameter');
         }
-        $tabelka = $this->createTableHeader($kolumny);
+        $table = $this->createTableHeader($columns);
+        $this->initJ();
         if (count($this->view->paginator)) {
             foreach ($this->view->paginator as $row) {
-                $tabelka .= $this->createTableContent($row, $kolumny);
-                $tabelka .= $this->createButtons($kontroler, $row[$primary], $row);
-                $tabelka .= '</tr>';
+                $table .= $this->createTableContent($row, $columns, $row[$primary], $controller);
+                $table .= $this->createButtons($controller, $row[$primary], $row);
+                $table .= '</tr>';
             }
         } else {
-            $tabelka .= '<tr><td colspan="100%">brak danych</td></tr>';
+            $table .= '<tr><td colspan="100%">brak danych</td></tr>';
         }
 
-        $tabelka = '<table id="list">' . $tabelka . '</table>';
+        $table = '<table id="list">' . $table . '</table>';
         if (isset($this->view->paginator)) {
-            return $tabelka . $this->view->paginationControl($this->view->paginator, 'Sliding', 'pagination_control.phtml');
+            return $table . $this->view->paginationControl($this->view->paginator, 'Sliding', 'pagination_control.phtml');
         } else {
-            return $tabelka;
+            return $table;
         }
     }
 
-    protected function createTableHeader(array $kolumny)
+    protected function initJ()
     {
-        $th = '';
-        foreach ($kolumny AS $key => $val) {
+        $page = Zend_Controller_Front::getInstance()->getRequest()->getParam('page');
+        if (empty($page)) {
+            $page = 1;
+        }
+        $this->j = ($page - 1) * $this->view->paginator->getItemCountPerPage();
+    }
+
+    protected function createTableHeader(array $columns)
+    {
+        $th = '<tr><th><a href="' . $this->view->url(array('sort' => null)) . '">Lp</a></th>';
+
+        $sort = Zend_Controller_Front::getInstance()->getRequest()->getParam('sort');
+        $order = Zend_Controller_Front::getInstance()->getRequest()->getParam('order');
+
+        foreach ($columns AS $key => $val) {
             if (isset($val['active']['table']) && !$val['active']['table']) {
                 continue;
             }
 
-            $th .= '<th><a href="' . $this->view->url(array('order' => $key)) . '">' . $val['nazwa'] . '</a></th>';
+            if ($sort == $key) {
+                switch ($order) {
+                    case 'desc':
+                        $order = 'asc';
+                        $img = '<img id="order" src="/img/admin/orderDown.png" alt="desc"/>';
+                        break;
+                    default:
+                        $order = 'desc';
+                        $img = '<img id="order" src="/img/admin/orderUp.png" alt="asc"/>';
+                        break;
+                }
+            } else {
+                $img = '';
+            }
+            $th .= '<th>' . $img . '<a href="' . $this->view->url(array('sort' => $key, 'order' => $order)) . '">' . $val['label'] . '</a></th>';
         }
-        return '<tr><th><a href="' . $this->view->url(array('order' => null)) . '">Lp</a></th>' . $th . '<th></th></tr>';
+
+        return $th . '<th></th></tr>';
     }
 
-    protected function createTableContent(array $v, array $kolumny)
+    protected function createTableContent(array $row, array $columns, $id, $controller)
     {
         $this->j++;
-        $content = '<tr><td>' . $this->j . '</td>';
-        foreach ($v AS $key => $val) {
-            if (!isset($kolumny[$key])) {
+        $content = '<tr id="' . $id . '"><td class="right">' . $this->j . '.</td>';
+        foreach (array_keys($columns) as $key) {
+            if (isset($columns[$key]['active']['table']) && !$columns[$key]['active']['table']) {
                 continue;
             }
-            if (isset($kolumny[$key]['active']['table']) && !$kolumny[$key]['active']['table']) {
+
+            if (!array_key_exists($key, $row)) {
                 continue;
             }
-            if (!isset($kolumny[$key]['class'])) {
-                $klasa = '';
+
+            if (isset($columns[$key]['class'])) {
+                $cssClass = ' ' . $columns[$key]['class'];
             } else {
-                $klasa = ' class="' . $kolumny[$key]['class'] . '"';
+                $cssClass = '';
             }
-            switch ($kolumny[$key]['typ']) {
-                case 'checkbox':
-                    $content .= '<td' . $klasa . '>' . Coret_View_Helper_Formatuj::bool($val) . '</td>';
+
+            switch ($columns[$key]['type']) {
+                case 'number':
+                    $content .= '<td class="center' . $cssClass . '">' . Coret_View_Helper_Formatuj::number($row[$key]) . '</td>';
                     break;
-                case 'data':
-                    $content .= '<td' . $klasa . '>' . Coret_View_Helper_Formatuj::date($val) . '</td>';
+                case 'checkbox':
+                    $content .= '<td class="center' . $cssClass . '">' . Coret_View_Helper_Formatuj::bool($row[$key]) . '</td>';
+                    break;
+                case 'date':
+                    $content .= '<td class="center' . $cssClass . '">' . Coret_View_Helper_Formatuj::date($row[$key]) . '</td>';
+                    break;
+                case 'select':
+                    $name = $controller . ucfirst($key);
+                    $content .= '<td class="center' . $cssClass . '">' . Admin_View_Helper_Data::$name($row[$key]) . '</td>';
                     break;
                 default:
-                    $content .= '<td' . $klasa . '>' . substr(strip_tags($val), 0, 100) . '</td>';
+                    $content .= '<td class="left' . $cssClass . '">' . Coret_View_Helper_Formatuj::varchar($row[$key]) . '</td>';
                     break;
             }
         }
         return $content;
     }
 
-    protected function createButtons($kontroler, $id, $params = null)
+    protected function createButtons($controller, $id, $params = null)
     {
-        return '
-        <td>
-            <a href="/admin/' . $kontroler . '/edit/id/' . $id . '" title="Zmień dane">
+        $html = '<td>
+            <a href="/admin/' . $controller . '/edit/id/' . $id . '" title="Zmień dane">
                 <img class="pointer zmien" src="' . $this->view->baseUrl() . '/img/admin/zmien.png" alt="Zmień dane" />
-            </a>
-            <a href="/admin/' . $kontroler . '/delete/id/' . $id . '" title="Usuń">
+            </a>';
+        $html .= '
+            <a class="active_0" id="' . $id . '" href="#" title="Usuń">
                 <img class="pointer usun" src="' . $this->view->baseUrl() . '/img/admin/usun.png" alt="Usuń" />
-            </a>
-        </td>';
+            </a>';
+        if (Zend_Auth::getInstance()->getIdentity()->type == 2) {
+            $html .= '<a href="/admin/' . $controller . '/delete/id/' . $id . '">Usuń na zawsze</a>';
+        }
+        $html .= '</td>';
+        return $html;
     }
 
 }

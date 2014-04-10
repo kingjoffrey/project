@@ -15,7 +15,9 @@ class Zend_View_Helper_AddButton extends Zend_View_Helper_Abstract
                 break;
 
             case 2:
-                return new Coret_Form_Search();
+                $form = new Coret_Form_Search();
+                return $form . '
+<div class="dodaj"></div>';
                 break;
 
             default:

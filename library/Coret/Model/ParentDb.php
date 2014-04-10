@@ -1,6 +1,6 @@
 <?php
 
-class Coret_Model_ParentDb extends Coret_Db_Table_Abstract
+abstract class Coret_Model_ParentDb extends Coret_Db_Table_Abstract
 {
 
     /**
@@ -13,10 +13,9 @@ class Coret_Model_ParentDb extends Coret_Db_Table_Abstract
      */
     protected $_params;
 
-    protected $_name;
-    protected $_primary;
     protected $_columns;
     protected $_adminId = 'adminId';
+    protected $_sequence = '';
 
     /**
      * @param array $params
@@ -33,9 +32,11 @@ class Coret_Model_ParentDb extends Coret_Db_Table_Abstract
             $this->_db->query("SET NAMES 'utf8'");
             $this->_db->query("set character set 'utf8'");
         }
+
+        $this->mixColumns();
     }
 
-    public function create()
+    public function createTable()
     {
         $sql = 'CREATE TABLE IF NOT EXISTS `' . $this->_name . '` (
             `' . $this->_primary . '` bigint(20) unsigned NOT NULL AUTO_INCREMENT,';
@@ -90,7 +91,7 @@ class Coret_Model_ParentDb extends Coret_Db_Table_Abstract
             $dane['data'] = $this->addDataInsert($dane['data']);
             $id = $this->insertElement($dane['data']);
             if (!$id) {
-                throw new Exception('error');
+                throw new Exception('There is no ID');
             }
 
             $this->_id = $id;
@@ -123,10 +124,14 @@ class Coret_Model_ParentDb extends Coret_Db_Table_Abstract
         foreach ($dane['data_img'] as $k => $v) {
             $mThumb = new Coret_Model_Thumbnail(array(), $id, $v);
 
-            $mThumb->createThumbnail($this->_columns[$k]['resize']['width'], $this->_columns[$k]['resize']['height'], $k . '_' . $this->_columns[$k]['prefix']);
+            if (isset($this->_columns[$k]['destination']) && $this->_columns[$k]['destination']) {
+                $mThumb->setDestinationDir($this->_columns[$k]['destination']);
+            }
+
+            $mThumb->createThumbnail($this->_columns[$k]['resize']['width'], $this->_columns[$k]['resize']['height'], $k);
 
             if (isset($this->_params['width']) && isset($this->_params['height'])) {
-                $mThumb->createThumbnail($this->_params['width'], $this->_params['height'], 'big_' . $k . '_' . $this->_columns[$k]['prefix']);
+                $mThumb->createThumbnail($this->_params['width'], $this->_params['height'], 'big_' . $k);
             }
 
             $dane['data'][$k] = $mThumb->getType();
@@ -142,7 +147,7 @@ class Coret_Model_ParentDb extends Coret_Db_Table_Abstract
     public function insertElement($dane)
     {
         $this->insert($dane);
-        if (isset($this->_sequence)) {
+        if (isset($this->_sequence) && $this->_sequence) {
             return $this->_db->lastSequenceId($this->_sequence);
         } else {
             return $this->_db->lastInsertId();
@@ -208,23 +213,51 @@ class Coret_Model_ParentDb extends Coret_Db_Table_Abstract
             $select->from($this->_name);
         }
 
-        $select = $this->addJoin($select, $columns_lang);
+        $select = $this->addSelectJoin($select, $columns_lang);
         $select = $this->addSelectWhereLang($select);
         $select = $this->addSelectWhere($select);
-        $select = $this->addGroup($select);
-        $select = $this->addOrder($select);
+        $select = $this->addSelectGroup($select);
+        $select = $this->addSelectOrder($select);
 
         return $select;
     }
 
     /**
      * @param array $columns
+     * @param array $columns_lang
      * @return array
      */
     public function getList(array $columns = array(), array $columns_lang = array())
     {
         $select = $this->getSelect($columns, $columns_lang);
         return $this->_db->fetchAll($select);
+    }
+
+    /**
+     * @param array $columns
+     * @param array $columns_lang
+     * @return array
+     * @throws Zend_Exception
+     */
+    public function getListWithAuthor(array $columns = array(), array $columns_lang = array())
+    {
+        $result = array();
+
+        $adminClassName = Zend_Registry::get('config')->adminClassName;
+        if (!$adminClassName) {
+            throw new Zend_Exception('Admin class name not enabled in application.ini');
+        }
+
+        $mAdmin = new $adminClassName();
+
+        foreach ($this->getList($columns, $columns_lang) as $row) {
+            if (isset($row[$this->_adminId])) {
+                $row['author'] = $mAdmin->getAuthorById($row[$this->_adminId]);
+            }
+            $result[] = $row;
+        }
+
+        return $result;
     }
 
     /**
@@ -239,26 +272,37 @@ class Coret_Model_ParentDb extends Coret_Db_Table_Abstract
     }
 
     /**
-     * @return mixed
+     * @param null $id
+     * @return array|mixed
+     * @throws Zend_Exception
      */
     public function getElement($id = null)
     {
         if (!$id) {
             $id = $this->_id;
         }
+
+        if (!$id) {
+            throw new Zend_Exception('No element ID');
+        }
+
         $select = $this->_db->select()
             ->from($this->_name)
             ->where($this->_name . ' . ' . $this->_db->quoteIdentifier($this->_primary) . ' = ?', $id);
 
         $select = $this->addSelectWhereLang($select);
         $select = $this->addSelectWhere($select);
-        $select = $this->addJoin($select);
+        $select = $this->addSelectJoin($select);
 
         $result = $this->_db->fetchRow($select);
-        if (is_array($result)) {
-            $result = $this->_db->fetchRow($select);
+        if ($result) {
             if (isset($result['adminId'])) {
-                $result['author'] = $this->getAuthorById($result['adminId']);
+                $adminClassName = Zend_Registry::get('config')->adminClassName;
+                if (!$adminClassName) {
+                    throw new Zend_Exception('Admin class name not enabled in application.ini');
+                }
+                $mAdmin = new $adminClassName();
+                $result['author'] = $mAdmin->getAuthorById($result['adminId']);
             }
             return $result;
         }
@@ -266,20 +310,12 @@ class Coret_Model_ParentDb extends Coret_Db_Table_Abstract
         return array();
     }
 
-    protected function getAuthorById($id_administrator)
-    {
-        $select = $this->_db->select()
-            ->from('Administrator', 'identyfikator')
-            ->where('id = ?', $id_administrator);
-
-        return $this->_db->fetchOne($select);
-    }
-
     /**
      * @param $select
+     * @param array $columns_lang
      * @return mixed
      */
-    protected function addJoin($select, $columns_lang = array())
+    protected function addSelectJoin($select, $columns_lang = array())
     {
         if ($columns_lang) {
             return $select->join($this->_name . '_Lang', $this->_name . ' . ' . $this->_db->quoteIdentifier($this->_primary) . ' = ' . $this->_db->quoteIdentifier($this->_name . '_Lang') . ' . ' . $this->_db->quoteIdentifier($this->_primary), $columns_lang);
@@ -315,7 +351,7 @@ class Coret_Model_ParentDb extends Coret_Db_Table_Abstract
                     if ($whereString) {
                         $whereString .= ' OR ';
                     }
-                    $whereString .= $this->_db->quoteInto($this->_name . ' . ' . $this->_db->quoteIdentifier($key) . ' ILIKE ?', '%' . $search . '%');
+                    $whereString .= 'upper(' . $this->_db->quoteInto($this->_name . ' . ' . $this->_db->quoteIdentifier($key) . ') LIKE upper(?)', '%' . $search . '%');
                 }
             }
             if ($whereString) {
@@ -369,7 +405,7 @@ class Coret_Model_ParentDb extends Coret_Db_Table_Abstract
      * @param $select
      * @return mixed
      */
-    protected function addGroup($select)
+    protected function addSelectGroup($select)
     {
         return $select;
     }
@@ -378,7 +414,7 @@ class Coret_Model_ParentDb extends Coret_Db_Table_Abstract
      * @param $select
      * @return mixed
      */
-    protected function addOrder($select)
+    protected function addSelectOrder($select)
     {
         $sort = Zend_Controller_Front::getInstance()->getRequest()->getParam('sort');
         $order = Zend_Controller_Front::getInstance()->getRequest()->getParam('order');
@@ -391,7 +427,7 @@ class Coret_Model_ParentDb extends Coret_Db_Table_Abstract
             }
         } elseif (isset($this->_sort) && $this->_sort) {
             if (isset($this->_order) && $this->_order) {
-                $select->order($this->_sort . ' ' . $order);
+                $select->order($this->_sort . ' ' . $this->_order);
             } else {
                 $select->order($this->_sort);
             }
@@ -420,10 +456,9 @@ class Coret_Model_ParentDb extends Coret_Db_Table_Abstract
      */
     protected function prepareData(Array $post)
     {
-        $session = new Zend_Session_Namespace('admin');
         $data = array(
             'date' => new Zend_Db_Expr('now()'),
-            $this->_adminId => $session->adminId
+            $this->_adminId => Zend_Auth::getInstance()->getIdentity()->user_id
         );
         $data_lang = array();
         $data_img = array();
@@ -520,6 +555,24 @@ class Coret_Model_ParentDb extends Coret_Db_Table_Abstract
     }
 
     /**
+     *
+     */
+    protected function mixColumns()
+    {
+        foreach ($this->columns() as $name => $column) {
+            $this->_columns[$name] = $column;
+        }
+    }
+
+    /**
+     * @return array
+     */
+    protected function columns()
+    {
+        return array();
+    }
+
+    /**
      * @return bool
      */
     public function isLang()
@@ -552,5 +605,13 @@ class Coret_Model_ParentDb extends Coret_Db_Table_Abstract
         return $this->_db->fetchOne($select);
     }
 
-}
+    public function updateActive($active, $id)
+    {
+        $data = array(
+            'active' => $active
+        );
+        $where = $this->_db->quoteInto($this->_primary . ' = ?', $id);
+        return $this->update($data, $where);
+    }
 
+}

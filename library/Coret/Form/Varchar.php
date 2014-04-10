@@ -19,7 +19,7 @@ class Coret_Form_Varchar extends Zend_Form
 
 
         if (isset($this->_attribs['required']) && $this->_attribs['required']) {
-//            $label .= '*';
+            $label .= '*';
             $required = $this->_attribs['required'];
         } else {
             $required = false;

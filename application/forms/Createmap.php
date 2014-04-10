@@ -29,19 +29,6 @@ class Application_Form_Createmap extends Zend_Form
                 'label' => $this->getView()->translate('Map width'),
                 'required' => true,
                 'opt' => $dimensions,
-                'filters' => array('StringTrim'),
-                'validators' => array(
-                    array('Digit'),
-                    array(
-                        new Zend_Validate_InArray(
-                            array('haystack' => $dimensions)
-                        ),
-                        'presence' => 'required',
-                        'messages' => array(
-                            "'%value%' is not a valid.",
-                        )
-                    )
-                )
             )
         );
         $this->addElements($f->getElements());
@@ -51,19 +38,6 @@ class Application_Form_Createmap extends Zend_Form
             'label' => $this->getView()->translate('Map height'),
             'required' => true,
             'opt' => $dimensions,
-            'filters' => array('StringTrim'),
-            'validators' => array(
-                array('Digit'),
-                array(
-                    new Zend_Validate_InArray(
-                        array('haystack' => $dimensions)
-                    ),
-                    'presence' => 'required',
-                    'messages' => array(
-                        "'%value%' is not a valid.",
-                    )
-                )
-            )
         ));
         $this->addElements($f->getElements());
 
@@ -73,19 +47,6 @@ class Application_Form_Createmap extends Zend_Form
                 'label' => $this->getView()->translate('Number of players'),
                 'required' => true,
                 'opt' => $numberOfPlayers,
-                'filters' => array('StringTrim'),
-                'validators' => array(
-                    array('Digit'),
-                    array(
-                        new Zend_Validate_InArray(
-                            array('haystack' => $numberOfPlayers)
-                        ),
-                        'presence' => 'required',
-                        'messages' => array(
-                            "'%value%' is not a valid.",
-                        )
-                    )
-                )
             )
         );
         $this->addElements($f->getElements());

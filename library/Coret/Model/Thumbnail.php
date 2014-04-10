@@ -4,6 +4,7 @@ class Coret_Model_Thumbnail
 {
 
     protected $_uploadDir = '/../public/upload/';
+    protected $_destinationDir = '';
     protected $_parentId;
     protected $_image;
     protected $_imgId;
@@ -33,6 +34,11 @@ class Coret_Model_Thumbnail
     public function setType($type)
     {
         $this->_type = $type;
+    }
+
+    public function setDestinationDir($destination)
+    {
+        $this->_destinationDir = APPLICATION_PATH . $destination;
     }
 
     public function createThumbnail($width, $height, $prefix = '', $adaptiveResize = 0, $q = 80)
@@ -67,7 +73,11 @@ class Coret_Model_Thumbnail
             $prefix = $prefix . '_';
         }
 
-        $destPath = $this->_uploadDir . $prefix . $controllerName . $id_parent . $id_img . $actionName . '.' . $this->getType();
+        if (!$this->_destinationDir) {
+            $this->_destinationDir = $this->_uploadDir;
+        }
+
+        $destPath = $this->_destinationDir . $prefix . $controllerName . $id_parent . $id_img . $actionName . '.' . $this->getType();
 
         $thumb = new PhpThumb_GdThumb($sourcePath);
 
