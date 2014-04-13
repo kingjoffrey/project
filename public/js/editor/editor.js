@@ -1,12 +1,13 @@
 var Editor = {
+    DATA_SIZE: 1025,
     group: null,
     map: null,
     pixels: [],
     water: 10,
-    grass: 70,
-    hills: 95,
-    mountains: 99,
-    snow: 100,
+    grass: 60,
+    hills: 25,
+    mountains: 4,
+    snow: 1,
     pixelCanvas: null,
     brush: null,
     init: function () {
@@ -91,8 +92,9 @@ var Editor = {
         }
     },
     generate: function () {
-        DiamondSquare.pixels = DiamondSquare.make(1025)
-        var keys = this.findMinMax(DiamondSquare.pixels)
+        DiamondSquare.pixels = DiamondSquare.make(this.DATA_SIZE)
+        var keys = this.splitTerrain(DiamondSquare.pixels)
+        DiamondSquare.pixels = this.clearBorders(DiamondSquare.pixels, keys)
         Gui.render(DiamondSquare.pixels, keys)
     },
     grid: function (size) {
@@ -105,36 +107,37 @@ var Editor = {
             }
         }
     },
-    findMinMax: function (data) {
-        var values = [],
-            keys = {}
+    splitTerrain: function (data) {
+        var valueCountMappings = [],
+            keys = {},
+            counter = 0
 
         for (var i in data) {
             for (var j in data[i]) {
                 var v = data[i][j]
-                if (typeof values[v] == 'undefined') {
-                    values[v] = 1
+                if (typeof valueCountMappings[v] == 'undefined') {
+                    valueCountMappings[v] = 1
                 } else {
-                    values[v]++
+                    valueCountMappings[v]++
                 }
+                counter++
             }
         }
 
+//        console.log(valueCountMappings)
+
         var summation = 0,
-            all = mapWidth * mapHeight,
-            water = all * (this.water / 100),
-            grass = all * (this.grass / 100),
-            hills = all * (this.hills / 100),
-            mountains = all * (this.mountains / 100),
-            snow = all * (this.snow / 100)
+            water = counter * (this.water / 100),
+            grass = water + counter * (this.grass / 100),
+            hills = grass + counter * (this.hills / 100),
+            mountains = hills + counter * (this.mountains / 100),
+            snow = mountains + counter * (this.snow / 100)
 
-        console.log(summation)
-
-        for (var i in values) {
+        for (var i in valueCountMappings) {
             if (typeof keys['min'] == 'undefined') {
                 keys['min'] = i
             }
-            summation += values[i]
+            summation += valueCountMappings[i]
             if (summation < water) {
                 keys['water'] = i
             } else if (summation < grass) {
@@ -149,6 +152,124 @@ var Editor = {
                 keys['max'] = i
             }
         }
+
         return keys
+    },
+    clearBorders: function (data, keys) {
+        if (keys['max'] < 0) {
+            return
+        }
+
+//        var beach = parseInt(keys['water']) + 1
+
+        for (var i in data) {
+            for (var j in data[i]) {
+                if (data[i][j] < keys['water']) { // water
+                    data[i][j] = 1
+//                } else if (data[i][j] < beach) { // beach
+//                    data[i][j] = 2
+                } else if (data[i][j] < keys['grass']) { // grass
+                    data[i][j] = 3
+                } else if (data[i][j] < keys['hills']) { // hills
+                    data[i][j] = 4
+                } else if (data[i][j] < keys['mountains']) {// mountains
+                    data[i][j] = 5
+                } else { // snow
+                    data[i][j] = 6
+                }
+            }
+        }
+
+        for (var i in data) {
+            for (var j in data[i]) {
+                data = this.removeDots(i, j, data)
+            }
+        }
+        for (var i in data) {
+            for (var j in data[i]) {
+                data = this.removeDots(i, j, data)
+            }
+        }
+        for (var i in data) {
+            for (var j in data[i]) {
+                data = this.replacePixelsBetween(i, j, data)
+            }
+        }
+//        this.replacePixelsBetween(1024, 1024, data)
+        return data
+    },
+    removeDots: function (x, y, data) {
+        var terrainType = data[x][y],
+            matchCount = 0,
+            otherTerrainType = 0,
+            x = parseInt(x),
+            y = parseInt(y)
+
+        for (var i = -1; i <= 1; i++) {
+            for (var j = -1; j <= 1; j++) {
+
+                var checkedX = x + i
+                if (checkedX > this.DATA_SIZE - 1) {
+                    checkedX = 0
+                } else if (checkedX < 0) {
+                    checkedX = this.DATA_SIZE - 1
+                }
+
+                var checkedY = y + j
+                if (checkedY > this.DATA_SIZE - 1) {
+                    checkedY = 0
+                } else if (checkedY < 0) {
+                    checkedY = this.DATA_SIZE - 1
+                }
+
+                if (data[checkedX][checkedY] == terrainType) {
+                    matchCount++
+                } else {
+                    otherTerrainType = data[checkedX][checkedY]
+                }
+            }
+        }
+
+        if (matchCount < 6) {
+            data[x][y] = otherTerrainType
+        }
+
+        return data
+    },
+    replacePixelsBetween: function (x, y, data) {
+        var terrainType = data[x][y],
+            x = parseInt(x),
+            y = parseInt(y)
+
+        var xMinusOne = x - 1,
+            xPlusOne = x + 1,
+            yMinusOne = y - 1,
+            yPlusOne = y + 1
+
+        if (xMinusOne < 0) {
+            xMinusOne = this.DATA_SIZE - 1
+        }
+        if (xPlusOne > this.DATA_SIZE - 1) {
+            xPlusOne = 0
+        }
+
+        if (yMinusOne < 0) {
+            yMinusOne = this.DATA_SIZE - 1
+        }
+        if (yPlusOne > this.DATA_SIZE - 1) {
+            yPlusOne = 0
+        }
+
+        if (data[xMinusOne][y] != terrainType && data[xPlusOne][y] != terrainType) {
+            data[x][y] = data[xMinusOne][y]
+            return data
+        }
+
+        if (data[x][yMinusOne] != terrainType && data[x][yPlusOne] != terrainType) {
+            data[x][y] = data[x][yMinusOne]
+            return data
+        }
+
+        return data
     }
 }
