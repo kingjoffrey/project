@@ -70,6 +70,11 @@ var Editor = {
         layer.add(this.group)
         stage.add(layer)
     },
+    resetPixelCanvas: function () {
+        this.pixelCanvas.width = this.DATA_SIZE
+        this.pixelCanvas.height = this.DATA_SIZE
+        this.pixelCanvas.pixels = []
+    },
     click: function (e) {
         if (!this.brush) {
             return
@@ -92,10 +97,15 @@ var Editor = {
         }
     },
     generate: function () {
-        DiamondSquare.pixels = DiamondSquare.make(this.DATA_SIZE)
-        var keys = this.splitTerrain(DiamondSquare.pixels)
-        DiamondSquare.pixels = this.clearBorders(DiamondSquare.pixels, keys)
-        Gui.render(DiamondSquare.pixels, keys)
+        var pixels = DiamondSquare.make(this.DATA_SIZE)
+        var keys = this.splitTerrain(pixels)
+        if (keys['max'] < 0) {
+            console.log('max < 0')
+            return
+        }
+
+        data = this.clearBorders(pixels, keys)
+        Gui.render(pixels, data, keys)
     },
     grid: function (size) {
         var grid = []
@@ -155,24 +165,19 @@ var Editor = {
 
         return keys
     },
-    clearBorders: function (data, keys) {
-        if (keys['max'] < 0) {
-            return
-        }
+    clearBorders: function (pixels, keys) {
+        var data = {}
 
-//        var beach = parseInt(keys['water']) + 1
-
-        for (var i in data) {
-            for (var j in data[i]) {
-                if (data[i][j] < keys['water']) { // water
+        for (var i in pixels) {
+            data[i] = {}
+            for (var j in pixels[i]) {
+                if (pixels[i][j] < keys['water']) { // water
                     data[i][j] = 1
-//                } else if (data[i][j] < beach) { // beach
-//                    data[i][j] = 2
-                } else if (data[i][j] < keys['grass']) { // grass
+                } else if (pixels[i][j] < keys['grass']) { // grass
                     data[i][j] = 3
-                } else if (data[i][j] < keys['hills']) { // hills
+                } else if (pixels[i][j] < keys['hills']) { // hills
                     data[i][j] = 4
-                } else if (data[i][j] < keys['mountains']) {// mountains
+                } else if (pixels[i][j] < keys['mountains']) {// mountains
                     data[i][j] = 5
                 } else { // snow
                     data[i][j] = 6
@@ -195,7 +200,7 @@ var Editor = {
                 data = this.replacePixelsBetween(i, j, data)
             }
         }
-//        this.replacePixelsBetween(1024, 1024, data)
+
         return data
     },
     removeDots: function (x, y, data) {

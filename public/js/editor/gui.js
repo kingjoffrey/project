@@ -30,107 +30,46 @@ var Gui = {
     hideGrid: function () {
 
     },
-    render: function (data, keys) {
-        if (keys['max'] < 0) {
-            return
+    render: function (pixels, data, keys) {
+        Editor.resetPixelCanvas()
+
+        var minus = {
+            water: 139 - parseInt(keys.water),
+            grass: 220 - parseInt(keys.grass),
+            hills: 240 - parseInt(keys.hills),
+            mountains: 45 - parseInt(keys.mountains),
+            snow: 190 - parseInt(keys.snow)
         }
+        var shadow = 0
 
         for (var i in data) {
             for (var j in data[i]) {
                 switch (data[i][j]) {
                     case 1:
-                        var color = '#0000ff'
-                        break
-                    case 2:
-                        var color = '#d9d900'
+                        var color = '#0000' + (parseInt(pixels[i][j]) + minus.water).toString(16)
                         break
                     case 3:
-                        var color = '#00ff00'
+                        var rgb = (256 - parseInt(pixels[i][j]) - minus.grass).toString(16)
+                        var color = '#00' + rgb + '00'
                         break
                     case 4:
-                        var color = '#ffff00'
+                        var rgb = (256 - parseInt(pixels[i][j]) - minus.hills).toString(16)
+                        var color = '#' + rgb + rgb + '00'
                         break
                     case 5:
-                        var color = '#cccccc'
+                        var rgb = (parseInt(pixels[i][j]) + minus.mountains).toString(16)
+                        var color = '#' + rgb + rgb + rgb
                         break
                     case 6:
-                        var color = '#ffffff'
+                        var rgb = (parseInt(pixels[i][j]) + minus.snow).toString(16)
+                        var color = '#' + rgb + rgb + rgb
                         break
                 }
 
                 Editor.pixelCanvas.setPixel(i, j, color)
             }
         }
-
-        Editor.map.draw()
-    },
-    render1: function (data, keys) {
-        if (keys['max'] < 0) {
-            return
-        }
-
-        var beach = parseInt(keys['water']) + 1
-        console.log(keys)
-
-        var minus = {
-            water: 139 - parseInt(keys['water']),
-            grass: 220 - parseInt(keys['grass']),
-            hills: 240 - parseInt(keys['hills']),
-            mountains: 45 - parseInt(keys['mountains']),
-            snow: 190 - parseInt(keys['snow'])
-        }
-
-
-        for (var i in data) {
-            i = parseInt(i)
-            for (var j in data[i]) {
-                j = parseInt(j)
-//                if (data[i][parseInt(j) + 1] < data[i][j]) {
-//                    var shadow = 30
-//                } else {
-                var shadow = 0
-//                }
-
-                if (data[i][j] < keys['water']) { // water
-                    var rgb = (parseInt(data[i][j]) + minus.water).toString(16)
-//                    var color = '#0000' + rgb
-                    var color = '#0000ff'
-                } else if (data[i][j] < beach) { // beach
-                    if (typeof data[i - 1] == 'undefined' || typeof data[i + 1] == 'undefined' || typeof data[i - 1][j - 1] == 'undefined' || typeof data[i - 1][j] == 'undefined' || typeof data[i - 1][j + 1] == 'undefined' || typeof data[i][j - 1] == 'undefined' || typeof data[i][j + 1] == 'undefined' || typeof data[i + 1][j - 1] == 'undefined' || typeof data[i + 1][j] == 'undefined' || typeof data[i + 1][j + 1] == 'undefined') {
-                        var color = '#d9d900'
-                    } else if (data[i - 1][j - 1] < keys['water'] && data[i - 1][j] < keys['water'] && data[i - 1][j + 1] < keys['water'] && data[i][j - 1] < keys['water'] && data[i][j + 1] < keys['water'] && data[i + 1][j - 1] < keys['water'] && data[i + 1][j] < keys['water'] && data[i + 1][j + 1] < keys['water']) {
-//                        var rgb = (parseInt(data[i][j]) + minus.water).toString(16)
-//                        var color = '#0000' + rgb
-                        var color = '#0000ff'
-                    } else if (data[i - 1][j - 1] > keys['grass'] && data[i - 1][j] > keys['grass'] && data[i - 1][j + 1] > keys['grass'] && data[i][j - 1] > keys['grass'] && data[i][j + 1] > keys['grass'] && data[i + 1][j - 1] > keys['grass'] && data[i + 1][j] > keys['grass'] && data[i + 1][j + 1] > keys['grass']) {
-//                        var rgb = (256 - parseInt(data[i][j]) - minus.grass).toString(16)
-//                        var color = '#00' + rgb + '00'
-                        var color = '#00ff00'
-                    } else {
-                        var color = '#d9d900'
-                    }
-                } else if (data[i][j] < keys['grass']) { // grass
-//                    var rgb = (256 - parseInt(data[i][j]) + shadow - minus.grass).toString(16)
-//                    var color = '#00' + rgb + '00'
-                    var color = '#00ff00'
-                } else if (data[i][j] < keys['hills']) { // hills
-//                    var rgb = (256 - parseInt(data[i][j]) + shadow - minus.hills).toString(16)
-//                    var color = '#' + rgb + rgb + '00'
-                    var color = '#ffff00'
-                } else if (data[i][j] < keys['mountains']) {// mountains
-//                    var rgb = (parseInt(data[i][j]) + shadow + minus.mountains).toString(16)
-//                    var color = '#' + rgb + rgb + rgb
-                    var color = '#cccccc'
-                } else { // snow
-//                    var rgb = (parseInt(data[i][j]) + shadow + minus.snow).toString(16)
-//                    var color = '#' + rgb + rgb + rgb
-                    var color = '#ffffff'
-                }
-
-                Editor.pixelCanvas.setPixel(i, j, color)
-            }
-        }
-
+        Editor.map.setSize({width: mapWidth, height: mapHeight})
         Editor.map.draw()
     }
 }
