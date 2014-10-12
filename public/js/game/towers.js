@@ -30,6 +30,10 @@ function isTowerAtPosition(x, y) {
 }
 
 function searchTower(x, y) {
+    if (!Players.isMy()) {
+        return
+    }
+
     for (towerId in towers) {
         if (towers[towerId].x == x && towers[towerId].y == y) {
             changeTower(x, y, towerId);

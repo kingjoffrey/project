@@ -16,14 +16,14 @@ class Cli_WofHandler extends WebSocket_UriHandler
      */
     public function sendToChannel($db, $token, $gameId, $debug = null)
     {
-
-        $mPlayersInGame = new Application_Model_PlayersInGame($gameId, $db);
-        $users = $mPlayersInGame->getInGameWSSUIds();
-
         if ($debug || Zend_Registry::get('config')->debug) {
             print_r('ODPOWIEDŹ ');
             print_r($token);
         }
+
+        $mPlayersInGame = new Application_Model_PlayersInGame($gameId, $db);
+        $users = $mPlayersInGame->getInGameWSSUIds();
+
         foreach ($users AS $row) {
             foreach ($this->users AS $u) {
                 if ($u->getId() == $row['webSocketServerUserId']) {

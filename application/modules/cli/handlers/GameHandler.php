@@ -218,6 +218,15 @@ class Cli_GameHandler extends Cli_WofHandler
             $mPlayersInGame = new Application_Model_PlayersInGame($user->parameters['gameId'], $db);
             $mPlayersInGame->updateWSSUId($user->parameters['playerId'], null);
 
+            $playersInGameColors = Zend_Registry::get('playersInGameColors');
+
+            $token = array(
+                'type' => 'close',
+                'color' => $playersInGameColors[$user->parameters['playerId']]
+            );
+
+            $this->sendToChannel($db, $token, $user->parameters['gameId']);
+
 //            Game_Cli_Database::disconnectFromGame($user->parameters['gameId'], $user->parameters['playerId'], $db);
 //            $this->update($user->parameters['gameId'], $db);
         }

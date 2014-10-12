@@ -304,13 +304,24 @@ Websocket = {
                         break;
 
                     case 'open':
-                        Gui.lock = false;
-                        if (loading) {
-                            startGame();
-                            loading = false;
-                        } else if (my.game && players[Turn.color].computer) {
-                            setTimeout('Websocket.computer()', 1000);
+                        for (color in r.online) {
+                            online[color] = r.online[color]
                         }
+                        Players.updateOnline()
+                        if (r.color == my.color) {
+                            Gui.lock = false;
+                            if (loading) {
+                                startGame();
+                                loading = false;
+                            } else if (Players.isMy() && players[Turn.color].computer) {
+                                setTimeout('Websocket.computer()', 1000);
+                            }
+                        }
+                        break;
+
+                    case 'close':
+                        online[r.color] = 0
+                        Players.updateOnline()
                         break;
 
                     case 'chat':

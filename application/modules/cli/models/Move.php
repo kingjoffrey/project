@@ -30,8 +30,8 @@ class Cli_Model_Move
         }
 
         if (Zend_Validate::is($dataIn['s'], 'Digits') || Zend_Validate::is($dataIn['h'], 'Digits')) {
-            $mSplitArmy = new Cli_Model_SplitArmy();
-            $attackerArmyId = $mSplitArmy->split($dataIn['armyId'], $dataIn['s'], $dataIn['h'], $user, $user->parameters['playerId'], $db, $gameHandler);
+            $mSplitArmy = new Cli_Model_SplitArmy($dataIn['armyId'], $dataIn['s'], $dataIn['h'], $user, $user->parameters['playerId'], $db, $gameHandler);
+            $attackerArmyId = $mSplitArmy->getChildArmyId();
         }
 
         $defenderColor = null;

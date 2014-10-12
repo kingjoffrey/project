@@ -57,7 +57,8 @@ class Cli_Model_Open
         Zend_Registry::set('castles', $castles);
         Zend_Registry::set('ruins', $mMapRuins->getMapRuins());
         Zend_Registry::set('towers', $mMapTowers->getMapTowers());
-        Zend_Registry::set('playersInGameColors', $mPlayersInGame->getAllColors());
+        $playersInGameColors = $mPlayersInGame->getAllColors();
+        Zend_Registry::set('playersInGameColors', $playersInGameColors);
         Zend_Registry::set('teams', $mPlayersInGame->getTeams());
         Zend_Registry::set('capitals', $mMapPlayers->getCapitals());
 
@@ -76,11 +77,19 @@ class Cli_Model_Open
             'turnStart' => strtotime($turn['date']),
         );
 
+        $online = array();
+
+        foreach ($mPlayersInGame->getInGamePlayerIds() as $row) {
+            $online[$playersInGameColors[$row['playerId']]] = 1;
+        }
+
         $token = array(
-            'type' => 'open'
+            'type' => 'open',
+            'color' => $playersInGameColors[$dataIn['playerId']],
+            'online' => $online
         );
 
-        $gameHandler->send($user, Zend_Json::encode($token));
+        $gameHandler->sendToChannel($db, $token, $dataIn['gameId']);
     }
 
     public function getParameters()

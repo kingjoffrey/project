@@ -104,16 +104,16 @@ var Move = {
     end: function (r, ii) {
         console.log('move.end(' + ii + ') 0')
 
-        if (players[r.attackerColor].computer && !Gui.show) {
-            $('#army' + r.oldArmyId)
-                .css({
-                    left: (r.path[step].x * 40) + 'px',
-                    top: (r.path[step].y * 40) + 'px'
-                })
-        }
-
         AStar.x = players[r.attackerColor].armies[r.attackerArmy.armyId].x;
         AStar.y = players[r.attackerColor].armies[r.attackerArmy.armyId].y;
+
+        //if (players[r.attackerColor].computer && !Gui.show) {
+        //    $('#army' + r.oldArmyId)
+        //        .css({
+        //            left: (AStar.x * 40) + 'px',
+        //            top: (AStar.y * 40) + 'px'
+        //        })
+        //}
 
         //searchTower(AStar.x, AStar.y);
 

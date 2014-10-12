@@ -3,6 +3,8 @@
 class Cli_Model_SplitArmy
 {
 
+    private $childArmyId = null;
+
     function  __construct($parentArmyId, $s, $h, $user, $playerId, $db, $gameHandler)
     {
         if (empty($parentArmyId) || (empty($h) && empty($s))) {
@@ -12,8 +14,6 @@ class Cli_Model_SplitArmy
 
         $heroesIds = explode(',', $h);
         $soldiersIds = explode(',', $s);
-
-        $childArmyId = null;
 
         $mArmy = new Application_Model_Army($user->parameters['gameId'], $db);
 
@@ -29,12 +29,12 @@ class Cli_Model_SplitArmy
                     continue;
                 }
 
-                if (empty($childArmyId)) {
+                if (empty($this->childArmyId)) {
                     $position = $mArmy->getArmyPositionByArmyIdPlayerId($parentArmyId, $playerId);
-                    $childArmyId = $mArmy->createArmy($position, $playerId);
+                    $this->childArmyId = $mArmy->createArmy($position, $playerId);
                 }
 
-                $mHeroesInGame->heroUpdateArmyId($heroId, $childArmyId);
+                $mHeroesInGame->heroUpdateArmyId($heroId, $this->childArmyId);
             }
         }
 
@@ -51,16 +51,16 @@ class Cli_Model_SplitArmy
                     continue;
                 }
 
-                if (empty($childArmyId)) {
+                if (empty($this->childArmyId)) {
                     $position = $mArmy->getArmyPositionByArmyIdPlayerId($parentArmyId, $playerId);
-                    $childArmyId = $mArmy->createArmy($position, $playerId);
+                    $this->childArmyId = $mArmy->createArmy($position, $playerId);
                 }
 
-                $mSoldier->soldierUpdateArmyId($soldierId, $childArmyId);
+                $mSoldier->soldierUpdateArmyId($soldierId, $this->childArmyId);
             }
         }
 
-        if (empty($childArmyId)) {
+        if (empty($this->childArmyId)) {
             $gameHandler->sendError($user, 'Brak "childArmyId"');
             return;
         }
@@ -70,13 +70,15 @@ class Cli_Model_SplitArmy
         $token = array(
             'type' => 'split',
             'parentArmy' => Cli_Model_Army::getArmyByArmyId($parentArmyId, $user->parameters['gameId'], $db),
-            'childArmy' => Cli_Model_Army::getArmyByArmyId($childArmyId, $user->parameters['gameId'], $db),
+            'childArmy' => Cli_Model_Army::getArmyByArmyId($this->childArmyId, $user->parameters['gameId'], $db),
             'color' => $playersInGameColors[$playerId]
         );
 
         $gameHandler->sendToChannel($db, $token, $user->parameters['gameId']);
-
-        return $childArmyId;
     }
 
+    public function getChildArmyId()
+    {
+        return $this->childArmyId;
+    }
 }

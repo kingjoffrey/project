@@ -24,7 +24,10 @@ var Players = {
         this.length = Object.size(players);
 
         for (color in players) {
-            players[color].active = 0;
+            //players[color].active = 0;
+            if (!players[color].computer) {
+                online[color] = 0
+            }
 
             $('.' + color + ' .color').addClass(color + 'bg');
 
@@ -59,6 +62,8 @@ var Players = {
 
         timer.start()
         this.draw()
+
+        return 1
     },
     draw: function () {
         this.angle = 360 / this.length;
@@ -192,7 +197,7 @@ var Players = {
         this.circle = new Kinetic.Circle({
             x: this.centerX,
             y: this.centerY,
-            radius: 18,
+            radius: 17,
             fill: 'grey',
             offset: [this.centerX - Players.wedges[Turn.color].x - 11, this.centerY - Players.wedges[Turn.color].y - 14],
             strokeWidth: 0
@@ -222,6 +227,42 @@ var Players = {
 
             this.layer.add(this.turnNumber);
             this.layer.draw()
+        }
+    },
+    updateOnline: function () {
+        for (shortName in online) {
+            if (!online[shortName]) {
+                if (isSet(Players.wedges[shortName].online)) {
+                    Players.wedges[shortName].online.remove()
+                }
+                continue
+            }
+
+            if (isSet(Players.wedges[shortName].online)) {
+                continue
+            }
+
+            Players.wedges[shortName].online = new Kinetic.Circle({
+                x: this.centerX,
+                y: this.centerY,
+                radius: 18,
+                offset: [this.centerX - Players.wedges[shortName].x - 11, this.centerY - Players.wedges[shortName].y - 14],
+                stroke: '#0f0',
+                strokeWidth: 1
+            });
+            Players.layer.add(Players.wedges[shortName].online);
+        }
+        this.layer.draw()
+    },
+    isMy: function () {
+        for (color in online) {
+            if (online[color]) {
+                if (my.color == color) {
+                    return 1
+                } else {
+                    return 0
+                }
+            }
         }
     }
 }

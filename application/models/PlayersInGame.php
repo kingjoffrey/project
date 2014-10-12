@@ -231,7 +231,18 @@ class Application_Model_PlayersInGame extends Coret_Db_Table_Abstract
     {
         $select = $this->_db->select()
             ->from($this->_name, 'webSocketServerUserId')
-            ->where($this->_db->quoteIdentifier('gameId') . ' = ?', $this->_gameId);
+            ->where($this->_db->quoteIdentifier('gameId') . ' = ?', $this->_gameId)
+            ->where($this->_db->quoteIdentifier('webSocketServerUserId') . ' IS NOT NULL');
+
+        return $this->selectAll($select);
+    }
+
+    public function getInGamePlayerIds()
+    {
+        $select = $this->_db->select()
+            ->from($this->_name, 'playerId')
+            ->where($this->_db->quoteIdentifier('gameId') . ' = ?', $this->_gameId)
+            ->where($this->_db->quoteIdentifier('webSocketServerUserId') . ' IS NOT NULL');
 
         return $this->selectAll($select);
     }

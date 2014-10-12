@@ -308,8 +308,8 @@ class Cli_Model_ComputerMainBlocks extends Cli_Model_ComputerSubBlocks
                             }
                         }
 
-                        $mSplitArmy = new Cli_Model_SplitArmy();
-                        $newArmyId = $mSplitArmy->split($army['armyId'], $s, $h, $this->_user, $this->_playerId, $this->_db, $this->_gameHandler);
+                        $mSplitArmy = new Cli_Model_SplitArmy($army['armyId'], $s, $h, $this->_user, $this->_playerId, $this->_db, $this->_gameHandler);
+                        $newArmyId = $mSplitArmy->getChildArmyId();
 
                         if ($army['x'] == $castlePosition['x'] && $army['y'] == $castlePosition['y']) {
                             $path = array(0 => array(

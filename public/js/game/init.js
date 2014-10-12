@@ -10,6 +10,7 @@ Image5 = new Image(20, 9);
 Image5.src = '/img/game/cursor_pointer.png';
 
 var fields = new Array();
+var online = {};
 
 //var selectedEnemyArmy = null;
 
@@ -58,7 +59,6 @@ $(document).ready(function () {
     unitsReformat();
 //    artifactsReformat();
     Gui.init();
-    Websocket.init();
 
     for (i in castles) {
         Castle.createNeutral(i);
@@ -73,7 +73,9 @@ $(document).ready(function () {
     }
 
     shipId = Unit.getShipId();
-    Players.init()
+    if (Players.init()) {
+        Websocket.init();
+    }
 });
 
 function startGame() {

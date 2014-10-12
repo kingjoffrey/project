@@ -152,9 +152,9 @@ function zoom(gameWidth, gameHeight) {
             this.node.left = (smallimage.ow - this.node.w - 2) / 2;
         };
         this.setcenter = function (x, y) {
-            //if (!my.turn && !Gui.show) {
-            //    return;
-            //}
+            if (players[Turn.color].computer && !Gui.show) {
+                return;
+            }
 
             this.node.top = parseInt((parseInt(y) - settings.gameHeight / 2) / el.scale.y);
             this.node.left = parseInt((parseInt(x) - settings.gameWidth / 2) / el.scale.x);
