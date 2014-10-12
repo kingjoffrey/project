@@ -3,7 +3,7 @@
 class Cli_Model_SplitArmy
 {
 
-    function split($parentArmyId, $s, $h, $user, $playerId, $db, $gameHandler)
+    function  __construct($parentArmyId, $s, $h, $user, $playerId, $db, $gameHandler)
     {
         if (empty($parentArmyId) || (empty($h) && empty($s))) {
             $gameHandler->sendError($user, 'Brak "armyId", "s" lub "h"!');

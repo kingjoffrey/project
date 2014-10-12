@@ -128,11 +128,6 @@ class Cli_GameHandler extends Cli_WofHandler
             return;
         }
 
-        if ($dataIn['type'] == 'tower') {
-            new Cli_Model_Tower($dataIn['towerId'], $user, $db, $this);
-            return;
-        }
-
         if (!isset($mGame)) {
             $mGame = new Application_Model_Game($user->parameters['gameId'], $db);
         }
@@ -151,9 +146,12 @@ class Cli_GameHandler extends Cli_WofHandler
                 new Cli_Model_Move($dataIn, $user, $db, $this);
                 break;
 
+            case 'tower':
+                new Cli_Model_Tower($dataIn['towerId'], $user, $db, $this);
+                break;
+
             case 'split':
-                $mSplitArmy = new Cli_Model_SplitArmy();
-                $mSplitArmy->split($dataIn['armyId'], $dataIn['s'], $dataIn['h'], $user, $user->parameters['playerId'], $db, $this);
+                new Cli_Model_SplitArmy($dataIn['armyId'], $dataIn['s'], $dataIn['h'], $user, $user->parameters['playerId'], $db, $this);
                 break;
 
             case 'join':
@@ -161,14 +159,7 @@ class Cli_GameHandler extends Cli_WofHandler
                 break;
 
             case 'fortify':
-                $armyId = $dataIn['armyId'];
-                if (empty($armyId)) {
-                    $this->sendError($user, 'No "armyId"!');
-                    return;
-                }
-
-                $mArmy2 = new Application_Model_Army($user->parameters['gameId'], $db);
-                $mArmy2->fortify($armyId, $dataIn['fortify'], $user->parameters['playerId']);
+                new Cli_Model_Fortify($dataIn['armyId'], $dataIn['fortify'], $user, $db, $this);
                 break;
 
             case 'disband':
