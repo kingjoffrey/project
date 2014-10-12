@@ -515,10 +515,10 @@ class Cli_Model_Army
 
     }
 
-    static public function getArmiesFromCastlePosition($castlePosition, $gameId, $db)
+    static public function getArmiesFromCastlePosition($castlePosition, $gameId, $playerId, $db)
     {
         $mArmy = new Application_Model_Army($gameId, $db);
-        $armies = $mArmy->getArmiesFromCastlePosition($castlePosition);
+        $armies = $mArmy->getArmiesFromCastlePosition($castlePosition, $playerId);
 
         $mSoldier = new Application_Model_UnitsInGame($gameId, $db);
         $mHeroesInGame = new Application_Model_HeroesInGame($gameId, $db);

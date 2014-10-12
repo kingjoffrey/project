@@ -129,22 +129,7 @@ class Cli_GameHandler extends Cli_WofHandler
         }
 
         if ($dataIn['type'] == 'tower') {
-            $towerId = $dataIn['towerId'];
-            if ($towerId === null) {
-                $this->sendError($user, 'No "towerId"!');
-                return;
-            }
-
-            $mGame = new Application_Model_Game($user->parameters['gameId'], $db);
-            $playerId = $mGame->getTurnPlayerId();
-            // sprawdzić czy armia gracza jest w pobliżu wieży
-
-            $mTowersInGame = new Application_Model_TowersInGame($user->parameters['gameId'], $db);
-            if ($mTowersInGame->towerExists($towerId)) {
-                $mTowersInGame->changeTowerOwner($towerId, $playerId);
-            } else {
-                $mTowersInGame->addTower($towerId, $playerId);
-            }
+            new Cli_Model_Tower($dataIn['towerId'], $user, $db, $this);
             return;
         }
 

@@ -43,6 +43,8 @@ var heroesKilled = null;
 var soldiersKilled = null;
 var soldiersCreated = null;
 
+var loading = true;
+
 $(document).ready(function () {
     my.income = 0
     my.costs = 0
@@ -52,11 +54,10 @@ $(document).ready(function () {
     });
 
     Turn.init();
-    Gui.adjust();
     fieldsCopy();
     unitsReformat();
 //    artifactsReformat();
-    Gui.prepareButtons();
+    Gui.init();
     Websocket.init();
 
     for (i in castles) {

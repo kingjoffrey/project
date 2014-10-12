@@ -164,7 +164,11 @@ class Cli_Model_Move
          */
 
         if (!$move['currentPosition']) {
-            $gameHandler->sendError($user, 'Za mało punktów ruchu aby wykonać akcję');
+            $token = array(
+                'type' => 'move'
+            );
+
+            $gameHandler->sendToUser($user, $db, $token, $user->parameters['gameId']);
             return;
         }
 

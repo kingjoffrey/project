@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: WOF\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-02-05 15:59+0100\n"
-"PO-Revision-Date: 2014-02-05 16:03+0100\n"
+"POT-Creation-Date: 2014-10-10 02:07+0100\n"
+"PO-Revision-Date: 2014-10-10 02:07+0100\n"
 "Last-Translator: Bartosz Krzeszewski <bartek@core-t.pl>\n"
 "Language-Team: \n"
 "Language: pl\n"
@@ -189,6 +189,10 @@ msgstr "ziemia"
 msgid "air"
 msgstr "powietrze"
 
+#: application/views/helpers/Translations.php:45
+msgid "water"
+msgstr "woda"
+
 #: application/views/helpers/Translations.php:46
 msgid "Time"
 msgstr "Czas"
@@ -302,6 +306,137 @@ msgstr "Komputer"
 msgid "Start game"
 msgstr "Rozpocznij grę"
 
+#: application/views/helpers/Translations.php:73
+msgid "Defence points"
+msgstr "Punkty obrony"
+
+#: application/views/helpers/Translations.php:74
+#: application/views/scripts/hero/index.phtml:7
+msgid "Attack points"
+msgstr "Punkty ataku"
+
+#: application/views/helpers/Translations.php:75
+msgid "Default moves"
+msgstr "Domyślna ilość ruchów"
+
+#: application/views/helpers/Translations.php:76
+msgid "Current moves"
+msgstr "Aktualna ilość ruchów"
+
+#: application/views/helpers/Translations.php:77
+#: application/views/scripts/help/index.phtml:49
+msgid "Movement cost through the forest"
+msgstr "Koszt poruszania się po lesie"
+
+#: application/views/helpers/Translations.php:78
+#: application/views/scripts/help/index.phtml:53
+msgid "Movement cost through the hills"
+msgstr "Koszt poruszania się po wzgórzach"
+
+#: application/views/helpers/Translations.php:79
+#: application/views/scripts/help/index.phtml:51
+msgid "Movement cost through the swamp"
+msgstr "Koszt poruszania się po bagnie"
+
+#: application/views/helpers/Translations.php:80
+msgid "Destroy castle"
+msgstr "Zburz zamek"
+
+#: application/views/helpers/Translations.php:81
+msgid "Battle sequence"
+msgstr "Kolejność walki"
+
+#: application/views/helpers/Translations.php:82
+msgid "Attack sequence successfully updated"
+msgstr "Kolejność atakowania została zaktualizowana pomyślnie"
+
+#: application/views/helpers/Translations.php:83
+msgid "Defence sequence successfully updated"
+msgstr "Kolejność obrony została zaktualizowana pomyślnie"
+
+#: application/views/helpers/Translations.php:84
+msgid "Ruins"
+msgstr "Ruiny"
+
+#: application/views/helpers/Translations.php:85
+msgid "You have found"
+msgstr "Twój heros znalazł"
+
+#: application/views/helpers/Translations.php:86
+msgid "Ruins are empty"
+msgstr "Ruiny są puste"
+
+#: application/views/helpers/Translations.php:87
+msgid "death"
+msgstr "śmierć"
+
+#: application/views/helpers/Translations.php:88
+msgid "You have found nothing"
+msgstr "Nic nie znaleziono"
+
+#: application/views/helpers/Translations.php:89
+msgid "allies joined your army"
+msgstr "sojuszników dołączyło do Twojej armii"
+
+#: application/views/helpers/Translations.php:90
+msgid "an ancient artifact"
+msgstr "starożytny artefakt"
+
+#: application/views/helpers/Translations.php:91
+msgid "It is not your turn"
+msgstr "To nie Twoja tura"
+
+#: application/views/helpers/Translations.php:92
+msgid "No castle to destroy"
+msgstr "Brak zamku do zburzenia"
+
+#: application/views/helpers/Translations.php:93
+msgid "No castle to build defense"
+msgstr "Brak zamku do podniesienia obrony"
+
+#: application/views/helpers/Translations.php:94
+msgid "Current defense"
+msgstr "Aktualna obrona"
+
+#: application/views/helpers/Translations.php:95
+msgid "New defense"
+msgstr "Nowa obrona"
+
+#: application/views/helpers/Translations.php:96
+msgid "Do you want to build castle defense?"
+msgstr "Czy chcesz podnieść obronę zamku?"
+
+#: application/views/helpers/Translations.php:97
+msgid "turn"
+msgstr "tura"
+
+#: application/views/helpers/Translations.php:98
+#: application/views/scripts/help/index.phtml:29
+#: application/layouts/scripts/game.phtml:112
+msgid "Moves"
+msgstr "Ruchy"
+
+#: application/views/helpers/Translations.php:99
+msgid "Battle"
+msgstr "Bitwa"
+
+#: application/views/helpers/Translations.php:100
+msgid "There is no free army with spare move points. Change turn!"
+msgstr "Brak wolnej armii, która posiada jeszcze punkty ruchu. Zmień turę!"
+
+#: application/views/helpers/Translations.php:101
+#: application/layouts/scripts/game.phtml:103
+msgid "Next army"
+msgstr "Następna armia"
+
+#: application/views/helpers/Translations.php:102
+msgid "Army"
+msgstr "Armia"
+
+#: application/views/helpers/Translations.php:103
+msgid "No more moves"
+msgstr "Za mało punktów ruchu aby wykonać akcję"
+
 #: application/views/helpers/Logout.php:8
 msgid "Logout"
 msgstr "Wyloguj"
@@ -346,7 +481,7 @@ msgstr "Edytor map"
 msgid "Version number"
 msgstr "Numer wersji"
 
-#: application/forms/NumberOfPlayers.php:14 application/forms/Createmap.php:73
+#: application/forms/NumberOfPlayers.php:14 application/forms/Createmap.php:47
 #: application/views/scripts/new/index.phtml:23
 msgid "Number of players"
 msgstr "Ilość graczy"
@@ -402,7 +537,7 @@ msgstr "Nazwa mapy"
 msgid "Map width"
 msgstr "Szerokość mapy"
 
-#: application/forms/Createmap.php:51
+#: application/forms/Createmap.php:38
 msgid "Map height"
 msgstr "Wysokość mapy"
 
@@ -496,6 +631,10 @@ msgstr "Potwierdź"
 #: library/Coret/View/Helper/Copyright.php:6
 msgid "All rights reserved"
 msgstr "Wszelkie prawa zastrzeżone"
+
+#: library/Coret/Controller/Authenticate.php:24
+msgid "Incorrect login details"
+msgstr "Nieprawidłowy e-mail lub hasło!"
 
 #: application/modules/admin/views/scripts/pagination_control.phtml:6
 msgid "First"
@@ -606,10 +745,6 @@ msgstr "Zmień swoje hasło"
 msgid "Hero statistics"
 msgstr "Statystyki bohatera"
 
-#: application/views/scripts/hero/index.phtml:7
-msgid "Attack points"
-msgstr "Punkty ataku"
-
 #: application/views/scripts/hero/index.phtml:8
 msgid "Defense points"
 msgstr "Punkty obrony"
@@ -696,11 +831,6 @@ msgstr "Jednostka specjalna"
 msgid "Defense"
 msgstr "Obrona"
 
-#: application/views/scripts/help/index.phtml:29
-#: application/layouts/scripts/game.phtml:112
-msgid "Moves"
-msgstr "Ruchy"
-
 #: application/views/scripts/help/index.phtml:33
 msgid "Can fly"
 msgstr "Może latać"
@@ -713,18 +843,6 @@ msgstr "Nie"
 #: application/views/scripts/help/index.phtml:40
 msgid "Can swim"
 msgstr "Pływa"
-
-#: application/views/scripts/help/index.phtml:49
-msgid "Movement cost through the forest"
-msgstr "Koszt poruszania się po lesie"
-
-#: application/views/scripts/help/index.phtml:51
-msgid "Movement cost through the swamp"
-msgstr "Koszt poruszania się po bagnie"
-
-#: application/views/scripts/help/index.phtml:53
-msgid "Movement cost through the hills"
-msgstr "Koszt poruszania się po wzgórzach"
 
 #: application/views/scripts/over/index.phtml:1
 msgid "Game score"
@@ -771,10 +889,6 @@ msgstr "Pokaż innych"
 #: application/layouts/scripts/game.phtml:87
 msgid "Sound"
 msgstr "Dźwięk"
-
-#: application/layouts/scripts/game.phtml:103
-msgid "Next army"
-msgstr "Następna armia"
 
 #: application/layouts/scripts/game.phtml:127
 msgid "Deselect army"
@@ -851,6 +965,10 @@ msgstr "Las"
 #: application/layouts/scripts/editor.phtml:24
 msgid "Swamp"
 msgstr "Bagno"
+
+#: application/layouts/scripts/editor.phtml:25
+msgid "Eraser"
+msgstr "Gumka"
 
 #~ msgid "Kick"
 #~ msgstr "Wykop"

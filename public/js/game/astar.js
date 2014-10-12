@@ -29,6 +29,10 @@ var AStar = {
             if (AStar.x == destination.x && AStar.y == destination.y && force != 1) {
                 return null;
             }
+            if (this.getG(fields[destination.y][destination.x]) > 6) {
+                return null;
+            }
+
             $('.path').remove();
             AStar.x = destination.x;
             AStar.y = destination.y;
@@ -36,8 +40,7 @@ var AStar = {
             var startY = Army.selected.y;
             var open = {};
             var close = {};
-            var start = new node(startX, startY, destination.x, destination.y, 0);
-            open[startX + '_' + startY] = start;
+            open[startX + '_' + startY] = new node(startX, startY, destination.x, destination.y, 0);
 
             this.aStar(close, open, destination.x, destination.y, 1);
 
@@ -177,12 +180,13 @@ var AStar = {
         this.aStar(close, open, destX, destY, nr);
     },
     addOpen: function (x, y, close, open, destX, destY) {
-        var startX = x - 1;
-        var startY = y - 1;
-        var endX = x + 1;
-        var endY = y + 1;
-        var i, j = 0;
-        var g;
+        var startX = x - 1,
+            startY = y - 1,
+            endX = x + 1,
+            endY = y + 1,
+            i, j = 0,
+            terrainType,
+            g;
 
         for (i = startX; i <= endX; i++) {
             for (j = startY; j <= endY; j++) {
@@ -201,27 +205,13 @@ var AStar = {
                     continue;
                 }
 
-                var terrainType = fields[j][i];
+                terrainType = fields[j][i];
 
                 if (terrainType == 'e') {
                     continue;
                 }
 
-                if (Army.selected.soldierSplitKey !== null) {
-                    if (units[Army.selected.soldiers[Army.selected.soldierSplitKey].unitId].canFly) {
-                        g = terrain[terrainType]['flying']
-                    } else if (units[Army.selected.soldiers[Army.selected.soldierSplitKey].unitId].canSwim) {
-                        g = terrain[terrainType]['swimming']
-                    } else {
-                        if (terrainType == 'f' || terrainType == 's' || terrainType == 'm') {
-                            g = units[Army.selected.soldiers[Army.selected.soldierSplitKey].unitId][terrainType]
-                        } else {
-                            g = Army.selected.terrain[terrainType]
-                        }
-                    }
-                } else {
-                    g = Army.selected.terrain[terrainType]
-                }
+                g = this.getG(terrainType);
 
                 if (g > 6) {
                     continue;
@@ -239,6 +229,27 @@ var AStar = {
                 }
             }
         }
+    },
+    getG: function (terrainType) {
+        var g;
+
+        if (Army.selected.soldierSplitKey !== null) {
+            if (units[Army.selected.soldiers[Army.selected.soldierSplitKey].unitId].canFly) {
+                g = terrain[terrainType]['flying']
+            } else if (units[Army.selected.soldiers[Army.selected.soldierSplitKey].unitId].canSwim) {
+                g = terrain[terrainType]['swimming']
+            } else {
+                if (terrainType == 'f' || terrainType == 's' || terrainType == 'm') {
+                    g = units[Army.selected.soldiers[Army.selected.soldierSplitKey].unitId][terrainType]
+                } else {
+                    g = terrain[terrainType]['walking']
+                }
+            }
+        } else {
+            g = Army.selected.terrain[terrainType]
+        }
+
+        return g;
     },
     isNotEmpty: function (obj) {
         for (key in obj) {

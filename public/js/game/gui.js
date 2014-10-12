@@ -8,6 +8,13 @@ var Gui = {
     timerBox: {'close': 0},
     mapBox: {'close': 0},
     speed: 200,
+    init: function () {
+        map = $('#map');
+        board = $('#board');
+        coord = $('#coord');
+        this.prepareButtons()
+        this.adjust();
+    },
     doKey: function (event) {
         if ($(event.target).attr('id') == 'msg') {
             return;
@@ -50,10 +57,6 @@ var Gui = {
         }
     },
     prepareButtons: function () {
-        map = $('#map');
-        board = $('#board');
-        coord = $('#coord');
-
         $('#gold').click(function () {
             Message.treasury()
         })
@@ -386,11 +389,11 @@ var Gui = {
         })
 
         $('#limitBox').css({
-            top: mapBoxHeight + 52 + 'px'
+            top: mapBoxHeight + 51 + 'px'
         })
 
         $('#timerBox').css({
-            top: mapBoxHeight + 77 + parseInt($('#limitBox').css('height')) + 'px'
+            top: mapBoxHeight + 72 + parseInt($('#limitBox').css('height')) + 'px'
         })
 
         Message.adjust()
@@ -408,6 +411,21 @@ var Gui = {
     },
     end: function () {
         window.location = '/' + lang + '/over/index/id/' + gameId
+    },
+    unlock: function () {
+        if (my.turn) {
+            Gui.lock = false;
+            $('#nextTurn').removeClass('buttonOff');
+            $('#nextArmy').removeClass('buttonOff');
+            makeMyCursorUnlock();
+        }
+    },
+    setLock: function () {
+        Gui.lock = true;
+        $('#nextTurn').addClass('buttonOff');
+        $('#nextArmy').addClass('buttonOff');
+        makeMyCursorLock();
     }
+
 
 }

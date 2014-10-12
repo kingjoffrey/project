@@ -1,4 +1,4 @@
- * {
+* {
     -webkit-touch-callout: none;
     -webkit-user-select: none;
     -khtml-user-select: none;
@@ -11,7 +11,7 @@
     position: relative;
     left: 0;
     top: 0;
-    background: #000;
+    background: url(/img/bg_0.jpg) #000;
     font-size: 12px;
     display: block;
     overflow: hidden;
@@ -29,6 +29,7 @@
     position: absolute;
     top: 0px;
     left: 0px;
+    box-shadow: 0px 0px 14px #0f0;
 }
 
 #map {
@@ -257,7 +258,7 @@
 }
 
 .message .showCastle #center {
-    padding: 3px 3px 0 3px;
+    padding: 3px;
     float: right;
 }
 
@@ -289,7 +290,11 @@
 .message div.overflow {
     overflow: hidden;
     overflow-y: auto;
-    padding-right: 17px;
+    padding: 0 17px 0 17px;
+}
+
+.message div.simple {
+    padding-top: 20px;
 }
 
 .message .production {
@@ -308,7 +313,6 @@
     margin: 0;
     padding: 5px;
     text-align: center;
-    width: 158px;
     cursor: url(/img/game/cursor_pointer.png), pointer;
 }
 
@@ -356,7 +360,6 @@
 }
 
 .message .production .unit .img {
-    float: left;
     padding: 5px 0 5px 5px;
     width: 30px;
     height: 30px;
@@ -368,9 +371,7 @@
 }
 
 .message .production .unit div.attributes {
-    float: right;
     padding: 1px;
-    width: 156px;
 }
 
 .message .production .unit div p {
@@ -382,6 +383,18 @@
     margin-top: 7px;
 }
 
+.message .showCastle .iconButton {
+    display: inline-block;
+    margin: 2px 14px;
+    height: 23px;
+    box-shadow: 1px 1px 5px #000;
+    float: right;
+}
+
+.message .relocatedProduction td {
+    border: none;
+}
+
 .message p.h input {
     margin: 5px 6px;
 }
@@ -391,7 +404,7 @@
     overflow-y: auto;
 }
 
-.message .split #selectAll{
+.message .split #selectAll {
     text-align: right;
     margin: 4px;
 }
@@ -410,7 +423,6 @@
     height: 30px;
     position: relative;
     top: 9px;
-    left: 9px;
 }
 
 .message .split div.row div.nr {
@@ -537,6 +549,7 @@
     background: url(/img/game/grass.png);
     border-radius: 5px;
     padding: 5px;
+    box-shadow: 0 0 10px #0f0;
 }
 
 .center {
@@ -704,7 +717,7 @@
 }
 
 #timerBox #hour {
-    min-width: 20px;
+    min-width: 30px;
     text-align: left;
     padding: 0 3px;
 }
@@ -717,9 +730,13 @@
 }
 
 #limitBox span {
-    width: 20px;
+    width: 16px;
     display: inline-block;
     text-align: right;
+}
+
+#limitBox span#hour {
+    width: 50px;
 }
 
 #goldBox {
@@ -1076,7 +1093,7 @@ table.treasury td.c {
     position: absolute;
     width: 19px;
     height: 19px;
-    line-height: 20px;
+    line-height: 18px;
     text-align: center;
     text-shadow: none;
     color: orange;

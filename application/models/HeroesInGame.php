@@ -189,16 +189,16 @@ class Application_Model_HeroesInGame extends Coret_Db_Table_Abstract
         return $this->selectOne($select);
     }
 
-    public function getHeroIdByArmyIdPlayerId($armyId, $playerId)
+    public function getHeroByArmyIdPlayerId($armyId, $playerId)
     {
         $select = $this->_db->select()
-            ->from(array('a' => $this->_name), 'heroId')
+            ->from(array('a' => $this->_name), array('heroId', 'movesLeft'))
             ->join(array('b' => 'hero'), 'a."heroId" = b."heroId"')
             ->where('"gameId" = ?', $this->_gameId)
             ->where('"playerId" = ?', $playerId)
             ->where('"armyId" = ?', $armyId);
 
-        return $this->selectOne($select);
+        return $this->selectRow($select);
     }
 
     public function isHeroInArmy($armyId, $heroId)

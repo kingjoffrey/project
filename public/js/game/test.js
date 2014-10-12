@@ -127,3 +127,14 @@ function test() {
 //        }
 //    }
 }
+
+function test2() {
+    var a = $('<p>'),
+        b = $('<div>')
+
+    for (var i = 0; i < 10; i++) {
+        b.append(a.clone())
+    }
+
+    console.log(b)
+}

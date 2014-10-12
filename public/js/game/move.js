@@ -2,10 +2,17 @@ var Move = {
     stepTime: 0,
     moving: 0,
     start: function (r, ii) {
+        if (notSet(r.attackerColor)) {
+            Gui.unlock();
+            Websocket.executing = 0
+            Message.simple(translations.army, translations.noMoreMoves)
+            return
+        }
         this.moving = 1
+        console.log(' ')
         console.log('move.start(' + ii + ') 0')
         console.log(r)
-        switch (players[r.attackerColor].armies[r.attackerArmy.armyId].movementType) {
+        switch (players[r.attackerColor].armies[r.oldArmyId].movementType) {
             case 'flying':
                 Sound.play('fly');
                 break;
@@ -17,7 +24,7 @@ var Move = {
                 break;
         }
 
-        if (my.turn || Gui.show) {
+        if (my.turn || (!players[r.attackerColor].computer || Gui.show)) {
             Message.remove()
         }
 
@@ -49,7 +56,7 @@ var Move = {
         if (isSet(r.path[step])) {
             zoomer.setCenterIfOutOfScreen(r.path[step].x * 40, r.path[step].y * 40);
 
-            if (Gui.show) {
+            if (!players[r.attackerColor].computer || Gui.show) {
                 $('#army' + r.oldArmyId)
                     .animate({
                         left: (r.path[step].x * 40) + 'px',
@@ -73,7 +80,7 @@ var Move = {
                 Move.loop(r, ii);
             }
         } else {
-            if (isTruthful(r.battle) && Gui.show) {
+            if (isTruthful(r.battle) && (!players[r.attackerColor].computer || Gui.show)) {
                 Sound.play('fight');
 
                 if (isTruthful(r.castleId)) {
@@ -138,11 +145,11 @@ var Move = {
             Websocket.computer();
         } else if (r.attackerColor == my.color) {
             if (!r.castleId && isSet(players[r.attackerColor].armies[r.attackerArmy.armyId]) && players[r.attackerColor].armies[r.attackerArmy.armyId].moves) {
-                unlock()
+                Gui.unlock()
                 Army.select(players[r.attackerColor].armies[r.attackerArmy.armyId])
             } else {
                 Army.deselect()
-                unlock()
+                Gui.unlock()
                 if (isDigit(r.castleId) && isTruthful(r.victory)) {
                     incomeIncrement(castles[r.castleId].income);
                     Message.castle(r.castleId)

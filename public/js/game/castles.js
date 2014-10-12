@@ -15,9 +15,9 @@ var Castle = {
             if (!unitId) {
                 Message.error('No unit selected')
             } else {
-                Message.simpleNew(translations.relocation, translations.selectCastleToWhichYouWantToRelocateThisProduction)
+                Message.simple(translations.relocation, translations.selectCastleToWhichYouWantToRelocateThisProduction)
                 $('.castle.' + my.color)
-                    .unbind('click')
+                    .unbind()
                     .click(function () {
                         var relocationToCastleId = $(this).attr('id').substring(6);
                         Websocket.production(castleId, unitId, relocationToCastleId);
@@ -35,14 +35,26 @@ var Castle = {
             return;
         }
     },
+    myMousedown: function (castle, castleId) {
+        castle
+            .unbind()
+            .mousedown(function (e) {
+                switch (e.which) {
+                    case 1:
+                        if (!Army.isSelected) {
+                            Message.castle(castleId)
+                        }
+                }
+            });
+    },
     updateMyProduction: function (unitId, castleId, relocationToCastleId) {
         if (isTruthful(relocationToCastleId)) {
-            Message.simpleNew(translations.production, translations.productionRelocated)
+            Message.simple(translations.production, translations.productionRelocated)
         } else {
             if (unitId === null) {
-                Message.simpleNew(translations.production, translations.productionStopped)
+                Message.simple(translations.production, translations.productionStopped)
             } else {
-                Message.simpleNew(translations.production, translations.productionSet)
+                Message.simple(translations.production, translations.productionSet)
             }
         }
 
@@ -80,11 +92,7 @@ var Castle = {
             $('.castle.' + my.color).each(function () {
                 var thisCastleId = $(this).attr('id').substring(6);
 
-                $(this)
-                    .unbind('click')
-                    .click(function () {
-                        Message.castle(thisCastleId)
-                    });
+                Castle.myMousedown($(this), thisCastleId)
 
                 if (isSet(castles[thisCastleId].relocatedProduction) && isSet(castles[thisCastleId].relocatedProduction[castleId])) {
                     delete castles[thisCastleId].relocatedProduction[castleId]
@@ -107,7 +115,7 @@ var Castle = {
         castles[castleId].currentProductionId = players[my.color].castles[castleId].productionId;
         castles[castleId].currentProductionTurn = players[my.color].castles[castleId].productionTurn;
 
-        var relocationToCastleId = players[my.color].castles[castleId].relocationToCastleId;
+        var relocationToCastleId = players[my.color].castles[castleId].relocationCastleId;
 
         if (relocationToCastleId) {
             castles[castleId].relocationToCastleId = relocationToCastleId
@@ -309,13 +317,10 @@ var Castle = {
                 .css({
                     'cursor': 'url(/img/game/cursor_castle.png), default'
                 })
-                .unbind()
                 .removeClass('team')
-                .click(function () {
-                    Message.castle(castleId)
-                });
+            Castle.myMousedown(castle, castleId)
         } else {
-            if (players[color].team == my.color) {
+            if (players[color].team == players[my.color].team) {
                 Castle.changeFields(castleId, 'c')
                 castle
                     .unbind()
@@ -326,7 +331,7 @@ var Castle = {
                     .unbind()
                     .removeClass('team')
                     .mouseover(function () {
-                        Castle.changeFields(this.id.substring(6), 'g')
+                        Castle.changeFields(this.id.substring(6), 'E')
                     })
                     .mouseout(function () {
                         Castle.changeFields(this.id.substring(6), 'e')

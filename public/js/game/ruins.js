@@ -33,19 +33,20 @@ var Ruin = {
             title = 'Ruins (empty)';
             css = '_empty';
         } else {
+            ruins[ruinId].e = 0;
             title = 'Ruins';
             css = '';
         }
         $('#ruin' + ruinId).attr('title', title)
             .css('background', 'url(/img/game/ruin' + css + '.png) center center no-repeat');
     },
-    getId: function (a) {
+    getIdByPosition: function (x, y) {
         for (i in ruins) {
-            if (a.x == ruins[i].x && a.y == ruins[i].y) {
-                if (typeof ruins[i].e == 'undefined') {
-                    return i;
+            if (x == ruins[i].x && y == ruins[i].y) {
+                if (isSet(ruins[i].e) && ruins[i].e) {
+                    return null;
                 }
-                return null;
+                return i;
             }
         }
         return null;

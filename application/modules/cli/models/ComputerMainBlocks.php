@@ -222,7 +222,7 @@ class Cli_Model_ComputerMainBlocks extends Cli_Model_ComputerSubBlocks
             }
 
             if ($numberOfUnits) {
-                $garrison = Cli_Model_Army::getArmiesFromCastlePosition($castlePosition, $this->_gameId, $this->_db);
+                $garrison = Cli_Model_Army::getArmiesFromCastlePosition($castlePosition, $this->_gameId, $this->_playerId, $this->_db);
                 reset($garrison);
                 $armyId = Cli_Model_Army::isCastleGarrisonSufficient($numberOfUnits, $garrison);
 
@@ -241,6 +241,7 @@ class Cli_Model_ComputerMainBlocks extends Cli_Model_ComputerSubBlocks
                             $this->_l->log('ŁĄCZĘ ARMIE, KTÓRE PÓJDĄ DALEJ');
 
                             $firstArmy = current($notGarrison);
+
                             $path = array(0 => array(
                                 'x' => $firstArmy['x'],
                                 'y' => $firstArmy['y'],

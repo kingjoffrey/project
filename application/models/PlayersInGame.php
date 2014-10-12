@@ -53,6 +53,24 @@ class Application_Model_PlayersInGame extends Coret_Db_Table_Abstract
         return $colors;
     }
 
+    public function getTeams()
+    {
+        $select = $this->_db->select()
+            ->from(array('a' => $this->_name), array('playerId', 'team'))
+            ->join(array('b' => 'mapplayers'), 'a . "mapPlayerId" = b . "mapPlayerId"', null)
+            ->where('a."gameId" = ?', $this->_gameId)
+            ->where('a . ' . $this->_db->quoteIdentifier('mapPlayerId') . ' IS NOT NULL')
+            ->order('startOrder');
+
+        $teams = array();
+
+        foreach ($this->selectAll($select) as $row) {
+            $teams[$row['playerId']] = $row['team'];
+        }
+
+        return $teams;
+    }
+
     public function getPlayersWaitingForGame()
     {
         $select = $this->_db->select()

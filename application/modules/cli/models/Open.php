@@ -58,6 +58,7 @@ class Cli_Model_Open
         Zend_Registry::set('ruins', $mMapRuins->getMapRuins());
         Zend_Registry::set('towers', $mMapTowers->getMapTowers());
         Zend_Registry::set('playersInGameColors', $mPlayersInGame->getAllColors());
+        Zend_Registry::set('teams', $mPlayersInGame->getTeams());
         Zend_Registry::set('capitals', $mMapPlayers->getCapitals());
 
         $mTurn = new Application_Model_TurnHistory($dataIn['gameId'], $db);

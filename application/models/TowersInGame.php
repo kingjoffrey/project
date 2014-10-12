@@ -47,6 +47,16 @@ class Application_Model_TowersInGame extends Coret_Db_Table_Abstract
         return $this->selectOne($select);
     }
 
+    public function getTowerOwnerId($towerId)
+    {
+        $select = $this->_db->select()
+            ->from(array('a' => $this->_name), 'playerId')
+            ->where('"' . $this->_primary . '" = ?', $towerId)
+            ->where('a."gameId" = ?', $this->_gameId);
+
+        return $this->selectOne($select);
+    }
+
     public function calculateIncomeFromTowers($playerId)
     {
         $select = $this->_db->select()

@@ -50,22 +50,6 @@ function incomeIncrement(gold) {
     incomeUpdate(gold)
 }
 
-function setLock() {
-    Gui.lock = true;
-    $('#nextTurn').addClass('buttonOff');
-    $('#nextArmy').addClass('buttonOff');
-    makeMyCursorLock();
-}
-
-function unlock() {
-    if (my.turn) {
-        Gui.lock = false;
-        $('#nextTurn').removeClass('buttonOff');
-        $('#nextArmy').removeClass('buttonOff');
-        makeMyCursorUnlock();
-    }
-}
-
 function makeMyCursorUnlock() {
     board.css('cursor', 'url(/img/game/cursor.png), auto')
     $('.tower').css('cursor', 'url(/img/game/cursor.png), auto')

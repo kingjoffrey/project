@@ -227,14 +227,14 @@ function zoom(gameWidth, gameHeight) {
 
     function Largeimage() {
         var $obj = this;
-        this.node = $('#board');
+        $obj.node = board;
         $obj.scale = {};
         this.loadimage = function () {
-            $obj.w = this.node.width();
-            $obj.h = this.node.height();
-            $obj.pos = this.node.offset();
-            $obj.pos.l = this.node.offset().left;
-            $obj.pos.t = this.node.offset().top;
+            $obj.w = $obj.node.width();
+            $obj.h = $obj.node.height();
+            $obj.pos = $obj.node.offset();
+            $obj.pos.l = $obj.node.offset().left;
+            $obj.pos.t = $obj.node.offset().top;
             $obj.pos.r = $obj.w + $obj.pos.l;
             $obj.pos.b = $obj.h + $obj.pos.t;
             $obj.scale.x = ($obj.w / smallimage.w);
@@ -244,7 +244,7 @@ function zoom(gameWidth, gameHeight) {
             lens.setdimensions(0, 0);
             lens.show();
 
-            this.node
+            $obj.node
                 .mousedown(function (e) {
                     if (!Gui.lock) {
                         switch (e.which) {
@@ -322,7 +322,7 @@ function zoom(gameWidth, gameHeight) {
         this.setposition = function () {
             var left = -el.scale.x * (lens.getoffset().left - smallimage.bleft + 1);
             var top = -el.scale.y * (lens.getoffset().top - smallimage.btop + 1);
-            this.node.css({
+            $obj.node.css({
                 'left': left + 'px',
                 'top': top + 'px'
             });

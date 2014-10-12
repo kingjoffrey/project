@@ -259,6 +259,18 @@ class Application_Model_Army extends Coret_Db_Table_Abstract
         return $this->selectOne($select);
     }
 
+    public function isAnyArmyAtPosition($position)
+    {
+        $select = $this->_db->select()
+            ->from($this->_name, 'armyId')
+            ->where('"gameId" = ?', $this->_gameId)
+            ->where('destroyed = false')
+            ->where('x = ?', $position['x'])
+            ->where('y = ?', $position['y']);
+
+        return $this->selectOne($select);
+    }
+
     public function unfortifyComputerArmies($playerId)
     {
         $data = array(
@@ -482,7 +494,7 @@ class Application_Model_Army extends Coret_Db_Table_Abstract
         return $ids;
     }
 
-    public function getArmiesFromCastlePosition($position)
+    public function getArmiesFromCastlePosition($position, $playerId)
     {
         $xs = array(
             $position['x'],
@@ -497,10 +509,32 @@ class Application_Model_Army extends Coret_Db_Table_Abstract
         $select = $this->_db->select()
             ->from($this->_name, array('armyId', 'x', 'y'))
             ->where('"gameId" = ?', $this->_gameId)
+            ->where('"playerId" = ?', $playerId)
             ->where('destroyed = false')
             ->where('x IN (?)', $xs)
             ->where('y IN (?)', $ys);
 
         return $this->selectAll($select);
+    }
+
+    public function isPlayerArmyNearTowerPosition($position, $playerId)
+    {
+        $xMin = $position['x'] - 1;
+        $xMax = $position['x'] + 1;
+
+        $yMin = $position['y'] - 1;
+        $yMax = $position['y'] + 1;
+
+        $select = $this->_db->select()
+            ->from($this->_name, 'armyId')
+            ->where('"gameId" = ?', $this->_gameId)
+            ->where('"playerId" = ?', $playerId)
+            ->where('destroyed = false')
+            ->where('x >= (?)', $xMin)
+            ->where('x <= (?)', $xMax)
+            ->where('y >= (?)', $yMin)
+            ->where('y <= (?)', $yMax);
+
+        return $this->selectOne($select);
     }
 }

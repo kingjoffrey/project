@@ -56,7 +56,7 @@ Websocket = {
                     goldUpdate(r.gold)
                     costsUpdate(r.costs)
                     incomeUpdate(r.income)
-                    unlock();
+                    Gui.unlock();
                 }
 
                 for (i in r.armies) {
@@ -80,30 +80,30 @@ Websocket = {
                         case 'gold':
                             Sound.play('gold1');
                             goldIncrement(r.find[1]);
-                            Message.simpleNew('Ruins', 'You have found ' + r.find[1] + ' gold.');
+                            Message.simple(translations.ruins, translations.youHaveFound + ' ' + r.find[1] + ' ' + translations.gold);
                             break;
                         case 'death':
                             Sound.play('death');
-                            Message.simpleNew('Ruins', 'You have found death.');
+                            Message.simple(translations.ruins, translations.youHaveFound + ' ' + translations.death);
                             if (!Hero.findMy()) {
                                 $('#heroResurrection').removeClass('buttonOff')
                             }
                             break
                         case 'allies':
                             Sound.play('allies');
-                            Message.simpleNew('Ruins', r.find[1] + ' alies joined your army.');
+                            Message.simple(translations.ruins, r.find[1] + ' ' + translations.alliesJoinedYourArmy);
                             break
                         case 'null':
                             Sound.play('click');
-                            Message.simpleNew('Ruins', 'You have found nothing.');
+                            Message.simple(translations.ruins, translations.youHaveFoundNothing);
                             break
                         case 'artifact':
-                            Message.simpleNew('Ruins', 'You have found an ancient artifact - "' + artifacts[r.find[1]].name + '".');
+                            Message.simple(translations.ruins, translations.youHaveFound + ' ' + translations.anAncientArtifact + ' - "' + artifacts[r.find[1]].name + '".');
                             Chest.update(r.color, r.find[1]);
                             break
                         case 'empty':
                             Sound.play('error');
-                            Message.simpleNew('Ruins', 'Ruins are empty.');
+                            Message.simple(translations.ruins, translations.ruinsAreEmpty);
                             break;
 
                     }
@@ -300,7 +300,7 @@ Websocket = {
 
                     case 'error':
                         Message.error(r.msg);
-                        unlock();
+                        Gui.unlock();
                         break;
 
                     case 'open':
@@ -332,10 +332,10 @@ Websocket = {
 
                     case 'bSequence':
                         if (r.attack == 'true') {
-                            Message.simpleNew('Battle sequence', 'Attack sequence successfully updated')
+                            Message.simple(translations.battleSequence, translations.attackSequenceSuccessfullyUpdated)
                             my.battleSequence['attack'] = r.sequence
                         } else {
-                            Message.simpleNew('Battle sequence', 'Defence sequence successfully updated')
+                            Message.simple(translations.battleSequence, translations.defenceSequenceSuccessfullyUpdated)
                             my.battleSequence['defence'] = r.sequence
                         }
                         break
@@ -592,7 +592,7 @@ Websocket = {
         }
 
         if (!my.turn) {
-            Message.error('It is not your turn.');
+            Message.error(translations.itIsNotYourTurn);
             return;
         }
 
@@ -610,7 +610,7 @@ Websocket = {
 
         Army.halfDeselect();
 
-        setLock();
+        Gui.setLock();
 
         var token = {
             type: 'move',
@@ -631,7 +631,7 @@ Websocket = {
         }
 
         if (!my.turn) {
-            Message.error('It is not your turn.');
+            Message.error(translations.itIsNotYourTurn);
             return;
         }
         var h = '';
@@ -713,7 +713,7 @@ Websocket = {
         var castleId = Castle.getMy(Army.selected.x, Army.selected.y);
 
         if (!castleId) {
-            Message.error('No castle to destroy.');
+            Message.error(translations.noCastleToDestroy);
             return;
         }
 
@@ -733,7 +733,7 @@ Websocket = {
         var castleId = Castle.getMy(Army.selected.x, Army.selected.y);
 
         if (!castleId) {
-            Message.error('No castle to build defense.');
+            Message.error(translations.noCastleToBuildDefense);
             return;
         }
 
