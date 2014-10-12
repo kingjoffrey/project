@@ -54,9 +54,9 @@ var Move = {
         }
 
         if (isSet(r.path[step])) {
-            zoomer.setCenterIfOutOfScreen(r.path[step].x * 40, r.path[step].y * 40);
-
             if (!players[r.attackerColor].computer || Gui.show) {
+                zoomer.setCenterIfOutOfScreen(r.path[step].x * 40, r.path[step].y * 40);
+
                 $('#army' + r.oldArmyId)
                     .animate({
                         left: (r.path[step].x * 40) + 'px',
@@ -70,11 +70,6 @@ var Move = {
                         Move.loop(r, ii);
                     })
             } else {
-                $('#army' + r.oldArmyId)
-                    .css({
-                        left: (r.path[step].x * 40) + 'px',
-                        top: (r.path[step].y * 40) + 'px'
-                    })
                 searchTower(r.path[step].x, r.path[step].y);
                 delete r.path[step];
                 Move.loop(r, ii);
@@ -109,10 +104,18 @@ var Move = {
     end: function (r, ii) {
         console.log('move.end(' + ii + ') 0')
 
+        if (players[r.attackerColor].computer && !Gui.show) {
+            $('#army' + r.oldArmyId)
+                .css({
+                    left: (r.path[step].x * 40) + 'px',
+                    top: (r.path[step].y * 40) + 'px'
+                })
+        }
+
         AStar.x = players[r.attackerColor].armies[r.attackerArmy.armyId].x;
         AStar.y = players[r.attackerColor].armies[r.attackerArmy.armyId].y;
 
-        searchTower(AStar.x, AStar.y);
+        //searchTower(AStar.x, AStar.y);
 
         Army.init(r.attackerArmy, r.attackerColor);
 
