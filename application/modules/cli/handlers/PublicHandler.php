@@ -44,7 +44,7 @@ class Cli_PublicHandler extends Cli_WofHandler
             $mGame = new Application_Model_Game($user->parameters['gameId'], $db);
 
             $mMapPlayers = new Application_Model_MapPlayers($mGame->getMapId(), $db);
-            Zend_Registry::set('mapPlayerIdToShortNameRelations', $mMapPlayers->getMapPlayerIdToShortNameRelations());
+            Zend_Registry::set('mapPlayerIdToShortNameRelations', $mMapPlayers->getShortNameToMapPlayerIdRelations());
 
             return;
         }

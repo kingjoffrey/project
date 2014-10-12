@@ -464,7 +464,7 @@ class Application_Model_PlayersInGame extends Coret_Db_Table_Abstract
     public function getGamePlayers()
     {
         $select = $this->_db->select()
-            ->from(array('b' => $this->_name), 'playerId')
+            ->from(array('b' => $this->_name), array('playerId', 'team'))
             ->join(array('a' => 'player'), 'a."playerId" = b."playerId"', array('firstName', 'lastName'))
             ->join(array('c' => 'mapplayers'), 'b . "mapPlayerId" = c . "mapPlayerId"', array('color' => 'shortName', 'longName', 'backgroundColor', 'textColor'))
             ->where($this->_db->quoteIdentifier('gameId') . ' = ?', $this->_gameId)

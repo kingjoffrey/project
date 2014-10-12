@@ -42,7 +42,7 @@ class Application_Model_MapPlayers extends Coret_Db_Table_Abstract
         return $array;
     }
 
-    public function getMapPlayerIdToShortNameRelations()
+    public function getShortNameToMapPlayerIdRelations()
     {
         $select = $this->_db->select()
             ->from($this->_name, array('mapPlayerId', 'shortName'))
@@ -57,17 +57,17 @@ class Application_Model_MapPlayers extends Coret_Db_Table_Abstract
         return $array;
     }
 
-    public function getColors()
+    public function getMapPlayerIdToBackgroundColorRelations()
     {
         $select = $this->_db->select()
-            ->from($this->_name, 'shortName')
+            ->from($this->_name, array('mapPlayerId', 'backgroundColor'))
             ->where($this->_db->quoteIdentifier('mapId') . ' = ?', $this->mapId)
             ->order('startOrder');
 
         $array = array();
 
         foreach ($this->selectAll($select) as $row) {
-            $array[] = $row['shortName'];
+            $array[$row['mapPlayerId']] = $row['backgroundColor'];
         }
 
         return $array;
