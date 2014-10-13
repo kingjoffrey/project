@@ -104,7 +104,7 @@ function startGame() {
 
     goldUpdate(my.gold)
     costsUpdate(my.costs)
-    my.income += countPlayerTowers(my.color) * 5
+    my.income += Tower.countPlayers(my.color) * 5
     incomeUpdate(my.income)
 }
 

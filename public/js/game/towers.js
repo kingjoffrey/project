@@ -16,90 +16,31 @@ var Tower = {
                     background: 'url(/img/game/towers/' + towers[towerId].color + '.png) center center no-repeat'
                 })
         );
-    }
-
-}
-
-function isTowerAtPosition(x, y) {
-    for (towerId in towers) {
-        if (towers[towerId].x == x && towers[towerId].y == y) {
-            return 1;
-        }
-    }
-    return 0;
-}
-
-function searchTower(x, y) {
-    if (!Players.isMy()) {
-        return
-    }
-
-    for (towerId in towers) {
-        if (towers[towerId].x == x && towers[towerId].y == y) {
-            changeTower(x, y, towerId);
-            continue;
-        }
-        if (towers[towerId].x == (x - 1) && towers[towerId].y == (y - 1)) {
-            changeTower(x, y, towerId);
-            continue;
-        }
-        if (towers[towerId].x == (x) && towers[towerId].y == (y - 1)) {
-            changeTower(x, y, towerId);
-            continue;
-        }
-        if (towers[towerId].x == (x + 1) && towers[towerId].y == (y - 1)) {
-            changeTower(x, y, towerId);
-            continue;
-        }
-        if (towers[towerId].x == (x - 1) && towers[towerId].y == (y)) {
-            changeTower(x, y, towerId);
-            continue;
-        }
-        if (towers[towerId].x == (x + 1) && towers[towerId].y == (y)) {
-            changeTower(x, y, towerId);
-            continue;
-        }
-        if (towers[towerId].x == (x - 1) && towers[towerId].y == (y + 1)) {
-            changeTower(x, y, towerId);
-            continue;
-        }
-        if (towers[towerId].x == (x) && towers[towerId].y == (y + 1)) {
-            changeTower(x, y, towerId);
-            continue;
-        }
-        if (towers[towerId].x == (x + 1) && towers[towerId].y == (y + 1)) {
-            changeTower(x, y, towerId);
-            continue;
-        }
-    }
-}
-
-function changeTower(x, y, towerId) {
-    if (fields[y][x] != 'e') {
-        if (towers[towerId].color != Turn.color) {
-            if (towers[towerId].color != my.color && my.turn) {
-                incomeIncrement(5);
-            } else if (towers[towerId].color == my.color && !my.turn) {
-                incomeIncrement(-5);
+    },
+    isAtPosition: function (x, y) {
+        for (towerId in towers) {
+            if (towers[towerId].x == x && towers[towerId].y == y) {
+                return 1;
             }
-            if (my.turn || (my.game && players[Turn.color].computer)) {
-                Websocket.tower(towerId);
+        }
+        return 0;
+    },
+    change: function (towerId, color) {
+        if (color == my.color && towers[towerId].color != my.color) {
+            incomeIncrement(5);
+        } else if (color != my.color && towers[towerId].color == my.color) {
+            incomeIncrement(-5);
+        }
+        towers[towerId].color = color;
+        $('#tower' + towerId).css('background', 'url(/img/game/towers/' + color + '.png) center center no-repeat');
+    },
+    countPlayers: function (color) {
+        var count = 0;
+        for (i in towers) {
+            if (towers[i].color == color) {
+                count++;
             }
-            towers[towerId].color = Turn.color;
-            $('#tower' + towerId).css('background', 'url(/img/game/towers/' + Turn.color + '.png) center center no-repeat');
         }
-        return true;
-    } else {
-        return false;
+        return count;
     }
-}
-
-function countPlayerTowers(color) {
-    var count = 0;
-    for (i in towers) {
-        if (towers[i].color == color) {
-            count++;
-        }
-    }
-    return count;
 }

@@ -472,6 +472,8 @@ class Cli_Model_ComputerMainBlocks extends Cli_Model_ComputerSubBlocks
             exit;
         }
 
+        new Cli_Model_Tower($path, $this->_playerId, $this->_gameId, $this->_db, $this->_gameHandler);
+
         $playersInGameColors = Zend_Registry::get('playersInGameColors');
 
         $token = array(

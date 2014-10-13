@@ -246,6 +246,10 @@ Websocket = {
                         Websocket.addQueue(r)
                         break;
 
+                    case 'tower':
+                        Tower.change(r.towerId, r.color)
+                        break;
+
                     case 'computerStart':
                         Websocket.addQueue(r)
                         break;
@@ -428,17 +432,17 @@ Websocket = {
         ws.send(JSON.stringify(token));
     },
     tower: function (towerId) {
-        if (Websocket.closed) {
-            Message.error(translations.sorryServerIsDisconnected)
-            return;
-        }
-
-        var token = {
-            type: 'tower',
-            towerId: towerId
-        };
-
-        ws.send(JSON.stringify(token));
+        //if (Websocket.closed) {
+        //    Message.error(translations.sorryServerIsDisconnected)
+        //    return;
+        //}
+        //
+        //var token = {
+        //    type: 'tower',
+        //    towerId: towerId
+        //};
+        //
+        //ws.send(JSON.stringify(token));
     },
     surrender: function () {
         if (Websocket.closed) {

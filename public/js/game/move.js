@@ -65,12 +65,10 @@ var Move = {
                         if (typeof r.path[step] == 'undefined') {
                             throw(r)
                         }
-                        searchTower(r.path[step].x, r.path[step].y);
                         delete r.path[step];
                         Move.loop(r, ii);
                     })
             } else {
-                searchTower(r.path[step].x, r.path[step].y);
                 delete r.path[step];
                 Move.loop(r, ii);
             }

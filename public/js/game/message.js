@@ -553,7 +553,7 @@ var Message = {
             }
         }
 
-        if (isTowerAtPosition(Army.selected.x, Army.selected.y)) {
+        if (Tower.isAtPosition(Army.selected.x, Army.selected.y)) {
             bonusTower = 1;
         }
 
@@ -796,7 +796,7 @@ var Message = {
             )
         }
 
-        if (r.defenderArmy && r.defenderColor != 'neutral' && isTowerAtPosition(players[r.defenderColor].armies[r.defenderArmy[0].armyId].x, players[r.defenderColor].armies[r.defenderArmy[0].armyId].y)) {
+        if (r.defenderArmy && r.defenderColor != 'neutral' && Tower.isAtPosition(players[r.defenderColor].armies[r.defenderArmy[0].armyId].x, players[r.defenderColor].armies[r.defenderArmy[0].armyId].y)) {
             defenseLayout.append(
                 $('<div>')
                     .addClass('tower')

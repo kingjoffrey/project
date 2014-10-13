@@ -154,7 +154,8 @@ class Cli_Model_Move
             $A_Star = new Cli_Model_Astar($army, $x, $y, $fields, array('myCastles' => $myCastles));
             $move = $mArmy->calculateMovesSpend($A_Star->getPath($x . '_' . $y));
         } catch (Exception $e) {
-            echo($e);
+            $l = new Coret_Model_Logger();
+            $l->log($e);
             $gameHandler->sendError($user, 'Wystąpił błąd podczas obliczania ścieżki');
             return;
         }
@@ -261,6 +262,8 @@ class Cli_Model_Move
             $attacker = Cli_Model_Army::getArmyByArmyIdPlayerId($newArmyId, $user->parameters['playerId'], $user->parameters['gameId'], $db);
             $deletedIds = $armiesIds['deletedIds'];
         }
+
+        new Cli_Model_Tower($move['path'], $user->parameters['playerId'], $user->parameters['gameId'], $db, $gameHandler);
 
         $token = array(
             'type' => 'move',
