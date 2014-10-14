@@ -75,6 +75,9 @@ class Application_Model_Board
         $hostileCastles = array();
 
         foreach ($castlesSchema as $castleId => $castleSchema) {
+            if ($castleSchema['enclaveNumber']) {
+                continue;
+            }
             if (isset($razed[$castleId])) {
                 continue;
             }
@@ -86,7 +89,7 @@ class Application_Model_Board
                 $fields = self::changeCastleFields($fields, $x, $y, 'c');
             } else {
                 if (isset($teamCastles[$castleId])) {
-                    $fields = self::changeCastleFields($fields, $x, $y, 'c');
+                    $fields = self::changeCastleFields($fields, $x, $y, 'r');
                     continue;
                 }
                 $hostileCastles[$castleId] = $castleSchema;
