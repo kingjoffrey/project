@@ -34,5 +34,19 @@ class Application_Model_Castle extends Coret_Db_Table_Abstract
 
         $this->insert($data);
     }
+
+    public function getAll()
+    {
+        $select = $this->_db->select()
+            ->from($this->_name, array($this->_primary, 'name'));
+
+        $array = array();
+
+        foreach ($this->selectAll($select) as $row) {
+            $array[$row[$this->_primary]] = $row['name'];
+        }
+
+        return $array;
+    }
 }
 

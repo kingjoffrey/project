@@ -46,7 +46,7 @@ class Application_Model_Board
         }
     }
 
-    static public function changeCasteFields($fields, $destX, $destY, $type)
+    static public function changeCastleFields($fields, $destX, $destY, $type)
     {
         $fields[$destY][$destX] = $type;
         $fields[$destY + 1][$destX] = $type;
@@ -83,15 +83,15 @@ class Application_Model_Board
             if (isset($myCastles[$castleId])) {
                 $myCastles[$castleId] = $castleSchema;
                 $myCastles[$castleId]['castleId'] = $castleId;
-                $fields = self::changeCasteFields($fields, $x, $y, 'c');
+                $fields = self::changeCastleFields($fields, $x, $y, 'c');
             } else {
                 if (isset($teamCastles[$castleId])) {
-                    $fields = self::changeCasteFields($fields, $x, $y, 'c');
+                    $fields = self::changeCastleFields($fields, $x, $y, 'c');
                     continue;
                 }
                 $hostileCastles[$castleId] = $castleSchema;
                 $hostileCastles[$castleId]['castleId'] = $castleId;
-                $fields = self::changeCasteFields($fields, $x, $y, 'e');
+                $fields = self::changeCastleFields($fields, $x, $y, 'e');
             }
         }
         return array(

@@ -107,11 +107,11 @@ class Cli_Model_Move
         foreach ($castlesSchema as $cId => $castle) {
             if (!isset($allCastles[$cId])) { // castle is neutral
                 if (Application_Model_Board::isCastleField($aP, $castle['position'])) { // trakuję neutralny zamek jak własny ponieważ go atakuję i jeśli wygram to będę mógł po nim chodzić
-                    $fields = Application_Model_Board::changeCasteFields($fields, $castle['position']['x'], $castle['position']['y'], 'E');
+                    $fields = Application_Model_Board::changeCastleFields($fields, $castle['position']['x'], $castle['position']['y'], 'E');
                     $castleId = $cId;
                     $defenderColor = 'neutral';
                 } else {
-                    $fields = Application_Model_Board::changeCasteFields($fields, $castle['position']['x'], $castle['position']['y'], 'e');
+                    $fields = Application_Model_Board::changeCastleFields($fields, $castle['position']['x'], $castle['position']['y'], 'e');
                 }
                 continue;
             }
@@ -121,15 +121,15 @@ class Cli_Model_Move
             }
 
             if ($user->parameters['playerId'] == $allCastles[$cId]['playerId']) { // my castle
-                $fields = Application_Model_Board::changeCasteFields($fields, $castle['position']['x'], $castle['position']['y'], 'c');
+                $fields = Application_Model_Board::changeCastleFields($fields, $castle['position']['x'], $castle['position']['y'], 'c');
             } elseif (isset($teamPlayerIds[$allCastles[$cId]['playerId']])) { // team castle
-                $fields = Application_Model_Board::changeCasteFields($fields, $castle['position']['x'], $castle['position']['y'], 'c');
+                $fields = Application_Model_Board::changeCastleFields($fields, $castle['position']['x'], $castle['position']['y'], 'c');
             } else { // enemy castle
                 if (Application_Model_Board::isCastleField($aP, $castle['position'])) { // trakuję zamek wroga jak własny ponieważ go atakuję i jeśli wygram to będę mógł po nim chodzić
-                    $fields = Application_Model_Board::changeCasteFields($fields, $castle['position']['x'], $castle['position']['y'], 'E');
+                    $fields = Application_Model_Board::changeCastleFields($fields, $castle['position']['x'], $castle['position']['y'], 'E');
                     $castleId = $cId;
                 } else {
-                    $fields = Application_Model_Board::changeCasteFields($fields, $castle['position']['x'], $castle['position']['y'], 'e');
+                    $fields = Application_Model_Board::changeCastleFields($fields, $castle['position']['x'], $castle['position']['y'], 'e');
                 }
             }
         }

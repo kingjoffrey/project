@@ -39,5 +39,14 @@ class Admin_Model_Player extends Coret_Model_ParentDb
 
         return $this->_db->fetchOne($select);
     }
+
+    public function getAuthorById($id_administrator)
+    {
+        $select = $this->_db->select()
+            ->from($this->_name, 'login')
+            ->where('"' . $this->_primary . '" = ?', $id_administrator);
+
+        return $this->_db->fetchOne($select);
+    }
 }
 

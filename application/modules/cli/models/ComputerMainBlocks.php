@@ -31,16 +31,17 @@ class Cli_Model_ComputerMainBlocks extends Cli_Model_ComputerSubBlocks
         } else {
             $this->_l->log('SĄ ZAMKI WROGA');
 
-            $castleIds = array();
-            $castleId = $this->getWeakerEnemyCastle($castlesAndFields['hostileCastles'], $army);
-            if ($castleId) {
-                $castleRange = $this->isEnemyCastleInRange($castlesAndFields, $castleId, $mArmy);
+            $omittedCastlesIds = array();
+            $weakerHostileCastleId = $this->getWeakerHostileCastle($castlesAndFields['hostileCastles'], $army);
+
+            if ($weakerHostileCastleId) {
+                $castleRange = $this->isEnemyCastleInRange($castlesAndFields, $weakerHostileCastleId, $mArmy);
                 while (true) {
                     if (empty($castleRange)) {
-                        $castleIds[] = $castleId;
-                        $castleId = $this->getWeakerEnemyCastle($castlesAndFields['hostileCastles'], $army, $castleIds);
-                        if ($castleId) {
-                            $castleRange = $this->isEnemyCastleInRange($castlesAndFields, $castleId, $mArmy);
+                        $omittedCastlesIds[] = $weakerHostileCastleId;
+                        $weakerHostileCastleId = $this->getWeakerHostileCastle($castlesAndFields['hostileCastles'], $army, $omittedCastlesIds);
+                        if ($weakerHostileCastleId) {
+                            $castleRange = $this->isEnemyCastleInRange($castlesAndFields, $weakerHostileCastleId, $mArmy);
                         } else {
                             break;
                         }
@@ -49,14 +50,14 @@ class Cli_Model_ComputerMainBlocks extends Cli_Model_ComputerSubBlocks
                 }
             }
 
-            if ($castleId) {
-                $this->_l->log('JEST SŁABSZY ZAMEK WROGA: ' . $castleId);
+            if ($weakerHostileCastleId) {
+                $this->_l->log('JEST SŁABSZY ZAMEK WROGA: ' . $weakerHostileCastleId);
 
                 if ($castleRange['in']) {
                     //atakuj
                     $this->_l->log('SŁABSZY ZAMEK WROGA W ZASIĘGU - ATAKUJĘ!');
-                    $fightEnemyResults = $this->fightEnemy($army, $castleRange['path'], $castlesAndFields['fields'], null, $castleId);
-                    return $this->endMove($army['armyId'], $castleRange['currentPosition'], $castleRange['path'], $fightEnemyResults, $castleId);
+                    $fightEnemyResults = $this->fightEnemy($army, $castleRange['path'], $castlesAndFields['fields'], null, $weakerHostileCastleId);
+                    return $this->endMove($army['armyId'], $castleRange['currentPosition'], $castleRange['path'], $fightEnemyResults, $weakerHostileCastleId);
                 } else {
                     $this->_l->log('SŁABSZY ZAMEK WROGA POZA ZASIĘGIEM');
                     $enemy = $this->getWeakerEnemyArmyInRange($enemies, $mArmy, $castlesAndFields);

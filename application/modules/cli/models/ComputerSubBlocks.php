@@ -2,7 +2,7 @@
 
 class Cli_Model_ComputerSubBlocks extends Cli_Model_ComputerFight
 {
-    public function getWeakerEnemyCastle($castles, $army, $castlesIds = array())
+    public function getWeakerHostileCastle($castles, $army, $castlesIds = array())
     {
         $heuristics = array();
         foreach ($castles as $id => $castle) {
@@ -12,11 +12,13 @@ class Cli_Model_ComputerSubBlocks extends Cli_Model_ComputerFight
             $mHeuristics = new Cli_Model_Heuristics($castle['position']['x'], $castle['position']['y']);
             $heuristics[$id] = $mHeuristics->calculateH($army['x'], $army['y']);
         }
+
         asort($heuristics, SORT_NUMERIC);
+
+        $mCastlesInGame = new Application_Model_CastlesInGame($this->_gameId, $this->_db);
 
         foreach (array_keys($heuristics) as $id) {
             $position = $castles[$id]['position'];
-            $mCastlesInGame = new Application_Model_CastlesInGame($this->_gameId, $this->_db);
             if ($mCastlesInGame->isEnemyCastle($id, $this->_playerId)) {
                 $enemy = Cli_Model_Army::getCastleGarrisonFromCastlePosition($position, $this->_gameId, $this->_db);
             } else {
@@ -36,7 +38,7 @@ class Cli_Model_ComputerSubBlocks extends Cli_Model_ComputerFight
         $mapCastles = Zend_Registry::get('castles');
         $army = $mArmy->getArmy();
         $position = $mapCastles[$castleId]['position'];
-        $fields = Application_Model_Board::changeCasteFields($castlesAndFields['fields'], $position['x'], $position['y'], 'E');
+        $fields = Application_Model_Board::changeCastleFields($castlesAndFields['fields'], $position['x'], $position['y'], 'E');
 
         try {
             $aStar = new Cli_Model_Astar($army, $position['x'], $position['y'], $fields);
@@ -67,7 +69,7 @@ class Cli_Model_ComputerSubBlocks extends Cli_Model_ComputerFight
         $army = $mArmy->getArmy();
         $castleId = Application_Model_Board::isCastleAtPosition($enemy['x'], $enemy['y'], $castlesAndFields['hostileCastles']);
         if ($castleId) {
-            $castlesAndFields['fields'] = Application_Model_Board::changeCasteFields($castlesAndFields['fields'], $enemy['x'], $enemy['y'], 'E');
+            $castlesAndFields['fields'] = Application_Model_Board::changeCastleFields($castlesAndFields['fields'], $enemy['x'], $enemy['y'], 'E');
         } else {
             $castlesAndFields['fields'] = Application_Model_Board::restoreField($castlesAndFields['fields'], $enemy['x'], $enemy['y']);
         }
@@ -107,7 +109,7 @@ class Cli_Model_ComputerSubBlocks extends Cli_Model_ComputerFight
                 $mArmy = new Cli_Model_Army($enemy);
                 $enemy = $mArmy->getArmy();
 
-                $castlesAndFields['fields'] = Application_Model_Board::changeCasteFields($castlesAndFields['fields'], $castlePosition['x'], $castlePosition['y'], 'E');
+                $castlesAndFields['fields'] = Application_Model_Board::changeCastleFields($castlesAndFields['fields'], $castlePosition['x'], $castlePosition['y'], 'E');
 
                 try {
                     $aStar = new Cli_Model_Astar($enemy, $castlePosition['x'], $castlePosition['y'], $castlesAndFields['fields']);
@@ -116,7 +118,7 @@ class Cli_Model_ComputerSubBlocks extends Cli_Model_ComputerFight
                     return;
                 }
 
-                $castlesAndFields['fields'] = Application_Model_Board::changeCasteFields($castlesAndFields['fields'], $castlePosition['x'], $castlePosition['y'], 'e');
+                $castlesAndFields['fields'] = Application_Model_Board::changeCastleFields($castlesAndFields['fields'], $castlePosition['x'], $castlePosition['y'], 'e');
 
                 if ($mArmy->unitsHaveRange($aStar->getPath($castlePosition['x'] . '_' . $castlePosition['y']))) {
                     $enemiesHaveRange[] = $enemy;
@@ -232,7 +234,7 @@ class Cli_Model_ComputerSubBlocks extends Cli_Model_ComputerFight
             $mHeuristics = new Cli_Model_Heuristics($enemy['x'], $enemy['y']);
             $h = $mHeuristics->calculateH($myEmptyCastle['x'], $myEmptyCastle['y']);
             if ($h < $enemy['movesLeft']) {
-                $fields = Application_Model_Board::changeCasteFields($fields, $myEmptyCastle['x'], $myEmptyCastle['y'], 'E');
+                $fields = Application_Model_Board::changeCastleFields($fields, $myEmptyCastle['x'], $myEmptyCastle['y'], 'E');
                 $mArmy = new Cli_Model_Army($enemy);
                 $enemy = $mArmy->getArmy();
                 try {
@@ -246,7 +248,7 @@ class Cli_Model_ComputerSubBlocks extends Cli_Model_ComputerFight
                     return true;
                 }
 
-                $fields = Application_Model_Board::changeCasteFields($fields, $myEmptyCastle['x'], $myEmptyCastle['y'], 'e');
+                $fields = Application_Model_Board::changeCastleFields($fields, $myEmptyCastle['x'], $myEmptyCastle['y'], 'e');
             }
         }
     }
@@ -278,7 +280,7 @@ class Cli_Model_ComputerSubBlocks extends Cli_Model_ComputerFight
                     continue;
                 }
                 if ($castleId !== null) {
-                    $castlesAndFields['fields'] = Application_Model_Board::changeCasteFields($castlesAndFields['fields'], $enemy['x'], $enemy['y'], 'E');
+                    $castlesAndFields['fields'] = Application_Model_Board::changeCastleFields($castlesAndFields['fields'], $enemy['x'], $enemy['y'], 'E');
                 } else {
                     $castlesAndFields['fields'] = Application_Model_Board::restoreField($castlesAndFields['fields'], $enemy['x'], $enemy['y']);
                 }
@@ -296,7 +298,7 @@ class Cli_Model_ComputerSubBlocks extends Cli_Model_ComputerFight
                 }
 
                 if ($castleId !== null) {
-                    $castlesAndFields['fields'] = Application_Model_Board::changeCasteFields($castlesAndFields['fields'], $enemy['x'], $enemy['y'], 'e');
+                    $castlesAndFields['fields'] = Application_Model_Board::changeCastleFields($castlesAndFields['fields'], $enemy['x'], $enemy['y'], 'e');
                 } else {
                     $castlesAndFields['fields'] = Application_Model_Board::changeArmyField($castlesAndFields['fields'], $enemy['x'], $enemy['y'], 'e');
                 }
@@ -320,7 +322,7 @@ class Cli_Model_ComputerSubBlocks extends Cli_Model_ComputerFight
                     continue;
                 }
                 if ($castleId !== null) {
-                    $castlesAndFields['fields'] = Application_Model_Board::changeCasteFields($castlesAndFields['fields'], $enemy['x'], $enemy['y'], 'E');
+                    $castlesAndFields['fields'] = Application_Model_Board::changeCastleFields($castlesAndFields['fields'], $enemy['x'], $enemy['y'], 'E');
                 } else {
                     $castlesAndFields['fields'] = Application_Model_Board::restoreField($castlesAndFields['fields'], $enemy['x'], $enemy['y']);
                 }
@@ -338,7 +340,7 @@ class Cli_Model_ComputerSubBlocks extends Cli_Model_ComputerFight
                     return true;
                 }
                 if ($castleId !== null) {
-                    $castlesAndFields['fields'] = Application_Model_Board::changeCasteFields($castlesAndFields['fields'], $enemy['x'], $enemy['y'], 'e');
+                    $castlesAndFields['fields'] = Application_Model_Board::changeCastleFields($castlesAndFields['fields'], $enemy['x'], $enemy['y'], 'e');
                 } else {
                     $castlesAndFields['fields'] = Application_Model_Board::changeArmyField($castlesAndFields['fields'], $enemy['x'], $enemy['y'], 'e');
                 }
