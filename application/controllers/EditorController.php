@@ -8,7 +8,7 @@ class EditorController extends Game_Controller_Gui
             unset($this->_namespace->mapId);
         }
         $mMap = new Application_Model_Map ();
-        $this->view->mapList = $mMap->getPlayerMapList($this->_namespace->player['playerId']);
+        $this->view->mapList = $mMap->getPlayerMapList(Zend_Auth::getInstance()->getIdentity()->playerId);
     }
 
     public function createAction()
@@ -17,8 +17,8 @@ class EditorController extends Game_Controller_Gui
         if ($this->_request->isPost()) {
             if ($this->view->form->isValid($this->_request->getPost())) {
                 $mMap = new Application_Model_Map ();
-                $mapId = $mMap->createMap($this->view->form->getValues(), $this->_namespace->player['playerId']);
-                $this->_redirect($this->view->url(array('action' => 'edit', 'mapId' => $mapId)));
+                $mapId = $mMap->createMap($this->view->form->getValues(), Zend_Auth::getInstance()->getIdentity()->playerId);
+                $this->redirect($this->view->url(array('action' => 'edit', 'mapId' => $mapId)));
             }
         }
     }
@@ -41,11 +41,11 @@ class EditorController extends Game_Controller_Gui
         $mapId = $this->_request->getParam('mapId');
 
         $mMap = new Application_Model_Map($mapId);
-        $this->view->map = $mMap->getMap($this->_namespace->player['playerId']);
+        $this->view->map = $mMap->getMap(Zend_Auth::getInstance()->getIdentity()->playerId);
 
-        $mWebSocket = new Application_Model_Websocket($this->_namespace->player['playerId']);
+        $mWebSocket = new Application_Model_Websocket(Zend_Auth::getInstance()->getIdentity()->playerId);
         $this->view->websocket = $mWebSocket->connect('editor');
-        $this->view->playerId = $this->_namespace->player['playerId'];
+        $this->view->playerId = Zend_Auth::getInstance()->getIdentity()->playerId;
 
         $mMapCastles = new Application_Model_MapCastles($mapId);
         $this->view->mapCastles = $mMapCastles->getMapCastles();

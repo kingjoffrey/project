@@ -24,20 +24,20 @@ class SetupController extends Game_Controller_Gui
         $game = $mGame->getGame();
         $mMapPlayers = new Application_Model_MapPlayers($game['mapId']);
 
-        $mGame->updateGameMaster($this->_namespace->player['playerId']);
+        $mGame->updateGameMaster(Zend_Auth::getInstance()->getIdentity()->playerId);
 
-        if ($game['gameMasterId'] != $this->_namespace->player['playerId']) {
-            if ($mPlayersInGame->isPlayerInGame($this->_namespace->player['playerId'])) {
-                $mPlayersInGame->disconnectFromGame($this->_namespace->player['playerId']);
+        if ($game['gameMasterId'] != Zend_Auth::getInstance()->getIdentity()->playerId) {
+            if ($mPlayersInGame->isPlayerInGame(Zend_Auth::getInstance()->getIdentity()->playerId)) {
+                $mPlayersInGame->disconnectFromGame(Zend_Auth::getInstance()->getIdentity()->playerId);
             }
-            $mPlayersInGame->joinGame($this->_namespace->player['playerId']);
-        } elseif (!$mPlayersInGame->isPlayerInGame($this->_namespace->player['playerId'])) {
-            $mPlayersInGame->joinGame($this->_namespace->player['playerId']);
+            $mPlayersInGame->joinGame(Zend_Auth::getInstance()->getIdentity()->playerId);
+        } elseif (!$mPlayersInGame->isPlayerInGame(Zend_Auth::getInstance()->getIdentity()->playerId)) {
+            $mPlayersInGame->joinGame(Zend_Auth::getInstance()->getIdentity()->playerId);
         }
 
         $this->view->mapPlayers = $mMapPlayers->getAll();
         $this->view->game = $game;
-        $this->view->accessKey = $mPlayersInGame->getAccessKey($this->_namespace->player['playerId']);
+        $this->view->accessKey = $mPlayersInGame->getAccessKey(Zend_Auth::getInstance()->getIdentity()->playerId);
         $this->view->gameId = $gameId;
         $this->view->player = $this->_namespace->player;
 

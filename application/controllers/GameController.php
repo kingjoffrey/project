@@ -119,22 +119,22 @@ class GameController extends Game_Controller_Game
             $this->view->players[$player['color']]['longName'] = $player['longName'];
             $this->view->players[$player['color']]['team'] = $mMapPlayers->getColorByMapPlayerId($player['team']);
 
-            if ($this->_namespace->player['playerId'] == $player['playerId']) {
+            if (Zend_Auth::getInstance()->getIdentity()->playerId == $player['playerId']) {
                 $this->view->gold = $player['gold'];
                 $this->view->accessKey = $player['accessKey'];
                 $this->view->color = $player['color'];
             }
         }
 
-        $this->view->id = $this->_namespace->player['playerId'];
-        if ($game['turnPlayerId'] == $this->_namespace->player['playerId']) {
+        $this->view->id = Zend_Auth::getInstance()->getIdentity()->playerId;
+        if ($game['turnPlayerId'] == Zend_Auth::getInstance()->getIdentity()->playerId) {
             $this->view->myTurn = 'true';
         } else {
             $this->view->myTurn = 'false';
         }
 
         $gameMasterId = $mGame->getGameMasterId();
-        if ($gameMasterId == $this->_namespace->player['playerId']) {
+        if ($gameMasterId == Zend_Auth::getInstance()->getIdentity()->playerId) {
             $this->view->myGame = 1;
         } else {
             $this->view->myGame = 0;
@@ -165,10 +165,10 @@ class GameController extends Game_Controller_Game
         $this->view->gameId = $this->_namespace->gameId;
 
         $mBattleSequence = new Application_Model_BattleSequence($this->_namespace->gameId);
-        $this->view->battleSequence = $mBattleSequence->get($this->_namespace->player['playerId']);
+        $this->view->battleSequence = $mBattleSequence->get(Zend_Auth::getInstance()->getIdentity()->playerId);
         if (empty($this->view->battleSequence)) {
-            $mBattleSequence->initiate($this->_namespace->player['playerId'], $this->view->units);
-            $this->view->battleSequence = $mBattleSequence->get($this->_namespace->player['playerId']);
+            $mBattleSequence->initiate(Zend_Auth::getInstance()->getIdentity()->playerId, $this->view->units);
+            $this->view->battleSequence = $mBattleSequence->get(Zend_Auth::getInstance()->getIdentity()->playerId);
         }
     }
 }

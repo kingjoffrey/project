@@ -6,7 +6,7 @@ abstract class Coret_Controller_AuthenticateFrontend extends Coret_Controller_Au
     {
         $authAdapter = new Zend_Auth_Adapter_DbTable(
             Zend_Db_Table_Abstract::getDefaultAdapter(),
-            $this->authTableName,
+            $this->_authTableName,
             $this->_loginDatabaseName,
             $this->_passwordDatabaseName,
             'MD5(?) AND active = 1'
@@ -40,7 +40,7 @@ abstract class Coret_Controller_AuthenticateFrontend extends Coret_Controller_Au
             // When validation fails or other local issues
             $l = new Coret_Model_Logger('www');
             $l->log($ex);
-            $this->_redirect($this->view->url(array('action' => null)));
+            $this->redirect($this->view->url(array('action' => null)));
         }
 
         if ($session) {

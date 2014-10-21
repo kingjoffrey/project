@@ -6,7 +6,7 @@ class ProfileController extends Game_Controller_Gui
     public function indexAction()
     {
         $mPlayer = new Application_Model_Player();
-        $player = $mPlayer->getPlayer($this->_namespace->player['playerId']);
+        $player = $mPlayer->getPlayer(Zend_Auth::getInstance()->getIdentity()->playerId);
 
         $this->view->formPlayer = new Application_Form_Player();
         $this->view->formPlayer->populate($player);
@@ -33,7 +33,7 @@ class ProfileController extends Game_Controller_Gui
             }
 
             if ($valid) {
-                $mPlayer->updatePlayer($data, $this->_namespace->player['playerId']);
+                $mPlayer->updatePlayer($data, Zend_Auth::getInstance()->getIdentity()->playerId);
                 $this->_redirect('/profile');
             }
         }

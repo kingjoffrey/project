@@ -3,6 +3,7 @@
 class LoginController extends Coret_Controller_AuthenticateFrontend
 {
     protected $_authTableName = 'player';
+    protected $_identityArray = array('login', 'firstName', 'lastName', 'playerId');
 
     public function indexAction()
     {
@@ -37,7 +38,7 @@ class LoginController extends Coret_Controller_AuthenticateFrontend
                     $modelHero = new Application_Model_Hero($playerId);
                     $modelHero->createHero();
                     $this->_namespace->player = $mPlayer->getPlayer($playerId);
-                    $this->_redirect($this->view->url(array('controller' => 'index', 'action' => null)));
+                    $this->redirect($this->view->url(array('controller' => 'index', 'action' => null)));
                 }
             }
         }
@@ -51,7 +52,7 @@ class LoginController extends Coret_Controller_AuthenticateFrontend
         $mPlayer = new Application_Model_Player();
         if ($playerId = $mPlayer->hasFacebookId($facebookId)) {
             $this->_namespace->player = $mPlayer->getPlayer($playerId);
-            $this->_redirect($this->view->url(array('controller' => 'index', 'action' => null)));
+            $this->redirect($this->view->url(array('controller' => 'index', 'action' => null)));
         } else {
             $data = array(
                 'fbId' => $facebookId,
@@ -62,7 +63,7 @@ class LoginController extends Coret_Controller_AuthenticateFrontend
                 $modelHero = new Application_Model_Hero($playerId);
                 $modelHero->createHero();
                 $this->_namespace->player = $mPlayer->getPlayer($playerId);
-                $this->_redirect($this->view->url(array('controller' => 'index', 'action' => null)));
+                $this->redirect($this->view->url(array('controller' => 'index', 'action' => null)));
             }
         }
     }

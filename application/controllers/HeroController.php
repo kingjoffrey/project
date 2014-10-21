@@ -7,7 +7,7 @@ class HeroController extends Game_Controller_Gui
     {
         $this->view->headLink()->appendStylesheet($this->view->baseUrl() . '/css/hero.css?v=' . Zend_Registry::get('config')->version);
 
-        $modelHero = new Application_Model_Hero($this->_namespace->player['playerId']);
+        $modelHero = new Application_Model_Hero(Zend_Auth::getInstance()->getIdentity()->playerId);
         $this->view->heroes = $modelHero->getHeroes();
 
         $this->view->form = new Application_Form_Hero ();
@@ -16,11 +16,11 @@ class HeroController extends Game_Controller_Gui
             if ($this->view->form->isValid($this->_request->getPost())) {
 
                 $modelHero->changeHeroName($this->view->heroes[0]['heroId'], $this->_request->getParam('name'));
-                $this->_redirect('/hero');
+                $this->redirect('/hero');
             }
         }
 
-        $mChest = new Application_Model_Chest($this->_namespace->player['playerId']);
+        $mChest = new Application_Model_Chest(Zend_Auth::getInstance()->getIdentity()->playerId);
         $this->view->chest = $mChest->getAll();
 
         $mArtifact = new Application_Model_Artifact();
