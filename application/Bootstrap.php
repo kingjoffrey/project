@@ -140,5 +140,9 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
         $front->registerPlugin(new Coret_Controller_Plugin_Language());
     }
 
+    protected function _initAutoload()
+    {
+        require_once APPLICATION_PATH . '/../library/Facebook/autoload.php';
+    }
 }
 

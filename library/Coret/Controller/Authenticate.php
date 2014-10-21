@@ -2,10 +2,16 @@
 
 abstract class Coret_Controller_Authenticate extends Zend_Controller_Action
 {
-    protected $_login;
-    protected $_password;
     protected $_authAdapter;
     protected $_auth;
+
+    protected $_identity = array('login');
+
+    protected $_authTableName = 'users';
+    protected $_loginFormName = 'login';
+    protected $_passwordFormName = 'password';
+    protected $_loginDatabaseName = 'login';
+    protected $_passwordDatabaseName = 'password';
 
     public function init()
     {
@@ -29,7 +35,7 @@ abstract class Coret_Controller_Authenticate extends Zend_Controller_Action
 
     protected function handleAuthenticated()
     {
-        $identity = $this->_authAdapter->getResultRowObject(array('login', 'user_id', 'guild_id', 'type'));
+        $identity = $this->_authAdapter->getResultRowObject($this->_identity);
         $this->_auth->getStorage()->write($identity);
 
         if ($this->_request->getParam('rememberMe')) {
@@ -53,6 +59,7 @@ abstract class Coret_Controller_Authenticate extends Zend_Controller_Action
 
         $this->_auth->clearIdentity();
 //        Zend_Session::destroy(true);
+        $this->_redirect($this->view->url(array('action' => null)));
     }
 
 }

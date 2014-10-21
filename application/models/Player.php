@@ -17,25 +17,13 @@ class Application_Model_Player extends Coret_Db_Table_Abstract
         }
     }
 
-    public function auth($login, $password)
+    public function hasFacebookId($fbid)
     {
         $select = $this->_db->select()
             ->from($this->_name, $this->_primary)
-            ->where('login = ?', $login)
-            ->where('password = ?', md5($password));
+            ->where('"fbId" = ?', $fbid);
 
         return $this->selectOne($select);
-    }
-
-    public function noPlayer()
-    {
-        $select = $this->_db->select()
-            ->from($this->_name, $this->_primary)
-            ->where('"fbId" = ?', $this->fbid);
-
-        $result = $this->_db->query($select)->fetchAll();
-        if (empty($result[0][$this->_primary]))
-            return true;
     }
 
     public function createPlayer($data)
@@ -59,21 +47,10 @@ class Application_Model_Player extends Coret_Db_Table_Abstract
     public function getPlayer($playerId)
     {
         $select = $this->_db->select()
-            ->from($this->_name);
-        if ($playerId) {
-            $select->where('"' . $this->_primary . '" = ?', $playerId);
-        } elseif ($this->fbid) {
-            $select->where('"fbId" = ?', $this->fbid);
-        }
+            ->from($this->_name)
+            ->where('"' . $this->_primary . '" = ?', $playerId);
 
         return $this->selectRow($select);
-    }
-
-    public function updateFacebookData($data)
-    {
-        $where = $this->_db->quoteInto('"fbId" = ?', $this->fbid);
-
-        return $this->update($data, $where);
     }
 
     public function updatePlayer($data, $playerId)

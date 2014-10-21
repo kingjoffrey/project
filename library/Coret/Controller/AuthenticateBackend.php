@@ -5,8 +5,6 @@ abstract class Coret_Controller_AuthenticateBackend extends Coret_Controller_Aut
     public function indexAction()
     {
         $this->view->form = new Admin_Form_Login();
-        $this->_login = 'login';
-        $this->_password = 'haslo';
 
         parent::indexAction();
 
@@ -25,13 +23,13 @@ abstract class Coret_Controller_AuthenticateBackend extends Coret_Controller_Aut
     {
         $authAdapter = new Zend_Auth_Adapter_DbTable(
             Zend_Db_Table_Abstract::getDefaultAdapter(),
-            'users',
-            'login',
-            'password',
+            $this->authTableName,
+            $this->_loginDatabaseName,
+            $this->_passwordDatabaseName,
             'MD5(?) AND active = 1 AND type > 0'
         );
-        $authAdapter->setIdentity($params[$this->_login]);
-        $authAdapter->setCredential($params[$this->_password]);
+        $authAdapter->setIdentity($params[$this->_loginFormName]);
+        $authAdapter->setCredential($params[$this->_passwordFormName]);
         return $authAdapter;
     }
 

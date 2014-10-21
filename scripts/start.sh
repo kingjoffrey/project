@@ -6,7 +6,7 @@ then
 else
     data=`date +%Y%m%d`
     czas=`date +%H.%M.%S`
-    path="/root/wof/scripts"
+    path="/home/wof/scripts"
 
 
     export APPLICATION_ENV=production

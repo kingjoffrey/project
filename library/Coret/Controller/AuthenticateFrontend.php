@@ -6,15 +6,64 @@ abstract class Coret_Controller_AuthenticateFrontend extends Coret_Controller_Au
     {
         $authAdapter = new Zend_Auth_Adapter_DbTable(
             Zend_Db_Table_Abstract::getDefaultAdapter(),
-            'users',
-            'login',
-            'password',
+            $this->authTableName,
+            $this->_loginDatabaseName,
+            $this->_passwordDatabaseName,
             'MD5(?) AND active = 1'
         );
-        $authAdapter->setIdentity($params[$this->_login]);
-        $authAdapter->setCredential($params[$this->_password]);
+        $authAdapter->setIdentity($params[$this->_loginFormName]);
+        $authAdapter->setCredential($params[$this->_passwordFormName]);
         return $authAdapter;
     }
 
+    public function indexAction()
+    {
+        Facebook\FacebookSession::setDefaultApplication(Zend_Registry::get('config')->facebook->appId, Zend_Registry::get('config')->facebook->appPassword);
+        $helper = new Facebook\FacebookRedirectLoginHelper($this->getRequest()->getScheme() . '://' . $this->getRequest()->getHttpHost() . $this->view->url(array('action' => 'facebook')));
+        $this->view->loginUrl = $helper->getLoginUrl();
+
+        parent::indexAction();
+    }
+
+    public function facebookAction()
+    {
+        Facebook\FacebookSession::setDefaultApplication(Zend_Registry::get('config')->facebook->appId, Zend_Registry::get('config')->facebook->appPassword);
+        $helper = new Facebook\FacebookRedirectLoginHelper($this->getRequest()->getScheme() . '://' . $this->getRequest()->getHttpHost() . $this->view->url(array('action' => 'facebook')));
+        try {
+            $session = $helper->getSessionFromRedirect();
+        } catch (Facebook\FacebookRequestException $ex) {
+            // When Facebook returns an error
+            echo $ex->getMessage();
+            $l = new Coret_Model_Logger('www');
+            $l->log($ex);
+        } catch (\Exception $ex) {
+            // When validation fails or other local issues
+            $l = new Coret_Model_Logger('www');
+            $l->log($ex);
+            $this->_redirect($this->view->url(array('action' => null)));
+        }
+
+        if ($session) {
+            $this->_helper->layout->disableLayout();
+            $this->_helper->viewRenderer->setNoRender(true);
+
+            try {
+                $request = new Facebook\FacebookRequest($session, 'GET', '/me');
+                $response = $request->execute();
+
+                $this->handleFacebookUser($response->getGraphObject(Facebook\GraphUser::className()));
+
+            } catch (FacebookRequestException $e) {
+
+                echo "Exception occured, code: " . $e->getCode();
+                echo " with message: " . $e->getMessage();
+
+            }
+        }
+    }
+
+    protected function handleFacebookUser($userProfile)
+    {
+    }
 }
 

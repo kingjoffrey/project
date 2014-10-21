@@ -1,11 +1,14 @@
 <?php
 
-class LoginController extends Zend_Controller_Action
+class LoginController extends Coret_Controller_AuthenticateFrontend
 {
+    protected $_authTableName = 'player';
 
-    public function init()
+    public function indexAction()
     {
-        $this->_namespace = Game_Namespace::getNamespace();
+        $this->view->form = new Application_Form_Auth();
+        parent::indexAction();
+
         $this->_helper->layout->setLayout('login');
         $this->view->headLink()->prependStylesheet($this->view->baseUrl() . '/css/main.css');
         $this->view->headLink()->prependStylesheet($this->view->baseUrl() . '/css/login.css');
@@ -15,37 +18,6 @@ class LoginController extends Zend_Controller_Action
 
         $this->view->title();
         $this->view->Version();
-    }
-
-    public function indexAction()
-    {
-        $this->view->form = new Application_Form_Auth();
-        if ($this->_request->isPost()) {
-            if ($this->view->form->isValid($this->_request->getPost())) {
-                $modelPlayer = new Application_Model_Player(null, false);
-                $playerId = $modelPlayer->auth($this->_request->getParam('login'), $this->_request->getParam('password'));
-                if ($playerId) {
-                    if ($this->_request->getParam('rememberMe')) {
-                        Zend_Session::rememberMe(31556940);
-                    } else {
-                        Zend_Session::forgetMe();
-                    }
-                    $this->_namespace->player = $modelPlayer->getPlayer($playerId);
-                    $this->_redirect($this->view->url(array('controller' => 'index')));
-                } else {
-                    $this->view->form->setDescription($this->view->translate('Incorrect login or password!'));
-                }
-            }
-        }
-    }
-
-    public function logoutAction()
-    {
-        $this->_helper->layout->disableLayout();
-        $this->_helper->viewRenderer->setNoRender(true);
-
-        Zend_Session::destroy(true);
-        $this->_redirect($this->view->url(array('controller' => 'login', 'action' => null)));
     }
 
     public function registrationAction()
@@ -72,5 +44,27 @@ class LoginController extends Zend_Controller_Action
         $this->view->form = $form;
     }
 
+    protected function handleFacebookUser($userProfile)
+    {
+        $facebookId = $userProfile->getId();
+
+        $mPlayer = new Application_Model_Player();
+        if ($playerId = $mPlayer->hasFacebookId($facebookId)) {
+            $this->_namespace->player = $mPlayer->getPlayer($playerId);
+            $this->_redirect($this->view->url(array('controller' => 'index', 'action' => null)));
+        } else {
+            $data = array(
+                'fbId' => $facebookId,
+                'firstName' => $userProfile->getFirstName(),
+                'lastName' => $userProfile->getLastName(),
+            );
+            if ($playerId = $mPlayer->createPlayer($data)) {
+                $modelHero = new Application_Model_Hero($playerId);
+                $modelHero->createHero();
+                $this->_namespace->player = $mPlayer->getPlayer($playerId);
+                $this->_redirect($this->view->url(array('controller' => 'index', 'action' => null)));
+            }
+        }
+    }
 }
 

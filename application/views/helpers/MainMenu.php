@@ -20,7 +20,7 @@ class zend_View_Helper_MainMenu extends Zend_View_Helper_Abstract
             'profile' => $this->view->translate('Profile'),
             'help' => $this->view->translate('Help'),
 //            'stats' => $this->view->translate('Stats'),
-            'editor' => $this->view->translate('Map editor'),
+//            'editor' => $this->view->translate('Map editor'),
 //            'market' => $this->view->translate('Market'),
         );
 
