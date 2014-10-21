@@ -11,8 +11,26 @@ abstract class Coret_Controller_AuthenticateFrontend extends Coret_Controller_Au
             $this->_passwordDatabaseName,
             'MD5(?) AND active = 1'
         );
+
         $authAdapter->setIdentity($params[$this->_loginFormName]);
         $authAdapter->setCredential($params[$this->_passwordFormName]);
+
+        return $authAdapter;
+    }
+
+    protected function getAuthAdapterFacebook($facebookId)
+    {
+        $authAdapter = new Zend_Auth_Adapter_DbTable(
+            Zend_Db_Table_Abstract::getDefaultAdapter(),
+            $this->_authTableName,
+            $this->_facebookDatabaseName,
+            $this->_facebookDatabaseName,
+            '? AND active = 1'
+        );
+
+        $authAdapter->setIdentity($facebookId);
+        $authAdapter->setCredential($facebookId);
+
         return $authAdapter;
     }
 
@@ -27,6 +45,9 @@ abstract class Coret_Controller_AuthenticateFrontend extends Coret_Controller_Au
 
     public function facebookAction()
     {
+        $this->_helper->viewRenderer->setNoRender(true);
+        $this->_helper->layout->disableLayout();
+
         Facebook\FacebookSession::setDefaultApplication(Zend_Registry::get('config')->facebook->appId, Zend_Registry::get('config')->facebook->appPassword);
         $helper = new Facebook\FacebookRedirectLoginHelper($this->getRequest()->getScheme() . '://' . $this->getRequest()->getHttpHost() . $this->view->url(array('action' => 'facebook')));
         try {

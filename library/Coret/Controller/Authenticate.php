@@ -48,7 +48,7 @@ abstract class Coret_Controller_Authenticate extends Zend_Controller_Action
 
     protected function redirectAuthenticated()
     {
-        $this->redirect($this->view->url(array('controller' => 'index')));
+        $this->redirect($this->view->url(array('controller' => 'index', 'action' => null)));
     }
 
     public function logoutAction()

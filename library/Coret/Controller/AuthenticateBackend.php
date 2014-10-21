@@ -23,7 +23,7 @@ abstract class Coret_Controller_AuthenticateBackend extends Coret_Controller_Aut
     {
         $authAdapter = new Zend_Auth_Adapter_DbTable(
             Zend_Db_Table_Abstract::getDefaultAdapter(),
-            $this->authTableName,
+            $this->_authTableName,
             $this->_loginDatabaseName,
             $this->_passwordDatabaseName,
             'MD5(?) AND active = 1 AND type > 0'
