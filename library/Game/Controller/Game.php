@@ -1,18 +1,15 @@
 <?php
 
-abstract class Game_Controller_Game extends Game_Controller_Action
+abstract class Game_Controller_Game extends Coret_Controller_Authorized
 {
+    protected $_gameId;
 
     public function init()
     {
         parent::init();
 
-        if (empty($this->_namespace->player['playerId'])) {
-            $this->_redirect('/' . Zend_Registry::get('lang') . '/login');
-        }
-
-        $this->_namespace->gameId = $this->_request->getParam('id');
-        if (empty($this->_namespace->gameId)) {
+        $this->_gameId = $this->_request->getParam('id');
+        if (empty($this->_gameId)) {
             throw new Exception('Brak "gameId"!');
         }
 

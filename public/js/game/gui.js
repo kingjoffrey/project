@@ -46,11 +46,14 @@ var Gui = {
             case 79: //o
                 $('.message .go').click()
                 break;
+            case 81: //q
+                Army.skip();
+                break;
             case 82: //r
                 Websocket.ruin()
                 break;
             case 83: //s
-                Army.skip();
+                Message.armyStatus()
                 break;
 //            default:
 //                console.log(key)

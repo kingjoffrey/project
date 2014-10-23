@@ -59,6 +59,7 @@ class Cli_Model_Open
         Zend_Registry::set('towers', $mMapTowers->getMapTowers());
         $playersInGameColors = $mPlayersInGame->getAllColors();
         Zend_Registry::set('playersInGameColors', $playersInGameColors);
+//        Zend_Registry::set('playersInGame', $mPlayersInGame->getGamePlayers());
         Zend_Registry::set('teams', $mPlayersInGame->getTeams());
         Zend_Registry::set('capitals', $mMapPlayers->getCapitals());
 

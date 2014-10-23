@@ -4,6 +4,7 @@ class LoginController extends Coret_Controller_AuthenticateFrontend
 {
     protected $_authTableName = 'player';
     protected $_identityArray = array('login', 'firstName', 'lastName', 'playerId');
+    protected $_facebookDatabaseName = 'fbId';
 
     public function indexAction()
     {

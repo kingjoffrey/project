@@ -60,6 +60,7 @@ class Cli_Model_ComputerSubBlocks extends Cli_Model_ComputerFight
             $move['in'] = false;
         }
 
+        $move['fullPath'] = $path;
 
         return $move;
     }

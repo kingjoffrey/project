@@ -27,7 +27,7 @@ class Cli_Model_ComputerMainBlocks extends Cli_Model_ComputerSubBlocks
 
         if (!$mCastlesInGame->enemiesCastlesExist($this->_playerId, $mPlayersInGame->selectPlayerTeamExceptPlayer($this->_playerId))) {
             $this->_l->log('BRAK ZAMKÓW WROGA');
-            return self::secondBlock($enemies, $mArmy, $castlesAndFields);
+            return $this->noEnemyCastlesToAttack($enemies, $mArmy, $castlesAndFields);
         } else {
             $this->_l->log('SĄ ZAMKI WROGA');
 
@@ -58,54 +58,50 @@ class Cli_Model_ComputerMainBlocks extends Cli_Model_ComputerSubBlocks
                     $this->_l->log('SŁABSZY ZAMEK WROGA W ZASIĘGU - ATAKUJĘ!');
                     $fightEnemyResults = $this->fightEnemy($army, $castleRange['path'], $castlesAndFields['fields'], null, $weakerHostileCastleId);
                     return $this->endMove($army['armyId'], $castleRange['currentPosition'], $castleRange['path'], $fightEnemyResults, $weakerHostileCastleId);
-                } else {
-                    $this->_l->log('SŁABSZY ZAMEK WROGA POZA ZASIĘGIEM');
-                    $enemy = $this->getWeakerEnemyArmyInRange($enemies, $mArmy, $castlesAndFields);
-                    if ($enemy) {
-                        //atakuj
-                        $this->_l->log('JEST SŁABSZA ARMIA WROGA W ZASIĘGU (' . $enemy['armyId'] . ') - ATAKUJĘ!');
-                        $fightEnemyResults = $this->fightEnemy($army, $enemy['path'], $castlesAndFields['fields'], $enemy, $enemy['castleId']);
-                        return $this->endMove($army['armyId'], $enemy['currentPosition'], $enemy['path'], $fightEnemyResults, $enemy['castleId']);
-                    } else {
-                        $this->_l->log('BRAK SŁABSZEJ ARMII WROGA W ZASIĘGU');
-                        $enemy = $this->getStrongerEnemyArmyInRange($enemies, $mArmy, $castlesAndFields);
-                        if ($enemy) {
-                            $this->_l->log('JEST SILNIEJSZA ARMIA WROGA W ZASIĘGU: ' . $enemy['armyId']);
-                            $join = $this->getMyArmyInRange($mArmy, $castlesAndFields);
-                            if ($join) {
-                                $this->_l->log('JEST MOJA ARMIA W ZASIĘGU - DOŁĄCZ!');
-                                Cli_Model_Army::updateArmyPosition($this->_playerId, $join['path'], $castlesAndFields['fields'], $army, $this->_gameId, $this->_db);
-                                return $this->endMove($army['armyId'], $join['currentPosition'], $join['path']);
-                            } else {
-                                $this->_l->log('BRAK MOJEJ ARMII W ZASIĘGU - IDŹ W KIERUNKU ZAMKU!');
-                                Cli_Model_Army::updateArmyPosition($this->_playerId, $castleRange['path'], $castlesAndFields['fields'], $army, $this->_gameId, $this->_db);
-                                $this->_modelArmy->fortify($army['armyId'], 1);
-                                return $this->endMove($army['armyId'], $castleRange['currentPosition'], $castleRange['path']);
-                            }
-                        } else {
-                            $this->_l->log('BRAK SILNIEJSZEJ ARMII WROGA W ZASIĘGU');
-                            $join = $this->getMyArmyInRange($mArmy, $castlesAndFields);
-                            if ($join) {
-                                $this->_l->log('JEST MOJA ARMIA W ZASIĘGU - DOŁĄCZ!');
-                                Cli_Model_Army::updateArmyPosition($this->_playerId, $join['path'], $castlesAndFields['fields'], $army, $this->_gameId, $this->_db);
-                                return $this->endMove($army['armyId'], $join['currentPosition'], $join['path']);
-                            } else {
-                                $this->_l->log('BRAK MOJEJ ARMII W ZASIĘGU - IDŹ W KIERUNKU ZAMKU!');
-                                Cli_Model_Army::updateArmyPosition($this->_playerId, $castleRange['path'], $castlesAndFields['fields'], $army, $this->_gameId, $this->_db);
-                                $this->_modelArmy->fortify($army['armyId'], 1);
-                                return $this->endMove($army['armyId'], $castleRange['currentPosition'], $castleRange['path']);
-                            }
-                        }
-                    }
                 }
-            } else {
-                $this->_l->log('BRAK SŁABSZYCH ZAMKÓW WROGA');
-                return $this->secondBlock($enemies, $mArmy, $castlesAndFields);
+
+                $this->_l->log('SŁABSZY ZAMEK WROGA POZA ZASIĘGIEM');
+                $enemy = $this->getWeakerEnemyArmyInRange($enemies, $mArmy, $castlesAndFields);
+                if ($enemy) {
+                    //atakuj
+                    $this->_l->log('JEST SŁABSZA ARMIA WROGA W ZASIĘGU (' . $enemy['armyId'] . ') - ATAKUJĘ!');
+                    $fightEnemyResults = $this->fightEnemy($army, $enemy['path'], $castlesAndFields['fields'], $enemy, $enemy['castleId']);
+                    return $this->endMove($army['armyId'], $enemy['currentPosition'], $enemy['path'], $fightEnemyResults, $enemy['castleId']);
+                }
+
+                $this->_l->log('BRAK SŁABSZEJ ARMII WROGA W ZASIĘGU');
+                $enemy = $this->getStrongerEnemyArmyInRange($enemies, $mArmy, $castlesAndFields);
+                if ($enemy) {
+                    $this->_l->log('JEST SILNIEJSZA ARMIA WROGA W ZASIĘGU: ' . $enemy['armyId']);
+                    $join = $this->getMyArmyInRange($mArmy, $castlesAndFields);
+                    if ($join) {
+                        $this->_l->log('JEST MOJA ARMIA W ZASIĘGU - DOŁĄCZ!');
+                        Cli_Model_Army::updateArmyPosition($this->_playerId, $join['path'], $castlesAndFields['fields'], $army, $this->_gameId, $this->_db);
+                        return $this->endMove($army['armyId'], $join['currentPosition'], $join['path']);
+                    }
+                    $this->_l->log('BRAK MOJEJ ARMII W ZASIĘGU - IDŹ W KIERUNKU ZAMKU!');
+                    Cli_Model_Army::updateArmyPosition($this->_playerId, $castleRange['path'], $castlesAndFields['fields'], $army, $this->_gameId, $this->_db);
+                    $this->_modelArmy->fortify($army['armyId'], 1);
+                    return $this->endMove($army['armyId'], $castleRange['currentPosition'], $castleRange['path']);
+                }
+
+                $this->_l->log('BRAK SILNIEJSZEJ ARMII WROGA W ZASIĘGU');
+                $join = $this->getMyArmyInRange($mArmy, $castlesAndFields);
+                if ($join) {
+                    $this->_l->log('JEST MOJA ARMIA W ZASIĘGU - DOŁĄCZ!');
+                    Cli_Model_Army::updateArmyPosition($this->_playerId, $join['path'], $castlesAndFields['fields'], $army, $this->_gameId, $this->_db);
+                    return $this->endMove($army['armyId'], $join['currentPosition'], $join['path']);
+                }
+                $this->_l->log('BRAK MOJEJ ARMII W ZASIĘGU - IDŹ W KIERUNKU ZAMKU!');
+                return $this->goByThePath($castleRange, $army, $castlesAndFields['fields']);
             }
+
+            $this->_l->log('BRAK SŁABSZYCH ZAMKÓW WROGA');
+            return $this->noEnemyCastlesToAttack($enemies, $mArmy, $castlesAndFields);
         }
     }
 
-    private function secondBlock($enemies, $mArmy, $castlesAndFields)
+    private function noEnemyCastlesToAttack($enemies, $mArmy, $castlesAndFields)
     {
         $army = $mArmy->getArmy();
         if (!$enemies) {
@@ -164,6 +160,17 @@ class Cli_Model_ComputerMainBlocks extends Cli_Model_ComputerSubBlocks
         }
     }
 
+    private function goByThePath($move, $army, $fields)
+    {
+        $this->_user->parameters['computer'][$this->_playerId][$army['armyId']] = array(
+            'path' => $move['fullPath']
+        );
+
+        Cli_Model_Army::updateArmyPosition($this->_playerId, $move['path'], $fields, $army, $this->_gameId, $this->_db);
+        $this->_modelArmy->fortify($army['armyId'], 1);
+        return $this->endMove($army['armyId'], $move['currentPosition'], $move['path']);
+    }
+
     private function ruinBlock($enemies, $mArmy, $castlesAndFields)
     {
         $army = $mArmy->getArmy();
@@ -171,30 +178,35 @@ class Cli_Model_ComputerMainBlocks extends Cli_Model_ComputerSubBlocks
             $this->_l->log('BRAK HEROSA');
 
             return $this->firstBlock($enemies, $mArmy, $castlesAndFields);
+        }
+        $this->_l->log('JEST HEROS');
+
+        $mRuinsInGame = new Application_Model_RuinsInGame($this->_gameId, $this->_db);
+        $ruin = $this->getNearestRuin($castlesAndFields['fields'], $mRuinsInGame->getFullRuins(), $mArmy);
+
+        if (!$ruin) {
+            $this->_l->log('BRAK RUIN');
+
+            return $this->firstBlock($enemies, $mArmy, $castlesAndFields);
         } else {
-            $this->_l->log('JEST HEROS');
+            $this->_l->log('IDŹ DO RUIN');
 
-            $mRuinsInGame = new Application_Model_RuinsInGame($this->_gameId, $this->_db);
-            $ruin = $this->getNearestRuin($castlesAndFields['fields'], $mRuinsInGame->getFullRuins(), $mArmy);
+            Cli_Model_Army::updateArmyPosition($this->_playerId, $ruin['path'], $castlesAndFields['fields'], $army, $this->_gameId, $this->_db);
+            Cli_Model_SearchRuin::search($this->_gameId, $ruin['ruinId'], $army['heroes'][0]['heroId'], $army['armyId'], $this->_playerId, $this->_db);
 
-            if (!$ruin) {
-                $this->_l->log('BRAK RUIN');
-
-                return $this->firstBlock($enemies, $mArmy, $castlesAndFields);
-            } else {
-                $this->_l->log('IDŹ DO RUIN');
-
-                Cli_Model_Army::updateArmyPosition($this->_playerId, $ruin['path'], $castlesAndFields['fields'], $army, $this->_gameId, $this->_db);
-                Cli_Model_SearchRuin::search($this->_gameId, $ruin['ruinId'], $army['heroes'][0]['heroId'], $army['armyId'], $this->_playerId, $this->_db);
-
-                $this->_modelArmy->fortify($army['armyId'], 1);
-                return $this->endMove($army['armyId'], $ruin['currentPosition'], $ruin['path'], null, null, $ruin['ruinId']);
-            }
+            $this->_modelArmy->fortify($army['armyId'], 1);
+            return $this->endMove($army['armyId'], $ruin['currentPosition'], $ruin['path'], null, null, $ruin['ruinId']);
         }
     }
 
     public function moveArmy($mArmy)
     {
+        if (isset($this->_user->parameters['computer']) && is_array($this->_user->parameters['computer'])) {
+            var_dump($this->_user->parameters['computer']);
+            exit;
+        }
+
+
         $army = $mArmy->getArmy();
         $this->_l->log('');
         $this->_l->log($army['armyId'], 'armyId: ');
@@ -493,56 +505,10 @@ class Cli_Model_ComputerMainBlocks extends Cli_Model_ComputerSubBlocks
         );
 
         $this->_gameHandler->sendToChannel($this->_db, $token, $this->_gameId);
+
+        return $this->_user;
     }
 
-    static public function handleHeroResurrection($gameId, $playerId, $db, $gameHandler)
-    {
-        $mPlayersInGame = new Application_Model_PlayersInGame($gameId, $db);
-        $gold = $mPlayersInGame->getPlayerGold($playerId);
-
-        if ($gold < 100) {
-            return;
-        }
-
-        $capitals = Zend_Registry::get('capitals');
-        $playersInGameColors = Zend_Registry::get('playersInGameColors');
-        $color = $playersInGameColors[$playerId];
-        $castleId = $capitals[$color];
-
-        $mCastlesInGame = new Application_Model_CastlesInGame($gameId, $db);
-        if (!$mCastlesInGame->isPlayerCastle($castleId, $playerId)) {
-            return;
-        }
-
-        $mapCastles = Zend_Registry::get('castles');
-
-        $mHeroesInGame = new Application_Model_HeroesInGame($gameId, $db);
-        $heroId = $mHeroesInGame->getDeadHeroId($playerId);
-
-        if (!$heroId) {
-            return;
-        }
-
-        $armyId = Cli_Model_Army::heroResurrection($gameId, $heroId, $mapCastles[$castleId]['position'], $playerId, $db);
-
-        if (!$armyId) {
-            return;
-        }
-
-        $gold -= 100;
-        $mPlayersInGame->updatePlayerGold($playerId, $gold);
-
-        $token = array(
-            'type' => 'resurrection',
-            'data' => array(
-                'army' => Cli_Model_Army::getArmyByArmyId($armyId, $gameId, $db),
-                'gold' => $gold
-            ),
-            'color' => $color
-        );
-
-        $gameHandler->sendToChannel($db, $token, $gameId);
-    }
 
 }
 

@@ -36,6 +36,11 @@ class Cli_GameHandler extends Cli_WofHandler
             return;
         }
 
+//        if($dataIn['type'] == 'test') {
+//            $open = new Cli_Model_Test($dataIn, $user, $db, $this);
+//            return;
+//        }
+
         if (!Zend_Validate::is($user->parameters['gameId'], 'Digits') || !Zend_Validate::is($user->parameters['playerId'], 'Digits')) {
             $this->sendError($user, 'No game ID or player ID. Not authorized.');
             return;
@@ -83,6 +88,15 @@ class Cli_GameHandler extends Cli_WofHandler
 
             $playerId = $mGame->getTurnPlayerId();
 
+            $mPlayersInGame = new Application_Model_PlayersInGame($user->parameters['gameId'], $db);
+
+            if (!$mPlayersInGame->playerTurnActive($playerId)) {
+                $l->log('START TURY');
+                $mTurn = new Cli_Model_Turn($user, $db, $this);
+                $mTurn->start($playerId, true);
+                return;
+            }
+
             $mPlayer = new Application_Model_Player($db);
             if (!$mPlayer->isComputer($playerId)) {
                 echo 'To (' . $playerId . ') nie komputer!' . "\n";
@@ -90,24 +104,20 @@ class Cli_GameHandler extends Cli_WofHandler
                 return;
             }
 
-            $mPlayersInGame = new Application_Model_PlayersInGame($user->parameters['gameId'], $db);
-            if (!$mPlayersInGame->playerTurnActive($playerId)) {
-                $mTurn = new Cli_Model_Turn($user, $db, $this);
-                $mTurn->start($playerId, true);
-            } else {
-                if (Cli_Model_ComputerMainBlocks::handleHeroResurrection($user->parameters['gameId'], $playerId, $db, $this)) {
-                    return;
-                }
+            if (Cli_Model_ComputerHeroResurrection::handle($user->parameters['gameId'], $playerId, $db, $this)) {
+                return;
+            }
 
-                $mArmy2 = new Application_Model_Army($user->parameters['gameId'], $db);
-                $army = $mArmy2->getComputerArmyToMove($playerId);
-                if (!empty($army['armyId'])) {
-                    $mMain = new Cli_Model_ComputerMainBlocks($user, $playerId, $db, $this);
-                    $mMain->moveArmy(new Cli_Model_Army($army));
-                } else {
-                    $mTurn = new Cli_Model_Turn($user, $db, $this);
-                    $mTurn->next($playerId);
-                }
+            $mArmy2 = new Application_Model_Army($user->parameters['gameId'], $db);
+            $army = $mArmy2->getComputerArmyToMove($playerId);
+
+            if (!empty($army['armyId'])) {
+                $mMain = new Cli_Model_ComputerMainBlocks($user, $playerId, $db, $this);
+                $user = $mMain->moveArmy(new Cli_Model_Army($army));
+            } else {
+                $l->log('NASTĘPNA TURA');
+                $mTurn = new Cli_Model_Turn($user, $db, $this);
+                $mTurn->next($playerId);
             }
 
             return;

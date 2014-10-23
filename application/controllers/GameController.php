@@ -7,7 +7,7 @@ class GameController extends Game_Controller_Game
     {
         $this->_helper->layout->setLayout('game');
 
-        $mGame = new Application_Model_Game($this->_namespace->gameId);
+        $mGame = new Application_Model_Game($this->_gameId);
 
         $this->view->headLink()->appendStylesheet('/css/game.css?v=' . Zend_Registry::get('config')->version);
 
@@ -35,12 +35,12 @@ class GameController extends Game_Controller_Game
 
         $this->view->sound();
 
-        $mCastlesInGame = new Application_Model_CastlesInGame($this->_namespace->gameId);
-        $mArmy = new Application_Model_Army($this->_namespace->gameId);
-        $mRuin = new Application_Model_RuinsInGame($this->_namespace->gameId);
-        $mTower = new Application_Model_TowersInGame($this->_namespace->gameId);
-        $mChat = new Application_Model_Chat($this->_namespace->gameId);
-        $mPlayersInGame = new Application_Model_PlayersInGame($this->_namespace->gameId);
+        $mCastlesInGame = new Application_Model_CastlesInGame($this->_gameId);
+        $mArmy = new Application_Model_Army($this->_gameId);
+        $mRuin = new Application_Model_RuinsInGame($this->_gameId);
+        $mTower = new Application_Model_TowersInGame($this->_gameId);
+        $mChat = new Application_Model_Chat($this->_gameId);
+        $mPlayersInGame = new Application_Model_PlayersInGame($this->_gameId);
 
         $game = $mGame->getGame();
         $this->view->game = array();
@@ -60,7 +60,7 @@ class GameController extends Game_Controller_Game
         $neutralTowers = $mMapTowers->getMapTowers();
         $playersTowers = $mTower->getTowers();
 
-        $mTurn = new Application_Model_TurnHistory($this->_namespace->gameId);
+        $mTurn = new Application_Model_TurnHistory($this->_gameId);
         $this->view->turnHistory = $mTurn->getTurnHistory();
 
         $towers = array();
@@ -89,8 +89,8 @@ class GameController extends Game_Controller_Game
             $colors[$player['playerId']] = $player['color'];
             $this->view->players[$player['color']]['armies'] = array();
 
-            $mHeroesInGame = new Application_Model_HeroesInGame($this->_namespace->gameId);
-            $mSoldier = new Application_Model_UnitsInGame($this->_namespace->gameId);
+            $mHeroesInGame = new Application_Model_HeroesInGame($this->_gameId);
+            $mSoldier = new Application_Model_UnitsInGame($this->_gameId);
 
             foreach ($mArmy->getPlayerArmies($player['playerId']) as $army) {
                 $this->view->players[$player['color']]['armies'][$army['armyId']] = $army;
@@ -98,7 +98,7 @@ class GameController extends Game_Controller_Game
 
 
                 foreach ($this->view->players[$player['color']]['armies'][$army['armyId']]['heroes'] as $k => $row) {
-                    $mInventory = new Application_Model_Inventory($row['heroId'], $this->_namespace->gameId);
+                    $mInventory = new Application_Model_Inventory($row['heroId'], $this->_gameId);
                     $this->view->players[$player['color']]['armies'][$army['armyId']]['heroes'][$k]['artifacts'] = $mInventory->getAll();
                 }
 
@@ -162,9 +162,9 @@ class GameController extends Game_Controller_Game
         foreach ($this->view->chatHistory as $k => $v) {
             $this->view->chatHistory[$k]['color'] = $colors[$v['playerId']];
         }
-        $this->view->gameId = $this->_namespace->gameId;
+        $this->view->gameId = $this->_gameId;
 
-        $mBattleSequence = new Application_Model_BattleSequence($this->_namespace->gameId);
+        $mBattleSequence = new Application_Model_BattleSequence($this->_gameId);
         $this->view->battleSequence = $mBattleSequence->get(Zend_Auth::getInstance()->getIdentity()->playerId);
         if (empty($this->view->battleSequence)) {
             $mBattleSequence->initiate(Zend_Auth::getInstance()->getIdentity()->playerId, $this->view->units);
