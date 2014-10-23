@@ -112,8 +112,8 @@ class Cli_GameHandler extends Cli_WofHandler
             $army = $mArmy2->getComputerArmyToMove($playerId);
 
             if (!empty($army['armyId'])) {
-                $mMain = new Cli_Model_ComputerMainBlocks($user, $playerId, $db, $this);
-                $user = $mMain->moveArmy(new Cli_Model_Army($army));
+                $mMain = new Cli_Model_ComputerMain($user, $playerId, $db, $this);
+                $user = $mMain->move(new Cli_Model_Army($army));
             } else {
                 $l->log('NASTĘPNA TURA');
                 $mTurn = new Cli_Model_Turn($user, $db, $this);

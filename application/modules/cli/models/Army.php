@@ -76,6 +76,7 @@ class Cli_Model_Army
 
         return array(
             'path' => $realPath,
+            'fullPath' => $path,
             'currentPosition' => end($realPath)
         );
     }
