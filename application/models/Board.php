@@ -97,6 +97,7 @@ class Application_Model_Board
                 $fields = self::changeCastleFields($fields, $x, $y, 'e');
             }
         }
+
         return array(
             'myCastles' => $myCastles,
             'hostileCastles' => $hostileCastles,
@@ -111,6 +112,10 @@ class Application_Model_Board
             'y' => $y
         );
         foreach ($castles as $castle) {
+            if (!isset($castle['position'])) {
+                var_dump($castle);
+                throw new Exception('aaa');
+            }
             if (self::isCastleField($aP, $castle['position'])) {
                 return $castle['castleId'];
             }

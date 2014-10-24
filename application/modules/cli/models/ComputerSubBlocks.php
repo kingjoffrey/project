@@ -52,7 +52,7 @@ class Cli_Model_ComputerSubBlocks extends Cli_Model_ComputerFight
             return;
         }
 
-        $move = $this->_mArm->calculateMovesSpend($path);
+        $move = $this->_mArmy->calculateMovesSpend($path);
         if (Application_Model_Board::isCastleField($move['currentPosition'], $position)) {
             $move['in'] = true;
         } else {
@@ -80,7 +80,7 @@ class Cli_Model_ComputerSubBlocks extends Cli_Model_ComputerFight
             return;
         }
 
-        $move = $this->_mArm->calculateMovesSpend($aStar->getPath($enemy['x'] . '_' . $enemy['y']));
+        $move = $this->_mArmy->calculateMovesSpend($aStar->getPath($enemy['x'] . '_' . $enemy['y']));
         if ($castleId) {
             if ($castleId == Application_Model_Board::isCastleAtPosition($move['currentPosition']['x'], $move['currentPosition']['y'], $this->_map['hostileCastles'])) {
                 $move['in'] = true;
@@ -153,7 +153,7 @@ class Cli_Model_ComputerSubBlocks extends Cli_Model_ComputerFight
 
                 $fields = Application_Model_Board::changeArmyField($fields, $enemy['x'], $enemy['y'], 'e');
 
-                $move = $this->_mArm->calculateMovesSpend($aStar->getPath($enemy['x'] . '_' . $enemy['y']));
+                $move = $this->_mArmy->calculateMovesSpend($aStar->getPath($enemy['x'] . '_' . $enemy['y']));
                 if ($move['currentPosition']['x'] == $enemy['x'] && $move['currentPosition']['y'] == $enemy['y']) {
                     $enemiesInRange[] = $enemy;
                 }
@@ -183,7 +183,7 @@ class Cli_Model_ComputerSubBlocks extends Cli_Model_ComputerFight
                     return;
                 }
 
-                $move = $this->_mArm->calculateMovesSpend($aStar->getPath($ruin['x'] . '_' . $ruin['y']));
+                $move = $this->_mArmy->calculateMovesSpend($aStar->getPath($ruin['x'] . '_' . $ruin['y']));
                 if ($move['currentPosition']['x'] == $ruin['x'] && $move['currentPosition']['y'] == $ruin['y']) {
                     $ruin['ruinId'] = $ruinId;
                     return array_merge($ruin, $move);
@@ -209,7 +209,7 @@ class Cli_Model_ComputerSubBlocks extends Cli_Model_ComputerFight
                     return;
                 }
 
-                $move = $this->_mArm->calculateMovesSpend($aStar->getPath($position['x'] . '_' . $position['y']));
+                $move = $this->_mArmy->calculateMovesSpend($aStar->getPath($position['x'] . '_' . $position['y']));
                 if ($move['currentPosition']['x'] == $position['x'] && $move['currentPosition']['y'] == $position['y']) {
                     $castle['x'] = $position['x'];
                     $castle['y'] = $position['y'];
@@ -244,10 +244,10 @@ class Cli_Model_ComputerSubBlocks extends Cli_Model_ComputerFight
         }
     }
 
-    public function canAttackAllEnemyHaveRange($castles)
+    public function canAttackAllEnemyHaveRange()
     {
         foreach ($this->_enemies as $enemy) {
-            $castleId = Application_Model_Board::isCastleAtPosition($enemy['x'], $enemy['y'], $castles);
+            $castleId = Application_Model_Board::isCastleAtPosition($enemy['x'], $enemy['y'], $this->_map['hostileCastles']);
             $enemy['castleId'] = $castleId;
             if ($this->isEnemyStronger($enemy, $castleId)) {
                 return;
@@ -284,7 +284,7 @@ class Cli_Model_ComputerSubBlocks extends Cli_Model_ComputerFight
                     return;
                 }
 
-                $move = $this->_mArm->calculateMovesSpend($aStar->getPath($enemy['x'] . '_' . $enemy['y']));
+                $move = $this->_mArmy->calculateMovesSpend($aStar->getPath($enemy['x'] . '_' . $enemy['y']));
                 if ($move['currentPosition']['x'] == $enemy['x'] && $move['currentPosition']['y'] == $enemy['y']) {
                     $enemy['castleId'] = $castleId;
                     return array_merge($enemy, $move);
@@ -327,7 +327,7 @@ class Cli_Model_ComputerSubBlocks extends Cli_Model_ComputerFight
                     return;
                 }
 
-                $move = $this->_mArm->calculateMovesSpend($aStar->getPath($enemy['x'] . '_' . $enemy['y']));
+                $move = $this->_mArmy->calculateMovesSpend($aStar->getPath($enemy['x'] . '_' . $enemy['y']));
                 if ($move['currentPosition']['x'] == $enemy['x'] && $move['currentPosition']['y'] == $enemy['y']) {
 //                    array_merge($enemy, $move);
 //                    $enemy['castleId'] = $castleId;
@@ -392,7 +392,7 @@ class Cli_Model_ComputerSubBlocks extends Cli_Model_ComputerFight
                     return;
                 }
 
-                $move = $this->_mArm->calculateMovesSpend($aStar->getPath($a['x'] . '_' . $a['y']));
+                $move = $this->_mArmy->calculateMovesSpend($aStar->getPath($a['x'] . '_' . $a['y']));
                 if ($move['currentPosition']['x'] == $a['x'] && $move['currentPosition']['y'] == $a['y']) {
                     return array_merge($a, $move);
                 }
@@ -439,7 +439,7 @@ class Cli_Model_ComputerSubBlocks extends Cli_Model_ComputerFight
             return;
         }
 
-        $move = $this->_mArm->calculateMovesSpend($aStar->getPath($castle['position']['x'] . '_' . $castle['position']['y']));
+        $move = $this->_mArmy->calculateMovesSpend($aStar->getPath($castle['position']['x'] . '_' . $castle['position']['y']));
 
         if ($move['currentPosition'] == $position) {
             return array_merge($castle, $move);
@@ -472,6 +472,21 @@ class Cli_Model_ComputerSubBlocks extends Cli_Model_ComputerFight
         $castleRange['weakerHostileCastleId'] = $weakerHostileCastleId;
 
         return $castleRange;
+    }
+
+    protected function initMap()
+    {
+        $mCastlesInGame = new Application_Model_CastlesInGame($this->_gameId, $this->_db);
+        $mPlayersInGame = new Application_Model_PlayersInGame($this->_gameId, $this->_db);
+
+        $this->_map = Application_Model_Board::prepareCastlesAndFields(
+            Cli_Model_Army::getEnemyArmiesFieldsPositions($this->_gameId, $this->_db, $this->_playerId),
+            $mCastlesInGame->getRazedCastles(),
+            $mCastlesInGame->getPlayerCastles($this->_playerId),
+            $mCastlesInGame->getTeamCastles($this->_playerId, $mPlayersInGame->selectPlayerTeamExceptPlayer($this->_playerId))
+        );
+
+//        var_dump($this->_map['hostileCastles']);exit;
     }
 }
 
