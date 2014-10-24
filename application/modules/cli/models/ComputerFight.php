@@ -2,6 +2,9 @@
 
 class Cli_Model_ComputerFight
 {
+    protected $_gameId;
+    protected $_playerId;
+    protected $_db;
     protected $_mArmyDB;
 
     public function __construct($gameId, $playerId, $db)
@@ -9,19 +12,17 @@ class Cli_Model_ComputerFight
         $this->_gameId = $gameId;
         $this->_playerId = $playerId;
         $this->_db = $db;
-
         $this->_mArmyDB = new Application_Model_Army($this->_gameId, $this->_db);
     }
 
-    public function fightEnemy($path, $fields, $castleId)
+    public function fightEnemy($path, $castleId = null)
     {
         $result = array(
             'victory' => false
         );
 
         $position = end($path);
-        $fields = Application_Model_Board::changeArmyField($fields, $position['x'], $position['y'], 'E');
-        $mapCastles = Zend_Registry::get('castles');
+        $fields = Application_Model_Board::changeArmyField($this->_map['fields'], $position['x'], $position['y'], 'E');
 
         if ($castleId) { // castle
             $mCastlesInGame = new Application_Model_CastlesInGame($this->_gameId, $this->_db);
@@ -30,7 +31,7 @@ class Cli_Model_ComputerFight
                 $playersInGameColors = Zend_Registry::get('playersInGameColors');
                 $defenderId = $mCastlesInGame->getPlayerIdByCastleId($castleId);
                 $result['defenderColor'] = $playersInGameColors[$defenderId];
-                $enemy = Cli_Model_Army::getCastleGarrisonFromCastlePosition($mapCastles[$castleId]['position'], $this->_gameId, $this->_db);
+                $enemy = Cli_Model_Army::getCastleGarrisonFromCastlePosition($this->_map['hostileCastles'][$castleId]['position'], $this->_gameId, $this->_db);
                 $enemy = Cli_Model_Army::addCastleDefenseModifier($enemy, $this->_gameId, $castleId, $this->_db);
                 $enemy = Cli_Model_Army::setCombatDefenseModifiers($enemy);
 
@@ -43,7 +44,7 @@ class Cli_Model_ComputerFight
                     Cli_Model_Army::updateArmyPosition($this->_playerId, $path, $fields, $this->_army, $this->_gameId, $this->_db);
                     $result['attackerArmy'] = Cli_Model_Army::getArmyByArmyIdPlayerId($this->_army['armyId'], $this->_playerId, $this->_gameId, $this->_db);
                     $result['victory'] = true;
-                    $mCastlesInGame->changeOwner($mapCastles[$castleId], $this->_playerId);
+                    $mCastlesInGame->changeOwner($this->_map['hostileCastles'][$castleId], $this->_playerId);
                 } else {
                     $result['attackerArmy'] = array(
                         'armyId' => $this->_army['armyId'],
@@ -78,6 +79,7 @@ class Cli_Model_ComputerFight
             }
         } else { // enemy army
             $enemy = $this->_mArmyDB->getAllEnemyUnitsFromPosition($position, $this->_playerId);
+            $enemy['armyId'] = $enemy['ids'][0];
             $enemy = Cli_Model_Army::setCombatDefenseModifiers($enemy);
             $enemy = Cli_Model_Army::addTowerDefenseModifier($enemy);
             $defenderId = Cli_Model_Army::getEnemyPlayerIdFromPosition($this->_gameId, $this->_db, $this->_playerId, $enemy);

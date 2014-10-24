@@ -361,13 +361,10 @@ class Application_Model_Army extends Coret_Db_Table_Abstract
                 'x' => $position['x'],
                 'y' => $position['y']
             );
-        } else {
-            return array(
-                'heroes' => null,
-                'soldiers' => null,
-                'ids' => null
-            );
         }
+        Coret_Model_Logger::debug(debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 2));
+        throw new Exception('Brak jednostek wroga na pozycji');
+        exit;
     }
 
     public function areMySwimmingUnitsAtPosition($position, $playerId)

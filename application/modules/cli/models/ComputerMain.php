@@ -199,7 +199,7 @@ class Cli_Model_ComputerMain extends Cli_Model_ComputerSubBlocks
                         } else {
                             $range = $this->isEnemyArmyInRange($enemy);
                         }
-                        $fightEnemyResults = $this->fightEnemy($range['path'], $this->_map['fields'], $castleId);
+                        $fightEnemyResults = $this->fightEnemy($range['path'], $castleId);
                         return $this->endMove($this->_army['armyId'], $range['currentPosition'], $range['path'], $fightEnemyResults, $castleId);
                     }
 
@@ -237,7 +237,7 @@ class Cli_Model_ComputerMain extends Cli_Model_ComputerSubBlocks
                             if ($range['in']) {
                                 $this->_l->log('ATAKUJĘ WRÓGA Z ZASIĘGIEM - ATAKUJ!');
 
-                                $fightEnemyResults = $this->fightEnemy($range['path'], $this->_map['fields'], $range['castleId']);
+                                $fightEnemyResults = $this->fightEnemy($range['path'], $range['castleId']);
                                 return $this->endMove($this->_army['armyId'], $range['currentPosition'], $range['path'], $fightEnemyResults, $range['castleId']);
                             }
                             $this->_l->log('WRÓG Z ZASIĘGIEM POZA ZASIĘGIEM - IDŹ DO WROGA!');
@@ -291,7 +291,7 @@ class Cli_Model_ComputerMain extends Cli_Model_ComputerSubBlocks
                 if (isset($castleRange['in']) && $castleRange['in']) {
                     //atakuj
                     $this->_l->log('SŁABSZY ZAMEK WROGA W ZASIĘGU - ATAKUJĘ!');
-                    $fightEnemyResults = $this->fightEnemy($castleRange['path'], $this->_map['fields'], $castleRange['weakerHostileCastleId']);
+                    $fightEnemyResults = $this->fightEnemy($castleRange['path'], $castleRange['weakerHostileCastleId']);
                     return $this->endMove($this->_army['armyId'], $castleRange['currentPosition'], $castleRange['path'], $fightEnemyResults, $castleRange['weakerHostileCastleId']);
                 }
 
@@ -300,7 +300,7 @@ class Cli_Model_ComputerMain extends Cli_Model_ComputerSubBlocks
                 if ($enemy) {
                     //atakuj
                     $this->_l->log('JEST SŁABSZA ARMIA WROGA W ZASIĘGU (' . $enemy['armyId'] . ') - ATAKUJĘ!');
-                    $fightEnemyResults = $this->fightEnemy($enemy['path'], $this->_map['fields'], $enemy['castleId']);
+                    $fightEnemyResults = $this->fightEnemy($enemy['path'], $enemy['castleId']);
                     return $this->endMove($this->_army['armyId'], $enemy['currentPosition'], $enemy['path'], $fightEnemyResults, $enemy['castleId']);
                 }
 
@@ -361,7 +361,7 @@ class Cli_Model_ComputerMain extends Cli_Model_ComputerSubBlocks
             $range = $this->isEnemyArmyInRange($enemy);
             if ($range['in']) {
                 $this->_l->log('SŁABSZY WRÓG W ZASIĘGU - ATAKUJ!');
-                $fightEnemyResults = $this->fightEnemy($range['path'], $this->_map['fields'], $range['castleId']);
+                $fightEnemyResults = $this->fightEnemy($range['path'], $range['castleId']);
                 return $this->endMove($this->_army['armyId'], $range['currentPosition'], $range['path'], $fightEnemyResults);
             }
             $this->_l->log('SŁABSZY WRÓG POZA ZASIĘGIEM - IDŹ DO WROGA');
@@ -451,6 +451,7 @@ class Cli_Model_ComputerMain extends Cli_Model_ComputerSubBlocks
 
     private function goByThePath()
     {
+
         $this->_l->log('IDĘ ŚCIEŻKĄ');
         $move = $this->_mArmy->calculateMovesSpend($this->_user->parameters['computer'][$this->_playerId][$this->_army['armyId']]['path']);
         unset($this->_user->parameters['computer'][$this->_playerId][$this->_army['armyId']]['path']);
@@ -460,17 +461,16 @@ class Cli_Model_ComputerMain extends Cli_Model_ComputerSubBlocks
             $castleId = Application_Model_Board::isCastleAtPosition($move['currentPosition']['x'], $move['currentPosition']['y'], $this->_map['hostileCastles']);
             if ($castleId) {
                 $this->_l->log('JEST ZAMEK');
-                $fightEnemyResults = $this->fightEnemy($move['path'], $this->_map['fields'], $castleId);
+                $fightEnemyResults = $this->fightEnemy($move['path'], $castleId);
             } else {
                 $this->_l->log('BRAK ZAMKU');
-                $fightEnemyResults = $this->fightEnemy($move['path'], $this->_map['fields']);
+                $fightEnemyResults = $this->fightEnemy($move['path']);
             }
 
             return $this->endMove($this->_army['armyId'], $move['currentPosition'], $move['path'], $fightEnemyResults);
         }
 
         if (count($move['fullPath']) > count($move['path'])) {
-            $this->_l->log('ZAPISUJĘ ŚCIEŻKĘ');
             return $this->savePath($move);
         }
 
