@@ -13,7 +13,7 @@ class Cli_Model_ComputerFight
         $this->_mArmyDB = new Application_Model_Army($this->_gameId, $this->_db);
     }
 
-    public function fightEnemy($path, $fields, $enemy, $castleId)
+    public function fightEnemy($path, $fields, $castleId)
     {
         $result = array(
             'victory' => false
@@ -77,9 +77,9 @@ class Cli_Model_ComputerFight
                 $result['defenderColor'] = 'neutral';
             }
         } else { // enemy army
+            $enemy = $this->_mArmyDB->getAllEnemyUnitsFromPosition($position, $this->_playerId);
             $enemy = Cli_Model_Army::setCombatDefenseModifiers($enemy);
             $enemy = Cli_Model_Army::addTowerDefenseModifier($enemy);
-            $enemy['ids'][] = $enemy['armyId'];
             $defenderId = Cli_Model_Army::getEnemyPlayerIdFromPosition($this->_gameId, $this->_db, $this->_playerId, $enemy);
             $battle = new Cli_Model_Battle($this->_army, $enemy, Cli_Model_Army::getAttackSequence($this->_gameId, $this->_db, $this->_playerId), Cli_Model_Army::getDefenceSequence($this->_gameId, $this->_db, $defenderId));
             $battle->fight();
@@ -108,7 +108,7 @@ class Cli_Model_ComputerFight
         return $result;
     }
 
-    public function isEnemyStronger($enemy, $castleId, $max = 30)
+    public function isEnemyStronger($enemy, $castleId = null, $max = 30)
     {
         $attackerWinsCount = 0;
         $attackerCourage = 2;

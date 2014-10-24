@@ -45,11 +45,7 @@ class Application_Model_RuinsInGame extends Coret_Db_Table_Abstract
             $this->_foreign_1 => $this->_gameId
         );
 
-        try {
-            $this->_db->insert($this->_name, $data);
-        } catch (Exception $e) {
-            echo($e);
-        }
+        $this->insert($data);
     }
 
     public function ruinExists($ruinId)
@@ -59,12 +55,7 @@ class Application_Model_RuinsInGame extends Coret_Db_Table_Abstract
             ->where($this->_db->quoteIdentifier($this->_foreign_2) . ' = ?', $ruinId)
             ->where($this->_db->quoteIdentifier($this->_foreign_1) . ' = ?', $this->_gameId);
 
-        try {
-            return Zend_Validate::is($this->_db->fetchOne($select), 'Digits');
-        } catch (Exception $e) {
-            echo($e);
-            echo($select->__toString());
-        }
+        return Zend_Validate::is($this->selectOne($select), 'Digits');
     }
 
     public function getFullRuins()
@@ -72,12 +63,8 @@ class Application_Model_RuinsInGame extends Coret_Db_Table_Abstract
         $select = $this->_db->select()
             ->from($this->_name, $this->_foreign_2)
             ->where($this->_db->quoteIdentifier($this->_foreign_1) . ' = ?', $this->_gameId);
-        try {
-            $result = $this->_db->query($select)->fetchAll();
-        } catch (Exception $e) {
-            echo($e);
-            echo($select->__toString());
-        }
+
+        $result = $this->selectAll($select);
 
         $ruins = Zend_Registry::get('ruins');
         foreach ($result as $row) {

@@ -202,8 +202,6 @@ class Cli_Model_Move
             $fight = true;
             $defenderColor = $playersInGameColors[$defenderId];
             $enemy = $mArmy2->getAllEnemyUnitsFromPosition(array('x' => $x, 'y' => $y), $user->parameters['playerId']);
-            $enemy['x'] = $x;
-            $enemy['y'] = $y;
             $enemy = Cli_Model_Army::setCombatDefenseModifiers($enemy);
             $enemy = Cli_Model_Army::addTowerDefenseModifier($enemy);
         }

@@ -357,7 +357,9 @@ class Application_Model_Army extends Coret_Db_Table_Abstract
             return array(
                 'heroes' => $mHeroesInGame->getForBattle($ids),
                 'soldiers' => $mSoldier->getForBattle($ids),
-                'ids' => $ids
+                'ids' => $ids,
+                'x' => $position['x'],
+                'y' => $position['y']
             );
         } else {
             return array(

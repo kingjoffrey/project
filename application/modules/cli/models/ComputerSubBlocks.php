@@ -343,7 +343,7 @@ class Cli_Model_ComputerSubBlocks extends Cli_Model_ComputerFight
         return null;
     }
 
-    public function getMyArmyInRange()
+    public function getPathToMyArmyInRange()
     {
         if (!isset($this->_army['movesLeft'])) {
             $this->_army['movesLeft'] = Cli_Model_Army::calculateMaxArmyMoves($this->_army);
@@ -485,8 +485,6 @@ class Cli_Model_ComputerSubBlocks extends Cli_Model_ComputerFight
             $mCastlesInGame->getPlayerCastles($this->_playerId),
             $mCastlesInGame->getTeamCastles($this->_playerId, $mPlayersInGame->selectPlayerTeamExceptPlayer($this->_playerId))
         );
-
-//        var_dump($this->_map['hostileCastles']);exit;
     }
 }
 

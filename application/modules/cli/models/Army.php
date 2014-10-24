@@ -302,7 +302,7 @@ class Cli_Model_Army
     static public function addTowerDefenseModifier($army)
     {
         if (!isset($army['x'])) {
-            Coret_Model_Logger::debug('addTowerDefenseModifier');
+            Coret_Model_Logger::debug(debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 2));
             exit;
         }
         if (Application_Model_Board::isTowerAtPosition($army['x'], $army['y'])) {
@@ -329,6 +329,7 @@ class Cli_Model_Army
                 $army['defenseModifier'] = $defenseModifier;
             }
         } else {
+            throw new Exception('$defenseModifier <= 0');
             echo 'error! !';
         }
         return $army;
