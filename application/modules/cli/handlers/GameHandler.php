@@ -108,12 +108,12 @@ class Cli_GameHandler extends Cli_WofHandler
                 return;
             }
 
-            $mArmy2 = new Application_Model_Army($user->parameters['gameId'], $db);
-            $army = $mArmy2->getComputerArmyToMove($playerId);
+            $mArmy = new Application_Model_Army($user->parameters['gameId'], $db);
+            $army = $mArmy->getComputerArmyToMove($playerId);
 
             if (!empty($army['armyId'])) {
                 $mMain = new Cli_Model_ComputerMain($user, $playerId, $db, $this);
-                $user = $mMain->move(new Cli_Model_Army($army));
+                $user = $mMain->move($army);
             } else {
                 $l->log('NASTĘPNA TURA');
                 $mTurn = new Cli_Model_Turn($user, $db, $this);

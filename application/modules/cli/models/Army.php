@@ -3,20 +3,41 @@
 class Cli_Model_Army
 {
 
-    private $army;
     private $units;
+
+    private $terrain;
+
+    public $id;
+    public $x;
+    public $y;
+    public $defenseModifier = 0;
+    public $attackModifier = 0;
+
+    private $canFly = 0;
+    private $canSwim = 0;
+
+    public $heroes = array();
+    public $soldiers = array();
+
+    public $movesLeft = 0;
 
     public function __construct($army)
     {
         $this->units = Zend_Registry::get('units');
+        $this->terrain = Zend_Registry::get('terrain');
 
-        $this->army = $army;
-        $this->army['defenseModifier'] = 0;
-        $this->army['attackModifier'] = 0;
+        $this->id = $army['armyId'];
+        $this->x = $army['x'];
+        $this->y = $army['y'];
 
-        $numberOfHeroes = count($army['heroes']);
+        $this->movesLeft = Cli_Model_Army::calculateMaxArmyMoves($army);
+
+        $this->heroes = $army['heroes'];
+        $this->soldiers = $army['soldiers'];
+
+        $numberOfHeroes = count($this->heroes);
         if ($numberOfHeroes) {
-            $this->army['attackModifier']++;
+            $this->attackModifier++;
             $modMovesForest = 3;
             $modMovesSwamp = 4;
             $modMovesHills = 5;
@@ -25,12 +46,12 @@ class Cli_Model_Army
             $modMovesSwamp = 0;
             $modMovesHills = 0;
         }
-        $this->army['canFly'] = -$numberOfHeroes + 1;
-        $this->army['canSwim'] = 0;
+        $this->canFly = -$numberOfHeroes + 1;
+        $this->canSwim = 0;
 
         $attackFlyModifier = 0;
 
-        foreach ($army['soldiers'] as $soldier) {
+        foreach ($this->soldiers as $soldier) {
             $unit = $this->units[$soldier['unitId']];
 
             if ($unit['modMovesForest'] > $modMovesForest) {
@@ -45,48 +66,48 @@ class Cli_Model_Army
 
             if ($unit['canFly']) {
                 $attackFlyModifier++;
-                $this->army['canFly']++;
+                $this->canFly++;
             } else {
-                $this->army['canFly'] -= 200;
+                $this->canFly -= 200;
             }
             if ($unit['canSwim']) {
-                $this->army['canSwim']++;
+                $this->canSwim++;
             }
         }
 
         if ($attackFlyModifier) {
-            $this->army['attackModifier']++;
+            $this->attackModifier++;
         }
     }
 
-    public function getArmy()
+    public function getArmyId()
     {
-        return $this->army;
+        return $this->id;
     }
 
-    public function calculateMovesSpend($path)
+    public function calculateMovesSpend($fullPath)
     {
         if ($this->canFly()) {
-            $realPath = $this->calculateMovesSpendFlying($path);
+            $currentPath = $this->calculateMovesSpendFlying($fullPath);
         } elseif ($this->canSwim()) {
-            $realPath = $this->calculateMovesSpendSwimming($path);
+            $currentPath = $this->calculateMovesSpendSwimming($fullPath);
         } else {
-            $realPath = $this->calculateMovesSpendWalking($path);
+            $currentPath = $this->calculateMovesSpendWalking($fullPath);
         }
 
-        return array(
-            'path' => $realPath,
-            'fullPath' => $path,
-            'currentPosition' => end($realPath)
-        );
+        return new Cli_Model_Path($currentPath, $fullPath);
+//        return array(
+//            'path' => $currentPath,
+//            'fullPath' => $fullPath,
+//            'currentPosition' => end($currentPath)
+//        );
     }
 
-    private function calculateMovesSpendFlying($path)
+    private function calculateMovesSpendFlying($fullPath)
     {
-        $terrain = Zend_Registry::get('terrain');
-        $realPath = array();
+        $currentPath = array();
 
-        foreach ($this->army['soldiers'] as $soldier) {
+        foreach ($this->soldiers as $soldier) {
             if (!$this->units[$soldier['unitId']]['canFly']) {
                 continue;
             }
@@ -101,32 +122,31 @@ class Cli_Model_Army
             }
         }
 
-
-        for ($i = 0; $i < count($path); $i++) {
-            if (!isset($path[$i]['cc'])) {
-                $movesLeft -= $terrain[$path[$i]['tt']]['flying'];
+        for ($i = 0; $i < count($fullPath); $i++) {
+            if (!isset($fullPath[$i]['cc'])) {
+                $movesLeft -= $this->terrain[$fullPath[$i]['tt']]['flying'];
             }
 
             if ($movesLeft < 0) {
                 break;
             }
 
-            if (isset($path[$i]['cc'])) {
-                $realPath[] = array(
-                    'x' => $path[$i]['x'],
-                    'y' => $path[$i]['y'],
-                    'tt' => $path[$i]['tt'],
+            if (isset($fullPath[$i]['cc'])) {
+                $currentPath[] = array(
+                    'x' => $fullPath[$i]['x'],
+                    'y' => $fullPath[$i]['y'],
+                    'tt' => $fullPath[$i]['tt'],
                     'myCastleCosts' => true
                 );
             } else {
-                $realPath[] = array(
-                    'x' => $path[$i]['x'],
-                    'y' => $path[$i]['y'],
-                    'tt' => $path[$i]['tt']
+                $currentPath[] = array(
+                    'x' => $fullPath[$i]['x'],
+                    'y' => $fullPath[$i]['y'],
+                    'tt' => $fullPath[$i]['tt']
                 );
             }
 
-            if ($path[$i]['tt'] == 'E') {
+            if ($fullPath[$i]['tt'] == 'E') {
                 break;
             }
 
@@ -135,15 +155,14 @@ class Cli_Model_Army
             }
         }
 
-        return $realPath;
+        return $currentPath;
     }
 
-    private function calculateMovesSpendSwimming($path)
+    private function calculateMovesSpendSwimming($fullPath)
     {
-        $terrain = Zend_Registry::get('terrain');
-        $realPath = array();
+        $currentPath = array();
 
-        foreach ($this->army['soldiers'] as $soldier) {
+        foreach ($this->soldiers as $soldier) {
             if (!$this->units[$soldier['unitId']]['canSwim']) {
                 continue;
             }
@@ -159,31 +178,31 @@ class Cli_Model_Army
         }
 
 
-        for ($i = 0; $i < count($path); $i++) {
-            if (!isset($path[$i]['cc'])) {
-                $movesLeft -= $terrain[$path[$i]['tt']]['swimming'];
+        for ($i = 0; $i < count($fullPath); $i++) {
+            if (!isset($fullPath[$i]['cc'])) {
+                $movesLeft -= $this->terrain[$fullPath[$i]['tt']]['swimming'];
             }
 
             if ($movesLeft < 0) {
                 break;
             }
 
-            if (isset($path[$i]['cc'])) {
-                $realPath[] = array(
-                    'x' => $path[$i]['x'],
-                    'y' => $path[$i]['y'],
-                    'tt' => $path[$i]['tt'],
+            if (isset($fullPath[$i]['cc'])) {
+                $currentPath[] = array(
+                    'x' => $fullPath[$i]['x'],
+                    'y' => $fullPath[$i]['y'],
+                    'tt' => $fullPath[$i]['tt'],
                     'myCastleCosts' => true
                 );
             } else {
-                $realPath[] = array(
-                    'x' => $path[$i]['x'],
-                    'y' => $path[$i]['y'],
-                    'tt' => $path[$i]['tt']
+                $currentPath[] = array(
+                    'x' => $fullPath[$i]['x'],
+                    'y' => $fullPath[$i]['y'],
+                    'tt' => $fullPath[$i]['tt']
                 );
             }
 
-            if ($path[$i]['tt'] == 'E') {
+            if ($fullPath[$i]['tt'] == 'E') {
                 break;
             }
 
@@ -192,33 +211,32 @@ class Cli_Model_Army
             }
         }
 
-        return $realPath;
+        return $currentPath;
     }
 
-    private function calculateMovesSpendWalking($path)
+    private function calculateMovesSpendWalking($fullPath)
     {
-        $terrain = Zend_Registry::get('terrain');
         $soldiersMovesLeft = array();
         $heroesMovesLeft = array();
-        $realPath = array();
+        $currentPath = array();
         $stop = false;
         $skip = false;
 
-        for ($i = 0; $i < count($path); $i++) {
-            $defaultMoveCost = $terrain[$path[$i]['tt']]['walking'];
+        for ($i = 0; $i < count($fullPath); $i++) {
+            $defaultMoveCost = $this->terrain[$fullPath[$i]['tt']]['walking'];
 
-            foreach ($this->army['soldiers'] as $soldier) {
+            foreach ($this->soldiers as $soldier) {
                 if (!isset($soldiersMovesLeft[$soldier['soldierId']])) {
                     $soldiersMovesLeft[$soldier['soldierId']] = $soldier['movesLeft'];
                 }
 
-                if ($path[$i]['tt'] == 'f') {
+                if ($fullPath[$i]['tt'] == 'f') {
                     $soldiersMovesLeft[$soldier['soldierId']] -= $this->units[$soldier['unitId']]['modMovesForest'];
-                } elseif ($path[$i]['tt'] == 's') {
+                } elseif ($fullPath[$i]['tt'] == 's') {
                     $soldiersMovesLeft[$soldier['soldierId']] -= $this->units[$soldier['unitId']]['modMovesSwamp'];
-                } elseif ($path[$i]['tt'] == 'm') {
+                } elseif ($fullPath[$i]['tt'] == 'm') {
                     $soldiersMovesLeft[$soldier['soldierId']] -= $this->units[$soldier['unitId']]['modMovesHills'];
-                } elseif (!isset($path[$i]['cc'])) {
+                } elseif (!isset($fullPath[$i]['cc'])) {
                     $soldiersMovesLeft[$soldier['soldierId']] -= $defaultMoveCost;
                 }
 
@@ -232,12 +250,12 @@ class Cli_Model_Army
                 }
             }
 
-            foreach ($this->army['heroes'] as $hero) {
+            foreach ($this->heroes as $hero) {
                 if (!isset($heroesMovesLeft[$hero['heroId']])) {
                     $heroesMovesLeft[$hero['heroId']] = $hero['movesLeft'];
                 }
 
-                if (!isset($path[$i]['cc'])) {
+                if (!isset($fullPath[$i]['cc'])) {
                     $heroesMovesLeft[$hero['heroId']] -= $defaultMoveCost;
                 }
 
@@ -255,22 +273,22 @@ class Cli_Model_Army
                 break;
             }
 
-            if (isset($path[$i]['cc'])) {
-                $realPath[] = array(
-                    'x' => $path[$i]['x'],
-                    'y' => $path[$i]['y'],
-                    'tt' => $path[$i]['tt'],
+            if (isset($fullPath[$i]['cc'])) {
+                $currentPath[] = array(
+                    'x' => $fullPath[$i]['x'],
+                    'y' => $fullPath[$i]['y'],
+                    'tt' => $fullPath[$i]['tt'],
                     'myCastleCosts' => true
                 );
             } else {
-                $realPath[] = array(
-                    'x' => $path[$i]['x'],
-                    'y' => $path[$i]['y'],
-                    'tt' => $path[$i]['tt']
+                $currentPath[] = array(
+                    'x' => $fullPath[$i]['x'],
+                    'y' => $fullPath[$i]['y'],
+                    'tt' => $fullPath[$i]['tt']
                 );
             }
 
-            if ($path[$i]['tt'] == 'E') {
+            if ($fullPath[$i]['tt'] == 'E') {
                 break;
             }
 
@@ -279,7 +297,7 @@ class Cli_Model_Army
             }
         }
 
-        return $realPath;
+        return $currentPath;
     }
 
     static public function setCombatDefenseModifiers($army)
@@ -342,29 +360,27 @@ class Cli_Model_Army
 
     public function canSwim()
     {
-        if ($this->army['canSwim']) {
+        if ($this->canSwim) {
             return true;
         }
     }
 
     public function canFly()
     {
-        if ($this->army['canFly'] > 0) {
+        if ($this->canFly > 0) {
             return true;
         }
     }
 
-    public function unitsHaveRange($path)
+    public function unitsHaveRange($fullPath)
     {
-        $terrain = Zend_Registry::get('terrain');
-
         $soldiersMovesLeft = array();
         $heroesMovesLeft = array();
 
-        for ($i = 0; $i < count($path); $i++) {
-            $defaultMoveCost = $terrain[$path[$i]['tt']]['walking'];
+        for ($i = 0; $i < count($fullPath); $i++) {
+            $defaultMoveCost = $this->terrain[$fullPath[$i]['tt']]['walking'];
 
-            foreach ($this->army['soldiers'] as $soldier) {
+            foreach ($this->soldiers as $soldier) {
                 if (!isset($soldiersMovesLeft[$soldier['soldierId']])) {
                     $soldiersMovesLeft[$soldier['soldierId']] = $this->units[$soldier['unitId']]['numberOfMoves'];
                     if ($soldier['movesLeft'] <= 2) {
@@ -377,11 +393,11 @@ class Cli_Model_Army
                 if ($this->canFly()) {
                     $soldiersMovesLeft[$soldier['soldierId']] -= $defaultMoveCost;
                 } else {
-                    if ($path[$i]['tt'] == 'f') {
+                    if ($fullPath[$i]['tt'] == 'f') {
                         $soldiersMovesLeft[$soldier['soldierId']] -= $this->units[$soldier['unitId']]['modMovesForest'];
-                    } elseif ($path[$i]['tt'] == 's') {
+                    } elseif ($fullPath[$i]['tt'] == 's') {
                         $soldiersMovesLeft[$soldier['soldierId']] -= $this->units[$soldier['unitId']]['modMovesSwamp'];
-                    } elseif ($path[$i]['tt'] == 'm') {
+                    } elseif ($fullPath[$i]['tt'] == 'm') {
                         $soldiersMovesLeft[$soldier['soldierId']] -= $this->units[$soldier['unitId']]['modMovesHills'];
                     } else {
                         $soldiersMovesLeft[$soldier['soldierId']] -= $defaultMoveCost;
@@ -389,7 +405,7 @@ class Cli_Model_Army
                 }
             }
 
-            foreach ($this->army['heroes'] as $hero) {
+            foreach ($this->heroes as $hero) {
                 if (!isset($heroesMovesLeft[$hero['heroId']])) {
                     $heroesMovesLeft[$hero['heroId']] = $hero['numberOfMoves'];
                     if ($hero['movesLeft'] <= 2) {
@@ -402,7 +418,7 @@ class Cli_Model_Army
                 $heroesMovesLeft[$hero['heroId']] -= $defaultMoveCost;
             }
 
-            if ($path[$i]['tt'] == 'E') {
+            if ($fullPath[$i]['tt'] == 'E') {
                 break;
             }
         }
@@ -637,18 +653,15 @@ class Cli_Model_Army
         }
     }
 
-    static public function updateArmyPosition($playerId, $path, $fields, $army, $gameId, $db)
+    public function updateArmyPosition($playerId, $path, $fields, $gameId, $db)
     {
         if (empty($path)) {
             return;
         }
 
-        $units = Zend_Registry::get('units');
-        $terrain = Zend_Registry::get('terrain');
-
-        if ($army['canFly'] > 0) {
+        if ($this->canFly()) {
             $type = 'flying';
-        } elseif ($army['canSwim']) {
+        } elseif ($this->canSwim()) {
             $type = 'swimming';
         } else {
             $type = 'walking';
@@ -656,14 +669,12 @@ class Cli_Model_Army
 
         $mHeroesInGame = new Application_Model_HeroesInGame($gameId, $db);
 
-        $heroes = $army['heroes'];
-
-        foreach ($heroes as $hero) {
+        foreach ($this->heroes as $hero) {
             $movesSpend = 0;
 
             foreach ($path as $step) {
                 if (!isset($step['myCastleCosts'])) {
-                    $movesSpend += $terrain[$fields[$step['y']][$step['x']]][$type];
+                    $movesSpend += $this->terrain[$fields[$step['y']][$step['x']]][$type];
                 }
             }
 
@@ -675,16 +686,15 @@ class Cli_Model_Army
             $mHeroesInGame->updateMovesLeft($movesLeft, $hero['heroId']);
         }
 
-        $soldiers = $army['soldiers'];
         $mSoldier = new Application_Model_UnitsInGame($gameId, $db);
 
-        if ($army['canFly'] > 0 || $army['canSwim']) {
-            foreach ($soldiers as $soldier) {
+        if ($this->canFly() || $this->canSwim()) {
+            foreach ($this->soldiers as $soldier) {
                 $movesSpend = 0;
 
                 foreach ($path as $step) {
                     if (!isset($step['myCastleCosts'])) {
-                        $movesSpend += $terrain[$fields[$step['y']][$step['x']]][$type];
+                        $movesSpend += $this->terrain[$fields[$step['y']][$step['x']]][$type];
                     }
                 }
 
@@ -696,16 +706,16 @@ class Cli_Model_Army
                 $mSoldier->updateMovesLeft($movesLeft, $soldier['soldierId']);
             }
         } else {
-            foreach ($soldiers as $soldier) {
+            foreach ($this->soldiers as $soldier) {
                 $movesSpend = 0;
 
-                $terrain['f'][$type] = $units[$soldier['unitId']]['modMovesForest'];
-                $terrain['m'][$type] = $units[$soldier['unitId']]['modMovesHills'];
-                $terrain['s'][$type] = $units[$soldier['unitId']]['modMovesSwamp'];
+                $this->terrain['f'][$type] = $this->units[$soldier['unitId']]['modMovesForest'];
+                $this->terrain['m'][$type] = $this->units[$soldier['unitId']]['modMovesHills'];
+                $this->terrain['s'][$type] = $this->units[$soldier['unitId']]['modMovesSwamp'];
 
                 foreach ($path as $step) {
                     if (!isset($step['myCastleCosts'])) {
-                        $movesSpend += $terrain[$fields[$step['y']][$step['x']]][$type];
+                        $movesSpend += $this->terrain[$fields[$step['y']][$step['x']]][$type];
                     }
                 }
 
@@ -718,10 +728,13 @@ class Cli_Model_Army
             }
         }
 
-        $end = end($path);
         $mArmy = new Application_Model_Army($gameId, $db);
 
-        return $mArmy->updateArmyPosition($playerId, $end, $army['armyId']);
+        $end = end($path);
+        $this->x = $end['x'];
+        $this->y = $end['y'];
+
+        return $mArmy->updateArmyPosition($playerId, $end, $this->id);
     }
 
     static public function getAttackSequence($gameId, $db, $playerId)

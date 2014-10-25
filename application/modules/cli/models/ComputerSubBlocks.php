@@ -10,7 +10,7 @@ class Cli_Model_ComputerSubBlocks extends Cli_Model_ComputerFight
                 continue;
             }
             $mHeuristics = new Cli_Model_Heuristics($castle['position']['x'], $castle['position']['y']);
-            $heuristics[$id] = $mHeuristics->calculateH($this->_army['x'], $this->_army['y']);
+            $heuristics[$id] = $mHeuristics->calculateH($this->_mArmy->x, $mArmy->y);
         }
 
         asort($heuristics, SORT_NUMERIC);
@@ -135,12 +135,9 @@ class Cli_Model_ComputerSubBlocks extends Cli_Model_ComputerFight
 
     public function getEnemiesInRange($fields)
     {
-        if (!isset($this->_army['movesLeft'])) {
-            $this->_army['movesLeft'] = Cli_Model_Army::calculateMaxArmyMoves($this->_army);
-        }
         $enemiesInRange = array();
         foreach ($this->_enemies as $enemy) {
-            $mHeuristics = new Cli_Model_Heuristics($this->_army['x'], $this->_army['y']);
+            $mHeuristics = new Cli_Model_Heuristics($this->_mArmy->x, $this->_mArmy->y);
             $h = $mHeuristics->calculateH($enemy['x'], $enemy['y']);
             if ($h < $this->_army['movesLeft']) {
                 $fields = Application_Model_Board::restoreField($fields, $enemy['x'], $enemy['y']);
@@ -169,12 +166,9 @@ class Cli_Model_ComputerSubBlocks extends Cli_Model_ComputerFight
 
     public function getNearestRuin($fields, $ruins)
     {
-        if (!isset($this->_army['movesLeft'])) {
-            $this->_army['movesLeft'] = Cli_Model_Army::calculateMaxArmyMoves($this->_army);
-        }
         foreach ($ruins as $ruinId => $ruin) {
             $mHeuristics = new Cli_Model_Heuristics($ruin['x'], $ruin['y']);
-            $h = $mHeuristics->calculateH($this->_army['x'], $this->_army['y']);
+            $h = $mHeuristics->calculateH($this->_mArmy->x, $this->_mArmy->y);
             if ($h < $this->_army['movesLeft']) {
                 try {
                     $aStar = new Cli_Model_Astar($this->_army, $ruin['x'], $ruin['y'], $fields, array('limit' => true));
@@ -183,10 +177,10 @@ class Cli_Model_ComputerSubBlocks extends Cli_Model_ComputerFight
                     return;
                 }
 
-                $move = $this->_mArmy->calculateMovesSpend($aStar->getPath($ruin['x'] . '_' . $ruin['y']));
-                if ($move['currentPosition']['x'] == $ruin['x'] && $move['currentPosition']['y'] == $ruin['y']) {
-                    $ruin['ruinId'] = $ruinId;
-                    return array_merge($ruin, $move);
+                $path = $this->_mArmy->calculateMovesSpend($aStar->getPath($ruin['x'] . '_' . $ruin['y']));
+                if ($path->x == $ruin['x'] && $path->y == $ruin['y']) {
+                    $path->ruinId = $ruinId;
+                    return $path;
                 }
             }
         }
@@ -199,7 +193,7 @@ class Cli_Model_ComputerSubBlocks extends Cli_Model_ComputerFight
             if ($this->_mArmyDB->areUnitsAtCastlePosition($position)) {
                 continue;
             }
-            $mHeuristics = new Cli_Model_Heuristics($this->_army['x'], $this->_army['y']);
+            $mHeuristics = new Cli_Model_Heuristics($this->_mArmy->x, $this->_mArmy->y);
             $h = $mHeuristics->calculateH($position['x'], $position['y']);
             if ($h < $this->_army['movesLeft']) {
                 try {
@@ -260,13 +254,9 @@ class Cli_Model_ComputerSubBlocks extends Cli_Model_ComputerFight
     {
         $fields = $this->_map['fields'];
 
-        if (!isset($this->_army['movesLeft'])) {
-            $this->_army['movesLeft'] = Cli_Model_Army::calculateMaxArmyMoves($this->_army);
-        }
-
         foreach ($this->_enemies as $enemy) {
             $mHeuristics = new Cli_Model_Heuristics($enemy['x'], $enemy['y']);
-            $h = $mHeuristics->calculateH($this->_army['x'], $this->_army['y']);
+            $h = $mHeuristics->calculateH($this->_mArmy->x, $this->_mArmy->y);
             if ($h < $this->_army['movesLeft']) {
                 $castleId = Application_Model_Board::isCastleAtPosition($enemy['x'], $enemy['y'], $this->_map['hostileCastles']);
                 if ($this->isEnemyStronger($enemy, $castleId)) {
@@ -304,12 +294,9 @@ class Cli_Model_ComputerSubBlocks extends Cli_Model_ComputerFight
     {
         $fields = $this->_map['fields'];
 
-        if (!isset($this->_army['movesLeft'])) {
-            $this->_army['movesLeft'] = Cli_Model_Army::calculateMaxArmyMoves($this->_army);
-        }
         foreach ($this->_enemies as $enemy) {
             $mHeuristics = new Cli_Model_Heuristics($enemy['x'], $enemy['y']);
-            $h = $mHeuristics->calculateH($this->_army['x'], $this->_army['y']);
+            $h = $mHeuristics->calculateH($this->_mArmy->x, $this->_mArmy->y);
             if ($h < $this->_army['movesLeft']) {
                 $castleId = Application_Model_Board::isCastleAtPosition($enemy['x'], $enemy['y'], $this->_map['hostileCastles']);
                 if (!$this->isEnemyStronger($enemy, $castleId)) {
@@ -345,10 +332,6 @@ class Cli_Model_ComputerSubBlocks extends Cli_Model_ComputerFight
 
     public function getPathToMyArmyInRange()
     {
-        if (!isset($this->_army['movesLeft'])) {
-            $this->_army['movesLeft'] = Cli_Model_Army::calculateMaxArmyMoves($this->_army);
-        }
-
         if ($this->_turnNumber < 5) {
             return;
         }
@@ -383,7 +366,7 @@ class Cli_Model_ComputerSubBlocks extends Cli_Model_ComputerFight
             }
 
             $mHeuristics = new Cli_Model_Heuristics($a['x'], $a['y']);
-            $h = $mHeuristics->calculateH($this->_army['x'], $this->_army['y']);
+            $h = $mHeuristics->calculateH($this->_mArmy->x, $this->_mArmy->y);
             if ($h < $this->_army['movesLeft']) {
                 try {
                     $aStar = new Cli_Model_Astar($this->_army, $a['x'], $a['y'], $this->_map['fields']);
@@ -407,7 +390,7 @@ class Cli_Model_ComputerSubBlocks extends Cli_Model_ComputerFight
 
         foreach ($this->_enemies as $k => $enemy) {
             $mHeuristics = new Cli_Model_Heuristics($enemy['x'], $enemy['y']);
-            $heuristics[$k] = $mHeuristics->calculateH($this->_army['x'], $this->_army['y']);
+            $heuristics[$k] = $mHeuristics->calculateH($this->_mArmy->x, $this->_mArmy->y);
         }
 
         if (empty($heuristics)) {

@@ -41,7 +41,7 @@ class Cli_Model_ComputerFight
                 $defender = $this->_mArmyDB->getDefender($enemy['ids']);
 
                 if (!$battle->getDefender()) {
-                    Cli_Model_Army::updateArmyPosition($this->_playerId, $path, $fields, $this->_army, $this->_gameId, $this->_db);
+                    $this->_mArmy->updateArmyPosition($this->_playerId, $path, $fields, $this->_gameId, $this->_db);
                     $result['attackerArmy'] = Cli_Model_Army::getArmyByArmyIdPlayerId($this->_army['armyId'], $this->_playerId, $this->_gameId, $this->_db);
                     $result['victory'] = true;
                     $mCastlesInGame->changeOwner($this->_map['hostileCastles'][$castleId], $this->_playerId);
@@ -61,7 +61,7 @@ class Cli_Model_ComputerFight
                 $defender = $battle->getDefender();
 
                 if (!$battle->getDefender()) {
-                    Cli_Model_Army::updateArmyPosition($this->_playerId, $path, $fields, $this->_army, $this->_gameId, $this->_db);
+                    $this->_mArmy->updateArmyPosition($this->_playerId, $path, $fields, $this->_gameId, $this->_db);
                     $result['attackerArmy'] = Cli_Model_Army::getArmyByArmyIdPlayerId($this->_army['armyId'], $this->_playerId, $this->_gameId, $this->_db);
 
                     $mCastlesInGame = new Application_Model_CastlesInGame($this->_gameId, $this->_db);
@@ -89,7 +89,7 @@ class Cli_Model_ComputerFight
             $defender = $this->_mArmyDB->getDefender($enemy['ids']);
 
             if (!$battle->getDefender()) {
-                Cli_Model_Army::updateArmyPosition($this->_playerId, $path, $fields, $this->_army, $this->_gameId, $this->_db);
+                $this->_mArmy->updateArmyPosition($this->_playerId, $path, $fields, $this->_gameId, $this->_db);
                 $result['attackerArmy'] = Cli_Model_Army::getArmyByArmyIdPlayerId($this->_army['armyId'], $this->_playerId, $this->_gameId, $this->_db);
                 $result['victory'] = true;
                 $defender[0]['armyId'] = $enemy['armyId'];

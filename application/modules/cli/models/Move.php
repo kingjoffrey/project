@@ -54,14 +54,13 @@ class Cli_Model_Move
             return;
         } else {
             $mArmy = new Cli_Model_Army($army);
-            $army = $mArmy->getArmy();
         }
 
         $fields = Cli_Model_Army::getEnemyArmiesFieldsPositions($user->parameters['gameId'], $db, $user->parameters['playerId']);
 
-        if ($fields[$army['y']][$army['x']] == 'w') {
-            if ($army['canSwim'] || $army['canFly']) {
-                $otherArmyId = $mArmy2->isOtherArmyAtPosition($attackerArmyId, $army['x'], $army['y']);
+        if ($fields[$mArmy->y][$mArmy->x] == 'w') {
+            if ($mArmy->canSwim() || $mArmy->canFly()) {
+                $otherArmyId = $mArmy2->isOtherArmyAtPosition($attackerArmyId, $mArmy->x, $mArmy->y);
                 if ($otherArmyId) {
                     $otherArmy = Cli_Model_Army::getArmyByArmyIdPlayerId($otherArmyId, $user->parameters['playerId'], $user->parameters['gameId'], $db);
                     $mOtherArmy = new Cli_Model_Army($otherArmy);
@@ -72,8 +71,8 @@ class Cli_Model_Move
                     }
                 }
             }
-        } elseif ($fields[$army['y']][$army['x']] == 'M') {
-            $otherArmyId = $mArmy2->isOtherArmyAtPosition($attackerArmyId, $army['x'], $army['y']);
+        } elseif ($fields[$mArmy->y][$mArmy->x] == 'M') {
+            $otherArmyId = $mArmy2->isOtherArmyAtPosition($attackerArmyId, $mArmy->x, $mArmy->y);
             if ($otherArmyId) {
                 $otherArmy = Cli_Model_Army::getArmyByArmyIdPlayerId($otherArmyId, $user->parameters['playerId'], $user->parameters['gameId'], $db);
                 $mOtherArmy = new Cli_Model_Army($otherArmy);
@@ -236,14 +235,14 @@ class Cli_Model_Move
                         $mCastlesInGame->changeOwner($castlesSchema[$castleId], $user->parameters['playerId']);
                     }
                 }
-                Cli_Model_Army::updateArmyPosition($user->parameters['playerId'], $move['path'], $fields, $army, $user->parameters['gameId'], $db);
+                $mArmy->updateArmyPosition($user->parameters['playerId'], $move['path'], $fields, $user->parameters['gameId'], $db);
                 $attacker = Cli_Model_Army::getArmyByArmyIdPlayerId($attackerArmyId, $user->parameters['playerId'], $user->parameters['gameId'], $db);
                 $victory = true;
 //                foreach ($enemy['ids'] as $id) {
 //                    $defender[]['armyId'] = $id;
 //                }
             } else {
-                $mArmy2->destroyArmy($army['armyId'], $user->parameters['playerId']);
+                $mArmy2->destroyArmy($mArmy->id, $user->parameters['playerId']);
                 $attacker = array(
                     'armyId' => $attackerArmyId,
                     'destroyed' => true
@@ -254,7 +253,7 @@ class Cli_Model_Move
             }
             $battleResult = $battle->getResult();
         } else {
-            Cli_Model_Army::updateArmyPosition($user->parameters['playerId'], $move['path'], $fields, $army, $user->parameters['gameId'], $db);
+            $mArmy->updateArmyPosition($user->parameters['playerId'], $move['path'], $fields, $user->parameters['gameId'], $db);
             $armiesIds = Cli_Model_Army::joinArmiesAtPosition($move['currentPosition'], $user->parameters['playerId'], $user->parameters['gameId'], $db);
             $newArmyId = $armiesIds['armyId'];
             $attacker = Cli_Model_Army::getArmyByArmyIdPlayerId($newArmyId, $user->parameters['playerId'], $user->parameters['gameId'], $db);
