@@ -7,6 +7,8 @@ class Cli_Model_Path
     public $end;
     public $x;
     public $y;
+    public $castleId = null;
+    public $ruinId = null;
 
     public function __construct($full, $current)
     {

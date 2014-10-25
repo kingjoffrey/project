@@ -3,9 +3,8 @@
 class Cli_Model_Army
 {
 
-    private $units;
-
-    private $terrain;
+    public $units;
+    public $terrain;
 
     public $id;
     public $x;
@@ -21,14 +20,25 @@ class Cli_Model_Army
 
     public $movesLeft = 0;
 
+    /*
+     * @param array $army
+     */
     public function __construct($army)
     {
-        $this->units = Zend_Registry::get('units');
-        $this->terrain = Zend_Registry::get('terrain');
+        if (isset($army['ids'][0])) {
+            $this->id = $army['ids'][0];
+        } else {
+            if (!isset($army['armyId'])) {
+                throw new Exception('no armyId');
+            }
+            $this->id = $army['armyId'];
+        }
 
-        $this->id = $army['armyId'];
         $this->x = $army['x'];
         $this->y = $army['y'];
+
+        $this->units = Zend_Registry::get('units');
+        $this->terrain = Zend_Registry::get('terrain');
 
         $this->movesLeft = Cli_Model_Army::calculateMaxArmyMoves($army);
 
@@ -300,40 +310,21 @@ class Cli_Model_Army
         return $currentPath;
     }
 
-    static public function setCombatDefenseModifiers($army)
+    public function setCombatDefenseModifiers()
     {
-        if (!isset($army['defenseModifier'])) {
-            $army['defenseModifier'] = 0;
+        if ($this->canFly()) {
+            $this->defenseModifier++;
         }
-
-        if ($army['heroes']) {
-            $army['defenseModifier']++;
-        }
-
-        if (isset($army['canFly']) && $army['canFly']) {
-            $army['defenseModifier']++;
-        }
-
-        return $army;
     }
 
-    static public function addTowerDefenseModifier($army)
+    public function addTowerDefenseModifier()
     {
-        if (!isset($army['x'])) {
-            Coret_Model_Logger::debug(debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 2));
-            exit;
+        if (Application_Model_Board::isTowerAtPosition($this->x, $this->y)) {
+            $this->defenseModifier++;
         }
-        if (Application_Model_Board::isTowerAtPosition($army['x'], $army['y'])) {
-            if (isset($army['defenseModifier'])) {
-                $army['defenseModifier']++;
-            } else {
-                $army['defenseModifier'] = 1;
-            }
-        }
-        return $army;
     }
 
-    static public function addCastleDefenseModifier($army, $gameId, $castleId, $db)
+    public function addCastleDefenseModifier($gameId, $castleId, $db)
     {
         $mapCastles = Zend_Registry::get('castles');
 
@@ -341,16 +332,11 @@ class Cli_Model_Army
         $defenseModifier = $mapCastles[$castleId]['defense'] + $mCastlesInGame->getCastleDefenseModifier($castleId);
 
         if ($defenseModifier > 0) {
-            if (isset($army['defenseModifier'])) {
-                $army['defenseModifier'] += $defenseModifier;
-            } else {
-                $army['defenseModifier'] = $defenseModifier;
-            }
+            $this->defenseModifier += $defenseModifier;
         } else {
             throw new Exception('$defenseModifier <= 0');
             echo 'error! !';
         }
-        return $army;
     }
 
     static public function armyArray($columnName = '')
@@ -653,9 +639,9 @@ class Cli_Model_Army
         }
     }
 
-    public function updateArmyPosition($playerId, $path, $fields, $gameId, $db)
+    public function updateArmyPosition($playerId, Cli_Model_Path $path, $fields, $gameId, $db)
     {
-        if (empty($path)) {
+        if (empty($path->current)) {
             return;
         }
 
@@ -672,7 +658,7 @@ class Cli_Model_Army
         foreach ($this->heroes as $hero) {
             $movesSpend = 0;
 
-            foreach ($path as $step) {
+            foreach ($path->current as $step) {
                 if (!isset($step['myCastleCosts'])) {
                     $movesSpend += $this->terrain[$fields[$step['y']][$step['x']]][$type];
                 }
@@ -692,7 +678,7 @@ class Cli_Model_Army
             foreach ($this->soldiers as $soldier) {
                 $movesSpend = 0;
 
-                foreach ($path as $step) {
+                foreach ($path->current as $step) {
                     if (!isset($step['myCastleCosts'])) {
                         $movesSpend += $this->terrain[$fields[$step['y']][$step['x']]][$type];
                     }
@@ -713,7 +699,7 @@ class Cli_Model_Army
                 $this->terrain['m'][$type] = $this->units[$soldier['unitId']]['modMovesHills'];
                 $this->terrain['s'][$type] = $this->units[$soldier['unitId']]['modMovesSwamp'];
 
-                foreach ($path as $step) {
+                foreach ($path->current as $step) {
                     if (!isset($step['myCastleCosts'])) {
                         $movesSpend += $this->terrain[$fields[$step['y']][$step['x']]][$type];
                     }
@@ -730,11 +716,10 @@ class Cli_Model_Army
 
         $mArmy = new Application_Model_Army($gameId, $db);
 
-        $end = end($path);
-        $this->x = $end['x'];
-        $this->y = $end['y'];
+        $this->x = $path->x;
+        $this->y = $path->y;
 
-        return $mArmy->updateArmyPosition($playerId, $end, $this->id);
+        return $mArmy->updateArmyPosition($playerId, $path->end, $this->id);
     }
 
     static public function getAttackSequence($gameId, $db, $playerId)
@@ -794,11 +779,14 @@ class Cli_Model_Army
         return $fields;
     }
 
-    static public function getEnemyPlayerIdFromPosition($gameId, $db, $playerId, $position)
+    /*
+     * @todo co jeśli jest więcej niż 1 armia na pozycji (np 2 graczy z tej samej drużyny)?
+     */
+    public function getEnemyPlayerId($gameId, $playerId, $db)
     {
         $mArmy = new Application_Model_Army($gameId, $db);
         $mPlayersInGame = new Application_Model_PlayersInGame($gameId, $db);
 
-        return $mArmy->getEnemyPlayerIdFromPosition($playerId, $position, $mPlayersInGame->selectPlayerTeamExceptPlayer($playerId));
+        return $mArmy->getEnemyPlayerIdFromPosition($this->x, $this->y, $playerId, $mPlayersInGame->selectPlayerTeamExceptPlayer($playerId));
     }
 }

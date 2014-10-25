@@ -20,9 +20,9 @@ class Cli_Model_Battle
     private $succession = 0;
     private $units;
 
-    public function __construct($attacker, $defender, $attackerBattleSequence, $defenderBattleSequence)
+    public function __construct(Cli_Model_Army $attacker, Cli_Model_Army $defender, $attackerBattleSequence, $defenderBattleSequence)
     {
-        $this->units = Zend_Registry::get('units');
+        $this->units = $attacker->units;
 
         if (empty($defenderBattleSequence)) {
             $defenderBattleSequence = array_keys($this->units);
@@ -35,41 +35,41 @@ class Cli_Model_Battle
         $this->defender = array(
             'soldiers' => array(),
             'ships' => array(),
-            'defenseModifier' => $defender['defenseModifier'],
-            'heroes' => $defender['heroes']
+            'defenseModifier' => $defender->defenseModifier,
+            'heroes' => $defender->heroes
         );
 
         $this->attacker = array(
             'soldiers' => array(),
             'ships' => array(),
-            'attackModifier' => $attacker['attackModifier'],
-            'heroes' => $attacker['heroes']
+            'attackModifier' => $attacker->attackModifier,
+            'heroes' => $attacker->heroes
         );
 
         foreach ($defenderBattleSequence as $unitId) {
-            foreach ($defender['soldiers'] as $k => $soldier) {
+            foreach ($defender->soldiers as $k => $soldier) {
                 if ($this->units[$soldier['unitId']]['canSwim']) {
                     $this->defender['ships'][] = $soldier;
-                    unset($defender['soldiers'][$k]);
+                    unset($defender->soldiers[$k]);
                     continue;
                 }
                 if ($soldier['unitId'] == $unitId) {
                     $this->defender['soldiers'][] = $soldier;
-                    unset($defender['soldiers'][$k]);
+                    unset($defender->soldiers[$k]);
                 }
             }
         }
 
         foreach ($attackerBattleSequence as $unitId) {
-            foreach ($attacker['soldiers'] as $k => $soldier) {
+            foreach ($attacker->soldiers as $k => $soldier) {
                 if ($this->units[$soldier['unitId']]['canSwim']) {
                     $this->attacker['ships'][] = $soldier;
-                    unset($attacker['soldiers'][$k]);
+                    unset($attacker->soldiers[$k]);
                     continue;
                 }
                 if ($soldier['unitId'] == $unitId) {
                     $this->attacker['soldiers'][] = $soldier;
-                    unset($attacker['soldiers'][$k]);
+                    unset($attacker->soldiers[$k]);
                 }
             }
         }

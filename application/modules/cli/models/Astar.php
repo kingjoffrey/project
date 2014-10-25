@@ -45,13 +45,15 @@ class Cli_Model_Astar extends Cli_Model_Heuristics
     /**
      * Constructor
      *
+     * @param Cli_Model_Army $army
      * @param int $destX
      * @param int $destY
      * @param array $fields
+     * @param array $params
      */
-    public function __construct($army, $destX, $destY, $fields, $params = null)
+    public function __construct(Cli_Model_Army $army, $destX, $destY, $fields, $params = null)
     {
-        if ($army['x'] == $destX && $army['y'] == $destY) {
+        if ($army->x == $destX && $army->y == $destY) {
             return;
         }
         parent::__construct($destX, $destY);
@@ -59,26 +61,22 @@ class Cli_Model_Astar extends Cli_Model_Heuristics
             $this->limit = $params['limit'];
         }
         $this->fields = $fields;
-        $this->terrain = Zend_Registry::get('terrain');
-        if ($army['canFly'] > 0) {
+        $this->terrain = $army->terrain;
+        if ($army->canFly()) {
             $this->movementType = 'flying';
-        } elseif ($army['canSwim']) {
+        } elseif ($army->canSwim()) {
             $this->movementType = 'swimming';
         } else {
             $this->movementType = 'walking';
         }
-        if (!isset($army['movesLeft'])) {
-            $this->movesLeft = Cli_Model_Army::calculateMaxArmyMoves($army);
-        } else {
-            $this->movesLeft = $army['movesLeft'];
-        }
+        $this->movesLeft = $army->movesLeft;
 
-        $this->open[$army['x'] . '_' . $army['y']] = $this->node($army['x'], $army['y'], 0, null, 'c');
+        $this->open[$army->x . '_' . $army->y] = $this->node($army->x, $army->y, 0, null, 'c');
 
         if (isset($params['myCastles']) && $params['myCastles']) {
             $this->myCastles = $params['myCastles'];
             $this->myCastleId = array();
-            $castleId = Application_Model_Board::isCastleAtPosition($army['x'], $army['y'], $params['myCastles']);
+            $castleId = Application_Model_Board::isCastleAtPosition($army->x, $army->y, $params['myCastles']);
             if ($castleId) {
                 $this->myCastleId[$castleId] = true;
             }

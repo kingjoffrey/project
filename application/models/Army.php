@@ -321,7 +321,7 @@ class Application_Model_Army extends Coret_Db_Table_Abstract
             ->where('y = ?', $position['y']));
     }
 
-    public function getEnemyPlayerIdFromPosition($playerId, $position, $select)
+    public function getEnemyPlayerIdFromPosition($x, $y, $playerId, $select)
     {
         return $this->selectOne($this->_db->select()
             ->from($this->_name, 'playerId')
@@ -329,8 +329,8 @@ class Application_Model_Army extends Coret_Db_Table_Abstract
             ->where('"playerId" != ?', $playerId)
             ->where('"playerId" NOT IN (?)', new Zend_Db_Expr($select))
             ->where('destroyed = false')
-            ->where('x = ?', $position['x'])
-            ->where('y = ?', $position['y']));
+            ->where('x = ?', $x)
+            ->where('y = ?', $y));
     }
 
     public function getAllEnemyUnitsFromPosition($position, $playerId)
