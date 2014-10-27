@@ -12,7 +12,7 @@ class Admin_Form_Login extends Zend_Form {
                 'validators' => array(array('StringLength', false, array(3, 20)))
             )
         );
-        $this->addElement('password', 'haslo', array(
+        $this->addElement('password', 'password', array(
                 'label' => 'Hasło',
                 'required' => true,
                 'filters' => array('StringTrim')

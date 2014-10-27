@@ -15,7 +15,6 @@ class Cli_Model_ComputerMain extends Cli_Model_ComputerFunctions
 
     private function init($army)
     {
-        $this->_l->logMethodName();
         $this->_Computer = new Cli_Model_Army($army);
         $this->_l->log('');
         $this->_l->log($this->_playerId, 'playerId: ');
@@ -28,7 +27,6 @@ class Cli_Model_ComputerMain extends Cli_Model_ComputerFunctions
 
     public function move($mArmy)
     {
-        $this->_l->logMethodName();
         $this->init($mArmy);
 
         if (isset($this->_user->parameters['computer'][$this->_playerId][$this->_Computer->id]['path']) && $this->_user->parameters['computer'][$this->_playerId][$this->_Computer->id]['path']) {

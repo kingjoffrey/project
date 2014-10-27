@@ -475,7 +475,6 @@ class Cli_Model_ComputerFunctions extends Cli_Model_ComputerFight
 
     protected function initMap()
     {
-        $this->_l->logMethodName();
         $mCastlesInGame = new Application_Model_CastlesInGame($this->_gameId, $this->_db);
         $mPlayersInGame = new Application_Model_PlayersInGame($this->_gameId, $this->_db);
 
