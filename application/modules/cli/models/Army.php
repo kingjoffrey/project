@@ -7,6 +7,7 @@ class Cli_Model_Army
     public $terrain;
 
     public $id;
+    public $ids;
     public $x;
     public $y;
     public $defenseModifier = 0;
@@ -18,7 +19,7 @@ class Cli_Model_Army
     public $heroes = array();
     public $soldiers = array();
 
-    public $movesLeft = 0;
+    public $movesLeft;
 
     /*
      * @param array $army
@@ -27,11 +28,23 @@ class Cli_Model_Army
     {
         if (isset($army['ids'][0])) {
             $this->id = $army['ids'][0];
+            $this->ids = $army['ids'];
         } else {
             if (!isset($army['armyId'])) {
+                Coret_Model_Logger::debug(debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 2));
                 throw new Exception('no armyId');
             }
             $this->id = $army['armyId'];
+            $this->ids = array($army['armyId']);
+        }
+
+        if (!isset($army['x'])) {
+            Coret_Model_Logger::debug(debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 2));
+            throw new Exception('');
+        }
+
+        if (isset($army['movesLeft'])) {
+            $this->movesLeft = $army['movesLeft'];
         }
 
         $this->x = $army['x'];
@@ -39,8 +52,6 @@ class Cli_Model_Army
 
         $this->units = Zend_Registry::get('units');
         $this->terrain = Zend_Registry::get('terrain');
-
-        $this->movesLeft = Cli_Model_Army::calculateMaxArmyMoves($army);
 
         $this->heroes = $army['heroes'];
         $this->soldiers = $army['soldiers'];
@@ -90,6 +101,20 @@ class Cli_Model_Army
         }
     }
 
+    public function getArmy()
+    {
+        return array(
+            'armyId' => $this->id,
+            'soldiers' => $this->soldiers,
+            'heroes' => $this->heroes,
+            'x' => $this->x,
+            'y' => $this->y,
+            'fortified' => false,
+            'destroyed' => false,
+            'movesLeft' => $this->movesLeft
+        );
+    }
+
     public function getArmyId()
     {
         return $this->id;
@@ -97,6 +122,9 @@ class Cli_Model_Army
 
     public function calculateMovesSpend($fullPath)
     {
+        if (empty($fullPath)) {
+            return new Cli_Model_Path();
+        }
         if ($this->canFly()) {
             $currentPath = $this->calculateMovesSpendFlying($fullPath);
         } elseif ($this->canSwim()) {
@@ -106,11 +134,6 @@ class Cli_Model_Army
         }
 
         return new Cli_Model_Path($currentPath, $fullPath);
-//        return array(
-//            'path' => $currentPath,
-//            'fullPath' => $fullPath,
-//            'currentPosition' => end($currentPath)
-//        );
     }
 
     private function calculateMovesSpendFlying($fullPath)
@@ -324,7 +347,7 @@ class Cli_Model_Army
         }
     }
 
-    public function addCastleDefenseModifier($gameId, $castleId, $db)
+    public function addCastleDefenseModifier($castleId, $gameId, $db)
     {
         $mapCastles = Zend_Registry::get('castles');
 
@@ -507,18 +530,25 @@ class Cli_Model_Army
             return array(
                 'heroes' => $mHeroesInGame->getForBattle($ids),
                 'soldiers' => $mSoldier->getForBattle($ids),
-                'ids' => $ids
+                'ids' => $ids,
+                'x' => $castlePosition['x'],
+                'y' => $castlePosition['y']
             );
         } else {
             return array(
                 'heroes' => array(),
                 'soldiers' => array(),
-                'ids' => array()
+                'ids' => array(0),
+                'x' => $castlePosition['x'],
+                'y' => $castlePosition['y']
             );
         }
 
     }
 
+    /*
+     * @return array
+     */
     static public function getArmiesFromCastlePosition($castlePosition, $gameId, $playerId, $db)
     {
         $mArmy = new Application_Model_Army($gameId, $db);
@@ -575,35 +605,33 @@ class Cli_Model_Army
         $result = $mArmy->getArmyIdsByPositionPlayerId($position, $playerId);
 
         if (!isset($result[0]['armyId'])) {
-//            echo '
-//(joinArmiesAtPosition) Brak armii na pozycji: ';
-//            Coret_Model_Logger::debug(debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 2));
-//            print_r($position);
-
-            return array(
-                'armyId' => null,
-                'deletedIds' => null,
-            );
+            Coret_Model_Logger::debug(debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 2));
+            print_r($position);
+            throw new Exception('');
         }
 
-        $firstArmyId = $result[0]['armyId'];
+        $newArmyId = $result[0]['armyId'];
         unset($result[0]);
         $count = count($result);
+
+        if ($count == 0) {
+            return array(
+                'armyId' => $newArmyId,
+                'deletedIds' => null
+            );
+        }
 
         $mSoldier = new Application_Model_UnitsInGame($gameId, $db);
         $mHeroesInGame = new Application_Model_HeroesInGame($gameId, $db);
 
         for ($i = 1; $i <= $count; $i++) {
-            if ($result[$i]['armyId'] == $firstArmyId) {
-                continue;
-            }
-            $mHeroesInGame->heroesUpdateArmyId($result[$i]['armyId'], $firstArmyId);
-            $mSoldier->soldiersUpdateArmyId($result[$i]['armyId'], $firstArmyId);
+            $mHeroesInGame->heroesUpdateArmyId($result[$i]['armyId'], $newArmyId);
+            $mSoldier->soldiersUpdateArmyId($result[$i]['armyId'], $newArmyId);
             $mArmy->destroyArmy($result[$i]['armyId'], $playerId);
         }
 
         return array(
-            'armyId' => $firstArmyId,
+            'armyId' => $newArmyId,
             'deletedIds' => $result
         );
     }

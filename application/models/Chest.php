@@ -8,7 +8,7 @@ class Application_Model_Chest extends Coret_Db_Table_Abstract
     protected $_foreign_1 = 'playerId';
     protected $_foreign_2 = 'artifactId';
 
-    public function __construct($playerId, $db = null)
+    public function __construct($playerId, Zend_Db_Adapter_Pdo_Pgsql $db = null)
     {
         $this->_playerId = $playerId;
         if ($db) {

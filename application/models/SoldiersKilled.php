@@ -7,7 +7,7 @@ class Application_Model_SoldiersKilled extends Coret_Db_Table_Abstract
     protected $_sequence = 'soldierskilled_soldierskilledId_seq';
     protected $_gameId;
 
-    public function __construct($gameId, $db = null)
+    public function __construct($gameId, Zend_Db_Adapter_Pdo_Pgsql $db = null)
     {
         $this->_gameId = $gameId;
         if ($db) {

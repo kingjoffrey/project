@@ -7,7 +7,7 @@ class Application_Model_MapCastles extends Coret_Db_Table_Abstract
     protected $_sequence = 'mapcastles_mapCastleId_seq';
     protected $mapId;
 
-    public function __construct($mapId, $db = null)
+    public function __construct($mapId, Zend_Db_Adapter_Pdo_Pgsql $db = null)
     {
         $this->mapId = $mapId;
         if ($db) {

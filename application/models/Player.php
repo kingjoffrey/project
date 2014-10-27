@@ -8,7 +8,7 @@ class Application_Model_Player extends Coret_Db_Table_Abstract
     protected $_sequence = 'player_playerId_seq';
     protected $_playerId;
 
-    public function __construct($db = null)
+    public function __construct(Zend_Db_Adapter_Pdo_Pgsql $db = null)
     {
         if ($db) {
             $this->_db = $db;

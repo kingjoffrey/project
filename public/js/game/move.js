@@ -143,7 +143,7 @@ var Move = {
 
         if (players[r.attackerColor].computer) {
             this.moving = 0
-            Websocket.computer();
+            //Websocket.computer();
         } else if (r.attackerColor == my.color) {
             if (!r.castleId && isSet(players[r.attackerColor].armies[r.attackerArmy.armyId]) && players[r.attackerColor].armies[r.attackerArmy.armyId].moves) {
                 Gui.unlock()

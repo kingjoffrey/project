@@ -6,7 +6,7 @@ class Application_Model_TurnHistory extends Coret_Db_Table_Abstract
     protected $_name = 'turn';
     protected $_primary = 'turnId';
 
-    public function __construct($gameId, $db = null)
+    public function __construct($gameId, Zend_Db_Adapter_Pdo_Pgsql $db = null)
     {
         $this->_gameId = $gameId;
         if ($db) {

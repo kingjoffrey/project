@@ -51,9 +51,7 @@ class Cli_Model_Battle
                 if ($this->units[$soldier['unitId']]['canSwim']) {
                     $this->defender['ships'][] = $soldier;
                     unset($defender->soldiers[$k]);
-                    continue;
-                }
-                if ($soldier['unitId'] == $unitId) {
+                } elseif ($soldier['unitId'] == $unitId) {
                     $this->defender['soldiers'][] = $soldier;
                     unset($defender->soldiers[$k]);
                 }
@@ -65,9 +63,7 @@ class Cli_Model_Battle
                 if ($this->units[$soldier['unitId']]['canSwim']) {
                     $this->attacker['ships'][] = $soldier;
                     unset($attacker->soldiers[$k]);
-                    continue;
-                }
-                if ($soldier['unitId'] == $unitId) {
+                } elseif ($soldier['unitId'] == $unitId) {
                     $this->attacker['soldiers'][] = $soldier;
                     unset($attacker->soldiers[$k]);
                 }
@@ -128,6 +124,9 @@ class Cli_Model_Battle
 
     public function fight()
     {
+        $this->attacker = $this->attackerCopy;
+        $this->defender = $this->defenderCopy;
+
         $hits = array('attack' => 2, 'defense' => 2);
 
         foreach ($this->attacker['soldiers'] as $a => $unitAttacking) {
@@ -431,8 +430,10 @@ class Cli_Model_Battle
         return array(
             'soldiers' => $soldiers,
             'heroes' => array(),
-            'ids' => array(),
-            'defenseModifier' => 0
+            'ids' => array(0),
+            'defenseModifier' => 0,
+            'x' => 0,
+            'y' => 0
         );
     }
 }

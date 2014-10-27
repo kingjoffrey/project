@@ -7,7 +7,7 @@ class Application_Model_MapPlayers extends Coret_Db_Table_Abstract
     protected $_sequence = '';
     protected $mapId;
 
-    public function __construct($mapId, $db = null)
+    public function __construct($mapId, Zend_Db_Adapter_Pdo_Pgsql $db = null)
     {
         $this->mapId = $mapId;
         if ($db) {

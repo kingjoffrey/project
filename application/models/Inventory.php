@@ -7,7 +7,7 @@ class Application_Model_Inventory extends Coret_Db_Table_Abstract
     protected $_foreign_2 = 'heroId';
     protected $_foreign_3 = 'gameId';
 
-    public function __construct($heroId, $gameId, $db = null)
+    public function __construct($heroId, $gameId, Zend_Db_Adapter_Pdo_Pgsql $db = null)
     {
         $this->_heroId = $heroId;
         $this->_gameId = $gameId;

@@ -7,7 +7,7 @@ class Application_Model_Army extends Coret_Db_Table_Abstract
     protected $_primary = 'armyId';
     protected $_gameId;
 
-    public function __construct($gameId, $db = null)
+    public function __construct($gameId, Zend_Db_Adapter_Pdo_Pgsql $db = null)
     {
         $this->_gameId = $gameId;
         if ($db) {
@@ -183,8 +183,6 @@ class Application_Model_Army extends Coret_Db_Table_Abstract
         $result = $this->selectAll($select);
 
         foreach ($result as $k => $army) {
-            unset($result[$k]['playerId']);
-
             if ($army['destroyed']) {
                 continue;
             }

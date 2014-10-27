@@ -134,7 +134,7 @@ class Cli_Model_Move
         }
 
         if ($castleId === null) {
-            $defenderId = Cli_Model_Army::getEnemyPlayerIdFromPosition($user->parameters['gameId'], $db, $user->parameters['playerId'], array('x' => $x, 'y' => $y));
+            $defenderId = $mArmy->getEnemyPlayerId($user->parameters['gameId'], $user->parameters['playerId'], $db);
             if ($defenderId) { // enemy army
                 $fields = Application_Model_Board::changeArmyField($fields, $x, $y, 'E');
             } else { // idziemy nie walczymy
@@ -150,7 +150,7 @@ class Cli_Model_Move
 
 
         try {
-            $A_Star = new Cli_Model_Astar($army, $x, $y, $fields, array('myCastles' => $myCastles));
+            $A_Star = new Cli_Model_Astar($mArmy, $x, $y, $fields, array('myCastles' => $myCastles));
             $move = $mArmy->calculateMovesSpend($A_Star->getPath($x . '_' . $y));
         } catch (Exception $e) {
             $l = new Coret_Model_Logger();
@@ -163,7 +163,7 @@ class Cli_Model_Move
          * A* END
          */
 
-        if (!$move['currentPosition']) {
+        if (!$move->end) {
             $token = array(
                 'type' => 'move'
             );
@@ -183,26 +183,25 @@ class Cli_Model_Move
 
         $playersInGameColors = Zend_Registry::get('playersInGameColors');
 
-        if (Zend_Validate::is($castleId, 'Digits') && Application_Model_Board::isCastleField($move['currentPosition'], $castlesSchema[$castleId]['position'])) { // enemy castle
+        if (Zend_Validate::is($castleId, 'Digits') && Application_Model_Board::isCastleField($move->end, $castlesSchema[$castleId]['position'])) { // enemy castle
 //        if (Zend_Validate::is($castleId, 'Digits')) { // enemy castle (ZAMIENIĆ?)
             $fight = true;
             if ($defenderColor == 'neutral') {
-                $enemy = Cli_Model_Battle::getNeutralCastleGarrison($user->parameters['gameId'], $db);
-                $enemy['defenseModifier'] = 0;
+                $enemy = new Cli_Model_Army(Cli_Model_Battle::getNeutralCastleGarrison($user->parameters['gameId'], $db));
                 $defenderId = 0;
             } else { // kolor wrogiego zamku sprawdzam dopiero wtedy gdy wiem, że armia ma na niego zasięg
                 $defenderId = $mCastlesInGame->getPlayerIdByCastleId($castleId);
                 $defenderColor = $playersInGameColors[$defenderId];
-                $enemy = Cli_Model_Army::getCastleGarrisonFromCastlePosition($castlesSchema[$castleId]['position'], $user->parameters['gameId'], $db);
-                $enemy = Cli_Model_Army::addCastleDefenseModifier($enemy, $user->parameters['gameId'], $castleId, $db);
-                $enemy = Cli_Model_Army::setCombatDefenseModifiers($enemy);
+                $enemy = new Cli_Model_Army(Cli_Model_Army::getCastleGarrisonFromCastlePosition($castlesSchema[$castleId]['position'], $user->parameters['gameId'], $db));
+                $enemy->addCastleDefenseModifier($castleId, $user->parameters['gameId'], $db);
+                $enemy->setCombatDefenseModifiers();
             }
-        } elseif ($defenderId && $move['currentPosition']['x'] == $x && $move['currentPosition']['y'] == $y) { // enemy army
+        } elseif ($defenderId && $move->x == $x && $move->y == $y) { // enemy army
             $fight = true;
             $defenderColor = $playersInGameColors[$defenderId];
-            $enemy = $mArmy2->getAllEnemyUnitsFromPosition(array('x' => $x, 'y' => $y), $user->parameters['playerId']);
-            $enemy = Cli_Model_Army::setCombatDefenseModifiers($enemy);
-            $enemy = Cli_Model_Army::addTowerDefenseModifier($enemy);
+            $enemy = new Cli_Model_Army($mArmy2->getAllEnemyUnitsFromPosition($move->end, $user->parameters['playerId']));
+            $enemy->setCombatDefenseModifiers();
+            $enemy->addTowerDefenseModifier();
         }
 
         /* ------------------------------------
@@ -212,7 +211,7 @@ class Cli_Model_Move
          * ------------------------------------ */
 
         if ($fight) {
-            $battle = new Cli_Model_Battle($army, $enemy, Cli_Model_Army::getAttackSequence($user->parameters['gameId'], $db, $user->parameters['playerId']), Cli_Model_Army::getDefenceSequence($user->parameters['gameId'], $db, $defenderId));
+            $battle = new Cli_Model_Battle($mArmy, $enemy, Cli_Model_Army::getAttackSequence($user->parameters['gameId'], $db, $user->parameters['playerId']), Cli_Model_Army::getDefenceSequence($user->parameters['gameId'], $db, $defenderId));
             $battle->fight();
             $battle->updateArmies($user->parameters['gameId'], $db, $user->parameters['playerId'], $defenderId);
 
@@ -220,10 +219,10 @@ class Cli_Model_Move
                 if ($defenderColor == 'neutral') {
                     $defender = $battle->getDefender();
                 } else {
-                    $defender = $mArmy2->getDefender($enemy['ids']);
+                    $defender = $mArmy2->getDefender($enemy->ids);
                 }
             } else {
-                $defender = $mArmy2->getDefender($enemy['ids']);
+                $defender = $mArmy2->getDefender($enemy->ids);
             }
 
             if (!$battle->getDefender()) {
@@ -235,7 +234,7 @@ class Cli_Model_Move
                         $mCastlesInGame->changeOwner($castlesSchema[$castleId], $user->parameters['playerId']);
                     }
                 }
-                $mArmy->updateArmyPosition($user->parameters['playerId'], $move['path'], $fields, $user->parameters['gameId'], $db);
+                $mArmy->updateArmyPosition($user->parameters['playerId'], $move, $fields, $user->parameters['gameId'], $db);
                 $attacker = Cli_Model_Army::getArmyByArmyIdPlayerId($attackerArmyId, $user->parameters['playerId'], $user->parameters['gameId'], $db);
                 $victory = true;
 //                foreach ($enemy['ids'] as $id) {
@@ -253,14 +252,14 @@ class Cli_Model_Move
             }
             $battleResult = $battle->getResult();
         } else {
-            $mArmy->updateArmyPosition($user->parameters['playerId'], $move['path'], $fields, $user->parameters['gameId'], $db);
-            $armiesIds = Cli_Model_Army::joinArmiesAtPosition($move['currentPosition'], $user->parameters['playerId'], $user->parameters['gameId'], $db);
+            $mArmy->updateArmyPosition($user->parameters['playerId'], $move, $fields, $user->parameters['gameId'], $db);
+            $armiesIds = Cli_Model_Army::joinArmiesAtPosition($move->end, $user->parameters['playerId'], $user->parameters['gameId'], $db);
             $newArmyId = $armiesIds['armyId'];
             $attacker = Cli_Model_Army::getArmyByArmyIdPlayerId($newArmyId, $user->parameters['playerId'], $user->parameters['gameId'], $db);
             $deletedIds = $armiesIds['deletedIds'];
         }
 
-        new Cli_Model_Tower($move['path'], $user->parameters['playerId'], $user->parameters['gameId'], $db, $gameHandler);
+        new Cli_Model_Tower($move->current, $user->parameters['playerId'], $user->parameters['gameId'], $db, $gameHandler);
 
         $token = array(
             'type' => 'move',
@@ -273,7 +272,7 @@ class Cli_Model_Move
             'x' => $x,
             'y' => $y,
             'castleId' => $castleId,
-            'path' => $move['path'],
+            'path' => $move->current,
             'oldArmyId' => $attackerArmyId,
             'deletedIds' => $deletedIds,
         );

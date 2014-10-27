@@ -4,15 +4,13 @@
     <table>
         <tr>
             <th>
-                <div></div><?php echo $this->translate('Game master') ?>
-                <hr style="border: 1px solid #878967">
-                <div></div><?php echo $this->translate('Player turn') ?>
+                <div style="padding: 5px"><?php echo $this->translate('Game master') ?></div>
+                <hr style="border: 1px solid #fff">
+                <div style="padding: 5px"><?php echo $this->translate('Start date') ?></div>
             </th>
             <th>
-                <?php echo $this->translate('Turn nr') ?>
-                <br>
-                <?php echo $this->translate('Number of Players') ?>
-                <br>
+                <!--                --><?php //echo $this->translate('Number of Players') ?>
+                <!--                <br>-->
                 <?php echo $this->translate('Time limit') ?>
                 <br>
                 <?php echo $this->translate('Turns limit') ?>
@@ -21,9 +19,11 @@
             </th>
             <th><?php echo $this->translate('Player name') ?> <?php echo $this->translate('Player color') ?> <?php echo $this->translate('Team color') ?> <?php echo $this->translate('Kingdom name') ?></th>
             <th>
-                <?php echo $this->translate('Start date') ?>
-                <br>
-                <?php echo $this->translate('Pause date') ?>
+                <div style="padding: 5px"><?php echo $this->translate('Turn nr') ?></div>
+                <hr style="border: 1px solid #fff">
+                <div style="padding: 5px"><?php echo $this->translate('Player turn') ?></div>
+                <hr style="border: 1px solid #fff">
+                <div style="padding: 5px"><?php echo $this->translate('Pause date') ?></div>
             </th>
         </tr>
         <?php if (count($this->myGames)): ?>
@@ -34,13 +34,11 @@
                     <td>
                         <div><?php echo $game['players'][$game['gameMasterId']]['firstName'] . ' ' . $game['players'][$game['gameMasterId']]['lastName'] ?></div>
                         <hr style="border: 1px solid #878967">
-                        <div><?php echo $game['playerTurn']['firstName'] . ' ' . $game['playerTurn']['lastName'] ?></div>
+                        <div><?php echo Coret_View_Helper_Formatuj::date($game['begin']) ?></div>
                     </td>
                     <td>
-                        <?php echo $game['turnNumber'] ?>
-                        <br>
-                        <?php echo $game['numberOfPlayers'] ?>
-                        <br>
+                        <!--                        --><?php //echo $game['numberOfPlayers'] ?>
+                        <!--                        <br>-->
                         <?php echo $this->translate($this->timeLimits[$game['timeLimit']]) ?>
                         <br>
                         <?php if ($game['turnsLimit']): echo $game['turnsLimit'];
@@ -63,7 +61,9 @@
                         <?php endforeach ?>
                     </td>
                     <td>
-                        <div><?php echo Coret_View_Helper_Formatuj::date($game['begin']) ?></div>
+                        <div><?php echo $game['turnNumber'] ?></div>
+                        <hr style="border: 1px solid #878967">
+                        <div><?php echo $game['playerTurn']['firstName'] . ' ' . $game['playerTurn']['lastName'] ?></div>
                         <hr style="border: 1px solid #878967">
                         <div><?php echo Coret_View_Helper_Formatuj::date($game['end']) ?></div>
                     </td>

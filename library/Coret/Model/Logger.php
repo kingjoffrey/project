@@ -34,4 +34,9 @@ class Coret_Model_Logger
         }
     }
 
+    public function logMethodName()
+    {
+        $callers = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 2);
+        $this->log($callers[1]['function']);
+    }
 }

@@ -8,7 +8,7 @@ class Application_Model_Websocket extends Coret_Db_Table_Abstract
 
     protected $_playerId;
 
-    public function __construct($playerId, $db = null)
+    public function __construct($playerId, Zend_Db_Adapter_Pdo_Pgsql $db = null)
     {
         if ($db) {
             $this->_db = $db;

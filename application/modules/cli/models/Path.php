@@ -9,13 +9,16 @@ class Cli_Model_Path
     public $y;
     public $castleId = null;
     public $ruinId = null;
+    public $in = false;
 
-    public function __construct($full, $current)
+    public function __construct($current = null, $full = null)
     {
-        $this->full = $full;
-        $this->current = $current;
-        $this->end = end($current);
-        $this->x = $this->end['x'];
-        $this->y = $this->end['y'];
+        if (is_array($current)) {
+            $this->full = $full;
+            $this->current = $current;
+            $this->end = end($current);
+            $this->x = $this->end['x'];
+            $this->y = $this->end['y'];
+        }
     }
 }
