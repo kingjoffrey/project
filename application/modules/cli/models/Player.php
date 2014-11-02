@@ -17,7 +17,7 @@ class Cli_Model_Player
     private $_longName;
     private $_team;
 
-    public function __construct($playerId, $gameId, Zend_Db_Adapter_Pdo_Pgsql $db)
+    public function __construct($playerId, $gameId, Application_Model_MapPlayers $mMapPlayers, Zend_Db_Adapter_Pdo_Pgsql $db)
     {
         $this->_id = $playerId;
 
@@ -33,6 +33,8 @@ class Cli_Model_Player
         $this->_backgroundColor = $player['backgroundColor'];
         $this->_textColor = $player['textColor'];
         $this->_longName = $player['longName'];
+
+
         $this->_team = $mMapPlayers->getColorByMapPlayerId($player['team']);
     }
 
@@ -57,7 +59,25 @@ class Cli_Model_Player
 
     public function updateArmy($army)
     {
-        $this->_armies[$army->id]->update($army);
+        if (isset($this->_armies[$army->id])) {
+            if ($army->destroyed) {
+                unset($this->_armies[$army->id]);
+            } else {
+                $this->_armies[$army->id]->update($army);
+            }
+        } else {
+            $this->_armies[$army->id] = new Cli_Model_Army($army);
+        }
+    }
+
+    public function updateCastle($castle)
+    {
+        $this->_castles[$castle->id]->update($castle);
+    }
+
+    public function updateTower($tower)
+    {
+        $this->_towers[$tower->id]->update($tower);
     }
 
 }

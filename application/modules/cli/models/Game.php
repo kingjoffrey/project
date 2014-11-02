@@ -4,11 +4,15 @@ class Cli_Model_Game
 {
     private $_id;
 
+    private $_mapId;
+
     private $_players = array();
 
     private $_turnNumber = 1;
 
     private $_ruins = array();
+
+    private $_capitals = array();
 
     public function __construct($gameId, Zend_Db_Adapter_Pdo_Pgsql $db)
     {
@@ -18,22 +22,34 @@ class Cli_Model_Game
         $game = $mGame->getGame();
 
         $this->_mapId = $game['mapId'];
+        $this->_begin = $game['begin'];
+        $this->_turnsLimit = $game['turnsLimit'];
+        $this->_turnTimeLimit = $game['turnTimeLimit'];
+        $this->_timeLimit = $game['timeLimit'];
 
-        $this->initPlayers($db);
+        $mMapPlayers = new Application_Model_MapPlayers($this->_mapId, $db);
+        $this->_capitals = $mMapPlayers->getCapitals();
+
+        $this->initPlayers($mMapPlayers, $db);
         $this->initRuins($db);
     }
 
-    private function initPlayers(Zend_Db_Adapter_Pdo_Pgsql $db)
+    private function initPlayers(Application_Model_MapPlayers $mMapPlayers, Zend_Db_Adapter_Pdo_Pgsql $db)
     {
         $mPlayersInGame = new Application_Model_PlayersInGame($this->_id, $db);
         foreach ($mPlayersInGame->getAllColors() as $playerId => $color) {
-            $this->_players[$color] = new Cli_Model_Player($playerId, $this->_id, $db);
+            $this->_players[$color] = new Cli_Model_Player($playerId, $this->_id, $mMapPlayers, $db);
         }
     }
 
     public function updatePlayerArmy($army, $color)
     {
         $this->_players[$color]->updateArmy($army);
+    }
+
+    public function updatePlayerCastle($castle, $color)
+    {
+        $this->_players[$color]->updateCastle($castle);
     }
 
     public function updatePlayerTower($tower, $color)
@@ -57,13 +73,12 @@ class Cli_Model_Game
         }
     }
 
-    public function updateRuins($ruinId, Zend_Db_Adapter_Pdo_Pgsql $db)
+    public function emptyRuin($ruinId, Zend_Db_Adapter_Pdo_Pgsql $db)
     {
         $mRuinsInGame = new Application_Model_RuinsInGame($this->_id, $db);
         if ($mRuinsInGame->add($ruinId)) {
-
+            $this->_ruins[$ruinId]->empty = true;
         }
-
     }
 
     public function incrementTurnNumber()
