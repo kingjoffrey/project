@@ -530,7 +530,7 @@ class Cli_Model_ComputerMain extends Cli_Model_ComputerFunctions
             exit;
         }
 
-        new Cli_Model_Tower($currentPath, $this->_playerId, $this->_gameId, $this->_db, $this->_gameHandler);
+        new Cli_Model_TowerHandler($currentPath, $this->_playerId, $this->_gameId, $this->_db, $this->_gameHandler);
 
         $playersInGameColors = Zend_Registry::get('playersInGameColors');
 

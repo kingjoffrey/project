@@ -22,7 +22,7 @@ class Application_Model_TowersInGame extends Coret_Db_Table_Abstract
             ->from(array('a' => $this->_name), $this->_primary)
             ->join(array('b' => 'playersingame'), 'a."playerId" = b."playerId" AND a."gameId" = b."gameId"')
             ->join(array('c' => 'mapplayers'), 'b . "mapPlayerId" = c . "mapPlayerId"', array('color' => 'shortName'))
-            ->where('a."gameId" = ?', $this->_gameId);
+            ->where('a.' . $this->_db->quoteIdentifier('gameId') . ' = ?', $this->_gameId);
 
         $result = $this->selectAll($select);
 
@@ -35,6 +35,16 @@ class Application_Model_TowersInGame extends Coret_Db_Table_Abstract
         return $towers;
     }
 
+    public function getPlayerTowers($playerId)
+    {
+        $select = $this->_db->select()
+            ->from(array('a' => $this->_name), $this->_primary)
+            ->where('"playerId" = ?', $playerId)
+            ->where($this->_db->quoteIdentifier('gameId') . ' = ?', $this->_gameId);
+
+        return $this->selectAll($select);
+    }
+
     public function getTower($towerId)
     {
         $select = $this->_db->select()
@@ -42,7 +52,7 @@ class Application_Model_TowersInGame extends Coret_Db_Table_Abstract
             ->join(array('b' => 'playersingame'), 'a."playerId" = b."playerId" AND a."gameId" = b."gameId"')
             ->join(array('c' => 'mapplayers'), 'b . "mapPlayerId" = c . "mapPlayerId"', array('color' => 'shortName'))
             ->where('"' . $this->_primary . '" = ?', $towerId)
-            ->where('a."gameId" = ?', $this->_gameId);
+            ->where('a.' . $this->_db->quoteIdentifier('gameId') . ' = ?', $this->_gameId);
 
         return $this->selectOne($select);
     }
@@ -52,7 +62,7 @@ class Application_Model_TowersInGame extends Coret_Db_Table_Abstract
         $select = $this->_db->select()
             ->from(array('a' => $this->_name), 'playerId')
             ->where('"' . $this->_primary . '" = ?', $towerId)
-            ->where('a."gameId" = ?', $this->_gameId);
+            ->where('a.' . $this->_db->quoteIdentifier('gameId') . ' = ?', $this->_gameId);
 
         return $this->selectOne($select);
     }
@@ -61,8 +71,8 @@ class Application_Model_TowersInGame extends Coret_Db_Table_Abstract
     {
         $select = $this->_db->select()
             ->from($this->_name, 'towerId')
-            ->where('"gameId" = ?', $this->_gameId)
-            ->where('"playerId" IN (?)', $playerId);
+            ->where($this->_db->quoteIdentifier('gameId') . ' = ?', $this->_gameId)
+            ->where('"playerId" = ?', $playerId);
 
         $towers = $this->selectAll($select);
 
@@ -74,7 +84,7 @@ class Application_Model_TowersInGame extends Coret_Db_Table_Abstract
         $select = $this->_db->select()
             ->from($this->_name, 'towerId')
             ->where('"towerId" = ?', $towerId)
-            ->where('"gameId" = ?', $this->_gameId);
+            ->where($this->_db->quoteIdentifier('gameId') . ' = ?', $this->_gameId);
 
         return $this->selectOne($select);
     }
@@ -86,7 +96,7 @@ class Application_Model_TowersInGame extends Coret_Db_Table_Abstract
         );
         $where = array(
             $this->_db->quoteInto('"towerId" = ?', $towerId),
-            $this->_db->quoteInto('"gameId" = ?', $this->_gameId)
+            $this->_db->quoteInto($this->_db->quoteIdentifier('gameId') . ' = ?', $this->_gameId)
         );
 
         $this->setQuiet(true);

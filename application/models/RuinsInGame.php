@@ -23,16 +23,12 @@ class Application_Model_RuinsInGame extends Coret_Db_Table_Abstract
             ->from($this->_name, $this->_foreign_2)
             ->where($this->_db->quoteIdentifier($this->_foreign_1) . ' = ?', $this->_gameId);
 
-        try {
-            $result = $this->_db->query($select)->fetchAll();
-        } catch (PDOException $e) {
-            throw new Exception($select->__toString());
-        }
+        $result = $this->selectAll($select);
 
         $array = array();
 
         foreach ($result as $row) {
-            $array[$row[$this->_foreign_2]] = $row;
+            $array[$row[$this->_foreign_2]] = true;
         }
 
         return $array;
@@ -45,7 +41,7 @@ class Application_Model_RuinsInGame extends Coret_Db_Table_Abstract
             $this->_foreign_1 => $this->_gameId
         );
 
-        $this->insert($data);
+        return $this->insert($data);
     }
 
     public function ruinExists($ruinId)
