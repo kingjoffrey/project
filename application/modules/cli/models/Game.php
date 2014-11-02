@@ -14,6 +14,18 @@ class Cli_Model_Game
 
     private $_capitals = array();
 
+    private $_begin;
+    private $_turnsLimit;
+    private $_turnTimeLimit;
+    private $_timeLimit;
+
+    private $_units;
+    private $_terrain;
+
+    private $_turnHistory;
+
+    private $_me;
+
     public function __construct($gameId, Zend_Db_Adapter_Pdo_Pgsql $db)
     {
         $this->_id = $gameId;
@@ -27,18 +39,30 @@ class Cli_Model_Game
         $this->_turnTimeLimit = $game['turnTimeLimit'];
         $this->_timeLimit = $game['timeLimit'];
 
+        $mUnit = new Application_Model_MapUnits($this->_mapId, $db);
+        $this->_units = $mUnit->getUnits();
+        $mTerrain = new Application_Model_MapTerrain($this->_mapId, $db);
+        $this->_terrain = $mTerrain->getTerrain();
+
+        $mTurnHistory = new Application_Model_TurnHistory($this->_id, $db);
+        $this->_turnHistory = $mTurnHistory->getTurnHistory();
+
         $mMapPlayers = new Application_Model_MapPlayers($this->_mapId, $db);
         $this->_capitals = $mMapPlayers->getCapitals();
 
         $this->initPlayers($mMapPlayers, $db);
         $this->initRuins($db);
+
+//        $this->_me = new Cli_Model_Me();
     }
 
     private function initPlayers(Application_Model_MapPlayers $mMapPlayers, Zend_Db_Adapter_Pdo_Pgsql $db)
     {
         $mPlayersInGame = new Application_Model_PlayersInGame($this->_id, $db);
+        $players = $mPlayersInGame->getGamePlayers();
+
         foreach ($mPlayersInGame->getAllColors() as $playerId => $color) {
-            $this->_players[$color] = new Cli_Model_Player($playerId, $this->_id, $mMapPlayers, $db);
+            $this->_players[$color] = new Cli_Model_Player($players[$playerId], $this->_id, $mMapPlayers, $db);
         }
     }
 

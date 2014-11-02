@@ -305,7 +305,7 @@ class Cli_Model_Turn
 
         $castlesDestroyed = $mCastlesDestroyed->countAll($playersInGameColors);
 
-        $playersGold = $mPlayersInGame->getAllPlayersGold();
+        $playersGold = $mPlayersInGame->getGoldForAllPlayers();
 
         foreach ($playersInGameColors as $playerId => $shortName) {
             $points = array();

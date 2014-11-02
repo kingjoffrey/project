@@ -83,7 +83,7 @@ class GameController extends Game_Controller_Game
 
         $mMapFields = new Application_Model_MapFields($game['mapId']);
         $mMapCastles = new Application_Model_MapCastles($game['mapId']);
-        $this->view->map($game['mapId']);
+        $this->view->map($game['mapId']);// co to?
 
         foreach ($players as $player) {
             $colors[$player['playerId']] = $player['color'];

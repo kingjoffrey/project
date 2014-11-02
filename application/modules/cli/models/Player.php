@@ -17,14 +17,11 @@ class Cli_Model_Player
     private $_longName;
     private $_team;
 
-    public function __construct($playerId, $gameId, Application_Model_MapPlayers $mMapPlayers, Zend_Db_Adapter_Pdo_Pgsql $db)
+    public function __construct($player, $gameId, Application_Model_MapPlayers $mMapPlayers, Zend_Db_Adapter_Pdo_Pgsql $db)
     {
-        $this->_id = $playerId;
+        $this->_id = $player['playerId'];
 
         $this->init($gameId, $db);
-
-        $mPlayersInGame = new Application_Model_PlayersInGame($this->_id, $db);
-        $player = $mPlayersInGame->getGamePlayers();
 
         $this->_isPlayerTurn = $player['turnActive'];
         $this->_isComputer = $player['computer'];
@@ -33,7 +30,6 @@ class Cli_Model_Player
         $this->_backgroundColor = $player['backgroundColor'];
         $this->_textColor = $player['textColor'];
         $this->_longName = $player['longName'];
-
 
         $this->_team = $mMapPlayers->getColorByMapPlayerId($player['team']);
     }

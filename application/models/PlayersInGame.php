@@ -285,7 +285,7 @@ class Application_Model_PlayersInGame extends Coret_Db_Table_Abstract
 
     }
 
-    public function getAllPlayersGold()
+    public function getGoldForAllPlayers()
     {
         $select = $this->_db->select()
             ->from($this->_name, array('playerId', 'gold'))
