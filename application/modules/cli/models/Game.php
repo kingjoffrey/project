@@ -6,6 +6,8 @@ class Cli_Model_Game
 
     private $_players = array();
 
+    private $_turnNumber = 1;
+
     public function __construct($gameId, Zend_Db_Adapter_Pdo_Pgsql $db)
     {
         $this->_id = $gameId;
@@ -13,7 +15,7 @@ class Cli_Model_Game
         $this->initPlayersArmies($db);
     }
 
-    public function initPlayersArmies(Zend_Db_Adapter_Pdo_Pgsql $db)
+    private function initPlayers(Zend_Db_Adapter_Pdo_Pgsql $db)
     {
         $mPlayersInGame = new Application_Model_PlayersInGame($this->_id, $db);
         foreach ($mPlayersInGame->getAllColors() as $playerId => $color) {
@@ -29,5 +31,15 @@ class Cli_Model_Game
     public function updatePlayerTower($tower, $color)
     {
         $this->_players[$color]->updateTower($tower);
+    }
+
+    public function incrementTurnNumber()
+    {
+        $this->_turnNumber++;
+    }
+
+    public function getTurnNumber()
+    {
+        return $this->_turnNumber;
     }
 }
