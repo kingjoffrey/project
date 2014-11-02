@@ -14,7 +14,7 @@ class Cli_Model_ComputerFight
     protected $_map;
     protected $_enemies;
 
-    public function __construct($gameId, $playerId, $db)
+    public function __construct($gameId, $playerId, Zend_Db_Adapter_Pdo_Pgsql $db)
     {
         $this->_gameId = $gameId;
         $this->_playerId = $playerId;
@@ -43,7 +43,7 @@ class Cli_Model_ComputerFight
                 $battle = new Cli_Model_Battle($this->_Computer, $enemy, Cli_Model_Army::getAttackSequence($this->_gameId, $this->_db, $this->_playerId), Cli_Model_Army::getDefenceSequence($this->_gameId, $this->_db, $defenderId));
                 $battle->fight();
                 $battle->updateArmies($this->_gameId, $this->_db, $this->_playerId, $defenderId);
-                $defender = $this->_mArmyDB->getDefender($enemy->ids);
+                $result->defenderArmy = $this->_mArmyDB->getDefender($enemy->ids);
 
                 if (!$battle->getDefender()) {
                     $this->_Computer->updateArmyPosition($this->_playerId, $path, $fields, $this->_gameId, $this->_db);
@@ -66,7 +66,7 @@ class Cli_Model_ComputerFight
                 );
                 $battle->fight();
                 $battle->updateArmies($this->_gameId, $this->_db, $this->_playerId, 0);
-                $defender = $battle->getDefender();
+                $result->defenderArmy = $battle->getDefender();
 
                 if (!$battle->getDefender()) {
                     $this->_Computer->updateArmyPosition($this->_playerId, $path, $fields, $this->_gameId, $this->_db);
@@ -81,7 +81,6 @@ class Cli_Model_ComputerFight
                         'destroyed' => true
                     );
                     $this->_mArmyDB->destroyArmy($this->_Computer->id, $this->_playerId);
-                    $defender = null;
                 }
                 $result->defenderColor = 'neutral';
             }
@@ -93,7 +92,7 @@ class Cli_Model_ComputerFight
             $battle = new Cli_Model_Battle($this->_Computer, $enemy, Cli_Model_Army::getAttackSequence($this->_gameId, $this->_db, $this->_playerId), Cli_Model_Army::getDefenceSequence($this->_gameId, $this->_db, $defenderId));
             $battle->fight();
             $battle->updateArmies($this->_gameId, $this->_db, $this->_playerId, $defenderId);
-            $defender = $this->_mArmyDB->getDefender($enemy->ids);
+            $result->defenderArmy = $this->_mArmyDB->getDefender($enemy->ids);
 
             if (!$battle->getDefender()) {
                 $this->_Computer->updateArmyPosition($this->_playerId, $path, $fields, $this->_gameId, $this->_db);
@@ -111,7 +110,6 @@ class Cli_Model_ComputerFight
             $result->defenderColor = $playersInGameColors[$defenderId];
         }
 
-        $result->defenderArmy = $defender;
         $result->battle = $battle->getResult();
 
         return $result;
@@ -141,7 +139,7 @@ class Cli_Model_ComputerFight
 
         for ($i = 0; $i < $max; $i++) {
             $battle->fight();
-            if ($battle->getAttacker()) {
+            if ($battle->isAttacker()) {
                 $attackerWinsCount++;
             }
         }

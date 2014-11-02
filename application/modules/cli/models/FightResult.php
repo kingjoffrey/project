@@ -7,8 +7,4 @@ class Cli_Model_FightResult
     public $defenderColor;
     public $battle;
     public $victory = false;
-
-    public function __construct()
-    {
-    }
 }

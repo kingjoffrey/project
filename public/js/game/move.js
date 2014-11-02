@@ -121,7 +121,7 @@ var Move = {
             Ruin.update(r.ruinId, 1);
         }
 
-        if (isTruthful(r.defenderArmy) && isTruthful(r.defenderColor)) {
+        if (isSet(r.defenderArmy[0]) && isTruthful(r.defenderColor)) {
             if (isTruthful(r.victory)) {
                 for (i in r.defenderArmy) {
                     Army.delete(r.defenderArmy[i].armyId, r.defenderColor, 1);
@@ -143,7 +143,7 @@ var Move = {
 
         if (players[r.attackerColor].computer) {
             this.moving = 0
-            //Websocket.computer();
+            Websocket.computer();
         } else if (r.attackerColor == my.color) {
             if (!r.castleId && isSet(players[r.attackerColor].armies[r.attackerArmy.armyId]) && players[r.attackerColor].armies[r.attackerArmy.armyId].moves) {
                 Gui.unlock()

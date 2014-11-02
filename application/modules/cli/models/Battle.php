@@ -46,26 +46,28 @@ class Cli_Model_Battle
             'heroes' => $attacker->heroes
         );
 
+        $soldiers = $defender->soldiers;
         foreach ($defenderBattleSequence as $unitId) {
-            foreach ($defender->soldiers as $k => $soldier) {
+            foreach ($soldiers as $k => $soldier) {
                 if ($this->units[$soldier['unitId']]['canSwim']) {
                     $this->defender['ships'][] = $soldier;
-                    unset($defender->soldiers[$k]);
+                    unset($soldiers[$k]);
                 } elseif ($soldier['unitId'] == $unitId) {
                     $this->defender['soldiers'][] = $soldier;
-                    unset($defender->soldiers[$k]);
+                    unset($soldiers[$k]);
                 }
             }
         }
 
+        $soldiers = $attacker->soldiers;
         foreach ($attackerBattleSequence as $unitId) {
-            foreach ($attacker->soldiers as $k => $soldier) {
+            foreach ($soldiers as $k => $soldier) {
                 if ($this->units[$soldier['unitId']]['canSwim']) {
                     $this->attacker['ships'][] = $soldier;
-                    unset($attacker->soldiers[$k]);
+                    unset($soldiers[$k]);
                 } elseif ($soldier['unitId'] == $unitId) {
                     $this->attacker['soldiers'][] = $soldier;
-                    unset($attacker->soldiers[$k]);
+                    unset($soldiers[$k]);
                 }
             }
         }
@@ -104,22 +106,24 @@ class Cli_Model_Battle
         }
     }
 
-    public function getDefender()
+    public function getDefender() // only used for getting neutral castle garrison
     {
         if (empty($this->defender['soldiers']) && empty($this->defender['heroes']) && empty($this->defender['ships'])) {
-            return null;
+            return array();
         }
-        // only neutral castle garrison (ships?)
-        return $this->defender;
+
+        return array(
+            'soldiers' => array_merge($this->defender['soldiers'], $this->defender['ships']),
+            'heroes' => $this->defender['heroes']
+        );
     }
 
-    public function getAttacker()
+    public function isAttacker()
     {
         if (empty($this->attacker['soldiers']) && empty($this->attacker['heroes']) && empty($this->attacker['ships'])) {
-            return null;
+            return false;
         }
-        // (ships?)
-        return $this->attacker;
+        return true;
     }
 
     public function fight()

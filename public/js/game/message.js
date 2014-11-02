@@ -796,9 +796,7 @@ var Message = {
             )
         }
 
-        console.log(r.defenderArmy)
-
-        if (r.defenderArmy && r.defenderColor != 'neutral' && Tower.isAtPosition(players[r.defenderColor].armies[r.defenderArmy[0].armyId].x, players[r.defenderColor].armies[r.defenderArmy[0].armyId].y)) {
+        if (isSet(r.defenderArmy[0]) && r.defenderColor != 'neutral' && Tower.isAtPosition(players[r.defenderColor].armies[r.defenderArmy[0].armyId].x, players[r.defenderColor].armies[r.defenderArmy[0].armyId].y)) {
             defenseLayout.append(
                 $('<div>')
                     .addClass('tower')

@@ -113,7 +113,7 @@ class Cli_GameHandler extends Cli_WofHandler
 
             if (!empty($army['armyId'])) {
                 $mMain = new Cli_Model_ComputerMain($user, $playerId, $db, $this);
-                $user = $mMain->move($army);
+                $mMain->init($army);
             } else {
                 $l->log('NASTĘPNA TURA');
                 $mTurn = new Cli_Model_Turn($user, $db, $this);
@@ -154,10 +154,6 @@ class Cli_GameHandler extends Cli_WofHandler
         switch ($dataIn['type']) {
             case 'move':
                 new Cli_Model_Move($dataIn, $user, $db, $this);
-                break;
-
-            case 'tower':
-                new Cli_Model_Tower($dataIn['towerId'], $user, $db, $this);
                 break;
 
             case 'split':

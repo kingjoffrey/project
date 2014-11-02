@@ -5,7 +5,7 @@ class Cli_Model_Open
 
     private $_parameters = array();
 
-    public function __construct($dataIn, $user, $db, $gameHandler)
+    public function __construct($dataIn, $user, Zend_Db_Adapter_Pdo_Pgsql $db, $gameHandler)
     {
         if (!isset($dataIn['gameId']) || !isset($dataIn['playerId']) || !isset($dataIn['langId'])) {
             $gameHandler->sendError($user, 'Brak "gameId" lub "playerId" lub "langId');

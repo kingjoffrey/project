@@ -269,6 +269,19 @@ class Application_Model_Army extends Coret_Db_Table_Abstract
         return $this->selectOne($select);
     }
 
+    public function isEnemyArmyAtPosition($position, $playerId)
+    {
+        $select = $this->_db->select()
+            ->from($this->_name, 'armyId')
+            ->where('"gameId" = ?', $this->_gameId)
+            ->where('"playerId" != ?', $playerId)
+            ->where('destroyed = false')
+            ->where('x = ?', $position['x'])
+            ->where('y = ?', $position['y']);
+
+        return $this->selectOne($select);
+    }
+
     public function unfortifyComputerArmies($playerId)
     {
         $data = array(

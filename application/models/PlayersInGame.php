@@ -40,7 +40,7 @@ class Application_Model_PlayersInGame extends Coret_Db_Table_Abstract
         $select = $this->_db->select()
             ->from(array('a' => $this->_name), 'playerId')
             ->join(array('b' => 'mapplayers'), 'a . "mapPlayerId" = b . "mapPlayerId"', array('color' => 'shortName'))
-            ->where('a."gameId" = ?', $this->_gameId)
+            ->where('a . ' . $this->_db->quoteIdentifier('gameId') . ' = ?', $this->_gameId)
             ->where('a . ' . $this->_db->quoteIdentifier('mapPlayerId') . ' IS NOT NULL')
             ->order('startOrder');
 
@@ -58,7 +58,7 @@ class Application_Model_PlayersInGame extends Coret_Db_Table_Abstract
         $select = $this->_db->select()
             ->from(array('a' => $this->_name), array('playerId', 'team'))
             ->join(array('b' => 'mapplayers'), 'a . "mapPlayerId" = b . "mapPlayerId"', null)
-            ->where('a."gameId" = ?', $this->_gameId)
+            ->where('a . ' . $this->_db->quoteIdentifier('gameId') . ' = ?', $this->_gameId)
             ->where('a . ' . $this->_db->quoteIdentifier('mapPlayerId') . ' IS NOT NULL')
             ->order('startOrder');
 
@@ -76,7 +76,7 @@ class Application_Model_PlayersInGame extends Coret_Db_Table_Abstract
         $select = $this->_db->select()
             ->from(array('a' => $this->_name), array('mapPlayerId', 'playerId'))
             ->join(array('b' => 'player'), 'a . "playerId" = b . "playerId"', array('firstName', 'lastName', 'computer'))
-            ->where('a."gameId" = ?', $this->_gameId)
+            ->where('a . ' . $this->_db->quoteIdentifier('gameId') . ' = ?', $this->_gameId)
             ->where($this->_db->quoteIdentifier('webSocketServerUserId') . ' IS NOT NULL OR computer = true');
 
         return $this->selectAll($select);
@@ -129,7 +129,7 @@ class Application_Model_PlayersInGame extends Coret_Db_Table_Abstract
         $select = $this->_db->select()
             ->from(array('a' => $this->_name), 'playerId')
             ->join(array('b' => 'player'), 'a."playerId" = b."playerId"', null)
-            ->where('"gameId" = ?', $this->_gameId)
+            ->where('a . ' . $this->_db->quoteIdentifier('gameId') . ' = ?', $this->_gameId)
             ->where($this->_db->quoteIdentifier('webSocketServerUserId') . ' IS NULL')
             ->where('computer = false');
 
@@ -484,7 +484,7 @@ class Application_Model_PlayersInGame extends Coret_Db_Table_Abstract
         $select = $this->_db->select()
             ->from($this->_name, 'accessKey')
             ->where('"playerId" = ?', $playerId)
-            ->where('"gameId" = ?', $this->_gameId);
+            ->where($this->_db->quoteIdentifier('gameId') . ' = ?', $this->_gameId);
 
         return $this->_db->fetchOne($select);
     }
@@ -495,7 +495,7 @@ class Application_Model_PlayersInGame extends Coret_Db_Table_Abstract
             ->from($this->_name, 'playerId')
             ->where('"playerId" != ?', $playerId)
             ->where('"team" = (?)', new Zend_Db_Expr($this->selectPlayerTeam($playerId)))
-            ->where('"gameId" = ?', $this->_gameId);
+            ->where($this->_db->quoteIdentifier('gameId') . ' = ?', $this->_gameId);
     }
 
     public function getTeamPlayerIds($playerId)
@@ -514,7 +514,7 @@ class Application_Model_PlayersInGame extends Coret_Db_Table_Abstract
         return $this->_db->select()
             ->from($this->_name, 'team')
             ->where('"playerId" = ?', $playerId)
-            ->where('"gameId" = ?', $this->_gameId);
+            ->where($this->_db->quoteIdentifier('gameId') . ' = ?', $this->_gameId);
     }
 
     public function isEnemyAlive($playerId)
@@ -523,7 +523,7 @@ class Application_Model_PlayersInGame extends Coret_Db_Table_Abstract
             ->from($this->_name, 'team')
             ->where('lost = false')
             ->where('team != (?)', new Zend_Db_Expr($this->selectPlayerTeam($playerId)))
-            ->where('"gameId" = ?', $this->_gameId));
+            ->where($this->_db->quoteIdentifier('gameId') . ' = ?', $this->_gameId));
     }
 }
 
