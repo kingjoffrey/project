@@ -53,6 +53,49 @@ class Cli_Model_Player
         }
     }
 
+    public function toArray()
+    {
+        return array(
+            'isComputer' => $this->_isComputer,
+            'lost' => $this->_lost,
+            'miniMapColor' => $this->_miniMapColor,
+            'backgroundColor' => $this->_backgroundColor,
+            'textColor' => $this->_textColor,
+            'longName' => $this->_longName,
+            'team' => $this->_team,
+            'armies' => $this->armiesToArray(),
+            'castles' => $this->castlesToArray(),
+            'towers' => $this->towersToArray()
+        );
+    }
+
+    private function armiesToArray()
+    {
+        $armies = array();
+        foreach ($this->_armies as $army) {
+            $armies[$army->id] = $army->toArray();
+        }
+        return $armies;
+    }
+
+    private function castlesToArray()
+    {
+        $castles = array();
+        foreach ($this->_castles as $castle) {
+            $castles[$castle->id] = $castle->toArray();
+        }
+        return $castles;
+    }
+
+    private function towersToArray()
+    {
+        $towers = array();
+        foreach ($this->_towers as $towerId => $tower) {
+            $towers[$towerId] = $tower->toArray();
+        }
+        return $towers;
+    }
+
     public function updateArmy($army)
     {
         if (isset($this->_armies[$army->id])) {

@@ -15,4 +15,13 @@ class Cli_Model_Me
         $this->_accessKey = $player['accessKey'];
         $this->_color = $player['color'];
     }
+
+    public function toArray()
+    {
+        return array(
+            'gold' => $this->_gold,
+            'accessKey' => $this->_accessKey,
+            'color' => $this->_color,
+        );
+    }
 }

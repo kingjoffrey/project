@@ -14,4 +14,13 @@ class Cli_Model_Ruin
         $this->x = $position['x'];
         $this->y = $position['y'];
     }
+
+    public function toArray()
+    {
+        return array(
+            'empty' => $this->empty,
+            'x' => $this->x,
+            'y' => $this->y,
+        );
+    }
 }
