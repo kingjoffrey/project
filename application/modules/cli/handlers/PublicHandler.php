@@ -94,9 +94,9 @@ class Cli_PublicHandler extends Cli_WofHandler
                     } else {
                         $playerId = $mPlayersInGame->getComputerPlayerId();
                         if (!$playerId) {
-                            $modelPlayer = new Application_Model_Player(null, false);
+                            $modelPlayer = new Application_Model_Player($db);
                             $playerId = $modelPlayer->createComputerPlayer();
-                            $modelHero = new Application_Model_Hero($playerId);
+                            $modelHero = new Application_Model_Hero($playerId, $db);
                             $modelHero->createHero();
                         }
                         $mPlayersInGame->joinGame($playerId);

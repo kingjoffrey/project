@@ -6,15 +6,12 @@ class Cli_Model_Game
 
     private $_mapId;
 
-    private $_players = array();
-
     private $_turnNumber = 1;
-
-    private $_ruins = array();
 
     private $_capitals = array();
     private $_teams = array();
     private $_playersInGameColors;
+    private $_online = array();
 
     private $_begin;
     private $_turnsLimit;
@@ -31,12 +28,14 @@ class Cli_Model_Game
     private $_firstUnitId;
     private $_terrain;
 
+    private $_neutralCastles = array();
+    private $_players = array();
+    private $_ruins = array();
+    private $_neutralTowers = array();
 
     public function __construct($playerId, $gameId, Zend_Db_Adapter_Pdo_Pgsql $db)
     {
         $this->_id = $gameId;
-
-        $this->_me = new Cli_Model_Me($playerId, $this->_id, $db);
 
         $mGame = new Application_Model_Game($this->_id);
         $game = $mGame->getGame();
@@ -53,6 +52,9 @@ class Cli_Model_Game
         $mPlayersInGame = new Application_Model_PlayersInGame($this->_id, $db);
         $this->_teams = $mPlayersInGame->getTeams();
         $this->_playersInGameColors = $mPlayersInGame->getAllColors();
+        foreach ($mPlayersInGame->getInGamePlayerIds() as $row) {
+            $this->_online[$this->_playersInGameColors[$row['playerId']]] = 1;
+        }
 
         $mChat = new Application_Model_Chat($this->_id, $db);
         $this->_chatHistory = $mChat->getChatHistory();
@@ -60,14 +62,16 @@ class Cli_Model_Game
             $this->_chatHistory[$k]['color'] = $this->_playersInGameColors[$v['playerId']];
         }
 
+        $this->_me = new Cli_Model_Me($this->_playersInGameColors[$playerId], $mPlayersInGame->getMe($playerId));
+
         $mMapPlayers = new Application_Model_MapPlayers($this->_mapId, $db);
         $this->_capitals = $mMapPlayers->getCapitals();
 
         $mMapFields = new Application_Model_MapFields($this->_mapId, $db);
         $this->_fields = $mMapFields->getMapFields();
 
-        $mTerrain = new Application_Model_MapTerrain($this->_mapId, $db);
-        $this->_terrain = $mTerrain->getTerrain();
+        $mMapTerrain = new Application_Model_MapTerrain($this->_mapId, $db);
+        $this->_terrain = $mMapTerrain->getTerrain();
 
         $mMapUnits = new Application_Model_MapUnits($this->_mapId, $db);
         $this->_units = $mMapUnits->getUnits();
@@ -81,8 +85,24 @@ class Cli_Model_Game
         reset($this->_units);
         $this->_firstUnitId = key($this->_units);
 
+        $this->initNeutralCastles($db);
         $this->initPlayers($mMapPlayers, $db);
         $this->initRuins($db);
+        $this->initNeutralTowers($db);
+    }
+
+    private function initNeutralCastles(Zend_Db_Adapter_Pdo_Pgsql $db)
+    {
+        $mCastlesInGame = new Application_Model_CastlesInGame($this->_id, $db);
+        $playersCastles = $mCastlesInGame->getAllCastles();
+
+        $mMapCastles = new Application_Model_MapCastles($this->_mapId, $db);
+        foreach ($mMapCastles->getMapCastles() as $castleId => $castle) {
+            if (isset($playersCastles[$castleId])) {
+                continue;
+            }
+            $this->_neutralCastles[$castleId] = $castle;
+        }
     }
 
     private function initPlayers(Application_Model_MapPlayers $mMapPlayers, Zend_Db_Adapter_Pdo_Pgsql $db)
@@ -92,6 +112,36 @@ class Cli_Model_Game
 
         foreach ($mPlayersInGame->getAllColors() as $playerId => $color) {
             $this->_players[$color] = new Cli_Model_Player($players[$playerId], $this->_id, $mMapPlayers, $db);
+        }
+    }
+
+    private function initRuins(Zend_Db_Adapter_Pdo_Pgsql $db)
+    {
+        $mRuinsInGame = new Application_Model_RuinsInGame($this->_id, $db);
+        $emptyRuins = $mRuinsInGame->getVisited();
+
+        $mMapRuins = new Application_Model_MapRuins($this->_mapId, $db);
+        foreach ($mMapRuins->getMapRuins() as $ruinId => $position) {
+            if (isset($emptyRuins[$ruinId])) {
+                $empty = true;
+            } else {
+                $empty = false;
+            }
+            $this->_ruins[$ruinId] = new Cli_Model_Ruin($position, $empty);
+        }
+    }
+
+    private function initNeutralTowers(Zend_Db_Adapter_Pdo_Pgsql $db)
+    {
+        $mTowersInGame = new Application_Model_TowersInGame($this->_id, $db);
+        $playersTowers = $mTowersInGame->getTowers();
+
+        $mMapTowers = new Application_Model_MapTowers($this->_mapId, $db);
+        foreach ($mMapTowers->getMapTowers() as $towerId => $tower) {
+            if (isset($playersTowers[$towerId])) {
+                continue;
+            }
+            $this->_neutralTowers[$towerId] = $tower;
         }
     }
 
@@ -117,22 +167,6 @@ class Cli_Model_Game
     public function updatePlayerTower($tower, $color)
     {
         $this->_players[$color]->updateTower($tower);
-    }
-
-    private function initRuins(Zend_Db_Adapter_Pdo_Pgsql $db)
-    {
-        $mRuinsInGame = new Application_Model_RuinsInGame($this->_id, $db);
-        $emptyRuins = $mRuinsInGame->getVisited();
-
-        $mMapRuins = new Application_Model_MapRuins($this->_mapId, $db);
-        foreach ($mMapRuins->getMapRuins() as $ruinId => $position) {
-            if (isset($emptyRuins[$ruinId])) {
-                $empty = true;
-            } else {
-                $empty = false;
-            }
-            $this->_ruins[$ruinId] = new Cli_Model_Ruin($position, $empty);
-        }
     }
 
     private function ruinsToArray()
@@ -178,11 +212,14 @@ class Cli_Model_Game
             'capitals' => $this->_capitals,
             'playersInGameColors' => $this->_playersInGameColors,
             'teams' => $this->_teams,
+            'online' => $this->_online,
             'chatHistory' => $this->_chatHistory,
             'turnHistory' => $this->_turnHistory,
             'me' => $this->_me->toArray(),
             'players' => $this->playersToArray(),
-            'ruins' => $this->ruinsToArray()
+            'ruins' => $this->ruinsToArray(),
+            'neutralCastles' => $this->_neutralCastles,
+            'neutralTowers' => $this->_neutralTowers
         );
     }
 }

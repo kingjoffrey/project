@@ -13,33 +13,27 @@ class SetupController extends Game_Controller_Gui
         $this->view->Websocket();
         $this->view->headScript()->appendFile('/js/setup.js?v=' . Zend_Registry::get('config')->version);
 
-        if (isset($this->_namespace->armyId)) {
-            unset($this->_namespace->armyId);
-        }
-
-        $this->_namespace->gameId = $gameId; // zapisuję gemeId do sesji
-
         $mGame = new Application_Model_Game($gameId);
         $mPlayersInGame = new Application_Model_PlayersInGame($gameId);
         $game = $mGame->getGame();
         $mMapPlayers = new Application_Model_MapPlayers($game['mapId']);
 
-        $mGame->updateGameMaster(Zend_Auth::getInstance()->getIdentity()->playerId);
+        $mGame->updateGameMaster($this->_playerId);
 
-        if ($game['gameMasterId'] != Zend_Auth::getInstance()->getIdentity()->playerId) {
-            if ($mPlayersInGame->isPlayerInGame(Zend_Auth::getInstance()->getIdentity()->playerId)) {
-                $mPlayersInGame->disconnectFromGame(Zend_Auth::getInstance()->getIdentity()->playerId);
+        if ($game['gameMasterId'] != $this->_playerId) {
+            if ($mPlayersInGame->isPlayerInGame($this->_playerId)) {
+                $mPlayersInGame->disconnectFromGame($this->_playerId);
             }
-            $mPlayersInGame->joinGame(Zend_Auth::getInstance()->getIdentity()->playerId);
-        } elseif (!$mPlayersInGame->isPlayerInGame(Zend_Auth::getInstance()->getIdentity()->playerId)) {
-            $mPlayersInGame->joinGame(Zend_Auth::getInstance()->getIdentity()->playerId);
+            $mPlayersInGame->joinGame($this->_playerId);
+        } elseif (!$mPlayersInGame->isPlayerInGame($this->_playerId)) {
+            $mPlayersInGame->joinGame($this->_playerId);
         }
 
         $this->view->mapPlayers = $mMapPlayers->getAll();
         $this->view->game = $game;
-        $this->view->accessKey = $mPlayersInGame->getAccessKey(Zend_Auth::getInstance()->getIdentity()->playerId);
+        $this->view->accessKey = $mPlayersInGame->getAccessKey($this->_playerId);
         $this->view->gameId = $gameId;
-        $this->view->player = $this->_namespace->player;
+        $this->view->playerId = $this->_playerId;
 
         $mMap = new Application_Model_Map($game['mapId']);
         $map = $mMap->getMap();

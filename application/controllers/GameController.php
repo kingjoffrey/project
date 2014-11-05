@@ -7,8 +7,6 @@ class GameController extends Game_Controller_Game
     {
         $this->_helper->layout->setLayout('game');
 
-        $mGame = new Application_Model_Game($this->_gameId);
-
         $this->view->headLink()->appendStylesheet('/css/game.css?v=' . Zend_Registry::get('config')->version);
 
         $this->view->headScript()->appendFile('/js/jquery-ui-1.10.3.custom.js');
@@ -35,141 +33,8 @@ class GameController extends Game_Controller_Game
 
         $this->view->sound();
 
-        $mCastlesInGame = new Application_Model_CastlesInGame($this->_gameId);
-        $mArmy = new Application_Model_Army($this->_gameId);
-        $mRuin = new Application_Model_RuinsInGame($this->_gameId);
-        $mTower = new Application_Model_TowersInGame($this->_gameId);
-        $mChat = new Application_Model_Chat($this->_gameId);
-        $mPlayersInGame = new Application_Model_PlayersInGame($this->_gameId);
-
-        $game = $mGame->getGame();
-        $this->view->game = array();
-        $this->view->game['begin'] = $game['begin'];
-        $this->view->game['turnsLimit'] = $game['turnsLimit'];
-        $this->view->game['turnTimeLimit'] = $game['turnTimeLimit'];
-        $this->view->game['timeLimit'] = $game['timeLimit'];
-
-        $mMapPlayers = new Application_Model_MapPlayers($game['mapId']);
-        $this->view->capitals = $mMapPlayers->getCapitals();
-
-        $mUnit = new Application_Model_MapUnits($game['mapId']);
-        $this->view->units = $mUnit->getUnits();
-        $mTerrain = new Application_Model_MapTerrain($game['mapId']);
-        $this->view->terrain = $mTerrain->getTerrain();
-        $mMapTowers = new Application_Model_MapTowers($game['mapId']);
-        $neutralTowers = $mMapTowers->getMapTowers();
-        $playersTowers = $mTower->getTowers();
-
-        $mTurn = new Application_Model_TurnHistory($this->_gameId);
-        $this->view->turnHistory = $mTurn->getTurnHistory();
-
-        $towers = array();
-
-        foreach (array_keys($neutralTowers) as $k) {
-            $towers[$k] = $neutralTowers[$k];
-            if (isset($playersTowers[$k])) {
-                $towers[$k]['color'] = $playersTowers[$k];
-            } else {
-                $towers[$k]['color'] = 'neutral';
-            }
-        }
-
-        $this->view->towers = $towers;
-
-        $players = $mPlayersInGame->getPlayersInGame();
-
-        $this->view->players = array();
-        $colors = array();
-
-        $mMapFields = new Application_Model_MapFields($game['mapId']);
-        $mMapCastles = new Application_Model_MapCastles($game['mapId']);
-        $this->view->map($game['mapId']);// co to?
-
-        foreach ($players as $player) {
-            $colors[$player['playerId']] = $player['color'];
-            $this->view->players[$player['color']]['armies'] = array();
-
-            $mHeroesInGame = new Application_Model_HeroesInGame($this->_gameId);
-            $mSoldier = new Application_Model_UnitsInGame($this->_gameId);
-
-            foreach ($mArmy->getPlayerArmies($player['playerId']) as $army) {
-                $this->view->players[$player['color']]['armies'][$army['armyId']] = $army;
-                $this->view->players[$player['color']]['armies'][$army['armyId']]['heroes'] = $mHeroesInGame->getForMove($army['armyId']);
-
-
-                foreach ($this->view->players[$player['color']]['armies'][$army['armyId']]['heroes'] as $k => $row) {
-                    $mInventory = new Application_Model_Inventory($row['heroId'], $this->_gameId);
-                    $this->view->players[$player['color']]['armies'][$army['armyId']]['heroes'][$k]['artifacts'] = $mInventory->getAll();
-                }
-
-                $this->view->players[$player['color']]['armies'][$army['armyId']]['soldiers'] = $mSoldier->getForMove($army['armyId']);
-                if (empty($this->view->players[$player['color']]['armies'][$army['armyId']]['heroes']) AND empty($this->view->players[$player['color']]['armies'][$army['armyId']]['soldiers'])) {
-                    $mArmy->destroyArmy($army['armyId'], $player['playerId']);
-                    unset($this->view->players[$player['color']]['armies'][$army['armyId']]);
-                }
-            }
-
-            $this->view->players[$player['color']]['castles'] = $mCastlesInGame->getPlayerCastles($player['playerId']);
-            $this->view->players[$player['color']]['turnActive'] = $player['turnActive'];
-            $this->view->players[$player['color']]['computer'] = $player['computer'];
-            $this->view->players[$player['color']]['lost'] = $player['lost'];
-            $this->view->players[$player['color']]['minimapColor'] = $player['minimapColor'];
-            $this->view->players[$player['color']]['backgroundColor'] = $player['backgroundColor'];
-            $this->view->players[$player['color']]['textColor'] = $player['textColor'];
-            $this->view->players[$player['color']]['longName'] = $player['longName'];
-            $this->view->players[$player['color']]['team'] = $mMapPlayers->getColorByMapPlayerId($player['team']);
-
-            if (Zend_Auth::getInstance()->getIdentity()->playerId == $player['playerId']) {
-                $this->view->gold = $player['gold'];
-                $this->view->accessKey = $player['accessKey'];
-                $this->view->color = $player['color'];
-            }
-        }
-
-        $this->view->id = Zend_Auth::getInstance()->getIdentity()->playerId;
-        if ($game['turnPlayerId'] == Zend_Auth::getInstance()->getIdentity()->playerId) {
-            $this->view->myTurn = 'true';
-        } else {
-            $this->view->myTurn = 'false';
-        }
-
-        $gameMasterId = $mGame->getGameMasterId();
-        if ($gameMasterId == Zend_Auth::getInstance()->getIdentity()->playerId) {
-            $this->view->myGame = 1;
-        } else {
-            $this->view->myGame = 0;
-        }
-
-        $this->view->castlesSchema = array();
-        $razed = $mCastlesInGame->getRazedCastles();
-        $mMapRuins = new Application_Model_MapRuins($game['mapId']);
-        $this->view->ruins = $mMapRuins->getMapRuins();
-        $emptyRuins = $mRuin->getVisited();
-        foreach (array_keys($emptyRuins) as $id) {
-            $this->view->ruins[$id]['e'] = 1;
-        }
-
-        $mCastleProduction = new Application_Model_CastleProduction();
-        $this->view->fields = $mMapFields->getMapFields();
-        foreach ($mMapCastles->getMapCastles() as $id => $castle) {
-            if (!isset($razed[$id])) {
-                $castle['production'] = $mCastleProduction->getCastleProduction($id);
-                $this->view->castlesSchema[$id] = $castle;
-            }
-        }
-
-        $this->view->chatHistory = $mChat->getChatHistory();
-        foreach ($this->view->chatHistory as $k => $v) {
-            $this->view->chatHistory[$k]['color'] = $colors[$v['playerId']];
-        }
         $this->view->gameId = $this->_gameId;
 
-        $mBattleSequence = new Application_Model_BattleSequence($this->_gameId);
-        $this->view->battleSequence = $mBattleSequence->get(Zend_Auth::getInstance()->getIdentity()->playerId);
-        if (empty($this->view->battleSequence)) {
-            $mBattleSequence->initiate(Zend_Auth::getInstance()->getIdentity()->playerId, $this->view->units);
-            $this->view->battleSequence = $mBattleSequence->get(Zend_Auth::getInstance()->getIdentity()->playerId);
-        }
     }
 }
 

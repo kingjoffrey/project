@@ -57,7 +57,7 @@ var numberOfPlayers = <?php echo (int)$this->game['numberOfPlayers'] ?>;
 var mapPlayers = <?php echo Zend_Json::encode($this->mapPlayers) ?>;
 
 var gameId = <?php echo (int)$this->gameId ?>;
-var myId = <?php echo (int)$this->player['playerId'] ?>;
+var myId = <?php echo (int)$this->playerId ?>;
 var accessKey = '<?php echo $this->accessKey ?>';
 
 var lang = '<?php echo Zend_Registry::get('lang') ?>'

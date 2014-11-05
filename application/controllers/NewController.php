@@ -15,7 +15,7 @@ class NewController extends Game_Controller_Gui
                     $mPlayersInGame = new Application_Model_PlayersInGame($gameId);
                     $mPlayersInGame->joinGame(Zend_Auth::getInstance()->getIdentity()->playerId);
                     $mPlayersInGame->updatePlayerReady(Zend_Auth::getInstance()->getIdentity()->playerId, $mMapPlayers->getFirstMapPlayerId());
-                    $this->_redirect('/' . Zend_Registry::get('lang') . '/setup/index/gameId/' . $gameId);
+                    $this->redirect('/' . Zend_Registry::get('lang') . '/setup/index/gameId/' . $gameId);
                 }
             }
         }
@@ -25,11 +25,6 @@ class NewController extends Game_Controller_Gui
 
         $this->view->headScript()->appendFile($this->view->baseUrl() . '/js/new.js?v=' . Zend_Registry::get('config')->version);
 
-        if ($this->_namespace->gameId) {
-            unset($this->_namespace->gameId);
-        }
-
-        $this->view->player = $this->_namespace->player;
     }
 
 }

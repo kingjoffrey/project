@@ -29,7 +29,7 @@ html, body {
     margin: 0;
     padding: 0;
     font-size: 18px;
-    font-family: "xenippa", Verdana, Tahoma;
+    font-family: "Alpine", Verdana, Tahoma;
     letter-spacing: 2px;
     color: #878967;
     text-shadow: 1px 1px 0 #000;
@@ -105,7 +105,7 @@ input[type="radio"], input[type="checkbox"] {
 
 .button, #submit {
     padding: 0 32px;
-    margin: 2px;
+    margin: 4px;
     text-align: center;
     text-decoration: none;
     cursor: pointer;
