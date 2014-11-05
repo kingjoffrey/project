@@ -16,6 +16,7 @@ class Cli_WofHandler extends WebSocket_UriHandler
      */
     public function sendToChannel($db, $token, $gameId, $debug = null)
     {
+        echo Zend_Registry::get('config')->debug;
         if ($debug || Zend_Registry::get('config')->debug) {
             print_r('ODPOWIEDŹ ');
             print_r($token);
@@ -44,6 +45,7 @@ class Cli_WofHandler extends WebSocket_UriHandler
             'type' => 'error',
             'msg' => $msg
         );
+
         if ($debug || Zend_Registry::get('config')->debug) {
             print_r('ODPOWIEDŹ (ERROR)');
             print_r($token);

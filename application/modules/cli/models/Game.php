@@ -37,7 +37,7 @@ class Cli_Model_Game
     {
         $this->_id = $gameId;
 
-        $mGame = new Application_Model_Game($this->_id);
+        $mGame = new Application_Model_Game($this->_id, $db);
         $game = $mGame->getGame();
 
         $this->_mapId = $game['mapId'];
@@ -51,18 +51,18 @@ class Cli_Model_Game
 
         $mPlayersInGame = new Application_Model_PlayersInGame($this->_id, $db);
         $this->_teams = $mPlayersInGame->getTeams();
-        $this->_playersInGameColors = $mPlayersInGame->getAllColors();
+        $this->_playersInGameColors = Zend_Registry::get('playersInGameColors');
         foreach ($mPlayersInGame->getInGamePlayerIds() as $row) {
             $this->_online[$this->_playersInGameColors[$row['playerId']]] = 1;
         }
+
+        $this->_me = new Cli_Model_Me($this->_playersInGameColors[$playerId], $mPlayersInGame->getMe($playerId));
 
         $mChat = new Application_Model_Chat($this->_id, $db);
         $this->_chatHistory = $mChat->getChatHistory();
         foreach ($this->_chatHistory as $k => $v) {
             $this->_chatHistory[$k]['color'] = $this->_playersInGameColors[$v['playerId']];
         }
-
-        $this->_me = new Cli_Model_Me($this->_playersInGameColors[$playerId], $mPlayersInGame->getMe($playerId));
 
         $mMapPlayers = new Application_Model_MapPlayers($this->_mapId, $db);
         $this->_capitals = $mMapPlayers->getCapitals();

@@ -217,7 +217,7 @@ class Cli_GameHandler extends Cli_WofHandler
 
     public function onDisconnect(IWebSocketConnection $user)
     {
-        if (Zend_Validate::is($user->parameters['gameId'], 'Digits') || Zend_Validate::is($user->parameters['playerId'], 'Digits')) {
+        if ((isset($user->parameters['gameId']) && Zend_Validate::is($user->parameters['gameId'], 'Digits')) || (isset($user->parameters['playerId']) && Zend_Validate::is($user->parameters['playerId'], 'Digits'))) {
             $db = Cli_Model_Database::getDb();
 
             $mPlayersInGame = new Application_Model_PlayersInGame($user->parameters['gameId'], $db);

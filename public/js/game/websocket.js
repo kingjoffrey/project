@@ -308,6 +308,7 @@ Websocket = {
                         break;
 
                     case 'open':
+                        console.log(r)
                         for (color in r.online) {
                             online[color] = r.online[color]
                         }

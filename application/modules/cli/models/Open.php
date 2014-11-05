@@ -18,8 +18,15 @@ class Cli_Model_Open
 
         $mPlayersInGame->updateWSSUId($dataIn['playerId'], $user->getId());
 
+        Zend_Registry::set('id_lang', $dataIn['langId']);
+        Zend_Registry::set('playersInGameColors', $mPlayersInGame->getAllColors());
+
         $game = new Cli_Model_Game($dataIn['playerId'], $dataIn['gameId'], $db);
-        $user->parameters = $game;
+        $user->parameters = array(
+            'game' => $game,
+            'playerId' => $dataIn['playerId'],
+            'gameId' => $dataIn['gameId']
+        );
         $token = $game->toArray();
         $token['type'] = 'open';
 
