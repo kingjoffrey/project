@@ -47,35 +47,13 @@ var soldiersCreated = null;
 var loading = true;
 
 $(document).ready(function () {
-    my.income = 0
-    my.costs = 0
-
     $(window).resize(function () {
         Gui.adjust();
     });
 
-    Turn.init();
-    fieldsCopy();
-    unitsReformat();
-//    artifactsReformat();
     Gui.init();
 
-    for (i in castles) {
-        Castle.createNeutral(i);
-    }
-
-    for (i in ruins) {
-        Ruin.create(i);
-    }
-
-    for (i in towers) {
-        Tower.create(i);
-    }
-
-    shipId = Unit.getShipId();
-    if (Players.init()) {
-        Websocket.init();
-    }
+    Websocket.init();
 });
 
 function startGame() {

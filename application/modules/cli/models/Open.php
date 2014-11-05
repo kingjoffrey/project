@@ -19,6 +19,7 @@ class Cli_Model_Open
         $mPlayersInGame->updateWSSUId($dataIn['playerId'], $user->getId());
 
         $game = new Cli_Model_Game($dataIn['playerId'], $dataIn['gameId'], $db);
+        $user->parameters = $game;
         $token = $game->toArray();
         $token['type'] = 'open';
 

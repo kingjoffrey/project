@@ -8,4 +8,8 @@ var langId = <?php echo Zend_Registry::get('id_lang') ?>
 var gameId = <?php echo $this->gameId ?>;
 var accessKey = '<?php echo $this->accessKey ?>';
 
+var my = {'id':<?php echo $this->playerId ?>};
+
+var translations = <?php echo $this->translations() ?>;
+
 <?php $this->headScript()->captureEnd() ?>

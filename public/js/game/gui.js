@@ -13,7 +13,7 @@ var Gui = {
         board = $('#board');
         coord = $('#coord');
         this.prepareButtons()
-        this.adjust();
+        //this.adjust();
     },
     doKey: function (event) {
         if ($(event.target).attr('id') == 'msg') {

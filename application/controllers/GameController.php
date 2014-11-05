@@ -34,6 +34,7 @@ class GameController extends Game_Controller_Game
         $this->view->sound();
 
         $this->view->gameId = $this->_gameId;
+        $this->view->playerId = $this->_auth->getIdentity()->playerId;
 
     }
 }

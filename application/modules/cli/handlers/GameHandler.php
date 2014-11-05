@@ -31,8 +31,7 @@ class Cli_GameHandler extends Cli_WofHandler
         $db = Cli_Model_Database::getDb();
 
         if ($dataIn['type'] == 'open') {
-            $open = new Cli_Model_Open($dataIn, $user, $db, $this);
-            $user->parameters = $open->getParameters();
+            new Cli_Model_Open($dataIn, $user, $db, $this);
             return;
         }
 
