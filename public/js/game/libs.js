@@ -158,10 +158,10 @@ function isComputer(color) {
 }
 
 function fieldsCopy() {
-    for (y in fieldsOryginal) {
+    for (y in fieldsOriginal) {
         fields[y] = new Array();
-        for (x in fieldsOryginal[y]) {
-            fields[y][x] = fieldsOryginal[y][x];
+        for (x in fieldsOriginal[y]) {
+            fields[y][x] = fieldsOriginal[y][x];
         }
     }
 }

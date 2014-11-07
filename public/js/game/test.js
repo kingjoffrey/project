@@ -41,9 +41,9 @@ function test() {
     var pX = null;
     var pY = null;
 
-//    for (y in fieldsOryginal) {
-//        for (x in fieldsOryginal[y]) {
-//            if (fieldsOryginal[y][x] == 'e') {
+//    for (y in fieldsOriginal) {
+//        for (x in fieldsOriginal[y]) {
+//            if (fieldsOriginal[y][x] == 'e') {
 //                console.log(y + ' ' + x);
 //            }
 //        }

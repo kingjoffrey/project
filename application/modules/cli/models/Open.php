@@ -30,7 +30,7 @@ class Cli_Model_Open
         $token = $game->toArray();
         $token['type'] = 'open';
 
-        $gameHandler->sendToChannel($db, $token, $dataIn['gameId']);
+        $gameHandler->sendToUser($user, $db, $token, $dataIn['gameId']);
     }
 
 }

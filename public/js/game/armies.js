@@ -612,7 +612,7 @@ var Army = {
     fields: function (a) {
         if (a.color == my.color) {
             if (fields[a.y][a.x] == 'S') {
-                fields[a.y][a.x] = fieldsOryginal[a.y][a.x];
+                fields[a.y][a.x] = fieldsOriginal[a.y][a.x];
             }
             return;
         }
@@ -620,7 +620,7 @@ var Army = {
         if (Castle.getEnemy(a.x, a.y) !== null) {
             fields[a.y][a.x] = 'e';
         } else {
-            fields[a.y][a.x] = fieldsOryginal[a.y][a.x];
+            fields[a.y][a.x] = fieldsOriginal[a.y][a.x];
         }
     },
     myMouseOver: function (armyId) {

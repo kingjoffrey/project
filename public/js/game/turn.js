@@ -4,7 +4,7 @@ var Turn = {
     number: null,
     color: null,
     beginDate: null,
-    init: function () {
+    init: function (turnHistory) {
         var j = 0,
             history = {}
 

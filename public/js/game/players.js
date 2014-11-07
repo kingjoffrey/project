@@ -11,7 +11,7 @@ var Players = {
     anim: null,
     turnCircle: null,
     turnNumber: null,
-    init: function () {
+    init: function (players) {
         this.stage = new Kinetic.Stage({
             container: 'playersCanvas',
             width: 180,

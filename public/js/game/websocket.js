@@ -308,20 +308,20 @@ Websocket = {
                         break;
 
                     case 'open':
-                        console.log(r)
-                        for (color in r.online) {
-                            online[color] = r.online[color]
-                        }
-                        Players.updateOnline()
-                        if (r.color == my.color) {
-                            Gui.lock = false;
-                            if (loading) {
-                                startGame();
-                                loading = false;
-                            } else if (Players.isMy() && players[Turn.color].computer) {
-                                setTimeout('Websocket.computer()', 1000);
-                            }
-                        }
+                        Init.game(r);
+                        //for (color in r.online) {
+                        //    online[color] = r.online[color]
+                        //}
+                        //Players.updateOnline()
+                        //if (r.color == my.color) {
+                        //    Gui.lock = false;
+                        //    if (loading) {
+                        //        startGame();
+                        //        loading = false;
+                        //    } else if (Players.isMy() && players[Turn.color].computer) {
+                        //        setTimeout('Websocket.computer()', 1000);
+                        //    }
+                        //}
                         break;
 
                     case 'close':

@@ -23,10 +23,10 @@ class Cli_Model_Game
     private $_me;
 
     private $_fields;
+    private $_terrain;
     private $_units;
     private $_specialUnits = array();
     private $_firstUnitId;
-    private $_terrain;
 
     private $_neutralCastles = array();
     private $_players = array();
@@ -72,9 +72,11 @@ class Cli_Model_Game
 
         $mMapTerrain = new Application_Model_MapTerrain($this->_mapId, $db);
         $this->_terrain = $mMapTerrain->getTerrain();
+        Zend_Registry::set('terrain', $this->_terrain);
 
         $mMapUnits = new Application_Model_MapUnits($this->_mapId, $db);
         $this->_units = $mMapUnits->getUnits();
+        Zend_Registry::set('units', $this->_units);
 
         foreach ($this->_units as $unit) {
             if ($unit['special']) {
@@ -85,8 +87,8 @@ class Cli_Model_Game
         reset($this->_units);
         $this->_firstUnitId = key($this->_units);
 
-        $this->initNeutralCastles($db);
-        $this->initPlayers($mMapPlayers, $db);
+        $mapCastles=$this->initNeutralCastles($db);
+        $this->initPlayers($mapCastles,$mMapPlayers, $db);
         $this->initRuins($db);
         $this->initNeutralTowers($db);
     }
@@ -97,21 +99,23 @@ class Cli_Model_Game
         $playersCastles = $mCastlesInGame->getAllCastles();
 
         $mMapCastles = new Application_Model_MapCastles($this->_mapId, $db);
-        foreach ($mMapCastles->getMapCastles() as $castleId => $castle) {
+        $mapCastles =$mMapCastles->getMapCastles();
+        foreach ($mapCastles as $castleId => $castle) {
             if (isset($playersCastles[$castleId])) {
                 continue;
             }
             $this->_neutralCastles[$castleId] = $castle;
         }
+        return $mapCastles;
     }
 
-    private function initPlayers(Application_Model_MapPlayers $mMapPlayers, Zend_Db_Adapter_Pdo_Pgsql $db)
+    private function initPlayers($mapCastles,Application_Model_MapPlayers $mMapPlayers, Zend_Db_Adapter_Pdo_Pgsql $db)
     {
         $mPlayersInGame = new Application_Model_PlayersInGame($this->_id, $db);
         $players = $mPlayersInGame->getGamePlayers();
 
         foreach ($mPlayersInGame->getAllColors() as $playerId => $color) {
-            $this->_players[$color] = new Cli_Model_Player($players[$playerId], $this->_id, $mMapPlayers, $db);
+            $this->_players[$color] = new Cli_Model_Player($players[$playerId], $this->_id, $mapCastles,$mMapPlayers, $db);
         }
     }
 

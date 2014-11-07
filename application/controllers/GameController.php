@@ -39,6 +39,8 @@ class GameController extends Game_Controller_Game
         $mPlayersInGame = new Application_Model_PlayersInGame($this->_gameId);
         $this->view->accessKey = $mPlayersInGame->getAccessKey($this->view->playerId);
 
+        $mGame = new Application_Model_Game($this->_gameId);
+        $this->view->map($mapId = $mGame->getMapId());
     }
 }
 

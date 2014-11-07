@@ -17,11 +17,11 @@ class Cli_Model_Player
     private $_longName;
     private $_team;
 
-    public function __construct($player, $gameId, Application_Model_MapPlayers $mMapPlayers, Zend_Db_Adapter_Pdo_Pgsql $db)
+    public function __construct($player, $gameId, $mapCastles, Application_Model_MapPlayers $mMapPlayers, Zend_Db_Adapter_Pdo_Pgsql $db)
     {
         $this->_id = $player['playerId'];
 
-        $this->init($gameId, $db);
+        $this->init($gameId, $mapCastles, $db);
 
         $this->_isPlayerTurn = $player['turnActive'];
         $this->_isComputer = $player['computer'];
@@ -34,18 +34,25 @@ class Cli_Model_Player
         $this->_team = $mMapPlayers->getColorByMapPlayerId($player['team']);
     }
 
-    private function init($gameId, Zend_Db_Adapter_Pdo_Pgsql $db)
+    private function init($gameId, $mapCastles, Zend_Db_Adapter_Pdo_Pgsql $db)
     {
         if ($this->_lost) {
             return;
         }
+
         $mArmy = new Application_Model_Army($gameId, $db);
+        $mSoldier = new Application_Model_UnitsInGame($gameId, $db);
+        $mHeroesInGame = new Application_Model_HeroesInGame($gameId, $db);
+
         foreach ($mArmy->getPlayerArmies($this->_id) as $army) {
+            $army['heroes'] = $mHeroesInGame->getForMove($army['armyId']);
+            $army['soldiers'] = $mSoldier->getForMove($army['armyId']);
             $this->_armies[$army['armyId']] = new Cli_Model_Army($army);
         }
+
         $mCastlesInGame = new Application_Model_CastlesInGame($gameId, $db);
-        foreach ($mCastlesInGame->getPlayerCastles($this->_id) as $castle) {
-            $this->_castles[$castle['castleId']] = $castle;
+        foreach ($mCastlesInGame->getPlayerCastles($this->_id) as $castleId => $castle) {
+            $this->_castles[$castleId] = new Cli_Model_Castle($castle, $mapCastles[$castleId]);
         }
         $mTowersInGame = new Application_Model_TowersInGame($gameId, $db);
         foreach ($mTowersInGame->getPlayerTowers($this->_id) as $tower) {
@@ -81,8 +88,8 @@ class Cli_Model_Player
     private function castlesToArray()
     {
         $castles = array();
-        foreach ($this->_castles as $castle) {
-            $castles[$castle->id] = $castle->toArray();
+        foreach ($this->_castles as $castleId => $castle) {
+            $castles[$castleId] = $castle->toArray();
         }
         return $castles;
     }
