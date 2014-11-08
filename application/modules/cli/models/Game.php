@@ -14,9 +14,9 @@ class Cli_Model_Game
     private $_online = array();
 
     private $_begin;
-    private $_turnsLimit;
-    private $_turnTimeLimit;
-    private $_timeLimit;
+    private $turnsLimit;
+    private $turnTimeLimit;
+    private $timeLimit;
 
     private $_turnHistory;
 
@@ -42,9 +42,9 @@ class Cli_Model_Game
 
         $this->_mapId = $game['mapId'];
         $this->_begin = $game['begin'];
-        $this->_turnsLimit = $game['turnsLimit'];
-        $this->_turnTimeLimit = $game['turnTimeLimit'];
-        $this->_timeLimit = $game['timeLimit'];
+        $this->turnsLimit = $game['turnsLimit'];
+        $this->turnTimeLimit = $game['turnTimeLimit'];
+        $this->timeLimit = $game['timeLimit'];
 
         $mTurnHistory = new Application_Model_TurnHistory($this->_id, $db);
         $this->_turnHistory = $mTurnHistory->getTurnHistory();
@@ -204,9 +204,9 @@ class Cli_Model_Game
     {
         return array(
             'begin' => $this->_begin,
-            'timeLimit' => $this->_timeLimit,
-            'turnsLimit' => $this->_turnsLimit,
-            'turnTimeLimit' => $this->_turnTimeLimit,
+            'timeLimit' => $this->timeLimit,
+            'turnsLimit' => $this->turnsLimit,
+            'turnTimeLimit' => $this->turnTimeLimit,
             'turnNumber' => $this->_turnNumber,
             'units' => $this->_units,
             'firstUnitId' => $this->_firstUnitId,

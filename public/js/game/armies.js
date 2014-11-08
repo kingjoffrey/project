@@ -45,8 +45,8 @@ var Army = {
     getMovementType: function (army) {
         if (army.canSwim) {
             army.movementType = 'swimming';
-            for (key in terrain) {
-                army.terrain[key] = terrain[key][army.movementType];
+            for (key in game.terrain) {
+                army.terrain[key] = game.terrain[key][army.movementType];
             }
 
             for (key in army.soldiers) {
@@ -66,8 +66,8 @@ var Army = {
             army.moves = shipMoves;
         } else if (army.canFly > 0) {
             army.movementType = 'flying';
-            for (key in terrain) {
-                army.terrain[key] = terrain[key][army.movementType];
+            for (key in game.terrain) {
+                army.terrain[key] = game.terrain[key][army.movementType];
             }
 
             for (key in army.soldiers) {
@@ -87,8 +87,8 @@ var Army = {
             army.moves = flyMoves;
         } else {
             army.movementType = 'walking';
-            for (key in terrain) {
-                army.terrain[key] = terrain[key][army.movementType];
+            for (key in game.terrain) {
+                army.terrain[key] = game.terrain[key][army.movementType];
             }
 
             if (army.heroes.length) {
@@ -247,11 +247,11 @@ var Army = {
             } else {
                 Army.deselect();
                 Sound.play('slash');
-                Army.select(players[my.color].armies[army.armyId], 0);
+                Army.select(players[game.me.color].armies[army.armyId], 0);
             }
         } else {
             Sound.play('slash');
-            Army.select(players[my.color].armies[army.armyId], 0);
+            Army.select(players[game.me.color].armies[army.armyId], 0);
         }
     },
     changeImg: function (army) {
@@ -311,7 +311,7 @@ var Army = {
                 top: (army.y * 40 - 1) + 'px'
             });
 
-        if (color == my.color) { // moja armia
+        if (color == game.me.color) { // moja armia
             element.addClass('team')
             element.click(function (e) {
                 Army.myClick(army, e)
@@ -325,7 +325,7 @@ var Army = {
                 }
             }
         } else { // nie moja armia
-            if (players[color].team == players[my.color].team) {
+            if (game.players[color].team == game.players[game.me.color].team) {
                 element.addClass('team')
             } else {
                 fields[army.y][army.x] = 'e';
@@ -360,21 +360,21 @@ var Army = {
                 .css({
                     'left': army.x * 2 + 'px',
                     'top': army.y * 2 + 'px',
-                    'background': players[color].minimapColor,
-                    'border-color': players[color].textColor,
+                    'background': game.players[color].minimapColor,
+                    'border-color': game.players[color].textColor,
                     'z-index': 10
                 })
                 .attr('id', army.armyId)
                 .addClass('a')
         );
 
-        players[color].armies[army.armyId] = army;
+        game.players[color].armies[army.armyId] = army;
 
         return
     },
     showFirst: function (color) {
-        for (i in players[color].armies) {
-            zoomer.lensSetCenter(players[color].armies[i].x * 40, players[color].armies[i].y * 40);
+        for (i in game.players[color].armies) {
+            zoomer.lensSetCenter(game.players[color].armies[i].x * 40, game.players[color].armies[i].y * 40);
             return;
         }
         zoomer.lensSetCenter(30, 30);
@@ -415,8 +415,8 @@ var Army = {
 
         Army.deselect()
 
-        for (armyId in players[my.color].armies) {
-            if (players[my.color].armies[armyId].moves == 0) {
+        for (armyId in game.players[game.me.color].armies) {
+            if (game.players[game.me.color].armies[armyId].moves == 0) {
                 continue;
             }
 
@@ -434,7 +434,7 @@ var Army = {
 
             reset = false
             Army.nextArmies[armyId] = true
-            Army.select(players[my.color].armies[armyId])
+            Army.select(game.players[game.me.color].armies[armyId])
             return
         }
 
@@ -448,25 +448,25 @@ var Army = {
         }
     },
     delete: function (armyId, color, quiet) {
-        if (notSet(players[color].armies[armyId])) {
+        if (notSet(game.players[color].armies[armyId])) {
             throw ('Brak armi o armyId = ' + armyId + ' i kolorze = ' + color);
             return;
         }
 
-        this.fields(players[color].armies[armyId]);
+        this.fields(game.players[color].armies[armyId]);
 
         if (quiet) {
             $('#army' + armyId).remove();
             $('#' + armyId).remove();
         } else {
-            zoomer.lensSetCenter(players[color].armies[armyId].x * 40, players[color].armies[armyId].y * 40);
+            zoomer.lensSetCenter(game.players[color].armies[armyId].x * 40, game.players[color].armies[armyId].y * 40);
             $('#' + armyId).fadeOut(500, function () {
                 $('#army' + armyId).remove();
                 $('#' + armyId).remove();
             });
         }
 
-        delete players[color].armies[armyId];
+        delete game.players[color].armies[armyId];
     },
     updateInfo: function (a) {
         $('#name').html(a.name);
@@ -610,7 +610,7 @@ var Army = {
         this.computerLoop(armies, color);
     },
     fields: function (a) {
-        if (a.color == my.color) {
+        if (a.color == game.me.color) {
             if (fields[a.y][a.x] == 'S') {
                 fields[a.y][a.x] = fieldsOriginal[a.y][a.x];
             }
@@ -635,11 +635,11 @@ var Army = {
 //        }
     },
     enemyCursorWhenSelected: function () {
-//        $('.army:not(.' + my.color + ') *').css('cursor', 'url(/img/game/cursor_attack.png) 13 16, crosshair')
+//        $('.army:not(.' + game.me.color + ') *').css('cursor', 'url(/img/game/cursor_attack.png) 13 16, crosshair')
         $('.army:not(.team) *').css('cursor', 'url(/img/game/cursor_attack.png) 13 16, crosshair')
     },
     enemyCursorWhenUnselected: function () {
-//        $('.army:not(.' + my.color + ') *').css('cursor', 'url(/img/game/cursor.png), default');
+//        $('.army:not(.' + game.me.color + ') *').css('cursor', 'url(/img/game/cursor.png), default');
         $('.army:not(.team) *').css('cursor', 'url(/img/game/cursor.png), default');
     },
     enemyMouse: function (element, x, y) {
@@ -713,9 +713,9 @@ var Hero = {
         return '/img/game/heroes/' + color + '.png';
     },
     findMy: function () {
-        for (armyId in players[my.color].armies) {
-            for (j in players[my.color].armies[armyId].heroes) {
-                return players[my.color].armies[armyId].heroes[j].heroId;
+        for (armyId in game.players[game.me.color].armies) {
+            for (j in game.players[game.me.color].armies[armyId].heroes) {
+                return game.players[game.me.color].armies[armyId].heroes[j].heroId;
             }
         }
     }

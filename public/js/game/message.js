@@ -234,7 +234,7 @@ var Message = {
             )
                 .append(
                 $('<div>')
-                    .append($('<img>').attr('src', Unit.getImage(unitId, my.color)))
+                    .append($('<img>').attr('src', Unit.getImage(unitId, game.me.color)))
                     .addClass('img')
             )
                 .append(
@@ -332,14 +332,14 @@ var Message = {
 
         // relocation to
 
-        if (castles[castleId].color == my.color && castles[castleId].relocationToCastleId && castles[castleId].currentProductionId) {
+        if (castles[castleId].color == game.me.color && castles[castleId].relocationToCastleId && castles[castleId].currentProductionId) {
             div
                 .append($('<br>'))
                 .append($('<fieldset>').addClass('relocatedProduction').append($('<label>').html(translations.relocatingTo)).append(
                     $('<table>').append(
                         $('<tr>')
                             .append(
-                            $('<td>').append($('<img>').attr('src', Unit.getImage(castles[castleId].currentProductionId, my.color)))
+                            $('<td>').append($('<img>').attr('src', Unit.getImage(castles[castleId].currentProductionId, game.me.color)))
                         )
                             .append(
                             $('<td>')
@@ -379,7 +379,7 @@ var Message = {
                     $('<tr>')
                         .append(
                         $('<td>').append(
-                            $('<img>').attr('src', Unit.getImage(currentProductionId, my.color))
+                            $('<img>').attr('src', Unit.getImage(currentProductionId, game.me.color))
                         )
                     )
                         .append(
@@ -866,19 +866,19 @@ var Message = {
                 }, 500)
             }
             $('#unit' + b[i].soldierId + ' .killed').fadeIn(1000, function () {
-                if (r.attackerColor == my.color) {
-                    for (k in players[my.color].armies[r.attackerArmy.armyId].soldiers) {
-                        if (players[my.color].armies[r.attackerArmy.armyId].soldiers[k].soldierId == b[i].soldierId) {
-                            costIncrement(-units[players[my.color].armies[r.attackerArmy.armyId].soldiers[k].unitId].cost)
+                if (r.attackerColor == game.me.color) {
+                    for (k in players[game.me.color].armies[r.attackerArmy.armyId].soldiers) {
+                        if (players[game.me.color].armies[r.attackerArmy.armyId].soldiers[k].soldierId == b[i].soldierId) {
+                            costIncrement(-units[players[game.me.color].armies[r.attackerArmy.armyId].soldiers[k].unitId].cost)
                         }
                     }
                 }
 
-                if (r.defenderColor == my.color) {
+                if (r.defenderColor == game.me.color) {
                     for (j in r.defenderArmy) {
-                        for (k in players[my.color].armies[r.defenderArmy[j].armyId].soldiers) {
-                            if (players[my.color].armies[r.defenderArmy[j].armyId].soldiers[k].soldierId == b[i].soldierId) {
-                                costIncrement(-units[players[my.color].armies[r.defenderArmy[j].armyId].soldiers[k].unitId].cost)
+                        for (k in players[game.me.color].armies[r.defenderArmy[j].armyId].soldiers) {
+                            if (players[game.me.color].armies[r.defenderArmy[j].armyId].soldiers[k].soldierId == b[i].soldierId) {
+                                costIncrement(-units[players[game.me.color].armies[r.defenderArmy[j].armyId].soldiers[k].unitId].cost)
                             }
                         }
                     }
@@ -1071,22 +1071,22 @@ var Message = {
 
         var i
         for (i in towers) {
-            if (towers[i].color == my.color) {
+            if (towers[i].color == game.me.color) {
                 myTowers++
             }
         }
 
         for (i in castles) {
-            if (castles[i].color == my.color) {
+            if (castles[i].color == game.me.color) {
                 myCastles++
                 myCastlesGold += castles[i].income
             }
         }
 
-        for (i in players[my.color].armies) {
-            for (j in players[my.color].armies[i].soldiers) {
+        for (i in players[game.me.color].armies) {
+            for (j in players[game.me.color].armies[i].soldiers) {
                 myUnits++
-                myUnitsGold += units[players[my.color].armies[i].soldiers[j].unitId].cost
+                myUnitsGold += units[players[game.me.color].armies[i].soldiers[j].unitId].cost
             }
         }
 
@@ -1136,7 +1136,7 @@ var Message = {
             myCastlesGold = 0
 
         for (i in towers) {
-            if (towers[i].color == my.color) {
+            if (towers[i].color == game.me.color) {
                 myTowers++
             }
         }
@@ -1152,7 +1152,7 @@ var Message = {
         }
 
         for (i in castles) {
-            if (castles[i].color == my.color) {
+            if (castles[i].color == game.me.color) {
                 myCastles++
                 myCastlesGold += castles[i].income
                 table.append(
@@ -1211,19 +1211,19 @@ var Message = {
 
         var center = function (i) {
             return function () {
-                zoomer.lensSetCenter(players[my.color].armies[i].x * 40, players[my.color].armies[i].y * 40)
+                zoomer.lensSetCenter(players[game.me.color].armies[i].x * 40, players[game.me.color].armies[i].y * 40)
             }
         }
 
-        for (i in players[my.color].armies) {
-            for (j in players[my.color].armies[i].soldiers) {
+        for (i in players[game.me.color].armies) {
+            for (j in players[game.me.color].armies[i].soldiers) {
                 myUnits++
-                myUnitsGold += units[players[my.color].armies[i].soldiers[j].unitId].cost
+                myUnitsGold += units[players[game.me.color].armies[i].soldiers[j].unitId].cost
                 table.append(
                     $('<tr>')
-                        .append($('<td>').html($('<img>').attr('src', Unit.getImage(players[my.color].armies[i].soldiers[j].unitId, my.color))))
-                        .append($('<td>').html(units[players[my.color].armies[i].soldiers[j].unitId].name_lang))
-                        .append($('<td>').html(units[players[my.color].armies[i].soldiers[j].unitId].cost + ' ' + translations.gold).addClass('r'))
+                        .append($('<td>').html($('<img>').attr('src', Unit.getImage(players[game.me.color].armies[i].soldiers[j].unitId, game.me.color))))
+                        .append($('<td>').html(units[players[game.me.color].armies[i].soldiers[j].unitId].name_lang))
+                        .append($('<td>').html(units[players[game.me.color].armies[i].soldiers[j].unitId].cost + ' ' + translations.gold).addClass('r'))
                         .append(
                         $('<td>')
                             .html($('<img>').attr('src', '/img/game/center.png'))
@@ -1279,7 +1279,7 @@ var Message = {
                 .append(
                 $('<div>')
                     .append($('<img>').attr({
-                        src: Unit.getImage(unitId, my.color),
+                        src: Unit.getImage(unitId, game.me.color),
                         id: unitId,
                         alt: name
                     }))

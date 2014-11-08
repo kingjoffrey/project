@@ -6,7 +6,7 @@ $(document)[0].oncontextmenu = function () {
 // *** OTHER ***
 
 function goldUpdate(gold) {
-    my.gold = gold
+    game.me.gold = gold
     $('#gold #value').fadeOut(300, function () {
         $('#gold #value').html(gold)
         $('#gold #value').fadeIn()
@@ -20,12 +20,12 @@ function goldUpdate(gold) {
 }
 
 function goldIncrement(gold) {
-    gold += my.gold
+    gold += game.me.gold
     goldUpdate(gold)
 }
 
 function costsUpdate(gold) {
-    my.costs = gold
+    game.me.costs = gold
     $('#costs #value').fadeOut(300, function () {
         $('#costs #value').html(gold)
         $('#costs #value').fadeIn(300)
@@ -33,12 +33,12 @@ function costsUpdate(gold) {
 }
 
 function costIncrement(gold) {
-    gold += my.costs
+    gold += game.me.costs
     costsUpdate(gold)
 }
 
 function incomeUpdate(gold) {
-    my.income = gold
+    game.me.income = gold
     $('#income #value').fadeOut(300, function () {
         $('#income #value').html(gold)
         $('#income #value').fadeIn(300)
@@ -46,7 +46,7 @@ function incomeUpdate(gold) {
 }
 
 function incomeIncrement(gold) {
-    gold += my.income
+    gold += game.me.income
     incomeUpdate(gold)
 }
 
@@ -54,7 +54,7 @@ function makeMyCursorUnlock() {
     board.css('cursor', 'url(/img/game/cursor.png), auto')
     $('.tower').css('cursor', 'url(/img/game/cursor.png), auto')
     $('.ruin').css('cursor', 'url(/img/game/cursor.png), auto')
-    $('.castle:not(.' + my.color + ')').css('cursor', 'url(/img/game/cursor.png), auto')
+    $('.castle:not(.' + game.me.color + ')').css('cursor', 'url(/img/game/cursor.png), auto')
     $('.army').css('cursor', 'url(/img/game/cursor.png), auto')
 
     Castle.myCursor()
@@ -64,7 +64,7 @@ function makeMyCursorLock() {
     board.css('cursor', 'url(/img/game/cursor_hourglass.png), wait')
     $('.tower').css('cursor', 'url(/img/game/cursor_hourglass.png), wait')
     $('.ruin').css('cursor', 'url(/img/game/cursor_hourglass.png), wait')
-    $('.castle:not(.' + my.color + ')').css('cursor', 'url(/img/game/cursor_hourglass.png), wait')
+    $('.castle:not(.' + game.me.color + ')').css('cursor', 'url(/img/game/cursor_hourglass.png), wait')
     $('.army').css('cursor', 'url(/img/game/cursor_hourglass.png), wait')
 }
 
@@ -154,14 +154,14 @@ function notSet(val) {
 }
 
 function isComputer(color) {
-    return players[color].computer;
+    return game.players[color].computer;
 }
 
 function fieldsCopy() {
-    for (y in fieldsOriginal) {
+    for (y in game.fields) {
         fields[y] = new Array();
-        for (x in fieldsOriginal[y]) {
-            fields[y][x] = fieldsOriginal[y][x];
+        for (x in game.fields[y]) {
+            fields[y][x] = game.fields[y][x];
         }
     }
 }

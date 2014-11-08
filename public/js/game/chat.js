@@ -5,7 +5,7 @@ var Chat = {
             .append('<br>')
             .append(message)
             .addClass('chatCloud')
-        if (color == my.color) {
+        if (color == game.me.color) {
             var align = 'right'
             div
                 .css({
@@ -35,7 +35,7 @@ var Chat = {
 }
 
 function chat(color, msg, time) {
-    if (color != my.color) {
+    if (color != game.me.color) {
         titleBlink('Incoming chat!');
     }
 
@@ -48,8 +48,8 @@ function chat(color, msg, time) {
 
 function renderChatHistory() {
     var chatContent = $('#chatWindow #chatContent')
-    for (i in chatHistory) {
-        Chat.renderChatCloud(chatContent, getISODateTime(chatHistory[i]['date']), chatHistory[i]['message'], chatHistory[i]['color'])
+    for (i in game.chatHistory) {
+        Chat.renderChatCloud(chatContent, getISODateTime(game.chatHistory[i]['date']), game.chatHistory[i]['message'], game.chatHistory[i]['color'])
     }
     $('#chatWindow').animate({ scrollTop: $('#chatWindow div')[0].scrollHeight }, 1000);
 }

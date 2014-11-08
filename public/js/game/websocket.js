@@ -50,7 +50,7 @@ Websocket = {
                 break;
 
             case 'startTurn':
-                if (r.color == my.color) {
+                if (r.color == game.me.color) {
                     Army.quitedArmies = {};
                     Sound.play('startturn');
                     goldUpdate(r.gold)
@@ -75,7 +75,7 @@ Websocket = {
                 zoomer.lensSetCenter(X, Y);
                 Army.init(r.army, r.color);
                 Ruin.update(r.ruin.ruinId, r.ruin.empty);
-                if (my.color == r.color) {
+                if (game.me.color == r.color) {
                     switch (r.find[0]) {
                         case 'gold':
                             Sound.play('gold1');
@@ -145,8 +145,8 @@ Websocket = {
                 if (my.turn) {
                     Message.remove()
                     var upkeep = 0;
-                    for (i in players[my.color].armies[r.armyId].soldiers) {
-                        upkeep += units[players[my.color].armies[r.armyId].soldiers[i].unitId].cost
+                    for (i in players[game.me.color].armies[r.armyId].soldiers) {
+                        upkeep += units[players[game.me.color].armies[r.armyId].soldiers[i].unitId].cost
                     }
 
                     costIncrement(-upkeep)
@@ -309,11 +309,6 @@ Websocket = {
 
                     case 'open':
                         Init.game(r);
-                        //for (color in r.online) {
-                        //    online[color] = r.online[color]
-                        //}
-                        //Players.updateOnline()
-                        //if (r.color == my.color) {
                         //    Gui.lock = false;
                         //    if (loading) {
                         //        startGame();
@@ -321,7 +316,6 @@ Websocket = {
                         //    } else if (Players.isMy() && players[Turn.color].computer) {
                         //        setTimeout('Websocket.computer()', 1000);
                         //    }
-                        //}
                         break;
 
                     case 'close':
@@ -378,7 +372,7 @@ Websocket = {
         var token = {
             type: 'open',
             gameId: gameId,
-            playerId: my.id,
+            playerId: id,
             langId: langId,
             accessKey: accessKey
         }
@@ -431,19 +425,6 @@ Websocket = {
         };
 
         ws.send(JSON.stringify(token));
-    },
-    tower: function (towerId) {
-        //if (Websocket.closed) {
-        //    Message.error(translations.sorryServerIsDisconnected)
-        //    return;
-        //}
-        //
-        //var token = {
-        //    type: 'tower',
-        //    towerId: towerId
-        //};
-        //
-        //ws.send(JSON.stringify(token));
     },
     surrender: function () {
         if (Websocket.closed) {

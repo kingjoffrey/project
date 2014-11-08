@@ -9,13 +9,8 @@ Image4.src = '/img/game/cursor.png';
 Image5 = new Image(20, 9);
 Image5.src = '/img/game/cursor_pointer.png';
 
-var fieldsOriginal = new Array()
 var fields = new Array()
-var terrain = {}
-var online = {}
-var players = {}
-
-//var selectedEnemyArmy = null;
+var game = {}
 
 var firstCastleId = 1000;
 
@@ -58,42 +53,43 @@ $(document).ready(function () {
 
 var Init = {
     game: function (r) {
-        my = r.me
-        players = r.players
-        terrain = r.terrain
+        game = r
         fieldsCopy();
 
         Gui.init();
-        Turn.init(r.turnHistory)
-        Players.init(r.players)
+        Turn.init()
+        Players.init()
 
-        Sound.play('gamestart');
+        Players.updateOnline()
 
-        Castle.showFirst();
-
-        if (my.turn) {
+        if (game.players[game.me.color].turn) {
             Turn.on();
         } else {
             Turn.off();
         }
 
-        if (my.turn && !players[my.color].turnActive) {
+        if (Turn.color == game.me.color && !game.players[game.me.color].turnActive) {
             Websocket.startMyTurn();
-        } else if (my.game && players[Turn.color].computer) {
+        } else if (game.players[Turn.color].computer) {
             setTimeout('Websocket.computer()', 1000);
         }
 
         renderChatHistory();
 
-        goldUpdate(my.gold)
-        costsUpdate(my.costs)
-        my.income += Tower.countPlayers(my.color) * 5
-        incomeUpdate(my.income)
+        goldUpdate(game.me.gold)
+        costsUpdate(game.me.costs)
+        game.me.income += Tower.countPlayers(game.me.color) * 5
+        incomeUpdate(game.me.income)
+
+        Init.start()
     },
     start: function () {
-        if (!largeimageloaded) {
-            setTimeout('Init.start()', 1000);
-            return;
-        }
+        //if (!largeimageloaded) {
+        //    setTimeout('Init.start()', 1000);
+        //    return;
+        //}
+
+        Castle.showFirst()
+        Sound.play('gamestart')
     }
 }

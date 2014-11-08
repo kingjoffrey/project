@@ -16,7 +16,7 @@ var Castle = {
                 Message.error('No unit selected')
             } else {
                 Message.simple(translations.relocation, translations.selectCastleToWhichYouWantToRelocateThisProduction)
-                $('.castle.' + my.color)
+                $('.castle.' + game.me.color)
                     .unbind()
                     .click(function () {
                         var relocationToCastleId = $(this).attr('id').substring(6);
@@ -89,10 +89,10 @@ var Castle = {
 
             castles[castleId].relocationToCastleId = relocationToCastleId
 
-            $('.castle.' + my.color).each(function () {
+            $('.castle.' + game.me.color).each(function () {
                 var thisCastleId = $(this).attr('id').substring(6);
 
-                Castle.myMousedown($(this), thisCastleId)
+                Castle.game.meMousedown($(this), thisCastleId)
 
                 if (isSet(castles[thisCastleId].relocatedProduction) && isSet(castles[thisCastleId].relocatedProduction[castleId])) {
                     delete castles[thisCastleId].relocatedProduction[castleId]
@@ -112,10 +112,10 @@ var Castle = {
         }
     },
     initMyProduction: function (castleId) {
-        castles[castleId].currentProductionId = players[my.color].castles[castleId].productionId;
-        castles[castleId].currentProductionTurn = players[my.color].castles[castleId].productionTurn;
+        castles[castleId].currentProductionId = players[game.me.color].castles[castleId].productionId;
+        castles[castleId].currentProductionTurn = players[game.me.color].castles[castleId].productionTurn;
 
-        var relocationToCastleId = players[my.color].castles[castleId].relocationCastleId;
+        var relocationToCastleId = players[game.me.color].castles[castleId].relocationCastleId;
 
         if (relocationToCastleId) {
             castles[castleId].relocationToCastleId = relocationToCastleId
@@ -199,7 +199,7 @@ var Castle = {
     },
     getMy: function (x, y) {
         for (castleId in castles) {
-            if (castles[castleId].color != my.color) {
+            if (castles[castleId].color != game.me.color) {
                 continue;
             }
             var pos = castles[castleId].position;
@@ -211,7 +211,7 @@ var Castle = {
     },
     getEnemy: function (x, y) {
         for (castleId in castles) {
-            if (castles[castleId].color == my.color) {
+            if (castles[castleId].color == game.me.color) {
                 continue;
             }
             var pos = castles[castleId].position;
@@ -225,7 +225,7 @@ var Castle = {
         var castleId,
             myCastles = 0
         for (castleId in castles) {
-            if (castles[castleId].color == my.color) {
+            if (castles[castleId].color == game.me.color) {
                 myCastles++
             }
         }
@@ -311,7 +311,7 @@ var Castle = {
             $('#castle' + castleId + ' .shield').html(castles[castleId].defense);
         }
 
-        if (color == my.color) {
+        if (color == game.me.color) {
             Castle.changeFields(castleId, 'c')
             castle
                 .css({
@@ -320,7 +320,7 @@ var Castle = {
                 .removeClass('team')
             Castle.myMousedown(castle, castleId)
         } else {
-            if (players[color].team == players[my.color].team) {
+            if (players[color].team == players[game.me.color].team) {
                 Castle.changeFields(castleId, 'c')
                 castle
                     .unbind()
@@ -355,7 +355,7 @@ var Castle = {
         })
     },
     raze: function (castleId) {
-        if (castles[castleId].color == my.color) {
+        if (castles[castleId].color == game.me.color) {
             incomeIncrement(-castles[castleId].income)
         }
         Castle.changeFields(castleId, 'g')
@@ -364,14 +364,14 @@ var Castle = {
         delete castles[castleId];
     },
     showFirst: function () {
-        if ($('#castle' + capitals[my.color]).length) {
-            var sp = $('#castle' + capitals[my.color]);
+        if ($('#castle' + game.capitals[game.me.color]).length) {
+            var sp = $('#castle' + game.capitals[game.me.color]);
             zoomer.lensSetCenter(sp.css('left'), sp.css('top'));
         } else if ($('#castle' + firstCastleId).length) {
             var sp = $('#castle' + firstCastleId);
             zoomer.lensSetCenter(sp.css('left'), sp.css('top'));
         } else {
-            Army.showFirst(my.color);
+            Army.showFirst(game.me.color);
         }
     },
     updateDefense: function (castleId, defenseMod) {
@@ -386,19 +386,19 @@ var Castle = {
         castles[castleId].currentProductionTurn = productionTurn;
     },
     selectedArmyCursor: function () {
-//        $('.castle:not(.' + my.color + '), .castle:not(.team)').css('cursor', 'url(/img/game/cursor_attack.png), crosshair')
-//        $('.castle:not(.' + my.color + ') .name, .castle:not(.team) .name').css('cursor', 'url(/img/game/cursor.png), default')
+//        $('.castle:not(.' + game.me.color + '), .castle:not(.team)').css('cursor', 'url(/img/game/cursor_attack.png), crosshair')
+//        $('.castle:not(.' + game.me.color + ') .name, .castle:not(.team) .name').css('cursor', 'url(/img/game/cursor.png), default')
         $('.castle:not(.team)').css('cursor', 'url(/img/game/cursor_attack.png), crosshair')
         $('.castle:not(.team) .name').css('cursor', 'url(/img/game/cursor.png), default')
     },
     deselectedArmyCursor: function () {
-        $('.castle:not(.' + my.color + ' .team)').css('cursor', 'url(/img/game/cursor.png), default');
+        $('.castle:not(.' + game.me.color + ' .team)').css('cursor', 'url(/img/game/cursor.png), default');
     },
     myCursor: function () {
-        $('.castle.' + my.color).css('cursor', 'url(/img/game/cursor_castle.png), crosshair');
+        $('.castle.' + game.me.color).css('cursor', 'url(/img/game/cursor_castle.png), crosshair');
     },
     myRemoveCursor: function () {
-        $('.castle.' + my.color).css('cursor', 'url(/img/game/cursor.png), default');
+        $('.castle.' + game.me.color).css('cursor', 'url(/img/game/cursor.png), default');
     }
 }
 
@@ -406,7 +406,7 @@ var Castle = {
 function getMyCastleDefenseFromPosition(x, y) {
     var castleId
     for (castleId in castles) {
-        if (castles[castleId].color == my.color) {
+        if (castles[castleId].color == game.me.color) {
             var pos = castles[castleId].position;
             if ((x >= pos.x) && (x < (pos.x + 2)) && (y >= pos.y) && (y < (pos.y + 2))) {
                 return castles[castleId].defense;

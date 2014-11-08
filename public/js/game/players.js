@@ -11,7 +11,7 @@ var Players = {
     anim: null,
     turnCircle: null,
     turnNumber: null,
-    init: function (players) {
+    init: function () {
         this.stage = new Kinetic.Stage({
             container: 'playersCanvas',
             width: 180,
@@ -21,21 +21,21 @@ var Players = {
         this.centerY = this.stage.getHeight() / 2
         this.layer = new Kinetic.Layer();
 
-        this.length = Object.size(players);
+        this.length = Object.size(game.players);
 
-        for (color in players) {
-            //players[color].active = 0;
-            if (!players[color].computer) {
-                online[color] = 0
+        for (color in game.players) {
+            //game.players[color].active = 0;
+            if (!game.players[color].computer) {
+                game.online[color] = 0
             }
 
             $('.' + color + ' .color').addClass(color + 'bg');
 
-            for (i in players[color].armies) {
-                Army.init(players[color].armies[i], color);
-                if (color == my.color) {
-                    for (s in players[color].armies[i].soldiers) {
-                        my.costs += units[players[color].armies[i].soldiers[s].unitId].cost;
+            for (i in game.players[color].armies) {
+                Army.init(game.players[color].armies[i], color);
+                if (color == game.me.color) {
+                    for (s in game.players[color].armies[i].soldiers) {
+                        my.costs += units[game.players[color].armies[i].soldiers[s].unitId].cost;
                     }
                     myArmies = true;
                 } else {
@@ -43,17 +43,17 @@ var Players = {
                 }
             }
 
-            for (i in players[color].castles) {
-                Castle.updateDefense(i, players[color].castles[i].defenseMod);
-                Castle.owner(i, color);
+            for (i in game.players[color].castles) {
+                //Castle.updateDefense(i, game.players[color].castles[i].defenseMod);
+                //Castle.owner(i, color);
 
-                if (color == my.color) {
-                    my.income += castles[i].income;
+                if (color == game.me.color) {
+                    game.me.income += game.players[color].castles[i].income;
                     if (firstCastleId > i) {
                         firstCastleId = i;
                     }
                     myCastles = true;
-                    Castle.initMyProduction(i);
+                    //Castle.initMyProduction(i);
                 } else {
                     enemyCastles = true;
                 }
@@ -88,7 +88,7 @@ var Players = {
         this.layer.add(circle)
 
         var i = 0;
-        for (shortName in players) {
+        for (shortName in game.players) {
             var rotation = i * this.angle
             var r_rotation = i * r_angle + r_angle / 2
 
@@ -101,13 +101,13 @@ var Players = {
                 y: this.centerY,
                 radius: 50,
                 angleDeg: this.angle,
-                fill: players[players[shortName].team].backgroundColor,
+                fill: game.players[game.players[shortName].team].backgroundColor,
                 strokeWidth: 0,
                 rotationDeg: rotation
             })
             this.layer.add(this.wedges[shortName].kinetic)
             this.drawImage(shortName)
-            if (players[shortName].lost) {
+            if (game.players[shortName].lost) {
                 this.drawSkull(shortName)
             }
             i++;
@@ -132,7 +132,7 @@ var Players = {
             start = 0,
             end = 0
 
-        for (shortName in players) {
+        for (shortName in game.players) {
             i++
             if (color == shortName) {
                 end = i
@@ -230,8 +230,8 @@ var Players = {
         }
     },
     updateOnline: function () {
-        for (shortName in online) {
-            if (!online[shortName]) {
+        for (shortName in game.online) {
+            if (!game.online[shortName]) {
                 if (isSet(Players.wedges[shortName].online)) {
                     Players.wedges[shortName].online.remove()
                 }
@@ -255,9 +255,9 @@ var Players = {
         this.layer.draw()
     },
     isMy: function () {
-        for (color in online) {
-            if (online[color]) {
-                if (my.color == color) {
+        for (color in game.online) {
+            if (game.online[color]) {
+                if (game.me.color == color) {
                     return 1
                 } else {
                     return 0

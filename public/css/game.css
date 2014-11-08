@@ -175,7 +175,7 @@
     border-top: none;
     border-bottom-left-radius: 10px;
     width: 230px;
-    height: 318px;
+    height: 310px;
     clear: both;
 }
 
@@ -889,6 +889,7 @@ html {
 .button, #submit {
     line-height: 27px;
     height: 27px;
+    margin: 1px;
 }
 
 .iconButton, .button, #submit {

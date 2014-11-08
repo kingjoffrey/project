@@ -4,15 +4,15 @@ var Turn = {
     number: null,
     color: null,
     beginDate: null,
-    init: function (turnHistory) {
+    init: function () {
         var j = 0,
             history = {}
 
-        for (i in turnHistory) {
-            var date = turnHistory[i].date.substr(0, 19);
+        for (i in game.turnHistory) {
+            var date = game.turnHistory[i].date.substr(0, 19);
             history[j] = {
-                shortName: turnHistory[i].shortName,
-                number: turnHistory[i].number,
+                shortName: game.turnHistory[i].shortName,
+                number: game.turnHistory[i].number,
                 start: date
             }
 
@@ -28,14 +28,13 @@ var Turn = {
         }
 
         timer.scroll()
-        this.number = turnHistory[i].number
-        this.color = turnHistory[i].shortName
-        this.beginDate = Date.parse(turnHistory[i].date.substr(0, 19)).getTime()
+        this.number = game.turnHistory[i].number
+        this.color = game.turnHistory[i].shortName
+        this.beginDate = Date.parse(game.turnHistory[i].date.substr(0, 19)).getTime()
     },
     on: function () {
         makeMyCursorUnlock();
         Army.skippedArmies = {};
-        my.turn = true;
         $('#nextTurn').removeClass('buttonOff');
         $('#nextArmy').removeClass('buttonOff');
         Castle.showFirst();
@@ -49,7 +48,6 @@ var Turn = {
         }
     },
     off: function () {
-        my.turn = false;
         Army.deselect();
         $('#nextTurn').addClass('buttonOff')
         $('#nextArmy').addClass('buttonOff')
@@ -76,7 +74,7 @@ var Turn = {
         timer.append(Turn.color, Turn.number)
         Players.drawTurn();
 
-        if (Turn.color == my.color) {
+        if (Turn.color == game.me.color) {
             Turn.on();
             Websocket.startMyTurn();
             return;

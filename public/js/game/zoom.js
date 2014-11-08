@@ -1,4 +1,5 @@
 function zoom(gameWidth, gameHeight) {
+    console.log('zoom')
     var el = $('body');
     var obj = this;
     var settings = {
@@ -6,7 +7,6 @@ function zoom(gameWidth, gameHeight) {
         gameHeight: gameHeight
     };
 
-    largeimageloaded = false; //tell us if large image is loaded
     el.scale = {};
     el.mousepos = {};
     el.mouseDown = false;
@@ -152,7 +152,7 @@ function zoom(gameWidth, gameHeight) {
             this.node.left = (smallimage.ow - this.node.w - 2) / 2;
         };
         this.setcenter = function (x, y) {
-            if (players[Turn.color].computer && !Gui.show) {
+            if (game.players[Turn.color].computer && !Gui.show) {
                 return;
             }
 

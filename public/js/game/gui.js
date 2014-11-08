@@ -339,8 +339,8 @@ var Gui = {
         )
 
         var numberOfHumanPlayers = 0
-        for (sn in players) {
-            if (!players[sn].computer) {
+        for (sn in game.players) {
+            if (!game.players[sn].computer) {
                 numberOfHumanPlayers++
             }
         }

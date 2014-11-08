@@ -26,9 +26,9 @@ var Tower = {
         return 0;
     },
     change: function (towerId, color) {
-        if (color == my.color && towers[towerId].color != my.color) {
+        if (color == game.me.color && towers[towerId].color != game.me.color) {
             incomeIncrement(5);
-        } else if (color != my.color && towers[towerId].color == my.color) {
+        } else if (color != game.me.color && towers[towerId].color == game.me.color) {
             incomeIncrement(-5);
         }
         towers[towerId].color = color;
@@ -36,10 +36,8 @@ var Tower = {
     },
     countPlayers: function (color) {
         var count = 0;
-        for (i in towers) {
-            if (towers[i].color == color) {
-                count++;
-            }
+        for (i in game.players[color].towers) {
+            count++;
         }
         return count;
     }

@@ -8,8 +8,9 @@ class Cli_Model_Player
     private $_castles = array();
     private $_towers = array();
 
-    private $_isPlayerTurn = false;
-    private $_isComputer = false;
+    private $_turn = false;
+    private $_turnActive = false;
+    private $_computer = false;
     private $_lost = false;
     private $_miniMapColor;
     private $_backgroundColor;
@@ -23,8 +24,8 @@ class Cli_Model_Player
 
         $this->init($gameId, $mapCastles, $db);
 
-        $this->_isPlayerTurn = $player['turnActive'];
-        $this->_isComputer = $player['computer'];
+        $this->_turnActive = $player['turnActive'];
+        $this->_computer = $player['computer'];
         $this->_lost = $player['lost'];
         $this->_miniMapColor = $player['minimapColor'];
         $this->_backgroundColor = $player['backgroundColor'];
@@ -63,7 +64,8 @@ class Cli_Model_Player
     public function toArray()
     {
         return array(
-            'isComputer' => $this->_isComputer,
+            'turnActive' => $this->_turnActive,
+            'computer' => $this->_computer,
             'lost' => $this->_lost,
             'miniMapColor' => $this->_miniMapColor,
             'backgroundColor' => $this->_backgroundColor,
