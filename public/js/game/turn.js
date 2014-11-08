@@ -43,7 +43,7 @@ var Turn = {
         if (!Hero.findMy()) {
             $('#heroResurrection').removeClass('buttonOff')
         }
-        if (my.gold > 1000) {
+        if (game.me.gold > 1000) {
             $('#heroHire').removeClass('buttonOff')
         }
     },

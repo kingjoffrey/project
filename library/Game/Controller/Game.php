@@ -2,6 +2,7 @@
 
 abstract class Game_Controller_Game extends Coret_Controller_Authorized
 {
+    protected $_redirectNotAuthorized = 'login';
     protected $_gameId;
 
     public function init()

@@ -11,6 +11,7 @@ Image5.src = '/img/game/cursor_pointer.png';
 
 var fields = new Array()
 var game = {}
+var neutralCastles = {}
 
 var firstCastleId = 1000;
 
@@ -62,7 +63,34 @@ var Init = {
 
         Players.updateOnline()
 
-        if (game.players[game.me.color].turn) {
+        for (castleId in game.neutralCastles) {
+            Castle.createNeutral(castleId)
+        }
+
+        for (towerId in game.neutralTowers) {
+            Tower.createNeutral(towerId)
+        }
+
+        for (ruinId in game.ruins) {
+            Ruin.create(ruinId)
+        }
+
+        renderChatHistory();
+
+        goldUpdate(game.me.gold)
+        costsUpdate(game.me.costs)
+
+        incomeUpdate(game.me.income)
+
+        Init.start()
+    },
+    start: function () {
+        if (!zoom.loaded) {
+            setTimeout('Init.start()', 1000);
+            return;
+        }
+
+        if (game.me.turn) {
             Turn.on();
         } else {
             Turn.off();
@@ -74,22 +102,6 @@ var Init = {
             setTimeout('Websocket.computer()', 1000);
         }
 
-        renderChatHistory();
-
-        goldUpdate(game.me.gold)
-        costsUpdate(game.me.costs)
-        game.me.income += Tower.countPlayers(game.me.color) * 5
-        incomeUpdate(game.me.income)
-
-        Init.start()
-    },
-    start: function () {
-        //if (!largeimageloaded) {
-        //    setTimeout('Init.start()', 1000);
-        //    return;
-        //}
-
-        Castle.showFirst()
         Sound.play('gamestart')
     }
 }

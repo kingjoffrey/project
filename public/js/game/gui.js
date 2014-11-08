@@ -385,10 +385,10 @@ var Gui = {
             left: closeLeft + 'px'
         })
         $('#limitBox .close').css({
-            left: closeLeft - 8 + 'px'
+            left: closeLeft + 'px'
         })
         $('#timerBox .close').css({
-            left: closeLeft - 8 + 'px'
+            left: closeLeft + 'px'
         })
 
         $('#limitBox').css({
@@ -402,11 +402,12 @@ var Gui = {
         Message.adjust()
         Message.setOverflowHeight()
 
-        if (!zoomer) {
-            zoomer = new zoom(gameWidth, gameHeight)
+        if (!zoom.loaded) {
+            zoom.init(gameWidth, gameHeight)
         } else {
-            zoomer.setSettings(gameWidth, gameHeight)
-            zoomer.lens.setdimensions();
+            zoom.gameWidth = gameWidth
+            zoom.gameHeight = gameHeight
+            zoom.lens.setdimensions();
         }
     },
     exit: function () {

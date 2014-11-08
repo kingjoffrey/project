@@ -30,8 +30,6 @@ class Application_Model_MapCastles extends Coret_Db_Table_Abstract
 
         foreach ($castles as $val) {
             $mapCastles[$val['castleId']] = $val;
-            $mapCastles[$val['castleId']]['defensePoints'] = $val['defense'];
-            $mapCastles[$val['castleId']]['position'] = array('x' => $val['x'], 'y' => $val['y']);
         }
 
         return $mapCastles;

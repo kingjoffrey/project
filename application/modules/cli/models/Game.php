@@ -57,6 +57,9 @@ class Cli_Model_Game
         }
 
         $this->_me = new Cli_Model_Me($this->_playersInGameColors[$playerId], $mPlayersInGame->getMe($playerId));
+        if ($game['turnPlayerId'] == $playerId) {
+            $this->_me->setTurn(true);
+        }
 
         $mChat = new Application_Model_Chat($this->_id, $db);
         $this->_chatHistory = $mChat->getChatHistory();
@@ -87,8 +90,8 @@ class Cli_Model_Game
         reset($this->_units);
         $this->_firstUnitId = key($this->_units);
 
-        $mapCastles=$this->initNeutralCastles($db);
-        $this->initPlayers($mapCastles,$mMapPlayers, $db);
+        $mapCastles = $this->initNeutralCastles($db);
+        $this->initPlayers($mapCastles, $mMapPlayers, $db);
         $this->initRuins($db);
         $this->initNeutralTowers($db);
     }
@@ -99,7 +102,7 @@ class Cli_Model_Game
         $playersCastles = $mCastlesInGame->getAllCastles();
 
         $mMapCastles = new Application_Model_MapCastles($this->_mapId, $db);
-        $mapCastles =$mMapCastles->getMapCastles();
+        $mapCastles = $mMapCastles->getMapCastles();
         foreach ($mapCastles as $castleId => $castle) {
             if (isset($playersCastles[$castleId])) {
                 continue;
@@ -109,13 +112,13 @@ class Cli_Model_Game
         return $mapCastles;
     }
 
-    private function initPlayers($mapCastles,Application_Model_MapPlayers $mMapPlayers, Zend_Db_Adapter_Pdo_Pgsql $db)
+    private function initPlayers($mapCastles, Application_Model_MapPlayers $mMapPlayers, Zend_Db_Adapter_Pdo_Pgsql $db)
     {
         $mPlayersInGame = new Application_Model_PlayersInGame($this->_id, $db);
         $players = $mPlayersInGame->getGamePlayers();
 
         foreach ($mPlayersInGame->getAllColors() as $playerId => $color) {
-            $this->_players[$color] = new Cli_Model_Player($players[$playerId], $this->_id, $mapCastles,$mMapPlayers, $db);
+            $this->_players[$color] = new Cli_Model_Player($players[$playerId], $this->_id, $mapCastles, $mMapPlayers, $db);
         }
     }
 

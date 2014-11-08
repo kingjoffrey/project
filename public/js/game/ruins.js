@@ -4,12 +4,12 @@ var Ruin = {
     create: function (ruinId) {
         var title;
         var css;
-        if (typeof ruins[ruinId].e == 'undefined') {
-            title = 'Ruins';
-            css = '';
-        } else {
+        if (game.ruins[ruinId].empty) {
             title = 'Ruins (empty)';
             css = '_empty';
+        } else {
+            title = 'Ruins';
+            css = '';
         }
         board.append(
             $('<div>')
@@ -19,8 +19,8 @@ var Ruin = {
                     title: title
                 })
                 .css({
-                    left: (ruins[ruinId].x * 40) + 'px',
-                    top: (ruins[ruinId].y * 40) + 'px',
+                    left: (game.ruins[ruinId].x * 40) + 'px',
+                    top: (game.ruins[ruinId].y * 40) + 'px',
                     background: 'url(/img/game/ruin' + css + '.png) center center no-repeat'
                 })
         );

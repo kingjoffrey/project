@@ -401,7 +401,7 @@ var Army = {
         }
     },
     findNext: function () {
-        if (!my.turn) {
+        if (!game.me.turn) {
             return;
         }
 

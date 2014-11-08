@@ -35,8 +35,8 @@ var Castle = {
             return;
         }
     },
-    myMousedown: function (castle, castleId) {
-        castle
+    myMousedown: function (el, castleId) {
+        el
             .unbind()
             .mousedown(function (e) {
                 switch (e.which) {
@@ -137,8 +137,8 @@ var Castle = {
             Castle.addHammer(castleId);
         }
     },
-    addName: function (castleId) {
-        $('#castle' + castleId).append($('<div>').html(castles[castleId].name).addClass('name'));
+    addName: function (castleId, name) {
+        $('#castle' + castleId).append($('<div>').html(name).addClass('name'));
     },
     addCrown: function (castleId) {
         $('#castle' + castleId).append($('<img>').attr('src', '/img/game/crown.png').addClass('crown'));
@@ -146,8 +146,8 @@ var Castle = {
     removeCrown: function (castleId) {
         $('#castle' + castleId + ' .crown').remove();
     },
-    addShield: function (castleId) {
-        $('#castle' + castleId).append($('<div>').css('background', 'url(/img/game/shield.png)').addClass('shield').html(castles[castleId].defense));
+    addShield: function (castleId, defense) {
+        $('#castle' + castleId).append($('<div>').css('background', 'url(/img/game/shield.png)').addClass('shield').html(defense));
     },
     addHammer: function (castleId) {
         $('#castle' + castleId).append($('<img>').attr('src', '/img/game/hammer.png').addClass('hammer'));
@@ -231,127 +231,127 @@ var Castle = {
         }
         return myCastles
     },
-    changeFields: function (castleId, type) {
-        x = castles[castleId].x;
-        y = castles[castleId].y;
+    changeFields: function (castleId, type, x, y) {
         fields[y][x] = type;
         fields[y + 1][x] = type;
         fields[y][x + 1] = type;
         fields[y + 1][x + 1] = type;
     },
     createNeutral: function (castleId) {
-        castles[castleId].defense = castles[castleId].defensePoints;
-        castles[castleId].color = null;
-
+        var castle = game.neutralCastles[castleId]
+        Castle.create(castle, castleId)
+        Castle.changeFields(castleId, 'e', castle.x, castle.y);
+    },
+    createWithColor: function (castleId, color) {
+        var castle = game.players[color].castles[castleId]
+        Castle.create(castle, castleId)
+        Castle.owner(castle, castleId, color)
+    },
+    create: function (castle, castleId) {
         board.append(
             $('<div>')
                 .addClass('castle')
                 .attr({
                     id: 'castle' + castleId,
-                    title: castles[castleId].name + ' (' + castles[castleId].defense + ')'
+                    title: castle.name + ' (' + castle.defense + ')'
                 })
                 .css({
-                    left: (castles[castleId].x * 40) + 'px',
-                    top: (castles[castleId].y * 40) + 'px'
+                    left: (castle.x * 40) + 'px',
+                    top: (castle.y * 40) + 'px'
                 })
                 .mouseover(function () {
-                    Castle.changeFields(this.id.substring(6), 'g')
+                    Castle.changeFields(castleId, 'g', castle.x, castle.y)
                 })
                 .mouseout(function () {
-                    Castle.changeFields(this.id.substring(6), 'e')
+                    Castle.changeFields(castleId, 'e', castle.x, castle.y)
                 })
         );
 
-        Castle.addShield(castleId);
-        Castle.addName(castleId);
-
-        Castle.changeFields(castleId, 'e');
+        Castle.addShield(castleId, castle.defense);
+        Castle.addName(castleId, castle.name);
 
         map.append(
             $('<div>').css({
-                'left': castles[castleId].x * 2 + 'px',
-                'top': castles[castleId].y * 2 + 'px'
+                'left': castle.x * 2 + 'px',
+                'top': castle.y * 2 + 'px'
             })
                 .attr('id', 'c' + castleId)
                 .addClass('c')
         );
     },
-    owner: function (castleId, color) {
-        var castle = $('#castle' + castleId)
+    owner: function (castle, castleId, color) {
+        var el = $('#castle' + castleId)
             .removeClass()
             .addClass('castle ' + color)
             .css('background', 'url(/img/game/castles/' + color + '.png) center center no-repeat');
 
-        if (castles[castleId].color) {
-            Castle.removeCrown(castleId)
-            Castle.removeHammer(castleId)
-            Castle.removeRelocationTo(castleId)
-            Castle.removeRelocationFrom(castleId)
+        Castle.removeCrown(castleId)
+        Castle.removeHammer(castleId)
+        Castle.removeRelocationTo(castleId)
+        Castle.removeRelocationFrom(castleId)
 
-            if (isTruthful(castles[castleId].currentProductionId)) {
-                castles[castleId].currentProductionId = null
-            }
-            if (isTruthful(castles[castleId].relocationToCastleId)) {
-                Castle.removeRelocationFrom(castles[castleId].relocationToCastleId, castleId)
-                castles[castleId].relocationToCastleId = null
-            }
+        //if (isTruthful(castles[castleId].currentProductionId)) {
+        //    castles[castleId].currentProductionId = null
+        //}
+        //if (isTruthful(castles[castleId].relocationToCastleId)) {
+        //    Castle.removeRelocationFrom(castles[castleId].relocationToCastleId, castleId)
+        //    castles[castleId].relocationToCastleId = null
+        //}
+        //
+        //if (isTruthful(castles[castleId].relocatedProduction)) {
+        //    var relocationFromCastleId
+        //    for (relocationFromCastleId in castles[castleId].relocatedProduction) {
+        //        Castle.removeRelocationTo(relocationFromCastleId)
+        //    }
+        //}
 
-            if (isTruthful(castles[castleId].relocatedProduction)) {
-                var relocationFromCastleId
-                for (relocationFromCastleId in castles[castleId].relocatedProduction) {
-                    Castle.removeRelocationTo(relocationFromCastleId)
-                }
-            }
-
-            castles[castleId].defense -= 1;
-            if (castles[castleId].defense < 1) {
-                castles[castleId].defense = 1;
-            }
-            castle.attr('title', castles[castleId].name + '(' + castles[castleId].defense + ')');
-            $('#castle' + castleId + ' .shield').html(castles[castleId].defense);
-        }
+        //castles[castleId].defense -= 1;
+        //if (castles[castleId].defense < 1) {
+        //    castles[castleId].defense = 1;
+        //}
+        //el.attr('title', castles[castleId].name + '(' + castles[castleId].defense + ')');
+        //$('#castle' + castleId + ' .shield').html(castles[castleId].defense);
 
         if (color == game.me.color) {
-            Castle.changeFields(castleId, 'c')
-            castle
+            Castle.changeFields(castleId, 'c', castle.x, castle.y)
+            el
                 .css({
                     'cursor': 'url(/img/game/cursor_castle.png), default'
                 })
                 .removeClass('team')
-            Castle.myMousedown(castle, castleId)
+            Castle.myMousedown(el, castleId)
         } else {
-            if (players[color].team == players[game.me.color].team) {
-                Castle.changeFields(castleId, 'c')
-                castle
+            if (game.players[color].team == game.players[game.me.color].team) {
+                Castle.changeFields(castleId, 'c', castle.x, castle.y)
+                el
                     .unbind()
                     .addClass('team')
             } else {
-                Castle.changeFields(castleId, 'e')
-                castle
+                Castle.changeFields(castleId, 'e', castle.x, castle.y)
+
+                el
                     .unbind()
                     .removeClass('team')
                     .mouseover(function () {
-                        Castle.changeFields(this.id.substring(6), 'E')
-                    })
+                        Castle.changeFields(castleId, 'E', castle.x, castle.y)
+                    }(this))
                     .mouseout(function () {
-                        Castle.changeFields(this.id.substring(6), 'e')
-                    })
-                if (isSet(castles[castleId].relocationToCastleId)) {
-                    delete castles[castles[castleId].relocationToCastleId].relocatedProduction[castleId]
-                    delete castles[castleId].relocationToCastleId
-                }
+                        Castle.changeFields(castleId, 'e', castle.x, castle.y)
+                    }(this))
+                //if (isSet(castles[castleId].relocationToCastleId)) {
+                //    delete castles[castles[castleId].relocationToCastleId].relocatedProduction[castleId]
+                //    delete castles[castleId].relocationToCastleId
+                //}
             }
         }
 
-        if (castles[castleId].capital && capitals[color] == castleId) {
+        if (castle.capital && game.capitals[color] == castleId) {
             Castle.addCrown(castleId);
         }
 
-        castles[castleId].color = color;
-
         $('#c' + castleId).css({
-            'background': players[color].minimapColor,
-            'border-color': players[color].textColor
+            'background': game.players[color].miniMapColor,
+            'border-color': game.players[color].textColor
         })
     },
     raze: function (castleId) {
@@ -366,7 +366,7 @@ var Castle = {
     showFirst: function () {
         if ($('#castle' + game.capitals[game.me.color]).length) {
             var sp = $('#castle' + game.capitals[game.me.color]);
-            zoomer.lensSetCenter(sp.css('left'), sp.css('top'));
+            zoom.lens.setcenter(sp.css('left'), sp.css('top'));
         } else if ($('#castle' + firstCastleId).length) {
             var sp = $('#castle' + firstCastleId);
             zoomer.lensSetCenter(sp.css('left'), sp.css('top'));

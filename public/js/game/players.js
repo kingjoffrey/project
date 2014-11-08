@@ -35,7 +35,7 @@ var Players = {
                 Army.init(game.players[color].armies[i], color);
                 if (color == game.me.color) {
                     for (s in game.players[color].armies[i].soldiers) {
-                        my.costs += units[game.players[color].armies[i].soldiers[s].unitId].cost;
+                        game.me.costs += units[game.players[color].armies[i].soldiers[s].unitId].cost;
                     }
                     myArmies = true;
                 } else {
@@ -43,19 +43,27 @@ var Players = {
                 }
             }
 
-            for (i in game.players[color].castles) {
+            for (castleId in game.players[color].castles) {
+                Castle.createWithColor(castleId, color)
                 //Castle.updateDefense(i, game.players[color].castles[i].defenseMod);
                 //Castle.owner(i, color);
 
                 if (color == game.me.color) {
-                    game.me.income += game.players[color].castles[i].income;
-                    if (firstCastleId > i) {
-                        firstCastleId = i;
+                    game.me.income += game.players[color].castles[castleId].income;
+                    if (firstCastleId > castleId) {
+                        firstCastleId = castleId;
                     }
                     myCastles = true;
                     //Castle.initMyProduction(i);
                 } else {
                     enemyCastles = true;
+                }
+            }
+
+            for (towerId in game.players[color].towers) {
+                Tower.create(towerId)
+                if (color == game.me.color) {
+                    game.me.income += 5
                 }
             }
         }
