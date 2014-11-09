@@ -52,8 +52,10 @@ class Cli_Model_Player
         }
 
         $mCastlesInGame = new Application_Model_CastlesInGame($gameId, $db);
+        $mCastleProduction = new Application_Model_CastleProduction($db);
         foreach ($mCastlesInGame->getPlayerCastles($this->_id) as $castleId => $castle) {
             $this->_castles[$castleId] = new Cli_Model_Castle($castle, $mapCastles[$castleId]);
+            $this->_castles[$castleId]->setProduction($mCastleProduction->getCastleProduction($castleId));
         }
         $mTowersInGame = new Application_Model_TowersInGame($gameId, $db);
         foreach ($mTowersInGame->getPlayerTowers($this->_id) as $tower) {
@@ -105,27 +107,72 @@ class Cli_Model_Player
         return $towers;
     }
 
-    public function updateArmy($army)
+    public function hasArmy($armyId)
     {
-        if (isset($this->_armies[$army->id])) {
-            if ($army->destroyed) {
-                unset($this->_armies[$army->id]);
-            } else {
-                $this->_armies[$army->id]->update($army);
-            }
-        } else {
-            $this->_armies[$army->id] = new Cli_Model_Army($army);
-        }
+        return isset($this->_armies[$armyId]);
     }
 
-    public function updateCastle($castle)
+    public function hasCastle($castleId)
     {
-        $this->_castles[$castle->id]->update($castle);
+        return isset($this->_castles[$castleId]);
     }
 
-    public function updateTower($tower)
+    public function hasTower($towerId)
     {
-        $this->_towers[$tower->id]->update($tower);
+        return isset($this->_towers[$towerId]);
     }
+
+    public function canCastleProduceThisUnit($castleId, $unitId)
+    {
+        return $this->_castles[$castleId]->canProduceThisUnit($unitId);
+    }
+
+    public function getCastleCurrentProductionId($castleId)
+    {
+        return $this->_castles[$castleId]->getProductionId();
+    }
+
+    public function setProduction($gameId, $castleId, $unitId, $relocationToCastleId, $db)
+    {
+        $this->_castles[$castleId]->setProductionId($gameId, $this->_id, $castleId, $unitId, $relocationToCastleId, $db);
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//    public function updateArmy($army)
+//    {
+//        if (isset($this->_armies[$army->id])) {
+//            if ($army->destroyed) {
+//                unset($this->_armies[$army->id]);
+//            } else {
+//                $this->_armies[$army->id]->update($army);
+//            }
+//        } else {
+//            $this->_armies[$army->id] = new Cli_Model_Army($army);
+//        }
+//    }
+//
+//    public function updateCastle($castle)
+//    {
+//        $this->_castles[$castle->id]->update($castle);
+//    }
+//
+//    public function updateTower($tower)
+//    {
+//        $this->_towers[$tower->id]->update($tower);
+//    }
 
 }

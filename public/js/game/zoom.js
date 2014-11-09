@@ -238,14 +238,11 @@ var zoom = {
                                     var pageX = e.pageX;
                                     var pageY = e.pageY;
 
-                                    var left = parseInt(zoom.largeimage.node.css('left'));
-                                    var top = parseInt(zoom.largeimage.node.css('top'));
-
                                     var centerPageX = zoom.gameWidth / 2;
                                     var centerPageY = zoom.gameHeight / 2;
 
                                     board.mousemove(function (e) {
-                                        zoom.lens.setcenter((centerPageX + (pageX - e.pageX)) - left, (centerPageY + (pageY - e.pageY)) - top);
+                                        zoom.lens.setcenter((centerPageX + (pageX - e.pageX)) - zoom.largeimage.pos.l, (centerPageY + (pageY - e.pageY)) - zoom.largeimage.pos.t);
                                     });
                                 }
                                 break;

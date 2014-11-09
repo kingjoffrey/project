@@ -173,31 +173,28 @@ var Message = {
         }
     },
     castle: function (castleId) {
-        if (notSet(castles[castleId])) {
-            return;
-        }
-
         var time = '',
             attr,
             capital = '',
             table = $('<table>'),
             j = 0,
-            td = new Array()
+            td = new Array(),
+            castle = game.players[game.me.color].castles[castleId]
 
-        if (castles[castleId].capital) {
+        if (castle.capital) {
             capital = ' - ' + translations.capitalCity;
         }
 
-        for (unitId in castles[castleId].production) {
+        for (unitId in castle.production) {
             var travelBy = '';
-            if (unitId == castles[castleId].currentProductionId) {
+            if (unitId == castle.currentProductionId) {
                 attr = {
                     type: 'radio',
                     name: 'production',
                     value: unitId,
                     checked: 'checked'
                 }
-                time = castles[castleId].currentProductionTurn + '/';
+                time = castle.currentProductionTurn + '/';
             } else {
                 attr = {
                     type: 'radio',
@@ -207,17 +204,17 @@ var Message = {
                 time = '';
             }
 
-            if (units[unitId].canFly) {
+            if (game.units[unitId].canFly) {
                 travelBy = translations.ground + ' / ' + translations.air;
-            } else if (units[unitId].canSwim) {
+            } else if (game.units[unitId].canSwim) {
                 travelBy = translations.water;
             } else {
                 travelBy = translations.ground;
             }
-            if (units[unitId].name_lang) {
-                var name = units[unitId].name_lang;
+            if (game.units[unitId].name_lang) {
+                var name = game.units[unitId].name_lang;
             } else {
-                var name = units[unitId].name;
+                var name = game.units[unitId].name;
             }
             td[j] = $('<td>')
                 .addClass('unit')
@@ -240,9 +237,9 @@ var Message = {
                 .append(
                 $('<div>')
                     .addClass('attributes')
-                    .append($('<p>').html(translations.time + ':&nbsp;' + time + castles[castleId].production[unitId].time + ' ' + translations.turn))
-                    .append($('<p>').html(translations.cost + ':&nbsp;' + units[unitId].cost + ' ' + translations.gold))
-                    .append($('<p>').html(translations.moves + '&nbsp;' + units[unitId].numberOfMoves + '&nbsp;/&nbsp;' + translations.attack + '&nbsp;' + units[unitId].attackPoints + '&nbsp;/&nbsp;' + translations.defence + '&nbsp;' + units[unitId].defensePoints))
+                    .append($('<p>').html(translations.time + ':&nbsp;' + time + castle.production[unitId].time + ' ' + translations.turn))
+                    .append($('<p>').html(translations.cost + ':&nbsp;' + game.units[unitId].cost + ' ' + translations.gold))
+                    .append($('<p>').html(translations.moves + '&nbsp;' + game.units[unitId].numberOfMoves + '&nbsp;/&nbsp;' + translations.attack + '&nbsp;' + game.units[unitId].attackPoints + '&nbsp;/&nbsp;' + translations.defence + '&nbsp;' + game.units[unitId].defensePoints))
             );
             j++;
         }
@@ -263,7 +260,7 @@ var Message = {
 
         var stopButtonOff = ' buttonOff'
         var relocationButtonOff = ' buttonOff'
-        if (castles[castleId].currentProductionId) {
+        if (castle.currentProductionId) {
             if (Castle.countMyCastles() > 1) {
                 var relocationButtonOff = ''
             }
@@ -324,40 +321,40 @@ var Message = {
                 .click(center(castleId))
                 .attr('id', 'center')
         )
-            .append($('<h3>').append(castles[castleId].name).append(capital).addClass('name'))
-            .append($('<h5>').append(translations.castleDefense + ': ' + castles[castleId].defense))
-            .append($('<h5>').append(translations.income + ': ' + castles[castleId].income + ' ' + translations.gold_turn))
+            .append($('<h3>').append(castle.name).append(capital).addClass('name'))
+            .append($('<h5>').append(translations.castleDefense + ': ' + castle.defense))
+            .append($('<h5>').append(translations.income + ': ' + castle.income + ' ' + translations.gold_turn))
             .append($('<br>'))
             .append($('<fieldset>').addClass('production').append($('<label>').html(translations.production)).append(table).attr('id', castleId))
 
         // relocation to
 
-        if (castles[castleId].color == game.me.color && castles[castleId].relocationToCastleId && castles[castleId].currentProductionId) {
+        if (castle.color == game.me.color && castle.relocationToCastleId && castle.currentProductionId) {
             div
                 .append($('<br>'))
                 .append($('<fieldset>').addClass('relocatedProduction').append($('<label>').html(translations.relocatingTo)).append(
                     $('<table>').append(
                         $('<tr>')
                             .append(
-                            $('<td>').append($('<img>').attr('src', Unit.getImage(castles[castleId].currentProductionId, game.me.color)))
+                            $('<td>').append($('<img>').attr('src', Unit.getImage(castle.currentProductionId, game.me.color)))
                         )
                             .append(
                             $('<td>')
-                                .html(castles[castleId].currentProductionTurn + ' / ' + castles[castleId].production[castles[castleId].currentProductionId].time)
+                                .html(castle.currentProductionTurn + ' / ' + castle.production[castle.currentProductionId].time)
                         )
                             .append(
                             $('<td>')
-                                .html(castles[castles[castleId].relocationToCastleId].name)
+                                .html(castles[castle.relocationToCastleId].name)
                                 .addClass('button buttonColors')
                                 .click(function () {
-                                    Message.castle(castles[castleId].relocationToCastleId)
+                                    Message.castle(castle.relocationToCastleId)
                                 })
                         )
                             .append(
                             $('<td>')
                                 .html($('<img>').attr('src', '/img/game/center.png'))
                                 .addClass('iconButton buttonColors')
-                                .click(center(castles[castleId].relocationToCastleId))
+                                .click(center(castle.relocationToCastleId))
                         )
                     )
                 ))
@@ -365,7 +362,7 @@ var Message = {
 
         // relocation from
 
-        if (isSet(castles[castleId].relocatedProduction) && !$.isEmptyObject(castles[castleId].relocatedProduction)) {
+        if (isSet(castle.relocatedProduction) && !$.isEmptyObject(castle.relocatedProduction)) {
             var relocatingFrom = $('<table>'),
                 click = function (i) {
                     return function () {
@@ -373,7 +370,7 @@ var Message = {
                     }
                 }
 
-            for (castleIdFrom in castles[castleId].relocatedProduction) {
+            for (castleIdFrom in castle.relocatedProduction) {
                 var currentProductionId = castles[castleIdFrom].currentProductionId
                 relocatingFrom.append(
                     $('<tr>')
@@ -598,14 +595,14 @@ var Message = {
                             .append(
                             $('<tr>')
                                 .append($('<td>').html(translations.defaultMoves + ': '))
-                                .append($('<td>').html(units[Army.selected.soldiers[i].unitId].numberOfMoves).addClass('value'))
+                                .append($('<td>').html(game.units[Army.selected.soldiers[i].unitId].numberOfMoves).addClass('value'))
                         )
                             .append(
                             $('<tr>')
                                 .append($('<td>').html(translations.attackPoints + ': '))
                                 .append(
                                 $('<td>')
-                                    .append($('<div>').html(units[Army.selected.soldiers[i].unitId].attackPoints))
+                                    .append($('<div>').html(game.units[Army.selected.soldiers[i].unitId].attackPoints))
                                     .append(attackFlyBonus.clone())
                                     .append(attackHeroBonus.clone())
                                     .addClass('value')
@@ -616,7 +613,7 @@ var Message = {
                                 .append($('<td>').html(translations.defencePoints + ': '))
                                 .append(
                                 $('<td>')
-                                    .append($('<div>').html(units[Army.selected.soldiers[i].unitId].defensePoints))
+                                    .append($('<div>').html(game.units[Army.selected.soldiers[i].unitId].defensePoints))
                                     .append(defenseFlyBonus.clone())
                                     .append(defenseHeroBonus.clone())
                                     .append(defenseTowerBonus.clone())
@@ -631,16 +628,16 @@ var Message = {
                             .append(
                             $('<tr>')
                                 .append($('<td>').html(translations.movementCostThroughTheForest + ': '))
-                                .append($('<td>').html(units[Army.selected.soldiers[i].unitId].f).addClass('value'))
+                                .append($('<td>').html(game.units[Army.selected.soldiers[i].unitId].f).addClass('value'))
                         )
                             .append(
                             $('<tr>')
                                 .append($('<td>').html(translations.movementCostThroughTheSwamp + ': '))
-                                .append($('<p>').html(units[Army.selected.soldiers[i].unitId].s).addClass('value')))
+                                .append($('<p>').html(game.units[Army.selected.soldiers[i].unitId].s).addClass('value')))
                             .append(
                             $('<tr>')
                                 .append($('<td>').html(translations.movementCostThroughTheHills + ': '))
-                                .append($('<p>').html(units[Army.selected.soldiers[i].unitId].m).addClass('value'))
+                                .append($('<p>').html(game.units[Army.selected.soldiers[i].unitId].m).addClass('value'))
                         )
                     )
                 )
@@ -743,7 +740,7 @@ var Message = {
 
         var attackLayout = $('<div>')
             .append(attack)
-            .append($('<div>').html(players[r.attackerColor].longName + ' (' + translations.attack + ')'))
+            .append($('<div>').html(game.players[r.attackerColor].longName + ' (' + translations.attack + ')'))
 
         var defense = $('<div>').addClass('battle defense');
 
@@ -775,8 +772,8 @@ var Message = {
             );
         }
 
-        if (isSet(players[r.defenderColor])) {
-            var longName = players[r.defenderColor].longName
+        if (isSet(game.players[r.defenderColor])) {
+            var longName = game.players[r.defenderColor].longName
         } else {
             var longName = 'Shadow'
         }
@@ -796,7 +793,7 @@ var Message = {
             )
         }
 
-        if (isSet(r.defenderArmy[0]) && r.defenderColor != 'neutral' && Tower.isAtPosition(players[r.defenderColor].armies[r.defenderArmy[0].armyId].x, players[r.defenderColor].armies[r.defenderArmy[0].armyId].y)) {
+        if (isSet(r.defenderArmy[0]) && r.defenderColor != 'neutral' && Tower.isAtPosition(game.players[r.defenderColor].armies[r.defenderArmy[0].armyId].x, game.players[r.defenderColor].armies[r.defenderArmy[0].armyId].y)) {
             defenseLayout.append(
                 $('<div>')
                     .addClass('tower')
@@ -821,7 +818,7 @@ var Message = {
         )
 
         var id = this.show(translations.battle, div);
-        if (!players[r.attackerColor].computer) {
+        if (!game.players[r.attackerColor].computer) {
             this.ok(id)// add Move.end(r)
         } else {
             this.ok(id)
@@ -830,7 +827,7 @@ var Message = {
         $('.go').css('display', 'none')
 
         if (newBattle) {
-            if (players[r.attackerColor].computer) {
+            if (game.players[r.attackerColor].computer) {
                 Message.kill(newBattle, r);
             } else {
                 setTimeout(function () {
@@ -846,7 +843,7 @@ var Message = {
         }
 
         if (notSet(b[i])) {
-            if (!players[r.attackerColor].computer) {
+            if (!game.players[r.attackerColor].computer) {
                 $('.go').fadeIn(100)
             }
             Move.end(r)
@@ -860,25 +857,25 @@ var Message = {
             }
 
             unitElement.append($('<div>').addClass('killed'));
-            if (!players[r.attackerColor].computer) {
+            if (!game.players[r.attackerColor].computer) {
                 setTimeout(function () {
                     Sound.play('error');
                 }, 500)
             }
             $('#unit' + b[i].soldierId + ' .killed').fadeIn(1000, function () {
                 if (r.attackerColor == game.me.color) {
-                    for (k in players[game.me.color].armies[r.attackerArmy.armyId].soldiers) {
-                        if (players[game.me.color].armies[r.attackerArmy.armyId].soldiers[k].soldierId == b[i].soldierId) {
-                            costIncrement(-units[players[game.me.color].armies[r.attackerArmy.armyId].soldiers[k].unitId].cost)
+                    for (k in game.players[game.me.color].armies[r.attackerArmy.armyId].soldiers) {
+                        if (game.players[game.me.color].armies[r.attackerArmy.armyId].soldiers[k].soldierId == b[i].soldierId) {
+                            costIncrement(-game.units[game.players[game.me.color].armies[r.attackerArmy.armyId].soldiers[k].unitId].cost)
                         }
                     }
                 }
 
                 if (r.defenderColor == game.me.color) {
                     for (j in r.defenderArmy) {
-                        for (k in players[game.me.color].armies[r.defenderArmy[j].armyId].soldiers) {
-                            if (players[game.me.color].armies[r.defenderArmy[j].armyId].soldiers[k].soldierId == b[i].soldierId) {
-                                costIncrement(-units[players[game.me.color].armies[r.defenderArmy[j].armyId].soldiers[k].unitId].cost)
+                        for (k in game.players[game.me.color].armies[r.defenderArmy[j].armyId].soldiers) {
+                            if (game.players[game.me.color].armies[r.defenderArmy[j].armyId].soldiers[k].soldierId == b[i].soldierId) {
+                                costIncrement(-game.units[game.players[game.me.color].armies[r.defenderArmy[j].armyId].soldiers[k].unitId].cost)
                             }
                         }
                     }
@@ -893,7 +890,7 @@ var Message = {
             }
 
             heroElement.append($('<div>').addClass('killed'));
-            if (!players[r.attackerColor].computer) {
+            if (!game.players[r.attackerColor].computer) {
                 setTimeout(function () {
                     Sound.play('error');
                 }, 500)
@@ -953,16 +950,16 @@ var Message = {
                 .append($('<th>').html(translations.heroesLost))
         );
         var color
-        for (color in players) {
+        for (color in game.players) {
             var tr = $('<tr>');
 
             tr.append($('<td>').addClass('shortName').html($('<img>').attr('src', Hero.getImage(color))))
 
             var td = $('<td>').addClass('shortName');
-            tr.append(td.html(players[color].longName))
+            tr.append(td.html(game.players[color].longName))
 
             var td = $('<td>').css({
-                border: '1px solid ' + players[color].backgroundColor
+                border: '1px solid ' + game.players[color].backgroundColor
             })
             var numberOfCastlesHeld = 0,
                 castleId
@@ -978,7 +975,7 @@ var Message = {
             }
 
             var td = $('<td>').css({
-                border: '1px solid ' + players[color].backgroundColor
+                border: '1px solid ' + game.players[color].backgroundColor
             })
             if (isSet(castlesConquered.winners[color])) {
                 tr.append(td.html(castlesConquered.winners[color]))
@@ -987,7 +984,7 @@ var Message = {
             }
 
             var td = $('<td>').css({
-                border: '1px solid ' + players[color].backgroundColor
+                border: '1px solid ' + game.players[color].backgroundColor
             })
             if (isSet(castlesConquered.losers[color])) {
                 tr.append(td.html(castlesConquered.losers[color]))
@@ -996,7 +993,7 @@ var Message = {
             }
 
             var td = $('<td>').css({
-                border: '1px solid ' + players[color].backgroundColor
+                border: '1px solid ' + game.players[color].backgroundColor
             })
             if (isSet(castlesDestroyed[color])) {
                 tr.append(td.html(castlesConquered[color]))
@@ -1005,7 +1002,7 @@ var Message = {
             }
 
             var td = $('<td>').css({
-                border: '1px solid ' + players[color].backgroundColor
+                border: '1px solid ' + game.players[color].backgroundColor
             })
             if (isSet(soldiersCreated[color])) {
                 tr.append(td.html(soldiersCreated[color]))
@@ -1014,7 +1011,7 @@ var Message = {
             }
 
             var td = $('<td>').css({
-                border: '1px solid ' + players[color].backgroundColor
+                border: '1px solid ' + game.players[color].backgroundColor
             })
             if (isSet(soldiersKilled.winners[color])) {
                 tr.append(td.html(soldiersKilled.winners[color]))
@@ -1023,7 +1020,7 @@ var Message = {
             }
 
             var td = $('<td>').css({
-                border: '1px solid ' + players[color].backgroundColor
+                border: '1px solid ' + game.players[color].backgroundColor
             })
             if (isSet(soldiersKilled.losers[color])) {
                 tr.append(td.html(soldiersKilled.losers[color]))
@@ -1032,7 +1029,7 @@ var Message = {
             }
 
             var td = $('<td>').css({
-                border: '1px solid ' + players[color].backgroundColor
+                border: '1px solid ' + game.players[color].backgroundColor
             })
             if (isSet(heroesKilled.winners[color])) {
                 tr.append(td.html(heroesKilled.winners[color]))
@@ -1041,7 +1038,7 @@ var Message = {
             }
 
             var td = $('<td>').css({
-                border: '1px solid ' + players[color].backgroundColor
+                border: '1px solid ' + game.players[color].backgroundColor
             })
             if (isSet(heroesKilled.losers[color])) {
                 tr.append(td.html(heroesKilled.losers[color]))
@@ -1083,10 +1080,10 @@ var Message = {
             }
         }
 
-        for (i in players[game.me.color].armies) {
-            for (j in players[game.me.color].armies[i].soldiers) {
+        for (i in game.players[game.me.color].armies) {
+            for (j in game.players[game.me.color].armies[i].soldiers) {
                 myUnits++
-                myUnitsGold += units[players[game.me.color].armies[i].soldiers[j].unitId].cost
+                myUnitsGold += game.units[game.players[game.me.color].armies[i].soldiers[j].unitId].cost
             }
         }
 
@@ -1211,19 +1208,19 @@ var Message = {
 
         var center = function (i) {
             return function () {
-                zoomer.lensSetCenter(players[game.me.color].armies[i].x * 40, players[game.me.color].armies[i].y * 40)
+                zoomer.lensSetCenter(game.players[game.me.color].armies[i].x * 40, game.players[game.me.color].armies[i].y * 40)
             }
         }
 
-        for (i in players[game.me.color].armies) {
-            for (j in players[game.me.color].armies[i].soldiers) {
+        for (i in game.players[game.me.color].armies) {
+            for (j in game.players[game.me.color].armies[i].soldiers) {
                 myUnits++
-                myUnitsGold += units[players[game.me.color].armies[i].soldiers[j].unitId].cost
+                myUnitsGold += game.units[game.players[game.me.color].armies[i].soldiers[j].unitId].cost
                 table.append(
                     $('<tr>')
-                        .append($('<td>').html($('<img>').attr('src', Unit.getImage(players[game.me.color].armies[i].soldiers[j].unitId, game.me.color))))
-                        .append($('<td>').html(units[players[game.me.color].armies[i].soldiers[j].unitId].name_lang))
-                        .append($('<td>').html(units[players[game.me.color].armies[i].soldiers[j].unitId].cost + ' ' + translations.gold).addClass('r'))
+                        .append($('<td>').html($('<img>').attr('src', Unit.getImage(game.players[game.me.color].armies[i].soldiers[j].unitId, game.me.color))))
+                        .append($('<td>').html(game.units[game.players[game.me.color].armies[i].soldiers[j].unitId].name_lang))
+                        .append($('<td>').html(game.units[game.players[game.me.color].armies[i].soldiers[j].unitId].cost + ' ' + translations.gold).addClass('r'))
                         .append(
                         $('<td>')
                             .html($('<img>').attr('src', '/img/game/center.png'))
@@ -1268,10 +1265,10 @@ var Message = {
                 continue
             }
             i++
-            if (isSet(units[unitId].name_lang)) {
-                var name = units[unitId].name_lang
+            if (isSet(game.units[unitId].name_lang)) {
+                var name = game.units[unitId].name_lang
             } else {
-                var name = units[unitId].name
+                var name = game.units[unitId].name
             }
             sequenceNumber
                 .append($('<div>').html(i).addClass('battleNumber'))

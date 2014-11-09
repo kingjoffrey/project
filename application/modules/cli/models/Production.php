@@ -26,23 +26,18 @@ class Cli_Model_Production
             return;
         }
 
-        $mCastlesInGame = new Application_Model_CastlesInGame($user->parameters['gameId'], $db);
-
-        if (!$mCastlesInGame->isPlayerCastle($castleId, $user->parameters['playerId'])) {
+        if (!$user->parameters['game']->isPlayerCastle($user->parameters['playerId'], $castleId)) {
             $gameHandler->sendError($user, 'To nie jest Twój zamek!');
             return;
         }
 
-        if ($relocationToCastleId && !$mCastlesInGame->isPlayerCastle($relocationToCastleId, $user->parameters['playerId'])) {
+        if ($relocationToCastleId && !$user->parameters['game']->isPlayerCastle($user->parameters['playerId'], $relocationToCastleId)) {
             $gameHandler->sendError($user, 'To nie jest Twój zamek!');
             return;
         }
 
         if ($unitId != -1) {
-            $mMapCastlesProduction = new Application_Model_CastleProduction($db);
-            $production = $mMapCastlesProduction->getCastleProduction($castleId);
-
-            if (!isset($production[$unitId])) {
+            if (!$user->parameters['game']->canCastleProduceThisUnit($user->parameters['playerId'], $castleId, $unitId)) {
                 $this->sendError($user, 'Can\'t produce this unit here!');
                 return;
             }
@@ -50,21 +45,25 @@ class Cli_Model_Production
             $unitId = null;
         }
 
-        $production = $mCastlesInGame->getProduction($castleId, $user->parameters['playerId']);
-        if (empty($relocationToCastleId) && $production['productionId'] == $unitId) {
+        if (empty($relocationToCastleId) && $user->parameters['game']->getCastleCurrentProductionId($user->parameters['playerId'], $castleId) == $unitId) {
             return;
         }
 
-        if ($mCastlesInGame->setProduction($user->parameters['playerId'], $castleId, $unitId, $relocationToCastleId)) {
-            $token = array(
-                'type' => $dataIn['type'],
-                'unitId' => $unitId,
-                'castleId' => $castleId,
-                'relocationToCastleId' => $relocationToCastleId
-            );
-
-            $gameHandler->sendToUser($user, $db, $token, $user->parameters['gameId']);
+        try {
+            $user->parameters['game']->setProductionId($user->parameters['playerId'], $castleId, $unitId, $relocationToCastleId, $db);
+        } catch (Exception $e) {
+            $gameHandler->sendError($user, 'Set castle production error!');
+            $l = new Coret_Model_Logger('Production');
+            $l->log($e);
+            return;
         }
+        $token = array(
+            'type' => $dataIn['type'],
+            'unitId' => $unitId,
+            'castleId' => $castleId,
+            'relocationToCastleId' => $relocationToCastleId
+        );
 
+        $gameHandler->sendToUser($user, $db, $token, $user->parameters['gameId']);
     }
 }

@@ -41,12 +41,12 @@ var Ruin = {
             .css('background', 'url(/img/game/ruin' + css + '.png) center center no-repeat');
     },
     getIdByPosition: function (x, y) {
-        for (i in ruins) {
-            if (x == ruins[i].x && y == ruins[i].y) {
-                if (isSet(ruins[i].e) && ruins[i].e) {
+        for (var ruinId in game.ruins) {
+            if (x == game.ruins[ruinId].x && y == game.ruins[ruinId].y) {
+                if (isTruthful(game.ruins[ruinId].e)) {
                     return null;
                 }
-                return i;
+                return ruinId;
             }
         }
         return null;

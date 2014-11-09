@@ -118,11 +118,11 @@ Websocket = {
                 Army.init(r.parentArmy, r.color);
                 Army.init(r.childArmy, r.color);
 
-                Army.parent = players[r.color].armies[r.parentArmy.armyId];
+                Army.parent = game.players[r.color].armies[r.parentArmy.armyId];
 
-                if (my.turn) {
+                if (Turn.isMy()) {
                     Message.remove()
-                    Army.select(players[r.color].armies[r.childArmy.armyId], 0);
+                    Army.select(game.players[r.color].armies[r.childArmy.armyId], 0);
                 } else {
                     zoomer.setCenterIfOutOfScreen(r.parentArmy.x * 40, r.parentArmy.y * 40);
                 }
@@ -130,7 +130,7 @@ Websocket = {
                 break;
 
             case 'join':
-                if (my.turn) {
+                if (Turn.isMy()) {
                     Message.remove()
                 }
                 zoomer.setCenterIfOutOfScreen(r.army.x * 40, r.army.y * 40);
@@ -142,11 +142,11 @@ Websocket = {
                 break;
 
             case 'disband':
-                if (my.turn) {
+                if (Turn.isMy()) {
                     Message.remove()
                     var upkeep = 0;
-                    for (i in players[game.me.color].armies[r.armyId].soldiers) {
-                        upkeep += units[players[game.me.color].armies[r.armyId].soldiers[i].unitId].cost
+                    for (i in game.players[game.me.color].armies[r.armyId].soldiers) {
+                        upkeep += game.units[game.players[game.me.color].armies[r.armyId].soldiers[i].unitId].cost
                     }
 
                     costIncrement(-upkeep)
@@ -163,13 +163,13 @@ Websocket = {
                 Sound.play('resurrection');
                 zoomer.lensSetCenter(r.data.army.x * 40, r.data.army.y * 40);
                 Army.init(r.data.army, r.color);
-                if (my.turn) {
+                if (Turn.isMy()) {
                     Message.remove()
                     goldUpdate(r.data.gold);
                     if (Hero.findMy()) {
                         $('#heroResurrection').addClass('buttonOff')
                     }
-                } else if (players[r.color].computer) {
+                } else if (game.players[r.color].computer) {
                     Websocket.computer()
                 }
                 this.executing = 0
@@ -178,7 +178,7 @@ Websocket = {
             case 'raze':
                 $('#razeCastle').addClass('buttonOff');
                 Castle.raze(r.castleId);
-                if (my.turn) {
+                if (Turn.isMy()) {
                     Sound.play('gold1');
                     Message.remove()
                     goldUpdate(r.gold);
@@ -190,7 +190,7 @@ Websocket = {
 
             case 'defense':
                 Castle.updateDefense(r.castleId, r.defenseMod);
-                if (my.turn) {
+                if (Turn.isMy()) {
                     Message.remove();
                     goldUpdate(r.gold);
                 }
@@ -199,10 +199,10 @@ Websocket = {
 
             case 'surrender':
                 Army.deselect()
-                for (i in players[r.color].armies) {
+                for (i in game.players[r.color].armies) {
                     var s = Army.delete(i, r.color, 1)
                 }
-                for (i in players[r.color].castles) {
+                for (i in game.players[r.color].castles) {
                     var s = Castle.raze(i)
                 }
                 this.nextTurn()
@@ -309,17 +309,10 @@ Websocket = {
 
                     case 'open':
                         Init.game(r);
-                        //    Gui.lock = false;
-                        //    if (loading) {
-                        //        startGame();
-                        //        loading = false;
-                        //    } else if (Players.isMy() && players[Turn.color].computer) {
-                        //        setTimeout('Websocket.computer()', 1000);
-                        //    }
                         break;
 
                     case 'close':
-                        online[r.color] = 0
+                        game.online[r.color] = 0
                         Players.updateOnline()
                         break;
 
@@ -467,7 +460,7 @@ Websocket = {
             return
         }
 
-        if (!players[Turn.color].computer) {
+        if (!game.players[Turn.color].computer) {
             return
         }
 
@@ -491,7 +484,7 @@ Websocket = {
             return;
         }
 
-        if (!my.turn) {
+        if (!Turn.isMy()) {
             return;
         }
         if (Army.selected == null) {
@@ -513,7 +506,7 @@ Websocket = {
             return;
         }
 
-        if (!my.turn) {
+        if (!Turn.isMy()) {
             return;
         }
 
@@ -531,7 +524,7 @@ Websocket = {
             return;
         }
 
-        if (!my.turn) {
+        if (!Turn.isMy()) {
             return;
         }
 
@@ -550,7 +543,7 @@ Websocket = {
         }
 
 
-        if (!my.turn) {
+        if (!Turn.isMy()) {
             return;
         }
 
@@ -567,7 +560,7 @@ Websocket = {
             return;
         }
 
-        if (!my.turn) {
+        if (!Turn.isMy()) {
             return;
         }
         if (Army.selected == null) {
@@ -588,7 +581,7 @@ Websocket = {
             return;
         }
 
-        if (!my.turn) {
+        if (!Turn.isMy()) {
             Message.error(translations.itIsNotYourTurn);
             return;
         }
@@ -627,7 +620,7 @@ Websocket = {
             return;
         }
 
-        if (!my.turn) {
+        if (!Turn.isMy()) {
             Message.error(translations.itIsNotYourTurn);
             return;
         }
@@ -667,7 +660,7 @@ Websocket = {
             return;
         }
 
-        if (!my.turn) {
+        if (!Turn.isMy()) {
             return;
         }
 
@@ -689,7 +682,7 @@ Websocket = {
             return;
         }
 
-        if (!my.turn) {
+        if (!Turn.isMy()) {
             return;
         }
 

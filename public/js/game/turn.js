@@ -33,12 +33,10 @@ var Turn = {
         this.beginDate = Date.parse(game.turnHistory[i].date.substr(0, 19)).getTime()
     },
     on: function () {
-        makeMyCursorUnlock();
         Army.skippedArmies = {};
-        $('#nextTurn').removeClass('buttonOff');
-        $('#nextArmy').removeClass('buttonOff');
         Castle.showFirst();
         Message.turn();
+        Gui.unlock()
         titleBlink('Your turn!');
         if (!Hero.findMy()) {
             $('#heroResurrection').removeClass('buttonOff')
@@ -74,13 +72,18 @@ var Turn = {
         timer.append(Turn.color, Turn.number)
         Players.drawTurn();
 
-        if (Turn.color == game.me.color) {
+        if (Turn.isMy()) {
             Turn.on();
             Websocket.startMyTurn();
             return;
         } else {
             Turn.off();
             return;
+        }
+    },
+    isMy: function () {
+        if (Turn.color == game.me.color) {
+            return true;
         }
     }
 }

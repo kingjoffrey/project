@@ -35,7 +35,7 @@ var Players = {
                 Army.init(game.players[color].armies[i], color);
                 if (color == game.me.color) {
                     for (s in game.players[color].armies[i].soldiers) {
-                        game.me.costs += units[game.players[color].armies[i].soldiers[s].unitId].cost;
+                        game.me.costs += game.units[game.players[color].armies[i].soldiers[s].unitId].cost;
                     }
                     myArmies = true;
                 } else {
@@ -239,15 +239,8 @@ var Players = {
     },
     updateOnline: function () {
         for (shortName in game.online) {
-            if (!game.online[shortName]) {
-                if (isSet(Players.wedges[shortName].online)) {
-                    Players.wedges[shortName].online.remove()
-                }
-                continue
-            }
-
             if (isSet(Players.wedges[shortName].online)) {
-                continue
+                Players.wedges[shortName].online.remove()
             }
 
             Players.wedges[shortName].online = new Kinetic.Circle({

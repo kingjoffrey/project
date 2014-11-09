@@ -417,12 +417,10 @@ var Gui = {
         window.location = '/' + lang + '/over/index/id/' + gameId
     },
     unlock: function () {
-        if (my.turn) {
-            Gui.lock = false;
-            $('#nextTurn').removeClass('buttonOff');
-            $('#nextArmy').removeClass('buttonOff');
-            makeMyCursorUnlock();
-        }
+        Gui.lock = false;
+        $('#nextTurn').removeClass('buttonOff');
+        $('#nextArmy').removeClass('buttonOff');
+        makeMyCursorUnlock();
     },
     setLock: function () {
         Gui.lock = true;

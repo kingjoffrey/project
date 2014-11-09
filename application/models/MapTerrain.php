@@ -30,6 +30,7 @@ class Application_Model_MapTerrain extends Coret_Db_Table_Abstract
 
         foreach ($this->selectAll($select) as $row) {
             $terrain[$row['type']] = $row;
+            unset($terrain[$row['type']]['type']);
         }
 
         return $terrain;

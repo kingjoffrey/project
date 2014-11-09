@@ -121,7 +121,7 @@ function test() {
         }
     }
 //    console.log('PLAYERS:');
-//    for(color in players) {
+//    for(color in game.players) {
 //        for(i in players[color].armies) {
 //            console.log(i);
 //        }

@@ -12,7 +12,7 @@ var Move = {
         console.log(' ')
         console.log('move.start(' + ii + ') 0')
         console.log(r)
-        switch (players[r.attackerColor].armies[r.oldArmyId].movementType) {
+        switch (game.players[r.attackerColor].armies[r.oldArmyId].movementType) {
             case 'flying':
                 Sound.play('fly');
                 break;
@@ -24,20 +24,20 @@ var Move = {
                 break;
         }
 
-        if (my.turn || (!players[r.attackerColor].computer || Gui.show)) {
+        if (Turn.isMy() || (!game.players[r.attackerColor].computer || Gui.show)) {
             Message.remove()
         }
 
         if (notSet(r.path[1])) {
             zoomer.lensSetCenter(r.attackerArmy.x * 40, r.attackerArmy.y * 40);
         } else {
-            Army.fields(players[r.attackerColor].armies[r.attackerArmy.armyId]);
+            Army.fields(game.players[r.attackerColor].armies[r.attackerArmy.armyId]);
             zoomer.lensSetCenter(r.path[1].x * 40, r.path[1].y * 40);
         }
 
         Army.unfortify(r.attackerArmy.armyId);
 
-        if (players[r.attackerColor].computer) {
+        if (game.players[r.attackerColor].computer) {
             this.stepTime = 100
         } else {
             this.stepTime = 200
@@ -54,7 +54,7 @@ var Move = {
         }
 
         if (isSet(r.path[step])) {
-            if (!players[r.attackerColor].computer || Gui.show) {
+            if (!game.players[r.attackerColor].computer || Gui.show) {
                 zoomer.setCenterIfOutOfScreen(r.path[step].x * 40, r.path[step].y * 40);
 
                 $('#army' + r.oldArmyId)
@@ -73,7 +73,7 @@ var Move = {
                 Move.loop(r, ii);
             }
         } else {
-            if (isTruthful(r.battle) && (!players[r.attackerColor].computer || Gui.show)) {
+            if (isTruthful(r.battle) && (!game.players[r.attackerColor].computer || Gui.show)) {
                 Sound.play('fight');
 
                 if (isTruthful(r.castleId)) {
@@ -102,10 +102,10 @@ var Move = {
     end: function (r, ii) {
         console.log('move.end(' + ii + ') 0')
 
-        AStar.x = players[r.attackerColor].armies[r.attackerArmy.armyId].x;
-        AStar.y = players[r.attackerColor].armies[r.attackerArmy.armyId].y;
+        AStar.x = game.players[r.attackerColor].armies[r.attackerArmy.armyId].x;
+        AStar.y = game.players[r.attackerColor].armies[r.attackerArmy.armyId].y;
 
-        //if (players[r.attackerColor].computer && !Gui.show) {
+        //if (game.players[r.attackerColor].computer && !Gui.show) {
         //    $('#army' + r.oldArmyId)
         //        .css({
         //            left: (AStar.x * 40) + 'px',
@@ -141,13 +141,13 @@ var Move = {
             Castle.owner(r.castleId, r.attackerColor)
         }
 
-        if (players[r.attackerColor].computer) {
+        if (game.players[r.attackerColor].computer) {
             this.moving = 0
             Websocket.computer();
         } else if (r.attackerColor == game.me.color) {
-            if (!r.castleId && isSet(players[r.attackerColor].armies[r.attackerArmy.armyId]) && players[r.attackerColor].armies[r.attackerArmy.armyId].moves) {
+            if (!r.castleId && isSet(game.players[r.attackerColor].armies[r.attackerArmy.armyId]) && game.players[r.attackerColor].armies[r.attackerArmy.armyId].moves) {
                 Gui.unlock()
-                Army.select(players[r.attackerColor].armies[r.attackerArmy.armyId])
+                Army.select(game.players[r.attackerColor].armies[r.attackerArmy.armyId])
             } else {
                 Army.deselect()
                 Gui.unlock()

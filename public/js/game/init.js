@@ -10,8 +10,17 @@ Image5 = new Image(20, 9);
 Image5.src = '/img/game/cursor_pointer.png';
 
 var fields = new Array()
-var game = {}
-var neutralCastles = {}
+var game = {
+    'players': {},
+    'neutralCastles': {},
+    'neutralTowers': {},
+    'me': {
+        'color': null
+    },
+    'online': {},
+    'turnHistory': {},
+    'terrain': {}
+}
 
 var firstCastleId = 1000;
 
@@ -22,8 +31,6 @@ var coord;
 
 var documentTitle = document.title;
 var timeoutId = null;
-
-var largeimageloaded = false;
 
 var myArmies = false;
 var myCastles = false;
@@ -47,48 +54,43 @@ var loading = true;
 
 $(document).ready(function () {
     Websocket.init();
-    $(window).resize(function () {
-        Gui.adjust();
-    });
 });
 
 var Init = {
     game: function (r) {
         game = r
-        fieldsCopy();
 
-        Gui.init();
-        Turn.init()
-        Players.init()
+        if (loading) {
+            fieldsCopy();
 
-        Players.updateOnline()
+            Gui.init();
+            Turn.init()
+            Players.init()
 
-        for (castleId in game.neutralCastles) {
-            Castle.createNeutral(castleId)
+            Players.updateOnline()
+
+            for (var castleId in game.neutralCastles) {
+                Castle.createNeutral(castleId)
+            }
+
+            for (var towerId in game.neutralTowers) {
+                Tower.createNeutral(towerId)
+            }
+
+            for (var ruinId in game.ruins) {
+                Ruin.create(ruinId)
+            }
+            renderChatHistory();
+
+            goldUpdate(game.me.gold)
+            costsUpdate(game.me.costs)
+            incomeUpdate(game.me.income)
+            $(window).resize(function () {
+                Gui.adjust();
+            });
         }
 
-        for (towerId in game.neutralTowers) {
-            Tower.createNeutral(towerId)
-        }
-
-        for (ruinId in game.ruins) {
-            Ruin.create(ruinId)
-        }
-
-        renderChatHistory();
-
-        goldUpdate(game.me.gold)
-        costsUpdate(game.me.costs)
-
-        incomeUpdate(game.me.income)
-
-        Init.start()
-    },
-    start: function () {
-        if (!zoom.loaded) {
-            setTimeout('Init.start()', 1000);
-            return;
-        }
+        loading = false
 
         if (game.me.turn) {
             Turn.on();
@@ -96,12 +98,13 @@ var Init = {
             Turn.off();
         }
 
-        if (Turn.color == game.me.color && !game.players[game.me.color].turnActive) {
+        if (Turn.isMy() && !game.players[game.me.color].turnActive) {
             Websocket.startMyTurn();
-        } else if (game.players[Turn.color].computer) {
+        } else if (isComputer(Turn.color)) {
             setTimeout('Websocket.computer()', 1000);
         }
 
         Sound.play('gamestart')
+
     }
 }

@@ -15,6 +15,8 @@ class Cli_Model_Castle
     private $_defenseMod;
     private $_relocationCastleId;
 
+    private $_production = array();
+
     public function __construct($playerCastle, $mapCastle)
     {
         $this->_x = $mapCastle['x'];
@@ -31,20 +33,45 @@ class Cli_Model_Castle
         $this->_relocationCastleId = $playerCastle['relocationCastleId'];
     }
 
+    public function setProduction($production)
+    {
+        $this->_production = $production;
+    }
+
     public function toArray()
     {
         return array(
             'x' => $this->_x,
             'y' => $this->_y,
-            'productionId' => $this->_productionId,
-            'productionTurn' => $this->_productionTurn,
+            'currentProductionId' => $this->_productionId,
+            'currentProductionTurn' => $this->_productionTurn,
             'defenseMod' => $this->_defenseMod,
             'relocationCastleId' => $this->_relocationCastleId,
             'defense' => $this->_defense,
             'name' => $this->_name,
             'income' => $this->_income,
             'capital' => $this->_capital,
-            'enclaveNumber' => $this->_enclaveNumber
+            'enclaveNumber' => $this->_enclaveNumber,
+            'production' => $this->_production
         );
+    }
+
+    public function canProduceThisUnit($unitId)
+    {
+        return isset($this->_production[$unitId]);
+    }
+
+    public function getProductionId()
+    {
+        return $this->_productionId;
+    }
+
+    public function setProductionId($gameId, $playerId, $castleId, $unitId, $relocationToCastleId, $db)
+    {
+        $mCastlesInGame = new Application_Model_CastlesInGame($gameId, $db);
+        $mCastlesInGame->setProduction($playerId, $castleId, $unitId, $relocationToCastleId);
+        $this->_productionId = $unitId;
+        $this->_productionTurn = 0;
+        $this->_relocationCastleId = $relocationToCastleId;
     }
 }

@@ -1,7 +1,7 @@
 var Chat = {
     renderChatCloud: function (chatContent, date, message, color) {
         var div = $('<div>')
-            .append($('<span>').html(players[color].longName + ' (' + date + ')'))
+            .append($('<span>').html(game.players[color].longName + ' (' + date + ')'))
             .append('<br>')
             .append(message)
             .addClass('chatCloud')

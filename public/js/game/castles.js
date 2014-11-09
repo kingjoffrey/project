@@ -58,15 +58,15 @@ var Castle = {
             }
         }
 
-        for (i in castles) {
+        for (var i in game.players[game.me.color].castles) {
             Castle.removeRelocationFrom(i, castleId)
-            if (isSet(castles[i].relocatedProduction) && isSet(castles[i].relocatedProduction[castleId])) {
-                delete castles[i].relocatedProduction[castleId]
+            if (isSet(game.players[game.me.color].castles[i].relocatedProduction) && isSet(game.players[game.me.color].castles[i].relocatedProduction[castleId])) {
+                delete game.players[game.me.color].castles[i].relocatedProduction[castleId]
             }
         }
 
-        if (isSet(castles[castleId].relocationToCastleId)) {
-            delete castles[castleId].relocationToCastleId
+        if (isSet(game.players[game.me.color].castles[castleId].relocationToCastleId)) {
+            delete game.players[game.me.color].castles[castleId].relocationToCastleId
         }
 
         if (unitId === null) {
@@ -75,8 +75,8 @@ var Castle = {
             Castle.addHammer(castleId)
         }
 
-        castles[castleId].currentProductionId = unitId;
-        castles[castleId].currentProductionTurn = 0;
+        game.players[game.me.color].castles[castleId].currentProductionId = unitId;
+        game.players[game.me.color].castles[castleId].currentProductionTurn = 0;
 
         if (relocationToCastleId) {
 
@@ -87,24 +87,24 @@ var Castle = {
             Castle.addRelocationTo(castleId)
             Castle.addRelocationFrom(relocationToCastleId, castleId)
 
-            castles[castleId].relocationToCastleId = relocationToCastleId
+            game.players[game.me.color].castles[castleId].relocationToCastleId = relocationToCastleId
 
             $('.castle.' + game.me.color).each(function () {
                 var thisCastleId = $(this).attr('id').substring(6);
 
                 Castle.game.meMousedown($(this), thisCastleId)
 
-                if (isSet(castles[thisCastleId].relocatedProduction) && isSet(castles[thisCastleId].relocatedProduction[castleId])) {
-                    delete castles[thisCastleId].relocatedProduction[castleId]
+                if (isSet(game.players[game.me.color].castles[thisCastleId].relocatedProduction) && isSet(game.players[game.me.color].castles[thisCastleId].relocatedProduction[castleId])) {
+                    delete game.players[game.me.color].castles[thisCastleId].relocatedProduction[castleId]
                 }
             })
 
             if (notSet(castles[relocationToCastleId].relocatedProduction)) {
-                castles[relocationToCastleId].relocatedProduction = {};
+                game.players[game.me.color].castles[relocationToCastleId].relocatedProduction = {};
             }
             castles[relocationToCastleId].relocatedProduction[castleId] = {
-                'currentProductionId': castles[castleId].currentProductionId,
-                'currentProductionTurn': castles[castleId].currentProductionTurn
+                'currentProductionId': game.players[game.me.color].castles[castleId].currentProductionId,
+                'currentProductionTurn': game.players[game.me.color].castles[castleId].currentProductionTurn
             }
         } else {
             Castle.removeRelocationTo(castleId)
@@ -112,10 +112,10 @@ var Castle = {
         }
     },
     initMyProduction: function (castleId) {
-        castles[castleId].currentProductionId = players[game.me.color].castles[castleId].productionId;
-        castles[castleId].currentProductionTurn = players[game.me.color].castles[castleId].productionTurn;
+        castles[castleId].currentProductionId = game.players[game.me.color].castles[castleId].productionId;
+        castles[castleId].currentProductionTurn = game.players[game.me.color].castles[castleId].productionTurn;
 
-        var relocationToCastleId = players[game.me.color].castles[castleId].relocationCastleId;
+        var relocationToCastleId = game.players[game.me.color].castles[castleId].relocationCastleId;
 
         if (relocationToCastleId) {
             castles[castleId].relocationToCastleId = relocationToCastleId
@@ -189,45 +189,45 @@ var Castle = {
         }
     },
     get: function (x, y) {
-        for (castleId in castles) {
-            var pos = castles[castleId].position;
-            if ((x >= pos.x) && (x < (pos.x + 2)) && (y >= pos.y) && (y < (pos.y + 2))) {
-                return castleId;
+        for (var color in game.players) {
+            for (var castleId in game.players[color].castles) {
+                if (Castle.isCastleAtPosition(x, y, game.players[color].castles[castleId].x, game.players[color].castles[castleId].y)) {
+                    return castleId;
+                }
             }
         }
         return false;
     },
     getMy: function (x, y) {
-        for (castleId in castles) {
-            if (castles[castleId].color != game.me.color) {
-                continue;
-            }
-            var pos = castles[castleId].position;
-            if ((x >= pos.x) && (x < (pos.x + 2)) && (y >= pos.y) && (y < (pos.y + 2))) {
+        for (var castleId in game.players[game.me.color].castles) {
+            if (Castle.isCastleAtPosition(x, y, game.players[game.me.color].castles[castleId].x, game.players[game.me.color].castles[castleId].y)) {
                 return castleId;
             }
         }
         return false;
     },
     getEnemy: function (x, y) {
-        for (castleId in castles) {
-            if (castles[castleId].color == game.me.color) {
+        for (var color in game.players) {
+            if (color == game.me.color) {
                 continue;
             }
-            var pos = castles[castleId].position;
-            if ((x >= pos.x) && (x < (pos.x + 2)) && (y >= pos.y) && (y < (pos.y + 2))) {
-                return castleId;
+            for (var castleId in game.players[color].castles) {
+                if (Castle.isCastleAtPosition(x, y, game.players[color].castles[castleId].x, game.players[color].castles[castleId].y)) {
+                    return castleId;
+                }
             }
         }
         return null;
     },
+    isCastleAtPosition: function (x1, y1, x2, y2) {
+        if ((x1 >= x2) && (x1 < (x2 + 2)) && (y1 >= y2) && (y1 < (y2 + 2))) {
+            return true;
+        }
+    },
     countMyCastles: function () {
-        var castleId,
-            myCastles = 0
-        for (castleId in castles) {
-            if (castles[castleId].color == game.me.color) {
-                myCastles++
-            }
+        var myCastles = 0
+        for (var castleId in game.players[game.me.color].castles) {
+            myCastles++
         }
         return myCastles
     },

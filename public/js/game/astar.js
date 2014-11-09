@@ -18,10 +18,15 @@ var AStar = {
         var castleId = 0;
 
         if (castleId = Castle.get(destination.x, destination.y)) {
-            coord.html(castles[castleId].name);
+            for (var color in game.players) {
+                if (isSet(game.players[color].castles[castleId])) {
+                    coord.html(game.players[color].castles[castleId].name);
+                    break
+                }
+            }
         } else {
 //            coord.html(destination.x + ' - ' + destination.y + ' ' + terrain[fields[destination.y][destination.x]].name);
-            coord.html(terrain[fields[destination.y][destination.x]].name);
+            coord.html(game.terrain[fields[destination.y][destination.x]].name);
         }
 
         if (Army.selected) {
@@ -234,13 +239,13 @@ var AStar = {
         var g;
 
         if (Army.selected.soldierSplitKey !== null) {
-            if (units[Army.selected.soldiers[Army.selected.soldierSplitKey].unitId].canFly) {
+            if (game.units[Army.selected.soldiers[Army.selected.soldierSplitKey].unitId].canFly) {
                 g = terrain[terrainType]['flying']
-            } else if (units[Army.selected.soldiers[Army.selected.soldierSplitKey].unitId].canSwim) {
+            } else if (game.units[Army.selected.soldiers[Army.selected.soldierSplitKey].unitId].canSwim) {
                 g = terrain[terrainType]['swimming']
             } else {
                 if (terrainType == 'f' || terrainType == 's' || terrainType == 'm') {
-                    g = units[Army.selected.soldiers[Army.selected.soldierSplitKey].unitId][terrainType]
+                    g = game.units[Army.selected.soldiers[Army.selected.soldierSplitKey].unitId][terrainType]
                 } else {
                     g = terrain[terrainType]['walking']
                 }

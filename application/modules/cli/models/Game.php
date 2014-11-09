@@ -14,9 +14,9 @@ class Cli_Model_Game
     private $_online = array();
 
     private $_begin;
-    private $turnsLimit;
-    private $turnTimeLimit;
-    private $timeLimit;
+    private $_turnsLimit;
+    private $_turnTimeLimit;
+    private $_timeLimit;
 
     private $_turnHistory;
 
@@ -42,9 +42,9 @@ class Cli_Model_Game
 
         $this->_mapId = $game['mapId'];
         $this->_begin = $game['begin'];
-        $this->turnsLimit = $game['turnsLimit'];
-        $this->turnTimeLimit = $game['turnTimeLimit'];
-        $this->timeLimit = $game['timeLimit'];
+        $this->_turnsLimit = $game['turnsLimit'];
+        $this->_turnTimeLimit = $game['turnTimeLimit'];
+        $this->_timeLimit = $game['timeLimit'];
 
         $mTurnHistory = new Application_Model_TurnHistory($this->_id, $db);
         $this->_turnHistory = $mTurnHistory->getTurnHistory();
@@ -117,7 +117,7 @@ class Cli_Model_Game
         $mPlayersInGame = new Application_Model_PlayersInGame($this->_id, $db);
         $players = $mPlayersInGame->getGamePlayers();
 
-        foreach ($mPlayersInGame->getAllColors() as $playerId => $color) {
+        foreach ($this->_playersInGameColors as $playerId => $color) {
             $this->_players[$color] = new Cli_Model_Player($players[$playerId], $this->_id, $mapCastles, $mMapPlayers, $db);
         }
     }
@@ -203,13 +203,23 @@ class Cli_Model_Game
         return $this->_turnNumber;
     }
 
+    public function getTimeLimit()
+    {
+        return $this->_timeLimit;
+    }
+
+    public function getTurnTimeLimit()
+    {
+        return $this->_turnTimeLimit;
+    }
+
     public function toArray()
     {
         return array(
             'begin' => $this->_begin,
-            'timeLimit' => $this->timeLimit,
-            'turnsLimit' => $this->turnsLimit,
-            'turnTimeLimit' => $this->turnTimeLimit,
+            'timeLimit' => $this->_timeLimit,
+            'turnsLimit' => $this->_turnsLimit,
+            'turnTimeLimit' => $this->_turnTimeLimit,
             'turnNumber' => $this->_turnNumber,
             'units' => $this->_units,
             'firstUnitId' => $this->_firstUnitId,
@@ -228,5 +238,27 @@ class Cli_Model_Game
             'neutralCastles' => $this->_neutralCastles,
             'neutralTowers' => $this->_neutralTowers
         );
+    }
+
+    public function isPlayerCastle($playerId, $castleId)
+    {
+        if (isset($this->_players[$this->_playersInGameColors[$playerId]])) {
+            return $this->_players[$this->_playersInGameColors[$playerId]]->hasCastle($castleId);
+        }
+    }
+
+    public function canCastleProduceThisUnit($playerId, $castleId, $unitId)
+    {
+        return $this->_players[$this->_playersInGameColors[$playerId]]->canCastleProduceThisUnit($castleId, $unitId);
+    }
+
+    public function getCastleCurrentProductionId($playerId, $castleId)
+    {
+        return $this->_players[$this->_playersInGameColors[$playerId]]->getCastleCurrentProductionId($castleId);
+    }
+
+    public function setProductionId($playerId, $castleId, $unitId, $relocationToCastleId, $db)
+    {
+        $this->_players[$this->_playersInGameColors[$playerId]]->setProduction($this->_id, $castleId, $unitId, $relocationToCastleId, $db);
     }
 }
