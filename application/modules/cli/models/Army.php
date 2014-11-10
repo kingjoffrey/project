@@ -10,8 +10,8 @@ class Cli_Model_Army
 
     public $_ids;
 
-    public $_defenseModifier = 0;
-    public $_attackModifier = 0;
+    public $_defenseModifier;
+    public $_attackModifier;
 
     public $_heroes = array();
     public $_soldiers = array();
@@ -64,9 +64,12 @@ class Cli_Model_Army
 
     public function init()
     {
+        $this->attackModifier = new Cli_Model_AttackModifier();
+
+
         $numberOfHeroes = count($this->_heroes);
         if ($numberOfHeroes) {
-            $this->attackModifier++;
+            $this->attackModifier->increment();
             $modMovesForest = 3;
             $modMovesSwamp = 4;
             $modMovesHills = 5;
@@ -97,7 +100,7 @@ class Cli_Model_Army
                 $attackFlyModifier++;
                 $this->canFly++;
             } else {
-                $this->canFly -= 200;
+                $this->canFly -= 1;
             }
             if ($unit['canSwim']) {
                 $this->canSwim++;
@@ -105,7 +108,7 @@ class Cli_Model_Army
         }
 
         if ($attackFlyModifier) {
-            $this->attackModifier++;
+            $this->attackModifier->increment();
         }
     }
 

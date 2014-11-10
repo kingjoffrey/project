@@ -51,6 +51,7 @@ class Cli_Model_Player
             $this->_armies[$army['armyId']] = new Cli_Model_Army($army);
             $this->_armies[$army['armyId']]->setHeroes($mHeroesInGame->getForMove($army['armyId']));
             $this->_armies[$army['armyId']]->setSoldiers($mSoldier->getForMove($army['armyId']));
+            $this->_armies[$army['armyId']]->init();
         }
     }
 

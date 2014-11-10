@@ -1,4 +1,7 @@
 <?php
+/**
+ * ver. 0001
+ */
 date_default_timezone_set('Europe/Warsaw');
 
 class Aaa
