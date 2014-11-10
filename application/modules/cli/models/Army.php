@@ -476,7 +476,7 @@ class Cli_Model_Army
 
             foreach ($path->current as $step) {
                 if (!isset($step['myCastleCosts'])) {
-                    $movesSpend += $this->terrain[$fields[$step['y']][$step['x']]][$type];
+                    $movesSpend += $this->terrain[$fields->getType($step['x'], $step['y'])][$type];
                 }
             }
 
@@ -496,7 +496,7 @@ class Cli_Model_Army
 
                 foreach ($path->current as $step) {
                     if (!isset($step['myCastleCosts'])) {
-                        $movesSpend += $this->terrain[$fields[$step['y']][$step['x']]][$type];
+                        $movesSpend += $this->terrain[$fields->getType($step['x'], $step['y'])][$type];
                     }
                 }
 
@@ -517,7 +517,7 @@ class Cli_Model_Army
 
                 foreach ($path->current as $step) {
                     if (!isset($step['myCastleCosts'])) {
-                        $movesSpend += $this->terrain[$fields[$step['y']][$step['x']]][$type];
+                        $movesSpend += $this->terrain[$fields->getType($step['x'], $step['y'])][$type];
                     }
                 }
 

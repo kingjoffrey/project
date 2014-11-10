@@ -68,7 +68,7 @@ class Cli_Model_Game
         $this->_capitals = $mMapPlayers->getCapitals();
 
         $mMapFields = new Application_Model_MapFields($this->_mapId, $db);
-        $this->_fields = $mMapFields->getMapFields();
+        $this->_fields = new Cli_Model_Fields($mMapFields->getMapFields());
 
         $mMapTerrain = new Application_Model_MapTerrain($this->_mapId, $db);
         $this->_terrain = $mMapTerrain->getTerrain();
@@ -118,44 +118,29 @@ class Cli_Model_Game
         foreach ($this->_players as $color => $player) {
             if ($this->_me->isMyColor($color)) {
                 foreach ($player->armiesToArray() as $armyId => $army) {
-                    if ($this->_fields[$army['y']][$army['x']] == 'w' && $army->canSwim()) {
-                        $this->_fields[$army['y']][$army['x']] = 'su' . $armyId;
+                    if ($this->_fields->getType($army['x'], $army['y']) == 'w' && $army->canSwim()) {
+                        $this->_fields->changeArmy($army['x'], $army['y'], $armyId, 'mySwimmingArmy', $color);
                     } else {
-                        $this->_fields[$army['y']][$army['x']] = 'ma' . $armyId;
+                        $this->_fields->changeArmy($army['x'], $army['y'], $armyId, 'myArmy', $color);
                     }
                 }
                 foreach ($player->castlesToArray() as $castleId => $castle) {
-                    $this->_fields[$castle['y']][$castle['x']] = 'mc' . $castleId;
-                    $this->_fields[$castle['y'] + 1][$castle['x']] = 'mc' . $castleId;
-                    $this->_fields[$castle['y']][$castle['x'] + 1] = 'mc' . $castleId;
-                    $this->_fields[$castle['y'] + 1][$castle['x'] + 1] = 'mc' . $castleId;
+                    $this->_fields->changeCastle($castle['x'], $castle['y'], $castleId, 'myCastle', $color);
                 }
                 continue;
             }
             if ($player->getTeam() == $this->_me->getTeam()) {
                 foreach ($player->castlesToArray() as $castleId => $castle) {
-                    $this->_fields[$castle['y']][$castle['x']] = 'tc' . $castleId;
-                    $this->_fields[$castle['y'] + 1][$castle['x']] = 'tc' . $castleId;
-                    $this->_fields[$castle['y']][$castle['x'] + 1] = 'tc' . $castleId;
-                    $this->_fields[$castle['y'] + 1][$castle['x'] + 1] = 'tc' . $castleId;
+                    $this->_fields->changeCastle($castle['x'], $castle['y'], $castleId, 'teamCastle', $color);
                 }
                 continue;
             }
             foreach ($player->armiesToArray() as $armyId => $army) {
-                $this->_fields[$army['y']][$army['x']] = 'ea' . $armyId;
+                $this->_fields->changeArmy($army['x'], $army['y'], $armyId, 'enemyArmy', $color);
             }
             foreach ($player->castlesToArray() as $castleId => $castle) {
-                $this->_fields[$castle['y']][$castle['x']] = 'ec' . $castleId;
-                $this->_fields[$castle['y'] + 1][$castle['x']] = 'ec' . $castleId;
-                $this->_fields[$castle['y']][$castle['x'] + 1] = 'ec' . $castleId;
-                $this->_fields[$castle['y'] + 1][$castle['x'] + 1] = 'ec' . $castleId;
+                $this->_fields->changeCastle($castle['x'], $castle['y'], $castleId, 'enemyCastle', $color);
             }
-        }
-        foreach ($this->_neutralCastles as $castleId => $castle) {
-            $this->_fields[$castle['y']][$castle['x']] = 'nc' . $castleId;
-            $this->_fields[$castle['y'] + 1][$castle['x']] = 'nc' . $castleId;
-            $this->_fields[$castle['y']][$castle['x'] + 1] = 'nc' . $castleId;
-            $this->_fields[$castle['y'] + 1][$castle['x'] + 1] = 'nc' . $castleId;
         }
     }
 
@@ -169,6 +154,7 @@ class Cli_Model_Game
                 continue;
             }
             $this->_neutralCastles[$castleId] = $castle;
+            $this->_fields->changeCastle($castle['x'], $castle['y'], $castleId, 'castle', 'neutral');
         }
     }
 
@@ -284,7 +270,7 @@ class Cli_Model_Game
             'units' => $this->_units,
             'firstUnitId' => $this->_firstUnitId,
             'specialUnits' => $this->_specialUnits,
-            'fields' => $this->_fields,
+            'fields' => $this->_fields->toArray(),
             'terrain' => $this->_terrain,
             'capitals' => $this->_capitals,
             'playersInGameColors' => $this->_playersInGameColors,
@@ -340,5 +326,15 @@ class Cli_Model_Game
     public function isOtherArmyAtPosition($playerId, $armyId)
     {
         return $this->_players[$this->_playersInGameColors[$playerId]]->isOtherArmyAtPosition($armyId);
+    }
+
+    public function joinArmiesAtPosition()
+    {
+
+    }
+
+    public function updateArmyPosition()
+    {
+
     }
 }

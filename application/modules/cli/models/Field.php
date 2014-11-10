@@ -18,4 +18,19 @@ class Cli_Model_Field
         $this->_possessionType = $type;
         $this->_possessionColor = $color;
     }
+
+    public function getType()
+    {
+        return $this->_type;
+    }
+
+    public function getPossessionId()
+    {
+        return $this->_possessionId;
+    }
+
+    public function getPossessionType()
+    {
+        return $this->_possessionType;
+    }
 }

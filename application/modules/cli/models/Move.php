@@ -57,7 +57,7 @@ class Cli_Model_Move
 //        $fields = Cli_Model_Army::getEnemyArmiesFieldsPositions($user->parameters['gameId'], $db, $user->parameters['playerId']);
         $fields = $user->parameters['game']->getFields();
 
-        if ($fields[$army->y][$army->x] == 'w') {
+        if ($fields->getType($army->x, $army->y) == 'w') {
             if ($army->canSwim() || $army->canFly()) {
                 $otherArmyId = $user->parameters['game']->isOtherArmyAtPosition($user->parameters['playerId'], $attackerArmyId);
                 if ($otherArmyId) {
@@ -69,7 +69,7 @@ class Cli_Model_Move
                     }
                 }
             }
-        } elseif ($fields[$army->y][$army->x] == 'M') {
+        } elseif ($fields->getType($army->x, $army->y) == 'M') {
             $otherArmyId = $user->parameters['game']->isOtherArmyAtPosition($user->parameters['playerId'], $attackerArmyId);
             if ($otherArmyId) {
                 $otherArmy = $user->parameters['game']->getPlayerArmy($user->parameters['playerId'], $otherArmyId);
@@ -130,36 +130,36 @@ class Cli_Model_Move
 //            }
 //        }
 
-        $type = substr($fields[$y][$x], 0, 2);
-        switch ($type) {
-            case 'ec':
-                $fight = true;
-                $fields = Application_Model_Board::changeCastleFields($fields, $castle['position']['x'], $castle['position']['y'], 'E');
-                break;
-            case 'nc':
-                $fight = true;
-                $fields = Application_Model_Board::changeCastleFields($fields, $castle['position']['x'], $castle['position']['y'], 'E');
-                break;
-            case 'ea':
-                $fight = true;
-                $fields = Application_Model_Board::changeArmyField($fields, $x, $y, 'E');
-                break;
-            case 'su':
-                $fields = Application_Model_Board::changeArmyField($fields, $x, $y, 'b');
-                break;
-
-        }
-
-        if ($castleId === null) {
-            $defenderId = $army->getEnemyPlayerId($user->parameters['gameId'], $user->parameters['playerId'], $db);
-            if ($defenderId) { // enemy army
-                $fields = Application_Model_Board::changeArmyField($fields, $x, $y, 'E');
-            } else { // idziemy nie walczymy
-                if ($mArmy2->areMySwimmingUnitsAtPosition(array('x' => $x, 'y' => $y), $user->parameters['playerId'])) {
-                    $fields = Application_Model_Board::changeArmyField($fields, $x, $y, 'b');
-                }
-            }
-        }
+//        $field = $fields->getField($x, $y);
+//        switch ($field->getType()) {
+//            case '':
+//                $fight = true;
+//                $fields = Application_Model_Board::changeCastleFields($fields, $castle['position']['x'], $castle['position']['y'], 'E');
+//                break;
+//            case 'nc':
+//                $fight = true;
+//                $fields = Application_Model_Board::changeCastleFields($fields, $castle['position']['x'], $castle['position']['y'], 'E');
+//                break;
+//            case 'ea':
+//                $fight = true;
+//                $fields = Application_Model_Board::changeArmyField($fields, $x, $y, 'E');
+//                break;
+//            case 'su':
+//                $fields = Application_Model_Board::changeArmyField($fields, $x, $y, 'b');
+//                break;
+//
+//        }
+//
+//        if ($castleId === null) {
+//            $defenderId = $army->getEnemyPlayerId($user->parameters['gameId'], $user->parameters['playerId'], $db);
+//            if ($defenderId) { // enemy army
+//                $fields = Application_Model_Board::changeArmyField($fields, $x, $y, 'E');
+//            } else { // idziemy nie walczymy
+//                if ($mArmy2->areMySwimmingUnitsAtPosition(array('x' => $x, 'y' => $y), $user->parameters['playerId'])) {
+//                    $fields = Application_Model_Board::changeArmyField($fields, $x, $y, 'b');
+//                }
+//            }
+//        }
 
         /*
          * A* START
@@ -167,7 +167,7 @@ class Cli_Model_Move
 
 
         try {
-            $A_Star = new Cli_Model_Astar($army, $x, $y, $fields, array('myCastles' => $myCastles));
+            $A_Star = new Cli_Model_Astar($army, $x, $y, $fields);
             $move = $army->calculateMovesSpend($A_Star->getPath($x . '_' . $y));
         } catch (Exception $e) {
             $l = new Coret_Model_Logger();

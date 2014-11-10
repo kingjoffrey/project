@@ -37,7 +37,6 @@ class Cli_Model_Astar extends Cli_Model_Heuristics
     private $movesLeft;
     private $limit;
     private $myCastleId;
-    private $myCastles;
     private $movementType;
 
     private $outOfReach = false;
@@ -73,13 +72,18 @@ class Cli_Model_Astar extends Cli_Model_Heuristics
 
         $this->open[$army->x . '_' . $army->y] = $this->node($army->x, $army->y, 0, null, 'c');
 
-        if (isset($params['myCastles']) && $params['myCastles']) {
-            $this->myCastles = $params['myCastles'];
-            $this->myCastleId = array();
-            $castleId = Application_Model_Board::isCastleAtPosition($army->x, $army->y, $params['myCastles']);
-            if ($castleId) {
-                $this->myCastleId[$castleId] = true;
-            }
+//        if (isset($params['myCastles']) && $params['myCastles']) {
+//            $this->myCastles = $params['myCastles'];
+//            $this->myCastleId = array();
+//            $castleId = Application_Model_Board::isCastleAtPosition($army->x, $army->y, $params['myCastles']);
+//            if ($castleId) {
+//                $this->myCastleId[$castleId] = true;
+//            }
+//        }
+
+        $this->myCastleId = array();
+        if ($castleId = $this->fields->isMyCastle($army->x, $army->y)) {
+            $this->myCastleId[$castleId] = true;
         }
 
         $this->aStar();
@@ -169,11 +173,11 @@ class Cli_Model_Astar extends Cli_Model_Heuristics
                 }
 
                 // jeśli na mapie nie ma tego pola to pomiń to pole
-                if (!isset($this->fields[$j][$i])) {
+                if (!$this->fields->isField($i, $j)) {
                     continue;
                 }
 
-                $terrainType = $this->fields[$j][$i];
+                $terrainType = $this->fields->getType($i, $j);
 
                 // jeżeli na polu znajduje się wróg to pomiń to pole
                 if ($terrainType == 'e') {
@@ -261,21 +265,22 @@ class Cli_Model_Astar extends Cli_Model_Heuristics
         if (is_array($path)) {
             $path = array_reverse($path);
 
-            if ($this->myCastles) {
-                foreach ($path as $k => $v) {
-                    if ($v['tt'] == 'c') {
-                        $castleId = Application_Model_Board::isCastleAtPosition($v['x'], $v['y'], $this->myCastles);
-                        if (isset($this->myCastleId[$castleId])) {
-                            $path[$k]['cc'] = true;
-                            $i++;
-                        } else {
-                            $this->myCastleId[$castleId] = true;
-                        }
+//            if ($this->myCastles) {
+            foreach ($path as $k => $step) {
+                if ($step['tt'] == 'c') {
+//                        $castleId = Application_Model_Board::isCastleAtPosition($step['x'], $step['y'], $this->myCastles);
+                    $castleId = $this->fields->isMyCastle($step['x'], $step['y']);
+                    if (isset($this->myCastleId[$castleId])) {
+                        $path[$k]['cc'] = true;
+                        $i++;
+                    } else {
+                        $this->myCastleId[$castleId] = true;
                     }
-                    $path[$k]['F'] -= $i;
-                    $path[$k]['G'] -= $i;
                 }
+                $path[$k]['F'] -= $i;
+                $path[$k]['G'] -= $i;
             }
+//            }
 
             return $path;
         }
