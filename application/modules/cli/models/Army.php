@@ -3,20 +3,21 @@
 class Cli_Model_Army
 {
 
-    public $id;
-    public $ids;
-    public $x;
-    public $y;
-    public $defenseModifier = 0;
-    public $attackModifier = 0;
+    public $_id;
+    public $_x;
+    public $_y;
+    public $_fortified;
+
+    public $_ids;
+
+    public $_defenseModifier = 0;
+    public $_attackModifier = 0;
+
+    public $_heroes = array();
+    public $_soldiers = array();
 
     private $canFly = 0;
     private $canSwim = 0;
-
-    public $heroes = array();
-    public $soldiers = array();
-
-    public $movesLeft;
 
     /*
      * @param array $army
@@ -24,24 +25,20 @@ class Cli_Model_Army
     public function __construct($army)
     {
         if (isset($army['ids'][0])) {
-            $this->id = $army['ids'][0];
-            $this->ids = $army['ids'];
+            $this->_id = $army['ids'][0];
+            $this->_ids = $army['ids'];
         } else {
             if (!isset($army['armyId'])) {
                 Coret_Model_Logger::debug(debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 2));
                 throw new Exception('no armyId');
             }
-            $this->id = $army['armyId'];
-            $this->ids = array($army['armyId']);
+            $this->_id = $army['armyId'];
+            $this->_ids = array($this->_id);
         }
 
-        if (!isset($army['x'])) {
+        if (!isset($army['x']) || !isset($army['y'])) {
             Coret_Model_Logger::debug(debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 2));
             throw new Exception('');
-        }
-
-        if (isset($army['movesLeft'])) {
-            $this->movesLeft = $army['movesLeft'];
         }
 
         $this->x = $army['x'];
@@ -49,11 +46,25 @@ class Cli_Model_Army
 
         $this->units = Zend_Registry::get('units');
         $this->terrain = Zend_Registry::get('terrain');
+    }
 
-        $this->heroes = $army['heroes'];
-        $this->soldiers = $army['soldiers'];
+    public function setHeroes($heroes)
+    {
+        foreach ($heroes as $hero) {
+            $this->_heroes[$hero['heroId']] = new Cli_Model_Hero($hero);
+        }
+    }
 
-        $numberOfHeroes = count($this->heroes);
+    public function setSoldiers($soldiers)
+    {
+        foreach ($soldiers as $soldier) {
+            $this->_soldiers[$soldier['soldierId']] = new Cli_Model_Soldier($soldier);
+        }
+    }
+
+    public function init()
+    {
+        $numberOfHeroes = count($this->_heroes);
         if ($numberOfHeroes) {
             $this->attackModifier++;
             $modMovesForest = 3;
@@ -69,7 +80,7 @@ class Cli_Model_Army
 
         $attackFlyModifier = 0;
 
-        foreach ($this->soldiers as $soldier) {
+        foreach ($this->_soldiers as $soldier) {
             $unit = $this->units[$soldier['unitId']];
 
             if ($unit['modMovesForest'] > $modMovesForest) {
@@ -102,8 +113,8 @@ class Cli_Model_Army
     {
         return array(
             'armyId' => $this->id,
-            'soldiers' => $this->soldiers,
-            'heroes' => $this->heroes,
+            'soldiers' => $this->_soldiers,
+            'heroes' => $this->_heroes,
             'x' => $this->x,
             'y' => $this->y,
             'fortified' => false,
@@ -137,18 +148,18 @@ class Cli_Model_Army
     {
         $currentPath = array();
 
-        foreach ($this->soldiers as $soldier) {
-            if (!$this->units[$soldier['unitId']]['canFly']) {
+        foreach ($this->_soldiers as $soldier) {
+            if (!$soldier->canFly()) {
                 continue;
             }
 
             if (!isset($movesLeft)) {
-                $movesLeft = $soldier['movesLeft'];
+                $movesLeft = $soldier->getMovesLeft();
                 continue;
             }
 
-            if ($movesLeft > $soldier['movesLeft']) {
-                $movesLeft = $soldier['movesLeft'];
+            if ($movesLeft > $soldier->getMovesLeft()) {
+                $movesLeft = $soldier->getMovesLeft();
             }
         }
 
@@ -192,7 +203,7 @@ class Cli_Model_Army
     {
         $currentPath = array();
 
-        foreach ($this->soldiers as $soldier) {
+        foreach ($this->_soldiers as $soldier) {
             if (!$this->units[$soldier['unitId']]['canSwim']) {
                 continue;
             }
@@ -255,7 +266,7 @@ class Cli_Model_Army
         for ($i = 0; $i < count($fullPath); $i++) {
             $defaultMoveCost = $this->terrain[$fullPath[$i]['tt']]['walking'];
 
-            foreach ($this->soldiers as $soldier) {
+            foreach ($this->_soldiers as $soldier) {
                 if (!isset($soldiersMovesLeft[$soldier['soldierId']])) {
                     $soldiersMovesLeft[$soldier['soldierId']] = $soldier['movesLeft'];
                 }
@@ -280,7 +291,7 @@ class Cli_Model_Army
                 }
             }
 
-            foreach ($this->heroes as $hero) {
+            foreach ($this->_heroes as $hero) {
                 if (!isset($heroesMovesLeft[$hero['heroId']])) {
                     $heroesMovesLeft[$hero['heroId']] = $hero['movesLeft'];
                 }
@@ -378,7 +389,7 @@ class Cli_Model_Army
         $soldiersMovesLeft = array();
         $heroesMovesLeft = array();
 
-        foreach ($this->soldiers as $soldier) {
+        foreach ($this->_soldiers as $soldier) {
             // ustawiam początkową ilość ruchów dla każdej jednostki
             if (!isset($soldiersMovesLeft[$soldier['soldierId']])) {
                 $soldiersMovesLeft[$soldier['soldierId']] = $this->units[$soldier['unitId']]['numberOfMoves'];
@@ -418,7 +429,7 @@ class Cli_Model_Army
             }
         }
 
-        foreach ($this->heroes as $hero) {
+        foreach ($this->_heroes as $hero) {
             if (!isset($heroesMovesLeft[$hero['heroId']])) {
                 $heroesMovesLeft[$hero['heroId']] = $hero['numberOfMoves'];
                 if ($hero['movesLeft'] <= 2) {
@@ -471,7 +482,7 @@ class Cli_Model_Army
 
         $mHeroesInGame = new Application_Model_HeroesInGame($gameId, $db);
 
-        foreach ($this->heroes as $hero) {
+        foreach ($this->_heroes as $hero) {
             $movesSpend = 0;
 
             foreach ($path->current as $step) {
@@ -491,7 +502,7 @@ class Cli_Model_Army
         $mSoldier = new Application_Model_UnitsInGame($gameId, $db);
 
         if ($this->canFly() || $this->canSwim()) {
-            foreach ($this->soldiers as $soldier) {
+            foreach ($this->_soldiers as $soldier) {
                 $movesSpend = 0;
 
                 foreach ($path->current as $step) {
@@ -508,7 +519,7 @@ class Cli_Model_Army
                 $mSoldier->updateMovesLeft($movesLeft, $soldier['soldierId']);
             }
         } else {
-            foreach ($this->soldiers as $soldier) {
+            foreach ($this->_soldiers as $soldier) {
                 $movesSpend = 0;
 
                 $this->terrain['f'][$type] = $this->units[$soldier['unitId']]['modMovesForest'];

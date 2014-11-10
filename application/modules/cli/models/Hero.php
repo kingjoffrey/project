@@ -1,5 +1,9 @@
 <?php
 
+/**
+ * Class Cli_Model_Hero
+ * ver. 0001
+ */
 class Cli_Model_Hero
 {
     private $_numberOfMoves;

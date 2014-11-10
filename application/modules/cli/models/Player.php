@@ -22,8 +22,6 @@ class Cli_Model_Player
     {
         $this->_id = $player['playerId'];
 
-        $this->init($gameId, $mapCastles, $db);
-
         $this->_turnActive = $player['turnActive'];
         $this->_computer = $player['computer'];
         $this->_lost = $player['lost'];
@@ -33,9 +31,13 @@ class Cli_Model_Player
         $this->_longName = $player['longName'];
 
         $this->_team = $mMapPlayers->getColorByMapPlayerId($player['team']);
+
+        $this->initArmies($gameId, $db);
+        $this->initCastles($gameId, $mapCastles, $db);
+        $this->initTowers($gameId, $db);
     }
 
-    private function init($gameId, $mapCastles, Zend_Db_Adapter_Pdo_Pgsql $db)
+    private function initArmies($gameId, Zend_Db_Adapter_Pdo_Pgsql $db)
     {
         if ($this->_lost) {
             return;
@@ -46,9 +48,16 @@ class Cli_Model_Player
         $mHeroesInGame = new Application_Model_HeroesInGame($gameId, $db);
 
         foreach ($mArmy->getPlayerArmies($this->_id) as $army) {
-            $army['heroes'] = $mHeroesInGame->getForMove($army['armyId']);
-            $army['soldiers'] = $mSoldier->getForMove($army['armyId']);
             $this->_armies[$army['armyId']] = new Cli_Model_Army($army);
+            $this->_armies[$army['armyId']]->setHeroes($mHeroesInGame->getForMove($army['armyId']));
+            $this->_armies[$army['armyId']]->setSoldiers($mSoldier->getForMove($army['armyId']));
+        }
+    }
+
+    private function initCastles($gameId, $mapCastles, Zend_Db_Adapter_Pdo_Pgsql $db)
+    {
+        if ($this->_lost) {
+            return;
         }
 
         $mCastlesInGame = new Application_Model_CastlesInGame($gameId, $db);
@@ -57,6 +66,14 @@ class Cli_Model_Player
             $this->_castles[$castleId] = new Cli_Model_Castle($castle, $mapCastles[$castleId]);
             $this->_castles[$castleId]->setProduction($mCastleProduction->getCastleProduction($castleId));
         }
+    }
+
+    private function initTowers($gameId, Zend_Db_Adapter_Pdo_Pgsql $db)
+    {
+        if ($this->_lost) {
+            return;
+        }
+
         $mTowersInGame = new Application_Model_TowersInGame($gameId, $db);
         foreach ($mTowersInGame->getPlayerTowers($this->_id) as $tower) {
             $this->_towers[$tower['towerId']] = new Cli_Model_Tower($tower);
