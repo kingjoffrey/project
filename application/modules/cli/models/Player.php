@@ -80,7 +80,7 @@ class Cli_Model_Player
         );
     }
 
-    private function armiesToArray()
+    public function armiesToArray()
     {
         $armies = array();
         foreach ($this->_armies as $army) {
@@ -89,7 +89,7 @@ class Cli_Model_Player
         return $armies;
     }
 
-    private function castlesToArray()
+    public function castlesToArray()
     {
         $castles = array();
         foreach ($this->_castles as $castleId => $castle) {
@@ -137,11 +137,30 @@ class Cli_Model_Player
         $this->_castles[$castleId]->setProductionId($gameId, $this->_id, $castleId, $unitId, $relocationToCastleId, $db);
     }
 
+    public function getArmy($armyId)
+    {
+        if ($this->hasArmy($armyId)) {
+            return $this->_armies[$armyId];
+        }
+    }
 
+    public function isOtherArmyAtPosition($armyId)
+    {
+        $army = $this->getArmy($armyId);
+        foreach ($this->_armies as $id => $a) {
+            if ($id == $armyId) {
+                continue;
+            }
+            if ($a->x == $army->x && $a->y == $army->y) {
+                return $id;
+            }
+        }
+    }
 
-
-
-
+    public function getTeam()
+    {
+        return $this->_team;
+    }
 
 
 

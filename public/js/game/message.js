@@ -1259,8 +1259,8 @@ var Message = {
             sequenceImage = $('<div>').attr('id', 'sortable'),
             i = 0
 
-        for (k in my.battleSequence[type]) {
-            var unitId = my.battleSequence[type][k]
+        for (k in game.me.battleSequence[type]) {
+            var unitId = game.me.battleSequence[type][k]
             if (parseInt(unitId) == shipId) {
                 continue
             }

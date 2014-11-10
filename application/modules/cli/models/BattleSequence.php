@@ -24,6 +24,8 @@ class Cli_Model_BattleSequence
             return;
         }
 
+        $user->parameters['game']->setBattleSequence($data['sequence']);
+
         $token = array(
             'type' => 'bSequence',
             'sequence' => $data['sequence'],

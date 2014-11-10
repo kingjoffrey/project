@@ -45,38 +45,35 @@ class Cli_Model_Move
         $castleId = null;
         $rollbackPath = null;
 
-        $mArmy2 = new Application_Model_Army($user->parameters['gameId'], $db);
+//        $mArmy2 = new Application_Model_Army($user->parameters['gameId'], $db);
 
-        $army = Cli_Model_Army::getArmyByArmyIdPlayerId($attackerArmyId, $user->parameters['playerId'], $user->parameters['gameId'], $db);
+        $army = $user->parameters['game']->getPlayerArmy($user->parameters['playerId'], $attackerArmyId);
 
         if (empty($army)) {
             $gameHandler->sendError($user, 'Brak armii o podanym ID! Odświerz przeglądarkę.');
             return;
-        } else {
-            $mArmy = new Cli_Model_Army($army);
         }
 
-        $fields = Cli_Model_Army::getEnemyArmiesFieldsPositions($user->parameters['gameId'], $db, $user->parameters['playerId']);
+//        $fields = Cli_Model_Army::getEnemyArmiesFieldsPositions($user->parameters['gameId'], $db, $user->parameters['playerId']);
+        $fields = $user->parameters['game']->getFields();
 
-        if ($fields[$mArmy->y][$mArmy->x] == 'w') {
-            if ($mArmy->canSwim() || $mArmy->canFly()) {
-                $otherArmyId = $mArmy2->isOtherArmyAtPosition($attackerArmyId, $mArmy->x, $mArmy->y);
+        if ($fields[$army->y][$army->x] == 'w') {
+            if ($army->canSwim() || $army->canFly()) {
+                $otherArmyId = $user->parameters['game']->isOtherArmyAtPosition($user->parameters['playerId'], $attackerArmyId);
                 if ($otherArmyId) {
-                    $otherArmy = Cli_Model_Army::getArmyByArmyIdPlayerId($otherArmyId, $user->parameters['playerId'], $user->parameters['gameId'], $db);
-                    $mOtherArmy = new Cli_Model_Army($otherArmy);
-                    if (!$mOtherArmy->canSwim() && !$mOtherArmy->canFly()) {
+                    $otherArmy = $user->parameters['game']->getPlayerArmy($user->parameters['playerId'], $otherArmyId);
+                    if (!$otherArmy->canSwim() && !$otherArmy->canFly()) {
                         new Cli_Model_JoinArmy($otherArmyId, $user, $db, $gameHandler);
                         $gameHandler->sendError($user, 'Nie możesz zostawić armii na wodzie.');
                         return;
                     }
                 }
             }
-        } elseif ($fields[$mArmy->y][$mArmy->x] == 'M') {
-            $otherArmyId = $mArmy2->isOtherArmyAtPosition($attackerArmyId, $mArmy->x, $mArmy->y);
+        } elseif ($fields[$army->y][$army->x] == 'M') {
+            $otherArmyId = $user->parameters['game']->isOtherArmyAtPosition($user->parameters['playerId'], $attackerArmyId);
             if ($otherArmyId) {
-                $otherArmy = Cli_Model_Army::getArmyByArmyIdPlayerId($otherArmyId, $user->parameters['playerId'], $user->parameters['gameId'], $db);
-                $mOtherArmy = new Cli_Model_Army($otherArmy);
-                if (!$mOtherArmy->canFly()) {
+                $otherArmy = $user->parameters['game']->getPlayerArmy($user->parameters['playerId'], $otherArmyId);
+                if (!$otherArmy->canFly()) {
                     new Cli_Model_JoinArmy($otherArmyId, $user, $db, $gameHandler);
                     $gameHandler->sendError($user, 'Nie możesz zostawić armii w górach.');
                     return;
@@ -84,57 +81,77 @@ class Cli_Model_Move
             }
         }
 
-        $castlesSchema = Zend_Registry::get('castles');
-        $mCastlesInGame = new Application_Model_CastlesInGame($user->parameters['gameId'], $db);
-        $allCastles = $mCastlesInGame->getAllCastles();
-        $mPlayersInGame = new Application_Model_PlayersInGame($user->parameters['gameId'], $db);
-        $teamPlayerIds = $mPlayersInGame->getTeamPlayerIds($user->parameters['playerId']);
-        $myCastles = array();
-        foreach ($allCastles as $castle) {
-            if ($castle['playerId'] == $user->parameters['playerId']) {
-                $castle['position'] = $castlesSchema[$castle['castleId']]['position'];
-                $myCastles[] = $castle;
-            }
-        }
+//        $castlesSchema = Zend_Registry::get('castles');
+//        $mCastlesInGame = new Application_Model_CastlesInGame($user->parameters['gameId'], $db);
+//        $allCastles = $mCastlesInGame->getAllCastles();
+//        $mPlayersInGame = new Application_Model_PlayersInGame($user->parameters['gameId'], $db);
+//        $teamPlayerIds = $mPlayersInGame->getTeamPlayerIds($user->parameters['playerId']);
+//        $myCastles = array();
+//        foreach ($allCastles as $castle) {
+//            if ($castle['playerId'] == $user->parameters['playerId']) {
+//                $castle['position'] = $castlesSchema[$castle['castleId']]['position'];
+//                $myCastles[] = $castle;
+//            }
+//        }
+//
+//
+//        $aP = array(
+//            'x' => $x,
+//            'y' => $y
+//        );
+//
+//        foreach ($castlesSchema as $cId => $castle) {
+//            if (!isset($allCastles[$cId])) { // castle is neutral
+//                if (Application_Model_Board::isCastleField($aP, $castle['position'])) { // trakuję neutralny zamek jak własny ponieważ go atakuję i jeśli wygram to będę mógł po nim chodzić
+//                    $fields = Application_Model_Board::changeCastleFields($fields, $castle['position']['x'], $castle['position']['y'], 'E');
+//                    $castleId = $cId;
+//                    $defenderColor = 'neutral';
+//                } else {
+//                    $fields = Application_Model_Board::changeCastleFields($fields, $castle['position']['x'], $castle['position']['y'], 'e');
+//                }
+//                continue;
+//            }
+//
+//            if ($allCastles[$cId]['razed']) { // castle is razed
+//                continue;
+//            }
+//
+//            if ($user->parameters['playerId'] == $allCastles[$cId]['playerId']) { // my castle
+//                $fields = Application_Model_Board::changeCastleFields($fields, $castle['position']['x'], $castle['position']['y'], 'c');
+//            } elseif (isset($teamPlayerIds[$allCastles[$cId]['playerId']])) { // team castle
+//                $fields = Application_Model_Board::changeCastleFields($fields, $castle['position']['x'], $castle['position']['y'], 'c');
+//            } else { // enemy castle
+//                if (Application_Model_Board::isCastleField($aP, $castle['position'])) { // trakuję zamek wroga jak własny ponieważ go atakuję i jeśli wygram to będę mógł po nim chodzić
+//                    $fields = Application_Model_Board::changeCastleFields($fields, $castle['position']['x'], $castle['position']['y'], 'E');
+//                    $castleId = $cId;
+//                } else {
+//                    $fields = Application_Model_Board::changeCastleFields($fields, $castle['position']['x'], $castle['position']['y'], 'e');
+//                }
+//            }
+//        }
 
+        $type = substr($fields[$y][$x], 0, 2);
+        switch ($type) {
+            case 'ec':
+                $fight = true;
+                $fields = Application_Model_Board::changeCastleFields($fields, $castle['position']['x'], $castle['position']['y'], 'E');
+                break;
+            case 'nc':
+                $fight = true;
+                $fields = Application_Model_Board::changeCastleFields($fields, $castle['position']['x'], $castle['position']['y'], 'E');
+                break;
+            case 'ea':
+                $fight = true;
+                $fields = Application_Model_Board::changeArmyField($fields, $x, $y, 'E');
+                break;
+            case 'su':
+                $fields = Application_Model_Board::changeArmyField($fields, $x, $y, 'b');
+                break;
 
-        $aP = array(
-            'x' => $x,
-            'y' => $y
-        );
-
-        foreach ($castlesSchema as $cId => $castle) {
-            if (!isset($allCastles[$cId])) { // castle is neutral
-                if (Application_Model_Board::isCastleField($aP, $castle['position'])) { // trakuję neutralny zamek jak własny ponieważ go atakuję i jeśli wygram to będę mógł po nim chodzić
-                    $fields = Application_Model_Board::changeCastleFields($fields, $castle['position']['x'], $castle['position']['y'], 'E');
-                    $castleId = $cId;
-                    $defenderColor = 'neutral';
-                } else {
-                    $fields = Application_Model_Board::changeCastleFields($fields, $castle['position']['x'], $castle['position']['y'], 'e');
-                }
-                continue;
-            }
-
-            if ($allCastles[$cId]['razed']) { // castle is razed
-                continue;
-            }
-
-            if ($user->parameters['playerId'] == $allCastles[$cId]['playerId']) { // my castle
-                $fields = Application_Model_Board::changeCastleFields($fields, $castle['position']['x'], $castle['position']['y'], 'c');
-            } elseif (isset($teamPlayerIds[$allCastles[$cId]['playerId']])) { // team castle
-                $fields = Application_Model_Board::changeCastleFields($fields, $castle['position']['x'], $castle['position']['y'], 'c');
-            } else { // enemy castle
-                if (Application_Model_Board::isCastleField($aP, $castle['position'])) { // trakuję zamek wroga jak własny ponieważ go atakuję i jeśli wygram to będę mógł po nim chodzić
-                    $fields = Application_Model_Board::changeCastleFields($fields, $castle['position']['x'], $castle['position']['y'], 'E');
-                    $castleId = $cId;
-                } else {
-                    $fields = Application_Model_Board::changeCastleFields($fields, $castle['position']['x'], $castle['position']['y'], 'e');
-                }
-            }
         }
 
         if ($castleId === null) {
-            $defenderId = $mArmy->getEnemyPlayerId($user->parameters['gameId'], $user->parameters['playerId'], $db);
+            $defenderId = $army->getEnemyPlayerId($user->parameters['gameId'], $user->parameters['playerId'], $db);
             if ($defenderId) { // enemy army
                 $fields = Application_Model_Board::changeArmyField($fields, $x, $y, 'E');
             } else { // idziemy nie walczymy
@@ -150,8 +167,8 @@ class Cli_Model_Move
 
 
         try {
-            $A_Star = new Cli_Model_Astar($mArmy, $x, $y, $fields, array('myCastles' => $myCastles));
-            $move = $mArmy->calculateMovesSpend($A_Star->getPath($x . '_' . $y));
+            $A_Star = new Cli_Model_Astar($army, $x, $y, $fields, array('myCastles' => $myCastles));
+            $move = $army->calculateMovesSpend($A_Star->getPath($x . '_' . $y));
         } catch (Exception $e) {
             $l = new Coret_Model_Logger();
             $l->log($e);
@@ -211,7 +228,7 @@ class Cli_Model_Move
          * ------------------------------------ */
 
         if ($fight) {
-            $battle = new Cli_Model_Battle($mArmy, $enemy, Cli_Model_Army::getAttackSequence($user->parameters['gameId'], $db, $user->parameters['playerId']), Cli_Model_Army::getDefenceSequence($user->parameters['gameId'], $db, $defenderId));
+            $battle = new Cli_Model_Battle($army, $enemy, Cli_Model_Army::getAttackSequence($user->parameters['gameId'], $db, $user->parameters['playerId']), Cli_Model_Army::getDefenceSequence($user->parameters['gameId'], $db, $defenderId));
             $battle->fight();
             $battle->updateArmies($user->parameters['gameId'], $db, $user->parameters['playerId'], $defenderId);
 
@@ -234,14 +251,14 @@ class Cli_Model_Move
                         $mCastlesInGame->changeOwner($castlesSchema[$castleId], $user->parameters['playerId']);
                     }
                 }
-                $mArmy->updateArmyPosition($user->parameters['playerId'], $move, $fields, $user->parameters['gameId'], $db);
+                $army->updateArmyPosition($user->parameters['playerId'], $move, $fields, $user->parameters['gameId'], $db);
                 $attacker = Cli_Model_Army::getArmyByArmyIdPlayerId($attackerArmyId, $user->parameters['playerId'], $user->parameters['gameId'], $db);
                 $victory = true;
 //                foreach ($enemy['ids'] as $id) {
 //                    $defender[]['armyId'] = $id;
 //                }
             } else {
-                $mArmy2->destroyArmy($mArmy->id, $user->parameters['playerId']);
+                $mArmy2->destroyArmy($army->id, $user->parameters['playerId']);
                 $attacker = array(
                     'armyId' => $attackerArmyId,
                     'destroyed' => true
@@ -252,7 +269,7 @@ class Cli_Model_Move
             }
             $battleResult = $battle->getResult();
         } else {
-            $mArmy->updateArmyPosition($user->parameters['playerId'], $move, $fields, $user->parameters['gameId'], $db);
+            $army->updateArmyPosition($user->parameters['playerId'], $move, $fields, $user->parameters['gameId'], $db);
             $armiesIds = Cli_Model_Army::joinArmiesAtPosition($move->end, $user->parameters['playerId'], $user->parameters['gameId'], $db);
             $newArmyId = $armiesIds['armyId'];
             $attacker = Cli_Model_Army::getArmyByArmyIdPlayerId($newArmyId, $user->parameters['playerId'], $user->parameters['gameId'], $db);

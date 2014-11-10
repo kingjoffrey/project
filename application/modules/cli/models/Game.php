@@ -9,7 +9,7 @@ class Cli_Model_Game
     private $_turnNumber = 1;
 
     private $_capitals = array();
-    private $_teams = array();
+//    private $_teams = array();
     private $_playersInGameColors;
     private $_online = array();
 
@@ -33,6 +33,8 @@ class Cli_Model_Game
     private $_ruins = array();
     private $_neutralTowers = array();
 
+    private $_statistics;
+
     public function __construct($playerId, $gameId, Zend_Db_Adapter_Pdo_Pgsql $db)
     {
         $this->_id = $gameId;
@@ -50,15 +52,10 @@ class Cli_Model_Game
         $this->_turnHistory = $mTurnHistory->getTurnHistory();
 
         $mPlayersInGame = new Application_Model_PlayersInGame($this->_id, $db);
-        $this->_teams = $mPlayersInGame->getTeams();
+//        $this->_teams = $mPlayersInGame->getTeams();
         $this->_playersInGameColors = Zend_Registry::get('playersInGameColors');
         foreach ($mPlayersInGame->getInGamePlayerIds() as $row) {
             $this->_online[$this->_playersInGameColors[$row['playerId']]] = 1;
-        }
-
-        $this->_me = new Cli_Model_Me($this->_playersInGameColors[$playerId], $mPlayersInGame->getMe($playerId));
-        if ($game['turnPlayerId'] == $playerId) {
-            $this->_me->setTurn(true);
         }
 
         $mChat = new Application_Model_Chat($this->_id, $db);
@@ -90,26 +87,89 @@ class Cli_Model_Game
         reset($this->_units);
         $this->_firstUnitId = key($this->_units);
 
-        $mapCastles = $this->initNeutralCastles($db);
+        $mMapCastles = new Application_Model_MapCastles($this->_mapId, $db);
+        $mapCastles = $mMapCastles->getMapCastles();
+        $this->initNeutralCastles($mapCastles, $db);
+        $this->initNeutralTowers($db);
         $this->initPlayers($mapCastles, $mMapPlayers, $db);
         $this->initRuins($db);
-        $this->initNeutralTowers($db);
+
+        $mBattleSequence = new Application_Model_BattleSequence($this->_id, $db);
+        $battleSequence = $mBattleSequence->get($playerId);
+        if (empty($battleSequence)) {
+            $mBattleSequence->initiate($playerId, $this->_units);
+            $battleSequence = $mBattleSequence->get($playerId);
+        }
+        $this->_me = new Cli_Model_Me(
+            $this->_playersInGameColors[$playerId],
+            $this->_players[$this->_playersInGameColors[$playerId]]->getTeam(),
+            $mPlayersInGame->getMe($playerId),
+            $battleSequence
+        );
+        if ($game['turnPlayerId'] == $playerId) {
+            $this->_me->setTurn(true);
+        }
+
+        $this->initFields();
     }
 
-    private function initNeutralCastles(Zend_Db_Adapter_Pdo_Pgsql $db)
+    private function initFields()
+    {
+        foreach ($this->_players as $color => $player) {
+            if ($this->_me->isMyColor($color)) {
+                foreach ($player->armiesToArray() as $armyId => $army) {
+                    if ($this->_fields[$army['y']][$army['x']] == 'w' && $army->canSwim()) {
+                        $this->_fields[$army['y']][$army['x']] = 'su' . $armyId;
+                    } else {
+                        $this->_fields[$army['y']][$army['x']] = 'ma' . $armyId;
+                    }
+                }
+                foreach ($player->castlesToArray() as $castleId => $castle) {
+                    $this->_fields[$castle['y']][$castle['x']] = 'mc' . $castleId;
+                    $this->_fields[$castle['y'] + 1][$castle['x']] = 'mc' . $castleId;
+                    $this->_fields[$castle['y']][$castle['x'] + 1] = 'mc' . $castleId;
+                    $this->_fields[$castle['y'] + 1][$castle['x'] + 1] = 'mc' . $castleId;
+                }
+                continue;
+            }
+            if ($player->getTeam() == $this->_me->getTeam()) {
+                foreach ($player->castlesToArray() as $castleId => $castle) {
+                    $this->_fields[$castle['y']][$castle['x']] = 'tc' . $castleId;
+                    $this->_fields[$castle['y'] + 1][$castle['x']] = 'tc' . $castleId;
+                    $this->_fields[$castle['y']][$castle['x'] + 1] = 'tc' . $castleId;
+                    $this->_fields[$castle['y'] + 1][$castle['x'] + 1] = 'tc' . $castleId;
+                }
+                continue;
+            }
+            foreach ($player->armiesToArray() as $armyId => $army) {
+                $this->_fields[$army['y']][$army['x']] = 'ea' . $armyId;
+            }
+            foreach ($player->castlesToArray() as $castleId => $castle) {
+                $this->_fields[$castle['y']][$castle['x']] = 'ec' . $castleId;
+                $this->_fields[$castle['y'] + 1][$castle['x']] = 'ec' . $castleId;
+                $this->_fields[$castle['y']][$castle['x'] + 1] = 'ec' . $castleId;
+                $this->_fields[$castle['y'] + 1][$castle['x'] + 1] = 'ec' . $castleId;
+            }
+        }
+        foreach ($this->_neutralCastles as $castleId => $castle) {
+            $this->_fields[$castle['y']][$castle['x']] = 'nc' . $castleId;
+            $this->_fields[$castle['y'] + 1][$castle['x']] = 'nc' . $castleId;
+            $this->_fields[$castle['y']][$castle['x'] + 1] = 'nc' . $castleId;
+            $this->_fields[$castle['y'] + 1][$castle['x'] + 1] = 'nc' . $castleId;
+        }
+    }
+
+    private function initNeutralCastles($mapCastles, Zend_Db_Adapter_Pdo_Pgsql $db)
     {
         $mCastlesInGame = new Application_Model_CastlesInGame($this->_id, $db);
         $playersCastles = $mCastlesInGame->getAllCastles();
 
-        $mMapCastles = new Application_Model_MapCastles($this->_mapId, $db);
-        $mapCastles = $mMapCastles->getMapCastles();
         foreach ($mapCastles as $castleId => $castle) {
             if (isset($playersCastles[$castleId])) {
                 continue;
             }
             $this->_neutralCastles[$castleId] = $castle;
         }
-        return $mapCastles;
     }
 
     private function initPlayers($mapCastles, Application_Model_MapPlayers $mMapPlayers, Zend_Db_Adapter_Pdo_Pgsql $db)
@@ -228,7 +288,7 @@ class Cli_Model_Game
             'terrain' => $this->_terrain,
             'capitals' => $this->_capitals,
             'playersInGameColors' => $this->_playersInGameColors,
-            'teams' => $this->_teams,
+//            'teams' => $this->_teams,
             'online' => $this->_online,
             'chatHistory' => $this->_chatHistory,
             'turnHistory' => $this->_turnHistory,
@@ -260,5 +320,25 @@ class Cli_Model_Game
     public function setProductionId($playerId, $castleId, $unitId, $relocationToCastleId, $db)
     {
         $this->_players[$this->_playersInGameColors[$playerId]]->setProduction($this->_id, $castleId, $unitId, $relocationToCastleId, $db);
+    }
+
+    public function setBattleSequence($battleSequence)
+    {
+        $this->_me->setBattleSequence($battleSequence);
+    }
+
+    public function getPlayerArmy($playerId, $armyId)
+    {
+        return $this->_players[$this->_playersInGameColors[$playerId]]->getArmy($armyId);
+    }
+
+    public function getFields()
+    {
+        return $this->_fields;
+    }
+
+    public function isOtherArmyAtPosition($playerId, $armyId)
+    {
+        return $this->_players[$this->_playersInGameColors[$playerId]]->isOtherArmyAtPosition($armyId);
     }
 }

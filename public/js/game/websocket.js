@@ -1,5 +1,5 @@
 Websocket = {
-    closed: true,
+    closed: null,
     i: 0,
     queue: {},
     executing: 0,
@@ -336,10 +336,10 @@ Websocket = {
                     case 'bSequence':
                         if (r.attack == 'true') {
                             Message.simple(translations.battleSequence, translations.attackSequenceSuccessfullyUpdated)
-                            my.battleSequence['attack'] = r.sequence
+                            game.me.battleSequence['attack'] = r.sequence
                         } else {
                             Message.simple(translations.battleSequence, translations.defenceSequenceSuccessfullyUpdated)
-                            my.battleSequence['defence'] = r.sequence
+                            game.me.battleSequence['defence'] = r.sequence
                         }
                         break
 
@@ -351,7 +351,10 @@ Websocket = {
         }
 
         ws.onclose = function () {
-            Websocket.closed = true
+            if (!Websocket.closed) {
+                Message.error('Connection error. Can\'t connect to WebSocket server')
+                Websocket.closed = true
+            }
             setTimeout('Websocket.init()', 1000)
         }
 
@@ -456,11 +459,7 @@ Websocket = {
             return;
         }
 
-        if (!my.game) {
-            return
-        }
-
-        if (!game.players[Turn.color].computer) {
+        if (!isComputer(Turn.color)) {
             return
         }
 

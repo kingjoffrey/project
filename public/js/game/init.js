@@ -67,8 +67,6 @@ var Init = {
             Turn.init()
             Players.init()
 
-            Players.updateOnline()
-
             for (var castleId in game.neutralCastles) {
                 Castle.createNeutral(castleId)
             }
@@ -88,9 +86,11 @@ var Init = {
             $(window).resize(function () {
                 Gui.adjust();
             });
+
+            loading = false
         }
 
-        loading = false
+        Players.updateOnline()
 
         if (game.me.turn) {
             Turn.on();
