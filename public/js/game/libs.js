@@ -176,6 +176,17 @@ function makeId(lenght) {
     return text;
 }
 
+function countProperties(obj) {
+    var count = 0;
+
+    for(var prop in obj) {
+        if(obj.hasOwnProperty(prop))
+            ++count;
+    }
+
+    return count;
+}
+
 function artifactsReformat() {
 //    for (i in artifacts) {
 //        for (j in artifacts[i]) {

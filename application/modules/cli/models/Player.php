@@ -101,8 +101,8 @@ class Cli_Model_Player
     public function armiesToArray()
     {
         $armies = array();
-        foreach ($this->_armies as $army) {
-            $armies[$army->id] = $army->toArray();
+        foreach ($this->_armies as $armyId => $army) {
+            $armies[$armyId] = $army->toArray();
         }
         return $armies;
     }

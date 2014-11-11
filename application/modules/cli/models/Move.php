@@ -57,7 +57,7 @@ class Cli_Model_Move
 //        $fields = Cli_Model_Army::getEnemyArmiesFieldsPositions($user->parameters['gameId'], $db, $user->parameters['playerId']);
         $fields = $user->parameters['game']->getFields();
 
-        if ($fields->getType($army->x, $army->y) == 'w') {
+        if ($fields->getType($army->getX(), $army->getY()) == 'w') {
             if ($army->canSwim() || $army->canFly()) {
                 $otherArmyId = $user->parameters['game']->isOtherArmyAtPosition($user->parameters['playerId'], $attackerArmyId);
                 if ($otherArmyId) {
@@ -69,7 +69,7 @@ class Cli_Model_Move
                     }
                 }
             }
-        } elseif ($fields->getType($army->x, $army->y) == 'M') {
+        } elseif ($fields->getType($army->getX(), $army->getY()) == 'M') {
             $otherArmyId = $user->parameters['game']->isOtherArmyAtPosition($user->parameters['playerId'], $attackerArmyId);
             if ($otherArmyId) {
                 $otherArmy = $user->parameters['game']->getPlayerArmy($user->parameters['playerId'], $otherArmyId);

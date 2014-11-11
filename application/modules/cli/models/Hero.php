@@ -6,17 +6,17 @@
  */
 class Cli_Model_Hero
 {
-    private $_numberOfMoves;
-    private $_attackPoints;
-    private $_defensePoints;
+    private $_moves;
+    private $_attack;
+    private $_defense;
     private $_name;
     private $_movesLeft;
 
     public function __construct($hero)
     {
-        $this->_numberOfMoves = $hero['numberOfMoves'];
-        $this->_attackPoints = $hero['attackPoints'];
-        $this->_defensePoints = $hero['defensePoints'];
+        $this->_moves = $hero['numberOfMoves'];
+        $this->_attack = $hero['attackPoints'];
+        $this->_defense = $hero['defensePoints'];
         $this->_name = $hero['name'];
         $this->_movesLeft = $hero['movesLeft'];
     }
@@ -24,9 +24,9 @@ class Cli_Model_Hero
     public function toArray()
     {
         return array(
-            'numberOfMoves' => $this->_numberOfMoves,
-            'attackPoints' => $this->attackPoints_,
-            'defensePoints' => $this->_defensePoints,
+            'moves' => $this->_moves,
+            'attack' => $this->_attack,
+            'defense' => $this->_defense,
             'name' => $this->_name,
             'movesLeft' => $this->_movesLeft
         );

@@ -20,28 +20,6 @@ var Army = {
             return key
         }
     },
-    getFlySwim: function (army) {
-        for (key in army.soldiers) {
-            if (game.units[army.soldiers[key].unitId].canFly) {
-                army.canFly++;
-                if (!army.flyBonus) {
-                    army.flyBonus = 1;
-                }
-            } else {
-                army.canFly -= 200;
-            }
-
-            if (game.units[army.soldiers[key].unitId].canSwim) {
-                army.soldierKey = key
-                army.canSwim++;
-                army.moves = army.soldiers[key].movesLeft;
-            }
-        }
-
-        army.canFly -= army.heroes.length - 1
-
-        return army;
-    },
     getMovementType: function (army) {
         if (army.canSwim) {
             army.movementType = 'swimming';
@@ -274,8 +252,8 @@ var Army = {
             x: obj.x,
             y: obj.y,
             flyBonus: 0,
-            canFly: 0,
-            canSwim: 0,
+            canFly: obj.canFly,
+            canSwim: obj.canSwim,
             heroes: obj.heroes,
             soldiers: obj.soldiers,
             fortified: obj.fortified,
@@ -296,7 +274,6 @@ var Army = {
             this.unfortify(army.armyId);
         }
 
-        army = this.getFlySwim(army)
         army = this.getMovementType(army)
         army = this.setImg(army, army.heroKey, army.soldierKey)
 
@@ -333,7 +310,7 @@ var Army = {
             }
         }
 
-        var numberOfUnits = army.heroes.length + army.soldiers.length;
+        var numberOfUnits = countProperties(army.heroes) + countProperties(army.soldiers);
         if (numberOfUnits > 8) {
             numberOfUnits = 8;
         }
@@ -672,17 +649,6 @@ var Army = {
 
 // *** UNITS ***
 
-function unitsReformat() {
-    for (i in game.units) {
-        if (i == 0) {
-            continue;
-        }
-        game.units[i]['f'] = game.units[i].modMovesForest;
-        game.units[i]['s'] = game.units[i].modMovesSwamp;
-        game.units[i]['m'] = game.units[i].modMovesHills;
-    }
-}
-
 var Unit = {
     getId: function (name) {
         for (i in game.units) {
@@ -714,8 +680,8 @@ var Hero = {
     },
     findMy: function () {
         for (armyId in game.players[game.me.color].armies) {
-            for (j in game.players[game.me.color].armies[armyId].heroes) {
-                return game.players[game.me.color].armies[armyId].heroes[j].heroId;
+            for (heroId in game.players[game.me.color].armies[armyId].heroes) {
+                return heroId;
             }
         }
     }

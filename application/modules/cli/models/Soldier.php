@@ -9,6 +9,17 @@ class Cli_Model_Soldier
     private $_unitId;
     private $_movesLeft;
 
+    private $_forest;
+    private $_hills;
+    private $_swamp;
+
+    private $_fly;
+    private $_swim;
+
+    private $_attack;
+    private $_defense;
+    private $_moves;
+
     public function __construct($soldier)
     {
         $this->_unitId = $soldier['unitId'];
@@ -16,8 +27,16 @@ class Cli_Model_Soldier
 
         $units = Zend_Registry::get('units');
 
-        $this->_road;
-        //'modMovesForest', 'modMovesHills', 'modMovesSwamp'
+        $this->_forest = $units[$this->_unitId]['modMovesForest'];
+        $this->_hills = $units[$this->_unitId]['modMovesHills'];
+        $this->_swamp = $units[$this->_unitId]['modMovesSwamp'];
+
+        $this->_fly = $units[$this->_unitId]['canFly'];
+        $this->_swim = $units[$this->_unitId]['canSwim'];
+
+        $this->_attack = $units[$this->_unitId]['attackPoints'];
+        $this->_defense = $units[$this->_unitId]['defensePoints'];
+        $this->_moves = $units[$this->_unitId]['numberOfMoves'];
     }
 
     public function toArray()
@@ -25,13 +44,35 @@ class Cli_Model_Soldier
         return array(
             'unitId' => $this->_unitId,
             'movesLeft' => $this->_movesLeft,
-            'road' => $this->_road,
-            'grass' => $this->_grass,
+            'forest' => $this->_forest,
+            'hills' => $this->_hills,
+            'swamp' => $this->_swamp,
+            'fly' => $this->_fly,
+            'swim' => $this->_swim,
+            'attack' => $this->_attack,
+            'defense' => $this->_defense,
+            'moves' => $this->_moves
         );
     }
+
+    public function getMovesLeft()
+    {
+        return $this->_movesLeft;
+    }
+
 
     public function setMovesLeft($movesLeft)
     {
         $this->_movesLeft = $movesLeft;
+    }
+
+    public function canFly()
+    {
+        return $this->_fly;
+    }
+
+    public function canSwim()
+    {
+        return $this->_swim;
     }
 }
