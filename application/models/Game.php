@@ -195,31 +195,13 @@ class Application_Model_Game extends Coret_Db_Table_Abstract
         return $this->selectOne($select);
     }
 
-    public function updateTurnNumber($nextPlayerId, $nextPlayerColor)
-    {
-        $playerColors = Zend_Registry::get('playersInGameColors');
-        reset($playerColors);
-
-        if (current($playerColors) == $nextPlayerColor) { //first color, turn number increment
-            $select = $this->_db->select()
-                ->from('game', array('turnNumber' => '("turnNumber" + 1)'))
-                ->where($this->_db->quoteIdentifier($this->_primary) . ' = ?', $this->_gameId);
-
-            $data = array(
-                'turnNumber' => new Zend_Db_Expr('(' . $select->__toString() . ')'),
-                'end' => new Zend_Db_Expr('now()'),
-                'turnPlayerId' => $nextPlayerId
-            );
-            $this->updateGame($data);
-        }
-    }
-
-    public function updateTurnPlayer($nextPlayerId)
+    public function updateTurnNumber($nextPlayerId, $turnNumber)
     {
         $data = array(
+            'turnNumber' => $turnNumber,
+            'end' => new Zend_Db_Expr('now()'),
             'turnPlayerId' => $nextPlayerId
         );
-
         $this->updateGame($data);
     }
 

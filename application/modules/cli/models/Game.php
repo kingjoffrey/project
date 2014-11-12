@@ -101,8 +101,8 @@ class Cli_Model_Game
             $battleSequence = $mBattleSequence->get($playerId);
         }
         $this->_me = new Cli_Model_Me(
-            $this->_playersInGameColors[$playerId],
-            $this->_players[$this->_playersInGameColors[$playerId]]->getTeam(),
+            $this->getPlayerColor($playerId),
+            $this->_players[$this->getPlayerColor($playerId)]->getTeam(),
             $mPlayersInGame->getMe($playerId),
             $battleSequence
         );
@@ -288,24 +288,24 @@ class Cli_Model_Game
 
     public function isPlayerCastle($playerId, $castleId)
     {
-        if (isset($this->_players[$this->_playersInGameColors[$playerId]])) {
-            return $this->_players[$this->_playersInGameColors[$playerId]]->hasCastle($castleId);
+        if (isset($this->_players[$this->getPlayerColor($playerId)])) {
+            return $this->_players[$this->getPlayerColor($playerId)]->hasCastle($castleId);
         }
     }
 
     public function canCastleProduceThisUnit($playerId, $castleId, $unitId)
     {
-        return $this->_players[$this->_playersInGameColors[$playerId]]->canCastleProduceThisUnit($castleId, $unitId);
+        return $this->_players[$this->getPlayerColor($playerId)]->canCastleProduceThisUnit($castleId, $unitId);
     }
 
     public function getCastleCurrentProductionId($playerId, $castleId)
     {
-        return $this->_players[$this->_playersInGameColors[$playerId]]->getCastleCurrentProductionId($castleId);
+        return $this->_players[$this->getPlayerColor($playerId)]->getCastleCurrentProductionId($castleId);
     }
 
     public function setProductionId($playerId, $castleId, $unitId, $relocationToCastleId, $db)
     {
-        $this->_players[$this->_playersInGameColors[$playerId]]->setProduction($this->_id, $castleId, $unitId, $relocationToCastleId, $db);
+        $this->_players[$this->getPlayerColor($playerId)]->setProduction($this->_id, $castleId, $unitId, $relocationToCastleId, $db);
     }
 
     public function setBattleSequence($battleSequence)
@@ -315,7 +315,7 @@ class Cli_Model_Game
 
     public function getPlayerArmy($playerId, $armyId)
     {
-        return $this->_players[$this->_playersInGameColors[$playerId]]->getArmy($armyId);
+        return $this->_players[$this->getPlayerColor($playerId)]->getArmy($armyId);
     }
 
     public function getFields()
@@ -325,16 +325,144 @@ class Cli_Model_Game
 
     public function isOtherArmyAtPosition($playerId, $armyId)
     {
-        return $this->_players[$this->_playersInGameColors[$playerId]]->isOtherArmyAtPosition($armyId);
+        return $this->_players[$this->getPlayerColor($playerId)]->isOtherArmyAtPosition($armyId);
     }
 
     public function joinArmiesAtPosition($playerId, $armyId, $db)
     {
-        return  $this->_players[$this->_playersInGameColors[$playerId]]->joinArmiesAtPosition($armyId, $this->_id, $db);
+        return $this->_players[$this->getPlayerColor($playerId)]->joinArmiesAtPosition($armyId, $this->_id, $db);
     }
 
-    public function updateArmyPosition()
+    public function isTowerAtField($x, $y)
     {
-
+        return $this->_fields->isTower($x, $y);
     }
+
+    public function isArmyAtField($x, $y)
+    {
+        return $this->_fields->isArmy($x, $y);
+    }
+
+    public function isTowerAtFieldOpen($x, $y)
+    {
+        return $this->_fields->isTowerOpen($x, $y, $this->_me->getColor(), $this->_me->getTeam());
+    }
+
+    public function noPlayerArmiesAndCastles($playerId)
+    {
+        return $this->_players[$this->getPlayerColor($playerId)]->noCastlesExists() && $this->_players[$this->getPlayerColor($playerId)]->noArmiesExists();
+    }
+
+    public function getPlayerColor($playerId)
+    {
+        return $this->_playersInGameColors[$playerId];
+    }
+
+    public function getPlayerTeam($playerId)
+    {
+        return $this->_players[$this->getPlayerColor($playerId)]->getTeam();
+    }
+
+    public function setPlayerLost($playerId, $db)
+    {
+        $this->_players[$this->getPlayerColor($playerId)]->setLost(true);
+        $mPlayersInGame = new Application_Model_PlayersInGame($this->_id, $db);
+        $mPlayersInGame->setPlayerLostGame($playerId);
+    }
+
+    public function allEnemiesAreDead($playerId)
+    {
+        $playerColor = $this->getPlayerColor($playerId);
+        $playerTeam = $this->getPlayerTeam($playerId);
+        foreach ($this->_players as $color => $player) {
+            if ($color == $playerColor) {
+                continue;
+            }
+            if ($playerTeam == $player->getTeam()) {
+                continue;
+            }
+
+            if ($this->_players[$color]->castlesExists() || $this->_players[$color]->armiesExists()) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    public function playerArmiesOrCastlesExists($playerId)
+    {
+        $color = $this->getPlayerColor($playerId);
+        return $this->_players[$color]->armiesExists() || $this->_players[$color]->castlesExists();
+    }
+
+    public function getExpectedNextTurnPlayer($playerId, $db)
+    {
+        $playerColor = $this->getPlayerColor($playerId);
+        $find = false;
+        reset($this->_playersInGameColors);
+        $firstColor = current($this->_playersInGameColors);
+
+        /* szukam następnego koloru w dostępnych kolorach */
+        foreach ($this->_playersInGameColors as $color) {
+            /* znajduję kolor gracza, który ma aktualnie turę i przewijam na następny */
+            if ($playerColor == $color) {
+                $find = true;
+                continue;
+            }
+
+            /* to jest przewinięty kolor gracza */
+            if ($find) {
+                $nextPlayerColor = $color;
+                break;
+            }
+        }
+
+        /* jeśli nie znalazłem następnego gracza to następnym graczem jest gracz pierwszy */
+        if (!isset($nextPlayerColor)) {
+            $nextPlayerColor = $firstColor;
+        }
+
+        /* przypisuję playerId do koloru */
+        $player = $this->_players[$nextPlayerColor];
+        $color = $player->getColor();
+        if ($color == $firstColor) {
+            $this->turnNumberIncrement();
+            $mGame = new Application_Model_Game($this->_id, $db);
+            $mGame->updateTurnNumber($player->getId(), $this->_turnNumber);
+        }
+        return $player->getId();
+    }
+
+    private function turnNumberIncrement()
+    {
+        $this->_turnNumber++;
+    }
+
+    public function increaseAllCastlesProductionTurn($playerId, $db)
+    {
+        $mCastlesInGame = new Application_Model_CastlesInGame($this->_id, $db);
+        $mCastlesInGame->increaseAllCastlesProductionTurn($playerId);
+    }
+
+    public function getPlayerGold($playerId)
+    {
+        return $this->_players[$this->getPlayerColor($playerId)]->getGold();
+    }
+
+    public function activatePlayerTurn($playerId, $db)
+    {
+        $mPlayersInGame = new Application_Model_PlayersInGame($this->_id, $db);
+        $mPlayersInGame->turnActivate($playerId);
+
+        $playerColor = $this->getPlayerColor($playerId);
+        foreach ($this->_players as $color => $player) {
+            if ($playerColor == $color) {
+                $player->setTurnActive(true);
+            } else {
+                $player->setTurnActive(false);
+            }
+        }
+    }
+
 }

@@ -29,10 +29,10 @@ var Move = {
         }
 
         if (notSet(r.path[1])) {
-            zoomer.lensSetCenter(r.attackerArmy.x * 40, r.attackerArmy.y * 40);
+            zoom.lensSetCenter(r.attackerArmy.x * 40, r.attackerArmy.y * 40);
         } else {
             Army.fields(game.players[r.attackerColor].armies[r.attackerArmy.armyId]);
-            zoomer.lensSetCenter(r.path[1].x * 40, r.path[1].y * 40);
+            zoom.lensSetCenter(r.path[1].x * 40, r.path[1].y * 40);
         }
 
         Army.unfortify(r.attackerArmy.armyId);

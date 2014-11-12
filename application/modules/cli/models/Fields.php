@@ -23,25 +23,25 @@ class Cli_Model_Fields
 
     public function changeCastle($x, $y, $castleId, $type, $color)
     {
-        $this->_fields[$y][$x]->setPossession($castleId, $type, $color);
-        $this->_fields[$y + 1][$x]->setPossession($castleId, $type, $color);
-        $this->_fields[$y][$x + 1]->setPossession($castleId, $type, $color);
-        $this->_fields[$y + 1][$x + 1]->setPossession($castleId, $type, $color);
+        $this->_fields[$y][$x]->setCastle($castleId, $type, $color);
+        $this->_fields[$y + 1][$x]->setCastle($castleId, $type, $color);
+        $this->_fields[$y][$x + 1]->setCastle($castleId, $type, $color);
+        $this->_fields[$y + 1][$x + 1]->setCastle($castleId, $type, $color);
     }
 
     public function changeArmy($x, $y, $armyId, $type, $color)
     {
-        $this->_fields[$y][$x]->setPossession($armyId, $type, $color);
+        $this->_fields[$y][$x]->setArmy($armyId, $type, $color);
     }
 
     public function changeTower($x, $y, $towerId, $color)
     {
-        $this->_fields[$y][$x]->setPossession($towerId, 'tower', $color);
+        $this->_fields[$y][$x]->setTower($towerId, $color);
     }
 
     public function changeRuin($x, $y, $ruinId, $empty)
     {
-        $this->_fields[$y][$x]->setPossession($ruinId, 'ruin', $empty);
+        $this->_fields[$y][$x]->setRuin($ruinId, $empty);
     }
 
     public function getField($x, $y)
@@ -57,7 +57,7 @@ class Cli_Model_Fields
     public function isMyCastle($x, $y)
     {
         if ($this->_fields[$y][$x]->getPossessionType() == 'myCastle') {
-            return $this->_fields[$y][$x]->getPossessionId();
+            return $this->_fields[$y][$x]->getCastleId();
         }
     }
 
@@ -71,5 +71,23 @@ class Cli_Model_Fields
             }
         }
         return $fields;
+    }
+
+    public function isTower($x, $y)
+    {
+        return $this->_fields[$y][$x]->getTowerId();
+    }
+
+    public function isArmy($x, $y)
+    {
+        return $this->_fields[$y][$x]->getArmyId();
+    }
+
+    public function isTowerOpen($x, $y, $myColor, $myTeam)
+    {
+        $towerColor = $this->_fields[$y][$x]->getColor();
+        if ($myColor != $towerColor && $myTeam != $towerColor) {
+            return $towerColor;
+        }
     }
 }

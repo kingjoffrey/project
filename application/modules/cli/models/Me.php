@@ -48,4 +48,9 @@ class Cli_Model_Me
     {
         return $this->_team;
     }
+
+    public function getColor()
+    {
+        return $this->_color;
+    }
 }

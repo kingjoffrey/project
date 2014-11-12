@@ -8,10 +8,10 @@ class Cli_Model_Player
     private $_castles = array();
     private $_towers = array();
 
-    private $_turn = false;
-    private $_turnActive = false;
-    private $_computer = false;
-    private $_lost = false;
+    private $_turnActive;
+    private $_computer;
+    private $_lost;
+    private $_gold;
     private $_miniMapColor;
     private $_backgroundColor;
     private $_textColor;
@@ -25,6 +25,7 @@ class Cli_Model_Player
         $this->_turnActive = $player['turnActive'];
         $this->_computer = $player['computer'];
         $this->_lost = $player['lost'];
+        $this->_gold = $player['gold'];
         $this->_miniMapColor = $player['minimapColor'];
         $this->_backgroundColor = $player['backgroundColor'];
         $this->_textColor = $player['textColor'];
@@ -212,35 +213,45 @@ class Cli_Model_Player
             'armyId' => $excludedArmyId,
             'deletedIds' => $ids
         );
-
     }
 
+    public function noCastlesExists()
+    {
+        return !count($this->_castles);
+    }
 
+    public function noArmiesExists()
+    {
+        return !count($this->_armies);
+    }
 
+    public function castlesExists()
+    {
+        return count($this->_castles);
+    }
 
+    public function armiesExists()
+    {
+        return count($this->_armies);
+    }
 
+    public function setLost($lost)
+    {
+        $this->_lost = $lost;
+    }
 
-//    public function updateArmy($army)
-//    {
-//        if (isset($this->_armies[$army->id])) {
-//            if ($army->destroyed) {
-//                unset($this->_armies[$army->id]);
-//            } else {
-//                $this->_armies[$army->id]->update($army);
-//            }
-//        } else {
-//            $this->_armies[$army->id] = new Cli_Model_Army($army);
-//        }
-//    }
-//
-//    public function updateCastle($castle)
-//    {
-//        $this->_castles[$castle->id]->update($castle);
-//    }
-//
-//    public function updateTower($tower)
-//    {
-//        $this->_towers[$tower->id]->update($tower);
-//    }
+    public function getId()
+    {
+        return $this->_id;
+    }
 
+    public function getGold()
+    {
+        return $this->_gold;
+    }
+
+    public function setTurnActive($turnActive)
+    {
+        $this->_turnActive = $turnActive;
+    }
 }

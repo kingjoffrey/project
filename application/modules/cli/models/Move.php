@@ -273,7 +273,7 @@ class Cli_Model_Move
             $deletedIds = $user->parameters['game']->joinArmiesAtPosition($user->parameters['playerId'], $army->getId(), $db);
         }
 
-        new Cli_Model_TowerHandler($move->current, $user->parameters['playerId'], $user->parameters['gameId'], $db, $gameHandler);
+        new Cli_Model_TowerHandler($move->current, $user, $db, $gameHandler);
 
         $token = array(
             'type' => 'move',
