@@ -68,7 +68,7 @@ class Cli_Model_Astar extends Cli_Model_Heuristics
         } else {
             $this->movementType = 'walking';
         }
-        $this->movesLeft = $army->movesLeft;
+        $this->movesLeft = $army->getMovesLeft();
 
         $this->open[$army->getX() . '_' . $army->getY()] = $this->node($army->getX(), $army->getY(), 0, null, 'c');
 

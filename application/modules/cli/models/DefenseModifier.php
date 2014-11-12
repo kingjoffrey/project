@@ -2,7 +2,7 @@
 
 /**
  * Class Cli_Model_DefenseModifier
- * ver. 0001
+ * ver. 0002
  */
 class Cli_Model_DefenseModifier
 {
@@ -13,11 +13,18 @@ class Cli_Model_DefenseModifier
         return $this->_mod;
     }
 
-    public function increment(){
+    public function increment()
+    {
         $this->_mod++;
     }
 
-    public function decrement(){
+    public function decrement()
+    {
         $this->_mod--;
+    }
+
+    public function add($defense)
+    {
+        $this->_mod += $defense;
     }
 }

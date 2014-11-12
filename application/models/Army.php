@@ -59,7 +59,7 @@ class Application_Model_Army extends Coret_Db_Table_Abstract
         return $this->selectAll($select);
     }
 
-    public function destroyArmy($armyId, $playerId)
+    public function destroyArmy($armyId)
     {
         $data = array(
             'destroyed' => 'true'
@@ -68,7 +68,6 @@ class Application_Model_Army extends Coret_Db_Table_Abstract
         $where = array(
             $this->_db->quoteInto($this->_db->quoteIdentifier($this->_primary) . ' = ?', $armyId),
             $this->_db->quoteInto($this->_db->quoteIdentifier('gameId') . ' = ?', $this->_gameId),
-            $this->_db->quoteInto($this->_db->quoteIdentifier('playerId') . ' = ?', $playerId),
         );
 
         return $this->update($data, $where);

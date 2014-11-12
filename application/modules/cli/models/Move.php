@@ -270,10 +270,7 @@ class Cli_Model_Move
             $battleResult = $battle->getResult();
         } else {
             $army->updateArmyPosition($user->parameters['playerId'], $move, $fields, $user->parameters['gameId'], $db);
-            $armiesIds = Cli_Model_Army::joinArmiesAtPosition($move->end, $user->parameters['playerId'], $user->parameters['gameId'], $db);
-            $newArmyId = $armiesIds['armyId'];
-            $attacker = Cli_Model_Army::getArmyByArmyIdPlayerId($newArmyId, $user->parameters['playerId'], $user->parameters['gameId'], $db);
-            $deletedIds = $armiesIds['deletedIds'];
+            $deletedIds = $user->parameters['game']->joinArmiesAtPosition($user->parameters['playerId'], $army->getId(), $db);
         }
 
         new Cli_Model_TowerHandler($move->current, $user->parameters['playerId'], $user->parameters['gameId'], $db, $gameHandler);
@@ -281,7 +278,7 @@ class Cli_Model_Move
         $token = array(
             'type' => 'move',
             'attackerColor' => $playersInGameColors[$user->parameters['playerId']],
-            'attackerArmy' => $attacker,
+            'attackerArmy' => $army->toArray(),
             'defenderColor' => $defenderColor,
             'defenderArmy' => $defender,
             'battle' => $battleResult,

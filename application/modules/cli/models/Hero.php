@@ -36,4 +36,20 @@ class Cli_Model_Hero
     {
         $this->_movesLeft = $movesLeft;
     }
+
+    public function getMovesLeft()
+    {
+        return $this->_movesLeft;
+    }
+
+    public function updateMovesLeft($heroId, $movesSpend, Application_Model_HeroesInGame $mHeroesInGame)
+    {
+        $this->_movesLeft -= $movesSpend;
+        if ($this->_movesLeft < 0) {
+            Coret_Model_Logger::debug(debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 2));
+            throw new Exception('movesLeft < 0');
+        }
+
+        $mHeroesInGame->updateMovesLeft($this->_movesLeft, $heroId);
+    }
 }

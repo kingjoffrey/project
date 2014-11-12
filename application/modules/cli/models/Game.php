@@ -328,9 +328,9 @@ class Cli_Model_Game
         return $this->_players[$this->_playersInGameColors[$playerId]]->isOtherArmyAtPosition($armyId);
     }
 
-    public function joinArmiesAtPosition()
+    public function joinArmiesAtPosition($playerId, $armyId, $db)
     {
-
+        return  $this->_players[$this->_playersInGameColors[$playerId]]->joinArmiesAtPosition($armyId, $this->_id, $db);
     }
 
     public function updateArmyPosition()

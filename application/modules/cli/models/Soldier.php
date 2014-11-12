@@ -55,15 +55,14 @@ class Cli_Model_Soldier
         );
     }
 
-    public function getMovesLeft()
-    {
-        return $this->_movesLeft;
-    }
-
-
     public function setMovesLeft($movesLeft)
     {
         $this->_movesLeft = $movesLeft;
+    }
+
+    public function getMovesLeft()
+    {
+        return $this->_movesLeft;
     }
 
     public function canFly()
@@ -74,5 +73,16 @@ class Cli_Model_Soldier
     public function canSwim()
     {
         return $this->_swim;
+    }
+
+    public function updateMovesLeft($soldierId, $movesSpend, Application_Model_UnitsInGame $mSoldier)
+    {
+        $this->_movesLeft -= $movesSpend;
+        if ($this->_movesLeft < 0) {
+            Coret_Model_Logger::debug(debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 2));
+            throw new Exception('movesLeft < 0');
+        }
+
+        $mSoldier->updateMovesLeft($this->_movesLeft, $soldierId);
     }
 }
