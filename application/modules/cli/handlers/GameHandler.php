@@ -79,25 +79,22 @@ class Cli_GameHandler extends Cli_WofHandler
         Cli_Model_Database::addTokensIn($db, $user->parameters['gameId'], $user->parameters['playerId'], $dataIn);
 
         if ($dataIn['type'] == 'computer') {
-            $mGame = new Application_Model_Game($user->parameters['gameId'], $db);
-            if (!$mGame->isGameMaster($user->parameters['playerId'])) {
-                $this->sendError($user, 'Nie Twoja gra!');
-                return;
-            }
+//            $mGame = new Application_Model_Game($user->parameters['gameId'], $db);
+//            if (!$mGame->isGameMaster($user->parameters['playerId'])) {
+//                $this->sendError($user, 'Nie Twoja gra!');
+//                return;
+//            }
 
-            $playerId = $mGame->getTurnPlayerId();
+            $playerId = $user->parameters['game']->getTurnPlayerId();
 
-            $mPlayersInGame = new Application_Model_PlayersInGame($user->parameters['gameId'], $db);
-
-            if (!$mPlayersInGame->playerTurnActive($playerId)) {
+            if (!$user->parameters['game']->getPlayerTurnActive($playerId)) {
                 $l->log('START TURY');
                 $mTurn = new Cli_Model_Turn($user, $db, $this);
                 $mTurn->start($playerId, true);
                 return;
             }
 
-            $mPlayer = new Application_Model_Player($db);
-            if (!$mPlayer->isComputer($playerId)) {
+            if (!$user->parameters['game']->isComputer($playerId)) {
                 echo 'To (' . $playerId . ') nie komputer!' . "\n";
 //                $this->sendError($user, 'To (' . $playerId . ') nie komputer!');
                 return;
@@ -107,10 +104,7 @@ class Cli_GameHandler extends Cli_WofHandler
                 return;
             }
 
-            $mArmy = new Application_Model_Army($user->parameters['gameId'], $db);
-            $army = $mArmy->getComputerArmyToMove($playerId);
-
-            if (!empty($army['armyId'])) {
+            if ($army = $user->parameters['game']->getComputerArmyToMove($playerId)) {
                 $mMain = new Cli_Model_ComputerMain($user, $playerId, $db, $this);
                 $mMain->init($army);
             } else {

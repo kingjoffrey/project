@@ -6,6 +6,7 @@
  */
 class Cli_Model_Hero
 {
+    private $_id;
     private $_moves;
     private $_attack;
     private $_defense;
@@ -14,6 +15,7 @@ class Cli_Model_Hero
 
     public function __construct($hero)
     {
+        $this->_id = $hero['heroId'];
         $this->_moves = $hero['numberOfMoves'];
         $this->_attack = $hero['attackPoints'];
         $this->_defense = $hero['defensePoints'];
@@ -51,5 +53,17 @@ class Cli_Model_Hero
         }
 
         $mHeroesInGame->updateMovesLeft($this->_movesLeft, $heroId);
+    }
+
+    public function resetMovesLeft($gameId, $db)
+    {
+        if ($this->_movesLeft > 2) {
+            $this->setMovesLeft($this->_moves + 2);
+        } else {
+            $this->setMovesLeft($this->_moves);
+        }
+
+        $mHeroesInGame = new Application_Model_HeroesInGame($gameId, $db);
+        $mHeroesInGame->updateMovesLeft($this->_movesLeft, $this->_id);
     }
 }

@@ -628,4 +628,35 @@ class Cli_Model_Army
     {
         return $this->_soldiers;
     }
+
+    public function createSoldier($gameId, $playerId, $unitId, $db)
+    {
+        $mSoldier = new Application_Model_UnitsInGame($gameId, $db);
+        $soldierId = $mSoldier->add($this->_id, $unitId);
+
+        $this->_soldiers[$soldierId] = new Cli_Model_Soldier(array('unitId' => $unitId));
+
+        $mSoldiersCreated = new Application_Model_SoldiersCreated($gameId, $db);
+        $mSoldiersCreated->add($unitId, $playerId);
+    }
+
+    public function resetMovesLeft($gameId, $db)
+    {
+        foreach ($this->_heroes as $hero) {
+            $hero->resetMovesLeft($gameId, $db);
+        }
+        foreach ($this->_soldiers as $soldier) {
+            $soldier->resetMovesLeft($gameId, $db);
+        }
+    }
+
+    public function setFortified($fortified)
+    {
+        $this->_fortified = $fortified;
+    }
+
+    public function getFortified()
+    {
+        return $this->_fortified;
+    }
 }

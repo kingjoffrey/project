@@ -281,7 +281,7 @@ class Application_Model_Army extends Coret_Db_Table_Abstract
         return $this->selectOne($select);
     }
 
-    public function unfortifyComputerArmies($playerId)
+    public function unfortifyPlayerArmies($playerId)
     {
         $data = array(
             'fortified' => 'false'

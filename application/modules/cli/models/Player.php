@@ -11,7 +11,10 @@ class Cli_Model_Player
     private $_turnActive;
     private $_computer;
     private $_lost;
+
     private $_gold;
+    private $_income = 0;
+
     private $_miniMapColor;
     private $_backgroundColor;
     private $_textColor;
@@ -67,6 +70,7 @@ class Cli_Model_Player
         foreach ($mCastlesInGame->getPlayerCastles($this->_id) as $castleId => $castle) {
             $this->_castles[$castleId] = new Cli_Model_Castle($castle, $mapCastles[$castleId]);
             $this->_castles[$castleId]->setProduction($mCastleProduction->getCastleProduction($castleId));
+            $this->addIncome($this->_castles[$castleId]->getIncome());
         }
     }
 
@@ -79,6 +83,7 @@ class Cli_Model_Player
         $mTowersInGame = new Application_Model_TowersInGame($gameId, $db);
         foreach ($mTowersInGame->getPlayerTowers($this->_id) as $tower) {
             $this->_towers[$tower['towerId']] = new Cli_Model_Tower($tower);
+            $this->addIncome(5);
         }
     }
 
@@ -250,8 +255,182 @@ class Cli_Model_Player
         return $this->_gold;
     }
 
+    public function addIncome($income)
+    {
+        $this->_income += $income;
+    }
+
+    public function subtractIncome($income)
+    {
+        $this->_income -= $income;
+    }
+
+    public function subtractGold($gold)
+    {
+        $this->_gold -= $gold;
+    }
+
+    public function addGold($gold)
+    {
+        $this->_gold += $gold;
+    }
+
     public function setTurnActive($turnActive)
     {
         $this->_turnActive = $turnActive;
+    }
+
+    public function startTurn($gameId, $playerId, $turnNumber, $db)
+    {
+        $units = Zend_Registry::get('units');
+
+        $this->resetMovesLeft($gameId, $db);
+
+        foreach ($this->_armies as $armyId => $army) {
+            $this->subtractGold($army->getCosts());
+        }
+
+        $this->addGold(count($this->_towers) * 5);
+
+        foreach ($this->_castles as $castleId => $castle) {
+            $this->addGold($castle->getIncome());
+            $production = $castle->getProduction();
+
+            if ($this->_computer) {
+                if ($turnNumber < 7) {
+                    $unitId = $castle->getUnitIdWithShortestProductionTime($production);
+                } else {
+                    $unitId = $castle->findBestCastleProduction();
+                }
+                if ($unitId != $castle->getProductionId()) {
+                    $relocationToCastleId = null;
+                    $castle->setProductionId($gameId, $playerId, $castleId, $unitId, $relocationToCastleId, $db);
+                }
+            } else {
+                $unitId = $castle->getProductionId();
+            }
+
+            if ($unitId && $production[$unitId]['time'] <= $castle->getProductionTurn() && $units[$unitId]['cost'] <= $this->_gold) {
+                $castle->resetProductionTurn($gameId, $db);
+                $unitCastleId = null;
+
+                if ($relocationCastleId = $castle->getRelocationCastleId()) {
+                    if (isset($this->_castles[$relocationCastleId])) {
+                        $unitCastleId = $relocationCastleId;
+                    }
+
+                    if (!$unitCastleId) {
+                        $castle->cancelProductionRelocation($gameId, $db);
+                    }
+                }
+
+                if (!$unitCastleId) {
+                    $unitCastleId = $castleId;
+                }
+
+                $x = $this->_castles[$unitCastleId]->getX();
+                $y = $this->_castles[$unitCastleId]->getY();
+                $armyId = $this->getPlayerArmyIdFromPosition($x, $y);
+
+                if (!$armyId) {
+                    $armyId = $this->createArmy($gameId, $playerId, $x, $y, $db);
+                }
+
+                $this->_armies[$armyId]->createSoldier($gameId, $db);
+            }
+        }
+    }
+
+    public function getArmyIdFromPosition($x, $y)
+    {
+        foreach ($this->_armies as $armyId => $army) {
+            if ($x == $army->getX() && $y == $army->getY()) {
+                return $armyId;
+            }
+        }
+    }
+
+    public function createArmy($gameId, $playerId, $x, $y, $db)
+    {
+        $mArmy = new Application_Model_Army($gameId, $db);
+        $armyId = $mArmy->createArmy(array('x' => $x, 'y' => $y), $playerId);
+        $this->_armies[$armyId] = new Cli_Model_Army(array(
+            'x' => $x,
+            'y' => $y,
+            'armyId' => $armyId
+        ));
+    }
+
+    public function addTower($towerId, $tower)
+    {
+        $this->addIncome(5);
+        $this->_towers[$towerId] = new Cli_Model_Tower($tower);
+    }
+
+    public function removeTower($towerId)
+    {
+        $this->subtractIncome(5);
+        unset($this->_towers[$towerId]);
+    }
+
+    public function resetMovesLeft($gameId, $db)
+    {
+        foreach ($this->_armies as $army) {
+            $army->resetMovesLeft($gameId, $db);
+        }
+    }
+
+    public function unfortifyArmies()
+    {
+        foreach ($this->_armies as $army) {
+            $army->setFortified(false);
+        }
+    }
+
+    public function getComputer()
+    {
+        return $this->_computer;
+    }
+
+    public function getComputerArmyToMove()
+    {
+        foreach ($this->_armies as $armyId => $army) {
+            if ($army->getFortified()) {
+                continue;
+            }
+            return $army;
+        }
+    }
+
+    public function getTurnActive()
+    {
+        return $this->_turnActive;
+    }
+
+    public function getComputerEmptyCastleInComputerRange($computer, $fields)
+    {
+        foreach ($this->_castles as $castle) {
+            $castleX = $castle->getX();
+            $castleY = $castle->getY();
+            if ($fields->areUnitsAtCastlePosition($castleX, $castleY)) {
+                continue;
+            }
+            $mHeuristics = new Cli_Model_Heuristics($computer->getX(), $computer->getY());
+            $h = $mHeuristics->calculateH($castleX, $castleY);
+            if ($h < $computer->getMovesLeft()) {
+                try {
+                    $aStar = new Cli_Model_Astar($computer, $castleX, $castleY, $fields);
+                } catch (Exception $e) {
+                    $this->_l->log($e);
+                    return;
+                }
+
+                $move = $computer->calculateMovesSpend($aStar->getPath($castleX . '_' . $castleY));
+                if ($move->x == $castleX && $move->y == $castleY) {
+                    return $move;
+                }
+            }
+        }
+
     }
 }

@@ -2,6 +2,8 @@
 
 class Cli_Model_Castle
 {
+    private $_id;
+
     private $_x;
     private $_y;
     private $_defense;
@@ -19,6 +21,8 @@ class Cli_Model_Castle
 
     public function __construct($playerCastle, $mapCastle)
     {
+        $this->_id = $playerCastle['castleId'];
+
         $this->_x = $mapCastle['x'];
         $this->_y = $mapCastle['y'];
         $this->_defense = $mapCastle['defense'];
@@ -36,6 +40,11 @@ class Cli_Model_Castle
     public function setProduction($production)
     {
         $this->_production = $production;
+    }
+
+    public function getProduction()
+    {
+        return $this->_production;
     }
 
     public function toArray()
@@ -73,5 +82,61 @@ class Cli_Model_Castle
         $this->_productionId = $unitId;
         $this->_productionTurn = 0;
         $this->_relocationCastleId = $relocationToCastleId;
+    }
+
+    public function getIncome()
+    {
+        return $this->_income;
+    }
+
+    public function resetProductionTurn($gameId, $db)
+    {
+        $this->_productionTurn = 0;
+        $mCastlesInGame = new Application_Model_CastlesInGame($gameId, $db);
+        $mCastlesInGame->resetProductionTurn($this->_id);
+    }
+
+    public function cancelProductionRelocation($gameId, $db)
+    {
+        $this->_relocationCastleId = null;
+        $mCastlesInGame = new Application_Model_CastlesInGame($gameId, $db);
+        $mCastlesInGame->cancelProductionRelocation($this->_id);
+    }
+
+    static public function countUnitValue($unit, $productionTime)
+    {
+        return ($unit['attackPoints'] + $unit['defensePoints'] + $unit['canFly']) / ($productionTime + $unit['cost']);
+    }
+
+    public function findBestCastleProduction()
+    {
+        $units = Zend_Registry::get('units');
+
+        $value = 0;
+        $bestUnitId = null;
+
+        foreach ($this->_production as $unitId => $row) {
+
+            $tmpValue = self::countUnitValue($units[$unitId], $row['time']);
+
+            if ($tmpValue > $value) {
+                $value = $tmpValue;
+                $bestUnitId = $unitId;
+            }
+        }
+
+        return $bestUnitId;
+    }
+
+    public function getUnitIdWithShortestProductionTime()
+    {
+        $min = 100;
+        foreach ($this->_production as $key => $val) {
+            if ($val['time'] < $min) {
+                $min = $val['time'];
+                $unitId = $key;
+            }
+        }
+        return $unitId;
     }
 }

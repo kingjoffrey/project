@@ -18,12 +18,11 @@ class Application_Model_CastlesInGame extends Coret_Db_Table_Abstract
         }
     }
 
-    public function cancelProductionRelocation($playerId, $castleId)
+    public function cancelProductionRelocation($castleId)
     {
         $where = array(
             $this->_db->quoteInto('"gameId" = ?', $this->_gameId),
-            $this->_db->quoteInto('"castleId" = ?', $castleId),
-            $this->_db->quoteInto('"playerId" = ?', $playerId)
+            $this->_db->quoteInto('"castleId" = ?', $castleId)
         );
 
         $data = array(
@@ -203,12 +202,10 @@ class Application_Model_CastlesInGame extends Coret_Db_Table_Abstract
         $this->insert($data);
     }
 
-    public function resetProductionTurn($castleId, $playerId)
+    public function resetProductionTurn($castleId)
     {
-
         $where = array(
             $this->_db->quoteInto('"gameId" = ?', $this->_gameId),
-            $this->_db->quoteInto('"playerId" = ?', $playerId),
             $this->_db->quoteInto('"castleId" = ?', $castleId)
         );
         $data = array(

@@ -9,7 +9,6 @@ class Cli_Model_TowerHandler
             return;
         }
 
-        $mTowersInGame = new Application_Model_TowersInGame($user->parameters['gameId'], $db);
         $surroundings = array();
 
         foreach ($path as $step) {
@@ -31,11 +30,7 @@ class Cli_Model_TowerHandler
                         continue;
                     }
                     if ($type = $user->parameters['game']->isTowerAtFieldOpen($x, $y)) {
-                        if ($type == 'neutral') {
-                            $mTowersInGame->addTower($towerId, $user->parameters['playerId']);
-                        } else {
-                            $mTowersInGame->changeTowerOwner($towerId, $user->parameters['playerId']);
-                        }
+                        $user->parameters['game']->addTower($user->parameters['playerIdId'], $towerId, $type, $db);
 
                         $token = array(
                             'type' => 'tower',
@@ -47,45 +42,6 @@ class Cli_Model_TowerHandler
                 }
             }
         }
-
-//        foreach ($towers as $towerId => $tower) {
-//            if (isset($surroundings[$tower['y']]) && isset($surroundings[$tower['y']][$tower['x']])) {
-//                if ($mArmy->isAnyArmyAtPosition($tower)) {
-//                    continue;
-//                }
-//
-//                if ($towerOwnerId = $mTowersInGame->getTowerOwnerId($towerId)) {
-////                    if ($towerOwnerId == $playerId) {
-////                        continue;
-////                    }
-//                    if ($teams[$towerOwnerId] == $teams[$playerId]) {
-//                        continue;
-//                    }
-//
-//                    $mTowersInGame->changeTowerOwner($towerId, $playerId);
-//
-//                    $token = array(
-//                        'type' => 'tower',
-//                        'towerId' => $towerId,
-//                        'color' => $color
-//                    );
-//                    $gameHandler->sendToChannel($db, $token, $gameId);
-//                } else {
-//                    $mTowersInGame->addTower($towerId, $playerId);
-//                    $token = array(
-//                        'type' => 'tower',
-//                        'towerId' => $towerId,
-//                        'color' => $color
-//                    );
-//                    $gameHandler->sendToChannel($db, $token, $gameId);
-//                }
-//            }
-//        }
-
-//        if (!$mArmy->isPlayerArmyNearTowerPosition($towers[$towerId], $playerId)) {
-//            $gameHandler->sendError($user, 'No player army near tower!');
-//            return;
-//        }
     }
 
 }

@@ -58,29 +58,6 @@ class Cli_Model_ArmyFunctions
         return $armyId;
     }
 
-    static public function countUnitValue($unit, $productionTime)
-    {
-        return ($unit['attackPoints'] + $unit['defensePoints'] + $unit['canFly']) / ($productionTime + $unit['cost']);
-    }
-
-    static public function findBestCastleProduction(array $units, array $production)
-    {
-        $value = 0;
-        $bestUnitId = null;
-
-        foreach ($production as $unitId => $row) {
-
-            $tmpValue = self::countUnitValue($units[$unitId], $row['time']);
-
-            if ($tmpValue > $value) {
-                $value = $tmpValue;
-                $bestUnitId = $unitId;
-            }
-        }
-
-        return $bestUnitId;
-    }
-
     static public function getCastleGarrisonFromCastlePosition($castlePosition, $gameId, $db)
     {
         $mArmy = new Application_Model_Army($gameId, $db);
@@ -152,51 +129,6 @@ class Cli_Model_ArmyFunctions
         }
 
         return $result;
-    }
-
-    static public function joinArmiesAtPosition($position, $playerId, $gameId, $db)
-    {
-        if (!isset($position['x'])) {
-            throw new Exception('(joinArmiesAtPosition) No x position - exiting');
-        }
-
-        if (!isset($position['y'])) {
-            throw new Exception('(joinArmiesAtPosition) No y position - exiting');
-        }
-
-        $mArmy = new Application_Model_Army($gameId, $db);
-        $result = $mArmy->getArmyIdsByPositionPlayerId($position, $playerId);
-
-        if (!isset($result[0]['armyId'])) {
-            Coret_Model_Logger::debug(debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 2));
-            print_r($position);
-            throw new Exception('');
-        }
-
-        $newArmyId = $result[0]['armyId'];
-        unset($result[0]);
-        $count = count($result);
-
-        if ($count == 0) {
-            return array(
-                'armyId' => $newArmyId,
-                'deletedIds' => null
-            );
-        }
-
-        $mSoldier = new Application_Model_UnitsInGame($gameId, $db);
-        $mHeroesInGame = new Application_Model_HeroesInGame($gameId, $db);
-
-        for ($i = 1; $i <= $count; $i++) {
-            $mHeroesInGame->heroesUpdateArmyId($result[$i]['armyId'], $newArmyId);
-            $mSoldier->soldiersUpdateArmyId($result[$i]['armyId'], $newArmyId);
-            $mArmy->destroyArmy($result[$i]['armyId'], $playerId);
-        }
-
-        return array(
-            'armyId' => $newArmyId,
-            'deletedIds' => $result
-        );
     }
 
     static public function getArmyByArmyId($armyId, $gameId, $db)

@@ -61,6 +61,13 @@ class Cli_Model_Fields
         }
     }
 
+    public function isPlayerCastle($color, $x, $y)
+    {
+        if ($this->_fields[$y][$x]->getColor() == $color) {
+            return $this->_fields[$y][$x]->getCastleId();
+        }
+    }
+
     public function toArray()
     {
         $fields = array();
@@ -88,6 +95,22 @@ class Cli_Model_Fields
         $towerColor = $this->_fields[$y][$x]->getColor();
         if ($myColor != $towerColor && $myTeam != $towerColor) {
             return $towerColor;
+        }
+    }
+
+    public function areUnitsAtCastlePosition($x, $y)
+    {
+        if ($this->isArmy($x, $y)) {
+            return true;
+        }
+        if ($this->isArmy($x + 1, $y)) {
+            return true;
+        }
+        if ($this->isArmy($x, $y + 1)) {
+            return true;
+        }
+        if ($this->isArmy($x + 1, $y + 1)) {
+            return true;
         }
     }
 }

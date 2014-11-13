@@ -41,6 +41,8 @@ class Cli_Model_Turn
                 $mTurnHistory = new Application_Model_TurnHistory($this->_user->parameters['gameId'], $this->_db);
                 $mTurnHistory->add($nextPlayerId, $turnNumber);
 
+                $this->_user->parameters['game']->setTurnPlayerId($nextPlayerId);
+
                 $token = array(
                     'type' => 'nextTurn',
                     'nr' => $turnNumber,
@@ -69,99 +71,23 @@ class Cli_Model_Turn
     {
         $this->_user->parameters['game']->activatePlayerTurn($playerId, $this->_db);
 
-        $gold = $this->_user->parameters['game']->getPlayerGold($playerId);
         if ($computer) {
-            $mArmy->unfortifyComputerArmies($playerId);
+            $this->_user->parameters['game']->unfortifyPlayerArmies($playerId, $this->_db);
             $type = 'computerStart';
         } else {
             $type = 'startTurn';
         }
-        $mHeroesInGame = new Application_Model_HeroesInGame($this->_user->parameters['gameId'], $this->_db);
-        $mHeroesInGame->resetMovesLeftForAll($playerId);
 
-        $income = 0;
-
-        $mCastlesInGame = new Application_Model_CastlesInGame($this->_user->parameters['gameId'], $this->_db);
-        $playerCastles = $mCastlesInGame->getPlayerCastles($playerId);
-
-        $mSoldier = new Application_Model_UnitsInGame($this->_user->parameters['gameId'], $this->_db);
-        $mSoldiersCreated = new Application_Model_SoldiersCreated($this->_user->parameters['gameId'], $this->_db);
-
-        foreach ($playerCastles as $castleId => $castleInGame) {
-            $income += $mapCastles[$castleId]['income'];
-
-            $castleProduction = $mCastlesInGame->getProduction($castleId, $playerId);
-            $playerCastles[$castleId]['productionTurn'] = $castleProduction['productionTurn'];
-
-            if ($computer) {
-                if (!isset($turnNumber)) {
-                    $mGame = new Application_Model_Game($this->_user->parameters['gameId'], $this->_db);
-                    $turnNumber = $mGame->getTurnNumber();
-                }
-
-                if ($turnNumber < 7) {
-                    $unitId = Application_Model_Board::getUnitIdWithMinimalProductionTime($mapCastles[$castleId]['production']);
-                } else {
-                    $unitId = Cli_Model_Army::findBestCastleProduction($units, $mapCastles[$castleId]['production']);
-                }
-
-                if ($unitId != $castleProduction['productionId']) {
-                    $mCastlesInGame->setProduction($playerId, $castleId, $unitId);
-                    $castleProduction = $mCastlesInGame->getProduction($castleId, $playerId);
-                }
-            } else {
-                $unitId = $castleProduction['productionId'];
-            }
-
-            if ($unitId && $mapCastles[$castleId]['production'][$unitId]['time'] <= $castleProduction['productionTurn'] && $units[$unitId]['cost'] <= $gold) {
-                if ($mCastlesInGame->resetProductionTurn($castleId, $playerId) == 1) {
-                    $unitCastleId = null;
-                    if ($castleProduction['relocationCastleId']) {
-                        foreach ($playerCastles as $castle) {
-                            if ($castleProduction['relocationCastleId'] == $castle['castleId']) {
-                                $unitCastleId = $castleProduction['relocationCastleId'];
-                                break;
-                            }
-                        }
-
-                        if (!$unitCastleId) {
-                            $mCastlesInGame->cancelProductionRelocation($playerId, $castleId);
-                        }
-                    }
-
-                    if (!$unitCastleId) {
-                        $unitCastleId = $castleId;
-                    }
-
-                    $armyId = $mArmy->getArmyIdFromPosition($mapCastles[$unitCastleId]['position']);
-
-                    if (!$armyId) {
-                        $armyId = $mArmy->createArmy($mapCastles[$unitCastleId]['position'], $playerId);
-                    }
-
-                    $mSoldier->add($armyId, $unitId);
-                    $mSoldiersCreated->add($unitId, $playerId);
-                }
-            }
-        }
-
-        $armies = $mArmy->getPlayerArmiesWithUnits($playerId);
-
-        $costs = $mSoldier->calculateCostsOfSoldiers($mArmy->getSelectForPlayerAll($playerId));
-        $mTowersInGame = new Application_Model_TowersInGame($this->_user->parameters['gameId'], $this->_db);
-        $income += $mTowersInGame->calculateIncomeFromTowers($playerId);
-        $gold = $gold + $income - $costs;
-
-        $mPlayersInGame->updatePlayerGold($playerId, $gold);
+        $this->_user->parameters['game']->startPlayerTurn();
 
         $token = array(
             'type' => $type,
-            'gold' => $gold,
-            'costs' => $costs,
-            'income' => $income,
-            'armies' => $armies,
-            'castles' => $playerCastles,
-            'color' => $color
+            'gold' => $this->_user->parameters['game']->getPlayerGold($playerId),
+            'costs' => $this->_user->parameters['game']->getPlayerCosts($playerId),
+            'income' => $this->_user->parameters['game']->getPlayerIncome($playerId),
+            'armies' => $this->_user->parameters['game']->getPlayerArmiesToArray($playerId),
+            'castles' => $this->_user->parameters['game']->getPlayerCastlesToArray($playerId),
+            'color' => $this->_user->parameters['game']->getPlayerColor($playerId)
         );
         $this->_gameHandler->sendToChannel($this->_db, $token, $this->_user->parameters['gameId']);
     }

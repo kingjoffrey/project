@@ -6,6 +6,7 @@
  */
 class Cli_Model_Soldier
 {
+    private $_id;
     private $_unitId;
     private $_movesLeft;
 
@@ -22,10 +23,16 @@ class Cli_Model_Soldier
 
     public function __construct($soldier)
     {
-        $this->_unitId = $soldier['unitId'];
-        $this->_movesLeft = $soldier['movesLeft'];
-
         $units = Zend_Registry::get('units');
+
+        $this->_id = $soldier['soldierId'];
+        $this->_unitId = $soldier['unitId'];
+
+        if (isset($soldier['movesLeft'])) {
+            $this->setMovesLeft($soldier['movesLeft']);
+        } else {
+            $this->setMovesLeft($units[$this->_unitId]['numberOfMoves']);
+        }
 
         $this->_forest = $units[$this->_unitId]['modMovesForest'];
         $this->_hills = $units[$this->_unitId]['modMovesHills'];
@@ -84,5 +91,17 @@ class Cli_Model_Soldier
         }
 
         $mSoldier->updateMovesLeft($this->_movesLeft, $soldierId);
+    }
+
+    public function resetMovesLeft($gameId, $db)
+    {
+        if ($this->_movesLeft > 2) {
+            $this->setMovesLeft($this->_moves + 2);
+        } else {
+            $this->setMovesLeft($this->_moves);
+        }
+
+        $mUnitsInGame = new Application_Model_UnitsInGame($gameId, $db);
+        $mUnitsInGame->updateMovesLeft($this->_movesLeft, $this->_id);
     }
 }

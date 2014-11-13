@@ -19,6 +19,7 @@ class Cli_Model_Game
     private $_timeLimit;
 
     private $_turnHistory;
+    private $_turnPlayerId;
 
     private $_me;
 
@@ -47,6 +48,8 @@ class Cli_Model_Game
         $this->_turnsLimit = $game['turnsLimit'];
         $this->_turnTimeLimit = $game['turnTimeLimit'];
         $this->_timeLimit = $game['timeLimit'];
+
+        $this->setTurnPlayerId($game['turnPlayerId']);
 
         $mTurnHistory = new Application_Model_TurnHistory($this->_id, $db);
         $this->_turnHistory = $mTurnHistory->getTurnHistory();
@@ -106,7 +109,7 @@ class Cli_Model_Game
             $mPlayersInGame->getMe($playerId),
             $battleSequence
         );
-        if ($game['turnPlayerId'] == $playerId) {
+        if ($this->_turnPlayerId == $playerId) {
             $this->_me->setTurn(true);
         }
 
@@ -338,6 +341,16 @@ class Cli_Model_Game
         return $this->_fields->isTower($x, $y);
     }
 
+    public function isMyCastleAtField($x, $y)
+    {
+        return $this->_fields->isMyCastle($x, $y);
+    }
+
+    public function isPlayerCastleAtField($playerId, $x, $y)
+    {
+        return $this->_fields->isPlayerCastle($this->getPlayerColor($playerId), $x, $y);
+    }
+
     public function isArmyAtField($x, $y)
     {
         return $this->_fields->isArmy($x, $y);
@@ -465,4 +478,73 @@ class Cli_Model_Game
         }
     }
 
+    public function startPlayerTurn($playerId, $db)
+    {
+        $this->_players[$this->getPlayerColor($playerId)]->startTurn($this->getTurnNumber(), $db);
+    }
+
+    public function addTower($playerId, $towerId, $color, $db)
+    {
+        $mTowersInGame = new Application_Model_TowersInGame($this->_id, $db);
+
+        if ($color == 'neutral') {
+            $this->_players[$this->getPlayerColor($playerId)]->addTower($towerId, $this->_neutralTowers[$towerId]);
+            unset($this->_neutralTowers[$towerId]);
+            $mTowersInGame->addTower($towerId, $playerId);
+        } else {
+            $this->_players[$this->getPlayerColor($playerId)]->addTower($towerId, $this->_players[$color]->getTower($towerId));
+            $this->_players[$color]->removeTower($towerId);
+            $mTowersInGame->changeTowerOwner($towerId, $playerId);
+        }
+    }
+
+    public function unfortifyPlayerArmies($playerId, $db)
+    {
+        $mArmy = new Application_Model_Army($this->_id, $db);
+        $mArmy->unfortifyPlayerArmies($playerId);
+        $this->_players[$this->getPlayerColor($playerId)]->unfortifyArmies();
+    }
+
+    public function setTurnPlayerId($playerId)
+    {
+        $this->_turnPlayerId = $playerId;
+    }
+
+    public function getTurnPlayerId()
+    {
+        return $this->_turnPlayerId;
+    }
+
+    public function getPlayerTurnActive($playerId)
+    {
+        return $this->_players[$this->getPlayerColor($playerId)]->getTurnActive();
+    }
+
+    public function isComputer($playerId)
+    {
+        return $this->_players[$this->getPlayerColor($playerId)]->getComputer();
+    }
+
+    public function getComputerArmyToMove($playerId)
+    {
+        return $this->_players[$this->getPlayerColor($playerId)]->getComputerArmyToMove();
+    }
+
+    /*
+     * **************************
+     * *** COMPUTER FUNCTIONS ***
+     * **************************
+     */
+
+    /**
+     * @param $playerId
+     * @param $computer
+     */
+    public function getComputerEmptyCastleInComputerRange($playerId, $computer)
+    {
+        $l = new Coret_Model_Logger();
+        $l->logMethodName();
+
+        $this->_players[$this->getPlayerColor($playerId)]->getComputerEmptyCastleInComputerRange($computer, $this->_fields);
+    }
 }

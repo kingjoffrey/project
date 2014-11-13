@@ -14,18 +14,6 @@ class Application_Model_Board
         return self::$_instance;
     }
 
-    static public function getUnitIdWithMinimalProductionTime(array $production)
-    {
-        $min = 100;
-        foreach ($production as $key => $val) {
-            if ($val['time'] < $min) {
-                $min = $val['time'];
-                $unitId = $key;
-            }
-        }
-        return $unitId;
-    }
-
     static public function confirmRuinPosition($position)
     {
         $ruins = Zend_Registry::get('ruins');

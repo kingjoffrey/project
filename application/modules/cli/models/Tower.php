@@ -3,10 +3,7 @@
 class Cli_Model_Tower
 {
     public $_id;
-
-
     public $x;
-
     public $y;
 
     public function __construct($tower)

@@ -15,16 +15,12 @@ class Cli_Model_ComputerMain extends Cli_Model_ComputerFunctions
 
     public function init($army)
     {
-        $this->_Computer = new Cli_Model_Army($army);
+        $this->_Computer = $army;
         $this->_l->log('');
         $this->_l->log($this->_playerId, 'playerId: ');
-        $this->_l->log($this->_Computer->id, 'armyId: ');
+        $this->_l->log($this->_Computer->getId(), 'armyId: ');
 
-        $this->_enemies = Cli_Model_Army::getAllEnemiesArmies($this->_gameId, $this->_db, $this->_playerId);
-
-        $this->initMap();
-
-        if (isset($this->_user->parameters['computer'][$this->_playerId][$this->_Computer->id]['path']) && $this->_user->parameters['computer'][$this->_playerId][$this->_Computer->id]['path']) {
+        if (isset($this->_user->parameters['computer'][$this->_playerId][$this->_Computer->getId()]['path']) && $this->_user->parameters['computer'][$this->_playerId][$this->_Computer->getId()]['path']) {
             return $this->goByThePath();
         }
 
@@ -34,9 +30,8 @@ class Cli_Model_ComputerMain extends Cli_Model_ComputerFunctions
     private function move()
     {
         $this->_l->logMethodName();
-        $myCastleId = Application_Model_Board::isCastleAtPosition($this->_Computer->x, $this->_Computer->y, $this->_map['myCastles']);
 
-        if ($myCastleId !== null) {
+        if ($myCastleId = $this->_user->parameters['game']->isPlayerCastleAtField($this->_playerId, $this->_Computer->getX(), $this->_Computer->getY())) {
             return $this->inside($myCastleId);
         } else {
             return $this->outside();
@@ -48,15 +43,13 @@ class Cli_Model_ComputerMain extends Cli_Model_ComputerFunctions
         $this->_l->logMethodName();
         $this->_l->log('W ZAMKU');
 
-        $castlePosition = $this->_map['myCastles'][$myCastleId]['position'];
-
         $numberOfUnits = floor($this->_turnNumber / 7);
         if ($numberOfUnits > 4) {
             $numberOfUnits = 4;
         }
 
         if ($numberOfUnits) {
-            $garrison = Cli_Model_Army::getArmiesFromCastlePosition($castlePosition, $this->_gameId, $this->_playerId, $this->_db);
+            $garrison = $this->_user->parameters['game']->getArmiesFromCastle($this->_playerId, $myCastleId);
             reset($garrison);
             $armyId = Cli_Model_Army::isCastleGarrisonSufficient($numberOfUnits, $garrison);
 
@@ -255,7 +248,7 @@ class Cli_Model_ComputerMain extends Cli_Model_ComputerFunctions
         $this->_l->logMethodName();
         $this->_l->log('POZA ZAMKIEM');
 
-        $path = $this->getMyEmptyCastleInMyRange();
+        $path = $this->getComputerEmptyCastleInComputerRange($this->_playerId, $this->_Computer);
         if (!$path) {
             $this->_l->log('NIE MA MOJEGO PUSTEGO ZAMKU W ZASIĘGU');
             return $this->ruinBlock($this->_map['myCastles']);
