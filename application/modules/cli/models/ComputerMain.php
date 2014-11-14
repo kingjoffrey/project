@@ -162,14 +162,14 @@ class Cli_Model_ComputerMain extends Cli_Model_ComputerFunctions
         }
 
         $enemiesHaveRange = $this->_user->parameters['game']->getEnemiesHaveRangeAtThisCastle($this->_playerId, $myCastle);
-        $enemiesInRange = $this->getEnemiesInRange($this->_map['fields']);
+        $enemiesInRange = $this->_user->parameters['game']->getEnemiesInRange($this->_playerId, $this->_Computer);
         if (!$enemiesHaveRange) {
             $this->_l->log('BRAK WROGA Z ZASIĘGIEM');
 
             if (!$enemiesInRange) {
                 $this->_l->log('BRAK WROGA W ZASIĘGU');
 
-                return $this->ruinBlock($this->_map['myCastles']);
+                return $this->ruinBlock();
             } else {
                 $this->_l->log('JEST WRÓG W ZASIĘGU');
 
@@ -251,7 +251,7 @@ class Cli_Model_ComputerMain extends Cli_Model_ComputerFunctions
         $path = $this->_user->parameters['game']->getComputerEmptyCastleInComputerRange($this->_playerId, $this->_Computer);
         if (!$path) {
             $this->_l->log('NIE MA MOJEGO PUSTEGO ZAMKU W ZASIĘGU');
-            return $this->ruinBlock($this->_map['myCastles']);
+            return $this->ruinBlock();
         } else {
             $this->_l->log('JEST MÓJ PUSTY ZAMEK W ZASIĘGU');
             if (!$this->isMyCastleInRangeOfEnemy($path, $this->_map['fields'])) {
@@ -268,10 +268,8 @@ class Cli_Model_ComputerMain extends Cli_Model_ComputerFunctions
     private function firstBlock()
     {
         $this->_l->logMethodName();
-        $mCastlesInGame = new Application_Model_CastlesInGame($this->_gameId, $this->_db);
-        $mPlayersInGame = new Application_Model_PlayersInGame($this->_gameId, $this->_db);
 
-        if (!$mCastlesInGame->enemiesCastlesExist($this->_playerId, $mPlayersInGame->selectPlayerTeamExceptPlayer($this->_playerId))) {
+        if ($this->_user->parameters['game']->noEnemyCastles($this->_playerId)) {
             $this->_l->log('BRAK ZAMKÓW WROGA');
             return $this->noEnemyCastlesToAttack();
         } else {
@@ -379,14 +377,13 @@ class Cli_Model_ComputerMain extends Cli_Model_ComputerFunctions
     private function ruinBlock()
     {
         $this->_l->logMethodName();
-        if (empty($this->_Computer->heroes)) {
+        if (!$this->_Computer->hasHero()) {
             $this->_l->log('BRAK HEROSA');
             return $this->firstBlock();
         }
 
         $this->_l->log('JEST HEROS');
-        $mRuinsInGame = new Application_Model_RuinsInGame($this->_gameId, $this->_db);
-        $path = $this->getPathToNearestRuin($mRuinsInGame->getFullRuins());
+        $path = $this->_user->parameters['game']->getPathToNearestRuin($this->_playerId, $this->_Computer);
 
         if (!$path) {
             $this->_l->log('BRAK RUIN');

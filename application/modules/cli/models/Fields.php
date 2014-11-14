@@ -99,7 +99,6 @@ class Cli_Model_Fields
 
     public function isPlayerCastle($color, $x, $y)
     {
-        echo $this->_fields[$y][$x]->getColor();exit;
         if ($this->_fields[$y][$x]->getColor() == $color) {
             return $this->_fields[$y][$x]->getCastleId();
         }

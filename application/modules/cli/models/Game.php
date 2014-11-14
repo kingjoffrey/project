@@ -372,18 +372,28 @@ class Cli_Model_Game
         $playerColor = $this->getPlayerColor($playerId);
         $playerTeam = $this->getPlayerTeam($playerId);
         foreach ($this->_players as $color => $player) {
-            if ($color == $playerColor) {
+            if ($color == $playerColor || $playerTeam == $player->getTeam()) {
                 continue;
             }
-            if ($playerTeam == $player->getTeam()) {
-                continue;
-            }
-
             if ($this->_players[$color]->castlesExists() || $this->_players[$color]->armiesExists()) {
                 return false;
             }
         }
+        return true;
+    }
 
+    public function noEnemyCastles($playerId)
+    {
+        $playerColor = $this->getPlayerColor($playerId);
+        $playerTeam = $this->getPlayerTeam($playerId);
+        foreach ($this->_players as $color => $player) {
+            if ($color == $playerColor || $playerTeam == $player->getTeam()) {
+                continue;
+            }
+            if ($this->_players[$color]->castlesExists()) {
+                return false;
+            }
+        }
         return true;
     }
 
@@ -514,6 +524,16 @@ class Cli_Model_Game
         return $this->_players[$this->getPlayerColor($playerId)]->getComputerArmyToMove();
     }
 
+    public function getPlayerCastle($playerId, $castleId)
+    {
+        return $this->_players[$this->getPlayerColor($playerId)]->getCastle($castleId);
+    }
+
+    public function sameTeam($color1, $color2)
+    {
+        return $this->_players[$color1]->getTeam() == $this->_players[$color2]->getTeam();
+    }
+
     /*
      * **************************
      * *** COMPUTER FUNCTIONS ***
@@ -549,12 +569,12 @@ class Cli_Model_Game
             if ($playerColor == $color) {
                 continue;
             }
-            if ($this->sameTeam($color)) {
+            if ($this->sameTeam($playerColor, $color)) {
                 continue;
             }
             foreach ($player->getArmies() as $enemy) {
                 $mHeuristics = new Cli_Model_Heuristics($castleX, $castleY);
-                $h = $mHeuristics->calculateH($enemy->x, $enemy->y);
+                $h = $mHeuristics->calculateH($enemy->getX(), $enemy->getY());
                 if ($h < 20) {
                     $this->_fields->setCastleTemporaryType($castleX, $castleY, 'E');
                     try {
@@ -574,5 +594,115 @@ class Cli_Model_Game
         }
 
         return $enemiesHaveRange;
+    }
+
+    public function getEnemiesInRange($playerId, $army)
+    {
+        $this->_l->logMethodName();
+        $enemiesInRange = array();
+        $playerColor = $this->getPlayerColor($playerId);
+
+        foreach ($this->_players as $color => $player) {
+            if ($playerColor == $color) {
+                continue;
+            }
+            if ($this->sameTeam($playerColor, $color)) {
+                continue;
+            }
+            foreach ($player->getArmies() as $enemy) {
+                $enemyX = $enemy->getX();
+                $enemyY = $enemy->getY();
+                $mHeuristics = new Cli_Model_Heuristics($army->getX(), $army->getY());
+                $h = $mHeuristics->calculateH($enemyX, $enemyY);
+                if ($h < $army->getMovesLeft()) {
+                    $this->_fields->setTemporaryType($enemyX, $enemyY, 'E');
+                    try {
+                        $aStar = new Cli_Model_Astar($army, $enemyX, $enemyY, $this->_fields, $playerColor);
+                    } catch (Exception $e) {
+                        echo($e);
+                        return;
+                    }
+
+                    $this->_fields->resetTemporaryType($enemyX, $enemyY);
+
+                    $move = $army->calculateMovesSpend($aStar->getPath($enemyX . '_' . $enemyY, $playerColor));
+                    if ($move->x == $enemyX && $move->y == $enemyY) {
+                        $enemiesInRange[] = $enemy;
+                    }
+                }
+            }
+        }
+        if (!empty($enemiesInRange)) {
+            return $enemiesInRange;
+        } else {
+//             new Game_Logger('BRAK WROGA W ZASIĘGU ARMII');
+            return false;
+        }
+    }
+
+    public function getPathToNearestRuin($playerId, $army)
+    {
+        $this->_l->logMethodName();
+        $armyX = $army->getX();
+        $armyY = $army->getY();
+        $movesLeft = $army->getMovesLeft();
+        $playerColor = $this->getPlayerColor($playerId);
+
+        foreach ($this->_ruins as $ruinId => $ruin) {
+            if ($ruin->getEmpty()) {
+                continue;
+            }
+
+            $ruinX = $ruin->getX();
+            $ruinY = $ruin->getY();
+
+            $mHeuristics = new Cli_Model_Heuristics($armyX, $armyY);
+            $h = $mHeuristics->calculateH($ruinX, $ruinY);
+            if ($h < $movesLeft) {
+                try {
+                    $aStar = new Cli_Model_Astar($army, $ruinX, $ruinY, $this->_fields, $playerColor);
+                } catch (Exception $e) {
+                    echo($e);
+                    return;
+                }
+
+                $path = $army->calculateMovesSpend($aStar->getPath($ruinX . '_' . $ruinY, $playerColor));
+                if ($path->x == $ruinX && $path->y == $ruinY) {
+                    $path->ruinId = $ruinId;
+                    return $path;
+                }
+            }
+        }
+    }
+
+    public function getWeakerHostileCastle($castles, $castlesIds = array())
+    {
+        $this->_l->logMethodName();
+        $heuristics = array();
+        foreach ($castles as $id => $castle) {
+            if (in_array($id, $castlesIds)) {
+                continue;
+            }
+            $mHeuristics = new Cli_Model_Heuristics($castle['position']['x'], $castle['position']['y']);
+            $heuristics[$id] = $mHeuristics->calculateH($this->_Computer->x, $this->_Computer->y);
+        }
+
+        asort($heuristics, SORT_NUMERIC);
+
+
+        foreach (array_keys($heuristics) as $id) {
+            $position = $castles[$id]['position'];
+            if ($mCastlesInGame->isEnemyCastle($id, $this->_playerId)) {
+                $enemy = Cli_Model_Army::getCastleGarrisonFromCastlePosition($position, $this->_gameId, $this->_db);
+            } else {
+                $enemy = Cli_Model_Battle::getNeutralCastleGarrison($this->_gameId, $this->_db);
+            }
+            $enemy = array_merge($enemy, $position);
+
+            if (!$this->isEnemyStronger(new Cli_Model_Army($enemy), $id)) {
+                return $id;
+            }
+        }
+        return null;
     }
 }

@@ -168,6 +168,11 @@ class Cli_Model_Player
         }
     }
 
+    public function getArmies()
+    {
+        return $this->_armies;
+    }
+
     public function isOtherArmyAtPosition($armyId)
     {
         $army = $this->getArmy($armyId);
@@ -433,4 +438,10 @@ class Cli_Model_Player
         }
 
     }
+
+    public function getCastle($castleId)
+    {
+        return $this->_castles[$castleId];
+    }
+
 }

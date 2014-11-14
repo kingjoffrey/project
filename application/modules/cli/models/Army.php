@@ -76,13 +76,13 @@ class Cli_Model_Army
 //        $modMovesSwamp = 0;
 //        $modMovesHills = 0;
 
-        $movesLeft = 1000;
+        $this->_movesLeft = 1000;
         $numberOfHeroes = 0;
         $attackFlyModifier = 0;
 
         foreach ($this->_heroes as $hero) {
-            if ($movesLeft > $hero->getMovesLeft()) {
-                $movesLeft = $hero->getMovesLeft();
+            if ($this->_movesLeft > $hero->getMovesLeft()) {
+                $this->_movesLeft = $hero->getMovesLeft();
             }
             $numberOfHeroes++;
         }
@@ -97,8 +97,8 @@ class Cli_Model_Army
         $this->_canFly = -$numberOfHeroes + 1;
 
         foreach ($this->_soldiers as $soldier) {
-            if ($movesLeft > $soldier->getMovesLeft()) {
-                $movesLeft = $soldier->getMovesLeft();
+            if ($this->_movesLeft > $soldier->getMovesLeft()) {
+                $this->_movesLeft = $soldier->getMovesLeft();
             }
 
 //            if ($soldier->getForest() > $modMovesForest) {
@@ -658,5 +658,12 @@ class Cli_Model_Army
     public function getFortified()
     {
         return $this->_fortified;
+    }
+
+    public function hasHero()
+    {
+        if ($this->_heroes) {
+            return true;
+        }
     }
 }

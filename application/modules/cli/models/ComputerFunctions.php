@@ -2,38 +2,6 @@
 
 class Cli_Model_ComputerFunctions extends Cli_Model_ComputerFight
 {
-    protected function getWeakerHostileCastle($castles, $castlesIds = array())
-    {
-        $this->_l->logMethodName();
-        $heuristics = array();
-        foreach ($castles as $id => $castle) {
-            if (in_array($id, $castlesIds)) {
-                continue;
-            }
-            $mHeuristics = new Cli_Model_Heuristics($castle['position']['x'], $castle['position']['y']);
-            $heuristics[$id] = $mHeuristics->calculateH($this->_Computer->x, $this->_Computer->y);
-        }
-
-        asort($heuristics, SORT_NUMERIC);
-
-        $mCastlesInGame = new Application_Model_CastlesInGame($this->_gameId, $this->_db);
-
-        foreach (array_keys($heuristics) as $id) {
-            $position = $castles[$id]['position'];
-            if ($mCastlesInGame->isEnemyCastle($id, $this->_playerId)) {
-                $enemy = Cli_Model_Army::getCastleGarrisonFromCastlePosition($position, $this->_gameId, $this->_db);
-            } else {
-                $enemy = Cli_Model_Battle::getNeutralCastleGarrison($this->_gameId, $this->_db);
-            }
-            $enemy = array_merge($enemy, $position);
-
-            if (!$this->isEnemyStronger(new Cli_Model_Army($enemy), $id)) {
-                return $id;
-            }
-        }
-        return null;
-    }
-
     protected function getPathToEnemyCastleInRange($castleId)
     {
         $this->_l->logMethodName();
@@ -107,63 +75,6 @@ class Cli_Model_ComputerFunctions extends Cli_Model_ComputerFight
             } else {
                 $move->current = null;
                 return $move;
-            }
-        }
-    }
-
-    protected function getEnemiesInRange()
-    {
-        $this->_l->logMethodName();
-        $fields = $this->_map['fields'];
-        $enemiesInRange = array();
-        foreach ($this->_enemies as $enemy) {
-            $mHeuristics = new Cli_Model_Heuristics($this->_Computer->x, $this->_Computer->y);
-            $h = $mHeuristics->calculateH($enemy->x, $enemy->y);
-            if ($h < $this->_Computer->movesLeft) {
-                $fields = Application_Model_Board::restoreField($fields, $enemy->x, $enemy->y);
-                try {
-                    $aStar = new Cli_Model_Astar($this->_Computer, $enemy->x, $enemy->y, $fields);
-                } catch (Exception $e) {
-                    echo($e);
-                    return;
-                }
-
-                $fields = Application_Model_Board::changeArmyField($fields, $enemy->x, $enemy->y, 'e');
-
-                $move = $this->_Computer->calculateMovesSpend($aStar->getPath($enemy->x . '_' . $enemy->y));
-                if ($move->x == $enemy->x && $move->y == $enemy->y) {
-                    $enemiesInRange[] = $enemy;
-                }
-            }
-        }
-        if (!empty($enemiesInRange)) {
-            return $enemiesInRange;
-        } else {
-//             new Game_Logger('BRAK WROGA W ZASIĘGU ARMII');
-            return false;
-        }
-    }
-
-    protected function getPathToNearestRuin($ruins)
-    {
-        $this->_l->logMethodName();
-        foreach ($ruins as $ruinId => $ruin) {
-            $mHeuristics = new Cli_Model_Heuristics($this->_Computer->x, $this->_Computer->y);
-            $h = $mHeuristics->calculateH($ruin['x'], $ruin['y']);
-            if ($h < $this->_Computer->movesLeft) {
-                try {
-//                    $aStar = new Cli_Model_Astar($this->_Computer, $ruin['x'], $ruin['y'], $this->_map['fields'], array('limit' => true));
-                    $aStar = new Cli_Model_Astar($this->_Computer, $ruin['x'], $ruin['y'], $this->_map['fields']);
-                } catch (Exception $e) {
-                    echo($e);
-                    return;
-                }
-
-                $path = $this->_Computer->calculateMovesSpend($aStar->getPath($ruin['x'] . '_' . $ruin['y']));
-                if ($path->x == $ruin['x'] && $path->y == $ruin['y']) {
-                    $path->ruinId = $ruinId;
-                    return $path;
-                }
             }
         }
     }
@@ -436,17 +347,4 @@ class Cli_Model_ComputerFunctions extends Cli_Model_ComputerFight
         $path->castleId = $weakerHostileCastleId;
         return $path;
     }
-
-//    protected function initMap()
-//    {
-//        $mCastlesInGame = new Application_Model_CastlesInGame($this->_gameId, $this->_db);
-//        $mPlayersInGame = new Application_Model_PlayersInGame($this->_gameId, $this->_db);
-//
-//        $this->_map = Application_Model_Board::prepareCastlesAndFields(
-//            Cli_Model_Army::getEnemyArmiesFieldsPositions($this->_gameId, $this->_db, $this->_playerId),
-//            $mCastlesInGame->getRazedCastles(),
-//            $mCastlesInGame->getPlayerCastles($this->_playerId),
-//            $mCastlesInGame->getTeamCastles($this->_playerId, $mPlayersInGame->selectPlayerTeamExceptPlayer($this->_playerId))
-//        );
-//    }
 }
