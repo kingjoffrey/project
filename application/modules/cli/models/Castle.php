@@ -47,6 +47,16 @@ class Cli_Model_Castle
         return $this->_production;
     }
 
+    public function getX()
+    {
+        return $this->_x;
+    }
+
+    public function getY()
+    {
+        return $this->_y;
+    }
+
     public function toArray()
     {
         return array(

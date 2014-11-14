@@ -47,10 +47,11 @@ class Cli_Model_Astar extends Cli_Model_Heuristics
      * @param Cli_Model_Army $army
      * @param int $destX
      * @param int $destY
-     * @param array $fields
+     * @param Cli_Model_Fields $fields
+     * @param string $color
      * @param array $params
      */
-    public function __construct(Cli_Model_Army $army, $destX, $destY, $fields, $params = null)
+    public function __construct(Cli_Model_Army $army, $destX, $destY, Cli_Model_Fields $fields, $color, $params = null)
     {
         if ($army->getX() == $destX && $army->getY() == $destY) {
             return;
@@ -82,7 +83,7 @@ class Cli_Model_Astar extends Cli_Model_Heuristics
 //        }
 
         $this->myCastleId = array();
-        if ($castleId = $this->fields->isMyCastle($army->getX(), $army->getY())) {
+        if ($castleId = $this->fields->isPlayerCastle($color, $army->getX(), $army->getY())) {
             $this->myCastleId[$castleId] = true;
         }
 
@@ -254,10 +255,10 @@ class Cli_Model_Astar extends Cli_Model_Heuristics
      *
      *
      * @param string $key
-     * @param type $moves
-     * @return int
+     * @param string $color
+     * @return array
      */
-    public function getPath($key)
+    public function getPath($key, $color)
     {
         $i = 0;
         $path = $this->getReturnPath($key);
@@ -265,11 +266,9 @@ class Cli_Model_Astar extends Cli_Model_Heuristics
         if (is_array($path)) {
             $path = array_reverse($path);
 
-//            if ($this->myCastles) {
             foreach ($path as $k => $step) {
                 if ($step['tt'] == 'c') {
-//                        $castleId = Application_Model_Board::isCastleAtPosition($step['x'], $step['y'], $this->myCastles);
-                    $castleId = $this->fields->isMyCastle($step['x'], $step['y']);
+                    $castleId = $this->fields->isPlayerCastle($color, $step['x'], $step['y']);
                     if (isset($this->myCastleId[$castleId])) {
                         $path[$k]['cc'] = true;
                         $i++;
@@ -280,7 +279,6 @@ class Cli_Model_Astar extends Cli_Model_Heuristics
                 $path[$k]['F'] -= $i;
                 $path[$k]['G'] -= $i;
             }
-//            }
 
             return $path;
         }

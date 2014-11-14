@@ -21,25 +21,68 @@ class Cli_Model_Fields
     }
 
 
-    public function changeCastle($x, $y, $castleId, $type, $color)
+    public function initCastle($x, $y, $castleId, $color)
     {
-        $this->_fields[$y][$x]->setCastle($castleId, $type, $color);
-        $this->_fields[$y + 1][$x]->setCastle($castleId, $type, $color);
-        $this->_fields[$y][$x + 1]->setCastle($castleId, $type, $color);
-        $this->_fields[$y + 1][$x + 1]->setCastle($castleId, $type, $color);
+        for ($i = $y; $i <= $y + 1; $i++) {
+            for ($j = $x; $j <= $x + 1; $j++) {
+                $this->_fields[$i][$j]->setCastle($castleId, $color);
+            }
+        }
     }
 
-    public function changeArmy($x, $y, $armyId, $type, $color)
+    public function razeCastle($x, $y)
     {
-        $this->_fields[$y][$x]->setArmy($armyId, $type, $color);
+        for ($i = $y; $i <= $y + 1; $i++) {
+            for ($j = $x; $j <= $x + 1; $j++) {
+                $this->_fields[$i][$j]->setCastle(null, null);
+            }
+        }
     }
 
-    public function changeTower($x, $y, $towerId, $color)
+    public function changeCastle($x, $y, $color)
+    {
+        for ($i = $y; $i <= $y + 1; $i++) {
+            for ($j = $x; $j <= $x + 1; $j++) {
+                $this->_fields[$i][$j]->setColor($color);
+            }
+        }
+    }
+
+    public function setCastleTemporaryType($x, $y, $type)
+    {
+        for ($i = $y; $i <= $y + 1; $i++) {
+            for ($j = $x; $j <= $x + 1; $j++) {
+                $this->_fields[$i][$j]->setTemporaryType($type);
+            }
+        }
+    }
+
+    public function setTemporaryType($x, $y, $type)
+    {
+        $this->_fields[$y][$x]->setTemporaryType($type);
+    }
+
+    public function resetTemporaryType($x, $y)
+    {
+        $this->_fields[$y][$x]->reset();
+    }
+
+    public function initArmy($x, $y, $armyId, $color)
+    {
+        $this->_fields[$y][$x]->setArmy($armyId, $color);
+    }
+
+    public function initTower($x, $y, $towerId, $color)
     {
         $this->_fields[$y][$x]->setTower($towerId, $color);
     }
 
-    public function changeRuin($x, $y, $ruinId, $empty)
+    public function changeTower($x, $y, $color)
+    {
+        $this->_fields[$y][$x]->setColor($color);
+    }
+
+    public function initRuin($x, $y, $ruinId, $empty)
     {
         $this->_fields[$y][$x]->setRuin($ruinId, $empty);
     }
@@ -54,15 +97,9 @@ class Cli_Model_Fields
         return isset($this->_fields[$y][$x]);
     }
 
-    public function isMyCastle($x, $y)
-    {
-        if ($this->_fields[$y][$x]->getPossessionType() == 'myCastle') {
-            return $this->_fields[$y][$x]->getCastleId();
-        }
-    }
-
     public function isPlayerCastle($color, $x, $y)
     {
+        echo $this->_fields[$y][$x]->getColor();exit;
         if ($this->_fields[$y][$x]->getColor() == $color) {
             return $this->_fields[$y][$x]->getCastleId();
         }

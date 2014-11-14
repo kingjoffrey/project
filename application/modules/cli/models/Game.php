@@ -38,6 +38,8 @@ class Cli_Model_Game
 
     public function __construct($playerId, $gameId, Zend_Db_Adapter_Pdo_Pgsql $db)
     {
+        $this->_l = new Coret_Model_Logger();
+
         $this->_id = $gameId;
 
         $mGame = new Application_Model_Game($this->_id, $db);
@@ -119,30 +121,11 @@ class Cli_Model_Game
     private function initFields()
     {
         foreach ($this->_players as $color => $player) {
-            if ($this->_me->isMyColor($color)) {
-                foreach ($player->armiesToArray() as $armyId => $army) {
-                    if ($this->_fields->getType($army['x'], $army['y']) == 'w' && $army->canSwim()) {
-                        $this->_fields->changeArmy($army['x'], $army['y'], $armyId, 'mySwimmingArmy', $color);
-                    } else {
-                        $this->_fields->changeArmy($army['x'], $army['y'], $armyId, 'myArmy', $color);
-                    }
-                }
-                foreach ($player->castlesToArray() as $castleId => $castle) {
-                    $this->_fields->changeCastle($castle['x'], $castle['y'], $castleId, 'myCastle', $color);
-                }
-                continue;
-            }
-            if ($player->getTeam() == $this->_me->getTeam()) {
-                foreach ($player->castlesToArray() as $castleId => $castle) {
-                    $this->_fields->changeCastle($castle['x'], $castle['y'], $castleId, 'teamCastle', $color);
-                }
-                continue;
-            }
             foreach ($player->armiesToArray() as $armyId => $army) {
-                $this->_fields->changeArmy($army['x'], $army['y'], $armyId, 'enemyArmy', $color);
+                $this->_fields->initArmy($army['x'], $army['y'], $armyId, $color);
             }
             foreach ($player->castlesToArray() as $castleId => $castle) {
-                $this->_fields->changeCastle($castle['x'], $castle['y'], $castleId, 'enemyCastle', $color);
+                $this->_fields->initCastle($castle['x'], $castle['y'], $castleId, $color);
             }
         }
     }
@@ -157,7 +140,7 @@ class Cli_Model_Game
                 continue;
             }
             $this->_neutralCastles[$castleId] = $castle;
-            $this->_fields->changeCastle($castle['x'], $castle['y'], $castleId, 'castle', 'neutral');
+            $this->_fields->initCastle($castle['x'], $castle['y'], $castleId, 'neutral');
         }
     }
 
@@ -184,6 +167,7 @@ class Cli_Model_Game
                 $empty = false;
             }
             $this->_ruins[$ruinId] = new Cli_Model_Ruin($position, $empty);
+            $this->_fields->initRuin($position['x'], $position['y'], $ruinId, $empty);
         }
     }
 
@@ -542,9 +526,53 @@ class Cli_Model_Game
      */
     public function getComputerEmptyCastleInComputerRange($playerId, $computer)
     {
-        $l = new Coret_Model_Logger();
-        $l->logMethodName();
+        $this->_l->logMethodName();
 
         $this->_players[$this->getPlayerColor($playerId)]->getComputerEmptyCastleInComputerRange($computer, $this->_fields);
+    }
+
+    public function getArmiesFromCastle($playerId, $castle)
+    {
+
+    }
+
+    public function getEnemiesHaveRangeAtThisCastle($playerId, $castle)
+    {
+        $this->_l->logMethodName();
+        $enemiesHaveRange = array();
+        $playerColor = $this->getPlayerColor($playerId);
+        $castleX = $castle->getX();
+        $castleY = $castle->getY();
+
+
+        foreach ($this->_players as $color => $player) {
+            if ($playerColor == $color) {
+                continue;
+            }
+            if ($this->sameTeam($color)) {
+                continue;
+            }
+            foreach ($player->getArmies() as $enemy) {
+                $mHeuristics = new Cli_Model_Heuristics($castleX, $castleY);
+                $h = $mHeuristics->calculateH($enemy->x, $enemy->y);
+                if ($h < 20) {
+                    $this->_fields->setCastleTemporaryType($castleX, $castleY, 'E');
+                    try {
+                        $aStar = new Cli_Model_Astar($enemy, $castleX, $castleY, $this->_fields, $playerColor);
+                    } catch (Exception $e) {
+                        echo($e);
+                        return;
+                    }
+
+                    $this->_fields->resetTemporaryType($castleX, $castleY);
+
+                    if ($enemy->unitsHaveRange($aStar->getPath($castleX . '_' . $castleY, $playerColor))) {
+                        $enemiesHaveRange[] = $enemy;
+                    }
+                }
+            }
+        }
+
+        return $enemiesHaveRange;
     }
 }

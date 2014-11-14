@@ -31,14 +31,14 @@ class Cli_Model_ComputerMain extends Cli_Model_ComputerFunctions
     {
         $this->_l->logMethodName();
 
-        if ($myCastleId = $this->_user->parameters['game']->isPlayerCastleAtField($this->_playerId, $this->_Computer->getX(), $this->_Computer->getY())) {
-            return $this->inside($myCastleId);
+        if ($castleId = $this->_user->parameters['game']->isPlayerCastleAtField($this->_playerId, $this->_Computer->getX(), $this->_Computer->getY())) {
+            return $this->inside($this->_user->parameters['game']->getPlayerCastle($this->_playerId, $castleId));
         } else {
             return $this->outside();
         }
     }
 
-    private function inside($myCastleId)
+    private function inside($myCastle)
     {
         $this->_l->logMethodName();
         $this->_l->log('W ZAMKU');
@@ -49,7 +49,7 @@ class Cli_Model_ComputerMain extends Cli_Model_ComputerFunctions
         }
 
         if ($numberOfUnits) {
-            $garrison = $this->_user->parameters['game']->getArmiesFromCastle($this->_playerId, $myCastleId);
+            $garrison = $this->_user->parameters['game']->getArmiesFromCastle($this->_playerId, $myCastle);
             reset($garrison);
             $armyId = Cli_Model_Army::isCastleGarrisonSufficient($numberOfUnits, $garrison);
 
@@ -161,7 +161,7 @@ class Cli_Model_ComputerMain extends Cli_Model_ComputerFunctions
             }
         }
 
-        $enemiesHaveRange = $this->getEnemiesHaveRangeAtThisCastle($castlePosition);
+        $enemiesHaveRange = $this->_user->parameters['game']->getEnemiesHaveRangeAtThisCastle($this->_playerId, $myCastle);
         $enemiesInRange = $this->getEnemiesInRange($this->_map['fields']);
         if (!$enemiesHaveRange) {
             $this->_l->log('BRAK WROGA Z ZASIĘGIEM');
@@ -248,7 +248,7 @@ class Cli_Model_ComputerMain extends Cli_Model_ComputerFunctions
         $this->_l->logMethodName();
         $this->_l->log('POZA ZAMKIEM');
 
-        $path = $this->getComputerEmptyCastleInComputerRange($this->_playerId, $this->_Computer);
+        $path = $this->_user->parameters['game']->getComputerEmptyCastleInComputerRange($this->_playerId, $this->_Computer);
         if (!$path) {
             $this->_l->log('NIE MA MOJEGO PUSTEGO ZAMKU W ZASIĘGU');
             return $this->ruinBlock($this->_map['myCastles']);

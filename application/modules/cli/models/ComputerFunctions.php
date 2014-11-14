@@ -111,36 +111,6 @@ class Cli_Model_ComputerFunctions extends Cli_Model_ComputerFight
         }
     }
 
-    protected function getEnemiesHaveRangeAtThisCastle($castlePosition)
-    {
-        $this->_l->logMethodName();
-        $enemiesHaveRange = array();
-        $fields = $this->_map['fields'];
-
-        foreach ($this->_enemies as $enemy) {
-            $mHeuristics = new Cli_Model_Heuristics($castlePosition['x'], $castlePosition['y']);
-            $h = $mHeuristics->calculateH($enemy->x, $enemy->y);
-            if ($h < 20) {
-                $fields = Application_Model_Board::changeCastleFields($fields, $castlePosition['x'], $castlePosition['y'], 'E');
-
-                try {
-                    $aStar = new Cli_Model_Astar($enemy, $castlePosition['x'], $castlePosition['y'], $fields);
-                } catch (Exception $e) {
-                    echo($e);
-                    return;
-                }
-
-                $fields = Application_Model_Board::changeCastleFields($fields, $castlePosition['x'], $castlePosition['y'], 'e');
-
-                if ($enemy->unitsHaveRange($aStar->getPath($castlePosition['x'] . '_' . $castlePosition['y']))) {
-                    $enemiesHaveRange[] = $enemy;
-                }
-            }
-        }
-
-        return $enemiesHaveRange;
-    }
-
     protected function getEnemiesInRange()
     {
         $this->_l->logMethodName();
