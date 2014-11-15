@@ -683,6 +683,34 @@ class Cli_Model_Game
         return $found;
     }
 
+
+    public function getNeutralCastleGarrison()
+    {
+        $numberOfSoldiers = ceil($this->_turnNumber / 10);
+        $soldiers = array();
+        for ($i = 1; $i <= $numberOfSoldiers; $i++) {
+            $soldiers[] = array(
+                'defensePoints' => 3,
+                'soldierId' => 's' . $i,
+                'unitId' => $this->_firstUnitId
+            );
+        }
+
+        $army = new Cli_Model_Army(array(
+            'id' => 0,
+            'x' => 0,
+            'y' => 0
+        ));
+        $army->addSoldiers($soldiers);
+
+        return $army;
+    }
+
+    public function getCastleGarrison($playerId, $castleId)
+    {
+        return $this->_players[$this->getPlayerColor($playerId)]->getCastleGarrison($castleId);
+    }
+
     /*
      * **************************
      * *** COMPUTER FUNCTIONS ***
@@ -824,29 +852,43 @@ class Cli_Model_Game
         }
     }
 
-    public function getWeakerHostileCastle($castles, $castlesIds = array())
+    public function getWeakerHostileCastle($playerId, $army, $castlesIds = array())
     {
         $this->_l->logMethodName();
+        $playerColor = $this->getPlayerColor($playerId);
         $heuristics = array();
-        foreach ($castles as $id => $castle) {
-            if (in_array($id, $castlesIds)) {
+        $armyX = $army->getX();
+        $armyY = $army->getY();
+
+        foreach ($this->_neutralCastles as $castleId => $castle) {
+            if (in_array($castleId, $castlesIds)) {
                 continue;
             }
-            $mHeuristics = new Cli_Model_Heuristics($castle['position']['x'], $castle['position']['y']);
-            $heuristics[$id] = $mHeuristics->calculateH($this->_Computer->x, $this->_Computer->y);
+            $mHeuristics = new Cli_Model_Heuristics($castle->getX(), $castle->getY());
+            $heuristics[$castleId] = $mHeuristics->calculateH($armyX, $armyY);
+        }
+
+        foreach ($this->_players as $color => $player) {
+            if ($playerColor == $color || $this->sameTeam($playerColor, $color)) {
+                continue;
+            }
+            foreach ($player->getCastles() as $castleId => $castle) {
+                if (in_array($castleId, $castlesIds)) {
+                    continue;
+                }
+                $mHeuristics = new Cli_Model_Heuristics($castle->getX(), $castle->getY());
+                $heuristics[$castleId] = $mHeuristics->calculateH($armyX, $armyY);
+            }
         }
 
         asort($heuristics, SORT_NUMERIC);
 
-
         foreach (array_keys($heuristics) as $id) {
-            $position = $castles[$id]['position'];
-            if ($mCastlesInGame->isEnemyCastle($id, $this->_playerId)) {
-                $enemy = Cli_Model_Army::getCastleGarrisonFromCastlePosition($position, $this->_gameId, $this->_db);
+            if (isset($this->_neutralCastles[$id])) {
+                $enemy = $this->getNeutralCastleGarrison();
             } else {
-                $enemy = Cli_Model_Battle::getNeutralCastleGarrison($this->_gameId, $this->_db);
+                $enemy = $this->getCastleGarrison($playerId, $id);
             }
-            $enemy = array_merge($enemy, $position);
 
             if (!$this->isEnemyStronger(new Cli_Model_Army($enemy), $id)) {
                 return $id;
@@ -855,11 +897,11 @@ class Cli_Model_Game
         return null;
     }
 
-    public function findNearestWeakestHostileCastle()
+    public function findNearestWeakestHostileCastle($playerId, $army)
     {
         $this->_l->logMethodName();
         $omittedCastlesIds = array();
-        $weakerHostileCastleId = $this->getWeakerHostileCastle($this->_map['hostileCastles']);
+        $weakerHostileCastleId = $this->getWeakerHostileCastle($playerId, $army);
 
         if (!$weakerHostileCastleId) {
             return new Cli_Model_Path();
@@ -869,7 +911,7 @@ class Cli_Model_Game
         while (true) {
             if (!isset($path->current) || empty($path->current)) {
                 $omittedCastlesIds[] = $weakerHostileCastleId;
-                $weakerHostileCastleId = $this->getWeakerHostileCastle($this->_map['hostileCastles'], $omittedCastlesIds);
+                $weakerHostileCastleId = $this->getWeakerHostileCastle($playerId, $army, $omittedCastlesIds);
                 if ($weakerHostileCastleId) {
                     $path = $this->getPathToEnemyCastleInRange($weakerHostileCastleId);
                 } else {

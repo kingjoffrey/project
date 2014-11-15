@@ -16,6 +16,11 @@ class Aaa
         }
     }
 
+    function getFirstBbb()
+    {
+        return $this->aaa[0];
+    }
+
     function get()
     {
         return $this->a;
@@ -47,40 +52,23 @@ class Bbb
 
     function b()
     {
-        echo 'b' . $this->i;
+        echo 'b' . $this->i . "\n";
+    }
+
+    function setI($i)
+    {
+        $this->i = $i;
     }
 }
 
-$value = 10;
 $Aaa = new Aaa();
+$Aaa->a();
 
-$Aaa->loop();
+$Bbb = $Aaa->getFirstBbb();
 
-//print_r(1);
-echo date('H:i;s', time()) . "\n";
-
-for ($i = 0; $i < 1000000000; $i++) {
-    if ($Aaa->get() >= $value) {
-
-    }
-}
-
-echo date('H:i;s', time()) . "\n";
-
-$arr = array('Aaa' => 20);
-
-//print_r(2);
-echo date('H:i;s', time()) . "\n";
-
-for ($i = 0; $i < 1000000000; $i++) {
-    if ($arr['Aaa'] >= $value) {
-
-    }
-}
-
-echo date('H:i;s', time()) . "\n";
-
-//for ($i = 0; $i < 10; $i++) {
-//    $Aaa->aaa[$i]->b();
-//}
-
+$Bbb->b();
+$Bbb->setI(1);
+$Bbb->b();
+$Aaa->getFirstBbb()->b();
+$Aaa->getFirstBbb()->setI(2);
+$Bbb->b();

@@ -58,34 +58,6 @@ class Cli_Model_ArmyFunctions
         return $armyId;
     }
 
-    static public function getCastleGarrisonFromCastlePosition($castlePosition, $gameId, $db)
-    {
-        $mArmy = new Application_Model_Army($gameId, $db);
-        $ids = $mArmy->getCastleGarrisonFromCastlePosition($castlePosition);
-
-        if ($ids) {
-            $mSoldier = new Application_Model_UnitsInGame($gameId, $db);
-            $mHeroesInGame = new Application_Model_HeroesInGame($gameId, $db);
-
-            return array(
-                'heroes' => $mHeroesInGame->getForBattle($ids),
-                'soldiers' => $mSoldier->getForBattle($ids),
-                'ids' => $ids,
-                'x' => $castlePosition['x'],
-                'y' => $castlePosition['y']
-            );
-        } else {
-            return array(
-                'heroes' => array(),
-                'soldiers' => array(),
-                'ids' => array(0),
-                'x' => $castlePosition['x'],
-                'y' => $castlePosition['y']
-            );
-        }
-
-    }
-
     /*
      * @return array
      */

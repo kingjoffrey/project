@@ -446,4 +446,23 @@ class Cli_Model_Player
     {
         return $this->_castles[$castleId];
     }
+
+    public function getCastleGarrison($castleId)
+    {
+        $garrison = array();
+        $x = $this->_castles[$castleId]->getX();
+        $y = $this->_castles[$castleId]->getY();
+
+        foreach ($this->_armies as $armyId => $army) {
+            for ($i = $y; $i <= $y + 1; $i++) {
+                for ($j = $x; $j <= $x + 1; $j++) {
+                    if ($army->getX() == $i && $army->getY() == $j) {
+                        $garrison[$armyId] = $army;
+                    }
+                }
+            }
+        }
+
+        return $garrison;
+    }
 }
