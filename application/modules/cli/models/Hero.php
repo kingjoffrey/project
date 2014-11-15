@@ -66,4 +66,18 @@ class Cli_Model_Hero
         $mHeroesInGame = new Application_Model_HeroesInGame($gameId, $db);
         $mHeroesInGame->updateMovesLeft($this->_movesLeft, $this->_id);
     }
+
+    public function zeroMovesLeft($gameId, $db)
+    {
+        $this->_movesLeft = 0;
+        $mHeroesInGame = new Application_Model_HeroesInGame($gameId, $db);
+        $mHeroesInGame->zeroHeroMovesLeft($this->_id);
+    }
+
+    public function kill($playerId, $gameId, $db){
+        $mHeroesInGame = new Application_Model_HeroesInGame($gameId, $db);
+        $mHeroesInGame->armyRemoveHero($this->_id);
+        $mHeroesKilled = new Application_Model_HeroesKilled($gameId, $db);
+        $mHeroesKilled->add($this->_id, 0, $playerId);
+    }
 }

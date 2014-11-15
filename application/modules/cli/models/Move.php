@@ -251,7 +251,7 @@ class Cli_Model_Move
                         $mCastlesInGame->changeOwner($castlesSchema[$castleId], $user->parameters['playerId']);
                     }
                 }
-                $army->updateArmyPosition($user->parameters['playerId'], $move, $fields, $user->parameters['gameId'], $db);
+                $army->updateArmyPosition($user->parameters['gameId'], $move, $fields, $db);
                 $attacker = Cli_Model_Army::getArmyByArmyIdPlayerId($attackerArmyId, $user->parameters['playerId'], $user->parameters['gameId'], $db);
                 $victory = true;
 //                foreach ($enemy['ids'] as $id) {
@@ -269,7 +269,7 @@ class Cli_Model_Move
             }
             $battleResult = $battle->getResult();
         } else {
-            $army->updateArmyPosition($user->parameters['playerId'], $move, $fields, $user->parameters['gameId'], $db);
+            $army->updateArmyPosition($user->parameters['gameId'], $move, $fields, $db);
             $deletedIds = $user->parameters['game']->joinArmiesAtPosition($user->parameters['playerId'], $army->getId(), $db);
         }
 

@@ -275,9 +275,11 @@ class Cli_Model_Player
         $this->_gold -= $gold;
     }
 
-    public function addGold($gold)
+    public function addGold($gold, $gameId, $db)
     {
         $this->_gold += $gold;
+        $mPlayersInGame = new Application_Model_PlayersInGame($gameId, $db);
+        $mPlayersInGame->updatePlayerGold($this->_id, $this->_gold);
     }
 
     public function setTurnActive($turnActive)
@@ -295,10 +297,10 @@ class Cli_Model_Player
             $this->subtractGold($army->getCosts());
         }
 
-        $this->addGold(count($this->_towers) * 5);
+        $this->addGold(count($this->_towers) * 5, $this->_id, $db);
 
         foreach ($this->_castles as $castleId => $castle) {
-            $this->addGold($castle->getIncome());
+            $this->addGold($castle->getIncome(), $this->_id, $db);
             $production = $castle->getProduction();
 
             if ($this->_computer) {
@@ -417,6 +419,8 @@ class Cli_Model_Player
         foreach ($this->_castles as $castle) {
             $castleX = $castle->getX();
             $castleY = $castle->getY();
+            $color = $fields->getFieldColor($castleX, $castleY);
+
             if ($fields->areUnitsAtCastlePosition($castleX, $castleY)) {
                 continue;
             }
@@ -424,24 +428,22 @@ class Cli_Model_Player
             $h = $mHeuristics->calculateH($castleX, $castleY);
             if ($h < $computer->getMovesLeft()) {
                 try {
-                    $aStar = new Cli_Model_Astar($computer, $castleX, $castleY, $fields);
+                    $aStar = new Cli_Model_Astar($computer, $castleX, $castleY, $fields, $color);
                 } catch (Exception $e) {
                     $this->_l->log($e);
                     return;
                 }
 
-                $move = $computer->calculateMovesSpend($aStar->getPath($castleX . '_' . $castleY));
+                $move = $computer->calculateMovesSpend($aStar->getPath($castleX . '_' . $castleY, $color));
                 if ($move->x == $castleX && $move->y == $castleY) {
                     return $move;
                 }
             }
         }
-
     }
 
     public function getCastle($castleId)
     {
         return $this->_castles[$castleId];
     }
-
 }

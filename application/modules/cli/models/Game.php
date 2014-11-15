@@ -534,6 +534,155 @@ class Cli_Model_Game
         return $this->_players[$color1]->getTeam() == $this->_players[$color2]->getTeam();
     }
 
+    public function searchRuin($ruinId, $army, $playerId, $db)
+    {
+        $random = rand(0, 100);
+        $heroId = $army->getAnyHeroId();
+
+        if ($random < 10) { //10%
+//śmierć
+            if ($this->_turnNumber <= 7) {
+                $army->zeroHeroMovesLeft($heroId, $this->_id, $db);
+                $found = array('null', 1);
+            } else {
+                $found = array('death', 1);
+                $army->killHero($heroId, $playerId, $this->_id, $db);
+            }
+        } elseif ($random < 55) { //45%
+//kasa
+            $gold = rand(50, 150);
+            $found = array('gold', $gold);
+            $this->_players[$this->getPlayerColor($playerId)]->addGold($gold);
+            $army->zeroHeroMovesLeft($heroId, $this->_id, $db);
+            $this->_ruins[$ruinId]->setEmpty($this->_id, $db);
+        } elseif ($random < 85) { //30%
+//jednostki
+            if ($this->_turnNumber <= 9) {
+                $min1 = 1;
+                $max1 = 1;
+                $min2 = 1;
+                $max2 = 1;
+            } elseif ($this->_turnNumber <= 13) {
+                $min1 = 0;
+                $max1 = 1;
+                $min2 = 1;
+                $max2 = 1;
+            } elseif ($this->_turnNumber <= 17) {
+                $min1 = 0;
+                $max1 = 2;
+                $min2 = 1;
+                $max2 = 1;
+            } elseif ($this->_turnNumber <= 21) {
+                $min1 = 0;
+                $max1 = 3;
+                $min2 = 1;
+                $max2 = 1;
+            } elseif ($this->_turnNumber <= 25) {
+                $min1 = 0;
+                $max1 = 4;
+                $min2 = 1;
+                $max2 = 1;
+            } elseif ($this->_turnNumber <= 32) {
+                $min1 = 0;
+                $max1 = 4;
+                $min2 = 1;
+                $max2 = 2;
+            } elseif ($this->_turnNumber <= 39) {
+                $min1 = 0;
+                $max1 = 4;
+                $min2 = 1;
+                $max2 = 3;
+            } elseif ($this->_turnNumber <= 46) {
+                $min1 = 0;
+                $max1 = 4;
+                $min2 = 2;
+                $max2 = 3;
+            } elseif ($this->_turnNumber <= 53) {
+                $min1 = 0;
+                $max1 = 4;
+                $min2 = 3;
+                $max2 = 3;
+            } elseif ($this->_turnNumber <= 60) {
+                $min1 = 0;
+                $max1 = 4;
+                $min2 = 4;
+                $max2 = 4;
+            } elseif ($this->_turnNumber <= 67) {
+                $min1 = 0;
+                $max1 = 4;
+                $min2 = 5;
+                $max2 = 5;
+            } elseif ($this->_turnNumber <= 74) {
+                $min1 = 0;
+                $max1 = 4;
+                $min2 = 6;
+                $max2 = 6;
+            } elseif ($this->_turnNumber <= 81) {
+                $min1 = 0;
+                $max1 = 4;
+                $min2 = 7;
+                $max2 = 7;
+            } elseif ($this->_turnNumber <= 88) {
+                $min1 = 0;
+                $max1 = 4;
+                $min2 = 8;
+                $max2 = 8;
+            } elseif ($this->_turnNumber <= 95) {
+                $min1 = 0;
+                $max1 = 4;
+                $min2 = 9;
+                $max2 = 9;
+            } elseif ($this->_turnNumber <= 102) {
+                $min1 = 0;
+                $max1 = 4;
+                $min2 = 10;
+                $max2 = 10;
+            } else {
+                $min1 = 0;
+                $max1 = 4;
+                $min2 = 11;
+                $max2 = 11;
+            }
+
+            $unitId = $this->_specialUnits[rand($min1, $max1)]['unitId'];
+            $numberOfUnits = rand($min2, $max2);
+
+            for ($i = 0; $i < $numberOfUnits; $i++) {
+                $army->createSoldier($this->_id, $playerId, $unitId, $db);
+            }
+
+            $army->zeroHeroMovesLeft($heroId, $this->_id, $db);
+            $this->_ruins[$ruinId]->setEmpty($this->_id, $db);
+            $found = array('allies', $numberOfUnits);
+//        } elseif ($random < 95) { //10%
+        } else {
+//nic
+            $army->zeroHeroMovesLeft($heroId, $this->_id, $db);
+            $found = array('null', 1);
+
+//        } else { //5%
+////artefakt
+//            $artifactId = rand(5, 34);
+//
+//            $mChest = new Application_Model_Chest($playerId, $db);
+//
+//            if ($mChest->artifactExists($artifactId)) {
+//                $mChest->increaseArtifactQuantity($artifactId);
+//            } else {
+//                $mChest->add($artifactId);
+//            }
+//
+//            $found = array('artifact', $artifactId);
+//
+//            Cli_Model_Database::zeroHeroMovesLeft($gameId, $armyId, $heroId, $playerId, $db);
+//
+//            $mRuinsInGame = new Application_Model_RuinsInGame($gameId, $db);
+//            $mRuinsInGame->add($ruinId);
+//
+        }
+        return $found;
+    }
+
     /*
      * **************************
      * *** COMPUTER FUNCTIONS ***
@@ -575,7 +724,7 @@ class Cli_Model_Game
             foreach ($player->getArmies() as $enemy) {
                 $mHeuristics = new Cli_Model_Heuristics($castleX, $castleY);
                 $h = $mHeuristics->calculateH($enemy->getX(), $enemy->getY());
-                if ($h < 20) {
+                if ($h < $enemy->getMovesLeft()) {
                     $this->_fields->setCastleTemporaryType($castleX, $castleY, 'E');
                     try {
                         $aStar = new Cli_Model_Astar($enemy, $castleX, $castleY, $this->_fields, $playerColor);
@@ -584,7 +733,7 @@ class Cli_Model_Game
                         return;
                     }
 
-                    $this->_fields->resetTemporaryType($castleX, $castleY);
+                    $this->_fields->resetCastleTemporaryType($castleX, $castleY);
 
                     if ($enemy->unitsHaveRange($aStar->getPath($castleX . '_' . $castleY, $playerColor))) {
                         $enemiesHaveRange[] = $enemy;
@@ -704,5 +853,32 @@ class Cli_Model_Game
             }
         }
         return null;
+    }
+
+    public function findNearestWeakestHostileCastle()
+    {
+        $this->_l->logMethodName();
+        $omittedCastlesIds = array();
+        $weakerHostileCastleId = $this->getWeakerHostileCastle($this->_map['hostileCastles']);
+
+        if (!$weakerHostileCastleId) {
+            return new Cli_Model_Path();
+        }
+
+        $path = $this->getPathToEnemyCastleInRange($weakerHostileCastleId);
+        while (true) {
+            if (!isset($path->current) || empty($path->current)) {
+                $omittedCastlesIds[] = $weakerHostileCastleId;
+                $weakerHostileCastleId = $this->getWeakerHostileCastle($this->_map['hostileCastles'], $omittedCastlesIds);
+                if ($weakerHostileCastleId) {
+                    $path = $this->getPathToEnemyCastleInRange($weakerHostileCastleId);
+                } else {
+                    break;
+                }
+            }
+            break;
+        }
+        $path->castleId = $weakerHostileCastleId;
+        return $path;
     }
 }

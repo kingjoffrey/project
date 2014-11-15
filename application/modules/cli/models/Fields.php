@@ -67,6 +67,15 @@ class Cli_Model_Fields
         $this->_fields[$y][$x]->reset();
     }
 
+    public function resetCastleTemporaryType($x, $y)
+    {
+        for ($i = $y; $i <= $y + 1; $i++) {
+            for ($j = $x; $j <= $x + 1; $j++) {
+                $this->_fields[$i][$j]->reset();
+            }
+        }
+    }
+
     public function initArmy($x, $y, $armyId, $color)
     {
         $this->_fields[$y][$x]->setArmy($armyId, $color);
@@ -148,5 +157,10 @@ class Cli_Model_Fields
         if ($this->isArmy($x + 1, $y + 1)) {
             return true;
         }
+    }
+
+    public function getFieldColor($x, $y)
+    {
+        return $this->_fields[$y][$x]->getColor();
     }
 }

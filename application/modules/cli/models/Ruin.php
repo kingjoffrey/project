@@ -36,4 +36,11 @@ class Cli_Model_Ruin
     {
         return $this->_y;
     }
+
+    public function setEmpty($gameId, $db)
+    {
+        $mRuinsInGame = new Application_Model_RuinsInGame($gameId, $db);
+        $mRuinsInGame->add($this->_id);
+        $this->_empty = true;
+    }
 }

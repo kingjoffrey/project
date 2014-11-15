@@ -115,7 +115,7 @@ class Application_Model_Army extends Coret_Db_Table_Abstract
         return $this->update($data, $where);
     }
 
-    public function updateArmyPosition($playerId, $end, $armyId)
+    public function updateArmyPosition($end, $armyId)
     {
         $data = array(
             'x' => $end['x'],
@@ -124,8 +124,7 @@ class Application_Model_Army extends Coret_Db_Table_Abstract
         );
         $where = array(
             $this->_db->quoteInto($this->_db->quoteIdentifier('armyId') . ' = ?', $armyId),
-            $this->_db->quoteInto($this->_db->quoteIdentifier('gameId') . ' = ?', $this->_gameId),
-            $this->_db->quoteInto($this->_db->quoteIdentifier('playerId') . ' = ?', $playerId)
+            $this->_db->quoteInto($this->_db->quoteIdentifier('gameId') . ' = ?', $this->_gameId)
         );
 
         return $this->update($data, $where);

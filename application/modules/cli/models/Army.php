@@ -493,7 +493,7 @@ class Cli_Model_Army
         }
     }
 
-    public function updateArmyPosition($playerId, Cli_Model_Path $path, $fields, $gameId, $db)
+    public function updateArmyPosition($gameId, Cli_Model_Path $path, Cli_Model_Fields $fields, Zend_Db_Adapter_Pdo_Pgsql $db)
     {
         if (empty($path->current)) {
             return;
@@ -570,7 +570,7 @@ class Cli_Model_Army
         $this->_x = $path->x;
         $this->_y = $path->y;
 
-        return $mArmy->updateArmyPosition($playerId, $path->end, $this->_id);
+        return $mArmy->updateArmyPosition($path->end, $this->_id);
     }
 
     /*
@@ -650,9 +650,11 @@ class Cli_Model_Army
         }
     }
 
-    public function setFortified($fortified)
+    public function setFortified($fortified, $gameId, $db)
     {
         $this->_fortified = $fortified;
+        $mArmy = new Application_Model_Army($gameId, $db);
+        $mArmy->fortify($this->getId(), $fortified);
     }
 
     public function getFortified()
@@ -666,4 +668,22 @@ class Cli_Model_Army
             return true;
         }
     }
+
+    public function getAnyHeroId()
+    {
+        return current($this->_heroes);
+    }
+
+    public function zeroHeroMovesLeft($heroId, $gameId, $db)
+    {
+        $this->_heroes[$heroId]->zeroMovesLeft($gameId, $db);
+    }
+
+    public function removeHero($heroId, $playerId, $gameId, $db)
+    {
+        $this->_heroes[$heroId]->kill($playerId, $gameId, $db);
+        unset($this->_heroes[$heroId]);
+    }
+
+
 }

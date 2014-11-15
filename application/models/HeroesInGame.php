@@ -162,14 +162,13 @@ class Application_Model_HeroesInGame extends Coret_Db_Table_Abstract
         return $this->update($data, $where);
     }
 
-    public function zeroHeroMovesLeft($armyId, $heroId, $playerId)
+    public function zeroHeroMovesLeft($heroId)
     {
         $data = array(
             'movesLeft' => 0
         );
 
         $where = array(
-            $this->_db->quoteInto('"armyId" = ?', $armyId),
             $this->_db->quoteInto('"heroId" = ?', $heroId),
             $this->_db->quoteInto('"gameId" = ?', $this->_gameId)
         );

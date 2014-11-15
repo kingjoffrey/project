@@ -391,10 +391,10 @@ class Cli_Model_ComputerMain extends Cli_Model_ComputerFunctions
         }
 
         $this->_l->log('IDĘ DO RUIN');
-        $this->_Computer->updateArmyPosition($this->_playerId, $path, $this->_map['fields'], $this->_gameId, $this->_db);
-        Cli_Model_SearchRuin::search($this->_gameId, $path->ruinId, $this->_Computer->heroes[0]['heroId'], $this->_Computer->id, $this->_playerId, $this->_db);
-        $this->_mArmyDB->fortify($this->_Computer->id, 1);
-        return $this->endMove($this->_Computer->id, $path);
+        $this->_Computer->updateArmyPosition($this->_gameId, $path, $this->_user->parameters['game']->getFields(), $this->_db);
+        $this->_user->parameters['game']->searchRuin($this->_gameId, $path->ruinId, $this->_Computer, $this->_playerId, $this->_db);
+        $this->_Computer->setFortified(true, $this->_gameId, $this->_db);
+        return $this->endMove($this->_Computer->getId(), $path);
 
     }
 
@@ -479,12 +479,12 @@ class Cli_Model_ComputerMain extends Cli_Model_ComputerFunctions
         $this->_l->logMethodName();
 
         if (!$oldArmyId) {
-            $oldArmyId = $this->_Computer->id;
+            $oldArmyId = $this->_Computer->getId();
         }
 
         if ($fightResults) {
             if ($fightResults->victory) {
-                $joinIds = Cli_Model_Army::joinArmiesAtPosition($path->end, $this->_playerId, $this->_gameId, $this->_db);
+                $joinIds = $this->_user->parameters['game']->joinArmiesAtPosition($this->_playerId, $this->_Computer->getId(), $this->_db);
             } else {
                 $joinIds = array('deletedIds' => null);
             }
@@ -492,7 +492,7 @@ class Cli_Model_ComputerMain extends Cli_Model_ComputerFunctions
             $currentPath = $path->current;
         } else {
             if (isset($path->current) && $path->current) {
-                $joinIds = Cli_Model_Army::joinArmiesAtPosition($path->end, $this->_playerId, $this->_gameId, $this->_db);
+                $joinIds = $this->_user->parameters['game']->joinArmiesAtPosition($this->_playerId, $this->_Computer->getId(), $this->_db);
                 $attackerArmy = Cli_Model_Army::getArmyByArmyIdPlayerId($joinIds['armyId'], $this->_playerId, $this->_gameId, $this->_db);
                 $currentPath = $path->current;
             } else {

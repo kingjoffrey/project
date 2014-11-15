@@ -320,31 +320,4 @@ class Cli_Model_ComputerFunctions extends Cli_Model_ComputerFight
 
         return $this->_Computer->calculateMovesSpend($aStar->getPath($castle['position']['x'] . '_' . $castle['position']['y']));
     }
-
-    protected function findNearestWeakestHostileCastle()
-    {
-        $this->_l->logMethodName();
-        $omittedCastlesIds = array();
-        $weakerHostileCastleId = $this->getWeakerHostileCastle($this->_map['hostileCastles']);
-
-        if (!$weakerHostileCastleId) {
-            return new Cli_Model_Path();
-        }
-
-        $path = $this->getPathToEnemyCastleInRange($weakerHostileCastleId);
-        while (true) {
-            if (!isset($path->current) || empty($path->current)) {
-                $omittedCastlesIds[] = $weakerHostileCastleId;
-                $weakerHostileCastleId = $this->getWeakerHostileCastle($this->_map['hostileCastles'], $omittedCastlesIds);
-                if ($weakerHostileCastleId) {
-                    $path = $this->getPathToEnemyCastleInRange($weakerHostileCastleId);
-                } else {
-                    break;
-                }
-            }
-            break;
-        }
-        $path->castleId = $weakerHostileCastleId;
-        return $path;
-    }
 }
