@@ -555,7 +555,7 @@ class Cli_Model_Game
 //kasa
             $gold = rand(50, 150);
             $found = array('gold', $gold);
-            $this->_players[$this->getPlayerColor($playerId)]->addGold($gold);
+            $this->_players[$this->getPlayerColor($playerId)]->addGold($gold, $this->_id, $db);
             $army->zeroHeroMovesLeft($heroId, $this->_id, $db);
             $this->_ruins[$ruinId]->setEmpty($this->_id, $db);
         } elseif ($random < 85) { //30%
@@ -839,7 +839,6 @@ class Cli_Model_Game
                     echo($e);
                     return;
                 }
-
                 $path = $army->calculateMovesSpend($aStar->getPath($ruinX . '_' . $ruinY, $playerColor));
                 if ($path->x == $ruinX && $path->y == $ruinY) {
                     $path->ruinId = $ruinId;
@@ -861,7 +860,7 @@ class Cli_Model_Game
             if (in_array($castleId, $castlesIds)) {
                 continue;
             }
-            $mHeuristics = new Cli_Model_Heuristics($castle->getX(), $castle->getY());
+            $mHeuristics = new Cli_Model_Heuristics($castle['x'], $castle['y']);
             $heuristics[$castleId] = $mHeuristics->calculateH($armyX, $armyY);
         }
 
@@ -1150,46 +1149,51 @@ class Cli_Model_Game
         return $enemy;
     }
 
-    public function isMyCastleInRangeOfEnemy($pathToMyEmptyCastle)
+    public function isMyCastleInRangeOfEnemy($playerId, $pathToMyEmptyCastle)
     {
         $this->_l->logMethodName();
+        $playerColor = $this->getPlayerColor($playerId);
+
         foreach ($this->_enemies as $enemy) {
-            $mHeuristics = new Cli_Model_Heuristics($enemy->x, $enemy->y);
+            $enemyX = $enemy->getX();
+            $enemyY = $enemy->getY();
+            $mHeuristics = new Cli_Model_Heuristics($enemyX, $enemyY);
             $h = $mHeuristics->calculateH($pathToMyEmptyCastle->x, $pathToMyEmptyCastle->y);
-            if ($h < $enemy->movesLeft) {
-                $fields = Application_Model_Board::changeCastleFields($fields, $pathToMyEmptyCastle->x, $pathToMyEmptyCastle->y, 'E');
+            if ($h < $enemy->getMovesLeft()) {
+                $this->_fields->setCastleTemporaryType($pathToMyEmptyCastle->x, $pathToMyEmptyCastle->y, 'E');
                 try {
-                    $aStar = new Cli_Model_Astar($enemy, $pathToMyEmptyCastle->x, $pathToMyEmptyCastle->y, $fields);
+                    $aStar = new Cli_Model_Astar($enemy, $pathToMyEmptyCastle->x, $pathToMyEmptyCastle->y, $this->_fields, $playerColor);
                 } catch (Exception $e) {
                     echo($e);
                     return;
                 }
-
-                if ($enemy->unitsHaveRange($aStar->getPath($pathToMyEmptyCastle->x . '_' . $pathToMyEmptyCastle->y))) {
+                $this->_fields->resetCastleTemporaryType($pathToMyEmptyCastle->x, $pathToMyEmptyCastle->y);
+                if ($enemy->unitsHaveRange($aStar->getPath($pathToMyEmptyCastle->x . '_' . $pathToMyEmptyCastle->y, $playerColor))) {
                     return true;
                 }
-
-                $fields = Application_Model_Board::changeCastleFields($fields, $pathToMyEmptyCastle->x, $pathToMyEmptyCastle->y, 'e');
             }
         }
     }
 
-    public function getPathToEnemyCastleInRange($castleId)
+    public function getPathToEnemyCastleInRange($playerId, $castleId, $army)
     {
         $this->_l->logMethodName();
-        $mapCastles = Zend_Registry::get('castles');
-        $position = $mapCastles[$castleId]['position'];
-        $fields = Application_Model_Board::changeCastleFields($this->_map['fields'], $position['x'], $position['y'], 'E');
+        $playerColor = $this->getPlayerColor($playerId);
+        $castle = $this->_players[$playerColor]->getCastle($castleId);
+        $castleX = $castle->getX();
+        $castleY = $castle->getY();
+
+        $this->_fields->setCastleTemporaryType($castleX, $castleY, 'E');
 
         try {
-            $aStar = new Cli_Model_Astar($this->_Computer, $position['x'], $position['y'], $fields);
+            $aStar = new Cli_Model_Astar($army, $castleX, $castleY, $this->_fields, $playerColor);
         } catch (Exception $e) {
             echo($e);
             return;
         }
 
-        $move = $this->_Computer->calculateMovesSpend($aStar->getPath($position['x'] . '_' . $position['y']));
-        if (Application_Model_Board::isCastleField($move->end, $position)) {
+        $move = $army->calculateMovesSpend($aStar->getPath($castleX . '_' . $castleY, $playerColor));
+        if ($this->_fields->isEnemyCastle($playerColor, $move->x, $move->y)) {
             $move->in = true;
         } else {
             $move->in = false;
@@ -1198,43 +1202,47 @@ class Cli_Model_Game
         return $move;
     }
 
-    public function getPathToEnemyInRange($enemy)
+    public function getPathToEnemyInRange($playerId, $army, $enemy)
     {
         $this->_l->logMethodName();
-        $fields = Application_Model_Board::changeCastleFields($this->_map['fields'], $enemy->x, $enemy->y, 'E');
-
+        $playerColor = $this->getPlayerColor($playerId);
+        $enemyX = $enemy->getX();
+        $enemyY = $enemy->getY();
+        $this->_fields->setCastleTemporaryType($enemyX, $enemyY, 'E');
         try {
-            $aStar = new Cli_Model_Astar($this->_Computer, $enemy->x, $enemy->y, $fields);
+            $aStar = new Cli_Model_Astar($army, $enemyX, $enemyY, $this->_fields, $playerColor);
         } catch (Exception $e) {
             echo($e);
             return;
         }
-
-        return $this->_Computer->calculateMovesSpend($aStar->getPath($enemy->x . '_' . $enemy->y));
+        $this->_fields->resetCastleTemporaryType($enemyX, $enemyY);
+        return $army->calculateMovesSpend($aStar->getPath($enemyX . '_' . $enemyY, $playerColor));
     }
 
-    public function isEnemyArmyInRange($enemy)
+    public function isEnemyArmyInRange($playerId, $army, $enemy)
     {
         $this->_l->logMethodName();
-        $fields = $this->_map['fields'];
+        $playerColor = $this->getPlayerColor($playerId);
+        $enemyX = $enemy->getX();
+        $enemyY = $enemy->getY();
 
-        $castleId = Application_Model_Board::isCastleAtPosition($enemy->x, $enemy->y, $this->_map['hostileCastles']);
-        if ($castleId) {
-            $fields = Application_Model_Board::changeCastleFields($fields, $enemy->x, $enemy->y, 'E');
+        if ($castleId = $this->_fields->getCastleId($playerColor, $enemyX, $enemyY)) {
+            $this->_fields->setCastleTemporaryType($enemyX, $enemyY, 'E');
         } else {
-            $fields = Application_Model_Board::restoreField($fields, $enemy->x, $enemy->y);
+            $this->_fields->setTemporaryType($enemyX, $enemyY, 'E');
         }
 
         try {
-            $aStar = new Cli_Model_Astar($this->_Computer, $enemy->x, $enemy->y, $fields);
+            $aStar = new Cli_Model_Astar($army, $enemyX, $enemyY, $this->_fields, $playerColor);
         } catch (Exception $e) {
             echo($e);
             return;
         }
 
-        $move = $this->_Computer->calculateMovesSpend($aStar->getPath($enemy->x . '_' . $enemy->y));
+        $move = $army->calculateMovesSpend($aStar->getPath($enemyX . '_' . $enemyY, $playerColor));
         if ($castleId) {
-            if ($castleId == Application_Model_Board::isCastleAtPosition($move->x, $move->y, $this->_map['hostileCastles'])) {
+            $this->_fields->resetCastleTemporaryType($enemyX, $enemyY);
+            if ($castleId == $this->_fields->getCastleId($move->x, $move->y)) {
                 $move->castleId = $castleId;
                 return $move;
             } else {
@@ -1242,7 +1250,8 @@ class Cli_Model_Game
                 return $move;
             }
         } else {
-            if ($move->x == $enemy->x && $move->y == $enemy->y) {
+            $this->_fields->resetTemporaryType($enemyX, $enemyY);
+            if ($move->x == $enemyX && $move->y == $enemyY) {
                 return $move;
             } else {
                 $move->current = null;
@@ -1251,26 +1260,32 @@ class Cli_Model_Game
         }
     }
 
-    public function getMyEmptyCastleInMyRange()
+    public function getMyEmptyCastleInMyRange($playerId, $army)
     {
         $this->_l->logMethodName();
-        foreach ($this->_map['myCastles'] as $castle) {
-            $position = $castle['position'];
-            if ($this->_mArmyDB->areUnitsAtCastlePosition($position)) {
+        $playerColor = $this->getPlayerColor($playerId);
+        $movesLeft = $army->getMovesLeft();
+        $armyX = $army->getX();
+        $armyY = $army->getY();
+
+        foreach ($this->_players[$playerColor]->getCastles() as $castleId => $castle) {
+            $castleX = $castle->getX();
+            $castleY = $castle->getY();
+            if ($this->_players[$playerColor]->countCastleGarrison($castleId)) {
                 continue;
             }
-            $mHeuristics = new Cli_Model_Heuristics($this->_Computer->x, $this->_Computer->y);
-            $h = $mHeuristics->calculateH($position['x'], $position['y']);
-            if ($h < $this->_Computer->movesLeft) {
+            $mHeuristics = new Cli_Model_Heuristics($armyX, $armyY);
+            $h = $mHeuristics->calculateH($castleX, $castleY);
+            if ($h < $movesLeft) {
                 try {
-                    $aStar = new Cli_Model_Astar($this->_Computer, $position['x'], $position['y'], $this->_map['fields']);
+                    $aStar = new Cli_Model_Astar($army, $castleX, $castleY, $this->_fields, $playerColor);
                 } catch (Exception $e) {
                     $this->_l->log($e);
                     return;
                 }
 
-                $move = $this->_Computer->calculateMovesSpend($aStar->getPath($position['x'] . '_' . $position['y']));
-                if ($move->x == $position['x'] && $move->y == $position['y']) {
+                $move = $army->calculateMovesSpend($aStar->getPath($castleX . '_' . $castleY, $playerColor));
+                if ($move->x == $castleX && $move->y == $castleY) {
                     return $move;
                 }
             }

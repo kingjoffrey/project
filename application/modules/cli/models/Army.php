@@ -694,4 +694,9 @@ class Cli_Model_Army
     {
         return count($this->_heroes);
     }
+
+    public function count()
+    {
+        return count($this->_soldiers) + count($this->_heroes);
+    }
 }

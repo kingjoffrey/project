@@ -442,6 +442,11 @@ class Cli_Model_Player
         }
     }
 
+    public function  getCastles()
+    {
+        return $this->_castles;
+    }
+
     public function getCastle($castleId)
     {
         return $this->_castles[$castleId];
@@ -464,5 +469,23 @@ class Cli_Model_Player
         }
 
         return $garrison;
+    }
+
+    public function countCastleGarrison($castleId)
+    {
+        $count = 0;
+        $x = $this->_castles[$castleId]->getX();
+        $y = $this->_castles[$castleId]->getY();
+
+        foreach ($this->_armies as $armyId => $army) {
+            for ($i = $y; $i <= $y + 1; $i++) {
+                for ($j = $x; $j <= $x + 1; $j++) {
+                    if ($army->getX() == $i && $army->getY() == $j) {
+                        $count += $army->count();
+                    }
+                }
+            }
+        }
+        return $count;
     }
 }

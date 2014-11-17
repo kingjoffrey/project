@@ -36,7 +36,7 @@ class Cli_Model_Astar extends Cli_Model_Heuristics
     private $terrain;
     private $movesLeft;
     private $limit;
-    private $myCastleId;
+    private $myCastleId = array();
     private $movementType;
 
     private $outOfReach = false;
@@ -53,9 +53,6 @@ class Cli_Model_Astar extends Cli_Model_Heuristics
      */
     public function __construct(Cli_Model_Army $army, $destX, $destY, Cli_Model_Fields $fields, $color, $params = null)
     {
-        if ($army->getX() == $destX && $army->getY() == $destY) {
-            return;
-        }
         parent::__construct($destX, $destY);
         if (isset($params['limit'])) {
             $this->limit = $params['limit'];
@@ -73,16 +70,6 @@ class Cli_Model_Astar extends Cli_Model_Heuristics
 
         $this->open[$army->getX() . '_' . $army->getY()] = $this->node($army->getX(), $army->getY(), 0, null, 'c');
 
-//        if (isset($params['myCastles']) && $params['myCastles']) {
-//            $this->myCastles = $params['myCastles'];
-//            $this->myCastleId = array();
-//            $castleId = Application_Model_Board::isCastleAtPosition($army->getX(), $army->getY(), $params['myCastles']);
-//            if ($castleId) {
-//                $this->myCastleId[$castleId] = true;
-//            }
-//        }
-
-        $this->myCastleId = array();
         if ($castleId = $this->fields->isPlayerCastle($color, $army->getX(), $army->getY())) {
             $this->myCastleId[$castleId] = true;
         }
@@ -108,12 +95,13 @@ class Cli_Model_Astar extends Cli_Model_Heuristics
         $y = $this->open[$key]['y'];
         $this->close[$key] = $this->open[$key];
         if ($x == $this->destX && $y == $this->destY) {
-            return true;
+            return;
         }
         unset($this->open[$key]);
         $this->addOpen($x, $y);
         if (!$this->isNotEmpty()) {
-            return null;
+            echo 'Nie znalazłem ścieżki';
+            return;
 //            throw new Exception('Nie znalazłem ścieżki');
         }
         $this->aStar();
@@ -231,11 +219,12 @@ class Cli_Model_Astar extends Cli_Model_Heuristics
 
     /**
      *
-     * @param type $x
-     * @param type $y
-     * @param type $g
-     * @param type $parent
-     * @return type
+     * @param integer $x
+     * @param integer $y
+     * @param integer $g
+     * @param array $parent
+     * @param string $terrainType
+     * @return array
      */
     private function node($x, $y, $g, $parent, $terrainType)
     {
@@ -300,6 +289,10 @@ class Cli_Model_Astar extends Cli_Model_Heuristics
             return;
         }
         $path = array();
+        if (empty($this->close[$key]['parent'])) {
+            $path[] = $this->close[$key];
+            return $path;
+        }
         while (!empty($this->close[$key]['parent'])) {
             $path[] = $this->close[$key];
             $key = $this->close[$key]['parent']['x'] . '_' . $this->close[$key]['parent']['y'];

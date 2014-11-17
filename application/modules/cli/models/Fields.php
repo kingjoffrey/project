@@ -113,6 +113,13 @@ class Cli_Model_Fields
         }
     }
 
+    public function isEnemyCastle($color, $x, $y)
+    {
+        if ($this->_fields[$y][$x]->getColor() != $color) {
+            return $this->_fields[$y][$x]->getCastleId();
+        }
+    }
+
     public function toArray()
     {
         $fields = array();
@@ -162,5 +169,10 @@ class Cli_Model_Fields
     public function getFieldColor($x, $y)
     {
         return $this->_fields[$y][$x]->getColor();
+    }
+
+    public function getCastleId($x, $y)
+    {
+        return $this->_fields[$y][$x]->getCastleId();
     }
 }

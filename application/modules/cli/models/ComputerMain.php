@@ -275,7 +275,7 @@ class Cli_Model_ComputerMain extends Cli_Model_ComputerFunctions
         } else {
             $this->_l->log('SĄ ZAMKI WROGA');
 
-            $pathToNearestWeakestHostileCastle = $this->findNearestWeakestHostileCastle();
+            $pathToNearestWeakestHostileCastle = $this->_user->parameters['game']->findNearestWeakestHostileCastle($this->_playerId,$this->_Computer);
 
             if (isset($pathToNearestWeakestHostileCastle->castleId)) {
                 $this->_l->log('JEST SŁABSZY ZAMEK WROGA: ' . $pathToNearestWeakestHostileCastle->castleId);
@@ -392,7 +392,7 @@ class Cli_Model_ComputerMain extends Cli_Model_ComputerFunctions
 
         $this->_l->log('IDĘ DO RUIN');
         $this->_Computer->updateArmyPosition($this->_gameId, $path, $this->_user->parameters['game']->getFields(), $this->_db);
-        $this->_user->parameters['game']->searchRuin($this->_gameId, $path->ruinId, $this->_Computer, $this->_playerId, $this->_db);
+        $this->_user->parameters['game']->searchRuin($path->ruinId, $this->_Computer, $this->_playerId, $this->_db);
         $this->_Computer->setFortified(true, $this->_gameId, $this->_db);
         return $this->endMove($this->_Computer->getId(), $path);
 
