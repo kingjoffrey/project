@@ -685,5 +685,13 @@ class Cli_Model_Army
         unset($this->_heroes[$heroId]);
     }
 
+    public function getNumberOfSoldiers()
+    {
+        return count($this->_soldiers);
+    }
 
+    public function getNumberOfHeroes()
+    {
+        return count($this->_heroes);
+    }
 }
