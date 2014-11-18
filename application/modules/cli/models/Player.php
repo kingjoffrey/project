@@ -21,6 +21,9 @@ class Cli_Model_Player
     private $_longName;
     private $_team;
 
+    private $_attackSequence;
+    private $_defenceSequence;
+
     public function __construct($player, $gameId, $mapCastles, Application_Model_MapPlayers $mMapPlayers, Zend_Db_Adapter_Pdo_Pgsql $db)
     {
         $this->_id = $player['playerId'];
@@ -39,6 +42,15 @@ class Cli_Model_Player
         $this->initArmies($gameId, $db);
         $this->initCastles($gameId, $mapCastles, $db);
         $this->initTowers($gameId, $db);
+        $this->initBattleSequence($gameId, $db);
+    }
+
+    private function initBattleSequence($gameId, Zend_Db_Adapter_Pdo_Pgsql $db)
+    {
+        $mBattleSequence = new Application_Model_BattleSequence($gameId, $db);
+        $sequence = $mBattleSequence->get($this->_id);
+        $this->_attackSequence = $sequence['attack'];
+        $this->_defenceSequence = $sequence['defence'];
     }
 
     private function initArmies($gameId, Zend_Db_Adapter_Pdo_Pgsql $db)
@@ -492,5 +504,15 @@ class Cli_Model_Player
     public function getCastleDefenseModifier($castleId)
     {
         return $this->_castles[$castleId]->getDefenseModifier();
+    }
+
+    public function getAttackSequence()
+    {
+        return $this->_attackSequence;
+    }
+
+    public function getDefenceSequence()
+    {
+        return $this->_defenceSequence;
     }
 }

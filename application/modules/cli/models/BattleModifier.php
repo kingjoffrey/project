@@ -1,24 +1,24 @@
 <?php
 
 /**
- * Class Cli_Model_AttackModifier
+ * Class Cli_Model_BattleModifier
  * ver. 0001
  */
-class Cli_Model_AttackModifier
+class Cli_Model_BattleModifier
 {
     private $_mod = 0;
 
-    public function setMod($mod)
+    public function set($mod)
     {
         $this->_mod = $mod;
     }
 
-    public function addMod($mod)
+    public function add($mod)
     {
-        $this->_mod = $mod;
+        $this->_mod += $mod;
     }
 
-    public function getMod()
+    public function get()
     {
         return $this->_mod;
     }

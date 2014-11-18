@@ -1302,8 +1302,6 @@ class Cli_Model_Game
         $attackerWinsCount = 0;
         $attackerCourage = 2;
 
-        $enemy->setCombatDefenseModifiers();
-
         if ($castleId = $this->_fields->isEnemyCastle($playerColor, $enemyX, $enemyY)) {
             $enemy->setDefenseModifier($this->_players[$enemyColor]->getCastleDefenseModifier($castleId));
         } elseif ($this->_fields->getTowerId($enemyX, $enemyY)) {

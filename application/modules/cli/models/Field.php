@@ -4,11 +4,10 @@ class Cli_Model_Field
 {
     private $_type;
     private $_temporaryType;
-    private $_armyId;
+    private $_armies = array();
     private $_castleId;
     private $_towerId;
     private $_ruinId;
-    private $_armyColor;
     private $_castleColor;
     private $_towerColor;
     private $_empty;
@@ -18,10 +17,9 @@ class Cli_Model_Field
         $this->_type = $type;
     }
 
-    public function setArmy($armyId, $color)
+    public function addArmy($armyId, $color)
     {
-        $this->_armyId = $armyId;
-        $this->_armyColor = $color;
+        $this->_armies[$armyId] = $color;
     }
 
     public function setCastle($castleId, $color)
@@ -47,11 +45,6 @@ class Cli_Model_Field
         return $this->_empty;
     }
 
-    public function getArmyId()
-    {
-        return $this->_armyId;
-    }
-
     public function getCastleId()
     {
         return $this->_castleId;
@@ -71,11 +64,6 @@ class Cli_Model_Field
         }
     }
 
-    public function getArmyColor()
-    {
-        return $this->_armyColor;
-    }
-
     public function getCastleColor()
     {
         return $this->_castleColor;
@@ -84,11 +72,6 @@ class Cli_Model_Field
     public function getTowerColor()
     {
         return $this->_towerColor;
-    }
-
-    public function setArmyColor($color)
-    {
-        $this->_armyColor = $color;
     }
 
     public function setCastleColor($color)

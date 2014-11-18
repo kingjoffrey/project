@@ -89,6 +89,7 @@ class Cli_Model_Army
 
         if ($numberOfHeroes) {
             $this->_attackModifier->increment();
+            $this->_defenseModifier->increment();
 //            $modMovesForest = 3;
 //            $modMovesSwamp = 4;
 //            $modMovesHills = 5;
@@ -377,7 +378,7 @@ class Cli_Model_Army
 
     public function setDefenseModifier($defenseModifier)
     {
-        $this->_defenseModifier = $defenseModifier;
+        $this->_defenseModifier->set($defenseModifier);
     }
 
     public function canSwim()
@@ -603,6 +604,10 @@ class Cli_Model_Army
 
     public function addHeroes($heroes)
     {
+        if (empty($this->_heroes) && $heroes) {
+            $this->_attackModifier->increment();
+            $this->_defenseModifier->increment();
+        }
         $this->_heroes = array_merge($this->_heroes, $heroes);
     }
 
@@ -676,6 +681,10 @@ class Cli_Model_Army
     {
         $this->_heroes[$heroId]->kill($playerId, $gameId, $db);
         unset($this->_heroes[$heroId]);
+        if (empty($this->_heroes)) {
+            $this->_attackModifier->decrement();
+            $this->_defenseModifier->decrement();
+        }
     }
 
     public function getNumberOfSoldiers()
