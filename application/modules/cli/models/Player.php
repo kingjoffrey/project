@@ -488,4 +488,9 @@ class Cli_Model_Player
         }
         return $count;
     }
+
+    public function getCastleDefenseModifier($castleId)
+    {
+        return $this->_castles[$castleId]->getDefenseModifier();
+    }
 }

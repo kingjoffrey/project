@@ -114,42 +114,5 @@ class Cli_Model_ComputerFight
 
         return $result;
     }
-
-    public function isEnemyStronger(Cli_Model_Army $enemy, $castleId = null, $max = 30)
-    {
-        $this->_l->logMethodName();
-        $attackerWinsCount = 0;
-        $attackerCourage = 2;
-
-        $enemy->setCombatDefenseModifiers();
-        $mCastlesInGame = new Application_Model_CastlesInGame($this->_gameId, $this->_db);
-
-        if ($castleId !== null && $mCastlesInGame->isEnemyCastle($castleId, $this->_playerId)) {
-            $enemy->addCastleDefenseModifier($castleId, $this->_gameId, $this->_db);
-        } else {
-            $enemy->addTowerDefenseModifier();
-        }
-
-        $battle = new Cli_Model_Battle(
-            $this->_Computer,
-            $enemy,
-            Cli_Model_Army::getAttackSequence($this->_gameId, $this->_db, $this->_playerId),
-            Cli_Model_Army::getDefenceSequence($this->_gameId, $this->_db, $enemy->getEnemyPlayerId($this->_gameId, $this->_playerId, $this->_db))
-        );
-
-        for ($i = 0; $i < $max; $i++) {
-            $battle->fight();
-            if ($battle->isAttacker()) {
-                $attackerWinsCount++;
-            }
-        }
-
-        $border = $max - $attackerWinsCount - $attackerCourage;
-        if ($attackerWinsCount >= $border) {
-            return false;
-        } else {
-            return true;
-        }
-    }
 }
 

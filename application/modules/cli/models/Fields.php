@@ -43,7 +43,7 @@ class Cli_Model_Fields
     {
         for ($i = $y; $i <= $y + 1; $i++) {
             for ($j = $x; $j <= $x + 1; $j++) {
-                $this->_fields[$i][$j]->setColor($color);
+                $this->_fields[$i][$j]->setCastleColor($color);
             }
         }
     }
@@ -88,7 +88,7 @@ class Cli_Model_Fields
 
     public function changeTower($x, $y, $color)
     {
-        $this->_fields[$y][$x]->setColor($color);
+        $this->_fields[$y][$x]->setTowerColor($color);
     }
 
     public function initRuin($x, $y, $ruinId, $empty)
@@ -144,7 +144,7 @@ class Cli_Model_Fields
 
     public function isTowerOpen($x, $y, $myColor, $myTeam)
     {
-        $towerColor = $this->_fields[$y][$x]->getColor();
+        $towerColor = $this->_fields[$y][$x]->getTowerColor();
         if ($myColor != $towerColor && $myTeam != $towerColor) {
             return $towerColor;
         }
@@ -166,9 +166,9 @@ class Cli_Model_Fields
         }
     }
 
-    public function getFieldColor($x, $y)
+    public function getArmyColor($x, $y)
     {
-        return $this->_fields[$y][$x]->getColor();
+        return $this->_fields[$y][$x]->getArmyColor();
     }
 
     public function getCastleId($x, $y)

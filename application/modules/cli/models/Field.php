@@ -6,9 +6,12 @@ class Cli_Model_Field
     private $_temporaryType;
     private $_armyId;
     private $_castleId;
-    private $_ruinId;
     private $_towerId;
-    private $_color;
+    private $_ruinId;
+    private $_armyColor;
+    private $_castleColor;
+    private $_towerColor;
+    private $_empty;
 
     public function __construct($type)
     {
@@ -18,7 +21,30 @@ class Cli_Model_Field
     public function setArmy($armyId, $color)
     {
         $this->_armyId = $armyId;
-        $this->_color = $color;
+        $this->_armyColor = $color;
+    }
+
+    public function setCastle($castleId, $color)
+    {
+        $this->_castleId = $castleId;
+        $this->_castleColor = $color;
+    }
+
+    public function setTower($towerId, $color)
+    {
+        $this->_towerId = $towerId;
+        $this->_towerColor = $color;
+    }
+
+    public function setRuin($ruinId, $empty)
+    {
+        $this->_ruinId = $ruinId;
+        $this->_empty = $empty;
+    }
+
+    public function getEmpty()
+    {
+        return $this->_empty;
     }
 
     public function getArmyId()
@@ -26,27 +52,9 @@ class Cli_Model_Field
         return $this->_armyId;
     }
 
-    public function setCastle($castleId, $color)
-    {
-        $this->_castleId = $castleId;
-        $this->_color = $color;
-    }
-
     public function getCastleId()
     {
         return $this->_castleId;
-    }
-
-    public function setRuin($ruinId, $empty)
-    {
-        $this->_ruinId = $ruinId;
-        $this->_color = $empty;
-    }
-
-    public function setTower($towerId, $color)
-    {
-        $this->_towerId = $towerId;
-        $this->_color = $color;
     }
 
     public function getTowerId()
@@ -63,14 +71,34 @@ class Cli_Model_Field
         }
     }
 
-    public function getColor()
+    public function getArmyColor()
     {
-        return $this->_color;
+        return $this->_armyColor;
     }
 
-    public function setColor($color)
+    public function getCastleColor()
     {
-        $this->_color = $color;
+        return $this->_castleColor;
+    }
+
+    public function getTowerColor()
+    {
+        return $this->_towerColor;
+    }
+
+    public function setArmyColor($color)
+    {
+        $this->_armyColor = $color;
+    }
+
+    public function setCastleColor($color)
+    {
+        $this->_castleColor = $color;
+    }
+
+    public function setTowerColor($color)
+    {
+        $this->_towerColor = $color;
     }
 
     public function setTemporaryType($type)

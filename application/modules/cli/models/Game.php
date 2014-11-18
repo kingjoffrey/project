@@ -1291,4 +1291,44 @@ class Cli_Model_Game
             }
         }
     }
+
+    public function isEnemyStronger($playerId, Cli_Model_Army $army, Cli_Model_Army $enemy, $max = 30)
+    {
+        $this->_l->logMethodName();
+        $playerColor = $this->getPlayerColor($playerId);
+        $enemyX = $enemy->getX();
+        $enemyY = $enemy->getY();
+        $enemyColor = $this->_fields->getArmyColor($enemyX, $enemyY);
+        $attackerWinsCount = 0;
+        $attackerCourage = 2;
+
+        $enemy->setCombatDefenseModifiers();
+
+        if ($castleId = $this->_fields->isEnemyCastle($playerColor, $enemyX, $enemyY)) {
+            $enemy->setDefenseModifier($this->_players[$enemyColor]->getCastleDefenseModifier($castleId));
+        } elseif ($this->_fields->getTowerId($enemyX, $enemyY)) {
+            $enemy->setDefenseModifier(1);
+        }
+
+        $battle = new Cli_Model_Battle(
+            $army,
+            $enemy,
+            $this->_players[$playerColor]->getAttackSequence(),
+            $this->_players[$enemyColor]->getDefenceSequence()
+        );
+
+        for ($i = 0; $i < $max; $i++) {
+            $battle->fight();
+            if ($battle->isAttacker()) {
+                $attackerWinsCount++;
+            }
+        }
+
+        $border = $max - $attackerWinsCount - $attackerCourage;
+        if ($attackerWinsCount >= $border) {
+            return false;
+        } else {
+            return true;
+        }
+    }
 }

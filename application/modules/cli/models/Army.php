@@ -375,26 +375,9 @@ class Cli_Model_Army
         return $currentPath;
     }
 
-    public function addTowerDefenseModifier()
+    public function setDefenseModifier($defenseModifier)
     {
-        if (Application_Model_Board::isTowerAtPosition($this->_x, $this->_y)) {
-            $this->_defenseModifier->increment();
-        }
-    }
-
-    public function addCastleDefenseModifier($castleId, $gameId, $db)
-    {
-        $mapCastles = Zend_Registry::get('castles');
-
-        $mCastlesInGame = new Application_Model_CastlesInGame($gameId, $db);
-        $defenseModifier = $mapCastles[$castleId]['defense'] + $mCastlesInGame->getCastleDefenseModifier($castleId);
-
-        if ($defenseModifier > 0) {
-            $this->_defenseModifier->add($defenseModifier);
-        } else {
-            throw new Exception('$defenseModifier <= 0');
-            echo 'error! !';
-        }
+        $this->_defenseModifier = $defenseModifier;
     }
 
     public function canSwim()

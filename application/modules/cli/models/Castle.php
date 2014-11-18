@@ -149,4 +149,9 @@ class Cli_Model_Castle
         }
         return $unitId;
     }
+
+    public function getDefenseModifier()
+    {
+        return $this->_defense + $this->_defenseMod;
+    }
 }
