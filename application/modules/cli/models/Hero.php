@@ -48,6 +48,8 @@ class Cli_Model_Hero
     {
         $this->_movesLeft -= $movesSpend;
         if ($this->_movesLeft < 0) {
+            echo $this->_movesLeft . "\n";
+            echo $movesSpend . "\n";
             Coret_Model_Logger::debug(debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 2));
             throw new Exception('movesLeft < 0');
         }
@@ -74,7 +76,8 @@ class Cli_Model_Hero
         $mHeroesInGame->zeroHeroMovesLeft($this->_id);
     }
 
-    public function kill($playerId, $gameId, $db){
+    public function kill($playerId, $gameId, $db)
+    {
         $mHeroesInGame = new Application_Model_HeroesInGame($gameId, $db);
         $mHeroesInGame->armyRemoveHero($this->_id);
         $mHeroesKilled = new Application_Model_HeroesKilled($gameId, $db);

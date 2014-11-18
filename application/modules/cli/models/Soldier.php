@@ -104,4 +104,19 @@ class Cli_Model_Soldier
         $mUnitsInGame = new Application_Model_UnitsInGame($gameId, $db);
         $mUnitsInGame->updateMovesLeft($this->_movesLeft, $this->_id);
     }
+
+    public function getForest()
+    {
+        return $this->_forest;
+    }
+
+    public function getHills()
+    {
+        return $this->_hills;
+    }
+
+    public function getSwamp()
+    {
+        return $this->_swamp;
+    }
 }

@@ -700,7 +700,7 @@ class Cli_Model_Game
         }
 
         $army = new Cli_Model_Army(array(
-            'id' => 0,
+            'armyId' => 0,
             'x' => 0,
             'y' => 0
         ));

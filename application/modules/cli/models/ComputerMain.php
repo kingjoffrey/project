@@ -493,7 +493,7 @@ class Cli_Model_ComputerMain extends Cli_Model_ComputerFunctions
         } else {
             if (isset($path->current) && $path->current) {
                 $joinIds = $this->_user->parameters['game']->joinArmiesAtPosition($this->_playerId, $this->_Computer->getId(), $this->_db);
-                $attackerArmy = Cli_Model_Army::getArmyByArmyIdPlayerId($joinIds['armyId'], $this->_playerId, $this->_gameId, $this->_db);
+                $attackerArmy = $this->_Computer->getArmy();
                 $currentPath = $path->current;
             } else {
                 $joinIds = array('deletedIds' => null);
