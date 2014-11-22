@@ -10,11 +10,26 @@ class Cli_Model_Army
 
     public $_ids;
 
-    public $_defenseModifier;
     public $_attackModifier;
+    public $_defenseModifier;
+
+    public $_attackBattleSequence;
+    public $_defenceBattleSequence;
+
+    public $_attack = array(
+        'soldiers' => array(),
+        'ships' => array(),
+        'heroes' => array()
+    );
+    public $_defence = array(
+        'soldiers' => array(),
+        'ships' => array(),
+        'heroes' => array()
+    );
 
     public $_heroes = array();
     public $_soldiers = array();
+    public $_ships = array();
 
     private $_canFly = 0;
     private $_canSwim = 0;
@@ -22,7 +37,7 @@ class Cli_Model_Army
     private $_units;
     private $_terrain;
 
-    private $_movesLeft;
+    private $_movesLeft = 1000;
 
     /*
      * @param array $army
@@ -65,18 +80,19 @@ class Cli_Model_Army
 
     public function setSoldiers($soldiers)
     {
+        $units = Zend_Registry::get('units');
         foreach ($soldiers as $soldier) {
-            $this->_soldiers[$soldier['soldierId']] = new Cli_Model_Soldier($soldier);
+            $unit = $units[$soldier['unitId']];
+            if ($unit['canSwim']) {
+                $this->_ships[$soldier['soldierId']] = new Cli_Model_Soldier($soldier, $unit);
+            } else {
+                $this->_soldiers[$soldier['soldierId']] = new Cli_Model_Soldier($soldier, $unit);
+            }
         }
     }
 
     public function init()
     {
-//        $modMovesForest = 0;
-//        $modMovesSwamp = 0;
-//        $modMovesHills = 0;
-
-        $this->_movesLeft = 1000;
         $numberOfHeroes = 0;
         $attackFlyModifier = 0;
 
@@ -90,9 +106,6 @@ class Cli_Model_Army
         if ($numberOfHeroes) {
             $this->_attackModifier->increment();
             $this->_defenseModifier->increment();
-//            $modMovesForest = 3;
-//            $modMovesSwamp = 4;
-//            $modMovesHills = 5;
         }
 
         $this->_canFly = -$numberOfHeroes + 1;
@@ -101,16 +114,6 @@ class Cli_Model_Army
             if ($this->_movesLeft > $soldier->getMovesLeft()) {
                 $this->_movesLeft = $soldier->getMovesLeft();
             }
-
-//            if ($soldier->getForest() > $modMovesForest) {
-//                $modMovesForest = $soldier->getForest();
-//            }
-//            if ($soldier->getSwamp() > $modMovesSwamp) {
-//                $modMovesSwamp = $soldier->getSwamp();
-//            }
-//            if ($soldier->getHills() > $modMovesHills) {
-//                $modMovesHills = $soldier->getHills();
-//            }
 
             if ($soldier->canFly()) {
                 $attackFlyModifier++;
@@ -146,11 +149,21 @@ class Cli_Model_Army
         return $soldiers;
     }
 
+    private function shipsToArray()
+    {
+        $ships = array();
+        foreach ($this->_ships as $soldierId => $soldier) {
+            $ships[$soldierId] = $soldier->toArray();
+        }
+        return $ships;
+    }
+
     public function toArray()
     {
         return array(
             'armyId' => $this->_id,
             'soldiers' => $this->soldiersToArray(),
+            'ships' => $this->shipsToArray(),
             'heroes' => $this->heroesToArray(),
             'x' => $this->_x,
             'y' => $this->_y,
@@ -699,6 +712,89 @@ class Cli_Model_Army
 
     public function count()
     {
-        return count($this->_soldiers) + count($this->_heroes);
+        return count($this->_soldiers) + count($this->_ships) + count($this->_heroes);
+    }
+
+    public function isemptyAttackBattleSequence()
+    {
+        return empty($this->_attackBattleSequence);
+    }
+
+    public function isemptyDefenceBattleSequence()
+    {
+        return empty($this->_defenceBattleSequence);
+    }
+
+    public function setAttackBattleSequence($attackBattleSequence)
+    {
+        $this->_attackBattleSequence = $attackBattleSequence;
+        foreach ($this->_soldiers as $soldier) {
+            $soldier->setUsed(false);
+        }
+        foreach ($this->_attackBattleSequence as $unitId) {
+            foreach ($this->_soldiers as $soldier) {
+                if ($soldier->getUnitId() == $unitId && $soldier->notUsed()) {
+                    $soldier->setUsed(true);
+                    $this->_attack['soldiers'][] = $soldier;
+                }
+            }
+        }
+
+        foreach ($this->_heroes as $hero) {
+            $this->_attack['heroes'][] = $hero;
+        }
+
+        foreach ($this->_ships as $ship) {
+            $this->_attack['ships'][] = $ship;
+        }
+    }
+
+    public function setDefenceBattleSequence($defenceBattleSequence)
+    {
+        $this->_defenceBattleSequence = $defenceBattleSequence;
+        foreach ($this->_soldiers as $soldier) {
+            $soldier->setUsed(false);
+        }
+        foreach ($this->_defenceBattleSequence as $unitId) {
+            foreach ($this->_soldiers as $soldier) {
+                if ($soldier->getUnitId() == $unitId && $soldier->notUsed()) {
+                    $soldier->setUsed(true);
+                    $this->_defence['soldiers'][] = $soldier;
+                }
+            }
+        }
+
+        foreach ($this->_heroes as $hero) {
+            $this->_defence['heroes'][] = $hero;
+        }
+
+        foreach ($this->_ships as $ship) {
+            $this->_defence['ships'][] = $ship;
+        }
+    }
+
+    public function getAttack()
+    {
+        return $this->_attack;
+    }
+
+    public function getDefence()
+    {
+        return $this->_defence;
+    }
+
+    public function getAttackModifier()
+    {
+        return $this->_attackModifier->get();
+    }
+
+    public function getDefenseModifier()
+    {
+        return $this->_defenseModifier->get();
+    }
+
+    public function attackerVictory()
+    {
+        return count($this->_attack['soldiers']) || count($this->_attack['heroes']) || count($this->_attack['ships']);
     }
 }

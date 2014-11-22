@@ -4,14 +4,10 @@
  * Class Cli_Model_Hero
  * ver. 0001
  */
-class Cli_Model_Hero
+class Cli_Model_Hero extends Cli_Model_DefaultUnit
 {
-    private $_id;
-    private $_moves;
-    private $_attack;
-    private $_defense;
+    protected $_type = 'hero';
     private $_name;
-    private $_movesLeft;
 
     public function __construct($hero)
     {
@@ -32,16 +28,6 @@ class Cli_Model_Hero
             'name' => $this->_name,
             'movesLeft' => $this->_movesLeft
         );
-    }
-
-    public function setMovesLeft($movesLeft)
-    {
-        $this->_movesLeft = $movesLeft;
-    }
-
-    public function getMovesLeft()
-    {
-        return $this->_movesLeft;
     }
 
     public function updateMovesLeft($heroId, $movesSpend, Application_Model_HeroesInGame $mHeroesInGame)

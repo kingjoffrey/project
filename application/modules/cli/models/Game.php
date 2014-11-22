@@ -9,7 +9,6 @@ class Cli_Model_Game
     private $_turnNumber = 1;
 
     private $_capitals = array();
-//    private $_teams = array();
     private $_playersInGameColors;
     private $_online = array();
 
@@ -29,10 +28,8 @@ class Cli_Model_Game
     private $_specialUnits = array();
     private $_firstUnitId;
 
-    private $_neutralCastles = array();
     private $_players = array();
     private $_ruins = array();
-    private $_neutralTowers = array();
 
     private $_statistics;
 
@@ -57,7 +54,6 @@ class Cli_Model_Game
         $this->_turnHistory = $mTurnHistory->getTurnHistory();
 
         $mPlayersInGame = new Application_Model_PlayersInGame($this->_id, $db);
-//        $this->_teams = $mPlayersInGame->getTeams();
         $this->_playersInGameColors = Zend_Registry::get('playersInGameColors');
         foreach ($mPlayersInGame->getInGamePlayerIds() as $row) {
             $this->_online[$this->_playersInGameColors[$row['playerId']]] = 1;
@@ -92,24 +88,13 @@ class Cli_Model_Game
         reset($this->_units);
         $this->_firstUnitId = key($this->_units);
 
-        $mMapCastles = new Application_Model_MapCastles($this->_mapId, $db);
-        $mapCastles = $mMapCastles->getMapCastles();
-        $this->initNeutralCastles($mapCastles, $db);
-        $this->initNeutralTowers($db);
-        $this->initPlayers($mapCastles, $mMapPlayers, $db);
+        $this->initPlayers($mMapPlayers, $db);
         $this->initRuins($db);
 
-        $mBattleSequence = new Application_Model_BattleSequence($this->_id, $db);
-        $battleSequence = $mBattleSequence->get($playerId);
-        if (empty($battleSequence)) {
-            $mBattleSequence->initiate($playerId, $this->_units);
-            $battleSequence = $mBattleSequence->get($playerId);
-        }
         $this->_me = new Cli_Model_Me(
             $this->getPlayerColor($playerId),
             $this->_players[$this->getPlayerColor($playerId)]->getTeam(),
-            $mPlayersInGame->getMe($playerId),
-            $battleSequence
+            $mPlayersInGame->getMe($playerId)
         );
         if ($this->_turnPlayerId == $playerId) {
             $this->_me->setTurn(true);
@@ -121,37 +106,30 @@ class Cli_Model_Game
     private function initFields()
     {
         foreach ($this->_players as $color => $player) {
-            foreach ($player->armiesToArray() as $armyId => $army) {
-                $this->_fields->initArmy($army['x'], $army['y'], $armyId, $color);
+            foreach ($player->getArmies() as $armyId => $army) {
+                $this->_fields->addArmy($army->getX(), $army->getY(), $armyId, $color);
             }
-            foreach ($player->castlesToArray() as $castleId => $castle) {
-                $this->_fields->initCastle($castle['x'], $castle['y'], $castleId, $color);
+            foreach ($player->getCastles() as $castleId => $castle) {
+                $this->_fields->initCastle($castle->getX(), $castle->getY(), $castleId, $color);
+            }
+            foreach ($player->getTowers() as $towerId => $tower) {
+                $this->_fields->initTower($tower->getX(), $tower->getY(), $towerId, $color);
             }
         }
     }
 
-    private function initNeutralCastles($mapCastles, Zend_Db_Adapter_Pdo_Pgsql $db)
-    {
-        $mCastlesInGame = new Application_Model_CastlesInGame($this->_id, $db);
-        $playersCastles = $mCastlesInGame->getAllCastles();
-
-        foreach ($mapCastles as $castleId => $castle) {
-            if (isset($playersCastles[$castleId])) {
-                continue;
-            }
-            $this->_neutralCastles[$castleId] = $castle;
-            $this->_fields->initCastle($castle['x'], $castle['y'], $castleId, 'neutral');
-        }
-    }
-
-    private function initPlayers($mapCastles, Application_Model_MapPlayers $mMapPlayers, Zend_Db_Adapter_Pdo_Pgsql $db)
+    private function initPlayers(Application_Model_MapPlayers $mMapPlayers, Zend_Db_Adapter_Pdo_Pgsql $db)
     {
         $mPlayersInGame = new Application_Model_PlayersInGame($this->_id, $db);
         $players = $mPlayersInGame->getGamePlayers();
+        $mMapCastles = new Application_Model_MapCastles($this->_mapId, $db);
+        $mapCastles = $mMapCastles->getMapCastles();
 
         foreach ($this->_playersInGameColors as $playerId => $color) {
             $this->_players[$color] = new Cli_Model_Player($players[$playerId], $this->_id, $mapCastles, $mMapPlayers, $db);
         }
+
+        $this->_players['neutral'] = new Cli_Model_NeutralPlayer($this->_mapId, $this->_id, $mapCastles, $db);
     }
 
     private function initRuins(Zend_Db_Adapter_Pdo_Pgsql $db)
@@ -171,24 +149,13 @@ class Cli_Model_Game
         }
     }
 
-    private function initNeutralTowers(Zend_Db_Adapter_Pdo_Pgsql $db)
-    {
-        $mTowersInGame = new Application_Model_TowersInGame($this->_id, $db);
-        $playersTowers = $mTowersInGame->getTowers();
-
-        $mMapTowers = new Application_Model_MapTowers($this->_mapId, $db);
-        foreach ($mMapTowers->getMapTowers() as $towerId => $tower) {
-            if (isset($playersTowers[$towerId])) {
-                continue;
-            }
-            $this->_neutralTowers[$towerId] = $tower;
-        }
-    }
-
     private function playersToArray()
     {
         $players = array();
         foreach ($this->_players as $color => $player) {
+            if ($color == 'neutral') {
+                continue;
+            }
             $players[$color] = $player->toArray();
         }
         return $players;
@@ -268,8 +235,8 @@ class Cli_Model_Game
             'me' => $this->_me->toArray(),
             'players' => $this->playersToArray(),
             'ruins' => $this->ruinsToArray(),
-            'neutralCastles' => $this->_neutralCastles,
-            'neutralTowers' => $this->_neutralTowers
+            'neutralCastles' => $this->_players['neutral']->castlesToArray(),
+            'neutralTowers' => $this->_players['neutral']->towersToArray()
         );
     }
 
@@ -430,15 +397,15 @@ class Cli_Model_Game
             $nextPlayerColor = $firstColor;
         }
 
-        /* przypisuję playerId do koloru */
-        $player = $this->_players[$nextPlayerColor];
-        $color = $player->getColor();
-        if ($color == $firstColor) {
+        $nextPlayerId = $this->_players[$nextPlayerColor]->getId();
+
+        /* sprawdzam czy to nowa tura */
+        if ($nextPlayerColor == $firstColor) {
             $this->turnNumberIncrement();
             $mGame = new Application_Model_Game($this->_id, $db);
-            $mGame->updateTurnNumber($player->getId(), $this->_turnNumber);
+            $mGame->updateTurnNumber($nextPlayerId, $this->_turnNumber);
         }
-        return $player->getId();
+        return $nextPlayerId;
     }
 
     private function turnNumberIncrement()
@@ -464,6 +431,9 @@ class Cli_Model_Game
 
         $playerColor = $this->getPlayerColor($playerId);
         foreach ($this->_players as $color => $player) {
+            if ($color == 'neutral') {
+                continue;
+            }
             if ($playerColor == $color) {
                 $player->setTurnActive(true);
             } else {
@@ -480,16 +450,13 @@ class Cli_Model_Game
     public function addTower($playerId, $towerId, $color, $db)
     {
         $mTowersInGame = new Application_Model_TowersInGame($this->_id, $db);
-
         if ($color == 'neutral') {
-            $this->_players[$this->getPlayerColor($playerId)]->addTower($towerId, $this->_neutralTowers[$towerId]);
-            unset($this->_neutralTowers[$towerId]);
             $mTowersInGame->addTower($towerId, $playerId);
         } else {
-            $this->_players[$this->getPlayerColor($playerId)]->addTower($towerId, $this->_players[$color]->getTower($towerId));
-            $this->_players[$color]->removeTower($towerId);
             $mTowersInGame->changeTowerOwner($towerId, $playerId);
         }
+        $this->_players[$this->getPlayerColor($playerId)]->addTower($towerId, $this->_players[$color]->getTower($towerId));
+        $this->_players[$color]->removeTower($towerId);
     }
 
     public function unfortifyPlayerArmies($playerId, $db)
@@ -686,33 +653,32 @@ class Cli_Model_Game
         return $found;
     }
 
-
-    public function getNeutralCastleGarrison()
-    {
-        $numberOfSoldiers = ceil($this->_turnNumber / 10);
-        $soldiers = array();
-        for ($i = 1; $i <= $numberOfSoldiers; $i++) {
-            $soldiers[] = array(
-                'defensePoints' => 3,
-                'soldierId' => 's' . $i,
-                'unitId' => $this->_firstUnitId
-            );
-        }
-
-        $army = new Cli_Model_Army(array(
-            'armyId' => 0,
-            'x' => 0,
-            'y' => 0
-        ));
-        $army->addSoldiers($soldiers);
-
-        return $army;
-    }
-
     public function getCastleGarrison($playerId, $castleId)
     {
         return $this->_players[$this->getPlayerColor($playerId)]->getCastleGarrison($castleId);
     }
+
+    public function getTurnsLimit()
+    {
+        return $this->_turnsLimit;
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     /*
      * **************************
@@ -848,21 +814,13 @@ class Cli_Model_Game
         }
     }
 
-    public function getWeakerHostileCastle($playerId, $army, $castlesIds = array())
+    public function getWeakerHostileCastleId($playerId, $army, $castlesIds = array())
     {
         $this->_l->logMethodName();
         $playerColor = $this->getPlayerColor($playerId);
         $heuristics = array();
         $armyX = $army->getX();
         $armyY = $army->getY();
-
-        foreach ($this->_neutralCastles as $castleId => $castle) {
-            if (in_array($castleId, $castlesIds)) {
-                continue;
-            }
-            $mHeuristics = new Cli_Model_Heuristics($castle['x'], $castle['y']);
-            $heuristics[$castleId] = $mHeuristics->calculateH($armyX, $armyY);
-        }
 
         foreach ($this->_players as $color => $player) {
             if ($this->sameTeam($playerColor, $color)) {
@@ -880,13 +838,13 @@ class Cli_Model_Game
         asort($heuristics, SORT_NUMERIC);
 
         foreach (array_keys($heuristics) as $id) {
-            if (isset($this->_neutralCastles[$id])) {
-                $enemy = $this->getNeutralCastleGarrison();
+            if ($this->_players['neutral']->hasCastle($id)) {
+                $enemy = $this->_players['neutral']->getCastleGarrison($this->_turnNumber, $this->_firstUnitId);
             } else {
                 $enemy = $this->getCastleGarrison($playerId, $id);
             }
 
-            if (!$this->isEnemyStronger(new Cli_Model_Army($enemy), $id)) {
+            if (!$this->isEnemyStronger($playerId, $army, $enemy)) {
                 return $id;
             }
         }
@@ -897,19 +855,19 @@ class Cli_Model_Game
     {
         $this->_l->logMethodName();
         $omittedCastlesIds = array();
-        $weakerHostileCastleId = $this->getWeakerHostileCastle($playerId, $army);
+        $weakerHostileCastleId = $this->getWeakerHostileCastleId($playerId, $army);
 
         if (!$weakerHostileCastleId) {
             return new Cli_Model_Path();
         }
 
-        $path = $this->getPathToEnemyCastleInRange($weakerHostileCastleId);
+        $path = $this->getPathToEnemyCastleInRange($playerId, $army, $weakerHostileCastleId);
         while (true) {
             if (!isset($path->current) || empty($path->current)) {
                 $omittedCastlesIds[] = $weakerHostileCastleId;
-                $weakerHostileCastleId = $this->getWeakerHostileCastle($playerId, $army, $omittedCastlesIds);
+                $weakerHostileCastleId = $this->getWeakerHostileCastleId($playerId, $army, $omittedCastlesIds);
                 if ($weakerHostileCastleId) {
-                    $path = $this->getPathToEnemyCastleInRange($weakerHostileCastleId);
+                    $path = $this->getPathToEnemyCastleInRange($playerId, $army, $weakerHostileCastleId);
                 } else {
                     break;
                 }
@@ -918,6 +876,40 @@ class Cli_Model_Game
         }
         $path->castleId = $weakerHostileCastleId;
         return $path;
+    }
+
+    public function getPathToEnemyCastleInRange($playerId, $army, $castleId)
+    {
+        $this->_l->logMethodName();
+        $playerColor = $this->getPlayerColor($playerId);
+
+        foreach ($this->_players as $color => $player) {
+            if ($player->hasCastle($castleId)) {
+                $castle = $this->_players[$color]->getCastle($castleId);
+                break;
+            }
+        }
+
+        $castleX = $castle->getX();
+        $castleY = $castle->getY();
+
+        $this->_fields->setCastleTemporaryType($castleX, $castleY, 'E');
+
+        try {
+            $aStar = new Cli_Model_Astar($army, $castleX, $castleY, $this->_fields, $playerColor);
+        } catch (Exception $e) {
+            echo($e);
+            return;
+        }
+
+        $move = $army->calculateMovesSpend($aStar->getPath($castleX . '_' . $castleY, $playerColor));
+        if ($move->end && $this->_fields->isEnemyCastle($playerColor, $move->x, $move->y)) {
+            $move->in = true;
+        } else {
+            $move->in = false;
+        }
+
+        return $move;
     }
 
     public function getPathToMyCastle($playerId, $army, $castle)
@@ -1057,11 +1049,10 @@ class Cli_Model_Game
                 $mHeuristics = new Cli_Model_Heuristics($enemyX, $enemyY);
                 $h = $mHeuristics->calculateH($armyX, $armyY);
                 if ($h < $movesLeft) {
-                    $castleId = $this->_fields->isPlayerCastle($color, $enemyX, $enemyY);
-
-                    if (!$this->isEnemyStronger($enemy, $castleId)) {
+                    if (!$this->isEnemyStronger($playerId, $army, $enemy)) {
                         continue;
                     }
+                    $castleId = $this->_fields->isPlayerCastle($color, $enemyX, $enemyY);
                     if ($castleId) {
                         $this->_fields->setCastleTemporaryType($enemyX, $enemyY, 'E');
                     } else {
@@ -1097,38 +1088,43 @@ class Cli_Model_Game
         $armyY = $army->getY();
         $movesLeft = $army->getMovesLeft();
 
-        foreach ($this->_enemies as $enemyId => $enemy) {
-            $enemyX = $enemy->getX();
-            $enemyY = $enemy->getY();
-            $mHeuristics = new Cli_Model_Heuristics($enemyX, $enemyY);
-            $h = $mHeuristics->calculateH($armyX, $armyY);
-            if ($h < $movesLeft) {
-                $castleId = $this->_fields->isNotPlayerCastle($playerColor, $enemyX, $enemyY);
-                if ($this->isEnemyStronger($enemy, $castleId)) {
-                    continue;
-                }
-                if ($castleId) {
-                    $this->_fields->setCastleTemporaryType($enemyX, $enemyY, 'E');
-                } else {
-                    $this->_fields->setTemporaryType($enemyX, $enemyY, 'E');
-                }
-                try {
-                    $aStar = new Cli_Model_Astar($army, $enemyX, $enemyY, $this->_fields, $playerColor);
-                } catch (Exception $e) {
-                    echo($e);
-                    return;
-                }
+        foreach ($this->_players as $color => $player) {
+            if ($this->sameTeam($playerColor, $color)) {
+                continue;
+            }
+            foreach ($player->getArmies() as $enemy) {
+                $enemyX = $enemy->getX();
+                $enemyY = $enemy->getY();
+                $mHeuristics = new Cli_Model_Heuristics($enemyX, $enemyY);
+                $h = $mHeuristics->calculateH($armyX, $armyY);
+                if ($h < $movesLeft) {
+                    if ($this->isEnemyStronger($playerId, $army, $enemy)) {
+                        continue;
+                    }
+                    $castleId = $this->_fields->isNotPlayerCastle($playerColor, $enemyX, $enemyY);
+                    if ($castleId) {
+                        $this->_fields->setCastleTemporaryType($enemyX, $enemyY, 'E');
+                    } else {
+                        $this->_fields->setTemporaryType($enemyX, $enemyY, 'E');
+                    }
+                    try {
+                        $aStar = new Cli_Model_Astar($army, $enemyX, $enemyY, $this->_fields, $playerColor);
+                    } catch (Exception $e) {
+                        echo($e);
+                        return;
+                    }
 
-                $move = $army->calculateMovesSpend($aStar->getPath($enemyX . '_' . $enemyY, $playerColor));
-                if ($castleId) {
-                    $this->_fields->resetCastleTemporaryType($enemyX, $enemyY);
-                } else {
-                    $this->_fields->resetTemporaryType($enemyX, $enemyY);
-                }
-                if ($move->x == $enemyX && $move->y == $enemyY) {
-                    $move->castleId = $castleId;
-                    $move->armyId = $enemyId;
-                    return $move;
+                    $move = $army->calculateMovesSpend($aStar->getPath($enemyX . '_' . $enemyY, $playerColor));
+                    if ($castleId) {
+                        $this->_fields->resetCastleTemporaryType($enemyX, $enemyY);
+                    } else {
+                        $this->_fields->resetTemporaryType($enemyX, $enemyY);
+                    }
+                    if ($move->x == $enemyX && $move->y == $enemyY) {
+                        $move->castleId = $castleId;
+                        $move->armyId = $enemyId;
+                        return $move;
+                    }
                 }
             }
         }
@@ -1139,10 +1135,8 @@ class Cli_Model_Game
     public function canAttackAllEnemyHaveRange($playerId, $army, $enemiesHaveRange)
     {
         $this->_l->logMethodName();
-        $playerColor = $this->getPlayerColor($playerId);
         foreach ($enemiesHaveRange as $enemy) {
-            $castleId = $this->_fields->isPlayerCastle($enemy->getX(), $enemy->getY(), $playerColor);
-            if ($this->isEnemyStronger($enemy, $castleId)) {
+            if ($this->isEnemyStronger($playerId, $army, $enemy)) {
                 return;
             }
         }
@@ -1173,33 +1167,6 @@ class Cli_Model_Game
                 }
             }
         }
-    }
-
-    public function getPathToEnemyCastleInRange($playerId, $castleId, $army)
-    {
-        $this->_l->logMethodName();
-        $playerColor = $this->getPlayerColor($playerId);
-        $castle = $this->_players[$playerColor]->getCastle($castleId);
-        $castleX = $castle->getX();
-        $castleY = $castle->getY();
-
-        $this->_fields->setCastleTemporaryType($castleX, $castleY, 'E');
-
-        try {
-            $aStar = new Cli_Model_Astar($army, $castleX, $castleY, $this->_fields, $playerColor);
-        } catch (Exception $e) {
-            echo($e);
-            return;
-        }
-
-        $move = $army->calculateMovesSpend($aStar->getPath($castleX . '_' . $castleY, $playerColor));
-        if ($this->_fields->isEnemyCastle($playerColor, $move->x, $move->y)) {
-            $move->in = true;
-        } else {
-            $move->in = false;
-        }
-
-        return $move;
     }
 
     public function getPathToEnemyInRange($playerId, $army, $enemy)
@@ -1298,7 +1265,7 @@ class Cli_Model_Game
         $playerColor = $this->getPlayerColor($playerId);
         $enemyX = $enemy->getX();
         $enemyY = $enemy->getY();
-        $enemyColor = $this->_fields->getArmyColor($enemyX, $enemyY);
+        $enemyColor = $this->_fields->getArmyColor($enemyX, $enemyY, $enemy->getId());
         $attackerWinsCount = 0;
         $attackerCourage = 2;
 
@@ -1317,7 +1284,7 @@ class Cli_Model_Game
 
         for ($i = 0; $i < $max; $i++) {
             $battle->fight();
-            if ($battle->isAttacker()) {
+            if ($battle->attackerVictory()) {
                 $attackerWinsCount++;
             }
         }

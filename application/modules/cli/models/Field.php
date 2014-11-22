@@ -22,6 +22,19 @@ class Cli_Model_Field
         $this->_armies[$armyId] = $color;
     }
 
+    public function isArmy()
+    {
+        return !empty($this->_armies);
+    }
+
+    public function getArmyColor($armyId)
+    {
+        if (empty($armyId)) {
+            return 'neutral';
+        }
+        return $this->_armies[$armyId];
+    }
+
     public function setCastle($castleId, $color)
     {
         $this->_castleId = $castleId;

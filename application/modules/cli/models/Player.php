@@ -1,12 +1,10 @@
 <?php
 
-class Cli_Model_Player
+class Cli_Model_Player extends Cli_Model_DefaultPlayer
 {
     private $_id;
 
     private $_armies = array();
-    private $_castles = array();
-    private $_towers = array();
 
     private $_turnActive;
     private $_computer;
@@ -27,10 +25,14 @@ class Cli_Model_Player
     public function __construct($player, $gameId, $mapCastles, Application_Model_MapPlayers $mMapPlayers, Zend_Db_Adapter_Pdo_Pgsql $db)
     {
         $this->_id = $player['playerId'];
+        $this->_lost = $player['lost'];
+
+        if ($this->_lost) {
+            return;
+        }
 
         $this->_turnActive = $player['turnActive'];
         $this->_computer = $player['computer'];
-        $this->_lost = $player['lost'];
         $this->_gold = $player['gold'];
         $this->_miniMapColor = $player['minimapColor'];
         $this->_backgroundColor = $player['backgroundColor'];
@@ -48,17 +50,17 @@ class Cli_Model_Player
     private function initBattleSequence($gameId, Zend_Db_Adapter_Pdo_Pgsql $db)
     {
         $mBattleSequence = new Application_Model_BattleSequence($gameId, $db);
-        $sequence = $mBattleSequence->get($this->_id);
-        $this->_attackSequence = $sequence['attack'];
-        $this->_defenceSequence = $sequence['defence'];
+        $battleSequence = $mBattleSequence->get($this->_id);
+        if (isset($battleSequence['attack'])) {
+            $this->_attackSequence = $battleSequence['attack'];
+        }
+        if (isset($battleSequence['defence'])) {
+            $this->_defenceSequence = $battleSequence['defence'];
+        }
     }
 
     private function initArmies($gameId, Zend_Db_Adapter_Pdo_Pgsql $db)
     {
-        if ($this->_lost) {
-            return;
-        }
-
         $mArmy = new Application_Model_Army($gameId, $db);
         $mSoldier = new Application_Model_UnitsInGame($gameId, $db);
         $mHeroesInGame = new Application_Model_HeroesInGame($gameId, $db);
@@ -73,10 +75,6 @@ class Cli_Model_Player
 
     private function initCastles($gameId, $mapCastles, Zend_Db_Adapter_Pdo_Pgsql $db)
     {
-        if ($this->_lost) {
-            return;
-        }
-
         $mCastlesInGame = new Application_Model_CastlesInGame($gameId, $db);
         $mCastleProduction = new Application_Model_CastleProduction($db);
         foreach ($mCastlesInGame->getPlayerCastles($this->_id) as $castleId => $castle) {
@@ -88,10 +86,6 @@ class Cli_Model_Player
 
     private function initTowers($gameId, Zend_Db_Adapter_Pdo_Pgsql $db)
     {
-        if ($this->_lost) {
-            return;
-        }
-
         $mTowersInGame = new Application_Model_TowersInGame($gameId, $db);
         foreach ($mTowersInGame->getPlayerTowers($this->_id) as $tower) {
             $this->_towers[$tower['towerId']] = new Cli_Model_Tower($tower);
@@ -125,37 +119,9 @@ class Cli_Model_Player
         return $armies;
     }
 
-    public function castlesToArray()
-    {
-        $castles = array();
-        foreach ($this->_castles as $castleId => $castle) {
-            $castles[$castleId] = $castle->toArray();
-        }
-        return $castles;
-    }
-
-    private function towersToArray()
-    {
-        $towers = array();
-        foreach ($this->_towers as $towerId => $tower) {
-            $towers[$towerId] = $tower->toArray();
-        }
-        return $towers;
-    }
-
     public function hasArmy($armyId)
     {
         return isset($this->_armies[$armyId]);
-    }
-
-    public function hasCastle($castleId)
-    {
-        return isset($this->_castles[$castleId]);
-    }
-
-    public function hasTower($towerId)
-    {
-        return isset($this->_towers[$towerId]);
     }
 
     public function canCastleProduceThisUnit($castleId, $unitId)
@@ -237,19 +203,9 @@ class Cli_Model_Player
         );
     }
 
-    public function noCastlesExists()
-    {
-        return !count($this->_castles);
-    }
-
     public function noArmiesExists()
     {
         return !count($this->_armies);
-    }
-
-    public function castlesExists()
-    {
-        return count($this->_castles);
     }
 
     public function armiesExists()
@@ -399,10 +355,10 @@ class Cli_Model_Player
         }
     }
 
-    public function unfortifyArmies()
+    public function unfortifyArmies($gameId, $db)
     {
         foreach ($this->_armies as $army) {
-            $army->setFortified(false);
+            $army->setFortified(false, $gameId, $db);
         }
     }
 
@@ -431,7 +387,7 @@ class Cli_Model_Player
         foreach ($this->_castles as $castle) {
             $castleX = $castle->getX();
             $castleY = $castle->getY();
-            $color = $fields->getFieldColor($castleX, $castleY);
+            $color = $fields->getCastleColor($castleX, $castleY);
 
             if ($fields->areUnitsAtCastlePosition($castleX, $castleY)) {
                 continue;
@@ -452,16 +408,6 @@ class Cli_Model_Player
                 }
             }
         }
-    }
-
-    public function  getCastles()
-    {
-        return $this->_castles;
-    }
-
-    public function getCastle($castleId)
-    {
-        return $this->_castles[$castleId];
     }
 
     public function getCastleGarrison($castleId)

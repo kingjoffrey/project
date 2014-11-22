@@ -21,8 +21,6 @@ class Cli_Model_Castle
 
     public function __construct($playerCastle, $mapCastle)
     {
-        $this->_id = $playerCastle['castleId'];
-
         $this->_x = $mapCastle['x'];
         $this->_y = $mapCastle['y'];
         $this->_defense = $mapCastle['defense'];
@@ -31,6 +29,12 @@ class Cli_Model_Castle
         $this->_capital = $mapCastle['capital'];
         $this->_enclaveNumber = $mapCastle['enclaveNumber'];
 
+        if (empty($playerCastle)) {
+            $this->_id = $mapCastle['castleId'];
+            return;
+        }
+
+        $this->_id = $playerCastle['castleId'];
         $this->_productionId = $playerCastle['productionId'];
         $this->_productionTurn = $playerCastle['productionTurn'];
         $this->_defenseMod = $playerCastle['defenseMod'];

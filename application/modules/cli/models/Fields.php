@@ -81,6 +81,11 @@ class Cli_Model_Fields
         $this->_fields[$y][$x]->addArmy($armyId, $color);
     }
 
+    public function getArmyColor($x, $y, $armyId)
+    {
+        return $this->_fields[$y][$x]->getArmyColor($armyId);
+    }
+
     public function initTower($x, $y, $towerId, $color)
     {
         $this->_fields[$y][$x]->setTower($towerId, $color);
@@ -106,16 +111,21 @@ class Cli_Model_Fields
         return isset($this->_fields[$y][$x]);
     }
 
+    public function getCastleColor($x, $y)
+    {
+        return $this->_fields[$y][$x]->getCastleColor();
+    }
+
     public function isPlayerCastle($color, $x, $y)
     {
-        if ($this->_fields[$y][$x]->getColor() == $color) {
+        if ($this->_fields[$y][$x]->getCastleColor() == $color) {
             return $this->_fields[$y][$x]->getCastleId();
         }
     }
 
     public function isEnemyCastle($color, $x, $y)
     {
-        if ($this->_fields[$y][$x]->getColor() != $color) {
+        if ($this->_fields[$y][$x]->getCastleColor() != $color) {
             return $this->_fields[$y][$x]->getCastleId();
         }
     }
@@ -147,22 +157,22 @@ class Cli_Model_Fields
 
     public function areUnitsAtCastlePosition($x, $y)
     {
-        if ($this->isArmy($x, $y)) {
-            return true;
-        }
-        if ($this->isArmy($x + 1, $y)) {
-            return true;
-        }
-        if ($this->isArmy($x, $y + 1)) {
-            return true;
-        }
-        if ($this->isArmy($x + 1, $y + 1)) {
-            return true;
+        for ($i = $y; $i <= $y + 1; $i++) {
+            for ($j = $x; $j <= $x + 1; $j++) {
+                if ($this->_fields[$i][$j]->isArmy()) {
+                    return true;
+                }
+            }
         }
     }
 
     public function getCastleId($x, $y)
     {
         return $this->_fields[$y][$x]->getCastleId();
+    }
+
+    public function getTowerId($x, $y)
+    {
+        return $this->_fields[$y][$x]->getTowerId();
     }
 }

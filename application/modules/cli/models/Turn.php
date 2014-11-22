@@ -78,7 +78,7 @@ class Cli_Model_Turn
             $type = 'startTurn';
         }
 
-        $this->_user->parameters['game']->startPlayerTurn();
+        $this->_user->parameters['game']->startPlayerTurn($playerId, $this->_db);
 
         $token = array(
             'type' => $type,

@@ -69,7 +69,7 @@ class Application_Model_BattleSequence extends Coret_Db_Table_Abstract
             ->where('"playerId" = ?', $playerId)
             ->order('sequence');
 
-        $sequence = array();
+        $sequence = array('attack', 'defence');
 
         foreach ($this->selectAll($select) as $row) {
             if ($row['attack']) {

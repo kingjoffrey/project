@@ -4,11 +4,9 @@
  * Class Cli_Model_Soldier
  * ver. 0001
  */
-class Cli_Model_Soldier
+class Cli_Model_Soldier extends Cli_Model_DefaultUnit
 {
-    private $_id;
-    private $_unitId;
-    private $_movesLeft;
+    protected $_type = 'soldier';
 
     private $_forest;
     private $_hills;
@@ -17,33 +15,29 @@ class Cli_Model_Soldier
     private $_fly;
     private $_swim;
 
-    private $_attack;
-    private $_defense;
-    private $_moves;
+    private $_used;
 
-    public function __construct($soldier)
+    public function __construct($soldier, $unit)
     {
-        $units = Zend_Registry::get('units');
-
         $this->_id = $soldier['soldierId'];
         $this->_unitId = $soldier['unitId'];
 
         if (isset($soldier['movesLeft'])) {
             $this->setMovesLeft($soldier['movesLeft']);
         } else {
-            $this->setMovesLeft($units[$this->_unitId]['numberOfMoves']);
+            $this->setMovesLeft($unit['numberOfMoves']);
         }
 
-        $this->_forest = $units[$this->_unitId]['modMovesForest'];
-        $this->_hills = $units[$this->_unitId]['modMovesHills'];
-        $this->_swamp = $units[$this->_unitId]['modMovesSwamp'];
+        $this->_forest = $unit['modMovesForest'];
+        $this->_hills = $unit['modMovesHills'];
+        $this->_swamp = $unit['modMovesSwamp'];
 
-        $this->_fly = $units[$this->_unitId]['canFly'];
-        $this->_swim = $units[$this->_unitId]['canSwim'];
+        $this->_fly = $unit['canFly'];
+        $this->_swim = $unit['canSwim'];
 
-        $this->_attack = $units[$this->_unitId]['attackPoints'];
-        $this->_defense = $units[$this->_unitId]['defensePoints'];
-        $this->_moves = $units[$this->_unitId]['numberOfMoves'];
+        $this->_attack = $unit['attackPoints'];
+        $this->_defense = $unit['defensePoints'];
+        $this->_moves = $unit['numberOfMoves'];
     }
 
     public function toArray()
@@ -60,16 +54,6 @@ class Cli_Model_Soldier
             'defense' => $this->_defense,
             'moves' => $this->_moves
         );
-    }
-
-    public function setMovesLeft($movesLeft)
-    {
-        $this->_movesLeft = $movesLeft;
-    }
-
-    public function getMovesLeft()
-    {
-        return $this->_movesLeft;
     }
 
     public function canFly()
@@ -118,5 +102,26 @@ class Cli_Model_Soldier
     public function getSwamp()
     {
         return $this->_swamp;
+    }
+
+    /**
+     * @param boolean $used
+     */
+    public function setUsed($used)
+    {
+        $this->_used = $used;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function notUsed()
+    {
+        return !$this->_used;
+    }
+
+    public function getUnitId()
+    {
+        return $this->_unitId;
     }
 }
