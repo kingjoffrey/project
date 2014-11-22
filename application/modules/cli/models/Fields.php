@@ -81,6 +81,11 @@ class Cli_Model_Fields
         $this->_fields[$y][$x]->addArmy($armyId, $color);
     }
 
+    public function isArmy($x, $y)
+    {
+        return $this->_fields[$y][$x]->isArmy();
+    }
+
     public function getArmyColor($x, $y, $armyId)
     {
         return $this->_fields[$y][$x]->getArmyColor($armyId);
@@ -147,14 +152,6 @@ class Cli_Model_Fields
         return $this->_fields[$y][$x]->getTowerId();
     }
 
-    public function isTowerOpen($x, $y, $myColor, $myTeam)
-    {
-        $towerColor = $this->_fields[$y][$x]->getTowerColor();
-        if ($myColor != $towerColor && $myTeam != $towerColor) {
-            return $towerColor;
-        }
-    }
-
     public function areUnitsAtCastlePosition($x, $y)
     {
         for ($i = $y; $i <= $y + 1; $i++) {
@@ -174,5 +171,10 @@ class Cli_Model_Fields
     public function getTowerId($x, $y)
     {
         return $this->_fields[$y][$x]->getTowerId();
+    }
+
+    public function getTowerColor($x, $y)
+    {
+        return $this->_fields[$y][$x]->getTowerColor();
     }
 }

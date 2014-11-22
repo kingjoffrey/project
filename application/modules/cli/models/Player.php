@@ -22,7 +22,7 @@ class Cli_Model_Player extends Cli_Model_DefaultPlayer
     private $_attackSequence;
     private $_defenceSequence;
 
-    public function __construct($player, $gameId, $mapCastles, Application_Model_MapPlayers $mMapPlayers, Zend_Db_Adapter_Pdo_Pgsql $db)
+    public function __construct($player, $gameId, $mapCastles, $mapTowers, Application_Model_MapPlayers $mMapPlayers, Zend_Db_Adapter_Pdo_Pgsql $db)
     {
         $this->_id = $player['playerId'];
         $this->_lost = $player['lost'];
@@ -43,7 +43,7 @@ class Cli_Model_Player extends Cli_Model_DefaultPlayer
 
         $this->initArmies($gameId, $db);
         $this->initCastles($gameId, $mapCastles, $db);
-        $this->initTowers($gameId, $db);
+        $this->initTowers($gameId, $mapTowers, $db);
         $this->initBattleSequence($gameId, $db);
     }
 
@@ -84,11 +84,14 @@ class Cli_Model_Player extends Cli_Model_DefaultPlayer
         }
     }
 
-    private function initTowers($gameId, Zend_Db_Adapter_Pdo_Pgsql $db)
+    private function initTowers($gameId, $mapTowers, Zend_Db_Adapter_Pdo_Pgsql $db)
     {
         $mTowersInGame = new Application_Model_TowersInGame($gameId, $db);
         foreach ($mTowersInGame->getPlayerTowers($this->_id) as $tower) {
-            $this->_towers[$tower['towerId']] = new Cli_Model_Tower($tower);
+            $towerId = $tower['towerId'];
+            $tower = $mapTowers[$towerId];
+            $tower['towerId'] = $towerId;
+            $this->_towers[$towerId] = new Cli_Model_Tower($tower);
             $this->addIncome(5);
         }
     }
@@ -197,10 +200,7 @@ class Cli_Model_Player extends Cli_Model_DefaultPlayer
             }
         }
 
-        return array(
-            'armyId' => $excludedArmyId,
-            'deletedIds' => $ids
-        );
+        return $ids;
     }
 
     public function noArmiesExists()
@@ -255,7 +255,7 @@ class Cli_Model_Player extends Cli_Model_DefaultPlayer
         $this->_turnActive = $turnActive;
     }
 
-    public function startTurn($gameId, $playerId, $turnNumber, $db)
+    public function startTurn($gameId, $turnNumber, $db)
     {
         $units = Zend_Registry::get('units');
 
@@ -279,7 +279,7 @@ class Cli_Model_Player extends Cli_Model_DefaultPlayer
                 }
                 if ($unitId != $castle->getProductionId()) {
                     $relocationToCastleId = null;
-                    $castle->setProductionId($gameId, $playerId, $castleId, $unitId, $relocationToCastleId, $db);
+                    $castle->setProductionId($gameId, $this->_id, $castleId, $unitId, $relocationToCastleId, $db);
                 }
             } else {
                 $unitId = $castle->getProductionId();
@@ -308,7 +308,7 @@ class Cli_Model_Player extends Cli_Model_DefaultPlayer
                 $armyId = $this->getPlayerArmyIdFromPosition($x, $y);
 
                 if (!$armyId) {
-                    $armyId = $this->createArmy($gameId, $playerId, $x, $y, $db);
+                    $armyId = $this->createArmy($gameId, $this->_id, $x, $y, $db);
                 }
 
                 $this->_armies[$armyId]->createSoldier($gameId, $db);
@@ -336,10 +336,10 @@ class Cli_Model_Player extends Cli_Model_DefaultPlayer
         ));
     }
 
-    public function addTower($towerId, $tower)
+    public function addTower($towerId, Cli_Model_Tower $tower)
     {
         $this->addIncome(5);
-        $this->_towers[$towerId] = new Cli_Model_Tower($tower);
+        $this->_towers[$towerId] = $tower;
     }
 
     public function removeTower($towerId)
@@ -357,6 +357,9 @@ class Cli_Model_Player extends Cli_Model_DefaultPlayer
 
     public function unfortifyArmies($gameId, $db)
     {
+        $mArmy = new Application_Model_Army($gameId, $db);
+        $mArmy->unfortifyPlayerArmies($this->_id);
+
         foreach ($this->_armies as $army) {
             $army->setFortified(false, $gameId, $db);
         }
@@ -402,7 +405,7 @@ class Cli_Model_Player extends Cli_Model_DefaultPlayer
                     return;
                 }
 
-                $move = $computer->calculateMovesSpend($aStar->getPath($castleX . '_' . $castleY, $color));
+                $move = $computer->calculateMovesSpend($aStar->getPath($castleX . '_' . $castleY));
                 if ($move->x == $castleX && $move->y == $castleY) {
                     return $move;
                 }

@@ -69,27 +69,28 @@ class Cli_Model_Turn
 
     public function start($playerId, $computer = null)
     {
-        $this->_user->parameters['game']->activatePlayerTurn($playerId, $this->_db);
+        $game = $this->_user->parameters['game'];
+        $gameId = $game->getId();
+        $player = $game->getPlayer($playerId);
+        $game->activatePlayerTurn($playerId, $this->_db);
 
         if ($computer) {
-            $this->_user->parameters['game']->unfortifyPlayerArmies($playerId, $this->_db);
+            $player->unfortifyArmies($gameId, $this->_db);
             $type = 'computerStart';
         } else {
             $type = 'startTurn';
         }
 
-        $this->_user->parameters['game']->startPlayerTurn($playerId, $this->_db);
+        $player->startTurn($gameId, $game->getTurnNumber(), $this->_db);
 
         $token = array(
             'type' => $type,
-            'gold' => $this->_user->parameters['game']->getPlayerGold($playerId),
-            'costs' => $this->_user->parameters['game']->getPlayerCosts($playerId),
-            'income' => $this->_user->parameters['game']->getPlayerIncome($playerId),
-            'armies' => $this->_user->parameters['game']->getPlayerArmiesToArray($playerId),
-            'castles' => $this->_user->parameters['game']->getPlayerCastlesToArray($playerId),
-            'color' => $this->_user->parameters['game']->getPlayerColor($playerId)
+            'gold' => $player->getGold(),
+            'armies' => $player->armiesToArray(),
+            'castles' => $player->castlesToArray(),
+            'color' => $game->getPlayerColor($playerId)
         );
-        $this->_gameHandler->sendToChannel($this->_db, $token, $this->_user->parameters['gameId']);
+        $this->_gameHandler->sendToChannel($this->_db, $token, $gameId);
     }
 
     public function saveResults()

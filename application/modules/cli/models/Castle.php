@@ -89,6 +89,11 @@ class Cli_Model_Castle
         return $this->_productionId;
     }
 
+    public function getProductionTurn()
+    {
+        return $this->_productionTurn;
+    }
+
     public function setProductionId($gameId, $playerId, $castleId, $unitId, $relocationToCastleId, $db)
     {
         $mCastlesInGame = new Application_Model_CastlesInGame($gameId, $db);

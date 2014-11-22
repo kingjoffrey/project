@@ -61,7 +61,7 @@ var Players = {
             }
 
             for (towerId in game.players[color].towers) {
-                Tower.create(towerId)
+                Tower.create(towerId, color)
                 if (color == game.me.color) {
                     game.me.income += 5
                 }

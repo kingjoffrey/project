@@ -17,21 +17,29 @@ var Tower = {
                 })
         );
     },
-    isAtPosition: function (x, y) {
-        for (towerId in towers) {
-            if (towers[towerId].x == x && towers[towerId].y == y) {
-                return 1;
-            }
-        }
-        return 0;
+    create: function (towerId, color) {
+        var title = 'Tower';
+        board.append(
+            $('<div>')
+                .addClass('tower')
+                .attr({
+                    id: 'tower' + towerId,
+                    title: title
+                })
+                .css({
+                    left: (game.players[color].towers[towerId].x * 40) + 'px',
+                    top: (game.players[color].towers[towerId].y * 40) + 'px',
+                    background: 'url(/img/game/towers/' + color + '.png) center center no-repeat'
+                })
+        );
     },
-    change: function (towerId, color) {
-        if (color == game.me.color && towers[towerId].color != game.me.color) {
+    change: function (towerId, color) { // todo zapisywanie zmian
+        if (color == game.me.color) {
+            //game.players[game.me.color].towers[towerId]
             incomeIncrement(5);
-        } else if (color != game.me.color && towers[towerId].color == game.me.color) {
+        } else if (isSet(game.players[game.me.color].towers[towerId])) {
             incomeIncrement(-5);
         }
-        towers[towerId].color = color;
         $('#tower' + towerId).css('background', 'url(/img/game/towers/' + color + '.png) center center no-repeat');
     }
 }

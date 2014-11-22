@@ -493,7 +493,7 @@ class Cli_Model_ComputerMain extends Cli_Model_ComputerFunctions
         } else {
             if (isset($path->current) && $path->current) {
                 $joinIds = $this->_user->parameters['game']->joinArmiesAtPosition($this->_playerId, $this->_Computer->getId(), $this->_db);
-                $attackerArmy = $this->_Computer->getArmy();
+                $attackerArmy = $this->_Computer->toArray();
                 $currentPath = $path->current;
             } else {
                 $joinIds = array('deletedIds' => null);
@@ -520,7 +520,7 @@ class Cli_Model_ComputerMain extends Cli_Model_ComputerFunctions
             exit;
         }
 
-        new Cli_Model_TowerHandler($currentPath, $this->_playerId, $this->_gameId, $this->_db, $this->_gameHandler);
+        new Cli_Model_TowerHandler($currentPath, $this->_user->parameters['game'], $this->_db, $this->_gameHandler);
 
         $playersInGameColors = Zend_Registry::get('playersInGameColors');
 

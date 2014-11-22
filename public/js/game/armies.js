@@ -491,7 +491,8 @@ var Army = {
         }
 
         if (notSet(center)) {
-            zoomer.setCenterIfOutOfScreen(a.x * 40, a.y * 40);
+            //zoomer.setCenterIfOutOfScreen(a.x * 40, a.y * 40);
+            zoom.lens.setcenter(a.x * 40, a.y * 40);
         }
     },
     deselect: function (skipJoin) {

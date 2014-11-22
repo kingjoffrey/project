@@ -2,6 +2,7 @@
 
 class Cli_Model_Me
 {
+    private $_id;
     private $_gold;
     private $_accessKey;
     private $_color;
@@ -10,6 +11,7 @@ class Cli_Model_Me
 
     public function __construct($color, $team, $player)
     {
+        $this->_id = $player['playerId'];
         $this->_gold = $player['gold'];
         $this->_accessKey = $player['accessKey'];
         $this->_color = $color;
@@ -44,5 +46,10 @@ class Cli_Model_Me
     public function getColor()
     {
         return $this->_color;
+    }
+
+    public function getId()
+    {
+        return $this->_id;
     }
 }

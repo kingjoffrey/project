@@ -29,10 +29,10 @@ var Move = {
         }
 
         if (notSet(r.path[1])) {
-            zoom.lensSetCenter(r.attackerArmy.x * 40, r.attackerArmy.y * 40);
+            zoom.lens.setcenter(r.attackerArmy.x * 40, r.attackerArmy.y * 40);
         } else {
             Army.fields(game.players[r.attackerColor].armies[r.attackerArmy.armyId]);
-            zoom.lensSetCenter(r.path[1].x * 40, r.path[1].y * 40);
+            zoom.lens.setcenter(r.path[1].x * 40, r.path[1].y * 40);
         }
 
         Army.unfortify(r.attackerArmy.armyId);
@@ -55,7 +55,8 @@ var Move = {
 
         if (isSet(r.path[step])) {
             if (!game.players[r.attackerColor].computer || Gui.show) {
-                zoomer.setCenterIfOutOfScreen(r.path[step].x * 40, r.path[step].y * 40);
+                //zoomer.setCenterIfOutOfScreen(r.path[step].x * 40, r.path[step].y * 40);
+                zoom.lens.setcenter(r.path[step].x * 40, r.path[step].y * 40);
 
                 $('#army' + r.oldArmyId)
                     .animate({
@@ -121,7 +122,7 @@ var Move = {
             Ruin.update(r.ruinId, 1);
         }
 
-        if (isSet(r.defenderArmy[0]) && isTruthful(r.defenderColor)) {
+        if (r.defenderArmy && isSet(r.defenderArmy[0]) && isTruthful(r.defenderColor)) {
             if (isTruthful(r.victory)) {
                 for (i in r.defenderArmy) {
                     Army.delete(r.defenderArmy[i].armyId, r.defenderColor, 1);

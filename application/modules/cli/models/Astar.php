@@ -11,14 +11,14 @@ class Cli_Model_Astar extends Cli_Model_Heuristics
      *
      * @var array
      */
-    private $close = array();
+    private $_close = array();
 
     /**
      * The set of tentative nodes to be evaluated
      *
      * @var array
      */
-    private $open = array();
+    private $_open = array();
 
     /**
      * Number of loops
@@ -32,9 +32,10 @@ class Cli_Model_Astar extends Cli_Model_Heuristics
      *
      * @var array
      */
-    private $fields;
+    private $_fields;
     private $terrain;
     private $movesLeft;
+    private $_color;
     private $limit;
     private $myCastleId = array();
     private $movementType;
@@ -57,8 +58,11 @@ class Cli_Model_Astar extends Cli_Model_Heuristics
         if (isset($params['limit'])) {
             $this->limit = $params['limit'];
         }
-        $this->fields = $fields;
+        $this->_fields = $fields;
         $this->terrain = Zend_Registry::get('terrain');
+        $this->movesLeft = $army->getMovesLeft();
+        $this->_color = $color;
+
         if ($army->canFly()) {
             $this->movementType = 'flying';
         } elseif ($army->canSwim()) {
@@ -66,14 +70,11 @@ class Cli_Model_Astar extends Cli_Model_Heuristics
         } else {
             $this->movementType = 'walking';
         }
-        $this->movesLeft = $army->getMovesLeft();
 
-        $this->open[$army->getX() . '_' . $army->getY()] = $this->node($army->getX(), $army->getY(), 0, null, 'c');
-
-        if ($castleId = $this->fields->isPlayerCastle($color, $army->getX(), $army->getY())) {
+        if ($castleId = $this->_fields->isPlayerCastle($this->_color, $army->getX(), $army->getY())) {
             $this->myCastleId[$castleId] = true;
         }
-
+        $this->_open[$army->getX() . '_' . $army->getY()] = $this->node($army->getX(), $army->getY(), 0, null, 'c');
         $this->aStar();
     }
 
@@ -91,13 +92,13 @@ class Cli_Model_Astar extends Cli_Model_Heuristics
             throw new Exception('>' + $this->nr);
         }
         $key = $this->findSmallestF();
-        $x = $this->open[$key]['x'];
-        $y = $this->open[$key]['y'];
-        $this->close[$key] = $this->open[$key];
+        $x = $this->_open[$key]['x'];
+        $y = $this->_open[$key]['y'];
+        $this->_close[$key] = $this->_open[$key];
         if ($x == $this->destX && $y == $this->destY) {
             return;
         }
-        unset($this->open[$key]);
+        unset($this->_open[$key]);
         $this->addOpen($x, $y);
         if (!$this->isNotEmpty()) {
             echo 'Nie znalazłem ścieżki';
@@ -114,7 +115,7 @@ class Cli_Model_Astar extends Cli_Model_Heuristics
      */
     private function isNotEmpty()
     {
-        return count($this->open);
+        return count($this->_open);
     }
 
     /**
@@ -125,11 +126,11 @@ class Cli_Model_Astar extends Cli_Model_Heuristics
     private function findSmallestF()
     {
         $i = 0;
-        foreach (array_keys($this->open) as $k) {
-            if (!isset($this->open[$i])) {
+        foreach (array_keys($this->_open) as $k) {
+            if (!isset($this->_open[$i])) {
                 $i = $k;
             }
-            if ($this->open[$k]['F'] < $this->open[$i]['F']) {
+            if ($this->_open[$k]['F'] < $this->_open[$i]['F']) {
                 $i = $k;
             }
         }
@@ -157,16 +158,16 @@ class Cli_Model_Astar extends Cli_Model_Heuristics
 
                 $key = $i . '_' . $j;
 
-                if (isset($this->close[$key]) && $this->close[$key]['x'] == $i && $this->close[$key]['y'] == $j) {
+                if (isset($this->_close[$key]) && $this->_close[$key]['x'] == $i && $this->_close[$key]['y'] == $j) {
                     continue;
                 }
 
                 // jeśli na mapie nie ma tego pola to pomiń to pole
-                if (!$this->fields->isField($i, $j)) {
+                if (!$this->_fields->isField($i, $j)) {
                     continue;
                 }
 
-                $terrainType = $this->fields->getType($i, $j);
+                $terrainType = $this->_fields->getType($i, $j);
 
                 // jeżeli na polu znajduje się wróg to pomiń to pole
                 if ($terrainType == 'e') {
@@ -180,10 +181,10 @@ class Cli_Model_Astar extends Cli_Model_Heuristics
                     continue;
                 }
 
-                if (isset($this->open[$key])) {
+                if (isset($this->_open[$key])) {
                     $this->calculatePath($x . '_' . $y, $g, $key);
                 } else {
-                    $g += $this->close[$x . '_' . $y]['G'];
+                    $g += $this->_close[$x . '_' . $y]['G'];
                     // pomiń jeśli koszt ścieżki jest większy od pozostałych ruchów
                     if ($this->limit && $g > $this->movesLeft) {
                         continue;
@@ -192,7 +193,7 @@ class Cli_Model_Astar extends Cli_Model_Heuristics
                         'x' => $x,
                         'y' => $y
                     );
-                    $this->open[$key] = $this->node($i, $j, $g, $parent, $terrainType);
+                    $this->_open[$key] = $this->node($i, $j, $g, $parent, $terrainType);
                 }
             }
         }
@@ -207,13 +208,13 @@ class Cli_Model_Astar extends Cli_Model_Heuristics
      */
     private function calculatePath($kA, $g, $key)
     {
-        if ($this->open[$key]['G'] > ($g + $this->close[$kA]['G'])) {
-            $this->open[$key]['parent'] = array(
-                'x' => $this->close[$kA]['x'],
-                'y' => $this->close[$kA]['y']
+        if ($this->_open[$key]['G'] > ($g + $this->_close[$kA]['G'])) {
+            $this->_open[$key]['parent'] = array(
+                'x' => $this->_close[$kA]['x'],
+                'y' => $this->_close[$kA]['y']
             );
-            $this->open[$key]['G'] = $g + $this->close[$kA]['G'];
-            $this->open[$key]['F'] = $this->open[$key]['G'] + $this->open[$key]['H'];
+            $this->_open[$key]['G'] = $g + $this->_close[$kA]['G'];
+            $this->_open[$key]['F'] = $this->_open[$key]['G'] + $this->_open[$key]['H'];
         }
     }
 
@@ -247,7 +248,7 @@ class Cli_Model_Astar extends Cli_Model_Heuristics
      * @param string $color
      * @return array
      */
-    public function getPath($key, $color)
+    public function getPath($key)
     {
         $i = 0;
         $path = $this->getReturnPath($key);
@@ -257,7 +258,7 @@ class Cli_Model_Astar extends Cli_Model_Heuristics
 
             foreach ($path as $k => $step) {
                 if ($step['tt'] == 'c') {
-                    $castleId = $this->fields->isPlayerCastle($color, $step['x'], $step['y']);
+                    $castleId = $this->_fields->isPlayerCastle($color, $step['x'], $step['y']);
                     if (isset($this->myCastleId[$castleId])) {
                         $path[$k]['cc'] = true;
                         $i++;
@@ -282,20 +283,20 @@ class Cli_Model_Astar extends Cli_Model_Heuristics
      */
     public function getReturnPath($key)
     {
-        if (!isset($this->close[$key])) {
+        if (!isset($this->_close[$key])) {
             $this->outOfReach = true;
             $l = new Coret_Model_Logger();
             $l->log('W ścieżce nie ma podanego jako parametr klucza: ' . $key . ' (getPath)');
             return;
         }
         $path = array();
-        if (empty($this->close[$key]['parent'])) {
-            $path[] = $this->close[$key];
+        if (empty($this->_close[$key]['parent'])) {
+            $path[] = $this->_close[$key];
             return $path;
         }
-        while (!empty($this->close[$key]['parent'])) {
-            $path[] = $this->close[$key];
-            $key = $this->close[$key]['parent']['x'] . '_' . $this->close[$key]['parent']['y'];
+        while (!empty($this->_close[$key]['parent'])) {
+            $path[] = $this->_close[$key];
+            $key = $this->_close[$key]['parent']['x'] . '_' . $this->_close[$key]['parent']['y'];
         }
         return $path;
     }

@@ -644,7 +644,7 @@ class Cli_Model_Army
         $mSoldier = new Application_Model_UnitsInGame($gameId, $db);
         $soldierId = $mSoldier->add($this->_id, $unitId);
 
-        $this->_soldiers[$soldierId] = new Cli_Model_Soldier(array('unitId' => $unitId, 'soldierId' => $soldierId));
+        $this->_soldiers[$soldierId] = new Cli_Model_Soldier(array('unitId' => $unitId, 'soldierId' => $soldierId), $this->_units[$unitId]);
 
         $mSoldiersCreated = new Application_Model_SoldiersCreated($gameId, $db);
         $mSoldiersCreated->add($unitId, $playerId);
@@ -796,5 +796,17 @@ class Cli_Model_Army
     public function attackerVictory()
     {
         return count($this->_attack['soldiers']) || count($this->_attack['heroes']) || count($this->_attack['ships']);
+    }
+
+    public function getCosts()
+    {
+        $costs = 0;
+        foreach ($this->_soldiers as $soldier) {
+            $costs += $soldier->getCost();
+        }
+        foreach ($this->_ships as $soldier) {
+            $costs += $soldier->getCost();
+        }
+        return $costs;
     }
 }

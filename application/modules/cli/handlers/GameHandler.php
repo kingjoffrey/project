@@ -146,7 +146,7 @@ class Cli_GameHandler extends Cli_WofHandler
 
         switch ($dataIn['type']) {
             case 'move':
-                new Cli_Model_Move($dataIn, $user, $db, $this);
+                new Cli_Model_Move($dataIn, $user, $user->parameters['game'], $db, $this);
                 break;
 
             case 'split':

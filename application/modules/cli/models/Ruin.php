@@ -2,15 +2,17 @@
 
 class Cli_Model_Ruin
 {
-    private $_empty;
+    private $_id;
     private $_x;
     private $_y;
+    private $_empty;
 
-    public function __construct($position, $empty)
+    public function __construct($ruin, $empty)
     {
+        $this->_id = $ruin['ruinId'];
+        $this->_x = $ruin['x'];
+        $this->_y = $ruin['y'];
         $this->_empty = $empty;
-        $this->_x = $position['x'];
-        $this->_y = $position['y'];
     }
 
     public function toArray()

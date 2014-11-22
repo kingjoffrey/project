@@ -124,7 +124,8 @@ Websocket = {
                     Message.remove()
                     Army.select(game.players[r.color].armies[r.childArmy.armyId], 0);
                 } else {
-                    zoomer.setCenterIfOutOfScreen(r.parentArmy.x * 40, r.parentArmy.y * 40);
+                    //zoomer.setCenterIfOutOfScreen(r.parentArmy.x * 40, r.parentArmy.y * 40);
+                    zoom.lens.setcenter(r.parentArmy.x * 40, r.parentArmy.y * 40);
                 }
                 this.executing = 0
                 break;
@@ -133,7 +134,8 @@ Websocket = {
                 if (Turn.isMy()) {
                     Message.remove()
                 }
-                zoomer.setCenterIfOutOfScreen(r.army.x * 40, r.army.y * 40);
+                //zoomer.setCenterIfOutOfScreen(r.army.x * 40, r.army.y * 40);
+                zoom.lens.setcenter(r.army.x * 40, r.army.y * 40);
                 for (i in r.deletedIds) {
                     Army.delete(r.deletedIds[i].armyId, r.color);
                 }

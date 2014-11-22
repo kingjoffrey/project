@@ -57,4 +57,9 @@ abstract class Cli_Model_DefaultPlayer
     {
         return $this->_towers;
     }
+
+    public function getTower($towerId)
+    {
+        return $this->_towers[$towerId];
+    }
 }

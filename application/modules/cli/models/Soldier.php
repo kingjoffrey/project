@@ -15,6 +15,8 @@ class Cli_Model_Soldier extends Cli_Model_DefaultUnit
     private $_fly;
     private $_swim;
 
+    private $_cost;
+
     private $_used;
 
     public function __construct($soldier, $unit)
@@ -34,6 +36,8 @@ class Cli_Model_Soldier extends Cli_Model_DefaultUnit
 
         $this->_fly = $unit['canFly'];
         $this->_swim = $unit['canSwim'];
+
+        $this->_cost = $unit['cost'];
 
         $this->_attack = $unit['attackPoints'];
         $this->_defense = $unit['defensePoints'];

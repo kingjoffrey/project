@@ -303,11 +303,11 @@ class Application_Model_PlayersInGame extends Coret_Db_Table_Abstract
     public function getMe($playerId)
     {
         $select = $this->_db->select()
-            ->from($this->_name, array('gold', 'accessKey'))
+            ->from($this->_name, array('gold', 'accessKey', 'playerId'))
             ->where($this->_db->quoteIdentifier('playerId') . ' = ?', $playerId)
             ->where($this->_db->quoteIdentifier('gameId') . ' = ?', $this->_gameId);
 
-        return $this->selectOne($select);
+        return $this->selectRow($select);
     }
 
     public function getPlayerGold($playerId)
