@@ -41,8 +41,6 @@ class Cli_Model_Turn
                 $mTurnHistory = new Application_Model_TurnHistory($this->_user->parameters['gameId'], $this->_db);
                 $mTurnHistory->add($nextPlayerId, $turnNumber);
 
-                $this->_user->parameters['game']->setTurnPlayerId($nextPlayerId);
-
                 $token = array(
                     'type' => 'nextTurn',
                     'nr' => $turnNumber,

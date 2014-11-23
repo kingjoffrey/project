@@ -92,7 +92,7 @@ var Init = {
 
         Players.updateOnline()
 
-        if (game.me.turn) {
+        if (Turn.isMy()) {console.log('ccc')
             Turn.on();
         } else {
             Turn.off();

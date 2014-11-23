@@ -48,7 +48,7 @@ class Cli_Model_Game
         $this->_turnTimeLimit = $game['turnTimeLimit'];
         $this->_timeLimit = $game['timeLimit'];
 
-        $this->setTurnPlayerId($game['turnPlayerId']);
+        $this->_turnPlayerId = $game['turnPlayerId'];
 
         $mTurnHistory = new Application_Model_TurnHistory($this->_id, $db);
         $this->_turnHistory = $mTurnHistory->getTurnHistory();
@@ -312,7 +312,11 @@ class Cli_Model_Game
 
     public function getPlayerColor($playerId)
     {
-        return $this->_playersInGameColors[$playerId];
+        if ($playerId) {
+            return $this->_playersInGameColors[$playerId];
+        } else {
+            return 'neutral';
+        }
     }
 
     public function getPlayerId($color)
@@ -395,15 +399,16 @@ class Cli_Model_Game
             $nextPlayerColor = $firstColor;
         }
 
-        $nextPlayerId = $this->_players[$nextPlayerColor]->getId();
-
-        /* sprawdzam czy to nowa tura */
+        /* jeżeli nowa tura */
         if ($nextPlayerColor == $firstColor) {
             $this->turnNumberIncrement();
-            $mGame = new Application_Model_Game($this->_id, $db);
-            $mGame->updateTurnNumber($nextPlayerId, $this->_turnNumber);
         }
-        return $nextPlayerId;
+        $this->_turnPlayerId = $this->getPlayerId($nextPlayerColor);
+
+        $mGame = new Application_Model_Game($this->_id, $db);
+        $mGame->updateTurn($this->_turnPlayerId, $this->_turnNumber);
+
+        return $this->_turnPlayerId;
     }
 
     private function turnNumberIncrement()
@@ -435,16 +440,21 @@ class Cli_Model_Game
         }
     }
 
-    public function addTower($playerId, $towerId, $color, $db)
+    public function changeTowerOwner($playerId, $towerId, $color, $db)
     {
+        $tower = $this->_players[$color]->getTower($towerId);
+        $this->_players[$color]->removeTower($towerId);
+
         $mTowersInGame = new Application_Model_TowersInGame($this->_id, $db);
         if ($color == 'neutral') {
             $mTowersInGame->addTower($towerId, $playerId);
         } else {
             $mTowersInGame->changeTowerOwner($towerId, $playerId);
         }
-        $this->_players[$this->getPlayerColor($playerId)]->addTower($towerId, $this->_players[$color]->getTower($towerId));
-        $this->_players[$color]->removeTower($towerId);
+
+        $newColor = $this->getPlayerColor($playerId);
+        $this->_fields->changeTower($tower->getX(), $tower->getY(), $newColor);
+        $this->_players[$newColor]->addTower($towerId, $tower);
     }
 
     public function setTurnPlayerId($playerId)
@@ -1109,7 +1119,7 @@ class Cli_Model_Game
                     }
                     if ($move->x == $enemyX && $move->y == $enemyY) {
                         $move->castleId = $castleId;
-                        $move->armyId = $enemyId;
+                        $move->armyId = $enemy->getId();
                         return $move;
                     }
                 }

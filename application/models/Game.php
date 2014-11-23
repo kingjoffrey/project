@@ -195,7 +195,7 @@ class Application_Model_Game extends Coret_Db_Table_Abstract
         return $this->selectOne($select);
     }
 
-    public function updateTurnNumber($nextPlayerId, $turnNumber)
+    public function updateTurn($nextPlayerId, $turnNumber)
     {
         $data = array(
             'turnNumber' => $turnNumber,

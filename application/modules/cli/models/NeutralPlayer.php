@@ -87,4 +87,9 @@ class Cli_Model_NeutralPlayer extends Cli_Model_DefaultPlayer
     {
         unset($this->_towers[$towerId]);
     }
+
+    public function getId()
+    {
+        return 0;
+    }
 }

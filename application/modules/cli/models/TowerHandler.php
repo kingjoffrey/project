@@ -3,7 +3,7 @@
 class Cli_Model_TowerHandler
 {
 
-    public function __construct($path, Cli_model_game $game, Zend_Db_Adapter_Pdo_Pgsql $db, Cli_GameHandler $gameHandler)
+    public function __construct($playerId, $path, Cli_model_game $game, Zend_Db_Adapter_Pdo_Pgsql $db, Cli_GameHandler $gameHandler)
     {
         if (empty($path)) {
             return;
@@ -25,10 +25,8 @@ class Cli_Model_TowerHandler
 
         $gameId = $game->getId();
         $fields = $game->getFields();
-        $me = $game->getMe();
-        $playerId = $me->getId();
-        $myColor = $me->getColor();
-        $myTeam = $me->getTeam();
+        $playerColor = $game->getPlayerColor($playerId);
+        $playerTeam = $game->getPlayerTeam($playerId);
 
         foreach ($surroundings as $y => $row) {
             foreach (array_keys($row) as $x) {
@@ -39,20 +37,20 @@ class Cli_Model_TowerHandler
 
                     $towerColor = $fields->getTowerColor($x, $y);
 
-                    if ($towerColor == $myColor) {
+                    if ($towerColor == $playerColor) {
                         continue;
                     }
 
-                    if ($myTeam == $game->getPlayerTeam($game->getPlayerId($towerColor))) {
+                    if ($playerTeam == $game->getPlayerTeam($game->getPlayerId($towerColor))) {
                         continue;
                     }
 
-                    $game->addTower($playerId, $towerId, $towerColor, $db);
+                    $game->changeTowerOwner($playerId, $towerId, $towerColor, $db);
 
                     $token = array(
                         'type' => 'tower',
                         'towerId' => $towerId,
-                        'color' => $myColor
+                        'color' => $playerColor
                     );
                     $gameHandler->sendToChannel($db, $token, $gameId);
                 }
