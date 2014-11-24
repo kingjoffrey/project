@@ -35,6 +35,11 @@ class Cli_Model_Field
         return $this->_armies[$armyId];
     }
 
+    public function getArmies()
+    {
+        return $this->_armies;
+    }
+
     public function setCastle($castleId, $color)
     {
         $this->_castleId = $castleId;

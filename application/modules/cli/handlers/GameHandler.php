@@ -100,7 +100,7 @@ class Cli_GameHandler extends Cli_WofHandler
                 return;
             }
 
-            if (Cli_Model_ComputerHeroResurrection::handle($user->parameters['gameId'], $playerId, $db, $this)) {
+            if (Cli_Model_ComputerHeroResurrection::handle($playerId, $user->parameters['game'], $db, $this)) {
                 return;
             }
 

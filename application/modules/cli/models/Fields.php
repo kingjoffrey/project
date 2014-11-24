@@ -91,6 +91,11 @@ class Cli_Model_Fields
         return $this->_fields[$y][$x]->getArmyColor($armyId);
     }
 
+    public function getArmies($x, $y)
+    {
+        return $this->_fields[$y][$x]->getArmies();
+    }
+
     public function initTower($x, $y, $towerId, $color)
     {
         $this->_fields[$y][$x]->setTower($towerId, $color);

@@ -2,26 +2,22 @@
 
 class Cli_Model_ComputerHeroResurrection
 {
-    static public function handle($gameId, $playerId, $db, $gameHandler)
+    static public function handle($playerId, Cli_Model_Game $game, Zend_Db_Adapter_Pdo_Pgsql $db, Cli_GameHandler $gameHandler)
     {
-        $mPlayersInGame = new Application_Model_PlayersInGame($gameId, $db);
-        $gold = $mPlayersInGame->getPlayerGold($playerId);
+        $gameId = $game->getId();
+        $player = $game->getPlayer($playerId);
+        $gold = $player->getGold();
 
         if ($gold < 100) {
             return;
         }
 
-        $capitals = Zend_Registry::get('capitals');
-        $playersInGameColors = Zend_Registry::get('playersInGameColors');
-        $color = $playersInGameColors[$playerId];
-        $castleId = $capitals[$color];
+        $color = $game->getPlayerColor($playerId);
+        $castleId = $game->getPlayerCapital($color);
 
-        $mCastlesInGame = new Application_Model_CastlesInGame($gameId, $db);
-        if (!$mCastlesInGame->isPlayerCastle($castleId, $playerId)) {
+        if (!$capital = $player->getCastle($castleId)) {
             return;
         }
-
-        $mapCastles = Zend_Registry::get('castles');
 
         $mHeroesInGame = new Application_Model_HeroesInGame($gameId, $db);
         $heroId = $mHeroesInGame->getDeadHeroId($playerId);
@@ -30,7 +26,18 @@ class Cli_Model_ComputerHeroResurrection
             return;
         }
 
-        $armyId = Cli_Model_Army::heroResurrection($gameId, $heroId, $mapCastles[$castleId]['position'], $playerId, $db);
+        if ($armyId = $player->getArmyIdFromPosition($capital->getX(), $capital->getY())) {
+            $army = $player->getArmy($armyId);
+        } else {
+            $mArmy = new Application_Model_Army($gameId, $db);
+            $armyId = $mArmy->createArmy($capital->getPosition(), $playerId);
+            $army = new Cli_Model_Army(array(
+                'armyId' => $armyId,
+                'x' => $capital->getX(),
+                'y' => $capital->getY()
+            ));
+        }
+        $army->createHero($gameId, $heroId, $db);
 
         if (!$armyId) {
             return;
@@ -39,14 +46,13 @@ class Cli_Model_ComputerHeroResurrection
         $l = new Coret_Model_Logger();
         $l->log('WSKRZESZAM HEROSA id = ' . $heroId);
 
-        $gold -= 100;
-        $mPlayersInGame->updatePlayerGold($playerId, $gold);
+        $player->subtractGold(100, $gameId, $db);
 
         $token = array(
             'type' => 'resurrection',
             'data' => array(
-                'army' => Cli_Model_Army::getArmyByArmyId($armyId, $gameId, $db),
-                'gold' => $gold
+                'army' => $army->toArray(),
+                'gold' => $player->getGold()
             ),
             'color' => $color
         );

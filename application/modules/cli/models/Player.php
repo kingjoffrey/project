@@ -142,11 +142,24 @@ class Cli_Model_Player extends Cli_Model_DefaultPlayer
         $this->_castles[$castleId]->setProductionId($gameId, $this->_id, $castleId, $unitId, $relocationToCastleId, $db);
     }
 
+    /**
+     * @param $armyId
+     * @return Cli_Model_Army
+     */
     public function getArmy($armyId)
     {
         if ($this->hasArmy($armyId)) {
             return $this->_armies[$armyId];
         }
+    }
+
+    /**
+     * @param $castleId
+     * @return Cli_Model_Castle
+     */
+    public function getCastle($castleId)
+    {
+        return $this->_castles[$castleId];
     }
 
     public function getArmies()

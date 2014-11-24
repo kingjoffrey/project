@@ -270,14 +270,28 @@ class Cli_Model_Game
         $this->_me->setBattleSequence($battleSequence);
     }
 
+    /**
+     * @param $playerId
+     * @return Cli_Model_Player
+     */
     public function getPlayer($playerId)
     {
         return $this->_players[$this->getPlayerColor($playerId)];
     }
 
+    /**
+     * @param $playerId
+     * @param $armyId
+     * @return Cli_Model_Army
+     */
     public function getPlayerArmy($playerId, $armyId)
     {
         return $this->_players[$this->getPlayerColor($playerId)]->getArmy($armyId);
+    }
+
+    public function getPlayerCapital($color)
+    {
+        return $this->_capitals[$color];
     }
 
     public function getFields()
@@ -644,11 +658,6 @@ class Cli_Model_Game
         return $found;
     }
 
-    public function getCastleGarrison($playerId, $castleId)
-    {
-        return $this->_players[$this->getPlayerColor($playerId)]->getCastleGarrison($castleId);
-    }
-
     public function getTurnsLimit()
     {
         return $this->_turnsLimit;
@@ -664,7 +673,10 @@ class Cli_Model_Game
         return $this->_id;
     }
 
-
+    public function getFirstUnitId()
+    {
+        return $this->_firstUnitId;
+    }
 
 
 
@@ -1140,6 +1152,11 @@ class Cli_Model_Game
         return $enemy;
     }
 
+    /**
+     * @param $playerId
+     * @param $pathToMyEmptyCastle
+     * @return bool
+     */
     public function isMyCastleInRangeOfEnemy($playerId, $pathToMyEmptyCastle)
     {
         $this->_l->logMethodName();

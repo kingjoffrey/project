@@ -44,21 +44,15 @@ class Cli_Model_Army
      */
     public function __construct($army)
     {
-        if (isset($army['ids'][0])) {
-            $this->_id = $army['ids'][0];
-            $this->_ids = $army['ids'];
-        } else {
-            if (!isset($army['armyId'])) {
-                Coret_Model_Logger::debug(debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 2));
-                throw new Exception('no armyId');
-            }
-            $this->_id = $army['armyId'];
-            $this->_ids = array($this->_id);
+        if (!isset($army['armyId'])) {
+            Coret_Model_Logger::debug(debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 2));
+            throw new Exception('no "armyId"');
         }
+        $this->_id = $army['armyId'];
 
         if (!isset($army['x']) || !isset($army['y'])) {
             Coret_Model_Logger::debug(debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 2));
-            throw new Exception('');
+            throw new Exception('no "x" or "y"');
         }
 
         $this->_x = $army['x'];
@@ -648,6 +642,14 @@ class Cli_Model_Army
 
         $mSoldiersCreated = new Application_Model_SoldiersCreated($gameId, $db);
         $mSoldiersCreated->add($unitId, $playerId);
+    }
+
+    public function createHero($gameId, $heroId, $db)
+    {
+        $mHeroesInGame = new Application_Model_HeroesInGame($gameId, $db);
+        $mHeroesInGame->addToArmy($this->_id, $heroId, 0);
+
+        $this->_heroes[$heroId] = new Cli_Model_Hero($mHeroesInGame->getForMove($this->_id));
     }
 
     public function resetMovesLeft($gameId, $db)

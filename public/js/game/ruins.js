@@ -29,11 +29,11 @@ var Ruin = {
         var title;
         var css;
         if (empty) {
-            ruins[ruinId].e = 1;
+            game.ruins[ruinId].empty = 1;
             title = 'Ruins (empty)';
             css = '_empty';
         } else {
-            ruins[ruinId].e = 0;
+            ruins[ruinId].empty = 0;
             title = 'Ruins';
             css = '';
         }
@@ -43,7 +43,7 @@ var Ruin = {
     getIdByPosition: function (x, y) {
         for (var ruinId in game.ruins) {
             if (x == game.ruins[ruinId].x && y == game.ruins[ruinId].y) {
-                if (isTruthful(game.ruins[ruinId].e)) {
+                if (isTruthful(game.ruins[ruinId].empty)) {
                     return null;
                 }
                 return ruinId;

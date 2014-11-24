@@ -1,39 +1,36 @@
 <?php
 
-class Cli_Model_ComputerFight
+class Cli_Model_Fight
 {
-    protected $_gameId;
-    protected $_playerId;
-    protected $_db;
-    protected $_mArmyDB;
-    protected $_Computer;
-    protected $_gameHandler;
-    protected $_l;
-    protected $_mGame;
-    protected $_turnNumber;
-    protected $_map;
-    protected $_enemies;
-
-    public function __construct($gameId, $playerId, Zend_Db_Adapter_Pdo_Pgsql $db)
+    public function __construct(Cli_Model_Game $game, Cli_Model_Army $army, Cli_Model_Path $path, $playerId, Zend_Db_Adapter_Pdo_Pgsql $db)
     {
-        $this->_gameId = $gameId;
-        $this->_playerId = $playerId;
-        $this->_db = $db;
-        $this->_mArmyDB = new Application_Model_Army($this->_gameId, $this->_db);
-    }
-
-    public function fightEnemy($path)
-    {
-        $this->_l->logMethodName();
+        $l = new Coret_Model_Logger();
+        $l->logMethodName();
         $result = new Cli_Model_FightResult();
+        $gameId = $game->getId();
+        $fields = $game->getFields();
+        $enemies = array();
 
-        $fields = Application_Model_Board::changeArmyField($this->_map['fields'], $path->x, $path->y, 'E');
+        if ($castleId = $fields->getCastleId($path->x, $path->y)) {
+            $defenderColor = $fields->getCastleColor($path->x, $path->y);
+            $result->setDefenderColor($defenderColor);
+            $player = $game->getPlayer($game->getPlayerId($defenderColor));
+            if ($defenderColor == 'neutral') {
+                $enemies[] = $player->getCastleGarrison($game->getTurnNumber(), $game->getFirstUnitId());
+            } else {
+                $enemies = $player->getCastleGarrison($castleId);
+            }
+        } elseif ($enemyArmies = $fields->getArmies($path->x, $path->y)) {
+            foreach ($enemyArmies as $armyId => $color) {
+                $enemies[] = $game->getPlayerArmy($game->getPlayerId($color), $armyId);
+            }
+        } else {
+
+        }
+
 
         if (isset($path->castleId) && $path->castleId) { // castle
-            $mCastlesInGame = new Application_Model_CastlesInGame($this->_gameId, $this->_db);
-
             if ($mCastlesInGame->isEnemyCastle($path->castleId, $this->_playerId)) { // enemy castle
-                $playersInGameColors = Zend_Registry::get('playersInGameColors');
                 $defenderId = $mCastlesInGame->getPlayerIdByCastleId($path->castleId);
                 $result->defenderColor = $playersInGameColors[$defenderId];
                 $enemy = new Cli_Model_Army(Cli_Model_Army::getCastleGarrisonFromCastlePosition($this->_map['hostileCastles'][$path->castleId]['position'], $this->_gameId, $this->_db));

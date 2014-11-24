@@ -481,7 +481,7 @@ class Cli_Model_ComputerMain extends Cli_Model_ComputerFunctions
             if ($fightResults->victory) {
                 $joinIds = $this->_game->joinArmiesAtPosition($this->_playerId, $this->_Computer->getId(), $this->_db);
             } else {
-                $joinIds = array('deletedIds' => null);
+                $joinIds = null;
             }
             $attackerArmy = $fightResults->attackerArmy;
             $currentPath = $path->current;
@@ -491,7 +491,7 @@ class Cli_Model_ComputerMain extends Cli_Model_ComputerFunctions
                 $attackerArmy = $this->_Computer->toArray();
                 $currentPath = $path->current;
             } else {
-                $joinIds = array('deletedIds' => null);
+                $joinIds = null;
                 $attackerArmy = $this->_Computer->toArray();
                 $currentPath = null;
             }
@@ -527,7 +527,7 @@ class Cli_Model_ComputerMain extends Cli_Model_ComputerFunctions
             'path' => $currentPath,
             'battle' => $fightResults->battle,
             'victory' => $fightResults->victory,
-            'deletedIds' => $joinIds['deletedIds'],
+            'deletedIds' => $joinIds,
             'oldArmyId' => $oldArmyId,
             'castleId' => $castleId,
             'ruinId' => $ruinId,

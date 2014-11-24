@@ -61,6 +61,11 @@ class Cli_Model_Castle
         return $this->_y;
     }
 
+    public function getPosition()
+    {
+        return array('x' => $this->_x, 'y' => $this->_y);
+    }
+
     public function toArray()
     {
         return array(
