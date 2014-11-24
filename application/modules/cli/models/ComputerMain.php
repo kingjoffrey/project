@@ -1,11 +1,19 @@
 <?php
 
-class Cli_Model_ComputerMain extends Cli_Model_ComputerFunctions
+class Cli_Model_ComputerMain
 {
+    protected $_gameId;
+    protected $_playerId;
+    protected $_db;
+    protected $_Computer;
+    protected $_gameHandler;
+    protected $_l;
+
     public function __construct(IWebSocketConnection $user, $playerId, Zend_Db_Adapter_Pdo_Pgsql $db, Cli_GameHandler $gameHandler)
     {
-        parent::__construct($user->parameters['gameId'], $playerId, $db);
-
+        $this->_gameId = $user->parameters['gameId'];
+        $this->_playerId = $playerId;
+        $this->_db = $db;
         $this->_user = $user;
         $this->_gameHandler = $gameHandler;
         $this->_l = new Coret_Model_Logger();
