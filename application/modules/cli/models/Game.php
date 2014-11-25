@@ -29,7 +29,7 @@ class Cli_Model_Game
     private $_firstUnitId;
 
     private $_players;
-    private $_ruins = array();
+    private $_ruins;
 
     private $_statistics;
 
@@ -38,6 +38,7 @@ class Cli_Model_Game
         $this->_l = new Coret_Model_Logger();
 
         $this->_players = new Cli_Model_Players();
+        $this->_ruins = new Cli_Model_Ruins();
         $this->_id = $gameId;
 
         $mGame = new Application_Model_Game($this->_id, $db);
@@ -148,25 +149,8 @@ class Cli_Model_Game
                 $empty = false;
             }
             $position['ruinId'] = $ruinId;
-            $this->_ruins[$ruinId] = new Cli_Model_Ruin($position, $empty);
+            $this->_ruins->add($ruinId, new Cli_Model_Ruin($position, $empty));
             $this->_fields->initRuin($position['x'], $position['y'], $ruinId, $empty);
-        }
-    }
-
-    private function ruinsToArray()
-    {
-        $ruins = array();
-        foreach ($this->_ruins as $ruinId => $ruin) {
-            $ruins[$ruinId] = $ruin->toArray();
-        }
-        return $ruins;
-    }
-
-    public function emptyRuin($ruinId, Zend_Db_Adapter_Pdo_Pgsql $db)
-    {
-        $mRuinsInGame = new Application_Model_RuinsInGame($this->_id, $db);
-        if ($mRuinsInGame->add($ruinId)) {
-            $this->_ruins[$ruinId]->empty = true;
         }
     }
 
@@ -211,7 +195,7 @@ class Cli_Model_Game
             'turnHistory' => $this->_turnHistory,
             'me' => $this->_me->toArray(),
             'players' => $this->_players->toArray(),
-            'ruins' => $this->ruinsToArray(),
+            'ruins' => $this->_ruins->toArray(),
             'neutralCastles' => $this->_players['neutral']->castlesToArray(),
             'neutralTowers' => $this->_players['neutral']->towersToArray()
         );
@@ -374,7 +358,7 @@ class Cli_Model_Game
             $found = array('gold', $gold);
             $this->_players[$this->getPlayerColor($playerId)]->addGold($gold, $this->_id, $db);
             $army->zeroHeroMovesLeft($heroId, $this->_id, $db);
-            $this->_ruins[$ruinId]->setEmpty($this->_id, $db);
+            $this->_ruins->getRuin($ruinId)->setEmpty($this->_id, $db);
         } elseif ($random < 85) { //30%
 //jednostki
             if ($this->_turnNumber <= 9) {
@@ -472,7 +456,7 @@ class Cli_Model_Game
             }
 
             $army->zeroHeroMovesLeft($heroId, $this->_id, $db);
-            $this->_ruins[$ruinId]->setEmpty($this->_id, $db);
+            $this->_ruins->getRuin($ruinId)->setEmpty($this->_id, $db);
             $found = array('allies', $numberOfUnits);
 //        } elseif ($random < 95) { //10%
         } else {
@@ -631,7 +615,7 @@ class Cli_Model_Game
         $movesLeft = $army->getMovesLeft();
         $playerColor = $this->getPlayerColor($playerId);
 
-        foreach ($this->_ruins as $ruinId => $ruin) {
+        foreach ($this->_ruins->get() as $ruinId => $ruin) {
             if ($ruin->getEmpty()) {
                 continue;
             }
