@@ -27,7 +27,7 @@ class Cli_Model_TowerHandler
         $fields = $game->getFields();
         $players = $game->getPlayers();
         $playerColor = $game->getPlayerColor($playerId);
-        $playerTeam = $game->getPlayerTeam($playerId);
+        $playerTeam = $players->getPlayer($playerColor)->getTeam();
 
         foreach ($surroundings as $y => $row) {
             foreach (array_keys($row) as $x) {
@@ -42,7 +42,7 @@ class Cli_Model_TowerHandler
                         continue;
                     }
 
-                    if ($playerTeam == $game->getPlayerTeam($game->getPlayerId($towerColor))) {
+                    if ($playerTeam == $players->getPlayer($towerColor)->getTeam()) {
                         continue;
                     }
 

@@ -39,7 +39,7 @@ class Cli_Model_NextTurn extends Cli_Model_Turn
                 $token = array(
                     'type' => 'nextTurn',
                     'nr' => $turnNumber,
-                    'color' => $this->_game->getPlayerColor($nextPlayerId)
+                    'color' => $nextPlayerColor
                 );
                 $this->_gameHandler->sendToChannel($this->_db, $token, $this->_gameId);
                 return;

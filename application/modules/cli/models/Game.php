@@ -229,7 +229,7 @@ class Cli_Model_Game
 
     public function getPlayers()
     {
-        return $this->_players;
+        return $this->_players->get();
     }
 
     public function isMyCastleAtField($x, $y)
@@ -246,25 +246,15 @@ class Cli_Model_Game
         }
     }
 
-    public function getPlayerId($color)
-    {
-        return $this->_players[$color]->getId();
-    }
-
-    public function getPlayerTeam($playerId)
-    {
-        return $this->_players[$this->getPlayerColor($playerId)]->getTeam();
-    }
-
     public function allEnemiesAreDead($playerId)
     {
         $playerColor = $this->getPlayerColor($playerId);
-        $playerTeam = $this->getPlayerTeam($playerId);
-        foreach ($this->_players as $color => $player) {
+        $playerTeam = $this->_players->getPlayer($playerColor)->getTeam();
+        foreach ($this->_players->get() as $color => $player) {
             if ($color == $playerColor || $playerTeam == $player->getTeam()) {
                 continue;
             }
-            if ($this->_players[$color]->castlesExists() || $this->_players[$color]->armiesExists()) {
+            if ($player->castlesExists() || $player->armiesExists()) {
                 return false;
             }
         }
@@ -317,7 +307,7 @@ class Cli_Model_Game
         if ($nextPlayerColor == $firstColor) {
             $this->turnNumberIncrement();
         }
-        $this->_turnPlayerId = $this->getPlayerId($nextPlayerColor);
+        $this->_turnPlayerId = $this->getPlayers()->getPlayer($nextPlayerColor)->getId();
 
         $mGame = new Application_Model_Game($this->_id, $db);
         $mGame->updateTurn($this->_turnPlayerId, $this->_turnNumber);
@@ -362,14 +352,6 @@ class Cli_Model_Game
     public function getTurnPlayerId()
     {
         return $this->_turnPlayerId;
-    }
-
-    public function sameTeam($color1, $color2)
-    {
-        if ($color1 == $color2) {
-            return true;
-        }
-        return $this->_players[$color1]->getTeam() == $this->_players[$color2]->getTeam();
     }
 
     public function searchRuin($ruinId, $army, $playerId, $db)
@@ -572,9 +554,8 @@ class Cli_Model_Game
         $castleX = $castle->getX();
         $castleY = $castle->getY();
 
-
-        foreach ($this->_players as $color => $player) {
-            if ($this->sameTeam($playerColor, $color)) {
+        foreach ($this->_players->get() as $color => $player) {
+            if ($this->_players->sameTeam($playerColor, $color)) {
                 continue;
             }
             foreach ($player->getArmies() as $enemy) {
@@ -607,8 +588,8 @@ class Cli_Model_Game
         $enemiesInRange = array();
         $playerColor = $this->getPlayerColor($playerId);
 
-        foreach ($this->_players as $color => $player) {
-            if ($this->sameTeam($playerColor, $color)) {
+        foreach ($this->_players->get() as $color => $player) {
+            if ($this->_players->sameTeam($playerColor, $color)) {
                 continue;
             }
             foreach ($player->getArmies() as $enemy) {
@@ -685,7 +666,7 @@ class Cli_Model_Game
         $armyY = $army->getY();
 
         foreach ($this->_players as $color => $player) {
-            if ($this->sameTeam($playerColor, $color)) {
+            if ($this->_players->sameTeam($playerColor, $color)) {
                 continue;
             }
             foreach ($player->getCastles() as $castleId => $castle) {
@@ -808,8 +789,8 @@ class Cli_Model_Game
 
         foreach ($this->_players[$playerColor]->getCastles() as $castleId => $castle) {
             $mHeuristics = new Cli_Model_Heuristics($castle->getX(), $castle->getY());
-            foreach ($this->_players as $color => $player) {
-                if ($this->sameTeam($playerColor, $color)) {
+            foreach ($this->_players->get() as $color => $player) {
+                if ($this->_players->sameTeam($playerColor, $color)) {
                     continue;
                 }
 
@@ -901,7 +882,7 @@ class Cli_Model_Game
         $movesLeft = $army->getMovesLeft();
 
         foreach ($this->_players as $color => $player) {
-            if ($this->sameTeam($playerColor, $color)) {
+            if ($this->_players->sameTeam($playerColor, $color)) {
                 continue;
             }
             foreach ($player->getArmies() as $enemy) {
@@ -951,7 +932,7 @@ class Cli_Model_Game
         $movesLeft = $army->getMovesLeft();
 
         foreach ($this->_players as $color => $player) {
-            if ($this->sameTeam($playerColor, $color)) {
+            if ($this->_players->sameTeam($playerColor, $color)) {
                 continue;
             }
             foreach ($player->getArmies() as $enemy) {

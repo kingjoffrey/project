@@ -4,6 +4,11 @@ class Cli_Model_Players
 {
     private $_players = array();
 
+    public function get()
+    {
+        return $this->_players;
+    }
+
     public function addPlayer($color, $player)
     {
         $this->_players[$color] = $player;
@@ -74,5 +79,13 @@ class Cli_Model_Players
     {
         $player = $this->getPlayer($color);
         return $player->armiesExists() || $player->castlesExists();
+    }
+
+    public function sameTeam($color1, $color2)
+    {
+        if ($color1 == $color2) {
+            return true;
+        }
+        return $this->getPlayer($color1)->getTeam() == $this->getPlayer($color2)->getTeam();
     }
 }
