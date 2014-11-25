@@ -84,35 +84,7 @@ class Cli_GameHandler extends Cli_WofHandler
 //                $this->sendError($user, 'Nie Twoja gra!');
 //                return;
 //            }
-
-            $playerId = $user->parameters['game']->getTurnPlayerId();
-
-            if (!$user->parameters['game']->getPlayerTurnActive($playerId)) {
-                $l->log('START TURY');
-                $mTurn = new Cli_Model_Turn($user, $db, $this);
-                $mTurn->start($playerId, true);
-                return;
-            }
-
-            if (!$user->parameters['game']->isComputer($playerId)) {
-                echo 'To (' . $playerId . ') nie komputer!' . "\n";
-//                $this->sendError($user, 'To (' . $playerId . ') nie komputer!');
-                return;
-            }
-
-            if (Cli_Model_ComputerHeroResurrection::handle($playerId, $user->parameters['game'], $db, $this)) {
-                return;
-            }
-
-            if ($army = $user->parameters['game']->getComputerArmyToMove($playerId)) {
-                $mMain = new Cli_Model_ComputerMain($user, $playerId, $db, $this);
-                $mMain->init($army);
-            } else {
-                $l->log('NASTĘPNA TURA');
-                $mTurn = new Cli_Model_Turn($user, $db, $this);
-                $mTurn->next($playerId);
-            }
-
+            new Cli_Model_ComputerMain($user, $user->parameters['game'], $db, $this);
             return;
         }
 
@@ -131,11 +103,7 @@ class Cli_GameHandler extends Cli_WofHandler
             return;
         }
 
-        if (!isset($mGame)) {
-            $mGame = new Application_Model_Game($user->parameters['gameId'], $db);
-        }
-
-        if (!$mGame->isPlayerTurn($user->parameters['playerId'])) {
+        if (!$user->parameters['game']->isPlayerTurn($user->parameters['playerId'])) {
             $this->sendError($user, 'Not your turn.');
 
             if (Zend_Registry::get('config')->exitOnErrors) {
@@ -178,12 +146,12 @@ class Cli_GameHandler extends Cli_WofHandler
                 break;
 
             case 'nextTurn':
-                $mTurn = new Cli_Model_Turn($user, $db, $this);
+                $mTurn = new Cli_Model_Turn($user, $user->parameters['game'], $db, $this);
                 $mTurn->next($user->parameters['playerId']);
                 break;
 
             case 'startTurn':
-                $mTurn = new Cli_Model_Turn($user, $db, $this);
+                $mTurn = new Cli_Model_Turn($user, $user->parameters['game'], $db, $this);
                 $mTurn->start($user->parameters['playerId']);
                 break;
 

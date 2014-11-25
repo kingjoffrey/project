@@ -91,6 +91,15 @@ class Cli_Model_Fields
         return $this->_fields[$y][$x]->getArmyColor($armyId);
     }
 
+    public function isPlayerArmy($x, $y, $playerColor)
+    {
+        foreach ($this->_fields[$y][$x]->getArmies() as $armyId => $color) {
+            if ($color == $playerColor) {
+                return $armyId;
+            }
+        }
+    }
+
     public function getArmies($x, $y)
     {
         return $this->_fields[$y][$x]->getArmies();

@@ -226,9 +226,11 @@ class Cli_Model_Player extends Cli_Model_DefaultPlayer
         return count($this->_armies);
     }
 
-    public function setLost($lost)
+    public function setLost($gameId, $db)
     {
-        $this->_lost = $lost;
+        $mPlayersInGame = new Application_Model_PlayersInGame($gameId, $db);
+        $mPlayersInGame->setPlayerLostGame($this->_id);
+        $this->_lost = true;
     }
 
     public function getId()
@@ -383,6 +385,9 @@ class Cli_Model_Player extends Cli_Model_DefaultPlayer
         return $this->_computer;
     }
 
+    /**
+     * @return Cli_Model_Army
+     */
     public function getComputerArmyToMove()
     {
         foreach ($this->_armies as $armyId => $army) {
@@ -476,5 +481,10 @@ class Cli_Model_Player extends Cli_Model_DefaultPlayer
     public function getDefenceSequence()
     {
         return $this->_defenceSequence;
+    }
+
+    public function noArmiesAndCastles()
+    {
+        return $this->noCastlesExists() && $this->noArmiesExists();
     }
 }

@@ -38,7 +38,8 @@ class Cli_Model_Move
             $attackerArmyId = $mSplitArmy->getChildArmyId();
         }
 
-        $army = $game->getPlayerArmy($playerId, $attackerArmyId);
+        $players = $game->getPlayers();
+        $army = $players->getPlayerArmy($game->getPlayerColor($playerId), $attackerArmyId);
 
         if (empty($army)) {
             $gameHandler->sendError($user, 'Brak armii o podanym ID! Odświerz przeglądarkę.');
@@ -59,28 +60,34 @@ class Cli_Model_Move
         $castleId = null;
         $fight = false;
 
-        if ($fields->getType($army->getX(), $army->getY()) == 'w') {
-            if ($army->canSwim() || $army->canFly()) {
-                $otherArmyId = $game->isOtherArmyAtPosition($playerId, $attackerArmyId);
+        $armyX = $army->getX();
+        $armyY = $army->getY();
+
+        $player = $players->getPlayer($attackerColor);
+
+        switch ($fields->getType($armyX, $armyY)) {
+            case 'w':
+                $otherArmyId = $fields->isPlayerArmy($armyX, $armyY, $attackerColor);
                 if ($otherArmyId) {
-                    $otherArmy = $game->getPlayerArmy($playerId, $otherArmyId);
+                    $otherArmy = $player->getArmy($otherArmyId);
                     if (!$otherArmy->canSwim() && !$otherArmy->canFly()) {
                         new Cli_Model_JoinArmy($otherArmyId, $user, $db, $gameHandler);
                         $gameHandler->sendError($user, 'Nie możesz zostawić armii na wodzie.');
                         return;
                     }
                 }
-            }
-        } elseif ($fields->getType($army->getX(), $army->getY()) == 'M') {
-            $otherArmyId = $game->isOtherArmyAtPosition($playerId, $attackerArmyId);
-            if ($otherArmyId) {
-                $otherArmy = $game->getPlayerArmy($playerId, $otherArmyId);
-                if (!$otherArmy->canFly()) {
-                    new Cli_Model_JoinArmy($otherArmyId, $user, $db, $gameHandler);
-                    $gameHandler->sendError($user, 'Nie możesz zostawić armii w górach.');
-                    return;
+                break;
+            case'M':
+                $otherArmyId = $fields->isPlayerArmy($armyX, $armyY, $attackerColor);
+                if ($otherArmyId) {
+                    $otherArmy = $player->getArmy($otherArmyId);
+                    if (!$otherArmy->canFly()) {
+                        new Cli_Model_JoinArmy($otherArmyId, $user, $db, $gameHandler);
+                        $gameHandler->sendError($user, 'Nie możesz zostawić armii w górach.');
+                        return;
+                    }
                 }
-            }
+                break;
         }
 
         /*
@@ -178,7 +185,7 @@ class Cli_Model_Move
             $battleResult = $battle->getResult();
         } else {
             $army->updateArmyPosition($gameId, $move, $fields, $db);
-            $deletedIds = $game->joinArmiesAtPosition($playerId, $army->getId(), $db);
+            $deletedIds = $player->joinArmiesAtPosition($army->getId(), $attackerColor, $db);
         }
 
         new Cli_Model_TowerHandler($playerId, $move->current, $game, $db, $gameHandler);

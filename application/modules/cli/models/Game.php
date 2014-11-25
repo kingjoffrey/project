@@ -28,7 +28,7 @@ class Cli_Model_Game
     private $_specialUnits = array();
     private $_firstUnitId;
 
-    private $_players = array();
+    private $_players;
     private $_ruins = array();
 
     private $_statistics;
@@ -37,6 +37,7 @@ class Cli_Model_Game
     {
         $this->_l = new Coret_Model_Logger();
 
+        $this->_players = new Cli_Model_Players();
         $this->_id = $gameId;
 
         $mGame = new Application_Model_Game($this->_id, $db);
@@ -128,10 +129,10 @@ class Cli_Model_Game
         $mapTowers = $mMapTowers->getMapTowers();
 
         foreach ($this->_playersInGameColors as $playerId => $color) {
-            $this->_players[$color] = new Cli_Model_Player($players[$playerId], $this->_id, $mapCastles, $mapTowers, $mMapPlayers, $db);
+            $this->_players->addPlayer($color, new Cli_Model_Player($players[$playerId], $this->_id, $mapCastles, $mapTowers, $mMapPlayers, $db));
         }
 
-        $this->_players['neutral'] = new Cli_Model_NeutralPlayer($this->_mapId, $this->_id, $mapCastles, $db);
+        $this->_players->addPlayer('neutral', new Cli_Model_NeutralPlayer($this->_mapId, $this->_id, $mapCastles, $db));
     }
 
     private function initRuins(Zend_Db_Adapter_Pdo_Pgsql $db)
@@ -150,33 +151,6 @@ class Cli_Model_Game
             $this->_ruins[$ruinId] = new Cli_Model_Ruin($position, $empty);
             $this->_fields->initRuin($position['x'], $position['y'], $ruinId, $empty);
         }
-    }
-
-    private function playersToArray()
-    {
-        $players = array();
-        foreach ($this->_players as $color => $player) {
-            if ($color == 'neutral') {
-                continue;
-            }
-            $players[$color] = $player->toArray();
-        }
-        return $players;
-    }
-
-    public function updatePlayerArmy($army, $color)
-    {
-        $this->_players[$color]->updateArmy($army);
-    }
-
-    public function updatePlayerCastle($castle, $color)
-    {
-        $this->_players[$color]->updateCastle($castle);
-    }
-
-    public function updatePlayerTower($tower, $color)
-    {
-        $this->_players[$color]->updateTower($tower);
     }
 
     private function ruinsToArray()
@@ -236,57 +210,11 @@ class Cli_Model_Game
             'chatHistory' => $this->_chatHistory,
             'turnHistory' => $this->_turnHistory,
             'me' => $this->_me->toArray(),
-            'players' => $this->playersToArray(),
+            'players' => $this->_players->toArray(),
             'ruins' => $this->ruinsToArray(),
             'neutralCastles' => $this->_players['neutral']->castlesToArray(),
             'neutralTowers' => $this->_players['neutral']->towersToArray()
         );
-    }
-
-    public function isPlayerCastle($playerId, $castleId)
-    {
-        if (isset($this->_players[$this->getPlayerColor($playerId)])) {
-            return $this->_players[$this->getPlayerColor($playerId)]->hasCastle($castleId);
-        }
-    }
-
-    public function canCastleProduceThisUnit($playerId, $castleId, $unitId)
-    {
-        return $this->_players[$this->getPlayerColor($playerId)]->canCastleProduceThisUnit($castleId, $unitId);
-    }
-
-    public function getCastleCurrentProductionId($playerId, $castleId)
-    {
-        return $this->_players[$this->getPlayerColor($playerId)]->getCastleCurrentProductionId($castleId);
-    }
-
-    public function setProductionId($playerId, $castleId, $unitId, $relocationToCastleId, $db)
-    {
-        $this->_players[$this->getPlayerColor($playerId)]->setProduction($this->_id, $castleId, $unitId, $relocationToCastleId, $db);
-    }
-
-    public function setBattleSequence($battleSequence)
-    {
-        $this->_me->setBattleSequence($battleSequence);
-    }
-
-    /**
-     * @param $playerId
-     * @return Cli_Model_Player
-     */
-    public function getPlayer($playerId)
-    {
-        return $this->_players[$this->getPlayerColor($playerId)];
-    }
-
-    /**
-     * @param $playerId
-     * @param $armyId
-     * @return Cli_Model_Army
-     */
-    public function getPlayerArmy($playerId, $armyId)
-    {
-        return $this->_players[$this->getPlayerColor($playerId)]->getArmy($armyId);
     }
 
     public function getPlayerCapital($color)
@@ -299,29 +227,14 @@ class Cli_Model_Game
         return $this->_fields;
     }
 
-    public function isOtherArmyAtPosition($playerId, $armyId)
+    public function getPlayers()
     {
-        return $this->_players[$this->getPlayerColor($playerId)]->isOtherArmyAtPosition($armyId);
-    }
-
-    public function joinArmiesAtPosition($playerId, $armyId, $db)
-    {
-        return $this->_players[$this->getPlayerColor($playerId)]->joinArmiesAtPosition($armyId, $this->_id, $db);
+        return $this->_players;
     }
 
     public function isMyCastleAtField($x, $y)
     {
         return $this->_fields->isMyCastle($x, $y);
-    }
-
-    public function isPlayerCastleAtField($playerId, $x, $y)
-    {
-        return $this->_fields->isPlayerCastle($this->getPlayerColor($playerId), $x, $y);
-    }
-
-    public function noPlayerArmiesAndCastles($playerId)
-    {
-        return $this->_players[$this->getPlayerColor($playerId)]->noCastlesExists() && $this->_players[$this->getPlayerColor($playerId)]->noArmiesExists();
     }
 
     public function getPlayerColor($playerId)
@@ -341,13 +254,6 @@ class Cli_Model_Game
     public function getPlayerTeam($playerId)
     {
         return $this->_players[$this->getPlayerColor($playerId)]->getTeam();
-    }
-
-    public function setPlayerLost($playerId, $db)
-    {
-        $this->_players[$this->getPlayerColor($playerId)]->setLost(true);
-        $mPlayersInGame = new Application_Model_PlayersInGame($this->_id, $db);
-        $mPlayersInGame->setPlayerLostGame($playerId);
     }
 
     public function allEnemiesAreDead($playerId)
@@ -378,12 +284,6 @@ class Cli_Model_Game
             }
         }
         return true;
-    }
-
-    public function playerArmiesOrCastlesExists($playerId)
-    {
-        $color = $this->getPlayerColor($playerId);
-        return $this->_players[$color]->armiesExists() || $this->_players[$color]->castlesExists();
     }
 
     public function getExpectedNextTurnPlayer($playerId, $db)
@@ -454,23 +354,6 @@ class Cli_Model_Game
         }
     }
 
-    public function changeTowerOwner($playerId, $towerId, $color, $db)
-    {
-        $tower = $this->_players[$color]->getTower($towerId);
-        $this->_players[$color]->removeTower($towerId);
-
-        $mTowersInGame = new Application_Model_TowersInGame($this->_id, $db);
-        if ($color == 'neutral') {
-            $mTowersInGame->addTower($towerId, $playerId);
-        } else {
-            $mTowersInGame->changeTowerOwner($towerId, $playerId);
-        }
-
-        $newColor = $this->getPlayerColor($playerId);
-        $this->_fields->changeTower($tower->getX(), $tower->getY(), $newColor);
-        $this->_players[$newColor]->addTower($towerId, $tower);
-    }
-
     public function setTurnPlayerId($playerId)
     {
         $this->_turnPlayerId = $playerId;
@@ -479,26 +362,6 @@ class Cli_Model_Game
     public function getTurnPlayerId()
     {
         return $this->_turnPlayerId;
-    }
-
-    public function getPlayerTurnActive($playerId)
-    {
-        return $this->_players[$this->getPlayerColor($playerId)]->getTurnActive();
-    }
-
-    public function isComputer($playerId)
-    {
-        return $this->_players[$this->getPlayerColor($playerId)]->getComputer();
-    }
-
-    public function getComputerArmyToMove($playerId)
-    {
-        return $this->_players[$this->getPlayerColor($playerId)]->getComputerArmyToMove();
-    }
-
-    public function getPlayerCastle($playerId, $castleId)
-    {
-        return $this->_players[$this->getPlayerColor($playerId)]->getCastle($castleId);
     }
 
     public function sameTeam($color1, $color2)
@@ -684,11 +547,6 @@ class Cli_Model_Game
 
 
 
-
-
-
-
-
     /*
      * **************************
      * *** COMPUTER FUNCTIONS ***
@@ -704,11 +562,6 @@ class Cli_Model_Game
         $this->_l->logMethodName();
 
         $this->_players[$this->getPlayerColor($playerId)]->getComputerEmptyCastleInComputerRange($computer, $this->_fields);
-    }
-
-    public function getArmiesFromCastle($playerId, $castle)
-    {
-
     }
 
     public function getEnemiesHaveRangeAtThisCastle($playerId, $castle)
