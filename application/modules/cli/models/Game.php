@@ -211,14 +211,12 @@ class Cli_Model_Game
         return $this->_fields;
     }
 
+    /**
+     * @return Cli_Model_Players
+     */
     public function getPlayers()
     {
-        return $this->_players->get();
-    }
-
-    public function isMyCastleAtField($x, $y)
-    {
-        return $this->_fields->isMyCastle($x, $y);
+        return $this->_players;
     }
 
     public function getPlayerColor($playerId)
@@ -1102,7 +1100,7 @@ class Cli_Model_Game
         $attackerCourage = 2;
 
         if ($castleId = $this->_fields->isEnemyCastle($playerColor, $enemyX, $enemyY)) {
-            $enemy->setDefenseModifier($this->_players[$enemyColor]->getCastleDefenseModifier($castleId));
+            $enemy->setDefenseModifier($this->_players->getPlayer($enemyColor)->getCastleDefenseModifier($castleId));
         } elseif ($this->_fields->getTowerId($enemyX, $enemyY)) {
             $enemy->setDefenseModifier(1);
         }
@@ -1110,8 +1108,8 @@ class Cli_Model_Game
         $battle = new Cli_Model_Battle(
             $army,
             $enemy,
-            $this->_players[$playerColor]->getAttackSequence(),
-            $this->_players[$enemyColor]->getDefenceSequence()
+            $this->_players->getPlayer($playerColor)->getAttackSequence(),
+            $this->_players->getPlayer($enemyColor)->getDefenceSequence()
         );
 
         for ($i = 0; $i < $max; $i++) {

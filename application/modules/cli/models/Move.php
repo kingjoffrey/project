@@ -39,7 +39,8 @@ class Cli_Model_Move
         }
 
         $players = $game->getPlayers();
-        $army = $players->getPlayerArmy($game->getPlayerColor($playerId), $attackerArmyId);
+        $attackerColor = $game->getPlayerColor($playerId);
+        $army = $players->getPlayer($attackerColor)->getArmy($attackerArmyId);
 
         if (empty($army)) {
             $gameHandler->sendError($user, 'Brak armii o podanym ID! Odświerz przeglądarkę.');
@@ -53,7 +54,7 @@ class Cli_Model_Move
         $defenderId = null;
         $enemy = null;
         $attacker = null;
-        $attackerColor = $game->getPlayerColor($playerId);
+
         $battleResult = null;
         $victory = false;
         $deletedIds = null;

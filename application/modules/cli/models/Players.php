@@ -55,24 +55,9 @@ class Cli_Model_Players
         $this->_players->getPlayer($color)->setProduction($gameId, $castleId, $unitId, $relocationToCastleId, $db);
     }
 
-    /**
-     * @param $color
-     * @param $armyId
-     * @return Cli_Model_Army
-     */
-    public function getPlayerArmy($color, $armyId)
-    {
-        return $this->_players->getPlayer($color)->getArmy($armyId);
-    }
-
     public function joinArmiesAtPosition($color, $armyId, $db)
     {
         return $this->getPlayer($color)->joinArmiesAtPosition($armyId, $this->_id, $db);
-    }
-
-    public function getArmiesFromCastle()
-    {
-
     }
 
     public function playerArmiesOrCastlesExists($color)

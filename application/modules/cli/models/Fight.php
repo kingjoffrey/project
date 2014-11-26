@@ -7,6 +7,8 @@ class Cli_Model_Fight
     private $_game;
     private $_gameId;
     private $_fields;
+    private $_players;
+    private $_player;
     private $_army;
     private $_enemies;
 
@@ -16,29 +18,30 @@ class Cli_Model_Fight
         $this->_l->logMethodName();
 
         $this->_result = new Cli_Model_FightResult();
+
         $this->_game = $game;
-        $this->_gameId = $game->getId();
-        $this->_fields = $game->getFields();
+        $this->_gameId = $this->_game->getId();
+        $this->_fields = $this->_game->getFields();
+        $this->_players = $this->_game->getPlayers();
+        $this->_attackerColor = $this->_game->getPlayerColor($playerId);
+        $this->_player = $this->_players->getPlayer($this->_attackerColor);
         $this->_army = $army;
     }
 
     public function prepareArmies(Cli_Model_Path $path)
     {
         $this->_enemies = array();
-        $players = $this->_game->getPlayers();
 
         if ($castleId = $this->_fields->getCastleId($path->x, $path->y)) {
             $defenderColor = $this->_fields->getCastleColor($path->x, $path->y);
-            $this->_result->setDefenderColor($defenderColor);
-            $player = $players->getPlayer($defenderColor);
             if ($defenderColor == 'neutral') {
-                $this->_enemies[] = $player->getCastleGarrison($this->_game->getTurnNumber(), $this->_game->getFirstUnitId());
+                $this->_enemies[] = $this->_players->getPlayer($defenderColor)->getCastleGarrison($this->_game->getTurnNumber(), $this->_game->getFirstUnitId());
             } else {
-                $this->_enemies = $this->_game->getCastleGarrison($castleId);
+                $this->handleCastleGarrison($this->_players->getPlayer($this->_fields->getCastleColor($path->x, $path->y))->getCastle($castleId));
             }
         } elseif ($enemyArmies = $this->_fields->getArmies($path->x, $path->y)) {
             foreach ($enemyArmies as $armyId => $color) {
-                $this->_enemies[] = $players->getPlayerArmy($color, $armyId);
+                $this->_enemies[] = $this->_players->getPlayer($color)->getArmy($armyId);
             }
         } else {
             throw new Exception();
@@ -50,9 +53,7 @@ class Cli_Model_Fight
         if (empty($this->_enemies)) {
             throw new Exception();
         }
-        foreach ($this->_enemies as $enemyId => $enemy) {
-            $battle = new Cli_Model_Battle($this->_army, $this->_enemies, $this->_game->getPlayer);
-        }
+        $battle = new Cli_Model_Battle($this->_army, $this->_enemies, $this->_game);
     }
 
     public function getResult()
@@ -61,6 +62,19 @@ class Cli_Model_Fight
             throw new Exception();
         }
         return $this->_result;
+    }
+
+    private function handleCastleGarrison(Cli_Model_Castle $castle)
+    {
+        $castleX = $castle->getX();
+        $castleY = $castle->getY();
+        for ($i = $castleX; $i <= $castleX + 1; $i++) {
+            for ($j = $castleY; $j <= $castleY + 1; $j++) {
+                foreach ($this->_fields->getArmies($i, $j) as $armyId => $color) {
+                    $this->_enemies[] = $this->_players->getPlayer($color)->getArmy($armyId);
+                }
+            }
+        }
     }
 }
 
