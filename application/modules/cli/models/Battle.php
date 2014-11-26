@@ -8,6 +8,7 @@ class Cli_Model_Battle
     private $_defenders;
     private $_succession = 0;
     private $_real;
+    private $_externalDefenceModifier;
 
     public function __construct(Cli_Model_Army $attacker, $defenders, Cli_Model_Game $game, $real = false)
     {
@@ -17,20 +18,37 @@ class Cli_Model_Battle
         $this->_result = new Cli_Model_BattleResult();
         $this->_real = $real;
 
-//        if (empty($attackerBattleSequence)) {
-//            $units = Zend_Registry::get('units');
-//            $attackerBattleSequence = array_keys($units);
-//        }
-//        if (empty($defenderBattleSequence)) {
-//            if (!isset($units)) {
-//                $units = Zend_Registry::get('units');
-//            }
-//            $defenderBattleSequence = array_keys($units);
-//        }
-//        if ($attacker->isemptyAttackBattleSequence()) {
+        $players = $game->getPlayers();
+        $fields = $game->getFields();
+
+        $attackerBattleSequence = $players->getPlayer($fields->getArmyColor($this->_attacker->getX(), $this->_attacker->getY(), $this->_attacker->getId()))->getAttackSequence();
+        if (empty($attackerBattleSequence)) {
+            $units = Zend_Registry::get('units');
+            $attackerBattleSequence = array_keys($units);
+        }
+        $this->_attacker->setAttackBattleSequence($attackerBattleSequence);
+
+        foreach ($this->_defenders as $defender) {
+            $defenderBattleSequence = $players->getPlayer($fields->getArmyColor($defender->getX(), $defender->getY(), $defender->getId()))->getDefenceSequence();
+            if (empty($defenderBattleSequence)) {
+                if (!isset($units)) {
+                    $units = Zend_Registry::get('units');
+                }
+                $defenderBattleSequence = array_keys($units);
+            }
+            $defender->setDefenceBattleSequence($defenderBattleSequence);
+        }
+
+        if ($castleId = $fields->getCastleId($defender->getX(), $defender->getY())) {
+            $this->_externalDefenceModifier = $players->getPlayer($fields->getCastleColor($defender->getX(), $defender->getY()))->getCastle($castleId)->getDefenseModifier();
+        } elseif ($fields->getTowerId($defender->getX(), $defender->getY())) {
+            $this->_externalDefenceModifier = 1;
+        }
+
+//        if ($attacker->isEmptyAttackBattleSequence()) {
 //            $attacker->setAttackBattleSequence($attackerBattleSequence);
 //        }
-//        if ($defender->isemptyDefenceBattleSequence()) {
+//        if ($defender->isEmptyDefenceBattleSequence()) {
 //            $defender->setDefenceBattleSequence($defenderBattleSequence);
 //        }
     }
@@ -86,10 +104,10 @@ class Cli_Model_Battle
     {
         $lives = array('attack' => 2, 'defense' => 2);
 
-        $attack = $this->_attacker->getAttack();
+        $attack = $this->_attacker->getAttackBattleSequence();
 
         foreach ($this->_defenders as $defenderArmy) {
-            $defence = $defenderArmy->getDefence();
+            $defence = $defenderArmy->getDefenceBattleSequence();
 
             foreach ($attack['soldiers'] as $a => $attackingFighter) {
                 foreach ($defence['soldiers'] as $d => $defendingFighter) {
@@ -207,7 +225,7 @@ class Cli_Model_Battle
         }
 
         $attackPoints = $attackingFighter->getAttackPoints() + $this->_attacker->getAttackModifier();
-        $defencePoints = $defendingFighter->getDefensePoints() + $this->_defenders->getDefenseModifier();
+        $defencePoints = $defendingFighter->getDefensePoints() + $this->_defenders->getDefenseModifier() + $this->_externalDefenceModifier;
 
         $maxDie = $attackPoints + $defencePoints;
         while ($attackLives AND $defenseLives) {

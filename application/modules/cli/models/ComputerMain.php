@@ -1,14 +1,7 @@
 <?php
 
-class Cli_Model_ComputerMain
+class Cli_Model_ComputerMain extends Cli_Model_ComputerMethods
 {
-    protected $_gameId;
-    protected $_playerId;
-    protected $_db;
-    protected $_army;
-    protected $_gameHandler;
-    protected $_l;
-
     public function __construct(IWebSocketConnection $user, Cli_Model_Game $game, Zend_Db_Adapter_Pdo_Pgsql $db, Cli_GameHandler $gameHandler)
     {
         $this->_user = $user;
@@ -211,7 +204,7 @@ class Cli_Model_ComputerMain
                 $this->_l->log('JEST WRÓG W ZASIĘGU');
 
                 foreach ($enemiesInRange as $e) {
-                    if ($this->_game->isEnemyStronger($this->_playerId, $this->_army, $e)) {
+                    if ($this->_game->isEnemyStronger($this->_army, array($e))) {
                         continue;
                     } else {
                         $enemy = $e;
