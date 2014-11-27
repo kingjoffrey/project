@@ -104,7 +104,7 @@ abstract class Cli_Model_ComputerMethods
         $this->_l->logMethodName();
         $movesLeft = $this->_army->getMovesLeft();
 
-        foreach ($this->_ruins->get() as $ruinId => $ruin) {
+        foreach ($this->_game->getRuins()->get() as $ruinId => $ruin) {
             if ($ruin->getEmpty()) {
                 continue;
             }
@@ -153,7 +153,7 @@ abstract class Cli_Model_ComputerMethods
 
         foreach (array_keys($heuristics) as $id) {
             if ($this->_players->getPlayer('neutral')->hasCastle($id)) {
-                $enemy = array($this->_players->getPlayer('neutral')->getCastleGarrison($this->_turnNumber, $this->_firstUnitId));
+                $enemy = array($this->_players->getPlayer('neutral')->getCastleGarrison($this->_game->getTurnNumber(), $this->_game->getFirstUnitId()));
             } else {
                 $enemy = $this->handleCastleGarrison($this->_players->g);
             }

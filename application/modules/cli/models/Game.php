@@ -95,7 +95,7 @@ class Cli_Model_Game
 
         $this->_me = new Cli_Model_Me(
             $this->getPlayerColor($playerId),
-            $this->_players[$this->getPlayerColor($playerId)]->getTeam(),
+            $this->_players->getPlayer($this->getPlayerColor($playerId))->getTeam(),
             $mPlayersInGame->getMe($playerId)
         );
         if ($this->_turnPlayerId == $playerId) {
@@ -107,7 +107,7 @@ class Cli_Model_Game
 
     private function initFields()
     {
-        foreach ($this->_players as $color => $player) {
+        foreach ($this->_players->get() as $color => $player) {
             foreach ($player->getArmies() as $armyId => $army) {
                 $this->_fields->addArmy($army->getX(), $army->getY(), $armyId, $color);
             }
@@ -196,8 +196,8 @@ class Cli_Model_Game
             'me' => $this->_me->toArray(),
             'players' => $this->_players->toArray(),
             'ruins' => $this->_ruins->toArray(),
-            'neutralCastles' => $this->_players['neutral']->castlesToArray(),
-            'neutralTowers' => $this->_players['neutral']->towersToArray()
+            'neutralCastles' => $this->_players->getPlayer('neutral')->castlesToArray(),
+            'neutralTowers' => $this->_players->getPlayer('neutral')->towersToArray()
         );
     }
 
@@ -206,9 +206,20 @@ class Cli_Model_Game
         return $this->_capitals[$color];
     }
 
+    /**
+     * @return Cli_Model_Fields
+     */
     public function getFields()
     {
         return $this->_fields;
+    }
+
+    /**
+     * @return Cli_Model_Ruins
+     */
+    public function getRuins()
+    {
+        return $this->_ruins;
     }
 
     /**
@@ -237,21 +248,6 @@ class Cli_Model_Game
                 continue;
             }
             if ($player->castlesExists() || $player->armiesExists()) {
-                return false;
-            }
-        }
-        return true;
-    }
-
-    public function noEnemyCastles($playerId)
-    {
-        $playerColor = $this->getPlayerColor($playerId);
-        $playerTeam = $this->getPlayerTeam($playerId);
-        foreach ($this->_players as $color => $player) {
-            if ($color == $playerColor || $playerTeam == $player->getTeam()) {
-                continue;
-            }
-            if ($this->_players[$color]->castlesExists()) {
                 return false;
             }
         }

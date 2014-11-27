@@ -62,7 +62,7 @@ class Cli_Model_ComputerMain extends Cli_Model_ComputerMethods
         $this->_l->logMethodName();
 
         if ($castleId = $this->_fields->isPlayerCastle($this->_color, $this->_armyX, $this->_armyY)) {
-            return $this->inside($this->_player->getCastle($this->_color, $castleId));
+            return $this->inside($this->_player->getCastle($castleId));
         } else {
             return $this->outside();
         }
@@ -191,8 +191,8 @@ class Cli_Model_ComputerMain extends Cli_Model_ComputerMethods
             }
         }
 
-        $enemiesHaveRange = $this->_game->getEnemiesHaveRangeAtThisCastle($this->_playerId, $myCastle);
-        $enemiesInRange = $this->_game->getEnemiesInRange($this->_playerId, $this->_army);
+        $enemiesHaveRange = $this->getEnemiesHaveRangeAtThisCastle($myCastle);
+        $enemiesInRange = $this->getEnemiesInRange();
         if (!$enemiesHaveRange) {
             $this->_l->log('BRAK WROGA Z ZASIĘGIEM');
 
@@ -204,7 +204,7 @@ class Cli_Model_ComputerMain extends Cli_Model_ComputerMethods
                 $this->_l->log('JEST WRÓG W ZASIĘGU');
 
                 foreach ($enemiesInRange as $e) {
-                    if ($this->_game->isEnemyStronger($this->_army, array($e))) {
+                    if ($this->isEnemyStronger(array($e))) {
                         continue;
                     } else {
                         $enemy = $e;
@@ -215,10 +215,10 @@ class Cli_Model_ComputerMain extends Cli_Model_ComputerMethods
                     $this->_l->log('WRÓG JEST SŁABSZY - ATAKUJ!');
 
                     if ($castleId = $this->_fields->getCastleId($enemy->getX(), $enemy->getY())) {
-                        $path = $this->_game->getPathToEnemyCastleInRange($castleId);
+                        $path = $this->getPathToEnemyCastleInRange($castleId);
                         $path->castleId = $castleId;
                     } else {
-                        $path = $this->_game->getPathToEnemyInRange($enemy);
+                        $path = $this->getPathToEnemyInRange($enemy);
                     }
                     $fightEnemyResults = $this->fightEnemy($path);
                     return $this->endMove($this->_armyId, $path, $fightEnemyResults);
@@ -273,13 +273,13 @@ class Cli_Model_ComputerMain extends Cli_Model_ComputerMethods
         $this->_l->logMethodName();
         $this->_l->log('POZA ZAMKIEM');
 
-        $path = $this->_game->getComputerEmptyCastleInComputerRange($this->_playerId, $this->_army);
+        $path = $this->getComputerEmptyCastleInComputerRange($this->_playerId, $this->_army);
         if (!$path) {
             $this->_l->log('NIE MA MOJEGO PUSTEGO ZAMKU W ZASIĘGU');
             return $this->ruinBlock();
         } else {
             $this->_l->log('JEST MÓJ PUSTY ZAMEK W ZASIĘGU');
-            if (!$this->_game->isMyCastleInRangeOfEnemy($path, $this->_map['fields'])) {
+            if (!$this->isMyCastleInRangeOfEnemy($path, $this->_map['fields'])) {
                 $this->_l->log('WRÓG NIE MA ZASIĘGU NA MÓJ PUSTY ZAMEK');
                 return $this->firstBlock();
             } else {
@@ -294,13 +294,13 @@ class Cli_Model_ComputerMain extends Cli_Model_ComputerMethods
     {
         $this->_l->logMethodName();
 
-        if ($this->_game->noEnemyCastles($this->_playerId)) {
+        if ($this->_players->noEnemyCastles($this->_color)) {
             $this->_l->log('BRAK ZAMKÓW WROGA');
-            return $this->_game->noEnemyCastlesToAttack();
+            return $this->noEnemyCastlesToAttack();
         } else {
             $this->_l->log('SĄ ZAMKI WROGA');
 
-            $pathToNearestWeakestHostileCastle = $this->_game->findNearestWeakestHostileCastle($this->_playerId, $this->_army);
+            $pathToNearestWeakestHostileCastle = $this->findNearestWeakestHostileCastle($this->_playerId, $this->_army);
 
             if (isset($pathToNearestWeakestHostileCastle->castleId)) {
                 $this->_l->log('JEST SŁABSZY ZAMEK WROGA: ' . $pathToNearestWeakestHostileCastle->castleId);
@@ -311,7 +311,7 @@ class Cli_Model_ComputerMain extends Cli_Model_ComputerMethods
                     return $this->endMove($this->_armyId, $pathToNearestWeakestHostileCastle, $fightEnemyResults);
                 } else {
                     $this->_l->log('SŁABSZY ZAMEK WROGA POZA ZASIĘGIEM');
-                    $path = $this->_game->getWeakerEnemyArmyInRange($this->_playerId, $this->_army);
+                    $path = $this->getWeakerEnemyArmyInRange($this->_playerId, $this->_army);
                     if (isset($path->current) && $path->current) {
                         //atakuj
                         $this->_l->log('JEST SŁABSZA ARMIA WROGA W ZASIĘGU (' . $path->armyId . ') - ATAKUJĘ!');
@@ -319,7 +319,7 @@ class Cli_Model_ComputerMain extends Cli_Model_ComputerMethods
                         return $this->endMove($this->_armyId, $path, $fightEnemyResults);
                     } else {
                         $this->_l->log('BRAK SŁABSZEJ ARMII WROGA W ZASIĘGU');
-                        $enemyId = $this->_game->getStrongerEnemyArmyInRange($this->_playerId, $this->_army);
+                        $enemyId = $this->getStrongerEnemyArmyInRange($this->_playerId, $this->_army);
                         if ($enemyId) {
                             $this->_l->log('JEST SILNIEJSZA ARMIA WROGA W ZASIĘGU: ' . $enemyId);
                             $path = $this->getPathToMyArmyInRange();
@@ -348,8 +348,8 @@ class Cli_Model_ComputerMain extends Cli_Model_ComputerMethods
         $this->_l->logMethodName();
         if (!$this->_enemies) {
             // brak zamków i armii wroga - koniec gry
-            $mTurn = new Cli_Model_Turn($this->_user, $this->_db, $this->_gameHandler);
-            $mTurn->endGame($this->_mGame);
+            $mTurn = new Cli_Model_Turn($this->_user, $this->_game, $this->_db, $this->_gameHandler);
+            $mTurn->endGame();
             return;
         }
 
@@ -408,7 +408,7 @@ class Cli_Model_ComputerMain extends Cli_Model_ComputerMethods
         }
 
         $this->_l->log('JEST HEROS');
-        $path = $this->_game->getPathToNearestRuin($this->_playerId, $this->_army);
+        $path = $this->getPathToNearestRuin($this->_playerId, $this->_army);
 
         if (!$path) {
             $this->_l->log('BRAK RUIN');
@@ -472,7 +472,7 @@ class Cli_Model_ComputerMain extends Cli_Model_ComputerMethods
 
         if ($path->end['tt'] == 'E') {
             $this->_l->log('JEST KONIEC ŚCIEŻKI');
-            $path->castleId = $this->_fields->isEnemyCastle($path->x, $path->y);
+            $path->castleId = $this->_fields->isEnemyCastle($this->_color, $path->x, $path->y);
             if ($path->castleId) {
                 $this->_l->log('JEST ZAMEK - WALCZĘ');
                 $fightEnemyResults = $this->fightEnemy($path);

@@ -73,4 +73,20 @@ class Cli_Model_Players
         }
         return $this->getPlayer($color1)->getTeam() == $this->getPlayer($color2)->getTeam();
     }
+
+    public function noEnemyCastles($playerColor)
+    {
+        $playerTeam = $this->getPlayer($playerColor)->getTeam();
+        foreach ($this->_players as $color => $player) {
+            if ($color == $playerColor || $playerTeam == $player->getTeam()) {
+                continue;
+            }
+            if ($player->castlesExists()) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+
 }
