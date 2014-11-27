@@ -35,7 +35,7 @@ class Cli_Model_Fight
         if ($castleId = $this->_fields->getCastleId($path->x, $path->y)) {
             $defenderColor = $this->_fields->getCastleColor($path->x, $path->y);
             if ($defenderColor == 'neutral') {
-                $this->_enemies[] = $this->_players->getPlayer($defenderColor)->getCastleGarrison($this->_game->getTurnNumber(), $this->_game->getFirstUnitId());
+                $this->_enemies = $this->_players->getPlayer($defenderColor)->getCastleGarrison($this->_game->getTurnNumber(), $this->_game->getFirstUnitId());
             } else {
                 $this->_enemies = $this->_game->handleCastleGarrison($this->_players->getPlayer($this->_fields->getCastleColor($path->x, $path->y))->getCastle($castleId));
             }

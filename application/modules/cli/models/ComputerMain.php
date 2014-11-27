@@ -300,18 +300,20 @@ class Cli_Model_ComputerMain extends Cli_Model_ComputerMethods
         } else {
             $this->_l->log('SĄ ZAMKI WROGA');
 
-            $pathToNearestWeakestHostileCastle = $this->findNearestWeakestHostileCastle($this->_playerId, $this->_army);
+            $pathToNearestWeakestHostileCastle = $this->findNearestWeakestHostileCastle();
 
             if (isset($pathToNearestWeakestHostileCastle->castleId)) {
                 $this->_l->log('JEST SŁABSZY ZAMEK WROGA: ' . $pathToNearestWeakestHostileCastle->castleId);
 
                 if ($pathToNearestWeakestHostileCastle->in) {
                     $this->_l->log('SŁABSZY ZAMEK WROGA W ZASIĘGU - ATAKUJĘ!');
-                    $fightEnemyResults = $this->fightEnemy($pathToNearestWeakestHostileCastle);
-                    return $this->endMove($this->_armyId, $pathToNearestWeakestHostileCastle, $fightEnemyResults);
+                    $fight = new Cli_Model_Fight($this->_game, $this->_army, $this->_playerId, $this->_db);
+                    $fight->prepareArmies($pathToNearestWeakestHostileCastle);
+                    $fight->battle();
+                    return $this->endMove($this->_armyId, $pathToNearestWeakestHostileCastle, $fight->getResult());
                 } else {
                     $this->_l->log('SŁABSZY ZAMEK WROGA POZA ZASIĘGIEM');
-                    $path = $this->getWeakerEnemyArmyInRange($this->_playerId, $this->_army);
+                    $path = $this->getWeakerEnemyArmyInRange();
                     if (isset($path->current) && $path->current) {
                         //atakuj
                         $this->_l->log('JEST SŁABSZA ARMIA WROGA W ZASIĘGU (' . $path->armyId . ') - ATAKUJĘ!');
@@ -319,7 +321,7 @@ class Cli_Model_ComputerMain extends Cli_Model_ComputerMethods
                         return $this->endMove($this->_armyId, $path, $fightEnemyResults);
                     } else {
                         $this->_l->log('BRAK SŁABSZEJ ARMII WROGA W ZASIĘGU');
-                        $enemyId = $this->getStrongerEnemyArmyInRange($this->_playerId, $this->_army);
+                        $enemyId = $this->getStrongerEnemyArmyInRange();
                         if ($enemyId) {
                             $this->_l->log('JEST SILNIEJSZA ARMIA WROGA W ZASIĘGU: ' . $enemyId);
                             $path = $this->getPathToMyArmyInRange();

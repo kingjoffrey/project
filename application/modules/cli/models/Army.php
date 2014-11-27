@@ -614,6 +614,11 @@ class Cli_Model_Army
         return $this->_soldiers;
     }
 
+    public function getShips()
+    {
+        return $this->_ships;
+    }
+
     public function createSoldier($gameId, $playerId, $unitId, $db)
     {
         $mSoldier = new Application_Model_UnitsInGame($gameId, $db);

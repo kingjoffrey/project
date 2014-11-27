@@ -153,12 +153,12 @@ abstract class Cli_Model_ComputerMethods
 
         foreach (array_keys($heuristics) as $id) {
             if ($this->_players->getPlayer('neutral')->hasCastle($id)) {
-                $enemy = array($this->_players->getPlayer('neutral')->getCastleGarrison($this->_game->getTurnNumber(), $this->_game->getFirstUnitId()));
+                $enemy = $this->_players->getPlayer('neutral')->getCastleGarrison($this->_game->getTurnNumber(), $this->_game->getFirstUnitId());
             } else {
                 $enemy = $this->handleCastleGarrison($this->_players->g);
             }
 
-            if (!$this->isEnemyStronger(array($enemy))) {
+            if (!$this->isEnemyStronger($enemy)) {
                 return $id;
             }
         }

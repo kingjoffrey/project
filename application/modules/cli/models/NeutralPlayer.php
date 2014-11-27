@@ -65,7 +65,7 @@ class Cli_Model_NeutralPlayer extends Cli_Model_DefaultPlayer
         ));
         $army->addSoldiers($soldiers);
 
-        return $army;
+        return array($army);
     }
 
     public function getArmies()

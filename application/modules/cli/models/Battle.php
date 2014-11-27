@@ -9,6 +9,8 @@ class Cli_Model_Battle
     private $_succession = 0;
     private $_real;
     private $_externalDefenceModifier;
+    private $_attackModifier;
+    private $_defenceModifier;
 
     public function __construct(Cli_Model_Army $attacker, $defenders, Cli_Model_Game $game, $real = false)
     {
@@ -45,55 +47,8 @@ class Cli_Model_Battle
             $this->_externalDefenceModifier = 1;
         }
 
-//        if ($attacker->isEmptyAttackBattleSequence()) {
-//            $attacker->setAttackBattleSequence($attackerBattleSequence);
-//        }
-//        if ($defender->isEmptyDefenceBattleSequence()) {
-//            $defender->setDefenceBattleSequence($defenderBattleSequence);
-//        }
+        $this->_attackModifier = $this->_attacker->getAttackModifier();
     }
-
-//    public function updateArmies($gameId, $db, $attackerId = null, $defenderId = null)
-//    {
-//        $this->deleteHeroes($this->_result['defense']['heroes'], $gameId, $db, $attackerId, $defenderId);
-//        $this->deleteSoldiers($this->_result['defense']['soldiers'], $gameId, $db, $attackerId, $defenderId);
-//        $this->deleteHeroes($this->_result['attack']['heroes'], $gameId, $db, $defenderId, $attackerId);
-//        $this->deleteSoldiers($this->_result['attack']['soldiers'], $gameId, $db, $defenderId, $attackerId);
-//    }
-
-//    private function deleteHeroes($heroes, $gameId, $db, $winnerId, $loserId)
-//    {
-//        $mHeroesInGame = new Application_Model_HeroesInGame($gameId, $db);
-//        $mHeroesKilled = new Application_Model_HeroesKilled($gameId, $db);
-//        foreach ($heroes as $v) {
-//            $mHeroesKilled->add($v['heroId'], $winnerId, $loserId);
-//            $mHeroesInGame->armyRemoveHero($v['heroId']);
-//        }
-//    }
-//
-//    private function deleteSoldiers($soldiers, $gameId, $db, $winnerId, $loserId)
-//    {
-//        $mSoldier = new Application_Model_UnitsInGame($gameId, $db);
-//        $mSoldiersKilled = new Application_Model_SoldiersKilled($gameId, $db);
-//        foreach ($soldiers as $v) {
-//            if (strpos($v['soldierId'], 's') === false) {
-//                $mSoldiersKilled->add($v['unitId'], $winnerId, $loserId);
-//                $mSoldier->destroy($v['soldierId']);
-//            }
-//        }
-//    }
-
-//    public function getDefender() // only used for getting neutral castle garrison
-//    {
-//        if (empty($this->defender['soldiers']) && empty($this->defender['heroes']) && empty($this->defender['ships'])) {
-//            return array();
-//        }
-//
-//        return array(
-//            'soldiers' => array_merge($this->defender['soldiers'], $this->defender['ships']),
-//            'heroes' => $this->defender['heroes']
-//        );
-//    }
 
     public function attackerVictory()
     {
@@ -107,6 +62,7 @@ class Cli_Model_Battle
         $attack = $this->_attacker->getAttackBattleSequence();
 
         foreach ($this->_defenders as $defenderArmy) {
+            $this->_defenceModifier = $defenderArmy->getDefenseModifier();
             $defence = $defenderArmy->getDefenceBattleSequence();
 
             foreach ($attack['soldiers'] as $a => $attackingFighter) {
@@ -224,8 +180,8 @@ class Cli_Model_Battle
             $defenseLives = 2;
         }
 
-        $attackPoints = $attackingFighter->getAttackPoints() + $this->_attacker->getAttackModifier();
-        $defencePoints = $defendingFighter->getDefensePoints() + $this->_defenders->getDefenseModifier() + $this->_externalDefenceModifier;
+        $attackPoints = $attackingFighter->getAttackPoints() + $this->_attackModifier;
+        $defencePoints = $defendingFighter->getDefensePoints() + $this->_defenceModifier + $this->_externalDefenceModifier;
 
         $maxDie = $attackPoints + $defencePoints;
         while ($attackLives AND $defenseLives) {
@@ -290,7 +246,7 @@ class Cli_Model_Battle
             $this->_result->addAttackingHero($unitId);
         }
 
-        foreach (array_keys($this->_attacker->getSoldiers) as $soldierId) {
+        foreach (array_keys($this->_attacker->getSoldiers()) as $soldierId) {
             $this->_result->addAttackingSoldier($soldierId);
         }
 
