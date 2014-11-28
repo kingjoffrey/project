@@ -41,6 +41,9 @@ class Cli_Model_Player extends Cli_Model_DefaultPlayer
 
         $this->_team = $mMapPlayers->getColorByMapPlayerId($player['team']);
 
+        $this->_armies = new Cli_Model_Armies();
+        $this->_castles = new Cli_Model_Castles();
+
         $this->initArmies($gameId, $db);
         $this->initCastles($gameId, $mapCastles, $db);
         $this->initTowers($gameId, $mapTowers, $db);
@@ -65,11 +68,12 @@ class Cli_Model_Player extends Cli_Model_DefaultPlayer
         $mSoldier = new Application_Model_UnitsInGame($gameId, $db);
         $mHeroesInGame = new Application_Model_HeroesInGame($gameId, $db);
 
-        foreach ($mArmy->getPlayerArmies($this->_id) as $army) {
-            $this->_armies[$army['armyId']] = new Cli_Model_Army($army);
-            $this->_armies[$army['armyId']]->setHeroes($mHeroesInGame->getForMove($army['armyId']));
-            $this->_armies[$army['armyId']]->setSoldiers($mSoldier->getForMove($army['armyId']));
-            $this->_armies[$army['armyId']]->init();
+        foreach ($mArmy->getPlayerArmies($this->_id) as $a) {
+            $this->_armies->addArmy($a['armyId'], new Cli_Model_Army($a));
+            $army = $this->_armies->getArmy($a['armyId']);
+            $army->setHeroes($mHeroesInGame->getForMove($army['armyId']));
+            $army->setSoldiers($mSoldier->getForMove($army['armyId']));
+            $army->init();
         }
     }
 
@@ -78,7 +82,7 @@ class Cli_Model_Player extends Cli_Model_DefaultPlayer
         $mCastlesInGame = new Application_Model_CastlesInGame($gameId, $db);
         $mCastleProduction = new Application_Model_CastleProduction($db);
         foreach ($mCastlesInGame->getPlayerCastles($this->_id) as $castleId => $castle) {
-            $this->_castles[$castleId] = new Cli_Model_Castle($castle, $mapCastles[$castleId]);
+            $this->_castles->addCastle($castleId, new Cli_Model_Castle($castle, $mapCastles[$castleId]));
             $this->_castles[$castleId]->setProduction($mCastleProduction->getCastleProduction($castleId));
             $this->addIncome($this->_castles[$castleId]->getIncome());
         }

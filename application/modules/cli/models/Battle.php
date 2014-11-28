@@ -256,6 +256,7 @@ class Cli_Model_Battle
 
         foreach (array_keys($this->_attacker->getShips()) as $soldierId) {
             $this->_result->addAttackingShip($soldierId);
+            $this->_attacker->
         }
     }
 
