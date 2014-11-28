@@ -226,11 +226,13 @@ class Cli_Model_Battle
         return rand(1, $maxDie);
     }
 
-    public function prepareResult()
+    public function saveResult($gameId, $db)
     {
         foreach ($this->_defenders as $defender) {
             foreach (array_keys($defender->getHeroes()) as $unitId) {
-                $this->_result->addDefendingHero($unitId);
+                if ($this->_result->addDefendingHero($unitId)) {
+                    $defender->removeHero($unitId, $playerId, $gameId, $db);
+                }
             }
 
             foreach (array_keys($defender->getSoldiers()) as $soldierId) {
@@ -243,7 +245,9 @@ class Cli_Model_Battle
         }
 
         foreach (array_keys($this->_attacker->getHeroes()) as $unitId) {
-            $this->_result->addAttackingHero($unitId);
+            if ($this->_result->addAttackingHero($unitId)) {
+                $this->_attacker->removeHero($unitId, $playerId, $gameId, $db);
+            }
         }
 
         foreach (array_keys($this->_attacker->getSoldiers()) as $soldierId) {

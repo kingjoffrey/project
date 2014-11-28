@@ -35,37 +35,6 @@ class Cli_Model_Players
         return $players;
     }
 
-    public function hasCastle($color, $castleId)
-    {
-        return $this->getPlayer($color)->hasCastle($castleId);
-    }
-
-    public function canCastleProduceThisUnit($color, $castleId, $unitId)
-    {
-        return $this->getPlayer($color)->canCastleProduceThisUnit($castleId, $unitId);
-    }
-
-    public function getCastleCurrentProductionId($color, $castleId)
-    {
-        return $this->_players->getPlayer($color)->getCastleCurrentProductionId($castleId);
-    }
-
-    public function setProductionId($color, $gameId, $castleId, $unitId, $relocationToCastleId, $db)
-    {
-        $this->_players->getPlayer($color)->setProduction($gameId, $castleId, $unitId, $relocationToCastleId, $db);
-    }
-
-    public function joinArmiesAtPosition($color, $armyId, $db)
-    {
-        return $this->getPlayer($color)->joinArmiesAtPosition($armyId, $this->_id, $db);
-    }
-
-    public function playerArmiesOrCastlesExists($color)
-    {
-        $player = $this->getPlayer($color);
-        return $player->armiesExists() || $player->castlesExists();
-    }
-
     public function sameTeam($color1, $color2)
     {
         if ($color1 == $color2) {

@@ -168,7 +168,7 @@ class Cli_Model_Move
                         $mCastlesInGame->changeOwner($castlesSchema[$castleId], $playerId);
                     }
                 }
-                $army->updateArmyPosition($gameId, $move, $fields, $db);
+                $army->move($gameId, $move, $fields, $db);
                 $victory = true;
 //                foreach ($enemy['ids'] as $id) {
 //                    $defender[]['armyId'] = $id;
@@ -185,8 +185,8 @@ class Cli_Model_Move
             }
             $battleResult = $battle->getResult();
         } else {
-            $army->updateArmyPosition($gameId, $move, $fields, $db);
-            $deletedIds = $player->joinArmiesAtPosition($army->getId(), $attackerColor, $db);
+            $army->move($gameId, $move, $fields, $db);
+            $deletedIds = $player->joinArmiesAtPosition($army->getId(), $gameId, $db);
         }
 
         new Cli_Model_TowerHandler($playerId, $move->current, $game, $db, $gameHandler);

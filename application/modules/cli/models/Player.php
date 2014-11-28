@@ -487,4 +487,9 @@ class Cli_Model_Player extends Cli_Model_DefaultPlayer
     {
         return $this->noCastlesExists() && $this->noArmiesExists();
     }
+
+    public function armiesOrCastlesExists()
+    {
+        return $this->armiesExists() || $this->castlesExists();
+    }
 }

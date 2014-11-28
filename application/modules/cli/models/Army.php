@@ -476,12 +476,46 @@ class Cli_Model_Army
         }
     }
 
-    public function updateArmyPosition($gameId, Cli_Model_Path $path, Cli_Model_Fields $fields, Zend_Db_Adapter_Pdo_Pgsql $db)
+    public function move(Cli_Model_Game $game, Cli_Model_Path $path, $playerColor,
+                         Zend_Db_Adapter_Pdo_Pgsql $db, Cli_GameHandler $gameHandler, $ruinId = null)
     {
-        if (empty($path->current)) {
-            return;
+        $gameId = $game->getId();
+        $fields = $game->getFields();
+        $players = $game->getPlayers();
+
+        $joinIds = array();
+        $battleResult = array();
+
+        $enemies = new Cli_Model_Enemies($game, $fields, $players, $path, $playerColor);
+        if ($enemies->hasEnemies()) {
+            $battle = new Cli_Model_Battle($this, $enemies->get(), $game, true);
+            $battle->fight();
+            $battle->saveResult($game, $db);
+            $battleResult = $battle->getResult();
+            if ($battle->attackerVictory()) {
+                $this->saveMove($gameId, $path, $fields, $db);
+            }
+        } else {
+            $this->saveMove($gameId, $path, $fields, $db);
+            $joinIds = $players->getPlayer($playerColor)->joinArmiesAtPosition($this->_id, $gameId, $db);
         }
 
+        $token = array(
+            'color' => $playerColor,
+            'army' => $this->toArray(),
+            'path' => $path->current,
+            'defendersIds' => $enemies->toArray(),
+            'battle' => $battleResult,
+            'deletedIds' => $joinIds,
+            'ruinId' => $ruinId,
+            'type' => 'move'
+        );
+
+        $gameHandler->sendToChannel($db, $token, $gameId);
+    }
+
+    private function saveMove($gameId, Cli_Model_Path $path, Cli_Model_Fields $fields, Zend_Db_Adapter_Pdo_Pgsql $db)
+    {
         if ($this->canFly()) {
             $type = 'flying';
         } elseif ($this->canSwim()) {
@@ -490,69 +524,73 @@ class Cli_Model_Army
             $type = 'walking';
         }
 
-        $mHeroesInGame = new Application_Model_HeroesInGame($gameId, $db);
+        if (count($this->_heroes)) {
+            $mHeroesInGame = new Application_Model_HeroesInGame($gameId, $db);
 
-        foreach ($this->_heroes as $heroId => $hero) {
-            $movesSpend = 0;
+            foreach ($this->_heroes as $heroId => $hero) {
+                $movesSpend = 0;
 
-            foreach ($path->current as $step) {
-                if ($step['x'] == $this->_x && $step['y'] == $this->_y) {
-                    break;
+                foreach ($path->current as $step) {
+                    if ($step['x'] == $this->_x && $step['y'] == $this->_y) {
+                        break;
+                    }
+                    if (!isset($step['myCastleCosts'])) {
+                        $movesSpend += $this->_terrain[$fields->getType($step['x'], $step['y'])][$type];
+                    }
                 }
-                if (!isset($step['myCastleCosts'])) {
-                    $movesSpend += $this->_terrain[$fields->getType($step['x'], $step['y'])][$type];
+
+                $hero->updateMovesLeft($heroId, $movesSpend, $mHeroesInGame);
+
+                if ($this->_movesLeft > $hero->getMovesLeft()) {
+                    $this->setMovesLeft($hero->getMovesLeft());
                 }
-            }
-
-            $hero->updateMovesLeft($heroId, $movesSpend, $mHeroesInGame);
-
-            if ($this->_movesLeft > $hero->getMovesLeft()) {
-                $this->setMovesLeft($hero->getMovesLeft());
             }
         }
 
-        $mSoldier = new Application_Model_UnitsInGame($gameId, $db);
+        if (count($this->_soldiers)) {
+            $mSoldier = new Application_Model_UnitsInGame($gameId, $db);
 
-        if ($this->canFly() || $this->canSwim()) {
-            foreach ($this->_soldiers as $soldierId => $soldier) {
-                $movesSpend = 0;
+            if ($this->canFly() || $this->canSwim()) {
+                foreach ($this->_soldiers as $soldierId => $soldier) {
+                    $movesSpend = 0;
 
-                foreach ($path->current as $step) {
-                    if ($step['x'] == $this->_x && $step['y'] == $this->_y) {
-                        break;
+                    foreach ($path->current as $step) {
+                        if ($step['x'] == $this->_x && $step['y'] == $this->_y) {
+                            break;
+                        }
+                        if (!isset($step['myCastleCosts'])) {
+                            $movesSpend += $this->_terrain[$fields->getType($step['x'], $step['y'])][$type];
+                        }
                     }
-                    if (!isset($step['myCastleCosts'])) {
-                        $movesSpend += $this->_terrain[$fields->getType($step['x'], $step['y'])][$type];
-                    }
-                }
 
-                $soldier->updateMovesLeft($soldierId, $movesSpend, $mSoldier);
+                    $soldier->updateMovesLeft($soldierId, $movesSpend, $mSoldier);
 
-                if ($this->_movesLeft > $soldier->getMovesLeft()) {
-                    $this->setMovesLeft($soldier->getMovesLeft());
-                }
-            }
-        } else {
-            foreach ($this->_soldiers as $soldierId => $soldier) {
-                $movesSpend = 0;
-
-                $this->_terrain['f'][$type] = $soldier->getForest();
-                $this->_terrain['m'][$type] = $soldier->getHills();
-                $this->_terrain['s'][$type] = $soldier->getSwamp();
-
-                foreach ($path->current as $step) {
-                    if ($step['x'] == $this->_x && $step['y'] == $this->_y) {
-                        break;
-                    }
-                    if (!isset($step['myCastleCosts'])) {
-                        $movesSpend += $this->_terrain[$fields->getType($step['x'], $step['y'])][$type];
+                    if ($this->_movesLeft > $soldier->getMovesLeft()) {
+                        $this->setMovesLeft($soldier->getMovesLeft());
                     }
                 }
+            } else {
+                foreach ($this->_soldiers as $soldierId => $soldier) {
+                    $movesSpend = 0;
 
-                $soldier->updateMovesLeft($soldierId, $movesSpend, $mSoldier);
+                    $this->_terrain['f'][$type] = $soldier->getForest();
+                    $this->_terrain['m'][$type] = $soldier->getHills();
+                    $this->_terrain['s'][$type] = $soldier->getSwamp();
 
-                if ($this->_movesLeft > $soldier->getMovesLeft()) {
-                    $this->setMovesLeft($soldier->getMovesLeft());
+                    foreach ($path->current as $step) {
+                        if ($step['x'] == $this->_x && $step['y'] == $this->_y) {
+                            break;
+                        }
+                        if (!isset($step['myCastleCosts'])) {
+                            $movesSpend += $this->_terrain[$fields->getType($step['x'], $step['y'])][$type];
+                        }
+                    }
+
+                    $soldier->updateMovesLeft($soldierId, $movesSpend, $mSoldier);
+
+                    if ($this->_movesLeft > $soldier->getMovesLeft()) {
+                        $this->setMovesLeft($soldier->getMovesLeft());
+                    }
                 }
             }
         }

@@ -21,7 +21,7 @@ class Cli_Model_NextTurn extends Cli_Model_Turn
             $nextPlayerId = $this->_game->getExpectedNextTurnPlayer($nextPlayerId, $this->_db);
             $nextPlayerColor = $this->_game->getPlayerColor($nextPlayerId);
 
-            if ($this->_players->playerArmiesOrCastlesExists($nextPlayerColor)) {
+            if ($this->_players->getPlayer($nextPlayerColor)->armiesOrCastlesExists()) {
 
                 $this->_game->increaseAllCastlesProductionTurn($nextPlayerId, $this->_db);
 

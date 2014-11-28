@@ -13,10 +13,6 @@ class Cli_Model_BattleResult
         'ships' => array()
     );
 
-    public function __construct()
-    {
-    }
-
     public function addAttackingHeroSuccession($heroId, $succession)
     {
         $this->_attack['heroes'][$heroId] = $succession;
@@ -25,7 +21,7 @@ class Cli_Model_BattleResult
     public function addAttackingHero($heroId)
     {
         if (isset($this->_attack['heroes'][$heroId])) {
-            return;
+            return true;
         }
         $this->_attack['heroes'][$heroId] = null;
     }
@@ -38,7 +34,7 @@ class Cli_Model_BattleResult
     public function addAttackingSoldier($soldierId)
     {
         if (isset($this->_attack['soldiers'][$soldierId])) {
-            return;
+            return true;
         }
         $this->_attack['soldiers'][$soldierId] = null;
     }
@@ -48,7 +44,7 @@ class Cli_Model_BattleResult
         if (isset($this->_attack['soldiers'][$soldierId])) {
             $this->_attack['ships'][$soldierId] = $this->_attack['soldiers'][$soldierId];
             unset($this->_attack['soldiers'][$soldierId]);
-            return;
+            return true;
         }
         $this->_attack['ships'][$soldierId] = null;
     }
@@ -61,7 +57,7 @@ class Cli_Model_BattleResult
     public function addDefendingHero($heroId)
     {
         if (isset($this->_defence['heroes'][$heroId])) {
-            return;
+            return true;
         }
         $this->_defence['heroes'][$heroId] = null;
     }
@@ -74,7 +70,7 @@ class Cli_Model_BattleResult
     public function addDefendingSoldier($soldierId)
     {
         if (isset($this->_defence['soldiers'][$soldierId])) {
-            return;
+            return true;
         }
         $this->_defence['soldiers'][$soldierId] = null;
     }
@@ -84,7 +80,7 @@ class Cli_Model_BattleResult
         if (isset($this->_defence['soldiers'][$soldierId])) {
             $this->_defence['ships'][$soldierId] = $this->_defence['soldiers'][$soldierId];
             unset($this->_defence['soldiers'][$soldierId]);
-            return;
+            return true;
         }
         $this->_defence['ships'][$soldierId] = null;
     }
