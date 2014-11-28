@@ -39,7 +39,7 @@ class Cli_Model_Army
     /*
      * @param array $army
      */
-    public function __construct($army)
+    public function __construct(array $army)
     {
         if (!isset($army['armyId'])) {
             Coret_Model_Logger::debug(debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 2));

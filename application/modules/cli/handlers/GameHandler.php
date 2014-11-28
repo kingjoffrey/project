@@ -79,12 +79,7 @@ class Cli_GameHandler extends Cli_WofHandler
         Cli_Model_Database::addTokensIn($db, $user->parameters['gameId'], $user->parameters['playerId'], $dataIn);
 
         if ($dataIn['type'] == 'computer') {
-//            $mGame = new Application_Model_Game($user->parameters['gameId'], $db);
-//            if (!$mGame->isGameMaster($user->parameters['playerId'])) {
-//                $this->sendError($user, 'Nie Twoja gra!');
-//                return;
-//            }
-            new Cli_Model_ComputerMain($user, $user->parameters['game'], $db, $this);
+            new Cli_Model_Computer($user, $user->parameters['game'], $db, $this);
             return;
         }
 
