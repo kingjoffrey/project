@@ -81,10 +81,11 @@ class Cli_Model_Player extends Cli_Model_DefaultPlayer
     {
         $mCastlesInGame = new Application_Model_CastlesInGame($gameId, $db);
         $mCastleProduction = new Application_Model_CastleProduction($db);
-        foreach ($mCastlesInGame->getPlayerCastles($this->_id) as $castleId => $castle) {
-            $this->_castles->addCastle($castleId, new Cli_Model_Castle($castle, $mapCastles[$castleId]));
-            $this->_castles[$castleId]->setProduction($mCastleProduction->getCastleProduction($castleId));
-            $this->addIncome($this->_castles[$castleId]->getIncome());
+        foreach ($mCastlesInGame->getPlayerCastles($this->_id) as $castleId => $c) {
+            $this->_castles->addCastle($castleId, new Cli_Model_Castle($c, $mapCastles[$castleId]));
+            $castle = $this->_castles->getCastle($castleId);
+            $castle->setProduction($mCastleProduction->getCastleProduction($castleId));
+            $this->addIncome($castle->getIncome());
         }
     }
 

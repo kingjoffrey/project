@@ -17,8 +17,6 @@ class Cli_Model_Soldier extends Cli_Model_DefaultUnit
 
     private $_cost;
 
-    private $_used;
-
     public function __construct($soldier, $unit)
     {
         $this->_id = $soldier['soldierId'];
@@ -108,24 +106,17 @@ class Cli_Model_Soldier extends Cli_Model_DefaultUnit
         return $this->_swamp;
     }
 
-    /**
-     * @param boolean $used
-     */
-    public function setUsed($used)
-    {
-        $this->_used = $used;
-    }
-
-    /**
-     * @return boolean
-     */
-    public function notUsed()
-    {
-        return !$this->_used;
-    }
-
     public function getUnitId()
     {
         return $this->_unitId;
+    }
+
+    public function death($gameId, $db, $winnerId, $loserId)
+    {
+        $mSoldier = new Application_Model_UnitsInGame($gameId, $db);
+        $mSoldier->destroy($this->_id);
+
+        $mSoldiersKilled = new Application_Model_SoldiersKilled($gameId, $db);
+        $mSoldiersKilled->add($this->_unitId, $winnerId, $loserId);
     }
 }

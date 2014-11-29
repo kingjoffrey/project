@@ -62,7 +62,7 @@ class Cli_Model_Hero extends Cli_Model_DefaultUnit
         $mHeroesInGame->zeroHeroMovesLeft($this->_id);
     }
 
-    public function kill($playerId, $gameId, $db)
+    public function death($playerId, $gameId, $db)
     {
         $mHeroesInGame = new Application_Model_HeroesInGame($gameId, $db);
         $mHeroesInGame->armyRemoveHero($this->_id);
