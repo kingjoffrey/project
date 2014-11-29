@@ -32,31 +32,6 @@ class Cli_Model_Soldiers
         return $soldiers;
     }
 
-    public function set($soldiers)
-    {
-        $units = Zend_Registry::get('units');
-        foreach ($soldiers as $soldier) {
-            $unit = $units[$soldier['unitId']];
-            if ($unit['canSwim']) {
-                $this->_ships->addSoldier($soldier['soldierId'], new Cli_Model_Soldier($soldier, $unit));
-            } else {
-                $this->_soldiers->addSoldier($soldier['soldierId'], new Cli_Model_Soldier($soldier, $unit));
-            }
-        }
-    }
-
-    public function createSoldier($gameId, $playerId, $armyId, $unitId, Zend_Db_Adapter_Pdo_Pgsql $db)
-    {
-        $units = Zend_Registry::get('units');
-        $mSoldier = new Application_Model_UnitsInGame($gameId, $db);
-        $soldierId = $mSoldier->add($armyId, $unitId);
-
-        $this->addSoldier($soldierId, new Cli_Model_Soldier(array('unitId' => $unitId, 'soldierId' => $soldierId), $units[$unitId]));
-
-        $mSoldiersCreated = new Application_Model_SoldiersCreated($gameId, $db);
-        $mSoldiersCreated->add($unitId, $playerId);
-    }
-
     public function exists()
     {
         return count($this->_soldiers);

@@ -355,15 +355,6 @@ class Cli_Model_Army
         $this->_movesLeft = $movesLeft;
     }
 
-    public function addHeroes($heroes)
-    {
-        if ($this->_heroes->exists() && $heroes) {
-            $this->_attackModifier->increment();
-            $this->_defenseModifier->increment();
-        }
-        $this->_heroes->add($heroes);
-    }
-
     public function getHeroes()
     {
         return $this->_heroes;
@@ -429,7 +420,7 @@ class Cli_Model_Army
 
     public function removeHero($heroId, $winnerId, $loserId, $gameId, $db)
     {
-        $this->_heroes->getHero($heroId)->death( $gameId, $db, $winnerId, $loserId);
+        $this->_heroes->getHero($heroId)->death($gameId, $db, $winnerId, $loserId);
         $this->_heroes->remove($heroId);
         $this->_attackHeroModifier->decrement();
         $this->_defenseHeroModifier->decrement();
@@ -506,4 +497,61 @@ class Cli_Model_Army
     {
         return $this->_soldiers->getCosts() + $this->_ships->getCosts();
     }
+
+    public function setSoldiers($soldiers)
+    {
+        $units = Zend_Registry::get('units');
+        foreach ($soldiers as $soldier) {
+            $unit = $units[$soldier['unitId']];
+            if ($unit['canSwim']) {
+                $this->_ships->addSoldier($soldier['soldierId'], new Cli_Model_Soldier($soldier, $unit));
+            } else {
+                $this->_soldiers->addSoldier($soldier['soldierId'], new Cli_Model_Soldier($soldier, $unit));
+            }
+        }
+    }
+
+    public function createSoldier($gameId, $playerId, $armyId, $unitId, Zend_Db_Adapter_Pdo_Pgsql $db)
+    {
+        $units = Zend_Registry::get('units');
+        $mSoldier = new Application_Model_UnitsInGame($gameId, $db);
+        $soldierId = $mSoldier->add($armyId, $unitId);
+
+        $this->_soldiers->addSoldier($soldierId, new Cli_Model_Soldier(array('unitId' => $unitId, 'soldierId' => $soldierId), $units[$unitId]));
+        $soldier = $this->_soldiers->getSoldier($soldierId);
+        if ($soldier->canFly()) {
+            $this->_attackFlyModifier->increment();
+            $this->_canFly++;
+        } else {
+            $this->_canFly--;
+        }
+
+        $mSoldiersCreated = new Application_Model_SoldiersCreated($gameId, $db);
+        $mSoldiersCreated->add($unitId, $playerId);
+    }
+
+    public function setHeroes($heroes)
+    {
+        $numberOfHeroes = 0;
+        foreach ($heroes as $hero) {
+            $this->_heroes->add($hero['heroId'], new Cli_Model_Hero($hero));
+            $this->_attackHeroModifier->increment();
+            $this->_defenseHeroModifier->increment();
+            $numberOfHeroes++;
+        }
+        $this->_canFly += -$numberOfHeroes + 1;
+    }
+
+    public function addHeroes($heroes)
+    {
+        $numberOfHeroes = 0;
+        foreach ($heroes as $heroId => $hero) {
+            $this->_heroes->add($heroId, $hero);
+            $this->_attackModifier->increment();
+            $this->_defenseModifier->increment();
+            $numberOfHeroes++;
+        }
+        $this->_canFly += -$numberOfHeroes + 1;
+    }
+
 }
