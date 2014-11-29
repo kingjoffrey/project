@@ -2,7 +2,6 @@
 
 class Cli_Model_Army
 {
-
     private $_id;
     private $_x;
     private $_y;
@@ -428,9 +427,9 @@ class Cli_Model_Army
         $this->_heroes->getHero($heroId)->zeroMovesLeft($gameId, $db);
     }
 
-    public function removeHero($heroId, $playerId, $gameId, $db)
+    public function removeHero($heroId, $winnerId, $loserId, $gameId, $db)
     {
-        $this->_heroes->getHero($heroId)->kill($playerId, $gameId, $db);
+        $this->_heroes->getHero($heroId)->death( $gameId, $db, $winnerId, $loserId);
         $this->_heroes->remove($heroId);
         $this->_attackHeroModifier->decrement();
         $this->_defenseHeroModifier->decrement();
