@@ -7,7 +7,6 @@ class Cli_Model_Path
     private $_end;
     private $_x;
     private $_y;
-    private $_army;
 
     public function __construct($fullPath, Cli_Model_Army $army)
     {
@@ -16,18 +15,17 @@ class Cli_Model_Path
         }
 
         $this->_full = $fullPath;
-        $this->_army = $army;
 
-        if ($this->canFly()) {
-            $type = 'walking';
-        } elseif ($this->canSwim()) {
-            $type = '';
+        if ($army->canFly()) {
+            $type = 'flying';
+        } elseif ($army->canSwim()) {
+            $type = 'swimming';
         } else {
-            $currentPath = $this->calculateMovesSpendWalking();
+            $type = 'walking';
         }
 
         foreach ($this->_full as $step) {
-            foreach ($this->_army->getSoldiers() as $soldierId => $soldier) {
+            foreach ($army->getSoldiers() as $soldierId => $soldier) {
                 if (!isset($soldiersMovesLeft[$soldierId])) {
                     $soldiersMovesLeft[$soldierId] = $soldier->getMovesLeft();
                 }
@@ -44,7 +42,7 @@ class Cli_Model_Path
                 }
             }
 
-            foreach ($this->_army->getShips() as $soldierId => $soldier) {
+            foreach ($army->getShips() as $soldierId => $soldier) {
                 if (!isset($soldiersMovesLeft[$soldierId])) {
                     $soldiersMovesLeft[$soldierId] = $soldier->getMovesLeft();
                 }
@@ -61,7 +59,7 @@ class Cli_Model_Path
                 }
             }
 
-            foreach ($this->_army->getHeroes() as $heroId => $hero) {
+            foreach ($army->getHeroes() as $heroId => $hero) {
                 if (!isset($heroesMovesLeft[$heroId])) {
                     $heroesMovesLeft[$heroId] = $hero->getMovesLeft();
                 }
@@ -121,5 +119,15 @@ class Cli_Model_Path
     public function getY()
     {
         return $this->_y;
+    }
+
+    public function getCurrent()
+    {
+        return $this->_current;
+    }
+
+    public function getEnd()
+    {
+        return $this->_end;
     }
 }

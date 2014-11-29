@@ -8,11 +8,6 @@ class Cli_Model_BattleModifier
 {
     private $_mod = 0;
 
-    public function set($mod)
-    {
-        $this->_mod = $mod;
-    }
-
     public function add($mod)
     {
         $this->_mod += $mod;
@@ -20,7 +15,13 @@ class Cli_Model_BattleModifier
 
     public function get()
     {
-        return $this->_mod;
+        if ($this->_mod > 0) {
+            return 1;
+        } elseif ($this->_mod == 0) {
+            return 0;
+        } else {
+            throw new Exception('error 0012');
+        }
     }
 
     public function increment()

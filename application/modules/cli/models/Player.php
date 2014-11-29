@@ -71,8 +71,8 @@ class Cli_Model_Player extends Cli_Model_DefaultPlayer
         foreach ($mArmy->getPlayerArmies($this->_id) as $a) {
             $this->_armies->addArmy($a['armyId'], new Cli_Model_Army($a));
             $army = $this->_armies->getArmy($a['armyId']);
-            $army->setHeroes($mHeroesInGame->getForMove($army['armyId']));
-            $army->setSoldiers($mSoldier->getForMove($army['armyId']));
+            $army->getHeroes()->set($mHeroesInGame->getForMove($army['armyId']));
+            $army->getSoldiers()->set($mSoldier->getForMove($army['armyId']));
             $army->init();
         }
     }

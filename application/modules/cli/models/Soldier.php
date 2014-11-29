@@ -79,7 +79,7 @@ class Cli_Model_Soldier extends Cli_Model_DefaultUnit
         $mSoldier->updateMovesLeft($this->_movesLeft, $soldierId);
     }
 
-    public function resetMovesLeft($gameId, $db)
+    public function resetMovesLeft($gameId, Zend_Db_Adapter_Pdo_Pgsql $db)
     {
         if ($this->_movesLeft > 2) {
             $this->setMovesLeft($this->_moves + 2);
@@ -111,7 +111,7 @@ class Cli_Model_Soldier extends Cli_Model_DefaultUnit
         return $this->_unitId;
     }
 
-    public function death($gameId, $db, $winnerId, $loserId)
+    public function death($gameId, Zend_Db_Adapter_Pdo_Pgsql $db, $winnerId, $loserId)
     {
         $mSoldier = new Application_Model_UnitsInGame($gameId, $db);
         $mSoldier->destroy($this->_id);
