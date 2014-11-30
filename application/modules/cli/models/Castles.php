@@ -32,11 +32,8 @@ class Cli_Model_Castles
         return $castles;
     }
 
-//    public function sameTeam($color1, $color2)
-//    {
-//        if ($color1 == $color2) {
-//            return true;
-//        }
-//        return $this->getArmy($color1)->getTeam() == $this->getArmy($color2)->getTeam();
-//    }
+    public function hasCastle($castleId)
+    {
+        return isset($this->_castles[$castleId]);
+    }
 }

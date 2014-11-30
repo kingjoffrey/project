@@ -1,7 +1,10 @@
 <?php
 
-class Cli_Model_Army extends Cli_Model_Entity
+class Cli_Model_Army
 {
+    private $_id;
+    private $_x;
+    private $_y;
     private $_fortified = false;
     private $_destroyed = false;
 
@@ -44,11 +47,6 @@ class Cli_Model_Army extends Cli_Model_Entity
         if (!isset($army['x']) || !isset($army['y'])) {
             Coret_Model_Logger::debug(debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 2));
             throw new Exception('no "x" or "y"');
-        }
-
-        if (empty($color)) {
-            Coret_Model_Logger::debug(debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 2));
-            throw new Exception('no "color"');
         }
 
         $this->_color = $color;
@@ -197,7 +195,7 @@ class Cli_Model_Army extends Cli_Model_Entity
             }
         } else {
             $this->saveMove($gameId, $path, $fields, $db);
-            $joinIds = $players->getPlayer($playerColor)->getArmies()->joinAtPosition($this->_id, $gameId, $db);
+            $joinIds = $players->getPlayer($playerColor)->joinArmiesAtPosition($this->_id, $gameId, $db);
         }
 
         $token = array(
@@ -305,6 +303,21 @@ class Cli_Model_Army extends Cli_Model_Entity
         return $mArmy->updateArmyPosition($path->getEnd(), $this->_id);
     }
 
+    public function getX()
+    {
+        return $this->_x;
+    }
+
+    public function getY()
+    {
+        return $this->_y;
+    }
+
+    public function getId()
+    {
+        return $this->_id;
+    }
+
     public function getMovesLeft()
     {
         return $this->_movesLeft;
@@ -370,15 +383,15 @@ class Cli_Model_Army extends Cli_Model_Entity
     public function setAttackBattleSequence($attackBattleSequence)
     {
         $this->_attackBattleSequence['soldiers'] = $this->_soldiers->setAttackBattleSequence($attackBattleSequence);
-        $this->_attackBattleSequence['heroes'] = $this->_heroes->toArray();
-        $this->_attackBattleSequence['ships'] = $this->_ships->toArray();
+        $this->_attackBattleSequence['heroes'] = $this->_heroes->get();
+        $this->_attackBattleSequence['ships'] = $this->_ships->get();
     }
 
     public function setDefenceBattleSequence($defenceBattleSequence)
     {
         $this->_defenceBattleSequence['soldiers'] = $this->_soldiers->setDefenceBattleSequence($defenceBattleSequence);
-        $this->_defenceBattleSequence['ships'] = $this->_ships->toArray();
-        $this->_defenceBattleSequence['heroes'] = $this->_heroes->toArray();
+        $this->_defenceBattleSequence['ships'] = $this->_ships->get();
+        $this->_defenceBattleSequence['heroes'] = $this->_heroes->get();
     }
 
     public function getAttackBattleSequence()
@@ -448,7 +461,7 @@ class Cli_Model_Army extends Cli_Model_Entity
         $this->_defenseHeroModifier->increment();
     }
 
-    public function setSoldiers(array $soldiers)
+    public function setSoldiers($soldiers)
     {
         $units = Zend_Registry::get('units');
         foreach ($soldiers as $soldier) {
@@ -490,7 +503,7 @@ class Cli_Model_Army extends Cli_Model_Entity
 
     public function addSoldiers(Cli_Model_Soldiers $soldiers)
     {
-        foreach ($soldiers->get() as $soldierId => $soldier) {
+        foreach ($soldiers as $soldierId => $soldier) {
             if ($soldier->canSwim()) {
                 $this->_ships->add($soldierId, $soldier);
             } else {
@@ -505,10 +518,10 @@ class Cli_Model_Army extends Cli_Model_Entity
         }
     }
 
-    public function addHeroes(Cli_Model_Heroes $heroes)
+    public function addHeroes($heroes)
     {
         $numberOfHeroes = 0;
-        foreach ($heroes->get() as $heroId => $hero) {
+        foreach ($heroes as $heroId => $hero) {
             if ($this->_movesLeft > $hero->getMovesLeft()) {
                 $this->_movesLeft = $hero->getMovesLeft();
             }
@@ -545,4 +558,6 @@ class Cli_Model_Army extends Cli_Model_Entity
     {
         return $this->_color;
     }
+
+
 }

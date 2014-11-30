@@ -1,10 +1,6 @@
 <?php
 
-/**
- * Class Cli_Model_DefaultUnit
- * ver. 0001
- */
-class Cli_Model_DefaultUnit
+class Cli_Model_Being
 {
     protected $_id;
     protected $_movesLeft;

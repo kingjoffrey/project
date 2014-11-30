@@ -23,10 +23,7 @@ abstract class Cli_Model_DefaultPlayer
         return $towers;
     }
 
-    public function hasCastle($castleId)
-    {
-        return isset($this->_castles[$castleId]);
-    }
+
 
     public function hasTower($towerId)
     {

@@ -4,7 +4,7 @@
  * Class Cli_Model_Soldier
  * ver. 0001
  */
-class Cli_Model_Soldier extends Cli_Model_DefaultUnit
+class Cli_Model_Soldier extends Cli_Model_Being
 {
     protected $_type = 'soldier';
 
