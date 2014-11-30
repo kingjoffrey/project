@@ -1,11 +1,22 @@
 <?php
 
-class Cli_Model_NextTurn extends Cli_Model_Turn
+class Cli_Model_NextTurn
 {
+    protected $_db;
+    protected $_gameHandler;
+    protected $_user;
+    protected $_game;
+    protected $_players;
 
-    public function __construct($nextPlayerId, $user, Cli_Model_Game $game, $db, $gameHandler)
+    public function __construct($nextPlayerId, IWebSocketConnection $user, Cli_Model_Game $game, Zend_Db_Adapter_Pdo_Pgsql $db, Cli_GameHandler $gameHandler)
     {
-        parent::__construct($user, $game, $db, $gameHandler);
+        $this->_user = $user;
+        $this->_game = $game;
+        $this->_db = $db;
+        $this->_gameHandler = $gameHandler;
+        $this->_gameId = $this->_game->getId();
+        $this->_players = $this->_game->getPlayers();
+
         $nextPlayerColor = $this->_game->getPlayerColor($nextPlayerId);
         $player = $this->_players->getPlayer($nextPlayerColor);
         if ($player->noArmiesAndCastles()) {

@@ -1,32 +1,32 @@
 <?php
 
-class Cli_Model_StartTurn extends Cli_Model_Turn
+class Cli_Model_StartTurn
 {
 
-    public function __construct($playerId, $user, Cli_Model_Game $game, $db, $gameHandler)
+    public function __construct($playerId, IWebSocketConnection $user, Cli_Model_Game $game, Zend_Db_Adapter_Pdo_Pgsql $db, Cli_GameHandler $gameHandler)
     {
-        parent::__construct($user, $game, $db, $gameHandler);
-
-        $player = $this->_players->getPlayer($this->_game->getPlayerColor($playerId));
-        $this->_game->activatePlayerTurn($playerId, $this->_db);
+        $players = $game->getPlayers();
+        $gameId = $game->getId();
+        $player = $players->getPlayer($game->getPlayerColor($playerId));
+        $game->activatePlayerTurn($playerId, $db);
 
         if ($player->getComputer()) {
-            $player->unfortifyArmies($this->_gameId, $this->_db);
+            $player->unfortifyArmies($gameId, $db);
             $type = 'computerStart';
         } else {
             $type = 'startTurn';
         }
 
-        $player->startTurn($this->_gameId, $this->_game->getTurnNumber(), $this->_db);
+        $player->startTurn($gameId, $game->getTurnNumber(), $db);
 
         $token = array(
             'type' => $type,
             'gold' => $player->getGold(),
-            'armies' => $player->armiesToArray(),
-            'castles' => $player->castlesToArray(),
-            'color' => $this->_game->getPlayerColor($playerId)
+            'armies' => $player->getArmies()->toArray(),
+            'castles' => $player->getCastles()->toArray(),
+            'color' => $game->getPlayerColor($playerId)
         );
-        $this->_gameHandler->sendToChannel($this->_db, $token, $this->_gameId);
+        $gameHandler->sendToChannel($db, $token, $gameId);
     }
 
 }

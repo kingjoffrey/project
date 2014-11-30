@@ -332,10 +332,10 @@ class Cli_Model_Game
         return $this->_turnPlayerId;
     }
 
-    public function searchRuin($ruinId, $army, $playerId, $db)
+    public function searchRuin($ruinId, Cli_Model_Army $army, $playerId, $db)
     {
         $random = rand(0, 100);
-        $heroId = $army->getAnyHeroId();
+        $heroId = $army->getHeroes()->getAnyHeroId();
 
         if ($random < 10) { //10%
 //śmierć

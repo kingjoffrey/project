@@ -1,11 +1,7 @@
 <?php
 
-class Cli_Model_Castle
+class Cli_Model_Castle extends Cli_Model_Entity
 {
-    private $_id;
-
-    private $_x;
-    private $_y;
     private $_defense;
     private $_name;
     private $_income;
@@ -49,16 +45,6 @@ class Cli_Model_Castle
     public function getProduction()
     {
         return $this->_production;
-    }
-
-    public function getX()
-    {
-        return $this->_x;
-    }
-
-    public function getY()
-    {
-        return $this->_y;
     }
 
     public function getPosition()

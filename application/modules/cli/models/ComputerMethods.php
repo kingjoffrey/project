@@ -12,6 +12,7 @@ abstract class Cli_Model_ComputerMethods
     protected $_army;
     protected $_gameHandler;
     protected $_l;
+    protected $_path;
 
     /**
      * @param $playerId
@@ -121,10 +122,10 @@ abstract class Cli_Model_ComputerMethods
                     echo($e);
                     return;
                 }
-                $path = $this->_army->calculateMovesSpend($aStar->getPath($ruinX . '_' . $ruinY));
-                if ($path->x == $ruinX && $path->y == $ruinY) {
-                    $path->ruinId = $ruinId;
-                    return $path;
+                $path = new Cli_Model_Path($aStar->getPath($ruinX . '_' . $ruinY), $this->_army);
+                if ($path->getX() == $ruinX && $path->getY() == $ruinY) {
+                    $this->_path = $path;
+                    return $ruin->getId();
                 }
             }
         }

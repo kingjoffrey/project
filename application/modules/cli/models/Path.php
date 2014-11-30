@@ -15,6 +15,8 @@ class Cli_Model_Path
         }
 
         $this->_full = $fullPath;
+        $skip = false;
+        $stop = false;
 
         if ($army->canFly()) {
             $type = 'flying';

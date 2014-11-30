@@ -1,11 +1,7 @@
 <?php
 
-class Cli_Model_Tower
+class Cli_Model_Tower extends Cli_Model_Entity
 {
-    private $_id;
-    private $_x;
-    private $_y;
-
     public function __construct($tower)
     {
         $this->_id = $tower['towerId'];
@@ -19,20 +15,5 @@ class Cli_Model_Tower
             'x' => $this->_x,
             'y' => $this->_y,
         );
-    }
-
-    public function getX()
-    {
-        return $this->_x;
-    }
-
-    public function getY()
-    {
-        return $this->_y;
-    }
-
-    public function getId()
-    {
-        return $this->_id;
     }
 }

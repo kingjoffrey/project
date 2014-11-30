@@ -1,10 +1,7 @@
 <?php
 
-class Cli_Model_Ruin
+class Cli_Model_Ruin extends Cli_Model_Entity
 {
-    private $_id;
-    private $_x;
-    private $_y;
     private $_empty;
 
     public function __construct($ruin, $empty)
@@ -27,16 +24,6 @@ class Cli_Model_Ruin
     public function getEmpty()
     {
         return $this->_empty;
-    }
-
-    public function getX()
-    {
-        return $this->_x;
-    }
-
-    public function getY()
-    {
-        return $this->_y;
     }
 
     public function setEmpty($gameId, $db)

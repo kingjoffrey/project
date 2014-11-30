@@ -1,34 +1,34 @@
 <?php
 
-class Cli_Model_Ruins
+class Cli_Model_Towers
 {
-    private $_ruins;
+    private $_towers = array();
 
     public function toArray()
     {
-        $ruins = array();
-        foreach ($this->_ruins as $ruinId => $ruin) {
-            $ruins[$ruinId] = $ruin->toArray();
+        $towers = array();
+        foreach ($this->_towers as $towerId => $tower) {
+            $towers[$towerId] = $tower->toArray();
         }
-        return $ruins;
+        return $towers;
     }
 
     public function get()
     {
-        return $this->_ruins;
+        return $this->_towers;
     }
 
-    public function add($ruinId, Cli_Model_Ruin $ruin)
+    public function add($towerId, Cli_Model_Tower $tower)
     {
-        $this->_ruins[$ruinId] = $ruin;
+        $this->_towers[$towerId] = $tower;
     }
 
     /**
-     * @param $ruinId
-     * @return Cli_Model_Ruin
+     * @param $towerId
+     * @return Cli_Model_Tower
      */
-    public function getRuin($ruinId)
+    public function getTower($towerId)
     {
-        return $this->_ruins[$ruinId];
+        return $this->_towers[$towerId];
     }
 }

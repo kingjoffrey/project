@@ -2,8 +2,6 @@
 
 class Cli_Model_ComputerMove extends Cli_Model_ComputerMethods
 {
-    private $_path;
-
     public function __construct(Cli_Model_Army $army, IWebSocketConnection $user, Cli_Model_Game $game, Zend_Db_Adapter_Pdo_Pgsql $db, Cli_GameHandler $gameHandler)
     {
         $this->_army = $army;
@@ -375,24 +373,24 @@ class Cli_Model_ComputerMove extends Cli_Model_ComputerMethods
     private function ruinBlock()
     {
         $this->_l->logMethodName();
-        if (!$this->_army->hasHero()) {
+        if (!$this->_army->getHeroes()->exists()) {
             $this->_l->log('BRAK HEROSA');
             return $this->firstBlock();
         }
 
         $this->_l->log('JEST HEROS');
-        $path = $this->getPathToNearestRuin($this->_playerId, $this->_army);
+        $ruinId = $this->getPathToNearestRuin($this->_playerId, $this->_army);
 
-        if (!$path) {
+        if (empty($ruinId)) {
             $this->_l->log('BRAK RUIN');
             return $this->firstBlock();
         }
 
         $this->_l->log('IDĘ DO RUIN');
-        $this->_army->updateArmyPosition($this->_gameId, $path, $this->_game->getFields(), $this->_db);
-        $this->_game->searchRuin($path->ruinId, $this->_army, $this->_playerId, $this->_db);
+        $this->_army->move($this->_game, $this->_path, $this->_color, $this->_db, $this->_gameHandler, $ruinId);
+        $this->_game->searchRuin($ruinId, $this->_army, $this->_playerId, $this->_db);
         $this->_army->setFortified(true, $this->_gameId, $this->_db);
-        return $this->endMove($this->_armyId, $path);
+        return;
 
     }
 

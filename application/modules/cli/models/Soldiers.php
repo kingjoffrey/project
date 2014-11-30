@@ -9,7 +9,7 @@ class Cli_Model_Soldiers
         return $this->_soldiers;
     }
 
-    public function addSoldier($soldierId, $soldier)
+    public function add($soldierId, $soldier)
     {
         $this->_soldiers[$soldierId] = $soldier;
     }
@@ -35,11 +35,6 @@ class Cli_Model_Soldiers
     public function exists()
     {
         return count($this->_soldiers);
-    }
-
-    public function add($soldiers)
-    {
-        $this->_soldiers = array_merge($this->_soldiers, $soldiers);
     }
 
     public function getCosts()

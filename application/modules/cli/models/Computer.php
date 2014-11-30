@@ -10,10 +10,9 @@ class Cli_Model_Computer
         $color = $game->getPlayerColor($playerId);
         $player = $players->getPlayer($color);
 
-        if (!$this->_player->getTurnActive()) {
+        if (!$player->getTurnActive()) {
             $l->log('START TURY');
-            $mTurn = new Cli_Model_Turn($user, $game, $db, $gameHandler);
-            $mTurn->start($playerId, true);
+            new Cli_Model_StartTurn($playerId, $user, $game, $db, $gameHandler);
             return;
         }
 
@@ -27,13 +26,12 @@ class Cli_Model_Computer
             return;
         }
 
-        if ($army = $player->getComputerArmyToMove()) {
+        if ($army = $player->getArmies()->getComputerArmyToMove()) {
             $computer = new Cli_Model_ComputerMove($army, $user, $game, $db, $gameHandler);
             $computer->move();
         } else {
             $l->log('NASTĘPNA TURA');
-            $mTurn = new Cli_Model_Turn($user, $game, $db, $gameHandler);
-            $mTurn->next($playerId);
+            new Cli_Model_NextTurn($playerId, $user, $game, $db, $gameHandler);
         }
     }
 }

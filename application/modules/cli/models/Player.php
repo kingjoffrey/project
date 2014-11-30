@@ -4,7 +4,7 @@ class Cli_Model_Player extends Cli_Model_DefaultPlayer
 {
     private $_id;
 
-    private $_armies = array();
+    private $_armies;
 
     private $_turnActive;
     private $_computer;
@@ -17,6 +17,8 @@ class Cli_Model_Player extends Cli_Model_DefaultPlayer
     private $_backgroundColor;
     private $_textColor;
     private $_longName;
+
+    private $_color;
     private $_team;
 
     private $_attackSequence;
@@ -40,9 +42,11 @@ class Cli_Model_Player extends Cli_Model_DefaultPlayer
         $this->_longName = $player['longName'];
 
         $this->_team = $mMapPlayers->getColorByMapPlayerId($player['team']);
+        $this->_color = $player['color'];
 
         $this->_armies = new Cli_Model_Armies();
         $this->_castles = new Cli_Model_Castles();
+        $this->_towers = new Cli_Model_Towers();
 
         $this->initArmies($gameId, $db);
         $this->initCastles($gameId, $mapCastles, $db);
@@ -69,11 +73,10 @@ class Cli_Model_Player extends Cli_Model_DefaultPlayer
         $mHeroesInGame = new Application_Model_HeroesInGame($gameId, $db);
 
         foreach ($mArmy->getPlayerArmies($this->_id) as $a) {
-            $this->_armies->addArmy($a['armyId'], new Cli_Model_Army($a));
+            $this->_armies->addArmy($a['armyId'], new Cli_Model_Army($a, $this->_color));
             $army = $this->_armies->getArmy($a['armyId']);
-            $army->setHeroes($mHeroesInGame->getForMove($army['armyId']));
-            $army->setSoldiers($mSoldier->getForMove($army['armyId']));
-            $army->init();
+            $army->setHeroes($mHeroesInGame->getForMove($a['armyId']));
+            $army->setSoldiers($mSoldier->getForMove($a['armyId']));
         }
     }
 
@@ -96,7 +99,7 @@ class Cli_Model_Player extends Cli_Model_DefaultPlayer
             $towerId = $tower['towerId'];
             $tower = $mapTowers[$towerId];
             $tower['towerId'] = $towerId;
-            $this->_towers[$towerId] = new Cli_Model_Tower($tower);
+            $this->_towers->add($towerId, new Cli_Model_Tower($tower));
             $this->addIncome(5);
         }
     }
@@ -112,25 +115,16 @@ class Cli_Model_Player extends Cli_Model_DefaultPlayer
             'textColor' => $this->_textColor,
             'longName' => $this->_longName,
             'team' => $this->_team,
-            'armies' => $this->armiesToArray(),
-            'castles' => $this->castlesToArray(),
-            'towers' => $this->towersToArray()
+            'armies' => $this->_armies->toArray(),
+            'castles' => $this->_castles->toArray(),
+            'towers' => $this->_towers->toArray()
         );
     }
 
-    public function armiesToArray()
-    {
-        $armies = array();
-        foreach ($this->_armies as $armyId => $army) {
-            $armies[$armyId] = $army->toArray();
-        }
-        return $armies;
-    }
-
-    public function hasArmy($armyId)
-    {
-        return isset($this->_armies[$armyId]);
-    }
+//    public function hasArmy($armyId)
+//    {
+//        return isset($this->_armies[$armyId]);
+//    }
 
     public function canCastleProduceThisUnit($castleId, $unitId)
     {
@@ -147,89 +141,48 @@ class Cli_Model_Player extends Cli_Model_DefaultPlayer
         $this->_castles[$castleId]->setProductionId($gameId, $this->_id, $castleId, $unitId, $relocationToCastleId, $db);
     }
 
-    /**
-     * @param $armyId
-     * @return Cli_Model_Army
-     */
-    public function getArmy($armyId)
-    {
-        if ($this->hasArmy($armyId)) {
-            return $this->_armies[$armyId];
-        }
-    }
-
-    /**
-     * @param $castleId
-     * @return Cli_Model_Castle
-     */
-    public function getCastle($castleId)
-    {
-        return $this->_castles[$castleId];
-    }
-
     public function getArmies()
     {
         return $this->_armies;
     }
 
-    public function isOtherArmyAtPosition($armyId)
+    public function getCastles()
     {
-        $army = $this->getArmy($armyId);
-        foreach ($this->_armies as $id => $a) {
-            if ($id == $armyId) {
-                continue;
-            }
-            if ($a->x == $army->x && $a->y == $army->y) {
-                return $id;
-            }
-        }
+        return $this->_castles;
     }
+
+    public function getTowers()
+    {
+        return $this->_towers;
+    }
+
+//    public function isOtherArmyAtPosition($armyId)
+//    {
+//        $army = $this->getArmy($armyId);
+//        foreach ($this->_armies as $id => $a) {
+//            if ($id == $armyId) {
+//                continue;
+//            }
+//            if ($a->x == $army->x && $a->y == $army->y) {
+//                return $id;
+//            }
+//        }
+//    }
 
     public function getTeam()
     {
         return $this->_team;
     }
 
-    public function joinArmiesAtPosition($excludedArmyId, $gameId, $db)
-    {
-        $x = $this->_armies[$excludedArmyId]->getX();
-        $y = $this->_armies[$excludedArmyId]->getY();
-
-        $mSoldier = new Application_Model_UnitsInGame($gameId, $db);
-        $mHeroesInGame = new Application_Model_HeroesInGame($gameId, $db);
-        $mArmy = new Application_Model_Army($gameId, $db);
-
-        $ids = array();
-
-        foreach ($this->_armies as $armyId => $army) {
-            if ($armyId == $excludedArmyId) {
-                continue;
-            }
-            if ($x == $army->getX() && $y == $army->getY()) {
-                $this->_armies[$excludedArmyId]->addHeroes($army->getHeroes());
-                $this->_armies[$excludedArmyId]->addSoldiers($army->getSoldiers());
-                unset($this->_armies[$armyId]);
-
-                $mHeroesInGame->heroesUpdateArmyId($armyId, $excludedArmyId);
-                $mSoldier->soldiersUpdateArmyId($armyId, $excludedArmyId);
-                $mArmy->destroyArmy($armyId);
-
-                $ids[] = $armyId;
-            }
-        }
-
-        return $ids;
-    }
-
-    public function noArmiesExists()
-    {
-        return !count($this->_armies);
-    }
-
-    public function armiesExists()
-    {
-        return count($this->_armies);
-    }
+//    public function noArmiesExists()
+//    {
+//        return !count($this->_armies);
+//    }
+//
+//    public function armiesExists()
+//    {
+//        return count($this->_armies);
+//    }
 
     public function setLost($gameId, $db)
     {
@@ -336,25 +289,25 @@ class Cli_Model_Player extends Cli_Model_DefaultPlayer
         }
     }
 
-    public function getArmyIdFromPosition($x, $y)
-    {
-        foreach ($this->_armies as $armyId => $army) {
-            if ($x == $army->getX() && $y == $army->getY()) {
-                return $armyId;
-            }
-        }
-    }
+//    public function getArmyIdFromPosition($x, $y)
+//    {
+//        foreach ($this->_armies as $armyId => $army) {
+//            if ($x == $army->getX() && $y == $army->getY()) {
+//                return $armyId;
+//            }
+//        }
+//    }
 
-    public function createArmy($gameId, $playerId, $x, $y, $db)
-    {
-        $mArmy = new Application_Model_Army($gameId, $db);
-        $armyId = $mArmy->createArmy(array('x' => $x, 'y' => $y), $playerId);
-        $this->_armies[$armyId] = new Cli_Model_Army(array(
-            'x' => $x,
-            'y' => $y,
-            'armyId' => $armyId
-        ));
-    }
+//    public function createArmy($gameId, $x, $y, $db)
+//    {
+//        $mArmy = new Application_Model_Army($gameId, $db);
+//        $armyId = $mArmy->createArmy(array('x' => $x, 'y' => $y), $this->_id);
+//        $army = array(
+//            'x' => $x,
+//            'y' => $y,
+//            'armyId' => $armyId);
+//        $this->_armies->addArmy($armyId, new Cli_Model_Army($army, $this->_color));
+//    }
 
     public function addTower($towerId, Cli_Model_Tower $tower)
     {
@@ -368,39 +321,26 @@ class Cli_Model_Player extends Cli_Model_DefaultPlayer
         unset($this->_towers[$towerId]);
     }
 
-    public function resetMovesLeft($gameId, $db)
-    {
-        foreach ($this->_armies as $army) {
-            $army->resetMovesLeft($gameId, $db);
-        }
-    }
+//    public function resetMovesLeft($gameId, $db)
+//    {
+//        foreach ($this->_armies as $army) {
+//            $army->resetMovesLeft($gameId, $db);
+//        }
+//    }
 
-    public function unfortifyArmies($gameId, $db)
-    {
-        $mArmy = new Application_Model_Army($gameId, $db);
-        $mArmy->unfortifyPlayerArmies($this->_id);
-
-        foreach ($this->_armies as $army) {
-            $army->setFortified(false, $gameId, $db);
-        }
-    }
+//    public function unfortifyArmies($gameId, $db)
+//    {
+//        $mArmy = new Application_Model_Army($gameId, $db);
+//        $mArmy->unfortifyPlayerArmies($this->_id);
+//
+//        foreach ($this->_armies as $army) {
+//            $army->setFortified(false, $gameId, $db);
+//        }
+//    }
 
     public function getComputer()
     {
         return $this->_computer;
-    }
-
-    /**
-     * @return Cli_Model_Army
-     */
-    public function getComputerArmyToMove()
-    {
-        foreach ($this->_armies as $armyId => $army) {
-            if ($army->getFortified()) {
-                continue;
-            }
-            return $army;
-        }
     }
 
     public function getTurnActive()
@@ -436,47 +376,47 @@ class Cli_Model_Player extends Cli_Model_DefaultPlayer
         }
     }
 
-    public function getCastleGarrison($castleId)
-    {
-        $garrison = array();
-        $x = $this->_castles[$castleId]->getX();
-        $y = $this->_castles[$castleId]->getY();
+//    public function getCastleGarrison($castleId)
+//    {
+//        $garrison = array();
+//        $x = $this->_castles[$castleId]->getX();
+//        $y = $this->_castles[$castleId]->getY();
+//
+//        foreach ($this->_armies as $armyId => $army) {
+//            for ($i = $y; $i <= $y + 1; $i++) {
+//                for ($j = $x; $j <= $x + 1; $j++) {
+//                    if ($army->getX() == $i && $army->getY() == $j) {
+//                        $garrison[$armyId] = $army;
+//                    }
+//                }
+//            }
+//        }
+//
+//        return $garrison;
+//    }
 
-        foreach ($this->_armies as $armyId => $army) {
-            for ($i = $y; $i <= $y + 1; $i++) {
-                for ($j = $x; $j <= $x + 1; $j++) {
-                    if ($army->getX() == $i && $army->getY() == $j) {
-                        $garrison[$armyId] = $army;
-                    }
-                }
-            }
-        }
-
-        return $garrison;
-    }
-
-    public function countCastleGarrison($castleId)
-    {
-        $count = 0;
-        $x = $this->_castles[$castleId]->getX();
-        $y = $this->_castles[$castleId]->getY();
-
-        foreach ($this->_armies as $armyId => $army) {
-            for ($i = $y; $i <= $y + 1; $i++) {
-                for ($j = $x; $j <= $x + 1; $j++) {
-                    if ($army->getX() == $i && $army->getY() == $j) {
-                        $count += $army->count();
-                    }
-                }
-            }
-        }
-        return $count;
-    }
-
-    public function getCastleDefenseModifier($castleId)
-    {
-        return $this->_castles[$castleId]->getDefenseModifier();
-    }
+//    public function countCastleGarrison($castleId)
+//    {
+//        $count = 0;
+//        $x = $this->_castles[$castleId]->getX();
+//        $y = $this->_castles[$castleId]->getY();
+//
+//        foreach ($this->_armies as $armyId => $army) {
+//            for ($i = $y; $i <= $y + 1; $i++) {
+//                for ($j = $x; $j <= $x + 1; $j++) {
+//                    if ($army->getX() == $i && $army->getY() == $j) {
+//                        $count += $army->count();
+//                    }
+//                }
+//            }
+//        }
+//        return $count;
+//    }
+//
+//    public function getCastleDefenseModifier($castleId)
+//    {
+//        return $this->_castles[$castleId]->getDefenseModifier();
+//    }
 
     public function getAttackSequence()
     {

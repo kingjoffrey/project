@@ -9,11 +9,6 @@ class Cli_Model_Heroes
         return $this->_heroes;
     }
 
-    public function addHero($heroId, $hero)
-    {
-        $this->_heroes[$heroId] = $hero;
-    }
-
     /**
      * @param $heroId
      * @return Cli_Model_Hero
