@@ -122,6 +122,9 @@ class Cli_Model_Fields
 
     public function getField($x, $y)
     {
+        if (!$this->isField($x, $y)) {
+            return;
+        }
         return $this->_fields[$y][$x];
     }
 
@@ -132,11 +135,17 @@ class Cli_Model_Fields
 
     public function getCastleColor($x, $y)
     {
+        if (!$this->isField($x, $y)) {
+            return;
+        }
         return $this->_fields[$y][$x]->getCastleColor();
     }
 
     public function isPlayerCastle($color, $x, $y)
     {
+        if (!$this->isField($x, $y)) {
+            return;
+        }
         if ($this->_fields[$y][$x]->getCastleColor() == $color) {
             return $this->_fields[$y][$x]->getCastleId();
         }
@@ -144,6 +153,9 @@ class Cli_Model_Fields
 
     public function isEnemyCastle($color, $x, $y)
     {
+        if (!$this->isField($x, $y)) {
+            return;
+        }
         if ($this->_fields[$y][$x]->getCastleColor() != $color) {
             return $this->_fields[$y][$x]->getCastleId();
         }
@@ -163,6 +175,9 @@ class Cli_Model_Fields
 
     public function isTower($x, $y)
     {
+        if (!$this->isField($x, $y)) {
+            return;
+        }
         return $this->_fields[$y][$x]->getTowerId();
     }
 
@@ -170,6 +185,9 @@ class Cli_Model_Fields
     {
         for ($i = $y; $i <= $y + 1; $i++) {
             for ($j = $x; $j <= $x + 1; $j++) {
+                if (!$this->isField($i, $j)) {
+                    return;
+                }
                 if ($this->_fields[$i][$j]->isArmy()) {
                     return true;
                 }
@@ -179,16 +197,25 @@ class Cli_Model_Fields
 
     public function getCastleId($x, $y)
     {
+        if (!$this->isField($x, $y)) {
+            return;
+        }
         return $this->_fields[$y][$x]->getCastleId();
     }
 
     public function getTowerId($x, $y)
     {
+        if (!$this->isField($x, $y)) {
+            return;
+        }
         return $this->_fields[$y][$x]->getTowerId();
     }
 
     public function getTowerColor($x, $y)
     {
+        if (!$this->isField($x, $y)) {
+            return;
+        }
         return $this->_fields[$y][$x]->getTowerColor();
     }
 }

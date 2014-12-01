@@ -196,8 +196,8 @@ class Cli_Model_Game
             'me' => $this->_me->toArray(),
             'players' => $this->_players->toArray(),
             'ruins' => $this->_ruins->toArray(),
-            'neutralCastles' => $this->_players->getPlayer('neutral')->castlesToArray(),
-            'neutralTowers' => $this->_players->getPlayer('neutral')->towersToArray()
+            'neutralCastles' => $this->_players->getPlayer('neutral')->getCastles()->toArray(),
+            'neutralTowers' => $this->_players->getPlayer('neutral')->getTowers()->toArray()
         );
     }
 
@@ -237,21 +237,6 @@ class Cli_Model_Game
         } else {
             return 'neutral';
         }
-    }
-
-    public function allEnemiesAreDead($playerId)
-    {
-        $playerColor = $this->getPlayerColor($playerId);
-        $playerTeam = $this->_players->getPlayer($playerColor)->getTeam();
-        foreach ($this->_players->get() as $color => $player) {
-            if ($color == $playerColor || $playerTeam == $player->getTeam()) {
-                continue;
-            }
-            if ($player->castlesExists() || $player->armiesExists()) {
-                return false;
-            }
-        }
-        return true;
     }
 
     public function getExpectedNextTurnPlayer($playerId, $db)
@@ -296,12 +281,6 @@ class Cli_Model_Game
     private function turnNumberIncrement()
     {
         $this->_turnNumber++;
-    }
-
-    public function increaseAllCastlesProductionTurn($playerId, $db)
-    {
-        $mCastlesInGame = new Application_Model_CastlesInGame($this->_id, $db);
-        $mCastlesInGame->increaseAllCastlesProductionTurn($playerId);
     }
 
     public function activatePlayerTurn($playerId, $db)

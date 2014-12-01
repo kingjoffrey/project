@@ -38,14 +38,6 @@ class Cli_Model_NeutralPlayer extends Cli_Model_DefaultPlayer
         }
     }
 
-    public function toArray()
-    {
-        return array(
-            'castles' => $this->castlesToArray(),
-            'towers' => $this->towersToArray()
-        );
-    }
-
     public function getCastleGarrison($turnNumber, $firstUnitId)
     {
         $numberOfSoldiers = ceil($turnNumber / 10);
@@ -70,7 +62,7 @@ class Cli_Model_NeutralPlayer extends Cli_Model_DefaultPlayer
 
     public function getArmies()
     {
-        return array();
+        return new Cli_Model_Armies();
     }
 
     public function getTeam()

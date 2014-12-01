@@ -437,4 +437,10 @@ class Cli_Model_Player extends Cli_Model_DefaultPlayer
     {
         return $this->armiesExists() || $this->castlesExists();
     }
+
+    public function increaseAllCastlesProductionTurn($gameId, $db)
+    {
+        $mCastlesInGame = new Application_Model_CastlesInGame($gameId, $db);
+        $mCastlesInGame->increaseAllCastlesProductionTurn($this->_id);
+    }
 }

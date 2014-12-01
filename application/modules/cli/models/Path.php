@@ -2,7 +2,7 @@
 
 class Cli_Model_Path
 {
-    private $_current;
+    private $_current = array();
     private $_full;
     private $_end;
     private $_x;
@@ -131,5 +131,10 @@ class Cli_Model_Path
     public function getEnd()
     {
         return $this->_end;
+    }
+
+    public function exists()
+    {
+        return count($this->_current);
     }
 }

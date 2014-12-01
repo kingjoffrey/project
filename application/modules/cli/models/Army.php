@@ -195,7 +195,7 @@ class Cli_Model_Army
             }
         } else {
             $this->saveMove($gameId, $path, $fields, $db);
-            $joinIds = $players->getPlayer($playerColor)->joinArmiesAtPosition($this->_id, $gameId, $db);
+            $joinIds = $players->getPlayer($playerColor)->getArmies()->joinAtPosition($this->_id, $gameId, $db);
         }
 
         $token = array(
@@ -424,11 +424,11 @@ class Cli_Model_Army
         return $this->_soldiers->getCosts() + $this->_ships->getCosts();
     }
 
-    public function createSoldier($gameId, $playerId, $armyId, $unitId, Zend_Db_Adapter_Pdo_Pgsql $db)
+    public function createSoldier($gameId, $playerId, $unitId, Zend_Db_Adapter_Pdo_Pgsql $db)
     {
         $units = Zend_Registry::get('units');
         $mSoldier = new Application_Model_UnitsInGame($gameId, $db);
-        $soldierId = $mSoldier->add($armyId, $unitId);
+        $soldierId = $mSoldier->add($this->_id, $unitId);
 
         $this->_soldiers->add($soldierId, new Cli_Model_Soldier(array('unitId' => $unitId, 'soldierId' => $soldierId), $units[$unitId]));
         $soldier = $this->_soldiers->getSoldier($soldierId);

@@ -173,24 +173,23 @@ abstract class Cli_Model_ComputerMethods
         $weakerHostileCastleId = $this->getWeakerHostileCastleId();
 
         if (!$weakerHostileCastleId) {
-            return new Cli_Model_Path();
+            return;
         }
 
-        $path = $this->getPathToEnemyCastleInRange($weakerHostileCastleId);
+        $this->getPathToEnemyCastleInRange($weakerHostileCastleId);
         while (true) {
-            if (!isset($path->current) || empty($path->current)) {
+            if ($this->_path && !$this->_path->exist()) {
                 $omittedCastlesIds[] = $weakerHostileCastleId;
                 $weakerHostileCastleId = $this->getWeakerHostileCastleId($omittedCastlesIds);
                 if ($weakerHostileCastleId) {
-                    $path = $this->getPathToEnemyCastleInRange($weakerHostileCastleId);
+                    $this->getPathToEnemyCastleInRange($weakerHostileCastleId);
                 } else {
                     break;
                 }
             }
             break;
         }
-        $path->castleId = $weakerHostileCastleId;
-        return $path;
+        return $weakerHostileCastleId;
     }
 
     public function getPathToEnemyCastleInRange($castleId)
@@ -216,14 +215,9 @@ abstract class Cli_Model_ComputerMethods
             return;
         }
 
-        $move = $this->_army->calculateMovesSpend($aStar->getPath($castleX . '_' . $castleY));
-        if ($move->end && $this->_fields->isEnemyCastle($this->_color, $move->x, $move->y)) {
-            $move->in = true;
-        } else {
-            $move->in = false;
-        }
+        $this->_path = new Cli_Model_Path($aStar->getPath($castleX . '_' . $castleY), $this->_army);
 
-        return $move;
+        return $this->_fields->isEnemyCastle($this->_color, $this->_path->getX(), $this->_path->getY());
     }
 
     public function getPathToMyCastle($castle)
@@ -513,24 +507,14 @@ abstract class Cli_Model_ComputerMethods
             return;
         }
 
-        $move = $this->_army->calculateMovesSpend($aStar->getPath($enemyX . '_' . $enemyY));
+        $this->_path = new Cli_Model_Path($aStar->getPath($enemyX . '_' . $enemyY), $this->_army);
         if ($castleId) {
             $this->_fields->resetCastleTemporaryType($enemyX, $enemyY);
-            if ($castleId == $this->_fields->getCastleId($move->x, $move->y)) {
-                $move->castleId = $castleId;
-                return $move;
-            } else {
-                $move->current = null;
-                return $move;
+            if ($castleId == $this->_fields->getCastleId($this->_path->getX(), $this->_path->getY())) {
+                return $castleId;
             }
         } else {
             $this->_fields->resetTemporaryType($enemyX, $enemyY);
-            if ($move->x == $enemyX && $move->y == $enemyY) {
-                return $move;
-            } else {
-                $move->current = null;
-                return $move;
-            }
         }
     }
 

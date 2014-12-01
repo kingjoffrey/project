@@ -58,4 +58,30 @@ class Cli_Model_Players
     }
 
 
+    public function allEnemiesAreDead($playerColor)
+    {
+        $playerTeam = $this->_players->getPlayer($playerColor)->getTeam();
+        foreach ($this->_players as $color => $player) {
+            if ($color == $playerColor || $playerTeam == $player->getTeam()) {
+                continue;
+            }
+            if ($player->castlesExists() || $player->armiesExists()) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public function getEnemies($playerColor)
+    {
+        $playerTeam = $this->getPlayer($playerColor)->getTeam();
+        $enemies = array();
+        foreach ($this->_players as $color => $player) {
+            if ($color == $playerColor || $playerTeam == $player->getTeam()) {
+                continue;
+            }
+            $enemies = array_merge($enemies, $player->getArmies()->get());
+        }
+        return $enemies;
+    }
 }

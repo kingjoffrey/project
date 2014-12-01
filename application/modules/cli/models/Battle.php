@@ -5,24 +5,35 @@ class Cli_Model_Battle
 
     private $_result;
     private $_attacker;
+    private $_defender;
     private $_defenders;
     private $_succession = 0;
-    private $_real;
     private $_externalDefenceModifier;
     private $_attackModifier;
     private $_defenceModifier;
 
     private $_players;
 
-    public function __construct(Cli_Model_Army $attacker, $defenders, Cli_Model_Game $game, $real = false)
+    private $_attackerId;
+    private $_defenderId;
+
+    private $_gameId;
+    private $_db;
+
+    public function __construct(Cli_Model_Army $attacker, $defenders, Cli_Model_Game $game, Zend_Db_Adapter_Pdo_Pgsql $db = null)
     {
         $this->_attacker = $attacker;
         $this->_defenders = $defenders;
 
         $this->_result = new Cli_Model_BattleResult();
-        $this->_real = $real;
 
         $this->_players = $game->getPlayers();
+
+        if ($db) {
+            $this->_gameId = $game->getId();
+            $this->_attackerId = $this->_players->getPlayer($this->_attacker->getColor())->getId();
+            $this->_db = $db;
+        }
         $fields = $game->getFields();
 
         $attackerBattleSequence = $this->_players->getPlayer($this->_attacker->getColor())->getAttackSequence();
@@ -64,8 +75,10 @@ class Cli_Model_Battle
         $attack = $this->_attacker->getAttackBattleSequence();
 
         foreach ($this->_defenders as $defenderArmy) {
-            $this->_defenceModifier = $defenderArmy->getDefenseModifier();
-            $defence = $defenderArmy->getDefenceBattleSequence();
+            $this->_defender = $defenderArmy;
+            $this->_defenceModifier = $this->_defender->getDefenseModifier();
+            $this->_defenderId = $this->_players->getPlayer($this->_defender->getColor())->getId();
+            $defence = $this->_defender->getDefenceBattleSequence();
 
             foreach ($attack['soldiers'] as $a => $attackingFighter) {
                 foreach ($defence['soldiers'] as $d => $defendingFighter) {
@@ -204,18 +217,28 @@ class Cli_Model_Battle
 
         $this->_succession++;
 
-        if ($this->_real) {
+        if ($this->_db) {
             if ($attackLives) {
                 if ($defendingFighter->getType() == 'hero') {
-                    $this->_result->addDefendingHeroSuccession($defendingFighter->getId(), $this->_succession);
+                    $heroId = $defendingFighter->getId();
+                    $this->_result->addDefendingHeroSuccession($heroId, $this->_succession);
+                    $this->_defender->removeHero($heroId, $this->_attackerId, $this->_defenderId, $this->_gameId, $this->_db);
                 } else {
-                    $this->_result->addDefendingSoldierSuccession($defendingFighter->getId(), $this->_succession);
+                    $soldierId = $defendingFighter->getId();
+                    $this->_result->addDefendingSoldierSuccession($soldierId, $this->_succession);
+                    if ($this->_defenderId) {
+                        $this->_defender->removeSoldier($soldierId, $this->_attackerId, $this->_defenderId, $this->_gameId, $this->_db);
+                    }
                 }
             } else {
                 if ($attackingFighter->getType() == 'hero') {
-                    $this->_result->addAttackingHeroSuccession($attackingFighter->getId(), $this->_succession);
+                    $heroId = $attackingFighter->getId();
+                    $this->_result->addAttackingHeroSuccession($heroId, $this->_succession);
+                    $this->_attacker->removeHero($heroId, $this->_defenderId, $this->_attackerId, $this->_gameId, $this->_db);
                 } else {
-                    $this->_result->addAttackingSoldierSuccession($attackingFighter->getId(), $this->_succession);
+                    $soldierId = $attackingFighter->getId();
+                    $this->_result->addAttackingSoldierSuccession($soldierId, $this->_succession);
+                    $this->_attacker->removeSoldier($soldierId, $this->_defenderId, $this->_attackerId, $this->_gameId, $this->_db);
                 }
             }
         }
@@ -228,52 +251,34 @@ class Cli_Model_Battle
         return rand(1, $maxDie);
     }
 
-    public function saveResult($gameId, $db)
+    public function getResult()
     {
-        $attackerId = $this->_players->getPlayer($this->_attacker->getColor())->getId();
-
         foreach ($this->_defenders as $defender) {
-            $defenderId = $this->_players->getPlayer($defender->getColor())->getId();
             foreach (array_keys($defender->getHeroes()) as $unitId) {
-                if ($this->_result->addDefendingHero($unitId)) {
-                    $defender->removeHero($unitId, $attackerId, $defenderId, $gameId, $db);
-                }
+                $this->_result->addDefendingHero($unitId);
             }
 
             foreach (array_keys($defender->getSoldiers()) as $soldierId) {
-                if ($this->_result->addDefendingSoldier($soldierId)) {
-                    $defender->removeSoldier($soldierId, $attackerId, $defenderId, $gameId, $db);
-                }
+                $this->_result->addDefendingSoldier($soldierId);
             }
 
             foreach (array_keys($defender->getShips()) as $soldierId) {
-                if ($this->_result->addDefendingShip($soldierId)) {
-                    $defender->removeSoldier($soldierId, $attackerId, $defenderId, $gameId, $db);
-                }
+                $this->_result->addDefendingShip($soldierId);
             }
         }
 
         foreach (array_keys($this->_attacker->getHeroes()) as $unitId) {
-            if ($this->_result->addAttackingHero($unitId)) {
-                $this->_attacker->removeHero($unitId, $winnerId, $attackerId, $gameId, $db);
-            }
+            $this->_result->addAttackingHero($unitId);
         }
 
         foreach (array_keys($this->_attacker->getSoldiers()) as $soldierId) {
-            if ($this->_result->addAttackingSoldier($soldierId)) {
-                $this->_attacker->removeSoldier($soldierId, $winnerId, $attackerId, $gameId, $db);
-            }
+            $this->_result->addAttackingSoldier($soldierId);
         }
 
         foreach (array_keys($this->_attacker->getShips()) as $soldierId) {
-            if ($this->_result->addAttackingShip($soldierId)) {
-                $this->_attacker->removeSoldier($soldierId, $winnerId, $attackerId, $gameId, $db);
-            }
+            $this->_result->addAttackingShip($soldierId);
         }
-    }
 
-    public function getResult()
-    {
         return $this->_result;
     }
 }

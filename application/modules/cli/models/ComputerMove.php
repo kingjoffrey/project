@@ -81,7 +81,7 @@ class Cli_Model_ComputerMove extends Cli_Model_ComputerMethods
                             'x' => $firstArmy['x'],
                             'y' => $firstArmy['y'],
                             'tt' => 'c')
-                        ));
+                        ), $firstArmy);
                         $this->_army = next($notGarrison);
                         return;
                     } elseif (count($notGarrison) == 1) {
@@ -101,7 +101,7 @@ class Cli_Model_ComputerMove extends Cli_Model_ComputerMethods
                     'x' => $firstArmy->getX(),
                     'y' => $firstArmy->getY(),
                     'tt' => 'c')
-                ));
+                ), $firstArmy);
                 $this->_army = next($garrison);
                 return;
             } else {
@@ -138,17 +138,17 @@ class Cli_Model_ComputerMove extends Cli_Model_ComputerMethods
                     $newArmyId = $mSplitArmy->getChildArmyId();
 
                     if ($army['x'] == $castlePosition['x'] && $army['y'] == $castlePosition['y']) {
-                        $path = new Cli_Model_Path(array(0 => array(
+                        $this->_path = new Cli_Model_Path(array(0 => array(
                             'x' => $castlePosition['x'] + 1,
                             'y' => $castlePosition['y'] + 1,
                             'tt' => 'c')
-                        ));
+                        ), $army);
                     } else {
-                        $path = new Cli_Model_Path(array(0 => array(
+                        $this->_path = new Cli_Model_Path(array(0 => array(
                             'x' => $castlePosition['x'],
                             'y' => $castlePosition['y'],
                             'tt' => 'c')
-                        ));
+                        ), $army);
                     }
 
                     $this->_army = new Cli_Model_Army(Cli_Model_Army::getArmyByArmyId($newArmyId, $this->_gameId, $this->_db));
@@ -317,36 +317,38 @@ class Cli_Model_ComputerMove extends Cli_Model_ComputerMethods
     private function noEnemyCastlesToAttack()
     {
         $this->_l->logMethodName();
-        if (!$this->_enemies) {
-            // brak zamków i armii wroga - koniec gry
-            $mTurn = new Cli_Model_Turn($this->_user, $this->_game, $this->_db, $this->_gameHandler);
-            $mTurn->endGame();
-            return;
-        }
+//        if (!$this->_enemies) {
+//            // brak zamków i armii wroga - koniec gry
+//            $mTurn = new Cli_Model_Turn($this->_user, $this->_game, $this->_db, $this->_gameHandler);
+//            $mTurn->endGame();
+//            return;
+//        }
 
-        foreach ($this->_enemies as $e) {
-            if (Application_Model_Board::isCastleAtPosition($e->x, $e->y, $this->_map['hostileCastles']) !== null) {
+
+        foreach ($this->_players->getEnemies($this->_color) as $e) {
+            if ($this->_fields->getCastleId($e->getX(), $e->getY())) {
                 // pomijam wrogów w zamku
                 continue;
             }
-            if ($this->isEnemyStronger($e)) {
+            if ($this->isEnemyStronger(array($e))) {
                 // pomijam silniejszych wrogów
                 continue;
             }
             $enemy = $e;
             break;
         }
+
         if (isset($enemy)) {
             // ATAKUJ
             $this->_l->log('WRÓG JEST SŁABSZY');
-            $path = $this->isEnemyArmyInRange($enemy);
-            if (empty($path->current)) {
+            $this->isEnemyArmyInRange($enemy);
+            if (!$this->_path->exists()) {
                 $this->_l->log('SŁABSZY WRÓG POZA ZASIĘGIEM - IDŹ DO WROGA');
-                return $this->savePath($path);
+                return $this->savePath();
             }
             $this->_l->log('SŁABSZY WRÓG W ZASIĘGU - ATAKUJ!');
-            $fightEnemyResults = $this->fightEnemy($path);
-            return $this->endMove($this->_armyId, $path, $fightEnemyResults);
+            $this->_army->move($this->_game, $this->_path, $this->_color, $this->_db, $this->_gameHandler);
+            return;
 
         } else {
             $this->_l->log('WRÓG JEST SILNIEJSZY');
@@ -390,21 +392,13 @@ class Cli_Model_ComputerMove extends Cli_Model_ComputerMethods
         $this->_army->move($this->_game, $this->_path, $this->_color, $this->_db, $this->_gameHandler, $ruinId);
         $this->_game->searchRuin($ruinId, $this->_army, $this->_playerId, $this->_db);
         $this->_army->setFortified(true, $this->_gameId, $this->_db);
-        return;
-
     }
 
-    private function savePath($move)
+    private function savePath()
     {
         $this->_l->logMethodName();
-        if (!isset($move->full)) {
-            var_dump($move);
-            throw new Exception('aaa');
-            exit;
-        }
-
-        if (empty($move->full)) {
-            var_dump($move);
+        if (!$this->_path->hasFull()) {
+            var_dump($this->_path);
             throw new Exception('bbb');
             exit;
         }
@@ -414,8 +408,8 @@ class Cli_Model_ComputerMove extends Cli_Model_ComputerMethods
         $newPath = array();
         $start = false;
 
-        foreach ($move->full as $step) {
-            if ($move->x == $step['x'] && $move->y == $step['y']) {
+        foreach ($this->_path->getFull() as $step) {
+            if ($this->_path->getX() == $step['x'] && $this->_path->getY() == $step['y']) {
                 $start = true;
             }
 
@@ -428,9 +422,8 @@ class Cli_Model_ComputerMove extends Cli_Model_ComputerMethods
             'path' => $newPath
         );
 
-        $this->_army->updateArmyPosition($this->_gameId, $move, $this->_game->getFields(), $this->_db);
+        $this->_army->move($this->_game, $this->_path, $this->_color, $this->_db, $this->_gameHandler);
         $this->_army->setFortified(true, $this->_gameId, $this->_db);
-        return $this->endMove($this->_armyId, $move);
     }
 
     private function goByThePath()

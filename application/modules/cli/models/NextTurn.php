@@ -23,7 +23,7 @@ class Cli_Model_NextTurn
             $this->playerLost($nextPlayerColor);
         }
 
-        if ($this->_game->allEnemiesAreDead($nextPlayerId)) {
+        if ($this->_players->allEnemiesAreDead($nextPlayerColor)) {
             $this->endGame($this->_gameId);
             return;
         }
@@ -32,9 +32,10 @@ class Cli_Model_NextTurn
             $nextPlayerId = $this->_game->getExpectedNextTurnPlayer($nextPlayerId, $this->_db);
             $nextPlayerColor = $this->_game->getPlayerColor($nextPlayerId);
 
-            if ($this->_players->getPlayer($nextPlayerColor)->armiesOrCastlesExists()) {
+            $player = $this->_players->getPlayer($nextPlayerColor);
+            if ($player->armiesOrCastlesExists()) {
 
-                $this->_game->increaseAllCastlesProductionTurn($nextPlayerId, $this->_db);
+                $player->increaseAllCastlesProductionTurn($this->_gameId, $this->_db);
 
                 $turnNumber = $this->_game->getTurnNumber();
                 $turnsLimit = $this->_game->getTurnsLimit();
