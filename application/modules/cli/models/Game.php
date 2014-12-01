@@ -311,6 +311,11 @@ class Cli_Model_Game
         return $this->_turnPlayerId;
     }
 
+    public function isPlayerTurn($playerId)
+    {
+        return $this->_turnPlayerId == $playerId;
+    }
+
     public function searchRuin($ruinId, Cli_Model_Army $army, $playerId, $db)
     {
         $random = rand(0, 100);

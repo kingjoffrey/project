@@ -508,11 +508,9 @@ abstract class Cli_Model_ComputerMethods
         }
 
         $this->_path = new Cli_Model_Path($aStar->getPath($enemyX . '_' . $enemyY), $this->_army);
+
         if ($castleId) {
             $this->_fields->resetCastleTemporaryType($enemyX, $enemyY);
-            if ($castleId == $this->_fields->getCastleId($this->_path->getX(), $this->_path->getY())) {
-                return $castleId;
-            }
         } else {
             $this->_fields->resetTemporaryType($enemyX, $enemyY);
         }

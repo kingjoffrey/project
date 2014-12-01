@@ -89,7 +89,7 @@ class Cli_GameHandler extends Cli_WofHandler
         }
 
         if ($dataIn['type'] == 'production') {
-            new Cli_Model_Production($dataIn, $user, $db, $this);
+            new Cli_Model_Production($dataIn, $user, $user->parameters['game'], $db, $this);
             return;
         }
 
@@ -141,13 +141,11 @@ class Cli_GameHandler extends Cli_WofHandler
                 break;
 
             case 'nextTurn':
-                $mTurn = new Cli_Model_Turn($user, $user->parameters['game'], $db, $this);
-                $mTurn->next($user->parameters['playerId']);
+                new Cli_Model_NextTurn($user->parameters['playerId'], $user, $user->parameters['game'], $db, $this);
                 break;
 
             case 'startTurn':
-                $mTurn = new Cli_Model_Turn($user, $user->parameters['game'], $db, $this);
-                $mTurn->start($user->parameters['playerId']);
+                new Cli_Model_StartTurn($user->parameters['playerId'], $user, $user->parameters['game'], $db, $this);
                 break;
 
             case 'raze':

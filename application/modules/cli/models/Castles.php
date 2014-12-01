@@ -20,7 +20,9 @@ class Cli_Model_Castles
      */
     public function getCastle($castleId)
     {
-        return $this->_castles[$castleId];
+        if ($this->hasCastle($castleId)) {
+            return $this->_castles[$castleId];
+        }
     }
 
     public function toArray()

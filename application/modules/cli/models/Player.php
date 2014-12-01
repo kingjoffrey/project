@@ -121,11 +121,6 @@ class Cli_Model_Player extends Cli_Model_DefaultPlayer
         );
     }
 
-//    public function hasArmy($armyId)
-//    {
-//        return isset($this->_armies[$armyId]);
-//    }
-
     public function canCastleProduceThisUnit($castleId, $unitId)
     {
         return $this->_castles[$castleId]->canProduceThisUnit($unitId);
@@ -155,19 +150,6 @@ class Cli_Model_Player extends Cli_Model_DefaultPlayer
     {
         return $this->_towers;
     }
-
-//    public function isOtherArmyAtPosition($armyId)
-//    {
-//        $army = $this->getArmy($armyId);
-//        foreach ($this->_armies as $id => $a) {
-//            if ($id == $armyId) {
-//                continue;
-//            }
-//            if ($a->x == $army->x && $a->y == $army->y) {
-//                return $id;
-//            }
-//        }
-//    }
 
     public function getTeam()
     {
@@ -232,7 +214,7 @@ class Cli_Model_Player extends Cli_Model_DefaultPlayer
     {
         $units = Zend_Registry::get('units');
 
-        $this->resetMovesLeft($gameId, $db);
+        $this->_armies->resetMovesLeft($gameId, $db);
 
         foreach ($this->_armies as $armyId => $army) {
             $this->subtractGold($army->getCosts());
@@ -276,38 +258,29 @@ class Cli_Model_Player extends Cli_Model_DefaultPlayer
                     $unitCastleId = $castleId;
                 }
 
-                $x = $this->_castles[$unitCastleId]->getX();
-                $y = $this->_castles[$unitCastleId]->getY();
-                $armyId = $this->getPlayerArmyIdFromPosition($x, $y);
+                $x = $this->_castles->getCastle($unitCastleId)->getX();
+                $y = $this->_castles->getCastle($unitCastleId)->getY();
+                $armyId = $this->getArmies()->getArmyIdFromPosition($x, $y);
 
                 if (!$armyId) {
                     $armyId = $this->createArmy($gameId, $this->_id, $x, $y, $db);
                 }
 
-                $this->_armies[$armyId]->createSoldier($gameId, $db);
+                $this->_armies->getArmy($armyId)->createSoldier($gameId, $this->_id, $unitId, $db);
             }
         }
     }
 
-//    public function getArmyIdFromPosition($x, $y)
-//    {
-//        foreach ($this->_armies as $armyId => $army) {
-//            if ($x == $army->getX() && $y == $army->getY()) {
-//                return $armyId;
-//            }
-//        }
-//    }
-
-//    public function createArmy($gameId, $x, $y, $db)
-//    {
-//        $mArmy = new Application_Model_Army($gameId, $db);
-//        $armyId = $mArmy->createArmy(array('x' => $x, 'y' => $y), $this->_id);
-//        $army = array(
-//            'x' => $x,
-//            'y' => $y,
-//            'armyId' => $armyId);
-//        $this->_armies->addArmy($armyId, new Cli_Model_Army($army, $this->_color));
-//    }
+    public function createArmy($gameId, $x, $y, $db)
+    {
+        $mArmy = new Application_Model_Army($gameId, $db);
+        $armyId = $mArmy->createArmy(array('x' => $x, 'y' => $y), $this->_id);
+        $army = array(
+            'x' => $x,
+            'y' => $y,
+            'armyId' => $armyId);
+        $this->_armies->addArmy($armyId, new Cli_Model_Army($army, $this->_color));
+    }
 
     public function addTower($towerId, Cli_Model_Tower $tower)
     {
@@ -321,22 +294,13 @@ class Cli_Model_Player extends Cli_Model_DefaultPlayer
         unset($this->_towers[$towerId]);
     }
 
-//    public function resetMovesLeft($gameId, $db)
-//    {
-//        foreach ($this->_armies as $army) {
-//            $army->resetMovesLeft($gameId, $db);
-//        }
-//    }
+    public function unfortifyArmies($gameId, $db)
+    {
+        $mArmy = new Application_Model_Army($gameId, $db);
+        $mArmy->unfortifyPlayerArmies($this->_id);
 
-//    public function unfortifyArmies($gameId, $db)
-//    {
-//        $mArmy = new Application_Model_Army($gameId, $db);
-//        $mArmy->unfortifyPlayerArmies($this->_id);
-//
-//        foreach ($this->_armies as $army) {
-//            $army->setFortified(false, $gameId, $db);
-//        }
-//    }
+        $this->_armies->unfortify($gameId, $db);
+    }
 
     public function getComputer()
     {
@@ -411,11 +375,6 @@ class Cli_Model_Player extends Cli_Model_DefaultPlayer
 //            }
 //        }
 //        return $count;
-//    }
-//
-//    public function getCastleDefenseModifier($castleId)
-//    {
-//        return $this->_castles[$castleId]->getDefenseModifier();
 //    }
 
     public function getAttackSequence()

@@ -2,28 +2,8 @@
 
 abstract class Cli_Model_DefaultPlayer
 {
-    protected $_castles = array();
-    protected $_towers = array();
-
-    public function castlesToArray()
-    {
-        $castles = array();
-        foreach ($this->_castles as $castleId => $castle) {
-            $castles[$castleId] = $castle->toArray();
-        }
-        return $castles;
-    }
-
-    public function towersToArray()
-    {
-        $towers = array();
-        foreach ($this->_towers as $towerId => $tower) {
-            $towers[$towerId] = $tower->toArray();
-        }
-        return $towers;
-    }
-
-
+    protected $_castles;
+    protected $_towers;
 
     public function hasTower($towerId)
     {
@@ -43,11 +23,6 @@ abstract class Cli_Model_DefaultPlayer
     public function getCastles()
     {
         return $this->_castles;
-    }
-
-    public function getCastle($castleId)
-    {
-        return $this->_castles[$castleId];
     }
 
     public function getTowers()

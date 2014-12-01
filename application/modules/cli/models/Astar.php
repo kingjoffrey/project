@@ -258,7 +258,7 @@ class Cli_Model_Astar extends Cli_Model_Heuristics
 
             foreach ($path as $k => $step) {
                 if ($step['tt'] == 'c') {
-                    $castleId = $this->_fields->isPlayerCastle($color, $step['x'], $step['y']);
+                    $castleId = $this->_fields->isPlayerCastle($this->_color, $step['x'], $step['y']);
                     if (isset($this->myCastleId[$castleId])) {
                         $path[$k]['cc'] = true;
                         $i++;

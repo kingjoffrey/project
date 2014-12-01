@@ -17,8 +17,6 @@ var Title = {
             top = 0
         }
 
-        console.log(top)
-
         title.
             css({
                 'margin-top': top + 'px'

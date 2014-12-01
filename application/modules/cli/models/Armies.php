@@ -75,4 +75,28 @@ class Cli_Model_Armies
 
         return $ids;
     }
+
+    public function resetMovesLeft($gameId, $db)
+    {
+        foreach ($this->_armies as $army) {
+            $army->resetMovesLeft($gameId, $db);
+        }
+    }
+
+    public function getArmyIdFromPosition($x, $y)
+    {
+        foreach ($this->_armies as $armyId => $army) {
+            if ($x == $army->getX() && $y == $army->getY()) {
+                return $armyId;
+            }
+        }
+    }
+
+    public function unfortify($gameId, $db)
+    {
+        foreach ($this->_armies as $army) {
+            $army->setFortified(false, $gameId, $db);
+        }
+    }
+
 }
