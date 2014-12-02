@@ -254,28 +254,28 @@ class Cli_Model_Battle
     public function getResult()
     {
         foreach ($this->_defenders as $defender) {
-            foreach (array_keys($defender->getHeroes()) as $unitId) {
-                $this->_result->addDefendingHero($unitId);
+            foreach ($defender->getHeroes()->getKeys() as $heroId) {
+                $this->_result->addDefendingHero($heroId);
             }
 
-            foreach (array_keys($defender->getSoldiers()) as $soldierId) {
+            foreach ($defender->getSoldiers()->getKeys() as $soldierId) {
                 $this->_result->addDefendingSoldier($soldierId);
             }
 
-            foreach (array_keys($defender->getShips()) as $soldierId) {
+            foreach ($defender->getShips()->getKeys() as $soldierId) {
                 $this->_result->addDefendingShip($soldierId);
             }
         }
 
-        foreach (array_keys($this->_attacker->getHeroes()) as $unitId) {
-            $this->_result->addAttackingHero($unitId);
+        foreach ($this->_attacker->getHeroes()->getKeys() as $heroId) {
+            $this->_result->addAttackingHero($heroId);
         }
 
-        foreach (array_keys($this->_attacker->getSoldiers()) as $soldierId) {
+        foreach ($this->_attacker->getSoldiers()->getKeys() as $soldierId) {
             $this->_result->addAttackingSoldier($soldierId);
         }
 
-        foreach (array_keys($this->_attacker->getShips()) as $soldierId) {
+        foreach ($this->_attacker->getShips()->getKeys() as $soldierId) {
             $this->_result->addAttackingShip($soldierId);
         }
 

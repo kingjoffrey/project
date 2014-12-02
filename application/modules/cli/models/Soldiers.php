@@ -79,4 +79,9 @@ class Cli_Model_Soldiers
     {
         unset($this->_soldiers[$soldierId]);
     }
+
+    public function getKeys()
+    {
+        return array_keys($this->_soldiers);
+    }
 }

@@ -99,4 +99,10 @@ class Cli_Model_Armies
         }
     }
 
+    public function initFields($fields, $color)
+    {
+        foreach ($this->_armies as $armyId => $army) {
+            $fields->addArmy($army->getX(), $army->getY(), $armyId, $color);
+        }
+    }
 }

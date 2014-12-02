@@ -180,30 +180,32 @@ class Cli_Model_Army
         $gameId = $game->getId();
         $fields = $game->getFields();
         $players = $game->getPlayers();
+        $player = $players->getPlayer($playerColor);
 
-        $joinIds = array();
-        $battleResult = array();
+        $joinIds = null;
+        $battleResult = null;
 
         $enemies = new Cli_Model_Enemies($game, $fields, $players, $path, $playerColor);
         if ($enemies->hasEnemies()) {
-            $battle = new Cli_Model_Battle($this, $enemies->get(), $game, true);
+            $battle = new Cli_Model_Battle($this, $enemies->get(), $game, $db);
             $battle->fight();
-            $battle->saveResult($game, $db);
             $battleResult = $battle->getResult();
             if ($battle->attackerVictory()) {
                 $this->saveMove($gameId, $path, $fields, $db);
             }
         } else {
             $this->saveMove($gameId, $path, $fields, $db);
-            $joinIds = $players->getPlayer($playerColor)->getArmies()->joinAtPosition($this->_id, $gameId, $db);
+            $joinIds = $player->getArmies()->joinAtPosition($this->_id, $gameId, $db);
         }
+
+        new Cli_Model_TowerHandler($player->getId(), $path, $game, $db, $gameHandler);
 
         $token = array(
             'color' => $playerColor,
             'army' => $this->toArray(),
             'path' => $path->getCurrent(),
             'defendersIds' => $enemies->toArray(),
-            'battle' => $battleResult,
+            'battle' => $battleResult->toArray(),
             'deletedIds' => $joinIds,
             'ruinId' => $ruinId,
             'type' => 'move'

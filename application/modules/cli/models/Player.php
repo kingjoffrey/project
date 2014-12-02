@@ -285,13 +285,13 @@ class Cli_Model_Player extends Cli_Model_DefaultPlayer
     public function addTower($towerId, Cli_Model_Tower $tower)
     {
         $this->addIncome(5);
-        $this->_towers[$towerId] = $tower;
+        $this->_towers->add($towerId, $tower);
     }
 
     public function removeTower($towerId)
     {
         $this->subtractIncome(5);
-        unset($this->_towers[$towerId]);
+        $this->_towers->removeTower($towerId);
     }
 
     public function unfortifyArmies($gameId, $db)

@@ -175,9 +175,6 @@ class Cli_Model_Fields
 
     public function isTower($x, $y)
     {
-        if (!$this->isField($x, $y)) {
-            return;
-        }
         return $this->_fields[$y][$x]->getTowerId();
     }
 

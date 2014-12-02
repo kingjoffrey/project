@@ -38,4 +38,11 @@ class Cli_Model_Castles
     {
         return isset($this->_castles[$castleId]);
     }
+
+    public function initFields($fields, $color)
+    {
+        foreach ($this->_castles as $castleId => $castle) {
+            $fields->initCastle($castle->getX(), $castle->getY(), $castleId, $color);
+        }
+    }
 }

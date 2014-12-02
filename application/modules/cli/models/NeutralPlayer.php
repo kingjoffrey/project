@@ -77,7 +77,7 @@ class Cli_Model_NeutralPlayer extends Cli_Model_DefaultPlayer
 
     public function removeTower($towerId)
     {
-        unset($this->_towers[$towerId]);
+        $this->_towers->removeTower($towerId);
     }
 
     public function getId()

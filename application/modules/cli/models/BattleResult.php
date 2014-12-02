@@ -13,6 +13,14 @@ class Cli_Model_BattleResult
         'ships' => array()
     );
 
+    public function toArray()
+    {
+        return array(
+            'attack' => $this->_attack,
+            'defence' => $this->_defence
+        );
+    }
+
     public function addAttackingHeroSuccession($heroId, $succession)
     {
         $this->_attack['heroes'][$heroId] = $succession;

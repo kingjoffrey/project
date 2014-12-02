@@ -40,7 +40,8 @@ class Cli_Model_Move
 
         $players = $game->getPlayers();
         $attackerColor = $game->getPlayerColor($playerId);
-        $army = $players->getPlayer($attackerColor)->getArmy($attackerArmyId);
+        $player = $players->getPlayer($attackerColor);
+        $army = $player->getArmies()->getArmy($attackerArmyId);
 
         if (empty($army)) {
             $gameHandler->sendError($user, 'Brak armii o podanym ID! Odświerz przeglądarkę.');
@@ -49,22 +50,8 @@ class Cli_Model_Move
 
         $fields = $game->getFields();
 
-        $defenderColor = null;
-        $defender = null;
-        $defenderId = null;
-        $enemy = null;
-        $attacker = null;
-
-        $battleResult = null;
-        $victory = false;
-        $deletedIds = null;
-        $castleId = null;
-        $fight = false;
-
         $armyX = $army->getX();
         $armyY = $army->getY();
-
-        $player = $players->getPlayer($attackerColor);
 
         switch ($fields->getType($armyX, $armyY)) {
             case 'w':
@@ -91,13 +78,9 @@ class Cli_Model_Move
                 break;
         }
 
-        /*
-         * A* START
-         */
-
         try {
             $A_Star = new Cli_Model_Astar($army, $x, $y, $fields, $attackerColor);
-            $move = $army->calculateMovesSpend($A_Star->getPath($x . '_' . $y));
+            $path = new Cli_Model_Path($A_Star->getPath($x . '_' . $y), $army);
         } catch (Exception $e) {
             $l = new Coret_Model_Logger();
             $l->log($e);
@@ -105,109 +88,6 @@ class Cli_Model_Move
             return;
         }
 
-        /*
-         * A* END
-         */
-
-        if (!$move->end) {
-            $token = array(
-                'type' => 'move'
-            );
-            $gameHandler->sendToUser($user, $db, $token, $gameId);
-            return;
-        }
-
-        if (Zend_Validate::is($castleId, 'Digits') && Application_Model_Board::isCastleField($move->end, $castlesSchema[$castleId]['position'])) { // enemy castle
-//        if (Zend_Validate::is($castleId, 'Digits')) { // enemy castle (ZAMIENIĆ?)
-            $fight = true;
-            if ($defenderColor == 'neutral') {
-                $enemy = new Cli_Model_Army(Cli_Model_Battle::getNeutralCastleGarrison($gameId, $db));
-                $defenderId = 0;
-            } else { // kolor wrogiego zamku sprawdzam dopiero wtedy gdy wiem, że armia ma na niego zasięg
-                $defenderId = $mCastlesInGame->getPlayerIdByCastleId($castleId);
-                $defenderColor = $playersInGameColors[$defenderId];
-                $enemy = new Cli_Model_Army(Cli_Model_Army::getCastleGarrisonFromCastlePosition($castlesSchema[$castleId]['position'], $gameId, $db));
-                $enemy->addCastleDefenseModifier($castleId, $gameId, $db);
-                $enemy->setCombatDefenseModifiers();
-            }
-        } elseif ($defenderId && $move->x == $x && $move->y == $y) { // enemy army
-            $fight = true;
-            $defenderColor = $game->getPlayerColor($defenderId);
-            $enemy = new Cli_Model_Army($mArmy2->getAllEnemyUnitsFromPosition($move->end, $playerId));
-            $enemy->setCombatDefenseModifiers();
-            $enemy->addTowerDefenseModifier();
-        }
-
-        /* ------------------------------------
-         *
-         * ZMIANY ZAPISUJĘ PONIZEJ TEJ LINII
-         *
-         * ------------------------------------ */
-
-        if ($fight) {
-            $battle = new Cli_Model_Battle($army, $enemy, Cli_Model_Army::getAttackSequence($gameId, $db, $playerId), Cli_Model_Army::getDefenceSequence($gameId, $db, $defenderId));
-            $battle->fight();
-            $battle->updateArmies($gameId, $db, $playerId, $defenderId);
-
-            if (Zend_Validate::is($castleId, 'Digits')) {
-                if ($defenderColor == 'neutral') {
-                    $defender = $battle->getDefender();
-                } else {
-                    $defender = $mArmy2->getDefender($enemy->ids);
-                }
-            } else {
-                $defender = $mArmy2->getDefender($enemy->ids);
-            }
-
-            if (!$battle->getDefender()) {
-                if (Zend_Validate::is($castleId, 'Digits')) {
-
-                    if ($defenderColor == 'neutral') {
-                        $mCastlesInGame->addCastle($castleId, $playerId);
-                    } else {
-                        $mCastlesInGame->changeOwner($castlesSchema[$castleId], $playerId);
-                    }
-                }
-                $army->move($gameId, $move, $fields, $db);
-                $victory = true;
-//                foreach ($enemy['ids'] as $id) {
-//                    $defender[]['armyId'] = $id;
-//                }
-            } else {
-                $mArmy2->destroyArmy($army->id, $playerId);
-//                $attacker = array(
-//                    'armyId' => $attackerArmyId,
-//                    'destroyed' => true
-//                );
-                if ($defenderColor == 'neutral') {
-                    $defender = null;
-                }
-            }
-            $battleResult = $battle->getResult();
-        } else {
-            $army->move($gameId, $move, $fields, $db);
-            $deletedIds = $player->joinArmiesAtPosition($army->getId(), $gameId, $db);
-        }
-
-        new Cli_Model_TowerHandler($playerId, $move->current, $game, $db, $gameHandler);
-
-        $token = array(
-            'type' => 'move',
-            'attackerColor' => $attackerColor,
-            'attackerArmy' => $army->toArray(),
-            'defenderColor' => $defenderColor,
-            'defenderArmy' => $defender,
-            'battle' => $battleResult,
-            'victory' => $victory,
-            'x' => $x,
-            'y' => $y,
-            'castleId' => $castleId,
-            'path' => $move->current,
-            'oldArmyId' => $attackerArmyId,
-            'deletedIds' => $deletedIds,
-        );
-
-        $gameHandler->sendToChannel($db, $token, $gameId);
+        $army->move($game, $path, $attackerColor, $db, $gameHandler);
     }
-
 }

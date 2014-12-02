@@ -102,22 +102,7 @@ class Cli_Model_Game
             $this->_me->setTurn(true);
         }
 
-        $this->initFields();
-    }
-
-    private function initFields()
-    {
-        foreach ($this->_players->get() as $color => $player) {
-            foreach ($player->getArmies() as $armyId => $army) {
-                $this->_fields->addArmy($army->getX(), $army->getY(), $armyId, $color);
-            }
-            foreach ($player->getCastles() as $castleId => $castle) {
-                $this->_fields->initCastle($castle->getX(), $castle->getY(), $castleId, $color);
-            }
-            foreach ($player->getTowers() as $towerId => $tower) {
-                $this->_fields->initTower($tower->getX(), $tower->getY(), $towerId, $color);
-            }
-        }
+        $this->_players->initFields($this->_fields);
     }
 
     private function initPlayers(Application_Model_MapPlayers $mMapPlayers, Zend_Db_Adapter_Pdo_Pgsql $db)

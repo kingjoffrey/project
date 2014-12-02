@@ -31,4 +31,16 @@ class Cli_Model_Towers
     {
         return $this->_towers[$towerId];
     }
+
+    public function removeTower($towerId)
+    {
+        unset($this->_towers[$towerId]);
+    }
+
+    public function initFields($fields, $color)
+    {
+        foreach ($this->_towers as $towerId => $tower) {
+            $fields->initTower($tower->getX(), $tower->getY(), $towerId, $color);
+        }
+    }
 }

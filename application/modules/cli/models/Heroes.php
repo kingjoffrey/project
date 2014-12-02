@@ -52,4 +52,9 @@ class Cli_Model_Heroes
     {
         $this->_heroes[$heroId] = $hero;
     }
+
+    public function getKeys()
+    {
+        return array_keys($this->_heroes);
+    }
 }

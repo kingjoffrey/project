@@ -84,4 +84,15 @@ class Cli_Model_Players
         }
         return $enemies;
     }
+
+    public function initFields($fields)
+    {
+        foreach ($this->_players as $color => $player) {
+            $player->getArmies()->initFields($fields, $color);
+            $player->getCastles()->initFields($fields, $color);
+            $player->getTowers()->initFields($fields, $color);
+        }
+    }
+
+
 }
