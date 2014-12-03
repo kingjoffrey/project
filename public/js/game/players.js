@@ -21,10 +21,10 @@ var Players = {
         this.centerY = this.stage.getHeight() / 2
         this.layer = new Kinetic.Layer();
 
-        this.length = Object.size(game.players);
+        this.length = Object.size(game.players) - 1;
 
         for (color in game.players) {
-            if (!game.players[color].computer) {
+            if (!game.players[color].computer && color != 'neutral') {
                 game.online[color] = 0
             }
 
@@ -43,33 +43,25 @@ var Players = {
             }
 
             for (castleId in game.players[color].castles) {
-                if (color == 'neutral') {
-                    Castle.createNeutral(castleId)
-                } else {
-                    Castle.createWithColor(castleId, color)
-                    if (color == game.me.color) {
-                        game.me.income += game.players[color].castles[castleId].income;
-                        if (firstCastleId > castleId) {
-                            firstCastleId = castleId;
-                        }
-                        myCastles = true;
-                        //Castle.initMyProduction(i);
-                    } else {
-                        enemyCastles = true;
+                Castle.createWithColor(castleId, color)
+                if (color == game.me.color) {
+                    game.me.income += game.players[color].castles[castleId].income;
+                    if (firstCastleId > castleId) {
+                        firstCastleId = castleId;
                     }
+                    myCastles = true;
+                    //Castle.initMyProduction(i);
+                } else {
+                    enemyCastles = true;
                 }
                 //Castle.updateDefense(i, game.players[color].castles[i].defenseMod);
                 //Castle.owner(i, color);
             }
 
             for (towerId in game.players[color].towers) {
-                if (color == 'neutral') {
-                    Tower.createNeutral(towerId)
-                } else {
-                    Tower.create(towerId, color)
-                    if (color == game.me.color) {
-                        game.me.income += 5
-                    }
+                Tower.create(towerId, color)
+                if (color == game.me.color) {
+                    game.me.income += 5
                 }
             }
         }
@@ -103,6 +95,9 @@ var Players = {
 
         var i = 0;
         for (shortName in game.players) {
+            if (shortName == 'neutral') {
+                continue
+            }
             var rotation = i * this.angle
             var r_rotation = i * r_angle + r_angle / 2
 

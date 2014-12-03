@@ -38,6 +38,14 @@ class Cli_Model_NeutralPlayer extends Cli_Model_DefaultPlayer
         }
     }
 
+    public function toArray()
+    {
+        return array(
+            'castles' => $this->_castles->toArray(),
+            'towers' => $this->_towers->toArray()
+        );
+    }
+
     public function getCastleGarrison($turnNumber, $firstUnitId, $castleId)
     {
         $castle = $this->_castles->getCastle($castleId);
