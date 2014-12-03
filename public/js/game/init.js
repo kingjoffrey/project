@@ -67,14 +67,6 @@ var Init = {
             Turn.init()
             Players.init()
 
-            for (var castleId in game.neutralCastles) {
-                Castle.createNeutral(castleId)
-            }
-
-            for (var towerId in game.neutralTowers) {
-                Tower.createNeutral(towerId)
-            }
-
             for (var ruinId in game.ruins) {
                 Ruin.create(ruinId)
             }

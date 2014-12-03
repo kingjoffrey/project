@@ -9,9 +9,22 @@ class Cli_Model_Castles
         return $this->_castles;
     }
 
-    public function addCastle($castleId, $castle)
+    public function addCastle($castleId, $castle, $oldColor = null, $playerId = null, $gameId = null, $db = null)
     {
         $this->_castles[$castleId] = $castle;
+        if ($db) {
+            $mCastlesInGame = new Application_Model_CastlesInGame($gameId, $db);
+            if ($oldColor == 'neutral') {
+                $mCastlesInGame->addCastle($castleId, $playerId);
+            } else {
+                $mCastlesInGame->changeOwner($castle, $playerId);
+            }
+        }
+    }
+
+    public function removeCastle($castleId)
+    {
+        unset($this->_castles[$castleId]);
     }
 
     /**

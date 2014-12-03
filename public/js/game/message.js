@@ -712,100 +712,101 @@ var Message = {
         var attack = $('<div>').addClass('battle attack');
 
         for (i in r.battle.attack.soldiers) {
-            if (r.battle.attack.soldiers[i].succession) {
-                newBattle[r.battle.attack.soldiers[i].succession] = {
-                    'soldierId': r.battle.attack.soldiers[i].soldierId
+            if (r.battle.attack.soldiers[i]) {
+                newBattle[r.battle.attack.soldiers[i]] = {
+                    'soldierId': i
                 };
             }
             attack.append(
                 $('<div>')
-                    .attr('id', 'unit' + r.battle.attack.soldiers[i].soldierId)
-                    .css('background', 'url(' + Unit.getImage(r.battle.attack.soldiers[i].unitId, r.attackerColor) + ') no-repeat')
+                    .attr('id', 'unit' + i)
+                    .css('background', 'url(' + Unit.getImage(r.battle.attack.soldiers[i].unitId, r.color) + ') no-repeat')
                     .addClass('battleUnit')
             );
         }
         for (i in r.battle.attack.heroes) {
-            if (r.battle.attack.heroes[i].succession) {
-                newBattle[r.battle.attack.heroes[i].succession] = {
-                    'heroId': r.battle.attack.heroes[i].heroId
+            if (r.battle.attack.heroes[i]) {
+                newBattle[r.battle.attack.heroes[i]] = {
+                    'heroId': i
                 };
             }
             attack.append(
                 $('<div>')
-                    .attr('id', 'hero' + r.battle.attack.heroes[i].heroId)
-                    .css('background', 'url(' + Hero.getImage(r.attackerColor) + ') no-repeat')
+                    .attr('id', 'hero' + i)
+                    .css('background', 'url(' + Hero.getImage(r.color) + ') no-repeat')
                     .addClass('battleUnit')
             );
         }
 
         var attackLayout = $('<div>')
             .append(attack)
-            .append($('<div>').html(game.players[r.attackerColor].longName + ' (' + translations.attack + ')'))
+            .append($('<div>').html(game.players[r.color].longName + ' (' + translations.attack + ')'))
 
         var defense = $('<div>').addClass('battle defense');
-
-        for (i in r.battle.defense.soldiers) {
-            if (r.battle.defense.soldiers[i].succession) {
-                newBattle[r.battle.defense.soldiers[i].succession] = {
-                    'soldierId': r.battle.defense.soldiers[i].soldierId
-                };
-            }
-            defense.append(
-                $('<div>')
-                    .attr('id', 'unit' + r.battle.defense.soldiers[i].soldierId)
-                    .css('background', 'url(' + Unit.getImage(r.battle.defense.soldiers[i].unitId, r.defenderColor) + ') no-repeat')
-                    .addClass('battleUnit')
-            );
-        }
-
-        for (i in r.battle.defense.heroes) {
-            if (r.battle.defense.heroes[i].succession) {
-                newBattle[r.battle.defense.heroes[i].succession] = {
-                    'heroId': r.battle.defense.heroes[i].heroId
-                };
-            }
-            defense.append(
-                $('<div>')
-                    .attr('id', 'hero' + r.battle.defense.heroes[i].heroId)
-                    .css('background', 'url(' + Hero.getImage(r.defenderColor) + ') no-repeat')
-                    .addClass('battleUnit')
-            );
-        }
-
-        if (isSet(game.players[r.defenderColor])) {
-            var longName = game.players[r.defenderColor].longName
-        } else {
-            var longName = 'Shadow'
-        }
-
         var defenseLayout = $('<div>')
-            .append($('<div>').html(longName + ' (' + translations.defence + ')'))
 
-        if (isDigit(r.castleId)) {
-            defenseLayout.append(
-                $('<div>')
-                    .addClass('castle')
-                    .css({
-                        position: 'static',
-                        background: 'url(/img/game/castles/' + r.defenderColor + '.png) center center no-repeat',
-                        margin: '0 auto'
-                    })
-            )
+        for (color in r.battle.defenders) {
+            for (i in r.battle.defenders[color].soldiers) {
+                if (r.battle.defenders[color].soldiers[i]) {
+                    newBattle[r.battle.defenders[color].soldiers[i]] = {
+                        'soldierId': i
+                    };
+                }
+                defense.append(
+                    $('<div>')
+                        .attr('id', 'unit' + i)
+                        .css('background', 'url(' + Unit.getImage(game.players[color].soldiers[i].unitId, color) + ') no-repeat')
+                        .addClass('battleUnit')
+                );
+            }
+
+            for (i in r.battle.defenders[color].heroes) {
+                if (r.battle.defenders[color].heroes[i]) {
+                    newBattle[r.battle.defenders[color].heroes[i]] = {
+                        'heroId': i
+                    };
+                }
+                defense.append(
+                    $('<div>')
+                        .attr('id', 'hero' + i)
+                        .css('background', 'url(' + Hero.getImage(color) + ') no-repeat')
+                        .addClass('battleUnit')
+                );
+            }
+            if (isSet(game.players[color])) {
+                var longName = game.players[color].longName
+            } else {
+                var longName = 'Shadow'
+            }
+
+            defenseLayout.append($('<div>').html(longName + ' (' + translations.defence + ')'))
+
+            if (r.battle.castleId && isSet(game.players[color].castles[r.battle.castleId])) {
+                defenseLayout.append(
+                    $('<div>')
+                        .addClass('castle')
+                        .css({
+                            position: 'static',
+                            background: 'url(/img/game/castles/' + color + '.png) center center no-repeat',
+                            margin: '0 auto'
+                        })
+                )
+            }
+
+            if (r.battle.towerId && isSet(game.players[color].towers[r.battle.towerId])) {
+                defenseLayout.append(
+                    $('<div>')
+                        .addClass('tower')
+                        .css({
+                            position: 'static',
+                            background: 'url(/img/game/towers/' + color + '.png) center center no-repeat',
+                            margin: '0 auto'
+                        })
+                )
+            }
+
+            defenseLayout.append(defense)
         }
-
-        if (isSet(r.defenderArmy[0]) && r.defenderColor != 'neutral' && Tower.isAtPosition(game.players[r.defenderColor].armies[r.defenderArmy[0].armyId].x, game.players[r.defenderColor].armies[r.defenderArmy[0].armyId].y)) {
-            defenseLayout.append(
-                $('<div>')
-                    .addClass('tower')
-                    .css({
-                        position: 'static',
-                        background: 'url(/img/game/towers/' + r.defenderColor + '.png) center center no-repeat',
-                        margin: '0 auto'
-                    })
-            )
-        }
-
-        defenseLayout.append(defense)
 
         var div = $('<div>')
             .append($('<p>').html('&nbsp;'))
@@ -818,7 +819,7 @@ var Message = {
         )
 
         var id = this.show(translations.battle, div);
-        if (!game.players[r.attackerColor].computer) {
+        if (!game.players[r.color].computer) {
             this.ok(id)// add Move.end(r)
         } else {
             this.ok(id)
@@ -827,7 +828,7 @@ var Message = {
         $('.go').css('display', 'none')
 
         if (newBattle) {
-            if (game.players[r.attackerColor].computer) {
+            if (game.players[r.color].computer) {
                 Message.kill(newBattle, r);
             } else {
                 setTimeout(function () {

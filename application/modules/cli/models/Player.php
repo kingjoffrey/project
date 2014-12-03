@@ -282,16 +282,30 @@ class Cli_Model_Player extends Cli_Model_DefaultPlayer
         $this->_armies->addArmy($armyId, new Cli_Model_Army($army, $this->_color));
     }
 
-    public function addTower($towerId, Cli_Model_Tower $tower)
+    public function addCastle($castleId, Cli_Model_Castle $castle, $oldColor, Cli_Model_Fields $fields, $gameId, $db)
+    {
+        $this->addIncome($castle->getIncome());
+        $this->_castles->addCastle($castleId, $castle, $oldColor, $this->_id, $gameId, $db);
+        $fields->changeCastle($castle->getX(), $castle->getY(), $this->_color);
+    }
+
+    public function removeCastle($castleId)
+    {
+        $this->subtractIncome($this->_castles->getCastle($castleId)->getIncome());
+        parent::removeCastle($castleId);
+    }
+
+    public function addTower($towerId, Cli_Model_Tower $tower, $oldColor, Cli_Model_Fields $fields, $gameId, $db)
     {
         $this->addIncome(5);
-        $this->_towers->add($towerId, $tower);
+        $fields->changeTower($tower->getX(), $tower->getY(), $this->_color);
+        $this->_towers->add($towerId, $tower, $oldColor, $this->_id, $gameId, $db);
     }
 
     public function removeTower($towerId)
     {
         $this->subtractIncome(5);
-        $this->_towers->removeTower($towerId);
+        parent::removeTower($towerId);
     }
 
     public function unfortifyArmies($gameId, $db)

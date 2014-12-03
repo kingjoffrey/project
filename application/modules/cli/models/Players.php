@@ -27,9 +27,6 @@ class Cli_Model_Players
     {
         $players = array();
         foreach ($this->_players as $color => $player) {
-            if ($color == 'neutral') {
-                continue;
-            }
             $players[$color] = $player->toArray();
         }
         return $players;

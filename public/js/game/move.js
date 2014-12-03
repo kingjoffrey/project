@@ -77,21 +77,21 @@ var Move = {
             if (isTruthful(r.battle) && (!game.players[r.color].computer || Gui.show)) {
                 Sound.play('fight');
 
-                if (isTruthful(r.castleId)) {
-                    board.append($('<div>')
-                        .addClass('war')
-                        .css({
-                            top: 40 * castles[r.castleId].y - 12 + 'px',
-                            left: 40 * castles[r.castleId].x - 11 + 'px'
-                        }));
-                } else {
-                    board.append($('<div>')
-                        .addClass('war')
-                        .css({
-                            top: 40 * r.army.y - 42 + 'px',
-                            left: 40 * r.army.x - 41 + 'px'
-                        }));
-                }
+                //if (isTruthful(r.battle.castleId)) {
+                //    board.append($('<div>')
+                //        .addClass('war')
+                //        .css({
+                //            top: 40 * game.players[r.color].castles[r.battle.castleId].y - 12 + 'px',
+                //            left: 40 * game.players[r.color].castles[r.battle.castleId].x - 11 + 'px'
+                //        }));
+                //} else {
+                board.append($('<div>')
+                    .addClass('war')
+                    .css({
+                        top: 40 * r.army.y - 42 + 'px',
+                        left: 40 * r.army.x - 41 + 'px'
+                    }));
+                //}
 
                 Message.battle(r, ii);
             } else {
@@ -114,22 +114,50 @@ var Move = {
         //        })
         //}
 
-        //searchTower(AStar.x, AStar.y);
-
         Army.init(r.army, r.color);
 
         if (isDigit(r.ruinId)) {
             Ruin.update(r.ruinId, 1);
         }
 
-        if (r.defenderArmy && isSet(r.defenderArmy[0]) && isTruthful(r.defenderColor)) {
-            if (isTruthful(r.victory)) {
-                for (i in r.defenderArmy) {
-                    Army.delete(r.defenderArmy[i].armyId, r.defenderColor, 1);
+        if (r.battle) {
+            if (r.battle.victory) {
+                for (color in r.battle.defenders) {
+                    if (color == 'neutral') {
+                        continue
+                    }
+                    for (armyId in r.battle.defenders[color]) {
+                        Army.delete(armyId, color, 1);
+                    }
                 }
-            } else {
-                for (i in r.defenderArmy) {
-                    Army.init(r.defenderArmy[i], r.defenderColor);
+                if (isDigit(r.battle.castleId)) {
+                    Castle.owner(r.battle.castleId, r.color)
+                }
+                if (isDigit(r.battle.towerId)) {
+                    Tower.change(r.battle.towerId, r.color)
+                }
+                if (r.color == game.me.color) {
+                    if (!r.battle.castleId && game.players[r.color].armies[r.army.armyId].moves) {
+                        Gui.unlock()
+                        Army.select(game.players[r.color].armies[r.army.armyId])
+                    } else {
+                        Army.deselect()
+                        Gui.unlock()
+                    }
+                } else {
+                    for (color in r.battle.defenders) {
+                        if (color == 'neutral') {
+                            continue
+                        }
+                        for (armyId in r.battle.defenders[color]) {
+                            Army.update(r.battle.defenders[color][armyId]);
+                        }
+                    }
+                    if (r.color == game.me.color) {
+                        if (!Hero.findMy()) {
+                            $('#heroResurrection').removeClass('buttonOff')
+                        }
+                    }
                 }
             }
         }
@@ -138,28 +166,9 @@ var Move = {
             Army.delete(r.deletedIds[i].armyId, r.color, 1);
         }
 
-        if (isDigit(r.castleId) && isTruthful(r.victory)) {
-            Castle.owner(r.castleId, r.color)
-        }
-
         if (game.players[r.color].computer) {
             this.moving = 0
             Websocket.computer();
-        } else if (r.color == game.me.color) {
-            if (!r.castleId && isSet(game.players[r.color].armies[r.army.armyId]) && game.players[r.color].armies[r.army.armyId].moves) {
-                Gui.unlock()
-                Army.select(game.players[r.color].armies[r.army.armyId])
-            } else {
-                Army.deselect()
-                Gui.unlock()
-                if (isDigit(r.castleId) && isTruthful(r.victory)) {
-                    incomeIncrement(castles[r.castleId].income);
-                    Message.castle(r.castleId)
-                }
-            }
-            if (!Hero.findMy()) {
-                $('#heroResurrection').removeClass('buttonOff')
-            }
         }
 
         setTimeout('$(".war").remove()', 100);

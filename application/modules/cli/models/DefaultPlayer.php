@@ -29,4 +29,14 @@ abstract class Cli_Model_DefaultPlayer
     {
         return $this->_towers;
     }
+
+    public function removeTower($towerId)
+    {
+        $this->_towers->removeTower($towerId);
+    }
+
+    public function removeCastle($castleId)
+    {
+        $this->_castles->removeCastle($castleId);
+    }
 }

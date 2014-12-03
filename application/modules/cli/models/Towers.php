@@ -18,9 +18,17 @@ class Cli_Model_Towers
         return $this->_towers;
     }
 
-    public function add($towerId, Cli_Model_Tower $tower)
+    public function add($towerId, Cli_Model_Tower $tower, $oldColor = null, $playerId = null, $gameId = null, $db = null)
     {
         $this->_towers[$towerId] = $tower;
+        if ($db) {
+            $mTowersInGame = new Application_Model_TowersInGame($gameId, $db);
+            if ($oldColor == 'neutral') {
+                $mTowersInGame->addTower($towerId, $playerId);
+            } else {
+                $mTowersInGame->changeTowerOwner($towerId, $playerId);
+            }
+        }
     }
 
     /**

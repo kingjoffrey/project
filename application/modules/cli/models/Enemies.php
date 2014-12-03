@@ -12,7 +12,7 @@ class Cli_Model_Enemies
         if ($castleId = $fields->getCastleId($pathX, $pathY)) {
             $defenderColor = $fields->getCastleColor($pathX, $pathY);
             if ($defenderColor == 'neutral') {
-                $this->_enemies = $players->getPlayer($defenderColor)->getCastleGarrison($game->getTurnNumber(), $game->getFirstUnitId());
+                $this->_enemies = $players->getPlayer($defenderColor)->getCastleGarrison($game->getTurnNumber(), $game->getFirstUnitId(),$castleId);
             } elseif ($players->sameTeam($defenderColor, $playerColor)) {
                 $this->_enemies = $game->handleCastleGarrison($players->getPlayer($fields->getCastleColor($pathX, $pathY))->getCastle($castleId));
             }
@@ -31,15 +31,6 @@ class Cli_Model_Enemies
     public function hasEnemies()
     {
         return count($this->_enemies);
-    }
-
-    public function toArray()
-    {
-        $enemies = array();
-        foreach (array_keys($this->_enemies) as $armyId) {
-            $enemies[] = $armyId;
-        }
-        return $enemies;
     }
 }
 

@@ -204,7 +204,6 @@ class Cli_Model_Army
             'color' => $playerColor,
             'army' => $this->toArray(),
             'path' => $path->getCurrent(),
-            'defendersIds' => $enemies->toArray(),
             'battle' => $battleResult->toArray(),
             'deletedIds' => $joinIds,
             'ruinId' => $ruinId,

@@ -174,15 +174,12 @@ class Cli_Model_Game
             'terrain' => $this->_terrain,
             'capitals' => $this->_capitals,
             'playersInGameColors' => $this->_playersInGameColors,
-//            'teams' => $this->_teams,
             'online' => $this->_online,
             'chatHistory' => $this->_chatHistory,
             'turnHistory' => $this->_turnHistory,
             'me' => $this->_me->toArray(),
             'players' => $this->_players->toArray(),
-            'ruins' => $this->_ruins->toArray(),
-            'neutralCastles' => $this->_players->getPlayer('neutral')->getCastles()->toArray(),
-            'neutralTowers' => $this->_players->getPlayer('neutral')->getTowers()->toArray()
+            'ruins' => $this->_ruins->toArray()
         );
     }
 

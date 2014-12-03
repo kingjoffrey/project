@@ -24,7 +24,6 @@ var Players = {
         this.length = Object.size(game.players);
 
         for (color in game.players) {
-            //game.players[color].active = 0;
             if (!game.players[color].computer) {
                 game.online[color] = 0
             }
@@ -44,26 +43,33 @@ var Players = {
             }
 
             for (castleId in game.players[color].castles) {
-                Castle.createWithColor(castleId, color)
+                if (color == 'neutral') {
+                    Castle.createNeutral(castleId)
+                } else {
+                    Castle.createWithColor(castleId, color)
+                    if (color == game.me.color) {
+                        game.me.income += game.players[color].castles[castleId].income;
+                        if (firstCastleId > castleId) {
+                            firstCastleId = castleId;
+                        }
+                        myCastles = true;
+                        //Castle.initMyProduction(i);
+                    } else {
+                        enemyCastles = true;
+                    }
+                }
                 //Castle.updateDefense(i, game.players[color].castles[i].defenseMod);
                 //Castle.owner(i, color);
-
-                if (color == game.me.color) {
-                    game.me.income += game.players[color].castles[castleId].income;
-                    if (firstCastleId > castleId) {
-                        firstCastleId = castleId;
-                    }
-                    myCastles = true;
-                    //Castle.initMyProduction(i);
-                } else {
-                    enemyCastles = true;
-                }
             }
 
             for (towerId in game.players[color].towers) {
-                Tower.create(towerId, color)
-                if (color == game.me.color) {
-                    game.me.income += 5
+                if (color == 'neutral') {
+                    Tower.createNeutral(towerId)
+                } else {
+                    Tower.create(towerId, color)
+                    if (color == game.me.color) {
+                        game.me.income += 5
+                    }
                 }
             }
         }
