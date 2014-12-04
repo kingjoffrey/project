@@ -466,24 +466,4 @@ class Cli_Model_Game
     {
         return $this->_firstUnitId;
     }
-
-
-    public function handleCastleGarrison(Cli_Model_Castle $castle)
-    {
-        $enemies = array();
-        $castleX = $castle->getX();
-        $castleY = $castle->getY();
-
-        for ($i = $castleX; $i <= $castleX + 1; $i++) {
-            for ($j = $castleY; $j <= $castleY + 1; $j++) {
-                foreach ($this->_fields->getArmies($i, $j) as $armyId => $color) {
-                    $enemies[] = $this->_players->getPlayer($color)->getArmy($armyId);
-                }
-            }
-        }
-
-        return $enemies;
-    }
-
-
 }

@@ -62,7 +62,9 @@ class Cli_Model_Army
         $this->_soldiers = new Cli_Model_Soldiers();
         $this->_ships = new Cli_Model_Soldiers();
 
-        $this->_fortified = $army['fortified'];
+        if (isset($army['fortified'])) {
+            $this->_fortified = $army['fortified'];
+        }
     }
 
     public function toArray()
@@ -177,7 +179,7 @@ class Cli_Model_Army
     }
 
     public function move(Cli_Model_Game $game, Cli_Model_Path $path, $playerColor,
-                         Zend_Db_Adapter_Pdo_Pgsql $db, Cli_GameHandler $gameHandler, $ruinId = null)
+                         Zend_Db_Adapter_Pdo_Pgsql $db, Cli_GameHandler $gameHandler)
     {
         $gameId = $game->getId();
         $fields = $game->getFields();
@@ -185,15 +187,14 @@ class Cli_Model_Army
         $player = $players->getPlayer($playerColor);
 
         $joinIds = null;
-        $battleResult = null;
+        $battleResult = new Cli_Model_BattleResult();
 
         $enemies = new Cli_Model_Enemies($game, $fields, $players, $path, $playerColor);
         if ($enemies->hasEnemies()) {
-            $battle = new Cli_Model_Battle($this, $enemies->get(), $game, $db);
+            $battle = new Cli_Model_Battle($this, $enemies->get(), $game, $db, $battleResult);
             $battle->fight();
             $battleResult = $battle->getResult();
-            $battleResult = $battleResult->toArray();
-            if ($battle->attackerVictory()) {
+            if ($battleResult->getVictory()) {
                 $this->saveMove($gameId, $path, $fields, $db);
             }
         } else {
@@ -205,11 +206,10 @@ class Cli_Model_Army
 
         $token = array(
             'color' => $playerColor,
-            'army' => $this->toArray(),
+            'army' => $this->toArray(), // todo
             'path' => $path->getCurrent(),
-            'battle' => $battleResult,
+            'battle' => $battleResult->toArray(),
             'deletedIds' => $joinIds,
-            'ruinId' => $ruinId,
             'type' => 'move'
         );
 
@@ -416,11 +416,6 @@ class Cli_Model_Army
     public function getDefenseModifier()
     {
         return $this->_defenseHeroModifier->get();
-    }
-
-    public function attackerVictory()
-    {
-        return count($this->_attackBattleSequence['soldiers']) || count($this->_attackBattleSequence['heroes']) || count($this->_attackBattleSequence['ships']);
     }
 
     public function getCosts()

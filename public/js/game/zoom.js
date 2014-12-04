@@ -235,15 +235,15 @@ var zoom = {
                                     Websocket.move(AStar.x, AStar.y);
                                 } else {
                                     // grabbing the map
-                                    var pageX = e.pageX;
-                                    var pageY = e.pageY;
+                                    //var pageX = e.pageX;
+                                    //var pageY = e.pageY;
+                                    //
+                                    //var centerPageX = zoom.gameWidth / 2;
+                                    //var centerPageY = zoom.gameHeight / 2;
 
-                                    var centerPageX = zoom.gameWidth / 2;
-                                    var centerPageY = zoom.gameHeight / 2;
-
-                                    board.mousemove(function (e) {
-                                        zoom.lens.setcenter((centerPageX + (pageX - e.pageX)) - zoom.largeimage.pos.l, (centerPageY + (pageY - e.pageY)) - zoom.largeimage.pos.t);
-                                    });
+                                    //board.mousemove(function (e) {
+                                    //    zoom.lens.setcenter((centerPageX + (pageX - e.pageX)) - zoom.largeimage.pos.l, (centerPageY + (pageY - e.pageY)) - zoom.largeimage.pos.t);
+                                    //});
                                 }
                                 break;
                             case 2:

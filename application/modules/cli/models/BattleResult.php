@@ -14,13 +14,15 @@ class Cli_Model_BattleResult
 
     public function toArray()
     {
-        return array(
-            'attack' => $this->_attack,
-            'defenders' => $this->_defenders,
-            'castleId' => $this->_castleId,
-            'towerId' => $this->_towerId,
-            'victory' => $this->_victory
-        );
+        if ($this->_defenders || $this->_castleId) {
+            return array(
+                'attack' => $this->_attack,
+                'defenders' => $this->_defenders,
+                'castleId' => $this->_castleId,
+                'towerId' => $this->_towerId,
+                'victory' => $this->_victory
+            );
+        }
     }
 
     public function victory()
@@ -51,6 +53,13 @@ class Cli_Model_BattleResult
         $this->_attack['heroes'][$heroId] = null;
     }
 
+    public function isAttackingHeroDead($heroId)
+    {
+        if (isset($this->_attack['heroes'][$heroId])) {
+            return true;
+        }
+    }
+
     public function addAttackingSoldierSuccession($soldierId, $succession)
     {
         $this->_attack['soldiers'][$soldierId] = $succession;
@@ -62,6 +71,13 @@ class Cli_Model_BattleResult
             return true;
         }
         $this->_attack['soldiers'][$soldierId] = null;
+    }
+
+    public function isAttackingSoldierDead($soldierId)
+    {
+        if (isset($this->_attack['soldiers'][$soldierId])) {
+            return true;
+        }
     }
 
     public function addAttackingShip($soldierId)
@@ -87,7 +103,7 @@ class Cli_Model_BattleResult
         $this->_defenders[$color]['heroes'][$heroId] = null;
     }
 
-    public function isDefendingHero($color, $heroId)
+    public function isDefendingHeroDead($color, $heroId)
     {
         if (isset($this->_defenders[$color]['heroes'][$heroId])) {
             return true;
@@ -107,7 +123,7 @@ class Cli_Model_BattleResult
         $this->_defenders[$color]['soldiers'][$soldierId] = null;
     }
 
-    public function isDefendingSoldier($color, $soldierId)
+    public function isDefendingSoldierDead($color, $soldierId)
     {
         if (isset($this->_defenders[$color]['soldiers'][$soldierId])) {
             return true;
@@ -122,5 +138,10 @@ class Cli_Model_BattleResult
             return true;
         }
         $this->_defenders[$color]['ships'][$soldierId] = null;
+    }
+
+    public function getVictory()
+    {
+        return $this->_victory;
     }
 }

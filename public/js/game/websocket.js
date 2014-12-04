@@ -51,6 +51,9 @@ Websocket = {
 
             case 'startTurn':
                 if (r.color == game.me.color) {
+                    for (var i in r.castles) {
+                        var status = Castle.updateCurrentProductionTurn(i, r.castles[i].productionTurn);
+                    }
                     Army.quitedArmies = {};
                     Sound.play('startturn');
                     goldUpdate(r.gold)
@@ -61,9 +64,6 @@ Websocket = {
 
                 for (i in r.armies) {
                     var status = Army.init(r.armies[i], r.color);
-                }
-                for (i in r.castles) {
-                    var status = Castle.updateCurrentProductionTurn(i, r.castles[i].productionTurn);
                 }
                 this.executing = 0
                 break;

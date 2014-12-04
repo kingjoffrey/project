@@ -316,7 +316,6 @@ var Castle = {
                 .removeClass('team')
             Castle.myMousedown(el, castleId)
         } else {
-            console.log(color)
             if (game.players[color].team == game.players[game.me.color].team) {
                 Castle.changeFields(castleId, 'c', castle.x, castle.y)
                 el
@@ -376,7 +375,7 @@ var Castle = {
         $('#castle' + castleId + ' .shield').html(defence);
     },
     updateCurrentProductionTurn: function (castleId, productionTurn) {
-        castles[castleId].currentProductionTurn = productionTurn;
+        game.players[game.me.color].castles[castleId].currentProductionTurn = productionTurn;
     },
     selectedArmyCursor: function () {
 //        $('.castle:not(.' + game.me.color + '), .castle:not(.team)').css('cursor', 'url(/img/game/cursor_attack.png), crosshair')

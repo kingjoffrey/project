@@ -9,7 +9,7 @@ class Cli_Model_Castles
         return $this->_castles;
     }
 
-    public function addCastle($castleId, $castle, $oldColor = null, $playerId = null, $gameId = null, $db = null)
+    public function addCastle($castleId, Cli_Model_Castle $castle, $oldColor = null, $playerId = null, $gameId = null, $db = null)
     {
         $this->_castles[$castleId] = $castle;
         if ($db) {
@@ -17,6 +17,9 @@ class Cli_Model_Castles
             if ($oldColor == 'neutral') {
                 $mCastlesInGame->addCastle($castleId, $playerId);
             } else {
+                if ($castle->getDefenseModifier() > 1) {
+                    $castle->decreaseDefenceMod();
+                }
                 $mCastlesInGame->changeOwner($castle, $playerId);
             }
         }

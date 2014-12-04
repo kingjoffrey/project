@@ -25,12 +25,10 @@ class Cli_Model_Battle
     private $_towerId;
     private $_towerColor;
 
-    public function __construct(Cli_Model_Army $attacker, $defenders, Cli_Model_Game $game, Zend_Db_Adapter_Pdo_Pgsql $db = null)
+    public function __construct(Cli_Model_Army $attacker, $defenders, Cli_Model_Game $game, Zend_Db_Adapter_Pdo_Pgsql $db = null, Cli_Model_BattleResult $result)
     {
         $this->_attacker = $attacker;
         $this->_defenders = $defenders;
-
-        $this->_result = new Cli_Model_BattleResult();
 
         $this->_players = $game->getPlayers();
 
@@ -38,6 +36,7 @@ class Cli_Model_Battle
             $this->_gameId = $game->getId();
             $this->_attackerId = $this->_players->getPlayer($this->_attacker->getColor())->getId();
             $this->_db = $db;
+            $this->_result = $result;
         }
         $this->_fields = $game->getFields();
 
@@ -70,9 +69,44 @@ class Cli_Model_Battle
         $this->_attackModifier = $this->_attacker->getAttackModifier();
     }
 
-    public function attackerVictory()
+    private function attackerVictory()
     {
-        return $this->_attacker->attackerVictory();
+        foreach ($this->_attacker->getHeroes()->getKeys() as $heroId) {
+            if (!$this->_result->isAttackingHeroDead($heroId)) {
+                return true;
+            }
+        }
+
+        foreach ($this->_attacker->getSoldiers()->getKeys() as $soldierId) {
+            if (!$this->_result->isAttackingSoldierDead($soldierId)) {
+                return true;
+            }
+        }
+
+        foreach ($this->_attacker->getShips()->getKeys() as $soldierId) {
+            if (!$this->_result->isAttackingSoldierDead($soldierId)) {
+                return true;
+            }
+        }
+    }
+
+    private function defenderVictory(Cli_Model_Army $defender, $color)
+    {
+        foreach ($defender->getHeroes()->getKeys() as $heroId) {
+            if (!$this->_result->isDefendingHeroDead($color, $heroId)) {
+                return true;
+            }
+        }
+        foreach ($defender->getSoldiers()->getKeys() as $soldierId) {
+            if (!$this->_result->isDefendingSoldierDead($color, $soldierId)) {
+                return true;
+            }
+        }
+        foreach ($defender->getShips()->getKeys() as $soldierId) {
+            if (!$this->_result->isDefendingSoldierDead($color, $soldierId)) {
+                return true;
+            }
+        }
     }
 
     public function fight()
@@ -205,7 +239,6 @@ class Cli_Model_Battle
                 }
 
             } else {
-                echo 'a';
                 $this->_players->getPlayer($this->_attacker->getColor())->getArmies()->removeArmy($this->_attacker->getId(), $this->_gameId, $this->_db);
             }
             foreach ($this->_defenders as $defender) {
@@ -213,34 +246,8 @@ class Cli_Model_Battle
                 if ($color == 'neutral') {
                     continue;
                 }
-                $dead = true;
-                foreach ($defender->getHeroes()->getKeys() as $heroId) {
-                    if (!$this->_result->isDefendingHero($color, $heroId)) {
-                        $dead = false;
-                        break;
-                    }
-                }
-                if (!$dead) {
-                    continue;
-                }
 
-                foreach ($defender->getSoldiers()->getKeys() as $soldierId) {
-                    if (!$this->_result->isDefendingSoldier($color, $soldierId)) {
-                        $dead = false;
-                        break;
-                    }
-                }
-                if (!$dead) {
-                    continue;
-                }
-
-                foreach ($defender->getShips()->getKeys() as $soldierId) {
-                    if (!$this->_result->isDefendingSoldier($color, $soldierId)) {
-                        $dead = false;
-                        break;
-                    }
-                }
-                if ($dead) {
+                if (!$this->defenderVictory($defender, $color)) {
                     $this->_players->getPlayer($color)->getArmies()->removeArmy($defender->getId(), $this->_gameId, $this->_db);
                 }
             }

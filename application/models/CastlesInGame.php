@@ -146,30 +146,24 @@ class Application_Model_CastlesInGame extends Coret_Db_Table_Abstract
         return $this->update($data, $where);
     }
 
-    public function changeOwner($castle, $playerId)
+    public function changeOwner(Cli_Model_Castle $castle, $playerId)
     {
-        $defenseMod = $this->getCastleDefenseModifier($castle['castleId']);
-        $defense = $castle['defense'] + $defenseMod;
-
-        if ($defense > 1) {
-            $defenseMod--;
-        }
-
+        $castleId = $castle->getId();
         $select = $this->_db->select()
             ->from($this->_name, 'playerId')
             ->where('"gameId" = ?', $this->_gameId)
-            ->where('"castleId" = ?', $castle['castleId']);
+            ->where('"castleId" = ?', $castleId);
 
         $mCastlesConquered = new Application_Model_CastlesConquered($this->_gameId, $this->_db);
-        $mCastlesConquered->add($castle['castleId'], $playerId, new Zend_Db_Expr('(' . $select->__toString() . ')'));
+        $mCastlesConquered->add($castleId, $playerId, new Zend_Db_Expr('(' . $select->__toString() . ')'));
 
         $where = array(
             $this->_db->quoteInto('"gameId" = ?', $this->_gameId),
-            $this->_db->quoteInto('"castleId" = ?', $castle['castleId'])
+            $this->_db->quoteInto('"castleId" = ?', $castleId)
         );
 
         $data = array(
-            'defenseMod' => $defenseMod,
+            'defenseMod' => $castle->getDefenseMod(),
             'playerId' => $playerId,
             'productionId' => null,
             'productionTurn' => 0,

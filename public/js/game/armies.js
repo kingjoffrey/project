@@ -69,7 +69,7 @@ var Army = {
                 army.terrain[key] = game.terrain[key][army.movementType];
             }
 
-            if (army.heroes.length) {
+            if (typeof army.heroes === 'object') {
                 var f = army.terrain.f,
                     m = army.terrain.m,
                     s = army.terrain.s;
@@ -629,7 +629,7 @@ var Army = {
                 if (Turn.isMy() && Army.selected) {
                     var castleId = Castle.getEnemy(x, y);
                     if (castleId !== null) {
-                        Castle.changeFields(castleId, 'E');
+                        Castle.changeFields(castleId, 'E', x, y);
                     } else {
                         fields[y][x] = 'g';
                     }
@@ -638,7 +638,7 @@ var Army = {
             .mouseout(function () {
                 var castleId = Castle.getEnemy(x, y);
                 if (castleId !== null) {
-                    Castle.changeFields(castleId, 'e');
+                    Castle.changeFields(castleId, 'e', x, y);
                 } else {
                     fields[y][x] = 'e';
                 }

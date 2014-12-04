@@ -154,4 +154,14 @@ class Cli_Model_Castle extends Cli_Model_Entity
     {
         return $this->_defense + $this->_defenseMod;
     }
+
+    public function getDefenseMod()
+    {
+        return $this->_defenseMod;
+    }
+
+    public function decreaseDefenceMod()
+    {
+        $this->_defenseMod--;
+    }
 }
