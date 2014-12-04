@@ -76,6 +76,13 @@ class Cli_Model_Armies
         return $ids;
     }
 
+    public function removeArmy($armyId, $gameId, $db)
+    {
+        $mArmy = new Application_Model_Army($gameId, $db);
+        $mArmy->destroyArmy($armyId);
+        unset($this->_armies[$armyId]);
+    }
+
     public function resetMovesLeft($gameId, $db)
     {
         foreach ($this->_armies as $army) {

@@ -112,28 +112,23 @@ var Castle = {
         }
     },
     initMyProduction: function (castleId) {
-        castles[castleId].currentProductionId = game.players[game.me.color].castles[castleId].productionId;
-        castles[castleId].currentProductionTurn = game.players[game.me.color].castles[castleId].productionTurn;
-
         var relocationToCastleId = game.players[game.me.color].castles[castleId].relocationCastleId;
 
         if (relocationToCastleId) {
-            castles[castleId].relocationToCastleId = relocationToCastleId
-
-            if (notSet(castles[relocationToCastleId].relocatedProduction)) {
-                castles[relocationToCastleId].relocatedProduction = {};
+            if (notSet(game.players[game.me.color].castles[relocationToCastleId].relocatedProduction)) {
+                game.players[game.me.color].castles[relocationToCastleId].relocatedProduction = {};
             }
 
-            castles[relocationToCastleId].relocatedProduction[castleId] = {
-                'currentProductionId': castles[castleId].currentProductionId,
-                'currentProductionTurn': castles[castleId].currentProductionTurn
+            game.players[game.me.color].castles[relocationToCastleId].relocatedProduction[castleId] = {
+                'currentProductionId': game.players[game.me.color].castles[castleId].currentProductionId,
+                'currentProductionTurn': game.players[game.me.color].castles[castleId].currentProductionTurn
             }
 
             Castle.addRelocationTo(castleId)
             Castle.addRelocationFrom(relocationToCastleId, castleId)
         }
 
-        if (castles[castleId].currentProductionId) {
+        if (game.players[game.me.color].castles[castleId].currentProductionId) {
             Castle.addHammer(castleId);
         }
     },
@@ -374,13 +369,10 @@ var Castle = {
             Army.showFirst(game.me.color);
         }
     },
-    updateDefense: function (castleId, defenseMod) {
-        castles[castleId].defense = castles[castleId].defensePoints + defenseMod;
-        if (castles[castleId].defense < 1) {
-            castles[castleId].defense = 1;
-        }
-        $('#castle' + castleId).attr('title', castles[castleId].name + '(' + castles[castleId].defense + ')');
-        $('#castle' + castleId + ' .shield').html(castles[castleId].defense);
+    updateDefense: function (castleId, castle) {
+        var defence = castle.defense + castle.defenseMod
+        $('#castle' + castleId).attr('title', castle.name + '(' + defence + ')');
+        $('#castle' + castleId + ' .shield').html(defence);
     },
     updateCurrentProductionTurn: function (castleId, productionTurn) {
         castles[castleId].currentProductionTurn = productionTurn;

@@ -188,20 +188,58 @@ class Cli_Model_Battle
             }
         }
 
-        if ($this->_db && $this->attackerVictory()) {
-            $this->_result->victory();
+        if ($this->_db) {
             $player = $this->_players->getPlayer($this->_attacker->getColor());
-            if ($this->_castleId) {
-                $castleOwner = $this->_players->getPlayer($this->_castleColor);
-                $player->addCastle($this->_castleId, $castleOwner->getCastles()->getCastle($this->_castleId), $this->_castleColor, $this->_fields, $this->_gameId, $this->_db);
-                $castleOwner->removeCastle($this->_castleId);
-                $this->_result->setCastleId($this->_castleId);
+            if ($this->attackerVictory()) {
+                $this->_result->victory();
+                if ($this->_castleId) {
+                    $castleOwner = $this->_players->getPlayer($this->_castleColor);
+                    $player->addCastle($this->_castleId, $castleOwner->getCastles()->getCastle($this->_castleId), $this->_castleColor, $this->_fields, $this->_gameId, $this->_db);
+                    $castleOwner->removeCastle($this->_castleId);
+                    $this->_result->setCastleId($this->_castleId);
 
-            } elseif ($this->_towerId) {
-                $towerOwner = $this->_players->getPlayer($this->_towerColor);
-                $player->addTower($this->_towerId, $towerOwner->getTowers()->getTower($this->_towerId), $this->_towerColor, $this->_fields, $this->_gameId, $this->_db);
-                $towerOwner->removeTower($this->_towerId);
-                $this->_result->setTowerId($this->_towerId);
+                } elseif ($this->_towerId) {
+                    $towerOwner = $this->_players->getPlayer($this->_towerColor);
+                    $player->addTower($this->_towerId, $towerOwner->getTowers()->getTower($this->_towerId), $this->_towerColor, $this->_fields, $this->_gameId, $this->_db);
+                    $towerOwner->removeTower($this->_towerId);
+                    $this->_result->setTowerId($this->_towerId);
+                }
+
+            } else {
+                $player->getArmies()->removeArmy($this->_attacker->getId(), $this->_gameId, $this->_db);
+            }
+            foreach ($this->_defenders as $defender) {
+                $color = $defender->getColor();
+                $dead = true;
+                foreach ($defender->getHeroes()->getKeys() as $heroId) {
+                    if (!$this->_result->isDefendingHero($color, $heroId)) {
+                        $dead = false;
+                        break;
+                    }
+                }
+                if (!$dead) {
+                    continue;
+                }
+
+                foreach ($defender->getSoldiers()->getKeys() as $soldierId) {
+                    if (!$this->_result->isDefendingSoldier($color, $soldierId)) {
+                        $dead = false;
+                        break;
+                    }
+                }
+                if (!$dead) {
+                    continue;
+                }
+
+                foreach ($defender->getShips()->getKeys() as $soldierId) {
+                    if (!$this->_result->isDefendingSoldier($color, $soldierId)) {
+                        $dead = false;
+                        break;
+                    }
+                }
+                if ($dead) {
+                    $this->_players->getPlayer($color)->getArmies()->removeArmy($defender->getId(), $this->_gameId, $this->_db);
+                }
             }
         }
     }

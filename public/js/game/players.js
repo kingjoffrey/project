@@ -50,11 +50,11 @@ var Players = {
                         firstCastleId = castleId;
                     }
                     myCastles = true;
-                    //Castle.initMyProduction(i);
+                    Castle.initMyProduction(castleId);
                 } else {
                     enemyCastles = true;
                 }
-                //Castle.updateDefense(i, game.players[color].castles[i].defenseMod);
+                Castle.updateDefense(castleId, game.players[color].castles[castleId]);
                 //Castle.owner(i, color);
             }
 

@@ -190,6 +190,7 @@ class Cli_Model_Army
             $battle = new Cli_Model_Battle($this, $enemies->get(), $game, $db);
             $battle->fight();
             $battleResult = $battle->getResult();
+            $battleResult = $battleResult->toArray();
             if ($battle->attackerVictory()) {
                 $this->saveMove($gameId, $path, $fields, $db);
             }
@@ -204,7 +205,7 @@ class Cli_Model_Army
             'color' => $playerColor,
             'army' => $this->toArray(),
             'path' => $path->getCurrent(),
-            'battle' => $battleResult->toArray(),
+            'battle' => $battleResult,
             'deletedIds' => $joinIds,
             'ruinId' => $ruinId,
             'type' => 'move'

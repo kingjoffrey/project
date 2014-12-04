@@ -87,6 +87,13 @@ class Cli_Model_BattleResult
         $this->_defenders[$color]['heroes'][$heroId] = null;
     }
 
+    public function isDefendingHero($color, $heroId)
+    {
+        if (isset($this->_defenders[$color]['heroes'][$heroId])) {
+            return true;
+        }
+    }
+
     public function addDefendingSoldierSuccession($color, $soldierId, $succession)
     {
         $this->_defenders[$color]['soldiers'][$soldierId] = $succession;
@@ -98,6 +105,13 @@ class Cli_Model_BattleResult
             return true;
         }
         $this->_defenders[$color]['soldiers'][$soldierId] = null;
+    }
+
+    public function isDefendingSoldier($color, $soldierId)
+    {
+        if (isset($this->_defenders[$color]['soldiers'][$soldierId])) {
+            return true;
+        }
     }
 
     public function addDefendingShip($color, $soldierId)
