@@ -131,18 +131,21 @@ var Move = {
                     }
                 }
                 if (isDigit(r.battle.castleId)) {
-                    Castle.owner(r.battle.castleId, r.color)
+                    for (var color in r.defenders) {
+                        if (isSet(game.players[color].castles[r.battle.castleId])) {
+                            break;
+                        }
+                    }
+                    Castle.owner(game.players[color].castles[r.battle.castleId], r.battle.castleId, r.color)
                 }
                 if (isDigit(r.battle.towerId)) {
                     Tower.change(r.battle.towerId, r.color)
                 }
                 if (r.color == game.me.color) {
                     if (!r.battle.castleId && game.players[r.color].armies[r.army.armyId].moves) {
-                        Gui.unlock()
                         Army.select(game.players[r.color].armies[r.army.armyId])
                     } else {
                         Army.deselect()
-                        Gui.unlock()
                     }
                 } else {
                     for (color in r.battle.defenders) {
@@ -175,5 +178,8 @@ var Move = {
         console.log('move.end(' + ii + ') 1')
         this.moving = 0
         Websocket.executing = 0
+        if (r.color == game.me.color) {
+            Gui.unlock()
+        }
     }
 }

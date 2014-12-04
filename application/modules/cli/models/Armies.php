@@ -78,6 +78,9 @@ class Cli_Model_Armies
 
     public function removeArmy($armyId, $gameId, $db)
     {
+        echo 'b';
+        echo $armyId;
+        echo 'c';
         $mArmy = new Application_Model_Army($gameId, $db);
         $mArmy->destroyArmy($armyId);
         unset($this->_armies[$armyId]);

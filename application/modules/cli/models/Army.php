@@ -61,6 +61,8 @@ class Cli_Model_Army
         $this->_heroes = new Cli_Model_Heroes();
         $this->_soldiers = new Cli_Model_Soldiers();
         $this->_ships = new Cli_Model_Soldiers();
+
+        $this->_fortified = $army['fortified'];
     }
 
     public function toArray()

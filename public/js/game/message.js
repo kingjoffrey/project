@@ -752,10 +752,15 @@ var Message = {
                         'soldierId': i
                     };
                 }
+                if (color == 'neutral') {
+                    var unitId = game.firstUnitId
+                } else {
+                    var unitId = game.players[color].soldiers[i].unitId
+                }
                 defense.append(
                     $('<div>')
                         .attr('id', 'unit' + i)
-                        .css('background', 'url(' + Unit.getImage(game.players[color].soldiers[i].unitId, color) + ') no-repeat')
+                        .css('background', 'url(' + Unit.getImage(unitId, color) + ') no-repeat')
                         .addClass('battleUnit')
                 );
             }
@@ -773,13 +778,7 @@ var Message = {
                         .addClass('battleUnit')
                 );
             }
-            if (isSet(game.players[color])) {
-                var longName = game.players[color].longName
-            } else {
-                var longName = 'Shadow'
-            }
-
-            defenseLayout.append($('<div>').html(longName + ' (' + translations.defence + ')'))
+            defenseLayout.append($('<div>').html(game.players[color].longName + ' (' + translations.defence + ')'))
 
             if (r.battle.castleId && isSet(game.players[color].castles[r.battle.castleId])) {
                 defenseLayout.append(
@@ -844,7 +843,7 @@ var Message = {
         }
 
         if (notSet(b[i])) {
-            if (!game.players[r.attackerColor].computer) {
+            if (!game.players[r.color].computer) {
                 $('.go').fadeIn(100)
             }
             Move.end(r)
@@ -858,27 +857,30 @@ var Message = {
             }
 
             unitElement.append($('<div>').addClass('killed'));
-            if (!game.players[r.attackerColor].computer) {
+            if (!game.players[r.color].computer) {
                 setTimeout(function () {
                     Sound.play('error');
                 }, 500)
             }
             $('#unit' + b[i].soldierId + ' .killed').fadeIn(1000, function () {
-                if (r.attackerColor == game.me.color) {
-                    for (k in game.players[game.me.color].armies[r.attackerArmy.armyId].soldiers) {
-                        if (game.players[game.me.color].armies[r.attackerArmy.armyId].soldiers[k].soldierId == b[i].soldierId) {
-                            costIncrement(-game.units[game.players[game.me.color].armies[r.attackerArmy.armyId].soldiers[k].unitId].cost)
+                if (r.color == game.me.color) {
+                    for (k in game.players[game.me.color].armies[r.army.armyId].soldiers) {
+                        if (game.players[game.me.color].armies[r.army.armyId].soldiers[k].soldierId == b[i].soldierId) {
+                            costIncrement(-game.units[game.players[game.me.color].armies[r.army.armyId].soldiers[k].unitId].cost)
                         }
                     }
                 }
 
-                if (r.defenderColor == game.me.color) {
-                    for (j in r.defenderArmy) {
-                        for (k in game.players[game.me.color].armies[r.defenderArmy[j].armyId].soldiers) {
-                            if (game.players[game.me.color].armies[r.defenderArmy[j].armyId].soldiers[k].soldierId == b[i].soldierId) {
-                                costIncrement(-game.units[game.players[game.me.color].armies[r.defenderArmy[j].armyId].soldiers[k].unitId].cost)
+                for (var color in r.defenders) {
+                    if (color == game.me.color) {
+                        for (j in r.defenders[color]) {
+                            for (k in game.players[color].armies[j].soldiers) {
+                                if (game.players[color].armies[j].soldiers[k].soldierId == b[i].soldierId) {
+                                    costIncrement(-game.units[game.players[color].armies[j].soldiers[k].unitId].cost)
+                                }
                             }
                         }
+                        break;
                     }
                 }
                 delete b[i];
@@ -891,7 +893,7 @@ var Message = {
             }
 
             heroElement.append($('<div>').addClass('killed'));
-            if (!game.players[r.attackerColor].computer) {
+            if (!game.players[r.color].computer) {
                 setTimeout(function () {
                     Sound.play('error');
                 }, 500)

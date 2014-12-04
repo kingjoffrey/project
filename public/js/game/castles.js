@@ -316,6 +316,7 @@ var Castle = {
                 .removeClass('team')
             Castle.myMousedown(el, castleId)
         } else {
+            console.log(color)
             if (game.players[color].team == game.players[game.me.color].team) {
                 Castle.changeFields(castleId, 'c', castle.x, castle.y)
                 el
