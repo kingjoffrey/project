@@ -80,7 +80,7 @@ class Cli_Model_Armies
     {
         $mArmy = new Application_Model_Army($gameId, $db);
         $mArmy->destroyArmy($armyId);
-        $this->getArmy($armyId)->setDestoyed(true);
+        $this->getArmy($armyId)->setDestroyed(true);
         unset($this->_armies[$armyId]);
     }
 

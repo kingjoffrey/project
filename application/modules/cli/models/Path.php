@@ -14,6 +14,7 @@ class Cli_Model_Path
             return $this;
         }
 
+        $terrain = Zend_Registry::get('terrain');
         $this->_full = $fullPath;
         $skip = false;
         $stop = false;
@@ -27,12 +28,17 @@ class Cli_Model_Path
         }
 
         foreach ($this->_full as $step) {
-            foreach ($army->getSoldiers() as $soldierId => $soldier) {
+            foreach ($army->getSoldiers()->getKeys() as $soldierId) {
+                $soldier = $army->getSoldiers()->getSoldier($soldierId);
                 if (!isset($soldiersMovesLeft[$soldierId])) {
                     $soldiersMovesLeft[$soldierId] = $soldier->getMovesLeft();
                 }
 
-                $soldiersMovesLeft[$soldierId] -= $soldier->getStepCost($step['tt'], $type);
+                if (isset($step['cc'])) {
+                    continue;
+                }
+
+                $soldiersMovesLeft[$soldierId] -= $soldier->getStepCost($terrain, $step['tt'], $type);
 
                 if ($soldiersMovesLeft[$soldierId] < 0) {
                     $skip = true;
@@ -44,12 +50,17 @@ class Cli_Model_Path
                 }
             }
 
-            foreach ($army->getShips() as $soldierId => $soldier) {
+            foreach ($army->getShips()->getKeys() as $soldierId) {
+                $soldier = $army->getShips()->getSoldier($soldierId);
                 if (!isset($soldiersMovesLeft[$soldierId])) {
                     $soldiersMovesLeft[$soldierId] = $soldier->getMovesLeft();
                 }
 
-                $soldiersMovesLeft[$soldierId] -= $soldier->getStepCost($step['tt'], $type);
+                if (isset($step['cc'])) {
+                    continue;
+                }
+
+                $soldiersMovesLeft[$soldierId] -= $soldier->getStepCost($terrain, $step['tt'], $type);
 
                 if ($soldiersMovesLeft[$soldierId] < 0) {
                     $skip = true;
@@ -61,14 +72,16 @@ class Cli_Model_Path
                 }
             }
 
-            foreach ($army->getHeroes() as $heroId => $hero) {
+            foreach ($army->getHeroes()->getKeys() as $heroId) {
                 if (!isset($heroesMovesLeft[$heroId])) {
-                    $heroesMovesLeft[$heroId] = $hero->getMovesLeft();
+                    $heroesMovesLeft[$heroId] = $army->getHeroes()->getHero($heroId)->getMovesLeft();
                 }
 
-                if (!isset($step['cc'])) {
-                    $heroesMovesLeft[$heroId] -= $heroId->getStepCost($step['tt'], $type);
+                if (isset($step['cc'])) {
+                    continue;
                 }
+
+                $heroesMovesLeft[$heroId] -= $terrain[$step['tt']][$type];
 
                 if ($heroesMovesLeft[$heroId] < 0) {
                     $skip = true;
@@ -84,20 +97,7 @@ class Cli_Model_Path
                 break;
             }
 
-            if (isset($step['cc'])) {
-                $this->_current[] = array(
-                    'x' => $step['x'],
-                    'y' => $step['y'],
-                    'tt' => $step['tt'],
-                    'myCastleCosts' => true
-                );
-            } else {
-                $this->_current[] = array(
-                    'x' => $step['x'],
-                    'y' => $step['y'],
-                    'tt' => $step['tt']
-                );
-            }
+            $this->_current[] = $step;
 
             if ($step['tt'] == 'E') {
                 break;

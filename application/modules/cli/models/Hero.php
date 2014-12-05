@@ -30,7 +30,7 @@ class Cli_Model_Hero extends Cli_Model_Being
         );
     }
 
-    public function updateMovesLeft($heroId, $movesSpend, Application_Model_HeroesInGame $mHeroesInGame)
+    public function updateMovesLeft($movesSpend, Application_Model_HeroesInGame $mHeroesInGame)
     {
         $this->_movesLeft -= $movesSpend;
         if ($this->_movesLeft < 0) {
@@ -40,7 +40,7 @@ class Cli_Model_Hero extends Cli_Model_Being
             throw new Exception('movesLeft < 0');
         }
 
-        $mHeroesInGame->updateMovesLeft($this->_movesLeft, $heroId);
+        $mHeroesInGame->updateMovesLeft($this->_movesLeft, $this->_id);
     }
 
     public function resetMovesLeft($gameId, $db)

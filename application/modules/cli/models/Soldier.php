@@ -91,6 +91,37 @@ class Cli_Model_Soldier extends Cli_Model_Being
         $mUnitsInGame->updateMovesLeft($this->_movesLeft, $this->_id);
     }
 
+    public function getUnitId()
+    {
+        return $this->_unitId;
+    }
+
+    public function death($gameId, Zend_Db_Adapter_Pdo_Pgsql $db, $winnerId, $loserId)
+    {
+        $mSoldier = new Application_Model_UnitsInGame($gameId, $db);
+        $mSoldier->destroy($this->_id);
+
+        $mSoldiersKilled = new Application_Model_SoldiersKilled($gameId, $db);
+        $mSoldiersKilled->add($this->_unitId, $winnerId, $loserId);
+    }
+
+    public function getStepCost($terrain, $terrainType, $movementType)
+    {
+        if ($movementType == 'walking') {
+            switch ($terrainType) {
+                case 'f':
+                    return $this->getForest();
+                case 's':
+                    return $this->getSwamp();
+                case 'h':
+                    return $this->getHills();
+                default:
+                    return $terrain[$terrainType][$movementType];
+            }
+        }
+        return $terrain[$terrainType][$movementType];
+    }
+
     public function getForest()
     {
         return $this->_forest;
@@ -104,19 +135,5 @@ class Cli_Model_Soldier extends Cli_Model_Being
     public function getSwamp()
     {
         return $this->_swamp;
-    }
-
-    public function getUnitId()
-    {
-        return $this->_unitId;
-    }
-
-    public function death($gameId, Zend_Db_Adapter_Pdo_Pgsql $db, $winnerId, $loserId)
-    {
-        $mSoldier = new Application_Model_UnitsInGame($gameId, $db);
-        $mSoldier->destroy($this->_id);
-
-        $mSoldiersKilled = new Application_Model_SoldiersKilled($gameId, $db);
-        $mSoldiersKilled->add($this->_unitId, $winnerId, $loserId);
     }
 }

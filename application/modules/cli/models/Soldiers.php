@@ -84,4 +84,41 @@ class Cli_Model_Soldiers
     {
         return array_keys($this->_soldiers);
     }
+
+    public function saveMove($x, $y, $movesLeft, $type, Cli_Model_Path $path, $gameId, $db)
+    {
+        if (!count($this->_soldiers)) {
+            return $movesLeft;
+        }
+
+        $terrain = Zend_Registry::get('terrain');
+        $current = $path->getCurrent();
+        $mSoldier = new Application_Model_UnitsInGame($gameId, $db);
+
+        foreach ($this->getKeys() as $soldierId) {
+            $soldier = $this->getSoldier($soldierId);
+            $movesSpend = 0;
+
+            if ($type == 'walking') {
+                $terrain['f'][$type] = $soldier->getForest();
+                $terrain['m'][$type] = $soldier->getHills();
+                $terrain['s'][$type] = $soldier->getSwamp();
+            }
+            foreach ($current as $step) {
+                if ($step['x'] == $x && $step['y'] == $y) {
+                    break;
+                }
+                if (!isset($step['cc'])) {
+                    $movesSpend += $terrain[$step['tt']][$type];
+                }
+            }
+
+            $soldier->updateMovesLeft($soldierId, $movesSpend, $mSoldier);
+
+            if ($movesLeft > $soldier->getMovesLeft()) {
+                $movesLeft = $soldier->getMovesLeft();
+            }
+        }
+    }
+
 }
