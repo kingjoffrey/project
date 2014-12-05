@@ -10,7 +10,7 @@ var Move = {
         }
         this.moving = 1
         console.log(' ')
-        console.log('move.start(' + ii + ') 0')
+        console.log('move.start(' + ii + ') start')
         console.log(r)
         switch (game.players[r.color].armies[r.army.armyId].movementType) {
             case 'flying':
@@ -44,10 +44,10 @@ var Move = {
         }
 
         this.loop(r, ii);
-        console.log('move.start(' + ii + ') 1')
+        console.log('move.start(' + ii + ') end')
     },
     loop: function (r, ii) {
-        console.log('move.loop(' + ii + ') 0')
+        console.log('move.loop(' + ii + ') start')
         var step
         for (step in r.path) {
             break;
@@ -97,11 +97,11 @@ var Move = {
             } else {
                 Move.end(r, ii);
             }
-            console.log('move.loop(' + ii + ') 1')
+            console.log('move.loop(' + ii + ') end')
         }
     },
     end: function (r, ii) {
-        console.log('move.end(' + ii + ') 0')
+        console.log('move.end(' + ii + ') start')
 
         AStar.x = game.players[r.color].armies[r.army.armyId].x;
         AStar.y = game.players[r.color].armies[r.army.armyId].y;
@@ -122,11 +122,11 @@ var Move = {
 
         if (r.battle) {
             if (r.battle.victory) {
-                for (color in r.battle.defenders) {
+                for (var color in r.battle.defenders) {
                     if (color == 'neutral') {
                         continue
                     }
-                    for (armyId in r.battle.defenders[color]) {
+                    for (var armyId in r.battle.defenders[color]) {
                         Army.delete(armyId, color, 1);
                     }
                 }
@@ -148,11 +148,11 @@ var Move = {
                         Army.deselect()
                     }
                 } else {
-                    for (color in r.battle.defenders) {
+                    for (var color in r.battle.defenders) {
                         if (color == 'neutral') {
                             continue
                         }
-                        for (armyId in r.battle.defenders[color]) {
+                        for (var armyId in r.battle.defenders[color]) {
                             Army.update(r.battle.defenders[color][armyId]);
                         }
                     }
@@ -175,7 +175,7 @@ var Move = {
         }
 
         setTimeout('$(".war").remove()', 100);
-        console.log('move.end(' + ii + ') 1')
+        console.log('move.end(' + ii + ') end')
         this.moving = 0
         Websocket.executing = 0
         if (r.color == game.me.color) {

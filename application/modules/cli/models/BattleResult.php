@@ -90,54 +90,54 @@ class Cli_Model_BattleResult
         $this->_attack['ships'][$soldierId] = null;
     }
 
-    public function addDefendingHeroSuccession($color, $heroId, $succession)
+    public function addDefendingHeroSuccession($color, $armyId, $heroId, $succession)
     {
-        $this->_defenders[$color]['heroes'][$heroId] = $succession;
+        $this->_defenders[$color][$armyId]['heroes'][$heroId] = $succession;
     }
 
-    public function addDefendingHero($color, $heroId)
+    public function addDefendingHero($color, $armyId, $heroId)
     {
-        if (isset($this->_defenders[$color]['heroes'][$heroId])) {
+        if (isset($this->_defenders[$color][$armyId]['heroes'][$heroId])) {
             return true;
         }
-        $this->_defenders[$color]['heroes'][$heroId] = null;
+        $this->_defenders[$color][$armyId]['heroes'][$heroId] = null;
     }
 
-    public function isDefendingHeroDead($color, $heroId)
+    public function isDefendingHeroDead($color, $armyId, $heroId)
     {
-        if (isset($this->_defenders[$color]['heroes'][$heroId])) {
-            return true;
-        }
-    }
-
-    public function addDefendingSoldierSuccession($color, $soldierId, $succession)
-    {
-        $this->_defenders[$color]['soldiers'][$soldierId] = $succession;
-    }
-
-    public function addDefendingSoldier($color, $soldierId)
-    {
-        if (isset($this->_defenders[$color]['soldiers'][$soldierId])) {
-            return true;
-        }
-        $this->_defenders[$color]['soldiers'][$soldierId] = null;
-    }
-
-    public function isDefendingSoldierDead($color, $soldierId)
-    {
-        if (isset($this->_defenders[$color]['soldiers'][$soldierId])) {
+        if (isset($this->_defenders[$color][$armyId]['heroes'][$heroId])) {
             return true;
         }
     }
 
-    public function addDefendingShip($color, $soldierId)
+    public function addDefendingSoldierSuccession($color, $armyId, $soldierId, $succession)
     {
-        if (isset($this->_defenders[$color]['soldiers'][$soldierId])) {
-            $this->_defenders[$color]['ships'][$soldierId] = $this->_defenders[$color]['soldiers'][$soldierId];
-            unset($this->_defenders[$color]['soldiers'][$soldierId]);
+        $this->_defenders[$color][$armyId]['soldiers'][$soldierId] = $succession;
+    }
+
+    public function addDefendingSoldier($color, $armyId, $soldierId)
+    {
+        if (isset($this->_defenders[$color][$armyId]['soldiers'][$soldierId])) {
             return true;
         }
-        $this->_defenders[$color]['ships'][$soldierId] = null;
+        $this->_defenders[$color][$armyId]['soldiers'][$soldierId] = null;
+    }
+
+    public function isDefendingSoldierDead($color, $armyId, $soldierId)
+    {
+        if (isset($this->_defenders[$color][$armyId]['soldiers'][$soldierId])) {
+            return true;
+        }
+    }
+
+    public function addDefendingShip($color, $armyId, $soldierId)
+    {
+        if (isset($this->_defenders[$color][$armyId]['soldiers'][$soldierId])) {
+            $this->_defenders[$color][$armyId]['ships'][$soldierId] = $this->_defenders[$color][$armyId]['soldiers'][$soldierId];
+            unset($this->_defenders[$color][$armyId]['soldiers'][$soldierId]);
+            return true;
+        }
+        $this->_defenders[$color][$armyId]['ships'][$soldierId] = null;
     }
 
     public function getVictory()

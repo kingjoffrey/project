@@ -558,5 +558,8 @@ class Cli_Model_Army
         return $this->_color;
     }
 
-
+    public function setDestoyed($destroyed)
+    {
+        $this->_destroyed = $destroyed;
+    }
 }
