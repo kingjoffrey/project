@@ -57,7 +57,7 @@ class Cli_Model_Players
 
     public function allEnemiesAreDead($playerColor)
     {
-        $playerTeam = $this->_players->getPlayer($playerColor)->getTeam();
+        $playerTeam = $this->getPlayer($playerColor)->getTeam();
         foreach ($this->_players as $color => $player) {
             if ($color == $playerColor || $playerTeam == $player->getTeam()) {
                 continue;

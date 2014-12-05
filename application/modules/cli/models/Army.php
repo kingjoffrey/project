@@ -182,6 +182,16 @@ class Cli_Model_Army
                          Zend_Db_Adapter_Pdo_Pgsql $db, Cli_GameHandler $gameHandler)
     {
         $gameId = $game->getId();
+
+        if (!$path->exists()) {
+            $token = array(
+                'type' => 'move'
+            );
+
+            $gameHandler->sendToChannel($db, $token, $gameId);
+            return;
+        }
+
         $fields = $game->getFields();
         $players = $game->getPlayers();
         $player = $players->getPlayer($playerColor);
@@ -195,10 +205,10 @@ class Cli_Model_Army
             $battle->fight();
             $battleResult = $battle->getResult();
             if ($battleResult->getVictory()) {
-                $this->saveMove($gameId, $path, $fields, $db);
+                $this->saveMove($gameId, $path, $db);
             }
         } else {
-            $this->saveMove($gameId, $path, $fields, $db);
+            $this->saveMove($gameId, $path, $db);
             $joinIds = $player->getArmies()->joinAtPosition($this->_id, $gameId, $db);
         }
 
@@ -206,7 +216,7 @@ class Cli_Model_Army
 
         $token = array(
             'color' => $playerColor,
-            'army' => $this->toArray(), // todo
+            'army' => $this->toArray(),
             'path' => $path->getCurrent(),
             'battle' => $battleResult->toArray(),
             'deletedIds' => $joinIds,
@@ -216,7 +226,7 @@ class Cli_Model_Army
         $gameHandler->sendToChannel($db, $token, $gameId);
     }
 
-    private function saveMove($gameId, Cli_Model_Path $path, Cli_Model_Fields $fields, Zend_Db_Adapter_Pdo_Pgsql $db)
+    private function saveMove($gameId, Cli_Model_Path $path, Zend_Db_Adapter_Pdo_Pgsql $db)
     {
         if ($this->canFly()) {
             $type = 'flying';

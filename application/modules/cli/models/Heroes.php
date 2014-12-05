@@ -63,9 +63,7 @@ class Cli_Model_Heroes
         if (!count($this->_heroes)) {
             return $movesLeft;
         }
-        var_dump($path->getCurrent());
-        echo $x . "\n";
-        echo $y . "\n";
+
         $terrain = Zend_Registry::get('terrain');
         $current = $path->getCurrent();
         $mHeroesInGame = new Application_Model_HeroesInGame($gameId, $db);

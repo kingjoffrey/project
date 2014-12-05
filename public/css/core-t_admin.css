@@ -150,8 +150,9 @@ table#list {
 }
 
 table#list td {
-    border: 1px solid #cdcdcd;
+    border: 1px solid #eee;
     padding: 3px;
+    background: #fdfdfd;
     height: 26px;
 }
 
@@ -172,9 +173,9 @@ table#list .active td {
 }
 
 table#list th {
-    border: 1px solid #B2BBC9;
-    padding: 3px;
-    background: #ddd;
+    border: 1px solid #eee;
+    padding: 10px 3px;
+    background: #eee;
     color: #3E4146;
     height: 13px;
 }
@@ -423,7 +424,7 @@ form#search dd {
 }
 
 form#search #search-element {
-    left: 0;
+    left: -19px;
 }
 
 form#search #send-element {
@@ -441,4 +442,5 @@ input#search {
     font-size: 12px;
     text-shadow: 0;
     display: inline-block;
+    height: 15px;
 }
