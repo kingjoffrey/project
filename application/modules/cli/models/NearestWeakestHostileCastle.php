@@ -2,7 +2,6 @@
 
 class Cli_Model_NearestWeakerHostileCastle
 {
-    private $_castle = null;
     private $_path = null;
 
     private $_heuristics = array();
@@ -15,7 +14,7 @@ class Cli_Model_NearestWeakerHostileCastle
         $players = $game->getPlayers();
         $this->initHeuristics($players, $playerColor, $army->getX(), $army->getY());
 
-        $castleId = $this->getCastleId($game, $playerColor);
+        $castleId = $this->getCastleId($game, $playerColor, $army);
 
         if (!$castleId) {
             return;
@@ -23,21 +22,18 @@ class Cli_Model_NearestWeakerHostileCastle
 
         $this->_path = $this->path($game, $castleId, $playerColor, $army);
         if ($this->_path->exists()) {
-            $this->_castle = $this->_castles[$castleId];
             return;
         }
 
         while (true) {
-            if ($castleId = $this->getCastleId($game, $playerColor)) {
+            if ($castleId = $this->getCastleId($game, $playerColor, $army)) {
                 $this->_path = $this->path($game, $castleId, $playerColor, $army);
                 if ($this->_path->exists()) {
-                    $this->_castle = $this->_castles[$castleId];
                     return;
                 }
             }
             return;
         }
-
     }
 
     private function initHeuristics(Cli_Model_Players $players, $playerColor, $armyX, $armyY)
@@ -91,5 +87,10 @@ class Cli_Model_NearestWeakerHostileCastle
         }
 
         return new Cli_Model_Path($aStar->getPath($castleX . '_' . $castleY), $army);
+    }
+
+    public function getPath()
+    {
+        return $this->_path;
     }
 }

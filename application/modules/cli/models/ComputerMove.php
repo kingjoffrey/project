@@ -268,62 +268,52 @@ class Cli_Model_ComputerMove extends Cli_Model_ComputerMethods
         if ($this->_players->noEnemyCastles($this->_color)) {
             $this->_l->log('BRAK ZAMKÓW WROGA');
             return $this->noEnemyCastlesToAttack();
-        } else {
-            $this->_l->log('SĄ ZAMKI WROGA');
-
-            $castleId = $this->findNearestWeakestHostileCastle();
-
-            if ($this->_path->exists()) {
-                $this->_l->log('JEST SŁABSZY ZAMEK WROGA: ' . $castleId);
-
-                if ($castleId) {
-                    $this->_l->log('SŁABSZY ZAMEK WROGA W ZASIĘGU - ATAKUJĘ!');
-                    $this->_army->move($this->_game, $this->_path, $this->_color, $this->_db, $this->_gameHandler);
-                    return;
-                } else {
-                    $this->_l->log('SŁABSZY ZAMEK WROGA POZA ZASIĘGIEM');
-                    $this->getWeakerEnemyArmyInRange();
-                    if ($this->_path->exists()) {
-                        //atakuj
-                        $this->_l->log('JEST SŁABSZA ARMIA WROGA W ZASIĘGU (' . $path->armyId . ') - ATAKUJĘ!');
-                        $this->_army->move($this->_game, $this->_path, $this->_color, $this->_db, $this->_gameHandler);
-                        return;
-                    } else {
-                        $this->_l->log('BRAK SŁABSZEJ ARMII WROGA W ZASIĘGU');
-                        $enemyId = $this->getStrongerEnemyArmyInRange();
-                        if ($enemyId) {
-                            $this->_l->log('JEST SILNIEJSZA ARMIA WROGA W ZASIĘGU: ' . $enemyId);
-                            $this->getPathToMyArmyInRange();
-                            if ($this->_path->exists()) {
-                                $this->_l->log('JEST MOJA ARMIA W ZASIĘGU - DOŁĄCZ!');
-                                $this->_army->move($this->_game, $this->_path, $this->_color, $this->_db, $this->_gameHandler);
-                                return;
-                            }
-                            $this->_l->log('BRAK MOJEJ ARMII W ZASIĘGU - IDŹ W KIERUNKU ZAMKU!');
-                            return $this->savePath($pathToNearestWeakestHostileCastle);
-                        } else {
-                            $this->_l->log('BRAK SILNIEJSZEJ ARMII WROGA W ZASIĘGU - IDŹ W KIERUNKU ZAMKU!');
-                            return $this->savePath($pathToNearestWeakestHostileCastle);
-                        }
-                    }
-                }
-            } else {
-                $this->_l->log('BRAK SŁABSZYCH ZAMKÓW WROGA');
-                return $this->noEnemyCastlesToAttack();
-            }
         }
+
+        $this->_l->log('SĄ ZAMKI WROGA');
+        $nwhc = new Cli_Model_NearestWeakerHostileCastle($this->_game, $this->_color, $this->_army);
+        if (!$nwhc->getPath()->exists()) {
+            $this->_l->log('BRAK SŁABSZYCH ZAMKÓW WROGA');
+            return $this->noEnemyCastlesToAttack();
+        }
+
+        $this->_l->log('JEST SŁABSZY ZAMEK WROGA');
+        if ($nwhc->getPath()->enemyInRange()) {
+            $this->_l->log('SŁABSZY ZAMEK WROGA W ZASIĘGU - ATAKUJĘ!');
+            $this->_army->move($this->_game, $nwhc->getPath(), $this->_color, $this->_db, $this->_gameHandler);
+            return;
+        }
+
+        $this->_l->log('SŁABSZY ZAMEK WROGA POZA ZASIĘGIEM');
+        $this->getWeakerEnemyArmyInRange();
+        if ($this->_path->exists()) {
+            //atakuj
+            $this->_l->log('JEST SŁABSZA ARMIA WROGA W ZASIĘGU - ATAKUJĘ!');
+            $this->_army->move($this->_game, $this->_path, $this->_color, $this->_db, $this->_gameHandler);
+            return;
+        }
+
+        $this->_l->log('BRAK SŁABSZEJ ARMII WROGA W ZASIĘGU');
+        $enemyId = $this->getStrongerEnemyArmyInRange();
+        if ($enemyId) {
+            $this->_l->log('JEST SILNIEJSZA ARMIA WROGA W ZASIĘGU: ' . $enemyId);
+            $this->getPathToMyArmyInRange();
+            if ($this->_path->exists()) {
+                $this->_l->log('JEST MOJA ARMIA W ZASIĘGU - DOŁĄCZ!');
+                $this->_army->move($this->_game, $this->_path, $this->_color, $this->_db, $this->_gameHandler);
+                return;
+            }
+            $this->_l->log('BRAK MOJEJ ARMII W ZASIĘGU - IDŹ W KIERUNKU ZAMKU!');
+            return $this->savePath($pathToNearestWeakestHostileCastle);
+        }
+
+        $this->_l->log('BRAK SILNIEJSZEJ ARMII WROGA W ZASIĘGU - IDŹ W KIERUNKU ZAMKU!');
+        return $this->savePath($pathToNearestWeakestHostileCastle);
     }
 
     private function noEnemyCastlesToAttack()
     {
         $this->_l->logMethodName();
-//        if (!$this->_enemies) {
-//            // brak zamków i armii wroga - koniec gry
-//            $mTurn = new Cli_Model_Turn($this->_user, $this->_game, $this->_db, $this->_gameHandler);
-//            $mTurn->endGame();
-//            return;
-//        }
-
 
         foreach ($this->_players->getEnemies($this->_color) as $e) {
             if ($this->_fields->getCastleId($e->getX(), $e->getY())) {
@@ -402,10 +392,10 @@ class Cli_Model_ComputerMove extends Cli_Model_ComputerMethods
         $this->_army->setFortified(true, $this->_gameId, $this->_db);
     }
 
-    private function savePath()
+    private function savePath(Cli_Model_Path $path)
     {
         $this->_l->logMethodName();
-        if (!$this->_path->hasFull()) {
+        if (!$path->hasFull()) {
             var_dump($this->_path);
             throw new Exception('bbb');
             exit;
@@ -416,8 +406,8 @@ class Cli_Model_ComputerMove extends Cli_Model_ComputerMethods
         $newPath = array();
         $start = false;
 
-        foreach ($this->_path->getFull() as $step) {
-            if ($this->_path->getX() == $step['x'] && $this->_path->getY() == $step['y']) {
+        foreach ($path->getFull() as $step) {
+            if ($path->getX() == $step['x'] && $path->getY() == $step['y']) {
                 $start = true;
             }
 
@@ -430,7 +420,7 @@ class Cli_Model_ComputerMove extends Cli_Model_ComputerMethods
             'path' => $newPath
         );
 
-        $this->_army->move($this->_game, $this->_path, $this->_color, $this->_db, $this->_gameHandler);
+        $this->move($path);
         $this->_army->setFortified(true, $this->_gameId, $this->_db);
     }
 
@@ -439,44 +429,25 @@ class Cli_Model_ComputerMove extends Cli_Model_ComputerMethods
         $this->_l->logMethodName();
 
         $this->_l->log('IDĘ ŚCIEŻKĄ');
-        $path = $this->_army->calculateMovesSpend($this->_user->parameters['computer'][$this->_playerId][$this->_armyId]['path']);
+        $path = new Cli_Model_Path($this->_user->parameters['computer'][$this->_playerId][$this->_armyId]['path'], $this->_army);
         unset($this->_user->parameters['computer'][$this->_playerId][$this->_armyId]['path']);
 
-        if ($path->end['tt'] == 'E') {
-            $this->_l->log('JEST KONIEC ŚCIEŻKI');
-            $path->castleId = $this->_fields->isEnemyCastle($this->_color, $path->x, $path->y);
-            if ($path->castleId) {
-                $this->_l->log('JEST ZAMEK - WALCZĘ');
-                $fightEnemyResults = $this->fightEnemy($path);
-            } else {
-                $this->_l->log('BRAK ZAMKU');
-                if ($this->_mArmyDB->isEnemyArmyAtPosition($path->end, $this->_playerId)) {
-                    $this->_l->log('JEST WROGA ARMIA - WALCZĘ');
-                    $fightEnemyResults = $this->fightEnemy($path);
-                } else {
-                    $this->_l->log('WRÓG ZMIENIŁ POZYCJĘ');
-                    return $this->findPath();
-                }
-            }
-
-            return $this->endMove($this->_armyId, $path, $fightEnemyResults);
+        if (!$path->enemyInRange()) {
+            $this->savePath($path);
+        } else {
+            $this->move($path);
         }
 
-        if (count($path->full) > count($path->current)) {
-            return $this->savePath($path);
-        }
-
-        $this->_army->updateArmyPosition($this->_playerId, $path, $this->_map['fields'], $this->_gameId, $this->_db);
         $this->_army->setFortified(true, $this->_gameId, $this->_db);
         return;
     }
 
-    public function move()
+    public function move(Cli_Model_Path $path)
     {
-        if (empty($this->_path->current)) {
+        if (!$path->exists()) {
             return;
         }
 
-        $this->_army->move($this->_game, $this->_path, $this->_color, $this->_db, $this->_gameHandler);
+        $this->_army->move($this->_game, $path, $this->_color, $this->_db, $this->_gameHandler);
     }
 }

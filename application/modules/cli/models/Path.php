@@ -137,4 +137,9 @@ class Cli_Model_Path
     {
         return count($this->_current);
     }
+
+    public function enemyInRange()
+    {
+        return $this->_end['tt'] == 'E';
+    }
 }
