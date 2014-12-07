@@ -42,23 +42,27 @@ class Cli_Model_Astar extends Cli_Model_Heuristics
 
     private $outOfReach = false;
 
+    private $_enemyCastle = null;
+    private $_enemyArmy = null;
+
     /**
      * Constructor
      *
      * @param Cli_Model_Army $army
      * @param int $destX
      * @param int $destY
-     * @param Cli_Model_Fields $fields
+     * @param Cli_Model_Game $game
      * @param string $color
      * @param array $params
      */
-    public function __construct(Cli_Model_Army $army, $destX, $destY, Cli_Model_Fields $fields, $color, $params = null)
+    public function __construct(Cli_Model_Army $army, $destX, $destY, Cli_Model_Game $game, $color, $params = null)
     {
         parent::__construct($destX, $destY);
+
         if (isset($params['limit'])) {
             $this->limit = $params['limit'];
         }
-        $this->_fields = $fields;
+        $this->_fields = $game->getFields();
         $this->terrain = Zend_Registry::get('terrain');
         $this->movesLeft = $army->getMovesLeft();
         $this->_color = $color;
@@ -71,11 +75,30 @@ class Cli_Model_Astar extends Cli_Model_Heuristics
             $this->movementType = 'walking';
         }
 
-        if ($castleId = $this->_fields->isPlayerCastle($this->_color, $army->getX(), $army->getY())) {
+        $this->init($game->getPlayers(), $army->getX(), $army->getY());
+        $this->aStar();
+    }
+
+    private function init(Cli_Model_Players $players, $x, $y)
+    {
+        $castleColor = $this->_fields->getCastleColor($this->destX, $this->destY);
+        if ($castleColor && !$players->sameTeam($castleColor, $this->_color)) {
+            $this->_enemyCastle = $players->getPlayer($castleColor)->getCastles()->getCastle($this->_fields->getCastleId($this->destX, $this->destY));
+            $this->_fields->setCastleTemporaryType($this->_enemyCastle->getX(), $this->_enemyCastle->getY(), 'E');
+        } else {
+            foreach ($this->_fields->getArmies($this->destX, $this->destY) as $armyId => $armyColor) {
+                if (!$players->sameTeam($castleColor, $this->_color)) {
+                    $this->_fields->setTemporaryType($this->destX, $this->destY, 'E');
+                    break;
+                }
+            }
+        }
+
+        if ($castleId = $this->_fields->isPlayerCastle($this->_color, $x, $y)) {
             $this->myCastleId[$castleId] = true;
         }
-        $this->_open[$army->getX() . '_' . $army->getY()] = $this->node($army->getX(), $army->getY(), 0, null, 'c');
-        $this->aStar();
+
+        $this->_open[$x . '_' . $y] = $this->node($x, $y, 0, null, 'c');
     }
 
     /**
@@ -96,6 +119,11 @@ class Cli_Model_Astar extends Cli_Model_Heuristics
         $y = $this->_open[$key]['y'];
         $this->_close[$key] = $this->_open[$key];
         if ($x == $this->destX && $y == $this->destY) {
+            if ($this->_enemyCastle) {
+                $this->_fields->setCastleTemporaryType($this->_enemyCastle->getX(), $this->_enemyCastle->getY(), 'e');
+            } elseif ($this->_enemyArmy) {
+                $this->_fields->setTemporaryType($this->destX, $this->destY, 'e');
+            }
             return;
         }
         unset($this->_open[$key]);
@@ -284,12 +312,12 @@ class Cli_Model_Astar extends Cli_Model_Heuristics
     public function getReturnPath($key)
     {
         if (!isset($this->_close[$key])) {
-            $this->outOfReach = true;
             $l = new Coret_Model_Logger();
             $l->log('W ścieżce nie ma podanego jako parametr klucza: ' . $key . ' (getPath)');
             return;
         }
         $path = array();
+        // stoję w pozycji docelowej
         if (empty($this->_close[$key]['parent'])) {
             $path[] = $this->_close[$key];
             return $path;
@@ -299,11 +327,6 @@ class Cli_Model_Astar extends Cli_Model_Heuristics
             $key = $this->_close[$key]['parent']['x'] . '_' . $this->_close[$key]['parent']['y'];
         }
         return $path;
-    }
-
-    public function outOfReach()
-    {
-        return $this->outOfReach;
     }
 }
 

@@ -156,16 +156,6 @@ class Cli_Model_Player extends Cli_Model_DefaultPlayer
         return $this->_team;
     }
 
-//    public function noArmiesExists()
-//    {
-//        return !count($this->_armies);
-//    }
-//
-//    public function armiesExists()
-//    {
-//        return count($this->_armies);
-//    }
-
     public function setLost($gameId, $db)
     {
         $mPlayersInGame = new Application_Model_PlayersInGame($gameId, $db);
@@ -403,12 +393,12 @@ class Cli_Model_Player extends Cli_Model_DefaultPlayer
 
     public function noArmiesAndCastles()
     {
-        return $this->noCastlesExists() && $this->noArmiesExists();
+        return $this->_castles->noCastlesExists() && $this->_armies->noArmiesExists();
     }
 
     public function armiesOrCastlesExists()
     {
-        return $this->armiesExists() || $this->castlesExists();
+        return $this->_armies->armiesExists() || $this->_castles->castlesExists();
     }
 
     public function increaseAllCastlesProductionTurn($gameId, $db)

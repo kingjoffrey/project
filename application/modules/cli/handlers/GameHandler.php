@@ -137,7 +137,7 @@ class Cli_GameHandler extends Cli_WofHandler
                 break;
 
             case 'ruin':
-                new Cli_Model_SearchRuin($dataIn['armyId'], $user, $db, $this);
+                new Cli_Model_SearchRuinHandler($dataIn['armyId'], $user, $db, $this);
                 break;
 
             case 'nextTurn':

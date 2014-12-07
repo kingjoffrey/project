@@ -4,7 +4,7 @@ class Cli_Model_Armies
 {
     private $_armies = array();
 
-    public function get()
+    public function getArray()
     {
         return $this->_armies;
     }
@@ -20,6 +20,10 @@ class Cli_Model_Armies
      */
     public function getArmy($armyId)
     {
+        if (!isset($this->_armies[$armyId])) {
+            Coret_Model_Logger::debug(debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 4));
+            throw new Exception('No army with armyId=' . $armyId);
+        }
         return $this->_armies[$armyId];
     }
 
@@ -112,5 +116,15 @@ class Cli_Model_Armies
         foreach ($this->_armies as $armyId => $army) {
             $fields->addArmy($army->getX(), $army->getY(), $armyId, $color);
         }
+    }
+
+    public function noArmiesExists()
+    {
+        return !count($this->_armies);
+    }
+
+    public function armiesExists()
+    {
+        return count($this->_armies);
     }
 }

@@ -4,21 +4,20 @@ class Cli_Model_Enemies
 {
     private $_enemies = array();
 
-    public function __construct(Cli_Model_Game $game, Cli_Model_Fields $fields, Cli_Model_Players $players, Cli_Model_Path $path, $playerColor)
+    public function __construct(Cli_Model_Game $game, $x, $y, $playerColor)
     {
-        $pathX = $path->getX();
-        $pathY = $path->getY();
-
-        if ($castleId = $fields->getCastleId($pathX, $pathY)) {
-            $defenderColor = $fields->getCastleColor($pathX, $pathY);
+        $fields = $game->getFields();
+        $players = $game->getPlayers();
+        if ($castleId = $fields->getCastleId($x, $y)) {
+            $defenderColor = $fields->getCastleColor($x, $y);
             if ($defenderColor == 'neutral') {
                 $this->_enemies = $players->getPlayer($defenderColor)->getCastleGarrison($game->getTurnNumber(), $game->getFirstUnitId(), $castleId);
             } elseif (!$players->sameTeam($defenderColor, $playerColor)) {
                 $this->handleCastleGarrison($players->getPlayer($defenderColor)->getCastles()->getCastle($castleId), $fields, $players);
             }
-        } elseif ($enemyArmies = $fields->getArmies($pathX, $pathY)) {
+        } elseif ($enemyArmies = $fields->getArmies($x, $y)) {
             foreach ($enemyArmies as $armyId => $color) {
-                $this->_enemies[] = $players->getPlayer($color)->getArmy($armyId);
+                $this->_enemies[] = $players->getPlayer($color)->getArmies()->getArmy($armyId);
             }
         }
     }

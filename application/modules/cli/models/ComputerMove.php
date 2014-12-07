@@ -40,7 +40,7 @@ class Cli_Model_ComputerMove extends Cli_Model_ComputerMethods
         $this->_l->logMethodName();
 
         if ($castleId = $this->_fields->isPlayerCastle($this->_color, $this->_armyX, $this->_armyY)) {
-            return $this->inside($this->_player->getCastle($castleId));
+            return $this->inside($this->_player->getCastles()->getCastle($castleId));
         } else {
             return $this->outside();
         }
@@ -271,33 +271,33 @@ class Cli_Model_ComputerMove extends Cli_Model_ComputerMethods
         } else {
             $this->_l->log('SĄ ZAMKI WROGA');
 
-            $pathToNearestWeakestHostileCastle = $this->findNearestWeakestHostileCastle();
+            $castleId = $this->findNearestWeakestHostileCastle();
 
-            if (isset($pathToNearestWeakestHostileCastle->castleId)) {
-                $this->_l->log('JEST SŁABSZY ZAMEK WROGA: ' . $pathToNearestWeakestHostileCastle->castleId);
+            if ($this->_path->exists()) {
+                $this->_l->log('JEST SŁABSZY ZAMEK WROGA: ' . $castleId);
 
-                if ($pathToNearestWeakestHostileCastle->in) {
+                if ($castleId) {
                     $this->_l->log('SŁABSZY ZAMEK WROGA W ZASIĘGU - ATAKUJĘ!');
-                    $this->_path = $pathToNearestWeakestHostileCastle;
+                    $this->_army->move($this->_game, $this->_path, $this->_color, $this->_db, $this->_gameHandler);
                     return;
                 } else {
                     $this->_l->log('SŁABSZY ZAMEK WROGA POZA ZASIĘGIEM');
-                    $path = $this->getWeakerEnemyArmyInRange();
-                    if (isset($path->current) && $path->current) {
+                    $this->getWeakerEnemyArmyInRange();
+                    if ($this->_path->exists()) {
                         //atakuj
                         $this->_l->log('JEST SŁABSZA ARMIA WROGA W ZASIĘGU (' . $path->armyId . ') - ATAKUJĘ!');
-                        $fightEnemyResults = $this->fightEnemy($path);
-                        return $this->endMove($this->_armyId, $path, $fightEnemyResults);
+                        $this->_army->move($this->_game, $this->_path, $this->_color, $this->_db, $this->_gameHandler);
+                        return;
                     } else {
                         $this->_l->log('BRAK SŁABSZEJ ARMII WROGA W ZASIĘGU');
                         $enemyId = $this->getStrongerEnemyArmyInRange();
                         if ($enemyId) {
                             $this->_l->log('JEST SILNIEJSZA ARMIA WROGA W ZASIĘGU: ' . $enemyId);
-                            $path = $this->getPathToMyArmyInRange();
-                            if ($path->current) {
+                            $this->getPathToMyArmyInRange();
+                            if ($this->_path->exists()) {
                                 $this->_l->log('JEST MOJA ARMIA W ZASIĘGU - DOŁĄCZ!');
-                                $this->_army->updateArmyPosition($this->_playerId, $path, $this->_map['fields'], $this->_gameId, $this->_db);
-                                return $this->endMove($this->_armyId, $path);
+                                $this->_army->move($this->_game, $this->_path, $this->_color, $this->_db, $this->_gameHandler);
+                                return;
                             }
                             $this->_l->log('BRAK MOJEJ ARMII W ZASIĘGU - IDŹ W KIERUNKU ZAMKU!');
                             return $this->savePath($pathToNearestWeakestHostileCastle);
@@ -342,10 +342,10 @@ class Cli_Model_ComputerMove extends Cli_Model_ComputerMethods
             // ATAKUJ
             $this->_l->log('WRÓG JEST SŁABSZY');
             $this->isEnemyArmyInRange($enemy);
-            echo $this->_path->getX()."\n";
-            echo $this->_path->getY()."\n";
-            echo $enemy->getX()."\n";
-            echo $enemy->getY()."\n";
+            echo $this->_path->getX() . "\n";
+            echo $this->_path->getY() . "\n";
+            echo $enemy->getX() . "\n";
+            echo $enemy->getY() . "\n";
             if ($this->_path->exists() && $this->_path->getX() == $enemy->getX() && $this->_path->getY() == $enemy->getY()) {
                 $this->_l->log('SŁABSZY WRÓG W ZASIĘGU - ATAKUJ!');
                 $this->_army->move($this->_game, $this->_path, $this->_color, $this->_db, $this->_gameHandler);
@@ -363,14 +363,18 @@ class Cli_Model_ComputerMove extends Cli_Model_ComputerMethods
                 return $this->endMove($this->_armyId, $path);
             } else {
                 $this->_l->log('BRAK MOJEJ ARMII W ZASIĘGU');
-                $path = $this->getPathToMyCastle($this->getMyCastleNearEnemy());
-                if (isset($path->current) && $path->current) {
+                $castle = $this->getMyCastleNearEnemy();
+                if ($castle) {
+                    $this->getPathToMyCastle($castle);
+                }
+                if ($this->_path->exists()) {
                     $this->_l->log('JEST MÓJ ZAMEK W POBLIŻU WROGA - IDŹ DO ZAMKU');
-                    return $this->savePath($path);
+                    return $this->savePath();
                 } else {
                     $this->_l->log('NIE MA MOJEGO ZAMKU W POBLIŻU WROGA - ZOSTAŃ');
                     $this->_army->setFortified(true, $this->_gameId, $this->_db);
-                    return $this->endMove();
+                    $this->_army->move($this->_game, $this->_path, $this->_color, $this->_db, $this->_gameHandler);
+                    return;
                 }
             }
         }
@@ -393,8 +397,8 @@ class Cli_Model_ComputerMove extends Cli_Model_ComputerMethods
         }
 
         $this->_l->log('IDĘ DO RUIN');
-        $this->_army->move($this->_game, $this->_path, $this->_color, $this->_db, $this->_gameHandler, $ruinId);
-        $this->_game->searchRuin($ruinId, $this->_army, $this->_playerId, $this->_db);
+        $this->_army->move($this->_game, $this->_path, $this->_color, $this->_db, $this->_gameHandler);
+        $this->_game->getRuins()->getRuin($ruinId)->search($this->_game, $this->_army, $this->_playerId, $this->_db);
         $this->_army->setFortified(true, $this->_gameId, $this->_db);
     }
 

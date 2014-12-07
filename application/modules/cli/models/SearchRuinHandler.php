@@ -1,6 +1,6 @@
 <?php
 
-class Cli_Model_SearchRuin
+class Cli_Model_SearchRuinHandler
 {
 
     public function __construct($armyId, $user, $db, $gameHandler)

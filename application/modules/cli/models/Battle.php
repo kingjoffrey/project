@@ -27,7 +27,7 @@ class Cli_Model_Battle
     private $_towerId;
     private $_towerColor;
 
-    public function __construct(Cli_Model_Army $attacker, $defenders, Cli_Model_Game $game, Zend_Db_Adapter_Pdo_Pgsql $db = null, Cli_Model_BattleResult $result)
+    public function __construct(Cli_Model_Army $attacker, $defenders, Cli_Model_Game $game, Zend_Db_Adapter_Pdo_Pgsql $db = null, Cli_Model_BattleResult $result = null)
     {
         $this->_attacker = $attacker;
         $this->_defenders = $defenders;
@@ -227,14 +227,15 @@ class Cli_Model_Battle
             }
         }
 
-        $this->saveFight();
+        if ($this->_db) {
+            $this->saveFight();
+        } else {
+            return count($attack['ships']) || count($attack['heroes']) || count($attack['soldiers']);
+        }
     }
 
     private function saveFight()
     {
-        if (!$this->_db) {
-            return;
-        }
         if ($this->attackerVictory()) {
             $this->_result->victory();
             if ($this->_castleId) {

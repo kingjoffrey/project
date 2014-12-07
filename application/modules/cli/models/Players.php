@@ -9,6 +9,11 @@ class Cli_Model_Players
         return $this->_players;
     }
 
+    public function getKeys()
+    {
+        return array_keys($this->_players);
+    }
+
     public function addPlayer($color, $player)
     {
         $this->_players[$color] = $player;
@@ -26,8 +31,8 @@ class Cli_Model_Players
     public function toArray()
     {
         $players = array();
-        foreach ($this->_players as $color => $player) {
-            $players[$color] = $player->toArray();
+        foreach ($this->getKeys() as $color) {
+            $players[$color] = $this->getPlayer($color)->toArray();
         }
         return $players;
     }
@@ -43,11 +48,12 @@ class Cli_Model_Players
     public function noEnemyCastles($playerColor)
     {
         $playerTeam = $this->getPlayer($playerColor)->getTeam();
-        foreach ($this->_players as $color => $player) {
+        foreach ($this->getKeys() as $color) {
+            $player = $this->getPlayer($color);
             if ($color == $playerColor || $playerTeam == $player->getTeam()) {
                 continue;
             }
-            if ($player->castlesExists()) {
+            if ($player->getCastles()->castlesExists()) {
                 return false;
             }
         }
@@ -58,11 +64,12 @@ class Cli_Model_Players
     public function allEnemiesAreDead($playerColor)
     {
         $playerTeam = $this->getPlayer($playerColor)->getTeam();
-        foreach ($this->_players as $color => $player) {
+        foreach ($this->getKeys() as $color) {
+            $player = $this->getPlayer($color);
             if ($color == $playerColor || $playerTeam == $player->getTeam()) {
                 continue;
             }
-            if ($player->castlesExists() || $player->armiesExists()) {
+            if ($player->getCastles()->castlesExists() || $player->getArmies()->armiesExists()) {
                 return false;
             }
         }
@@ -73,23 +80,40 @@ class Cli_Model_Players
     {
         $playerTeam = $this->getPlayer($playerColor)->getTeam();
         $enemies = array();
-        foreach ($this->_players as $color => $player) {
+        foreach ($this->getKeys() as $color) {
+            $player = $this->getPlayer($color);
             if ($color == $playerColor || $playerTeam == $player->getTeam()) {
                 continue;
             }
-            $enemies = array_merge($enemies, $player->getArmies()->get());
+            $enemies = array_merge($enemies, $player->getArmies()->getArray());
         }
         return $enemies;
     }
 
     public function initFields($fields)
     {
-        foreach ($this->_players as $color => $player) {
+        foreach ($this->getKeys() as $color) {
+            $player = $this->getPlayer($color);
             $player->getArmies()->initFields($fields, $color);
             $player->getCastles()->initFields($fields, $color);
             $player->getTowers()->initFields($fields, $color);
         }
     }
 
+    public function activatePlayerTurn($playerColor, $playerId, $gameId, $db)
+    {
+        $mPlayersInGame = new Application_Model_PlayersInGame($gameId, $db);
+        $mPlayersInGame->turnActivate($playerId);
 
+        foreach ($this->getKeys() as $color) {
+            if ($color == 'neutral') {
+                continue;
+            }
+            if ($playerColor == $color) {
+                $this->getPlayer($color)->setTurnActive(true);
+            } else {
+                $this->getPlayer($color)->setTurnActive(false);
+            }
+        }
+    }
 }

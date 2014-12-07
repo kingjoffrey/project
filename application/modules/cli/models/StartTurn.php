@@ -7,8 +7,9 @@ class Cli_Model_StartTurn
     {
         $players = $game->getPlayers();
         $gameId = $game->getId();
-        $player = $players->getPlayer($game->getPlayerColor($playerId));
-        $game->activatePlayerTurn($playerId, $db);
+        $color = $game->getPlayerColor($playerId);
+        $player = $players->getPlayer($color);
+        $players->activatePlayerTurn($color, $playerId, $gameId, $db);
 
         if ($player->getComputer()) {
             $player->unfortifyArmies($gameId, $db);
@@ -24,7 +25,7 @@ class Cli_Model_StartTurn
             'gold' => $player->getGold(),
             'armies' => $player->getArmies()->toArray(),
             'castles' => $player->getCastles()->toArray(),
-            'color' => $game->getPlayerColor($playerId)
+            'color' => $color
         );
         $gameHandler->sendToChannel($db, $token, $gameId);
     }

@@ -9,6 +9,11 @@ class Cli_Model_Castles
         return $this->_castles;
     }
 
+    public function getKeys()
+    {
+        return array_keys($this->_castles);
+    }
+
     public function addCastle($castleId, Cli_Model_Castle $castle, $oldColor = null, $playerId = null, $gameId = null, $db = null)
     {
         $this->_castles[$castleId] = $castle;
@@ -60,5 +65,15 @@ class Cli_Model_Castles
         foreach ($this->_castles as $castleId => $castle) {
             $fields->initCastle($castle->getX(), $castle->getY(), $castleId, $color);
         }
+    }
+
+    public function noCastlesExists()
+    {
+        return !count($this->_castles);
+    }
+
+    public function castlesExists()
+    {
+        return count($this->_castles);
     }
 }

@@ -18,8 +18,7 @@ class Cli_Model_NextTurn
         $this->_players = $this->_game->getPlayers();
 
         $nextPlayerColor = $this->_game->getPlayerColor($nextPlayerId);
-        $player = $this->_players->getPlayer($nextPlayerColor);
-        if ($player->noArmiesAndCastles()) {
+        if ($this->_players->getPlayer($nextPlayerColor)->noArmiesAndCastles()) {
             $this->playerLost($nextPlayerColor);
         }
 

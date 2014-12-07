@@ -25,7 +25,7 @@ abstract class Cli_Model_ComputerMethods
         $this->_player->getComputerEmptyCastleInComputerRange($computer, $this->_fields);
     }
 
-    public function getEnemiesHaveRangeAtThisCastle($castle)
+    public function getEnemiesHaveRangeAtThisCastle(Cli_Model_Castle $castle)
     {
         $this->_l->logMethodName();
         $enemiesHaveRange = array();
@@ -131,96 +131,7 @@ abstract class Cli_Model_ComputerMethods
         }
     }
 
-    public function getWeakerHostileCastleId($castlesIds = array())
-    {
-        $this->_l->logMethodName();
-        $heuristics = array();
-
-        foreach ($this->_players->get() as $color => $player) {
-            if ($this->_players->sameTeam($this->_color, $color)) {
-                continue;
-            }
-            foreach ($player->getCastles() as $castleId => $castle) {
-                if (in_array($castleId, $castlesIds)) {
-                    continue;
-                }
-                $mHeuristics = new Cli_Model_Heuristics($castle->getX(), $castle->getY());
-                $heuristics[$castleId] = $mHeuristics->calculateH($this->_armyX, $this->_armyY);
-            }
-        }
-
-        asort($heuristics, SORT_NUMERIC);
-
-
-        foreach (array_keys($heuristics) as $id) {
-            if ($this->_players->getPlayer('neutral')->getCastles()->hasCastle($id)) {
-                $enemy = $this->_players->getPlayer('neutral')->getCastleGarrison($this->_game->getTurnNumber(), $this->_game->getFirstUnitId());
-            } else {
-                $enemy = $this->handleCastleGarrison($this->_players->g);
-            }
-
-            if (!$this->isEnemyStronger($enemy)) {
-                return $id;
-            }
-        }
-        return null;
-    }
-
-    public function findNearestWeakestHostileCastle()
-    {
-        $this->_l->logMethodName();
-        $omittedCastlesIds = array();
-        $weakerHostileCastleId = $this->getWeakerHostileCastleId();
-
-        if (!$weakerHostileCastleId) {
-            return;
-        }
-
-        $this->getPathToEnemyCastleInRange($weakerHostileCastleId);
-        while (true) {
-            if ($this->_path && !$this->_path->exist()) {
-                $omittedCastlesIds[] = $weakerHostileCastleId;
-                $weakerHostileCastleId = $this->getWeakerHostileCastleId($omittedCastlesIds);
-                if ($weakerHostileCastleId) {
-                    $this->getPathToEnemyCastleInRange($weakerHostileCastleId);
-                } else {
-                    break;
-                }
-            }
-            break;
-        }
-        return $weakerHostileCastleId;
-    }
-
-    public function getPathToEnemyCastleInRange($castleId)
-    {
-        $this->_l->logMethodName();
-
-        foreach ($this->_players->get() as $color => $player) {
-            if ($player->hasCastle($castleId)) {
-                $castle = $this->_players->getPlayer($color)->getCastle($castleId);
-                break;
-            }
-        }
-
-        $castleX = $castle->getX();
-        $castleY = $castle->getY();
-
-        $this->_fields->setCastleTemporaryType($castleX, $castleY, 'E');
-
-        try {
-            $aStar = new Cli_Model_Astar($this->_army, $castleX, $castleY, $this->_fields, $this->_color);
-        } catch (Exception $e) {
-            echo($e);
-            return;
-        }
-
-        $this->_path = new Cli_Model_Path($aStar->getPath($castleX . '_' . $castleY), $this->_army);
-
-        return $this->_fields->isEnemyCastle($this->_color, $this->_path->getX(), $this->_path->getY());
-    }
-
-    public function getPathToMyCastle($castle)
+    public function getPathToMyCastle(Cli_Model_Castle $castle)
     {
         $this->_l->logMethodName();
         $castleX = $castle->getX();
@@ -279,13 +190,14 @@ abstract class Cli_Model_ComputerMethods
     protected function getPathToMyArmyInRange()
     {
         $this->_l->logMethodName();
-        if ($this->_turnNumber < 5) {
+        $turnNumber = $this->_game->getTurnNumber();
+        if ($turnNumber < 5) {
             return;
         }
         $myArmies = array();
         $myArmyId = $this->_armyId;
 
-        $numberOfUnits = floor($this->_turnNumber / 7);
+        $numberOfUnits = floor($turnNumber / 7);
         if ($numberOfUnits > 4) {
             $numberOfUnits = 4;
         }
@@ -542,34 +454,6 @@ abstract class Cli_Model_ComputerMethods
                     return $move;
                 }
             }
-        }
-    }
-
-    public function isEnemyStronger($enemies, $max = 30)
-    {
-        $this->_l->logMethodName();
-
-        $attackerWinsCount = 0;
-        $attackerCourage = 2;
-
-        $battle = new Cli_Model_Battle(
-            $this->_army,
-            $enemies,
-            $this->_game
-        );
-
-        for ($i = 0; $i < $max; $i++) {
-            $battle->fight();
-            if ($battle->attackerVictory()) {
-                $attackerWinsCount++;
-            }
-        }
-
-        $border = $max - $attackerWinsCount - $attackerCourage;
-        if ($attackerWinsCount >= $border) {
-            return false;
-        } else {
-            return true;
         }
     }
 }
