@@ -53,7 +53,9 @@ class Cli_Model_Ruin extends Cli_Model_Entity
 //kasa
             $gold = rand(50, 150);
             $found = array('gold', $gold);
-            $game->getPlayers()->getPlayer($game->getPlayerColor($playerId))->addGold($gold, $gameId, $db);
+            $player = $game->getPlayers()->getPlayer($game->getPlayerColor($playerId));
+            $player->addGold($gold);
+            $player->saveGold($gameId, $db);
             $army->zeroHeroMovesLeft($heroId, $gameId, $db);
             $this->setEmpty($gameId, $db);
         } elseif ($random < 85) { //30%

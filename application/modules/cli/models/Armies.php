@@ -9,6 +9,11 @@ class Cli_Model_Armies
         return $this->_armies;
     }
 
+    public function getKeys()
+    {
+        return array_keys($this->_armies);
+    }
+
     public function addArmy($armyId, $army)
     {
         $this->_armies[$armyId] = $army;

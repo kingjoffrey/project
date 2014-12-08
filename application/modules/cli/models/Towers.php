@@ -51,4 +51,9 @@ class Cli_Model_Towers
             $fields->initTower($tower->getX(), $tower->getY(), $towerId, $color);
         }
     }
+
+    public function count()
+    {
+        return count($this->_towers);
+    }
 }

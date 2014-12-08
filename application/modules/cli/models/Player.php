@@ -188,77 +188,14 @@ class Cli_Model_Player extends Cli_Model_DefaultPlayer
         $this->_gold -= $gold;
     }
 
-    public function addGold($gold, $gameId, $db)
+    public function addGold($gold)
     {
         $this->_gold += $gold;
-        $mPlayersInGame = new Application_Model_PlayersInGame($gameId, $db);
-        $mPlayersInGame->updatePlayerGold($this->_id, $this->_gold);
     }
 
     public function setTurnActive($turnActive)
     {
         $this->_turnActive = $turnActive;
-    }
-
-    public function startTurn($gameId, $turnNumber, $db)
-    {
-        $units = Zend_Registry::get('units');
-
-        $this->_armies->resetMovesLeft($gameId, $db);
-
-        foreach ($this->_armies as $armyId => $army) {
-            $this->subtractGold($army->getCosts());
-        }
-
-        $this->addGold(count($this->_towers) * 5, $this->_id, $db);
-
-        foreach ($this->_castles as $castleId => $castle) {
-            $this->addGold($castle->getIncome(), $this->_id, $db);
-            $production = $castle->getProduction();
-
-            if ($this->_computer) {
-                if ($turnNumber < 7) {
-                    $unitId = $castle->getUnitIdWithShortestProductionTime($production);
-                } else {
-                    $unitId = $castle->findBestCastleProduction();
-                }
-                if ($unitId != $castle->getProductionId()) {
-                    $relocationToCastleId = null;
-                    $castle->setProductionId($gameId, $this->_id, $castleId, $unitId, $relocationToCastleId, $db);
-                }
-            } else {
-                $unitId = $castle->getProductionId();
-            }
-
-            if ($unitId && $production[$unitId]['time'] <= $castle->getProductionTurn() && $units[$unitId]['cost'] <= $this->_gold) {
-                $castle->resetProductionTurn($gameId, $db);
-                $unitCastleId = null;
-
-                if ($relocationCastleId = $castle->getRelocationCastleId()) {
-                    if (isset($this->_castles[$relocationCastleId])) {
-                        $unitCastleId = $relocationCastleId;
-                    }
-
-                    if (!$unitCastleId) {
-                        $castle->cancelProductionRelocation($gameId, $db);
-                    }
-                }
-
-                if (!$unitCastleId) {
-                    $unitCastleId = $castleId;
-                }
-
-                $x = $this->_castles->getCastle($unitCastleId)->getX();
-                $y = $this->_castles->getCastle($unitCastleId)->getY();
-                $armyId = $this->getArmies()->getArmyIdFromPosition($x, $y);
-
-                if (!$armyId) {
-                    $armyId = $this->createArmy($gameId, $this->_id, $x, $y, $db);
-                }
-
-                $this->_armies->getArmy($armyId)->createSoldier($gameId, $this->_id, $unitId, $db);
-            }
-        }
     }
 
     public function createArmy($gameId, $x, $y, $db)
@@ -340,5 +277,20 @@ class Cli_Model_Player extends Cli_Model_DefaultPlayer
     {
         $mCastlesInGame = new Application_Model_CastlesInGame($gameId, $db);
         $mCastlesInGame->increaseAllCastlesProductionTurn($this->_id);
+    }
+
+    public function countIncomeAndOutcome()
+    {
+        foreach ($this->_armies->getKeys() as $armyId) {
+            $this->subtractGold($this->_armies->getArmy($armyId)->getCosts());
+        }
+
+        $this->addGold(count($this->_towers->count()) * 5);
+    }
+
+    public function saveGold($gameId, $db)
+    {
+        $mPlayersInGame = new Application_Model_PlayersInGame($gameId, $db);
+        $mPlayersInGame->updatePlayerGold($this->_id, $this->_gold);
     }
 }
