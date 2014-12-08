@@ -3,49 +3,18 @@
 class Cli_Model_Me
 {
     private $_id;
-    private $_gold;
-    private $_accessKey;
     private $_color;
-    private $_turn = false;
-    private $_team;
 
-    public function __construct($color, $team, $player)
+    public function __construct($color, $playerId)
     {
-        $this->_id = $player['playerId'];
-        $this->_gold = $player['gold'];
-        $this->_accessKey = $player['accessKey'];
-        $this->_color = $color;
-        $this->_team = $team;
-    }
-
-    public function setTurn($turn)
-    {
-        $this->_turn = $turn;
+        $this->_id = $playerId;
     }
 
     public function toArray()
     {
         return array(
-            'gold' => $this->_gold,
-            'accessKey' => $this->_accessKey,
-            'color' => $this->_color,
-            'turn' => $this->_turn
+            'color' => $this->_color
         );
-    }
-
-    public function isMyColor($color)
-    {
-        return $color == $this->_color;
-    }
-
-    public function getTeam()
-    {
-        return $this->_team;
-    }
-
-    public function getColor()
-    {
-        return $this->_color;
     }
 
     public function getId()

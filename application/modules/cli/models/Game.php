@@ -93,12 +93,8 @@ class Cli_Model_Game
 
         $this->_me = new Cli_Model_Me(
             $this->getPlayerColor($playerId),
-            $this->_players->getPlayer($this->getPlayerColor($playerId))->getTeam(),
-            $mPlayersInGame->getMe($playerId)
+            $playerId
         );
-        if ($this->_turnPlayerId == $playerId) {
-            $this->_me->setTurn(true);
-        }
 
         $this->_players->initFields($this->_fields);
     }

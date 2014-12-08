@@ -8,13 +8,9 @@
  * @author Bartosz Krzeszewski
  *
  */
-class Cli_GameHandler extends Cli_WofHandler
+class Cli_GameHumansHandler extends Cli_WofHandler
 {
-
-    public function __construct()
-    {
-        parent::__construct();
-    }
+    private $_game;
 
     public function onMessage(IWebSocketConnection $user, IWebSocketMessage $msg)
     {
@@ -32,17 +28,16 @@ class Cli_GameHandler extends Cli_WofHandler
         $db = Cli_Model_Database::getDb();
 
         if ($dataIn['type'] == 'open') {
-            new Cli_Model_Open($dataIn, $user, $db, $this);
+            $open = new Cli_Model_Open($dataIn, $user, $db, $this);
+            $this->_game = $open->getGame();
             return;
         }
 
-//        if($dataIn['type'] == 'test') {
-//            $open = new Cli_Model_Test($dataIn, $user, $db, $this);
-//            return;
-//        }
+        $gameId = $this->_game->getId();
+        $playerId = $this->_game->getMe()->getId();
 
         // AUTHORIZATION
-        if (!Zend_Validate::is($user->parameters['gameId'], 'Digits') || !Zend_Validate::is($user->parameters['playerId'], 'Digits')) {
+        if (!Zend_Validate::is($gameId, 'Digits') || !Zend_Validate::is($playerId, 'Digits')) {
             $this->sendError($user, 'No game ID or player ID. Not authorized.');
             return;
         }
@@ -54,36 +49,36 @@ class Cli_GameHandler extends Cli_WofHandler
 
         if ($timeLimit = $user->parameters['game']->getTimeLimit()) {
             if (time() - $user->parameters['begin'] > $timeLimit * 600) {
-                $mGame = new Application_Model_Game($user->parameters['gameId'], $db);
+                $mGame = new Application_Model_Game($gameId, $db);
                 $mGame->endGame();
                 $mTurn = new Cli_Model_Turn($user, $db, $this);
                 $mTurn->saveResults();
                 $token = array(
                     'type' => 'end'
                 );
-                $this->sendToChannel($db, $token, $user->parameters['gameId']);
+                $this->sendToChannel($db, $token, $gameId);
                 return;
             }
         }
 
         if ($turnTimeLimit = $user->parameters['game']->getTurnTimeLimit()) {
-            $mTurn = new Application_Model_TurnHistory($user->parameters['gameId'], $db);
+            $mTurn = new Application_Model_TurnHistory($gameId, $db);
             $turn = $mTurn->getCurrentStatus();
             if (time() - strtotime($turn['date']) > $turnTimeLimit * 60) {
-                $mGame = new Application_Model_Game($user->parameters['gameId'], $db);
+                $mGame = new Application_Model_Game($gameId, $db);
                 $mTurn = new Cli_Model_Turn($user, $db, $this);
                 $mTurn->next($mGame->getTurnPlayerId());
                 return;
             }
         }
 
-
-        Cli_Model_Database::addTokensIn($db, $user->parameters['gameId'], $user->parameters['playerId'], $dataIn);
-
-        if ($dataIn['type'] == 'computer') {
-            new Cli_Model_Computer($user, $user->parameters['game'], $db, $this);
-            return;
+        if (!Zend_Registry::get('turnOffDatabaseLogging')) {
+            Cli_Model_Database::addTokensIn($db, $gameId, $playerId, $dataIn);
         }
+//        if ($dataIn['type'] == 'computer') {
+//            new Cli_Model_Computer($user, $user->parameters['game'], $db, $this);
+//            return;
+//        }
 
         if ($dataIn['type'] == 'bSequence') {
             new Cli_Model_BattleSequence($dataIn, $user, $db, $this);
@@ -96,11 +91,11 @@ class Cli_GameHandler extends Cli_WofHandler
         }
 
         if ($dataIn['type'] == 'statistics') {
-            new Cli_Model_Statistics($user->parameters['gameId'], $db, $this);
+            new Cli_Model_Statistics($gameId, $db, $this);
             return;
         }
 
-        if (!$user->parameters['game']->isPlayerTurn($user->parameters['playerId'])) {
+        if (!$user->parameters['game']->isPlayerTurn($playerId)) {
             $this->sendError($user, 'Not your turn.');
 
             if (Zend_Registry::get('config')->exitOnErrors) {
@@ -115,7 +110,7 @@ class Cli_GameHandler extends Cli_WofHandler
                 break;
 
             case 'split':
-                new Cli_Model_SplitArmy($dataIn['armyId'], $dataIn['s'], $dataIn['h'], $user, $user->parameters['playerId'], $db, $this);
+                new Cli_Model_SplitArmy($dataIn['armyId'], $dataIn['s'], $dataIn['h'], $user, $playerId, $db, $this);
                 break;
 
             case 'join':
@@ -143,11 +138,11 @@ class Cli_GameHandler extends Cli_WofHandler
                 break;
 
             case 'nextTurn':
-                new Cli_Model_NextTurn($user->parameters['playerId'], $user, $user->parameters['game'], $db, $this);
+                new Cli_Model_NextTurn($user, $user->parameters['game'], $db, $this);
                 break;
 
             case 'startTurn':
-                new Cli_Model_StartTurn($user->parameters['playerId'], $user, $user->parameters['game'], $db, $this);
+                new Cli_Model_StartTurn($playerId, $user, $user->parameters['game'], $db, $this);
                 break;
 
             case 'raze':
@@ -174,23 +169,25 @@ class Cli_GameHandler extends Cli_WofHandler
 
     public function onDisconnect(IWebSocketConnection $user)
     {
-        if ((isset($user->parameters['gameId']) && Zend_Validate::is($user->parameters['gameId'], 'Digits')) || (isset($user->parameters['playerId']) && Zend_Validate::is($user->parameters['playerId'], 'Digits'))) {
+        if ($this->_game) {
             $db = Cli_Model_Database::getDb();
+            $gameId = $this->_game->getId();
+            $playerId = $this->_game->getMe()->getId();
 
-            $mPlayersInGame = new Application_Model_PlayersInGame($user->parameters['gameId'], $db);
-            $mPlayersInGame->updateWSSUId($user->parameters['playerId'], null);
+            $mPlayersInGame = new Application_Model_PlayersInGame($gameId, $db);
+            $mPlayersInGame->updateWSSUId($playerId, null);
 
             $playersInGameColors = Zend_Registry::get('playersInGameColors');
 
             $token = array(
                 'type' => 'close',
-                'color' => $playersInGameColors[$user->parameters['playerId']]
+                'color' => $playersInGameColors[$playerId]
             );
 
-            $this->sendToChannel($db, $token, $user->parameters['gameId']);
+            $this->sendToChannel($db, $token, $gameId);
 
-//            Game_Cli_Database::disconnectFromGame($user->parameters['gameId'], $user->parameters['playerId'], $db);
-//            $this->update($user->parameters['gameId'], $db);
+//            Game_Cli_Database::disconnectFromGame($gameId, $playerId, $db);
+//            $this->update($gameId, $db);
         }
 
 //        $this->say("[DEMO] {$user->getId()} disconnected");
@@ -206,7 +203,9 @@ class Cli_GameHandler extends Cli_WofHandler
             return;
         }
 
-        Cli_Model_Database::addTokensOut($db, $gameId, $token);
+        if (!Zend_Registry::get('turnOffDatabaseLogging')) {
+            Cli_Model_Database::addTokensOut($db, $gameId, $token);
+        }
     }
 
     /**
@@ -223,7 +222,9 @@ class Cli_GameHandler extends Cli_WofHandler
             print_r($token);
         }
 
-        Cli_Model_Database::addTokensOut($db, $gameId, $token);
+        if (!Zend_Registry::get('turnOffDatabaseLogging')) {
+            Cli_Model_Database::addTokensOut($db, $gameId, $token);
+        }
 
         $this->send($user, Zend_Json::encode($token));
     }

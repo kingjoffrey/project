@@ -2,6 +2,8 @@
 
 class Cli_Model_Open
 {
+    private $_game;
+
     public function __construct($dataIn, $user, Zend_Db_Adapter_Pdo_Pgsql $db, $gameHandler)
     {
         if (!isset($dataIn['gameId']) || !isset($dataIn['playerId']) || !isset($dataIn['langId'])) {
@@ -21,16 +23,15 @@ class Cli_Model_Open
         Zend_Registry::set('id_lang', $dataIn['langId']);
         Zend_Registry::set('playersInGameColors', $mPlayersInGame->getAllColors());
 
-        $game = new Cli_Model_Game($dataIn['playerId'], $dataIn['gameId'], $db);
-        $user->parameters = array(
-            'game' => $game,
-            'playerId' => $dataIn['playerId'],
-            'gameId' => $dataIn['gameId']
-        );
-        $token = $game->toArray();
+        $this->_game = new Cli_Model_Game($dataIn['playerId'], $dataIn['gameId'], $db);
+        $token = $this->_game->toArray();
         $token['type'] = 'open';
 
         $gameHandler->sendToUser($user, $db, $token, $dataIn['gameId']);
     }
 
+    public function getGame()
+    {
+        return $this->_game;
+    }
 }

@@ -8,7 +8,7 @@ class Cli_Model_NextTurn
     protected $_game;
     protected $_players;
 
-    public function __construct($nextPlayerId, IWebSocketConnection $user, Cli_Model_Game $game, Zend_Db_Adapter_Pdo_Pgsql $db, Cli_GameHandler $gameHandler)
+    public function __construct(IWebSocketConnection $user, Cli_Model_Game $game, Zend_Db_Adapter_Pdo_Pgsql $db, Cli_GameHandler $gameHandler)
     {
         $this->_user = $user;
         $this->_game = $game;
@@ -17,18 +17,8 @@ class Cli_Model_NextTurn
         $this->_gameId = $this->_game->getId();
         $this->_players = $this->_game->getPlayers();
 
-        $nextPlayerColor = $this->_game->getPlayerColor($nextPlayerId);
-        if ($this->_players->getPlayer($nextPlayerColor)->noArmiesAndCastles()) {
-            $this->playerLost($nextPlayerColor);
-        }
-
-        if ($this->_players->allEnemiesAreDead($nextPlayerColor)) {
-            $this->endGame($this->_gameId);
-            return;
-        }
-
         while (true) {
-            $nextPlayerId = $this->getExpectedNextTurnPlayer($this->_game, $nextPlayerId, $this->_db);
+            $nextPlayerId = $this->getExpectedNextTurnPlayer($this->_game, $this->_db);
             $nextPlayerColor = $this->_game->getPlayerColor($nextPlayerId);
 
             $player = $this->_players->getPlayer($nextPlayerColor);
@@ -229,9 +219,9 @@ class Cli_Model_NextTurn
 
     }
 
-    private function getExpectedNextTurnPlayer(Cli_Model_Game $game, $playerId, Zend_Db_Adapter_Pdo_Pgsql $db)
+    private function getExpectedNextTurnPlayer(Cli_Model_Game $game, Zend_Db_Adapter_Pdo_Pgsql $db)
     {
-        $playerColor = $this->getPlayerColor($playerId);
+        $playerColor = $game->getPlayerColor($game->getTurnPlayerId());
         $find = false;
         $playersInGameColors = $game->getPlayersInGameColors();
 
@@ -268,7 +258,7 @@ class Cli_Model_NextTurn
 
         $mGame = new Application_Model_Game($game->getId(), $db);
         $mGame->updateTurn($turnPlayerId, $game->getTurnNumber());
-        
+
         return $turnPlayerId;
     }
 }
