@@ -47,21 +47,16 @@ class Cli_GameHumansHandler extends Cli_WofHandler
             return;
         }
 
-        if ($timeLimit = $user->parameters['game']->getTimeLimit()) {
-            if (time() - $user->parameters['begin'] > $timeLimit * 600) {
+        if ($timeLimit = $this->_game->getTimeLimit()) {
+            if (time() - $this->_game->getBegin() > $timeLimit * 600) {
                 $mGame = new Application_Model_Game($gameId, $db);
                 $mGame->endGame();
-                $mTurn = new Cli_Model_Turn($user, $db, $this);
-                $mTurn->saveResults();
-                $token = array(
-                    'type' => 'end'
-                );
-                $this->sendToChannel($db, $token, $gameId);
+                new Cli_Model_SaveResults($gameId, $db, $this);
                 return;
             }
         }
 
-        if ($turnTimeLimit = $user->parameters['game']->getTurnTimeLimit()) {
+        if ($turnTimeLimit = $this->_game->getTurnTimeLimit()) {
             $mTurn = new Application_Model_TurnHistory($gameId, $db);
             $turn = $mTurn->getCurrentStatus();
             if (time() - strtotime($turn['date']) > $turnTimeLimit * 60) {
@@ -75,10 +70,10 @@ class Cli_GameHumansHandler extends Cli_WofHandler
         if (!Zend_Registry::get('turnOffDatabaseLogging')) {
             Cli_Model_Database::addTokensIn($db, $gameId, $playerId, $dataIn);
         }
-//        if ($dataIn['type'] == 'computer') {
-//            new Cli_Model_Computer($user, $user->parameters['game'], $db, $this);
-//            return;
-//        }
+        if ($dataIn['type'] == 'computer') {
+            new Cli_Model_Computer($user, $this->_game, $db, $this);
+            return;
+        }
 
         if ($dataIn['type'] == 'bSequence') {
             new Cli_Model_BattleSequence($dataIn, $user, $db, $this);
@@ -86,7 +81,7 @@ class Cli_GameHumansHandler extends Cli_WofHandler
         }
 
         if ($dataIn['type'] == 'production') {
-            new Cli_Model_Production($dataIn, $user, $user->parameters['game'], $db, $this);
+            new Cli_Model_Production($dataIn, $user, $this->_game, $db, $this);
             return;
         }
 
@@ -95,7 +90,7 @@ class Cli_GameHumansHandler extends Cli_WofHandler
             return;
         }
 
-        if (!$user->parameters['game']->isPlayerTurn($playerId)) {
+        if (!$this->_game->isPlayerTurn($playerId)) {
             $this->sendError($user, 'Not your turn.');
 
             if (Zend_Registry::get('config')->exitOnErrors) {
@@ -106,7 +101,7 @@ class Cli_GameHumansHandler extends Cli_WofHandler
 
         switch ($dataIn['type']) {
             case 'move':
-                new Cli_Model_Move($dataIn, $user, $user->parameters['game'], $db, $this);
+                new Cli_Model_Move($dataIn, $user, $this->_game, $db, $this);
                 break;
 
             case 'split':
@@ -138,11 +133,11 @@ class Cli_GameHumansHandler extends Cli_WofHandler
                 break;
 
             case 'nextTurn':
-                new Cli_Model_NextTurn($user, $user->parameters['game'], $db, $this);
+                new Cli_Model_NextTurn($user, $this->_game, $db, $this);
                 break;
 
             case 'startTurn':
-                new Cli_Model_StartTurn($playerId, $user, $user->parameters['game'], $db, $this);
+                new Cli_Model_StartTurn($playerId, $user, $this->_game, $db, $this);
                 break;
 
             case 'raze':

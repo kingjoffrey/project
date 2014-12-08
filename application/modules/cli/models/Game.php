@@ -264,4 +264,9 @@ class Cli_Model_Game
     {
         return $this->_playersInGameColors;
     }
+
+    public function getBegin()
+    {
+        return $this->_begin;
+    }
 }

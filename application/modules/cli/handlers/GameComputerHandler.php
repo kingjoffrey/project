@@ -11,11 +11,6 @@
 class Cli_GameComputerHandler extends Cli_WofHandler
 {
 
-    public function __construct()
-    {
-        parent::__construct();
-    }
-
     public function onMessage(IWebSocketConnection $user, IWebSocketMessage $msg)
     {
 
@@ -31,144 +26,32 @@ class Cli_GameComputerHandler extends Cli_WofHandler
 
         $db = Cli_Model_Database::getDb();
 
-        if ($dataIn['type'] == 'open') {
-            new Cli_Model_Open($dataIn, $user, $db, $this);
+        $playerId = $game->getTurnPlayerId();
+        $players = $game->getPlayers();
+        $color = $game->getPlayerColor($playerId);
+        $player = $players->getPlayer($color);
+
+        if (!$player->getTurnActive()) {
+            $l->log('START TURY');
+            new Cli_Model_StartTurn($playerId, $user, $game, $db, $gameHandler);
             return;
         }
 
-//        if($dataIn['type'] == 'test') {
-//            $open = new Cli_Model_Test($dataIn, $user, $db, $this);
-//            return;
-//        }
-
-        // AUTHORIZATION
-        if (!Zend_Validate::is($user->parameters['gameId'], 'Digits') || !Zend_Validate::is($user->parameters['playerId'], 'Digits')) {
-            $this->sendError($user, 'No game ID or player ID. Not authorized.');
+        if (!$player->getComputer()) {
+            echo 'To (' . $playerId . ') nie komputer!' . "\n";
+//                $this->sendError($user, 'To (' . $playerId . ') nie komputer!');
             return;
         }
 
-        if ($dataIn['type'] == 'chat') {
-            new Cli_Model_Chat($dataIn['msg'], $user, $db, $this);
+        if (Cli_Model_ComputerHeroResurrection::handle($playerId, $game, $db, $gameHandler)) {
             return;
         }
 
-        if ($timeLimit = $user->parameters['game']->getTimeLimit()) {
-            if (time() - $user->parameters['begin'] > $timeLimit * 600) {
-                $mGame = new Application_Model_Game($user->parameters['gameId'], $db);
-                $mGame->endGame();
-                $mTurn = new Cli_Model_Turn($user, $db, $this);
-                $mTurn->saveResults();
-                $token = array(
-                    'type' => 'end'
-                );
-                $this->sendToChannel($db, $token, $user->parameters['gameId']);
-                return;
-            }
-        }
-
-        if ($turnTimeLimit = $user->parameters['game']->getTurnTimeLimit()) {
-            $mTurn = new Application_Model_TurnHistory($user->parameters['gameId'], $db);
-            $turn = $mTurn->getCurrentStatus();
-            if (time() - strtotime($turn['date']) > $turnTimeLimit * 60) {
-                $mGame = new Application_Model_Game($user->parameters['gameId'], $db);
-                $mTurn = new Cli_Model_Turn($user, $db, $this);
-                $mTurn->next($mGame->getTurnPlayerId());
-                return;
-            }
-        }
-
-
-        Cli_Model_Database::addTokensIn($db, $user->parameters['gameId'], $user->parameters['playerId'], $dataIn);
-
-        if ($dataIn['type'] == 'computer') {
-            new Cli_Model_Computer($user, $user->parameters['game'], $db, $this);
-            return;
-        }
-
-        if ($dataIn['type'] == 'bSequence') {
-            new Cli_Model_BattleSequence($dataIn, $user, $db, $this);
-            return;
-        }
-
-        if ($dataIn['type'] == 'production') {
-            new Cli_Model_Production($dataIn, $user, $user->parameters['game'], $db, $this);
-            return;
-        }
-
-        if ($dataIn['type'] == 'statistics') {
-            new Cli_Model_Statistics($user->parameters['gameId'], $db, $this);
-            return;
-        }
-
-        if (!$user->parameters['game']->isPlayerTurn($user->parameters['playerId'])) {
-            $this->sendError($user, 'Not your turn.');
-
-            if (Zend_Registry::get('config')->exitOnErrors) {
-                exit;
-            }
-            return;
-        }
-
-        switch ($dataIn['type']) {
-            case 'move':
-                new Cli_Model_Move($dataIn, $user, $user->parameters['game'], $db, $this);
-                break;
-
-            case 'split':
-                new Cli_Model_SplitArmy($dataIn['armyId'], $dataIn['s'], $dataIn['h'], $user, $user->parameters['playerId'], $db, $this);
-                break;
-
-            case 'join':
-                new Cli_Model_JoinArmy($dataIn['armyId'], $user, $db, $this);
-                break;
-
-            case 'fortify':
-                new Cli_Model_Fortify($dataIn['armyId'], $dataIn['fortify'], $user, $db, $this);
-                break;
-
-            case 'disband':
-                new Cli_Model_DisbandArmy($dataIn['armyId'], $user, $db, $this);
-                break;
-
-            case 'resurrection':
-                new Cli_Model_HeroResurrection($user, $db, $this);
-                break;
-
-            case 'hire':
-                new Cli_Model_HeroHire($user, $db, $this);
-                break;
-
-            case 'ruin':
-                new Cli_Model_SearchRuinHandler($dataIn['armyId'], $user, $db, $this);
-                break;
-
-            case 'nextTurn':
-                new Cli_Model_NextTurn($user, $user->parameters['game'], $db, $this);
-                break;
-
-            case 'startTurn':
-                new Cli_Model_StartTurn($user->parameters['playerId'], $user, $user->parameters['game'], $db, $this);
-                break;
-
-            case 'raze':
-                new Cli_Model_CastleRaze($dataIn['armyId'], $user, $db, $this);
-                break;
-
-            case 'defense':
-                new Cli_Model_CastleBuildDefense($dataIn['castleId'], $user, $db, $this);
-                break;
-
-            case 'inventoryAdd':
-                new Cli_Model_InventoryAdd($dataIn['heroId'], $dataIn['artifactId'], $user, $db, $this);
-                break;
-
-            case 'inventoryDel':
-
-                break;
-
-            case 'surrender':
-                new Cli_Model_Surrender($user, $db, $this);
-                break;
+        if ($army = $player->getArmies()->getComputerArmyToMove()) {
+            new Cli_Model_ComputerMove($army, $user, $game, $db, $gameHandler);
+        } else {
+            $l->log('NASTĘPNA TURA');
+            new Cli_Model_NextTurn($user, $game, $db, $gameHandler);
         }
     }
 
