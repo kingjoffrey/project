@@ -94,7 +94,7 @@ class Cli_GameHandler extends Cli_WofHandler
         }
 
         if ($dataIn['type'] == 'statistics') {
-            new Cli_Model_Statistics($user, $db, $this);
+            new Cli_Model_Statistics($user->parameters['gameId'], $db, $this);
             return;
         }
 
