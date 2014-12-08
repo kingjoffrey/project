@@ -1,9 +1,10 @@
 <?php
 
 /**
- * This resource handler will respond to all messages sent to /game on the socketserver below
+ * This resource handler will respond to all messages sent to WebSockets channel "/game"
  *
- * All this handler does is receiving data from browsers and sending the responds back
+ * All this class does is receiving data from browsers and sending responds back
+ * Every client has his own copy of that class object
  * @author Bartosz Krzeszewski
  *
  */
@@ -40,6 +41,7 @@ class Cli_GameHandler extends Cli_WofHandler
 //            return;
 //        }
 
+        // AUTHORIZATION
         if (!Zend_Validate::is($user->parameters['gameId'], 'Digits') || !Zend_Validate::is($user->parameters['playerId'], 'Digits')) {
             $this->sendError($user, 'No game ID or player ID. Not authorized.');
             return;

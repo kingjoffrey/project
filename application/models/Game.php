@@ -197,6 +197,7 @@ class Application_Model_Game extends Coret_Db_Table_Abstract
 
     public function updateTurn($nextPlayerId, $turnNumber)
     {
+        echo '$nextPlayerId=' . $nextPlayerId . ' $turnNumber=' . $turnNumber . "\n";
         $data = array(
             'turnNumber' => $turnNumber,
             'end' => new Zend_Db_Expr('now()'),

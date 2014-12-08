@@ -28,7 +28,7 @@ class Cli_Model_NextTurn
         }
 
         while (true) {
-            $nextPlayerId = $this->_game->getExpectedNextTurnPlayer($nextPlayerId, $this->_db);
+            $nextPlayerId = $this->getExpectedNextTurnPlayer($this->_game, $nextPlayerId, $this->_db);
             $nextPlayerColor = $this->_game->getPlayerColor($nextPlayerId);
 
             $player = $this->_players->getPlayer($nextPlayerColor);
@@ -227,5 +227,48 @@ class Cli_Model_NextTurn
 
         $this->_gameHandler->sendToChannel($this->_db, $token, $this->_gameId);
 
+    }
+
+    private function getExpectedNextTurnPlayer(Cli_Model_Game $game, $playerId, Zend_Db_Adapter_Pdo_Pgsql $db)
+    {
+        $playerColor = $this->getPlayerColor($playerId);
+        $find = false;
+        $playersInGameColors = $game->getPlayersInGameColors();
+
+
+        reset($playersInGameColors);
+        $firstColor = current($playersInGameColors);
+
+        /* szukam następnego koloru w dostępnych kolorach */
+        foreach ($playersInGameColors as $color) {
+            /* znajduję kolor gracza, który ma aktualnie turę i przewijam na następny */
+            if ($playerColor == $color) {
+                $find = true;
+                continue;
+            }
+
+            /* to jest przewinięty kolor gracza */
+            if ($find) {
+                $nextPlayerColor = $color;
+                break;
+            }
+        }
+
+        /* jeśli nie znalazłem następnego gracza to następnym graczem jest gracz pierwszy */
+        if (!isset($nextPlayerColor)) {
+            $nextPlayerColor = $firstColor;
+        }
+
+        /* jeżeli następny gracz to pierwszy gracz to wtedy nowa tura */
+        if ($nextPlayerColor == $firstColor) {
+            $game->turnNumberIncrement();
+        }
+        $turnPlayerId = $this->getPlayers()->getPlayer($nextPlayerColor)->getId();
+        $game->setTurnPlayerId($turnPlayerId);
+
+        $mGame = new Application_Model_Game($game->getId(), $db);
+        $mGame->updateTurn($turnPlayerId, $game->getTurnNumber());
+        
+        return $turnPlayerId;
     }
 }

@@ -219,46 +219,7 @@ class Cli_Model_Game
         }
     }
 
-    public function getExpectedNextTurnPlayer($playerId, $db)
-    {
-        $playerColor = $this->getPlayerColor($playerId);
-        $find = false;
-        reset($this->_playersInGameColors);
-        $firstColor = current($this->_playersInGameColors);
-
-        /* szukam następnego koloru w dostępnych kolorach */
-        foreach ($this->_playersInGameColors as $color) {
-            /* znajduję kolor gracza, który ma aktualnie turę i przewijam na następny */
-            if ($playerColor == $color) {
-                $find = true;
-                continue;
-            }
-
-            /* to jest przewinięty kolor gracza */
-            if ($find) {
-                $nextPlayerColor = $color;
-                break;
-            }
-        }
-
-        /* jeśli nie znalazłem następnego gracza to następnym graczem jest gracz pierwszy */
-        if (!isset($nextPlayerColor)) {
-            $nextPlayerColor = $firstColor;
-        }
-
-        /* jeżeli nowa tura */
-        if ($nextPlayerColor == $firstColor) {
-            $this->turnNumberIncrement();
-        }
-        $this->_turnPlayerId = $this->getPlayers()->getPlayer($nextPlayerColor)->getId();
-
-        $mGame = new Application_Model_Game($this->_id, $db);
-        $mGame->updateTurn($this->_turnPlayerId, $this->_turnNumber);
-
-        return $this->_turnPlayerId;
-    }
-
-    private function turnNumberIncrement()
+    public function turnNumberIncrement()
     {
         $this->_turnNumber++;
     }
@@ -301,5 +262,10 @@ class Cli_Model_Game
     public function getSpecialUnits()
     {
         return $this->_specialUnits;
+    }
+
+    public function getPlayersInGameColors()
+    {
+        return $this->_playersInGameColors;
     }
 }
