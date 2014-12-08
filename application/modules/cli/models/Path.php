@@ -142,4 +142,14 @@ class Cli_Model_Path
     {
         return $this->_end['tt'] == 'E';
     }
+
+    public function targetWithin()
+    {
+        return count($this->_current) == count($this->_full);
+    }
+
+    public function getFull()
+    {
+        return $this->_full;
+    }
 }

@@ -9,7 +9,7 @@ class Cli_Model_NearestWeakerHostileCastle
 
     public function __construct(Cli_Model_Game $game, $playerColor, Cli_Model_Army $army)
     {
-        $this->_l->logMethodName();
+        $this->_l = new Coret_Model_Logger();
 
         $players = $game->getPlayers();
         $this->initHeuristics($players, $playerColor, $army->getX(), $army->getY());
@@ -39,8 +39,6 @@ class Cli_Model_NearestWeakerHostileCastle
     private function initHeuristics(Cli_Model_Players $players, $playerColor, $armyX, $armyY)
     {
         $this->_l->logMethodName();
-
-
         foreach ($players->getKeys() as $color) {
             if ($players->sameTeam($playerColor, $color)) {
                 continue;
@@ -49,7 +47,7 @@ class Cli_Model_NearestWeakerHostileCastle
                 $castle = $players->getPlayer($color)->getCastles()->getCastle($castleId);
                 $mHeuristics = new Cli_Model_Heuristics($castle->getX(), $castle->getY());
                 $this->_heuristics[$castleId] = $mHeuristics->calculateH($armyX, $armyY);
-                $this->_castles[] = $castle;
+                $this->_castles[$castleId] = $castle;
             }
         }
 
@@ -60,6 +58,7 @@ class Cli_Model_NearestWeakerHostileCastle
 
     private function getCastleId(Cli_Model_Game $game, $playerColor, $army)
     {
+        $this->_l->logMethodName();
         foreach ($this->_heuristics as $k => $castleId) {
             $castle = $this->_castles[$castleId];
             $es = new Cli_Model_EnemyStronger($army, $game, $castle->getX(), $castle->getY(), $playerColor);
@@ -74,18 +73,15 @@ class Cli_Model_NearestWeakerHostileCastle
     private function path(Cli_Model_Game $game, $castleId, $playerColor, Cli_Model_Army $army)
     {
         $this->_l->logMethodName();
-
         $castle = $this->_castles[$castleId];
         $castleX = $castle->getX();
         $castleY = $castle->getY();
-
         try {
             $aStar = new Cli_Model_Astar($army, $castleX, $castleY, $game, $playerColor);
         } catch (Exception $e) {
             echo($e);
             return;
         }
-
         return new Cli_Model_Path($aStar->getPath($castleX . '_' . $castleY), $army);
     }
 

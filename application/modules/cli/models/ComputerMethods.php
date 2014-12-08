@@ -103,7 +103,6 @@ abstract class Cli_Model_ComputerMethods
     public function getPathToNearestRuin()
     {
         $this->_l->logMethodName();
-        $movesLeft = $this->_army->getMovesLeft();
 
         foreach ($this->_game->getRuins()->get() as $ruinId => $ruin) {
             if ($ruin->getEmpty()) {
@@ -115,7 +114,7 @@ abstract class Cli_Model_ComputerMethods
 
             $mHeuristics = new Cli_Model_Heuristics($this->_armyX, $this->_armyY);
             $h = $mHeuristics->calculateH($ruinX, $ruinY);
-            if ($h < $movesLeft) {
+            if ($h < $this->_movesLeft) {
                 try {
                     $aStar = new Cli_Model_Astar($this->_army, $ruinX, $ruinY, $this->_fields, $this->_color);
                 } catch (Exception $e) {
@@ -167,7 +166,6 @@ abstract class Cli_Model_ComputerMethods
                 if ($this->_players->sameTeam($this->_color, $color)) {
                     continue;
                 }
-
                 foreach ($this->_players->getPlayer($color)->getArmies() as $enemy) {
                     if (isset($castlesHeuristics[$castleId])) { // co tu się dzieje?
                         $castlesHeuristics[$castleId] += $mHeuristics->calculateH($enemy->getX(), $enemy->getY());
@@ -195,7 +193,6 @@ abstract class Cli_Model_ComputerMethods
             return;
         }
         $myArmies = array();
-        $myArmyId = $this->_armyId;
 
         $numberOfUnits = floor($turnNumber / 7);
         if ($numberOfUnits > 4) {
@@ -203,7 +200,7 @@ abstract class Cli_Model_ComputerMethods
         }
         $numberOfSoldiersAndHeroes = count($this->_army->getNumberOfSoldiers()) + count($this->_army->getNumberOfHeroes());
         foreach ($this->_player->getArmies() as $armyId => $army) {
-            if ($armyId == $myArmyId) {
+            if ($armyId == $this->_armyId) {
                 continue;
             }
             $myArmies[$armyId] = $army;
@@ -229,48 +226,38 @@ abstract class Cli_Model_ComputerMethods
             }
 
             $mHeuristics = new Cli_Model_Heuristics($armyX, $armyY);
-            $h = $mHeuristics->calculateH($armyX, $armyY);
-            if ($h < $army->getMovesLeft()) {
+            $h = $mHeuristics->calculateH($this->_armyX, $this->_armyY);
+            if ($h < $this->_movesLeft) {
                 try {
-                    $aStar = new Cli_Model_Astar($army, $armyX, $armyY, $this->_fields, $this->_color);
+                    $aStar = new Cli_Model_Astar($this->_army, $armyX, $armyY, $this->_fields, $this->_color);
                 } catch (Exception $e) {
                     echo($e);
                     return;
                 }
 
-                $move = $army->calculateMovesSpend($aStar->getPath($armyX . '_' . $armyY));
-                if ($move->x == $armyX && $move->y == $armyY) {
-                    return $move;
-                }
+                return new Cli_Model_Path($aStar->getPath($armyX . '_' . $armyY), $this->_army);
             }
         }
-        return;
     }
 
     public function getStrongerEnemyArmyInRange()
     {
         $this->_l->logMethodName();
-        $movesLeft = $this->_army->getMovesLeft();
 
-        foreach ($this->_players->get() as $color => $player) {
+        foreach ($this->_players->getKeys() as $color) {
             if ($this->_players->sameTeam($this->_color, $color)) {
                 continue;
             }
-            foreach ($player->getArmies() as $enemy) {
+            foreach ($this->_players->getPlayer($color)->getArmies() as $enemy) {
                 $enemyX = $enemy->getX();
                 $enemyY = $enemy->getY();
 
                 $mHeuristics = new Cli_Model_Heuristics($enemyX, $enemyY);
                 $h = $mHeuristics->calculateH($this->_armyX, $this->_armyY);
-                if ($h < $movesLeft) {
-                    if (!$this->isEnemyStronger(array($enemy))) {
+                if ($h < $this->_movesLeft) {
+                    $es = new Cli_Model_EnemyStronger($this->_army, $this->_game, $enemyX, $enemyY, $this->_color);
+                    if (!$es->stronger()) {
                         continue;
-                    }
-                    $castleId = $this->_fields->isPlayerCastle($color, $enemyX, $enemyY);
-                    if ($castleId) {
-                        $this->_fields->setCastleTemporaryType($enemyX, $enemyY, 'E');
-                    } else {
-                        $this->_fields->setTemporaryType($enemyX, $enemyY, 'E');
                     }
                     try {
                         $aStar = new Cli_Model_Astar($this->_army, $enemyX, $enemyY, $this->_fields, $this->_color);
@@ -279,45 +266,35 @@ abstract class Cli_Model_ComputerMethods
                         return;
                     }
 
-                    $move = $this->_army->calculateMovesSpend($aStar->getPath($enemyX . '_' . $enemyY));
-                    if ($castleId) {
-                        $this->_fields->resetCastleTemporaryType($enemyX, $enemyY);
-                    } else {
-                        $this->_fields->resetTemporaryType($enemyX, $enemyY);
-                    }
-                    if ($move->x == $enemyX && $move->y == $enemyY) {
-                        return $enemy->getId();
-                    }
+                    return new Cli_Model_Path($aStar->getPath($enemyX . '_' . $enemyY), $this->_army);
                 }
             }
         }
         return null;
     }
 
+    /**
+     * @return Cli_Model_Path
+     */
     public function getWeakerEnemyArmyInRange()
     {
         $this->_l->logMethodName();
-        $movesLeft = $this->_army->getMovesLeft();
 
-        foreach ($this->_players->get() as $color => $player) {
+        foreach ($this->_players->getKeys() as $color) {
             if ($this->_players->sameTeam($this->_color, $color)) {
                 continue;
             }
-            foreach ($player->getArmies() as $enemy) {
+            foreach ($this->_players->getPlayer($color)->getArmies() as $enemy) {
                 $enemyX = $enemy->getX();
                 $enemyY = $enemy->getY();
                 $mHeuristics = new Cli_Model_Heuristics($enemyX, $enemyY);
                 $h = $mHeuristics->calculateH($this->_armyX, $this->_armyY);
-                if ($h < $movesLeft) {
-                    if ($this->isEnemyStronger(array($enemy))) {
+                if ($h < $this->_movesLeft) {
+                    $es = new Cli_Model_EnemyStronger($this->_army, $this->_game, $enemyX, $enemyY, $this->_color);
+                    if ($es->stronger()) {
                         continue;
                     }
-                    $castleId = $this->_fields->isNotPlayerCastle($this->_color, $enemyX, $enemyY);
-                    if ($castleId) {
-                        $this->_fields->setCastleTemporaryType($enemyX, $enemyY, 'E');
-                    } else {
-                        $this->_fields->setTemporaryType($enemyX, $enemyY, 'E');
-                    }
+
                     try {
                         $aStar = new Cli_Model_Astar($this->_army, $enemyX, $enemyY, $this->_fields, $this->_color);
                     } catch (Exception $e) {
@@ -325,22 +302,10 @@ abstract class Cli_Model_ComputerMethods
                         return;
                     }
 
-                    $move = $this->_army->calculateMovesSpend($aStar->getPath($enemyX . '_' . $enemyY));
-                    if ($castleId) {
-                        $this->_fields->resetCastleTemporaryType($enemyX, $enemyY);
-                    } else {
-                        $this->_fields->resetTemporaryType($enemyX, $enemyY);
-                    }
-                    if ($move->x == $enemyX && $move->y == $enemyY) {
-                        $move->castleId = $castleId;
-                        $move->armyId = $enemy->getId();
-                        return $move;
-                    }
+                    return new Cli_Model_Path($aStar->getPath($enemyX . '_' . $enemyY), $this->_army);
                 }
             }
         }
-
-        return;
     }
 
     public function canAttackAllEnemyHaveRange($enemiesHaveRange)
@@ -431,7 +396,6 @@ abstract class Cli_Model_ComputerMethods
     public function getMyEmptyCastleInMyRange()
     {
         $this->_l->logMethodName();
-        $movesLeft = $this->_army->getMovesLeft();
 
         foreach ($this->_player->getCastles() as $castleId => $castle) {
             $castleX = $castle->getX();
@@ -441,7 +405,7 @@ abstract class Cli_Model_ComputerMethods
             }
             $mHeuristics = new Cli_Model_Heuristics($this->_armyX, $this->_armyY);
             $h = $mHeuristics->calculateH($castleX, $castleY);
-            if ($h < $movesLeft) {
+            if ($h < $this->_movesLeft) {
                 try {
                     $aStar = new Cli_Model_Astar($this->_army, $castleX, $castleY, $this->_fields, $this->_color);
                 } catch (Exception $e) {

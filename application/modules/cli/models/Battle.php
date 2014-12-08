@@ -42,6 +42,13 @@ class Cli_Model_Battle
         }
         $this->_fields = $game->getFields();
 
+        if ($this->_defenders) {
+            $this->init();
+        }
+    }
+
+    private function init()
+    {
         $attackerBattleSequence = $this->_players->getPlayer($this->_attacker->getColor())->getAttackSequence();
         if (empty($attackerBattleSequence)) {
             $units = Zend_Registry::get('units');
