@@ -16,7 +16,7 @@ class Cli_Model_ComputerHeroResurrection
 
         $castleId = $game->getPlayerCapital($color);
 
-        if (!$capital = $player->getCastle($castleId)) {
+        if (!$capital = $player->getCastles()->getCastle($castleId)) {
             return;
         }
 
@@ -28,7 +28,7 @@ class Cli_Model_ComputerHeroResurrection
         }
 
         if ($armyId = $player->getArmyIdFromPosition($capital->getX(), $capital->getY())) {
-            $army = $player->getArmy($armyId);
+            $army = $player->getArmies()->getArmy($armyId);
         } else {
             $mArmy = new Application_Model_Army($gameId, $db);
             $armyId = $mArmy->createArmy($capital->getPosition(), $playerId);
@@ -36,7 +36,8 @@ class Cli_Model_ComputerHeroResurrection
                 'armyId' => $armyId,
                 'x' => $capital->getX(),
                 'y' => $capital->getY()
-            ));
+            ), $color);
+            $player->getArmies()->addArmy($armyId, $army);
         }
         $army->createHero($gameId, $heroId, $db);
 

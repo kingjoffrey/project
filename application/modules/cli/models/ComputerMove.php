@@ -246,20 +246,19 @@ class Cli_Model_ComputerMove extends Cli_Model_ComputerMethods
         $this->_l->log('POZA ZAMKIEM');
 
         $path = $this->getComputerEmptyCastleInComputerRange($this->_playerId, $this->_army);
-        if (!$path) {
-            $this->_l->log('NIE MA MOJEGO PUSTEGO ZAMKU W ZASIĘGU');
-            return $this->ruinBlock();
-        } else {
+        if ($path && $path->targetWithin()) {
             $this->_l->log('JEST MÓJ PUSTY ZAMEK W ZASIĘGU');
-            if (!$this->isMyCastleInRangeOfEnemy($path, $this->_map['fields'])) {
-                $this->_l->log('WRÓG NIE MA ZASIĘGU NA MÓJ PUSTY ZAMEK');
-                return $this->firstBlock();
-            } else {
+            if ($this->isMyCastleInRangeOfEnemy($path, $this->_map['fields'])) {
                 $this->_l->log('WRÓG MA ZASIĘG NA MÓJ PUSTY ZAMEK - IDŹ DO ZAMKU!');
-                $this->_army->updateArmyPosition($this->_playerId, $path, $this->_map['fields'], $this->_gameId, $this->_db);
-                return $this->endMove($this->_armyId, $path);
+                $this->move($path);
+                return;
             }
+
+            $this->_l->log('WRÓG NIE MA ZASIĘGU NA MÓJ PUSTY ZAMEK');
+            return $this->firstBlock();
         }
+        $this->_l->log('NIE MA MOJEGO PUSTEGO ZAMKU W ZASIĘGU');
+        return $this->ruinBlock();
     }
 
     private function firstBlock()
@@ -434,7 +433,7 @@ class Cli_Model_ComputerMove extends Cli_Model_ComputerMethods
         return;
     }
 
-    public function move(Cli_Model_Path $path)
+    private function move(Cli_Model_Path $path)
     {
         $this->_l->log('IDĘ... LUB WALCZĘ');
         if (!$path->exists()) {

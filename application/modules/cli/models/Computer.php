@@ -27,8 +27,7 @@ class Cli_Model_Computer
         }
 
         if ($army = $player->getArmies()->getComputerArmyToMove()) {
-            $computer = new Cli_Model_ComputerMove($army, $user, $game, $db, $gameHandler);
-            $computer->move();
+            new Cli_Model_ComputerMove($army, $user, $game, $db, $gameHandler);
         } else {
             $l->log('NASTĘPNA TURA');
             new Cli_Model_NextTurn($playerId, $user, $game, $db, $gameHandler);

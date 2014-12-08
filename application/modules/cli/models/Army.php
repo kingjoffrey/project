@@ -199,7 +199,7 @@ class Cli_Model_Army
         $joinIds = null;
         $battleResult = new Cli_Model_BattleResult();
 
-        $enemies = new Cli_Model_Enemies($game, $fields, $players, $path, $playerColor);
+        $enemies = new Cli_Model_Enemies($game, $path->getX(), $path->getY(), $playerColor);
         if ($enemies->hasEnemies()) {
             $battle = new Cli_Model_Battle($this, $enemies->get(), $game, $db, $battleResult);
             $battle->fight();

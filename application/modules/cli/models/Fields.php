@@ -178,7 +178,7 @@ class Cli_Model_Fields
         return $this->_fields[$y][$x]->getTowerId();
     }
 
-    public function areUnitsAtCastlePosition($x, $y)
+    public function areArmiesInCastle($x, $y)
     {
         for ($i = $y; $i <= $y + 1; $i++) {
             for ($j = $x; $j <= $x + 1; $j++) {
