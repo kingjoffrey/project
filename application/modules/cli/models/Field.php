@@ -111,4 +111,9 @@ class Cli_Model_Field
     {
         $this->_temporaryType = null;
     }
+
+    public function getRuinId()
+    {
+        return $this->_ruinId;
+    }
 }

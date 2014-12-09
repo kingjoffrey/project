@@ -369,7 +369,7 @@ class Cli_Model_ComputerMove extends Cli_Model_ComputerMethods
     private function ruinBlock()
     {
         $this->_l->logMethodName();
-        if (!$this->_army->getHeroes()->exists()) {
+        if (!$heroId = $this->_army->getHeroes()->getAnyHeroId()) {
             $this->_l->log('BRAK HEROSA');
             return $this->firstBlock();
         }
@@ -377,15 +377,16 @@ class Cli_Model_ComputerMove extends Cli_Model_ComputerMethods
         $this->_l->log('JEST HEROS');
         $ptnr = new Cli_Model_PathToNearestRuin($this->_game, $this->_army);
 
-        if (!$ptnr->getRuinId()) {
+        if (!$ruinId = $ptnr->getRuinId()) {
             $this->_l->log('BRAK RUIN');
             return $this->firstBlock();
         }
 
         $this->_l->log('IDĘ DO RUIN');
         $this->move($ptnr->getPath());
-        $this->_game->getRuins()->getRuin($ptnr->getRuinId())->search($this->_game, $this->_army, $this->_playerId, $this->_db);
         $this->_army->setFortified(true, $this->_gameId, $this->_db);
+
+        $this->_game->getRuins()->getRuin($ruinId)->search($this->_game, $this->_army, $heroId, $this->_playerId, $this->_db, $this->_gameHandler);
     }
 
     private function savePath(Cli_Model_Path $path)
@@ -432,8 +433,17 @@ class Cli_Model_ComputerMove extends Cli_Model_ComputerMethods
     private function move(Cli_Model_Path $path)
     {
         $this->_l->log('IDĘ... LUB WALCZĘ');
-        if (!$path->exists()) {
-            return;
+        if (!$path->exists()) { // todo dodać obsługę
+            $token = array(
+                'color' => $this->_color,
+                'army' => $this->_army->toArray(),
+                'path' => array(),
+                'battle' => null,
+                'deletedIds' => null,
+                'type' => 'move'
+            );
+
+            $this->_gameHandler->sendToChannel($this->_db, $token, $this->_gameId);
         }
 
         $this->_army->move($this->_game, $path, $this->_color, $this->_db, $this->_gameHandler);

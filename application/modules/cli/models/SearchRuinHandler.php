@@ -3,66 +3,42 @@
 class Cli_Model_SearchRuinHandler
 {
 
-    public function __construct($armyId, $user, $db, $gameHandler)
+    public function __construct($armyId, Cli_Model_Game $game, $user, $db, $gameHandler)
     {
         if (!Zend_Validate::is($armyId, 'Digits')) {
             $gameHandler->sendError($user, 'Brak armii!');
             return;
         }
 
-        $mHeroesInGame = new Application_Model_HeroesInGame($user->parameters['gameId'], $db);
-        $hero = $mHeroesInGame->getHeroByArmyIdPlayerId($armyId, $user->parameters['playerId']);
+        $gameId = $game->getId();
+        $playerId = $game->getMe()->getId();
+        $color = $game->getPlayerColor($playerId);
+        $army = $game->getPlayers()->getPlayer($color)->getArmies()->getArmy($armyId);
 
-        if (empty($hero)) {
-            $gameHandler->sendError($user, 'Tylko Heros może przeszukiwać ruiny!');
-            return;
-        }
-
-        if ($hero['movesLeft'] == 0) {
-            $gameHandler->sendError($user, 'Heros ma za mało ruchów!');
-            return;
-        }
-
-        $mArmy2 = new Application_Model_Army($user->parameters['gameId'], $db);
-        $position = $mArmy2->getArmyPositionByArmyIdPlayerId($armyId, $user->parameters['playerId']);
-        $ruinId = Application_Model_Board::confirmRuinPosition($position);
-
-        if (!Zend_Validate::is($ruinId, 'Digits')) {
+        if (!$ruinId = $game->getFields()->isRuin($army->getX(), $army->getY())) {
             $gameHandler->sendError($user, 'Brak ruin');
             return;
         }
 
-        $mRuinsInGame = new Application_Model_RuinsInGame($user->parameters['gameId'], $db);
+        $ruin = $game->getRuins()->getRuin($ruinId);
 
-        if ($mRuinsInGame->ruinExists($ruinId)) {
+        if ($ruin->getEmpty()) {
             $gameHandler->sendError($user, 'Ruiny są już przeszukane.');
             return;
         }
 
-        $found = self::search($user->parameters['gameId'], $ruinId, $hero['heroId'], $armyId, $user->parameters['playerId'], $db);
-
-        if ($mRuinsInGame->ruinExists($ruinId)) {
-            $ruin = array(
-                'ruinId' => $ruinId,
-                'empty' => 1
-            );
-        } else {
-            $ruin = array(
-                'ruinId' => $ruinId,
-                'empty' => 0
-            );
+        if (!$heroId = $army->getHeroes()->getAnyHeroId()) {
+            $gameHandler->sendError($user, 'Tylko Heros może przeszukiwać ruiny!');
+            return;
         }
 
-        $playersInGameColors = Zend_Registry::get('playersInGameColors');
+        $hero = $army->getHeroes()->getHero($heroId);
 
-        $token = array(
-            'type' => 'ruin',
-            'army' => Cli_Model_Army::getArmyByArmyId($armyId, $user->parameters['gameId'], $db),
-            'ruin' => $ruin,
-            'find' => $found,
-            'color' => $playersInGameColors[$user->parameters['playerId']]
-        );
+        if ($hero->getMovesLeft() <= 0) {
+            $gameHandler->sendError($user, 'Heros ma za mało ruchów!');
+            return;
+        }
 
-        $gameHandler->sendToChannel($db, $token, $user->parameters['gameId']);
+        $ruin->search($game, $army, $heroId, $playerId, $db, $gameHandler);
     }
 }

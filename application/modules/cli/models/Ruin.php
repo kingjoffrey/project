@@ -33,11 +33,11 @@ class Cli_Model_Ruin extends Cli_Model_Entity
         $this->_empty = true;
     }
 
-    public function search(Cli_Model_Game $game, Cli_Model_Army $army, $playerId, Zend_Db_Adapter_Pdo_Pgsql $db)
+    public function search(Cli_Model_Game $game, Cli_Model_Army $army, $heroId, $playerId, Zend_Db_Adapter_Pdo_Pgsql $db, Cli_GameHumansHandler $gameHandler)
     {
         $random = rand(0, 100);
-        $heroId = $army->getHeroes()->getAnyHeroId();
         $gameId = $game->getId();
+        $color = $game->getPlayerColor($playerId);
 
         if ($random < 10) { //10%
 //śmierć
@@ -53,7 +53,7 @@ class Cli_Model_Ruin extends Cli_Model_Entity
 //kasa
             $gold = rand(50, 150);
             $found = array('gold', $gold);
-            $player = $game->getPlayers()->getPlayer($game->getPlayerColor($playerId));
+            $player = $game->getPlayers()->getPlayer($color);
             $player->addGold($gold);
             $player->saveGold($gameId, $db);
             $army->zeroHeroMovesLeft($heroId, $gameId, $db);
@@ -185,6 +185,18 @@ class Cli_Model_Ruin extends Cli_Model_Entity
 //            $mRuinsInGame->add($ruinId);
 //
         }
-        return $found;
+
+        $token = array(
+            'type' => 'ruin',
+            'army' => $army->toArray(),
+            'ruin' => array(
+                'ruinId' => $this->_id,
+                'empty' => $this->_empty
+            ),
+            'find' => $found,
+            'color' => $color
+        );
+
+        $gameHandler->sendToChannel($db, $token, $gameId);
     }
 }

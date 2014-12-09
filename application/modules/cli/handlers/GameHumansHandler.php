@@ -190,8 +190,11 @@ class Cli_GameHumansHandler extends Cli_WofHandler
 
     public function sendToChannel($db, $token, $gameId, $debug = null)
     {
-//        $l = new Coret_Model_Logger();
-//        $l->log($token);
+        if ($debug || Zend_Registry::get('config')->debug) {
+            print_r('ODPOWIEDŹ');
+            print_r($token);
+        }
+
         parent::sendToChannel($db, $token, $gameId, $debug);
 
         if ($token['type'] == 'chat') {

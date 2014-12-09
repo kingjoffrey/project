@@ -28,14 +28,14 @@ Websocket = {
                 Move.start(r, Websocket.i);
                 break;
 
-            case 'computer':
-                if (isTruthful(r.path)) {
-                    Move.start(r, this.i)
-                } else {
-                    this.computer()
-                    this.executing = 0
-                }
-                break;
+            //case 'computer':
+            //    if (isTruthful(r.path)) {
+            //        Move.start(r, this.i)
+            //    } else {
+            //        this.computer()
+            //        this.executing = 0
+            //    }
+            //    break;
 
             case 'computerStart':
                 var s = Army.computerLoop(r.armies, r.color)
