@@ -2,39 +2,31 @@
 
 class Cli_Model_NextTurn
 {
-    protected $_db;
-    protected $_gameHandler;
-    protected $_user;
-    protected $_game;
-    protected $_players;
 
-    public function __construct(IWebSocketConnection $user, Cli_Model_Game $game, Zend_Db_Adapter_Pdo_Pgsql $db, Cli_GameHumansHandler $gameHandler)
+    public function __construct(Cli_Model_Game $game, Zend_Db_Adapter_Pdo_Pgsql $db, Cli_GameHumansHandler $gameHandler)
     {
-        $this->_user = $user;
-        $this->_game = $game;
-        $this->_db = $db;
-        $this->_gameHandler = $gameHandler;
-        $this->_gameId = $this->_game->getId();
-        $this->_players = $this->_game->getPlayers();
+
+        $gameId = $game->getId();
+        $players = $game->getPlayers();
 
         while (true) {
-            $nextPlayerId = $this->getExpectedNextTurnPlayer($this->_game, $this->_db);
-            $nextPlayerColor = $this->_game->getPlayerColor($nextPlayerId);
+            $nextPlayerId = $this->getExpectedNextTurnPlayer($game, $db);
+            $nextPlayerColor = $game->getPlayerColor($nextPlayerId);
 
-            $player = $this->_players->getPlayer($nextPlayerColor);
+            $player = $players->getPlayer($nextPlayerColor);
             if ($player->armiesOrCastlesExists()) {
 
-                $player->increaseAllCastlesProductionTurn($this->_gameId, $this->_db);
+                $player->increaseAllCastlesProductionTurn($gameId, $db);
 
-                $turnNumber = $this->_game->getTurnNumber();
-                $turnsLimit = $this->_game->getTurnsLimit();
+                $turnNumber = $game->getTurnNumber();
+                $turnsLimit = $game->getTurnsLimit();
 
                 if ($turnsLimit && $turnNumber > $turnsLimit) {
-                    new Cli_Model_SaveResults($this->_gameId, $this->_db, $this->_gameHandler);
+                    new Cli_Model_SaveResults($gameId, $db, $gameHandler);
                     return;
                 }
 
-                $mTurnHistory = new Application_Model_TurnHistory($this->_gameId, $this->_db);
+                $mTurnHistory = new Application_Model_TurnHistory($gameId, $db);
                 $mTurnHistory->add($nextPlayerId, $turnNumber);
 
                 $token = array(
@@ -42,23 +34,17 @@ class Cli_Model_NextTurn
                     'nr' => $turnNumber,
                     'color' => $nextPlayerColor
                 );
-                $this->_gameHandler->sendToChannel($this->_db, $token, $this->_gameId);
+                $gameHandler->sendToChannel($db, $token, $gameId);
                 return;
             } else {
-                $this->playerLost($nextPlayerColor);
+                $players->getPlayer($nextPlayerColor)->setLost($gameId, $db);
+                $token = array(
+                    'type' => 'dead',
+                    'color' => $nextPlayerColor
+                );
+                $gameHandler->sendToChannel($db, $token, $gameId);
             }
         }
-    }
-
-    private function playerLost($color)
-    {
-        $this->_players->getPlayer($color)->setLost($this->_gameId, $this->_db);
-        $token = array(
-            'type' => 'dead',
-            'color' => $color
-        );
-        $this->_gameHandler->sendToChannel($this->_db, $token, $this->_gameId);
-
     }
 
     private function getExpectedNextTurnPlayer(Cli_Model_Game $game, Zend_Db_Adapter_Pdo_Pgsql $db)

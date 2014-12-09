@@ -139,22 +139,22 @@ class Cli_Model_ComputerMove extends Cli_Model_ComputerMethods
                     $newArmyId = $mSplitArmy->getChildArmyId();
 
                     if ($army['x'] == $castlePosition['x'] && $army['y'] == $castlePosition['y']) {
-                        $this->_path = new Cli_Model_Path(array(0 => array(
+                        $path = new Cli_Model_Path(array(0 => array(
                             'x' => $castlePosition['x'] + 1,
                             'y' => $castlePosition['y'] + 1,
                             'tt' => 'c')
                         ), $army);
                     } else {
-                        $this->_path = new Cli_Model_Path(array(0 => array(
+                        $path = new Cli_Model_Path(array(0 => array(
                             'x' => $castlePosition['x'],
                             'y' => $castlePosition['y'],
                             'tt' => 'c')
                         ), $army);
                     }
 
-                    $this->_army = new Cli_Model_Army(Cli_Model_Army::getArmyByArmyId($newArmyId, $this->_gameId, $this->_db));
-                    $this->_army->move($this->_playerId, $path, $this->_map['fields'], $this->_gameId, $this->_db);
-                    return $this->endMove($newArmyId, $path);
+                    $this->_army = new Cli_Model_Army($army, $this->_color);
+                    $this->move($path);
+                    return;
                 }
                 $this->_l->log('ZA MAŁA OBSADA ZAMKU - ZOSTAŃ!');
 
@@ -245,10 +245,10 @@ class Cli_Model_ComputerMove extends Cli_Model_ComputerMethods
         $this->_l->logMethodName();
         $this->_l->log('POZA ZAMKIEM');
 
-        $path = $this->getComputerEmptyCastleInComputerRange($this->_playerId, $this->_army);
+        $path = $this->getComputerEmptyCastleInComputerRange();
         if ($path && $path->targetWithin()) {
             $this->_l->log('JEST MÓJ PUSTY ZAMEK W ZASIĘGU');
-            if ($this->isMyCastleInRangeOfEnemy($path, $this->_map['fields'])) {
+            if ($this->isMyCastleInRangeOfEnemy($path)) {
                 $this->_l->log('WRÓG MA ZASIĘG NA MÓJ PUSTY ZAMEK - IDŹ DO ZAMKU!');
                 $this->move($path);
                 return;
@@ -315,55 +315,51 @@ class Cli_Model_ComputerMove extends Cli_Model_ComputerMethods
     {
         $this->_l->logMethodName();
 
-        foreach ($this->_players->getEnemies($this->_color) as $e) {
-            if ($this->_fields->getCastleId($e->getX(), $e->getY())) {
+        foreach ($this->_players->getEnemies($this->_color) as $enemy) {
+            if ($this->_fields->getCastleId($enemy->getX(), $enemy->getY())) {
                 // pomijam wrogów w zamku
                 continue;
             }
-            if ($this->isEnemyStronger(array($e))) {
+            $es = new Cli_Model_EnemyStronger($this->_army, $this->_game, $enemy->getX(), $enemy->getY(), $this->_color);
+            if ($es->stronger()) {
                 // pomijam silniejszych wrogów
                 continue;
             }
-            $enemy = $e;
             break;
         }
 
         if (isset($enemy)) {
             // ATAKUJ
             $this->_l->log('WRÓG JEST SŁABSZY');
-            $this->isEnemyArmyInRange($enemy);
-            echo $this->_path->getX() . "\n";
-            echo $this->_path->getY() . "\n";
-            echo $enemy->getX() . "\n";
-            echo $enemy->getY() . "\n";
-            if ($this->_path->exists() && $this->_path->getX() == $enemy->getX() && $this->_path->getY() == $enemy->getY()) {
+            $path = $this->isEnemyArmyInRange($enemy);
+            if ($path && $path->enemyInRange()) {
                 $this->_l->log('SŁABSZY WRÓG W ZASIĘGU - ATAKUJ!');
-                $this->_army->move($this->_game, $this->_path, $this->_color, $this->_db, $this->_gameHandler);
+                $this->move($path);
                 return;
             }
             $this->_l->log('SŁABSZY WRÓG POZA ZASIĘGIEM - IDŹ DO WROGA');
-            $this->savePath();
+            $this->savePath($path);
             return;
         } else {
             $this->_l->log('WRÓG JEST SILNIEJSZY');
             $path = $this->getPathToMyArmyInRange();
             if ($path) {
                 $this->_l->log('JEST MOJA ARMIA W ZASIĘGU - DOŁĄCZ!');
-                $this->_army->updateArmyPosition($this->_playerId, $path, $this->_map['fields'], $this->_gameId, $this->_db);
-                return $this->endMove($this->_armyId, $path);
+                $this->move($path);
+                return;
             } else {
                 $this->_l->log('BRAK MOJEJ ARMII W ZASIĘGU');
                 $castle = $this->getMyCastleNearEnemy();
                 if ($castle) {
-                    $this->getPathToMyCastle($castle);
+                    $path = $this->getPathToMyCastle($castle);
                 }
-                if ($this->_path->exists()) {
+                if ($path->exists()) {
                     $this->_l->log('JEST MÓJ ZAMEK W POBLIŻU WROGA - IDŹ DO ZAMKU');
-                    return $this->savePath();
+                    return $this->savePath($path);
                 } else {
                     $this->_l->log('NIE MA MOJEGO ZAMKU W POBLIŻU WROGA - ZOSTAŃ');
                     $this->_army->setFortified(true, $this->_gameId, $this->_db);
-                    $this->_army->move($this->_game, $this->_path, $this->_color, $this->_db, $this->_gameHandler);
+                    $this->move($path);
                     return;
                 }
             }
@@ -379,16 +375,16 @@ class Cli_Model_ComputerMove extends Cli_Model_ComputerMethods
         }
 
         $this->_l->log('JEST HEROS');
-        $ruinId = $this->getPathToNearestRuin($this->_playerId, $this->_army);
+        $ptnr = new Cli_Model_PathToNearestRuin($this->_game, $this->_army);
 
-        if (empty($ruinId)) {
+        if (!$ptnr->getRuinId()) {
             $this->_l->log('BRAK RUIN');
             return $this->firstBlock();
         }
 
         $this->_l->log('IDĘ DO RUIN');
-        $this->_army->move($this->_game, $this->_path, $this->_color, $this->_db, $this->_gameHandler);
-        $this->_game->getRuins()->getRuin($ruinId)->search($this->_game, $this->_army, $this->_playerId, $this->_db);
+        $this->move($ptnr->getPath());
+        $this->_game->getRuins()->getRuin($ptnr->getRuinId())->search($this->_game, $this->_army, $this->_playerId, $this->_db);
         $this->_army->setFortified(true, $this->_gameId, $this->_db);
     }
 

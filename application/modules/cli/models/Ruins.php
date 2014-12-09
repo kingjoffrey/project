@@ -18,6 +18,11 @@ class Cli_Model_Ruins
         return $this->_ruins;
     }
 
+    public function getKeys()
+    {
+        return array_keys($this->_ruins);
+    }
+
     public function add($ruinId, Cli_Model_Ruin $ruin)
     {
         $this->_ruins[$ruinId] = $ruin;

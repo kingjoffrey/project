@@ -25,6 +25,10 @@ class Cli_Model_Players
      */
     public function getPlayer($color)
     {
+        if (!$color) {
+            Coret_Model_Logger::debug(debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 2));
+            throw new Exception('no $color');
+        }
         return $this->_players[$color];
     }
 

@@ -133,7 +133,7 @@ class Cli_GameHumansHandler extends Cli_WofHandler
                 break;
 
             case 'nextTurn':
-                new Cli_Model_NextTurn($user, $this->_game, $db, $this);
+                new Cli_Model_NextTurn($this->_game, $db, $this);
                 break;
 
             case 'startTurn':

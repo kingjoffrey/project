@@ -6,8 +6,6 @@ class Cli_Model_Game
 
     private $_mapId;
 
-    private $_turnNumber = 1;
-
     private $_capitals = array();
     private $_playersInGameColors;
     private $_online = array();
@@ -18,6 +16,7 @@ class Cli_Model_Game
     private $_timeLimit;
 
     private $_turnHistory;
+    private $_turnNumber;
     private $_turnPlayerId;
 
     private $_me;
@@ -48,6 +47,7 @@ class Cli_Model_Game
         $this->_turnTimeLimit = $game['turnTimeLimit'];
         $this->_timeLimit = $game['timeLimit'];
 
+        $this->_turnNumber = $game['turnNumber'];
         $this->_turnPlayerId = $game['turnPlayerId'];
 
         $mTurnHistory = new Application_Model_TurnHistory($this->_id, $db);
