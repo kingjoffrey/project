@@ -8,7 +8,7 @@ class Cli_Model_NextTurn
     protected $_game;
     protected $_players;
 
-    public function __construct(IWebSocketConnection $user, Cli_Model_Game $game, Zend_Db_Adapter_Pdo_Pgsql $db, Cli_GameHandler $gameHandler)
+    public function __construct(IWebSocketConnection $user, Cli_Model_Game $game, Zend_Db_Adapter_Pdo_Pgsql $db, Cli_GameHumansHandler $gameHandler)
     {
         $this->_user = $user;
         $this->_game = $game;
@@ -95,7 +95,7 @@ class Cli_Model_NextTurn
         if ($nextPlayerColor == $firstColor) {
             $game->turnNumberIncrement();
         }
-        $turnPlayerId = $this->getPlayers()->getPlayer($nextPlayerColor)->getId();
+        $turnPlayerId = $game->getPlayers()->getPlayer($nextPlayerColor)->getId();
         $game->setTurnPlayerId($turnPlayerId);
 
         $mGame = new Application_Model_Game($game->getId(), $db);

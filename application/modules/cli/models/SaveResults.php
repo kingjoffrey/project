@@ -2,7 +2,7 @@
 
 class Cli_Model_SaveResults
 {
-    public function __construct($gameId, Zend_Db_Adapter_Pdo_Pgsql $db, Cli_GameHandler $gameHandler)
+    public function __construct($gameId, Zend_Db_Adapter_Pdo_Pgsql $db, Cli_GameHumansHandler $gameHandler)
     {
         $mGame = new Application_Model_Game($gameId, $this->_db);
         $mGame->endGame(); // koniec gry

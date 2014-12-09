@@ -3,13 +3,14 @@
 class Cli_Model_StartTurn
 {
 
-    public function __construct($playerId, IWebSocketConnection $user, Cli_Model_Game $game, Zend_Db_Adapter_Pdo_Pgsql $db, Cli_GameHandler $gameHandler)
+    public function __construct($playerId, IWebSocketConnection $user, Cli_Model_Game $game, Zend_Db_Adapter_Pdo_Pgsql $db, Cli_GameHumansHandler $gameHandler)
     {
         $players = $game->getPlayers();
         $gameId = $game->getId();
         $color = $game->getPlayerColor($playerId);
         $player = $players->getPlayer($color);
         $players->activatePlayerTurn($color, $playerId, $gameId, $db); // todo po co to jest?
+
 
         if ($player->getComputer()) {
             $player->unfortifyArmies($gameId, $db);
@@ -37,7 +38,7 @@ class Cli_Model_StartTurn
                 }
                 if ($unitId != $castle->getProductionId()) {
                     $relocationToCastleId = null;
-                    $castle->setProductionId($gameId, $playerId, $castleId, $unitId, $relocationToCastleId, $db);
+                    $castle->setProductionId($gameId, $playerId, $unitId, $relocationToCastleId, $db);
                 }
             } else {
                 $unitId = $castle->getProductionId();

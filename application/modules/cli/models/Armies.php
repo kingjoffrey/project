@@ -95,8 +95,8 @@ class Cli_Model_Armies
 
     public function resetMovesLeft($gameId, $db)
     {
-        foreach ($this->_armies as $army) {
-            $army->resetMovesLeft($gameId, $db);
+        foreach ($this->getKeys() as $armyId) {
+            $this->getArmy($armyId)->resetMovesLeft($gameId, $db);
         }
     }
 

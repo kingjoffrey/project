@@ -90,4 +90,13 @@ class Cli_Model_Heroes
 
         return $movesLeft;
     }
+
+    public function resetMovesLeft($gameId, Zend_Db_Adapter_Pdo_Pgsql $db)
+    {
+        foreach ($this->getKeys() as $heroId) {
+            $this->getHero($heroId)->resetMovesLeft($gameId, $db);
+        }
+
+    }
+
 }

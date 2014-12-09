@@ -7,6 +7,7 @@ class Cli_Model_Me
 
     public function __construct($color, $playerId)
     {
+        $this->_color = $color;
         $this->_id = $playerId;
     }
 

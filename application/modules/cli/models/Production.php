@@ -2,10 +2,13 @@
 
 class Cli_Model_Production
 {
-    public function __construct($dataIn, IWebSocketConnection $user, Cli_Model_Game $game, Zend_Db_Adapter_Pdo_Pgsql $db, Cli_GameHandler $gameHandler)
+    public function __construct($dataIn, IWebSocketConnection $user, Cli_Model_Game $game, Zend_Db_Adapter_Pdo_Pgsql $db, Cli_GameHumansHandler $gameHandler)
     {
         $castleId = $dataIn['castleId'];
         $unitId = $dataIn['unitId'];
+        $gameId = $game->getId();
+        $playerId = $game->getMe()->getId();
+
         if (isset($dataIn['relocationToCastleId'])) {
             if ($dataIn['relocationToCastleId'] == $castleId) {
                 $gameHandler->sendError($user, 'Can\'t relocate production to the same castle!');
@@ -26,7 +29,7 @@ class Cli_Model_Production
             return;
         }
 
-        $color=$game->getPlayerColor($user->parameters['playerId']);
+        $color=$game->getPlayerColor($playerId);
 
         $castle = $game->getPlayers()->getPlayer($color)->getCastles()->getCastle($castleId);
 
@@ -56,7 +59,7 @@ class Cli_Model_Production
         }
 
         try {
-            $castle->setProductionId($user->parameters['gameId'], $user->parameters['playerId'], $unitId, $relocationToCastleId, $db);
+            $castle->setProductionId($gameId, $playerId, $unitId, $relocationToCastleId, $db);
         } catch (Exception $e) {
             $gameHandler->sendError($user, 'Set castle production error!');
             $l = new Coret_Model_Logger('Production');
@@ -70,6 +73,6 @@ class Cli_Model_Production
             'relocationToCastleId' => $relocationToCastleId
         );
 
-        $gameHandler->sendToUser($user, $db, $token, $user->parameters['gameId']);
+        $gameHandler->sendToUser($user, $db, $token, $gameId);
     }
 }

@@ -179,7 +179,7 @@ class Cli_Model_Army
 //    }
 
     public function move(Cli_Model_Game $game, Cli_Model_Path $path, $playerColor,
-                         Zend_Db_Adapter_Pdo_Pgsql $db, Cli_GameHandler $gameHandler)
+                         Zend_Db_Adapter_Pdo_Pgsql $db, Cli_GameHumansHandler $gameHandler)
     {
         $gameId = $game->getId();
 
@@ -283,12 +283,9 @@ class Cli_Model_Army
 
     public function resetMovesLeft($gameId, Zend_Db_Adapter_Pdo_Pgsql $db)
     {
-        foreach ($this->_heroes as $hero) {
-            $hero->resetMovesLeft($gameId, $db);
-        }
-        foreach ($this->_soldiers as $soldier) {
-            $soldier->resetMovesLeft($gameId, $db);
-        }
+        $this->_heroes->resetMovesLeft($gameId,$db);
+        $this->_soldiers->resetMovesLeft($gameId,$db);
+        $this->_ships->resetMovesLeft($gameId,$db);
     }
 
     public function setFortified($fortified, $gameId, Zend_Db_Adapter_Pdo_Pgsql $db)

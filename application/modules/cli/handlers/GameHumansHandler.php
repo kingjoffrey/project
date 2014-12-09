@@ -14,10 +14,10 @@ class Cli_GameHumansHandler extends Cli_WofHandler
 
     public function onMessage(IWebSocketConnection $user, IWebSocketMessage $msg)
     {
-
+        $config = Zend_Registry::get('config');
         $dataIn = Zend_Json::decode($msg->getData());
 
-        if (Zend_Registry::get('config')->debug) {
+        if ($config->debug) {
             print_r('ZAPYTANIE ');
             print_r($dataIn);
         }
@@ -67,7 +67,7 @@ class Cli_GameHumansHandler extends Cli_WofHandler
             }
         }
 
-        if (!Zend_Registry::get('turnOffDatabaseLogging')) {
+        if (!$config->turnOffDatabaseLogging) {
             Cli_Model_Database::addTokensIn($db, $gameId, $playerId, $dataIn);
         }
         if ($dataIn['type'] == 'computer') {
@@ -93,7 +93,7 @@ class Cli_GameHumansHandler extends Cli_WofHandler
         if (!$this->_game->isPlayerTurn($playerId)) {
             $this->sendError($user, 'Not your turn.');
 
-            if (Zend_Registry::get('config')->exitOnErrors) {
+            if ($config->exitOnErrors) {
                 exit;
             }
             return;
@@ -198,7 +198,7 @@ class Cli_GameHumansHandler extends Cli_WofHandler
             return;
         }
 
-        if (!Zend_Registry::get('turnOffDatabaseLogging')) {
+        if (!Zend_Registry::get('config')->turnOffDatabaseLogging) {
             Cli_Model_Database::addTokensOut($db, $gameId, $token);
         }
     }
@@ -217,7 +217,7 @@ class Cli_GameHumansHandler extends Cli_WofHandler
             print_r($token);
         }
 
-        if (!Zend_Registry::get('turnOffDatabaseLogging')) {
+        if (!Zend_Registry::get('config')->turnOffDatabaseLogging) {
             Cli_Model_Database::addTokensOut($db, $gameId, $token);
         }
 
