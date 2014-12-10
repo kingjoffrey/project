@@ -32,6 +32,11 @@ class Cli_Model_Soldiers
         return $soldiers;
     }
 
+    public function hasSoldier($soldierId)
+    {
+        return isset($this->_soldiers[$soldierId]);
+    }
+
     public function exists()
     {
         return count($this->_soldiers);

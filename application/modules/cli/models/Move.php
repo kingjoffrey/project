@@ -24,7 +24,6 @@ class Cli_Model_Move
         $x = $dataIn['x'];
         $y = $dataIn['y'];
 
-        $gameId = $game->getId();
         $me = $game->getMe();
         $playerId = $me->getId();
 
@@ -34,8 +33,8 @@ class Cli_Model_Move
         }
 
         if (Zend_Validate::is($dataIn['s'], 'Digits') || Zend_Validate::is($dataIn['h'], 'Digits')) {
-            $mSplitArmy = new Cli_Model_SplitArmy($dataIn['armyId'], $dataIn['s'], $dataIn['h'], $user, $playerId, $db, $gameHandler);
-            $attackerArmyId = $mSplitArmy->getChildArmyId();
+            $sa = new Cli_Model_SplitArmy($dataIn['armyId'], $dataIn['s'], $dataIn['h'], $playerId, $user, $game, $db, $gameHandler);
+            $attackerArmyId = $sa->getChildArmyId();
         }
 
         $players = $game->getPlayers();

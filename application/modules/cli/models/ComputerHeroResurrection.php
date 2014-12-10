@@ -30,14 +30,7 @@ class Cli_Model_ComputerHeroResurrection
         if ($armyId = $player->getArmyIdFromPosition($capital->getX(), $capital->getY())) {
             $army = $player->getArmies()->getArmy($armyId);
         } else {
-            $mArmy = new Application_Model_Army($gameId, $db);
-            $armyId = $mArmy->createArmy($capital->getPosition(), $playerId);
-            $army = new Cli_Model_Army(array(
-                'armyId' => $armyId,
-                'x' => $capital->getX(),
-                'y' => $capital->getY()
-            ), $color);
-            $player->getArmies()->addArmy($armyId, $army);
+            $armyId = $player->getArmies()->create($capital->getX(), $capital->getY(), $playerId, $game, $db);
         }
         $army->createHero($gameId, $heroId, $db);
 

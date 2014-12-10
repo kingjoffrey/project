@@ -240,14 +240,14 @@ var AStar = {
 
         if (Army.selected.soldierSplitKey !== null) {
             if (game.units[Army.selected.soldiers[Army.selected.soldierSplitKey].unitId].canFly) {
-                g = terrain[terrainType]['flying']
+                g = game.terrain[terrainType]['flying']
             } else if (game.units[Army.selected.soldiers[Army.selected.soldierSplitKey].unitId].canSwim) {
-                g = terrain[terrainType]['swimming']
+                g = game.terrain[terrainType]['swimming']
             } else {
                 if (terrainType == 'f' || terrainType == 's' || terrainType == 'm') {
                     g = game.units[Army.selected.soldiers[Army.selected.soldierSplitKey].unitId][terrainType]
                 } else {
-                    g = terrain[terrainType]['walking']
+                    g = game.terrain[terrainType]['walking']
                 }
             }
         } else {

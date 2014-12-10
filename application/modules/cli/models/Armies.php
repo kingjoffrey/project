@@ -132,4 +132,28 @@ class Cli_Model_Armies
     {
         return count($this->_armies);
     }
+
+    public function create($x, $y, $playerId, Cli_Model_Game $game, Zend_Db_Adapter_Pdo_Pgsql $db)
+    {
+        $mArmy = new Application_Model_Army($game->getId(), $db);
+        $armyId = $mArmy->createArmy(array('x' => $x, 'y' => $y), $playerId);
+        $army = new Cli_Model_Army(array(
+            'armyId' => $armyId,
+            'x' => $x,
+            'y' => $y
+        ), $game->getPlayerColor($playerId));
+        $this->addArmy($armyId, $army);
+
+        return $armyId;
+    }
+
+    public function moveHero($oldArmyId, $newArmyId, $heroId, $gameId, $db)
+    {
+
+    }
+
+    public function moveSoldier($oldArmyId, $newArmyId, $soldierId, $gameId, $db)
+    {
+
+    }
 }

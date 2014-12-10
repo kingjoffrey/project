@@ -135,7 +135,7 @@ class Cli_Model_ComputerMove extends Cli_Model_ComputerMethods
                         }
                     }
 
-                    $mSplitArmy = new Cli_Model_SplitArmy($army['armyId'], $s, $h, $this->_user, $this->_playerId, $this->_db, $this->_gameHandler);
+                    $mSplitArmy = new Cli_Model_SplitArmy($army['armyId'], $s, $h, $this->_playerId, $this->_user, $this->_game, $this->_db, $this->_gameHandler);
                     $newArmyId = $mSplitArmy->getChildArmyId();
 
                     if ($army['x'] == $castlePosition['x'] && $army['y'] == $castlePosition['y']) {

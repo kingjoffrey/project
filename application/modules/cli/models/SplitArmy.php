@@ -2,10 +2,9 @@
 
 class Cli_Model_SplitArmy
 {
+    private $_childArmyId = null;
 
-    private $childArmyId = null;
-
-    function  __construct($parentArmyId, $s, $h, $user, $playerId, $db, $gameHandler)
+    function  __construct($parentArmyId, $s, $h, $playerId, IWebSocketConnection $user, Cli_Model_Game $game, Zend_Db_Adapter_Pdo_Pgsql $db, Cli_GameHumansHandler $gameHandler)
     {
         if (empty($parentArmyId) || (empty($h) && empty($s))) {
             $gameHandler->sendError($user, 'Brak "armyId", "s" lub "h"!');
@@ -14,53 +13,51 @@ class Cli_Model_SplitArmy
 
         $heroesIds = explode(',', $h);
         $soldiersIds = explode(',', $s);
+        $gameId = $game->getId();
+        $color = $game->getPlayerColor($playerId);
+        $armies = $game->getPlayers()->getPlayer($color)->getArmies();
+        $army = $armies->getArmy($parentArmyId);
 
-        $mArmy = new Application_Model_Army($user->parameters['gameId'], $db);
-
-        if (isset($heroesIds[0]) && !empty($heroesIds[0])) {
-
-            $mHeroesInGame = new Application_Model_HeroesInGame($user->parameters['gameId'], $db);
+        if (isset($heroesIds[0]) && $heroesIds[0]) {
 
             foreach ($heroesIds as $heroId) {
                 if (!Zend_Validate::is($heroId, 'Digits')) {
                     continue;
                 }
-                if (!$mHeroesInGame->isHeroInArmy($parentArmyId, $heroId)) {
+                if (!$army->getHeroes()->hasHero($heroId)) {
                     continue;
                 }
 
-                if (empty($this->childArmyId)) {
-                    $position = $mArmy->getArmyPositionByArmyIdPlayerId($parentArmyId, $playerId);
-                    $this->childArmyId = $mArmy->createArmy($position, $playerId);
+                if (empty($this->_childArmyId)) {
+                    $this->_childArmyId = $armies->create($army->getX(), $army->getY(), $playerId, $game, $db);
+                    $childArmy = $armies->getArmy($this->_childArmyId);
                 }
 
-                $mHeroesInGame->heroUpdateArmyId($heroId, $this->childArmyId);
+                $armies->moveHero($parentArmyId, $this->_childArmyId, $heroId, $gameId, $db);
             }
         }
 
-        if (isset($soldiersIds) && !empty($soldiersIds)) {
-
-            $mSoldier = new Application_Model_UnitsInGame($user->parameters['gameId'], $db);
+        if (isset($soldiersIds) && $soldiersIds) {
 
             foreach ($soldiersIds as $soldierId) {
                 if (!Zend_Validate::is($soldierId, 'Digits')) {
                     continue;
                 }
 
-                if (!$mSoldier->isSoldierInArmy($parentArmyId, $soldierId)) {
+                if (!$army->getSoldiers()->hasSoldier($soldierId)) {
                     continue;
                 }
 
-                if (empty($this->childArmyId)) {
-                    $position = $mArmy->getArmyPositionByArmyIdPlayerId($parentArmyId, $playerId);
-                    $this->childArmyId = $mArmy->createArmy($position, $playerId);
+                if (empty($this->_childArmyId)) {
+                    $this->_childArmyId = $armies->create($army->getX(), $army->getY(), $playerId, $game, $db);
+                    $childArmy = $armies->getArmy($this->_childArmyId);
                 }
 
-                $mSoldier->soldierUpdateArmyId($soldierId, $this->childArmyId);
+                $armies->moveSoldier($parentArmyId, $this->_childArmyId, $soldierId, $gameId, $db);
             }
         }
 
-        if (empty($this->childArmyId)) {
+        if (empty($this->_childArmyId)) {
             $gameHandler->sendError($user, 'Brak "childArmyId"');
             return;
         }
@@ -69,16 +66,16 @@ class Cli_Model_SplitArmy
 
         $token = array(
             'type' => 'split',
-            'parentArmy' => Cli_Model_Army::getArmyByArmyId($parentArmyId, $user->parameters['gameId'], $db),
-            'childArmy' => Cli_Model_Army::getArmyByArmyId($this->childArmyId, $user->parameters['gameId'], $db),
-            'color' => $playersInGameColors[$playerId]
+            'parentArmy' => $army->toArray(),
+            'childArmy' => $childArmy->toArray(),
+            'color' => $color
         );
 
-        $gameHandler->sendToChannel($db, $token, $user->parameters['gameId']);
+        $gameHandler->sendToChannel($db, $token, $gameId);
     }
 
     public function getChildArmyId()
     {
-        return $this->childArmyId;
+        return $this->_childArmyId;
     }
 }

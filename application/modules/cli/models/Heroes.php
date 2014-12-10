@@ -38,9 +38,9 @@ class Cli_Model_Heroes
         return key($this->_heroes);
     }
 
-    public function hasHero()
+    public function hasHero($heroId)
     {
-        return count($this->_heroes);
+        return isset($this->_heroes[$heroId]);
     }
 
     public function remove($heroId)

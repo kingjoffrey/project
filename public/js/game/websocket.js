@@ -72,7 +72,7 @@ Websocket = {
                 var X = 40 * r.army.x,
                     Y = 40 * r.army.y
                 board.append($('<div>').addClass('ruinSearch').css({'top': Y + 'px', 'left': X + 'px'}));
-                zoomer.lensSetCenter(X, Y);
+                zoom.lens.setcenter(X, Y);
                 Army.init(r.army, r.color);
                 Ruin.update(r.ruin.ruinId, r.ruin.empty);
                 if (game.me.color == r.color) {

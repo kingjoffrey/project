@@ -105,7 +105,7 @@ class Cli_GameHumansHandler extends Cli_WofHandler
                 break;
 
             case 'split':
-                new Cli_Model_SplitArmy($dataIn['armyId'], $dataIn['s'], $dataIn['h'], $user, $playerId, $db, $this);
+                new Cli_Model_SplitArmy($dataIn['armyId'], $dataIn['s'], $dataIn['h'], $playerId, $user, $this->_game, $db, $this);
                 break;
 
             case 'join':
@@ -129,7 +129,7 @@ class Cli_GameHumansHandler extends Cli_WofHandler
                 break;
 
             case 'ruin':
-                new Cli_Model_SearchRuinHandler($dataIn['armyId'], $user, $db, $this);
+                new Cli_Model_SearchRuinHandler($dataIn['armyId'], $user, $this->_game, $db, $this);
                 break;
 
             case 'nextTurn':

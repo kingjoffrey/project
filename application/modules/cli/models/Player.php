@@ -198,17 +198,6 @@ class Cli_Model_Player extends Cli_Model_DefaultPlayer
         $this->_turnActive = $turnActive;
     }
 
-    public function createArmy($gameId, $x, $y, $db)
-    {
-        $mArmy = new Application_Model_Army($gameId, $db);
-        $armyId = $mArmy->createArmy(array('x' => $x, 'y' => $y), $this->_id);
-        $army = array(
-            'x' => $x,
-            'y' => $y,
-            'armyId' => $armyId);
-        $this->_armies->addArmy($armyId, new Cli_Model_Army($army, $this->_color));
-    }
-
     public function addCastle($castleId, Cli_Model_Castle $castle, $oldColor, Cli_Model_Fields $fields, $gameId, $db)
     {
         $this->addIncome($castle->getIncome());
