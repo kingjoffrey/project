@@ -25,7 +25,7 @@ class Cli_Model_HeroResurrection
         }
 
         $mHeroesInGame = new Application_Model_HeroesInGame($user->parameters['gameId'], $db);
-        $heroId = $mHeroesInGame->getDeadHeroId($user->parameters['playerId']);
+        $heroId = $mHeroesInGame->getDeadHero($user->parameters['playerId']);
 
         if (!$heroId) {
             $gameHandler->sendError($user, 'Twój heros żyje! ' . $heroId);

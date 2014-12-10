@@ -37,7 +37,7 @@ class Cli_Model_Castle extends Cli_Model_Entity
         $this->_relocationCastleId = $playerCastle['relocationCastleId'];
     }
 
-    public function setProduction($production)
+    public function initProduction($production)
     {
         $this->_production = $production;
     }

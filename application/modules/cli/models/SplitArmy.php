@@ -38,7 +38,6 @@ class Cli_Model_SplitArmy
         }
 
         if (isset($soldiersIds) && $soldiersIds) {
-
             foreach ($soldiersIds as $soldierId) {
                 if (!Zend_Validate::is($soldierId, 'Digits')) {
                     continue;
@@ -61,8 +60,6 @@ class Cli_Model_SplitArmy
             $gameHandler->sendError($user, 'Brak "childArmyId"');
             return;
         }
-
-        $playersInGameColors = Zend_Registry::get('playersInGameColors');
 
         $token = array(
             'type' => 'split',

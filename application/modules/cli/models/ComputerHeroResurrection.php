@@ -21,9 +21,9 @@ class Cli_Model_ComputerHeroResurrection
         }
 
         $mHeroesInGame = new Application_Model_HeroesInGame($gameId, $db);
-        $heroId = $mHeroesInGame->getDeadHeroId($playerId);
+        $hero = $mHeroesInGame->getDeadHero($playerId);
 
-        if (!$heroId) {
+        if (!$hero) {
             return;
         }
 
@@ -32,7 +32,8 @@ class Cli_Model_ComputerHeroResurrection
         } else {
             $armyId = $player->getArmies()->create($capital->getX(), $capital->getY(), $playerId, $game, $db);
         }
-        $army->createHero($gameId, $heroId, $db);
+
+        $army->addHero($hero['heroId'], new Cli_Model_Hero($hero), $gameId, $db);
 
         if (!$armyId) {
             return;

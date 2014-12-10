@@ -223,33 +223,33 @@ class Application_Model_HeroesInGame extends Coret_Db_Table_Abstract
         return $this->insert($data);
     }
 
-    public function getDeadHeroId($playerId)
+    public function getDeadHero($playerId) // todo sprawdzić jak to działa
     {
         $alive = 0;
+        $mArmy = new Application_Model_Army($this->_gameId, $this->_db);
 
         $select = $this->_db->select()
-            ->from(array('a' => $this->_name), 'armyId')
+            ->from(array('a' => $this->_name))
             ->join(array('b' => 'hero'), 'a."heroId" = b."heroId"', 'heroId')
             ->where($this->_db->quoteIdentifier('gameId') . ' = ?', $this->_gameId)
             ->where('"playerId" = ?', $playerId);
 
         foreach ($this->selectAll($select) as $row) {
             if (!$row['armyId']) {
-                $heroId = $row['heroId'];
+                $hero = $row;
                 continue;
             }
 
-            $mArmy = new Application_Model_Army($this->_gameId, $this->_db);
 
             if (!$mArmy->getArmyPositionByArmyIdPlayerId($row['armyId'], $playerId)) {
-                $heroId = $row['heroId'];
+                $hero['heroId'] = $row['heroId'];
                 continue;
             }
             $alive++;
         }
 
         if (!$alive) {
-            return $heroId;
+            return $hero;
         }
     }
 

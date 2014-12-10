@@ -149,11 +149,13 @@ class Cli_Model_Armies
 
     public function moveHero($oldArmyId, $newArmyId, $heroId, $gameId, $db)
     {
-
+        $this->getArmy($newArmyId)->addHero($heroId, $this->getArmy($oldArmyId)->getHeroes()->getHero($heroId), $gameId, $db);
+        $this->getArmy($oldArmyId)->getHeroes()->remove($heroId);
     }
 
     public function moveSoldier($oldArmyId, $newArmyId, $soldierId, $gameId, $db)
     {
-
+        $this->getArmy($newArmyId)->addSoldier($soldierId, $this->getArmy($oldArmyId)->getSoldiers()->getSoldier($soldierId), $gameId, $db);
+        $this->getArmy($oldArmyId)->getSoldiers()->remove($soldierId);
     }
 }

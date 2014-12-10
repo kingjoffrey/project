@@ -75,8 +75,8 @@ class Cli_Model_Player extends Cli_Model_DefaultPlayer
         foreach ($mArmy->getPlayerArmies($this->_id) as $a) {
             $this->_armies->addArmy($a['armyId'], new Cli_Model_Army($a, $this->_color));
             $army = $this->_armies->getArmy($a['armyId']);
-            $army->setHeroes($mHeroesInGame->getForMove($a['armyId']));
-            $army->setSoldiers($mSoldier->getForMove($a['armyId']));
+            $army->initHeroes($mHeroesInGame->getForMove($a['armyId']));
+            $army->initSoldiers($mSoldier->getForMove($a['armyId']));
         }
     }
 
@@ -87,7 +87,7 @@ class Cli_Model_Player extends Cli_Model_DefaultPlayer
         foreach ($mCastlesInGame->getPlayerCastles($this->_id) as $castleId => $c) {
             $this->_castles->addCastle($castleId, new Cli_Model_Castle($c, $mapCastles[$castleId]));
             $castle = $this->_castles->getCastle($castleId);
-            $castle->setProduction($mCastleProduction->getCastleProduction($castleId));
+            $castle->initProduction($mCastleProduction->getCastleProduction($castleId));
             $this->addIncome($castle->getIncome());
         }
     }
