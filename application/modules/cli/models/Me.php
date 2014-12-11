@@ -22,4 +22,9 @@ class Cli_Model_Me
     {
         return $this->_id;
     }
+
+    public function getColor()
+    {
+        return $this->_color;
+    }
 }

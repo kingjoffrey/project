@@ -113,7 +113,7 @@ class Cli_GameHumansHandler extends Cli_WofHandler
                 break;
 
             case 'fortify':
-                new Cli_Model_Fortify($dataIn['armyId'], $dataIn['fortify'], $user, $db, $this);
+                new Cli_Model_Fortify($dataIn['armyId'], $dataIn['fortify'], $user, $this->_game, $db, $this);
                 break;
 
             case 'disband':

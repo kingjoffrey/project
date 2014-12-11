@@ -3,15 +3,14 @@
 class Cli_Model_Fortify
 {
 
-    function  __construct($armyId, $fortify, $user, $db, $gameHandler)
+    function  __construct($armyId, $fortify, IWebSocketConnection $user, Cli_Model_Game $game, Zend_Db_Adapter_Pdo_Pgsql $db, Cli_GameHumansHandler $gameHandler)
     {
         if (empty($armyId)) {
             $gameHandler->sendError($user, 'No "armyId"!');
             return;
         }
 
-        $mArmy2 = new Application_Model_Army($user->parameters['gameId'], $db);
-        $mArmy2->fortify($armyId, $fortify, $user->parameters['playerId']);
+        $game->getPlayers()->getPlayer($game->getMe()->getColor())->getArmies()->getArmy($armyId)->setFortified($fortify, $game->getId(), $db);
     }
 
 }
