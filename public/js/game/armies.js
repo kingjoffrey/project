@@ -351,10 +351,10 @@ var Army = {
     },
     showFirst: function (color) {
         for (i in game.players[color].armies) {
-            zoomer.lensSetCenter(game.players[color].armies[i].x * 40, game.players[color].armies[i].y * 40);
+            zoom.lens.setcenter(game.players[color].armies[i].x * 40, game.players[color].armies[i].y * 40);
             return;
         }
-        zoomer.lensSetCenter(30, 30);
+        zoom.lens.setcenter(30, 30);
     },
     removeFromSkipped: function (armyId) {
         if (isTruthful(Army.skippedArmies[armyId])) {
@@ -378,7 +378,7 @@ var Army = {
         }
     },
     findNext: function () {
-        if (!game.me.turn) {
+        if (!Turn.isMy()) {
             return;
         }
 
@@ -436,7 +436,7 @@ var Army = {
             $('#army' + armyId).remove();
             $('#' + armyId).remove();
         } else {
-            zoomer.lensSetCenter(game.players[color].armies[armyId].x * 40, game.players[color].armies[armyId].y * 40);
+            zoom.lens.setcenter(game.players[color].armies[armyId].x * 40, game.players[color].armies[armyId].y * 40);
             $('#' + armyId).fadeOut(500, function () {
                 $('#army' + armyId).remove();
                 $('#' + armyId).remove();

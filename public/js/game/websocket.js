@@ -163,7 +163,7 @@ Websocket = {
 
             case 'resurrection':
                 Sound.play('resurrection');
-                zoomer.lensSetCenter(r.data.army.x * 40, r.data.army.y * 40);
+                zoom.lens.setcenter(r.data.army.x * 40, r.data.army.y * 40);
                 Army.init(r.data.army, r.color);
                 if (Turn.isMy()) {
                     Message.remove()

@@ -164,4 +164,9 @@ class Cli_Model_Castle extends Cli_Model_Entity
     {
         $this->_defenseMod--;
     }
+
+    public function getRelocationCastleId()
+    {
+        return $this->_relocationCastleId;
+    }
 }

@@ -33,7 +33,7 @@ var Ruin = {
             title = 'Ruins (empty)';
             css = '_empty';
         } else {
-            ruins[ruinId].empty = 0;
+            game.ruins[ruinId].empty = 0;
             title = 'Ruins';
             css = '';
         }

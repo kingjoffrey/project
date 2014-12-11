@@ -30,12 +30,12 @@ abstract class Cli_Model_ComputerMethods
                 $h = $mHeuristics->calculateH($castleX, $castleY);
                 if ($h < $this->_movesLeft) {
                     try {
-                        $aStar = new Cli_Model_Astar($this->_army, $castleX, $castleY, $this->_game, $this->_color);
+                        $aStar = new Cli_Model_Astar($this->_army, $castleX, $castleY, $this->_game);
+                        return $aStar->path();
                     } catch (Exception $e) {
                         $this->_l->log($e);
                         return;
                     }
-                    return new Cli_Model_Path($aStar->getPath($castleX . '_' . $castleY), $this->_army);
                 }
             }
         }
@@ -57,13 +57,13 @@ abstract class Cli_Model_ComputerMethods
                 $h = $mHeuristics->calculateH($enemy->getX(), $enemy->getY());
                 if ($h < $enemy->getMovesLeft()) {
                     try {
-                        $aStar = new Cli_Model_Astar($enemy, $castleX, $castleY, $this->_game, $this->_color);
+                        $aStar = new Cli_Model_Astar($enemy, $castleX, $castleY, $this->_game);
                     } catch (Exception $e) {
                         echo($e);
                         return;
                     }
 
-                    if ($enemy->unitsHaveRange($aStar->getPath($castleX . '_' . $castleY))) {
+                    if ($enemy->unitsHaveRange($aStar->path())) {
                         $enemiesHaveRange[] = $enemy;
                     }
                 }
@@ -89,13 +89,13 @@ abstract class Cli_Model_ComputerMethods
                 $h = $mHeuristics->calculateH($enemyX, $enemyY);
                 if ($h < $this->_movesLeft) {
                     try {
-                        $aStar = new Cli_Model_Astar($this->_army, $enemyX, $enemyY, $this->_game, $this->_color);
+                        $aStar = new Cli_Model_Astar($this->_army, $enemyX, $enemyY, $this->_game);
                     } catch (Exception $e) {
                         echo($e);
                         return;
                     }
 
-                    $path = new Cli_Model_Path($aStar->getPath($enemyX . '_' . $enemyY), $this->_army);
+                    $path = $aStar->path();
                     if ($path->enemyInRange()) {
                         $enemiesInRange[] = $enemy;
                     }
@@ -115,13 +115,13 @@ abstract class Cli_Model_ComputerMethods
             return;
         }
         try {
-            $aStar = new Cli_Model_Astar($this->_army, $castleX, $castleY, $this->_game, $this->_color);
+            $aStar = new Cli_Model_Astar($this->_army, $castleX, $castleY, $this->_game);
         } catch (Exception $e) {
             echo($e);
             return;
         }
 
-        return $this->_army->calculateMovesSpend($aStar->getPath($castleX . '_' . $castleY));
+        return $aStar->path();
     }
 
     /**
@@ -135,7 +135,7 @@ abstract class Cli_Model_ComputerMethods
         $this->_l->logMethodName();
         $castlesHeuristics = array();
 
-        $castles=$this->_player->getCasles();
+        $castles = $this->_player->getCasles();
         foreach ($castles->getKeys() as $castleId) {
             $castle = $castles->getCastle($castleId);
             $mHeuristics = new Cli_Model_Heuristics($castle->getX(), $castle->getY());
@@ -208,13 +208,13 @@ abstract class Cli_Model_ComputerMethods
             $h = $mHeuristics->calculateH($this->_armyX, $this->_armyY);
             if ($h < $this->_movesLeft) {
                 try {
-                    $aStar = new Cli_Model_Astar($this->_army, $armyX, $armyY, $this->_game, $this->_color);
+                    $aStar = new Cli_Model_Astar($this->_army, $armyX, $armyY, $this->_game);
                 } catch (Exception $e) {
                     echo($e);
                     return;
                 }
 
-                return new Cli_Model_Path($aStar->getPath($armyX . '_' . $armyY), $this->_army);
+                return $aStar->path();
             }
         }
     }
@@ -241,13 +241,13 @@ abstract class Cli_Model_ComputerMethods
                         continue;
                     }
                     try {
-                        $aStar = new Cli_Model_Astar($this->_army, $enemyX, $enemyY, $this->_game, $this->_color);
+                        $aStar = new Cli_Model_Astar($this->_army, $enemyX, $enemyY, $this->_game);
                     } catch (Exception $e) {
                         echo($e);
                         return;
                     }
 
-                    return new Cli_Model_Path($aStar->getPath($enemyX . '_' . $enemyY), $this->_army);
+                    return $aStar->path();
                 }
             }
         }
@@ -279,13 +279,13 @@ abstract class Cli_Model_ComputerMethods
                     }
 
                     try {
-                        $aStar = new Cli_Model_Astar($this->_army, $enemyX, $enemyY, $this->_game, $this->_color);
+                        $aStar = new Cli_Model_Astar($this->_army, $enemyX, $enemyY, $this->_game);
                     } catch (Exception $e) {
                         echo($e);
                         return;
                     }
 
-                    return new Cli_Model_Path($aStar->getPath($enemyX . '_' . $enemyY), $this->_army);
+                    return $aStar->path();
                 }
             }
         }
@@ -326,12 +326,12 @@ abstract class Cli_Model_ComputerMethods
                 $h = $mHeuristics->calculateH($castleX, $castleY);
                 if ($h < $enemy->getMovesLeft()) {
                     try {
-                        $aStar = new Cli_Model_Astar($enemy, $castleX, $castleY, $this->_game, $this->_color);
+                        $aStar = new Cli_Model_Astar($enemy, $castleX, $castleY, $this->_game);
                     } catch (Exception $e) {
                         echo($e);
                         return;
                     }
-                    if ($enemy->unitsHaveRange($aStar->getPath($castleX . '_' . $castleY))) {
+                    if ($enemy->unitsHaveRange($aStar->path())) {
                         return true;
                     }
                 }
@@ -345,13 +345,13 @@ abstract class Cli_Model_ComputerMethods
         $enemyX = $enemy->getX();
         $enemyY = $enemy->getY();
         try {
-            $aStar = new Cli_Model_Astar($this->_army, $enemyX, $enemyY, $this->_game, $this->_color);
+            $aStar = new Cli_Model_Astar($this->_army, $enemyX, $enemyY, $this->_game);
         } catch (Exception $e) {
             echo($e);
             return;
         }
 
-        return new Cli_Model_Path($aStar->getPath($enemyX . '_' . $enemyY), $this->_army);
+        return $aStar->path();
     }
 
     /**
@@ -365,13 +365,13 @@ abstract class Cli_Model_ComputerMethods
         $enemyY = $enemy->getY();
 
         try {
-            $aStar = new Cli_Model_Astar($this->_army, $enemyX, $enemyY, $this->_game, $this->_color);
+            $aStar = new Cli_Model_Astar($this->_army, $enemyX, $enemyY, $this->_game);
         } catch (Exception $e) {
             echo($e);
             return;
         }
 
-        return new Cli_Model_Path($aStar->getPath($enemyX . '_' . $enemyY), $this->_army);
+        return $aStar->path();
     }
 
     protected function getMyEmptyCastleInMyRange()
@@ -389,13 +389,13 @@ abstract class Cli_Model_ComputerMethods
             $h = $mHeuristics->calculateH($castleX, $castleY);
             if ($h < $this->_movesLeft) {
                 try {
-                    $aStar = new Cli_Model_Astar($this->_army, $castleX, $castleY, $this->_game, $this->_color);
+                    $aStar = new Cli_Model_Astar($this->_army, $castleX, $castleY, $this->_game);
                 } catch (Exception $e) {
                     $this->_l->log($e);
                     return;
                 }
 
-                return new Cli_Model_Path($aStar->getPath($castleX . '_' . $castleY), $this->_army);
+                return $aStar->path();
             }
         }
     }

@@ -77,12 +77,12 @@ class Cli_Model_NearestWeakerHostileCastle
         $castleX = $castle->getX();
         $castleY = $castle->getY();
         try {
-            $aStar = new Cli_Model_Astar($army, $castleX, $castleY, $game, $playerColor);
+            $aStar = new Cli_Model_Astar($army, $castleX, $castleY, $game);
         } catch (Exception $e) {
             echo($e);
             return;
         }
-        return new Cli_Model_Path($aStar->getPath($castleX . '_' . $castleY), $army);
+        return $aStar->path();
     }
 
     public function getPath()

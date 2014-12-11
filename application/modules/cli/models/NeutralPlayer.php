@@ -53,29 +53,6 @@ class Cli_Model_NeutralPlayer extends Cli_Model_DefaultPlayer
         );
     }
 
-    public function getCastleGarrison($turnNumber, $firstUnitId, $castleId)
-    {
-        $castle = $this->_castles->getCastle($castleId);
-        $numberOfSoldiers = ceil($turnNumber / 10);
-        $units = Zend_Registry::get('units');
-
-        $army = new Cli_Model_Army(array(
-            'armyId' => 0,
-            'x' => $castle->getX(),
-            'y' => $castle->getY()
-        ), 'neutral');
-        for ($i = 1; $i <= $numberOfSoldiers; $i++) {
-            $soldierId = 's' . $i;
-            $army->getSoldiers()->add($soldierId, new Cli_Model_Soldier(array(
-                'defensePoints' => 3,
-                'soldierId' => $soldierId,
-                'unitId' => $firstUnitId
-            ), $units[$firstUnitId]));
-        }
-
-        return array($army);
-    }
-
     public function getArmies()
     {
         return new Cli_Model_Armies();

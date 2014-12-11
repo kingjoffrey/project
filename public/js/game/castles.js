@@ -280,6 +280,8 @@ var Castle = {
             .addClass('castle ' + color)
             .css('background', 'url(/img/game/castles/' + color + '.png) center center no-repeat');
 
+        game.players[color].castles[castleId] = castle
+
         Castle.removeCrown(castleId)
         Castle.removeHammer(castleId)
         Castle.removeRelocationTo(castleId)
@@ -364,7 +366,7 @@ var Castle = {
             zoom.lens.setcenter(sp.css('left'), sp.css('top'));
         } else if ($('#castle' + firstCastleId).length) {
             var sp = $('#castle' + firstCastleId);
-            zoomer.lensSetCenter(sp.css('left'), sp.css('top'));
+            zoom.lens.setcenter(sp.css('left'), sp.css('top'));
         } else {
             Army.showFirst(game.me.color);
         }

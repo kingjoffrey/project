@@ -78,8 +78,8 @@ class Cli_Model_Move
         }
 
         try {
-            $A_Star = new Cli_Model_Astar($army, $x, $y, $game, $attackerColor);
-            $path = new Cli_Model_Path($A_Star->getPath($x . '_' . $y), $army);
+            $A_Star = new Cli_Model_Astar($army, $x, $y, $game);
+            $path = $A_Star->path();
         } catch (Exception $e) {
             $l = new Coret_Model_Logger();
             $l->log($e);

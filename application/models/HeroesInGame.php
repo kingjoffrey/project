@@ -223,36 +223,25 @@ class Application_Model_HeroesInGame extends Coret_Db_Table_Abstract
         return $this->insert($data);
     }
 
-    public function getDeadHero($playerId) // todo sprawdzić jak to działa
+    public function getDeadHero($playerId)
     {
-        $alive = 0;
-        $mArmy = new Application_Model_Army($this->_gameId, $this->_db);
+        $select = $this->_db->select()
+            ->from(array('a' => $this->_name), 'armyId')
+            ->join(array('b' => 'hero'), 'a."heroId" = b."heroId"', null)
+            ->where($this->_db->quoteIdentifier('armyId') . ' IS NOT NULL')
+            ->where($this->_db->quoteIdentifier('gameId') . ' = ?', $this->_gameId)
+            ->where($this->_db->quoteIdentifier('playerId') . ' = ?', $playerId);
+
+        if ($this->selectOne($select)) {
+            return;
+        }
 
         $select = $this->_db->select()
-            ->from(array('a' => $this->_name))
-            ->join(array('b' => 'hero'), 'a."heroId" = b."heroId"', 'heroId')
+            ->from(array('a' => 'hero'), array('numberOfMoves', 'attackPoints', 'defensePoints', 'name'))
+            ->join(array('b' => $this->_name), 'a."heroId" = b."heroId"', array('heroId', 'movesLeft'))
             ->where($this->_db->quoteIdentifier('gameId') . ' = ?', $this->_gameId)
-            ->where('"playerId" = ?', $playerId);
-
-        foreach ($this->selectAll($select) as $row) {
-            if (!$row['armyId']) {
-                $hero = $row;
-                continue;
-            }
-
-
-            if (!$mArmy->getArmyPositionByArmyIdPlayerId($row['armyId'], $playerId)) {
-                $hero['heroId'] = $row['heroId'];
-                continue;
-            }
-            $alive++;
-        }
-
-        if (!$alive) {
-            return $hero;
-        }
+            ->where($this->_db->quoteIdentifier('playerId') . ' = ?', $playerId);
+        return $this->selectRow($select);
     }
-
-
 }
 

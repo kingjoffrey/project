@@ -66,8 +66,8 @@ class Cli_Model_StartTurn
                 $y = $castles->getCastle($unitCastleId)->getY();
                 $armyId = $player->getArmies()->getArmyIdFromPosition($x, $y);
 
-                if (!$armyId) {
-                    $armyId = $player->getArmies()->createArmy($x, $y, $playerId, $game, $db);
+                if (empty($armyId)) {
+                    $armyId = $player->getArmies()->create($x, $y, $playerId, $game, $db);
                 }
 
                 $player->getArmies()->getArmy($armyId)->createSoldier($gameId, $playerId, $unitId, $db);

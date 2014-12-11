@@ -177,7 +177,7 @@ class Cli_Model_Game
         );
     }
 
-    public function getPlayerCapital($color)
+    public function getPlayerCapitalId($color)
     {
         return $this->_capitals[$color];
     }

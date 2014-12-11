@@ -34,16 +34,16 @@ class Cli_Model_Astar extends Cli_Model_Heuristics
      */
     private $_fields;
     private $terrain;
-    private $movesLeft;
-    private $_color;
     private $limit;
     private $myCastleId = array();
     private $movementType;
 
-    private $outOfReach = false;
-
     private $_enemyCastle = null;
     private $_enemyArmy = null;
+
+    private $_army;
+    private $_movesLeft;
+    private $_color;
 
     /**
      * Constructor
@@ -55,7 +55,7 @@ class Cli_Model_Astar extends Cli_Model_Heuristics
      * @param string $color
      * @param array $params
      */
-    public function __construct(Cli_Model_Army $army, $destX, $destY, Cli_Model_Game $game, $color, $params = null)
+    public function __construct(Cli_Model_Army $army, $destX, $destY, Cli_Model_Game $game, $params = null)
     {
         parent::__construct($destX, $destY);
 
@@ -64,8 +64,9 @@ class Cli_Model_Astar extends Cli_Model_Heuristics
         }
         $this->_fields = $game->getFields();
         $this->terrain = Zend_Registry::get('terrain');
-        $this->movesLeft = $army->getMovesLeft();
-        $this->_color = $color;
+        $this->_movesLeft = $army->getMovesLeft();
+        $this->_color = $army->getColor();
+        $this->_army = $army;
 
         if ($army->canFly()) {
             $this->movementType = 'flying';
@@ -214,7 +215,7 @@ class Cli_Model_Astar extends Cli_Model_Heuristics
                 } else {
                     $g += $this->_close[$x . '_' . $y]['G'];
                     // pomiń jeśli koszt ścieżki jest większy od pozostałych ruchów
-                    if ($this->limit && $g > $this->movesLeft) {
+                    if ($this->limit && $g > $this->_movesLeft) {
                         continue;
                     }
                     $parent = array(
@@ -270,16 +271,13 @@ class Cli_Model_Astar extends Cli_Model_Heuristics
     }
 
     /**
-     *
-     *
-     * @param string $key
-     * @param string $color
-     * @return array
+     * @return Cli_Model_Path
      */
-    public function getPath($key)
+    public function path()
     {
         $i = 0;
-        $path = $this->getReturnPath($key);
+        $key = $this->destX . '_' . $this->destY;
+        $path = $this->returnPath($key);
 
         if (is_array($path)) {
             $path = array_reverse($path);
@@ -298,7 +296,7 @@ class Cli_Model_Astar extends Cli_Model_Heuristics
                 $path[$k]['G'] -= $i;
             }
 
-            return $path;
+            return new Cli_Model_Path($path, $this->_army);
         }
     }
 
@@ -309,7 +307,7 @@ class Cli_Model_Astar extends Cli_Model_Heuristics
      * @param type $moves
      * @return int
      */
-    public function getReturnPath($key)
+    public function returnPath($key)
     {
         if (!isset($this->_close[$key])) {
             $l = new Coret_Model_Logger();

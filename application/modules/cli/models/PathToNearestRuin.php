@@ -23,13 +23,13 @@ class Cli_Model_PathToNearestRuin
             $h = $mHeuristics->calculateH($ruinX, $ruinY);
             if ($h < $movesLeft) {
                 try {
-                    $aStar = new Cli_Model_Astar($army, $ruinX, $ruinY, $game, $this->_color);
+                    $aStar = new Cli_Model_Astar($army, $ruinX, $ruinY, $game);
                 } catch (Exception $e) {
                     echo($e);
                     return;
                 }
-                $this->_path = new Cli_Model_Path($aStar->getPath($ruinX . '_' . $ruinY), $army);
-                if ($this->_path->targetWithin()) {
+                $this->_path = $aStar->path();
+                if ($this->_path && $this->_path->targetWithin()) {
                     $this->_ruinId = $ruinId;
                 }
             }

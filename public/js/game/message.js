@@ -301,7 +301,7 @@ var Message = {
 
         var center = function (i) {
             return function () {
-                zoomer.lensSetCenter(castles[i].x * 40, castles[i].y * 40)
+                zoom.lens.setcenter(castles[i].x * 40, castles[i].y * 40)
             }
         }
 
@@ -546,7 +546,7 @@ var Message = {
 
         var get = function (i) {
             return function () {
-                zoomer.lensSetCenter(castles[i].x * 40, castles[i].y * 40)
+                zoom.lens.setcenter(castles[i].x * 40, castles[i].y * 40)
             }
         }
 
@@ -707,32 +707,32 @@ var Message = {
         this.ok(id)
     },
     battle: function (r) {
-        var newBattle = new Array();
+        var killed = new Array();
 
         var attack = $('<div>').addClass('battle attack');
 
-        for (i in r.battle.attack.soldiers) {
-            if (r.battle.attack.soldiers[i]) {
-                newBattle[r.battle.attack.soldiers[i]] = {
-                    'soldierId': i
+        for (var soldierId in r.battle.attack.soldiers) {
+            if (r.battle.attack.soldiers[soldierId]) {
+                killed[r.battle.attack.soldiers[soldierId]] = {
+                    'soldierId': soldierId
                 };
             }
             attack.append(
                 $('<div>')
-                    .attr('id', 'unit' + i)
-                    .css('background', 'url(' + Unit.getImage(r.battle.attack.soldiers[i].unitId, r.color) + ') no-repeat')
+                    .attr('id', 'unit' + soldierId)
+                    .css('background', 'url(' + Unit.getImage(game.players[r.color].armies[r.army.armyId].soldiers[soldierId].unitId, r.color) + ') no-repeat')
                     .addClass('battleUnit')
             );
         }
-        for (i in r.battle.attack.heroes) {
-            if (r.battle.attack.heroes[i]) {
-                newBattle[r.battle.attack.heroes[i]] = {
-                    'heroId': i
+        for (var heroId in r.battle.attack.heroes) {
+            if (r.battle.attack.heroes[heroId]) {
+                killed[r.battle.attack.heroes[heroId]] = {
+                    'heroId': heroId
                 };
             }
             attack.append(
                 $('<div>')
-                    .attr('id', 'hero' + i)
+                    .attr('id', 'hero' + heroId)
                     .css('background', 'url(' + Hero.getImage(r.color) + ') no-repeat')
                     .addClass('battleUnit')
             );
@@ -749,7 +749,7 @@ var Message = {
             for (var armyId in r.battle.defenders[color]) {
                 for (var soldierId in r.battle.defenders[color][armyId].soldiers) {
                     if (r.battle.defenders[color][armyId].soldiers[soldierId]) {
-                        newBattle[r.battle.defenders[color][armyId].soldiers[soldierId]] = {
+                        killed[r.battle.defenders[color][armyId].soldiers[soldierId]] = {
                             'soldierId': soldierId
                         };
                     }
@@ -767,7 +767,7 @@ var Message = {
                 }
                 for (var heroId in r.battle.defenders[color][armyId].heroes) {
                     if (r.battle.defenders[color][armyId].heroes[heroId]) {
-                        newBattle[r.battle.defenders[color][armyId].heroes[heroId]] = {
+                        killed[r.battle.defenders[color][armyId].heroes[heroId]] = {
                             'heroId': heroId
                         };
                     }
@@ -828,12 +828,12 @@ var Message = {
 
         $('.go').css('display', 'none')
 
-        if (newBattle) {
+        if (killed) {
             if (game.players[r.color].computer) {
-                Message.kill(newBattle, r);
+                Message.kill(killed, r);
             } else {
                 setTimeout(function () {
-                    Message.kill(newBattle, r);
+                    Message.kill(killed, r);
                 }, 2500);
             }
         }
@@ -1149,7 +1149,7 @@ var Message = {
 
         var click = function (i) {
             return function () {
-                zoomer.lensSetCenter(castles[i].x * 40, castles[i].y * 40)
+                zoom.lens.setcenter(castles[i].x * 40, castles[i].y * 40)
             }
         }
 
@@ -1213,7 +1213,7 @@ var Message = {
 
         var center = function (i) {
             return function () {
-                zoomer.lensSetCenter(game.players[game.me.color].armies[i].x * 40, game.players[game.me.color].armies[i].y * 40)
+                zoom.lens.setcenter(game.players[game.me.color].armies[i].x * 40, game.players[game.me.color].armies[i].y * 40)
             }
         }
 
