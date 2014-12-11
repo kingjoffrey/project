@@ -39,7 +39,7 @@ class Cli_Model_Soldiers
 
     public function exists()
     {
-        return count($this->_soldiers);
+        return !empty($this->_soldiers);
     }
 
     public function getCosts()
@@ -131,5 +131,10 @@ class Cli_Model_Soldiers
         foreach ($this->getKeys() as $soldierId) {
             $this->getSoldier($soldierId)->resetMovesLeft($gameId, $db);
         }
+    }
+
+    public function count()
+    {
+        return count($this->_soldiers);
     }
 }

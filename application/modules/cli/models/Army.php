@@ -192,7 +192,6 @@ class Cli_Model_Army
             return;
         }
 
-        $fields = $game->getFields();
         $players = $game->getPlayers();
         $player = $players->getPlayer($playerColor);
 
@@ -439,37 +438,39 @@ class Cli_Model_Army
         $this->_canFly += -$numberOfHeroes + 1; // ????? todo
     }
 
-//    public function addSoldiers(Cli_Model_Soldiers $soldiers)
-//    {
-//        foreach ($soldiers as $soldierId => $soldier) {
-//            if ($soldier->canSwim()) {
-//                $this->_ships->add($soldierId, $soldier);
-//            } else {
-//                if ($soldier->canFly()) {
-//                    $this->_attackFlyModifier->increment();
-//                    $this->_canFly++;
-//                } else {
-//                    $this->_canFly--;
-//                }
-//                $this->_soldiers->add($soldierId, $soldier);
-//            }
-//        }
-//    }
+    public function joinSoldiers(Cli_Model_Soldiers $soldiers)
+    {
+        foreach ($soldiers->getKeys() as $soldierId) {
+            $soldier = $soldiers->getSoldier($soldierId);
+            if ($soldier->canSwim()) {
+                $this->_ships->add($soldierId, $soldier);
+            } else {
+                if ($soldier->canFly()) {
+                    $this->_attackFlyModifier->increment();
+                    $this->_canFly++;
+                } else {
+                    $this->_canFly--;
+                }
+                $this->_soldiers->add($soldierId, $soldier);
+            }
+        }
+    }
 
-//    public function addHeroes($heroes)
-//    {
-//        $numberOfHeroes = 0;
-//        foreach ($heroes as $heroId => $hero) {
-//            if ($this->_movesLeft > $hero->getMovesLeft()) {
-//                $this->_movesLeft = $hero->getMovesLeft();
-//            }
-//            $this->_heroes->add($heroId, $hero);
-//            $this->_attackModifier->increment();
-//            $this->_defenseModifier->increment();
-//            $numberOfHeroes++;
-//        }
-//        $this->_canFly += -$numberOfHeroes + 1; // ?????? todo
-//    }
+    public function joinHeroes(Cli_Model_Heroes $heroes)
+    {
+        $numberOfHeroes = 0;
+        foreach ($heroes->getKeys() as $heroId) {
+            $hero = $heroes->getHero($heroId);
+            if ($this->_movesLeft > $hero->getMovesLeft()) {
+                $this->_movesLeft = $hero->getMovesLeft();
+            }
+            $this->_heroes->add($heroId, $hero);
+            $this->_attackModifier->increment();
+            $this->_defenseModifier->increment();
+            $numberOfHeroes++;
+        }
+        $this->_canFly += -$numberOfHeroes + 1; // ?????? todo
+    }
 
     public function removeHero($heroId, $winnerId, $loserId, $gameId, $db)
     {
@@ -501,5 +502,10 @@ class Cli_Model_Army
     public function setDestroyed($destroyed)
     {
         $this->_destroyed = $destroyed;
+    }
+
+    public function count()
+    {
+        return $this->_soldiers->count() + $this->_ships->count() + $this->_heroes->count();
     }
 }

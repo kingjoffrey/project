@@ -56,32 +56,29 @@ class Cli_Model_Armies
 
     public function joinAtPosition($excludedArmyId, $gameId, Zend_Db_Adapter_Pdo_Pgsql $db)
     {
-        $x = $this->_armies[$excludedArmyId]->getX();
-        $y = $this->_armies[$excludedArmyId]->getY();
+        $excludedArmy = $this->getArmy($excludedArmyId);
+        $x = $excludedArmy->getX();
+        $y = $excludedArmy->getY();
 
         $mSoldier = new Application_Model_UnitsInGame($gameId, $db);
         $mHeroesInGame = new Application_Model_HeroesInGame($gameId, $db);
-        $mArmy = new Application_Model_Army($gameId, $db);
 
         $ids = array();
 
-        foreach ($this->_armies as $armyId => $army) {
+        foreach ($this->getKeys() as $armyId) {
+            $army = $this->getArmy($armyId);
             if ($armyId == $excludedArmyId) {
                 continue;
             }
             if ($x == $army->getX() && $y == $army->getY()) {
-                $this->_armies[$excludedArmyId]->addHeroes($army->getHeroes());
-                $this->_armies[$excludedArmyId]->addSoldiers($army->getSoldiers());
-                unset($this->_armies[$armyId]);
-
+                $excludedArmy->joinHeroes($army->getHeroes(), $mHeroesInGame);
                 $mHeroesInGame->heroesUpdateArmyId($armyId, $excludedArmyId);
+                $excludedArmy->joinSoldiers($army->getSoldiers(), $mSoldier);
                 $mSoldier->soldiersUpdateArmyId($armyId, $excludedArmyId);
-                $mArmy->destroyArmy($armyId);
-
+                $this->removeArmy($armyId, $gameId, $db);
                 $ids[] = $armyId;
             }
         }
-
         return $ids;
     }
 

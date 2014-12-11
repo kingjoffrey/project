@@ -3,6 +3,7 @@
 class Cli_Model_Enemies
 {
     private $_enemies = array();
+    private $_castleId;
 
     public function __construct(Cli_Model_Game $game, $x, $y, $playerColor)
     {
@@ -11,11 +12,11 @@ class Cli_Model_Enemies
         if ($castleId = $fields->getCastleId($x, $y)) {
             $castleColor = $fields->getCastleColor($x, $y);
             if ($castleColor == 'neutral') {
-                $this->neutralCastleGarrison($game->getTurnNumber(), $game->getFirstUnitId(), $castleId);
+                $this->neutralCastleGarrison($game, $castleId);
             } elseif (!$players->sameTeam($castleColor, $playerColor)) {
                 $this->handleCastleGarrison($players->getPlayer($castleColor)->getCastles()->getCastle($castleId), $fields, $players);
             }
-            $this->_enemies['castleId'] = $castleId;
+            $this->_castleId = $castleId;
         } elseif ($armies = $fields->getArmies($x, $y)) {
             foreach ($armies as $armyId => $armyColor) {
                 if (!$players->sameTeam($armyColor, $playerColor)) {
@@ -32,7 +33,7 @@ class Cli_Model_Enemies
 
     public function hasEnemies()
     {
-        return count($this->_enemies);
+        return count($this->_enemies) || $this->_castleId;
     }
 
     private function handleCastleGarrison(Cli_Model_Castle $castle, Cli_Model_Fields $fields, Cli_Model_Players $players)
@@ -49,9 +50,11 @@ class Cli_Model_Enemies
         }
     }
 
-    private function neutralCastleGarrison($turnNumber, $firstUnitId, $castleId)
+    private function neutralCastleGarrison(Cli_Model_Game $game, $castleId)
     {
-        $castle = $this->_castles->getCastle($castleId);
+        $turnNumber = $game->getTurnNumber();
+        $firstUnitId = $game->getFirstUnitId();
+        $castle = $game->getPlayers()->getPlayer('neutral')->getCastles()->getCastle($castleId);
         $numberOfSoldiers = ceil($turnNumber / 10);
         $units = Zend_Registry::get('units');
 

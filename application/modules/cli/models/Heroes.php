@@ -29,7 +29,7 @@ class Cli_Model_Heroes
 
     public function exists()
     {
-        return count($this->_heroes);
+        return !empty($this->_heroes);
     }
 
     public function getAnyHeroId()
@@ -60,7 +60,7 @@ class Cli_Model_Heroes
 
     public function saveMove($x, $y, $movesLeft, $type, Cli_Model_Path $path, $gameId, $db)
     {
-        if (!count($this->_heroes)) {
+        if (empty($this->_heroes)) {
             return $movesLeft;
         }
 
@@ -99,4 +99,8 @@ class Cli_Model_Heroes
 
     }
 
+    public function count()
+    {
+        return count($this->_heroes);
+    }
 }

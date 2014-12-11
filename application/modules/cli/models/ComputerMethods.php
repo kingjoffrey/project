@@ -171,22 +171,23 @@ abstract class Cli_Model_ComputerMethods
         if ($turnNumber < 5) {
             return;
         }
-        $myArmies = array();
+        $myArmies = new Cli_Model_Armies();
 
         $numberOfUnits = floor($turnNumber / 7);
         if ($numberOfUnits > 4) {
             $numberOfUnits = 4;
         }
-        $numberOfSoldiersAndHeroes = count($this->_army->getNumberOfSoldiers()) + count($this->_army->getNumberOfHeroes());
+        $numberOfSoldiersAndHeroes = $this->_army->count();
         foreach ($this->_player->getArmies()->getKeys() as $armyId) {
             if ($armyId == $this->_armyId) {
                 continue;
             }
-            $myArmies[$armyId] = $this->_player->getArmies()->getArmy($armyId);
+            $myArmies->addArmy($armyId, $this->_player->getArmies()->getArmy($armyId));
         }
 
-        foreach ($myArmies as $armyId => $army) {
-            $numberOfSoldiers = $army->getNumberOfSoldiers();
+        foreach ($myArmies->getKeys() as $armyId) {
+            $army = $myArmies->getArmy($armyId);
+            $numberOfSoldiers = $army->getSoldiers()->count();
             $armyX = $army->getX();
             $armyY = $army->getY();
 
@@ -209,12 +210,11 @@ abstract class Cli_Model_ComputerMethods
             if ($h < $this->_movesLeft) {
                 try {
                     $aStar = new Cli_Model_Astar($this->_army, $armyX, $armyY, $this->_game);
+                    return $aStar->path();
                 } catch (Exception $e) {
                     echo($e);
                     return;
                 }
-
-                return $aStar->path();
             }
         }
     }
