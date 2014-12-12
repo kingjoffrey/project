@@ -282,4 +282,5 @@ class Cli_Model_Player extends Cli_Model_DefaultPlayer
         $mPlayersInGame = new Application_Model_PlayersInGame($gameId, $db);
         $mPlayersInGame->updatePlayerGold($this->_id, $this->_gold);
     }
+
 }

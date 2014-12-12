@@ -3,12 +3,11 @@
 class Cli_Model_Army
 {
     private $_id;
+    private $_color;
     private $_x;
     private $_y;
     private $_fortified = false;
     private $_destroyed = false;
-
-    private $_color;
 
     private $_attackHeroModifier;
     private $_attackFlyModifier;
@@ -30,8 +29,9 @@ class Cli_Model_Army
     private $_ships = array();
 
     private $_canFly = 0;
-
     private $_movesLeft = 1000;
+
+    private $_oldPath = array();
 
     /*
      * @param array $army
@@ -507,5 +507,37 @@ class Cli_Model_Army
     public function count()
     {
         return $this->_soldiers->count() + $this->_ships->count() + $this->_heroes->count();
+    }
+
+    public function saveOldPath(Cli_Model_Path $path)
+    {
+        $start = false;
+
+        foreach ($path->getFull() as $step) {
+            if ($path->getX() == $step['x'] && $path->getY() == $step['y']) {
+                $start = true;
+            }
+
+            if ($start) {
+                $this->_oldPath[] = $step;
+            }
+        }
+    }
+
+    public function resetOldPath()
+    {
+        $this->_oldPath = array();
+    }
+
+    public function hasOldPath()
+    {
+        if ($this->_oldPath) {
+            return true;
+        }
+    }
+
+    public function getOldPath()
+    {
+        return $this->_oldPath;
     }
 }

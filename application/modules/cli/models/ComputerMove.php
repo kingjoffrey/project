@@ -2,38 +2,21 @@
 
 class Cli_Model_ComputerMove extends Cli_Model_ComputerMethods
 {
+
     public function __construct(Cli_Model_Army $army, IWebSocketConnection $user, Cli_Model_Game $game, Zend_Db_Adapter_Pdo_Pgsql $db, Cli_GameHumansHandler $gameHandler)
     {
-        $this->_army = $army;
-        $this->_user = $user;
-        $this->_game = $game;
-        $this->_db = $db;
-        $this->_gameHandler = $gameHandler;
-
-        $this->_playerId = $this->_game->getTurnPlayerId();
-
-        $this->_players = $this->_game->getPlayers();
-        $this->_color = $this->_game->getPlayerColor($this->_playerId);
-        $this->_player = $this->_players->getPlayer($this->_color);
-
-        $this->_armyId = $this->_army->getId();
-        $this->_armyX = $this->_army->getX();
-        $this->_armyY = $this->_army->getY();
-        $this->_movesLeft = $this->_army->getMovesLeft();
-
-        $this->_gameId = $this->_game->getId();
-        $this->_fields = $this->_game->getFields();
-
+        parent::__construct($army, $user, $game, $db, $gameHandler);
         $this->_l = new Coret_Model_Logger();
         $this->_l->log('');
         $this->_l->log($this->_playerId, 'playerId: ');
         $this->_l->log($this->_color, 'color: ');
         $this->_l->log($this->_armyId, 'armyId: ');
 
-        if (isset($this->_user->parameters['computer'][$this->_playerId][$this->_armyId]['path']) && $this->_user->parameters['computer'][$this->_playerId][$this->_armyId]['path']) {
-            return $this->goByThePath();
+        if ($this->_army->hasOldPath()) {
+            $this->goByThePath();
+        } else {
+            $this->findPath();
         }
-        $this->findPath();
     }
 
     private function findPath()
@@ -41,30 +24,23 @@ class Cli_Model_ComputerMove extends Cli_Model_ComputerMethods
         $this->_l->logMethodName();
 
         if ($castleId = $this->_fields->isPlayerCastle($this->_color, $this->_armyX, $this->_armyY)) {
-            return $this->inside($this->_player->getCastles()->getCastle($castleId));
+            return $this->inside($castleId);
         } else {
             return $this->outside();
         }
     }
 
-    private function inside($myCastle)
+    private function inside($castleId)
     {
         $this->_l->logMethodName();
         $this->_l->log('W ZAMKU');
 
-        $numberOfUnits = floor($this->_game->getTurnNumber() / 7);
-        if ($numberOfUnits > 4) {
-            $numberOfUnits = 4;
-        }
-
-        if ($numberOfUnits) {
-            $garrison = $this->_players->getArmiesFromCastle($myCastle->getId());
-            reset($garrison);
-            $armyId = Cli_Model_Army::isCastleGarrisonSufficient($numberOfUnits, $garrison);
-
-            if ($armyId) {
-                $this->_mArmyDB->fortify($armyId, 1);
-                if (count($garrison) > 1) {
+        $myCastle = $this->_player->getCastles()->getCastle($castleId);
+        if ($numberOfUnits = $this->_game->getNumberOfGarrisonUnits()) {
+            $garrison = new Cli_Model_Garrison($myCastle->getX(), $myCastle->getY(), $this->_player->getArmies());
+            if ($this->_army = $garrison->sufficient($numberOfUnits)) {
+                $this->fortify();
+                if ($garrison->g > 1) {
                     $notGarrison = array();
                     foreach ($garrison as $army) {
                         if ($armyId == $army->getId()) {
@@ -393,23 +369,7 @@ class Cli_Model_ComputerMove extends Cli_Model_ComputerMethods
     {
         $this->_l->log('ZAPISUJĘ ŚCIEŻKĘ');
 
-        $newPath = array();
-        $start = false;
-
-        foreach ($path->getFull() as $step) {
-            if ($path->getX() == $step['x'] && $path->getY() == $step['y']) {
-                $start = true;
-            }
-
-            if ($start) {
-                $newPath[] = $step;
-            }
-        }
-
-        $this->_user->parameters['computer'][$this->_playerId][$this->_armyId] = array(
-            'path' => $newPath
-        );
-
+        $this->_army->saveOldPath($path);
         $this->move($path);
         $this->_army->setFortified(true, $this->_gameId, $this->_db);
     }
@@ -417,12 +377,12 @@ class Cli_Model_ComputerMove extends Cli_Model_ComputerMethods
     private function goByThePath()
     {
         $this->_l->log('IDĘ ŚCIEŻKĄ');
-        $path = new Cli_Model_Path($this->_user->parameters['computer'][$this->_playerId][$this->_armyId]['path'], $this->_army);
-        unset($this->_user->parameters['computer'][$this->_playerId][$this->_armyId]['path']);
+        $path = new Cli_Model_Path($this->_army->getOldPath(), $this->_army);
 
         if (!$path->enemyInRange()) {
             $this->savePath($path);
         } else {
+            $this->_army->resetOldPath();
             $this->move($path);
         }
 
@@ -433,6 +393,7 @@ class Cli_Model_ComputerMove extends Cli_Model_ComputerMethods
     private function move(Cli_Model_Path $path)
     {
         $this->_l->log('IDĘ... LUB WALCZĘ');
+
         if (!$path->exists()) { // todo dodać obsługę
             $token = array(
                 'color' => $this->_color,

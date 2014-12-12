@@ -13,6 +13,25 @@ abstract class Cli_Model_ComputerMethods
     protected $_gameHandler;
     protected $_l;
 
+    public function __construct(Cli_Model_Army $army, IWebSocketConnection $user, Cli_Model_Game $game, Zend_Db_Adapter_Pdo_Pgsql $db, Cli_GameHumansHandler $gameHandler)
+    {
+        $this->_army = $army;
+        $this->_user = $user;
+        $this->_game = $game;
+        $this->_db = $db;
+        $this->_gameHandler = $gameHandler;
+        $this->_playerId = $this->_game->getTurnPlayerId();
+        $this->_players = $this->_game->getPlayers();
+        $this->_color = $this->_game->getPlayerColor($this->_playerId);
+        $this->_player = $this->_players->getPlayer($this->_color);
+        $this->_armyId = $this->_army->getId();
+        $this->_armyX = $this->_army->getX();
+        $this->_armyY = $this->_army->getY();
+        $this->_movesLeft = $this->_army->getMovesLeft();
+        $this->_gameId = $this->_game->getId();
+        $this->_fields = $this->_game->getFields();
+    }
+
     protected function getComputerEmptyCastleInComputerRange()
     {
         $this->_l->logMethodName();
@@ -398,6 +417,11 @@ abstract class Cli_Model_ComputerMethods
                 return $aStar->path();
             }
         }
+    }
+
+    public function fortify()
+    {
+        $this->_army->setFortified(true, $this->_gameId, $this->_db);
     }
 }
 

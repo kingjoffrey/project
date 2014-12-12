@@ -30,6 +30,8 @@ class Cli_Model_Game
     private $_players;
     private $_ruins;
 
+    private $_numberOfGarrisonUnits = 0;
+
     public function __construct($playerId, $gameId, Zend_Db_Adapter_Pdo_Pgsql $db)
     {
         $this->_l = new Coret_Model_Logger();
@@ -218,6 +220,10 @@ class Cli_Model_Game
     public function turnNumberIncrement()
     {
         $this->_turnNumber++;
+        $this->_numberOfGarrisonUnits = floor($this->_turnNumber / 7 + 0.5);
+        if ($this->_numberOfGarrisonUnits > 4) {
+            $this->_numberOfGarrisonUnits = 4;
+        }
     }
 
     public function setTurnPlayerId($playerId)
@@ -268,5 +274,10 @@ class Cli_Model_Game
     public function getBegin()
     {
         return $this->_begin;
+    }
+
+    public function getNumberOfGarrisonUnits()
+    {
+        return $this->_numberOfGarrisonUnits;
     }
 }

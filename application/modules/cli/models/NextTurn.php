@@ -5,7 +5,6 @@ class Cli_Model_NextTurn
 
     public function __construct(Cli_Model_Game $game, Zend_Db_Adapter_Pdo_Pgsql $db, Cli_GameHumansHandler $gameHandler)
     {
-
         $gameId = $game->getId();
         $players = $game->getPlayers();
 
