@@ -756,7 +756,7 @@ var Message = {
                     if (color == 'neutral') {
                         var unitId = game.firstUnitId
                     } else {
-                        var unitId = game.players[color][armyId].soldiers[soldierId].unitId
+                        var unitId = game.players[color].armies[armyId].soldiers[soldierId].unitId
                     }
                     defense.append(
                         $('<div>')

@@ -235,7 +235,6 @@ class Cli_Model_ComputerMove extends Cli_Model_ComputerMethods
                     return $this->savePath($path);
                 } else {
                     $this->_l->log('NIE MA MOJEGO ZAMKU W POBLIŻU WROGA - ZOSTAŃ');
-                    $this->fortify();
                     $this->move();
                     return;
                 }
@@ -261,7 +260,7 @@ class Cli_Model_ComputerMove extends Cli_Model_ComputerMethods
 
         $this->_l->log('IDĘ DO RUIN');
         $this->move($ptnr->getPath());
-        $this->fortify();
+        $this->_army->setFortified(true, $this->_gameId, $this->_db);
 
         $this->_game->getRuins()->getRuin($ruinId)->search($this->_game, $this->_army, $heroId, $this->_playerId, $this->_db, $this->_gameHandler);
     }
@@ -272,7 +271,7 @@ class Cli_Model_ComputerMove extends Cli_Model_ComputerMethods
 
         $this->_army->saveOldPath($path);
         $this->move($path);
-        $this->fortify();
+        $this->_army->setFortified(true, $this->_gameId, $this->_db);
     }
 
     private function goByThePath()
