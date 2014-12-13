@@ -153,9 +153,9 @@ var Move = {
                         if (color == 'neutral') {
                             continue
                         }
-                        for (var armyId in r.battle.defenders[color]) {
-                            Army.update(r.battle.defenders[color][armyId]);
-                        }
+                        //for (var armyId in r.battle.defenders[color]) {
+                        //    Army.update(r.battle.defenders[color][armyId]);
+                        //}
                     }
                     if (r.color == game.me.color) {
                         if (!Hero.findMy()) {
@@ -166,8 +166,8 @@ var Move = {
             }
         }
 
-        for (i in r.deletedIds) {
-            Army.delete(r.deletedIds[i].armyId, r.color, 1);
+        for (var i in r.deletedIds) {
+            Army.delete(r.deletedIds[i], r.color, 1);
         }
 
         if (game.players[r.color].computer) {

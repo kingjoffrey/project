@@ -3,27 +3,25 @@
 class Cli_Model_JoinArmy
 {
 
-    public function __construct($armyId, $user, $db, $gameHandler)
+    public function __construct($armyId, IWebSocketConnection $user, Cli_Model_Game $game, Zend_Db_Adapter_Pdo_Pgsql $db, Cli_GameHumansHandler $gameHandler)
     {
         if (empty($armyId)) {
             $gameHandler->sendError($user, 'Brak "armyId"!');
             return;
         }
 
-        $mArmy2 = new Application_Model_Army($user->parameters['gameId'], $db);
-        $position = $mArmy2->getArmyPositionByArmyIdPlayerId($armyId, $user->parameters['playerId']);
-        $armiesIds = Cli_Model_Army::joinArmiesAtPosition($position, $user->parameters['playerId'], $user->parameters['gameId'], $db);
-
-        $playersInGameColors = Zend_Registry::get('playersInGameColors');
+        $gameId = $game->getId();
+        $color = $game->getMe()->getColor();
+        $armies = $game->getPlayers()->getPlayer($color)->getArmies();
+        $joinIds = $armies->joinAtPosition($armyId, $gameId, $db);
 
         $token = array(
             'type' => 'join',
-            'army' => Cli_Model_Army::getArmyByArmyId($armiesIds['armyId'], $user->parameters['gameId'], $db),
-            'deletedIds' => $armiesIds['deletedIds'],
-            'color' => $playersInGameColors[$user->parameters['playerId']]
+            'army' => $armies->getArmy($armyId)->toArray(),
+            'deletedIds' => $joinIds,
+            'color' => $color
         );
 
-        $gameHandler->sendToChannel($db, $token, $user->parameters['gameId']);
+        $gameHandler->sendToChannel($db, $token, $gameId);
     }
-
 }

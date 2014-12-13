@@ -28,15 +28,6 @@ Websocket = {
                 Move.start(r, Websocket.i);
                 break;
 
-            //case 'computer':
-            //    if (isTruthful(r.path)) {
-            //        Move.start(r, this.i)
-            //    } else {
-            //        this.computer()
-            //        this.executing = 0
-            //    }
-            //    break;
-
             case 'computerStart':
                 var s = Army.computerLoop(r.armies, r.color)
                 this.executing = 0
@@ -136,8 +127,8 @@ Websocket = {
                 }
                 //zoomer.setCenterIfOutOfScreen(r.army.x * 40, r.army.y * 40);
                 zoom.lens.setcenter(r.army.x * 40, r.army.y * 40);
-                for (i in r.deletedIds) {
-                    Army.delete(r.deletedIds[i].armyId, r.color);
+                for (var i in r.deletedIds) {
+                    Army.delete(r.deletedIds[i], r.color);
                 }
                 Army.init(r.army, r.color);
                 this.executing = 0
@@ -591,12 +582,10 @@ Websocket = {
         var s = '';
 
         if (Army.selected.soldierSplitKey !== null) {
-//            console.log(Army.selected.soldiers[Army.selected.soldierSplitKey])
-            s = Army.selected.soldiers[Army.selected.soldierSplitKey].soldierId
+            s = Army.selected.soldierSplitKey
         }
         if (Army.selected.heroSplitKey !== null) {
-//            console.log(Army.selected.heroes[Army.selected.heroSplitKey])
-            h = Army.selected.heroes[Army.selected.heroSplitKey].heroId
+            h = Army.selected.heroSplitKey
         }
 
         Army.halfDeselect();

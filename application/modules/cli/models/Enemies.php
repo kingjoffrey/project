@@ -13,15 +13,18 @@ class Cli_Model_Enemies
             $castleColor = $fields->getCastleColor($x, $y);
             if ($castleColor == 'neutral') {
                 $this->neutralCastleGarrison($game, $castleId);
-            } elseif (!$players->sameTeam($castleColor, $playerColor)) {
+            } elseif ($players->sameTeam($castleColor, $playerColor)) {
+                return;
+            } else {
                 $this->handleCastleGarrison($players->getPlayer($castleColor)->getCastles()->getCastle($castleId), $fields, $players);
             }
             $this->_castleId = $castleId;
         } elseif ($armies = $fields->getArmies($x, $y)) {
             foreach ($armies as $armyId => $armyColor) {
-                if (!$players->sameTeam($armyColor, $playerColor)) {
-                    $this->_enemies[] = $players->getPlayer($armyColor)->getArmies()->getArmy($armyId);
+                if ($players->sameTeam($armyColor, $playerColor)) {
+                    return;
                 }
+                $this->_enemies[] = $players->getPlayer($armyColor)->getArmies()->getArmy($armyId);
             }
         }
     }
