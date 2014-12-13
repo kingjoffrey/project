@@ -3,7 +3,8 @@
 class Cli_Model_Garrison
 {
     private $_garrison;
-    private $_countGarrison = 0;
+    private $_countGarrisonArmies = 0;
+    private $_countGarrisonUnits = 0;
     private $_armiesToGo;
     private $_countArmiesToGo = 0;
 
@@ -16,7 +17,7 @@ class Cli_Model_Garrison
             for ($i = $x; $i <= $x + 1; $i++) {
                 for ($j = $y; $j <= $y + 1; $j++) {
                     if ($army->getX() == $i && $army->getY() == $j) {
-                        $this->_countGarrison = $army->count();
+                        $this->_countGarrisonArmies = $army->count();
                         $this->_garrison->addArmy($armyId, $army);
                     }
                 }
@@ -31,7 +32,7 @@ class Cli_Model_Garrison
      */
     public function sufficient($numberOfUnits)
     {
-        if ($this->_countGarrison > $numberOfUnits) {
+        if ($this->_countGarrisonArmies > $numberOfUnits) {
             $count = 0;
             foreach ($this->_garrison->getKeys() as $armyId) {
                 $army = $this->_garrison->getArmy($armyId);
@@ -40,16 +41,21 @@ class Cli_Model_Garrison
                     $this->_armiesToGo->addArmy($armyId, $army);
                     $this->_countArmiesToGo++;
                 } else {
-                    $this->_countGarrison++;
+                    $this->_countGarrisonArmies++;
                     $count += $army->count();
                 }
             }
         }
     }
 
-    public function getCountGarrison()
+    public function getCountGarrisonArmies()
     {
-        return $this->_countGarrison;
+        return $this->_countGarrisonArmies;
+    }
+
+    public function getCountArmiesToGo()
+    {
+        return $this->_countArmiesToGo;
     }
 
     public function getKeys()
@@ -60,5 +66,23 @@ class Cli_Model_Garrison
     public function getArmy($armyId)
     {
         return $this->_garrison->getArmy($armyId);
+    }
+
+    public function fortify($gameId, Zend_Db_Adapter_Pdo_Pgsql $db)
+    {
+        foreach ($this->_garrison->getKeys() as $armyId) {
+            $this->_garrison->getArmy($armyId)->setFortified(true, $gameId, $db);
+        }
+    }
+
+    public function getArmyToGo()
+    {
+        reset($this->_armiesToGo);
+        return current($this->_armiesToGo);
+    }
+
+    public function getNextArmyToGo()
+    {
+        return next($this->_armiesToGo);
     }
 }

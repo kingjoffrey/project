@@ -38,37 +38,27 @@ class Cli_Model_ComputerMove extends Cli_Model_ComputerMethods
         $myCastle = $this->_player->getCastles()->getCastle($castleId);
         if ($numberOfUnits = $this->_game->getNumberOfGarrisonUnits()) {
             $garrison = new Cli_Model_Garrison($myCastle->getX(), $myCastle->getY(), $this->_player->getArmies());
-            if ($this->_army = $garrison->sufficient($numberOfUnits)) {
-                $this->fortify();
-                if ($garrison->getCountGarrison() > 1) {
-                    $notGarrison = new Cli_Model_Armies();
-                    foreach ($garrison->getKeys() as $armyId) {
-                        $army = $garrison->getArmy($armyId);
-                        if ($this->_army->getId() == $army->getId()) {
-                            continue;
-                        }
-                        $notGarrison->addArmy($armyId, $army);
-                    }
-
-                    if ($notGarrison->c > 1) {
+            if ($garrison->sufficient($numberOfUnits)) {
+                $garrison->fortify($this->_gameId, $this->_db);
+                if ($garrison->getCountGarrisonArmies() > 1) {
+                    $countArmiesToGo = $garrison->getCountArmiesToGo();
+                    if ($countArmiesToGo > 1) {
                         $this->_l->log('ŁĄCZĘ ARMIE, KTÓRE PÓJDĄ DALEJ');
 
-                        $firstArmy = current($notGarrison);
-
+                        $army = $garrison->getArmyToGo();
                         $this->_path = new Cli_Model_Path(array(0 => array(
-                            'x' => $firstArmy['x'],
+                            'x' => $army->g,
                             'y' => $firstArmy['y'],
                             'tt' => 'c')
                         ), $firstArmy);
                         $this->_army = next($notGarrison);
                         return;
-                    } elseif (count($notGarrison) == 1) {
+                    } elseif ($countArmiesToGo == 1) {
                         $this->_l->log('TA ARMIA IDZIE DALEJ');
-                        $this->_army = current($notGarrison);
+                        $this->_army = $garrison->getArmyToGo();
                     }
                 } else {
-                    $this->_l->log('OBSADA ZAMKU - ZOSTAŃ!');
-                    $this->_army = current($garrison);
+                    $this->move();
                     return;
                 }
             } elseif (count($garrison) > 1) {
@@ -391,11 +381,13 @@ class Cli_Model_ComputerMove extends Cli_Model_ComputerMethods
         return;
     }
 
-    private function move(Cli_Model_Path $path)
+    private function move(Cli_Model_Path $path = null)
     {
         $this->_l->log('IDĘ... LUB WALCZĘ');
 
-        if (!$path->exists()) { // todo dodać obsługę
+        if ($path && $path->exists()) {
+            $this->_army->move($this->_game, $path, $this->_color, $this->_db, $this->_gameHandler);
+        } else {
             $token = array(
                 'color' => $this->_color,
                 'army' => $this->_army->toArray(),
@@ -407,7 +399,5 @@ class Cli_Model_ComputerMove extends Cli_Model_ComputerMethods
 
             $this->_gameHandler->sendToChannel($this->_db, $token, $this->_gameId);
         }
-
-        $this->_army->move($this->_game, $path, $this->_color, $this->_db, $this->_gameHandler);
     }
 }
