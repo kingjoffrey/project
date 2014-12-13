@@ -2,87 +2,84 @@
 
 class Cli_Model_Garrison
 {
-    private $_garrison;
-    private $_countGarrisonArmies = 0;
-    private $_countGarrisonUnits = 0;
-    private $_armiesToGo;
-    private $_countArmiesToGo = 0;
+    private $_newArmy;
 
-    public function __construct($x, $y, Cli_Model_Armies $armies)
+    public function __construct($numberOfUnits, $x, $y, Cli_Model_Armies $armies, IWebSocketConnection $user, Cli_Model_Game $game, Zend_Db_Adapter_Pdo_Pgsql $db, Cli_GameHumansHandler $gameHandler)
     {
-        $this->_garrison = new Cli_Model_Armies();
-        $this->_armiesToGo = new Cli_Model_Armies();
+        $garrison = new Cli_Model_Armies();
+        $gameId = $game->getId();
+
         foreach ($armies->getKeys() as $armyId) {
             $army = $armies->getArmy($armyId);
             for ($i = $x; $i <= $x + 1; $i++) {
                 for ($j = $y; $j <= $y + 1; $j++) {
                     if ($army->getX() == $i && $army->getY() == $j) {
-                        $this->_countGarrisonArmies = $army->count();
-                        $this->_garrison->addArmy($armyId, $army);
+                        if ($army->getX() != $x && $army->getY() != $y) {
+                            $path = new Cli_Model_Path(array(0 => array(
+                                'x' => $x,
+                                'y' => $y,
+                                'tt' => 'c')
+                            ), $army);
+                            $army->move($game, $path, $db, $gameHandler);
+                        }
+                        $countGarrisonUnits = $army->getSoldiers()->count();
                     }
                 }
             }
         }
-    }
 
-    /**
-     * @param $numberOfUnits
-     * @return Cli_Model_Army
-     * @throws Exception
-     */
-    public function sufficient($numberOfUnits)
-    {
-        if ($this->_countGarrisonArmies > $numberOfUnits) {
+        if (!isset($army)) {
+            return;
+        }
+
+        $army->setFortified(true, $gameId, $db);
+        $garrison->addArmy($armyId, $army);
+
+        $heroes = $army->getHeroes();
+        $ships = $army->getShips();
+        $newArmyId = 0;
+
+        if ($heroes->exists() || $ships->exists()) {
+            $newArmyId = $garrison->create($army->getX(), $army->getY(), $army->getColor(), $game, $db);
+            $army = $garrison->getArmy($newArmyId);
+            foreach ($heroes->getKeys() as $heroId) {
+                $garrison->moveHero($armyId, $newArmyId, $heroId, $gameId, $db);
+            }
+            foreach ($ships->getKeys() as $soldierId) {
+                $garrison->moveShip($armyId, $newArmyId, $soldierId, $gameId, $db);
+            }
+        }
+
+        // znajduję nadmiarowe jednostki
+        if ($countGarrisonUnits > $numberOfUnits) {
             $count = 0;
-            foreach ($this->_garrison->getKeys() as $armyId) {
-                $army = $this->_garrison->getArmy($armyId);
-                if ($count >= $numberOfUnits) {
-                    $this->_garrison->removeArmy($armyId);
-                    $this->_armiesToGo->addArmy($armyId, $army);
-                    $this->_countArmiesToGo++;
-                } else {
-                    $this->_countGarrisonArmies++;
-                    $count += $army->count();
+            $armySoldiers = $army->getSoldiers();
+            if (empty($newArmyId)) {
+                $newArmyId = $garrison->create($army->getX(), $army->getY(), $army->getColor(), $game, $db);
+            }
+
+            foreach ($armySoldiers->getKeys() as $soldierId) {
+                $count++;
+                if ($count > $numberOfUnits) {
+                    $garrison->moveSoldier($armyId, $newArmyId, $soldierId, $gameId, $db);
                 }
             }
         }
-    }
 
-    public function getCountGarrisonArmies()
-    {
-        return $this->_countGarrisonArmies;
-    }
-
-    public function getCountArmiesToGo()
-    {
-        return $this->_countArmiesToGo;
-    }
-
-    public function getKeys()
-    {
-        return $this->_garrison->getKeys();
-    }
-
-    public function getArmy($armyId)
-    {
-        return $this->_garrison->getArmy($armyId);
-    }
-
-    public function fortify($gameId, Zend_Db_Adapter_Pdo_Pgsql $db)
-    {
-        foreach ($this->_garrison->getKeys() as $armyId) {
-            $this->_garrison->getArmy($armyId)->setFortified(true, $gameId, $db);
+        if ($newArmyId) {
+            $this->_newArmy = $garrison->getArmy($newArmyId);
+            $token = array(
+                'type' => 'split',
+                'parentArmy' => $army->toArray(),
+                'childArmy' => $this->_newArmy->toArray(),
+                'color' => $army->getColor()
+            );
+            $gameHandler->sendToChannel($db, $token, $gameId);
         }
     }
 
     public function getArmyToGo()
     {
-        reset($this->_armiesToGo);
-        return current($this->_armiesToGo);
-    }
-
-    public function getNextArmyToGo()
-    {
-        return next($this->_armiesToGo);
+        return $this->_newArmy;
     }
 }

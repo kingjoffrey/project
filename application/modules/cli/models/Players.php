@@ -73,7 +73,7 @@ class Cli_Model_Players
             if ($color == $playerColor || $playerTeam == $player->getTeam()) {
                 continue;
             }
-            if ($player->getCastles()->castlesExists() || $player->getArmies()->armiesExists()) {
+            if ($player->getCastles()->castlesExists() || $player->getArmies()->exists()) {
                 return false;
             }
         }

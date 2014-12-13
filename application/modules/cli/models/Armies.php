@@ -46,8 +46,9 @@ class Cli_Model_Armies
      */
     public function getComputerArmyToMove()
     {
-        foreach ($this->_armies as $army) {
-            if ($army->getFortified()) {
+        foreach ($this->getKeys() as $armyId) {
+            $army = $this->getArmy($armyId);
+            if ($army->getFortified() || $army->getMovesLeft() == 0) {
                 continue;
             }
             return $army;
@@ -71,9 +72,10 @@ class Cli_Model_Armies
                 continue;
             }
             if ($x == $army->getX() && $y == $army->getY()) {
-                $excludedArmy->joinHeroes($army->getHeroes(), $mHeroesInGame);
+                $excludedArmy->joinHeroes($army->getHeroes());
+                $excludedArmy->joinSoldiers($army->getSoldiers());
+                $excludedArmy->joinShips($army->getShips());
                 $mHeroesInGame->heroesUpdateArmyId($armyId, $excludedArmyId);
-                $excludedArmy->joinSoldiers($army->getSoldiers(), $mSoldier);
                 $mSoldier->soldiersUpdateArmyId($armyId, $excludedArmyId);
                 $this->removeArmy($armyId, $gameId, $db);
                 $ids[] = $armyId;
@@ -127,22 +129,21 @@ class Cli_Model_Armies
         return !count($this->_armies);
     }
 
-    public function armiesExists()
+    public function exists()
     {
         return count($this->_armies);
     }
 
-    public function create($x, $y, $playerId, Cli_Model_Game $game, Zend_Db_Adapter_Pdo_Pgsql $db)
+    public function create($x, $y, $color, Cli_Model_Game $game, Zend_Db_Adapter_Pdo_Pgsql $db)
     {
         $mArmy = new Application_Model_Army($game->getId(), $db);
-        $armyId = $mArmy->createArmy(array('x' => $x, 'y' => $y), $playerId);
+        $armyId = $mArmy->createArmy(array('x' => $x, 'y' => $y), $game->getPlayers()->getPlayer($color)->getId());
         $army = new Cli_Model_Army(array(
             'armyId' => $armyId,
             'x' => $x,
             'y' => $y
-        ), $game->getPlayerColor($playerId));
+        ), $color);
         $this->addArmy($armyId, $army);
-
         return $armyId;
     }
 
@@ -156,6 +157,12 @@ class Cli_Model_Armies
     {
         $this->getArmy($newArmyId)->addSoldier($soldierId, $this->getArmy($oldArmyId)->getSoldiers()->getSoldier($soldierId), $gameId, $db);
         $this->getArmy($oldArmyId)->getSoldiers()->remove($soldierId);
+    }
+
+    public function moveShip($oldArmyId, $newArmyId, $soldierId, $gameId, Zend_Db_Adapter_Pdo_Pgsql $db)
+    {
+        $this->getArmy($newArmyId)->addShip($soldierId, $this->getArmy($oldArmyId)->getShips()->getSoldier($soldierId), $gameId, $db);
+        $this->getArmy($oldArmyId)->getShips()->remove($soldierId);
     }
 
     public function count()

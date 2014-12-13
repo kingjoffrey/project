@@ -67,7 +67,7 @@ class Cli_Model_StartTurn
                 $armyId = $player->getArmies()->getArmyIdFromPosition($x, $y);
 
                 if (empty($armyId)) {
-                    $armyId = $player->getArmies()->create($x, $y, $playerId, $game, $db);
+                    $armyId = $player->getArmies()->create($x, $y, $color, $game, $db);
                 }
 
                 $player->getArmies()->getArmy($armyId)->createSoldier($gameId, $playerId, $unitId, $db);

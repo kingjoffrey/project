@@ -87,6 +87,6 @@ class Cli_Model_Move
             return;
         }
 
-        $army->move($game, $path, $attackerColor, $db, $gameHandler);
+        $army->move($game, $path, $db, $gameHandler);
     }
 }

@@ -29,7 +29,7 @@ class Cli_Model_SplitArmy
                 }
 
                 if (empty($this->_childArmyId)) {
-                    $this->_childArmyId = $armies->create($army->getX(), $army->getY(), $playerId, $game, $db);
+                    $this->_childArmyId = $armies->create($army->getX(), $army->getY(), $color, $game, $db);
                     $childArmy = $armies->getArmy($this->_childArmyId);
                 }
 
@@ -48,7 +48,7 @@ class Cli_Model_SplitArmy
                 }
 
                 if (empty($this->_childArmyId)) {
-                    $this->_childArmyId = $armies->create($army->getX(), $army->getY(), $playerId, $game, $db);
+                    $this->_childArmyId = $armies->create($army->getX(), $army->getY(), $color, $game, $db);
                     $childArmy = $armies->getArmy($this->_childArmyId);
                 }
 

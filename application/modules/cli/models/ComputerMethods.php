@@ -418,10 +418,5 @@ abstract class Cli_Model_ComputerMethods
             }
         }
     }
-
-    public function fortify()
-    {
-        $this->_army->setFortified(true, $this->_gameId, $this->_db);
-    }
 }
 
