@@ -40,16 +40,17 @@ class Cli_Model_ComputerMove extends Cli_Model_ComputerMethods
             $garrison = new Cli_Model_Garrison($myCastle->getX(), $myCastle->getY(), $this->_player->getArmies());
             if ($this->_army = $garrison->sufficient($numberOfUnits)) {
                 $this->fortify();
-                if ($garrison->g > 1) {
-                    $notGarrison = array();
-                    foreach ($garrison as $army) {
-                        if ($armyId == $army->getId()) {
+                if ($garrison->getCountGarrison() > 1) {
+                    $notGarrison = new Cli_Model_Armies();
+                    foreach ($garrison->getKeys() as $armyId) {
+                        $army = $garrison->getArmy($armyId);
+                        if ($this->_army->getId() == $army->getId()) {
                             continue;
                         }
-                        $notGarrison[] = $army;
+                        $notGarrison->addArmy($armyId, $army);
                     }
 
-                    if (count($notGarrison) > 1) {
+                    if ($notGarrison->c > 1) {
                         $this->_l->log('ŁĄCZĘ ARMIE, KTÓRE PÓJDĄ DALEJ');
 
                         $firstArmy = current($notGarrison);

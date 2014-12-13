@@ -82,15 +82,17 @@ class Cli_Model_Armies
         return $ids;
     }
 
-    public function removeArmy($armyId, $gameId, $db)
+    public function removeArmy($armyId, $gameId = null, Zend_Db_Adapter_Pdo_Pgsql $db = null)
     {
-        $mArmy = new Application_Model_Army($gameId, $db);
-        $mArmy->destroyArmy($armyId);
-        $this->getArmy($armyId)->setDestroyed(true);
+        if ($db) {
+            $mArmy = new Application_Model_Army($gameId, $db);
+            $mArmy->destroyArmy($armyId);
+            $this->getArmy($armyId)->setDestroyed(true);
+        }
         unset($this->_armies[$armyId]);
     }
 
-    public function resetMovesLeft($gameId, $db)
+    public function resetMovesLeft($gameId, Zend_Db_Adapter_Pdo_Pgsql $db)
     {
         foreach ($this->getKeys() as $armyId) {
             $this->getArmy($armyId)->resetMovesLeft($gameId, $db);
@@ -106,7 +108,7 @@ class Cli_Model_Armies
         }
     }
 
-    public function unfortify($gameId, $db)
+    public function unfortify($gameId, Zend_Db_Adapter_Pdo_Pgsql $db)
     {
         foreach ($this->_armies as $army) {
             $army->setFortified(false, $gameId, $db);
@@ -144,15 +146,20 @@ class Cli_Model_Armies
         return $armyId;
     }
 
-    public function moveHero($oldArmyId, $newArmyId, $heroId, $gameId, $db)
+    public function moveHero($oldArmyId, $newArmyId, $heroId, $gameId, Zend_Db_Adapter_Pdo_Pgsql $db)
     {
         $this->getArmy($newArmyId)->addHero($heroId, $this->getArmy($oldArmyId)->getHeroes()->getHero($heroId), $gameId, $db);
         $this->getArmy($oldArmyId)->getHeroes()->remove($heroId);
     }
 
-    public function moveSoldier($oldArmyId, $newArmyId, $soldierId, $gameId, $db)
+    public function moveSoldier($oldArmyId, $newArmyId, $soldierId, $gameId, Zend_Db_Adapter_Pdo_Pgsql $db)
     {
         $this->getArmy($newArmyId)->addSoldier($soldierId, $this->getArmy($oldArmyId)->getSoldiers()->getSoldier($soldierId), $gameId, $db);
         $this->getArmy($oldArmyId)->getSoldiers()->remove($soldierId);
+    }
+
+    public function count()
+    {
+        return count($this->_armies);
     }
 }
