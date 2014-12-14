@@ -8,10 +8,9 @@ class Cli_Model_EnemyStronger
     {
         $attackerWinsCount = 0;
         $attackerCourage = 2;
-        $enemies = new Cli_Model_Enemies($game, $x, $y, $playerColor);
         $battle = new Cli_Model_Battle(
             $army,
-            $enemies->get(),
+            new Cli_Model_Enemies($game, $x, $y, $playerColor),
             $game
         );
         for ($i = 0; $i < $max; $i++) {

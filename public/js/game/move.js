@@ -131,10 +131,9 @@ var Move = {
                     }
                 }
                 if (isDigit(r.battle.castleId)) {
-                    for (var color in r.defenders) {
+                    for (var color in game.players) {
                         if (isSet(game.players[color].castles[r.battle.castleId])) {
-                            delete game.players[color].castles[r.battle.castleId]
-                            Castle.owner(game.players[color].castles[r.battle.castleId], r.battle.castleId, r.color)
+                            Castle.owner(r.battle.castleId, r.color, color)
                             break;
                         }
                     }

@@ -238,9 +238,8 @@ var Castle = {
         Castle.changeFields(castleId, 'e', castle.x, castle.y);
     },
     createWithColor: function (castleId, color) {
-        var castle = game.players[color].castles[castleId]
-        Castle.create(castle, castleId)
-        Castle.owner(castle, castleId, color)
+        Castle.create(game.players[color].castles[castleId], castleId)
+        Castle.owner(castleId, color)
     },
     create: function (castle, castleId) {
         board.append(
@@ -274,18 +273,26 @@ var Castle = {
                 .addClass('c')
         );
     },
-    owner: function (castle, castleId, color) {
+    owner: function (castleId, newColor, oldColor) {
         var el = $('#castle' + castleId)
             .removeClass()
             .addClass('castle ' + color)
-            .css('background', 'url(/img/game/castles/' + color + '.png) center center no-repeat');
+            .css('background', 'url(/img/game/castles/' + newColor + '.png) center center no-repeat');
 
-        game.players[color].castles[castleId] = castle
+        if (isSet(oldColor)) {
+            game.players[newColor].castles[castleId] = game.players[oldColor].castles[castleId]
+            delete game.players[oldColor].castles[castleId]
 
-        Castle.removeCrown(castleId)
-        Castle.removeHammer(castleId)
-        Castle.removeRelocationTo(castleId)
-        Castle.removeRelocationFrom(castleId)
+            if (oldColor == game.me.color) {
+                Castle.removeHammer(castleId)
+                Castle.removeRelocationTo(castleId)
+                Castle.removeRelocationFrom(castleId)
+            }
+            Castle.removeCrown(castleId)
+        }
+
+        var castle = game.players[newColor].castles[castleId]
+
 
         //if (isTruthful(castles[castleId].currentProductionId)) {
         //    castles[castleId].currentProductionId = null
@@ -309,7 +316,7 @@ var Castle = {
         //el.attr('title', castles[castleId].name + '(' + castles[castleId].defense + ')');
         //$('#castle' + castleId + ' .shield').html(castles[castleId].defense);
 
-        if (color == game.me.color) {
+        if (newColor == game.me.color) {
             Castle.changeFields(castleId, 'c', castle.x, castle.y)
             el
                 .css({
@@ -318,7 +325,7 @@ var Castle = {
                 .removeClass('team')
             Castle.myMousedown(el, castleId)
         } else {
-            if (game.players[color].team == game.players[game.me.color].team) {
+            if (game.players[newColor].team == game.players[game.me.color].team) {
                 Castle.changeFields(castleId, 'c', castle.x, castle.y)
                 el
                     .unbind()
@@ -335,10 +342,10 @@ var Castle = {
                     .mouseout(function () {
                         Castle.changeFields(castleId, 'e', castle.x, castle.y)
                     }(this))
-                //if (isSet(castles[castleId].relocationToCastleId)) {
-                //    delete castles[castles[castleId].relocationToCastleId].relocatedProduction[castleId]
-                //    delete castles[castleId].relocationToCastleId
-                //}
+                if (castle.relocationToCastleId) {
+                    delete game.players[newColor].castles[castle.relocationToCastleId].relocatedProduction[castleId]
+                    castle.relocationToCastleId = null
+                }
             }
         }
 

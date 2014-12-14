@@ -27,12 +27,14 @@ class Cli_Model_Battle
     private $_towerId;
     private $_towerColor;
 
-    public function __construct(Cli_Model_Army $attacker, $defenders, Cli_Model_Game $game, Zend_Db_Adapter_Pdo_Pgsql $db = null, Cli_Model_BattleResult $result = null)
+    public function __construct(Cli_Model_Army $attacker, Cli_Model_Enemies $defenders, Cli_Model_Game $game, Zend_Db_Adapter_Pdo_Pgsql $db = null, Cli_Model_BattleResult $result = null)
     {
         $this->_attacker = $attacker;
-        $this->_defenders = $defenders;
+        $this->_defenders = $defenders->get();
+        $this->_castleId = $defenders->getCastleId();
+        $this->_castleColor = $defenders->getCastleColor();
         $this->_players = $game->getPlayers();
-echo 'aaa';
+        $this->_fields = $game->getFields();
         if ($db) {
             $this->_gameId = $game->getId();
             $this->_game = $game;
@@ -40,22 +42,21 @@ echo 'aaa';
             $this->_db = $db;
             $this->_result = $result;
         }
-        $this->_fields = $game->getFields();
 
-        if ($this->_defenders) {
-            $this->init();
-        }
+        $this->init();
     }
 
     private function init()
     {
+        if (!$this->_defenders) {
+            return;
+        }
         $attackerBattleSequence = $this->_players->getPlayer($this->_attacker->getColor())->getAttackSequence();
         if (empty($attackerBattleSequence)) {
             $units = Zend_Registry::get('units');
             $attackerBattleSequence = array_keys($units);
         }
         $this->_attacker->setAttackBattleSequence($attackerBattleSequence);
-
         foreach ($this->_defenders as $defender) {
             $defenderBattleSequence = $this->_players->getPlayer($defender->getColor())->getDefenceSequence();
             if (empty($defenderBattleSequence)) {
@@ -67,14 +68,12 @@ echo 'aaa';
             $defender->setDefenceBattleSequence($defenderBattleSequence);
         }
 
-        if ($this->_castleId = $this->_fields->getCastleId($defender->getX(), $defender->getY())) {
-            $this->_castleColor = $this->_fields->getCastleColor($defender->getX(), $defender->getY());
-            $this->_externalDefenceModifier = $this->_players->getPlayer($this->_fields->getCastleColor($defender->getX(), $defender->getY()))->getCastles()->getCastle($this->_castleId)->getDefenseModifier();
+        if ($this->_castleId) {
+            $this->_externalDefenceModifier = $this->_players->getPlayer($this->_castleColor)->getCastles()->getCastle($this->_castleId)->getDefenseModifier();
         } elseif ($this->_towerId = $this->_fields->getTowerId($defender->getX(), $defender->getY())) {
             $this->_towerColor = $this->_fields->getTowerColor($defender->getX(), $defender->getY());
             $this->_externalDefenceModifier = 1;
         }
-
         $this->_attackModifier = $this->_attacker->getAttackModifier();
     }
 
@@ -122,7 +121,6 @@ echo 'aaa';
     public function fight()
     {
         $lives = array('attack' => 2, 'defense' => 2);
-echo 'bbb';
         $attack = $this->_attacker->getAttackBattleSequence();
 
         foreach ($this->_defenders as $defenderArmy) {
@@ -242,8 +240,8 @@ echo 'bbb';
     }
 
     private function saveFight()
-    {echo 'ccc';
-        if ($this->attackerVictory()) {echo 'ddd';
+    {
+        if ($this->attackerVictory()) {
             $this->_result->victory();
             if ($this->_castleId) {
                 $castleOwner = $this->_players->getPlayer($this->_castleColor);
@@ -256,7 +254,7 @@ echo 'bbb';
                 $towerOwner->removeTower($this->_towerId);
             }
 
-        } else {echo 'eee';
+        } else {
             $this->_players->getPlayer($this->_attacker->getColor())->getArmies()->removeArmy($this->_attacker->getId(), $this->_game, $this->_db);
         }
         foreach ($this->_defenders as $defender) {

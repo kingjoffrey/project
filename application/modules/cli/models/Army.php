@@ -117,7 +117,7 @@ class Cli_Model_Army
 
         $enemies = new Cli_Model_Enemies($game, $path->getX(), $path->getY(), $this->_color);
         if ($enemies->hasEnemies()) {
-            $battle = new Cli_Model_Battle($this, $enemies->get(), $game, $db, $battleResult);
+            $battle = new Cli_Model_Battle($this, $enemies, $game, $db, $battleResult);
             $battle->fight();
             $battleResult = $battle->getResult();
             if ($battleResult->getVictory()) {
