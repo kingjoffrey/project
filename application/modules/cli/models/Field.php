@@ -22,6 +22,11 @@ class Cli_Model_Field
         $this->_armies[$armyId] = $color;
     }
 
+    public function removeArmy($armyId)
+    {
+        unset($this->_armies[$armyId]);
+    }
+
     public function isArmy()
     {
         return !empty($this->_armies);

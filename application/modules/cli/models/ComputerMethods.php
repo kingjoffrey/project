@@ -346,12 +346,10 @@ abstract class Cli_Model_ComputerMethods
                 if ($h < $enemy->getMovesLeft()) {
                     try {
                         $aStar = new Cli_Model_Astar($enemy, $castleX, $castleY, $this->_game);
+                        return $aStar->inRange();
                     } catch (Exception $e) {
                         echo($e);
                         return;
-                    }
-                    if ($enemy->unitsHaveRange($aStar->path())) {
-                        return true;
                     }
                 }
             }

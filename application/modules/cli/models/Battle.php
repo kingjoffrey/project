@@ -31,11 +31,11 @@ class Cli_Model_Battle
     {
         $this->_attacker = $attacker;
         $this->_defenders = $defenders;
-
         $this->_players = $game->getPlayers();
-
+echo 'aaa';
         if ($db) {
             $this->_gameId = $game->getId();
+            $this->_game = $game;
             $this->_attackerId = $this->_players->getPlayer($this->_attacker->getColor())->getId();
             $this->_db = $db;
             $this->_result = $result;
@@ -122,7 +122,7 @@ class Cli_Model_Battle
     public function fight()
     {
         $lives = array('attack' => 2, 'defense' => 2);
-
+echo 'bbb';
         $attack = $this->_attacker->getAttackBattleSequence();
 
         foreach ($this->_defenders as $defenderArmy) {
@@ -242,8 +242,8 @@ class Cli_Model_Battle
     }
 
     private function saveFight()
-    {
-        if ($this->attackerVictory()) {
+    {echo 'ccc';
+        if ($this->attackerVictory()) {echo 'ddd';
             $this->_result->victory();
             if ($this->_castleId) {
                 $castleOwner = $this->_players->getPlayer($this->_castleColor);
@@ -256,8 +256,8 @@ class Cli_Model_Battle
                 $towerOwner->removeTower($this->_towerId);
             }
 
-        } else {
-            $this->_players->getPlayer($this->_attacker->getColor())->getArmies()->removeArmy($this->_attacker->getId(), $this->_gameId, $this->_db);
+        } else {echo 'eee';
+            $this->_players->getPlayer($this->_attacker->getColor())->getArmies()->removeArmy($this->_attacker->getId(), $this->_game, $this->_db);
         }
         foreach ($this->_defenders as $defender) {
             $color = $defender->getColor();
@@ -266,7 +266,7 @@ class Cli_Model_Battle
             }
 
             if (!$this->defenderVictory($defender, $color)) {
-                $this->_players->getPlayer($color)->getArmies()->removeArmy($defender->getId(), $this->_gameId, $this->_db);
+                $this->_players->getPlayer($color)->getArmies()->removeArmy($defender->getId(), $this->_game, $this->_db);
             }
         }
         $this->_result->setCastleId($this->_castleId);

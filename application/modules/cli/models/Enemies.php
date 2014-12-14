@@ -47,6 +47,7 @@ class Cli_Model_Enemies
         for ($i = $castleX; $i <= $castleX + 1; $i++) {
             for ($j = $castleY; $j <= $castleY + 1; $j++) {
                 foreach ($fields->getArmies($i, $j) as $armyId => $color) {
+                    echo $color.' '.$armyId."\n";
                     $this->_enemies[] = $players->getPlayer($color)->getArmies()->getArmy($armyId);
                 }
             }

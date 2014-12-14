@@ -296,15 +296,19 @@ class Cli_Model_ComputerMove extends Cli_Model_ComputerMethods
             $this->_army->move($this->_game, $path, $this->_db, $this->_gameHandler);
         } else {
             $this->_army->setFortified(true, $this->_gameId, $this->_db);
-            $this->_army = $this->_player->getArmies()->getComputerArmyToMove();
-            $this->_armyId = $this->_army->getId();
-            $this->_armyX = $this->_army->getX();
-            $this->_armyY = $this->_army->getY();
-            $this->_movesLeft = $this->_army->getMovesLeft();
-            if ($this->_army->hasOldPath()) {
-                $this->goByThePath();
+            if ($this->_army = $this->_player->getArmies()->getComputerArmyToMove()) {
+                $this->_armyId = $this->_army->getId();
+                $this->_armyX = $this->_army->getX();
+                $this->_armyY = $this->_army->getY();
+                $this->_movesLeft = $this->_army->getMovesLeft();
+                if ($this->_army->hasOldPath()) {
+                    $this->goByThePath();
+                } else {
+                    $this->findPath();
+                }
             } else {
-                $this->findPath();
+                $this->_l->log('NASTĘPNA TURA');
+                new Cli_Model_NextTurn($this->_game, $this->_db, $this->_gameHandler);
             }
         }
     }

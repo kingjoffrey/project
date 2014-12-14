@@ -96,88 +96,6 @@ class Cli_Model_Army
         }
     }
 
-//    public function unitsHaveRange($fullPath)
-//    {
-//        $soldiersMovesLeft = array();
-//        $heroesMovesLeft = array();
-//
-//        foreach ($this->_soldiers as $soldierId => $soldier) {
-//            // ustawiam początkową ilość ruchów dla każdej jednostki
-//            if (!isset($soldiersMovesLeft[$soldierId])) {
-//                $soldiersMovesLeft[$soldierId] = $this->_units[$soldier['unitId']]['numberOfMoves'];
-//                if ($soldier->getMovesLeft() <= 2) {
-//                    $soldiersMovesLeft[$soldierId] += $soldier->getMovesLeft();
-//                } else {
-//                    $soldiersMovesLeft[$soldierId] += 2;
-//                }
-//            }
-//
-//            foreach ($fullPath as $step) {
-//                // odejmuję
-//                if ($step['tt'] == 'f') {
-//                    $soldiersMovesLeft[$soldierId] -= $this->_units[$soldier['unitId']]['modMovesForest'];
-//                } elseif ($step['tt'] == 's') {
-//                    $soldiersMovesLeft[$soldierId] -= $this->_units[$soldier['unitId']]['modMovesSwamp'];
-//                } elseif ($step['tt'] == 'm') {
-//                    $soldiersMovesLeft[$soldierId] -= $this->_units[$soldier['unitId']]['modMovesHills'];
-//                } else {
-//                    if ($this->_units[$soldier['unitId']]['canFly']) {
-//                        $soldiersMovesLeft[$soldierId] -= $this->_terrain[$step['tt']]['flying'];
-//                    } elseif ($this->_units[$soldier['unitId']]['canSwim']) {
-//                        $soldiersMovesLeft[$soldierId] -= $this->_terrain[$step['tt']]['swimming'];
-//                    } else {
-//                        $soldiersMovesLeft[$soldierId] -= $this->_terrain[$step['tt']]['walking'];
-//
-//                    }
-//                }
-//
-//                if ($step['tt'] == 'E') {
-//                    break;
-//                }
-//
-//                if ($soldiersMovesLeft[$soldierId] <= 0) {
-//                    break;
-//                }
-//            }
-//        }
-//
-//        foreach ($this->_heroes as $heroId => $hero) {
-//            if (!isset($heroesMovesLeft[$heroId])) {
-//                $heroesMovesLeft[$heroId] = $hero['numberOfMoves'];
-//                if ($hero->getMovesLeft() <= 2) {
-//                    $heroesMovesLeft[$heroId] += $hero->getMovesLeft();
-//                } elseif ($hero->getMovesLeft() > 2) {
-//                    $heroesMovesLeft[$heroId] += 2;
-//                }
-//            }
-//
-//            foreach ($fullPath as $step) {
-//                $heroesMovesLeft[$heroId] -= $this->_terrain[$step['tt']]['walking'];
-//
-//                if ($step['tt'] == 'E') {
-//                    break;
-//                }
-//
-//                if ($heroesMovesLeft[$heroId] <= 0) {
-//                    break;
-//                }
-//            }
-//        }
-//
-//
-//        foreach ($soldiersMovesLeft as $s) {
-//            if ($s >= 0) {
-//                return true;
-//            }
-//        }
-//
-//        foreach ($heroesMovesLeft as $h) {
-//            if ($h >= 0) {
-//                return true;
-//            }
-//        }
-//    }
-
     public function move(Cli_Model_Game $game, Cli_Model_Path $path, Zend_Db_Adapter_Pdo_Pgsql $db, Cli_GameHumansHandler $gameHandler)
     {
         $gameId = $game->getId();
@@ -203,11 +121,11 @@ class Cli_Model_Army
             $battle->fight();
             $battleResult = $battle->getResult();
             if ($battleResult->getVictory()) {
-                $this->saveMove($gameId, $path, $db);
+                $this->saveMove($game, $path, $db);
             }
         } else {
-            $this->saveMove($gameId, $path, $db);
-            $joinIds = $player->getArmies()->joinAtPosition($this->_id, $gameId, $db);
+            $this->saveMove($game, $path, $db);
+            $joinIds = $player->getArmies()->joinAtPosition($this->_id, $game, $db);
         }
 
         new Cli_Model_TowerHandler($player->getId(), $path, $game, $db, $gameHandler);
@@ -224,7 +142,7 @@ class Cli_Model_Army
         $gameHandler->sendToChannel($db, $token, $gameId);
     }
 
-    private function saveMove($gameId, Cli_Model_Path $path, Zend_Db_Adapter_Pdo_Pgsql $db)
+    private function saveMove(Cli_Model_Game $game, Cli_Model_Path $path, Zend_Db_Adapter_Pdo_Pgsql $db)
     {
         if ($this->canFly()) {
             $type = 'flying';
@@ -233,12 +151,14 @@ class Cli_Model_Army
         } else {
             $type = 'walking';
         }
-
+        $gameId = $game->getId();
         $this->_movesLeft = $this->_heroes->saveMove($this->_x, $this->_y, $this->_movesLeft, $type, $path, $gameId, $db);
         $this->_movesLeft = $this->_soldiers->saveMove($this->_x, $this->_y, $this->_movesLeft, $type, $path, $gameId, $db);
 
+        $game->getFields()->getField($this->_x, $this->_y)->removeArmy($this->_id);
         $this->_x = $path->getX();
         $this->_y = $path->getY();
+        $game->getFields()->getField($this->_x, $this->_y)->addArmy($this->_id, $this->_color);
 
         $mArmy = new Application_Model_Army($gameId, $db);
         $mArmy->updateArmyPosition($path->getEnd(), $this->_id);

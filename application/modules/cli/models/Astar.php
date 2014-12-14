@@ -326,5 +326,10 @@ class Cli_Model_Astar extends Cli_Model_Heuristics
         }
         return $path;
     }
+
+    public function inRange()
+    {
+        return $this->path()->enemyInRange(); //todo zmienić na zasięg jednostek a nie armii
+    }
 }
 

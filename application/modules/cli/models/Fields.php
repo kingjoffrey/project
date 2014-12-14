@@ -120,6 +120,12 @@ class Cli_Model_Fields
         $this->getField($x, $y)->setRuin($ruinId, $empty);
     }
 
+    /**
+     * @param $x
+     * @param $y
+     * @return Cli_Model_Field
+     * @throws Exception
+     */
     public function getField($x, $y)
     {
         if (!$this->isField($x, $y)) {

@@ -152,4 +152,86 @@ class Cli_Model_Path
     {
         return $this->_full;
     }
+
+    public function unitsHaveRange($fullPath)
+    {
+        $soldiersMovesLeft = array();
+        $heroesMovesLeft = array();
+
+        foreach ($this->_soldiers as $soldierId => $soldier) {
+            // ustawiam początkową ilość ruchów dla każdej jednostki
+            if (!isset($soldiersMovesLeft[$soldierId])) {
+                $soldiersMovesLeft[$soldierId] = $this->_units[$soldier['unitId']]['numberOfMoves'];
+                if ($soldier->getMovesLeft() <= 2) {
+                    $soldiersMovesLeft[$soldierId] += $soldier->getMovesLeft();
+                } else {
+                    $soldiersMovesLeft[$soldierId] += 2;
+                }
+            }
+
+            foreach ($fullPath as $step) {
+                // odejmuję
+                if ($step['tt'] == 'f') {
+                    $soldiersMovesLeft[$soldierId] -= $this->_units[$soldier['unitId']]['modMovesForest'];
+                } elseif ($step['tt'] == 's') {
+                    $soldiersMovesLeft[$soldierId] -= $this->_units[$soldier['unitId']]['modMovesSwamp'];
+                } elseif ($step['tt'] == 'm') {
+                    $soldiersMovesLeft[$soldierId] -= $this->_units[$soldier['unitId']]['modMovesHills'];
+                } else {
+                    if ($this->_units[$soldier['unitId']]['canFly']) {
+                        $soldiersMovesLeft[$soldierId] -= $this->_terrain[$step['tt']]['flying'];
+                    } elseif ($this->_units[$soldier['unitId']]['canSwim']) {
+                        $soldiersMovesLeft[$soldierId] -= $this->_terrain[$step['tt']]['swimming'];
+                    } else {
+                        $soldiersMovesLeft[$soldierId] -= $this->_terrain[$step['tt']]['walking'];
+
+                    }
+                }
+
+                if ($step['tt'] == 'E') {
+                    break;
+                }
+
+                if ($soldiersMovesLeft[$soldierId] <= 0) {
+                    break;
+                }
+            }
+        }
+
+        foreach ($this->_heroes as $heroId => $hero) {
+            if (!isset($heroesMovesLeft[$heroId])) {
+                $heroesMovesLeft[$heroId] = $hero['numberOfMoves'];
+                if ($hero->getMovesLeft() <= 2) {
+                    $heroesMovesLeft[$heroId] += $hero->getMovesLeft();
+                } elseif ($hero->getMovesLeft() > 2) {
+                    $heroesMovesLeft[$heroId] += 2;
+                }
+            }
+
+            foreach ($fullPath as $step) {
+                $heroesMovesLeft[$heroId] -= $this->_terrain[$step['tt']]['walking'];
+
+                if ($step['tt'] == 'E') {
+                    break;
+                }
+
+                if ($heroesMovesLeft[$heroId] <= 0) {
+                    break;
+                }
+            }
+        }
+
+
+        foreach ($soldiersMovesLeft as $s) {
+            if ($s >= 0) {
+                return true;
+            }
+        }
+
+        foreach ($heroesMovesLeft as $h) {
+            if ($h >= 0) {
+                return true;
+            }
+        }
+    }
 }
