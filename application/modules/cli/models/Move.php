@@ -58,7 +58,7 @@ class Cli_Model_Move
                 if ($otherArmyId) {
                     $otherArmy = $player->getArmy($otherArmyId);
                     if (!$otherArmy->canSwim() && !$otherArmy->canFly()) {
-                        new Cli_Model_JoinArmy($otherArmyId, $user, $db, $gameHandler);
+                        new Cli_Model_JoinArmy($otherArmyId, $user, $game, $db, $gameHandler);
                         $gameHandler->sendError($user, 'Nie możesz zostawić armii na wodzie.');
                         return;
                     }
@@ -69,7 +69,7 @@ class Cli_Model_Move
                 if ($otherArmyId) {
                     $otherArmy = $player->getArmy($otherArmyId);
                     if (!$otherArmy->canFly()) {
-                        new Cli_Model_JoinArmy($otherArmyId, $user, $db, $gameHandler);
+                        new Cli_Model_JoinArmy($otherArmyId, $user, $game, $db, $gameHandler);
                         $gameHandler->sendError($user, 'Nie możesz zostawić armii w górach.');
                         return;
                     }

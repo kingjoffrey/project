@@ -18,6 +18,7 @@ class Cli_Model_NeutralPlayer extends Cli_Model_DefaultPlayer
     public function initCastles($gameId, $mapCastles, Zend_Db_Adapter_Pdo_Pgsql $db)
     {
         $mCastlesInGame = new Application_Model_CastlesInGame($gameId, $db);
+        $mCastleProduction = new Application_Model_CastleProduction($db);
         $playersCastles = $mCastlesInGame->getAllCastles();
 
         foreach ($mapCastles as $castleId => $castle) {
@@ -25,6 +26,7 @@ class Cli_Model_NeutralPlayer extends Cli_Model_DefaultPlayer
                 continue;
             }
             $this->_castles->addCastle($castleId, new Cli_Model_Castle(array(), $castle));
+            $this->_castles->getCastle($castleId)->initProduction($mCastleProduction->getCastleProduction($castleId));
         }
     }
 

@@ -69,7 +69,7 @@ class Cli_Model_Castles
 
     public function noCastlesExists()
     {
-        return !count($this->_castles);
+        return empty($this->_castles);
     }
 
     public function castlesExists()

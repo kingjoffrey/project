@@ -398,8 +398,8 @@ class Cli_Model_Army
                 $this->_movesLeft = $hero->getMovesLeft();
             }
             $this->_heroes->add($heroId, $hero);
-            $this->_attackModifier->increment();
-            $this->_defenseModifier->increment();
+            $this->_attackHeroModifier->increment();
+            $this->_defenseHeroModifier->increment();
             $numberOfHeroes++;
         }
         $this->_canFly += -$numberOfHeroes + 1; // ?????? todo
