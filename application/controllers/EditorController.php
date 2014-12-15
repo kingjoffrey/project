@@ -4,9 +4,6 @@ class EditorController extends Game_Controller_Gui
 {
     public function indexAction()
     {
-        if ($this->_namespace->mapId) {
-            unset($this->_namespace->mapId);
-        }
         $mMap = new Application_Model_Map ();
         $this->view->mapList = $mMap->getPlayerMapList(Zend_Auth::getInstance()->getIdentity()->playerId);
     }
