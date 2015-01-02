@@ -1,7 +1,8 @@
 <?php
 
-class TestController  extends Coret_Controller_Authorized
+class TestController extends Coret_Controller_Authorized
 {
+    protected $_redirectNotAuthorized = 'login';
 
     public function indexAction()
     {
