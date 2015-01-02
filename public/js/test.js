@@ -33,33 +33,16 @@ light.position.set(-15, 10, 15);
 scene.add(light);
 
 var loader = new THREE.JSONLoader();
-//loader.load('../models/castle.json', castleToScene);
-//loader.load('../models/tower.json', towerToScene);
+loader.load('../models/castle.json', modelToScene);
+loader.load('../models/tower.json', modelToScene);
 
-function castleToScene(geometry, materials) {
+function modelToScene(geometry, materials) {
     var material = new THREE.MeshFaceMaterial(materials);
     var obj = new THREE.Mesh(geometry, material);
     obj.scale.set(2, 2, 2);
-    obj.position.set(0, 0, 0);
+    obj.position.set(25, 0, -15);
     scene.add(obj);
 }
-
-function towerToScene(geometry, materials) {
-    var material = new THREE.MeshFaceMaterial(materials);
-    var obj = new THREE.Mesh(geometry, material);
-    obj.scale.set(2, 2, 2);
-    obj.position.set(50, 50, 0);
-    scene.add(obj);
-}
-
-//function getGeomHandler(posx, posy) {
-//    return function (geom) {
-//        var obj = new THREE.Mesh(geom, new THREE.MeshFaceMaterial());
-//        obj.scale.set(2, 2, 2);
-//        obj.position.set(posx, posy, 0);
-//        scene.add(obj);
-//    };
-//}
 
 var render = function () {
     requestAnimationFrame(render);
