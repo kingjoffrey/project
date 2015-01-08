@@ -3,8 +3,6 @@
 class Cli_Model_NeutralPlayer extends Cli_Model_DefaultPlayer
 {
     private $_longName = 'Shadow';
-
-    private $_color = 'neutral';
     private $_team = 'neutral';
 
     public function __construct($mapId, $gameId, $mapCastles, Zend_Db_Adapter_Pdo_Pgsql $db)
@@ -41,7 +39,7 @@ class Cli_Model_NeutralPlayer extends Cli_Model_DefaultPlayer
                 continue;
             }
             $tower['towerId'] = $towerId;
-            $this->_towers->add($towerId, new Cli_Model_Tower($tower));
+            $this->_team->add($towerId, new Cli_Model_Tower($tower));
         }
     }
 
@@ -62,7 +60,7 @@ class Cli_Model_NeutralPlayer extends Cli_Model_DefaultPlayer
 
     public function getTeam()
     {
-        return 'neutral';
+        return $this->_team;
     }
 
     public function getDefenceSequence()

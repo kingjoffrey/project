@@ -14,10 +14,10 @@ var renderer = new THREE.WebGLRenderer();
 renderer.setSize(window.innerWidth, window.innerHeight);
 
 var grassTex = THREE.ImageUtils.loadTexture('../img/maps/1.png');
-grassTex.wrapS = THREE.RepeatWrapping;
-grassTex.wrapT = THREE.RepeatWrapping;
+//grassTex.wrapS = THREE.RepeatWrapping;
+//grassTex.wrapT = THREE.RepeatWrapping;
 var groundMat = new THREE.MeshBasicMaterial({map: grassTex});
-var groundGeo = new THREE.PlaneBufferGeometry(400, 400);
+var groundGeo = new THREE.PlaneBufferGeometry(436, 624);
 var ground = new THREE.Mesh(groundGeo, groundMat);
 ground.position.y = -1.9; //lower it
 ground.rotation.x = -Math.PI / 2; //-90 degrees around the xaxis
@@ -33,16 +33,39 @@ light.position.set(-15, 10, 15);
 scene.add(light);
 
 var loader = new THREE.JSONLoader();
-loader.load('../models/castle.json', modelToScene);
-loader.load('../models/tower.json', modelToScene);
+//loader.load('../models/castle.json', getGeomHandler(0, 100, 20));
+loader.load('../models/tower.json', getGeomHandler(0, 0));
+//loader.load('../models/tower.json', getGeomHandler(10, 0, 1));
+//loader.load('../models/tower.json', getGeomHandler(100, 0, 1));
+//loader.load('../models/tower.json', getGeomHandler(150, 0, 1));
+//loader.load('../models/tower.json', getGeomHandler(170, 0, 1));
+//loader.load('../models/tower.json', getGeomHandler(190, 0, 1));
+//loader.load('../models/tower.json', getGeomHandler(200, 0, 1));
 
-function modelToScene(geometry, materials) {
-    var material = new THREE.MeshFaceMaterial(materials);
-    var obj = new THREE.Mesh(geometry, material);
-    obj.scale.set(2, 2, 2);
-    obj.position.set(25, 0, -15);
-    scene.add(obj);
+function getGeomHandler(x, y) {
+    //var scale = 1
+    return function (geometry) {
+        var obj = new THREE.Mesh(geometry, new THREE.MeshFaceMaterial());
+        obj.scale.set(1, 1, 1);
+        obj.position.set(x, 0, y);
+        scene.add(obj);
+    };
 }
+
+//var object1 = new PinaCollada('castle', 1);
+//scene.add(object1);
+
+//function PinaCollada(modelname, scale) {
+//    var loader = new THREE.ColladaLoader();
+//    var localObject;
+//    loader.options.convertUpAxis = true;
+//    loader.load('../models/' + modelname + '.dae', function colladaReady(collada) {
+//        localObject = collada.scene;
+//        localObject.scale.x = localObject.scale.y = localObject.scale.z = scale;
+//        localObject.updateMatrix();
+//    });
+//    return localObject;
+//}
 
 var render = function () {
     requestAnimationFrame(render);
