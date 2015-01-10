@@ -25,6 +25,22 @@ var Gui = {
                 Message.remove();
                 Army.deselect();
                 break;
+            case 37://left
+                Three.camera.position.x += -0.5
+                Three.camera.position.z += -0.5
+                break;
+            case 38://up
+                Three.camera.position.x += 0.5
+                Three.camera.position.z += -0.5
+                break;
+            case 39://right
+                Three.camera.position.x += 0.5
+                Three.camera.position.z += 0.5
+                break;
+            case 40://down
+                Three.camera.position.x += -0.5
+                Three.camera.position.z += 0.5
+                break;
             case 66: //b
                 Message.build()
                 break;
@@ -402,13 +418,13 @@ var Gui = {
         Message.adjust()
         Message.setOverflowHeight()
 
-        if (!zoom.loaded) {
-            zoom.init(gameWidth, gameHeight)
-        } else {
-            zoom.gameWidth = gameWidth
-            zoom.gameHeight = gameHeight
-            zoom.lens.setdimensions();
-        }
+        //if (!zoom.loaded) {
+        //    zoom.init(gameWidth, gameHeight)
+        //} else {
+        //    zoom.gameWidth = gameWidth
+        //    zoom.gameHeight = gameHeight
+        //    zoom.lens.setdimensions();
+        //}
     },
     exit: function () {
         window.location = '/' + lang + '/index'

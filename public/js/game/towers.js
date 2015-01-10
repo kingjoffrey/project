@@ -19,19 +19,20 @@ var Tower = {
     },
     create: function (towerId, color) {
         var title = 'Tower';
-        board.append(
-            $('<div>')
-                .addClass('tower')
-                .attr({
-                    id: 'tower' + towerId,
-                    title: title
-                })
-                .css({
-                    left: (game.players[color].towers[towerId].x * 40) + 'px',
-                    top: (game.players[color].towers[towerId].y * 40) + 'px',
-                    background: 'url(/img/game/towers/' + color + '.png) center center no-repeat'
-                })
-        );
+        //board.append(
+        //    $('<div>')
+        //        .addClass('tower')
+        //        .attr({
+        //            id: 'tower' + towerId,
+        //            title: title
+        //        })
+        //        .css({
+        //            left: (game.players[color].towers[towerId].x * 40) + 'px',
+        //            top: (game.players[color].towers[towerId].y * 40) + 'px',
+        //            background: 'url(/img/game/towers/' + color + '.png) center center no-repeat'
+        //        })
+        //);
+        Three.loadTower(game.players[color].towers[towerId].x * 4 - 213, game.players[color].towers[towerId].y * 4 - 309)
     },
     change: function (towerId, color) { // todo zapisywanie zmian
         if (color == game.me.color) {

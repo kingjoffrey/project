@@ -242,24 +242,26 @@ var Castle = {
         Castle.owner(castleId, color)
     },
     create: function (castle, castleId) {
-        board.append(
-            $('<div>')
-                .addClass('castle')
-                .attr({
-                    id: 'castle' + castleId,
-                    title: castle.name + ' (' + castle.defense + ')'
-                })
-                .css({
-                    left: (castle.x * 40) + 'px',
-                    top: (castle.y * 40) + 'px'
-                })
-                .mouseover(function () {
-                    Castle.changeFields(castleId, 'g', castle.x, castle.y)
-                })
-                .mouseout(function () {
-                    Castle.changeFields(castleId, 'e', castle.x, castle.y)
-                })
-        );
+        //board.append(
+        //    $('<div>')
+        //        .addClass('castle')
+        //        .attr({
+        //            id: 'castle' + castleId,
+        //            title: castle.name + ' (' + castle.defense + ')'
+        //        })
+        //        .css({
+        //            left: (castle.x * 40) + 'px',
+        //            top: (castle.y * 40) + 'px'
+        //        })
+        //        .mouseover(function () {
+        //            Castle.changeFields(castleId, 'g', castle.x, castle.y)
+        //        })
+        //        .mouseout(function () {
+        //            Castle.changeFields(castleId, 'e', castle.x, castle.y)
+        //        })
+        //);
+
+        Three.loadCastle(castle.x * 4 - 213, castle.y * 4 - 309)
 
         Castle.addShield(castleId, castle.defense);
         Castle.addName(castleId, castle.name);

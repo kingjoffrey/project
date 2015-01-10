@@ -351,10 +351,10 @@ var Army = {
     },
     showFirst: function (color) {
         for (i in game.players[color].armies) {
-            zoom.lens.setcenter(game.players[color].armies[i].x * 40, game.players[color].armies[i].y * 40);
+            //zoom.lens.setcenter(game.players[color].armies[i].x * 40, game.players[color].armies[i].y * 40);
             return;
         }
-        zoom.lens.setcenter(30, 30);
+        //zoom.lens.setcenter(30, 30);
     },
     removeFromSkipped: function (armyId) {
         if (isTruthful(Army.skippedArmies[armyId])) {

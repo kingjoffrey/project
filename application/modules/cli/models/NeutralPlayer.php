@@ -39,7 +39,7 @@ class Cli_Model_NeutralPlayer extends Cli_Model_DefaultPlayer
                 continue;
             }
             $tower['towerId'] = $towerId;
-            $this->_team->add($towerId, new Cli_Model_Tower($tower));
+            $this->_towers->add($towerId, new Cli_Model_Tower($tower));
         }
     }
 

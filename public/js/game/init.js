@@ -63,6 +63,7 @@ var Init = {
         if (loading) {
             fieldsCopy();
 
+            Three.init()
             Gui.init();
             Turn.init()
             Players.init()
@@ -84,7 +85,8 @@ var Init = {
 
         Players.updateOnline()
 
-        if (Turn.isMy()) {console.log('ccc')
+        if (Turn.isMy()) {
+            console.log('ccc')
             Turn.on();
         } else {
             Turn.off();
@@ -96,7 +98,7 @@ var Init = {
             setTimeout('Websocket.computer()', 1000);
         }
 
-        Sound.play('gamestart')
+        //Sound.play('gamestart')
 
     }
 }

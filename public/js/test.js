@@ -25,28 +25,27 @@ ground.rotation.x = -Math.PI / 2; //-90 degrees around the xaxis
 ground.doubleSided = true;
 scene.add(ground);
 
-var ambientLight = new THREE.AmbientLight(0x111111);
-scene.add(ambientLight);
+//var ambientLight = new THREE.AmbientLight(0x111111);
+//scene.add(ambientLight);
 
 var light = new THREE.PointLight(0xFFFFDD);
-light.position.set(-15, 10, 15);
+light.position.set(-1000, 1000, 1000);
 scene.add(light);
 
 var loader = new THREE.JSONLoader();
-//loader.load('../models/castle.json', getGeomHandler(0, 100, 20));
-loader.load('../models/tower.json', getGeomHandler(0, 0));
-//loader.load('../models/tower.json', getGeomHandler(10, 0, 1));
-//loader.load('../models/tower.json', getGeomHandler(100, 0, 1));
-//loader.load('../models/tower.json', getGeomHandler(150, 0, 1));
-//loader.load('../models/tower.json', getGeomHandler(170, 0, 1));
-//loader.load('../models/tower.json', getGeomHandler(190, 0, 1));
-//loader.load('../models/tower.json', getGeomHandler(200, 0, 1));
+loader.load('../models/castle.json', getGeomHandler(0, 100, 1));
+loader.load('../models/tower.json', getGeomHandler(0, 0, 1));
+loader.load('../models/tower.json', getGeomHandler(10, 0, 1));
+loader.load('../models/tower.json', getGeomHandler(100, 0, 1));
+loader.load('../models/tower.json', getGeomHandler(150, 0, 1));
+loader.load('../models/tower.json', getGeomHandler(170, 0, 1));
+loader.load('../models/tower.json', getGeomHandler(190, 0, 1));
+loader.load('../models/tower.json', getGeomHandler(200, 0, 1));
 
-function getGeomHandler(x, y) {
-    //var scale = 1
+function getGeomHandler(x, y, scale) {
     return function (geometry) {
-        var obj = new THREE.Mesh(geometry, new THREE.MeshFaceMaterial());
-        obj.scale.set(1, 1, 1);
+        var obj = new THREE.Mesh(geometry, new THREE.MeshLambertMaterial({color: 0x00ff00}));
+        obj.scale.set(scale, scale, scale);
         obj.position.set(x, 0, y);
         scene.add(obj);
     };
@@ -74,7 +73,6 @@ var render = function () {
 
 $(document).ready(function () {
     document.body.appendChild(renderer.domElement);
-
     render();
 })
 
