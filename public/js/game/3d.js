@@ -3,7 +3,7 @@ var Three = new function () {
 
     var aspect = window.innerWidth / window.innerHeight
     this.camera = new THREE.PerspectiveCamera(45, aspect, 1, 1000)
-    this.camera.position.set(20, 320, 20);
+    this.camera.position.set(20, 52, 20);
     this.camera.rotation.order = 'YXZ';
     this.camera.rotation.y = -Math.PI / 4;
     this.camera.rotation.x = Math.atan(-1 / Math.sqrt(2));
@@ -24,10 +24,13 @@ var Three = new function () {
 
     var loader = new THREE.JSONLoader();
     this.loadCastle = function (x, y) {
-        loader.load('/models/castle.json', getGeomHandler(x, y, 0.5));
+        loader.load('/models/castle.json', getGeomHandler(x * 4 - 214, y * 4 - 309, 0.5));
     }
     this.loadTower = function (x, y) {
-        loader.load('/models/tower.json', getGeomHandler(x, y, 1));
+        loader.load('/models/tower.json', getGeomHandler(x * 4 - 216, y * 4 - 311, 0.5));
+    }
+    this.loadRuin = function (x, y) {
+        loader.load('/models/ruin.json', getGeomHandler(x * 4 - 216, y * 4 - 311, 0.5));
     }
     this.init = function () {
         $('#game').append(Three.renderer.domElement);

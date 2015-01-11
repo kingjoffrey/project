@@ -11,19 +11,19 @@ var Ruin = {
             title = 'Ruins';
             css = '';
         }
-        board.append(
-            $('<div>')
-                .addClass('ruin')
-                .attr({
-                    id: 'ruin' + ruinId,
-                    title: title
-                })
-                .css({
-                    left: (game.ruins[ruinId].x * 40) + 'px',
-                    top: (game.ruins[ruinId].y * 40) + 'px',
-                    background: 'url(/img/game/ruin' + css + '.png) center center no-repeat'
-                })
-        );
+        //board.append(
+        //    $('<div>')
+        //        .addClass('ruin')
+        //        .attr({
+        //            id: 'ruin' + ruinId,
+        //            title: title
+        //        })
+        //        .css({
+        //            left: (game.ruins[ruinId].x * 40) + 'px',
+        //            top: (game.ruins[ruinId].y * 40) + 'px',
+        //            background: 'url(/img/game/ruin' + css + '.png) center center no-repeat'
+        //        })
+        //);
     },
     update: function (ruinId, empty) {
         var title;

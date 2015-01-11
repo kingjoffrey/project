@@ -315,22 +315,22 @@ var Army = {
             numberOfUnits = 8;
         }
 
-        board.append(
-            element
-                .append(
-                $('<div>')
-                    .addClass('flag')
-                    .css('background', 'url(/img/game/flags/' + color + '_' + numberOfUnits + '.png) top left no-repeat')
-                    .append(
-                    $('<div>')
-                        .addClass('unit')
-                        .append(
-                        $('<img>')
-                            .attr('src', army.img)
-                    )
-                )
-            )
-        );
+        //board.append(
+        //    element
+        //        .append(
+        //        $('<div>')
+        //            .addClass('flag')
+        //            .css('background', 'url(/img/game/flags/' + color + '_' + numberOfUnits + '.png) top left no-repeat')
+        //            .append(
+        //            $('<div>')
+        //                .addClass('unit')
+        //                .append(
+        //                $('<img>')
+        //                    .attr('src', army.img)
+        //            )
+        //        )
+        //    )
+        //);
 
         map.append(
             $('<div>')

@@ -10,6 +10,7 @@ class GameController extends Game_Controller_Game
         $this->view->headLink()->appendStylesheet('/css/game.css?v=' . Zend_Registry::get('config')->version);
 
         $this->view->headScript()->appendFile('/js/jquery-ui-1.10.3.custom.js');
+        $this->view->headScript()->appendFile('/js/jquery.mousewheel.min.js');
         $this->view->headScript()->appendFile('/js/three.js?v=' . Zend_Registry::get('config')->version);
 
         $this->view->headScript()->appendFile('/js/game/3d.js?v=' . Zend_Registry::get('config')->version);

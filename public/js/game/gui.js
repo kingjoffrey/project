@@ -10,10 +10,18 @@ var Gui = {
     speed: 200,
     init: function () {
         map = $('#map');
-        board = $('#board');
         coord = $('#coord');
         this.prepareButtons()
         this.adjust();
+        $('body').mousewheel(function (event) {
+            if (event.deltaY > 0) {
+                if (Three.camera.position.y < 320)
+                    Three.camera.position.y += 2
+            } else {
+                if (Three.camera.position.y > 52)
+                    Three.camera.position.y -= 2
+            }
+        });
     },
     doKey: function (event) {
         if ($(event.target).attr('id') == 'msg') {

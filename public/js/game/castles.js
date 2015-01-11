@@ -261,7 +261,7 @@ var Castle = {
         //        })
         //);
 
-        Three.loadCastle(castle.x * 4 - 213, castle.y * 4 - 309)
+        Three.loadCastle(castle.x, castle.y)
 
         Castle.addShield(castleId, castle.defense);
         Castle.addName(castleId, castle.name);

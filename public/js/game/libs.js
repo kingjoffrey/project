@@ -51,7 +51,7 @@ function incomeIncrement(gold) {
 }
 
 function makeMyCursorUnlock() {
-    board.css('cursor', 'url(/img/game/cursor.png), auto')
+    //board.css('cursor', 'url(/img/game/cursor.png), auto')
     $('.tower').css('cursor', 'url(/img/game/cursor.png), auto')
     $('.ruin').css('cursor', 'url(/img/game/cursor.png), auto')
     $('.castle:not(.' + game.me.color + ')').css('cursor', 'url(/img/game/cursor.png), auto')
@@ -61,7 +61,7 @@ function makeMyCursorUnlock() {
 }
 
 function makeMyCursorLock() {
-    board.css('cursor', 'url(/img/game/cursor_hourglass.png), wait')
+    //board.css('cursor', 'url(/img/game/cursor_hourglass.png), wait')
     $('.tower').css('cursor', 'url(/img/game/cursor_hourglass.png), wait')
     $('.ruin').css('cursor', 'url(/img/game/cursor_hourglass.png), wait')
     $('.castle:not(.' + game.me.color + ')').css('cursor', 'url(/img/game/cursor_hourglass.png), wait')
