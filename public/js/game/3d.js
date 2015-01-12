@@ -38,15 +38,29 @@ var Three = new function () {
         this.scene.add(hero);
     }
     this.loadMountain = function (x, y) {
-        loader.load('/models/mountain.json', getGeomHandler('#808080', x * 4 - 216, y * 4 - 311, 0.5));
+        loader.load('/models/mountain.json', getGeomHandler('#808080', x * 4 - 216, y * 4 - 311, 1));
+    }
+    this.loadHill = function (x, y) {
+        loader.load('/models/hill.json', getGeomHandler('#008000', x * 4 - 216, y * 4 - 311, 0.7));
     }
     this.init = function () {
         $('#game').append(Three.renderer.domElement);
+        var i = 0
         for (var y in game.fields) {
             for (var x in game.fields[y]) {
-                Three.loadMountain(x, y)
+                switch (game.fields[y][x]) {
+                    case 'm':
+                        Three.loadMountain(x, y)
+                        i++
+                        break
+                    case 'h':
+                        Three.loadHill(x, y)
+                        i++
+                        break
+                }
             }
         }
+        console.log(i)
         Three.render();
     }
     this.render = function () {
