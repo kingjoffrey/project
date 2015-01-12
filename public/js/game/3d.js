@@ -1,8 +1,7 @@
 var Three = new function () {
     this.scene = new THREE.Scene()
 
-    var aspect = window.innerWidth / window.innerHeight
-    this.camera = new THREE.PerspectiveCamera(45, aspect, 1, 1000)
+    this.camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 1, 1000)
     this.camera.position.set(20, 52, 20);
     this.camera.rotation.order = 'YXZ';
     this.camera.rotation.y = -Math.PI / 4;
@@ -38,20 +37,27 @@ var Three = new function () {
         hero.position.set(x * 4 - 216, 1.4, y * 4 - 311);
         this.scene.add(hero);
     }
+    this.loadMountain = function (x, y) {
+        loader.load('/models/mountain.json', getGeomHandler('#808080', x * 4 - 216, y * 4 - 311, 0.5));
+    }
     this.init = function () {
         $('#game').append(Three.renderer.domElement);
+        for (var y in game.fields) {
+            for (var x in game.fields[y]) {
+                Three.loadMountain(x, y)
+            }
+        }
         Three.render();
     }
     this.render = function () {
         requestAnimationFrame(Three.render);
         Three.renderer.render(Three.scene, Three.camera);
     };
-
 }
 
 
 function getGeomHandler(color, x, y, scale) {
-    console.log(color)
+    //console.log(color)
     return function (geometry) {
         var obj = new THREE.Mesh(geometry, new THREE.MeshLambertMaterial({color: color}));
         obj.scale.set(scale, scale, scale);
