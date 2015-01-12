@@ -234,10 +234,12 @@ var Castle = {
     },
     createNeutral: function (castleId) {
         var castle = game.neutralCastles[castleId]
+        Three.loadCastle('#808080', castle.x, castle.y)
         Castle.create(castle, castleId)
         Castle.changeFields(castleId, 'e', castle.x, castle.y);
     },
     createWithColor: function (castleId, color) {
+        Three.loadCastle(game.players[color].backgroundColor, game.players[color].castles[castleId].x, game.players[color].castles[castleId].y)
         Castle.create(game.players[color].castles[castleId], castleId)
         Castle.owner(castleId, color)
     },
@@ -260,8 +262,6 @@ var Castle = {
         //            Castle.changeFields(castleId, 'e', castle.x, castle.y)
         //        })
         //);
-
-        Three.loadCastle(castle.x, castle.y)
 
         Castle.addShield(castleId, castle.defense);
         Castle.addName(castleId, castle.name);

@@ -4,6 +4,7 @@ class Cli_Model_NeutralPlayer extends Cli_Model_DefaultPlayer
 {
     private $_longName = 'Shadow';
     private $_team = 'neutral';
+    private $_backgroundColor = '#808080';
 
     public function __construct($mapId, $gameId, $mapCastles, Zend_Db_Adapter_Pdo_Pgsql $db)
     {
@@ -48,6 +49,7 @@ class Cli_Model_NeutralPlayer extends Cli_Model_DefaultPlayer
         return array(
             'longName' => $this->_longName,
             'team' => $this->_team,
+            'backgroundColor' => $this->_backgroundColor,
             'castles' => $this->_castles->toArray(),
             'towers' => $this->_towers->toArray()
         );

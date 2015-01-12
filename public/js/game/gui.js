@@ -15,7 +15,7 @@ var Gui = {
         this.adjust();
         $('body').mousewheel(function (event) {
             if (event.deltaY > 0) {
-                if (Three.camera.position.y < 320)
+                if (Three.camera.position.y < 230)
                     Three.camera.position.y += 2
             } else {
                 if (Three.camera.position.y > 52)

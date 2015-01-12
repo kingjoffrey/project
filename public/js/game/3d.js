@@ -13,9 +13,9 @@ var Three = new function () {
     this.renderer.setSize(window.innerWidth, window.innerHeight);
 
     var ground = new THREE.Mesh(new THREE.PlaneBufferGeometry(436, 624), new THREE.MeshBasicMaterial({map: THREE.ImageUtils.loadTexture('/img/maps/1.png')}));
-    ground.rotation.x = -Math.PI / 2; //-90 degrees around the xaxis
+    ground.rotation.x = -Math.PI / 2; //-90 degrees around the x axis
 //IMPORTANT, draw on both sides
-    ground.doubleSided = true;
+//    ground.doubleSided = true;
     this.scene.add(ground);
 
     var light = new THREE.PointLight(0xFFFFDD);
@@ -23,14 +23,20 @@ var Three = new function () {
     this.scene.add(light);
 
     var loader = new THREE.JSONLoader();
-    this.loadCastle = function (x, y) {
-        loader.load('/models/castle.json', getGeomHandler(x * 4 - 214, y * 4 - 309, 0.5));
+    this.loadCastle = function (color, x, y) {
+        loader.load('/models/castle.json', getGeomHandler(color, x * 4 - 214, y * 4 - 309, 0.5));
     }
-    this.loadTower = function (x, y) {
-        loader.load('/models/tower.json', getGeomHandler(x * 4 - 216, y * 4 - 311, 0.5));
+    this.loadTower = function (color, x, y) {
+        loader.load('/models/tower.json', getGeomHandler(color, x * 4 - 216, y * 4 - 311, 0.5));
     }
     this.loadRuin = function (x, y) {
-        loader.load('/models/ruin.json', getGeomHandler(x * 4 - 216, y * 4 - 311, 0.5));
+        loader.load('/models/ruin.json', getGeomHandler('#808080', x * 4 - 216, y * 4 - 311, 0.5));
+    }
+    this.loadArmy = function (x, y, img) {
+        var hero = new THREE.Mesh(new THREE.PlaneBufferGeometry(2.2, 2.8), new THREE.MeshBasicMaterial({map: THREE.ImageUtils.loadTexture(img)}));
+        hero.rotation.y = -Math.PI / 4;
+        hero.position.set(x * 4 - 216, 1.4, y * 4 - 311);
+        this.scene.add(hero);
     }
     this.init = function () {
         $('#game').append(Three.renderer.domElement);
@@ -44,9 +50,10 @@ var Three = new function () {
 }
 
 
-function getGeomHandler(x, y, scale) {
+function getGeomHandler(color, x, y, scale) {
+    console.log(color)
     return function (geometry) {
-        var obj = new THREE.Mesh(geometry, new THREE.MeshLambertMaterial({color: 0x00ff00}));
+        var obj = new THREE.Mesh(geometry, new THREE.MeshLambertMaterial({color: color}));
         obj.scale.set(scale, scale, scale);
         obj.position.set(x, 0, y);
         Three.scene.add(obj);
