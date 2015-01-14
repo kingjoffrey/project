@@ -43,6 +43,9 @@ var Three = new function () {
     this.loadHill = function (x, y) {
         loader.load('/models/hill.json', getGeomHandler('#008000', x * 4 - 216, y * 4 - 311, 0.7));
     }
+    this.loadForest = function (x, y) {
+        loader.load('/models/tree.json', getGeomHandler('#008000', x * 4 - 216, y * 4 - 311, 0.3));
+    }
     this.init = function () {
         $('#game').append(Three.renderer.domElement);
         var i = 0
@@ -55,6 +58,10 @@ var Three = new function () {
                         break
                     case 'h':
                         Three.loadHill(x, y)
+                        i++
+                        break
+                    case 'f':
+                        Three.loadForest(x, y)
                         i++
                         break
                 }
