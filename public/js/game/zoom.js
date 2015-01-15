@@ -1,55 +1,28 @@
-var zoom = {
-    mouseDown: false,
-    gameWidth: gameWidth,
-    gameHeight: gameHeight,
-    smallimage: null,
-    largeimage: null,
+var Zoom = {
+    gameWidth: 0,
+    gameHeight: 0,
     lens: null,
-    scale: {},
-    loaded: false,
-    init: function (gameWidth, gameHeight) {
-        this.gameWidth = gameWidth
-        this.gameHeight = gameHeight
-        //drag option
-        $("#map").mousedown(function () {
-            zoom.mouseDown = true;
-        });
-        $("#map").mouseup(function () {
-            zoom.mouseDown = false;
-        });
+    scale: {x: 20, y: 20},
+    init: function () {
+        this.gameWidth = $(window).width()
+        this.gameHeight = $(window).height()
+
         document.body.ondragstart = function () {
             return false;
         };
-        $("#map").bind('mouseenter mouseover', function (event) {
-            zoom.smallimage.fetchdata();
-        });
-        $("#map").bind('mousedown', function (e) {
-            if (e.pageX > zoom.smallimage.pos.r || e.pageX < zoom.smallimage.pos.l || e.pageY < zoom.smallimage.pos.t || e.pageY > zoom.smallimage.pos.b) {
+
+        map.bind('mousedown', function (e) {
+            if (e.pageX > Zoom.smallimage.pos.r || e.pageX < Zoom.smallimage.pos.l || e.pageY < Zoom.smallimage.pos.t || e.pageY > Zoom.smallimage.pos.b) {
                 return false;
             }
-            if (zoom.loaded && zoom.mouseDown) {
-                zoom.lens.setposition(e);
-            }
-        });
-        $("#map").bind('mousemove', function (e) {
-
-            //prevent fast mouse mevements not to fire the mouseout event
-            if (e.pageX > zoom.smallimage.pos.r || e.pageX < zoom.smallimage.pos.l || e.pageY < zoom.smallimage.pos.t || e.pageY > zoom.smallimage.pos.b) {
-                return false;
-            }
-
-            if (!$('#game').is(':visible')) {
-                obj.activate(e);
-            }
-            if (zoom.mouseDown) {
-                zoom.lens.setposition(e);
-            }
+            Zoom.lens.setposition(e)
         });
 
         this.smallimage = this.Smallimage()
+        this.smallimage.fetchdata()
         this.lens = this.Lens()
-        this.largeimage = this.Largeimage();
-        this.largeimage.loadimage();
+        this.lens.setdimensions(0, 0);
+        this.lens.show()
     },
     /*========================================================,
      |   Smallimage
@@ -61,6 +34,7 @@ var zoom = {
         var $obj = {};
         var image = $('#mapImage');
         $obj.node = image[0];
+
         $obj.findborder = function () {
             var bordertop = 0;
             bordertop = image.css('border-top-width');
@@ -104,7 +78,6 @@ var zoom = {
             $obj.pos.b = $obj.h + $obj.pos.t;
             $obj.rightlimit = image.offset().left + $obj.ow;
             $obj.bottomlimit = image.offset().top + $obj.oh;
-
         };
         $obj.fetchdata()
         return $obj;
@@ -120,26 +93,25 @@ var zoom = {
         $obj.node = $('.zoomPup');
         $obj.mousepos = {}
         $obj.setdimensions = function () {
-            $obj.node.w = (parseInt((zoom.gameWidth) / zoom.scale.x) > zoom.smallimage.w ) ? zoom.smallimage.w : (parseInt(zoom.gameWidth / zoom.scale.x));
-            $obj.node.h = (parseInt((zoom.gameHeight) / zoom.scale.y) > zoom.smallimage.h ) ? zoom.smallimage.h : (parseInt(zoom.gameHeight / zoom.scale.y));
+            $obj.node.w = (parseInt((Zoom.gameWidth) / Zoom.scale.x) > Zoom.smallimage.w ) ? Zoom.smallimage.w : (parseInt(Zoom.gameWidth / Zoom.scale.x));
+            $obj.node.h = (parseInt((Zoom.gameHeight) / Zoom.scale.y) > Zoom.smallimage.h ) ? Zoom.smallimage.h : (parseInt(Zoom.gameHeight / Zoom.scale.y));
             $obj.node.css({
                 'width': $obj.node.w,
                 'height': $obj.node.h
             });
-            $obj.node.top = (zoom.smallimage.oh - $obj.node.h - 2) / 2;
-            $obj.node.left = (zoom.smallimage.ow - $obj.node.w - 2) / 2;
+            $obj.node.top = (Zoom.smallimage.oh - $obj.node.h - 2) / 2;
+            $obj.node.left = (Zoom.smallimage.ow - $obj.node.w - 2) / 2;
         };
         $obj.setcenter = function (x, y) {
             if (game.players[Turn.color].computer && !Gui.show) {
                 return;
             }
-            $obj.node.top = parseInt((parseInt(y) - zoom.gameHeight / 2) / zoom.scale.y);
-            $obj.node.left = parseInt((parseInt(x) - zoom.gameWidth / 2) / zoom.scale.x);
+            $obj.node.top = parseInt((parseInt(y) - Zoom.gameHeight / 2) / Zoom.scale.y);
+            $obj.node.left = parseInt((parseInt(x) - Zoom.gameWidth / 2) / Zoom.scale.x);
             $obj.node.css({
                 top: $obj.node.top,
                 left: $obj.node.left
             });
-            zoom.largeimage.setposition();
         };
         $obj.setposition = function (e) {
             $obj.mousepos.x = e.pageX;
@@ -148,33 +120,33 @@ var zoom = {
             var lenstop = 0;
 
             function overleft(lens) {
-                return $obj.mousepos.x < zoom.smallimage.pos.l;
+                return $obj.mousepos.x < Zoom.smallimage.pos.l;
             }
 
             function overright(lens) {
-                return $obj.mousepos.x > zoom.smallimage.pos.r;
+                return $obj.mousepos.x > Zoom.smallimage.pos.r;
 
             }
 
             function overtop(lens) {
-                return $obj.mousepos.y < zoom.smallimage.pos.t;
+                return $obj.mousepos.y < Zoom.smallimage.pos.t;
             }
 
             function overbottom(lens) {
-                return $obj.mousepos.y > zoom.smallimage.pos.b;
+                return $obj.mousepos.y > Zoom.smallimage.pos.b;
             }
 
-            lensleft = $obj.mousepos.x + zoom.smallimage.bleft - zoom.smallimage.pos.l - ($obj.node.w + 2) / 2;
-            lenstop = $obj.mousepos.y + zoom.smallimage.btop - zoom.smallimage.pos.t - ($obj.node.h + 2) / 2;
+            lensleft = $obj.mousepos.x + Zoom.smallimage.bleft - Zoom.smallimage.pos.l - ($obj.node.w + 2) / 2;
+            lenstop = $obj.mousepos.y + Zoom.smallimage.btop - Zoom.smallimage.pos.t - ($obj.node.h + 2) / 2;
             if (overleft($obj.node)) {
-                lensleft = zoom.smallimage.bleft - $obj.node.w / 2;
+                lensleft = Zoom.smallimage.bleft - $obj.node.w / 2;
             } else if (overright($obj.node)) {
-                lensleft = zoom.smallimage.w + zoom.smallimage.bleft - $obj.node.w / 2;
+                lensleft = Zoom.smallimage.w + Zoom.smallimage.bleft - $obj.node.w / 2;
             }
             if (overtop($obj.node)) {
-                lenstop = zoom.smallimage.btop - $obj.node.h / 2;
+                lenstop = Zoom.smallimage.btop - $obj.node.h / 2;
             } else if (overbottom($obj.node)) {
-                lenstop = zoom.smallimage.h + zoom.smallimage.btop - $obj.node.h / 2;
+                lenstop = Zoom.smallimage.h + Zoom.smallimage.btop - $obj.node.h / 2;
             }
 
             $obj.node.left = lensleft;
@@ -183,7 +155,13 @@ var zoom = {
                 'left': lensleft + 'px',
                 'top': lenstop + 'px'
             });
-            zoom.largeimage.setposition();
+
+            var newx = lensleft * 2.5 - 216
+            console.log(lensleft + 'x ' + newx)
+            var newz = lenstop * 2.5 - 216
+            console.log(lenstop + 'z ' + newz)
+            Three.camera.position.x = newx
+            Three.camera.position.z = newz
         };
         $obj.show = function () {
             $obj.node.show();
@@ -195,134 +173,5 @@ var zoom = {
             return o;
         };
         return $obj;
-    },
-    /*========================================================,
-     |   LargeImage
-     |---------------------------------------------------------:
-     |   The large detailed image
-     `========================================================*/
-    Largeimage: function () {
-        var $obj = {};
-        $obj.scale = {};
-        $obj.loadimage = function () {
-            $obj.w = board.width();
-            $obj.h = board.height();
-            $obj.pos = board.offset();
-            $obj.pos.l = board.offset().left;
-            $obj.pos.t = board.offset().top;
-            $obj.pos.r = $obj.w + $obj.pos.l;
-            $obj.pos.b = $obj.h + $obj.pos.t;
-            $obj.scale.x = ($obj.w / zoom.smallimage.w);
-            $obj.scale.y = ($obj.h / zoom.smallimage.h);
-
-            zoom.scale = $obj.scale;
-            //setting lens dimensions;
-            zoom.lens.setdimensions(0, 0);
-            zoom.lens.show();
-
-            board
-                .mousedown(function (e) {
-                    if (!Gui.lock) {
-                        switch (e.which) {
-                            case 1:
-                                if (Army.selected) {
-                                    var path = AStar.cursorPosition(e.pageX, e.pageY, 1);
-
-                                    if (Army.selected.x == AStar.x && Army.selected.y == AStar.y) {
-                                        return;
-                                    }
-
-                                    Websocket.move(AStar.x, AStar.y);
-                                } else {
-                                    // grabbing the map
-                                    //var pageX = e.pageX;
-                                    //var pageY = e.pageY;
-                                    //
-                                    //var centerPageX = zoom.gameWidth / 2;
-                                    //var centerPageY = zoom.gameHeight / 2;
-
-                                    //board.mousemove(function (e) {
-                                    //    zoom.lens.setcenter((centerPageX + (pageX - e.pageX)) - zoom.largeimage.pos.l, (centerPageY + (pageY - e.pageY)) - zoom.largeimage.pos.t);
-                                    //});
-                                }
-                                break;
-                            case 2:
-//                        alert('Middle mouse button pressed');
-                                break;
-                            case 3:
-                                if (Army.selected) {
-                                    var destination = AStar.getDestinationXY(e.pageX, e.pageY);
-
-                                    if (Army.selected.x == destination.x && Army.selected.y == destination.y) {
-                                        return;
-                                    }
-
-                                    Army.deselect();
-                                }
-                                break;
-                            default:
-                                alert('You have a strange mouse');
-                        }
-                    }
-                })
-                .mousemove(function (e) {
-                    if (!Gui.lock) {
-                        AStar.cursorPosition(e.pageX, e.pageY);
-                    }
-                })
-                .mouseleave(function () {
-                    $('.path').remove();
-                    board
-                        .unbind('mousemove')
-                        .mousemove(function (e) {
-                            if (!Gui.lock) {
-                                AStar.cursorPosition(e.pageX, e.pageY);
-                            }
-                        });
-                })
-                .mouseup(function () {
-                    board
-                        .unbind('mousemove')
-                        .mousemove(function (e) {
-                            if (!Gui.lock) {
-                                AStar.cursorPosition(e.pageX, e.pageY);
-                            }
-                        });
-                });
-
-            zoom.loaded = true;
-        };
-        $obj.setposition = function () {
-            var left = -zoom.scale.x * (zoom.lens.getoffset().left - zoom.smallimage.bleft + 1);
-            var top = -zoom.scale.y * (zoom.lens.getoffset().top - zoom.smallimage.btop + 1);
-            board.css({
-                'left': left + 'px',
-                'top': top + 'px'
-            });
-        };
-        return $obj;
     }
 };
-
-zoom.setCenterIfOutOfScreen = function (x, y) {
-    var top = parseInt(parseInt(y) / zoom.scale.y);
-    var lensTop = parseInt($('.zoomPup').css('top'));
-    var lensHeight = parseInt($('.zoomPup').css('height'));
-
-    var maxTop = lensTop + lensHeight - 10;
-    var minTop = lensTop + 10;
-
-    var left = parseInt((parseInt(x)) / zoom.scale.x);
-    var lensLeft = parseInt($('.zoomPup').css('left'));
-    var lensWidth = parseInt($('.zoomPup').css('width'));
-
-    var maxLeft = lensLeft + lensWidth - 20;
-    var minLeft = lensLeft + 20;
-
-    if ((top >= maxTop) || (top <= minTop)) {
-        lens.setcenter(x, y);
-    } else if ((left >= maxLeft) || (left <= minLeft)) {
-        lens.setcenter(x, y);
-    }
-};
-

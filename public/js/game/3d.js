@@ -13,8 +13,7 @@ var Three = new function () {
 
     var ground = new THREE.Mesh(new THREE.PlaneBufferGeometry(436, 624), new THREE.MeshBasicMaterial({map: THREE.ImageUtils.loadTexture('/img/maps/1.png')}));
     ground.rotation.x = -Math.PI / 2; //-90 degrees around the x axis
-//IMPORTANT, draw on both sides
-//    ground.doubleSided = true;
+
     this.scene.add(ground);
 
     var light = new THREE.PointLight(0xFFFFDD);
@@ -46,8 +45,7 @@ var Three = new function () {
     this.loadForest = function (x, y) {
         loader.load('/models/tree.json', getGeomHandler('#008000', x * 4 - 216, y * 4 - 311, 0.3));
     }
-    this.init = function () {
-        $('#game').append(Three.renderer.domElement);
+    this.loadFields = function () {
         var i = 0
         for (var y in game.fields) {
             for (var x in game.fields[y]) {
@@ -68,6 +66,10 @@ var Three = new function () {
             }
         }
         console.log(i)
+    }
+    this.init = function () {
+        $('#game').append(Three.renderer.domElement);
+        Three.loadFields()
         Three.render();
     }
     this.render = function () {
@@ -76,14 +78,21 @@ var Three = new function () {
     };
 }
 
+var EventsControls = new EventsControls(Three.camera, Three.renderer.domElement);
+EventsControls.displacing = false;
+EventsControls.onclick = function () {
+    console.log('aaa')
+    console.log(this.focused.name)
 
-function getGeomHandler(color, x, y, scale) {
-    //console.log(color)
-    return function (geometry) {
-        var obj = new THREE.Mesh(geometry, new THREE.MeshLambertMaterial({color: color}));
-        obj.scale.set(scale, scale, scale);
-        obj.position.set(x, 0, y);
-        Three.scene.add(obj);
-    };
 }
 
+function getGeomHandler(color, x, y, scale) {
+    return function (geometry) {
+        var model = new THREE.Mesh(geometry, new THREE.MeshLambertMaterial({color: color}));
+        model.scale.set(scale, scale, scale);
+        model.position.set(x, 0, y);
+        model.name = color + '_' + x + '_' + y;
+        Three.scene.add(model);
+        EventsControls.attach(model);
+    };
+}

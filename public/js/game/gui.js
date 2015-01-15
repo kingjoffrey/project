@@ -11,8 +11,9 @@ var Gui = {
     init: function () {
         map = $('#map');
         coord = $('#coord');
+        Zoom.init()
         this.prepareButtons()
-        this.adjust();
+        this.adjust()
         $('body').mousewheel(function (event) {
             if (event.deltaY > 0) {
                 if (Three.camera.position.y < 230)
@@ -336,8 +337,6 @@ var Gui = {
         this.limitBox.close = 0
         this.timerBox.close = 0
         this.mapBox.close = 0
-        gameWidth = $(window).width()
-        gameHeight = $(window).height()
 
         var mapBoxHeight = parseInt($('#mapImage').css('height'));
 
@@ -349,16 +348,16 @@ var Gui = {
         var minWidth = parseInt($('#mapBox').css('width')) + parseInt($('#playersBox').css('width')) + 450
         var minHeight = parseInt($('#playersBox').css('height')) + parseInt($('#armyBox').css('height')) + 50
 
-        if (gameWidth < minWidth) {
-            gameWidth = minWidth
+        if (Zoom.gameWidth < minWidth) {
+            Zoom.gameWidth = minWidth
         }
-        if (gameHeight < minHeight) {
-            gameHeight = minHeight
+        if (Zoom.gameHeight < minHeight) {
+            Zoom.gameHeight = minHeight
         }
 
         $('#game').css({
-                width: gameWidth + 'px',
-                height: gameHeight + 'px'
+                width: Zoom.gameWidth + 'px',
+                height: Zoom.gameHeight + 'px'
             }
         )
 
@@ -370,8 +369,8 @@ var Gui = {
         }
 
         if (numberOfHumanPlayers > 1) {
-            var chatLeft = gameWidth - 507;
-            var chatTop = gameHeight - 169;
+            var chatLeft = Zoom.gameWidth - 507;
+            var chatTop = Zoom.gameHeight - 169;
 
             $('#chatBox').css({
                 'left': chatLeft + 'px',
@@ -381,7 +380,7 @@ var Gui = {
             $('#chatBox').css({display: 'none'});
         }
 
-        var goldBoxLeft = gameWidth / 2 - $('#goldBox').outerWidth() / 2
+        var goldBoxLeft = Zoom.gameWidth / 2 - $('#goldBox').outerWidth() / 2
 
         $('#goldBox').css({
             'left': goldBoxLeft + 'px'
@@ -391,7 +390,7 @@ var Gui = {
             'left': 20 + goldBoxLeft + parseInt($('#goldBox').width()) + 'px'
         })
 
-        var left = gameWidth - 237;
+        var left = Zoom.gameWidth - 237;
 
         $('#playersBox').css({
             'left': left + 'px'
@@ -425,14 +424,6 @@ var Gui = {
 
         Message.adjust()
         Message.setOverflowHeight()
-
-        //if (!zoom.loaded) {
-        //    zoom.init(gameWidth, gameHeight)
-        //} else {
-        //    zoom.gameWidth = gameWidth
-        //    zoom.gameHeight = gameHeight
-        //    zoom.lens.setdimensions();
-        //}
     },
     exit: function () {
         window.location = '/' + lang + '/index'

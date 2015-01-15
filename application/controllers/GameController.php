@@ -11,7 +11,8 @@ class GameController extends Game_Controller_Game
 
         $this->view->headScript()->appendFile('/js/jquery-ui-1.10.3.custom.js');
         $this->view->headScript()->appendFile('/js/jquery.mousewheel.min.js');
-        $this->view->headScript()->appendFile('/js/three.js?v=' . Zend_Registry::get('config')->version);
+        $this->view->headScript()->appendFile('/js/three.js');
+        $this->view->headScript()->appendFile('/js/EventsControls.js');
 
         $this->view->headScript()->appendFile('/js/game/3d.js?v=' . Zend_Registry::get('config')->version);
         $this->view->headScript()->appendFile('/js/game/init.js?v=' . Zend_Registry::get('config')->version);
@@ -26,7 +27,7 @@ class GameController extends Game_Controller_Game
         $this->view->headScript()->appendFile('/js/game/chat.js?v=' . Zend_Registry::get('config')->version);
         $this->view->headScript()->appendFile('/js/game/chest.js?v=' . Zend_Registry::get('config')->version);
         $this->view->headScript()->appendFile('/js/game/libs.js?v=' . Zend_Registry::get('config')->version);
-//        $this->view->headScript()->appendFile('/js/game/zoom.js?v=' . Zend_Registry::get('config')->version);
+        $this->view->headScript()->appendFile('/js/game/zoom.js?v=' . Zend_Registry::get('config')->version);
         $this->view->headScript()->appendFile('/js/game/websocket.js?v=' . Zend_Registry::get('config')->version);
         $this->view->headScript()->appendFile('/js/game/message.js?v=' . Zend_Registry::get('config')->version);
         $this->view->headScript()->appendFile('/js/game/timer.js?v=' . Zend_Registry::get('config')->version);

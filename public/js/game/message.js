@@ -61,11 +61,11 @@ var Message = {
     },
     adjust: function (id) {
         if (isSet(id)) {
-            var maxHeight = gameHeight - 120
+            var maxHeight = Zoom.gameHeight - 120
             if (maxHeight < parseInt($('#' + id).css('min-height'))) {
                 maxHeight = parseInt($('#' + id).css('min-height'))
             }
-            var maxWidth = gameWidth - 600
+            var maxWidth = Zoom.gameWidth - 600
             if (maxWidth < parseInt($('#' + id).css('min-width'))) {
                 maxWidth = parseInt($('#' + id).css('min-width'))
             }
@@ -75,18 +75,18 @@ var Message = {
                     'max-height': maxHeight + 'px'
                 })
 //                .jScrollPane()
-            var left = gameWidth / 2 - $('#' + id).outerWidth() / 2;
+            var left = Zoom.gameWidth / 2 - $('#' + id).outerWidth() / 2;
             $('#' + id)
                 .css({
                     left: left + 'px'
                 })
         } else if ($('.message').length) {
-            var maxHeight = gameHeight - 120
+            var maxHeight = Zoom.gameHeight - 120
             if (maxHeight < parseInt($('.message').css('min-height'))) {
                 console.log(maxHeight)
                 maxHeight = parseInt($('.message').css('min-height'))
             }
-            var maxWidth = gameWidth - 600
+            var maxWidth = Zoom.gameWidth - 600
             if (maxWidth < parseInt($('.message').css('min-width'))) {
                 maxWidth = parseInt($('.message').css('min-width'))
             }
@@ -97,7 +97,7 @@ var Message = {
                 })
 //                .jScrollPane()
             $('.message')
-            var left = gameWidth / 2 - $('.message').outerWidth() / 2;
+            var left = Zoom.gameWidth / 2 - $('.message').outerWidth() / 2;
             $('.message')
                 .css({
                     left: left + 'px'
