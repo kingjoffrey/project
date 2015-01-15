@@ -21,20 +21,21 @@ var Three = new function () {
     this.scene.add(light);
 
     var loader = new THREE.JSONLoader();
-    this.loadCastle = function (color, x, y) {
-        loader.load('/models/castle.json', getGeomHandler(color, x * 4 - 214, y * 4 - 309, 0.5));
+    this.loadCastle = function (color, castle) {
+        loader.load('/models/castle.json', getGeomHandler(color, 'castle', castle.id, castle.x * 4 - 214, castle.y * 4 - 309, 0.5));
     }
-    this.loadTower = function (color, x, y) {
-        loader.load('/models/tower.json', getGeomHandler(color, x * 4 - 216, y * 4 - 311, 0.5));
+    this.loadTower = function (color, tower) {
+        loader.load('/models/tower.json', getGeomHandler(color, 'tower', tower.id, tower.x * 4 - 216, tower.y * 4 - 311, 0.5));
     }
-    this.loadRuin = function (x, y) {
-        loader.load('/models/ruin.json', getGeomHandler('#808080', x * 4 - 216, y * 4 - 311, 0.5));
+    this.loadRuin = function (ruin) {
+        loader.load('/models/ruin.json', getGeomHandler('neutral', 'ruin', ruin.id, ruin.x * 4 - 216, ruin.y * 4 - 311, 0.3));
     }
     this.loadArmy = function (x, y, img) {
         var hero = new THREE.Mesh(new THREE.PlaneBufferGeometry(2.2, 2.8), new THREE.MeshBasicMaterial({map: THREE.ImageUtils.loadTexture(img)}));
         hero.rotation.y = -Math.PI / 4;
         hero.position.set(x * 4 - 216, 1.4, y * 4 - 311);
-        this.scene.add(hero);
+        Three.scene.add(hero);
+        EventsControls.attach(hero);
     }
     this.loadMountain = function (x, y) {
         loader.load('/models/mountain.json', getGeomHandler('#808080', x * 4 - 216, y * 4 - 311, 1));
@@ -69,7 +70,7 @@ var Three = new function () {
     }
     this.init = function () {
         $('#game').append(Three.renderer.domElement);
-        Three.loadFields()
+        //Three.loadFields()
         Three.render();
     }
     this.render = function () {
@@ -81,17 +82,20 @@ var Three = new function () {
 var EventsControls = new EventsControls(Three.camera, Three.renderer.domElement);
 EventsControls.displacing = false;
 EventsControls.onclick = function () {
-    console.log('aaa')
-    console.log(this.focused.name)
-
+    switch (this.focused.name) {
+        case 'castle':
+            Message.castle(this.focused.identification)
+            break;
+    }
 }
 
-function getGeomHandler(color, x, y, scale) {
+function getGeomHandler(color, name, id, x, y, scale) {
     return function (geometry) {
-        var model = new THREE.Mesh(geometry, new THREE.MeshLambertMaterial({color: color}));
+        var model = new THREE.Mesh(geometry, new THREE.MeshLambertMaterial({color: game.players[color].backgroundColor}));
         model.scale.set(scale, scale, scale);
         model.position.set(x, 0, y);
-        model.name = color + '_' + x + '_' + y;
+        model.name = name
+        model.identification = id
         Three.scene.add(model);
         EventsControls.attach(model);
     };

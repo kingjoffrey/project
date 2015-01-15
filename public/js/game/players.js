@@ -42,7 +42,7 @@ var Players = {
                 }
             }
 
-            for (castleId in game.players[color].castles) {
+            for (var castleId in game.players[color].castles) {
                 Castle.createWithColor(castleId, color)
                 if (color == game.me.color) {
                     game.me.income += game.players[color].castles[castleId].income;

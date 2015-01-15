@@ -173,13 +173,16 @@ var Message = {
         }
     },
     castle: function (castleId) {
+        var castle = game.players[game.me.color].castles[castleId]
+        if(notSet(castle)){
+            return
+        }
         var time = '',
             attr,
             capital = '',
             table = $('<table>'),
             j = 0,
-            td = new Array(),
-            castle = game.players[game.me.color].castles[castleId]
+            td = new Array()
 
         if (castle.capital) {
             capital = ' - ' + translations.capitalCity;

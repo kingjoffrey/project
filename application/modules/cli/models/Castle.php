@@ -55,6 +55,7 @@ class Cli_Model_Castle extends Cli_Model_Entity
     public function toArray()
     {
         return array(
+            'id' => $this->_id,
             'x' => $this->_x,
             'y' => $this->_y,
             'currentProductionId' => $this->_productionId,
