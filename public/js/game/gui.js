@@ -9,6 +9,9 @@ var Gui = {
     mapBox: {'close': 0},
     speed: 200,
     init: function () {
+        $(window).resize(function () {
+            Gui.adjust();
+        })
         map = $('#map');
         coord = $('#coord');
         Zoom.init()
@@ -16,11 +19,19 @@ var Gui = {
         this.adjust()
         $('body').mousewheel(function (event) {
             if (event.deltaY > 0) {
-                if (Three.camera.position.y < 230)
+                if (Three.camera.position.y < 230) {
                     Three.camera.position.y += 2
+
+                    Three.camera.position.x -= 2
+                    Three.camera.position.z += 2
+                }
             } else {
-                if (Three.camera.position.y > 52)
+                if (Three.camera.position.y > 52) {
                     Three.camera.position.y -= 2
+
+                    Three.camera.position.x += 2
+                    Three.camera.position.z -= 2
+                }
             }
         });
     },

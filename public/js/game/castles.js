@@ -370,14 +370,13 @@ var Castle = {
         delete castles[castleId];
     },
     showFirst: function () {
-        if ($('#castle' + game.capitals[game.me.color]).length) {
-            var sp = $('#castle' + game.capitals[game.me.color]);
-            zoom.lens.setcenter(sp.css('left'), sp.css('top'));
-        } else if ($('#castle' + firstCastleId).length) {
-            var sp = $('#castle' + firstCastleId);
-            zoom.lens.setcenter(sp.css('left'), sp.css('top'));
+        var castleId = game.capitals[game.me.color]
+        if (isSet(castleId)) {
+            Zoom.lens.setcenter(game.players[game.me.color].castles[castleId].x, game.players[game.me.color].castles[castleId].y);
+        } else if (isSet(game.players[game.me.color].castles[firstCastleId])) {
+            Zoom.lens.setcenter(game.players[game.me.color].castles[firstCastleId].x, game.players[game.me.color].castles[firstCastleId].y);
         } else {
-            Army.showFirst(game.me.color);
+            Army.showFirst();
         }
     },
     updateDefense: function (castleId, castle) {

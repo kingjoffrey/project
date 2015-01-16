@@ -350,12 +350,12 @@ var Army = {
 
         return
     },
-    showFirst: function (color) {
-        for (i in game.players[color].armies) {
-            //zoom.lens.setcenter(game.players[color].armies[i].x * 40, game.players[color].armies[i].y * 40);
-            return;
+    showFirst: function () {
+        for (var armyId in game.players[game.me.color].armies) {
+            zoom.lens.setcenter(game.players[game.me.color].armies[armyId].x, game.players[game.me.color].armies[armyId].y)
+            return
         }
-        //zoom.lens.setcenter(30, 30);
+        Zoom.lens.setcenter(0, 0);
     },
     removeFromSkipped: function (armyId) {
         if (isTruthful(Army.skippedArmies[armyId])) {

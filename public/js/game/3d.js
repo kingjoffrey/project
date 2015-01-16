@@ -25,17 +25,19 @@ var Three = new function () {
         loader.load('/models/castle.json', Three.addCastle(color, castle.id, castle.x * 4 - 214, castle.y * 4 - 309))
     }
     this.loadTower = function (color, tower) {
-        loader.load('/models/tower.json', Three.getGeomHandler(color, tower.x * 4 - 216, tower.y * 4 - 311, 0.5))
+        loader.load('/models/tower.json', Three.getGeomHandler(color, tower.x * 4 - 216, tower.y * 4 - 311, 0.7))
     }
     this.loadRuin = function (ruin) {
         loader.load('/models/ruin.json', Three.getGeomHandler('neutral', ruin.x * 4 - 216, ruin.y * 4 - 311, 0.3))
     }
     this.loadArmy = function (x, y, img) {
-        var hero = new THREE.Mesh(new THREE.PlaneBufferGeometry(2.2, 2.8), new THREE.MeshBasicMaterial({map: THREE.ImageUtils.loadTexture(img)}))
-        hero.rotation.y = -Math.PI / 4;
-        hero.position.set(x * 4 - 216, 1.4, y * 4 - 311);
-        Three.scene.add(hero);
-        EventsControls.attach(hero);
+        var model = new THREE.Mesh(new THREE.PlaneBufferGeometry(2.2, 2.8), new THREE.MeshBasicMaterial({map: THREE.ImageUtils.loadTexture(img)}))
+        model.rotation.y = -Math.PI / 4;
+        //var scale = 1.5
+        //model.scale.set(scale, scale, scale);
+        model.position.set(x * 4 - 216, 1.5, y * 4 - 311);
+        Three.scene.add(model);
+        EventsControls.attach(model);
     }
     this.loadMountain = function (x, y) {
         loader.load('/models/mountain.json', Three.getGeomHandler('#808080', x * 4 - 216, y * 4 - 311, 1))

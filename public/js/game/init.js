@@ -76,9 +76,6 @@ var Init = {
             goldUpdate(game.me.gold)
             costsUpdate(game.me.costs)
             incomeUpdate(game.me.income)
-            $(window).resize(function () {
-                Gui.adjust();
-            });
 
             loading = false
         }

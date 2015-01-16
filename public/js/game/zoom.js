@@ -93,8 +93,8 @@ var Zoom = {
         $obj.node = $('.zoomPup');
         $obj.mousepos = {}
         $obj.setdimensions = function () {
-            $obj.node.w = (parseInt((Zoom.gameWidth) / Zoom.scale.x) > Zoom.smallimage.w ) ? Zoom.smallimage.w : (parseInt(Zoom.gameWidth / Zoom.scale.x));
-            $obj.node.h = (parseInt((Zoom.gameHeight) / Zoom.scale.y) > Zoom.smallimage.h ) ? Zoom.smallimage.h : (parseInt(Zoom.gameHeight / Zoom.scale.y));
+            $obj.node.w = (parseInt(Zoom.gameWidth / Zoom.scale.x) > Zoom.smallimage.w ) ? Zoom.smallimage.w : (parseInt(Zoom.gameWidth / Zoom.scale.x));
+            $obj.node.h = (parseInt(Zoom.gameHeight / Zoom.scale.y) > Zoom.smallimage.h ) ? Zoom.smallimage.h : (parseInt(Zoom.gameHeight / Zoom.scale.y));
             $obj.node.css({
                 'width': $obj.node.w,
                 'height': $obj.node.h
@@ -106,12 +106,19 @@ var Zoom = {
             if (game.players[Turn.color].computer && !Gui.show) {
                 return;
             }
-            $obj.node.top = parseInt((parseInt(y) - Zoom.gameHeight / 2) / Zoom.scale.y);
-            $obj.node.left = parseInt((parseInt(x) - Zoom.gameWidth / 2) / Zoom.scale.x);
+
+            $obj.node.top = (y * 40 - Zoom.gameHeight / 2) / Zoom.scale.y
+            //$obj.node.top *Zoom.scale.y= y * 40 - Zoom.gameHeight / 2
+            //$obj.node.top *Zoom.scale.y+Zoom.gameHeight / 2= y * 40
+
+            $obj.node.left = (x * 40 - Zoom.gameWidth / 2) / Zoom.scale.x
             $obj.node.css({
                 top: $obj.node.top,
                 left: $obj.node.left
             });
+
+            Three.camera.position.x = x * 4 - 262
+            Three.camera.position.z = y * 4 - 262
         };
         $obj.setposition = function (e) {
             $obj.mousepos.x = e.pageX;
@@ -156,12 +163,8 @@ var Zoom = {
                 'top': lenstop + 'px'
             });
 
-            var newx = lensleft * 2.5 - 216
-            console.log(lensleft + 'x ' + newx)
-            var newz = lenstop * 2.5 - 216
-            console.log(lenstop + 'z ' + newz)
-            Three.camera.position.x = newx
-            Three.camera.position.z = newz
+            Three.camera.position.x = ($obj.node.left * Zoom.scale.x + Zoom.gameWidth / 2) / 10 - 262
+            Three.camera.position.z = ($obj.node.top * Zoom.scale.y + Zoom.gameHeight / 2) / 10 - 262
         };
         $obj.show = function () {
             $obj.node.show();
