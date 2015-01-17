@@ -26,7 +26,7 @@ var Gui = {
                     Three.camera.position.z += 2
                 }
             } else {
-                if (Three.camera.position.y > 52) {
+                if (Three.camera.position.y > 22) {
                     Three.camera.position.y -= 2
 
                     Three.camera.position.x += 2

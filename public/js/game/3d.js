@@ -52,7 +52,7 @@ var Three = new function () {
     }
     this.loadFields = function () {
         loader.load('/models/mountain.json', function (geometry) {
-            var scale = 0.8
+            var scale = 1
             var material = new THREE.MeshLambertMaterial({color: '#808080'})
             for (var y in game.fields) {
                 for (var x in game.fields[y]) {
@@ -60,36 +60,39 @@ var Three = new function () {
                         var mesh = new THREE.Mesh(geometry, material);
                         mesh.scale.set(scale, scale, scale);
                         mesh.position.set(x * 4 - 216, 0, y * 4 - 311);
+                        mesh.rotation.y = Math.PI * Math.random()
                         Three.scene.add(mesh);
                     }
                 }
             }
         })
         loader.load('/models/hill.json', function (geometry) {
-            var scale = 0.8
-            var material = new THREE.MeshLambertMaterial({color: '#00a000'})
+            var scale = 0.7
+            var material = new THREE.MeshLambertMaterial({color: '#00d000'})
             for (var y in game.fields) {
                 for (var x in game.fields[y]) {
                     if (game.fields[y][x] == 'h') {
-                        var mesh = new THREE.Mesh(geometry, material);
-                        mesh.scale.set(scale, scale, scale);
-                        mesh.position.set(x * 4 - 216, 0, y * 4 - 311);
-                        Three.scene.add(mesh);
+                        var mesh = new THREE.Mesh(geometry, material)
+                        mesh.scale.set(scale, scale, scale)
+                        mesh.position.set(x * 4 - 216, 0, y * 4 - 311)
+                        mesh.rotation.y = Math.PI * Math.random()
+                        Three.scene.add(mesh)
                     }
                 }
             }
         })
         loader.load('/models/tree.json', function (geometry) {
-            var scale = 0.5
+            var scale = 0.4
             var material = new THREE.MeshLambertMaterial({color: '#008000'})
             var i = 0
             for (var y in game.fields) {
                 for (var x in game.fields[y]) {
                     if (game.fields[y][x] == 'f') {
-                        var mesh = new THREE.Mesh(geometry, material);
-                        mesh.scale.set(scale, scale, scale);
-                        mesh.position.set(x * 4 - 216, 0, y * 4 - 311);
-                        Three.scene.add(mesh);
+                        var mesh = new THREE.Mesh(geometry, material)
+                        mesh.scale.set(scale, scale, scale)
+                        mesh.position.set(x * 4 - 216, 0, y * 4 - 311)
+                        mesh.rotation.y = Math.PI * Math.random()
+                        Three.scene.add(mesh)
                     }
                 }
             }
@@ -130,14 +133,14 @@ var Three = new function () {
     }
     this.loadTowers = function () {
         loader.load('/models/tower.json', function (geometry) {
-            var scale = 0.5
+            var scale = 1
             for (var color in game.players) {
                 var material = new THREE.MeshLambertMaterial({color: game.players[color].backgroundColor})
                 for (var towerId in game.players[color].towers) {
                     var mesh = new THREE.Mesh(geometry, material);
                     mesh.scale.set(scale, scale, scale);
                     mesh.position.set(game.players[color].towers[towerId].x * 4 - 216, 0, game.players[color].towers[towerId].y * 4 - 311);
-                    console.log('t')
+                    mesh.rotation.y = Math.PI / 2
                     Three.scene.add(mesh);
                 }
             }
