@@ -23,29 +23,30 @@ var Three = new function () {
     this.scene.add(light);
 
     var loader = new THREE.JSONLoader();
-    this.loadMountain = function (x, y) {
-        loader.load('/models/mountain.json', Three.getGeomHandler('#808080', x, y, 1))
-    }
-    this.loadFields = function () {
-        for (var y = -50; y < 50; y++) {
-            for (var x = -50; x < 50; x++) {
-                Three.loadMountain(x * 4, y * 4)
-            }
-        }
+    this.loadMountains = function () {
+        loader.load('/models/mountain.json', Three.getGeomHandler())
     }
 
-    this.getGeomHandler = function (color, x, y, scale) {
+    this.getGeomHandler = function () {
         return function (geometry) {
-            var model = new THREE.Mesh(geometry, new THREE.MeshLambertMaterial({color: color}));
-            model.scale.set(scale, scale, scale);
-            model.position.set(x, 0, y);
-            Three.scene.add(model);
+            var material = new THREE.MeshLambertMaterial({color: '#808080'})
+            var i = 0
+            for (var y = -70; y < 70; y++) {
+                for (var x = -50; x < 50; x++) {
+                    i++
+                    var model = new THREE.Mesh(geometry, material);
+                    model.scale.set(1, 1, 1);
+                    model.position.set(x * 4, 0, y * 4);
+                    Three.scene.add(model);
+                }
+            }
+            console.log(i)
         };
     }
 
     this.init = function () {
         $('body').append(Three.renderer.domElement);
-        Three.loadFields()
+        Three.loadMountains()
         Three.render();
     }
     this.render = function () {
