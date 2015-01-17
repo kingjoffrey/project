@@ -58,13 +58,17 @@ var Players = {
                 //Castle.owner(i, color);
             }
 
+            Three.loadCastles()
+
             for (towerId in game.players[color].towers) {
-                Tower.create(towerId, color)
+                //Tower.create(towerId, color)
                 if (color == game.me.color) {
                     game.me.income += 5
                 }
             }
         }
+
+        Three.loadTowers()
 
         timer.start()
         this.draw()

@@ -22,7 +22,7 @@ var Three = new function () {
 
     var loader = new THREE.JSONLoader();
     this.loadCastle = function (color, castle) {
-        loader.load('/models/castle.json', Three.addCastle(color, castle.id, castle.x * 4 - 214, castle.y * 4 - 309))
+        loader.load('/models/castle.json', Three.addCastle(color, castle.id, castle.x, castle.y))
     }
     this.loadTower = function (color, tower) {
         loader.load('/models/tower.json', Three.getGeomHandler(color, tower.x * 4 - 216, tower.y * 4 - 311, 0.7))
@@ -51,38 +51,97 @@ var Three = new function () {
         loader.load('/models/tree.json', Three.getGeomHandler('#008000', x * 4 - 216, y * 4 - 311, 0.3))
     }
     this.loadFields = function () {
-        var i = 0
-        for (var y in game.fields) {
-            for (var x in game.fields[y]) {
-                switch (game.fields[y][x]) {
-                    case 'm':
-                        Three.loadMountain(x, y)
-                        i++
-                        break
-                    case 'h':
-                        Three.loadHill(x, y)
-                        i++
-                        break
-                    case 'f':
-                        Three.loadForest(x, y)
-                        i++
-                        break
+        loader.load('/models/mountain.json', function (geometry) {
+            var scale = 0.8
+            var material = new THREE.MeshLambertMaterial({color: '#808080'})
+            for (var y in game.fields) {
+                for (var x in game.fields[y]) {
+                    if (game.fields[y][x] == 'm') {
+                        var mesh = new THREE.Mesh(geometry, material);
+                        mesh.scale.set(scale, scale, scale);
+                        mesh.position.set(x * 4 - 216, 0, y * 4 - 311);
+                        Three.scene.add(mesh);
+                    }
                 }
             }
-        }
-        console.log(i)
+        })
+        loader.load('/models/hill.json', function (geometry) {
+            var scale = 0.8
+            var material = new THREE.MeshLambertMaterial({color: '#00a000'})
+            for (var y in game.fields) {
+                for (var x in game.fields[y]) {
+                    if (game.fields[y][x] == 'h') {
+                        var mesh = new THREE.Mesh(geometry, material);
+                        mesh.scale.set(scale, scale, scale);
+                        mesh.position.set(x * 4 - 216, 0, y * 4 - 311);
+                        Three.scene.add(mesh);
+                    }
+                }
+            }
+        })
+        loader.load('/models/tree.json', function (geometry) {
+            var scale = 0.5
+            var material = new THREE.MeshLambertMaterial({color: '#008000'})
+            var i = 0
+            for (var y in game.fields) {
+                for (var x in game.fields[y]) {
+                    if (game.fields[y][x] == 'f') {
+                        var mesh = new THREE.Mesh(geometry, material);
+                        mesh.scale.set(scale, scale, scale);
+                        mesh.position.set(x * 4 - 216, 0, y * 4 - 311);
+                        Three.scene.add(mesh);
+                    }
+                }
+            }
+        })
     }
-    this.addCastle = function (color, id, x, y) {
+    this.addCastle = function (color, castleId, x, y) {
         return function (geometry) {
             var scale = 0.5
             var mesh = new THREE.Mesh(geometry, new THREE.MeshLambertMaterial({color: game.players[color].backgroundColor}));
             mesh.scale.set(scale, scale, scale);
-            mesh.position.set(x, 0, y);
+            mesh.position.set(x * 4 - 214, 0, y * 4 - 309);
+
             mesh.name = 'castle'
-            mesh.identification = id
+            mesh.identification = castleId
+
             Three.scene.add(mesh);
             EventsControls.attach(mesh);
         };
+    }
+    this.loadCastles = function () {
+        loader.load('/models/castle.json', function (geometry) {
+            var scale = 0.5
+            for (var color in game.players) {
+                var material = new THREE.MeshLambertMaterial({color: game.players[color].backgroundColor})
+                for (var castleId in game.players[color].castles) {
+                    var mesh = new THREE.Mesh(geometry, material);
+                    mesh.scale.set(scale, scale, scale);
+                    mesh.position.set(game.players[color].castles[castleId].x * 4 - 214, 0, game.players[color].castles[castleId].y * 4 - 309);
+
+                    mesh.name = 'castle'
+                    mesh.identification = castleId
+
+                    Three.scene.add(mesh);
+                    EventsControls.attach(mesh);
+                }
+            }
+        })
+    }
+    this.loadTowers = function () {
+        loader.load('/models/tower.json', function (geometry) {
+            var scale = 0.5
+            for (var color in game.players) {
+                var material = new THREE.MeshLambertMaterial({color: game.players[color].backgroundColor})
+                for (var towerId in game.players[color].towers) {
+                    var mesh = new THREE.Mesh(geometry, material);
+                    mesh.scale.set(scale, scale, scale);
+                    mesh.position.set(game.players[color].towers[towerId].x * 4 - 216, 0, game.players[color].towers[towerId].y * 4 - 311);
+                    console.log('t')
+                    Three.scene.add(mesh);
+                }
+            }
+        })
     }
 
     this.getGeomHandler = function (color, x, y, scale) {
@@ -96,7 +155,7 @@ var Three = new function () {
 
     this.init = function () {
         $('#game').append(Three.renderer.domElement);
-        //Three.loadFields()
+        Three.loadFields()
         Three.render();
     }
     this.render = function () {

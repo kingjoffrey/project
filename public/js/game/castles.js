@@ -234,12 +234,10 @@ var Castle = {
     },
     createNeutral: function (castleId) {
         var castle = game.neutralCastles[castleId]
-        Three.loadCastle('#808080', castle)
         Castle.create(castle, castleId)
         Castle.changeFields(castleId, 'e', castle.x, castle.y);
     },
     createWithColor: function (castleId, color) {
-        Three.loadCastle(color, game.players[color].castles[castleId])
         Castle.create(game.players[color].castles[castleId], castleId)
         Castle.owner(castleId, color)
     },

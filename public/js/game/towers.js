@@ -32,7 +32,7 @@ var Tower = {
         //            background: 'url(/img/game/towers/' + color + '.png) center center no-repeat'
         //        })
         //);
-        Three.loadTower(color, game.players[color].towers[towerId])
+        //Three.loadTower(color, game.players[color].towers[towerId])
     },
     change: function (towerId, color) { // todo zapisywanie zmian
         if (color == game.me.color) {
