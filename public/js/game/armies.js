@@ -331,7 +331,7 @@ var Army = {
         //        )
         //    )
         //);
-        Three.loadArmy(army.x, army.y, army.img)
+        Three.loadArmy(army.armyId, army.x, army.y, army.img)
 
         map.append(
             $('<div>')

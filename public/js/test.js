@@ -1,110 +1,59 @@
-var scene = new THREE.Scene();
+var Three = new function () {
+    this.scene = new THREE.Scene()
 
-var aspect = window.innerWidth / window.innerHeight;
-var d = 20;
-//camera = new THREE.OrthographicCamera(-d * aspect, d * aspect, d, -d, 1, 1000);
-camera = new THREE.PerspectiveCamera(45, aspect, 1, 1000)
-camera.position.set(20, 32, 20);
-camera.rotation.order = 'YXZ';
-camera.rotation.y = -Math.PI / 4;
-camera.rotation.x = Math.atan(-1 / Math.sqrt(2));
-camera.scale.addScalar(1);
+    this.camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 1, 1000)
+    this.camera.position.set(-380, 252, 420);
+    this.camera.rotation.order = 'YXZ';
+    this.camera.rotation.y = -Math.PI / 4;
+    this.camera.rotation.x = Math.atan(-1 / Math.sqrt(2));
+    this.camera.scale.addScalar(1);
 
-var renderer = new THREE.WebGLRenderer();
-renderer.setSize(window.innerWidth, window.innerHeight);
+    this.renderer = new THREE.WebGLRenderer()
+    this.renderer.setSize(window.innerWidth, window.innerHeight);
 
-var grassTex = THREE.ImageUtils.loadTexture('../img/maps/1.png');
-//grassTex.wrapS = THREE.RepeatWrapping;
-//grassTex.wrapT = THREE.RepeatWrapping;
-var groundMat = new THREE.MeshBasicMaterial({map: grassTex});
-var groundGeo = new THREE.PlaneBufferGeometry(436, 624);
-var ground = new THREE.Mesh(groundGeo, groundMat);
-ground.position.y = -1.9; //lower it
-ground.rotation.x = -Math.PI / 2; //-90 degrees around the xaxis
-//IMPORTANT, draw on both sides
-ground.doubleSided = true;
-scene.add(ground);
+    var ground = new THREE.Mesh(
+        new THREE.PlaneBufferGeometry(436, 624),
+        new THREE.MeshLambertMaterial({color: '#808080'}));
+    ground.rotation.x = -Math.PI / 2; //-90 degrees around the x axis
 
-//var ambientLight = new THREE.AmbientLight(0x111111);
-//scene.add(ambientLight);
+    this.scene.add(ground);
 
-var light = new THREE.PointLight(0xFFFFDD);
-light.position.set(-1000, 1000, 1000);
-scene.add(light);
+    var light = new THREE.PointLight(0xFFFFDD);
+    light.position.set(-1000, 1000, 1000);
+    this.scene.add(light);
 
-var loader = new THREE.JSONLoader();
-loader.load('../models/castle.json', getGeomHandler(0, 100, 1));
-loader.load('../models/tower.json', getGeomHandler(0, 0, 1));
-loader.load('../models/tower.json', getGeomHandler(10, 0, 1));
-loader.load('../models/tower.json', getGeomHandler(100, 0, 1));
-loader.load('../models/tower.json', getGeomHandler(150, 0, 1));
-loader.load('../models/tower.json', getGeomHandler(170, 0, 1));
-loader.load('../models/tower.json', getGeomHandler(190, 0, 1));
-loader.load('../models/tower.json', getGeomHandler(200, 0, 1));
+    var loader = new THREE.JSONLoader();
+    this.loadMountain = function (x, y) {
+        loader.load('/models/mountain.json', Three.getGeomHandler('#808080', x, y, 1))
+    }
+    this.loadFields = function () {
+        for (var y = -50; y < 50; y++) {
+            for (var x = -50; x < 50; x++) {
+                Three.loadMountain(x * 4, y * 4)
+            }
+        }
+    }
 
-function getGeomHandler(x, y, scale) {
-    return function (geometry) {
-        var obj = new THREE.Mesh(geometry, new THREE.MeshLambertMaterial({color: 0x00ff00}));
-        obj.scale.set(scale, scale, scale);
-        obj.position.set(x, 0, y);
-        scene.add(obj);
+    this.getGeomHandler = function (color, x, y, scale) {
+        return function (geometry) {
+            var model = new THREE.Mesh(geometry, new THREE.MeshLambertMaterial({color: color}));
+            model.scale.set(scale, scale, scale);
+            model.position.set(x, 0, y);
+            Three.scene.add(model);
+        };
+    }
+
+    this.init = function () {
+        $('body').append(Three.renderer.domElement);
+        Three.loadFields()
+        Three.render();
+    }
+    this.render = function () {
+        requestAnimationFrame(Three.render);
+        Three.renderer.render(Three.scene, Three.camera);
     };
 }
 
-//var object1 = new PinaCollada('castle', 1);
-//scene.add(object1);
-
-//function PinaCollada(modelname, scale) {
-//    var loader = new THREE.ColladaLoader();
-//    var localObject;
-//    loader.options.convertUpAxis = true;
-//    loader.load('../models/' + modelname + '.dae', function colladaReady(collada) {
-//        localObject = collada.scene;
-//        localObject.scale.x = localObject.scale.y = localObject.scale.z = scale;
-//        localObject.updateMatrix();
-//    });
-//    return localObject;
-//}
-
-var render = function () {
-    requestAnimationFrame(render);
-    renderer.render(scene, camera);
-};
-
 $(document).ready(function () {
-    document.body.appendChild(renderer.domElement);
-    render();
-})
-
-var Gui = {
-    doKey: function (event) {
-        if ($(event.target).attr('id') == 'msg') {
-            return;
-        }
-        var key = event.keyCode || event.charCode;
-        switch (key) {
-            case 37://left
-                camera.position.x += -0.5
-                camera.position.z += -0.5
-                break;
-
-            case 38://up
-                camera.position.x += 0.5
-                camera.position.z += -0.5
-                break;
-
-            case 39://right
-                camera.position.x += 0.5
-                camera.position.z += 0.5
-                break;
-
-            case 40://down
-                camera.position.x += -0.5
-                camera.position.z += 0.5
-                break;
-
-            default :
-                console.log(key)
-        }
-    }
-}
+    Three.init();
+});

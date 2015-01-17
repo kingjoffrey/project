@@ -30,14 +30,16 @@ var Three = new function () {
     this.loadRuin = function (ruin) {
         loader.load('/models/ruin.json', Three.getGeomHandler('neutral', ruin.x * 4 - 216, ruin.y * 4 - 311, 0.3))
     }
-    this.loadArmy = function (x, y, img) {
-        var model = new THREE.Mesh(new THREE.PlaneBufferGeometry(2.2, 2.8), new THREE.MeshBasicMaterial({map: THREE.ImageUtils.loadTexture(img)}))
-        model.rotation.y = -Math.PI / 4;
+    this.loadArmy = function (id, x, y, img) {
+        var mesh = new THREE.Mesh(new THREE.PlaneBufferGeometry(2.2, 2.8), new THREE.MeshBasicMaterial({map: THREE.ImageUtils.loadTexture(img)}))
+        mesh.rotation.y = -Math.PI / 4;
         //var scale = 1.5
-        //model.scale.set(scale, scale, scale);
-        model.position.set(x * 4 - 216, 1.5, y * 4 - 311);
-        Three.scene.add(model);
-        EventsControls.attach(model);
+        //mesh.scale.set(scale, scale, scale);
+        mesh.position.set(x * 4 - 216, 1.5, y * 4 - 311);
+        mesh.name = 'army'
+        mesh.identification = id
+        Three.scene.add(mesh);
+        EventsControls.attach(mesh);
     }
     this.loadMountain = function (x, y) {
         loader.load('/models/mountain.json', Three.getGeomHandler('#808080', x * 4 - 216, y * 4 - 311, 1))
@@ -73,22 +75,22 @@ var Three = new function () {
     this.addCastle = function (color, id, x, y) {
         return function (geometry) {
             var scale = 0.5
-            var model = new THREE.Mesh(geometry, new THREE.MeshLambertMaterial({color: game.players[color].backgroundColor}));
-            model.scale.set(scale, scale, scale);
-            model.position.set(x, 0, y);
-            model.name = 'castle'
-            model.identification = id
-            Three.scene.add(model);
-            EventsControls.attach(model);
+            var mesh = new THREE.Mesh(geometry, new THREE.MeshLambertMaterial({color: game.players[color].backgroundColor}));
+            mesh.scale.set(scale, scale, scale);
+            mesh.position.set(x, 0, y);
+            mesh.name = 'castle'
+            mesh.identification = id
+            Three.scene.add(mesh);
+            EventsControls.attach(mesh);
         };
     }
 
     this.getGeomHandler = function (color, x, y, scale) {
         return function (geometry) {
-            var model = new THREE.Mesh(geometry, new THREE.MeshLambertMaterial({color: game.players[color].backgroundColor}));
-            model.scale.set(scale, scale, scale);
-            model.position.set(x, 0, y);
-            Three.scene.add(model);
+            var mesh = new THREE.Mesh(geometry, new THREE.MeshLambertMaterial({color: game.players[color].backgroundColor}));
+            mesh.scale.set(scale, scale, scale);
+            mesh.position.set(x, 0, y);
+            Three.scene.add(mesh);
         };
     }
 
@@ -109,6 +111,9 @@ EventsControls.onclick = function () {
     switch (this.focused.name) {
         case 'castle':
             Message.castle(this.focused.identification)
-            break;
+            break
+        case 'army':
+            Army.select(game.players[game.me.color].armies[this.focused.identification])
+            break
     }
 }

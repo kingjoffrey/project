@@ -108,9 +108,6 @@ var Zoom = {
             }
 
             $obj.node.top = (y * 40 - Zoom.gameHeight / 2) / Zoom.scale.y
-            //$obj.node.top *Zoom.scale.y= y * 40 - Zoom.gameHeight / 2
-            //$obj.node.top *Zoom.scale.y+Zoom.gameHeight / 2= y * 40
-
             $obj.node.left = (x * 40 - Zoom.gameWidth / 2) / Zoom.scale.x
             $obj.node.css({
                 top: $obj.node.top,
