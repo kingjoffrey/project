@@ -114,8 +114,8 @@ var Zoom = {
                 left: $obj.node.left
             });
 
-            Three.camera.position.x = x * 4 - 262
-            Three.camera.position.z = y * 4 - 262
+            Three.getCamera().position.x = x * 4 - 262
+            Three.getCamera().position.z = y * 4 - 262
         };
         $obj.setposition = function (e) {
             $obj.mousepos.x = e.pageX;
@@ -160,8 +160,8 @@ var Zoom = {
                 'top': lenstop + 'px'
             });
 
-            Three.camera.position.x = ($obj.node.left * Zoom.scale.x + Zoom.gameWidth / 2) / 10 - 262
-            Three.camera.position.z = ($obj.node.top * Zoom.scale.y + Zoom.gameHeight / 2) / 10 - 262
+            Three.getCamera().position.x = ($obj.node.left * Zoom.scale.x + Zoom.gameWidth / 2) / 10 - 262
+            Three.getCamera().position.z = ($obj.node.top * Zoom.scale.y + Zoom.gameHeight / 2) / 10 - 262
         };
         $obj.show = function () {
             $obj.node.show();

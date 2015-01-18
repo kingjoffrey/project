@@ -24,7 +24,7 @@ var Ruin = {
         //            background: 'url(/img/game/ruin' + css + '.png) center center no-repeat'
         //        })
         //);
-        Three.loadRuin(game.ruins[ruinId])
+        Three.loadRuins()
     },
     update: function (ruinId, empty) {
         var title;

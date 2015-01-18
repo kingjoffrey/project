@@ -19,18 +19,18 @@ var Gui = {
         this.adjust()
         $('body').mousewheel(function (event) {
             if (event.deltaY > 0) {
-                if (Three.camera.position.y < 230) {
-                    Three.camera.position.y += 2
+                if (Three.getCamera().position.y < 230) {
+                    Three.getCamera().position.y += 2
 
-                    Three.camera.position.x -= 2
-                    Three.camera.position.z += 2
+                    Three.getCamera().position.x -= 2
+                    Three.getCamera().position.z += 2
                 }
             } else {
-                if (Three.camera.position.y > 22) {
-                    Three.camera.position.y -= 2
+                if (Three.getCamera().position.y > 22) {
+                    Three.getCamera().position.y -= 2
 
-                    Three.camera.position.x += 2
-                    Three.camera.position.z -= 2
+                    Three.getCamera().position.x += 2
+                    Three.getCamera().position.z -= 2
                 }
             }
         });
@@ -46,20 +46,20 @@ var Gui = {
                 Army.deselect();
                 break;
             case 37://left
-                Three.camera.position.x += -0.5
-                Three.camera.position.z += -0.5
+                Three.getCamera().position.x += -0.5
+                Three.getCamera().position.z += -0.5
                 break;
             case 38://up
-                Three.camera.position.x += 0.5
-                Three.camera.position.z += -0.5
+                Three.getCamera().position.x += 0.5
+                Three.getCamera().position.z += -0.5
                 break;
             case 39://right
-                Three.camera.position.x += 0.5
-                Three.camera.position.z += 0.5
+                Three.getCamera().position.x += 0.5
+                Three.getCamera().position.z += 0.5
                 break;
             case 40://down
-                Three.camera.position.x += -0.5
-                Three.camera.position.z += 0.5
+                Three.getCamera().position.x += -0.5
+                Three.getCamera().position.z += 0.5
                 break;
             case 66: //b
                 Message.build()
