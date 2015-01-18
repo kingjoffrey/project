@@ -30,46 +30,14 @@ var Three = new function () {
         return renderer
     }
 
-    var ground = new THREE.Mesh(new THREE.PlaneBufferGeometry(436, 624), new THREE.MeshLambertMaterial({map: THREE.ImageUtils.loadTexture('/img/maps/1.png')}));
-    //var ground = new THREE.Mesh(new THREE.PlaneBufferGeometry(436, 624), new THREE.MeshLambertMaterial({color: 0x00dd00}));
-    ground.rotation.x = -Math.PI / 2; //-90 degrees around the x axis
-    ground.receiveShadow = true;
-    scene.add(ground);
-
-    //var ambientLight = new THREE.AmbientLight(0x111111);
-    //scene.add(ambientLight)
-
     var pointLight = new THREE.PointLight(0xddddDD);
     pointLight.position.set(-100000, 100000, 100000);
     scene.add(pointLight)
 
-    //var light = new THREE.DirectionalLight(0xffffff, 1);
-    //light.castShadow = true
-    //light.shadowDarkness = 1
-    //light.shadowCameraVisible = true
-    //light.shadowCameraNear = 1
-    //light.shadowCameraFar = 600
-    //light.shadowCameraLeft = -350; // CHANGED
-    //light.shadowCameraRight = 350; // CHANGED
-    //light.shadowCameraTop = 300; // CHANGED
-    //light.shadowCameraBottom = -300; // CHANGED
-    //light.position.set(100, 100, -100); // CHANGED
-    //
-    //scene.add(light);
-    //scene.add(new THREE.DirectionalLightHelper(light, 0.2))
-
-    //var spotLight = new THREE.SpotLight(0xffffff);
-    //spotLight.castShadow = true;
-    //spotLight.shadowCameraFov = Math.PI
-    //spotLight.shadowBias = 0.0001;
-    //spotLight.shadowDarkness = 0.2;
-    //spotLight.shadowMapWidth = 2048
-    //spotLight.shadowMapHeight = 2048
-
     //Lighting
-    var theLight = new THREE.DirectionalLight(0xffffff, 1);
-    theLight.position.set(1500, 1000, 1000);
-    theLight.castShadow = true;
+    var theLight = new THREE.DirectionalLight(0xffffff, 1)
+    theLight.position.set(1500, 1000, 1000)
+    theLight.castShadow = true
     theLight.shadowDarkness = 0.3
     theLight.shadowMapWidth = 8192
     theLight.shadowMapHeight = 8192
@@ -77,6 +45,14 @@ var Three = new function () {
 
     var loader = new THREE.JSONLoader();
 
+    var loadGround = function () {
+        var ground = new THREE.Mesh(new THREE.PlaneBufferGeometry(436, 624), new THREE.MeshLambertMaterial({map: THREE.ImageUtils.loadTexture('/img/maps/1.png')}));
+        //var ground = new THREE.Mesh(new THREE.PlaneBufferGeometry(436, 624), new THREE.MeshLambertMaterial({color: 0x00dd00}));
+        ground.rotation.x = -Math.PI / 2
+        ground.receiveShadow = true
+        scene.add(ground)
+        EventsControls.attach(ground)
+    }
     this.loadArmy = function (id, x, y, img) {
         var mesh = new THREE.Mesh(new THREE.PlaneBufferGeometry(2.2, 2.8), new THREE.MeshBasicMaterial({map: THREE.ImageUtils.loadTexture(img)}))
         mesh.rotation.y = -Math.PI / 4;
@@ -88,7 +64,7 @@ var Three = new function () {
         scene.add(mesh);
         EventsControls.attach(mesh);
     }
-    this.loadFields = function () {
+    var loadFields = function () {
         loader.load('/models/mountain.json', function (geometry) {
             var scale = 1
             var material = new THREE.MeshLambertMaterial({color: '#808080'})
@@ -206,12 +182,11 @@ var Three = new function () {
     this.loadRuins = function () {
         loader.load('/models/ruin.json', function (geometry) {
             var scale = 0.3
-            var material = new THREE.MeshLambertMaterial({color: '#808080'})
+            var material = new THREE.MeshPhongMaterial({color: '#8080a0'})
             for (var ruinId in game.ruins) {
-                var mesh = new THREE.Mesh(geometry, material);
-                mesh.scale.set(scale, scale, scale);
-                mesh.position.set(game.ruins[ruinId].x * 4 - 216, 0, game.ruins[ruinId].y * 4 - 311);
-                //mesh.rotation.y = Math.PI * Math.random()
+                var mesh = new THREE.Mesh(geometry, material)
+                mesh.scale.set(scale, scale, scale)
+                mesh.position.set(game.ruins[ruinId].x * 4 - 216, 0, game.ruins[ruinId].y * 4 - 311)
 
                 mesh.castShadow = true;
                 mesh.receiveShadow = true;
@@ -223,7 +198,8 @@ var Three = new function () {
 
     this.init = function () {
         $('#game').append(renderer.domElement)
-        Three.loadFields()
+        loadGround()
+        loadFields()
         render()
     }
     var render = function () {
@@ -242,6 +218,7 @@ EventsControls.onclick = function () {
         case 'army':
             Army.select(game.players[game.me.color].armies[this.focused.identification])
             break
+        default:
+            console.log(this.focused)
     }
 }
-
