@@ -193,10 +193,10 @@ var Three = new function () {
                     var mesh = new THREE.Mesh(geometry, material);
                     mesh.scale.set(scale, scale, scale);
                     mesh.position.set(game.players[color].towers[towerId].x * 4 - 216, 0, game.players[color].towers[towerId].y * 4 - 311);
-                    mesh.rotation.y = Math.PI / 2
+                    //mesh.rotation.y = Math.PI / 4
 
-                    mesh.castShadow = true;
-                    mesh.receiveShadow = true;
+                    mesh.castShadow = true
+                    mesh.receiveShadow = true
 
                     scene.add(mesh);
                 }
@@ -222,7 +222,6 @@ var Three = new function () {
     }
 
     this.init = function () {
-        //var controls = new THREE.OrbitControls( camera, renderer.domElement )
         $('#game').append(renderer.domElement)
         Three.loadFields()
         render()
