@@ -58,8 +58,6 @@ var Players = {
                 //Castle.owner(i, color);
             }
 
-            Three.loadCastles()
-
             for (towerId in game.players[color].towers) {
                 //Tower.create(towerId, color)
                 if (color == game.me.color) {
@@ -68,6 +66,7 @@ var Players = {
             }
         }
 
+        Three.loadCastles()
         Three.loadTowers()
 
         timer.start()

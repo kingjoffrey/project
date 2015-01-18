@@ -141,12 +141,15 @@ var Three = new function () {
     this.loadCastles = function () {
         loader.load('/models/castle.json', function (geometry) {
             var scale = 0.5
+            var flagModel = loader.parse(flag)
+            var castleMaterial = new THREE.MeshLambertMaterial({color: 0xa0a0a0})
+
             for (var color in game.players) {
-                var material = new THREE.MeshLambertMaterial({color: game.players[color].backgroundColor})
+                var material = new THREE.MeshPhongMaterial({color: game.players[color].backgroundColor})
                 for (var castleId in game.players[color].castles) {
-                    var mesh = new THREE.Mesh(geometry, material);
+                    var mesh = new THREE.Mesh(geometry, castleMaterial);
                     mesh.scale.set(scale, scale, scale);
-                    mesh.position.set(game.players[color].castles[castleId].x * 4 - 214, 0, game.players[color].castles[castleId].y * 4 - 309);
+                    mesh.position.set(game.players[color].castles[castleId].x * 4 - 214, -0.7, game.players[color].castles[castleId].y * 4 - 309);
 
                     mesh.name = 'castle'
                     mesh.identification = castleId
@@ -156,25 +159,32 @@ var Three = new function () {
 
                     scene.add(mesh);
                     EventsControls.attach(mesh);
+
+                    var flagMesh = new THREE.Mesh(flagModel.geometry, material)
+                    flagMesh.position.set(game.players[color].castles[castleId].x * 4 - 210.8, 1.7, game.players[color].castles[castleId].y * 4 - 312.4)
+                    scene.add(flagMesh)
                 }
             }
         })
     }
     this.loadTowers = function () {
         loader.load('/models/tower.json', function (geometry) {
-            var scale = 1
+            var flagModel = loader.parse(flag)
+            var towerMaterial = new THREE.MeshLambertMaterial({color: 0xa0a0a0})
             for (var color in game.players) {
                 var material = new THREE.MeshLambertMaterial({color: game.players[color].backgroundColor})
                 for (var towerId in game.players[color].towers) {
-                    var mesh = new THREE.Mesh(geometry, material);
-                    mesh.scale.set(scale, scale, scale);
-                    mesh.position.set(game.players[color].towers[towerId].x * 4 - 216, 0, game.players[color].towers[towerId].y * 4 - 311);
-                    //mesh.rotation.y = Math.PI / 4
+                    var mesh = new THREE.Mesh(geometry, towerMaterial)
+                    mesh.position.set(game.players[color].towers[towerId].x * 4 - 216, -0.7, game.players[color].towers[towerId].y * 4 - 311)
 
                     mesh.castShadow = true
                     mesh.receiveShadow = true
 
-                    scene.add(mesh);
+                    scene.add(mesh)
+
+                    var flagMesh = new THREE.Mesh(flagModel.geometry, material)
+                    flagMesh.position.set(game.players[color].towers[towerId].x * 4 - 216, 3, game.players[color].towers[towerId].y * 4 - 311)
+                    scene.add(flagMesh)
                 }
             }
         })
