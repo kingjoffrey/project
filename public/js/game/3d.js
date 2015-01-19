@@ -53,26 +53,50 @@ var Three = new function () {
         scene.add(ground)
         EventsControls.attach(ground)
     }
-    this.loadArmy = function (id, x, y, img) {
-        var mesh = new THREE.Mesh(new THREE.PlaneBufferGeometry(2.2, 2.8), new THREE.MeshBasicMaterial({map: THREE.ImageUtils.loadTexture(img)}))
-        mesh.rotation.y = -Math.PI / 4;
-        //var scale = 1.5
-        //mesh.scale.set(scale, scale, scale);
-        mesh.position.set(x * 4 - 216, 1.5, y * 4 - 311);
-        mesh.name = 'army'
-        mesh.identification = id
-        scene.add(mesh);
-        EventsControls.attach(mesh);
+    //this.loadArmy = function (id, x, y, img) {
+    //    var mesh = new THREE.Mesh(new THREE.PlaneBufferGeometry(2.2, 2.8), new THREE.MeshBasicMaterial({map: THREE.ImageUtils.loadTexture(img)}))
+    //    mesh.rotation.y = -Math.PI / 4;
+    //var scale = 1.5
+    //mesh.scale.set(scale, scale, scale);
+    //mesh.position.set(x * 4 - 216, 1.5, y * 4 - 311);
+    //mesh.name = 'army'
+    //mesh.identification = id
+    //scene.add(mesh);
+    //EventsControls.attach(mesh);
+    //}
+    this.loadArmies = function () {
+        loader.load('/models/hero.json', function (geometry) {
+            var scale = 0.2
+            for (var color in game.players) {
+                var material = new THREE.MeshPhongMaterial({color: game.players[color].backgroundColor})
+                material.side = THREE.DoubleSide
+                for (var armyId in game.players[color].armies) {
+                    var mesh = new THREE.Mesh(geometry, material);
+
+                    mesh.scale.set(scale, scale, scale);
+                    mesh.position.set(game.players[color].armies[armyId].x * 4 - 216, 0, game.players[color].armies[armyId].y * 4 - 311)
+                    mesh.rotation.y = Math.PI / 2 + Math.PI / 4
+
+                    mesh.name = 'army'
+                    mesh.identification = armyId
+
+                    mesh.castShadow = true
+                    mesh.receiveShadow = true
+
+                    scene.add(mesh);
+                    EventsControls.attach(mesh);
+                }
+            }
+        })
     }
     var loadFields = function () {
         loader.load('/models/mountain.json', function (geometry) {
-            var scale = 1
             var material = new THREE.MeshLambertMaterial({color: '#808080'})
+            material.side = THREE.DoubleSide
             for (var y in game.fields) {
                 for (var x in game.fields[y]) {
                     if (game.fields[y][x] == 'm') {
-                        var mesh = new THREE.Mesh(geometry, material);
-                        mesh.scale.set(scale, scale, scale);
+                        var mesh = new THREE.Mesh(geometry, material)
                         mesh.position.set(x * 4 - 216, 0, y * 4 - 311);
                         mesh.rotation.y = Math.PI * Math.random()
 
@@ -87,6 +111,7 @@ var Three = new function () {
         loader.load('/models/hill.json', function (geometry) {
             var scale = 0.7
             var material = new THREE.MeshLambertMaterial({color: '#00a000'})
+            material.side = THREE.DoubleSide
             for (var y in game.fields) {
                 for (var x in game.fields[y]) {
                     if (game.fields[y][x] == 'h') {
@@ -106,6 +131,7 @@ var Three = new function () {
         loader.load('/models/tree.json', function (geometry) {
             var scale = 0.4
             var material = new THREE.MeshLambertMaterial({color: '#008000'})
+            material.side = THREE.DoubleSide
             for (var y in game.fields) {
                 for (var x in game.fields[y]) {
                     if (game.fields[y][x] == 'f') {
@@ -143,9 +169,11 @@ var Three = new function () {
             var scale = 0.5
             var flagModel = loader.parse(flag)
             var castleMaterial = new THREE.MeshLambertMaterial({color: 0xa0a0a0})
+            castleMaterial.side = THREE.DoubleSide
 
             for (var color in game.players) {
                 var material = new THREE.MeshPhongMaterial({color: game.players[color].backgroundColor})
+                material.side = THREE.DoubleSide
                 for (var castleId in game.players[color].castles) {
                     var mesh = new THREE.Mesh(geometry, castleMaterial);
                     mesh.scale.set(scale, scale, scale);
@@ -171,8 +199,10 @@ var Three = new function () {
         loader.load('/models/tower.json', function (geometry) {
             var flagModel = loader.parse(flag)
             var towerMaterial = new THREE.MeshLambertMaterial({color: 0xa0a0a0})
+            towerMaterial.side = THREE.DoubleSide
             for (var color in game.players) {
                 var material = new THREE.MeshLambertMaterial({color: game.players[color].backgroundColor})
+                material.side = THREE.DoubleSide
                 for (var towerId in game.players[color].towers) {
                     var mesh = new THREE.Mesh(geometry, towerMaterial)
                     mesh.position.set(game.players[color].towers[towerId].x * 4 - 216, -0.7, game.players[color].towers[towerId].y * 4 - 311)
@@ -193,6 +223,7 @@ var Three = new function () {
         loader.load('/models/ruin.json', function (geometry) {
             var scale = 0.3
             var material = new THREE.MeshPhongMaterial({color: '#8080a0'})
+            material.side = THREE.DoubleSide
             for (var ruinId in game.ruins) {
                 var mesh = new THREE.Mesh(geometry, material)
                 mesh.scale.set(scale, scale, scale)
@@ -229,6 +260,23 @@ EventsControls.onclick = function () {
             Army.select(game.players[game.me.color].armies[this.focused.identification])
             break
         default:
-            console.log(this.focused)
+            //getXY()
+            console.log(this.intersects[0].point)
+        //console.log(this.focused)
     }
+}
+
+function getXY(cX, cY) {
+    var projector = new THREE.Projector();
+    var planeZ = new THREE.Plane(new THREE.Vector3(0, 0, 1), 0);
+    var mv = new THREE.Vector3(
+        (cX / window.innerWidth) * 2 - 1,
+        -(cY / window.innerHeight) * 2 + 1,
+        0.5);
+    var rayCaster = projector.pickingRay(mv, Three.getCamera());
+    var pos = rayCaster.ray.intersectPlane(planeZ);
+
+    console.log(pos)
+
+    return pos;
 }

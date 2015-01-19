@@ -68,6 +68,7 @@ var Players = {
 
         Three.loadCastles()
         Three.loadTowers()
+        Three.loadArmies()
 
         timer.start()
         this.draw()
