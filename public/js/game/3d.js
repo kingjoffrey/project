@@ -1,6 +1,10 @@
 var Three = new function () {
     var scene = new THREE.Scene()
 
+    this.getScene = function () {
+        return scene
+    }
+
     var camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 1, 1000)
     camera.rotation.order = 'YXZ';
     camera.rotation.y = -Math.PI / 4;
@@ -53,17 +57,17 @@ var Three = new function () {
         scene.add(ground)
         EventsControls.attach(ground)
     }
-    //this.loadArmy = function (id, x, y, img) {
-    //    var mesh = new THREE.Mesh(new THREE.PlaneBufferGeometry(2.2, 2.8), new THREE.MeshBasicMaterial({map: THREE.ImageUtils.loadTexture(img)}))
-    //    mesh.rotation.y = -Math.PI / 4;
-    //var scale = 1.5
-    //mesh.scale.set(scale, scale, scale);
-    //mesh.position.set(x * 4 - 216, 1.5, y * 4 - 311);
-    //mesh.name = 'army'
-    //mesh.identification = id
-    //scene.add(mesh);
-    //EventsControls.attach(mesh);
-    //}
+    this.loadArmy = function (id, x, y, img) {
+        var mesh = new THREE.Mesh(new THREE.PlaneBufferGeometry(2.2, 2.8), new THREE.MeshBasicMaterial({map: THREE.ImageUtils.loadTexture(img)}))
+        mesh.rotation.y = -Math.PI / 4;
+        var scale = 1.5
+        mesh.scale.set(scale, scale, scale);
+        mesh.position.set(x * 4 - 216, 1.5, y * 4 - 311);
+        mesh.name = 'army'
+        mesh.identification = id
+        scene.add(mesh);
+        EventsControls.attach(mesh);
+    }
     this.loadArmies = function () {
         loader.load('/models/hero.json', function (geometry) {
             var scale = 0.2
@@ -257,6 +261,7 @@ EventsControls.onclick = function () {
             Message.castle(this.focused.identification)
             break
         case 'army':
+            console.log(Three.getScene().getObjectById(this.focused.id).position)
             Army.select(game.players[game.me.color].armies[this.focused.identification])
             break
         default:
@@ -265,6 +270,7 @@ EventsControls.onclick = function () {
             }
             console.log(parseInt((this.intersects[0].point.x + 218) / 4))
             console.log(parseInt((this.intersects[0].point.z + 312) / 4))
+            console.log(this)
 
     }
 }
