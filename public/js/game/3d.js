@@ -260,23 +260,11 @@ EventsControls.onclick = function () {
             Army.select(game.players[game.me.color].armies[this.focused.identification])
             break
         default:
-            //getXY()
-            console.log(this.intersects[0].point)
-        //console.log(this.focused)
+            if (Army.selected) {
+                Websocket.move(parseInt((this.intersects[0].point.x + 218) / 4), parseInt((this.intersects[0].point.z + 312) / 4))
+            }
+            console.log(parseInt((this.intersects[0].point.x + 218) / 4))
+            console.log(parseInt((this.intersects[0].point.z + 312) / 4))
+
     }
-}
-
-function getXY(cX, cY) {
-    var projector = new THREE.Projector();
-    var planeZ = new THREE.Plane(new THREE.Vector3(0, 0, 1), 0);
-    var mv = new THREE.Vector3(
-        (cX / window.innerWidth) * 2 - 1,
-        -(cY / window.innerHeight) * 2 + 1,
-        0.5);
-    var rayCaster = projector.pickingRay(mv, Three.getCamera());
-    var pos = rayCaster.ray.intersectPlane(planeZ);
-
-    console.log(pos)
-
-    return pos;
 }

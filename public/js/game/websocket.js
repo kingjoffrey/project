@@ -60,10 +60,8 @@ Websocket = {
                 break;
 
             case 'ruin':
-                var X = 40 * r.army.x,
-                    Y = 40 * r.army.y
-                board.append($('<div>').addClass('ruinSearch').css({'top': Y + 'px', 'left': X + 'px'}));
-                zoom.lens.setcenter(X, Y);
+                //board.append($('<div>').addClass('ruinSearch').css({'top': Y + 'px', 'left': X + 'px'}));
+                Zoom.lens.setcenter(r.army.x, r.army.y);
                 Army.init(r.army, r.color);
                 Ruin.update(r.ruin.ruinId, r.ruin.empty);
                 if (game.me.color == r.color) {
@@ -116,7 +114,7 @@ Websocket = {
                     Army.select(game.players[r.color].armies[r.childArmy.armyId], 0);
                 } else {
                     //zoomer.setCenterIfOutOfScreen(r.parentArmy.x * 40, r.parentArmy.y * 40);
-                    zoom.lens.setcenter(r.parentArmy.x * 40, r.parentArmy.y * 40);
+                    Zoom.lens.setcenter(r.parentArmy.x, r.parentArmy.y);
                 }
                 this.executing = 0
                 break;
@@ -126,7 +124,7 @@ Websocket = {
                     Message.remove()
                 }
                 //zoomer.setCenterIfOutOfScreen(r.army.x * 40, r.army.y * 40);
-                zoom.lens.setcenter(r.army.x * 40, r.army.y * 40);
+                Zoom.lens.setcenter(r.army.x, r.army.y);
                 for (var i in r.deletedIds) {
                     Army.delete(r.deletedIds[i], r.color);
                 }

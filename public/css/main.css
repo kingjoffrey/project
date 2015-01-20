@@ -117,8 +117,8 @@ input[type="radio"], input[type="checkbox"] {
     font-size: 16px;
     color: #fff;
     text-shadow: none;
-    background: #000;
-    border: 2px solid grey;
+    background: #373737;
+    border: 2px solid #fff;
     border-radius: 5px;
     display: inline-block;
     box-shadow: 1px 1px 5px #000;
@@ -130,7 +130,7 @@ input[type="radio"], input[type="checkbox"] {
 }
 
 .button#active {
-    color: yellow;
+    color: grey;
 }
 
 .button#active:hover {

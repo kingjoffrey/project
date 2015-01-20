@@ -493,7 +493,7 @@ var Army = {
 
         if (notSet(center)) {
             //zoomer.setCenterIfOutOfScreen(a.x * 40, a.y * 40);
-            zoom.lens.setcenter(a.x * 40, a.y * 40);
+            Zoom.lens.setcenter(a.x, a.y)
         }
     },
     deselect: function (skipJoin) {
@@ -526,12 +526,12 @@ var Army = {
             Army.deselected.skippedHeroes = {};
             Army.deselected.skippedSoldiers = {};
 
-            $('#army' + Army.deselected.armyId + ' .unit img').attr('src', Army.deselected.img);
-
-            $('#army' + Army.deselected.armyId).css('background', 'none');
-            $('#army' + Army.deselected.armyId + ' .unit').css('background', 'none');
-
-            board.css('cursor', 'url(/img/game/cursor.png), default');
+            //$('#army' + Army.deselected.armyId + ' .unit img').attr('src', Army.deselected.img);
+            //
+            //$('#army' + Army.deselected.armyId).css('background', 'none');
+            //$('#army' + Army.deselected.armyId + ' .unit').css('background', 'none');
+            //
+            //board.css('cursor', 'url(/img/game/cursor.png), default');
         }
         Army.selected = null;
         $('.path').remove();
