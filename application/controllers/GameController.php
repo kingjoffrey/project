@@ -37,6 +37,7 @@ class GameController extends Game_Controller_Game
         $this->view->headScript()->appendFile('/js/game/sound.js?v=' . Zend_Registry::get('config')->version);
 
         $this->view->headScript()->appendFile('/models/flag.json?v=' . Zend_Registry::get('config')->version);
+        $this->view->headScript()->appendFile('/models/flag_1.json?v=' . Zend_Registry::get('config')->version);
 
         $this->view->sound();
 

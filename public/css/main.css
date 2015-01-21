@@ -31,7 +31,7 @@ html, body {
     font-size: 18px;
     font-family: "Alpine", Verdana, Tahoma;
     letter-spacing: 2px;
-    color: #878967;
+    color: #A8A45A;
     text-shadow: 1px 1px 0 #000;
 }
 
@@ -117,7 +117,7 @@ input[type="radio"], input[type="checkbox"] {
     font-size: 16px;
     color: #fff;
     text-shadow: none;
-    background: #373737;
+    background: #181107;
     border: 2px solid #fff;
     border-radius: 5px;
     display: inline-block;
@@ -267,7 +267,7 @@ tr:last-of-type td {
 th {
     text-align: center;
     padding: 4px;
-    color: #fff;
+    color: #A0B4B0;
     background: url("/img/game/message_bg.png");
     font-family: fantasy;
 }

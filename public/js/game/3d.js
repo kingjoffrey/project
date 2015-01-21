@@ -70,12 +70,17 @@ var Three = new function () {
     }
     this.loadArmies = function () {
         loader.load('/models/hero.json', function (geometry) {
+            var flagModel = loader.parse(flag_1)
             var scale = 0.2
             for (var color in game.players) {
                 var material = new THREE.MeshPhongMaterial({color: game.players[color].backgroundColor})
                 material.side = THREE.DoubleSide
+
                 for (var armyId in game.players[color].armies) {
-                    var mesh = new THREE.Mesh(geometry, material);
+                    var mesh = new THREE.Mesh(geometry, material)
+                    var flag = new THREE.Mesh(flagModel.geometry, material)
+                    flag.position.set(-4, 0, 2)
+                    mesh.add(flag)
 
                     game.players[color].armies[armyId].meshId = mesh.id
 
@@ -270,9 +275,9 @@ EventsControls.onclick = function () {
             if (Army.selected) {
                 Websocket.move(parseInt((this.intersects[0].point.x + 218) / 4), parseInt((this.intersects[0].point.z + 312) / 4))
             }
-            //console.log(parseInt((this.intersects[0].point.x + 218) / 4))
-            //console.log(parseInt((this.intersects[0].point.z + 312) / 4))
-            //console.log(this)
+        //console.log(parseInt((this.intersects[0].point.x + 218) / 4))
+        //console.log(parseInt((this.intersects[0].point.z + 312) / 4))
+        //console.log(this)
 
     }
 }
