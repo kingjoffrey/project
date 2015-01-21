@@ -77,6 +77,8 @@ var Three = new function () {
                 for (var armyId in game.players[color].armies) {
                     var mesh = new THREE.Mesh(geometry, material);
 
+                    game.players[color].armies[armyId].meshId = mesh.id
+
                     mesh.scale.set(scale, scale, scale);
                     mesh.position.set(game.players[color].armies[armyId].x * 4 - 216, 0, game.players[color].armies[armyId].y * 4 - 311)
                     mesh.rotation.y = Math.PI / 2 + Math.PI / 4

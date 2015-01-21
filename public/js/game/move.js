@@ -29,10 +29,10 @@ var Move = {
         }
 
         if (notSet(r.path[1])) {
-            zoom.lens.setcenter(r.army.x * 40, r.army.y * 40);
+            Zoom.lens.setcenter(r.army.x, r.army.y)
         } else {
-            Army.fields(game.players[r.color].armies[r.army.armyId]);
-            zoom.lens.setcenter(r.path[1].x * 40, r.path[1].y * 40);
+            Army.fields(game.players[r.color].armies[r.army.armyId])
+            Zoom.lens.setcenter(r.path[1].x, r.path[1].y)
         }
 
         Army.unfortify(r.army.armyId);
@@ -56,16 +56,17 @@ var Move = {
         if (isSet(r.path[step])) {
             if (!game.players[r.color].computer || Gui.show) {
                 //zoomer.setCenterIfOutOfScreen(r.path[step].x * 40, r.path[step].y * 40);
-                zoom.lens.setcenter(r.path[step].x * 40, r.path[step].y * 40);
+                Zoom.lens.setcenter(r.path[step].x, r.path[step].y)
 
-                $('#army' + r.army.armyId)
+                $('#' + r.army.armyId + '.a')
                     .animate({
-                        left: (r.path[step].x * 40) + 'px',
-                        top: (r.path[step].y * 40) + 'px'
+                        left: r.path[step].x * 2 + 'px',
+                        top: r.path[step].y * 2 + 'px'
                     }, Move.stepTime, function () {
                         if (typeof r.path[step] == 'undefined') {
                             throw(r)
                         }
+                        Three.getScene().getObjectById(game.players[r.color].armies[r.army.armyId].meshId).position.set(r.path[step].x * 4 - 218, 0, r.path[step].y * 4 - 312)
                         delete r.path[step];
                         Move.loop(r, ii);
                     })

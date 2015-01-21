@@ -15,6 +15,10 @@ class Cli_Model_Heroes
      */
     public function getHero($heroId)
     {
+        if (!isset($this->_heroes[$heroId])) {
+            Coret_Model_Logger::debug(debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 2));
+            throw new Exception('no $heroId');
+        }
         return $this->_heroes[$heroId];
     }
 
