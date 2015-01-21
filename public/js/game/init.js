@@ -24,9 +24,7 @@ var game = {
 
 var firstCastleId = 1000;
 
-var zoomer;
 var map;
-var board;
 var coord;
 
 var documentTitle = document.title;
@@ -36,9 +34,6 @@ var myArmies = false;
 var myCastles = false;
 var enemyArmies = false;
 var enemyCastles = false;
-
-var gameWidth;
-var gameHeight;
 
 var stop = 0;
 
@@ -54,7 +49,7 @@ var loading = true;
 
 $(document).ready(function () {
     Websocket.init();
-});
+})
 
 var Init = {
     game: function (r) {

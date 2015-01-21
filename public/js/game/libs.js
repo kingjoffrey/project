@@ -5,51 +5,6 @@ $(document)[0].oncontextmenu = function () {
 
 // *** OTHER ***
 
-function goldUpdate(gold) {
-    game.me.gold = gold
-    $('#gold #value').fadeOut(300, function () {
-        $('#gold #value').html(gold)
-        $('#gold #value').fadeIn()
-        if (gold > 1000) {
-            $('#heroHire').removeClass('buttonOff')
-        } else {
-            $('#heroHire').addClass('buttonOff')
-        }
-    })
-
-}
-
-function goldIncrement(gold) {
-    gold += game.me.gold
-    goldUpdate(gold)
-}
-
-function costsUpdate(gold) {
-    game.me.costs = gold
-    $('#costs #value').fadeOut(300, function () {
-        $('#costs #value').html(gold)
-        $('#costs #value').fadeIn(300)
-    })
-}
-
-function costIncrement(gold) {
-    gold += game.me.costs
-    costsUpdate(gold)
-}
-
-function incomeUpdate(gold) {
-    game.me.income = gold
-    $('#income #value').fadeOut(300, function () {
-        $('#income #value').html(gold)
-        $('#income #value').fadeIn(300)
-    })
-}
-
-function incomeIncrement(gold) {
-    gold += game.me.income
-    incomeUpdate(gold)
-}
-
 function makeMyCursorUnlock() {
     //board.css('cursor', 'url(/img/game/cursor.png), auto')
     $('.tower').css('cursor', 'url(/img/game/cursor.png), auto')
