@@ -263,16 +263,16 @@ EventsControls.onclick = function () {
             Message.castle(this.focused.identification)
             break
         case 'army':
-            console.log(Three.getScene().getObjectById(this.focused.id).position)
+            //console.log(Three.getScene().getObjectById(this.focused.id).position)
             Army.select(game.players[game.me.color].armies[this.focused.identification])
             break
         default:
             if (Army.selected) {
                 Websocket.move(parseInt((this.intersects[0].point.x + 218) / 4), parseInt((this.intersects[0].point.z + 312) / 4))
             }
-            console.log(parseInt((this.intersects[0].point.x + 218) / 4))
-            console.log(parseInt((this.intersects[0].point.z + 312) / 4))
-            console.log(this)
+            //console.log(parseInt((this.intersects[0].point.x + 218) / 4))
+            //console.log(parseInt((this.intersects[0].point.z + 312) / 4))
+            //console.log(this)
 
     }
 }
