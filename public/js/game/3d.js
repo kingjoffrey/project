@@ -265,9 +265,6 @@ var Three = new function () {
         loadGround()
         loadFields()
         render()
-
-        var person = new Person('bartek')
-        console.log(person.getName())
     }
     var render = function () {
         requestAnimationFrame(render);
@@ -296,18 +293,3 @@ EventsControls.onclick = function () {
 
     }
 }
-
-var Person = (function() {
-
-    var privateData = new WeakMap();
-
-    function Person(name) {
-        privateData.set(this, { name: name });
-    }
-
-    Person.prototype.getName = function() {
-        return privateData.get(this).name;
-    };
-
-    return Person;
-}());
