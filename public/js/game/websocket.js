@@ -299,7 +299,7 @@ Websocket = {
                         break;
 
                     case 'open':
-                        Init.game(r);
+                        Game.init(r)
                         break;
 
                     case 'close':

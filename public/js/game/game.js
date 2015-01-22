@@ -3,35 +3,35 @@ var Game = new function () {
 
     this.init = function (game) {
         if (loading) {
-            fieldsCopy();
+            loading = false
+            //fieldsCopy();
 
             Three.init()
             Gui.init();
-            Turn.init()
-            Players.init(game.players)
-            Me.init(game.me)
-            Ruins.init()
+            //Turn.init()
+            //Players.init(game.players)
+            //Me.init(game.me)
+            Ruins.init(game.ruins)
 
             renderChatHistory();
 
 
-            loading = false
         }
 
-        Players.updateOnline()
-
-        if (Turn.isMy()) {
-            console.log('ccc')
-            Turn.on();
-        } else {
-            Turn.off();
-        }
-
-        if (Turn.isMy() && !game.players[game.me.color].turnActive) {
-            Websocket.startMyTurn();
-        } else if (isComputer(Turn.color)) {
-            setTimeout('Websocket.computer()', 1000);
-        }
+        //Players.updateOnline()
+        //
+        //if (Turn.isMy()) {
+        //    console.log('ccc')
+        //    Turn.on();
+        //} else {
+        //    Turn.off();
+        //}
+        //
+        //if (Turn.isMy() && !game.players[game.me.color].turnActive) {
+        //    Websocket.startMyTurn();
+        //} else if (isComputer(Turn.color)) {
+        //    setTimeout('Websocket.computer()', 1000);
+        //}
 
         //Sound.play('gamestart')
     }

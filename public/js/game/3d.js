@@ -1,4 +1,5 @@
 var Three = new function () {
+    var ruinModel
     var scene = new THREE.Scene()
 
     this.getScene = function () {
@@ -47,7 +48,17 @@ var Three = new function () {
     theLight.shadowMapHeight = 8192
     scene.add(theLight);
 
-    var loader = new THREE.JSONLoader();
+    var loader = new THREE.JSONLoader()
+
+    var initRuin = function () {
+        ruinModel = loader.parse(ruin)
+        ruinModel.material = new THREE.MeshPhongMaterial({color: '#8080a0'})
+        ruinModel.material.side = THREE.DoubleSide
+    }
+
+    this.getRuin = function () {
+        return new THREE.Mesh(ruinModel.geometry, ruinModel.material)
+    }
 
     var loadGround = function () {
         var ground = new THREE.Mesh(new THREE.PlaneBufferGeometry(436, 624), new THREE.MeshLambertMaterial({map: THREE.ImageUtils.loadTexture('/img/maps/1.png')}));
@@ -249,10 +260,14 @@ var Three = new function () {
     }
 
     this.init = function () {
+        initRuin()
         $('#game').append(renderer.domElement)
         loadGround()
         loadFields()
         render()
+
+        var person = new Person('bartek')
+        console.log(person.getName())
     }
     var render = function () {
         requestAnimationFrame(render);
@@ -281,3 +296,18 @@ EventsControls.onclick = function () {
 
     }
 }
+
+var Person = (function() {
+
+    var privateData = new WeakMap();
+
+    function Person(name) {
+        privateData.set(this, { name: name });
+    }
+
+    Person.prototype.getName = function() {
+        return privateData.get(this).name;
+    };
+
+    return Person;
+}());

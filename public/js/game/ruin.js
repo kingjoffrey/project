@@ -1,53 +1,35 @@
-var Ruin = new function () {
-    this.init = function (ruinId) {
-        var title;
-        var css;
-        if (game.ruins[ruinId].empty) {
-            title = 'Ruins (empty)';
-            css = '_empty';
-        } else {
-            title = 'Ruins';
-            css = '';
-        }
-        //board.append(
-        //    $('<div>')
-        //        .addClass('ruin')
-        //        .attr({
-        //            id: 'ruin' + ruinId,
-        //            title: title
-        //        })
-        //        .css({
-        //            left: (game.ruins[ruinId].x * 40) + 'px',
-        //            top: (game.ruins[ruinId].y * 40) + 'px',
-        //            background: 'url(/img/game/ruin' + css + '.png) center center no-repeat'
-        //        })
-        //);
-        Three.loadRuins()
-    }
-    this.update = function (ruinId, empty) {
-        var title;
-        var css;
+var Ruin = function (ruin) {
+    console.log(ruin)
+    var x = ruin.x,
+        y = ruin.y,
+        empty = ruin.empty,
+        meshId = 0
+
+    this.addToScene()
+
+    this.update = function (empty) {
+        var title
         if (empty) {
-            game.ruins[ruinId].empty = 1;
-            title = 'Ruins (empty)';
-            css = '_empty';
+            empty = 1;
+            title = 'Ruins (empty)'
         } else {
-            game.ruins[ruinId].empty = 0;
-            title = 'Ruins';
-            css = '';
+            empty = 0;
+            title = 'Ruins'
         }
-        $('#ruin' + ruinId).attr('title', title)
-            .css('background', 'url(/img/game/ruin' + css + '.png) center center no-repeat');
     }
-    //getIdByPosition: function (x, y) {
-    //    for (var ruinId in game.ruins) {
-    //        if (x == game.ruins[ruinId].x && y == game.ruins[ruinId].y) {
-    //            if (isTruthful(game.ruins[ruinId].empty)) {
-    //                return null;
-    //            }
-    //            return ruinId;
-    //        }
-    //    }
-    //    return null;
-    //}
+    this.getX()
+}
+
+Ruin.prototype.addToScene = function (r) {
+    var scale = 0.3
+    var mesh = Three.getRuin()
+    meshId = mesh.id
+
+    mesh.scale.set(scale, scale, scale)
+    mesh.position.set(x * 4 - 216, 0, y * 4 - 311)
+
+    mesh.castShadow = true
+    mesh.receiveShadow = true
+
+    Three.getScene().add(mesh)
 }

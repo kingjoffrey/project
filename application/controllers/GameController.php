@@ -16,7 +16,7 @@ class GameController extends Game_Controller_Game
         $this->view->headScript()->appendFile('/js/EventsControls.js');
 
         $this->view->headScript()->appendFile('/js/game/3d.js?v=' . Zend_Registry::get('config')->version);
-        $this->view->headScript()->appendFile('/js/game/init.js?v=' . Zend_Registry::get('config')->version);
+        $this->view->headScript()->appendFile('/js/game/game.js?v=' . Zend_Registry::get('config')->version);
         $this->view->headScript()->appendFile('/js/game/castles.js?v=' . Zend_Registry::get('config')->version);
         $this->view->headScript()->appendFile('/js/game/armies.js?v=' . Zend_Registry::get('config')->version);
         $this->view->headScript()->appendFile('/js/game/astar.js?v=' . Zend_Registry::get('config')->version);
@@ -24,6 +24,7 @@ class GameController extends Game_Controller_Game
         $this->view->headScript()->appendFile('/js/game/move.js?v=' . Zend_Registry::get('config')->version);
         $this->view->headScript()->appendFile('/js/game/towers.js?v=' . Zend_Registry::get('config')->version);
         $this->view->headScript()->appendFile('/js/game/ruins.js?v=' . Zend_Registry::get('config')->version);
+        $this->view->headScript()->appendFile('/js/game/ruin.js?v=' . Zend_Registry::get('config')->version);
         $this->view->headScript()->appendFile('/js/game/test.js?v=' . Zend_Registry::get('config')->version);
         $this->view->headScript()->appendFile('/js/game/chat.js?v=' . Zend_Registry::get('config')->version);
         $this->view->headScript()->appendFile('/js/game/chest.js?v=' . Zend_Registry::get('config')->version);
@@ -38,6 +39,7 @@ class GameController extends Game_Controller_Game
 
         $this->view->headScript()->appendFile('/models/flag.json?v=' . Zend_Registry::get('config')->version);
         $this->view->headScript()->appendFile('/models/flag_1.json?v=' . Zend_Registry::get('config')->version);
+        $this->view->headScript()->appendFile('/models/ruin.json?v=' . Zend_Registry::get('config')->version);
 
         $this->view->sound();
 
