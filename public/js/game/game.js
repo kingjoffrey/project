@@ -9,7 +9,7 @@ var Game = new function () {
             Three.init()
             Gui.init();
             //Turn.init()
-            //Players.init(game.players)
+            Players.init(game.players)
             //Me.init(game.me)
             Ruins.init(game.ruins)
 

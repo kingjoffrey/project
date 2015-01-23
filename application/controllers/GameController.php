@@ -19,6 +19,7 @@ class GameController extends Game_Controller_Game
         $this->view->headScript()->appendFile('/js/game/game.js?v=' . Zend_Registry::get('config')->version);
         $this->view->headScript()->appendFile('/js/game/castles.js?v=' . Zend_Registry::get('config')->version);
         $this->view->headScript()->appendFile('/js/game/armies.js?v=' . Zend_Registry::get('config')->version);
+        $this->view->headScript()->appendFile('/js/game/army.js?v=' . Zend_Registry::get('config')->version);
         $this->view->headScript()->appendFile('/js/game/astar.js?v=' . Zend_Registry::get('config')->version);
         $this->view->headScript()->appendFile('/js/game/gui.js?v=' . Zend_Registry::get('config')->version);
         $this->view->headScript()->appendFile('/js/game/move.js?v=' . Zend_Registry::get('config')->version);
@@ -34,6 +35,7 @@ class GameController extends Game_Controller_Game
         $this->view->headScript()->appendFile('/js/game/message.js?v=' . Zend_Registry::get('config')->version);
         $this->view->headScript()->appendFile('/js/game/timer.js?v=' . Zend_Registry::get('config')->version);
         $this->view->headScript()->appendFile('/js/game/players.js?v=' . Zend_Registry::get('config')->version);
+        $this->view->headScript()->appendFile('/js/game/player.js?v=' . Zend_Registry::get('config')->version);
         $this->view->headScript()->appendFile('/js/game/turn.js?v=' . Zend_Registry::get('config')->version);
         $this->view->headScript()->appendFile('/js/game/sound.js?v=' . Zend_Registry::get('config')->version);
 
