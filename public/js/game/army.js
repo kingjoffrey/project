@@ -1,5 +1,3 @@
-// *** ARMIES ***
-
 var Army = {
     isSelected: 0,
     selected: null,

@@ -1,5 +1,3 @@
-// *** PLAYERS ***
-
 var Players = new function () {
     var center = {x: 0, y: 0},
         stage = null,

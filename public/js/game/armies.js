@@ -16,4 +16,7 @@ var Armies = new function () {
     this.add = function (armyId, army) {
         armies[armyId] = new Army(army)
     }
+    this.get = function () {
+
+    }
 }
