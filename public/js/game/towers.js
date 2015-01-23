@@ -1,6 +1,22 @@
-// *** TOWERS ***
+var Towers = new function () {
+    var towers = {}
+    this.init = function (towers) {
+        for (var towerId in towers) {
+            this.add(towerId, towers[towerId])
+            //if (color == game.me.color) {
+            //    game.me.income += 5
+            //}
+        }
+    }
+    this.add = function (towerId, tower) {
+        towers[towerId] = new Tower(tower)
+    }
+    this.get = function () {
+        return towers[towerId]
+    }
+}
 
-var Tower = {
+var Towerrr = {
     createNeutral: function (towerId) {
         var title = 'Tower';
         board.append(

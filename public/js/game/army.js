@@ -1,4 +1,8 @@
-var Army = {
+var Army = function (army) {
+
+}
+
+var Armyyyy = {
     isSelected: 0,
     selected: null,
     deselected: null,
