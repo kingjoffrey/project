@@ -1,3 +1,3 @@
-var Tower = function(tower){
+var Tower = function (tower) {
 
 }

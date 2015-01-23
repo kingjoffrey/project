@@ -2,9 +2,7 @@ var Castle = function (castle) {
 
 }
 
-// *** CASTLES ***
-
-var Castle = {
+var Castleeee = {
     handle: function (stop, relocation) {
         var castleId = $('.production').attr('id');
 
