@@ -2,7 +2,8 @@ var Three = new function () {
     var ruinModel,
         towerModel,
         flagModel,
-        castleModel
+        castleModel,
+        armyModel
     var scene = new THREE.Scene()
 
     this.getScene = function () {
@@ -129,6 +130,38 @@ var Three = new function () {
         return mesh.id
     }
 
+    var initArmy = function () {
+        hero.scale = 4
+        armyModel = loader.parse(hero)
+        armyModel.material = new THREE.MeshLambertMaterial({color: 0xa0a0a0})
+        armyModel.material.side = THREE.DoubleSide
+        flag_1.scale = 5
+        flag_1Model = loader.parse(flag_1)
+    }
+    this.addArmy = function (x, y, color, armyId) {
+        var material = new THREE.MeshLambertMaterial({color: color})
+        material.side = THREE.DoubleSide
+
+        var mesh = new THREE.Mesh(armyModel.geometry, armyModel.material)
+        mesh.position.set(x * 4 - 216, 0, y * 4 - 311)
+        mesh.rotation.y = Math.PI / 2 + Math.PI / 4
+
+        mesh.name = 'army'
+        mesh.identification = armyId
+
+        mesh.castShadow = true
+        mesh.receiveShadow = true
+
+        var flagMesh = new THREE.Mesh(flag_1Model.geometry, material)
+        flagMesh.position.set(-2, 0, 0)
+        mesh.add(flagMesh)
+
+        scene.add(mesh)
+        EventsControls.attach(mesh);
+
+        return mesh.id
+    }
+
     var loadGround = function () {
         var ground = new THREE.Mesh(new THREE.PlaneBufferGeometry(436, 624), new THREE.MeshLambertMaterial({map: THREE.ImageUtils.loadTexture('/img/maps/1.png')}));
         //var ground = new THREE.Mesh(new THREE.PlaneBufferGeometry(436, 624), new THREE.MeshLambertMaterial({color: 0x00dd00}));
@@ -137,50 +170,9 @@ var Three = new function () {
         scene.add(ground)
         EventsControls.attach(ground)
     }
-    this.loadArmy = function (id, x, y, img) {
-        var mesh = new THREE.Mesh(new THREE.PlaneBufferGeometry(2.2, 2.8), new THREE.MeshBasicMaterial({map: THREE.ImageUtils.loadTexture(img)}))
-        mesh.rotation.y = -Math.PI / 4;
-        var scale = 1.5
-        mesh.scale.set(scale, scale, scale);
-        mesh.position.set(x * 4 - 216, 1.5, y * 4 - 311);
-        mesh.name = 'army'
-        mesh.identification = id
-        scene.add(mesh);
-        EventsControls.attach(mesh);
-    }
-    this.loadArmies = function () {
-        loader.load('/models/hero.json', function (geometry) {
-            var flagModel = loader.parse(flag_1)
-            var scale = 0.2
-            for (var color in game.players) {
-                var material = new THREE.MeshPhongMaterial({color: game.players[color].backgroundColor})
-                material.side = THREE.DoubleSide
 
-                for (var armyId in game.players[color].armies) {
-                    var mesh = new THREE.Mesh(geometry, material)
-                    var flag = new THREE.Mesh(flagModel.geometry, material)
-                    flag.position.set(-4, 0, 2)
-                    mesh.add(flag)
-
-                    game.players[color].armies[armyId].meshId = mesh.id
-
-                    mesh.scale.set(scale, scale, scale);
-                    mesh.position.set(game.players[color].armies[armyId].x * 4 - 216, 0, game.players[color].armies[armyId].y * 4 - 311)
-                    mesh.rotation.y = Math.PI / 2 + Math.PI / 4
-
-                    mesh.name = 'army'
-                    mesh.identification = armyId
-
-                    mesh.castShadow = true
-                    mesh.receiveShadow = true
-
-                    scene.add(mesh);
-                    EventsControls.attach(mesh);
-                }
-            }
-        })
-    }
-    var loadFields = function () {
+    var loadFields = function (fields) {
+        tree.scale = 3
         var mountainModel = loader.parse(mountain),
             hillModel = loader.parse(hill),
             treeModel = loader.parse(tree)
@@ -194,9 +186,9 @@ var Three = new function () {
         treeModel.material.side = THREE.DoubleSide
         treeModel.scale = 0.4
 
-        for (var y in game.fields) {
-            for (var x in game.fields[y]) {
-                switch (game.fields[y][x]) {
+        for (var y in fields) {
+            for (var x in fields[y]) {
+                switch (fields[y][x]) {
                     case 'm':
                         var mesh = new THREE.Mesh(mountainModel.geometry, mountainModel.material)
                         mesh.position.set(x * 4 - 216, 0, y * 4 - 311)
@@ -217,7 +209,7 @@ var Three = new function () {
 
                         scene.add(mesh)
                         break
-                    case 't':
+                    case 'f':
                         var mesh = new THREE.Mesh(treeModel.geometry, treeModel.material)
                         mesh.position.set(x * 4 - 216, 0, y * 4 - 311)
                         mesh.rotation.y = Math.PI * Math.random()
@@ -232,13 +224,14 @@ var Three = new function () {
         }
     }
 
-    this.init = function () {
+    this.init = function (fields) {
         initRuin()
         initTower()
         initCastle()
+        initArmy()
         $('#game').append(renderer.domElement)
         loadGround()
-        loadFields()
+        loadFields(fields)
         render()
     }
     var render = function () {

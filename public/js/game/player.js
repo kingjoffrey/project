@@ -5,7 +5,7 @@ var Player = function (player) {
         team = player.team,
         backgroundColor = player.backgroundColor
 
-    armies.init(player.castles, backgroundColor)
+    armies.init(player.armies, backgroundColor)
     castles.init(player.castles, backgroundColor)
     towers.init(player.towers, backgroundColor)
 

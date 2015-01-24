@@ -6,7 +6,7 @@ var Game = new function () {
             loading = false
             //fieldsCopy();
 
-            Three.init()
+            Three.init(game.fields)
             Gui.init();
             Turn.init(game)
             Players.init(game.players)

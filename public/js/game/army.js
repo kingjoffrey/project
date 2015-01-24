@@ -1,5 +1,8 @@
 var Army = function (army, bgColor) {
-
+    var x = army.x,
+        y = army.y,
+        armyId = army.armyId,
+        meshId = Three.addArmy(x, y, bgColor, armyId)
 }
 
 var Armyyyy = {
