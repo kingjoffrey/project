@@ -1,4 +1,4 @@
-var Army = function (army) {
+var Army = function (army, bgColor) {
 
 }
 

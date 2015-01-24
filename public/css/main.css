@@ -55,26 +55,6 @@ hr {
     margin-bottom: 10px;
 }
 
-#versionNumber {
-    padding-left: 5px;
-    padding-top: 15px;
-    color: #000;
-    float: left;
-    font-family: fantasy;
-}
-
-#menuTop {
-    height: 21px;
-    border-bottom: 1px solid #878967;
-}
-
-#menuTop p {
-    color: white;
-    float: left;
-    line-height: 20px;
-    padding-left: 10px;
-}
-
 .paginationControl a {
     color: yellow;
 }
@@ -284,16 +264,44 @@ td:first-of-type {
     border-left: 1px solid #000;
 }
 
+#versionNumber {
+    padding-left: 5px;
+    padding-top: 15px;
+    color: grey;
+    float: left;
+    text-shadow: none;
+    font-style: italic;
+}
+
+#menuTop {
+    height: 21px;
+    border-bottom: 1px solid #f00;
+    /*text-shadow: 1px 1px 0 #000;*/
+    text-shadow: none;
+    color: #f00;
+    font-weight: bold;
+}
+
+#menuTop p {
+    color: white;
+    float: left;
+    line-height: 20px;
+    padding-left: 10px;
+}
+
 #logout {
     text-decoration: none;
     text-transform: none;
     display: inline-block;
     float: right;
-    color: gray;
+    color: blue;
+    text-shadow: none;
+    font-weight: normal;
 }
 
 #logout:hover {
-    color: yellow;
+    /*text-shadow: 0 0 1px #000;*/
+    color: gray;
 }
 
 .errors {

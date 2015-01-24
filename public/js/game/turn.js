@@ -1,10 +1,8 @@
-// *** TURN ***
-
 var Turn = {
     number: null,
     color: null,
     beginDate: null,
-    init: function () {
+    init: function (game) {
         var j = 0,
             history = {}
 

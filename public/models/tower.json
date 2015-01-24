@@ -1,4 +1,4 @@
-	{
+	var tower = {
 
 		"metadata": {
 			"formatVersion" : 3.1,

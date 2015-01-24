@@ -1,5 +1,7 @@
 var Three = new function () {
-    var ruinModel
+    var ruinModel,
+        towerModel,
+        flagModel
     var scene = new THREE.Scene()
 
     this.getScene = function () {
@@ -55,9 +57,44 @@ var Three = new function () {
         ruinModel.material = new THREE.MeshPhongMaterial({color: '#8080a0'})
         ruinModel.material.side = THREE.DoubleSide
     }
+    this.addRuin = function (x, y) {
+        var mesh = new THREE.Mesh(ruinModel.geometry, ruinModel.material)
+        var scale = 0.3
 
-    this.getRuin = function () {
-        return new THREE.Mesh(ruinModel.geometry, ruinModel.material)
+        mesh.scale.set(scale, scale, scale)
+        mesh.position.set(x * 4 - 216, 0, y * 4 - 311)
+
+        mesh.castShadow = true
+        mesh.receiveShadow = true
+
+        scene.add(mesh)
+
+        return mesh.id
+    }
+
+    var initTower = function () {
+        towerModel = loader.parse(tower)
+        towerModel.material = new THREE.MeshLambertMaterial({color: 0xa0a0a0})
+        towerModel.material.side = THREE.DoubleSide
+        flagModel = loader.parse(flag)
+    }
+    this.addTower = function (x, y, color) {
+        var material = new THREE.MeshLambertMaterial({color: color})
+        material.side = THREE.DoubleSide
+
+        var mesh = new THREE.Mesh(towerModel.geometry, towerModel.material)
+        mesh.position.set(x * 4 - 216, 0, y * 4 - 311)
+
+        mesh.castShadow = true
+        mesh.receiveShadow = true
+
+        scene.add(mesh)
+
+        var flagMesh = new THREE.Mesh(flagModel.geometry, material)
+        flagMesh.position.set(x * 4 - 216, 3.5, y * 4 - 311)
+        scene.add(flagMesh)
+
+        return mesh.id
     }
 
     var loadGround = function () {
@@ -261,6 +298,7 @@ var Three = new function () {
 
     this.init = function () {
         initRuin()
+        initTower()
         $('#game').append(renderer.domElement)
         loadGround()
         loadFields()

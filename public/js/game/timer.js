@@ -16,7 +16,7 @@ var timer = {
     minute2: 0,
     second2: 0,
     gameBegin: 0,
-    start: function () {
+    start: function (game) {
         this.gameBegin = Date.parse(game.begin.substr(0, 19)).getTime()
         $('#turnTimeLimit2').html(turnTimeLimit[game.turnTimeLimit])
         $('#timeLimit2').html(timeLimits[game.timeLimit])

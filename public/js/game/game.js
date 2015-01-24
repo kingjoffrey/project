@@ -8,8 +8,9 @@ var Game = new function () {
 
             Three.init()
             Gui.init();
-            //Turn.init()
+            Turn.init(game)
             Players.init(game.players)
+            timer.start(game)
             //Me.init(game.me)
             Ruins.init(game.ruins)
 

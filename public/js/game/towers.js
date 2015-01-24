@@ -1,15 +1,15 @@
 var Towers = new function () {
     var towers = {}
-    this.init = function (towers) {
+    this.init = function (towers, bgColor) {
         for (var towerId in towers) {
-            this.add(towerId, towers[towerId])
+            this.add(towerId, towers[towerId], bgColor)
             //if (color == game.me.color) {
             //    game.me.income += 5
             //}
         }
     }
-    this.add = function (towerId, tower) {
-        towers[towerId] = new Tower(tower)
+    this.add = function (towerId, tower, bgColor) {
+        towers[towerId] = new Tower(tower, bgColor)
     }
     this.get = function () {
         return towers[towerId]
