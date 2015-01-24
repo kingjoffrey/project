@@ -18,6 +18,7 @@ class Zend_View_Helper_Models extends Zend_View_Helper_Abstract
 
                 if ($file_parts['extension'] == 'json') {
                     $this->view->placeholder('models')->append('');
+                    $this->view->headScript()->appendFile('/models/'.$file_parts['filename'].'.json?v=' . Zend_Registry::get('config')->version);
                 }
 
             }

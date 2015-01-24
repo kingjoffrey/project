@@ -1,5 +1,8 @@
-var Castle = function (castle) {
-
+var Castle = function (castle, bgColor) {
+    var x = castle.x,
+        y = castle.y,
+        castleId = castle.castleId,
+        meshId = Three.addCastle(x, y, bgColor, castleId)
 }
 
 var Castleeee = {

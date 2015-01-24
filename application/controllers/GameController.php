@@ -41,12 +41,17 @@ class GameController extends Game_Controller_Game
         $this->view->headScript()->appendFile('/js/game/turn.js?v=' . Zend_Registry::get('config')->version);
         $this->view->headScript()->appendFile('/js/game/sound.js?v=' . Zend_Registry::get('config')->version);
 
-        $this->view->headScript()->appendFile('/models/flag.json?v=' . Zend_Registry::get('config')->version);
-        $this->view->headScript()->appendFile('/models/flag_1.json?v=' . Zend_Registry::get('config')->version);
-        $this->view->headScript()->appendFile('/models/ruin.json?v=' . Zend_Registry::get('config')->version);
-        $this->view->headScript()->appendFile('/models/tower.json?v=' . Zend_Registry::get('config')->version);
+//        $this->view->headScript()->appendFile('/models/flag.json?v=' . Zend_Registry::get('config')->version);
+//        $this->view->headScript()->appendFile('/models/flag_1.json?v=' . Zend_Registry::get('config')->version);
+//        $this->view->headScript()->appendFile('/models/ruin.json?v=' . Zend_Registry::get('config')->version);
+//        $this->view->headScript()->appendFile('/models/tower.json?v=' . Zend_Registry::get('config')->version);
+//        $this->view->headScript()->appendFile('/models/castle.json?v=' . Zend_Registry::get('config')->version);
+//        $this->view->headScript()->appendFile('/models/mountain.json?v=' . Zend_Registry::get('config')->version);
+//        $this->view->headScript()->appendFile('/models/hill.json?v=' . Zend_Registry::get('config')->version);
+//        $this->view->headScript()->appendFile('/models/tree.json?v=' . Zend_Registry::get('config')->version);
 
         $this->view->sound();
+        $this->view->models();
 
         $this->view->gameId = $this->_gameId;
         $this->view->playerId = $this->_auth->getIdentity()->playerId;

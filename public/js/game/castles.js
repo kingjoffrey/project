@@ -5,7 +5,7 @@ var Castles = new function () {
             this.add(castleId, castles[castleId], bgColor)
         }
     }
-    this.add = function (castleId, castle) {
+    this.add = function (castleId, castle, bgColor) {
         castles[castleId] = new Castle(castle, bgColor)
     }
     this.get = function (castleId) {

@@ -1,7 +1,8 @@
 var Three = new function () {
     var ruinModel,
         towerModel,
-        flagModel
+        flagModel,
+        castleModel
     var scene = new THREE.Scene()
 
     this.getScene = function () {
@@ -97,6 +98,37 @@ var Three = new function () {
         return mesh.id
     }
 
+    var initCastle = function () {
+        castleModel = loader.parse(castle)
+        castleModel.material = new THREE.MeshLambertMaterial({color: 0xa0a0a0})
+        castleModel.material.side = THREE.DoubleSide
+        flagModel = loader.parse(flag)
+    }
+    this.addCastle = function (x, y, color, castleId) {
+        var material = new THREE.MeshLambertMaterial({color: color})
+        material.side = THREE.DoubleSide
+
+        var scale = 0.5
+        var mesh = new THREE.Mesh(castleModel.geometry, castleModel.material)
+        mesh.scale.set(scale, scale, scale);
+        mesh.position.set(x * 4 - 214, 0, y * 4 - 309)
+
+        mesh.name = 'castle'
+        mesh.identification = castleId
+
+        mesh.castShadow = true
+        mesh.receiveShadow = true
+
+        scene.add(mesh)
+        EventsControls.attach(mesh);
+
+        var flagMesh = new THREE.Mesh(flagModel.geometry, material)
+        flagMesh.position.set(x * 4 - 210.8, 1.7, y * 4 - 312.4)
+        scene.add(flagMesh)
+
+        return mesh.id
+    }
+
     var loadGround = function () {
         var ground = new THREE.Mesh(new THREE.PlaneBufferGeometry(436, 624), new THREE.MeshLambertMaterial({map: THREE.ImageUtils.loadTexture('/img/maps/1.png')}));
         //var ground = new THREE.Mesh(new THREE.PlaneBufferGeometry(436, 624), new THREE.MeshLambertMaterial({color: 0x00dd00}));
@@ -149,53 +181,24 @@ var Three = new function () {
         })
     }
     var loadFields = function () {
-        loader.load('/models/mountain.json', function (geometry) {
-            var material = new THREE.MeshLambertMaterial({color: '#808080'})
-            material.side = THREE.DoubleSide
-            for (var y in game.fields) {
-                for (var x in game.fields[y]) {
-                    if (game.fields[y][x] == 'm') {
-                        var mesh = new THREE.Mesh(geometry, material)
-                        mesh.position.set(x * 4 - 216, 0, y * 4 - 311);
-                        mesh.rotation.y = Math.PI * Math.random()
+        var mountainModel = loader.parse(mountain),
+            hillModel = loader.parse(hill),
+            treeModel = loader.parse(tree)
 
-                        mesh.castShadow = true;
-                        mesh.receiveShadow = true;
+        mountainModel.material = new THREE.MeshLambertMaterial({color: '#808080'})
+        mountainModel.material.side = THREE.DoubleSide
+        hillModel.material = new THREE.MeshLambertMaterial({color: '#00a000'})
+        hillModel.material.side = THREE.DoubleSide
+        hillModel.scale = 0.7
+        treeModel.material = new THREE.MeshLambertMaterial({color: '#008000'})
+        treeModel.material.side = THREE.DoubleSide
+        treeModel.scale = 0.4
 
-                        scene.add(mesh);
-                    }
-                }
-            }
-        })
-        loader.load('/models/hill.json', function (geometry) {
-            var scale = 0.7
-            var material = new THREE.MeshLambertMaterial({color: '#00a000'})
-            material.side = THREE.DoubleSide
-            for (var y in game.fields) {
-                for (var x in game.fields[y]) {
-                    if (game.fields[y][x] == 'h') {
-                        var mesh = new THREE.Mesh(geometry, material)
-                        mesh.scale.set(scale, scale, scale)
-                        mesh.position.set(x * 4 - 216, 0, y * 4 - 311)
-                        mesh.rotation.y = Math.PI * Math.random()
-
-                        //mesh.castShadow = true
-                        mesh.receiveShadow = true
-
-                        scene.add(mesh)
-                    }
-                }
-            }
-        })
-        loader.load('/models/tree.json', function (geometry) {
-            var scale = 0.4
-            var material = new THREE.MeshLambertMaterial({color: '#008000'})
-            material.side = THREE.DoubleSide
-            for (var y in game.fields) {
-                for (var x in game.fields[y]) {
-                    if (game.fields[y][x] == 'f') {
-                        var mesh = new THREE.Mesh(geometry, material)
-                        mesh.scale.set(scale, scale, scale)
+        for (var y in game.fields) {
+            for (var x in game.fields[y]) {
+                switch (game.fields[y][x]) {
+                    case 'm':
+                        var mesh = new THREE.Mesh(mountainModel.geometry, mountainModel.material)
                         mesh.position.set(x * 4 - 216, 0, y * 4 - 311)
                         mesh.rotation.y = Math.PI * Math.random()
 
@@ -203,115 +206,49 @@ var Three = new function () {
                         mesh.receiveShadow = true
 
                         scene.add(mesh)
-                    }
+                        break
+                    case 'h':
+                        var mesh = new THREE.Mesh(hillModel.geometry, hillModel.material)
+                        mesh.position.set(x * 4 - 216, 0, y * 4 - 311)
+                        mesh.rotation.y = Math.PI * Math.random()
+
+                        //mesh.castShadow = true
+                        mesh.receiveShadow = true
+
+                        scene.add(mesh)
+                        break
+                    case 't':
+                        var mesh = new THREE.Mesh(treeModel.geometry, treeModel.material)
+                        mesh.position.set(x * 4 - 216, 0, y * 4 - 311)
+                        mesh.rotation.y = Math.PI * Math.random()
+
+                        mesh.castShadow = true
+                        mesh.receiveShadow = true
+
+                        scene.add(mesh)
+                        break
                 }
             }
-        })
-
-        //var material = new THREE.MeshLambertMaterial({color: '#008000'})
-        //for (var y in game.fields) {
-        //    for (var x in game.fields[y]) {
-        //        if (game.fields[y][x] == 'g') {
-        //            var mesh = new THREE.Mesh(new THREE.PlaneBufferGeometry(4, 4), material)
-        //            mesh.position.set(x * 4 - 216, 0, y * 4 - 311)
-        //            mesh.rotation.x = -Math.PI / 2
-        //
-        //            mesh.receiveShadow = true
-        //
-        //            scene.add(mesh)
-        //        }
-        //    }
-        //}
-    }
-    this.loadCastles = function () {
-        loader.load('/models/castle.json', function (geometry) {
-            var scale = 0.5
-            var flagModel = loader.parse(flag)
-            var castleMaterial = new THREE.MeshLambertMaterial({color: 0xa0a0a0})
-            castleMaterial.side = THREE.DoubleSide
-
-            for (var color in game.players) {
-                var material = new THREE.MeshPhongMaterial({color: game.players[color].backgroundColor})
-                material.side = THREE.DoubleSide
-                for (var castleId in game.players[color].castles) {
-                    var mesh = new THREE.Mesh(geometry, castleMaterial);
-                    mesh.scale.set(scale, scale, scale);
-                    mesh.position.set(game.players[color].castles[castleId].x * 4 - 214, -0.7, game.players[color].castles[castleId].y * 4 - 309);
-
-                    mesh.name = 'castle'
-                    mesh.identification = castleId
-
-                    mesh.castShadow = true
-                    mesh.receiveShadow = true
-
-                    scene.add(mesh);
-                    EventsControls.attach(mesh);
-
-                    var flagMesh = new THREE.Mesh(flagModel.geometry, material)
-                    flagMesh.position.set(game.players[color].castles[castleId].x * 4 - 210.8, 1.7, game.players[color].castles[castleId].y * 4 - 312.4)
-                    scene.add(flagMesh)
-                }
-            }
-        })
-    }
-    this.loadTowers = function () {
-        loader.load('/models/tower.json', function (geometry) {
-            var flagModel = loader.parse(flag)
-            var towerMaterial = new THREE.MeshLambertMaterial({color: 0xa0a0a0})
-            towerMaterial.side = THREE.DoubleSide
-            for (var color in game.players) {
-                var material = new THREE.MeshLambertMaterial({color: game.players[color].backgroundColor})
-                material.side = THREE.DoubleSide
-                for (var towerId in game.players[color].towers) {
-                    var mesh = new THREE.Mesh(geometry, towerMaterial)
-                    mesh.position.set(game.players[color].towers[towerId].x * 4 - 216, -0.7, game.players[color].towers[towerId].y * 4 - 311)
-
-                    mesh.castShadow = true
-                    mesh.receiveShadow = true
-
-                    scene.add(mesh)
-
-                    var flagMesh = new THREE.Mesh(flagModel.geometry, material)
-                    flagMesh.position.set(game.players[color].towers[towerId].x * 4 - 216, 3, game.players[color].towers[towerId].y * 4 - 311)
-                    scene.add(flagMesh)
-                }
-            }
-        })
-    }
-    this.loadRuins = function () {
-        loader.load('/models/ruin.json', function (geometry) {
-            var scale = 0.3
-            var material = new THREE.MeshPhongMaterial({color: '#8080a0'})
-            material.side = THREE.DoubleSide
-            for (var ruinId in game.ruins) {
-                var mesh = new THREE.Mesh(geometry, material)
-                mesh.scale.set(scale, scale, scale)
-                mesh.position.set(game.ruins[ruinId].x * 4 - 216, 0, game.ruins[ruinId].y * 4 - 311)
-
-                mesh.castShadow = true;
-                mesh.receiveShadow = true;
-
-                scene.add(mesh);
-            }
-        })
+        }
     }
 
     this.init = function () {
         initRuin()
         initTower()
+        initCastle()
         $('#game').append(renderer.domElement)
         loadGround()
         loadFields()
         render()
     }
     var render = function () {
-        requestAnimationFrame(render);
-        renderer.render(scene, camera);
-    };
+        requestAnimationFrame(render)
+        renderer.render(scene, camera)
+    }
 }
 
 var EventsControls = new EventsControls(Three.getCamera(), Three.getRenderer().domElement);
-EventsControls.displacing = false;
+EventsControls.displacing = false
 EventsControls.onclick = function () {
     switch (this.focused.name) {
         case 'castle':
