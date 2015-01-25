@@ -17,6 +17,21 @@ class Cli_Model_Field
         $this->_type = $type;
     }
 
+    public function toArray()
+    {
+        return array(
+            'type' => $this->_type,
+            'temporaryType' => $this->_temporaryType,
+            'armies' => $this->_armies,
+            'castleId' => $this->_castleId,
+            'towerId' => $this->_towerId,
+            'ruinId' => $this->_ruinId,
+            'castleColor' => $this->_castleColor,
+            'towerColor' => $this->_towerColor,
+            'empty' => $this->_empty,
+        );
+    }
+
     public function addArmy($armyId, $color)
     {
         $this->_armies[$armyId] = $color;

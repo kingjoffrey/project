@@ -165,7 +165,7 @@ class Cli_Model_Fields
         foreach ($this->_fields as $y => $row) {
             $fields[$y] = array();
             foreach ($row as $x => $type) {
-                $fields[$y][$x] = $this->getField($x, $y)->getType();
+                $fields[$y][$x] = $this->getField($x, $y)->toArray();
             }
         }
         return $fields;

@@ -5,13 +5,13 @@ var Game = new function () {
         if (loading) {
             loading = false
 
+            Me.init(game.me)
             Three.init()
             Fields.init(game.fields)
             Gui.init()
             Turn.init(game)
             Players.init(game.players)
             timer.start(game)
-            //Me.init(game.me)
             Ruins.init(game.ruins)
 
             renderChatHistory();

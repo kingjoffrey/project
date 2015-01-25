@@ -1,7 +1,8 @@
 var Me = new function () {
     var gold = 0,
         costs = 0,
-        income = 0
+        income = 0,
+        color
 
     this.init = function (me) {
         gold = me.gold
@@ -10,6 +11,10 @@ var Me = new function () {
         costsUpdate()
         income = me.income
         incomeUpdate()
+        color = me.color
+    }
+    this.getColor = function () {
+        return color
     }
 
     var goldUpdate = function () {

@@ -172,32 +172,29 @@ var Message = {
             var id = this.simple(translations.yourTurn, translations.thisIsYourTurnNow)
         }
     },
-    castle: function (castleId) {
-        var castle = game.players[game.me.color].castles[castleId]
-        if(notSet(castle)){
-            return
-        }
+    castle: function (castle) {
         var time = '',
             attr,
             capital = '',
             table = $('<table>'),
             j = 0,
-            td = new Array()
+            td = new Array(),
+            production =castle.getProduction()
 
-        if (castle.capital) {
+        if (castle.getCapital()) {
             capital = ' - ' + translations.capitalCity;
         }
 
-        for (unitId in castle.production) {
+        for (var unitId in production) {
             var travelBy = '';
-            if (unitId == castle.currentProductionId) {
+            if (unitId == castle.getCurrentProductionId()) {
                 attr = {
                     type: 'radio',
                     name: 'production',
                     value: unitId,
                     checked: 'checked'
                 }
-                time = castle.currentProductionTurn + '/';
+                time = castle.getCurrentProductionTurn() + '/';
             } else {
                 attr = {
                     type: 'radio',
@@ -240,7 +237,7 @@ var Message = {
                 .append(
                 $('<div>')
                     .addClass('attributes')
-                    .append($('<p>').html(translations.time + ':&nbsp;' + time + castle.production[unitId].time + ' ' + translations.turn))
+                    .append($('<p>').html(translations.time + ':&nbsp;' + time + production[unitId].time + ' ' + translations.turn))
                     .append($('<p>').html(translations.cost + ':&nbsp;' + game.units[unitId].cost + ' ' + translations.gold))
                     .append($('<p>').html(translations.moves + '&nbsp;' + game.units[unitId].numberOfMoves + '&nbsp;/&nbsp;' + translations.attack + '&nbsp;' + game.units[unitId].attackPoints + '&nbsp;/&nbsp;' + translations.defence + '&nbsp;' + game.units[unitId].defensePoints))
             );
@@ -263,7 +260,7 @@ var Message = {
 
         var stopButtonOff = ' buttonOff'
         var relocationButtonOff = ' buttonOff'
-        if (castle.currentProductionId) {
+        if (castle.getCurrentProductionId()) {
             if (Castle.countMyCastles() > 1) {
                 var relocationButtonOff = ''
             }
@@ -304,7 +301,7 @@ var Message = {
 
         var center = function (i) {
             return function () {
-                zoom.lens.setcenter(castles[i].x * 40, castles[i].y * 40)
+                Zoom.lens.setcenter(castles[i].x * 40, castles[i].y * 40)
             }
         }
 
@@ -321,7 +318,7 @@ var Message = {
                     })
             )
                 .addClass('iconButton buttonColors')
-                .click(center(castleId))
+                .click(center(castle.getId()))
                 .attr('id', 'center')
         )
             .append($('<h3>').append(castle.name).append(capital).addClass('name'))

@@ -1,5 +1,5 @@
 var Fields = new function () {
-    var fields
+    var fields = {}
     this.init = function (fields) {
         var mountainModel = Three.getMountainModel(),
             hillModel = Three.getHillModel(),
@@ -8,7 +8,7 @@ var Fields = new function () {
 
         for (var y in fields) {
             for (var x in fields[y]) {
-                switch (fields[y][x]) {
+                switch (fields[y][x].type) {
                     case 'm':
                         var mesh = new THREE.Mesh(mountainModel.geometry, mountainModel.material)
                         mesh.position.set(x * 4 - 216, 0, y * 4 - 311)
@@ -40,10 +40,14 @@ var Fields = new function () {
                         scene.add(mesh)
                         break
                 }
+                this.add(x, y, fields[y][x])
             }
         }
     }
     this.add = function (x, y, field) {
+        if (typeof fields[y] == 'undefined') {
+            fields[y] = {}
+        }
         fields[y][x] = new Field(field)
     }
     this.get = function () {

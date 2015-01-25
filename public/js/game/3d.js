@@ -223,11 +223,17 @@ EventsControls.displacing = false
 EventsControls.onclick = function () {
     switch (this.focused.name) {
         case 'castle':
-            Message.castle(this.focused.identification)
+            var castle = Players.get(Me.getColor()).getCastles().get(this.focused.identification)
+            console.log(this.focused.identification)
+            console.log(castle)
+            if(notSet(castle)){
+                return
+            }
+            Message.castle(castle)
             break
         case 'army':
             //console.log(Three.getScene().getObjectById(this.focused.id).position)
-            Army.select(game.players[game.me.color].armies[this.focused.identification])
+            Players.get(Me.getColor()).getArmies().get(this.focused.identification).select()
             break
         default:
             if (Army.selected) {

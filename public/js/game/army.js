@@ -1,8 +1,25 @@
-var Army = function (army, bgColor) {
+var Army = function (army, bgColor, miniMapColor, textColor) {
     var x = army.x,
         y = army.y,
         armyId = army.armyId,
-        meshId = Three.addArmy(x, y, bgColor, armyId)
+        meshId = Three.addArmy(x, y, bgColor, armyId),
+        selected = false
+
+    map.append(
+        $('<div>')
+            .css({
+                'left': x * 2 + 'px',
+                'top': y * 2 + 'px',
+                'background': miniMapColor,
+                'border-color': textColor,
+                'z-index': 10
+            })
+            .attr('id', armyId)
+            .addClass('a')
+    )
+    this.select = function () {
+        selected = true
+    }
 }
 
 var Armyyyy = {

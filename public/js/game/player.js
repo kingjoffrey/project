@@ -3,10 +3,14 @@ var Player = function (player) {
         castles = Castles,
         towers = Towers,
         team = player.team,
-        backgroundColor = player.backgroundColor
+        backgroundColor = player.backgroundColor,
+        miniMapColor = player.miniMapColor,
+        textColor = player.textColor
 
-    armies.init(player.armies, backgroundColor)
-    castles.init(player.castles, backgroundColor)
+//console.log(player)
+
+    armies.init(player.armies, backgroundColor, miniMapColor, textColor)
+    castles.init(player.castles, backgroundColor, miniMapColor, textColor)
     towers.init(player.towers, backgroundColor)
 
     this.getTeam = function () {
@@ -14,5 +18,11 @@ var Player = function (player) {
     }
     this.getBackgroundColor = function () {
         return backgroundColor
+    }
+    this.getArmies = function () {
+        return armies
+    }
+    this.getCastles = function () {
+        return castles
     }
 }
