@@ -4,10 +4,10 @@ var Game = new function () {
     this.init = function (game) {
         if (loading) {
             loading = false
-            //fieldsCopy();
 
-            Three.init(game.fields)
-            Gui.init();
+            Three.init()
+            Fields.init(game.fields)
+            Gui.init()
             Turn.init(game)
             Players.init(game.players)
             timer.start(game)

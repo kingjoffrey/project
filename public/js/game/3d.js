@@ -3,7 +3,10 @@ var Three = new function () {
         towerModel,
         flagModel,
         castleModel,
-        armyModel
+        armyModel,
+        mountainModel,
+        hillModel,
+        treeModel
     var scene = new THREE.Scene()
 
     this.getScene = function () {
@@ -171,57 +174,32 @@ var Three = new function () {
         EventsControls.attach(ground)
     }
 
-    var loadFields = function (fields) {
+    var initFields = function () {
         tree.scale = 3
-        var mountainModel = loader.parse(mountain),
-            hillModel = loader.parse(hill),
-            treeModel = loader.parse(tree)
+        mountainModel = loader.parse(mountain)
+        hillModel = loader.parse(hill)
+        treeModel = loader.parse(tree)
 
         mountainModel.material = new THREE.MeshLambertMaterial({color: '#808080'})
         mountainModel.material.side = THREE.DoubleSide
+
         hillModel.material = new THREE.MeshLambertMaterial({color: '#00a000'})
         hillModel.material.side = THREE.DoubleSide
-        hillModel.scale = 0.7
+        //hillModel.scale = 0.7
+
         treeModel.material = new THREE.MeshLambertMaterial({color: '#008000'})
         treeModel.material.side = THREE.DoubleSide
-        treeModel.scale = 0.4
+        //treeModel.scale = 0.4
+    }
 
-        for (var y in fields) {
-            for (var x in fields[y]) {
-                switch (fields[y][x]) {
-                    case 'm':
-                        var mesh = new THREE.Mesh(mountainModel.geometry, mountainModel.material)
-                        mesh.position.set(x * 4 - 216, 0, y * 4 - 311)
-                        mesh.rotation.y = Math.PI * Math.random()
-
-                        mesh.castShadow = true
-                        mesh.receiveShadow = true
-
-                        scene.add(mesh)
-                        break
-                    case 'h':
-                        var mesh = new THREE.Mesh(hillModel.geometry, hillModel.material)
-                        mesh.position.set(x * 4 - 216, 0, y * 4 - 311)
-                        mesh.rotation.y = Math.PI * Math.random()
-
-                        //mesh.castShadow = true
-                        mesh.receiveShadow = true
-
-                        scene.add(mesh)
-                        break
-                    case 'f':
-                        var mesh = new THREE.Mesh(treeModel.geometry, treeModel.material)
-                        mesh.position.set(x * 4 - 216, 0, y * 4 - 311)
-                        mesh.rotation.y = Math.PI * Math.random()
-
-                        mesh.castShadow = true
-                        mesh.receiveShadow = true
-
-                        scene.add(mesh)
-                        break
-                }
-            }
-        }
+    this.getMountainModel = function () {
+        return mountainModel
+    }
+    this.getHillModel = function () {
+        return hillModel
+    }
+    this.getTreeModel = function () {
+        return treeModel
     }
 
     this.init = function (fields) {
@@ -229,9 +207,9 @@ var Three = new function () {
         initTower()
         initCastle()
         initArmy()
+        initFields()
         $('#game').append(renderer.domElement)
         loadGround()
-        loadFields(fields)
         render()
     }
     var render = function () {
