@@ -1,6 +1,6 @@
 var Player = function (player) {
     var armies = Armies,
-        castles = Castles,
+        castles = new Castles(),
         towers = Towers,
         team = player.team,
         backgroundColor = player.backgroundColor,

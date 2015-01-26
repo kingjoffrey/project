@@ -2,7 +2,8 @@ var Me = new function () {
     var gold = 0,
         costs = 0,
         income = 0,
-        color
+        color,
+        selectedArmyId = null
 
     this.init = function (me) {
         gold = me.gold
@@ -56,5 +57,17 @@ var Me = new function () {
     }
     this.countCastles = function () {
         return Players.get(color).getCastles().count()
+    }
+    this.getCastle = function (castleId) {
+        return Players.get(color).getCastles().get(castleId)
+    }
+    this.getArmy = function (armyId) {
+        return Players.get(color).getArmies().get(armyId)
+    }
+    this.getSelectedArmyId = function () {
+        return selectedArmyId
+    }
+    this.setSelectedArmyId = function (armyId) {
+        selectedArmyId = armyId
     }
 }

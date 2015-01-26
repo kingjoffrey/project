@@ -221,27 +221,20 @@ var Three = new function () {
 var EventsControls = new EventsControls(Three.getCamera(), Three.getRenderer().domElement);
 EventsControls.displacing = false
 EventsControls.onclick = function () {
+    console.log(this)
     switch (this.focused.name) {
         case 'castle':
-            var castle = Players.get(Me.getColor()).getCastles().get(this.focused.identification)
-            console.log(this.focused.identification)
-            console.log(castle)
-            if(notSet(castle)){
-                return
+            var castle = Me.getCastle(this.focused.identification)
+            if (isSet(castle)) {
+                Message.castle(castle)
             }
-            Message.castle(castle)
             break
         case 'army':
-            //console.log(Three.getScene().getObjectById(this.focused.id).position)
-            Players.get(Me.getColor()).getArmies().get(this.focused.identification).select()
+            Me.setSelectedArmyId(this.focused.identification)
             break
         default:
-            if (Army.selected) {
+            if (Me.getSelectedArmyId()) {
                 Websocket.move(parseInt((this.intersects[0].point.x + 218) / 4), parseInt((this.intersects[0].point.z + 312) / 4))
             }
-        //console.log(parseInt((this.intersects[0].point.x + 218) / 4))
-        //console.log(parseInt((this.intersects[0].point.z + 312) / 4))
-        //console.log(this)
-
     }
 }

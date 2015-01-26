@@ -1,4 +1,4 @@
-var Castles = new function () {
+var Castles = function () {
     var castles = {}
     this.init = function (castles, bgColor, miniMapColor, textColor) {
         for (var castleId in castles) {
