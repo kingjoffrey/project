@@ -221,20 +221,31 @@ var Three = new function () {
 var EventsControls = new EventsControls(Three.getCamera(), Three.getRenderer().domElement);
 EventsControls.displacing = false
 EventsControls.onclick = function () {
-    console.log(this)
-    switch (this.focused.name) {
-        case 'castle':
-            var castle = Me.getCastle(this.focused.identification)
-            if (isSet(castle)) {
-                Message.castle(castle)
+    //console.log(this.button)
+    switch (this.button) {
+        case 0:
+            switch (this.focused.name) {
+                case 'castle':
+                    var castle = Me.getCastle(this.focused.identification)
+                    if (isSet(castle)) {
+                        Message.castle(castle)
+                    }
+                    break
+                case 'army':
+                    Me.setSelectedArmyId(this.focused.identification)
+                    break
+                default:
+                    if (Me.getSelectedArmyId()) {
+                        Websocket.move(parseInt((this.intersects[0].point.x + 218) / 4), parseInt((this.intersects[0].point.z + 312) / 4))
+                    }
             }
             break
-        case 'army':
-            Me.setSelectedArmyId(this.focused.identification)
+
+        case 1:
             break
-        default:
-            if (Me.getSelectedArmyId()) {
-                Websocket.move(parseInt((this.intersects[0].point.x + 218) / 4), parseInt((this.intersects[0].point.z + 312) / 4))
-            }
+
+        case 2:
+            Me.setSelectedArmyId(null)
+            break
     }
 }
