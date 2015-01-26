@@ -11,4 +11,9 @@ var Armies = function () {
     this.get = function (armyId) {
         return armies[armyId]
     }
+    this.attachEventsControls = function () {
+        for (var armyId in armies) {
+            EventsControls.attach(Three.getScene().getObjectById(this.get(armyId).getMeshId()))
+        }
+    }
 }

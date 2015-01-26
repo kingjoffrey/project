@@ -3,7 +3,8 @@ var Me = new function () {
         costs = 0,
         income = 0,
         color,
-        selectedArmyId = null
+        selectedArmyId = null,
+        detached = new Array()
 
     this.init = function (me) {
         gold = me.gold
@@ -13,6 +14,8 @@ var Me = new function () {
         income = me.income
         incomeUpdate()
         color = me.color
+
+        this.attachEventsControls()
     }
     this.getColor = function () {
         return color
@@ -69,5 +72,26 @@ var Me = new function () {
     }
     this.setSelectedArmyId = function (armyId) {
         selectedArmyId = armyId
+        if (selectedArmyId) {
+            for (var i in EventsControls.objects) {
+                if (i == 0) {
+                    continue
+                }
+                //if (EventsControls.objects[i].id == Players.get(color).getArmies().get(armyId).getMeshId()) {
+                //    continue
+                //}
+                detached.push(EventsControls.objects[i])
+                EventsControls.detach(EventsControls.objects[i])
+            }
+        } else {
+            for (var i in detached) {
+                EventsControls.attach(detached[i])
+            }
+        }
+
+    }
+    this.attachEventsControls = function () {
+        Players.get(color).getArmies().attachEventsControls()
+        Players.get(color).getCastles().attachEventsControls()
     }
 }

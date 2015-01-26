@@ -18,4 +18,9 @@ var Castles = function () {
         }
         return i
     }
+    this.attachEventsControls = function () {
+        for (var castleId in castles) {
+            EventsControls.attach(Three.getScene().getObjectById(this.get(castleId).getMeshId()))
+        }
+    }
 }

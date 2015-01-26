@@ -2,8 +2,7 @@ var Army = function (army, bgColor, miniMapColor, textColor) {
     var x = army.x,
         y = army.y,
         armyId = army.armyId,
-        meshId = Three.addArmy(x, y, bgColor, armyId),
-        selected = false
+        meshId = Three.addArmy(x, y, bgColor, armyId)
 
     map.append(
         $('<div>')
@@ -17,8 +16,8 @@ var Army = function (army, bgColor, miniMapColor, textColor) {
             .attr('id', armyId)
             .addClass('a')
     )
-    this.select = function () {
-        selected = true
+    this.getMeshId = function () {
+        return meshId
     }
 }
 

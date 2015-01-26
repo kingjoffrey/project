@@ -6,7 +6,6 @@ var Game = new function () {
             loading = false
 
             Units.init(game.units)
-            Me.init(game.me)
             Three.init()
             Fields.init(game.fields)
             Gui.init()
@@ -14,6 +13,7 @@ var Game = new function () {
             Players.init(game.players)
             timer.start(game)
             Ruins.init(game.ruins)
+            Me.init(game.me)
 
             renderChatHistory();
 

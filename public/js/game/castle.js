@@ -15,6 +15,9 @@ var Castle = function (castle, bgColor, miniMapColor, textColor) {
     this.toArray = function () {
         return castle
     }
+    this.getMeshId = function () {
+        return meshId
+    }
 }
 
 var Castleeee = {

@@ -125,7 +125,6 @@ var Three = new function () {
         mesh.receiveShadow = true
 
         scene.add(mesh)
-        EventsControls.attach(mesh);
 
         var flagMesh = new THREE.Mesh(flagModel.geometry, material)
         flagMesh.position.set(x * 4 - 210.8, 1.7, y * 4 - 312.4)
@@ -161,7 +160,6 @@ var Three = new function () {
         mesh.add(flagMesh)
 
         scene.add(mesh)
-        EventsControls.attach(mesh);
 
         return mesh.id
     }
