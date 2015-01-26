@@ -1,7 +1,7 @@
 var Player = function (player) {
-    var armies = Armies,
+    var armies = new Armies(),
         castles = new Castles(),
-        towers = Towers,
+        towers = new Towers(),
         team = player.team,
         backgroundColor = player.backgroundColor,
         miniMapColor = player.miniMapColor,
