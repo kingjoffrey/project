@@ -83,6 +83,46 @@ var Me = new function () {
                 detached.push(EventsControls.objects[i])
                 EventsControls.detach(EventsControls.objects[i])
             }
+
+            Message.remove()
+
+            //Castle.selectedArmyCursor();
+            //this.enemyCursorWhenSelected();
+            //Castle.myRemoveCursor();
+
+            //this.removeFromSkipped(a.armyId);
+            //this.unfortify(a.armyId);
+
+            //$('#army' + a.armyId)
+            //    .css('background', 'url(/img/game/units/' + a.color + '/border_army.gif)');
+
+            //this.updateInfo(a);
+            $('#name').html('Army');
+
+            $('#splitArmy').removeClass('buttonOff');
+            $('#deselectArmy').removeClass('buttonOff');
+            $('#armyStatus').removeClass('buttonOff');
+            $('#disbandArmy').removeClass('buttonOff');
+            $('#skipArmy').removeClass('buttonOff');
+            $('#quitArmy').removeClass('buttonOff');
+
+            //if (isSet(Army.selected.heroKey)) {
+            //    if (Ruin.getIdByPosition(Army.selected.x, Army.selected.y) !== null) {
+            //        $('#searchRuins').removeClass('buttonOff');
+            //    }
+            //    $('#showArtifacts').removeClass('buttonOff');
+            //}
+
+            //if (Castle.getMy(a.x, a.y)) {
+            //    $('#razeCastle').removeClass('buttonOff');
+            //    $('#buildCastleDefense').removeClass('buttonOff');
+            //    $('#showCastle').removeClass('buttonOff');
+            //}
+
+            //if (notSet(center)) {
+                //zoomer.setCenterIfOutOfScreen(a.x * 40, a.y * 40);
+                //Zoom.lens.setcenter(a.x, a.y)
+            //}
         } else {
             for (var i in detached) {
                 EventsControls.attach(detached[i])
