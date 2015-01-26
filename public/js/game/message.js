@@ -166,7 +166,7 @@ var Message = {
     },
     turn: function () {
         this.remove();
-        if (game.me.turn && Turn.number == 1 && game.players[game.me.color].castles[firstCastleId].currentProductionId === null) {
+        if (game.me.turn && Turn.number == 1 && game.players[Me.getColor()].castles[firstCastleId].currentProductionId === null) {
             Message.castle(firstCastleId);
         } else {
             var id = this.simple(translations.yourTurn, translations.thisIsYourTurnNow)
@@ -179,22 +179,23 @@ var Message = {
             table = $('<table>'),
             j = 0,
             td = new Array(),
-            production =castle.getProduction()
+            castle = castle.toArray()
 
-        if (castle.getCapital()) {
+        if (castle.capital) {
             capital = ' - ' + translations.capitalCity;
         }
 
-        for (var unitId in production) {
-            var travelBy = '';
-            if (unitId == castle.getCurrentProductionId()) {
+        for (var unitId in castle.production) {
+            var travelBy = '',
+                unit = Units.get(unitId)
+            if (unitId == castle.currentProductionId) {
                 attr = {
                     type: 'radio',
                     name: 'production',
                     value: unitId,
                     checked: 'checked'
                 }
-                time = castle.getCurrentProductionTurn() + '/';
+                time = castle.currentProductionTurn + '/';
             } else {
                 attr = {
                     type: 'radio',
@@ -204,17 +205,17 @@ var Message = {
                 time = '';
             }
 
-            if (game.units[unitId].canFly) {
+            if (unit.canFly) {
                 travelBy = translations.ground + ' / ' + translations.air;
-            } else if (game.units[unitId].canSwim) {
+            } else if (unit.canSwim) {
                 travelBy = translations.water;
             } else {
                 travelBy = translations.ground;
             }
-            if (game.units[unitId].name_lang) {
-                var name = game.units[unitId].name_lang;
+            if (unit.name_lang) {
+                var name = unit.name_lang;
             } else {
-                var name = game.units[unitId].name;
+                var name = unit.name;
             }
             td[j] = $('<td>')
                 .addClass('unit')
@@ -231,15 +232,15 @@ var Message = {
             )
                 .append(
                 $('<div>')
-                    .append($('<img>').attr('src', Unit.getImage(unitId, game.me.color)))
+                    .append($('<img>').attr('src', Unit.getImage(unitId, Me.getColor())))
                     .addClass('img')
             )
                 .append(
                 $('<div>')
                     .addClass('attributes')
-                    .append($('<p>').html(translations.time + ':&nbsp;' + time + production[unitId].time + ' ' + translations.turn))
-                    .append($('<p>').html(translations.cost + ':&nbsp;' + game.units[unitId].cost + ' ' + translations.gold))
-                    .append($('<p>').html(translations.moves + '&nbsp;' + game.units[unitId].numberOfMoves + '&nbsp;/&nbsp;' + translations.attack + '&nbsp;' + game.units[unitId].attackPoints + '&nbsp;/&nbsp;' + translations.defence + '&nbsp;' + game.units[unitId].defensePoints))
+                    .append($('<p>').html(translations.time + ':&nbsp;' + time + castle.production[unitId].time + ' ' + translations.turn))
+                    .append($('<p>').html(translations.cost + ':&nbsp;' + unit.cost + ' ' + translations.gold))
+                    .append($('<p>').html(translations.moves + '&nbsp;' + unit.numberOfMoves + '&nbsp;/&nbsp;' + translations.attack + '&nbsp;' + unit.attackPoints + '&nbsp;/&nbsp;' + translations.defence + '&nbsp;' + unit.defensePoints))
             );
             j++;
         }
@@ -260,8 +261,8 @@ var Message = {
 
         var stopButtonOff = ' buttonOff'
         var relocationButtonOff = ' buttonOff'
-        if (castle.getCurrentProductionId()) {
-            if (Castle.countMyCastles() > 1) {
+        if (castle.currentProductionId) {
+            if (Me.countCastles() > 1) {
                 var relocationButtonOff = ''
             }
             var stopButtonOff = ''
@@ -301,7 +302,7 @@ var Message = {
 
         var center = function (i) {
             return function () {
-                Zoom.lens.setcenter(castles[i].x * 40, castles[i].y * 40)
+                Zoom.lens.setcenter(castles[i].x, castles[i].y)
             }
         }
 
@@ -318,25 +319,25 @@ var Message = {
                     })
             )
                 .addClass('iconButton buttonColors')
-                .click(center(castle.getId()))
+                .click(center(castle.id))
                 .attr('id', 'center')
         )
             .append($('<h3>').append(castle.name).append(capital).addClass('name'))
             .append($('<h5>').append(translations.castleDefense + ': ' + castle.defense))
             .append($('<h5>').append(translations.income + ': ' + castle.income + ' ' + translations.gold_turn))
             .append($('<br>'))
-            .append($('<fieldset>').addClass('production').append($('<label>').html(translations.production)).append(table).attr('id', castleId))
+            .append($('<fieldset>').addClass('production').append($('<label>').html(translations.production)).append(table).attr('id', castle.id))
 
         // relocation to
 
-        if (castle.color == game.me.color && castle.relocationToCastleId && castle.currentProductionId) {
+        if (castle.color == Me.getColor() && castle.relocationToCastleId && castle.currentProductionId) {
             div
                 .append($('<br>'))
                 .append($('<fieldset>').addClass('relocatedProduction').append($('<label>').html(translations.relocatingTo)).append(
                     $('<table>').append(
                         $('<tr>')
                             .append(
-                            $('<td>').append($('<img>').attr('src', Unit.getImage(castle.currentProductionId, game.me.color)))
+                            $('<td>').append($('<img>').attr('src', Unit.getImage(castle.currentProductionId, Me.getColor())))
                         )
                             .append(
                             $('<td>')
@@ -370,13 +371,13 @@ var Message = {
                     }
                 }
 
-            for (castleIdFrom in castle.relocatedProduction) {
+            for (var castleIdFrom in castle.relocatedProduction) {
                 var currentProductionId = castles[castleIdFrom].currentProductionId
                 relocatingFrom.append(
                     $('<tr>')
                         .append(
                         $('<td>').append(
-                            $('<img>').attr('src', Unit.getImage(currentProductionId, game.me.color))
+                            $('<img>').attr('src', Unit.getImage(currentProductionId, Me.getColor()))
                         )
                     )
                         .append(
@@ -865,16 +866,16 @@ var Message = {
                 }, 500)
             }
             $('#unit' + b[i].soldierId + ' .killed').fadeIn(1000, function () {
-                if (r.color == game.me.color) {
-                    for (k in game.players[game.me.color].armies[r.army.armyId].soldiers) {
-                        if (game.players[game.me.color].armies[r.army.armyId].soldiers[k].soldierId == b[i].soldierId) {
-                            costIncrement(-game.units[game.players[game.me.color].armies[r.army.armyId].soldiers[k].unitId].cost)
+                if (r.color == Me.getColor()) {
+                    for (k in game.players[Me.getColor()].armies[r.army.armyId].soldiers) {
+                        if (game.players[Me.getColor()].armies[r.army.armyId].soldiers[k].soldierId == b[i].soldierId) {
+                            costIncrement(-game.units[game.players[Me.getColor()].armies[r.army.armyId].soldiers[k].unitId].cost)
                         }
                     }
                 }
 
                 for (var color in r.defenders) {
-                    if (color == game.me.color) {
+                    if (color == Me.getColor()) {
                         for (j in r.defenders[color]) {
                             for (k in game.players[color].armies[j].soldiers) {
                                 if (game.players[color].armies[j].soldiers[k].soldierId == b[i].soldierId) {
@@ -1073,22 +1074,22 @@ var Message = {
 
         var i
         for (i in towers) {
-            if (towers[i].color == game.me.color) {
+            if (towers[i].color == Me.getColor()) {
                 myTowers++
             }
         }
 
         for (i in castles) {
-            if (castles[i].color == game.me.color) {
+            if (castles[i].color == Me.getColor()) {
                 myCastles++
                 myCastlesGold += castles[i].income
             }
         }
 
-        for (i in game.players[game.me.color].armies) {
-            for (j in game.players[game.me.color].armies[i].soldiers) {
+        for (i in game.players[Me.getColor()].armies) {
+            for (j in game.players[Me.getColor()].armies[i].soldiers) {
                 myUnits++
-                myUnitsGold += game.units[game.players[game.me.color].armies[i].soldiers[j].unitId].cost
+                myUnitsGold += game.units[game.players[Me.getColor()].armies[i].soldiers[j].unitId].cost
             }
         }
 
@@ -1138,7 +1139,7 @@ var Message = {
             myCastlesGold = 0
 
         for (i in towers) {
-            if (towers[i].color == game.me.color) {
+            if (towers[i].color == Me.getColor()) {
                 myTowers++
             }
         }
@@ -1154,7 +1155,7 @@ var Message = {
         }
 
         for (i in castles) {
-            if (castles[i].color == game.me.color) {
+            if (castles[i].color == Me.getColor()) {
                 myCastles++
                 myCastlesGold += castles[i].income
                 table.append(
@@ -1213,19 +1214,19 @@ var Message = {
 
         var center = function (i) {
             return function () {
-                zoom.lens.setcenter(game.players[game.me.color].armies[i].x * 40, game.players[game.me.color].armies[i].y * 40)
+                zoom.lens.setcenter(game.players[Me.getColor()].armies[i].x * 40, game.players[Me.getColor()].armies[i].y * 40)
             }
         }
 
-        for (i in game.players[game.me.color].armies) {
-            for (j in game.players[game.me.color].armies[i].soldiers) {
+        for (i in game.players[Me.getColor()].armies) {
+            for (j in game.players[Me.getColor()].armies[i].soldiers) {
                 myUnits++
-                myUnitsGold += game.units[game.players[game.me.color].armies[i].soldiers[j].unitId].cost
+                myUnitsGold += game.units[game.players[Me.getColor()].armies[i].soldiers[j].unitId].cost
                 table.append(
                     $('<tr>')
-                        .append($('<td>').html($('<img>').attr('src', Unit.getImage(game.players[game.me.color].armies[i].soldiers[j].unitId, game.me.color))))
-                        .append($('<td>').html(game.units[game.players[game.me.color].armies[i].soldiers[j].unitId].name_lang))
-                        .append($('<td>').html(game.units[game.players[game.me.color].armies[i].soldiers[j].unitId].cost + ' ' + translations.gold).addClass('r'))
+                        .append($('<td>').html($('<img>').attr('src', Unit.getImage(game.players[Me.getColor()].armies[i].soldiers[j].unitId, Me.getColor()))))
+                        .append($('<td>').html(game.units[game.players[Me.getColor()].armies[i].soldiers[j].unitId].name_lang))
+                        .append($('<td>').html(game.units[game.players[Me.getColor()].armies[i].soldiers[j].unitId].cost + ' ' + translations.gold).addClass('r'))
                         .append(
                         $('<td>')
                             .html($('<img>').attr('src', '/img/game/center.png'))
@@ -1281,7 +1282,7 @@ var Message = {
                 .append(
                 $('<div>')
                     .append($('<img>').attr({
-                        src: Unit.getImage(unitId, game.me.color),
+                        src: Unit.getImage(unitId, Me.getColor()),
                         id: unitId,
                         alt: name
                     }))

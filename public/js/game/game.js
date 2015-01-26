@@ -5,6 +5,7 @@ var Game = new function () {
         if (loading) {
             loading = false
 
+            Units.init(game.units)
             Me.init(game.me)
             Three.init()
             Fields.init(game.fields)

@@ -54,4 +54,7 @@ var Me = new function () {
         income += value
         incomeUpdate()
     }
+    this.countCastles = function () {
+        return Players.get(color).getCastles().count()
+    }
 }

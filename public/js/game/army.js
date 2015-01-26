@@ -675,16 +675,16 @@ var Armyyyy = {
 
 var Unit = {
     getId: function (name) {
-        for (i in game.units) {
-            if (game.units[i] != null && game.units[i].name == name) {
-                return game.units[i].mapUnitId;
+        for (var unitId in Units.get) {
+            if (Units.get(unitId) != null && Units.get(unitId).name == name) {
+                return Units[i].mapUnitId;
             }
         }
 
         return null;
     },
     getImage: function (unitId, color) {
-        return '/img/game/units/' + color + '/' + game.units[unitId].name.replace(' ', '_').toLowerCase() + '.png'
+        return '/img/game/units/' + color + '/' + Units.get(unitId).name.replace(' ', '_').toLowerCase() + '.png'
     },
     getShipId: function () {
         for (i in game.units) {

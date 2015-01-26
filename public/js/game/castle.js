@@ -1,19 +1,20 @@
 var Castle = function (castle, bgColor, miniMapColor, textColor) {
-    var x = castle.x,
-        y = castle.y,
-        castleId = castle.id,
-        meshId = Three.addCastle(x, y, bgColor, castleId)
+    var meshId = Three.addCastle(castle.x, castle.y, bgColor, castle.id)
 
     map.append(
         $('<div>').css({
-            'left': x * 2 + 'px',
-            'top': y * 2 + 'px',
+            'left': castle.x * 2 + 'px',
+            'top': castle.y * 2 + 'px',
             'background': miniMapColor,
             'border-color': textColor
         })
-            .attr('id', 'c' + castleId)
+            .attr('id', 'c' + castle.id)
             .addClass('c')
     )
+
+    this.toArray = function () {
+        return castle
+    }
 }
 
 var Castleeee = {

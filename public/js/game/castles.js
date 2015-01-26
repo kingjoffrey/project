@@ -11,4 +11,11 @@ var Castles = new function () {
     this.get = function (castleId) {
         return castles[castleId]
     }
+    this.count = function () {
+        var i = 0
+        for (var castleId in castles) {
+            i++
+        }
+        return i
+    }
 }
