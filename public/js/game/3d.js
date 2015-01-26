@@ -6,7 +6,8 @@ var Three = new function () {
         armyModel,
         mountainModel,
         hillModel,
-        treeModel
+        treeModel,
+        waterModel
     var scene = new THREE.Scene()
 
     this.getScene = function () {
@@ -176,9 +177,12 @@ var Three = new function () {
 
     var initFields = function () {
         tree.scale = 3
+        water.scale = 1.7
+
         mountainModel = loader.parse(mountain)
         hillModel = loader.parse(hill)
         treeModel = loader.parse(tree)
+        waterModel = loader.parse(water)
 
         mountainModel.material = new THREE.MeshLambertMaterial({color: '#808080'})
         mountainModel.material.side = THREE.DoubleSide
@@ -190,16 +194,48 @@ var Three = new function () {
         treeModel.material = new THREE.MeshLambertMaterial({color: '#008000'})
         treeModel.material.side = THREE.DoubleSide
         //treeModel.scale = 0.4
+
+        waterModel.material = new THREE.MeshPhongMaterial({color: 0x0000ff})
+        waterModel.material.side = THREE.DoubleSide
     }
 
-    this.getMountainModel = function () {
-        return mountainModel
+    this.addMountain = function (x, y) {
+        var mesh = new THREE.Mesh(mountainModel.geometry, mountainModel.material)
+        mesh.position.set(x * 4 - 216, 0, y * 4 - 311)
+        mesh.rotation.y = Math.PI * Math.random()
+
+        mesh.castShadow = true
+        mesh.receiveShadow = true
+
+        scene.add(mesh)
+
     }
-    this.getHillModel = function () {
-        return hillModel
+    this.addHill = function (x, y) {
+        var mesh = new THREE.Mesh(hillModel.geometry, hillModel.material)
+        mesh.position.set(x * 4 - 216, 0, y * 4 - 311)
+        mesh.rotation.y = Math.PI * Math.random()
+
+        //mesh.castShadow = true
+        mesh.receiveShadow = true
+
+        scene.add(mesh)
     }
-    this.getTreeModel = function () {
-        return treeModel
+    this.addTree = function (x, y) {
+        var mesh = new THREE.Mesh(treeModel.geometry, treeModel.material)
+        mesh.position.set(x * 4 - 216, 0, y * 4 - 311)
+        mesh.rotation.y = Math.PI * Math.random()
+
+        mesh.castShadow = true
+        mesh.receiveShadow = true
+
+        scene.add(mesh)
+    }
+    this.addWater = function (x, y) {
+        var mesh = new THREE.Mesh(waterModel.geometry, waterModel.material)
+        mesh.position.set(x * 4 - 216, 0.1, y * 4 - 311)
+        mesh.rotation.y = Math.PI * Math.random()
+
+        scene.add(mesh)
     }
 
     this.init = function (fields) {
