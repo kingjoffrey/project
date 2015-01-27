@@ -80,7 +80,7 @@ var Turn = {
         }
     },
     isMy: function () {
-        if (Turn.color == game.me.color) {
+        if (Turn.color == Me.getColor()) {
             return true;
         }
     }

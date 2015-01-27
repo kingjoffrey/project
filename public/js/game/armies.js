@@ -1,5 +1,6 @@
 var Armies = function () {
     var armies = {}
+
     this.init = function (armies, bgColor, miniMapColor, textColor) {
         for (var armyId in armies) {
             this.add(armyId, armies[armyId], bgColor, miniMapColor, textColor)
@@ -15,5 +16,9 @@ var Armies = function () {
         for (var armyId in armies) {
             EventsControls.attach(Three.getScene().getObjectById(this.get(armyId).getMeshId()))
         }
+    }
+
+    this.toArray = function () {
+        return armies
     }
 }

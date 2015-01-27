@@ -1,47 +1,42 @@
 var Army = function (army, bgColor, miniMapColor, textColor) {
-    var x = army.x,
-        y = army.y,
-        armyId = army.armyId,
-        meshId = Three.addArmy(x, y, bgColor, armyId)
+    var meshId = Three.addArmy(army.x, army.y, bgColor, army.armyId)
 
     map.append(
         $('<div>')
             .css({
-                'left': x * 2 + 'px',
-                'top': y * 2 + 'px',
+                'left': army.x * 2 + 'px',
+                'top': army.y * 2 + 'px',
                 'background': miniMapColor,
                 'border-color': textColor,
                 'z-index': 10
             })
-            .attr('id', armyId)
+            .attr('id', army.armyId)
             .addClass('a')
     )
     this.getMeshId = function () {
         return meshId
     }
-}
+    this.getX = function () {
+        return army.x
+    }
+    this.getY = function () {
+        return army.y
+    }
+    this.getMoves = function () {
+        return moves
+    }
 
-var Armyyyy = {
-    isSelected: 0,
-    selected: null,
-    deselected: null,
-    parent: null,
-    skippedArmies: {},
-    quitedArmies: {},
-    nextArmies: {},
-    nextArmyId: null,
-    isNextSelected: null,
-    getHeroKey: function (heroes) {
+    var getHeroKey = function (heroes) {
         for (heroId in heroes) {
             return heroId
         }
-    },
-    getSoldierKey: function (soldiers) {
+    }
+    var getSoldierKey = function (soldiers) {
         for (key in soldiers) {
             return key
         }
-    },
-    getMovementType: function (army) {
+    }
+    var getMovementType = function (army) {
         if (army.canSwim) {
             army.movementType = 'swimming';
             for (key in game.terrain) {
@@ -137,13 +132,23 @@ var Armyyyy = {
             army.moves = moves;
         }
         return army;
-    },
-    getHeroMovesLeft: function (a, key) {
+    }
+    var getHeroMovesLeft = function (a, key) {
         return a.heroes[key].movesLeft
-    },
-    getSoldierMovesLeft: function (a, key) {
+    }
+    var getSoldierMovesLeft = function (a, key) {
         return a.soldiers[key].movesLeft
-    },
+    }
+}
+
+var Armyyyy = {
+    isSelected: 0,
+    selected: null,
+    deselected: null,
+    parent: null,
+    nextArmyId: null,
+    isNextSelected: null,
+
     setImg: function (army, heroKey, soldierKey) {
         if (heroKey) {
             if (army.heroes[heroKey].name) {
@@ -371,81 +376,7 @@ var Armyyyy = {
 
         return
     },
-    showFirst: function () {
-        for (var armyId in game.players[game.me.color].armies) {
-            zoom.lens.setcenter(game.players[game.me.color].armies[armyId].x, game.players[game.me.color].armies[armyId].y)
-            return
-        }
-        Zoom.lens.setcenter(0, 0);
-    },
-    removeFromSkipped: function (armyId) {
-        if (isTruthful(Army.skippedArmies[armyId])) {
-            delete Army.skippedArmies[armyId];
-        }
-    },
-    skip: function () {
-        if (!Turn.isMy()) {
-            return;
-        }
 
-        if (Gui.lock) {
-            return;
-        }
-
-        if (Army.selected) {
-            Sound.play('skip');
-            Army.skippedArmies[Army.selected.armyId] = 1;
-            Army.deselect();
-            this.findNext();
-        }
-    },
-    findNext: function () {
-        if (!Turn.isMy()) {
-            return;
-        }
-
-        if (Gui.lock) {
-            return;
-        }
-
-        if (Army.selected) {
-            Army.nextArmies[Army.selected.armyId] = true
-        }
-
-        Army.deselect()
-
-        for (armyId in game.players[game.me.color].armies) {
-            if (game.players[game.me.color].armies[armyId].moves == 0) {
-                continue;
-            }
-
-            if (isTruthful(Army.skippedArmies[armyId])) {
-                continue;
-            }
-
-            if (isTruthful(Army.quitedArmies[armyId])) {
-                continue;
-            }
-
-            if (isTruthful(Army.nextArmies[armyId])) {
-                continue;
-            }
-
-            reset = false
-            Army.nextArmies[armyId] = true
-            Army.select(game.players[game.me.color].armies[armyId])
-            return
-        }
-
-        if ($.isEmptyObject(Army.nextArmies)) {
-            Sound.play('error');
-            Message.simple(translations.nextArmy, translations.thereIsNoFreeArmyToWithSpareMovePoints)
-        } else {
-            Army.deselect()
-            Army.nextArmies = {}
-            Army.findNext()
-        }
-    },
     delete: function (armyId, color, quiet) {
         if (notSet(game.players[color].armies[armyId])) {
             throw ('Brak armi o armyId = ' + armyId + ' i kolorze = ' + color);

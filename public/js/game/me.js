@@ -4,7 +4,10 @@ var Me = new function () {
         income = 0,
         color,
         selectedArmyId = null,
-        detached = new Array()
+        detached = new Array(),
+        nextArmies = {},
+        skippedArmies = {},
+        quitedArmies = {}
 
     this.init = function (me) {
         gold = me.gold
@@ -127,11 +130,90 @@ var Me = new function () {
             for (var i in detached) {
                 EventsControls.attach(detached[i])
             }
+            detached = []
         }
 
     }
     this.attachEventsControls = function () {
         Players.get(color).getArmies().attachEventsControls()
         Players.get(color).getCastles().attachEventsControls()
+    }
+
+    this.showFirst = function () {
+        var armies = Players.get(color).getArmies().toArray()
+        for (var armyId in armies) {
+            Zoom.lens.setcenter(armies[armyId].getX(), armies[armyId].getY())
+            return
+        }
+        Zoom.lens.setcenter(0, 0);
+    }
+    this.removeFromSkipped = function (armyId) {
+        if (isTruthful(skippedArmies[armyId])) {
+            delete skippedArmies[armyId]
+        }
+    }
+    this.skip = function () {
+        if (!Turn.isMy()) {
+            return
+        }
+
+        if (Gui.lock) {
+            return
+        }
+
+        if (armyId = this.getSelectedArmyId()) {
+            Sound.play('skip')
+            skippedArmies[armyId] = 1
+            this.setSelectedArmyId(null)
+            this.findNext()
+        }
+    }
+    this.findNext = function () {
+        if (!Turn.isMy()) {
+            return
+        }
+
+        if (Gui.lock) {
+            return
+        }
+
+        if (armyId = Me.getSelectedArmyId()) {
+            nextArmies[armyId] = true
+        }
+
+        this.setSelectedArmyId(null)
+        var armies = Players.get(color).getArmies().toArray()
+
+        for (var armyId in armies) {
+            if (armies[armyId].getMoves() == 0) {
+                continue
+            }
+
+            if (isTruthful(skippedArmies[armyId])) {
+                continue
+            }
+
+            if (isTruthful(quitedArmies[armyId])) {
+                continue
+            }
+
+            if (isTruthful(nextArmies[armyId])) {
+                continue
+            }
+
+            //reset = false
+            nextArmies[armyId] = true
+            Me.setSelectedArmyId(armyId)
+            return
+        }
+
+        if ($.isEmptyObject(nextArmies)) {
+            Sound.play('error');
+            Message.simple(translations.nextArmy, translations.thereIsNoFreeArmyToWithSpareMovePoints)
+        } else {
+            this.setSelectedArmyId(null)
+            nextArmies = {}
+            this.findNext()
+        }
     }
 }
