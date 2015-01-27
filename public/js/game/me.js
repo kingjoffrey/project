@@ -61,6 +61,9 @@ var Me = new function () {
         income += value
         incomeUpdate()
     }
+    this.getGold = function () {
+        return gold
+    }
     this.countCastles = function () {
         return Players.get(color).getCastles().count()
     }
@@ -69,6 +72,9 @@ var Me = new function () {
     }
     this.getArmy = function (armyId) {
         return Players.get(color).getArmies().get(armyId)
+    }
+    this.resetSkippedArmies = function () {
+        skippedArmies = {}
     }
     this.getSelectedArmyId = function () {
         return selectedArmyId
@@ -123,8 +129,8 @@ var Me = new function () {
             //}
 
             //if (notSet(center)) {
-                //zoomer.setCenterIfOutOfScreen(a.x * 40, a.y * 40);
-                //Zoom.lens.setcenter(a.x, a.y)
+            //zoomer.setCenterIfOutOfScreen(a.x * 40, a.y * 40);
+            //Zoom.lens.setcenter(a.x, a.y)
             //}
         } else {
             for (var i in detached) {
@@ -134,6 +140,58 @@ var Me = new function () {
         }
 
     }
+    var deselect= function (skipJoin) {
+        if (notSet(skipJoin) && Army.parent && Army.selected) {
+            if (Army.selected.x == Army.parent.x && Army.selected.y == Army.parent.y) {
+                Websocket.join(Army.selected.armyId);
+            }
+        }
+
+        Army.isSelected = 0
+        Castle.deselectedArmyCursor()
+        this.enemyCursorWhenUnselected()
+        Castle.myCursor()
+
+        $('#name').html('');
+        $('#moves').html('');
+        $('#attack').html('');
+        $('#defense').html('');
+
+        halfDeselect()
+    }
+    var halfDeselect= function () {
+        if (Army.selected) {
+
+            Army.deselected = Army.selected;
+
+            Army.deselected.heroSplitKey = null
+            Army.deselected.soldierSplitKey = null
+
+            Army.deselected.skippedHeroes = {};
+            Army.deselected.skippedSoldiers = {};
+
+            //$('#army' + Army.deselected.armyId + ' .unit img').attr('src', Army.deselected.img);
+            //
+            //$('#army' + Army.deselected.armyId).css('background', 'none');
+            //$('#army' + Army.deselected.armyId + ' .unit').css('background', 'none');
+            //
+            //board.css('cursor', 'url(/img/game/cursor.png), default');
+        }
+        Army.selected = null;
+        $('.path').remove();
+        $('#splitArmy').addClass('buttonOff');
+        $('#deselectArmy').addClass('buttonOff');
+        $('#armyStatus').addClass('buttonOff');
+        $('#skipArmy').addClass('buttonOff');
+        $('#quitArmy').addClass('buttonOff');
+        $('#searchRuins').addClass('buttonOff');
+        $('#razeCastle').addClass('buttonOff');
+        $('#buildCastleDefense').addClass('buttonOff');
+        $('#showCastle').addClass('buttonOff');
+        $('#showArtifacts').addClass('buttonOff');
+        $('#disbandArmy').addClass('buttonOff');
+    }
+
     this.attachEventsControls = function () {
         Players.get(color).getArmies().attachEventsControls()
         Players.get(color).getCastles().attachEventsControls()

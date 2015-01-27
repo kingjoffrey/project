@@ -31,7 +31,7 @@ var Turn = {
         this.beginDate = Date.parse(game.turnHistory[i].date.substr(0, 19)).getTime()
     },
     on: function () {
-        Army.skippedArmies = {};
+        Me.resetSkippedArmies();
         Castle.showFirst();
         Message.turn();
         Gui.unlock()
@@ -39,7 +39,7 @@ var Turn = {
         if (!Hero.findMy()) {
             $('#heroResurrection').removeClass('buttonOff')
         }
-        if (game.me.gold > 1000) {
+        if (Me.getGold() > 1000) {
             $('#heroHire').removeClass('buttonOff')
         }
     },

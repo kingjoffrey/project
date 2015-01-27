@@ -17,7 +17,7 @@ var Game = new function () {
 
             renderChatHistory();
 
-
+console.log(game.terrain)
         }
 
         //Players.updateOnline()
