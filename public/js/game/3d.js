@@ -266,7 +266,7 @@ EventsControls.onclick = function () {
                     }
                     break
                 case 'army':
-                    Me.setSelectedArmyId(this.focused.identification)
+                    Me.selectArmy(this.focused.identification)
                     break
                 default:
                     if (Me.getSelectedArmyId()) {
@@ -279,7 +279,7 @@ EventsControls.onclick = function () {
             break
 
         case 2:
-            Me.setSelectedArmyId(null)
+            Me.selectArmy(null)
             break
     }
 }

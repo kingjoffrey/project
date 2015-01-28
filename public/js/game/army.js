@@ -398,36 +398,6 @@ var Armyyyy = {
 
         delete game.players[color].armies[armyId];
     },
-    updateInfo: function (a) {
-        $('#name').html(a.name);
-        $('#attack').html(a.attack);
-        $('#defense').html(a.defense);
-        $('#moves').html(a.moves);
-    },
-    fortify: function () {
-        if (!Turn.isMy()) {
-            return;
-        }
-        if (Gui.lock) {
-            return;
-        }
-        if (Army.selected) {
-            Websocket.fortify(Army.selected.armyId);
-            Army.quitedArmies[Army.selected.armyId] = 1;
-            Army.deselect();
-            Army.findNext();
-        }
-    },
-    unfortify: function (armyId) {
-        if (isComputer(Turn.color)) {
-            return;
-        }
-
-        if (isTruthful(Army.quitedArmies[armyId])) {
-            Websocket.unfortify(armyId, 0);
-            delete Army.quitedArmies[armyId];
-        }
-    },
     computerLoop: function (armies, color) {
         var armyId;
         for (armyId in armies) {

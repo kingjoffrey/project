@@ -532,7 +532,6 @@ Websocket = {
             return;
         }
 
-
         if (!Turn.isMy()) {
             return;
         }
@@ -553,10 +552,10 @@ Websocket = {
         if (!Turn.isMy()) {
             return;
         }
-        if (Army.selected == null) {
-            return;
+        if (Me.getSelectedArmyId() == null) {
+            return
         }
-        Army.deselect(1);
+        Me.deselectArmy(1)
 
         var token = {
             type: 'disband',
@@ -576,29 +575,21 @@ Websocket = {
             return;
         }
 
-        var h = '';
-        var s = '';
+        var s = Me.getSelectedSoldierSplitKey()
+        var h = Me.getSelectedHeroSplitKey()
+        var armyId = Me.getSelectedArmyId()
 
-        if (Army.selected.soldierSplitKey !== null) {
-            s = Army.selected.soldierSplitKey
-        }
-        if (Army.selected.heroSplitKey !== null) {
-            h = Army.selected.heroSplitKey
-        }
-
-        Army.halfDeselect();
-
-        Gui.setLock();
+        Me.armyButtonsOff()
+        Gui.setLock()
 
         var token = {
             type: 'move',
             x: x,
             y: y,
-            armyId: Army.deselected.armyId,
+            armyId: armyId,
             s: s,
             h: h
         };
-
 
         ws.send(JSON.stringify(token));
     },
@@ -635,7 +626,7 @@ Websocket = {
 
         var token = {
             type: 'split',
-            armyId: Army.selected.armyId,
+            armyId: Me.getSelectedArmyId(),
             s: s,
             h: h
         };
@@ -697,7 +688,7 @@ Websocket = {
 
         var token = {
             type: 'raze',
-            armyId: Army.selected.armyId
+            armyId: Me.getSelectedArmyId()
         };
 
         ws.send(JSON.stringify(token));

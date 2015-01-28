@@ -61,7 +61,7 @@ var Castleeee = {
             .mousedown(function (e) {
                 switch (e.which) {
                     case 1:
-                        if (!Army.isSelected) {
+                        if (!Me.isSelected()) {
                             Message.castle(castleId)
                         }
                 }

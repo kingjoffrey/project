@@ -117,8 +117,8 @@ var Message = {
             var height = parseInt($('.message').css('height')) - minus;
             $('.message' + ' div.overflow').css('height', height + 'px')
         }
-        if (Army.isSelected) {
-            Army.isSelected = 0
+        if (Me.isSelected()) {
+            Me.setIsSelected(0)
         }
     },
     ok: function (id, func) {
