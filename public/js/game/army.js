@@ -27,18 +27,17 @@ var Army = function (army, bgColor, miniMapColor, textColor) {
     this.getMoves = function () {
         return moves
     }
-
-    var getHeroKey = function (heroes) {
-        for (var heroId in heroes) {
+    this.getHeroKey = function () {
+        for (var heroId in army.heroes) {
             return heroId
         }
     }
-    var getSoldierKey = function (soldiers) {
-        for (var key in soldiers) {
+    this.getSoldierKey = function () {
+        for (var key in army.soldiers) {
             return key
         }
     }
-    var getMovementType = function (army) {
+    var getMovementType = function () {
         if (army.canSwim) {
             army.movementType = 'swimming';
             for (key in game.terrain) {
@@ -159,13 +158,6 @@ var Army = function (army, bgColor, miniMapColor, textColor) {
 }
 
 var Armyyyy = {
-    isSelected: 0,
-    selected: null,
-    deselected: null,
-    parent: null,
-    nextArmyId: null,
-    isNextSelected: null,
-
     setImg: function (army, heroKey, soldierKey) {
         if (heroKey) {
             if (army.heroes[heroKey].name) {

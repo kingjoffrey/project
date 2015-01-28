@@ -87,15 +87,16 @@ var Me = new function () {
     this.getDeselectedArmyId = function () {
         return deselectedArmyId
     }
-    this.selectArmy = function (armyId) {
+    this.selectArmy = function (armyId, center) {
         selectedArmyId = armyId
+        var army = this.getArmy(armyId)
         for (var i in EventsControls.objects) {
             if (i == 0) {
                 continue
             }
-            //if (EventsControls.objects[i].id == Players.get(color).getArmies().get(armyId).getMeshId()) {
-            //    continue
-            //}
+            if (EventsControls.objects[i].id == Players.get(color).getArmies().get(armyId).getMeshId()) {
+                continue
+            }
             detached.push(EventsControls.objects[i])
             EventsControls.detach(EventsControls.objects[i])
         }
@@ -122,12 +123,12 @@ var Me = new function () {
         $('#skipArmy').removeClass('buttonOff');
         $('#quitArmy').removeClass('buttonOff');
 
-        //if (isSet(Army.selected.heroKey)) {
-        //    if (Ruin.getIdByPosition(Army.selected.x, Army.selected.y) !== null) {
-        //        $('#searchRuins').removeClass('buttonOff');
-        //    }
+        if (army.getHeroKey()) {
+            if (Ruin.getIdByPosition(army.getX(), army.getY()) !== null) {
+                $('#searchRuins').removeClass('buttonOff');
+            }
         //    $('#showArtifacts').removeClass('buttonOff');
-        //}
+        }
 
         //if (Castle.getMy(a.x, a.y)) {
         //    $('#razeCastle').removeClass('buttonOff');
@@ -135,10 +136,10 @@ var Me = new function () {
         //    $('#showCastle').removeClass('buttonOff');
         //}
 
-        //if (notSet(center)) {
-        //zoomer.setCenterIfOutOfScreen(a.x * 40, a.y * 40);
-        //Zoom.lens.setcenter(a.x, a.y)
-        //}
+        if (notSet(center)) {
+            //zoomer.setCenterIfOutOfScreen(a.x * 40, a.y * 40);
+            Zoom.lens.setcenter(army.getX(), army.getY())
+        }
     }
     this.deselectArmy = function (skipJoin) {
         if (notSet(skipJoin) && parentArmyId && selectedArmyId) {
