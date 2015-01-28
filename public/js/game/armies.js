@@ -21,4 +21,22 @@ var Armies = function () {
     this.toArray = function () {
         return armies
     }
+    this.delete = function (armyId, quiet) {
+        if (notSet(armies[armyId])) {
+            throw ('Brak armi o armyId = ' + armyId );
+            return
+        }
+
+        this.fields(armies[armyId])
+
+        if (!quiet) {
+            Zoom.lens.setcenter(armies[armyId].getX(), armies[armyId].getY())
+        }
+
+        var mesh = Three.getScene().getObjectById(this.get(armyId).getMeshId())
+        EventsControls.detach(mesh)
+        Three.getScene().remove(mesh)
+        $('#' + armyId).remove()
+        delete armies[armyId]
+    }
 }

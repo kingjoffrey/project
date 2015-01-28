@@ -1,5 +1,7 @@
 var Army = function (army, bgColor, miniMapColor, textColor) {
-    var meshId = Three.addArmy(army.x, army.y, bgColor, army.armyId)
+    var meshId = Three.addArmy(army.x, army.y, bgColor, army.armyId),
+        heroSplitKey = null,
+        soldierSplitKey = null
 
     map.append(
         $('<div>')
@@ -27,12 +29,12 @@ var Army = function (army, bgColor, miniMapColor, textColor) {
     }
 
     var getHeroKey = function (heroes) {
-        for (heroId in heroes) {
+        for (var heroId in heroes) {
             return heroId
         }
     }
     var getSoldierKey = function (soldiers) {
-        for (key in soldiers) {
+        for (var key in soldiers) {
             return key
         }
     }
@@ -133,11 +135,26 @@ var Army = function (army, bgColor, miniMapColor, textColor) {
         }
         return army;
     }
-    var getHeroMovesLeft = function (a, key) {
-        return a.heroes[key].movesLeft
+    this.getHeroMovesLeft = function (key) {
+        return army.heroes[key].movesLeft
     }
-    var getSoldierMovesLeft = function (a, key) {
-        return a.soldiers[key].movesLeft
+    this.getSoldierMovesLeft = function (key) {
+        return army.soldiers[key].movesLeft
+    }
+    this.countHeroes = function () {
+        return army.heroes.length
+    }
+    this.countSoldiers = function () {
+        return army.soldiers.length
+    }
+    this.setHeroSplitKey = function (value) {
+        heroSplitKey = value
+    }
+    this.setSoldierSplitKey = function (value) {
+        soldierSplitKey = value
+    }
+    this.getHeroes = function () {
+        return army.heroes
     }
 }
 
@@ -173,90 +190,6 @@ var Armyyyy = {
         }
 
         return army;
-    },
-    myClick: function (army, e) {
-        if (e.which != 1) {
-            return
-        }
-        if (Gui.lock) {
-            return;
-        }
-
-        if (!Turn.isMy()) {
-            return;
-        }
-
-        if (Army.selected) {
-            if (Army.selected.armyId == army.armyId) {
-                if (Army.selected.heroes.length + Army.selected.soldiers.length == 1) {
-                    return
-                }
-
-                $('#army' + Army.selected.armyId).css('background', 'none');
-                $('#army' + Army.selected.armyId + ' .unit').css('background', 'url(/img/game/units/' + Army.selected.color + '/border_unit.gif)');
-
-                var newHeroKey = null;
-                var newSoldierKey = null;
-
-                Army.selected.heroSplitKey = null
-                Army.selected.soldierSplitKey = null
-
-                for (key in Army.selected.heroes) {
-                    if (Army.selected.skippedHeroes[key]) {
-                        continue;
-                    }
-                    Army.selected.skippedHeroes[key] = true;
-                    newHeroKey = key;
-                    Army.selected.heroSplitKey = key;
-                    break;
-                }
-
-                if (newHeroKey !== null) {
-                    Army.setImg(Army.selected, newHeroKey, null);
-                    Army.changeImg(Army.selected)
-                    Army.updateInfo(Army.selected)
-                    $('#moves').html(Army.getHeroMovesLeft(Army.selected, newHeroKey));
-                    return;
-                }
-
-                for (key in Army.selected.soldiers) {
-                    if (Army.selected.skippedSoldiers[key]) {
-                        continue;
-                    }
-                    Army.selected.skippedSoldiers[key] = true;
-                    newSoldierKey = key;
-                    Army.selected.soldierSplitKey = key;
-                    break;
-                }
-
-                if (newSoldierKey !== null) {
-                    Army.setImg(Army.selected, null, newSoldierKey);
-                    Army.changeImg(Army.selected)
-                    Army.updateInfo(Army.selected)
-                    $('#moves').html(Army.getSoldierMovesLeft(Army.selected, newSoldierKey));
-                    return;
-                }
-
-                Army.setImg(Army.selected, Army.selected.heroKey, Army.selected.soldierKey);
-                Army.changeImg(Army.selected)
-                Army.getMovementType(Army.selected);
-                Army.updateInfo(Army.selected)
-                $('#name').html('Army');
-
-                $('#army' + Army.selected.armyId).css('background', 'url(/img/game/units/' + Army.selected.color + '/border_army.gif)');
-                $('#army' + Army.selected.armyId + ' .unit').css('background', 'none');
-
-                Army.selected.skippedHeroes = {};
-                Army.selected.skippedSoldiers = {};
-            } else {
-                Army.deselect();
-                Sound.play('slash');
-                Army.select(game.players[game.me.color].armies[army.armyId], 0);
-            }
-        } else {
-            Sound.play('slash');
-            Army.select(game.players[game.me.color].armies[army.armyId], 0);
-        }
     },
     changeImg: function (army) {
         $('#army' + army.armyId + ' .unit img').attr('src', army.img);
@@ -377,27 +310,6 @@ var Armyyyy = {
         return
     },
 
-    delete: function (armyId, color, quiet) {
-        if (notSet(game.players[color].armies[armyId])) {
-            throw ('Brak armi o armyId = ' + armyId + ' i kolorze = ' + color);
-            return;
-        }
-
-        this.fields(game.players[color].armies[armyId]);
-
-        if (quiet) {
-            $('#army' + armyId).remove();
-            $('#' + armyId).remove();
-        } else {
-            zoom.lens.setcenter(game.players[color].armies[armyId].x * 40, game.players[color].armies[armyId].y * 40);
-            $('#' + armyId).fadeOut(500, function () {
-                $('#army' + armyId).remove();
-                $('#' + armyId).remove();
-            });
-        }
-
-        delete game.players[color].armies[armyId];
-    },
     computerLoop: function (armies, color) {
         var armyId;
         for (armyId in armies) {

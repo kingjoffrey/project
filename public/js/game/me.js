@@ -311,4 +311,80 @@ var Me = new function () {
     this.setIsSelected = function (value) {
         isSelected = value
     }
+    this.armyClick = function (armyId) {
+        if (Gui.lock) {
+            return;
+        }
+
+        if (!Turn.isMy()) {
+            return
+        }
+
+        if (selectedArmyId) {
+            var army = Me.getArmy(selectedArmyId)
+            if (army.countHeroes() + army.countSoldiers() == 1) {
+                return
+            }
+
+            //$('#army' + army.armyId).css('background', 'none');
+            //$('#army' + army.armyId + ' .unit').css('background', 'url(/img/game/units/' + army.color + '/border_unit.gif)');
+
+            var newHeroKey = null;
+            var newSoldierKey = null;
+
+            army.setHeroSplitKey(null)
+            army.setSoldierSplitKey(null)
+
+            for (var key in army.getHeroes()) {
+                if (army.skippedHeroes[key]) {
+                    continue
+                }
+                army.skippedHeroes[key] = true
+                newHeroKey = key
+                army.setHeroSplitKey(key)
+                break
+            }
+
+            if (newHeroKey !== null) {
+                //Army.setImg(army, newHeroKey, null);
+                //Army.changeImg(army)
+                Me.updateInfo(selectedArmyId)
+                $('#moves').html(army.getHeroMovesLeft(newHeroKey))
+                return
+            }
+
+            for (var key in army.getSoldiers()) {
+                if (army.skippedSoldiers[key]) {
+                    continue;
+                }
+                army.skippedSoldiers[key] = true
+                newSoldierKey = key
+                army.soldierSplitKey = key
+                break;
+            }
+
+            if (newSoldierKey !== null) {
+                //Army.setImg(army, null, newSoldierKey);
+                //Army.changeImg(army)
+                Me.updateInfo(selectedArmyId)
+                $('#moves').html(army.getSoldierMovesLeft(newSoldierKey));
+                return;
+            }
+
+            //Army.setImg(army, army.heroKey, army.soldierKey);
+            //Army.changeImg(army)
+            army.getMovementType()
+            Me.updateInfo(selectedArmyId)
+            $('#name').html('Army')
+
+            //$('#army' + army.armyId).css('background', 'url(/img/game/units/' + army.color + '/border_army.gif)');
+            //$('#army' + army.armyId + ' .unit').css('background', 'none');
+
+            army.skippedHeroes = {}
+            army.skippedSoldiers = {}
+        } else {
+            Sound.play('slash')
+            this.selectArmy(armyId, 0)
+        }
+    }
 }
