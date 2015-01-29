@@ -37,14 +37,14 @@ var Army = function (army, bgColor, miniMapColor, textColor) {
             return key
         }
     }
-    var getMovementType = function () {
+    this.getMovementType = function () {
         if (army.canSwim) {
             army.movementType = 'swimming';
-            for (key in game.terrain) {
-                army.terrain[key] = game.terrain[key][army.movementType];
+            for (var key in Terrain.toArray()) {
+                army.terrain[key] = Terrain.get(key)[army.movementType]
             }
 
-            for (key in army.soldiers) {
+            for (var key in army.soldiers) {
                 if (army.soldiers[key].unitId != shipId) {
                     continue;
                 }
@@ -132,7 +132,6 @@ var Army = function (army, bgColor, miniMapColor, textColor) {
 
             army.moves = moves;
         }
-        return army;
     }
     this.getHeroMovesLeft = function (key) {
         return army.heroes[key].movesLeft

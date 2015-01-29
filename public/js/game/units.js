@@ -6,4 +6,7 @@ var Units = new function () {
     this.get = function (unitId) {
         return units[unitId]
     }
+    this.toArray = function () {
+        return units
+    }
 }

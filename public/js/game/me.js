@@ -322,7 +322,7 @@ var Me = new function () {
         }
 
         if (selectedArmyId) {
-            var army = Me.getArmy(selectedArmyId)
+            var army = this.getArmy(selectedArmyId)
             if (army.countHeroes() + army.countSoldiers() == 1) {
                 return
             }

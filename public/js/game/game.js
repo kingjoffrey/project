@@ -6,6 +6,7 @@ var Game = new function () {
             loading = false
 
             Units.init(game.units)
+            Terrain.init(game.terrain)
             Three.init()
             Fields.init(game.fields)
             Gui.init()
@@ -16,8 +17,6 @@ var Game = new function () {
             Me.init(game.me)
 
             renderChatHistory();
-
-console.log(game.terrain)
         }
 
         //Players.updateOnline()
