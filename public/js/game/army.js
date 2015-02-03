@@ -1,7 +1,12 @@
 var Army = function (army, bgColor, miniMapColor, textColor) {
     var meshId = Three.addArmy(army.x, army.y, bgColor, army.armyId),
         heroSplitKey = null,
-        soldierSplitKey = null
+        soldierSplitKey = null,
+        numberOfUnits = countProperties(army.heroes) + countProperties(army.soldiers)
+
+    if (numberOfUnits > 8) {
+        numberOfUnits = 8
+    }
 
     map.append(
         $('<div>')
@@ -61,8 +66,8 @@ var Army = function (army, bgColor, miniMapColor, textColor) {
             army.moves = shipMoves;
         } else if (army.canFly > 0) {
             army.movementType = 'flying';
-            for (key in game.terrain) {
-                army.terrain[key] = game.terrain[key][army.movementType];
+            for (key in Terrain.toArray()) {
+                army.terrain[key] = Terrain.get(key)[army.movementType];
             }
 
             for (key in army.soldiers) {
@@ -82,8 +87,8 @@ var Army = function (army, bgColor, miniMapColor, textColor) {
             army.moves = flyMoves;
         } else {
             army.movementType = 'walking';
-            for (key in game.terrain) {
-                army.terrain[key] = game.terrain[key][army.movementType];
+            for (key in Terrain.toArray()) {
+                army.terrain[key] = Terrain.get(key)[army.movementType];
             }
 
             if (typeof army.heroes === 'object') {
@@ -107,14 +112,14 @@ var Army = function (army, bgColor, miniMapColor, textColor) {
             }
 
             for (key in army.soldiers) {
-                if (game.units[army.soldiers[key].unitId].f > f) {
-                    f = game.units[army.soldiers[key].unitId].f;
+                if (Units.get(army.soldiers[key].unitId).f > f) {
+                    f = Units.get(army.soldiers[key].unitId).f;
                 }
-                if (game.units[army.soldiers[key].unitId].m > m) {
-                    m = game.units[army.soldiers[key].unitId].m;
+                if (Units.get(army.soldiers[key].unitId).m > m) {
+                    m = Units.get(army.soldiers[key].unitId).m;
                 }
-                if (game.units[army.soldiers[key].unitId].s > s) {
-                    s = game.units[army.soldiers[key].unitId].s;
+                if (Units.get(army.soldiers[key].unitId).s > s) {
+                    s = Units.get(army.soldiers[key].unitId).s;
                 }
 
                 if (notSet(moves)) {
@@ -169,15 +174,15 @@ var Armyyyy = {
             army.attack = army.heroes[heroKey].attackPoints;
             army.defense = army.heroes[heroKey].defensePoints;
         } else if (soldierKey) {
-            if (game.units[army.soldiers[soldierKey].unitId].name_lang) {
-                army.name = game.units[army.soldiers[soldierKey].unitId].name_lang;
+            if (Units.get(army.soldiers[soldierKey].unitId).name_lang) {
+                army.name = Units.get(army.soldiers[soldierKey].unitId).name_lang;
             } else {
-                army.name = game.units[army.soldiers[soldierKey].unitId].name;
+                army.name = Units.get(army.soldiers[soldierKey].unitId).name;
             }
 
             army.img = Unit.getImage(army.soldiers[soldierKey].unitId, army.color);
-            army.attack = game.units[army.soldiers[soldierKey].unitId].attackPoints;
-            army.defense = game.units[army.soldiers[soldierKey].unitId].defensePoints;
+            army.attack = Units.get(army.soldiers[soldierKey].unitId).attackPoints;
+            army.defense = Units.get(army.soldiers[soldierKey].unitId).defensePoints;
         }
 
         return army;
@@ -260,10 +265,6 @@ var Armyyyy = {
             }
         }
 
-        var numberOfUnits = countProperties(army.heroes) + countProperties(army.soldiers);
-        if (numberOfUnits > 8) {
-            numberOfUnits = 8;
-        }
 
         //board.append(
         //    element
@@ -281,24 +282,6 @@ var Armyyyy = {
         //        )
         //    )
         //);
-        //Three.loadArmy(army.armyId, army.x, army.y, army.img)
-
-        map.append(
-            $('<div>')
-                .css({
-                    'left': army.x * 2 + 'px',
-                    'top': army.y * 2 + 'px',
-                    'background': game.players[color].minimapColor,
-                    'border-color': game.players[color].textColor,
-                    'z-index': 10
-                })
-                .attr('id', army.armyId)
-                .addClass('a')
-        );
-
-        game.players[color].armies[army.armyId] = army;
-
-        return
     },
 
     computerLoop: function (armies, color) {
@@ -396,10 +379,10 @@ var Unit = {
     },
     getShipId: function () {
         for (i in game.units) {
-            if (game.units[i] == null) {
+            if (Units.get(i) == null) {
                 continue;
             }
-            if (game.units[i].canSwim) {
+            if (Units.get(i).canSwim) {
                 return i;
             }
         }
@@ -411,9 +394,10 @@ var Hero = {
         return '/img/game/heroes/' + color + '.png';
     },
     findMy: function () {
-        for (armyId in game.players[game.me.color].armies) {
-            for (heroId in game.players[game.me.color].armies[armyId].heroes) {
-                return heroId;
+        for (var armyId in Players.get(Me.getColor()).getArmies().toArray()) {
+            var heroId = Me.getArmy(armyId).getHeroKey()
+            if (heroId) {
+                return heroId
             }
         }
     }

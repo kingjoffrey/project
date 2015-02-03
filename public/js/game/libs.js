@@ -1,5 +1,5 @@
 $(document)[0].oncontextmenu = function () {
-    return false;
+    return
 } // usuwa menu kontekstowe spod prawego przycisku
 
 
@@ -24,19 +24,21 @@ function makeMyCursorLock() {
 }
 
 function titleBlink(msg) {
+    var timeoutId = Game.getTimeoutId()
     if (timeoutId) {
         clearInterval(timeoutId);
     }
-    timeoutId = setInterval(function () {
+    Game.setTimeoutId(setInterval(function () {
         if (document.title == msg) {
-            document.title = '...';
+            document.title = '...'
         } else {
-            document.title = msg;
+            document.title = msg
         }
-    });
+    }))
+
     $(document).bind("mousemove keypress", function () {
-        clearInterval(timeoutId);
-        document.title = documentTitle;
+        clearInterval(Game.getTimeoutId())
+        document.title = documentTitle
         window.onmousemove = null;
     });
 }
@@ -58,7 +60,7 @@ function makeTime() {
 function getISODateTime(d) {
     // padding function
     var s = function (a, b) {
-        return(1e15 + a + "").slice(-b)
+        return (1e15 + a + "").slice(-b)
     };
 
     // default date parameter
@@ -134,8 +136,8 @@ function makeId(lenght) {
 function countProperties(obj) {
     var count = 0;
 
-    for(var prop in obj) {
-        if(obj.hasOwnProperty(prop))
+    for (var prop in obj) {
+        if (obj.hasOwnProperty(prop))
             ++count;
     }
 

@@ -276,6 +276,7 @@ EventsControls.onclick = function () {
             break
 
         case 1:
+            // middle button
             break
 
         case 2:

@@ -1,5 +1,6 @@
 var Game = new function () {
-    var loading = true
+    var loading = true,
+        timeoutId = null
 
     this.init = function (game) {
         if (loading) {
@@ -20,7 +21,20 @@ var Game = new function () {
         }
 
         //Players.updateOnline()
-        //
+
+        if (Turn.isMy()) {
+            Me.turnOn()
+            if (!Me.getTurnActive()) {
+                Websocket.startMyTurn()
+            }
+        } else {
+            Me.turnOff()
+            if (isComputer(Turn.color)) {
+                setTimeout('Websocket.computer()', 1000)
+            }
+        }
+
+
         //if (Turn.isMy()) {
         //    console.log('ccc')
         //    Turn.on();
@@ -35,6 +49,12 @@ var Game = new function () {
         //}
 
         //Sound.play('gamestart')
+    }
+    this.getTimeoutId = function () {
+        return timeoutId
+    }
+    this.setTimeoutId = function (value) {
+        timeoutId = value
     }
 }
 

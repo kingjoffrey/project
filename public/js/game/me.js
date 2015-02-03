@@ -12,18 +12,21 @@ var Me = new function () {
         isSelected = 0,
         parentArmyId = null,
         nextArmyId = null,
-        isNextSelected = null
+        isNextSelected = null,
+        turnActive
 
     this.init = function (me) {
+        turnActive = me.turnActive
         gold = me.gold
-        goldUpdate()
         costs = me.costs
-        costsUpdate()
         income = me.income
-        incomeUpdate()
         color = me.color
 
         this.attachEventsControls()
+
+        goldUpdate()
+        costsUpdate()
+        incomeUpdate()
     }
     this.getColor = function () {
         return color
@@ -127,7 +130,7 @@ var Me = new function () {
             if (Ruin.getIdByPosition(army.getX(), army.getY()) !== null) {
                 $('#searchRuins').removeClass('buttonOff');
             }
-        //    $('#showArtifacts').removeClass('buttonOff');
+            //    $('#showArtifacts').removeClass('buttonOff');
         }
 
         //if (Castle.getMy(a.x, a.y)) {
@@ -387,5 +390,29 @@ var Me = new function () {
             Sound.play('slash')
             this.selectArmy(armyId, 0)
         }
+    }
+    this.turnOn = function () {
+        this.resetSkippedArmies()
+        //Castle.showFirst()
+        Message.turn()
+        Gui.unlock()
+        titleBlink('Your turn!')
+        if (!Hero.findMy()) {
+            $('#heroResurrection').removeClass('buttonOff')
+        }
+        if (gold > 1000) {
+            $('#heroHire').removeClass('buttonOff')
+        }
+    }
+    this.turnOff = function () {
+        this.deselectArmy()
+        $('#nextTurn').addClass('buttonOff')
+        $('#nextArmy').addClass('buttonOff')
+        $('#heroResurrection').addClass('buttonOff')
+        $('#heroHire').addClass('buttonOff')
+        //makeMyCursorLock();
+    }
+    this.getTurnActive = function () {
+        return
     }
 }

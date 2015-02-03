@@ -446,7 +446,7 @@ var Gui = {
         Gui.lock = false;
         $('#nextTurn').removeClass('buttonOff');
         $('#nextArmy').removeClass('buttonOff');
-        makeMyCursorUnlock();
+        //makeMyCursorUnlock();
     },
     setLock: function () {
         Gui.lock = true;
