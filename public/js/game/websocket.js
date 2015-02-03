@@ -34,23 +34,23 @@ Websocket = {
                 break;
 
             case 'nextTurn':
-                Army.deselect()
+                Me.deselectArmy()
                 Turn.change(r.color, r.nr)
                 this.computer()
                 this.executing = 0
                 break;
 
             case 'startTurn':
-                if (r.color == game.me.color) {
+                if (Me.colorEquals(r.color)) {
                     for (var i in r.castles) {
                         var status = Castle.updateCurrentProductionTurn(i, r.castles[i].productionTurn);
                     }
-                    Army.quitedArmies = {};
-                    Sound.play('startturn');
-                    goldUpdate(r.gold)
-                    costsUpdate(r.costs)
-                    incomeUpdate(r.income)
-                    Gui.unlock();
+                    Me.resetQuitedArmies()
+                    Sound.play('startturn')
+                    Me.goldUpdate(r.gold)
+                    Me.costsUpdate(r.costs)
+                    Me.incomeUpdate(r.income)
+                    Gui.unlock()
                 }
 
                 for (i in r.armies) {

@@ -38,8 +38,8 @@ function titleBlink(msg) {
 
     $(document).bind("mousemove keypress", function () {
         clearInterval(Game.getTimeoutId())
-        document.title = documentTitle
-        window.onmousemove = null;
+        document.title = Gui.documentTitle
+        window.onmousemove = null
     });
 }
 

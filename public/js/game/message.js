@@ -166,7 +166,7 @@ var Message = {
     },
     turn: function () {
         this.remove();
-        if (Turn.isMy() && Turn.number == 1 && Players[Me.getColor()].castles[firstCastleId].currentProductionId === null) {
+        if (Turn.isMy() && Turn.number == 1 && Players.get(Me.getColor()).getCastles().get(firstCastleId).currentProductionId === null) {
             Message.castle(firstCastleId);
         } else {
             var id = this.simple(translations.yourTurn, translations.thisIsYourTurnNow)

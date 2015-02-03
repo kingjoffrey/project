@@ -31,7 +31,11 @@ var Me = new function () {
     this.getColor = function () {
         return color
     }
-
+    this.colorEquals = function (value) {
+        if (color == value) {
+            return true
+        }
+    }
     var goldUpdate = function () {
         $('#gold #value').fadeOut(300, function () {
             $('#gold #value').html(gold)
@@ -83,6 +87,9 @@ var Me = new function () {
     }
     this.resetSkippedArmies = function () {
         skippedArmies = {}
+    }
+    this.resetQuitedArmies = function () {
+        quitedArmies = {}
     }
     this.getSelectedArmyId = function () {
         return selectedArmyId

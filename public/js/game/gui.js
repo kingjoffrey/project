@@ -8,12 +8,14 @@ var Gui = {
     timerBox: {'close': 0},
     mapBox: {'close': 0},
     speed: 200,
+    documentTitle: null,
     init: function () {
         $(window).resize(function () {
             Gui.adjust();
         })
-        map = $('#map');
-        coord = $('#coord');
+        documentTitle = document.title
+        map = $('#map')
+        coord = $('#coord')
         Zoom.init()
         this.prepareButtons()
         this.adjust()
