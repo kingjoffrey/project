@@ -13,8 +13,8 @@ var Fields = new function () {
                     case 'f':
                         //Three.addTree(x, y)
                         break
-                    //case 'w':
-                    //    Three.addWater(x, y)
+                        //case 'w':
+                        //    Three.addWater(x, y)
                         break
                 }
                 this.add(x, y, fields[y][x])
@@ -27,7 +27,7 @@ var Fields = new function () {
         }
         fields[y][x] = new Field(field)
     }
-    this.get = function () {
+    this.get = function (x, y) {
         return fields[y][x]
     }
 }

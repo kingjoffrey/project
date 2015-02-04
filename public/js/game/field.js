@@ -4,8 +4,10 @@ var Field = function (field) {
         armies = field.armies,
         castleId = field.castleId,
         towerId = field.towerId,
-        ruinId = field.ruinId,
         castleColor = field.castleColor,
         towerColor = field.towerColor,
         empty = field.empty
+    this.getRuinId = function () {
+        return field.ruinId
+    }
 }

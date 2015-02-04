@@ -16,10 +16,7 @@ var Me = new function () {
         turnActive
 
     this.init = function (me) {
-        turnActive = me.turnActive
-        gold = me.gold
-        costs = me.costs
-        income = me.income
+        turnActive = Players.get(me.color).getTurnActive()
         color = me.color
 
         this.attachEventsControls()
@@ -145,7 +142,7 @@ var Me = new function () {
         $('#quitArmy').removeClass('buttonOff');
 
         if (army.getHeroKey()) {
-            if (Ruin.getIdByPosition(army.getX(), army.getY()) !== null) {
+            if (Fields.get(army.getX(), army.getY()).getRuinId()) {
                 $('#searchRuins').removeClass('buttonOff');
             }
             //    $('#showArtifacts').removeClass('buttonOff');

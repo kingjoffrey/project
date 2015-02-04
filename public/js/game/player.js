@@ -1,23 +1,17 @@
 var Player = function (player) {
     var armies = new Armies(),
         castles = new Castles(),
-        towers = new Towers(),
-        team = player.team,
-        backgroundColor = player.backgroundColor,
-        miniMapColor = player.miniMapColor,
-        textColor = player.textColor
+        towers = new Towers()
 
-//console.log(player)
-
-    armies.init(player.armies, backgroundColor, miniMapColor, textColor)
-    castles.init(player.castles, backgroundColor, miniMapColor, textColor)
-    towers.init(player.towers, backgroundColor)
+    armies.init(player.armies, player.backgroundColor, player.miniMapColor, player.textColor)
+    castles.init(player.castles, player.backgroundColor, player.miniMapColor, player.textColor)
+    towers.init(player.towers, player.backgroundColor)
 
     this.getTeam = function () {
-        return team
+        return player.team
     }
     this.getBackgroundColor = function () {
-        return backgroundColor
+        return player.backgroundColor
     }
     this.getArmies = function () {
         return armies
@@ -27,5 +21,8 @@ var Player = function (player) {
     }
     this.isComputer = function () {
         return player.computer
+    }
+    this.getTurnActive = function () {
+        return player.turnActive
     }
 }
