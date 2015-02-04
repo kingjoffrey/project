@@ -48,4 +48,9 @@ var Armies = function () {
         $('#' + armyId).remove()
         delete armies[armyId]
     }
+    this.hasArmy = function (armyId) {
+        if (isSet(armies[armyId])) {
+            return true
+        }
+    }
 }

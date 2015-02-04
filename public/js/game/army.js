@@ -26,7 +26,7 @@ var Army = function (army, bgColor, miniMapColor, textColor) {
         if (numberOfUnits > 8) {
             numberOfUnits = 8
         }
-        this.getMovementType()
+        //this.getMovementType()
     }
     this.getMeshId = function () {
         return meshId

@@ -18,6 +18,9 @@ var Castle = function (castle, bgColor, miniMapColor, textColor) {
     this.getMeshId = function () {
         return meshId
     }
+    this.updateCurrentProductionTurn = function (value) {
+        castle.currentProductionTurn = value
+    }
 }
 
 var Castleeee = {

@@ -110,19 +110,6 @@ function notSet(val) {
     return !isSet(val);
 }
 
-function isComputer(color) {
-    return game.players[color].computer;
-}
-
-function fieldsCopy() {
-    for (y in game.fields) {
-        fields[y] = new Array();
-        for (x in game.fields[y]) {
-            fields[y][x] = game.fields[y][x];
-        }
-    }
-}
-
 function makeId(lenght) {
     var text = '';
     var possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';

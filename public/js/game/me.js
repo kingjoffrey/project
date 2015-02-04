@@ -24,9 +24,9 @@ var Me = new function () {
 
         this.attachEventsControls()
 
-        goldUpdate()
-        costsUpdate()
-        incomeUpdate()
+        updateGold()
+        updateCosts()
+        updateIncome()
     }
     this.getColor = function () {
         return color
@@ -36,7 +36,7 @@ var Me = new function () {
             return true
         }
     }
-    var goldUpdate = function () {
+    var updateGold = function () {
         $('#gold #value').fadeOut(300, function () {
             $('#gold #value').html(gold)
             $('#gold #value').fadeIn()
@@ -48,30 +48,41 @@ var Me = new function () {
         })
 
     }
-    var costsUpdate = function () {
+    var updateCosts = function () {
         $('#costs #value').fadeOut(300, function () {
             $('#costs #value').html(gold)
             $('#costs #value').fadeIn(300)
         })
     }
-    var incomeUpdate = function () {
+    var updateIncome = function () {
         $('#income #value').fadeOut(300, function () {
             $('#income #value').html(income)
             $('#income #value').fadeIn(300)
         })
     }
-
+    this.setGold = function (value) {
+        gold = value
+        updateGold()
+    }
+    this.setCosts = function (value) {
+        costs = value
+        updateCosts()
+    }
+    this.setIncome = function (value) {
+        income = value
+        updateIncome()
+    }
     this.goldIncrement = function (value) {
         gold += value
-        goldUpdate()
+        updateGold()
     }
     this.costIncrement = function (value) {
         costs += value
-        costsUpdate()
+        updateCosts()
     }
     this.incomeIncrement = function (value) {
         income += value
-        incomeUpdate()
+        updateIncome()
     }
     this.getGold = function () {
         return gold
@@ -287,17 +298,18 @@ var Me = new function () {
         }
     }
     this.updateInfo = function (armyId) {
-        $('#name').html(a.name);
-        $('#attack').html(a.attack);
-        $('#defense').html(a.defense);
-        $('#moves').html(a.moves);
+        var army = this.getArmy(armyId)
+        $('#name').html(army.name);
+        $('#attack').html(army.attack);
+        $('#defense').html(army.defense);
+        $('#moves').html(army.moves);
     }
     this.fortify = function () {
         if (!Turn.isMy()) {
-            return;
+            return
         }
         if (Gui.lock) {
-            return;
+            return
         }
         if (selectedArmyId) {
             Websocket.fortify(selectedArmyId)
@@ -307,10 +319,12 @@ var Me = new function () {
         }
     }
     this.unfortify = function (armyId) {
-        if (isComputer(Turn.color)) {
+        if (!Turn.isMy()) {
             return
         }
-
+        if (Gui.lock) {
+            return
+        }
         if (isTruthful(quitedArmies[armyId])) {
             Websocket.unfortify(armyId, 0)
             delete quitedArmies[armyId]
@@ -420,6 +434,6 @@ var Me = new function () {
         //makeMyCursorLock();
     }
     this.getTurnActive = function () {
-        return
+        return turnActive
     }
 }

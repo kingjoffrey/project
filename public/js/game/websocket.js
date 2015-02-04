@@ -41,6 +41,7 @@ Websocket = {
                 break;
 
             case 'startTurn':
+                console.log('aaa')
                 if (Me.colorEquals(r.color)) {
                     var castles = Players.get(r.color).getCastles()
                     for (var castleId in r.castles) {
@@ -49,18 +50,18 @@ Websocket = {
                     }
                     Me.resetQuitedArmies()
                     Sound.play('startturn')
-                    Me.goldUpdate(r.gold)
-                    Me.costsUpdate(r.costs)
-                    Me.incomeUpdate(r.income)
+                    Me.setGold(r.gold)
+                    Me.setCosts(r.costs)
+                    Me.setIncome(r.income)
                     Gui.unlock()
                 }
 
                 var armies = Players.get(r.color).getArmies()
                 for (var armyId in r.armies) {
                     if (armies.hasArmy(armyId)) {
-                        armies.update(r.armies[armyId])
+                        armies.update(armyId, r.armies[armyId])
                     } else {
-                        armies.add(r.armies[armyId])
+                        armies.add(armyId, r.armies[armyId])
                     }
                 }
                 this.executing = 0
