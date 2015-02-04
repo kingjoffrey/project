@@ -1,13 +1,22 @@
 var Armies = function () {
-    var armies = {}
+    var armies = {},
+        bgColor,
+        miniMapColor,
+        textColor
 
-    this.init = function (armies, bgColor, miniMapColor, textColor) {
+    this.init = function (armies, bgC, miniMapC, textC) {
+        bgColor = bgC
+        miniMapColor = miniMapC
+        textColor = textC
         for (var armyId in armies) {
-            this.add(armyId, armies[armyId], bgColor, miniMapColor, textColor)
+            this.add(armyId, armies[armyId])
         }
     }
-    this.add = function (armyId, army, bgColor, miniMapColor, textColor) {
+    this.add = function (armyId, army) {
         armies[armyId] = new Army(army, bgColor, miniMapColor, textColor)
+    }
+    this.update = function (armyId, army) {
+        armies[armyId].update(army)
     }
     this.get = function (armyId) {
         return armies[armyId]

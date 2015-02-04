@@ -20,6 +20,14 @@ var Army = function (army, bgColor, miniMapColor, textColor) {
             .attr('id', army.armyId)
             .addClass('a')
     )
+    this.update = function (a) {
+        army = a
+        numberOfUnits = countProperties(army.heroes) + countProperties(army.soldiers)
+        if (numberOfUnits > 8) {
+            numberOfUnits = 8
+        }
+        this.getMovementType()
+    }
     this.getMeshId = function () {
         return meshId
     }
@@ -30,7 +38,7 @@ var Army = function (army, bgColor, miniMapColor, textColor) {
         return army.y
     }
     this.getMoves = function () {
-        return moves
+        return army.moves
     }
     this.getHeroKey = function () {
         for (var heroId in army.heroes) {

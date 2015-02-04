@@ -42,8 +42,10 @@ Websocket = {
 
             case 'startTurn':
                 if (Me.colorEquals(r.color)) {
-                    for (var i in r.castles) {
-                        var status = Castle.updateCurrentProductionTurn(i, r.castles[i].productionTurn);
+                    var castles = Players.get(r.color).getCastles()
+                    for (var castleId in r.castles) {
+                        //var status = Castle.updateCurrentProductionTurn(i, r.castles[i].productionTurn);
+                        castles.get(castleId).updateCurrentProductionTurn(r.castles[castleId].productionTurn)
                     }
                     Me.resetQuitedArmies()
                     Sound.play('startturn')
@@ -53,8 +55,13 @@ Websocket = {
                     Gui.unlock()
                 }
 
-                for (i in r.armies) {
-                    var status = Army.init(r.armies[i], r.color);
+                var armies = Players.get(r.color).getArmies()
+                for (var armyId in r.armies) {
+                    if (armies.hasArmy(armyId)) {
+                        armies.update(r.armies[armyId])
+                    } else {
+                        armies.add(r.armies[armyId])
+                    }
                 }
                 this.executing = 0
                 break;
