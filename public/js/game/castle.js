@@ -21,6 +21,12 @@ var Castle = function (castle, bgColor, miniMapColor, textColor) {
     this.updateCurrentProductionTurn = function (value) {
         castle.currentProductionTurn = value
     }
+    this.getX = function () {
+        return castle.x
+    }
+    this.getY = function () {
+        return castle.y
+    }
 }
 
 var Castleeee = {
@@ -389,16 +395,6 @@ var Castleeee = {
         $('#castle' + castleId).remove();
         $('#c' + castleId).remove();
         delete castles[castleId];
-    },
-    showFirst: function () {
-        var castleId = game.capitals[game.me.color]
-        if (isSet(castleId)) {
-            Zoom.lens.setcenter(game.players[game.me.color].castles[castleId].x, game.players[game.me.color].castles[castleId].y);
-        } else if (isSet(game.players[game.me.color].castles[firstCastleId])) {
-            Zoom.lens.setcenter(game.players[game.me.color].castles[firstCastleId].x, game.players[game.me.color].castles[firstCastleId].y);
-        } else {
-            Army.showFirst();
-        }
     },
     updateDefense: function (castleId, castle) {
         var defence = castle.defense + castle.defenseMod

@@ -13,7 +13,7 @@ var Gui = {
         $(window).resize(function () {
             Gui.adjust();
         })
-        documentTitle = document.title
+        documentTitle = 'WoF'
         map = $('#map')
         coord = $('#coord')
         Zoom.init()
@@ -165,27 +165,27 @@ var Gui = {
         });
 
         $('#nextArmy').click(function () {
-            Army.findNext();
+            Me.findNext()
         })
         ;
         $('#skipArmy').click(function () {
-            Army.skip();
+            Me.skip()
         });
 
         $('#quitArmy').click(function () {
-            Army.fortify();
+            Me.fortify()
         });
 
         $('#splitArmy').click(function () {
-            if (!Army.selected) {
-                return;
+            if (!Me.getSelectedArmyId()) {
+                return
             }
 
-            Message.split();
-        });
+            Message.split()
+        })
 
         $('#armyStatus').click(function () {
-            if (!Army.selected) {
+            if (!Me.getSelectedArmyId()) {
                 return;
             }
 
@@ -197,11 +197,11 @@ var Gui = {
         });
 
         $('#deselectArmy').click(function () {
-            if (!Army.selected) {
+            if (!Me.getSelectedArmyId()) {
                 return;
             }
 
-            Army.deselect();
+            Me.deselectArmy()
         });
 
         $('#searchRuins').click(function () {

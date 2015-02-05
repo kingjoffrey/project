@@ -1,10 +1,12 @@
 var Game = new function () {
     var loading = true,
-        timeoutId = null
+        timeoutId = null,
+        capitals
 
     this.init = function (game) {
         if (loading) {
             loading = false
+            capitals = game.capitals
 
             Units.init(game.units)
             Terrain.init(game.terrain)
@@ -17,7 +19,7 @@ var Game = new function () {
             Ruins.init(game.ruins)
             Me.init(game.me)
 
-            renderChatHistory();
+            renderChatHistory()
         }
 
         //Players.updateOnline()
@@ -29,24 +31,10 @@ var Game = new function () {
             }
         } else {
             Me.turnOff()
-            if (isComputer(Turn.color)) {
+            if (Players.get(Turn.color).isComputer()) {
                 setTimeout('Websocket.computer()', 1000)
             }
         }
-
-
-        //if (Turn.isMy()) {
-        //    console.log('ccc')
-        //    Turn.on();
-        //} else {
-        //    Turn.off();
-        //}
-        //
-        //if (Turn.isMy() && !game.players[game.me.color].turnActive) {
-        //    Websocket.startMyTurn();
-        //} else if (isComputer(Turn.color)) {
-        //    setTimeout('Websocket.computer()', 1000);
-        //}
 
         //Sound.play('gamestart')
     }
@@ -55,6 +43,9 @@ var Game = new function () {
     }
     this.setTimeoutId = function (value) {
         timeoutId = value
+    }
+    this.getCapitalId = function (color) {
+        return capitals[color]
     }
 }
 

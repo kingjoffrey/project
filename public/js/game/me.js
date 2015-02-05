@@ -209,19 +209,9 @@ var Me = new function () {
         $('#showArtifacts').addClass('buttonOff');
         $('#disbandArmy').addClass('buttonOff');
     }
-
     this.attachEventsControls = function () {
         Players.get(color).getArmies().attachEventsControls()
         Players.get(color).getCastles().attachEventsControls()
-    }
-
-    this.showFirst = function () {
-        var armies = Players.get(color).getArmies().toArray()
-        for (var armyId in armies) {
-            Zoom.lens.setcenter(armies[armyId].getX(), armies[armyId].getY())
-            return
-        }
-        Zoom.lens.setcenter(0, 0);
     }
     this.removeFromSkipped = function (armyId) {
         if (isTruthful(skippedArmies[armyId])) {
@@ -411,7 +401,7 @@ var Me = new function () {
     }
     this.turnOn = function () {
         this.resetSkippedArmies()
-        //Castle.showFirst()
+        this.showFirst()
         Message.turn()
         Gui.unlock()
         titleBlink('Your turn!')
@@ -432,5 +422,25 @@ var Me = new function () {
     }
     this.getTurnActive = function () {
         return turnActive
+    }
+    this.showFirst = function () {
+        var castleId = Game.getCapitalId(color)
+        var firstCastleId
+        if (isSet(this.getCastle(castleId))) {
+            Zoom.lens.setcenter(this.getCastle(castleId).getX(), this.getCastle(castleId).getY())
+        } else if (firstCastleId = this.getFirsCastleId()) {
+            Zoom.lens.setcenter(this.getCastle(firstCastleId).getX(), this.getCastle(firstCastleId).getY())
+        } else {
+            var armies = Players.get(color).getArmies().toArray()
+            for (var armyId in armies) {
+                Zoom.lens.setcenter(armies[armyId].getX(), armies[armyId].getY())
+                return
+            }
+        }
+    }
+    this.getFirsCastleId = function () {
+        for (var castleId in Player.get(color).getCastles().toArray()) {
+            return castleId
+        }
     }
 }
