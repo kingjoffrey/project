@@ -70,13 +70,13 @@ Websocket = {
             case 'ruin':
                 //board.append($('<div>').addClass('ruinSearch').css({'top': Y + 'px', 'left': X + 'px'}));
                 Zoom.lens.setcenter(r.army.x, r.army.y);
-                Army.init(r.army, r.color);
-                Ruin.update(r.ruin.ruinId, r.ruin.empty);
-                if (game.me.color == r.color) {
+                Players.get(r.color).getArmies().update(r.army.armyId, r.army)
+                Ruins.update(r.ruin.ruinId, r.ruin.empty)
+                if (Me.colorEquals(r.color)) {
                     switch (r.find[0]) {
                         case 'gold':
                             Sound.play('gold1');
-                            goldIncrement(r.find[1]);
+                            Me.goldIncrement(r.find[1])
                             Message.simple(translations.ruins, translations.youHaveFound + ' ' + r.find[1] + ' ' + translations.gold);
                             break;
                         case 'death':

@@ -454,7 +454,7 @@ var Gui = {
         Gui.lock = true;
         $('#nextTurn').addClass('buttonOff');
         $('#nextArmy').addClass('buttonOff');
-        makeMyCursorLock();
+        //makeMyCursorLock();
     }
 
 

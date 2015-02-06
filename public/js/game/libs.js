@@ -19,7 +19,7 @@ function makeMyCursorLock() {
     //board.css('cursor', 'url(/img/game/cursor_hourglass.png), wait')
     $('.tower').css('cursor', 'url(/img/game/cursor_hourglass.png), wait')
     $('.ruin').css('cursor', 'url(/img/game/cursor_hourglass.png), wait')
-    $('.castle:not(.' + game.me.color + ')').css('cursor', 'url(/img/game/cursor_hourglass.png), wait')
+    $('.castle:not(.' + Me.getColor() + ')').css('cursor', 'url(/img/game/cursor_hourglass.png), wait')
     $('.army').css('cursor', 'url(/img/game/cursor_hourglass.png), wait')
 }
 

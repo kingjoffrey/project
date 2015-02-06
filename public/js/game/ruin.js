@@ -1,10 +1,8 @@
 var Ruin = function (ruin) {
-    var x = ruin.x,
-        y = ruin.y,
-        empty = ruin.empty,
-        meshId = Three.addRuin(x, y)
+    var meshId = Three.addRuin(ruin.x, ruin.y)
 
-//this.update = function (empty) {
+    this.update = function (empty) {
+        ruin.empty = empty
 //    var title
 //    if (empty) {
 //        empty = 1;
@@ -13,6 +11,6 @@ var Ruin = function (ruin) {
 //        empty = 0;
 //        title = 'Ruins'
 //    }
-//}
+    }
 
 }

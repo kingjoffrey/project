@@ -184,17 +184,16 @@ var Me = new function () {
         this.armyButtonsOff()
     }
     this.armyButtonsOff = function () {
-        //if (selectedArmyId) {
+        if (selectedArmyId) {
+            deselectedArmyId = selectedArmyId
 
-        //deselectedArmyId = selectedArmyId
+            //Army.deselected.heroSplitKey = null
+            //Army.deselected.soldierSplitKey = null
+            //
+            //Army.deselected.skippedHeroes = {};
+            //Army.deselected.skippedSoldiers = {};
 
-        //Army.deselected.heroSplitKey = null
-        //Army.deselected.soldierSplitKey = null
-        //
-        //Army.deselected.skippedHeroes = {};
-        //Army.deselected.skippedSoldiers = {};
-
-        //}
+        }
         selectedArmyId = null
         $('.path').remove();
         $('#splitArmy').addClass('buttonOff');

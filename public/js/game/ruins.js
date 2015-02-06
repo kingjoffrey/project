@@ -11,4 +11,7 @@ var Ruins = new function () {
     this.get = function (ruinId) {
         return ruins[ruinId]
     }
+    this.update = function (ruinId, empty) {
+        ruins[ruinId].setEmpty(empty)
+    }
 }
