@@ -1,7 +1,6 @@
 var Field = function (field) {
     var type = field.type,
         temporaryType = field.temporaryType,
-        armies = field.armies,
         castleColor = field.castleColor,
         towerColor = field.towerColor,
         empty = field.empty
@@ -13,5 +12,8 @@ var Field = function (field) {
     }
     this.getCastleId = function () {
         return field.castleId
+    }
+    this.removeArmyId = function () {
+        console.log(field.armies)
     }
 }

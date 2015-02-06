@@ -466,13 +466,13 @@ Websocket = {
             return
         }
 
-        if (Move.moving) {
+        if (Move.getMoving()) {
             return
         }
 
         var token = {
             type: 'computer'
-        };
+        }
 
         ws.send(JSON.stringify(token));
     },
