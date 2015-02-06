@@ -3,7 +3,7 @@ var Move = {
     moving: 0,
     start: function (r, ii) {
         if (notSet(r.color)) {
-            Gui.unlock();
+            Gui.unlock()
             Websocket.executing = 0
             Message.simple(translations.army, translations.noMoreMoves)
             return
@@ -12,7 +12,7 @@ var Move = {
         console.log(' ')
         console.log('move.start(' + ii + ') start')
         console.log(r)
-        switch (game.players[r.color].armies[r.army.armyId].movementType) {
+        switch (Players.get(r.color).getArmies().get(r.army.armyId).getMovementType()) {
             case 'flying':
                 Sound.play('fly');
                 break;
@@ -24,7 +24,7 @@ var Move = {
                 break;
         }
 
-        if (Turn.isMy() || (!game.players[r.color].computer || Gui.show)) {
+        if (Turn.isMy() || (!Players.get(r.color).isComputer() || Gui.show)) {
             Message.remove()
         }
 
@@ -35,9 +35,9 @@ var Move = {
             Zoom.lens.setcenter(r.path[1].x, r.path[1].y)
         }
 
-        Army.unfortify(r.army.armyId);
+        Me.unfortify(r.army.armyId);
 
-        if (game.players[r.color].computer) {
+        if (Players.get(r.color).isComputer()) {
             this.stepTime = 100
         } else {
             this.stepTime = 200
@@ -54,7 +54,7 @@ var Move = {
         }
 
         if (isSet(r.path[step])) {
-            if (!game.players[r.color].computer || Gui.show) {
+            if (!Players.get(r.color).isComputer() || Gui.show) {
                 //zoomer.setCenterIfOutOfScreen(r.path[step].x * 40, r.path[step].y * 40);
                 Zoom.lens.setcenter(r.path[step].x, r.path[step].y)
 

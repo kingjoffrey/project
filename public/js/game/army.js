@@ -53,98 +53,99 @@ var Army = function (army, bgColor, miniMapColor, textColor) {
     this.getMovementType = function () {
         if (army.canSwim) {
             army.movementType = 'swimming';
-            for (var key in Terrain.toArray()) {
-                army.terrain[key] = Terrain.get(key)[army.movementType]
-            }
-
-            for (var key in army.soldiers) {
-                if (army.soldiers[key].unitId != shipId) {
-                    continue;
-                }
-
-                if (notSet(shipMoves)) {
-                    var shipMoves = army.soldiers[key].movesLeft;
-                }
-
-                if (army.soldiers[key].movesLeft < shipMoves) {
-                    shipMoves = army.soldiers[key].movesLeft
-                }
-            }
-
-            army.moves = shipMoves;
+            //for (var key in Terrain.toArray()) {
+            //    army.terrain[key] = Terrain.get(key)[army.movementType]
+            //}
+            //
+            //for (var key in army.soldiers) {
+            //    if (army.soldiers[key].unitId != shipId) {
+            //        continue;
+            //    }
+            //
+            //    if (notSet(shipMoves)) {
+            //        var shipMoves = army.soldiers[key].movesLeft;
+            //    }
+            //
+            //    if (army.soldiers[key].movesLeft < shipMoves) {
+            //        shipMoves = army.soldiers[key].movesLeft
+            //    }
+            //}
+            //
+            //army.moves = shipMoves;
         } else if (army.canFly > 0) {
             army.movementType = 'flying';
-            for (key in Terrain.toArray()) {
-                army.terrain[key] = Terrain.get(key)[army.movementType];
-            }
+            //for (key in Terrain.toArray()) {
+            //    army.terrain[key] = Terrain.get(key)[army.movementType];
+            //}
+            //
+            //for (key in army.soldiers) {
+            //    if (!game.units[army.soldiers[key].unitId].canFly) {
+            //        continue;
+            //    }
+            //
+            //    if (notSet(flyMoves)) {
+            //        var flyMoves = army.soldiers[key].movesLeft;
+            //    }
+            //
+            //    if (army.soldiers[key].movesLeft < flyMoves) {
+            //        flyMoves = army.soldiers[key].movesLeft
+            //    }
+            //}
 
-            for (key in army.soldiers) {
-                if (!game.units[army.soldiers[key].unitId].canFly) {
-                    continue;
-                }
-
-                if (notSet(flyMoves)) {
-                    var flyMoves = army.soldiers[key].movesLeft;
-                }
-
-                if (army.soldiers[key].movesLeft < flyMoves) {
-                    flyMoves = army.soldiers[key].movesLeft
-                }
-            }
-
-            army.moves = flyMoves;
+            //army.moves = flyMoves;
         } else {
             army.movementType = 'walking';
-            for (key in Terrain.toArray()) {
-                army.terrain[key] = Terrain.get(key)[army.movementType];
-            }
-
-            if (typeof army.heroes === 'object') {
-                var f = army.terrain.f,
-                    m = army.terrain.m,
-                    s = army.terrain.s;
-            } else {
-                var f = 0,
-                    m = 0,
-                    s = 0;
-            }
-
-            for (key in army.heroes) {
-                if (notSet(moves)) {
-                    var moves = army.heroes[key].movesLeft;
-                }
-
-                if (army.heroes[key].movesLeft < moves) {
-                    moves = army.heroes[key].movesLeft
-                }
-            }
-
-            for (key in army.soldiers) {
-                if (Units.get(army.soldiers[key].unitId).f > f) {
-                    f = Units.get(army.soldiers[key].unitId).f;
-                }
-                if (Units.get(army.soldiers[key].unitId).m > m) {
-                    m = Units.get(army.soldiers[key].unitId).m;
-                }
-                if (Units.get(army.soldiers[key].unitId).s > s) {
-                    s = Units.get(army.soldiers[key].unitId).s;
-                }
-
-                if (notSet(moves)) {
-                    var moves = army.soldiers[key].movesLeft;
-                }
-
-                if (army.soldiers[key].movesLeft < moves) {
-                    moves = army.soldiers[key].movesLeft
-                }
-            }
-
-            army.terrain.f = f;
-            army.terrain.m = m;
-            army.terrain.s = s;
-
-            army.moves = moves;
+            //for (key in Terrain.toArray()) {
+            //    army.terrain[key] = Terrain.get(key)[army.movementType];
+            //}
+            //
+            //if (typeof army.heroes === 'object') {
+            //    var f = army.terrain.f,
+            //        m = army.terrain.m,
+            //        s = army.terrain.s;
+            //} else {
+            //    var f = 0,
+            //        m = 0,
+            //        s = 0;
+            //}
+            //
+            //for (key in army.heroes) {
+            //    if (notSet(moves)) {
+            //        var moves = army.heroes[key].movesLeft;
+            //    }
+            //
+            //    if (army.heroes[key].movesLeft < moves) {
+            //        moves = army.heroes[key].movesLeft
+            //    }
+            //}
+            //
+            //for (key in army.soldiers) {
+            //    if (Units.get(army.soldiers[key].unitId).f > f) {
+            //        f = Units.get(army.soldiers[key].unitId).f;
+            //    }
+            //    if (Units.get(army.soldiers[key].unitId).m > m) {
+            //        m = Units.get(army.soldiers[key].unitId).m;
+            //    }
+            //    if (Units.get(army.soldiers[key].unitId).s > s) {
+            //        s = Units.get(army.soldiers[key].unitId).s;
+            //    }
+            //
+            //    if (notSet(moves)) {
+            //        var moves = army.soldiers[key].movesLeft;
+            //    }
+            //
+            //    if (army.soldiers[key].movesLeft < moves) {
+            //        moves = army.soldiers[key].movesLeft
+            //    }
+            //}
+            //
+            //army.terrain.f = f;
+            //army.terrain.m = m;
+            //army.terrain.s = s;
+            //
+            //army.moves = moves;
         }
+        return army.movementType
     }
     this.getHeroMovesLeft = function (key) {
         return army.heroes[key].movesLeft
