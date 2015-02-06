@@ -458,7 +458,7 @@ Websocket = {
             return;
         }
 
-        if (!isComputer(Turn.color)) {
+        if (!Players.get(Turn.color).isComputer()) {
             return
         }
 
@@ -485,15 +485,15 @@ Websocket = {
         if (!Turn.isMy()) {
             return;
         }
-        if (Army.selected == null) {
+        if (!Me.getSelectedArmyId()) {
             return;
         }
 
-        Army.deselect();
+        Me.deselectArmy()
 
         var token = {
             type: 'ruin',
-            armyId: Army.deselected.armyId
+            armyId: Me.getDeselectedArmyId()
         };
 
         ws.send(JSON.stringify(token));
@@ -560,14 +560,14 @@ Websocket = {
         if (!Turn.isMy()) {
             return;
         }
-        if (Me.getSelectedArmyId() == null) {
+        if (!Me.getSelectedArmyId()) {
             return
         }
         Me.deselectArmy(1)
 
         var token = {
             type: 'disband',
-            armyId: Army.deselected.armyId
+            armyId: Me.getDeselectedArmyId()
         };
 
         ws.send(JSON.stringify(token));
@@ -655,7 +655,7 @@ Websocket = {
             return;
         }
 
-        Army.deselect();
+        Me.deselectArmy()
 
         var token = {
             type: 'resurrection'
@@ -673,7 +673,7 @@ Websocket = {
             return;
         }
 
-        Army.deselect();
+        Me.deselectArmy()
 
         var token = {
             type: 'hire'

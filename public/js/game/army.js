@@ -164,6 +164,12 @@ var Army = function (army, bgColor, miniMapColor, textColor) {
     this.setSoldierSplitKey = function (value) {
         soldierSplitKey = value
     }
+    this.getHeroSplitKey = function () {
+        return heroSplitKey
+    }
+    this.getSoldierSplitKey = function () {
+        return soldierSplitKey
+    }
     this.getHeroes = function () {
         return army.heroes
     }

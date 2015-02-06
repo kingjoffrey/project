@@ -452,4 +452,10 @@ var Me = new function () {
             }
         }
     }
+    this.getSelectedHeroSplitKey = function () {
+        return this.getArmy(this.getSelectedArmyId()).getHeroSplitKey()
+    }
+    this.getSelectedSoldierSplitKey = function () {
+        return this.getArmy(this.getSelectedArmyId()).getSoldierSplitKey()
+    }
 }
