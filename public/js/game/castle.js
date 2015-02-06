@@ -27,6 +27,9 @@ var Castle = function (castle, bgColor, miniMapColor, textColor) {
     this.getY = function () {
         return castle.y
     }
+    this.getDefense = function () {
+        return castle.defence
+    }
 }
 
 var Castleeee = {
@@ -420,19 +423,3 @@ var Castleeee = {
         $('.castle.' + game.me.color).css('cursor', 'url(/img/game/cursor.png), default');
     }
 }
-
-
-function getMyCastleDefenseFromPosition(x, y) {
-    var castleId
-    for (castleId in castles) {
-        if (castles[castleId].color == game.me.color) {
-            var pos = castles[castleId].position;
-            if ((x >= pos.x) && (x < (pos.x + 2)) && (y >= pos.y) && (y < (pos.y + 2))) {
-                return castles[castleId].defense;
-            }
-        }
-    }
-    return 0;
-}
-
-

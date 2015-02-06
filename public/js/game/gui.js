@@ -45,7 +45,7 @@ var Gui = {
         switch (key) {
             case 27: //ESC
                 Message.remove();
-                Army.deselect();
+                Me.deselectArmy()
                 break;
             case 37://left
                 Three.getCamera().position.x += -0.5
@@ -76,16 +76,16 @@ var Gui = {
                 Message.nextTurn();
                 break;
             case 70: //f
-                Army.fortify();
+                Me.fortify()
                 break;
             case 78: //n
-                Army.findNext();
+                Me.findNext()
                 break;
             case 79: //o
                 $('.message .go').click()
                 break;
             case 81: //q
-                Army.skip();
+                Me.skip()
                 break;
             case 82: //r
                 Websocket.ruin()
@@ -186,10 +186,10 @@ var Gui = {
 
         $('#armyStatus').click(function () {
             if (!Me.getSelectedArmyId()) {
-                return;
+                return
             }
 
-            Message.armyStatus();
+            Message.armyStatus()
         });
 
         $('#disbandArmy').click(function () {

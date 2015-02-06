@@ -167,6 +167,15 @@ var Army = function (army, bgColor, miniMapColor, textColor) {
     this.getHeroes = function () {
         return army.heroes
     }
+    this.getHero = function (heroId) {
+        return army.heroes[heroId]
+    }
+    this.getSoldiers = function () {
+        return army.soldiers
+    }
+    this.getSoldier = function (soldierId) {
+        return army.soldiers[soldierId]
+    }
 }
 
 var Armyyyy = {

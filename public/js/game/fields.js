@@ -28,6 +28,10 @@ var Fields = new function () {
         fields[y][x] = new Field(field)
     }
     this.get = function (x, y) {
-        return fields[y][x]
+        if (isSet(fields[y][x])) {
+            return fields[y][x]
+        } else {
+            console.log('no field at x=' + x + ' y=' + y)
+        }
     }
 }

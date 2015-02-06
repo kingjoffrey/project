@@ -9,7 +9,11 @@ var Castles = function () {
         castles[castleId] = new Castle(castle, bgColor, miniMapColor, textColor)
     }
     this.get = function (castleId) {
-        return castles[castleId]
+        if (isSet(castles[castleId])) {
+            return castles[castleId]
+        } else {
+            console.log('No castle in castles with id=' + castleId)
+        }
     }
     this.count = function () {
         var i = 0

@@ -443,4 +443,13 @@ var Me = new function () {
             return castleId
         }
     }
+    this.getMyCastleDefenseFromPosition = function (x, y) {
+        var castleId = Fields.get(x, y).getCastleId()
+        if (castleId) {
+            var castle = this.getCastle(castleId)
+            if (castle) {
+                return castle.getDefense()
+            }
+        }
+    }
 }
