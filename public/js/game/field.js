@@ -14,11 +14,9 @@ var Field = function (field) {
     }
     this.removeArmyId = function (armyId) {
         delete field.armies[armyId]
-        console.log(field.armies)
     }
     this.addArmyId = function (armyId, color) {
         field.armies[armyId] = color
-        console.log(field.armies)
     }
     this.getTowerColor = function () {
         return field.towerColor

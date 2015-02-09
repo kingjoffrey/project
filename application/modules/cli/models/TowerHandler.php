@@ -54,7 +54,8 @@ class Cli_Model_TowerHandler
 
                     $token = array(
                         'type' => 'tower',
-                        'towerId' => $towerId,
+                        'x' => $x,
+                        'y' => $y,
                         'color' => $playerColor
                     );
                     $gameHandler->sendToChannel($db, $token, $gameId);

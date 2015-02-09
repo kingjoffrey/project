@@ -50,12 +50,12 @@ var Turn = {
         Players.drawTurn()
 
         if (Turn.isMy()) {
-            Turn.on();
+            Me.turnOn()
             Websocket.startMyTurn();
-            return;
+            return
         } else {
-            Turn.off();
-            return;
+            Me.turnOff()
+            return
         }
     },
     isMy: function () {

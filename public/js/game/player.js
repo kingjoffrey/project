@@ -1,9 +1,9 @@
-var Player = function (player) {
+var Player = function (player, color) {
     var armies = new Armies(),
         castles = new Castles(),
         towers = new Towers()
 
-    armies.init(player.armies, player.backgroundColor, player.miniMapColor, player.textColor)
+    armies.init(player.armies, player.backgroundColor, player.miniMapColor, player.textColor, color)
     castles.init(player.castles, player.backgroundColor, player.miniMapColor, player.textColor)
     towers.init(player.towers, player.backgroundColor)
 

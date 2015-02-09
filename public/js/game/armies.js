@@ -2,18 +2,20 @@ var Armies = function () {
     var armies = {},
         bgColor,
         miniMapColor,
-        textColor
+        textColor,
+        color
 
-    this.init = function (armies, bgC, miniMapC, textC) {
+    this.init = function (armies, bgC, miniMapC, textC, c) {
         bgColor = bgC
         miniMapColor = miniMapC
         textColor = textC
+        color = c
         for (var armyId in armies) {
             this.add(armyId, armies[armyId])
         }
     }
     this.add = function (armyId, army) {
-        armies[armyId] = new Army(army, bgColor, miniMapColor, textColor)
+        armies[armyId] = new Army(army, bgColor, miniMapColor, textColor, color)
     }
     this.update = function (armyId, army) {
         armies[armyId].update(army)
@@ -55,16 +57,12 @@ var Armies = function () {
     }
     this.computerLoop = function (a) {
         for (var armyId in a) {
-            break
+            if (isSet(armies[armyId])) {
+                armies[armyId].update(a[armyId])
+            } else {
+                armies[armyId].add(armyId, a[armyId])
+            }
         }
-
-        if (notSet(a[armyId])) {
-            Websocket.computer()
-            return
-        }
-
-        armies[armyId].update(a[armyId])
-        delete a[armyId] // potrzebne do pętli
-        this.computerLoop(a) // rekurencja
+        Websocket.computer()
     }
 }

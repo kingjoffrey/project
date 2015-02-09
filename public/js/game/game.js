@@ -1,14 +1,13 @@
 var Game = new function () {
     var loading = true,
         timeoutId = null,
-        capitals,
         stop = false,
         game
 
-    this.init = function (game) {
+    this.init = function (g) {
         if (loading) {
+            game = g
             loading = false
-            capitals = game.capitals
 
             Units.init(game.units)
             Terrain.init(game.terrain)
@@ -47,7 +46,7 @@ var Game = new function () {
         timeoutId = value
     }
     this.getCapitalId = function (color) {
-        return capitals[color]
+        return game.capitals[color]
     }
     this.getStop = function () {
         return stop

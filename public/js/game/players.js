@@ -35,7 +35,7 @@ var Players = new function () {
         return 1
     }
     this.add = function (color, player) {
-        players[color] = new Player(player)
+        players[color] = new Player(player, color)
     }
     /**
      *
@@ -108,7 +108,7 @@ var Players = new function () {
         kineticLayer.add(kineticTurnCircle);
 
         kineticStage.add(kineticLayer);
-        this.drawTurn()
+        Players.drawTurn()
         drawPlayerCircle()
     }
 

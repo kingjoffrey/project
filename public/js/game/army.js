@@ -1,4 +1,4 @@
-var Army = function (army, bgColor, miniMapColor, textColor) {
+var Army = function (army, bgColor, miniMapColor, textColor, color) {
     var meshId = Three.addArmy(army.x, army.y, bgColor, army.armyId),
         heroSplitKey = null,
         soldierSplitKey = null,
@@ -22,7 +22,8 @@ var Army = function (army, bgColor, miniMapColor, textColor) {
     )
     this.update = function (a) {
         army = a
-        Fields.get(army.x, army.y).addArmyId(army.armyId, army.color)
+        console.log(a)
+        Fields.get(army.x, army.y).addArmyId(army.armyId, color)
         numberOfUnits = countProperties(army.heroes) + countProperties(army.soldiers)
         if (numberOfUnits > 8) {
             numberOfUnits = 8
