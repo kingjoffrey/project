@@ -451,30 +451,30 @@ Websocket = {
             ws.send(JSON.stringify(token));
         }
     },
-    //computer: function () {
-    //    if (Websocket.closed) {
-    //        Message.error(translations.sorryServerIsDisconnected)
-    //        return;
-    //    }
-    //
-    //    if (!Players.get(Turn.color).isComputer()) {
-    //        return
-    //    }
-    //
-    //    if (stop) {
-    //        return
-    //    }
-    //
-    //    if (Move.getMoving()) {
-    //        return
-    //    }
-    //
-    //    var token = {
-    //        type: 'computer'
-    //    }
-    //
-    //    ws.send(JSON.stringify(token));
-    //},
+    computer: function () {
+        if (Websocket.closed) {
+            Message.error(translations.sorryServerIsDisconnected)
+            return;
+        }
+
+        if (!Players.get(Turn.color).isComputer()) {
+            return
+        }
+
+        if (stop) {
+            return
+        }
+
+        //if (Move.getMoving()) {
+        //    return
+        //}
+
+        var token = {
+            type: 'computer'
+        }
+
+        ws.send(JSON.stringify(token));
+    },
     ruin: function () {
         if (Websocket.closed) {
             Message.error(translations.sorryServerIsDisconnected)

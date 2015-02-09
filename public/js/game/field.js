@@ -16,4 +16,7 @@ var Field = function (field) {
     this.removeArmyId = function () {
         console.log(field.armies)
     }
+    this.addArmyId = function () {
+        console.log(field.armies)
+    }
 }

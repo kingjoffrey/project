@@ -3,7 +3,6 @@ var Players = new function () {
         kineticStage = null,
         kineticLayer = null,
         length = 0,
-        rotate = 0,
         wedges = {},
         kineticTurnNumber = null,
         circle = null,
@@ -113,12 +112,12 @@ var Players = new function () {
         drawPlayerCircle()
     }
 
-    var rotate = function (color) {
+    this.rotate = function (color) {
         var i = 0,
             start = 0,
             end = 0
 
-        for (shortName in players) {
+        for (var shortName in players) {
             i++
             if (color == shortName) {
                 end = i

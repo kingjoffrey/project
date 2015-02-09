@@ -1,11 +1,11 @@
 var Move = new function () {
     var stepTime = 200,
-        moving = 0,
+        //moving = 0,
         player = null,
         army = null
-    this.getMoving = function () {
-        return moving
-    }
+    //this.getMoving = function () {
+    //    return moving
+    //}
     this.start = function (r, ii) {
         if (notSet(r.color)) {
             Gui.unlock()
@@ -13,7 +13,7 @@ var Move = new function () {
             Message.simple(translations.army, translations.noMoreMoves)
             return
         }
-        moving = 1
+        //moving = 1
         player = Players.get(r.color)
         army = player.getArmies().get(r.army.armyId)
         console.log(' ')
@@ -35,13 +35,12 @@ var Move = new function () {
             Message.remove()
         }
 
-        if (notSet(r.path[1])) {
-            Zoom.lens.setcenter(r.army.x, r.army.y)
-        } else {
-            //Army.fields(game.players[r.color].armies[r.army.armyId])
+        //if (notSet(r.path[1])) {
+        //    Zoom.lens.setcenter(r.army.x, r.army.y)
+        //} else {
             Fields.get(army.getX(), army.getY()).removeArmyId(r.army.armyId)
-            Zoom.lens.setcenter(r.path[1].x, r.path[1].y)
-        }
+            Zoom.lens.setcenter(r.path[0].x, r.path[0].y)
+        //}
 
         //Me.unfortify(r.army.armyId)
 
@@ -181,7 +180,7 @@ var Move = new function () {
 
         //setTimeout('$(".war").remove()', 100);
         console.log('move.end(' + ii + ') end')
-        moving = 0
+        //moving = 0
         Websocket.executing = 0
         if (Me.colorEquals(r.color)) {
             Gui.unlock()
