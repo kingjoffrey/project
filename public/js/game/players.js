@@ -220,7 +220,7 @@ var Players = new function () {
     }
 
     var updateOnline = function () {
-        for (shortName in game.online) {
+        for (var shortName in game.online) {
             if (isSet(wedges[shortName].online)) {
                 wedges[shortName].online.remove()
             }

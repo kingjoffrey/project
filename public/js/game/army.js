@@ -22,7 +22,7 @@ var Army = function (army, bgColor, miniMapColor, textColor) {
     )
     this.update = function (a) {
         army = a
-        Fields.get(army.x, army.y).addArmyId(army.armyId)
+        Fields.get(army.x, army.y).addArmyId(army.armyId, army.color)
         numberOfUnits = countProperties(army.heroes) + countProperties(army.soldiers)
         if (numberOfUnits > 8) {
             numberOfUnits = 8

@@ -245,9 +245,13 @@ Websocket = {
                         break;
 
                     case 'tower':
-                        Fields.get()
-                        Players.get(r.color).getTowers().change(r.towerId)
-                        break;
+                        var field = Fields.get(r.x, r.y),
+                            towerId = field.getTowerId(),
+                            towers = Players.get(field.getTowerColor()).getTowers(),
+                            tower = towers.get(towerId)
+                        Players.get(r.color).getTowers().add(towerId, tower)
+                        towers.remove(towerId)
+                        break
 
                     case 'computerStart':
                         Websocket.addQueue(r)
