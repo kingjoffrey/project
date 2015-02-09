@@ -41,7 +41,6 @@ Websocket = {
                 break;
 
             case 'startTurn':
-                console.log('aaa')
                 if (Me.colorEquals(r.color)) {
                     var castles = Players.get(r.color).getCastles()
                     for (var castleId in r.castles) {
@@ -452,30 +451,30 @@ Websocket = {
             ws.send(JSON.stringify(token));
         }
     },
-    computer: function () {
-        if (Websocket.closed) {
-            Message.error(translations.sorryServerIsDisconnected)
-            return;
-        }
-
-        if (!Players.get(Turn.color).isComputer()) {
-            return
-        }
-
-        if (stop) {
-            return
-        }
-
-        if (Move.getMoving()) {
-            return
-        }
-
-        var token = {
-            type: 'computer'
-        }
-
-        ws.send(JSON.stringify(token));
-    },
+    //computer: function () {
+    //    if (Websocket.closed) {
+    //        Message.error(translations.sorryServerIsDisconnected)
+    //        return;
+    //    }
+    //
+    //    if (!Players.get(Turn.color).isComputer()) {
+    //        return
+    //    }
+    //
+    //    if (stop) {
+    //        return
+    //    }
+    //
+    //    if (Move.getMoving()) {
+    //        return
+    //    }
+    //
+    //    var token = {
+    //        type: 'computer'
+    //    }
+    //
+    //    ws.send(JSON.stringify(token));
+    //},
     ruin: function () {
         if (Websocket.closed) {
             Message.error(translations.sorryServerIsDisconnected)

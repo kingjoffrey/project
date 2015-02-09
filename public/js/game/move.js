@@ -43,7 +43,7 @@ var Move = new function () {
             Zoom.lens.setcenter(r.path[1].x, r.path[1].y)
         }
 
-        Me.unfortify(r.army.armyId);
+        //Me.unfortify(r.army.armyId)
 
         if (player.isComputer()) {
             stepTime = 100
@@ -54,9 +54,8 @@ var Move = new function () {
     }
     var loop = function (r, ii) {
         console.log('move.loop(' + ii + ') start')
-        var step
-        for (step in r.path) {
-            break;
+        for (var step in r.path) {
+            break
         }
 
         if (isSet(r.path[step])) {
@@ -104,11 +103,13 @@ var Move = new function () {
             } else {
                 end(r, ii)
             }
-            console.log('move.loop(' + ii + ') end')
         }
+        console.log('move.loop(' + ii + ') end')
     }
     var end = function (r, ii) {
         console.log('move.end(' + ii + ') start')
+
+        army.update(r.army)
 
         AStar.x = army.getX()
         AStar.y = army.getY()
@@ -121,12 +122,9 @@ var Move = new function () {
         //        })
         //}
 
-        //Army.init(r.army, r.color);
-        army.update(r.army.armyId, r.army)
-
-        if (isDigit(r.ruinId)) {
-            Ruins.update(r.ruinId, 1);
-        }
+        //if (isDigit(r.ruinId)) {
+        //    Ruins.update(r.ruinId, 1);
+        //}
 
         if (r.battle) {
             if (r.battle.victory) {
