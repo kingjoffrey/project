@@ -309,23 +309,7 @@ var Armyyyy = {
         //);
     },
 
-    computerLoop: function (armies, color) {
-        var armyId;
-        for (armyId in armies) {
-            break;
-        }
 
-        if (notSet(armies[armyId])) {
-            Websocket.computer();
-            return;
-        }
-
-        Army.init(armies[armyId], color);
-
-        delete armies[armyId]; // potrzebne do pętli
-
-        this.computerLoop(armies, color);
-    },
     fields: function (a) {
         if (a.color == game.me.color) {
             if (fields[a.y][a.x] == 'S') {

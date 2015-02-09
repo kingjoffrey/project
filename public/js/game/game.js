@@ -1,7 +1,9 @@
 var Game = new function () {
     var loading = true,
         timeoutId = null,
-        capitals
+        capitals,
+        stop = false,
+        game
 
     this.init = function (game) {
         if (loading) {
@@ -46,6 +48,12 @@ var Game = new function () {
     }
     this.getCapitalId = function (color) {
         return capitals[color]
+    }
+    this.getStop = function () {
+        return stop
+    }
+    this.getTurnsLimit = function () {
+        return game.turnsLimit
     }
 }
 

@@ -53,4 +53,18 @@ var Armies = function () {
             return true
         }
     }
+    this.computerLoop = function (a) {
+        for (var armyId in a) {
+            break
+        }
+
+        if (notSet(a[armyId])) {
+            Websocket.computer()
+            return
+        }
+
+        armies[armyId].update(a[armyId])
+        delete a[armyId] // potrzebne do pętli
+        this.computerLoop(a) // rekurencja
+    }
 }

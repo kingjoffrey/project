@@ -108,7 +108,7 @@ var Players = new function () {
         kineticLayer.add(kineticTurnCircle);
 
         kineticStage.add(kineticLayer);
-        drawTurn()
+        this.drawTurn()
         drawPlayerCircle()
     }
 
@@ -194,10 +194,10 @@ var Players = new function () {
         kineticLayer.add(circle)
     }
 
-    var drawTurn = function () {
+    this.drawTurn = function () {
         var turnNumber = Turn.number
-        if (game.turnsLimit) {
-            turnNumber = Turn.number + '/' + game.turnsLimit
+        if (Game.getTurnsLimit()) {
+            turnNumber = Turn.number + '/' + Game.getTurnsLimit()
         }
         if (kineticTurnNumber) {
             kineticTurnNumber.setText(turnNumber)

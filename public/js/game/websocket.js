@@ -25,13 +25,13 @@ Websocket = {
 
         switch (r.type) {
             case 'move':
-                Move.start(r, Websocket.i);
-                break;
+                Move.start(r, Websocket.i)
+                break
 
             case 'computerStart':
-                var s = Army.computerLoop(r.armies, r.color)
+                Players.get(r.color).getArmies().computerLoop(r.armies)
                 this.executing = 0
-                break;
+                break
 
             case 'nextTurn':
                 Me.deselectArmy()
@@ -245,7 +245,8 @@ Websocket = {
                         break;
 
                     case 'tower':
-                        Tower.change(r.towerId, r.color)
+                        Fields.get()
+                        Players.get(r.color).getTowers().change(r.towerId)
                         break;
 
                     case 'computerStart':
@@ -461,7 +462,7 @@ Websocket = {
             return
         }
 
-        if (stop) {
+        if (Game.getStop()) {
             return
         }
 

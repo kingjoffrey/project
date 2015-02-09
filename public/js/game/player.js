@@ -19,6 +19,9 @@ var Player = function (player) {
     this.getCastles = function () {
         return castles
     }
+    this.getTowers = function () {
+        return towers
+    }
     this.isComputer = function () {
         return player.computer
     }

@@ -47,7 +47,7 @@ var Turn = {
         }
 
         timer.append(Turn.color, Turn.number)
-        Players.drawTurn();
+        Players.drawTurn()
 
         if (Turn.isMy()) {
             Turn.on();
