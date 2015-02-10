@@ -225,8 +225,12 @@ var Gui = {
         });
 
         $('#showCastle').click(function () {
-            Castle.show();
-        });
+            var army = Me.getArmy(Me.getSelectedArmyId())
+            var castle = Me.getCastle(Fields.get(army.getX(), army.getY()).getCastleId())
+            if (isSet(castle)) {
+                Message.castle(castle)
+            }
+        })
 
         $('#showArtifacts').click(function () {
             Message.showArtifacts();

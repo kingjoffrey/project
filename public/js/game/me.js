@@ -148,11 +148,11 @@ var Me = new function () {
             //    $('#showArtifacts').removeClass('buttonOff');
         }
 
-        //if (Castle.getMy(a.x, a.y)) {
-        //    $('#razeCastle').removeClass('buttonOff');
-        //    $('#buildCastleDefense').removeClass('buttonOff');
-        //    $('#showCastle').removeClass('buttonOff');
-        //}
+        if (this.colorEquals(Fields.get(army.getX(), army.getY()).getCastleColor())) {
+            $('#razeCastle').removeClass('buttonOff');
+            $('#buildCastleDefense').removeClass('buttonOff');
+            $('#showCastle').removeClass('buttonOff');
+        }
 
         if (notSet(center)) {
             //zoomer.setCenterIfOutOfScreen(a.x * 40, a.y * 40);

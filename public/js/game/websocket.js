@@ -691,7 +691,8 @@ Websocket = {
             return;
         }
 
-        var castleId = Castle.getMy(Army.selected.x, Army.selected.y);
+        var army = Me.getArmy(Me.getSelectedArmyId())
+        var castleId = Fields.get(army.getX(), army.getY()).getCastleId()
 
         if (!castleId) {
             Message.error(translations.noCastleToDestroy);
@@ -711,7 +712,8 @@ Websocket = {
             return;
         }
 
-        var castleId = Castle.getMy(Army.selected.x, Army.selected.y);
+        var army = Me.getArmy(Me.getSelectedArmyId())
+        var castleId = Fields.get(army.getX(), army.getY()).getCastleId()
 
         if (!castleId) {
             Message.error(translations.noCastleToBuildDefense);

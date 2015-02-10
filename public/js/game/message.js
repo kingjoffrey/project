@@ -908,7 +908,7 @@ var Message = {
         console.log('kill 1')
     },
     raze: function () {
-        if (Army.selected == null) {
+        if (Me.getSelectedArmyId()) {
             return;
         }
         var id = this.simple(translations.destroyCastle, translations.areYouSure)
@@ -916,20 +916,21 @@ var Message = {
         this.cancel(id)
     },
     build: function () {
-        if (Army.selected == null) {
+        if (Me.getSelectedArmyId()) {
             return;
         }
 
-        var castleId = Castle.getMy(Army.selected.x, Army.selected.y);
+        var army = Me.getArmy(Me.getSelectedArmyId())
+        var castle = Me.getCastle(Fields.get(army.getX(), army.getY()).getCastleId())
 
         var costBuildDefense = 0;
-        for (i = 1; i <= castles[castleId].defense; i++) {
+        for (i = 1; i <= castle.getDefense(); i++) {
             costBuildDefense += i * 100;
         }
-        var newDefense = castles[castleId].defense + 1;
+        var newDefense = castle.getDefense() + 1;
 
         var div = $('<div>')
-            .append($('<div>').html(translations.currentDefense + ': ' + castles[castleId].defense))
+            .append($('<div>').html(translations.currentDefense + ': ' + castle.getDefense()))
             .append($('<div>').html(translations.newDefense + ': ' + newDefense))
             .append($('<div>').html(translations.cost + ': ' + costBuildDefense + ' ' + translations.gold))
 
