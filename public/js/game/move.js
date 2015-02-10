@@ -1,11 +1,7 @@
 var Move = new function () {
     var stepTime = 200,
-        //moving = 0,
         player = null,
         army = null
-    //this.getMoving = function () {
-    //    return moving
-    //}
     this.start = function (r, ii) {
         if (notSet(r.color)) {
             Gui.unlock()
@@ -38,8 +34,8 @@ var Move = new function () {
         //if (notSet(r.path[1])) {
         //    Zoom.lens.setcenter(r.army.x, r.army.y)
         //} else {
-            Fields.get(army.getX(), army.getY()).removeArmyId(r.army.armyId)
-            Zoom.lens.setcenter(r.path[0].x, r.path[0].y)
+        //    Fields.get(army.getX(), army.getY()).removeArmyId(r.army.armyId)
+        Zoom.lens.setcenter(r.path[0].x, r.path[0].y)
         //}
 
         //Me.unfortify(r.army.armyId)
@@ -121,10 +117,6 @@ var Move = new function () {
         //        })
         //}
 
-        //if (isDigit(r.ruinId)) {
-        //    Ruins.update(r.ruinId, 1);
-        //}
-
         if (r.battle) {
             if (r.battle.victory) {
                 for (var color in r.battle.defenders) {
@@ -132,25 +124,22 @@ var Move = new function () {
                         continue
                     }
                     for (var armyId in r.battle.defenders[color]) {
-                        Army.delete(armyId, color, 1);
+                        Players.get(color).getArmies().delete(armyId, 1)
                     }
                 }
                 if (isDigit(r.battle.castleId)) {
-                    for (var color in game.players) {
-                        if (isSet(game.players[color].castles[r.battle.castleId])) {
-                            Castle.owner(r.battle.castleId, r.color, color)
-                            break;
-                        }
-                    }
+                    var castles = Players.get(Fields.get(army.getX(),army.getY()).getCastleColor()).getCastles()
+                    Players.get(r.color).getCastles().add(r.battle.castleId, castles.get(r.battle.castleId))
+                    castles.remove(r.battle.castleId)
                 }
-                if (isDigit(r.battle.towerId)) {
-                    Tower.change(r.battle.towerId, r.color)
-                }
-                if (r.color == game.me.color) {
-                    if (!r.battle.castleId && game.players[r.color].armies[r.army.armyId].moves) {
-                        Army.select(game.players[r.color].armies[r.army.armyId])
+                //if (isDigit(r.battle.towerId)) {
+                //    Tower.change(r.battle.towerId, r.color)
+                //}
+                if (Me.colorEquals(r.color)) {
+                    if (!r.battle.castleId && Me.getArmy(r.army.armyId).getMoves()) {
+                        Me.selectArmy(r.army.armyId)
                     } else {
-                        Army.deselect()
+                        Me.deselectArmy()
                     }
                 } else {
                     for (var color in r.battle.defenders) {
@@ -161,7 +150,7 @@ var Move = new function () {
                         //    Army.update(r.battle.defenders[color][armyId]);
                         //}
                     }
-                    if (r.color == game.me.color) {
+                    if (Me.colorEquals(r.color)) {
                         if (!Hero.findMy()) {
                             $('#heroResurrection').removeClass('buttonOff')
                         }
@@ -171,7 +160,7 @@ var Move = new function () {
         }
 
         for (var i in r.deletedIds) {
-            Army.delete(r.deletedIds[i], r.color, 1);
+            Players.get(r.color).getArmies().delete(r.deletedIds[i], 1)
         }
 
         if (player.isComputer()) {
@@ -180,7 +169,6 @@ var Move = new function () {
 
         //setTimeout('$(".war").remove()', 100);
         console.log('move.end(' + ii + ') end')
-        //moving = 0
         Websocket.executing = 0
         if (Me.colorEquals(r.color)) {
             Gui.unlock()

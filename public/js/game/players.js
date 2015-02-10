@@ -31,8 +31,6 @@ var Players = new function () {
         }
 
         draw(players)
-
-        return 1
     }
     this.add = function (color, player) {
         players[color] = new Player(player, color)

@@ -21,8 +21,8 @@ var Army = function (army, bgColor, miniMapColor, textColor, color) {
             .addClass('a')
     )
     this.update = function (a) {
+        Fields.get(army.x, army.y).removeArmyId(army.armyId)
         army = a
-        console.log(a)
         Fields.get(army.x, army.y).addArmyId(army.armyId, color)
         numberOfUnits = countProperties(army.heroes) + countProperties(army.soldiers)
         if (numberOfUnits > 8) {
