@@ -5,7 +5,7 @@ var Me = new function () {
         color,
         selectedArmyId = null,
         deselectedArmyId = null,
-        detached = new Array(),
+        detached = [],
         nextArmies = {},
         skippedArmies = {},
         quitedArmies = {},
@@ -108,14 +108,11 @@ var Me = new function () {
     this.selectArmy = function (armyId, center) {
         selectedArmyId = armyId
         var army = this.getArmy(armyId)
-        for (var i in EventsControls.objects) {
-            if (i == 0) {
+        for (var i = EventsControls.objects.length - 1; i > 0; i--) {
+            if (EventsControls.objects[i].id == army.getMeshId()) {
                 continue
             }
-            if (EventsControls.objects[i].id == Players.get(color).getArmies().get(armyId).getMeshId()) {
-                continue
-            }
-            detached.push(EventsControls.objects[i])
+            detached.push(EventsControls.objects[i].id)
             EventsControls.detach(EventsControls.objects[i])
         }
 
@@ -167,7 +164,7 @@ var Me = new function () {
         }
 
         for (var i in detached) {
-            EventsControls.attach(detached[i])
+            EventsControls.attach(Three.getScene().getObjectById(detached[i]))
         }
         detached = []
 

@@ -73,12 +73,10 @@ EventsControls = function (camera, domElement) {
 
     }
     this.attach = function (object) {
-
         if (object instanceof THREE.Mesh) {
             this.objects.push(object);
         }
         else {
-
             this.objects.push(object);
 
             for (var i = 0; i < object.children.length; i++) {
@@ -89,10 +87,8 @@ EventsControls = function (camera, domElement) {
     }
 
     this.detach = function (object) {
-
         var item = this.objects.indexOf(object);
-        this.objects.splice(item);
-
+        this.objects.splice(item, 1);
     }
 
     this.setFocus = function (object) {
