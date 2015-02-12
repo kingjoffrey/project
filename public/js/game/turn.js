@@ -1,16 +1,16 @@
-var Turn = {
-    number: null,
-    color: null,
-    beginDate: null,
-    init: function (game) {
+var Turn = new function () {
+    var number = null,
+        color = null,
+        beginDate = null
+    this.init = function (turnHistory) {
         var j = 0,
             history = {}
 
-        for (var i in game.turnHistory) {
-            var date = game.turnHistory[i].date.substr(0, 19);
+        for (var i in turnHistory) {
+            var date = turnHistory[i].date.substr(0, 19);
             history[j] = {
-                shortName: game.turnHistory[i].shortName,
-                number: game.turnHistory[i].number,
+                shortName: turnHistory[i].shortName,
+                number: turnHistory[i].number,
                 start: date
             }
 
@@ -21,32 +21,41 @@ var Turn = {
             j++;
         }
 
-        for (i in history) {
-            timer.append(history[i].shortName, history[i].number, history[i].start, history[i].end)
+        for (var i in history) {
+            Timer.append(history[i].shortName, history[i].number, history[i].start, history[i].end)
         }
 
-        timer.scroll()
-        this.number = game.turnHistory[i].number
-        this.color = game.turnHistory[i].shortName
-        this.beginDate = Date.parse(game.turnHistory[i].date.substr(0, 19)).getTime()
-    },
-    change: function (color, nr) {
-        if (!color) {
+        Timer.scroll()
+        number = turnHistory[i].number
+        color = turnHistory[i].shortName
+        beginDate = Date.parse(turnHistory[i].date.substr(0, 19)).getTime()
+    }
+    this.getNumber = function () {
+        return number
+    }
+    this.getColor = function () {
+        return color
+    }
+    this.getBeginDate = function () {
+        return beginDate
+    }
+    this.change = function (c, nr) {
+        if (!c) {
             console.log('Turn "color" not set');
-            return;
+            return
         }
 
-        Players.rotate(color)
-        this.beginDate = (new Date()).getTime()
-        timer.update()
+        Players.rotate(c)
+        beginDate = (new Date()).getTime()
+        Timer.update()
 
-        Turn.color = color;
+        color = c
 
         if (isSet(nr)) {
-            Turn.number = nr;
+            number = nr
         }
 
-        timer.append(Turn.color, Turn.number)
+        Timer.append(color, number)
         Players.drawTurn()
 
         if (Turn.isMy()) {
@@ -57,10 +66,10 @@ var Turn = {
             Me.turnOff()
             return
         }
-    },
-    isMy: function () {
-        if (Turn.color == Me.getColor()) {
-            return true;
+    }
+    this.isMy = function () {
+        if (color == Me.getColor()) {
+            return true
         }
     }
 }

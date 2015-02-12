@@ -14,13 +14,13 @@ var Game = new function () {
             Three.init()
             Fields.init(game.fields)
             Gui.init()
-            Turn.init(game)
+            Turn.init(game.turnHistory)
             Players.init(game.players)
-            timer.start(game)
+            Timer.init(game.begin, game.turnTimeLimit, game.timeLimit)
             Ruins.init(game.ruins)
             Me.init(game.me)
 
-            renderChatHistory()
+            Chat.init(game.chatHistory)
         }
 
         //Players.updateOnline()
@@ -32,7 +32,7 @@ var Game = new function () {
             }
         } else {
             Me.turnOff()
-            if (Players.get(Turn.color).isComputer()) {
+            if (Players.get(Turn.getColor()).isComputer()) {
                 setTimeout('Websocket.computer()', 1000)
             }
         }

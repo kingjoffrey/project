@@ -1,8 +1,3 @@
-$(document)[0].oncontextmenu = function () {
-    return
-} // usuwa menu kontekstowe spod prawego przycisku
-
-
 // *** OTHER ***
 
 function makeMyCursorUnlock() {

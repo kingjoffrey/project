@@ -43,6 +43,9 @@ var Players = new function () {
     this.get = function (color) {
         return players[color]
     }
+    this.count = function () {
+        return Object.size(players) - 1
+    }
     var draw = function () {
         var angle = 360 / length;
         var r_angle = Math.PI * 2 / length
@@ -120,7 +123,7 @@ var Players = new function () {
             if (color == shortName) {
                 end = i
             }
-            if (Turn.color == shortName) {
+            if (Turn.getColor() == shortName) {
                 start = i
             }
         }
@@ -185,7 +188,7 @@ var Players = new function () {
             y: center.y,
             radius: 17,
             fill: 'grey',
-            offset: [center.x - wedges[Turn.color].x - 11, center.y - wedges[Turn.color].y - 14],
+            offset: [center.x - wedges[Turn.getColor()].x - 11, center.y - wedges[Turn.getColor()].y - 14],
             strokeWidth: 0
         });
 
@@ -193,9 +196,9 @@ var Players = new function () {
     }
 
     this.drawTurn = function () {
-        var turnNumber = Turn.number
+        var turnNumber = Turn.getNumber()
         if (Game.getTurnsLimit()) {
-            turnNumber = Turn.number + '/' + Game.getTurnsLimit()
+            turnNumber = Turn.getNumber() + '/' + Game.getTurnsLimit()
         }
         if (kineticTurnNumber) {
             kineticTurnNumber.setText(turnNumber)

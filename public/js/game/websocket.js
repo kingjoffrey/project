@@ -57,11 +57,7 @@ Websocket = {
 
                 var armies = Players.get(r.color).getArmies()
                 for (var armyId in r.armies) {
-                    if (armies.hasArmy(armyId)) {
-                        armies.update(armyId, r.armies[armyId])
-                    } else {
-                        armies.add(armyId, r.armies[armyId])
-                    }
+                    armies.handle(r.armies[armyId])
                 }
                 this.executing = 0
                 break;
@@ -111,14 +107,14 @@ Websocket = {
                 break;
 
             case 'split':
-                Army.init(r.parentArmy, r.color);
-                Army.init(r.childArmy, r.color);
-
-                Army.parent = game.players[r.color].armies[r.parentArmy.armyId];
+                var armies = Players.get(r.color).getArmies()
+                armies.handle(r.parentArmy)
+                armies.handle(r.childArmy)
 
                 if (Turn.isMy()) {
                     Message.remove()
-                    Army.select(game.players[r.color].armies[r.childArmy.armyId], 0);
+                    Me.setParentArmyId(r.parentArmy.armyId)
+                    Me.selectArmy(r.childArmy.armyId)
                 } else {
                     //zoomer.setCenterIfOutOfScreen(r.parentArmy.x * 40, r.parentArmy.y * 40);
                     Zoom.lens.setcenter(r.parentArmy.x, r.parentArmy.y);
@@ -131,43 +127,46 @@ Websocket = {
                     Message.remove()
                 }
                 //zoomer.setCenterIfOutOfScreen(r.army.x * 40, r.army.y * 40);
-                Zoom.lens.setcenter(r.army.x, r.army.y);
+                Zoom.lens.setcenter(r.army.x, r.army.y)
+                var armies = Players.get(r.color).getArmies()
                 for (var i in r.deletedIds) {
-                    Army.delete(r.deletedIds[i], r.color);
+                    armies.delete(r.deletedIds[i])
                 }
-                Army.init(r.army, r.color);
+                armies.handle(r.army)
                 this.executing = 0
                 break;
 
             case 'disband':
                 if (Turn.isMy()) {
                     Message.remove()
-                    var upkeep = 0;
-                    for (i in game.players[game.me.color].armies[r.armyId].soldiers) {
-                        upkeep += game.units[game.players[game.me.color].armies[r.armyId].soldiers[i].unitId].cost
+                    var upkeep = 0,
+                        soldiers = Players.get(r.color).getArmies().get(r.armyId).getSoldiers()
+                    for (var i in soldiers) {
+                        upkeep += Units.get(soldiers[i].unitId).cost
                     }
 
-                    costIncrement(-upkeep)
+                    Me.costIncrement(-upkeep)
 
                     if (!Hero.findMy()) {
                         $('#heroResurrection').removeClass('buttonOff')
                     }
                 }
-                Army.delete(r.armyId, r.color);
+                Players.get(r.color).getArmies().delete(r.armyId)
+
                 this.executing = 0
                 break;
 
             case 'resurrection':
                 Sound.play('resurrection');
-                zoom.lens.setcenter(r.data.army.x * 40, r.data.army.y * 40);
-                Army.init(r.data.army, r.color);
+                Zoom.lens.setcenter(r.army.x, r.army.y)
+                Players.get(r.color).getArmies().handle(r.army)
                 if (Turn.isMy()) {
                     Message.remove()
-                    goldUpdate(r.data.gold);
+                    Me.setGold(r.gold)
                     if (Hero.findMy()) {
                         $('#heroResurrection').addClass('buttonOff')
                     }
-                } else if (game.players[r.color].computer) {
+                } else if (Players.get(r.color).isComputer()) {
                     Websocket.computer()
                 }
                 this.executing = 0
@@ -175,11 +174,11 @@ Websocket = {
 
             case 'raze':
                 $('#razeCastle').addClass('buttonOff');
-                Castle.raze(r.castleId);
+                Castle.raze(r.castleId)
                 if (Turn.isMy()) {
                     Sound.play('gold1');
                     Message.remove()
-                    goldUpdate(r.gold);
+                    Me.setGold(r.data.gold)
                 } else {
                     Sound.play('raze');
                 }
@@ -189,21 +188,25 @@ Websocket = {
             case 'defense':
                 Castle.updateDefense(r.castleId, r.defenseMod);
                 if (Turn.isMy()) {
-                    Message.remove();
-                    goldUpdate(r.gold);
+                    Message.remove()
+                    Me.setGold(r.gold)
                 }
                 this.executing = 0
                 break;
 
             case 'surrender':
-                Army.deselect()
-                for (i in game.players[r.color].armies) {
-                    var s = Army.delete(i, r.color, 1)
+                Me.deselectArmy()
+                var armies = Players.get(r.color).getArmies(),
+                    castles = Players.get(r.color).getCastles()
+                for (var armyId in armies.toArray()) {
+                    armies.delete(armyId)
                 }
-                for (i in game.players[r.color].castles) {
-                    var s = Castle.raze(i)
+                for (var castleId in castles.toArray()) {
+                    castles.raze(castleId)
                 }
-                this.nextTurn()
+                if (Turn.getColor() == r.color) {
+                    this.nextTurn()
+                }
                 this.executing = 0
                 break;
 
@@ -462,7 +465,7 @@ Websocket = {
             return;
         }
 
-        if (!Players.get(Turn.color).isComputer()) {
+        if (!Players.get(Turn.getColor()).isComputer()) {
             return
         }
 

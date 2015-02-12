@@ -105,6 +105,9 @@ var Me = new function () {
     this.getDeselectedArmyId = function () {
         return deselectedArmyId
     }
+    this.setParentArmyId = function (armyId) {
+        parentArmyId = armyId
+    }
     this.selectArmy = function (armyId, center) {
         selectedArmyId = armyId
         var army = this.getArmy(armyId)
@@ -158,8 +161,10 @@ var Me = new function () {
     }
     this.deselectArmy = function (skipJoin) {
         if (notSet(skipJoin) && parentArmyId && selectedArmyId) {
-            if (Army.selected.x == Army.parent.x && Army.selected.y == Army.parent.y) {
-                Websocket.join(Army.selected.armyId);
+            var selectedArmy = this.getArmy(selectedArmyId)
+            var parentArmy = this.getArmy(parentArmyId)
+            if (selectedArmy.getX() == parentArmy.getX() && selectedArmy.getY() == parentArmy.getY()) {
+                Websocket.join(selectedArmyId)
             }
         }
 

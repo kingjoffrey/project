@@ -39,10 +39,8 @@ class Cli_Model_HeroResurrection
 
         $token = array(
             'type' => 'resurrection',
-            'data' => array(
-                'army' => Cli_Model_Army::getArmyByArmyId($armyId, $user->parameters['gameId'], $db),
-                'gold' => $gold
-            ),
+            'army' => Cli_Model_Army::getArmyByArmyId($armyId, $user->parameters['gameId'], $db),
+            'gold' => $gold,
             'color' => $color
         );
 

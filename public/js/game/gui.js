@@ -13,6 +13,9 @@ var Gui = {
         $(window).resize(function () {
             Gui.adjust();
         })
+        $(document)[0].oncontextmenu = function () {
+            return
+        } // usuwa menu kontekstowe spod prawego przycisku
         documentTitle = 'WoF'
         map = $('#map')
         coord = $('#coord')

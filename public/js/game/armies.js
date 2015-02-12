@@ -33,14 +33,14 @@ var Armies = function () {
         return armies
     }
     this.delete = function (armyId, quiet) {
-        if (notSet(armies[armyId])) {
+        if (!this.hasArmy(armyId)) {
             throw ('Brak armi o armyId = ' + armyId );
             return
         }
 
-        this.fields(armies[armyId])
+        Fields.get(armies[armyId].getX(), armies[armyId].getY()).removeArmyId(armyId)
 
-        if (!quiet) {
+        if (isTruthful(quiet)) {
             Zoom.lens.setcenter(armies[armyId].getX(), armies[armyId].getY())
         }
 
@@ -57,12 +57,15 @@ var Armies = function () {
     }
     this.computerLoop = function (a) {
         for (var armyId in a) {
-            if (isSet(armies[armyId])) {
-                armies[armyId].update(a[armyId])
-            } else {
-                armies[armyId].add(armyId, a[armyId])
-            }
+            this.handle(a[armyId])
         }
         Websocket.computer()
+    }
+    this.handle = function (army) {
+        if (this.hasArmy(army.armyId)) {
+            armies[army.armyId].update(army)
+        } else {
+            this.add(army.armyId, army)
+        }
     }
 }
