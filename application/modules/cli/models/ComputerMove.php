@@ -38,7 +38,9 @@ class Cli_Model_ComputerMove extends Cli_Model_ComputerMethods
         $myCastle = $this->_player->getCastles()->getCastle($castleId);
         if ($numberOfUnits = $this->_game->getNumberOfGarrisonUnits()) {
             $garrison = new Cli_Model_Garrison($numberOfUnits, $myCastle->getX(), $myCastle->getY(), $this->_player->getArmies(), $this->_user, $this->_game, $this->_db, $this->_gameHandler);
-            if ($this->_army = $garrison->getArmyToGo()) {
+            $armyToGo = $garrison->getArmyToGo();
+            if ($armyToGo) {
+                $this->_army = $armyToGo;
                 $this->_armyId = $this->_army->getId();
                 $this->_armyX = $this->_army->getX();
                 $this->_armyY = $this->_army->getY();
