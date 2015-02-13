@@ -13,11 +13,11 @@ var Me = new function () {
         parentArmyId = null,
         nextArmyId = null,
         isNextSelected = null,
-        turnActive
+        me
 
-    this.init = function (me) {
-        turnActive = Players.get(me.color).getTurnActive()
-        color = me.color
+    this.init = function (c) {
+        color = c
+        me = Players.get(color)
 
         this.attachEventsControls()
 
@@ -29,9 +29,7 @@ var Me = new function () {
         return color
     }
     this.colorEquals = function (value) {
-        if (color == value) {
-            return true
-        }
+        return color == value
     }
     var updateGold = function () {
         $('#gold #value').fadeOut(300, function () {
@@ -85,13 +83,13 @@ var Me = new function () {
         return gold
     }
     this.countCastles = function () {
-        return Players.get(color).getCastles().count()
+        return me.getCastles().count()
     }
     this.getCastle = function (castleId) {
-        return Players.get(color).getCastles().get(castleId)
+        return me.getCastles().get(castleId)
     }
     this.getArmy = function (armyId) {
-        return Players.get(color).getArmies().get(armyId)
+        return me.getArmies().get(armyId)
     }
     this.resetSkippedArmies = function () {
         skippedArmies = {}
@@ -211,8 +209,8 @@ var Me = new function () {
         $('#disbandArmy').addClass('buttonOff');
     }
     this.attachEventsControls = function () {
-        Players.get(color).getArmies().attachEventsControls()
-        Players.get(color).getCastles().attachEventsControls()
+        me.getArmies().attachEventsControls()
+        me.getCastles().attachEventsControls()
     }
     this.removeFromSkipped = function (armyId) {
         if (isTruthful(skippedArmies[armyId])) {
@@ -251,7 +249,7 @@ var Me = new function () {
         }
 
         this.deselectArmy()
-        var armies = Players.get(color).getArmies().toArray()
+        var armies = me.getArmies().toArray()
 
         for (var armyId in armies) {
             if (armies[armyId].getMoves() == 0) {
@@ -422,7 +420,7 @@ var Me = new function () {
         //makeMyCursorLock();
     }
     this.getTurnActive = function () {
-        return turnActive
+        return me.getTurnActive()
     }
     this.showFirst = function () {
         var castleId = Game.getCapitalId(color)
@@ -432,7 +430,7 @@ var Me = new function () {
         } else if (firstCastleId = this.getFirsCastleId()) {
             Zoom.lens.setcenter(this.getCastle(firstCastleId).getX(), this.getCastle(firstCastleId).getY())
         } else {
-            var armies = Players.get(color).getArmies().toArray()
+            var armies = me.getArmies().toArray()
             for (var armyId in armies) {
                 Zoom.lens.setcenter(armies[armyId].getX(), armies[armyId].getY())
                 return
@@ -440,7 +438,7 @@ var Me = new function () {
         }
     }
     this.getFirsCastleId = function () {
-        for (var castleId in Player.get(color).getCastles().toArray()) {
+        for (var castleId in me.getCastles().toArray()) {
             return castleId
         }
     }
@@ -458,5 +456,14 @@ var Me = new function () {
     }
     this.getSelectedSoldierSplitKey = function () {
         return this.getArmy(this.getSelectedArmyId()).getSoldierSplitKey()
+    }
+    this.getArmies = function () {
+        return me.getArmies()
+    }
+    this.getCastles = function () {
+        return me.getCastles()
+    }
+    this.getTowers = function () {
+        return me.getTowers()
     }
 }

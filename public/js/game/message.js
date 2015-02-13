@@ -431,7 +431,7 @@ var Message = {
                     color: '#fff'
                 })
 
-            if (Castle.countMyCastles() > 1) {
+            if (Me.getCastles().count() > 1) {
                 $('.production #relocation').removeClass('buttonOff')
             }
         })
@@ -1197,15 +1197,16 @@ var Message = {
             }
         }
 
-        for (i in game.players[Me.getColor()].armies) {
-            for (j in game.players[Me.getColor()].armies[i].soldiers) {
+        for (var i in Me.getArmies().toArray()) {
+            for (j in Me.getArmy(i).soldiers) {
                 myUnits++
-                myUnitsGold += game.units[game.players[Me.getColor()].armies[i].soldiers[j].unitId].cost
+                var army = Me.getArmy(i)
+                myUnitsGold += Units.get(army.soldiers[j].unitId).cost
                 table.append(
                     $('<tr>')
-                        .append($('<td>').html($('<img>').attr('src', Unit.getImage(game.players[Me.getColor()].armies[i].soldiers[j].unitId, Me.getColor()))))
-                        .append($('<td>').html(game.units[game.players[Me.getColor()].armies[i].soldiers[j].unitId].name_lang))
-                        .append($('<td>').html(game.units[game.players[Me.getColor()].armies[i].soldiers[j].unitId].cost + ' ' + translations.gold).addClass('r'))
+                        .append($('<td>').html($('<img>').attr('src', Unit.getImage(army.soldiers[j].unitId, Me.getColor()))))
+                        .append($('<td>').html(Units.get(army.soldiers[j].unitId).name_lang))
+                        .append($('<td>').html(Units.get(army.soldiers[j].unitId).cost + ' ' + translations.gold).addClass('r'))
                         .append(
                         $('<td>')
                             .html($('<img>').attr('src', '/img/game/center.png'))

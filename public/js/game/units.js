@@ -4,6 +4,9 @@ var Units = new function () {
         units = u
     }
     this.get = function (unitId) {
+        if (notSet(units[unitId])) {
+            throw  unitId
+        }
         return units[unitId]
     }
     this.toArray = function () {

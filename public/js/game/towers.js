@@ -15,4 +15,11 @@ var Towers = function () {
     this.remove = function (towerId) {
         delete towers[towerId]
     }
+    this.count = function () {
+        var i = 0
+        for (var towerId in towers) {
+            i++
+        }
+        return i
+    }
 }

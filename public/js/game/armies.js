@@ -51,9 +51,7 @@ var Armies = function () {
         delete armies[armyId]
     }
     this.hasArmy = function (armyId) {
-        if (isSet(armies[armyId])) {
-            return true
-        }
+        return isSet(armies[armyId])
     }
     this.computerLoop = function (a) {
         for (var armyId in a) {
@@ -67,5 +65,12 @@ var Armies = function () {
         } else {
             this.add(army.armyId, army)
         }
+    }
+    this.count = function () {
+        var i = 0
+        for (var armyId in armies) {
+            i++
+        }
+        return i
     }
 }

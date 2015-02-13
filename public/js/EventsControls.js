@@ -77,6 +77,8 @@ EventsControls = function (camera, domElement) {
             this.objects.push(object);
         }
         else {
+            console.log(object)
+            throw object
             this.objects.push(object);
 
             for (var i = 0; i < object.children.length; i++) {
