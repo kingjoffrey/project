@@ -76,12 +76,14 @@ class Cli_Model_Astar extends Cli_Model_Heuristics
             $this->movementType = 'walking';
         }
 
-        $this->init($game->getPlayers(), $army->getX(), $army->getY());
+        $this->init($game->getPlayers());
         $this->aStar();
     }
 
-    private function init(Cli_Model_Players $players, $x, $y)
+    private function init(Cli_Model_Players $players)
     {
+        $x = $this->_army->getX();
+        $y = $this->_army->getY();
         $castleColor = $this->_fields->getCastleColor($this->destX, $this->destY);
         if ($castleColor && !$players->sameTeam($castleColor, $this->_color)) {
             $this->_enemyCastle = $players->getPlayer($castleColor)->getCastles()->getCastle($this->_fields->getCastleId($this->destX, $this->destY));
