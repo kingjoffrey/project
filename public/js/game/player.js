@@ -28,4 +28,7 @@ var Player = function (player, color) {
     this.getTurnActive = function () {
         return player.turnActive
     }
+    this.getLongName = function () {
+        return player.longName
+    }
 }

@@ -531,7 +531,7 @@ var Message = {
             numberOfUnits = 0,
             bonusTower = 0,
             army = Me.getArmy(Me.getSelectedArmyId()),
-            color=Me.getColor(),
+            color = Me.getColor(),
             castleDefense = Me.getMyCastleDefenseFromPosition(army.getX(), army.getY()),
             attackPoints = 0,
             defensePoints = 0,
@@ -720,7 +720,7 @@ var Message = {
             attack.append(
                 $('<div>')
                     .attr('id', 'unit' + soldierId)
-                    .css('background', 'url(' + Unit.getImage(game.players[r.color].armies[r.army.armyId].soldiers[soldierId].unitId, r.color) + ') no-repeat')
+                    .css('background', 'url(' + Unit.getImage(Players.get(r.color).getArmies().get(r.army.armyId).getSoldiers()[soldierId].unitId, r.color) + ') no-repeat')
                     .addClass('battleUnit')
             );
         }
@@ -740,7 +740,7 @@ var Message = {
 
         var attackLayout = $('<div>')
             .append(attack)
-            .append($('<div>').html(game.players[r.color].longName + ' (' + translations.attack + ')'))
+            .append($('<div>').html(Players.get(r.color).getLongName() + ' (' + translations.attack + ')'))
 
         var defense = $('<div>').addClass('battle defense');
         var defenseLayout = $('<div>')
@@ -756,7 +756,7 @@ var Message = {
                     if (color == 'neutral') {
                         var unitId = game.firstUnitId
                     } else {
-                        var unitId = game.players[color].armies[armyId].soldiers[soldierId].unitId
+                        var unitId = Players.get(color).getArmies().get(armyId).soldiers[soldierId].unitId
                     }
                     defense.append(
                         $('<div>')
@@ -780,9 +780,10 @@ var Message = {
                 }
             }
 
-            defenseLayout.append($('<div>').html(game.players[color].longName + ' (' + translations.defence + ')'))
+            defenseLayout.append($('<div>').html(Players.get(color).getLongName() + ' (' + translations.defence + ')'))
 
-            if (r.battle.castleId && isSet(game.players[color].castles[r.battle.castleId])) {
+            //if (r.battle.castleId && isSet(Players.get(color).getCastles()[r.battle.castleId])) {
+            if (r.battle.castleId) {
                 defenseLayout.append(
                     $('<div>')
                         .addClass('castle')
@@ -794,7 +795,8 @@ var Message = {
                 )
             }
 
-            if (r.battle.towerId && isSet(game.players[color].towers[r.battle.towerId])) {
+            //if (r.battle.towerId && isSet(game.players[color].towers[r.battle.towerId])) {
+            if (r.battle.towerId) {
                 defenseLayout.append(
                     $('<div>')
                         .addClass('tower')
@@ -820,7 +822,7 @@ var Message = {
         )
 
         var id = this.show(translations.battle, div);
-        if (!game.players[r.color].computer) {
+        if (!Players.get(r.color).isComputer()) {
             this.ok(id)// add Move.end(r)
         } else {
             this.ok(id)
@@ -829,7 +831,7 @@ var Message = {
         $('.go').css('display', 'none')
 
         if (killed) {
-            if (game.players[r.color].computer) {
+            if (Players.get(r.color).isComputer()) {
                 Message.kill(killed, r);
             } else {
                 setTimeout(function () {
@@ -845,7 +847,7 @@ var Message = {
         }
 
         if (notSet(b[i])) {
-            if (!game.players[r.color].computer) {
+            if (!Players.get(r.color).isComputer()) {
                 $('.go').fadeIn(100)
             }
             Move.end(r)
@@ -859,26 +861,26 @@ var Message = {
             }
 
             unitElement.append($('<div>').addClass('killed'));
-            if (!game.players[r.color].computer) {
+            if (!Players.get(r.color).isComputer()) {
                 setTimeout(function () {
                     Sound.play('error');
                 }, 500)
             }
             $('#unit' + b[i].soldierId + ' .killed').fadeIn(1000, function () {
                 if (r.color == Me.getColor()) {
-                    for (k in game.players[Me.getColor()].armies[r.army.armyId].soldiers) {
-                        if (game.players[Me.getColor()].armies[r.army.armyId].soldiers[k].soldierId == b[i].soldierId) {
-                            costIncrement(-game.units[game.players[Me.getColor()].armies[r.army.armyId].soldiers[k].unitId].cost)
+                    for (var k in Me.getArmy(r.army.armyId).soldiers) {
+                        if (Me.getArmy(r.army.armyId).soldiers[k].soldierId == b[i].soldierId) {
+                            Me.costIncrement(-Units[Me.getArmy(r.army.armyId).soldiers[k].unitId].cost)
                         }
                     }
                 }
 
                 for (var color in r.defenders) {
-                    if (color == Me.getColor()) {
-                        for (j in r.defenders[color]) {
-                            for (k in game.players[color].armies[j].soldiers) {
-                                if (game.players[color].armies[j].soldiers[k].soldierId == b[i].soldierId) {
-                                    costIncrement(-game.units[game.players[color].armies[j].soldiers[k].unitId].cost)
+                    if (Me.colorEquals(color)) {
+                        for (var armyId in r.defenders[color]) {
+                            for (var soldierId in Me.getArmy(armyId).soldiers) {
+                                if (Me.getArmy().soldiers[soldierId].soldierId == b[i].soldierId) {
+                                    Me.costIncrement(-Units[Me.getArmy(armyId).soldiers[soldierId].unitId].cost)
                                 }
                             }
                         }
@@ -895,7 +897,7 @@ var Message = {
             }
 
             heroElement.append($('<div>').addClass('killed'));
-            if (!game.players[r.color].computer) {
+            if (!Players.get(r.color).isComputer()) {
                 setTimeout(function () {
                     Sound.play('error');
                 }, 500)
@@ -956,24 +958,21 @@ var Message = {
                 .append($('<th>').html(translations.heroesLost))
         );
         var color
-        for (color in game.players) {
-            var tr = $('<tr>');
+        for (var color in Players.toArray()) {
+            var tr = $('<tr>'),
+                player = Players.get(color),
+                numberOfCastlesHeld = player.getCastles().count(),
+                backgroundColor = player.getBackgroundColor()
 
             tr.append($('<td>').addClass('shortName').html($('<img>').attr('src', Hero.getImage(color))))
 
             var td = $('<td>').addClass('shortName');
-            tr.append(td.html(game.players[color].longName))
+            tr.append(td.html(player.getLongName()))
 
             var td = $('<td>').css({
-                border: '1px solid ' + game.players[color].backgroundColor
+                border: '1px solid ' + backgroundColor
             })
-            var numberOfCastlesHeld = 0,
-                castleId
-            for (castleId in castles) {
-                if (castles[castleId].color == color) {
-                    numberOfCastlesHeld++
-                }
-            }
+
             if (numberOfCastlesHeld > 0) {
                 tr.append(td.html(numberOfCastlesHeld))
             } else {
@@ -981,7 +980,7 @@ var Message = {
             }
 
             var td = $('<td>').css({
-                border: '1px solid ' + game.players[color].backgroundColor
+                border: '1px solid ' + backgroundColor
             })
             if (isSet(castlesConquered.winners[color])) {
                 tr.append(td.html(castlesConquered.winners[color]))
@@ -990,7 +989,7 @@ var Message = {
             }
 
             var td = $('<td>').css({
-                border: '1px solid ' + game.players[color].backgroundColor
+                border: '1px solid ' + backgroundColor
             })
             if (isSet(castlesConquered.losers[color])) {
                 tr.append(td.html(castlesConquered.losers[color]))
@@ -999,7 +998,7 @@ var Message = {
             }
 
             var td = $('<td>').css({
-                border: '1px solid ' + game.players[color].backgroundColor
+                border: '1px solid ' + backgroundColor
             })
             if (isSet(castlesDestroyed[color])) {
                 tr.append(td.html(castlesConquered[color]))
@@ -1008,7 +1007,7 @@ var Message = {
             }
 
             var td = $('<td>').css({
-                border: '1px solid ' + game.players[color].backgroundColor
+                border: '1px solid ' + backgroundColor
             })
             if (isSet(soldiersCreated[color])) {
                 tr.append(td.html(soldiersCreated[color]))
@@ -1017,7 +1016,7 @@ var Message = {
             }
 
             var td = $('<td>').css({
-                border: '1px solid ' + game.players[color].backgroundColor
+                border: '1px solid ' + backgroundColor
             })
             if (isSet(soldiersKilled.winners[color])) {
                 tr.append(td.html(soldiersKilled.winners[color]))
@@ -1026,7 +1025,7 @@ var Message = {
             }
 
             var td = $('<td>').css({
-                border: '1px solid ' + game.players[color].backgroundColor
+                border: '1px solid ' + backgroundColor
             })
             if (isSet(soldiersKilled.losers[color])) {
                 tr.append(td.html(soldiersKilled.losers[color]))
@@ -1035,7 +1034,7 @@ var Message = {
             }
 
             var td = $('<td>').css({
-                border: '1px solid ' + game.players[color].backgroundColor
+                border: '1px solid ' + backgroundColor
             })
             if (isSet(heroesKilled.winners[color])) {
                 tr.append(td.html(heroesKilled.winners[color]))
@@ -1044,7 +1043,7 @@ var Message = {
             }
 
             var td = $('<td>').css({
-                border: '1px solid ' + game.players[color].backgroundColor
+                border: '1px solid ' + backgroundColor
             })
             if (isSet(heroesKilled.losers[color])) {
                 tr.append(td.html(heroesKilled.losers[color]))
@@ -1066,32 +1065,12 @@ var Message = {
         this.ok(id, Gui.end)
     },
     treasury: function () {
-        var myTowers = 0,
-            myCastles = 0,
-            myCastlesGold = 0,
-            myUnits = 0,
-            myUnitsGold = 0
+        var myTowers = Me.getTowers().count(),
+            myCastles = Me.getCastles().count(),
+            myCastlesIncome = Me.getCastles().countIncome(),
+            myUnits = Me.getArmies().countSoldiers(),
+            myUnitsOutcome =  Me.getArmies().countOutcome()
 
-        var i
-        for (i in towers) {
-            if (towers[i].color == Me.getColor()) {
-                myTowers++
-            }
-        }
-
-        for (i in castles) {
-            if (castles[i].color == Me.getColor()) {
-                myCastles++
-                myCastlesGold += castles[i].income
-            }
-        }
-
-        for (i in game.players[Me.getColor()].armies) {
-            for (j in game.players[Me.getColor()].armies[i].soldiers) {
-                myUnits++
-                myUnitsGold += game.units[game.players[Me.getColor()].armies[i].soldiers[j].unitId].cost
-            }
-        }
 
         var div = $('<div>')
             .addClass('overflow')
@@ -1108,13 +1087,13 @@ var Message = {
                 $('<tr>')
                     .append($('<td>').html(myCastles).addClass('r'))
                     .append($('<td>').html(translations.castles).addClass('c'))
-                    .append($('<td>').html(myCastlesGold + ' ' + translations.gold).addClass('r'))
+                    .append($('<td>').html(myCastlesIncome + ' ' + translations.gold).addClass('r'))
             )
                 .append(
                 $('<tr>')
                     .append($('<td>'))
                     .append($('<td>'))
-                    .append($('<td>').html(myTowers * 5 + myCastlesGold + ' ' + translations.gold).addClass('r'))
+                    .append($('<td>').html(myTowers * 5 + myCastlesIncome + ' ' + translations.gold).addClass('r'))
             )
         )
             .append($('<h3>').html(translations.upkeep))
@@ -1125,18 +1104,18 @@ var Message = {
                 $('<tr>')
                     .append($('<td>').html(myUnits).addClass('r'))
                     .append($('<td>').html(translations.units).addClass('c'))
-                    .append($('<td>').html(myUnitsGold + ' ' + translations.gold).addClass('r'))
+                    .append($('<td>').html(myUnitsOutcome + ' ' + translations.gold).addClass('r'))
             )
         )
             .append($('<h3>').html(translations.summation))
-            .append($('<div>').html(myTowers * 5 + myCastlesGold - myUnitsGold + ' ' + translations.goldPerTurn))
+            .append($('<div>').html(myTowers * 5 + myCastlesIncome - myUnitsOutcome + ' ' + translations.goldPerTurn))
         var id = this.show(translations.income, div);
         this.ok(id)
     },
     income: function () {
         var myTowers = 0,
             myCastles = 0,
-            myCastlesGold = 0
+            myCastlesIncome = 0
 
         for (i in towers) {
             if (towers[i].color == Me.getColor()) {
@@ -1157,7 +1136,7 @@ var Message = {
         for (i in castles) {
             if (castles[i].color == Me.getColor()) {
                 myCastles++
-                myCastlesGold += castles[i].income
+                myCastlesIncome += castles[i].income
                 table.append(
                     $('<tr>')
                         .append($('<td>'))
@@ -1184,7 +1163,7 @@ var Message = {
             $('<tr>')
                 .append($('<td>').html(myCastles).addClass('r'))
                 .append($('<td>').html(translations.castles).addClass('c'))
-                .append($('<td>').html(myCastlesGold + ' ' + translations.gold).addClass('r'))
+                .append($('<td>').html(myCastlesIncome + ' ' + translations.gold).addClass('r'))
         ).append(
             $('<tr>')
                 .append($('<td>').html(myTowers).addClass('r'))
@@ -1194,7 +1173,7 @@ var Message = {
             $('<tr>')
                 .append($('<td>'))
                 .append($('<td>'))
-                .append($('<td>').html(myTowers * 5 + myCastlesGold + ' ' + translations.gold).addClass('r'))
+                .append($('<td>').html(myTowers * 5 + myCastlesIncome + ' ' + translations.gold).addClass('r'))
         )
 
 
