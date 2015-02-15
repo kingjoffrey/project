@@ -466,4 +466,7 @@ var Me = new function () {
     this.getTowers = function () {
         return me.getTowers()
     }
+    this.getSelectedArmy = function () {
+        return this.getArmy(selectedArmyId)
+    }
 }

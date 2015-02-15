@@ -452,10 +452,6 @@ var Message = {
         this.cancel(id)
     },
     split: function (a) {
-        if (notSet(Army.selected)) {
-            return;
-        }
-
         var div = $('<div>')
             .addClass('split')
             .append(
@@ -477,9 +473,11 @@ var Message = {
             )
                 .attr('id', 'selectAll')
         )
-        var numberOfUnits = 0;
+        var numberOfUnits = 0,
+            soldiers = Me.getSelectedArmy().getSoldiers(),
+            heroes = Me.getSelectedArmy().getHeroes()
 
-        for (var soldierId in Army.selected.soldiers) {
+        for (var soldierId in soldiers) {
             numberOfUnits++;
             div.append(
                 $('<div>')
@@ -487,11 +485,11 @@ var Message = {
                     .append($('<div>').addClass('nr').html(numberOfUnits))
                     .append($('<div>').addClass('img').html(
                         $('<img>').attr({
-                            'src': Unit.getImage(Army.selected.soldiers[soldierId].unitId, Army.selected.color),
+                            'src': Unit.getImage(soldiers[soldierId].unitId, Me.getColor()),
                             'id': 'unit' + soldierId
                         })
                     ))
-                    .append($('<span>').html(translations.movesLeft + ': ' + Army.selected.soldiers[soldierId].movesLeft + ' '))
+                    .append($('<span>').html(translations.movesLeft + ': ' + soldiers[soldierId].movesLeft + ' '))
                     .append($('<div>').addClass('right').html($('<input>').attr({
                         type: 'checkbox',
                         name: 'soldierId',
@@ -500,7 +498,7 @@ var Message = {
             );
         }
 
-        for (var heroId in Army.selected.heroes) {
+        for (var heroId in heroes) {
             numberOfUnits++;
             div.append(
                 $('<div>')
@@ -508,11 +506,11 @@ var Message = {
                     .append($('<div>').addClass('nr').html(numberOfUnits))
                     .append($('<div>').addClass('img').html(
                         $('<img>').attr({
-                            'src': Hero.getImage(Army.selected.color),
+                            'src': Hero.getImage(Me.getColor()),
                             'id': 'hero' + heroId
                         })
                     ))
-                    .append($('<span>').html(translations.movesLeft + ': ' + Army.selected.heroes[heroId].movesLeft + ' '))
+                    .append($('<span>').html(translations.movesLeft + ': ' + heroes[heroId].movesLeft + ' '))
                     .append($('<div>').addClass('right').html($('<input>').attr({
                         type: 'checkbox',
                         name: 'heroId',
@@ -1069,7 +1067,7 @@ var Message = {
             myCastles = Me.getCastles().count(),
             myCastlesIncome = Me.getCastles().countIncome(),
             myUnits = Me.getArmies().countSoldiers(),
-            myUnitsOutcome =  Me.getArmies().countOutcome()
+            myUnitsOutcome = Me.getArmies().countOutcome()
 
 
         var div = $('<div>')

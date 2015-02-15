@@ -20,6 +20,8 @@ var Army = function (army, bgColor, miniMapColor, textColor, color) {
             .attr('id', army.armyId)
             .addClass('a')
     )
+    this.skippedHeroes = {}
+    this.skippedSoldiers = {}
     this.update = function (a) {
         Fields.get(army.x, army.y).removeArmyId(army.armyId)
         army = a
