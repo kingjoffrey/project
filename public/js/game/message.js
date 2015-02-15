@@ -706,7 +706,7 @@ var Message = {
         var id = this.show(translations.status, div);
         this.ok(id)
     },
-    battle: function (r) {
+    battle: function (r, ii) {
         var killed = new Array();
 
         var attack = $('<div>').addClass('battle attack');
@@ -754,7 +754,7 @@ var Message = {
                         };
                     }
                     if (color == 'neutral') {
-                        var unitId = Units.getFirstUnitId()
+                        var unitId = Game.getFirstUnitId()
                     } else {
                         var unitId = Players.get(color).getArmies().get(armyId).getSoldiers()[soldierId].unitId
                     }
@@ -832,17 +832,17 @@ var Message = {
 
         if (killed) {
             if (Players.get(r.color).isComputer()) {
-                Message.kill(killed, r);
+                Message.kill(killed, r, ii);
             } else {
                 setTimeout(function () {
-                    Message.kill(killed, r);
+                    Message.kill(killed, r, ii);
                 }, 2500);
             }
         }
     },
-    kill: function (b, r) {
-        console.log('kill 0')
-        for (i in b) {
+    kill: function (b, r, ii) {
+        console.log('kill start')
+        for (var i in b) {
             break
         }
 
@@ -850,14 +850,14 @@ var Message = {
             if (!Players.get(r.color).isComputer()) {
                 $('.go').fadeIn(100)
             }
-            Move.end(r)
+            Move.end(r, ii)
             return
         }
 
         if (isSet(b[i].soldierId)) {
             var unitElement = $('#unit' + b[i].soldierId)
             if (!unitElement.length) {
-                Move.end(r)
+                Move.end(r, ii)
             }
 
             unitElement.append($('<div>').addClass('killed'));
@@ -867,10 +867,10 @@ var Message = {
                 }, 500)
             }
             $('#unit' + b[i].soldierId + ' .killed').fadeIn(1000, function () {
-                if (r.color == Me.getColor()) {
-                    for (var k in Me.getArmy(r.army.armyId).soldiers) {
-                        if (Me.getArmy(r.army.armyId).soldiers[k].soldierId == b[i].soldierId) {
-                            Me.costIncrement(-Units[Me.getArmy(r.army.armyId).soldiers[k].unitId].cost)
+                if (Me.colorEquals(r.color)) {
+                    for (var k in Me.getArmy(r.army.armyId).getSoldiers()) {
+                        if (Me.getArmy(r.army.armyId).getSoldiers()[k].soldierId == b[i].soldierId) {
+                            Me.costIncrement(-Units[Me.getArmy(r.army.armyId).getSoldiers()[k].unitId].cost)
                         }
                     }
                 }
@@ -878,9 +878,9 @@ var Message = {
                 for (var color in r.defenders) {
                     if (Me.colorEquals(color)) {
                         for (var armyId in r.defenders[color]) {
-                            for (var soldierId in Me.getArmy(armyId).soldiers) {
-                                if (Me.getArmy().soldiers[soldierId].soldierId == b[i].soldierId) {
-                                    Me.costIncrement(-Units[Me.getArmy(armyId).soldiers[soldierId].unitId].cost)
+                            for (var soldierId in Me.getArmy(armyId).getSoldiers()) {
+                                if (Me.getArmy().getSoldiers()[soldierId].soldierId == b[i].soldierId) {
+                                    Me.costIncrement(-Units[Me.getArmy(armyId).getSoldiers()[soldierId].unitId].cost)
                                 }
                             }
                         }
@@ -888,12 +888,12 @@ var Message = {
                     }
                 }
                 delete b[i];
-                Message.kill(b, r);
+                Message.kill(b, r, ii);
             });
         } else if (isSet(b[i].heroId)) {
             var heroElement = $('#hero' + b[i].heroId)
             if (!heroElement.length) {
-                Move.end(r)
+                Move.end(r, ii)
             }
 
             heroElement.append($('<div>').addClass('killed'));
@@ -904,10 +904,10 @@ var Message = {
             }
             $('#hero' + b[i].heroId + ' .killed').fadeIn(1000, function () {
                 delete b[i];
-                Message.kill(b, r);
+                Message.kill(b, r, ii);
             });
         }
-        console.log('kill 1')
+        console.log('kill end')
     },
     raze: function () {
         if (Me.getSelectedArmyId()) {

@@ -12,9 +12,4 @@ var Units = new function () {
     this.toArray = function () {
         return units
     }
-    this.getFirstUnitId = function () {
-        for (var unitId in units) {
-            return unitId
-        }
-    }
 }

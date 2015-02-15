@@ -54,6 +54,9 @@ var Game = new function () {
     this.getTurnsLimit = function () {
         return game.turnsLimit
     }
+    this.getFirstUnitId = function () {
+        return game.firstUnitId
+    }
 }
 
 $(document).ready(function () {
