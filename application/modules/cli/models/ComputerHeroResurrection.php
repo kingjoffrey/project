@@ -38,10 +38,8 @@ class Cli_Model_ComputerHeroResurrection
 
         $token = array(
             'type' => 'resurrection',
-            'data' => array(
-                'army' => $army->toArray(),
-                'gold' => $player->getGold()
-            ),
+            'army' => $army->toArray(),
+            'gold' => $player->getGold(),
             'color' => $color
         );
 

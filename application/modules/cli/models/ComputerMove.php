@@ -10,7 +10,6 @@ class Cli_Model_ComputerMove extends Cli_Model_ComputerMethods
         $this->_l->log('');
         $this->_l->log($this->_playerId, 'playerId: ');
         $this->_l->log($this->_color, 'color: ');
-        $this->_l->log($this->_armyId, 'armyId: ');
 
         if ($this->_army->hasOldPath()) {
             $this->goByThePath();
@@ -22,6 +21,7 @@ class Cli_Model_ComputerMove extends Cli_Model_ComputerMethods
     private function findPath()
     {
         $this->_l->logMethodName();
+        $this->_l->log($this->_armyId, 'armyId: ');
 
         if ($castleId = $this->_fields->isPlayerCastle($this->_color, $this->_armyX, $this->_armyY)) {
             return $this->inside($castleId);
@@ -151,15 +151,16 @@ class Cli_Model_ComputerMove extends Cli_Model_ComputerMethods
 
         $this->_l->log('SĄ ZAMKI WROGA');
         $nwhc = new Cli_Model_NearestWeakerHostileCastle($this->_game, $this->_color, $this->_army);
-        if (!$nwhc->getPath()->exists()) {
+        $path = $nwhc->getPath();
+        if (!$path || !$path->exists()) {
             $this->_l->log('BRAK SŁABSZYCH ZAMKÓW WROGA');
             return $this->noEnemyCastlesToAttack();
         }
 
         $this->_l->log('JEST SŁABSZY ZAMEK WROGA');
-        if ($nwhc->getPath()->enemyInRange()) {
+        if ($path && $path->enemyInRange()) {
             $this->_l->log('SŁABSZY ZAMEK WROGA W ZASIĘGU - ATAKUJĘ!');
-            $this->move();
+            $this->move($path);
             return;
         }
 
@@ -272,13 +273,16 @@ class Cli_Model_ComputerMove extends Cli_Model_ComputerMethods
         $this->_l->log('ZAPISUJĘ ŚCIEŻKĘ');
 
         $this->_army->saveOldPath($path);
-        $this->move($path);
         $this->_army->setFortified(true, $this->_gameId, $this->_db);
+        $this->move($path);
     }
 
     private function goByThePath()
     {
         $this->_l->log('IDĘ ŚCIEŻKĄ');
+
+        $this->_l->log($this->_armyId, 'armyId: ');
+
         $path = new Cli_Model_Path($this->_army->getOldPath(), $this->_army);
 
         if (!$path->enemyInRange()) {

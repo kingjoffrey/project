@@ -754,9 +754,9 @@ var Message = {
                         };
                     }
                     if (color == 'neutral') {
-                        var unitId = game.firstUnitId
+                        var unitId = Units.getFirstUnitId()
                     } else {
-                        var unitId = Players.get(color).getArmies().get(armyId).soldiers[soldierId].unitId
+                        var unitId = Players.get(color).getArmies().get(armyId).getSoldiers()[soldierId].unitId
                     }
                     defense.append(
                         $('<div>')

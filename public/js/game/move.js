@@ -96,12 +96,12 @@ var Move = new function () {
 
                 Message.battle(r, ii);
             } else {
-                end(r, ii)
+                Move.end(r, ii)
             }
         }
         console.log('move.loop(' + ii + ') end')
     }
-    var end = function (r, ii) {
+    this.end = function (r, ii) {
         console.log('move.end(' + ii + ') start')
 
         army.update(r.army)

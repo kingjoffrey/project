@@ -20,14 +20,14 @@ class Cli_Model_NearestWeakerHostileCastle
             return;
         }
 
-        $this->_path = $this->path($game, $castleId, $playerColor, $army);
-        if ($this->_path->exists()) {
+        $this->_path = $this->path($game, $castleId, $army);
+        if ($this->_path && $this->_path->exists()) {
             return;
         }
 
         while (true) {
             if ($castleId = $this->getCastleId($game, $playerColor, $army)) {
-                $this->_path = $this->path($game, $castleId, $playerColor, $army);
+                $this->_path = $this->path($game, $castleId, $army);
                 if ($this->_path->exists()) {
                     return;
                 }
@@ -70,7 +70,7 @@ class Cli_Model_NearestWeakerHostileCastle
         }
     }
 
-    private function path(Cli_Model_Game $game, $castleId, $playerColor, Cli_Model_Army $army)
+    private function path(Cli_Model_Game $game, $castleId, Cli_Model_Army $army)
     {
         $this->_l->logMethodName();
         $castle = $this->_castles[$castleId];

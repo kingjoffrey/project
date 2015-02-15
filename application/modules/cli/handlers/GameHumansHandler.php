@@ -121,7 +121,7 @@ class Cli_GameHumansHandler extends Cli_WofHandler
                 break;
 
             case 'resurrection':
-                new Cli_Model_HeroResurrection($user, $db, $this);
+                new Cli_Model_HeroResurrection($user, $this->_game, $db, $this);
                 break;
 
             case 'hire':
