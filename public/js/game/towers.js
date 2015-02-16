@@ -8,7 +8,6 @@ var Towers = function () {
     }
     this.add = function (towerId, tower) {
         if (tower instanceof Tower) {
-            console.log(tower)
             towers[towerId] = tower
             tower.update(bgColor)
         } else {

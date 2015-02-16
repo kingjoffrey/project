@@ -8,7 +8,6 @@ var Castles = function () {
     }
     this.add = function (castleId, castle) {
         if (castle instanceof Castle) {
-            console.log(castle)
             castles[castleId] = castle
             castle.update(bgColor, miniMapColor, textColor)
         } else {

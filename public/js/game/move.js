@@ -128,32 +128,30 @@ var Move = new function () {
                     }
                 }
                 if (isDigit(r.battle.castleId)) {
-                    var castles = Players.get(Fields.get(army.getX(),army.getY()).getCastleColor()).getCastles()
+                    var castles = Players.get(Fields.get(army.getX(), army.getY()).getCastleColor()).getCastles()
                     Players.get(r.color).getCastles().add(r.battle.castleId, castles.get(r.battle.castleId))
                     castles.remove(r.battle.castleId)
                 }
-                //if (isDigit(r.battle.towerId)) {
-                //    Tower.change(r.battle.towerId, r.color)
-                //}
                 if (Me.colorEquals(r.color)) {
-                    if (!r.battle.castleId && Me.getArmy(r.army.armyId).getMoves()) {
+                    if (r.battle.castleId) {
+                        Message.castle(Me.getCastle(r.battle.castleId))
+                    } else if (Me.getArmy(r.army.armyId).getMoves()) {
                         Me.selectArmy(r.army.armyId)
-                    } else {
-                        Me.deselectArmy()
                     }
-                } else {
-                    for (var color in r.battle.defenders) {
-                        if (color == 'neutral') {
-                            continue
-                        }
-                        //for (var armyId in r.battle.defenders[color]) {
-                        //    Army.update(r.battle.defenders[color][armyId]);
-                        //}
+                }
+            } else {
+                Players.get(r.color).getArmies().delete(r.army.armyId, 1)
+                for (var color in r.battle.defenders) {
+                    if (color == 'neutral') {
+                        continue
                     }
-                    if (Me.colorEquals(r.color)) {
-                        if (!Hero.findMy()) {
-                            $('#heroResurrection').removeClass('buttonOff')
-                        }
+                    for (var armyId in r.battle.defenders[color]) {
+                        Players.get(color).getArmies().get().update(r.battle.defenders[color][armyId])
+                    }
+                }
+                if (Me.colorEquals(r.color)) {
+                    if (!Hero.findMy()) {
+                        $('#heroResurrection').removeClass('buttonOff')
                     }
                 }
             }
