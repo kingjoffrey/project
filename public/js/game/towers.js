@@ -7,7 +7,13 @@ var Towers = function () {
         }
     }
     this.add = function (towerId, tower) {
-        towers[towerId] = new Tower(tower, bgColor)
+        if (tower instanceof Tower) {
+            console.log(tower)
+            towers[towerId] = tower
+            tower.update(bgColor)
+        } else {
+            towers[towerId] = new Tower(tower, bgColor)
+        }
     }
     this.get = function (towerId) {
         return towers[towerId]

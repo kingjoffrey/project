@@ -30,6 +30,13 @@ var Castle = function (castle, bgColor, miniMapColor, textColor) {
     this.getDefense = function () {
         return castle.defence
     }
+    this.update = function (bgColor, miniMapColor, textColor) {
+        $('#c' + castle.id).css({
+            'background': miniMapColor,
+            'border-color': textColor
+        })
+        Three.getScene().getObjectById(meshId).material.color.set(bgColor)
+    }
 }
 
 var Castleeee = {

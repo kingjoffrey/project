@@ -1,7 +1,8 @@
 var Tower = function (tower, bgColor) {
-    var x = tower.x,
-        y = tower.y,
-        meshId = Three.addTower(x, y, bgColor)
+    var meshId = Three.addTower(tower.x, tower.y, bgColor)
+    this.update = function (bgColor) {
+        Three.getScene().getObjectById(meshId).material.color.set(bgColor)
+    }
 }
 
 

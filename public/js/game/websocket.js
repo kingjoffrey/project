@@ -250,10 +250,17 @@ Websocket = {
                     case 'tower':
                         var field = Fields.get(r.x, r.y),
                             towerId = field.getTowerId(),
-                            towers = Players.get(field.getTowerColor()).getTowers(),
+                            towerColor = field.getTowerColor(),
+                            towers = Players.get(towerColor).getTowers(),
                             tower = towers.get(towerId)
                         Players.get(r.color).getTowers().add(towerId, tower)
                         towers.remove(towerId)
+                        if (Me.colorEquals(towerColor)) {
+                            Me.incomeIncrement(-5)
+                        }
+                        if (Me.colorEquals(r.color)) {
+                            Me.incomeIncrement(5)
+                        }
                         break
 
                     case 'computerStart':

@@ -62,8 +62,8 @@ var Three = new function () {
         ruin.scale = 3
         ruinModel = loader.parse(ruin)
     }
-    this.addRuin = function (x, y) {
-        var ruinMaterial = new THREE.MeshPhongMaterial({color: '#8080a0'})
+    this.addRuin = function (x, y, color) {
+        var ruinMaterial = new THREE.MeshPhongMaterial({color: color})
         ruinMaterial.side = THREE.DoubleSide
 
         var mesh = new THREE.Mesh(ruinModel.geometry, ruinMaterial)

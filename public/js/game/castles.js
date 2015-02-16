@@ -7,7 +7,13 @@ var Castles = function () {
         }
     }
     this.add = function (castleId, castle) {
-        castles[castleId] = new Castle(castle, bgColor, miniMapColor, textColor)
+        if (castle instanceof Castle) {
+            console.log(castle)
+            castles[castleId] = castle
+            castle.update(bgColor, miniMapColor, textColor)
+        } else {
+            castles[castleId] = new Castle(castle, bgColor, miniMapColor, textColor)
+        }
     }
     this.remove = function (castleId) {
         delete castles[castleId]
