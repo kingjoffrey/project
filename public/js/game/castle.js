@@ -27,8 +27,32 @@ var Castle = function (castle, bgColor, miniMapColor, textColor) {
     this.getY = function () {
         return castle.y
     }
+    this.getIncome = function () {
+        return castle.income
+    }
     this.getDefense = function () {
         return castle.defence
+    }
+    this.getCapital = function () {
+        return castle.capital
+    }
+    this.getProduction = function () {
+        return castle.production
+    }
+    this.getCurrentProductionId = function () {
+        return castle.currentProductionId
+    }
+    this.getCurrentProductionTurn = function () {
+        return castle.currentProductionTurn
+    }
+    this.getRelocationToCastleId = function () {
+        return castle.relocationToCastleId
+    }
+    this.getCastleId = function () {
+        return castle.id
+    }
+    this.getRelocatedProduction = function () {
+        //przenieść do Castles
     }
     this.update = function (bgColor, miniMapColor, textColor) {
         $('#c' + castle.id).css({
@@ -37,10 +61,7 @@ var Castle = function (castle, bgColor, miniMapColor, textColor) {
         })
         Three.getScene().getObjectById(meshId).material.color.set(bgColor)
     }
-}
-
-var Castleeee = {
-    handle: function (stop, relocation) {
+    this.handle = function (stop, relocation) {
         var castleId = $('.production').attr('id');
 
         if (!castleId) {
@@ -62,7 +83,7 @@ var Castleeee = {
                         Websocket.production(castleId, unitId, relocationToCastleId);
                     });
             }
-            return;
+            return
         }
 
         if (stop) {
@@ -70,10 +91,13 @@ var Castleeee = {
         }
 
         if (unitId) {
-            Websocket.production(castleId, unitId);
-            return;
+            Websocket.production(castleId, unitId)
+            return
         }
-    },
+    }
+}
+
+var Castleeee = {
     myMousedown: function (el, castleId) {
         el
             .unbind()

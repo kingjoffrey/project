@@ -146,7 +146,7 @@ var Move = new function () {
                         continue
                     }
                     for (var armyId in r.battle.defenders[color]) {
-                        Players.get(color).getArmies().get().update(r.battle.defenders[color][armyId])
+                        Players.get(color).getArmies().get(armyId).update(r.battle.defenders[color][armyId])
                     }
                 }
                 if (Me.colorEquals(r.color)) {

@@ -166,7 +166,7 @@ var Message = {
     },
     turn: function () {
         this.remove();
-        if (Turn.isMy() && Turn.getNumber() == 1 && Players.get(Me.getColor()).getCastles().get(firstCastleId).currentProductionId === null) {
+        if (Turn.isMy() && Turn.getNumber() == 1 && Me.getCastle(firstCastleId).getCurrentProductionId() === null) {
             Message.castle(firstCastleId);
         } else {
             var id = this.simple(translations.yourTurn, translations.thisIsYourTurnNow)
@@ -178,24 +178,23 @@ var Message = {
             capital = '',
             table = $('<table>'),
             j = 0,
-            td = new Array(),
-            castle = castle.toArray()
+            td = new Array()
 
-        if (castle.capital) {
+        if (castle.getCapital()) {
             capital = ' - ' + translations.capitalCity;
         }
 
-        for (var unitId in castle.production) {
+        for (var unitId in castle.getProduction()) {
             var travelBy = '',
                 unit = Units.get(unitId)
-            if (unitId == castle.currentProductionId) {
+            if (unitId == castle.getCurrentProductionId()) {
                 attr = {
                     type: 'radio',
                     name: 'production',
                     value: unitId,
                     checked: 'checked'
                 }
-                time = castle.currentProductionTurn + '/';
+                time = castle.getCurrentProductionTurn() + '/';
             } else {
                 attr = {
                     type: 'radio',
@@ -238,7 +237,7 @@ var Message = {
                 .append(
                 $('<div>')
                     .addClass('attributes')
-                    .append($('<p>').html(translations.time + ':&nbsp;' + time + castle.production[unitId].time + ' ' + translations.turn))
+                    .append($('<p>').html(translations.time + ':&nbsp;' + time + castle.getProduction()[unitId].time + ' ' + translations.turn))
                     .append($('<p>').html(translations.cost + ':&nbsp;' + unit.cost + ' ' + translations.gold))
                     .append($('<p>').html(translations.moves + '&nbsp;' + unit.numberOfMoves + '&nbsp;/&nbsp;' + translations.attack + '&nbsp;' + unit.attackPoints + '&nbsp;/&nbsp;' + translations.defence + '&nbsp;' + unit.defensePoints))
             );
@@ -261,7 +260,7 @@ var Message = {
 
         var stopButtonOff = ' buttonOff'
         var relocationButtonOff = ' buttonOff'
-        if (castle.currentProductionId) {
+        if (castle.getCurrentProductionId()) {
             if (Me.countCastles() > 1) {
                 var relocationButtonOff = ''
             }
@@ -279,7 +278,7 @@ var Message = {
                         .attr('id', 'stop')
                         .click(function () {
                             if ($('input:radio[name=production]:checked').val()) {
-                                Castle.handle(1, 0)
+                                castle.handle(1, 0)
                             }
                         })
                 )
@@ -293,7 +292,7 @@ var Message = {
                         .attr('id', 'relocation')
                         .click(function () {
                             if ($('input:radio[name=production]:checked').val()) {
-                                Castle.handle(0, 1)
+                                castle.handle(0, 1)
                             }
                         })
                 )
@@ -302,7 +301,7 @@ var Message = {
 
         var center = function (i) {
             return function () {
-                Zoom.lens.setcenter(castles[i].x, castles[i].y)
+                Zoom.lens.setcenter(castle.getX(), castle.getY())
             }
         }
 
@@ -319,43 +318,43 @@ var Message = {
                     })
             )
                 .addClass('iconButton buttonColors')
-                .click(center(castle.id))
+                .click(center(castle.getCastleId()))
                 .attr('id', 'center')
         )
-            .append($('<h3>').append(castle.name).append(capital).addClass('name'))
-            .append($('<h5>').append(translations.castleDefense + ': ' + castle.defense))
-            .append($('<h5>').append(translations.income + ': ' + castle.income + ' ' + translations.gold_turn))
+            .append($('<h3>').append(castle.getName()).append(capital).addClass('name'))
+            .append($('<h5>').append(translations.castleDefense + ': ' + castle.getDefense()))
+            .append($('<h5>').append(translations.income + ': ' + castle.getIncome() + ' ' + translations.gold_turn))
             .append($('<br>'))
-            .append($('<fieldset>').addClass('production').append($('<label>').html(translations.production)).append(table).attr('id', castle.id))
+            .append($('<fieldset>').addClass('production').append($('<label>').html(translations.production)).append(table).attr('id', castle.getCastleId()))
 
         // relocation to
 
-        if (castle.color == Me.getColor() && castle.relocationToCastleId && castle.currentProductionId) {
+        if (castle.getRelocationToCastleId()) {
             div
                 .append($('<br>'))
                 .append($('<fieldset>').addClass('relocatedProduction').append($('<label>').html(translations.relocatingTo)).append(
                     $('<table>').append(
                         $('<tr>')
                             .append(
-                            $('<td>').append($('<img>').attr('src', Unit.getImage(castle.currentProductionId, Me.getColor())))
+                            $('<td>').append($('<img>').attr('src', Unit.getImage(castle.getCurrentProductionId(), Me.getColor())))
                         )
                             .append(
                             $('<td>')
-                                .html(castle.currentProductionTurn + ' / ' + castle.production[castle.currentProductionId].time)
+                                .html(castle.getCurrentProductionTurn() + ' / ' + castle.getProduction()[castle.getCurrentProductionId()].time)
                         )
                             .append(
                             $('<td>')
-                                .html(castles[castle.relocationToCastleId].name)
+                                .html(Me.getCastle(castle.getRelocationToCastleId()).getName())
                                 .addClass('button buttonColors')
                                 .click(function () {
-                                    Message.castle(castle.relocationToCastleId)
+                                    Message.castle(castle.getRelocationToCastleId())
                                 })
                         )
                             .append(
                             $('<td>')
                                 .html($('<img>').attr('src', '/img/game/center.png'))
                                 .addClass('iconButton buttonColors')
-                                .click(center(castle.relocationToCastleId))
+                                .click(center(castle.getRelocationToCastleId()))
                         )
                     )
                 ))
@@ -363,7 +362,7 @@ var Message = {
 
         // relocation from
 
-        if (isSet(castle.relocatedProduction) && !$.isEmptyObject(castle.relocatedProduction)) {
+        if (castle.getRelocatedProduction() && !$.isEmptyObject(castle.getRelocatedProduction())) {
             var relocatingFrom = $('<table>'),
                 click = function (i) {
                     return function () {
@@ -371,8 +370,8 @@ var Message = {
                     }
                 }
 
-            for (var castleIdFrom in castle.relocatedProduction) {
-                var currentProductionId = castles[castleIdFrom].currentProductionId
+            for (var castleIdFrom in castle.getRelocatedProduction()) {
+                var currentProductionId = Me.getCastle(castleIdFrom).getCurrentProductionId()
                 relocatingFrom.append(
                     $('<tr>')
                         .append(
@@ -382,11 +381,11 @@ var Message = {
                     )
                         .append(
                         $('<td>')
-                            .html(castles[castleIdFrom].currentProductionTurn + ' / ' + castles[castleIdFrom].production[currentProductionId].time)
+                            .html(Me.getCastle(castleIdFrom).getCurrentProductionTurn() + ' / ' + Me.getCastle(castleIdFrom).getProduction()[currentProductionId].time)
                     )
                         .append(
                         $('<td>')
-                            .html(castles[castleIdFrom].name)
+                            .html(Me.getCastle(castleIdFrom).getName())
                             .addClass('button buttonColors')
                             .click(click(castleIdFrom))
                     )
@@ -404,7 +403,7 @@ var Message = {
         }
 
         var id = this.show('', div);
-        this.ok(id, Castle.handle);
+        this.ok(id, castle.handle);
         this.cancel(id)
 
         $('.production .unit input[type=radio]:checked').parent().parent().css({
