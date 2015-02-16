@@ -59,15 +59,14 @@ var Three = new function () {
     var loader = new THREE.JSONLoader()
 
     var initRuin = function () {
+        ruin.scale = 3
         ruinModel = loader.parse(ruin)
-        ruinModel.material = new THREE.MeshPhongMaterial({color: '#8080a0'})
-        ruinModel.material.side = THREE.DoubleSide
     }
     this.addRuin = function (x, y) {
-        var mesh = new THREE.Mesh(ruinModel.geometry, ruinModel.material)
-        var scale = 0.3
+        var ruinMaterial = new THREE.MeshPhongMaterial({color: '#8080a0'})
+        ruinMaterial.side = THREE.DoubleSide
 
-        mesh.scale.set(scale, scale, scale)
+        var mesh = new THREE.Mesh(ruinModel.geometry, ruinMaterial)
         mesh.position.set(x * 4 - 216, 0, y * 4 - 311)
 
         mesh.castShadow = true
@@ -80,15 +79,16 @@ var Three = new function () {
 
     var initTower = function () {
         towerModel = loader.parse(tower)
-        towerModel.material = new THREE.MeshLambertMaterial({color: 0xa0a0a0})
-        towerModel.material.side = THREE.DoubleSide
         flagModel = loader.parse(flag)
     }
     this.addTower = function (x, y, color) {
         var material = new THREE.MeshLambertMaterial({color: color})
         material.side = THREE.DoubleSide
 
-        var mesh = new THREE.Mesh(towerModel.geometry, towerModel.material)
+        var towerMaterial = new THREE.MeshLambertMaterial({color: color})
+        towerMaterial.side = THREE.DoubleSide
+
+        var mesh = new THREE.Mesh(towerModel.geometry, towerMaterial)
         mesh.position.set(x * 4 - 216, 0, y * 4 - 311)
 
         mesh.castShadow = true
@@ -104,18 +104,18 @@ var Three = new function () {
     }
 
     var initCastle = function () {
+        castle.scale = 2
         castleModel = loader.parse(castle)
-        castleModel.material = new THREE.MeshLambertMaterial({color: 0xa0a0a0})
-        castleModel.material.side = THREE.DoubleSide
         flagModel = loader.parse(flag)
     }
     this.addCastle = function (x, y, color, castleId) {
         var material = new THREE.MeshLambertMaterial({color: color})
         material.side = THREE.DoubleSide
 
-        var scale = 0.5
-        var mesh = new THREE.Mesh(castleModel.geometry, castleModel.material)
-        mesh.scale.set(scale, scale, scale);
+        var castleMaterial = new THREE.MeshLambertMaterial({color: color})
+        castleMaterial.side = THREE.DoubleSide
+
+        var mesh = new THREE.Mesh(castleModel.geometry, castleMaterial)
         mesh.position.set(x * 4 - 214, 0, y * 4 - 309)
 
         mesh.name = 'castle'
@@ -136,8 +136,6 @@ var Three = new function () {
     var initArmy = function () {
         hero.scale = 4
         armyModel = loader.parse(hero)
-        armyModel.material = new THREE.MeshLambertMaterial({color: 0xa0a0a0})
-        armyModel.material.side = THREE.DoubleSide
         flag_1.scale = 5
         flag_1Model = loader.parse(flag_1)
     }
@@ -145,7 +143,11 @@ var Three = new function () {
         var material = new THREE.MeshLambertMaterial({color: color})
         material.side = THREE.DoubleSide
 
-        var mesh = new THREE.Mesh(armyModel.geometry, armyModel.material)
+        var armyMaterial = new THREE.MeshLambertMaterial({color: color})
+        armyMaterial.side = THREE.DoubleSide
+
+
+        var mesh = new THREE.Mesh(armyModel.geometry, armyMaterial)
         mesh.position.set(x * 4 - 216, 0, y * 4 - 311)
         mesh.rotation.y = Math.PI / 2 + Math.PI / 4
 
