@@ -44,4 +44,18 @@ var Castles = function () {
             EventsControls.attach(Three.getScene().getObjectById(this.get(castleId).getMeshId()))
         }
     }
+    this.getRelocatedProduction = function (castleId) {
+        var relocatedProduction = []
+        for (var id in castles) {
+            var castle = this.get(id)
+            if (castleId == castle.getCastleId) {
+                continue
+            }
+            if (castleId == castle.getRelocationCastleId()) {
+                relocatedProduction.push(castle.getRelocationCastleId())
+            }
+        }
+        return relocatedProduction
+    }
+
 }

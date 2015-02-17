@@ -60,9 +60,6 @@ var Castle = function (castle, bgColor, miniMapColor, textColor) {
     this.getCastleId = function () {
         return castle.id
     }
-    this.getRelocatedProduction = function () {
-        //przenieść do Castles
-    }
     this.update = function (bgColor, miniMapColor, textColor) {
         $('#c' + castle.id).css({
             'background': miniMapColor,

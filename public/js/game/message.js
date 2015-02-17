@@ -362,7 +362,8 @@ var Message = {
 
         // relocation from
 
-        if (castle.getRelocatedProduction() && !$.isEmptyObject(castle.getRelocatedProduction())) {
+        var relocatedProduction = Me.getCastles().getRelocatedProduction(castle.getCastleId())
+        if (relocatedProduction) {
             var relocatingFrom = $('<table>'),
                 click = function (i) {
                     return function () {
@@ -370,22 +371,24 @@ var Message = {
                     }
                 }
 
-            for (var castleIdFrom in castle.getRelocatedProduction()) {
-                var currentProductionId = Me.getCastle(castleIdFrom).getProductionId()
+            for (var i in relocatedProduction) {
+                var castleFrom = Me.getCastle(castleIdFrom),
+                    productionId = castleFrom.getProductionId(),
+                    castleIdFrom = relocatedProduction[i]
                 relocatingFrom.append(
                     $('<tr>')
                         .append(
                         $('<td>').append(
-                            $('<img>').attr('src', Unit.getImage(currentProductionId, Me.getColor()))
+                            $('<img>').attr('src', Unit.getImage(productionId, Me.getColor()))
                         )
                     )
                         .append(
                         $('<td>')
-                            .html(Me.getCastle(castleIdFrom).getProductionTurn() + ' / ' + Me.getCastle(castleIdFrom).getProduction()[currentProductionId].time)
+                            .html(castleFrom.getProductionTurn() + ' / ' + castleFrom.getProduction()[productionId].time)
                     )
                         .append(
                         $('<td>')
-                            .html(Me.getCastle(castleIdFrom).getName())
+                            .html(castleFrom.getName())
                             .addClass('button buttonColors')
                             .click(click(castleIdFrom))
                     )
