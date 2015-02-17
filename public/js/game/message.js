@@ -372,9 +372,10 @@ var Message = {
                 }
 
             for (var i in relocatedProduction) {
-                var castleFrom = Me.getCastle(castleIdFrom),
-                    productionId = castleFrom.getProductionId(),
-                    castleIdFrom = relocatedProduction[i]
+                var castleIdFrom = relocatedProduction[i],
+                    castleFrom = Me.getCastle(castleIdFrom),
+                    productionId = castleFrom.getProductionId()
+
                 relocatingFrom.append(
                     $('<tr>')
                         .append(
