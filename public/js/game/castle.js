@@ -18,8 +18,14 @@ var Castle = function (castle, bgColor, miniMapColor, textColor) {
     this.getMeshId = function () {
         return meshId
     }
-    this.updateCurrentProductionTurn = function (value) {
-        castle.currentProductionTurn = value
+    this.setProductionId = function (value) {
+        castle.productionId = value
+    }
+    this.setProductionTurn = function (value) {
+        castle.productionTurn = value
+    }
+    this.setRelocationCastleId = function (value) {
+        castle.relocationCastleId = value
     }
     this.getX = function () {
         return castle.x
@@ -27,11 +33,14 @@ var Castle = function (castle, bgColor, miniMapColor, textColor) {
     this.getY = function () {
         return castle.y
     }
+    this.getName = function () {
+        return castle.name
+    }
     this.getIncome = function () {
         return castle.income
     }
     this.getDefense = function () {
-        return castle.defence
+        return castle.defense
     }
     this.getCapital = function () {
         return castle.capital
@@ -39,14 +48,14 @@ var Castle = function (castle, bgColor, miniMapColor, textColor) {
     this.getProduction = function () {
         return castle.production
     }
-    this.getCurrentProductionId = function () {
-        return castle.currentProductionId
+    this.getProductionId = function () {
+        return castle.productionId
     }
-    this.getCurrentProductionTurn = function () {
-        return castle.currentProductionTurn
+    this.getProductionTurn = function () {
+        return castle.productionTurn
     }
-    this.getRelocationToCastleId = function () {
-        return castle.relocationToCastleId
+    this.getRelocationCastleId = function () {
+        return castle.relocationCastleId
     }
     this.getCastleId = function () {
         return castle.id
@@ -62,13 +71,6 @@ var Castle = function (castle, bgColor, miniMapColor, textColor) {
         Three.getScene().getObjectById(meshId).material.color.set(bgColor)
     }
     this.handle = function (stop, relocation) {
-        var castleId = $('.production').attr('id');
-
-        if (!castleId) {
-            Message.error('No castle ID');
-            return;
-        }
-
         var unitId = $('input:radio[name=production]:checked').val()
 
         if (relocation) {
@@ -76,12 +78,8 @@ var Castle = function (castle, bgColor, miniMapColor, textColor) {
                 Message.error('No unit selected')
             } else {
                 Message.simple(translations.relocation, translations.selectCastleToWhichYouWantToRelocateThisProduction)
-                $('.castle.' + game.me.color)
-                    .unbind()
-                    .click(function () {
-                        var relocationToCastleId = $(this).attr('id').substring(6);
-                        Websocket.production(castleId, unitId, relocationToCastleId);
-                    });
+                Me.setSelectedCastleId(castle.id)
+                Me.setSelectedUnitId(unitId)
             }
             return
         }
@@ -91,7 +89,7 @@ var Castle = function (castle, bgColor, miniMapColor, textColor) {
         }
 
         if (unitId) {
-            Websocket.production(castleId, unitId)
+            Websocket.production(castle.id, unitId)
             return
         }
     }

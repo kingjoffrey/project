@@ -1,5 +1,5 @@
 var Army = function (army, bgColor, miniMapColor, textColor, color) {
-    var meshId = Three.addArmy(army.x, army.y, bgColor, army.armyId),
+    var meshId = Three.addArmy(army.x, army.y, bgColor, army.id),
         heroSplitKey = null,
         soldierSplitKey = null,
         numberOfUnits = countProperties(army.heroes) + countProperties(army.soldiers)
@@ -17,15 +17,15 @@ var Army = function (army, bgColor, miniMapColor, textColor, color) {
                 'border-color': textColor,
                 'z-index': 10
             })
-            .attr('id', army.armyId)
+            .attr('id', army.id)
             .addClass('a')
     )
     this.skippedHeroes = {}
     this.skippedSoldiers = {}
     this.update = function (a) {
-        Fields.get(army.x, army.y).removeArmyId(army.armyId)
+        Fields.get(army.x, army.y).removeArmyId(army.id)
         army = a
-        Fields.get(army.x, army.y).addArmyId(army.armyId, color)
+        Fields.get(army.x, army.y).addArmyId(army.id, color)
         numberOfUnits = countProperties(army.heroes) + countProperties(army.soldiers)
         if (numberOfUnits > 8) {
             numberOfUnits = 8
@@ -216,7 +216,7 @@ var Armyyyy = {
         return army;
     },
     changeImg: function (army) {
-        $('#army' + army.armyId + ' .unit img').attr('src', army.img);
+        $('#army' + army.id + ' .unit img').attr('src', army.img);
     },
     init: function (obj, color) {
 
@@ -252,9 +252,9 @@ var Armyyyy = {
         }
 
         if (army.fortified) {
-            Army.quitedArmies[army.armyId] = 1;
+            Army.quitedArmies[army.id] = 1;
         } else {
-            this.unfortify(army.armyId);
+            this.unfortify(army.id);
         }
 
         army = this.getMovementType(army)
@@ -263,7 +263,7 @@ var Armyyyy = {
         var element = $('<div>')
             .addClass('army ' + color)
             .attr({
-                id: 'army' + army.armyId,
+                id: 'army' + army.id,
                 title: army.name
             })
             .css({
@@ -277,7 +277,7 @@ var Armyyyy = {
                 Army.myClick(army, e)
             });
             element.mouseover(function () {
-                Army.myMouseOver(army.armyId)
+                Army.myMouseOver(army.id)
             })
             if (army.canSwim) {
                 if (!Castle.getMy(army.x, army.y)) {

@@ -13,7 +13,9 @@ var Me = new function () {
         parentArmyId = null,
         nextArmyId = null,
         isNextSelected = null,
-        me
+        me,
+        selectedCastleId = null,
+        selectedUnitId = null
 
     this.init = function (c) {
         color = c
@@ -90,6 +92,18 @@ var Me = new function () {
     }
     this.getArmy = function (armyId) {
         return me.getArmies().get(armyId)
+    }
+    this.setSelectedCastleId = function (castleId) {
+        selectedCastleId = castleId
+    }
+    this.setSelectedUnitId = function (unitId) {
+        selectedUnitId = unitId
+    }
+    this.getSelectedCastleId = function () {
+        return selectedCastleId
+    }
+    this.getSelectedUnitId = function () {
+        return selectedUnitId
     }
     this.resetSkippedArmies = function () {
         skippedArmies = {}

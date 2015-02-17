@@ -47,14 +47,14 @@ class Cli_Model_Soldier extends Cli_Model_Being
         return array(
             'unitId' => $this->_unitId,
             'movesLeft' => $this->_movesLeft,
-            'forest' => $this->_forest,
-            'hills' => $this->_hills,
-            'swamp' => $this->_swamp,
-            'fly' => $this->_fly,
-            'swim' => $this->_swim,
-            'attack' => $this->_attack,
-            'defense' => $this->_defense,
-            'moves' => $this->_moves
+//            'forest' => $this->_forest,
+//            'hills' => $this->_hills,
+//            'swamp' => $this->_swamp,
+//            'fly' => $this->_fly,
+//            'swim' => $this->_swim,
+//            'attack' => $this->_attack,
+//            'defense' => $this->_defense,
+//            'moves' => $this->_moves
         );
     }
 

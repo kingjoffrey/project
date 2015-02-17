@@ -262,9 +262,14 @@ EventsControls.onclick = function () {
         case 0:
             switch (this.focused.name) {
                 case 'castle':
-                    var castle = Me.getCastle(this.focused.identification)
-                    if (isSet(castle)) {
-                        Message.castle(castle)
+                    if (Me.getSelectedCastleId()) {
+                        if (Me.getSelectedCastleId() != this.focused.identification) {
+                            Websocket.production(Me.getSelectedCastleId(), Me.getSelectedUnitId(), this.focused.identification)
+                        }
+                        Me.setSelectedCastleId(null)
+                        Me.setSelectedUnitId(null)
+                    } else {
+                        Message.castle(Me.getCastle(this.focused.identification))
                     }
                     break
                 case 'army':

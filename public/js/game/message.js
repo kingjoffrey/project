@@ -166,7 +166,7 @@ var Message = {
     },
     turn: function () {
         this.remove();
-        if (Turn.isMy() && Turn.getNumber() == 1 && Me.getCastle(firstCastleId).getCurrentProductionId() === null) {
+        if (Turn.isMy() && Turn.getNumber() == 1 && Me.getCastle(firstCastleId).getProductionId() === null) {
             Message.castle(firstCastleId);
         } else {
             var id = this.simple(translations.yourTurn, translations.thisIsYourTurnNow)
@@ -187,14 +187,14 @@ var Message = {
         for (var unitId in castle.getProduction()) {
             var travelBy = '',
                 unit = Units.get(unitId)
-            if (unitId == castle.getCurrentProductionId()) {
+            if (unitId == castle.getProductionId()) {
                 attr = {
                     type: 'radio',
                     name: 'production',
                     value: unitId,
                     checked: 'checked'
                 }
-                time = castle.getCurrentProductionTurn() + '/';
+                time = castle.getProductionTurn() + '/';
             } else {
                 attr = {
                     type: 'radio',
@@ -260,7 +260,7 @@ var Message = {
 
         var stopButtonOff = ' buttonOff'
         var relocationButtonOff = ' buttonOff'
-        if (castle.getCurrentProductionId()) {
+        if (castle.getProductionId()) {
             if (Me.countCastles() > 1) {
                 var relocationButtonOff = ''
             }
@@ -329,32 +329,32 @@ var Message = {
 
         // relocation to
 
-        if (castle.getRelocationToCastleId()) {
+        if (castle.getRelocationCastleId()) {
             div
                 .append($('<br>'))
                 .append($('<fieldset>').addClass('relocatedProduction').append($('<label>').html(translations.relocatingTo)).append(
                     $('<table>').append(
                         $('<tr>')
                             .append(
-                            $('<td>').append($('<img>').attr('src', Unit.getImage(castle.getCurrentProductionId(), Me.getColor())))
+                            $('<td>').append($('<img>').attr('src', Unit.getImage(castle.getProductionId(), Me.getColor())))
                         )
                             .append(
                             $('<td>')
-                                .html(castle.getCurrentProductionTurn() + ' / ' + castle.getProduction()[castle.getCurrentProductionId()].time)
+                                .html(castle.getProductionTurn() + ' / ' + castle.getProduction()[castle.getProductionId()].time)
                         )
                             .append(
                             $('<td>')
-                                .html(Me.getCastle(castle.getRelocationToCastleId()).getName())
+                                .html(Me.getCastle(castle.getRelocationCastleId()).getName())
                                 .addClass('button buttonColors')
                                 .click(function () {
-                                    Message.castle(castle.getRelocationToCastleId())
+                                    Message.castle(castle.getRelocationCastleId())
                                 })
                         )
                             .append(
                             $('<td>')
                                 .html($('<img>').attr('src', '/img/game/center.png'))
                                 .addClass('iconButton buttonColors')
-                                .click(center(castle.getRelocationToCastleId()))
+                                .click(center(castle.getRelocationCastleId()))
                         )
                     )
                 ))
@@ -371,7 +371,7 @@ var Message = {
                 }
 
             for (var castleIdFrom in castle.getRelocatedProduction()) {
-                var currentProductionId = Me.getCastle(castleIdFrom).getCurrentProductionId()
+                var currentProductionId = Me.getCastle(castleIdFrom).getProductionId()
                 relocatingFrom.append(
                     $('<tr>')
                         .append(
@@ -381,7 +381,7 @@ var Message = {
                     )
                         .append(
                         $('<td>')
-                            .html(Me.getCastle(castleIdFrom).getCurrentProductionTurn() + ' / ' + Me.getCastle(castleIdFrom).getProduction()[currentProductionId].time)
+                            .html(Me.getCastle(castleIdFrom).getProductionTurn() + ' / ' + Me.getCastle(castleIdFrom).getProduction()[currentProductionId].time)
                     )
                         .append(
                         $('<td>')

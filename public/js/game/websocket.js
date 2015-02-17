@@ -334,8 +334,11 @@ Websocket = {
                         break;
 
                     case 'production':
-                        Castle.updateMyProduction(r.unitId, r.castleId, r.relocationToCastleId);
-                        break;
+                        var castle = Me.getCastle(r.castleId)
+                        castle.setProductionId(r.unitId)
+                        castle.setProductionTurn(0)
+                        castle.setRelocationCastleId(r.relocationToCastleId)
+                        break
 
                     case 'statistics':
                         castlesConquered = r.castlesConquered;

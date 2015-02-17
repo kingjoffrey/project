@@ -70,7 +70,7 @@ class Cli_Model_Army
     public function toArray()
     {
         return array(
-            'armyId' => $this->_id,
+            'id' => $this->_id,
             'soldiers' => $this->_soldiers->toArray(),
             'ships' => $this->_ships->toArray(),
             'heroes' => $this->_heroes->toArray(),

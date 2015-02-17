@@ -58,15 +58,15 @@ class Cli_Model_Castle extends Cli_Model_Entity
             'id' => $this->_id,
             'x' => $this->_x,
             'y' => $this->_y,
-            'currentProductionId' => $this->_productionId,
-            'currentProductionTurn' => $this->_productionTurn,
-            'defenseMod' => $this->_defenseMod,
+            'productionId' => $this->_productionId,
+            'productionTurn' => $this->_productionTurn,
+//            'defenseMod' => $this->_defenseMod,
             'relocationCastleId' => $this->_relocationCastleId,
             'defense' => $this->_defense,
             'name' => $this->_name,
             'income' => $this->_income,
             'capital' => $this->_capital,
-            'enclaveNumber' => $this->_enclaveNumber,
+//            'enclaveNumber' => $this->_enclaveNumber,
             'production' => $this->_production
         );
     }
