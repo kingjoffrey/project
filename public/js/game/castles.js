@@ -52,7 +52,7 @@ var Castles = function () {
                 continue
             }
             if (castleId == castle.getRelocationCastleId()) {
-                relocatedProduction.push(castle.getRelocationCastleId())
+                relocatedProduction.push(castle.getCastleId())
             }
         }
         return relocatedProduction

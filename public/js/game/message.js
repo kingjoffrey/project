@@ -301,7 +301,7 @@ var Message = {
 
         var center = function (i) {
             return function () {
-                Zoom.lens.setcenter(castle.getX(), castle.getY())
+                Zoom.lens.setcenter(Me.getCastle(i).getX(), Me.getCastle(i).getY())
             }
         }
 
@@ -347,7 +347,7 @@ var Message = {
                                 .html(Me.getCastle(castle.getRelocationCastleId()).getName())
                                 .addClass('button buttonColors')
                                 .click(function () {
-                                    Message.castle(castle.getRelocationCastleId())
+                                    Message.castle(Me.getCastle(castle.getRelocationCastleId()))
                                 })
                         )
                             .append(
@@ -363,11 +363,11 @@ var Message = {
         // relocation from
 
         var relocatedProduction = Me.getCastles().getRelocatedProduction(castle.getCastleId())
-        if (relocatedProduction) {
+        if (relocatedProduction.length) {
             var relocatingFrom = $('<table>'),
                 click = function (i) {
                     return function () {
-                        Message.castle(i)
+                        Message.castle(Me.getCastle(i))
                     }
                 }
 
