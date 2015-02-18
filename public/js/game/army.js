@@ -1,12 +1,7 @@
 var Army = function (army, bgColor, miniMapColor, textColor, color) {
     var meshId = Three.addArmy(army.x, army.y, bgColor, army.id),
         heroSplitKey = null,
-        soldierSplitKey = null,
-        numberOfUnits = countProperties(army.heroes) + countProperties(army.soldiers)
-
-    if (numberOfUnits > 8) {
-        numberOfUnits = 8
-    }
+        soldierSplitKey = null
 
     map.append(
         $('<div>')
@@ -26,14 +21,13 @@ var Army = function (army, bgColor, miniMapColor, textColor, color) {
         Fields.get(army.x, army.y).removeArmyId(army.id)
         army = a
         Fields.get(army.x, army.y).addArmyId(army.id, color)
-        numberOfUnits = countProperties(army.heroes) + countProperties(army.soldiers)
-        if (numberOfUnits > 8) {
-            numberOfUnits = 8
-        }
         //this.getMovementType()
     }
     this.getMeshId = function () {
         return meshId
+    }
+    this.getArmyId = function () {
+        return army.id
     }
     this.getX = function () {
         return army.x
@@ -186,6 +180,17 @@ var Army = function (army, bgColor, miniMapColor, textColor, color) {
     }
     this.getSoldier = function (soldierId) {
         return army.soldiers[soldierId]
+    }
+    this.setPosition = function (x, y) {
+        Three.getScene().getObjectById(meshId).position.set(x * 4 - 216, 0, y * 4 - 311)
+    }
+    this.getNumberOfUnits = function () {
+        var numberOfUnits = countProperties(army.heroes) + countProperties(army.soldiers)
+
+        if (numberOfUnits > 8) {
+            numberOfUnits = 8
+        }
+        return numberOfUnits
     }
 }
 

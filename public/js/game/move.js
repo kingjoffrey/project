@@ -6,12 +6,14 @@ var Move = new function () {
         if (notSet(r.color)) {
             Gui.unlock()
             Websocket.executing = 0
-            Message.simple(translations.army, translations.noMoreMoves)
+            if (Me.colorEquals(r.color)) {
+                Message.simple(translations.army, translations.noMoreMoves)
+            }
             return
         }
         //moving = 1
         player = Players.get(r.color)
-        army = player.getArmies().get(r.army.armyId)
+        army = player.getArmies().get(r.army.id)
         console.log(' ')
         console.log('move.start(' + ii + ') start')
         console.log(r)
@@ -34,21 +36,21 @@ var Move = new function () {
         //if (notSet(r.path[1])) {
         //    Zoom.lens.setcenter(r.army.x, r.army.y)
         //} else {
-        //    Fields.get(army.getX(), army.getY()).removeArmyId(r.army.armyId)
+        //    Fields.get(army.getX(), army.getY()).removeArmyId(army.getArmyId())
         Zoom.lens.setcenter(r.path[0].x, r.path[0].y)
         //}
 
-        //Me.unfortify(r.army.armyId)
+        //Me.unfortify(army.getArmyId())
 
         if (player.isComputer()) {
             stepTime = 100
         }
 
-        loop(r, ii)
+        stepLoop(r, ii)
         console.log('move.start(' + ii + ') end')
     }
-    var loop = function (r, ii) {
-        console.log('move.loop(' + ii + ') start')
+    var stepLoop = function (r, ii) {
+        console.log('move.stepLoop(' + ii + ') start')
         for (var step in r.path) {
             break
         }
@@ -58,7 +60,7 @@ var Move = new function () {
                 //zoomer.setCenterIfOutOfScreen(r.path[step].x * 40, r.path[step].y * 40);
                 Zoom.lens.setcenter(r.path[step].x, r.path[step].y)
 
-                $('#' + r.army.armyId + '.a')
+                $('#' + army.getArmyId() + '.a')
                     .animate({
                         left: r.path[step].x * 2 + 'px',
                         top: r.path[step].y * 2 + 'px'
@@ -66,13 +68,13 @@ var Move = new function () {
                         if (typeof r.path[step] == 'undefined') {
                             throw(r)
                         }
-                        Three.getScene().getObjectById(army.getMeshId()).position.set(r.path[step].x * 4 - 218, 0, r.path[step].y * 4 - 312)
-                        delete r.path[step];
-                        loop(r, ii);
+                        army.setPosition(r.path[step].x, r.path[step].y)
+                        delete r.path[step]
+                        stepLoop(r, ii);
                     })
             } else {
                 delete r.path[step];
-                loop(r, ii);
+                stepLoop(r, ii);
             }
         } else {
             if (isTruthful(r.battle) && (!player.isComputer() || Gui.show)) {
@@ -99,7 +101,7 @@ var Move = new function () {
                 Move.end(r, ii)
             }
         }
-        console.log('move.loop(' + ii + ') end')
+        console.log('move.stepLoop(' + ii + ') end')
     }
     this.end = function (r, ii) {
         console.log('move.end(' + ii + ') start')
@@ -110,7 +112,7 @@ var Move = new function () {
         AStar.y = army.getY()
 
         //if (game.players[r.color].computer && !Gui.show) {
-        //    $('#army' + r.army.armyId)
+        //    $('#army' + army.getArmyId())
         //        .css({
         //            left: (AStar.x * 40) + 'px',
         //            top: (AStar.y * 40) + 'px'
@@ -135,12 +137,12 @@ var Move = new function () {
                 if (Me.colorEquals(r.color)) {
                     if (r.battle.castleId) {
                         Message.castle(Me.getCastle(r.battle.castleId))
-                    } else if (Me.getArmy(r.army.armyId).getMoves()) {
-                        Me.selectArmy(r.army.armyId)
+                    } else if (Me.getArmy(army.getArmyId()).getMoves()) {
+                        Me.selectArmy(army.getArmyId())
                     }
                 }
             } else {
-                Players.get(r.color).getArmies().delete(r.army.armyId, 1)
+                Players.get(r.color).getArmies().delete(army.getArmyId(), 1)
                 for (var color in r.battle.defenders) {
                     if (color == 'neutral') {
                         continue

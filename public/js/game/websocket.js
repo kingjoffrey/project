@@ -65,7 +65,7 @@ Websocket = {
             case 'ruin':
                 //board.append($('<div>').addClass('ruinSearch').css({'top': Y + 'px', 'left': X + 'px'}));
                 Zoom.lens.setcenter(r.army.x, r.army.y);
-                Players.get(r.color).getArmies().update(r.army.armyId, r.army)
+                Players.get(r.color).getArmies().update(r.army.id, r.army)
                 Ruins.get(r.ruin.ruinId).update(r.ruin.empty)
                 if (Me.colorEquals(r.color)) {
                     switch (r.find[0]) {
