@@ -130,6 +130,7 @@ var Me = new function () {
             detached.push(EventsControls.objects[i].id)
             EventsControls.detach(EventsControls.objects[i])
         }
+        Three.addCircle(army.getX(), army.getY())
 
         Message.remove()
 

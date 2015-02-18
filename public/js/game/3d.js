@@ -56,6 +56,19 @@ var Three = new function () {
     theLight.shadowMapHeight = 8192
     scene.add(theLight);
 
+    this.addCircle = function (x, y) {
+        var radius = 2,
+            segments = 64,
+            material = new THREE.LineBasicMaterial({color: 0x0000ff}),
+            geometry = new THREE.CircleGeometry(radius, segments)
+
+        geometry.vertices.shift()
+        var circle = new THREE.Line(geometry, material)
+        circle.position.set(x * 4 - 216, 1, y * 4 - 311)
+
+        scene.add(circle)
+    }
+
     var loader = new THREE.JSONLoader()
 
     var initRuin = function () {
