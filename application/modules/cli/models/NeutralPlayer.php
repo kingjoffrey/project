@@ -8,8 +8,11 @@ class Cli_Model_NeutralPlayer extends Cli_Model_DefaultPlayer
 
     public function __construct($mapId, $gameId, $mapCastles, Zend_Db_Adapter_Pdo_Pgsql $db)
     {
+        $this->_color = 'neutral';
+
         $this->_castles = new Cli_Model_Castles();
         $this->_towers = new Cli_Model_Towers();
+        $this->_armies = new Cli_Model_Armies();
         $this->initCastles($gameId, $mapCastles, $db);
         $this->initTowers($mapId, $gameId, $db);
     }

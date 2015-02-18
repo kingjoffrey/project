@@ -8,15 +8,11 @@ var Gui = {
     timerBox: {'close': 0},
     mapBox: {'close': 0},
     speed: 200,
-    documentTitle: null,
+    documentTitle: 'WoF',
     init: function () {
         $(window).resize(function () {
             Gui.adjust();
         })
-        $(document)[0].oncontextmenu = function () {
-            return
-        } // usuwa menu kontekstowe spod prawego przycisku
-        documentTitle = 'WoF'
         map = $('#map')
         coord = $('#coord')
         Zoom.init()

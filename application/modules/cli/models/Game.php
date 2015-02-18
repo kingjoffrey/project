@@ -57,6 +57,12 @@ class Cli_Model_Game
 
         $mPlayersInGame = new Application_Model_PlayersInGame($this->_id, $db);
         $this->_playersInGameColors = Zend_Registry::get('playersInGameColors');
+
+        $this->_me = new Cli_Model_Me(
+            $this->getPlayerColor($playerId),
+            $playerId
+        );
+
         foreach ($mPlayersInGame->getInGamePlayerIds() as $row) {
             $this->_online[$this->_playersInGameColors[$row['playerId']]] = 1;
         }
@@ -93,11 +99,6 @@ class Cli_Model_Game
         $this->initPlayers($mMapPlayers, $db);
         $this->initRuins($db);
 
-        $this->_me = new Cli_Model_Me(
-            $this->getPlayerColor($playerId),
-            $playerId
-        );
-
         $this->_players->initFields($this->_fields);
     }
 
@@ -113,8 +114,14 @@ class Cli_Model_Game
         foreach ($this->_playersInGameColors as $playerId => $color) {
             $this->_players->addPlayer($color, new Cli_Model_Player($players[$playerId], $this->_id, $mapCastles, $mapTowers, $mMapPlayers, $db));
         }
-
         $this->_players->addPlayer('neutral', new Cli_Model_NeutralPlayer($this->_mapId, $this->_id, $mapCastles, $db));
+
+        $myColor = $this->_me->getColor();
+        foreach ($this->_players->getKeys() as $color) {
+            if (!$this->_players->sameTeam($myColor, $color)) {
+                $this->_players->getPlayer($color)->initFields($this->_fields);
+            }
+        }
     }
 
     private function initRuins(Zend_Db_Adapter_Pdo_Pgsql $db)

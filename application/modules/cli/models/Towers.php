@@ -18,6 +18,11 @@ class Cli_Model_Towers
         return $this->_towers;
     }
 
+    public function getKeys()
+    {
+        return array_keys($this->_towers);
+    }
+
     public function add($towerId, Cli_Model_Tower $tower, $oldColor = null, $playerId = null, $gameId = null, $db = null)
     {
         $this->_towers[$towerId] = $tower;

@@ -8,7 +8,7 @@
     echo $this->headScript() . "\n";
     ?>
 </head>
-<body onkeydown="Gui.doKey(arguments[0] || window.event)">
+<body onkeydown="Gui.doKey(arguments[0] || window.event)" oncontextmenu="return false">
 <?php echo $this->placeholder('sound') ?>
 <div id="game">
     <div id="mapBox" class="box">
