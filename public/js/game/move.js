@@ -58,7 +58,6 @@ var Move = new function () {
         if (isSet(r.path[step])) {
             if (!player.isComputer() || Gui.show) {
                 //zoomer.setCenterIfOutOfScreen(r.path[step].x * 40, r.path[step].y * 40);
-                Zoom.lens.setcenter(r.path[step].x, r.path[step].y)
 
                 $('#' + army.getArmyId() + '.a')
                     .animate({
@@ -107,9 +106,9 @@ var Move = new function () {
         console.log('move.end(' + ii + ') start')
 
         army.update(r.army)
-
         AStar.x = army.getX()
         AStar.y = army.getY()
+        Zoom.lens.setcenter(AStar.x, AStar.y)
 
         //if (game.players[r.color].computer && !Gui.show) {
         //    $('#army' + army.getArmyId())
