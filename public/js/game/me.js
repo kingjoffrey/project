@@ -181,6 +181,7 @@ var Me = new function () {
             }
         }
 
+        Three.clearCircles()
         for (var i in detached) {
             EventsControls.attach(Three.getScene().getObjectById(detached[i]))
         }

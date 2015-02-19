@@ -7,48 +7,28 @@ var Three = new function () {
         mountainModel,
         hillModel,
         treeModel,
-        waterModel
-    var scene = new THREE.Scene()
+        waterModel,
+        scene = new THREE.Scene(),
+        camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 1, 1000),
+        renderer = new THREE.WebGLRenderer({antialias: true}),
+        pointLight = new THREE.PointLight(0xdddddd),
+        theLight = new THREE.DirectionalLight(0xffffff, 1),
+        loader = new THREE.JSONLoader(),
+        circles = []
 
-    this.getScene = function () {
-        return scene
-    }
-
-    var camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 1, 1000)
-    camera.rotation.order = 'YXZ';
-    camera.rotation.y = -Math.PI / 4;
-    camera.rotation.x = Math.atan(-1 / Math.sqrt(2));
+    camera.rotation.order = 'YXZ'
+    camera.rotation.y = -Math.PI / 4
+    camera.rotation.x = Math.atan(-1 / Math.sqrt(2))
     camera.position.set(0, 52, 0)
-    camera.scale.addScalar(1);
+    camera.scale.addScalar(1)
 
-    this.getCamera = function () {
-        return camera
-    }
-
-    var renderer = new THREE.WebGLRenderer({antialias: true})
-    renderer.setSize(window.innerWidth, window.innerHeight);
+    renderer.setSize(window.innerWidth, window.innerHeight)
     renderer.shadowMapEnabled = true
     renderer.shadowMapSoft = false
 
-    //renderer.shadowCameraNear = 3;
-    //renderer.shadowCameraFar = camera.far;
-    //renderer.shadowCameraFov = 50;
-    //
-    //renderer.shadowMapBias = 0.0039;
-    //renderer.shadowMapDarkness = 0.5;
-    //renderer.shadowMapWidth = 1024;
-    //renderer.shadowMapHeight = 1024;
-
-    this.getRenderer = function () {
-        return renderer
-    }
-
-    var pointLight = new THREE.PointLight(0xddddDD);
     pointLight.position.set(-100000, 100000, 100000);
     scene.add(pointLight)
 
-    //Lighting
-    var theLight = new THREE.DirectionalLight(0xffffff, 1)
     theLight.position.set(1500, 1000, 1000)
     theLight.castShadow = true
     theLight.shadowDarkness = 0.3
@@ -56,6 +36,15 @@ var Three = new function () {
     theLight.shadowMapHeight = 8192
     scene.add(theLight);
 
+    this.getScene = function () {
+        return scene
+    }
+    this.getCamera = function () {
+        return camera
+    }
+    this.getRenderer = function () {
+        return renderer
+    }
     this.addCircle = function (x, y) {
         var radius = 2,
             segments = 64,
@@ -68,9 +57,14 @@ var Three = new function () {
         circle.rotation.x = Math.PI / 2
 
         scene.add(circle)
+        circles.push(circle)
     }
-
-    var loader = new THREE.JSONLoader()
+    this.clearCircles = function () {
+        for (var i in circles) {
+            scene.remove(circles[i])
+        }
+        circles = []
+    }
 
     var initRuin = function () {
         ruin.scale = 3

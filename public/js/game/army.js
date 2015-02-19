@@ -316,22 +316,6 @@ var Armyyyy = {
         //    )
         //);
     },
-
-
-    fields: function (a) {
-        if (a.color == game.me.color) {
-            if (fields[a.y][a.x] == 'S') {
-                fields[a.y][a.x] = game.fields[a.y][a.x];
-            }
-            return;
-        }
-
-        if (Castle.getEnemy(a.x, a.y) !== null) {
-            fields[a.y][a.x] = 'e';
-        } else {
-            fields[a.y][a.x] = game.fields[a.y][a.x];
-        }
-    },
     myMouseOver: function (armyId) {
         if (Gui.lock) {
             return;
