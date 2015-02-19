@@ -5,7 +5,6 @@ var Me = new function () {
         color,
         selectedArmyId = null,
         deselectedArmyId = null,
-        detached = [],
         nextArmies = {},
         skippedArmies = {},
         quitedArmies = {},
@@ -123,15 +122,8 @@ var Me = new function () {
     this.selectArmy = function (armyId, center) {
         selectedArmyId = armyId
         var army = this.getArmy(armyId)
-        for (var i = EventsControls.objects.length - 1; i > 0; i--) {
-            if (EventsControls.objects[i].id == army.getMeshId()) {
-                continue
-            }
-            detached.push(EventsControls.objects[i].id)
-            EventsControls.detach(EventsControls.objects[i])
-        }
+        EventsControls.aaa(army.getMeshId())
         Three.addCircle(army.getX(), army.getY())
-
         Message.remove()
 
         //Castle.selectedArmyCursor();
@@ -182,11 +174,7 @@ var Me = new function () {
         }
 
         Three.clearCircles()
-        for (var i in detached) {
-            EventsControls.attach(Three.getScene().getObjectById(detached[i]))
-        }
-        detached = []
-
+        EventsControls.bbb()
         Me.setIsSelected(0)
         //Castle.deselectedArmyCursor()
         //this.enemyCursorWhenUnselected()

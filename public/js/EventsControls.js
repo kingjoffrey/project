@@ -1,115 +1,98 @@
 EventsControls = function (camera, domElement) {
 
-    var _this = this;
-
-    this.button = null
-    this.camera = camera;
-    this.container = ( domElement !== undefined ) ? domElement : document;
-    this.fixed = new THREE.Vector3(0, 0, 0);
-
-    this.focused = null; // выделенный объект
-    this.raycaster = new THREE.Raycaster();
-
-    this._mouse = new THREE.Vector2();
-
-    // API
-
-    this.objects = [];
-    this.intersects = [];
-
-    this.previous = new THREE.Vector3(0, 0, 0);
-
-    this.onclick = function () {
-    }
-    this.mousemove = function () {
-    }
+    var raycaster = new THREE.Raycaster(),
+        objects = [],
+        intersects = [],
+        detached = []
 
     this.attach = function (object) {
         if (object instanceof THREE.Mesh) {
-            this.objects.push(object);
+            objects.push(object);
         }
     }
-
     this.detach = function (object) {
-        this.objects.splice(this.objects.indexOf(object), 1);
+        objects.splice(objects.indexOf(object), 1);
     }
-
-    this.setFocus = function (object) {
-        _this.focusedItem = _this.objects.indexOf(object);
-        if (object.userData.parent) {
-            this.focused = object.userData.parent;
-            this.previous.copy(this.focused.position);
-        }
-        else {
-            this.focused = object;
-            this.previous.copy(this.focused.position);
+    this.aaa = function (meshId) {
+        for (var i = objects.length - 1; i > 0; i--) {
+            if (objects[i].id == meshId) {
+                continue
+            }
+            detached.push(objects[i].id)
+            this.detach(objects[i])
         }
     }
-
-    this._setFocusNull = function () {
-        this.focused = null;
-    }
-
-    this.select = function (object) {
-        _this.mouseOveredItem = _this.objects.indexOf(object);
-    }
-
-    this._rayGet = function () {
-        if (_this.camera instanceof THREE.OrthographicCamera) {
-            var vector = new THREE.Vector3(_this._mouse.x, _this._mouse.y, -1).unproject(this.camera);
-            var direction = new THREE.Vector3(0, 0, -1).transformDirection(this.camera.matrixWorld);
-            _this.raycaster.set(vector, direction);
+    this.bbb = function () {
+        for (var i in detached) {
+            this.attach(Three.getScene().getObjectById(detached[i]))
         }
-        else {
-            var vector = new THREE.Vector3(_this._mouse.x, _this._mouse.y, 1);
-            vector.unproject(_this.camera);
-            _this.raycaster.set(_this.camera.position, vector.sub(_this.camera.position).normalize());
-        }
+        detached = []
     }
 
-    function getMousePos(event) {
+    var intersect = function (event) {
         var x = event.offsetX == undefined ? event.layerX : event.offsetX;
         var y = event.offsetY == undefined ? event.layerY : event.offsetY;
 
-        _this._mouse.x = ( x / _this.container.width ) * 2 - 1;
-        _this._mouse.y = -( y / _this.container.height ) * 2 + 1;
-
-        var vector = new THREE.Vector3(_this._mouse.x, _this._mouse.y, 0.5);
-        return vector;
+        var vector = new THREE.Vector3(( x / domElement.width ) * 2 - 1, -( y / domElement.height ) * 2 + 1, 1);
+        vector.unproject(camera);
+        raycaster.set(camera.position, vector.sub(camera.position).normalize());
+        intersects = raycaster.intersectObjects(objects, true)
     }
-
-    function onContainerMouseDown(event) {
-        _this.button = event.button
-
-        _this._rayGet();
-        _this.intersects = _this.raycaster.intersectObjects(_this.objects, true);
-
-        if (_this.intersects.length > 0) {
-            _this.setFocus(_this.intersects[0].object);
-            _this.focusedDistance = _this.intersects[0].distance;
-            _this.focusedPoint = _this.intersects[0].point;
-            _this.onclick();
-        }
-        else {
-            _this._setFocusNull();
-        }
+    var onContainerMouseDown = function (event) {
+        intersect(event)
+        onclick(event.button)
     }
-
-    function onContainerMouseMove(event) {
-        getMousePos(event)
-        _this.mousemove()
+    var onContainerMouseMove = function (event) {
+        intersect(event)
+        mouseMove()
     }
-
-    function onContainerMouseUp(event) {
+    var onContainerMouseUp = function (event) {
         event.preventDefault();
-
-        if (_this.focused) {
-            _this.focused = null;
-        }
     }
 
-    this.container.addEventListener('mousedown', onContainerMouseDown, false);	// мышка нажата
-    this.container.addEventListener('mousemove', onContainerMouseMove, false);   // получение координат мыши
-    this.container.addEventListener('mouseup', onContainerMouseUp, false);       // мышка отпущена
+    domElement.addEventListener('mousedown', onContainerMouseDown, false);
+    domElement.addEventListener('mousemove', onContainerMouseMove, false);
+    domElement.addEventListener('mouseup', onContainerMouseUp, false);
 
+    var onclick = function (button) {
+        switch (button) {
+            case 0:
+                var focused = intersects[0].object
+                switch (focused.name) {
+                    case 'castle':
+                        if (Me.getSelectedCastleId()) {
+                            if (Me.getSelectedCastleId() != focused.identification) {
+                                Websocket.production(Me.getSelectedCastleId(), Me.getSelectedUnitId(), focused.identification)
+                            }
+                            Me.setSelectedCastleId(null)
+                            Me.setSelectedUnitId(null)
+                        } else {
+                            Message.castle(Me.getCastle(focused.identification))
+                        }
+                        break
+                    case 'army':
+                        Me.armyClick(focused.identification)
+                        break
+                    default:
+                        if (Me.getSelectedArmyId()) {
+                            Websocket.move(parseInt((intersects[0].point.x + 218) / 4), parseInt((intersects[0].point.z + 312) / 4))
+                        }
+
+                }
+                break
+
+            case 1:
+                // middle button
+                break
+
+            case 2:
+                Me.deselectArmy()
+                break
+        }
+    }
+    var mouseMove = function () {
+        if (Me.getSelectedArmyId()) {
+            AStar.cursorPosition(parseInt((intersects[0].point.x + 218) / 4), parseInt((intersects[0].point.z + 312) / 4))
+        }
+    }
 };

@@ -1,7 +1,7 @@
 var Field = function (field) {
-    var type = field.type,
-        temporaryType = field.temporaryType,
+    var temporaryType = field.temporaryType,
         empty = field.empty
+
     this.getRuinId = function () {
         return field.ruinId
     }
@@ -22,5 +22,8 @@ var Field = function (field) {
     }
     this.getCastleColor = function () {
         return field.castleColor
+    }
+    this.getType = function () {
+        return field.type
     }
 }

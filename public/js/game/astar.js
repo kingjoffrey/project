@@ -4,29 +4,14 @@ var AStar = {
     myCastleId: {},
     x: 0,
     y: 0,
-    getDestinationXY: function (x, y) {
-        var offset = $('#game').offset();
-        var X = x - 20 - parseInt(board.css('left')) - offset.left;
-        var Y = y - 20 - parseInt(board.css('top')) - offset.top;
-        return {
-            x: Math.round(X / 40),
-            y: Math.round(Y / 40)
-        }
-    },
     cursorPosition: function (x, y, force) {
-        var destination = this.getDestinationXY(x, y);
         var castleId = 0;
 
-        if (castleId = Castle.get(destination.x, destination.y)) {
-            for (var color in game.players) {
-                if (isSet(game.players[color].castles[castleId])) {
-                    coord.html(game.players[color].castles[castleId].name);
-                    break
-                }
-            }
+        if (Fields.get(x, y).getCastleId()) {
+            coord.html(Players.get(Fields.get(x, y).getCastleColor()).getCastles().get(Fields.get(x, y).getCastleId()).getName());
         } else {
 //            coord.html(destination.x + ' - ' + destination.y + ' ' + terrain[fields[destination.y][destination.x]].name);
-            coord.html(game.terrain[fields[destination.y][destination.x]].name);
+            coord.html(Fields.get(x, y).getType());
         }
 
         if (Army.selected) {

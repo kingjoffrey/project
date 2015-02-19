@@ -262,44 +262,4 @@ var Three = new function () {
     }
 }
 
-var EventsControls = new EventsControls(Three.getCamera(), Three.getRenderer().domElement);
-EventsControls.onclick = function () {
-    switch (this.button) {
-        case 0:
-            switch (this.focused.name) {
-                case 'castle':
-                    if (Me.getSelectedCastleId()) {
-                        if (Me.getSelectedCastleId() != this.focused.identification) {
-                            Websocket.production(Me.getSelectedCastleId(), Me.getSelectedUnitId(), this.focused.identification)
-                        }
-                        Me.setSelectedCastleId(null)
-                        Me.setSelectedUnitId(null)
-                    } else {
-                        Message.castle(Me.getCastle(this.focused.identification))
-                    }
-                    break
-                case 'army':
-                    Me.armyClick(this.focused.identification)
-                    break
-                default:
-                    if (Me.getSelectedArmyId()) {
-                        Websocket.move(parseInt((this.intersects[0].point.x + 218) / 4), parseInt((this.intersects[0].point.z + 312) / 4))
-                    }
-
-            }
-            break
-
-        case 1:
-            // middle button
-            break
-
-        case 2:
-            Me.deselectArmy()
-            break
-    }
-}
-EventsControls.mousemove = function () {
-    if (Me.getSelectedArmyId()) {
-        AStar.cursorPosition(parseInt((this.intersects[0].point.x + 218) / 4), parseInt((this.intersects[0].point.z + 312) / 4))
-    }
-}
+var EventsControls = new EventsControls(Three.getCamera(), Three.getRenderer().domElement)
