@@ -589,7 +589,7 @@ Websocket = {
 
         ws.send(JSON.stringify(token));
     },
-    move: function (x, y) {
+    move: function () {
         if (Websocket.closed) {
             Message.error(translations.sorryServerIsDisconnected)
             return;
@@ -609,8 +609,8 @@ Websocket = {
 
         var token = {
             type: 'move',
-            x: x,
-            y: y,
+            x: AStar.getX(),
+            y: AStar.getY(),
             armyId: armyId,
             s: s,
             h: h

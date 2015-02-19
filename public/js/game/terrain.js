@@ -9,4 +9,7 @@ var Terrain = new function () {
     this.toArray = function () {
         return terrain
     }
+    this.getName=function(type){
+        return terrain[type].name
+    }
 }

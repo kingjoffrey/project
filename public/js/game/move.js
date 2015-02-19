@@ -106,9 +106,7 @@ var Move = new function () {
         console.log('move.end(' + ii + ') start')
 
         army.update(r.army)
-        AStar.x = army.getX()
-        AStar.y = army.getY()
-        Zoom.lens.setcenter(AStar.x, AStar.y)
+        Zoom.lens.setcenter(army.getX(), army.getY())
 
         //if (game.players[r.color].computer && !Gui.show) {
         //    $('#army' + army.getArmyId())

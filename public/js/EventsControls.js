@@ -75,7 +75,7 @@ EventsControls = function (camera, domElement) {
                         break
                     default:
                         if (Me.getSelectedArmyId()) {
-                            Websocket.move(parseInt((intersects[0].point.x + 218) / 4), parseInt((intersects[0].point.z + 312) / 4))
+                            Websocket.move()
                         }
 
                 }
@@ -91,8 +91,8 @@ EventsControls = function (camera, domElement) {
         }
     }
     var mouseMove = function () {
+        AStar.cursorPosition(intersects[0].point)
         if (Me.getSelectedArmyId()) {
-            AStar.cursorPosition(parseInt((intersects[0].point.x + 218) / 4), parseInt((intersects[0].point.z + 312) / 4))
         }
     }
 };

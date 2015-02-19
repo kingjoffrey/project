@@ -1,6 +1,5 @@
 var Field = function (field) {
-    var temporaryType = field.temporaryType,
-        empty = field.empty
+    var empty = field.empty
 
     this.getRuinId = function () {
         return field.ruinId
@@ -25,5 +24,8 @@ var Field = function (field) {
     }
     this.getType = function () {
         return field.type
+    }
+    this.getTemporaryType = function () {
+        return field.temporaryType
     }
 }
