@@ -20,7 +20,7 @@ var Me = new function () {
         color = c
         me = Players.get(color)
 
-        this.attachPicker()
+        //this.attachPicker()
 
         updateGold()
         updateCosts()
@@ -212,10 +212,10 @@ var Me = new function () {
         $('#showArtifacts').addClass('buttonOff');
         $('#disbandArmy').addClass('buttonOff');
     }
-    this.attachPicker = function () {
-        me.getArmies().attachPicker()
-        me.getCastles().attachPicker()
-    }
+    //this.attachPicker = function () {
+    //    me.getArmies().attachPicker()
+    //    me.getCastles().attachPicker()
+    //}
     this.removeFromSkipped = function (armyId) {
         if (isTruthful(skippedArmies[armyId])) {
             delete skippedArmies[armyId]

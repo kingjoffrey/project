@@ -17,10 +17,7 @@ var AStar = new function () {
     this.getY = function () {
         return y
     }
-    this.cursorPosition = function (point) {
-        var X = parseInt((point.x + 218) / 4),
-            Y = parseInt((point.z + 312) / 4)
-
+    this.cursorPosition = function (X, Y) {
         if (x == X && y == Y) {
             return
         }
@@ -38,6 +35,7 @@ var AStar = new function () {
         } else {
             coord.html(Terrain.getName(field.getType()))
         }
+        return 1
     }
     this.showPath = function (a) {
         army = a

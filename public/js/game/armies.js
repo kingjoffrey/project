@@ -23,11 +23,11 @@ var Armies = function () {
     this.get = function (armyId) {
         return armies[armyId]
     }
-    this.attachPicker = function () {
-        for (var armyId in armies) {
-            Picker.attach(Three.getScene().getObjectById(this.get(armyId).getMeshId()))
-        }
-    }
+    //this.attachPicker = function () {
+    //    for (var armyId in armies) {
+    //        Picker.attach(Three.getScene().getObjectById(this.get(armyId).getMeshId()))
+    //    }
+    //}
 
     this.toArray = function () {
         return armies
@@ -45,7 +45,7 @@ var Armies = function () {
         }
 
         var mesh = Three.getScene().getObjectById(this.get(armyId).getMeshId())
-        Picker.detach(mesh)
+        //Picker.detach(mesh)
         Three.getScene().remove(mesh)
         $('#' + armyId).remove()
         delete armies[armyId]

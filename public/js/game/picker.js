@@ -62,31 +62,41 @@ var Picker = new function () {
     var onContainerMouseUp = function (event) {
         event.preventDefault();
     }
-
+    var getField = function () {
+        return Fields.get(convertX(), convertY())
+    }
+    var convertX = function () {
+        return parseInt((intersects[0].point.x + 218) / 4)
+    }
+    var convertY = function () {
+        return parseInt((intersects[0].point.z + 312) / 4)
+    }
     var onclick = function (button) {
         switch (button) {
             case 0:
-                var focused = intersects[0].object
-                switch (focused.name) {
-                    case 'castle':
-                        if (Me.getSelectedCastleId()) {
-                            if (Me.getSelectedCastleId() != focused.identification) {
-                                Websocket.production(Me.getSelectedCastleId(), Me.getSelectedUnitId(), focused.identification)
-                            }
-                            Me.setSelectedCastleId(null)
-                            Me.setSelectedUnitId(null)
-                        } else {
-                            Message.castle(Me.getCastle(focused.identification))
+                var field = getField(),
+                    armies
+                if (armies = field.getArmies()) {
+                    for (var armyId in armies) {
+                        if (Me.colorEquals(armies[armyId])) {
+                            Me.armyClick(armyId)
                         }
-                        break
-                    case 'army':
-                        Me.armyClick(focused.identification)
-                        break
-                    default:
-                        if (Me.getSelectedArmyId()) {
-                            Websocket.move()
+                    }
+                } else if (Me.colorEquals(field.getCastleColor())) {
+                    var castleId = field.getCastleId()
+                    if (Me.getSelectedCastleId()) {
+                        if (Me.getSelectedCastleId() != castleId) {
+                            Websocket.production(Me.getSelectedCastleId(), Me.getSelectedUnitId(), castleId)
                         }
-
+                        Me.setSelectedCastleId(null)
+                        Me.setSelectedUnitId(null)
+                    } else {
+                        Message.castle(Me.getCastle(castleId))
+                    }
+                } else {
+                    if (Me.getSelectedArmyId()) {
+                        Websocket.move()
+                    }
                 }
                 break
 
@@ -100,8 +110,7 @@ var Picker = new function () {
         }
     }
     var mouseMove = function () {
-        AStar.cursorPosition(intersects[0].point)
-        if (Me.getSelectedArmyId()) {
+        if (AStar.cursorPosition(convertX(), convertY()) && Me.getSelectedArmyId()) {
             AStar.showPath(Me.getSelectedArmy())
         }
     }
