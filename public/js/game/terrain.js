@@ -4,12 +4,16 @@ var Terrain = new function () {
         terrain = value
     }
     this.get = function (type) {
-        return terrain[type]
+        if (isSet(terrain[type])) {
+            return terrain[type]
+        } else {
+            console.log('type: ' + type)
+        }
     }
     this.toArray = function () {
         return terrain
     }
-    this.getName=function(type){
+    this.getName = function (type) {
         return terrain[type].name
     }
 }

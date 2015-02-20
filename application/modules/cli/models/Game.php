@@ -138,7 +138,7 @@ class Cli_Model_Game
             }
             $position['ruinId'] = $ruinId;
             $this->_ruins->add($ruinId, new Cli_Model_Ruin($position, $empty));
-            $this->_fields->initRuin($position['x'], $position['y'], $ruinId, $empty);
+            $this->_fields->getField($position['x'], $position['y'])->setRuin($ruinId, $empty);
         }
     }
 

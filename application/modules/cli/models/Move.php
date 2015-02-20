@@ -52,7 +52,7 @@ class Cli_Model_Move
         $armyX = $army->getX();
         $armyY = $army->getY();
 
-        switch ($fields->getType($armyX, $armyY)) {
+        switch ($fields->getField($armyX, $armyY)->getType()) {
             case 'w':
                 $otherArmyId = $fields->isPlayerArmy($armyX, $armyY, $attackerColor);
                 if ($otherArmyId) {

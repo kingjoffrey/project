@@ -1,5 +1,6 @@
 var Field = function (field) {
-    var empty = field.empty
+    var empty = field.empty,
+        ruinId = field.ruinId
 
     this.getRuinId = function () {
         return field.ruinId
@@ -23,7 +24,16 @@ var Field = function (field) {
         return field.castleColor
     }
     this.getType = function () {
+        if (field.temporaryType) {
+            console.log(field.temporaryType)
+            //    field.temporaryType
+        }
+        //else {
         return field.type
+        //}
+    }
+    this.setTemporaryType = function (value) {
+        field.temporaryType = value
     }
     this.getTemporaryType = function () {
         return field.temporaryType

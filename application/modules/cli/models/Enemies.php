@@ -21,7 +21,7 @@ class Cli_Model_Enemies
             }
             $this->_castleId = $castleId;
             $this->_castleColor = $castleColor;
-        } elseif ($armies = $fields->getArmies($x, $y)) {
+        } elseif ($armies = $fields->getField($x, $y)->getArmies()) {
             foreach ($armies as $armyId => $armyColor) {
                 if ($players->sameTeam($armyColor, $playerColor)) {
                     return;
@@ -48,7 +48,7 @@ class Cli_Model_Enemies
 
         for ($i = $castleX; $i <= $castleX + 1; $i++) {
             for ($j = $castleY; $j <= $castleY + 1; $j++) {
-                foreach ($fields->getArmies($i, $j) as $armyId => $color) {
+                foreach ($fields->getField($i, $j)->getArmies() as $armyId => $color) {
                     echo $color . ' ' . $armyId . "\n";
                     $this->_enemies[] = $players->getPlayer($color)->getArmies()->getArmy($armyId);
                 }

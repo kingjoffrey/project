@@ -211,7 +211,7 @@ class Cli_Model_Player extends Cli_Model_DefaultPlayer
     public function addTower($towerId, Cli_Model_Tower $tower, $oldColor, Cli_Model_Fields $fields, $gameId, $db)
     {
         $this->addIncome(5);
-        $fields->changeTower($tower->getX(), $tower->getY(), $this->_color);
+        $fields->getField($tower->getX(), $tower->getY())->setTowerColor($this->_color);
         $this->_towers->add($towerId, $tower, $oldColor, $this->_id, $gameId, $db);
     }
 

@@ -7,6 +7,8 @@ var AStar = new function () {
         close = {},
         field,
         army,
+        soldierSplitKey,
+        heroSplitKey,
         myCastleId = {}
 
     this.getX = function () {
@@ -36,7 +38,7 @@ var AStar = new function () {
         if (getG(field.getType()) > 6) {
             return
         }
-
+return
         //$('.path').remove();
         var startX = army.getX(),
             startY = army.getY(),
@@ -50,16 +52,19 @@ var AStar = new function () {
             return
         }
 
+        soldierSplitKey = army.getSoldierSplitKey()
+        heroSplitKey = army.getHeroSplitKey()
+
         var path = getPath(close, key);
         var className = 'path1';
         var moves = 0;
 
-        if (army.soldierSplitKey !== null) {
-            moves = army.soldiers[army.soldierSplitKey].movesLeft
-        } else if (army.heroSplitKey !== null) {
-            moves = army.heroes[army.heroSplitKey].movesLeft
+        if (soldierSplitKey) {
+            moves = army.getSoldiers()[soldierSplitKey].movesLeft
+        } else if (heroSplitKey) {
+            moves = army.getHeroes()[heroSplitKey].movesLeft
         } else {
-            moves = army.moves
+            moves = army.getMoves()
         }
 
         for (var i in path) {
@@ -151,7 +156,7 @@ var AStar = new function () {
                     continue;
                 }
 
-                terrainType = Fields.get(i, j).getTemporaryType()
+                terrainType = Fields.get(i, j).getType()
 
                 if (terrainType == 'e') {
                     continue;
@@ -178,25 +183,22 @@ var AStar = new function () {
     }
 
     var getG = function (terrainType) {
-        var g;
-
-        if (army.soldierSplitKey !== null) {
-            if (game.units[army.soldiers[army.soldierSplitKey].unitId].canFly) {
-                g = game.terrain[terrainType]['flying']
-            } else if (game.units[army.soldiers[army.soldierSplitKey].unitId].canSwim) {
-                g = game.terrain[terrainType]['swimming']
+        var soldierSplitKey = army.getSoldierSplitKey()
+        if (soldierSplitKey) {
+            if (Units.get(army.getSoldiers[soldierSplitKey].unitId).canFly) {
+                return Terrain.get(terrainType).flying
+            } else if (Units.get(army.getSoldiers[soldierSplitKey].unitId).canSwim) {
+                return Terrain.get(terrainType).swimming
             } else {
                 if (terrainType == 'f' || terrainType == 's' || terrainType == 'm') {
-                    g = game.units[army.soldiers[army.soldierSplitKey].unitId][terrainType]
+                    return Units.get(army.getSoldiers[soldierSplitKey].unitId)[terrainType]
                 } else {
-                    g = game.terrain[terrainType]['walking']
+                    return Terrain.get(terrainType).walking
                 }
             }
         } else {
-            g = army.terrain[terrainType]
+            return Terrain.get(terrainType).walking
         }
-
-        return g;
     }
 
     var isNotEmpty = function () {

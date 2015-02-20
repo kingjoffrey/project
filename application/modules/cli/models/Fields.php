@@ -15,12 +15,6 @@ class Cli_Model_Fields
         }
     }
 
-    public function getType($x, $y)
-    {
-        return $this->getField($x, $y)->getType();
-    }
-
-
     public function initCastle($x, $y, $castleId, $color)
     {
         for ($i = $y; $i <= $y + 1; $i++) {
@@ -76,21 +70,6 @@ class Cli_Model_Fields
         }
     }
 
-    public function addArmy($x, $y, $armyId, $color)
-    {
-        $this->getField($x, $y)->addArmy($armyId, $color);
-    }
-
-    public function isArmy($x, $y)
-    {
-        return $this->getField($x, $y)->isArmy();
-    }
-
-    public function getArmyColor($x, $y, $armyId)
-    {
-        return $this->getField($x, $y)->getArmyColor($armyId);
-    }
-
     public function isPlayerArmy($x, $y, $playerColor)
     {
         foreach ($this->getField($x, $y)->getArmies() as $armyId => $color) {
@@ -98,26 +77,6 @@ class Cli_Model_Fields
                 return $armyId;
             }
         }
-    }
-
-    public function getArmies($x, $y)
-    {
-        return $this->getField($x, $y)->getArmies();
-    }
-
-    public function initTower($x, $y, $towerId, $color)
-    {
-        $this->getField($x, $y)->setTower($towerId, $color);
-    }
-
-    public function changeTower($x, $y, $color)
-    {
-        $this->getField($x, $y)->setTowerColor($color);
-    }
-
-    public function initRuin($x, $y, $ruinId, $empty)
-    {
-        $this->getField($x, $y)->setRuin($ruinId, $empty);
     }
 
     /**
@@ -128,16 +87,11 @@ class Cli_Model_Fields
      */
     public function getField($x, $y)
     {
-        if (!$this->isField($x, $y)) {
+        if (!isset($this->_fields[$y][$x])) {
             Coret_Model_Logger::debug(debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 2));
             throw new Exception('no such field');
         }
         return $this->_fields[$y][$x];
-    }
-
-    public function isField($x, $y)
-    {
-        return isset($this->_fields[$y][$x]);
     }
 
     public function getCastleColor($x, $y)
