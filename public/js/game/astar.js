@@ -32,7 +32,6 @@ var AStar = new function () {
         } else {
             coord.html(Terrain.getName(field.getType()))
         }
-        console.log(field.toArray())
     }
     this.showPath = function (a) {
         army = a

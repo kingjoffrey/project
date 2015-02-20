@@ -34,13 +34,4 @@ var Fields = new function () {
             console.log('no field at x=' + x + ' y=' + y)
         }
     }
-    this.a = function () {
-        for (var y in fields) {
-            for (var x in fields[y]) {
-                if (fields[y][x].getTemporaryType() == 'e') {
-                    console.log('e')
-                }
-            }
-        }
-    }
 }

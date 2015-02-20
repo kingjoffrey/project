@@ -25,20 +25,12 @@ var Field = function (field) {
     }
     this.getType = function () {
         if (field.temporaryType) {
-            console.log(field.temporaryType)
-            //    field.temporaryType
+            return field.temporaryType
+        } else {
+            return field.type
         }
-        //else {
-        return field.type
-        //}
     }
     this.setTemporaryType = function (value) {
         field.temporaryType = value
-    }
-    this.getTemporaryType = function () {
-        return field.temporaryType
-    }
-    this.toArray = function () {
-        return field
     }
 }
