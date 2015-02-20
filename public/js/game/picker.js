@@ -1,10 +1,19 @@
-EventsControls = function (camera, domElement) {
+var Picker = new function () {
 
     var raycaster = new THREE.Raycaster(),
         objects = [],
         intersects = [],
-        detached = []
+        detached = [],
+        camera,
+        container
 
+    this.init = function (c, domElement) {
+        camera = c
+        container = domElement
+        container.addEventListener('mousedown', onContainerMouseDown, false);
+        container.addEventListener('mousemove', onContainerMouseMove, false);
+        container.addEventListener('mouseup', onContainerMouseUp, false);
+    }
     this.attach = function (object) {
         if (object instanceof THREE.Mesh) {
             objects.push(object);
@@ -33,26 +42,26 @@ EventsControls = function (camera, domElement) {
         var x = event.offsetX == undefined ? event.layerX : event.offsetX;
         var y = event.offsetY == undefined ? event.layerY : event.offsetY;
 
-        var vector = new THREE.Vector3(( x / domElement.width ) * 2 - 1, -( y / domElement.height ) * 2 + 1, 1);
+        var vector = new THREE.Vector3(( x / container.width ) * 2 - 1, -( y / container.height ) * 2 + 1, 1);
         vector.unproject(camera);
         raycaster.set(camera.position, vector.sub(camera.position).normalize());
         intersects = raycaster.intersectObjects(objects, true)
     }
     var onContainerMouseDown = function (event) {
         intersect(event)
-        onclick(event.button)
+        if (isSet(intersects[0])) {
+            onclick(event.button)
+        }
     }
     var onContainerMouseMove = function (event) {
         intersect(event)
-        mouseMove()
+        if (isSet(intersects[0])) {
+            mouseMove()
+        }
     }
     var onContainerMouseUp = function (event) {
         event.preventDefault();
     }
-
-    domElement.addEventListener('mousedown', onContainerMouseDown, false);
-    domElement.addEventListener('mousemove', onContainerMouseMove, false);
-    domElement.addEventListener('mouseup', onContainerMouseUp, false);
 
     var onclick = function (button) {
         switch (button) {
@@ -93,6 +102,7 @@ EventsControls = function (camera, domElement) {
     var mouseMove = function () {
         AStar.cursorPosition(intersects[0].point)
         if (Me.getSelectedArmyId()) {
+            AStar.showPath(Me.getSelectedArmy())
         }
     }
 };

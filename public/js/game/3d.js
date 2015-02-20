@@ -180,7 +180,7 @@ var Three = new function () {
         ground.rotation.x = -Math.PI / 2
         ground.receiveShadow = true
         scene.add(ground)
-        EventsControls.attach(ground)
+        Picker.attach(ground)
     }
 
     var initFields = function () {
@@ -261,5 +261,3 @@ var Three = new function () {
         renderer.render(scene, camera)
     }
 }
-
-var EventsControls = new EventsControls(Three.getCamera(), Three.getRenderer().domElement)

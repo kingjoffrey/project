@@ -13,8 +13,8 @@ class GameController extends Game_Controller_Game
         $this->view->headScript()->appendFile('/js/jquery.mousewheel.min.js');
         $this->view->headScript()->appendFile('/js/three.js');
 //        $this->view->headScript()->appendFile('http://threejs.org/build/three.min.js');
-        $this->view->headScript()->appendFile('/js/EventsControls.js');
 
+        $this->view->headScript()->appendFile('/js/game/picker.js?v=' . Zend_Registry::get('config')->version);
         $this->view->headScript()->appendFile('/js/game/3d.js?v=' . Zend_Registry::get('config')->version);
         $this->view->headScript()->appendFile('/js/game/game.js?v=' . Zend_Registry::get('config')->version);
         $this->view->headScript()->appendFile('/js/game/me.js?v=' . Zend_Registry::get('config')->version);

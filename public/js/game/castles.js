@@ -39,9 +39,9 @@ var Castles = function () {
         }
         return i
     }
-    this.attachEventsControls = function () {
+    this.attachPicker = function () {
         for (var castleId in castles) {
-            EventsControls.attach(Three.getScene().getObjectById(this.get(castleId).getMeshId()))
+            Picker.attach(Three.getScene().getObjectById(this.get(castleId).getMeshId()))
         }
     }
     this.getRelocatedProduction = function (castleId) {

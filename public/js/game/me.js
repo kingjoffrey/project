@@ -20,7 +20,7 @@ var Me = new function () {
         color = c
         me = Players.get(color)
 
-        this.attachEventsControls()
+        this.attachPicker()
 
         updateGold()
         updateCosts()
@@ -122,7 +122,7 @@ var Me = new function () {
     this.selectArmy = function (armyId, center) {
         selectedArmyId = armyId
         var army = this.getArmy(armyId)
-        EventsControls.aaa(army.getMeshId())
+        Picker.aaa(army.getMeshId())
         Three.addCircle(army.getX(), army.getY())
         Message.remove()
 
@@ -174,7 +174,7 @@ var Me = new function () {
         }
 
         Three.clearCircles()
-        EventsControls.bbb()
+        Picker.bbb()
         Me.setIsSelected(0)
         //Castle.deselectedArmyCursor()
         //this.enemyCursorWhenUnselected()
@@ -212,9 +212,9 @@ var Me = new function () {
         $('#showArtifacts').addClass('buttonOff');
         $('#disbandArmy').addClass('buttonOff');
     }
-    this.attachEventsControls = function () {
-        me.getArmies().attachEventsControls()
-        me.getCastles().attachEventsControls()
+    this.attachPicker = function () {
+        me.getArmies().attachPicker()
+        me.getCastles().attachPicker()
     }
     this.removeFromSkipped = function (armyId) {
         if (isTruthful(skippedArmies[armyId])) {

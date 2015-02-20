@@ -23,9 +23,9 @@ var Armies = function () {
     this.get = function (armyId) {
         return armies[armyId]
     }
-    this.attachEventsControls = function () {
+    this.attachPicker = function () {
         for (var armyId in armies) {
-            EventsControls.attach(Three.getScene().getObjectById(this.get(armyId).getMeshId()))
+            Picker.attach(Three.getScene().getObjectById(this.get(armyId).getMeshId()))
         }
     }
 
@@ -45,7 +45,7 @@ var Armies = function () {
         }
 
         var mesh = Three.getScene().getObjectById(this.get(armyId).getMeshId())
-        EventsControls.detach(mesh)
+        Picker.detach(mesh)
         Three.getScene().remove(mesh)
         $('#' + armyId).remove()
         delete armies[armyId]
