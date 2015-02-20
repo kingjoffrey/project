@@ -1,6 +1,5 @@
 var Field = function (field) {
-    var empty = field.empty,
-        ruinId = field.ruinId
+    var empty = field.empty
 
     this.getRuinId = function () {
         return field.ruinId
@@ -16,6 +15,9 @@ var Field = function (field) {
     }
     this.addArmyId = function (armyId, color) {
         field.armies[armyId] = color
+    }
+    this.getArmies = function () {
+        return field.armies
     }
     this.getTowerColor = function () {
         return field.towerColor

@@ -29,6 +29,12 @@ var AStar = new function () {
         field = Fields.get(x, y)
         if (field.getCastleId()) {
             coord.html(Players.get(field.getCastleColor()).getCastles().get(field.getCastleId()).getName())
+        } else if (field.getTowerId()) {
+            coord.html(translations.tower)
+        } else if (field.getRuinId()) {
+            coord.html(translations.ruin)
+        } else if (field.getArmies()) {
+            coord.html(translations.army)
         } else {
             coord.html(Terrain.getName(field.getType()))
         }

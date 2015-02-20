@@ -7,6 +7,7 @@ class Cli_Model_Army
     private $_x;
     private $_y;
     private $_fortified = false;
+    private $_destroyed = false;
 
     private $_attackHeroModifier;
     private $_attackFlyModifier;
@@ -429,6 +430,11 @@ class Cli_Model_Army
     public function getColor()
     {
         return $this->_color;
+    }
+
+    public function setDestroyed($destroyed)
+    {
+        $this->_destroyed = $destroyed;
     }
 
     public function count()
