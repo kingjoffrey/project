@@ -32,13 +32,14 @@ var AStar = new function () {
         } else {
             coord.html(Terrain.getName(field.getType()))
         }
+        console.log(field.toArray())
     }
     this.showPath = function (a) {
         army = a
         if (getG(field.getType()) > 6) {
             return
         }
-return
+
         //$('.path').remove();
         var startX = army.getX(),
             startY = army.getY(),

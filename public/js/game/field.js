@@ -38,4 +38,7 @@ var Field = function (field) {
     this.getTemporaryType = function () {
         return field.temporaryType
     }
+    this.toArray = function () {
+        return field
+    }
 }

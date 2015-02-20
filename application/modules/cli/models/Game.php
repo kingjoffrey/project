@@ -119,7 +119,7 @@ class Cli_Model_Game
         $myColor = $this->_me->getColor();
         foreach ($this->_players->getKeys() as $color) {
             if (!$this->_players->sameTeam($myColor, $color)) {
-                $this->_players->getPlayer($color)->initFields($this->_fields);
+                $this->_players->getPlayer($color)->initFieldsTemporaryType($this->_fields);
             }
         }
     }

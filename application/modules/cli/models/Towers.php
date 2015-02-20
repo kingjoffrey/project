@@ -50,10 +50,10 @@ class Cli_Model_Towers
         unset($this->_towers[$towerId]);
     }
 
-    public function initFields($fields, $color)
+    public function initFields(Cli_Model_Fields $fields, $color)
     {
         foreach ($this->_towers as $towerId => $tower) {
-            $fields->initTower($tower->getX(), $tower->getY(), $towerId, $color);
+            $fields->getField($tower->getX(), $tower->getY())->setTower($towerId, $color);
         }
     }
 
