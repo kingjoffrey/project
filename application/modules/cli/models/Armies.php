@@ -91,7 +91,6 @@ class Cli_Model_Armies
             $mArmy = new Application_Model_Army($game->getId(), $db);
             $mArmy->destroyArmy($armyId);
             $army = $this->getArmy($armyId);
-            $army->setDestroyed(true);
             $game->getFields()->getField($army->getX(), $army->getY())->removeArmy($army->getId());
         }
         unset($this->_armies[$armyId]);

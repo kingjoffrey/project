@@ -65,10 +65,10 @@ abstract class Cli_Model_DefaultPlayer
             }
         }
 
-        foreach ($this->_towers->getKeys() as $towerId) {
-            $tower = $this->_towers->getTower($towerId);
-            $field = $fields->getField($tower->getX(), $tower->getY());
-            $field->setTemporaryType('e');
-        }
+//        foreach ($this->_towers->getKeys() as $towerId) {
+//            $tower = $this->_towers->getTower($towerId);
+//            $field = $fields->getField($tower->getX(), $tower->getY());
+//            $field->setTemporaryType('e');
+//        }
     }
 }
