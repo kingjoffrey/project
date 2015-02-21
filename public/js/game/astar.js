@@ -1,10 +1,11 @@
 // *** A* ***
 
 var AStar = new function () {
-    var x = 0,
-        y = 0,
+    var destX,
+        destY,
         open = {},
         close = {},
+        nr = 0,
         field,
         army,
         soldierSplitKey,
@@ -12,18 +13,18 @@ var AStar = new function () {
         myCastleId = {}
 
     this.getX = function () {
-        return x
+        return destX
     }
     this.getY = function () {
-        return y
+        return destY
     }
-    this.cursorPosition = function (X, Y) {
-        if (x == X && y == Y) {
+    this.cursorPosition = function (x, y) {
+        if (destX == x && destY == y) {
             return
         }
-        x = X
-        y = Y
-        field = Fields.get(x, y)
+        destX = x
+        destY = y
+        field = Fields.get(destX, destY)
         if (field.getCastleId()) {
             coord.html(Players.get(field.getCastleColor()).getCastles().get(field.getCastleId()).getName())
         } else if (field.getTowerId()) {
@@ -42,15 +43,14 @@ var AStar = new function () {
         if (getG(field.getType()) > 6) {
             return
         }
-
-        //$('.path').remove();
+        nr = 0
+        Three.clearCircles()
         var startX = army.getX(),
             startY = army.getY(),
-            key = x + '_' + y
+            key = destX + '_' + destY
 
-        open[startX + '_' + startY] = new node(startX, startY, x, y, 0);
-
-        aStar(x, y, 1)
+        open[startX + '_' + startY] = new node(startX, startY, destX, destY, 0)
+        aStar()
 
         if (notSet(close[key])) {
             return
@@ -59,45 +59,29 @@ var AStar = new function () {
         soldierSplitKey = army.getSoldierSplitKey()
         heroSplitKey = army.getHeroSplitKey()
 
-        var path = getPath(key),
-            className = 'path1',
-            moves = 0;
-console.log(path)
-        return
+        var path = getPath(key)
+        //className = 'path1',
+        //moves = 0
 
-        if (soldierSplitKey) {
-            moves = army.getSoldiers()[soldierSplitKey].movesLeft
-        } else if (heroSplitKey) {
-            moves = army.getHeroes()[heroSplitKey].movesLeft
-        } else {
-            moves = army.getMoves()
-        }
+        //if (soldierSplitKey) {
+        //    moves = army.getSoldiers()[soldierSplitKey].movesLeft
+        //} else if (heroSplitKey) {
+        //    moves = army.getHeroes()[heroSplitKey].movesLeft
+        //} else {
+        //    moves = army.getMoves()
+        //}
 
         for (var i in path) {
-            var pathX = path[i].x;
-            var pathY = path[i].y;
+            Three.addCircle(path[i].x, path[i].y)
+            //var pathX = path[i].x;
+            //var pathY = path[i].y;
 
-            if (moves < path[i].G) {
-                if (className == 'path1') {
-                    className = 'path2';
-                }
-//                if (notSet(set)) {
-//                    var set = {'x': pathX, 'y': pathY};
-//                }
-            }
-
-            //board.append(
-            //    $('<div>')
-            //        .addClass('path ' + className)
-            //        .css({
-            //            left: pathX + 'px',
-            //            top: pathY + 'px'
-            //        })
-            //        .html(path[i].G)
-            //);
+            //if (moves < path[i].G) {
+            //    if (className == 'path1') {
+            //        className = 'path2';
+            //    }
+            //}
         }
-
-        return path;
     }
 
     var getPath = function (key) {
@@ -113,17 +97,17 @@ console.log(path)
         if (isSet(path[0])) {
             if (path[0].tt == 'c') {
                 var castleId = Castle.getMy(path[0].x, path[0].y)
-                this.myCastleId[castleId] = true;
+                myCastleId[castleId] = true;
             }
         }
 
         for (var k in path) {
             if (path[k].tt == 'c') {
                 var castleId = Castle.getMy(path[k].x, path[k].y);
-                if (this.myCastleId[castleId]) {
+                if (myCastleId[castleId]) {
                     i++;
                 } else {
-                    this.myCastleId[castleId] = true;
+                    myCastleId[castleId] = true;
                 }
             }
             path[k].F -= i;
@@ -132,144 +116,133 @@ console.log(path)
 
         return path;
     }
-    var addOpen = function (x, y, destX, destY) {
-        var startX = x - 1,
-            startY = y - 1,
-            endX = x + 1,
-            endY = y + 1,
-            terrainType,
-            g
+    var addOpen = function (currX, currY) {
+            var startX = currX - 1,
+                startY = currY - 1,
+                endX = currX + 1,
+                endY = currY + 1,
+                terrainType,
+                g
 
-        for (var i = startX; i <= endX; i++) {
-            for (var j = startY; j <= endY; j++) {
+            for (var i = startX; i <= endX; i++) {
+                for (var j = startY; j <= endY; j++) {
+                    if (currX == i && currY == j) {
+                        continue;
+                    }
+                    var key = i + '_' + j;
+                    if (isSet(close[key])) {
+                        continue;
+                    }
 
-                if (x == i && y == j) {
-                    continue;
-                }
+                    terrainType = Fields.getAStarType(i, j)
+                    if (!terrainType) {
+                        continue
+                    }
+                    if (terrainType == 'e') {
+                        if (i == destX && j == destY) {
+                            console.log('aaa')
+                            terrainType = 'g'
+                        } else {
+                            continue;
+                        }
+                    }
 
-                var key = i + '_' + j;
+                    g = getG(terrainType);
+                    if (g > 6) {
+                        continue;
+                    }
 
-                //if (isSet(close[key]) && close[key].x == i && close[key].y == j) {
-                if (isSet(close[key])) {
-                    continue;
-                }
-
-                terrainType = Fields.getAStarType(i, j)
-
-                if (!terrainType) {
-                    continue
-                }
-
-                if (terrainType == 'e') {
-                    continue;
-                }
-
-                g = getG(terrainType);
-
-                if (g > 6) {
-                    continue;
-                }
-
-                if (isSet(open[key])) {
-                    calculatePath(x + '_' + y, g, key);
-                } else {
-                    var parent = {
-                        'x': x,
-                        'y': y
-                    };
-                    g += close[x + '_' + y].G;
-                    open[key] = new node(i, j, destX, destY, g, parent, terrainType);
+                    if (isSet(open[key])) {
+                        calculatePath(currX + '_' + currY, g, key);
+                    } else {
+                        var parent = {
+                            x: currX,
+                            y: currY
+                        };
+                        g += close[currX + '_' + currY].G;
+                        open[key] = new node(i, j, destX, destY, g, parent, terrainType)
+                    }
                 }
             }
-        }
-    }
-
-    var getG = function (terrainType) {
-        var soldierSplitKey = army.getSoldierSplitKey()
-        if (soldierSplitKey) {
-            if (Units.get(army.getSoldiers[soldierSplitKey].unitId).canFly) {
-                return Terrain.get(terrainType).flying
-            } else if (Units.get(army.getSoldiers[soldierSplitKey].unitId).canSwim) {
-                return Terrain.get(terrainType).swimming
+        },
+        getG = function (terrainType) {
+            var soldierSplitKey = army.getSoldierSplitKey()
+            if (soldierSplitKey) {
+                if (Units.get(army.getSoldiers[soldierSplitKey].unitId).canFly) {
+                    return Terrain.get(terrainType).flying
+                } else if (Units.get(army.getSoldiers[soldierSplitKey].unitId).canSwim) {
+                    return Terrain.get(terrainType).swimming
+                } else {
+                    if (terrainType == 'f' || terrainType == 's' || terrainType == 'm') {
+                        return Units.get(army.getSoldiers[soldierSplitKey].unitId)[terrainType]
+                    } else {
+                        return Terrain.get(terrainType).walking
+                    }
+                }
             } else {
-                if (terrainType == 'f' || terrainType == 's' || terrainType == 'm') {
-                    return Units.get(army.getSoldiers[soldierSplitKey].unitId)[terrainType]
-                } else {
-                    return Terrain.get(terrainType).walking
+                return Terrain.get(terrainType).walking
+            }
+        },
+        openIsEmpty = function () {
+            for (var key in open) {
+                if (open.hasOwnProperty(key)) {
+                    return false
                 }
             }
-        } else {
-            return Terrain.get(terrainType).walking
-        }
-    }
+            return true
+        },
+        findSmallestF = function () {
+            var f
 
-    var isNotEmpty = function () {
-        for (var key in open) {
-            if (open.hasOwnProperty(key)) {
-                return true;
+            for (var i in open) {
+                if (notSet(open[f])) {
+                    f = i
+                }
+                if (open[i].F < open[f].F) {
+                    f = i
+                }
             }
-        }
-        return false;
-    }
-
-    var findSmallestF = function () {
-        var f
-
-        for (var i in open) {
-            if (notSet(open[f])) {
-                f = i;
+            return f
+        },
+        calculatePath = function (kA, g, key) {
+            if (open[key].G > (g + close[kA].G)) {
+                open[key].parent = {
+                    x: close[kA].x,
+                    y: close[kA].y
+                };
+                open[key].G = g + close[kA].G;
+                open[key].F = open[key].G + open[key].H;
             }
-            if (open[i].F < open[f].F) {
-                f = i;
+        },
+        aStar = function () {
+            nr++
+            if (nr > 7000) {
+                console.log('>' + nr);
+                return
             }
-        }
-        return f;
-    }
+            var f = findSmallestF(),
+                currX = open[f].x,
+                currY = open[f].y
 
-    var calculatePath = function (kA, g, key) {
-        if (open[key].G > (g + close[kA].G)) {
-            open[key].parent = {
-                'x': close[kA].x,
-                'y': close[kA].y
-            };
-            open[key].G = g + close[kA].G;
-            open[key].F = open[key].G + open[key].H;
+            close[f] = open[f]
+            if (currX == destX && currY == destY) {
+                return
+            }
+            delete open[f]
+            addOpen(currX, currY)
+            if (openIsEmpty()) {
+                return;
+            }
+            aStar()
         }
-    }
-
-    var aStar = function (destX, destY, nr) {
-        nr++
-        if (nr > 7000) {
-            nr--;
-//            console.log('>' + nr);
-            return;
-        }
-        var f = findSmallestF(),
-            x = open[f].x,
-            y = open[f].y
-
-        close[f] = open[f];
-        if (x == destX && y == destY) {
-            return
-        }
-        delete open[f];
-        addOpen(x, y, destX, destY);
-        if (!isNotEmpty(open)) {
-            return;
-        }
-        aStar(destX, destY, nr);
-    }
 }
 
 function node(x, y, destX, destY, g, parent, tt) {
-    var calculateH = function (destX, destY) {
-        return Math.sqrt(Math.pow(destX - this.x, 2) + Math.pow(this.y - destY, 2))
-    }
-    this.x = x;
-    this.y = y;
-    this.G = g;
-    this.H = calculateH(destX, destY);
-    this.F = this.H + this.G;
-    this.parent = parent;
-    this.tt = tt;
+    this.x = x
+    this.y = y
+    this.G = g
+    this.H = Math.sqrt(Math.pow(destX - x, 2) + Math.pow(y - destY, 2))
+    this.F = this.H + this.G
+    this.parent = parent
+    this.tt = tt
 }
