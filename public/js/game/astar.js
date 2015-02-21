@@ -59,9 +59,11 @@ var AStar = new function () {
         soldierSplitKey = army.getSoldierSplitKey()
         heroSplitKey = army.getHeroSplitKey()
 
-        var path = getPath(close, key);
-        var className = 'path1';
-        var moves = 0;
+        var path = getPath(key),
+            className = 'path1',
+            moves = 0;
+console.log(path)
+        return
 
         if (soldierSplitKey) {
             moves = army.getSoldiers()[soldierSplitKey].movesLeft
@@ -72,8 +74,8 @@ var AStar = new function () {
         }
 
         for (var i in path) {
-            var pathX = path[i].x * 40;
-            var pathY = path[i].y * 40;
+            var pathX = path[i].x;
+            var pathY = path[i].y;
 
             if (moves < path[i].G) {
                 if (className == 'path1') {
@@ -96,17 +98,9 @@ var AStar = new function () {
         }
 
         return path;
-//        var set = this.walking(path);
-//
-//        if (notSet(set)) {
-//            return;
-//        } else {
-//            AStar.x = set.x;
-//            AStar.y = set.y;
-//        }
     }
 
-    var getPath = function (close, key) {
+    var getPath = function (key) {
         var path = [],
             i = 0
 
@@ -160,7 +154,11 @@ var AStar = new function () {
                     continue;
                 }
 
-                terrainType = Fields.get(i, j).getType()
+                terrainType = Fields.getAStarType(i, j)
+
+                if (!terrainType) {
+                    continue
+                }
 
                 if (terrainType == 'e') {
                     continue;

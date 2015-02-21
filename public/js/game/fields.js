@@ -34,4 +34,10 @@ var Fields = new function () {
             console.log('no field at x=' + x + ' y=' + y)
         }
     }
+    this.getAStarType = function (x, y) {
+        if (isSet(fields[y]) && isSet(fields[y][x])) {
+            return fields[y][x].getType()
+        }
+        return 0
+    }
 }

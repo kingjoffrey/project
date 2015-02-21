@@ -22,21 +22,6 @@ var Picker = new function () {
     this.detach = function (object) {
         objects.splice(objects.indexOf(object), 1);
     }
-    this.aaa = function (meshId) {
-        for (var i = objects.length - 1; i > 0; i--) {
-            if (objects[i].id == meshId) {
-                continue
-            }
-            detached.push(objects[i].id)
-            this.detach(objects[i])
-        }
-    }
-    this.bbb = function () {
-        for (var i in detached) {
-            this.attach(Three.getScene().getObjectById(detached[i]))
-        }
-        detached = []
-    }
 
     var intersect = function (event) {
         var x = event.offsetX == undefined ? event.layerX : event.offsetX;

@@ -122,7 +122,6 @@ var Me = new function () {
     this.selectArmy = function (armyId, center) {
         selectedArmyId = armyId
         var army = this.getArmy(armyId)
-        Picker.aaa(army.getMeshId())
         Three.addCircle(army.getX(), army.getY())
         Message.remove()
 
@@ -132,10 +131,6 @@ var Me = new function () {
 
         this.removeFromSkipped(armyId)
         this.unfortify(armyId)
-
-        //$('#army' + a.armyId)
-        //    .css('background', 'url(/img/game/units/' + a.color + '/border_army.gif)');
-
         this.updateInfo(armyId)
         $('#name').html('Army')
 
@@ -174,7 +169,6 @@ var Me = new function () {
         }
 
         Three.clearCircles()
-        Picker.bbb()
         Me.setIsSelected(0)
         //Castle.deselectedArmyCursor()
         //this.enemyCursorWhenUnselected()
@@ -328,7 +322,7 @@ var Me = new function () {
     }
     this.armyClick = function (armyId) {
         if (Gui.lock) {
-            return;
+            return
         }
 
         if (!Turn.isMy()) {
