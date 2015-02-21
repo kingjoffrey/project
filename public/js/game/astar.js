@@ -3,9 +3,9 @@
 var AStar = new function () {
     var destX,
         destY,
-        open = {},
-        close = {},
-        nr = 0,
+        open,
+        close,
+        nr,
         field,
         army,
         soldierSplitKey,
@@ -38,11 +38,13 @@ var AStar = new function () {
         }
         return 1
     }
-    this.showPath = function (a) {
-        army = a
-        if (getG(field.getType()) > 6) {
+    this.showPath = function () {
+        army = Me.getSelectedArmy()
+        if (getG(field.getType()) > 6 && field.getType() != 'e') {
             return
         }
+        open = {}
+        close = {}
         nr = 0
         Three.clearCircles()
         var startX = army.getX(),
@@ -127,11 +129,11 @@ var AStar = new function () {
             for (var i = startX; i <= endX; i++) {
                 for (var j = startY; j <= endY; j++) {
                     if (currX == i && currY == j) {
-                        continue;
+                        continue
                     }
                     var key = i + '_' + j;
                     if (isSet(close[key])) {
-                        continue;
+                        continue
                     }
 
                     terrainType = Fields.getAStarType(i, j)
@@ -140,16 +142,15 @@ var AStar = new function () {
                     }
                     if (terrainType == 'e') {
                         if (i == destX && j == destY) {
-                            console.log('aaa')
                             terrainType = 'g'
                         } else {
-                            continue;
+                            continue
                         }
                     }
 
-                    g = getG(terrainType);
+                    g = getG(terrainType)
                     if (g > 6) {
-                        continue;
+                        continue
                     }
 
                     if (isSet(open[key])) {

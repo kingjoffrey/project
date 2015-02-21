@@ -96,7 +96,7 @@ var Picker = new function () {
     }
     var mouseMove = function () {
         if (AStar.cursorPosition(convertX(), convertY()) && Me.getSelectedArmyId()) {
-            AStar.showPath(Me.getSelectedArmy())
+            AStar.showPath()
         }
     }
 };
