@@ -46,7 +46,7 @@ var AStar = new function () {
         open = {}
         close = {}
         nr = 0
-        Three.clearCircles()
+        Three.clearPathCircles()
         var startX = army.getX(),
             startY = army.getY(),
             key = destX + '_' + destY
@@ -74,7 +74,7 @@ var AStar = new function () {
         //}
 
         for (var i in path) {
-            Three.addCircle(path[i].x, path[i].y)
+            Three.addPathCircle(path[i].x, path[i].y)
             //var pathX = path[i].x;
             //var pathY = path[i].y;
 

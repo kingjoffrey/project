@@ -122,7 +122,7 @@ var Me = new function () {
     this.selectArmy = function (armyId, center) {
         selectedArmyId = armyId
         var army = this.getArmy(armyId)
-        Three.addCircle(army.getX(), army.getY())
+        Three.addArmyCircle(army.getX(), army.getY())
         Message.remove()
 
         //Castle.selectedArmyCursor();
@@ -168,7 +168,8 @@ var Me = new function () {
             }
         }
 
-        Three.clearCircles()
+        Three.clearArmyCircles()
+        Three.clearPathCircles()
         Me.setIsSelected(0)
         //Castle.deselectedArmyCursor()
         //this.enemyCursorWhenUnselected()

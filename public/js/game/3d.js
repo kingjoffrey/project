@@ -14,7 +14,8 @@ var Three = new function () {
         pointLight = new THREE.PointLight(0xdddddd),
         theLight = new THREE.DirectionalLight(0xffffff, 1),
         loader = new THREE.JSONLoader(),
-        circles = []
+        circles = [],
+        armyCircles = []
 
     camera.rotation.order = 'YXZ'
     camera.rotation.y = -Math.PI / 4
@@ -45,7 +46,7 @@ var Three = new function () {
     this.getRenderer = function () {
         return renderer
     }
-    this.addCircle = function (x, y) {
+    this.addPathCircle = function (x, y) {
         var radius = 2,
             segments = 64,
             material = new THREE.LineBasicMaterial({color: 0x0000ff}),
@@ -59,11 +60,31 @@ var Three = new function () {
         scene.add(circle)
         circles.push(circle)
     }
-    this.clearCircles = function () {
+    this.addArmyCircle = function (x, y) {
+        var radius = 2,
+            segments = 64,
+            material = new THREE.LineBasicMaterial({color: 0xffffff}),
+            geometry = new THREE.CircleGeometry(radius, segments)
+
+        geometry.vertices.shift()
+        var circle = new THREE.Line(geometry, material)
+        circle.position.set(x * 4 - 216, 1, y * 4 - 311)
+        circle.rotation.x = Math.PI / 2
+
+        scene.add(circle)
+        armyCircles.push(circle)
+    }
+    this.clearPathCircles = function () {
         for (var i in circles) {
             scene.remove(circles[i])
         }
         circles = []
+    }
+    this.clearArmyCircles = function () {
+        for (var i in armyCircles) {
+            scene.remove(armyCircles[i])
+        }
+        armyCircles = []
     }
 
     var initRuin = function () {
