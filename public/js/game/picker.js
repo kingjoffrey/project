@@ -59,28 +59,34 @@ var Picker = new function () {
     var onclick = function (button) {
         switch (button) {
             case 0:
-                var field = getField(),
-                    armies
-                if (armies = field.getArmies()) {
-                    for (var armyId in armies) {
-                        if (Me.colorEquals(armies[armyId])) {
-                            Me.armyClick(armyId)
-                        }
-                    }
-                } else if (Me.colorEquals(field.getCastleColor())) {
-                    var castleId = field.getCastleId()
-                    if (Me.getSelectedCastleId()) {
-                        if (Me.getSelectedCastleId() != castleId) {
-                            Websocket.production(Me.getSelectedCastleId(), Me.getSelectedUnitId(), castleId)
-                        }
-                        Me.setSelectedCastleId(null)
-                        Me.setSelectedUnitId(null)
-                    } else {
-                        Message.castle(Me.getCastle(castleId))
-                    }
+                if (Me.getSelectedArmyId()) {
+                    Websocket.move()
                 } else {
-                    if (Me.getSelectedArmyId()) {
-                        Websocket.move()
+                    var field = getField(),
+                        armies
+                    if (armies = field.getArmies()) {
+                        for (var armyId in armies) {
+                            if (Me.colorEquals(armies[armyId])) {
+                                Me.armyClick(armyId)
+                            }
+                        }
+                    } else if (Me.colorEquals(field.getCastleColor())) {
+                        var castleId = field.getCastleId()
+                        if (Me.getSelectedCastleId()) {
+                            if (Me.getSelectedCastleId() != castleId) {
+                                Websocket.production(Me.getSelectedCastleId(), Me.getSelectedUnitId(), castleId)
+                            }
+                            Me.setSelectedCastleId(null)
+                            Me.setSelectedUnitId(null)
+                        } else {
+                            Message.castle(Me.getCastle(castleId))
+                        }
+                    } else {
+                        alert('alert20150222 jednak kod poniżej jest potrzebny')
+                        // jednak kod poniżej jest potrzebny
+                        //if (Me.getSelectedArmyId()) {
+                        //    Websocket.move()
+                        //}
                     }
                 }
                 break
