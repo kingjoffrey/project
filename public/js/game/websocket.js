@@ -25,7 +25,8 @@ Websocket = {
 
         switch (r.type) {
             case 'move':
-                Move.start(r, Websocket.i)
+                var M = new Move()
+                M.start(r, Websocket.i)
                 break
 
             case 'computerStart':

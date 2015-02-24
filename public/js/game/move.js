@@ -1,4 +1,4 @@
-var Move = new function () {
+var Move = function () {
     var stepTime = 200,
         player = null,
         army = null
@@ -65,6 +65,8 @@ var Move = new function () {
                     }, Move.stepTime, function () {
                         if (typeof r.path[step] == 'undefined') {
                             console.log(r)
+                            console.log('step: ' + step)
+                            console.log('path: ' + r.path)
                             throw('error20150224')
                         }
                         army.setPosition(r.path[step].x, r.path[step].y)

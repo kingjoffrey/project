@@ -197,7 +197,10 @@ class Cli_Model_Astar extends Cli_Model_Heuristics
                     continue;
                 }
 
-                $terrainType = $this->_fields->getField($i, $j)->getType();
+                $terrainType = $this->_fields->getAStarType($i, $j);
+                if (!$terrainType) {
+                    continue;
+                }
 
                 // jeżeli na polu znajduje się wróg to pomiń to pole
                 if ($terrainType == 'e') {

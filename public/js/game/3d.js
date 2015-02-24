@@ -15,7 +15,8 @@ var Three = new function () {
         theLight = new THREE.DirectionalLight(0xffffff, 1),
         loader = new THREE.JSONLoader(),
         circles = [],
-        armyCircles = []
+        armyCircles = [],
+        showShadows = 0
 
     camera.rotation.order = 'YXZ'
     camera.rotation.y = -Math.PI / 4
@@ -24,17 +25,21 @@ var Three = new function () {
     camera.scale.addScalar(1)
 
     renderer.setSize(window.innerWidth, window.innerHeight)
-    renderer.shadowMapEnabled = true
-    renderer.shadowMapSoft = false
+    if (showShadows) {
+        renderer.shadowMapEnabled = true
+        renderer.shadowMapSoft = false
+    }
 
     pointLight.position.set(-100000, 100000, 100000);
     scene.add(pointLight)
 
     theLight.position.set(1500, 1000, 1000)
-    theLight.castShadow = true
-    theLight.shadowDarkness = 0.3
-    theLight.shadowMapWidth = 8192
-    theLight.shadowMapHeight = 8192
+    if (showShadows) {
+        theLight.castShadow = true
+        theLight.shadowDarkness = 0.3
+        theLight.shadowMapWidth = 8192
+        theLight.shadowMapHeight = 8192
+    }
     scene.add(theLight);
 
     this.getScene = function () {
@@ -98,9 +103,10 @@ var Three = new function () {
         var mesh = new THREE.Mesh(ruinModel.geometry, ruinMaterial)
         mesh.position.set(x * 4 - 216, 0, y * 4 - 311)
 
-        mesh.castShadow = true
-        mesh.receiveShadow = true
-
+        if (showShadows) {
+            mesh.castShadow = true
+            mesh.receiveShadow = true
+        }
         scene.add(mesh)
 
         return mesh.id
@@ -120,9 +126,10 @@ var Three = new function () {
         var mesh = new THREE.Mesh(towerModel.geometry, towerMaterial)
         mesh.position.set(x * 4 - 216, 0, y * 4 - 311)
 
-        mesh.castShadow = true
-        mesh.receiveShadow = true
-
+        if (showShadows) {
+            mesh.castShadow = true
+            mesh.receiveShadow = true
+        }
         scene.add(mesh)
 
         var flagMesh = new THREE.Mesh(flagModel.geometry, material)
@@ -150,9 +157,10 @@ var Three = new function () {
         mesh.name = 'castle'
         mesh.identification = castleId
 
-        mesh.castShadow = true
-        mesh.receiveShadow = true
-
+        if (showShadows) {
+            mesh.castShadow = true
+            mesh.receiveShadow = true
+        }
         scene.add(mesh)
 
         var flagMesh = new THREE.Mesh(flagModel.geometry, material)
@@ -183,9 +191,10 @@ var Three = new function () {
         mesh.name = 'army'
         mesh.identification = armyId
 
-        mesh.castShadow = true
-        mesh.receiveShadow = true
-
+        if (showShadows) {
+            mesh.castShadow = true
+            mesh.receiveShadow = true
+        }
         var flagMesh = new THREE.Mesh(flag_1Model.geometry, material)
         flagMesh.position.set(-2, 0, 0)
         mesh.add(flagMesh)
@@ -199,7 +208,9 @@ var Three = new function () {
         var ground = new THREE.Mesh(new THREE.PlaneBufferGeometry(436, 624), new THREE.MeshLambertMaterial({map: THREE.ImageUtils.loadTexture('/img/maps/1.png')}));
         //var ground = new THREE.Mesh(new THREE.PlaneBufferGeometry(436, 624), new THREE.MeshLambertMaterial({color: 0x00dd00}));
         ground.rotation.x = -Math.PI / 2
-        ground.receiveShadow = true
+        if (showShadows) {
+            ground.receiveShadow = true
+        }
         scene.add(ground)
         Picker.attach(ground)
     }
@@ -233,9 +244,10 @@ var Three = new function () {
         mesh.position.set(x * 4 - 216, 0, y * 4 - 311)
         mesh.rotation.y = Math.PI * Math.random()
 
-        mesh.castShadow = true
-        mesh.receiveShadow = true
-
+        if (showShadows) {
+            mesh.castShadow = true
+            mesh.receiveShadow = true
+        }
         scene.add(mesh)
 
     }
@@ -244,9 +256,10 @@ var Three = new function () {
         mesh.position.set(x * 4 - 216, 0, y * 4 - 311)
         mesh.rotation.y = Math.PI * Math.random()
 
-        //mesh.castShadow = true
-        mesh.receiveShadow = true
-
+        if (showShadows) {
+//mesh.castShadow = true
+            mesh.receiveShadow = true
+        }
         scene.add(mesh)
     }
     this.addTree = function (x, y) {
@@ -254,9 +267,10 @@ var Three = new function () {
         mesh.position.set(x * 4 - 216, 0, y * 4 - 311)
         mesh.rotation.y = Math.PI * Math.random()
 
-        mesh.castShadow = true
-        mesh.receiveShadow = true
-
+        if (showShadows) {
+            mesh.castShadow = true
+            mesh.receiveShadow = true
+        }
         scene.add(mesh)
     }
     this.addWater = function (x, y) {
