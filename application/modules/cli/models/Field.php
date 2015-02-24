@@ -4,7 +4,7 @@ class Cli_Model_Field
 {
     private $_type;
     private $_temporaryType;
-    private $_armies;
+    private $_armies = array();
     private $_castleId;
     private $_towerId;
     private $_ruinId;
@@ -19,6 +19,9 @@ class Cli_Model_Field
 
     public function toArray()
     {
+        if (empty($this->_armies)) {
+            $this->_armies = array();
+        }
         return array(
             'type' => $this->_type,
             'temporaryType' => $this->_temporaryType,
@@ -57,7 +60,11 @@ class Cli_Model_Field
 
     public function getArmies()
     {
-        return $this->_armies;
+        if (is_array($this->_armies)) {
+            return $this->_armies;
+        } else {
+            return array();
+        }
     }
 
     public function setCastle($castleId, $color)

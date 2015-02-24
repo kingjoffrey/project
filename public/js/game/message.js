@@ -721,7 +721,7 @@ var Message = {
             attack.append(
                 $('<div>')
                     .attr('id', 'unit' + soldierId)
-                    .css('background', 'url(' + Unit.getImage(Players.get(r.color).getArmies().get(r.army.armyId).getSoldiers()[soldierId].unitId, r.color) + ') no-repeat')
+                    .css('background', 'url(' + Unit.getImage(Players.get(r.color).getArmies().get(r.army.id).getSoldiers()[soldierId].unitId, r.color) + ') no-repeat')
                     .addClass('battleUnit')
             );
         }
@@ -869,9 +869,9 @@ var Message = {
             }
             $('#unit' + b[i].soldierId + ' .killed').fadeIn(1000, function () {
                 if (Me.colorEquals(r.color)) {
-                    for (var k in Me.getArmy(r.army.armyId).getSoldiers()) {
-                        if (Me.getArmy(r.army.armyId).getSoldiers()[k].soldierId == b[i].soldierId) {
-                            Me.costIncrement(-Units[Me.getArmy(r.army.armyId).getSoldiers()[k].unitId].cost)
+                    for (var k in Me.getArmy(r.army.id).getSoldiers()) {
+                        if (Me.getArmy(r.army.id).getSoldiers()[k].soldierId == b[i].soldierId) {
+                            Me.costIncrement(-Units[Me.getArmy(r.army.id).getSoldiers()[k].unitId].cost)
                         }
                     }
                 }

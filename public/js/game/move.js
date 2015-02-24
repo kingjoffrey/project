@@ -11,12 +11,13 @@ var Move = new function () {
             }
             return
         }
-        //moving = 1
         player = Players.get(r.color)
         army = player.getArmies().get(r.army.id)
+
         console.log(' ')
         console.log('move.start(' + ii + ') start')
         console.log(r)
+
         switch (army.getMovementType()) {
             case 'flying':
                 Sound.play('fly');
@@ -39,8 +40,6 @@ var Move = new function () {
         //    Fields.get(army.getX(), army.getY()).removeArmyId(army.getArmyId())
         Zoom.lens.setcenter(r.path[0].x, r.path[0].y)
         //}
-
-        //Me.unfortify(army.getArmyId())
 
         if (player.isComputer()) {
             stepTime = 100
@@ -65,7 +64,8 @@ var Move = new function () {
                         top: r.path[step].y * 2 + 'px'
                     }, Move.stepTime, function () {
                         if (typeof r.path[step] == 'undefined') {
-                            throw(r)
+                            console.log(r)
+                            throw('error20150224')
                         }
                         army.setPosition(r.path[step].x, r.path[step].y)
                         delete r.path[step]
@@ -106,15 +106,11 @@ var Move = new function () {
         console.log('move.end(' + ii + ') start')
 
         army.update(r.army)
+        if (player.isComputer() && !Gui.show) {
+            army.setPosition(army.getX(), army.getY())
+        }
         Zoom.lens.setcenter(army.getX(), army.getY())
 
-        //if (game.players[r.color].computer && !Gui.show) {
-        //    $('#army' + army.getArmyId())
-        //        .css({
-        //            left: (AStar.x * 40) + 'px',
-        //            top: (AStar.y * 40) + 'px'
-        //        })
-        //}
 
         if (r.battle) {
             if (r.battle.victory) {

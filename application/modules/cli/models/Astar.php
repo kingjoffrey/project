@@ -89,7 +89,11 @@ class Cli_Model_Astar extends Cli_Model_Heuristics
             $this->_enemyCastle = $players->getPlayer($castleColor)->getCastles()->getCastle($this->_fields->getCastleId($this->destX, $this->destY));
             $this->_fields->setCastleTemporaryType($this->_enemyCastle->getX(), $this->_enemyCastle->getY(), 'E');
         } else {
-            foreach ($this->_fields->getField($this->destX, $this->destY)->getArmies() as $armyId => $armyColor) {
+            $aaa = $this->_fields->getField($this->destX, $this->destY)->getArmies();
+            if (!is_array($aaa)) {
+                var_dump($aaa);
+            }
+            foreach ($aaa as $armyId => $armyColor) {
                 if (!$players->sameTeam($armyColor, $this->_color)) {
                     $this->_fields->setTemporaryType($this->destX, $this->destY, 'E');
                     break;

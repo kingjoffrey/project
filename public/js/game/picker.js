@@ -81,12 +81,6 @@ var Picker = new function () {
                         } else {
                             Message.castle(Me.getCastle(castleId))
                         }
-                    } else {
-                        alert('alert20150222 jednak kod poniżej jest potrzebny')
-                        // jednak kod poniżej jest potrzebny
-                        //if (Me.getSelectedArmyId()) {
-                        //    Websocket.move()
-                        //}
                     }
                 }
                 break
