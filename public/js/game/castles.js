@@ -1,7 +1,7 @@
 var Castles = function () {
-    var castles = {}, bgColor, miniMapColor, textColor
-    this.init = function (castles, bgC, miniMapC, textC) {
-        bgColor = bgC, miniMapColor = miniMapC, textColor = textC
+    var castles = {}, bgColor, miniMapColor, textColor, color
+    this.init = function (castles, bgC, miniMapC, textC, c) {
+        bgColor = bgC, miniMapColor = miniMapC, textColor = textC, color = c
         for (var castleId in castles) {
             this.add(castleId, castles[castleId])
         }
@@ -14,10 +14,11 @@ var Castles = function () {
                 type = 'e'
             }
             for (var x = castle.getX(); x <= castle.getX() + 1; x++) {
-                for (var y = castle.getY(); y <= castle.getY() + 1; y++)
-                     var field = Fields.get(x, y)
-                field.setTemporaryType(type)
-                field.setCastleColor(color)
+                for (var y = castle.getY(); y <= castle.getY() + 1; y++) {
+                    var field = Fields.get(x, y)
+                    field.setTemporaryType(type)
+                    field.setCastleColor(color)
+                }
             }
             castles[castleId] = castle
             castle.update(bgColor, miniMapColor, textColor)

@@ -468,4 +468,9 @@ var Me = new function () {
     this.getSelectedArmy = function () {
         return this.getArmy(selectedArmyId)
     }
+    this.sameTeam = function (color) {
+        if (me.getTeam() == Players.get(color).getTeam()) {
+            return true
+        }
+    }
 }
