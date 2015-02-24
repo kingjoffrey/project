@@ -62,9 +62,9 @@ var Picker = new function () {
                 if (Me.getSelectedArmyId()) {
                     Websocket.move()
                 } else {
-                    var field = getField(),
-                        armies
-                    if (armies = field.getArmies()) {
+                    var field = getField()
+                    if (field.hasArmies()) {
+                        var armies = field.getArmies()
                         for (var armyId in armies) {
                             if (Me.colorEquals(armies[armyId])) {
                                 Me.armyClick(armyId)

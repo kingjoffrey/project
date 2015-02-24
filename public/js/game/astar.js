@@ -31,7 +31,7 @@ var AStar = new function () {
             coord.html(translations.tower)
         } else if (field.getRuinId()) {
             coord.html(translations.ruin)
-        } else if (field.getArmies()) {
+        } else if (field.hasArmies()) {
             coord.html(translations.army)
         } else {
             coord.html(Terrain.getName(field.getType()))

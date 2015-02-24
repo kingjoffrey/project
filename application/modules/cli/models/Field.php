@@ -20,7 +20,7 @@ class Cli_Model_Field
     public function toArray()
     {
         if (empty($this->_armies)) {
-            $this->_armies = array();
+            $this->_armies = null;
         }
         return array(
             'type' => $this->_type,

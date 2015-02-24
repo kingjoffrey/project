@@ -19,6 +19,17 @@ var Field = function (field) {
     this.getArmies = function () {
         return field.armies
     }
+    this.hasArmies = function () {
+        if (!field.armies) {
+            return false
+        }
+        if (field.armies.constructor === Array) {
+            return false
+        }
+        if (field.armies.constructor === Object) {
+            return true
+        }
+    }
     this.getTowerColor = function () {
         return field.towerColor
     }

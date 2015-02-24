@@ -329,7 +329,7 @@ var Message = {
 
         // relocation to
 
-        if (castle.getRelocationCastleId()) {
+        if (castle.getRelocationCastleId() && Me.getCastles().has(castle.getRelocationCastleId())) {
             div
                 .append($('<br>'))
                 .append($('<fieldset>').addClass('relocatedProduction').append($('<label>').html(translations.relocatingTo)).append(
