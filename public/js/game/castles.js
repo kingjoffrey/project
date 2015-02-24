@@ -51,11 +51,6 @@ var Castles = function () {
         }
         return i
     }
-    //this.attachPicker = function () {
-    //    for (var castleId in castles) {
-    //        Picker.attach(Three.getScene().getObjectById(this.get(castleId).getMeshId()))
-    //    }
-    //}
     this.getRelocatedProduction = function (castleId) {
         var relocatedProduction = []
         for (var id in castles) {

@@ -23,12 +23,6 @@ var Armies = function () {
     this.get = function (armyId) {
         return armies[armyId]
     }
-    //this.attachPicker = function () {
-    //    for (var armyId in armies) {
-    //        Picker.attach(Three.getScene().getObjectById(this.get(armyId).getMeshId()))
-    //    }
-    //}
-
     this.toArray = function () {
         return armies
     }
@@ -45,7 +39,6 @@ var Armies = function () {
         }
 
         var mesh = Three.getScene().getObjectById(this.get(armyId).getMeshId())
-        //Picker.detach(mesh)
         Three.getScene().remove(mesh)
         $('#' + armyId).remove()
         delete armies[armyId]
@@ -60,10 +53,10 @@ var Armies = function () {
         Websocket.computer()
     }
     this.handle = function (army) {
-        if (this.hasArmy(army.armyId)) {
-            armies[army.armyId].update(army)
+        if (this.hasArmy(army.id)) {
+            armies[army.id].update(army)
         } else {
-            this.add(army.armyId, army)
+            this.add(army.id, army)
         }
     }
     this.count = function () {

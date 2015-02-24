@@ -113,8 +113,8 @@ Websocket = {
 
                 if (Turn.isMy()) {
                     Message.remove()
-                    Me.setParentArmyId(r.parentArmy.armyId)
-                    Me.selectArmy(r.childArmy.armyId)
+                    Me.setParentArmyId(r.parentArmy.id)
+                    Me.selectArmy(r.childArmy.id)
                 } else {
                     //zoomer.setCenterIfOutOfScreen(r.parentArmy.x * 40, r.parentArmy.y * 40);
                     Zoom.lens.setcenter(r.parentArmy.x, r.parentArmy.y);
@@ -140,7 +140,7 @@ Websocket = {
                 if (Turn.isMy()) {
                     Message.remove()
                     var upkeep = 0,
-                        soldiers = Players.get(r.color).getArmies().get(r.armyId).getSoldiers()
+                        soldiers = Players.get(r.color).getArmies().get(r.id).getSoldiers()
                     for (var i in soldiers) {
                         upkeep += Units.get(soldiers[i].unitId).cost
                     }
@@ -151,7 +151,7 @@ Websocket = {
                         $('#heroResurrection').removeClass('buttonOff')
                     }
                 }
-                Players.get(r.color).getArmies().delete(r.armyId)
+                Players.get(r.color).getArmies().delete(r.id)
 
                 this.executing = 0
                 break;

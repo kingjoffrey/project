@@ -22,7 +22,7 @@ class Cli_Model_DisbandArmy
 
         $token = array(
             'type' => 'disband',
-            'armyId' => $armyId,
+            'id' => $armyId,
             'color' => $playersInGameColors[$user->parameters['playerId']]
         );
 
