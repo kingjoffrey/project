@@ -146,6 +146,7 @@ class Cli_Model_Armies
             'y' => $y
         ), $color);
         $this->addArmy($armyId, $army);
+        $game->getFields()->getField($army->getX(), $army->getY())->addArmy($armyId, $color);
         return $armyId;
     }
 

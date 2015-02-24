@@ -2,47 +2,45 @@
 
 class Cli_Model_HeroHire
 {
-    public function __construct($user, $db, $gameHandler)
+    public function __construct(IWebSocketConnection $user, Cli_Model_Game $game, Zend_Db_Adapter_Pdo_Pgsql $db, Cli_GameHumansHandler $gameHandler)
     {
-        $mPlayersInGame = new Application_Model_PlayersInGame($user->parameters['gameId'], $db);
-        $gold = $mPlayersInGame->getPlayerGold($user->parameters['playerId']);
+        $gameId = $game->getId();
+        $color = $game->getMe()->getColor();
+        $playerId = $game->getMe()->getId();
+        $player = $game->getPlayers()->getPlayer($color);
 
-        if ($gold < 1000) {
+        if ($player->getGold() < 1000) {
             $gameHandler->sendError($user, 'Za mało złota!');
             return;
         }
 
-        $capitals = Zend_Registry::get('capitals');
-        $playersInGameColors = Zend_Registry::get('playersInGameColors');
-        $color = $playersInGameColors[$user->parameters['playerId']];
-        $castleId = $capitals[$color];
-
-        $mCastlesInGame = new Application_Model_CastlesInGame($user->parameters['gameId'], $db);
-        if (!$mCastlesInGame->isPlayerCastle($castleId, $user->parameters['playerId'])) {
+        if (!$capital = $player->getCastles()->getCastle($game->getPlayerCapitalId($color))) {
             $gameHandler->sendError($user, 'Aby wynająć herosa musisz posiadać stolicę!');
             return;
         }
 
-        $mHero = new Application_Model_Hero($user->parameters['playerId'], $db);
+        $mHero = new Application_Model_Hero($playerId, $db);
         $heroId = $mHero->createHero();
 
-        $mHeroesInGame = new Application_Model_HeroesInGame($user->parameters['gameId'], $db);
-        $mHeroesInGame->connectHero($heroId);
+        if (!$armyId = $player->getArmies()->getArmyIdFromPosition($capital->getX(), $capital->getY())) {
+            $armyId = $player->getArmies()->create($capital->getX(), $capital->getY(), $color, $game, $db);
+        }
 
-        $mapCastles = Zend_Registry::get('castles');
-        $armyId = Cli_Model_Army::heroResurrection($user->parameters['gameId'], $heroId, $mapCastles[$castleId]['position'], $user->parameters['playerId'], $db);
-        $gold -= 1000;
-        $mPlayersInGame->updatePlayerGold($user->parameters['playerId'], $gold);
+        $mHeroesInGame = new Application_Model_HeroesInGame($gameId, $db);
+        $mHeroesInGame->add($armyId, $heroId);
+
+        $army = $player->getArmies()->getArmy($armyId);
+        $army->addHero($heroId, new Cli_Model_Hero($mHeroesInGame->getHero($heroId)), $gameId, $db);
+
+        $player->subtractGold(1000, $gameId, $db);
 
         $token = array(
             'type' => 'resurrection',
-            'data' => array(
-                'army' => Cli_Model_Army::getArmyByArmyId($armyId, $user->parameters['gameId'], $db),
-                'gold' => $gold
-            ),
+            'army' => $army->toArray(),
+            'gold' => 1000,
             'color' => $color
         );
 
-        $gameHandler->sendToChannel($db, $token, $user->parameters['gameId']);
+        $gameHandler->sendToChannel($db, $token, $gameId);
     }
 }

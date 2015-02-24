@@ -117,7 +117,7 @@ class Cli_GameHumansHandler extends Cli_WofHandler
                 break;
 
             case 'disband':
-                new Cli_Model_DisbandArmy($dataIn['armyId'], $user, $db, $this);
+                new Cli_Model_DisbandArmy($dataIn['armyId'], $user, $this->_game, $db, $this);
                 break;
 
             case 'resurrection':
@@ -125,7 +125,7 @@ class Cli_GameHumansHandler extends Cli_WofHandler
                 break;
 
             case 'hire':
-                new Cli_Model_HeroHire($user, $db, $this);
+                new Cli_Model_HeroHire($user, $this->_game,$db, $this);
                 break;
 
             case 'ruin':
