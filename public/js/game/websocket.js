@@ -25,8 +25,7 @@ Websocket = {
 
         switch (r.type) {
             case 'move':
-                var M = new Move()
-                M.start(r, Websocket.i)
+                Move.start(r, Websocket.i)
                 break
 
             case 'computerStart':
@@ -46,7 +45,7 @@ Websocket = {
                     var castles = Players.get(r.color).getCastles()
                     for (var castleId in r.castles) {
                         //var status = Castle.updateCurrentProductionTurn(i, r.castles[i].productionTurn);
-                        castles.get(castleId).updateCurrentProductionTurn(r.castles[castleId].productionTurn)
+                        castles.get(castleId).updateProductionTurn(r.castles[castleId].productionTurn)
                     }
                     Me.resetQuitedArmies()
                     Sound.play('startturn')

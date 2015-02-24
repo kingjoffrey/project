@@ -35,4 +35,7 @@ var Field = function (field) {
     this.setTemporaryType = function (value) {
         field.temporaryType = value
     }
+    this.setCastleColor = function (color) {
+        field.castleColor = color
+    }
 }

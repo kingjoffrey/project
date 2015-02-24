@@ -68,7 +68,7 @@ var Turn = new function () {
         }
     }
     this.isMy = function () {
-        if (color == Me.getColor()) {
+        if (Me.colorEquals(color)) {
             return true
         }
     }

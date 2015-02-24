@@ -424,7 +424,7 @@ var Me = new function () {
     this.showFirst = function () {
         var castleId = Game.getCapitalId(color)
         var firstCastleId
-        if (isSet(this.getCastle(castleId))) {
+        if (me.getCastles().has(castleId)) {
             Zoom.lens.setcenter(this.getCastle(castleId).getX(), this.getCastle(castleId).getY())
         } else if (firstCastleId = this.getFirsCastleId()) {
             Zoom.lens.setcenter(this.getCastle(firstCastleId).getX(), this.getCastle(firstCastleId).getY())

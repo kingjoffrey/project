@@ -1,7 +1,8 @@
-var Move = function () {
-    var stepTime = 200,
-        player = null,
-        army = null
+var Move = new function () {
+    var stepTime,
+        player,
+        army
+
     this.start = function (r, ii) {
         if (notSet(r.color)) {
             Gui.unlock()
@@ -43,6 +44,8 @@ var Move = function () {
 
         if (player.isComputer()) {
             stepTime = 100
+        } else {
+            stepTime = 200
         }
 
         stepLoop(r, ii)
@@ -55,6 +58,8 @@ var Move = function () {
         }
 
         if (isSet(r.path[step])) {
+            console.log(step)
+            console.log(r.path[step])
             if (!player.isComputer() || Gui.show) {
                 //zoomer.setCenterIfOutOfScreen(r.path[step].x * 40, r.path[step].y * 40);
 
@@ -62,9 +67,8 @@ var Move = function () {
                     .animate({
                         left: r.path[step].x * 2 + 'px',
                         top: r.path[step].y * 2 + 'px'
-                    }, Move.stepTime, function () {
+                    }, stepTime, function () {
                         if (typeof r.path[step] == 'undefined') {
-                            console.log(r)
                             console.log('step: ' + step)
                             console.log('path: ' + r.path)
                             throw('error20150224')
@@ -97,7 +101,7 @@ var Move = function () {
                 //    }));
                 //}
 
-                Message.battle(r, ii);
+                Message.battle(r, ii)
             } else {
                 Move.end(r, ii)
             }
@@ -113,7 +117,6 @@ var Move = function () {
         }
         Zoom.lens.setcenter(army.getX(), army.getY())
 
-
         if (r.battle) {
             if (r.battle.victory) {
                 for (var color in r.battle.defenders) {
@@ -125,9 +128,14 @@ var Move = function () {
                     }
                 }
                 if (isDigit(r.battle.castleId)) {
-                    var castles = Players.get(Fields.get(army.getX(), army.getY()).getCastleColor()).getCastles()
+                    var castleColor = Fields.get(army.getX(), army.getY()).getCastleColor()
+                    console.log(castleColor)
+                    var castles = Players.get(castleColor).getCastles()
+                    console.log(castles)
                     Players.get(r.color).getCastles().add(r.battle.castleId, castles.get(r.battle.castleId))
                     castles.remove(r.battle.castleId)
+                    console.log(Players.get(r.color).getCastles())
+                    console.log(castles)
                 }
                 if (Me.colorEquals(r.color)) {
                     if (r.battle.castleId) {

@@ -8,6 +8,17 @@ var Castles = function () {
     }
     this.add = function (castleId, castle) {
         if (castle instanceof Castle) {
+            if (Me.sameTeam(color)) {
+                var type = null
+            } else {
+                type = 'e'
+            }
+            for (var x = castle.getX(); x <= castle.getX() + 1; x++) {
+                for (var y = castle.getY(); y <= castle.getY() + 1; y++)
+                     var field = Fields.get(x, y)
+                field.setTemporaryType(type)
+                field.setCastleColor(color)
+            }
             castles[castleId] = castle
             castle.update(bgColor, miniMapColor, textColor)
         } else {
@@ -57,5 +68,7 @@ var Castles = function () {
         }
         return relocatedProduction
     }
-
+    this.toArray = function () {
+        return castles
+    }
 }

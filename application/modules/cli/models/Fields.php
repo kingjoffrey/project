@@ -96,7 +96,7 @@ class Cli_Model_Fields
 
     public function getAStarType($x, $y)
     {
-        if (!isset($this->_fields[$y][$x])) {
+        if (isset($this->_fields[$y][$x])) {
             return $this->_fields[$y][$x]->getType();
         }
     }
