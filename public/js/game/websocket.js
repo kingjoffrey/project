@@ -44,8 +44,7 @@ Websocket = {
                 if (Me.colorEquals(r.color)) {
                     var castles = Players.get(r.color).getCastles()
                     for (var castleId in r.castles) {
-                        //var status = Castle.updateCurrentProductionTurn(i, r.castles[i].productionTurn);
-                        castles.get(castleId).updateProductionTurn(r.castles[castleId].productionTurn)
+                        castles.get(castleId).setProductionTurn(r.castles[castleId].productionTurn)
                     }
                     Me.resetQuitedArmies()
                     Sound.play('startturn')

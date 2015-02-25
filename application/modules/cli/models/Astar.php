@@ -136,7 +136,7 @@ class Cli_Model_Astar extends Cli_Model_Heuristics
         unset($this->_open[$key]);
         $this->addOpen($x, $y);
         if (!$this->isNotEmpty()) {
-            echo 'Nie znalazłem ścieżki';
+            echo 'Nie znalazłem ścieżki' . "\n";
             return;
 //            throw new Exception('Nie znalazłem ścieżki');
         }

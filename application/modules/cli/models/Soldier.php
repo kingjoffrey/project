@@ -72,6 +72,7 @@ class Cli_Model_Soldier extends Cli_Model_Being
     {
         $this->_movesLeft -= $movesSpend;
         if ($this->_movesLeft < 0) {
+            echo 'movesLeft= ' . $this->_movesLeft . "\n";
             Coret_Model_Logger::debug(debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 2));
             throw new Exception('movesLeft < 0');
         }

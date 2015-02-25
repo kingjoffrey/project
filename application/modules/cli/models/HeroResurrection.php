@@ -43,7 +43,7 @@ class Cli_Model_HeroResurrection
             'gold' => $player->getGold(),
             'color' => $color
         );
-        $gameHandler->sendToChannel($db, $token, $user->parameters['gameId']);
+        $gameHandler->sendToChannel($db, $token, $gameId);
     }
 
 

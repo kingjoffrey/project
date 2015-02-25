@@ -94,9 +94,11 @@ class Cli_Model_Path
             }
 
             if ($skip) {
+                echo 'break' . "\n";
                 break;
             }
 
+            echo 'current' . "\n";
             $this->_current[] = $step;
 
             if ($step['tt'] == 'E') {
