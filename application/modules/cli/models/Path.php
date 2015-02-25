@@ -26,7 +26,7 @@ class Cli_Model_Path
         } else {
             $type = 'walking';
         }
-
+echo "\n";
         foreach ($this->_full as $step) {
             foreach ($army->getSoldiers()->getKeys() as $soldierId) {
                 $soldier = $army->getSoldiers()->getSoldier($soldierId);

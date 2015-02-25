@@ -28,10 +28,10 @@ class Cli_Model_Castles
         }
     }
 
-//    public function removeCastle($castleId)
-//    {
-//        unset($this->_castles[$castleId]);
-//    }
+    public function removeCastle($castleId)
+    {
+        unset($this->_castles[$castleId]);
+    }
 
     /**
      * @param $castleId
@@ -81,6 +81,6 @@ class Cli_Model_Castles
         $mCastlesInGame->razeCastle($castleId, $playerId);
         $castle = $this->getCastle($castleId);
         $game->getFields()->resetCastleTemporaryType($castle->getX(), $castle->getY());
-        unset($this->_castles[$castleId]);
+        $this->removeCastle($castleId);
     }
 }
