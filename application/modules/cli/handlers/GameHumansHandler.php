@@ -157,7 +157,7 @@ class Cli_GameHumansHandler extends Cli_WofHandler
                 break;
 
             case 'surrender':
-                new Cli_Model_Surrender($user, $db, $this);
+                new Cli_Model_Surrender($user, $this->_game, $db, $this);
                 break;
         }
     }

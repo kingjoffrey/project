@@ -25,11 +25,10 @@ class Cli_Model_CastleRaze
             return;
         }
 
-        $gameId = $game->getId();
         $castles = $player->getCastles();
         $defense = $castles->getCastle($castleId)->getDefenseModifier();
 
-        $castles->razeCastle($castleId, $playerId, $gameId, $db);
+        $castles->razeCastle($castleId, $playerId, $game, $db);
         $player->addGold($defense * 200);
 
         $token = array(
@@ -39,7 +38,7 @@ class Cli_Model_CastleRaze
             'castleId' => $castleId
         );
 
-        $gameHandler->sendToChannel($db, $token, $gameId);
+        $gameHandler->sendToChannel($db, $token, $game->getId());
     }
 
 }
