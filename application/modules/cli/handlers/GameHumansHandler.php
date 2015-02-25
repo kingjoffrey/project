@@ -141,11 +141,11 @@ class Cli_GameHumansHandler extends Cli_WofHandler
                 break;
 
             case 'raze':
-                new Cli_Model_CastleRaze($dataIn['armyId'], $user, $db, $this);
+                new Cli_Model_CastleRaze($dataIn['armyId'], $user, $this->_game, $db, $this);
                 break;
 
             case 'defense':
-                new Cli_Model_CastleBuildDefense($dataIn['castleId'], $user, $db, $this);
+                new Cli_Model_CastleBuildDefense($dataIn['castleId'], $user, $this->_game, $db, $this);
                 break;
 
             case 'inventoryAdd':

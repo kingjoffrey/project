@@ -3,62 +3,45 @@
 class Cli_Model_CastleBuildDefense
 {
 
-    public function __construct($castleId, $user, $db, $gameHandler)
+    public function __construct($castleId, IWebSocketConnection $user, Cli_Model_Game $game, Zend_Db_Adapter_Pdo_Pgsql $db, Cli_GameHumansHandler $gameHandler)
     {
         if ($castleId == null) {
             $gameHandler->sendError($user, 'Brak "castleId"!');
             return;
         }
 
-        $mCastlesInGame = new Application_Model_CastlesInGame($user->parameters['gameId'], $db);
-        if (!$mCastlesInGame->isPlayerCastle($castleId, $user->parameters['playerId'])) {
+        $playerId = $game->getMe()->getId();
+        $color = $game->getPlayerColor($playerId);
+        $player = $game->getPlayers()->getPlayer($color);
+        $castle = $player->getCastles()->getCastle($castleId);
+
+        if (!$castle) {
             $gameHandler->sendError($user, 'To nie jest Twój zamek.');
             return;
         }
 
-        $mPlayersInGame = new Application_Model_PlayersInGame($user->parameters['gameId'], $db);
-        $gold = $mPlayersInGame->getPlayerGold($user->parameters['playerId']);
-
-        $defenseModifier = $mCastlesInGame->getCastleDefenseModifier($castleId);
-
-//        $defensePoints = Application_Model_Board::getCastleDefense($castleId);
-
-        $mapCastles = Zend_Registry::get('castles');
-        $defensePoints = $mapCastles[$castleId]['defensePoints'];
-
-        $defense = $defenseModifier + $defensePoints;
-        if ($defense < 1) {
-            $defense = 1;
-            $defenseModifier = $defense - $defensePoints;
-        }
-        $defenseModifier++;
-
         $costs = 0;
-        for ($i = 1; $i <= $defense; $i++) {
+        for ($i = 1; $i <= $castle->getDefenseModifier(); $i++) {
             $costs += $i * 100;
         }
-        if ($gold < $costs) {
+        if ($player->getGold() < $costs) {
             $gameHandler->sendError($user, 'Za mało złota!');
             return;
         }
 
-        $mCastlesInGame = new Application_Model_CastlesInGame($user->parameters['gameId'], $db);
-        $mCastlesInGame->buildDefense($castleId, $user->parameters['playerId'], $defenseModifier);
-
-        $playersInGameColors = Zend_Registry::get('playersInGameColors');
+        $gameId = $game->getId();
+        $castle->increaseDefenceMod($playerId, $gameId, $db);
+        $player->addGold(-$costs);
 
         $token = array(
             'type' => 'defense',
-            'color' => $playersInGameColors[$user->parameters['playerId']],
-            'gold' => $gold - $costs,
-            'defenseMod' => $defenseModifier,
+            'color' => $color,
+            'gold' => $player->getGold(),
+            'defense' => $castle->getDefenseModifier(),
             'castleId' => $castleId
         );
 
-        $mPlayersInGame = new Application_Model_PlayersInGame($user->parameters['gameId'], $db);
-        $mPlayersInGame->updatePlayerGold($user->parameters['playerId'], $token['gold']);
-
-        $gameHandler->sendToChannel($db, $token, $user->parameters['gameId']);
+        $gameHandler->sendToChannel($db, $token, $gameId);
     }
 
 }

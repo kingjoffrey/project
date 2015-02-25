@@ -161,9 +161,26 @@ class Cli_Model_Castle extends Cli_Model_Entity
         return $this->_defenseMod;
     }
 
-    public function decreaseDefenceMod()
+    public function decreaseDefenceMod($playerId, $gameId, $db)
     {
-        $this->_defenseMod--;
+        if ($this->getDefenseModifier() > 1) {
+            $this->_defenseMod--;
+            $this->setDefenceMod($playerId, $gameId, $db);
+        }
+    }
+
+    public function increaseDefenceMod($playerId, $gameId, $db)
+    {
+        if ($this->getDefenseModifier() < 4) {
+            $this->_defenseMod++;
+            $this->setDefenceMod($playerId, $gameId, $db);
+        }
+    }
+
+    private function setDefenceMod($playerId, $gameId, $db)
+    {
+        $mCastlesInGame = new Application_Model_CastlesInGame($gameId, $db);
+        $mCastlesInGame->buildDefense($this->_id, $playerId, $this->_defenseMod);
     }
 
     public function getRelocationCastleId()

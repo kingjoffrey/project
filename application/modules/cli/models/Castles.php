@@ -22,18 +22,16 @@ class Cli_Model_Castles
             if ($oldColor == 'neutral') {
                 $mCastlesInGame->addCastle($castleId, $playerId);
             } else {
-                if ($castle->getDefenseModifier() > 1) {
-                    $castle->decreaseDefenceMod();
-                }
+                $castle->decreaseDefenceMod($playerId, $gameId, $db);
                 $mCastlesInGame->changeOwner($castle, $playerId);
             }
         }
     }
 
-    public function removeCastle($castleId)
-    {
-        unset($this->_castles[$castleId]);
-    }
+//    public function removeCastle($castleId)
+//    {
+//        unset($this->_castles[$castleId]);
+//    }
 
     /**
      * @param $castleId
@@ -75,5 +73,12 @@ class Cli_Model_Castles
     public function castlesExists()
     {
         return count($this->_castles);
+    }
+
+    public function razeCastle($castleId, $playerId, $gameId, $db)
+    {
+        $mCastlesInGame = new Application_Model_CastlesInGame($gameId, $db);
+        $mCastlesInGame->razeCastle($castleId, $playerId);
+        unset($this->_castles[$castleId]);
     }
 }

@@ -19,9 +19,6 @@ class Cli_Model_Field
 
     public function toArray()
     {
-        if (empty($this->_armies)) {
-            $this->_armies = null;
-        }
         return array(
             'type' => $this->_type,
             'temporaryType' => $this->_temporaryType,
