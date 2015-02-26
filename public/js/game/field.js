@@ -20,11 +20,8 @@ var Field = function (field) {
         return field.armies
     }
     this.hasArmies = function () {
-        if (field.armies.constructor === Array) {
-            return false
-        }
-        if (field.armies.constructor === Object) {
-            return true
+        for(var armyId in field.armies){
+            return armyId
         }
     }
     this.getTowerColor = function () {
