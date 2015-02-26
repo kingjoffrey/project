@@ -131,11 +131,11 @@ var Move = new function () {
                     var castleColor = Fields.get(army.getX(), army.getY()).getCastleColor()
                     console.log(castleColor)
                     var castles = Players.get(castleColor).getCastles()
-                    console.log(castles)
+                    console.log(castles.toArray())
                     Players.get(r.color).getCastles().add(r.battle.castleId, castles.get(r.battle.castleId))
                     castles.remove(r.battle.castleId)
                     console.log(Players.get(r.color).getCastles())
-                    console.log(castles)
+                    console.log(castles.toArray())
                 }
                 if (Me.colorEquals(r.color)) {
                     if (r.battle.castleId) {

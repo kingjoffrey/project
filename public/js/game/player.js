@@ -4,7 +4,7 @@ var Player = function (player, color) {
         towers = new Towers()
 
     armies.init(player.armies, player.backgroundColor, player.miniMapColor, player.textColor, color)
-    castles.init(player.castles, player.backgroundColor, player.miniMapColor, player.textColor)
+    castles.init(player.castles, player.backgroundColor, player.miniMapColor, player.textColor, color)
     towers.init(player.towers, player.backgroundColor)
 
     this.getTeam = function () {

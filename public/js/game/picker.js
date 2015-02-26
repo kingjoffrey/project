@@ -63,6 +63,7 @@ var Picker = new function () {
                     Websocket.move()
                 } else {
                     var field = getField()
+                    console.log(field.getArmies())
                     if (field.hasArmies()) {
                         var armies = field.getArmies()
                         for (var armyId in armies) {
