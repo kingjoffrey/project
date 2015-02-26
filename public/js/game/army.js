@@ -18,8 +18,17 @@ var Army = function (army, bgColor, miniMapColor, textColor, color) {
     this.skippedHeroes = {}
     this.skippedSoldiers = {}
     this.update = function (a) {
+        console.log(a)
         Fields.get(army.x, army.y).removeArmyId(army.id)
-        army = a
+        //if (isSet(a.x)) {
+        //    army.x = a.x
+        //}
+        //if (isSet(a.y)) {
+        //    army.y = a.y
+        //}
+        for (var key in a) {
+            army[key] = a[key]
+        }
         Fields.get(army.x, army.y).addArmyId(army.id, color)
         //this.getMovementType()
     }

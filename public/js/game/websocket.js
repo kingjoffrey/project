@@ -603,9 +603,8 @@ Websocket = {
         var h = Me.getSelectedHeroSplitKey()
         var armyId = Me.getSelectedArmyId()
 
-        //Me.armyButtonsOff()
         Gui.setLock()
-        Me.deselectArmy()
+        Me.deselectArmy(1)
 
         var token = {
             type: 'move',
