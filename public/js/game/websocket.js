@@ -216,7 +216,7 @@ Websocket = {
                 break;
 
             case 'dead':
-                if (notSet(Players.wedges[r.color].skull)) {
+                if (!Players.hasSkull(r.color)) {
                     Players.drawSkull(r.color)
                 }
                 this.executing = 0

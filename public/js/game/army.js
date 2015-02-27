@@ -45,7 +45,24 @@ var Army = function (army, bgColor, miniMapColor, textColor, color) {
         return army.y
     }
     this.getMoves = function () {
-        return army.moves
+        var moves
+        for (var i in  army.soldiers) {
+            if (notSet(moves)) {
+                moves = army.soldiers[i].movesLeft
+            }
+            if (moves > army.soldiers[i].movesLeft) {
+                moves = army.soldiers[i].movesLeft
+            }
+        }
+        for (var i in army.heroes) {
+            if (notSet(moves)) {
+                moves = army.heroes[i].movesLeft
+            }
+            if (moves > army.heroes[i].movesLeft) {
+                moves = army.heroes[i].movesLeft
+            }
+        }
+        return moves
     }
     this.getHeroKey = function () {
         for (var heroId in army.heroes) {

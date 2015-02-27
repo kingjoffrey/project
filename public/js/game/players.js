@@ -93,7 +93,7 @@ var Players = new function () {
             kineticLayer.add(wedges[shortName].kinetic)
             drawImage(shortName)
             if (players[shortName].lost) {
-                drawSkull(shortName)
+                this.drawSkull(shortName)
             }
             i++;
         }
@@ -165,7 +165,10 @@ var Players = new function () {
         imageObj.src = Hero.getImage(shortName)
     }
 
-    var drawSkull = function (shortName) {
+    this.hasSkull = function (shortName) {
+        return isSet(wedges[shortName].skull)
+    }
+    this.drawSkull = function (shortName) {
         var imageObj = new Image();
         imageObj.onload = function () {
             wedges[shortName].skull = new Kinetic.Image({
