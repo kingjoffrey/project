@@ -38,8 +38,8 @@ $aaa=$this->_game->getPlayers()->getPlayer($this->_color)->getArmies()->getArmy(
         $myCastle = $this->_player->getCastles()->getCastle($castleId);
         if ($numberOfUnits = $this->_game->getNumberOfGarrisonUnits()) {
             $garrison = new Cli_Model_Garrison($numberOfUnits, $myCastle->getX(), $myCastle->getY(), $this->_player->getArmies(), $this->_user, $this->_game, $this->_db, $this->_gameHandler);
-            $armyToGo = $garrison->getArmyToGo();
-            if ($armyToGo) {
+            if ($armyToGo = $garrison->getArmyToGo()) {
+                $this->_player->getArmies()->a
                 $this->_army = $armyToGo;
                 $this->_armyId = $this->_army->getId();
                 $this->_armyX = $this->_army->getX();
