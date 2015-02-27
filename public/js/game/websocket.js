@@ -337,6 +337,15 @@ Websocket = {
                         castle.setProductionId(r.unitId)
                         castle.setProductionTurn(0)
                         castle.setRelocationCastleId(r.relocationToCastleId)
+                        if (isTruthful(r.relocationToCastleId)) {
+                            Message.simple(translations.production, translations.productionRelocated)
+                        } else {
+                            if (r.unitId === null) {
+                                Message.simple(translations.production, translations.productionStopped)
+                            } else {
+                                Message.simple(translations.production, translations.productionSet)
+                            }
+                        }
                         break
 
                     case 'statistics':
@@ -560,6 +569,7 @@ Websocket = {
             return;
         }
 
+        Me.setParentArmyId(null)
         var token = {
             type: 'join',
             armyId: armyId

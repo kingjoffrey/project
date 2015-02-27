@@ -27,7 +27,9 @@ class Cli_Model_Path
             $type = 'walking';
         }
 echo "\n";
+        print_r($army->getSoldiers()->toArray());
         foreach ($this->_full as $step) {
+            print_r($step);
             foreach ($army->getSoldiers()->getKeys() as $soldierId) {
                 $soldier = $army->getSoldiers()->getSoldier($soldierId);
                 if (!isset($soldiersMovesLeft[$soldierId])) {
@@ -94,6 +96,7 @@ echo "\n";
             }
 
             if ($skip) {
+                print_r($this->_current);
                 echo 'break' . "\n";
                 break;
             }

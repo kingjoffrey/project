@@ -26,10 +26,6 @@ class Cli_Model_Player extends Cli_Model_DefaultPlayer
         $this->_id = $player['playerId'];
         $this->_lost = $player['lost'];
 
-        if ($this->_lost) {
-            return;
-        }
-
         $this->_turnActive = $player['turnActive'];
         $this->_computer = $player['computer'];
         $this->_gold = $player['gold'];
@@ -44,6 +40,10 @@ class Cli_Model_Player extends Cli_Model_DefaultPlayer
         $this->_armies = new Cli_Model_Armies();
         $this->_castles = new Cli_Model_Castles();
         $this->_towers = new Cli_Model_Towers();
+
+        if ($this->_lost) {
+            return;
+        }
 
         $this->initArmies($gameId, $db);
         $this->initCastles($gameId, $mapCastles, $db);
