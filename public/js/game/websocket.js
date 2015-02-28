@@ -21,6 +21,7 @@ Websocket = {
         }
     },
     execute: function (r) {
+        console.log(r)
         this.executing = 1
 
         switch (r.type) {
@@ -99,10 +100,10 @@ Websocket = {
 
                     }
                 }
-                $('.ruinSearch').animate({'display': 'none'}, 1000, function () {
-                    $('.ruinSearch').remove()
-                    Websocket.executing = 0
-                })
+                //$('.ruinSearch').animate({'display': 'none'}, 1000, function () {
+                //    $('.ruinSearch').remove()
+                //})
+                Websocket.executing = 0
                 break;
 
             case 'split':

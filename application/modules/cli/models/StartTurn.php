@@ -13,7 +13,7 @@ class Cli_Model_StartTurn
 
 
         if ($player->getComputer()) {
-            $player->unfortifyArmies($gameId, $db);
+            $player->getArmies()->unfortify($gameId, $db);
             $type = 'computerStart';
         } else {
             $type = 'startTurn';

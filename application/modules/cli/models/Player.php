@@ -221,14 +221,6 @@ class Cli_Model_Player extends Cli_Model_DefaultPlayer
         parent::removeTower($towerId);
     }
 
-    public function unfortifyArmies($gameId, $db)
-    {
-        $mArmy = new Application_Model_Army($gameId, $db);
-        $mArmy->unfortifyPlayerArmies($this->_id);
-
-        $this->_armies->unfortify($gameId, $db);
-    }
-
     public function getComputer()
     {
         return $this->_computer;
