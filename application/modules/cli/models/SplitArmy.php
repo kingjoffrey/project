@@ -33,7 +33,7 @@ class Cli_Model_SplitArmy
                     $childArmy = $armies->getArmy($this->_childArmyId);
                 }
 
-                $armies->moveHero($parentArmyId, $this->_childArmyId, $heroId, $gameId, $db);
+                $armies->changeHeroAffiliation($parentArmyId, $this->_childArmyId, $heroId, $gameId, $db);
             }
         }
 
@@ -52,7 +52,7 @@ class Cli_Model_SplitArmy
                     $childArmy = $armies->getArmy($this->_childArmyId);
                 }
 
-                $armies->moveSoldier($parentArmyId, $this->_childArmyId, $soldierId, $gameId, $db);
+                $armies->changeSoldierAffiliation($parentArmyId, $this->_childArmyId, $soldierId, $gameId, $db);
             }
         }
 

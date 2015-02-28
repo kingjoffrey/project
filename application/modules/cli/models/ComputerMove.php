@@ -38,9 +38,9 @@ $aaa=$this->_game->getPlayers()->getPlayer($this->_color)->getArmies()->getArmy(
         $myCastle = $this->_player->getCastles()->getCastle($castleId);
         if ($numberOfUnits = $this->_game->getNumberOfGarrisonUnits()) {
             $garrison = new Cli_Model_Garrison($numberOfUnits, $myCastle->getX(), $myCastle->getY(), $this->_player->getArmies(), $this->_user, $this->_game, $this->_db, $this->_gameHandler);
-            if ($armyToGo = $garrison->getArmyToGo()) {
-                $this->_player->getArmies()->a
-                $this->_army = $armyToGo;
+            if ($armyId = $garrison->getNewArmyId()) {
+                $this->_l->log('NOWA ARMIA');
+                $this->_army = $this->_player->getArmies()->getArmy($armyId);
                 $this->_armyId = $this->_army->getId();
                 $this->_armyX = $this->_army->getX();
                 $this->_armyY = $this->_army->getY();
@@ -297,13 +297,14 @@ $aaa=$this->_game->getPlayers()->getPlayer($this->_color)->getArmies()->getArmy(
 
     private function move(Cli_Model_Path $path = null)
     {
-        $this->_l->log('IDĘ... LUB WALCZĘ');
-        $aaa=$this->_game->getPlayers()->getPlayer($this->_color)->getArmies()->getArmy($this->_army->getId());
         if ($path && $path->exists()) {
+            $this->_l->log('IDĘ/WALCZĘ');
             $this->_army->move($this->_game, $path, $this->_db, $this->_gameHandler);
         } else {
+            $this->_l->log('BRAK ŚCIEŻKI');
             $this->_army->setFortified(true, $this->_gameId, $this->_db);
             if ($this->_army = $this->_player->getArmies()->getComputerArmyToMove()) {
+                $this->_l->log('BIORĘ KOLEJNĄ ARMIĘ');
                 $this->_armyId = $this->_army->getId();
                 $this->_armyX = $this->_army->getX();
                 $this->_armyY = $this->_army->getY();

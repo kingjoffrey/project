@@ -150,19 +150,19 @@ class Cli_Model_Armies
         return $armyId;
     }
 
-    public function moveHero($oldArmyId, $newArmyId, $heroId, $gameId, Zend_Db_Adapter_Pdo_Pgsql $db)
+    public function changeHeroAffiliation($oldArmyId, $newArmyId, $heroId, $gameId, Zend_Db_Adapter_Pdo_Pgsql $db)
     {
         $this->getArmy($newArmyId)->addHero($heroId, $this->getArmy($oldArmyId)->getHeroes()->getHero($heroId), $gameId, $db);
         $this->getArmy($oldArmyId)->getHeroes()->remove($heroId);
     }
 
-    public function moveSoldier($oldArmyId, $newArmyId, $soldierId, $gameId, Zend_Db_Adapter_Pdo_Pgsql $db)
+    public function changeSoldierAffiliation($oldArmyId, $newArmyId, $soldierId, $gameId, Zend_Db_Adapter_Pdo_Pgsql $db)
     {
         $this->getArmy($newArmyId)->addSoldier($soldierId, $this->getArmy($oldArmyId)->getSoldiers()->getSoldier($soldierId), $gameId, $db);
         $this->getArmy($oldArmyId)->getSoldiers()->remove($soldierId);
     }
 
-    public function moveShip($oldArmyId, $newArmyId, $soldierId, $gameId, Zend_Db_Adapter_Pdo_Pgsql $db)
+    public function changeShipAffiliation($oldArmyId, $newArmyId, $soldierId, $gameId, Zend_Db_Adapter_Pdo_Pgsql $db)
     {
         $this->getArmy($newArmyId)->addShip($soldierId, $this->getArmy($oldArmyId)->getShips()->getSoldier($soldierId), $gameId, $db);
         $this->getArmy($oldArmyId)->getShips()->remove($soldierId);

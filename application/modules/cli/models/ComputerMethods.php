@@ -378,11 +378,9 @@ abstract class Cli_Model_ComputerMethods
     protected function isEnemyArmyInRange(Cli_Model_Army $enemy)
     {
         $this->_l->logMethodName();
-        $enemyX = $enemy->getX();
-        $enemyY = $enemy->getY();
 
         try {
-            $aStar = new Cli_Model_Astar($this->_army, $enemyX, $enemyY, $this->_game);
+            $aStar = new Cli_Model_Astar($this->_army, $enemy->getX(), $enemy->getY(), $this->_game);
         } catch (Exception $e) {
             echo($e);
             return;
