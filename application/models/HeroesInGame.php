@@ -31,7 +31,6 @@ class Application_Model_HeroesInGame extends Coret_Db_Table_Abstract
 
     public function addToArmy($armyId, $heroId, $movesLeft)
     {
-
         $data = array(
             'armyId' => $armyId,
             'movesLeft' => $movesLeft

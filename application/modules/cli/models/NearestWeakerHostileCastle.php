@@ -28,7 +28,7 @@ class Cli_Model_NearestWeakerHostileCastle
         while (true) {
             if ($castleId = $this->getCastleId($game, $playerColor, $army)) {
                 $this->_path = $this->path($game, $castleId, $army);
-                if ($this->_path->exists()) {
+                if ($this->_path && $this->_path->exists()) {
                     return;
                 }
             }
