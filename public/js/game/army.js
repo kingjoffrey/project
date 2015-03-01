@@ -2,7 +2,7 @@ var Army = function (army, bgColor, miniMapColor, textColor, color) {
     var meshId = Three.addArmy(army.x, army.y, bgColor, army.id),
         heroSplitKey = null,
         soldierSplitKey = null
-
+    Fields.get(army.x, army.y).addArmyId(army.id, color)
     map.append(
         $('<div>')
             .css({

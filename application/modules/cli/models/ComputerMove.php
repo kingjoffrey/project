@@ -264,7 +264,7 @@ $aaa=$this->_game->getPlayers()->getPlayer($this->_color)->getArmies()->getArmy(
 
         $this->_l->log('IDĘ DO RUIN');
         $this->move($ptnr->getPath());
-        $this->_army->setFortified(true, $this->_gameId, $this->_db);
+        $this->_army->setFortified(true);
 
         $this->_game->getRuins()->getRuin($ruinId)->search($this->_game, $this->_army, $heroId, $this->_playerId, $this->_db, $this->_gameHandler);
     }
@@ -274,7 +274,7 @@ $aaa=$this->_game->getPlayers()->getPlayer($this->_color)->getArmies()->getArmy(
         $this->_l->log('ZAPISUJĘ ŚCIEŻKĘ');
         $aaa=$this->_game->getPlayers()->getPlayer($this->_color)->getArmies()->getArmy($this->_army->getId());
         $this->_army->saveOldPath($path);
-        $this->_army->setFortified(true, $this->_gameId, $this->_db);
+        $this->_army->setFortified(true);
         $this->move($path);
     }
 
@@ -302,7 +302,7 @@ $aaa=$this->_game->getPlayers()->getPlayer($this->_color)->getArmies()->getArmy(
             $this->_army->move($this->_game, $path, $this->_db, $this->_gameHandler);
         } else {
             $this->_l->log('BRAK ŚCIEŻKI');
-            $this->_army->setFortified(true, $this->_gameId, $this->_db);
+            $this->_army->setFortified(true);
             if ($this->_army = $this->_player->getArmies()->getComputerArmyToMove()) {
                 $this->_l->log('BIORĘ KOLEJNĄ ARMIĘ');
                 $this->_armyId = $this->_army->getId();

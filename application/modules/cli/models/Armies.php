@@ -112,10 +112,10 @@ class Cli_Model_Armies
         }
     }
 
-    public function unfortify($gameId, Zend_Db_Adapter_Pdo_Pgsql $db)
+    public function unfortify()
     {
         foreach ($this->_armies as $army) {
-            $army->setFortified(false, $gameId, $db);
+            $army->setFortified(false);
         }
     }
 

@@ -21,10 +21,7 @@ class Cli_Model_StartTurn
         $castles->increaseAllProductionTurn($playerId, $gameId, $db);
 
         if ($isComputer) {
-            $armies->unfortify($gameId, $db);
-            $type = 'computerStart';
-        } else {
-            $type = 'startTurn';
+            $armies->unfortify();
         }
 
         foreach ($armies->getKeys() as $armyId) {
@@ -93,7 +90,7 @@ class Cli_Model_StartTurn
         $player->saveGold($gameId, $db);
 
         $token = array(
-            'type' => $type,
+            'type' => 'startTurn',
             'gold' => $player->getGold(),
             'armies' => $armies->toArray(),
             'castles' => $castles->toArray(),

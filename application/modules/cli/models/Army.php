@@ -206,11 +206,13 @@ class Cli_Model_Army
         $this->_ships->resetMovesLeft($gameId, $db);
     }
 
-    public function setFortified($fortified, $gameId, Zend_Db_Adapter_Pdo_Pgsql $db)
+    public function setFortified($fortified, $gameId = null, Zend_Db_Adapter_Pdo_Pgsql $db = null)
     {
         $this->_fortified = $fortified;
-        $mArmy = new Application_Model_Army($gameId, $db);
-        $mArmy->fortify($this->getId(), $fortified);
+        if ($db) {
+            $mArmy = new Application_Model_Army($gameId, $db);
+            $mArmy->fortify($this->getId(), $fortified);
+        }
     }
 
     public function getFortified()

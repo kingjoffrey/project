@@ -46,12 +46,6 @@ var Armies = function () {
     this.hasArmy = function (armyId) {
         return isSet(armies[armyId])
     }
-    this.computerLoop = function (a) {
-        for (var armyId in a) {
-            this.handle(a[armyId])
-        }
-        Websocket.computer()
-    }
     this.handle = function (army) {
         if (this.hasArmy(army.id)) {
             armies[army.id].update(army)

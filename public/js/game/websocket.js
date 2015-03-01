@@ -29,18 +29,6 @@ Websocket = {
                 Move.start(r, Websocket.i)
                 break
 
-            case 'computerStart':
-                Players.get(r.color).getArmies().computerLoop(r.armies)
-                this.executing = 0
-                break
-
-            case 'nextTurn':
-                Me.deselectArmy()
-                Turn.change(r.color, r.nr)
-                this.computer()
-                this.executing = 0
-                break;
-
             case 'startTurn':
                 if (Me.colorEquals(r.color)) {
                     var castles = Players.get(r.color).getCastles()
@@ -59,6 +47,16 @@ Websocket = {
                 for (var armyId in r.armies) {
                     armies.handle(r.armies[armyId])
                 }
+                if (Players.get(r.color).isComputer()) {
+                    this.computer()
+                }
+                this.executing = 0
+                break;
+
+            case 'nextTurn':
+                Me.deselectArmy()
+                Turn.change(r.color, r.nr)
+                this.computer()
                 this.executing = 0
                 break;
 
