@@ -5,28 +5,34 @@ class Cli_Model_StartTurn
 
     public function __construct($playerId, IWebSocketConnection $user, Cli_Model_Game $game, Zend_Db_Adapter_Pdo_Pgsql $db, Cli_GameHumansHandler $gameHandler)
     {
+        $fields = $game->getFields();
         $players = $game->getPlayers();
         $gameId = $game->getId();
         $color = $game->getPlayerColor($playerId);
         $player = $players->getPlayer($color);
-        $players->activatePlayerTurn($color, $playerId, $gameId, $db); // todo po co to jest?
+        $armies = $player->getArmies();
+        $castles = $player->getCastles();
+        $towers = $player->getTowers();
+        $isComputer = $player->getComputer();
 
+        // ustawienie informacji o tym, że tura gracza została uruchomiona
+        $players->activatePlayerTurn($color, $playerId, $gameId, $db);
+        $armies->resetMovesLeft($gameId, $db);
+        $castles->increaseAllProductionTurn($playerId, $gameId, $db);
 
-        if ($player->getComputer()) {
-            $player->getArmies()->unfortify($gameId, $db);
+        if ($isComputer) {
+            $armies->unfortify($gameId, $db);
             $type = 'computerStart';
         } else {
             $type = 'startTurn';
         }
 
-        $units = Zend_Registry::get('units');
+//        $units = Zend_Registry::get('units');
 
-        $player->getArmies()->resetMovesLeft($gameId, $db);
-        $castles = $player->getCastles();
-        $isComputer = $player->getComputer();
+        $player->addGold($towers->count() * 5);
 
         foreach ($castles->getKeys() as $castleId) {
-            $castle = $player->getCastles()->getCastle($castleId);
+            $castle = $castles->getCastle($castleId);
             $player->addGold($castle->getIncome());
             $production = $castle->getProduction();
 
@@ -44,7 +50,13 @@ class Cli_Model_StartTurn
                 $unitId = $castle->getProductionId();
             }
 
-            if ($unitId && $production[$unitId]['time'] <= $castle->getProductionTurn() && $units[$unitId]['cost'] <= $player->getGold()) {
+            echo $unitId . "\n";
+            echo $production[$unitId]['time'] . "\n";
+            echo $castle->getProductionTurn() . "\n";
+            echo $player->getGold() . "\n";
+
+            if ($unitId && $production[$unitId]['time'] <= $castle->getProductionTurn() && $player->getGold() > 0) {
+                echo 'aaa';
                 $castle->resetProductionTurn($gameId, $db);
                 $unitCastleId = null;
 
@@ -64,13 +76,19 @@ class Cli_Model_StartTurn
 
                 $x = $castles->getCastle($unitCastleId)->getX();
                 $y = $castles->getCastle($unitCastleId)->getY();
-                $armyId = $player->getArmies()->getArmyIdFromPosition($x, $y);
-
-                if (empty($armyId)) {
-                    $armyId = $player->getArmies()->create($x, $y, $color, $game, $db);
+                $castleArmies = $fields->getField($x, $y)->getArmies();
+                foreach ($castleArmies as $id => $armyColor) {
+                    if ($armyColor == $color) {
+                        $armyId = $id;
+                        break;
+                    }
                 }
 
-                $player->getArmies()->getArmy($armyId)->createSoldier($gameId, $playerId, $unitId, $db);
+                if (empty($armyId)) {
+                    $armyId = $armies->create($x, $y, $color, $game, $db);
+                }
+
+                $armies->getArmy($armyId)->createSoldier($gameId, $playerId, $unitId, $db);
             }
         }
 
@@ -79,8 +97,8 @@ class Cli_Model_StartTurn
         $token = array(
             'type' => $type,
             'gold' => $player->getGold(),
-            'armies' => $player->getArmies()->toArray(),
-            'castles' => $player->getCastles()->toArray(),
+            'armies' => $armies->toArray(),
+            'castles' => $castles->toArray(),
             'color' => $color
         );
         $gameHandler->sendToChannel($db, $token, $gameId);

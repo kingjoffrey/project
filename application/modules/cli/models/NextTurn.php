@@ -15,8 +15,6 @@ class Cli_Model_NextTurn
             $player = $players->getPlayer($nextPlayerColor);
             if ($player->armiesOrCastlesExists()) {
 
-                $player->increaseAllCastlesProductionTurn($gameId, $db);
-
                 $turnNumber = $game->getTurnNumber();
                 $turnsLimit = $game->getTurnsLimit();
 

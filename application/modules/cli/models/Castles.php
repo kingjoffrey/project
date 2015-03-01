@@ -83,4 +83,13 @@ class Cli_Model_Castles
         $game->getFields()->resetCastleTemporaryType($castle->getX(), $castle->getY());
         $this->removeCastle($castleId);
     }
+
+    public function increaseAllProductionTurn($playerId, $gameId, $db)
+    {
+        $mCastlesInGame = new Application_Model_CastlesInGame($gameId, $db);
+        $mCastlesInGame->increaseAllCastlesProductionTurn($playerId);
+        foreach ($this->_castles as $castle) {
+            $castle->incrementProductionTurn();
+        }
+    }
 }
