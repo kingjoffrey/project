@@ -35,11 +35,15 @@ class Cli_Model_Field
     public function addArmy($armyId, $color)
     {
         $this->_armies[$armyId] = $color;
+        echo 'ADD:'."\n";
+        print_r($this->_armies);
     }
 
     public function removeArmy($armyId)
     {
         unset($this->_armies[$armyId]);
+        echo 'REMOVE:'."\n";
+        print_r($this->_armies);
     }
 
     public function isArmy()

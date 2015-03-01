@@ -48,9 +48,6 @@ class Cli_Model_Soldiers
         foreach ($this->_soldiers as $soldier) {
             $costs += $soldier->getCost();
         }
-        foreach ($this->_ships as $soldier) {
-            $costs += $soldier->getCost();
-        }
         return $costs;
     }
 

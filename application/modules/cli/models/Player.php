@@ -251,15 +251,6 @@ class Cli_Model_Player extends Cli_Model_DefaultPlayer
         return $this->_armies->exists() || $this->_castles->castlesExists();
     }
 
-    public function countIncomeAndOutcome()
-    {
-        foreach ($this->_armies->getKeys() as $armyId) {
-            $this->subtractGold($this->_armies->getArmy($armyId)->getCosts());
-        }
-
-        $this->addGold(count($this->_towers->count()) * 5);
-    }
-
     public function saveGold($gameId, $db)
     {
         $mPlayersInGame = new Application_Model_PlayersInGame($gameId, $db);

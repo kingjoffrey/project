@@ -103,10 +103,10 @@ class Cli_Model_Armies
         }
     }
 
-    public function getArmyIdFromPosition($x, $y)
+    public function getArmyIdFromField(Cli_Model_Field $field)
     {
-        foreach ($this->_armies as $armyId => $army) {
-            if ($x == $army->getX() && $y == $army->getY()) {
+        foreach ($field->getArmies() as $armyId => $color) {
+            if (isset($this->_armies[$armyId])) {
                 return $armyId;
             }
         }

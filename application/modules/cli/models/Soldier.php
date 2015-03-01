@@ -137,4 +137,9 @@ class Cli_Model_Soldier extends Cli_Model_Being
     {
         return $this->_swamp;
     }
+
+    public function getCost()
+    {
+        return $this->_cost;
+    }
 }

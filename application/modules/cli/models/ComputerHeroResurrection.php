@@ -24,7 +24,7 @@ class Cli_Model_ComputerHeroResurrection
             return;
         }
 
-        if (!$armyId = $player->getArmies()->getArmyIdFromPosition($capital->getX(), $capital->getY())) {
+        if (!$armyId = $player->getArmies()->getArmyIdFromField($game->getFields()->getField($capital->getX(), $capital->getY()))) {
             $armyId = $player->getArmies()->create($capital->getX(), $capital->getY(), $color, $game, $db);
         }
 

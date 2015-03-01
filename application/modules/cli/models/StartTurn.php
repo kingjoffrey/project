@@ -27,7 +27,10 @@ class Cli_Model_StartTurn
             $type = 'startTurn';
         }
 
-//        $units = Zend_Registry::get('units');
+        foreach ($armies->getKeys() as $armyId) {
+            $army = $armies->getArmy($armyId);
+            $player->addGold(-$army->getCosts());
+        }
 
         $player->addGold($towers->count() * 5);
 
@@ -50,13 +53,7 @@ class Cli_Model_StartTurn
                 $unitId = $castle->getProductionId();
             }
 
-            echo $unitId . "\n";
-            echo $production[$unitId]['time'] . "\n";
-            echo $castle->getProductionTurn() . "\n";
-            echo $player->getGold() . "\n";
-
             if ($unitId && $production[$unitId]['time'] <= $castle->getProductionTurn() && $player->getGold() > 0) {
-                echo 'aaa';
                 $castle->resetProductionTurn($gameId, $db);
                 $unitCastleId = null;
 
@@ -77,6 +74,7 @@ class Cli_Model_StartTurn
                 $x = $castles->getCastle($unitCastleId)->getX();
                 $y = $castles->getCastle($unitCastleId)->getY();
                 $castleArmies = $fields->getField($x, $y)->getArmies();
+                $armyId = 0;
                 foreach ($castleArmies as $id => $armyColor) {
                     if ($armyColor == $color) {
                         $armyId = $id;
