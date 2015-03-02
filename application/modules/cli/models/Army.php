@@ -227,6 +227,7 @@ class Cli_Model_Army
     public function setFortified($fortified, $gameId = null, Zend_Db_Adapter_Pdo_Pgsql $db = null)
     {
         $this->_fortified = $fortified;
+        echo 'FORTIFIED VALUE = ' . $this->_fortified . "\n";
         if ($db) {
             $mArmy = new Application_Model_Army($gameId, $db);
             $mArmy->fortify($this->getId(), $fortified);
