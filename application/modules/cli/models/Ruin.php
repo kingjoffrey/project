@@ -47,7 +47,7 @@ class Cli_Model_Ruin extends Cli_Model_Entity
                 $found = array('null', 1);
             } else {
                 $found = array('death', 1);
-                $army->killHero($heroId, $playerId, $gameId, $db);
+                $army->removeHero($heroId, $playerId, 0, $gameId, $db);
             }
         } elseif ($random < 55) { //45%
 //kasa

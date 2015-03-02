@@ -36,31 +36,25 @@ class Cli_Model_Garrison
         $ships = $army->getShips();
 
         if ($heroes->exists() || $ships->exists()) {
-            echo 'a00' . "\n";
             $this->_newArmyId = $armies->create($army->getX(), $army->getY(), $army->getColor(), $game, $db);
             foreach ($heroes->getKeys() as $heroId) {
-                echo 'a01' . "\n";
                 $armies->changeHeroAffiliation($armyId, $this->_newArmyId, $heroId, $gameId, $db);
             }
             foreach ($ships->getKeys() as $soldierId) {
-                echo 'a02' . "\n";
                 $armies->changeShipAffiliation($armyId, $this->_newArmyId, $soldierId, $gameId, $db);
             }
         }
 
         // znajduję nadmiarowe jednostki
         if ($countGarrisonUnits > $numberOfUnits) {
-            echo 'a11' . "\n";
             $count = 0;
             $armySoldiers = $army->getSoldiers();
             if (empty($this->_newArmyId)) {
-                echo 'a12' . "\n";
                 $this->_newArmyId = $armies->create($army->getX(), $army->getY(), $army->getColor(), $game, $db);
             }
 
             foreach ($armySoldiers->getKeys() as $soldierId) {
                 $count++;
-                echo 'a' . $count . "\n";
                 if ($count > $numberOfUnits) {
                     $armies->changeSoldierAffiliation($armyId, $this->_newArmyId, $soldierId, $gameId, $db);
                 }
@@ -68,11 +62,10 @@ class Cli_Model_Garrison
         }
 
         if ($this->_newArmyId) {
-            echo 'b000' . "\n";
             $token = array(
                 'type' => 'split',
                 'parentArmy' => $army->toArray(),
-                'childArmy' => $armies->getArmy($this->_newArmyId),
+                'childArmy' => $armies->getArmy($this->_newArmyId)->toArray(),
                 'color' => $army->getColor()
             );
             $gameHandler->sendToChannel($db, $token, $gameId);
