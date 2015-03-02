@@ -204,6 +204,24 @@ class Cli_Model_Army
         $this->_heroes->resetMovesLeft($gameId, $db);
         $this->_soldiers->resetMovesLeft($gameId, $db);
         $this->_ships->resetMovesLeft($gameId, $db);
+
+        $this->_movesLeft = 1000;
+
+        foreach ($this->_heroes as $hero) {
+            if ($this->_movesLeft > $hero->getMovesLeft()) {
+                $this->_movesLeft = $hero->getMovesLeft();
+            }
+        }
+        foreach ($this->_soldiers as $soldier) {
+            if ($this->_movesLeft > $soldier->getMovesLeft()) {
+                $this->_movesLeft = $soldier->getMovesLeft();
+            }
+        }
+        foreach ($this->_ships as $soldier) {
+            if ($this->_movesLeft > $soldier->getMovesLeft()) {
+                $this->_movesLeft = $soldier->getMovesLeft();
+            }
+        }
     }
 
     public function setFortified($fortified, $gameId = null, Zend_Db_Adapter_Pdo_Pgsql $db = null)

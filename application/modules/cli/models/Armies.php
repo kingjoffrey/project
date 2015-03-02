@@ -48,7 +48,15 @@ class Cli_Model_Armies
     {
         foreach ($this->getKeys() as $armyId) {
             $army = $this->getArmy($armyId);
-            if ($army->getFortified() || $army->getMovesLeft() == 0) {
+//            if ($army->getFortified() || $army->getMovesLeft() == 0) {
+//                continue;
+//            }
+            if ($army->getFortified()) {
+                echo 'FORTIFIED' . "\n";
+                continue;
+            }
+            if ($army->getMovesLeft() == 0) {
+                echo 'ZERO MOVES LEFT' . "\n";
                 continue;
             }
             return $army;

@@ -87,8 +87,6 @@ class Cli_Model_Move
             return;
         }
 
-        if ($path) {
-            $army->move($game, $path, $db, $gameHandler);
-        }
+        $army->move($game, $path, $db, $gameHandler);
     }
 }

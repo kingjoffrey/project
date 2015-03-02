@@ -299,9 +299,8 @@ class Cli_Model_Astar extends Cli_Model_Heuristics
                 $path[$k]['F'] -= $i;
                 $path[$k]['G'] -= $i;
             }
-
-            return new Cli_Model_Path($path, $this->_army);
         }
+        return new Cli_Model_Path($path, $this->_army);
     }
 
     /**
