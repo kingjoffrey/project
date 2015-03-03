@@ -26,15 +26,15 @@ var AStar = new function () {
         destY = y
         field = Fields.get(destX, destY)
         if (field.getCastleId()) {
-            coord.html(Players.get(field.getCastleColor()).getCastles().get(field.getCastleId()).getName())
+            coord.html(Players.get(field.getCastleColor()).getCastles().get(field.getCastleId()).getName() + ' ' + destX + 'x' + destY)
         } else if (field.getTowerId()) {
-            coord.html(translations.tower)
+            coord.html(translations.tower + ' ' + destX + 'x' + destY)
         } else if (field.getRuinId()) {
-            coord.html(translations.ruin)
+            coord.html(translations.ruin + ' ' + destX + 'x' + destY)
         } else if (field.hasArmies()) {
-            coord.html(translations.army)
+            coord.html(translations.army + ' ' + destX + 'x' + destY)
         } else {
-            coord.html(Terrain.getName(field.getType()))
+            coord.html(Terrain.getName(field.getType()) + ' ' + destX + 'x' + destY)
         }
         return 1
     }

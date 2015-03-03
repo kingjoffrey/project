@@ -29,7 +29,7 @@ class Cli_Model_Army
     private $_ships = array();
 
     private $_canFly = 0;
-    private $_movesLeft = 1000;
+    private $_movesLeft;
 
     private $_oldPath = array();
 
@@ -65,6 +65,7 @@ class Cli_Model_Army
         if (isset($army['fortified'])) {
             $this->_fortified = $army['fortified'];
         }
+        $this->resetMovesLeft();
     }
 
     public function toArray()
@@ -152,8 +153,8 @@ class Cli_Model_Army
             $type = 'walking';
         }
         $gameId = $game->getId();
-        $this->_movesLeft = $this->_heroes->saveMove($this->_x, $this->_y, $this->_movesLeft, $type, $path, $gameId, $db);
-        $this->_movesLeft = $this->_soldiers->saveMove($this->_x, $this->_y, $this->_movesLeft, $type, $path, $gameId, $db);
+        $this->setMovesLeft($this->_heroes->saveMove($this->_x, $this->_y, $this->_movesLeft, $type, $path, $gameId, $db));
+        $this->setMovesLeft($this->_soldiers->saveMove($this->_x, $this->_y, $this->_movesLeft, $type, $path, $gameId, $db));
 
         $game->getFields()->getField($this->_x, $this->_y)->removeArmy($this->_id);
         $this->_x = $path->getX();
@@ -199,27 +200,30 @@ class Cli_Model_Army
         return $this->_ships;
     }
 
-    public function resetMovesLeft($gameId, Zend_Db_Adapter_Pdo_Pgsql $db)
+    public function resetMovesLeft($gameId = null, Zend_Db_Adapter_Pdo_Pgsql $db = null)
     {
-        $this->_heroes->resetMovesLeft($gameId, $db);
-        $this->_soldiers->resetMovesLeft($gameId, $db);
-        $this->_ships->resetMovesLeft($gameId, $db);
+        if ($db) {
+            $this->_heroes->resetMovesLeft($gameId, $db);
+            $this->_soldiers->resetMovesLeft($gameId, $db);
+            $this->_ships->resetMovesLeft($gameId, $db);
+        }
 
-        $this->_movesLeft = 1000;
+        $this->setMovesLeft(1000);
 
         foreach ($this->_heroes as $hero) {
+            echo '$this->_movesLeft=' . $this->_movesLeft . ' > $hero->getMovesLeft()=' . $hero->getMovesLeft();
             if ($this->_movesLeft > $hero->getMovesLeft()) {
-                $this->_movesLeft = $hero->getMovesLeft();
+                $this->setMovesLeft($hero->getMovesLeft());
             }
         }
         foreach ($this->_soldiers as $soldier) {
             if ($this->_movesLeft > $soldier->getMovesLeft()) {
-                $this->_movesLeft = $soldier->getMovesLeft();
+                $this->setMovesLeft($soldier->getMovesLeft());
             }
         }
         foreach ($this->_ships as $soldier) {
             if ($this->_movesLeft > $soldier->getMovesLeft()) {
-                $this->_movesLeft = $soldier->getMovesLeft();
+                $this->setMovesLeft($soldier->getMovesLeft());
             }
         }
     }
@@ -227,7 +231,7 @@ class Cli_Model_Army
     public function setFortified($fortified, $gameId = null, Zend_Db_Adapter_Pdo_Pgsql $db = null)
     {
         $this->_fortified = $fortified;
-        echo 'FORTIFIED VALUE = ' . $this->_fortified . "\n";
+        echo 'FORTIFY VALUE = ' . $this->_fortified . "\n";
         if ($db) {
             $mArmy = new Application_Model_Army($gameId, $db);
             $mArmy->fortify($this->getId(), $fortified);
@@ -300,7 +304,7 @@ class Cli_Model_Army
         }
 
         if ($this->_movesLeft > $soldier->getMovesLeft()) {
-            $this->_movesLeft = $soldier->getMovesLeft();
+            $this->setMovesLeft($soldier->getMovesLeft());
         }
 
         $mSoldiersCreated = new Application_Model_SoldiersCreated($gameId, $db);
@@ -321,7 +325,7 @@ class Cli_Model_Army
         }
 
         if ($this->_movesLeft > $soldier->getMovesLeft()) {
-            $this->_movesLeft = $soldier->getMovesLeft();
+            $this->setMovesLeft($soldier->getMovesLeft());
         }
     }
 
@@ -332,7 +336,7 @@ class Cli_Model_Army
         $mSoldier->soldierUpdateArmyId($soldierId, $this->_id);
 
         if ($this->_movesLeft > $soldier->getMovesLeft()) {
-            $this->_movesLeft = $soldier->getMovesLeft();
+            $this->setMovesLeft($soldier->getMovesLeft());
         }
     }
 
@@ -343,7 +347,7 @@ class Cli_Model_Army
         $mHeroesInGame->addToArmy($this->_id, $heroId, 0);
 
         if ($this->_movesLeft > $hero->getMovesLeft()) {
-            $this->_movesLeft = $hero->getMovesLeft();
+            $this->setMovesLeft($hero->getMovesLeft());
         }
         $this->_attackHeroModifier->increment();
         $this->_defenseHeroModifier->increment();
@@ -362,7 +366,7 @@ class Cli_Model_Army
                 $soldier = $this->_soldiers->getSoldier($soldier['soldierId']);
             }
             if ($this->_movesLeft > $soldier->getMovesLeft()) {
-                $this->_movesLeft = $soldier->getMovesLeft();
+                $this->setMovesLeft($soldier->getMovesLeft());
             }
             if ($soldier->canFly()) {
                 $this->_attackFlyModifier->increment();
@@ -380,7 +384,7 @@ class Cli_Model_Army
             $this->_heroes->add($hero['heroId'], new Cli_Model_Hero($hero));
             $hero = $this->_heroes->getHero($hero['heroId']);
             if ($this->_movesLeft > $hero->getMovesLeft()) {
-                $this->_movesLeft = $hero->getMovesLeft();
+                $this->setMovesLeft($hero->getMovesLeft());
             }
             $this->_attackHeroModifier->increment();
             $this->_defenseHeroModifier->increment();
@@ -416,7 +420,7 @@ class Cli_Model_Army
         foreach ($heroes->getKeys() as $heroId) {
             $hero = $heroes->getHero($heroId);
             if ($this->_movesLeft > $hero->getMovesLeft()) {
-                $this->_movesLeft = $hero->getMovesLeft();
+                $this->setMovesLeft($hero->getMovesLeft());
             }
             $this->_heroes->add($heroId, $hero);
             $this->_attackHeroModifier->increment();
@@ -493,5 +497,14 @@ class Cli_Model_Army
     public function getOldPath()
     {
         return $this->_oldPath;
+    }
+
+    private function setMovesLeft($movesLeft)
+    {
+        echo "\n";
+        echo 'armyId=' . $this->_id . "\n";
+        echo 'setMovesLeft($movesLeft)=' . $movesLeft . "\n";
+        echo 'BEFORE: ' . $this->_movesLeft . "\n";
+        $this->_movesLeft = $movesLeft;
     }
 }

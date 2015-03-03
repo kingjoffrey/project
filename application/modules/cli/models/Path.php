@@ -97,7 +97,12 @@ class Cli_Model_Path
                 break;
             }
 
-            $this->_current[] = $step;
+            $this->_current[] = array(
+                'x' => $step['x'],
+                'y' => $step['y'],
+                'tt' => $step['tt'],
+            );
+//            $this->_current[] = $step;
 
             if ($step['tt'] == 'E') {
                 break;
@@ -145,7 +150,7 @@ class Cli_Model_Path
 
     public function targetWithin()
     {
-        return count($this->_current) == count($this->_full);
+        return $this->exists() && count($this->_current) == count($this->_full);
     }
 
     public function getFull()

@@ -19,6 +19,9 @@ var Army = function (army, bgColor, miniMapColor, textColor, color) {
     this.skippedSoldiers = {}
     this.update = function (a) {
         console.log(a)
+        console.log('NEW ARMY DATA armyId=' + a.id)
+        console.log(army)
+        console.log('OLD ARMY DATA armyId=' + army.id)
         Fields.get(army.x, army.y).removeArmyId(army.id)
         //if (isSet(a.x)) {
         //    army.x = a.x
