@@ -107,4 +107,21 @@ class Cli_Model_Heroes
     {
         return count($this->_heroes);
     }
+
+    public function getMovesLeft()
+    {
+        foreach ($this->getKeys() as $heroId) {
+            $hero = $this->getHero($heroId);
+            if (!isset($movesLeft)) {
+                $movesLeft = $hero->getMovesLeft();
+                continue;
+            }
+            if ($hero->getMovesLeft() < $movesLeft) {
+                $movesLeft = $hero->getMovesLeft();
+            }
+        }
+        if ($movesLeft) {
+            return $movesLeft;
+        }
+    }
 }

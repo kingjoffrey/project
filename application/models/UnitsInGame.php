@@ -6,6 +6,7 @@ class Application_Model_UnitsInGame extends Coret_Db_Table_Abstract
     protected $_primary = 'soldierId';
     protected $gameId;
     protected $_unit = 'unit';
+    protected $_sequence = 'soldier_soldierId_seq';
 
     public function __construct($gameId, Zend_Db_Adapter_Pdo_Pgsql $db = null)
     {
@@ -28,7 +29,8 @@ class Application_Model_UnitsInGame extends Coret_Db_Table_Abstract
             'movesLeft' => $units[$unitId]['numberOfMoves']
         );
 
-        return $this->insert($data);
+        $this->insert($data);
+        return $this->_db->lastSequenceId($this->_sequence);
     }
 
     public function resetMovesLeft($subSelect)

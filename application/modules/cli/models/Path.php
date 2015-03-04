@@ -18,6 +18,9 @@ class Cli_Model_Path
         $this->_full = $fullPath;
         $skip = false;
         $stop = false;
+//        $start = false;
+//        $x = $army->getX();
+//        $y = $army->getY();
 
         if ($army->canFly()) {
             $type = 'flying';
@@ -28,6 +31,13 @@ class Cli_Model_Path
         }
 
         foreach ($this->_full as $step) {
+//            if ($step['x'] == $x && $step['y'] == $y) {
+//                $start = true;
+//            }
+//            if (empty($start)) {
+//                continue;
+//            }
+
             foreach ($army->getSoldiers()->getKeys() as $soldierId) {
                 $soldier = $army->getSoldiers()->getSoldier($soldierId);
                 if (!isset($soldiersMovesLeft[$soldierId])) {
@@ -238,5 +248,10 @@ class Cli_Model_Path
                 return true;
             }
         }
+    }
+
+    public function rewind()
+    {
+
     }
 }

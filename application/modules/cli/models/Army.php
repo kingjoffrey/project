@@ -102,6 +102,7 @@ class Cli_Model_Army
         $gameId = $game->getId();
 
         if (!$path->exists()) {
+            echo 'PATH NOT EXISTS' . "\n";
             $token = array(
                 'type' => 'move'
             );
@@ -472,6 +473,7 @@ class Cli_Model_Army
     public function saveOldPath(Cli_Model_Path $path)
     {
         $start = false;
+        $this->resetOldPath();
 
         foreach ($path->getFull() as $step) {
             if ($path->getX() == $step['x'] && $path->getY() == $step['y']) {
