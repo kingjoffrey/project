@@ -59,7 +59,7 @@ var Three = new function () {
 
         geometry.vertices.shift()
         var circle = new THREE.Line(geometry, material)
-        circle.position.set(x * 4 - 216, 1, y * 4 - 311)
+        circle.position.set(x * 4 - 216, 0.1, y * 4 - 311)
         circle.rotation.x = Math.PI / 2
 
         scene.add(circle)

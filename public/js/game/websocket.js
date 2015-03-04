@@ -1,4 +1,4 @@
-Websocket = {
+var Websocket = {
     closed: null,
     i: 0,
     queue: {},

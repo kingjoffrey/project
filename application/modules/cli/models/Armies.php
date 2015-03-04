@@ -52,11 +52,11 @@ class Cli_Model_Armies
 //                continue;
 //            }
             if ($army->getFortified()) {
-                echo 'FORTIFIED' . "\n";
+                echo '(armyId='.$armyId.')FORTIFIED' . "\n";
                 continue;
             }
             if ($army->getMovesLeft() == 0) {
-                echo 'ZERO MOVES LEFT' . "\n";
+                echo '(armyId='.$armyId.')ZERO MOVES LEFT' . "\n";
                 continue;
             }
             return $army;
@@ -68,6 +68,7 @@ class Cli_Model_Armies
         $excludedArmy = $this->getArmy($excludedArmyId);
         $x = $excludedArmy->getX();
         $y = $excludedArmy->getY();
+        $color = $excludedArmy->getColor();
         $gameId = $game->getId();
 
         $mSoldier = new Application_Model_UnitsInGame($gameId, $db);
@@ -75,12 +76,12 @@ class Cli_Model_Armies
 
         $ids = array();
 
-        foreach ($this->getKeys() as $armyId) {
-            $army = $this->getArmy($armyId);
+        foreach ($game->getFields()->getField($x, $y)->getArmies() as $armyId => $armyColor) {
             if ($armyId == $excludedArmyId) {
                 continue;
             }
-            if ($x == $army->getX() && $y == $army->getY()) {
+            if ($color == $armyColor) {
+                $army = $this->getArmy($armyId);
                 $excludedArmy->joinHeroes($army->getHeroes());
                 $excludedArmy->joinSoldiers($army->getSoldiers());
                 $excludedArmy->joinShips($army->getShips());

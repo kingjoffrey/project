@@ -298,13 +298,13 @@ $aaa=$this->_game->getPlayers()->getPlayer($this->_color)->getArmies()->getArmy(
     private function move(Cli_Model_Path $path = null)
     {
         if ($path && $path->exists()) {
-            $this->_l->log('IDĘ/WALCZĘ');
+            $this->_l->log('(armyId='.$this->_army->getId().')IDĘ/WALCZĘ');
             $this->_army->move($this->_game, $path, $this->_db, $this->_gameHandler);
         } else {
-            $this->_l->log('BRAK ŚCIEŻKI');
+            $this->_l->log('(armyId='.$this->_army->getId().')BRAK ŚCIEŻKI');
             $this->_army->setFortified(true);
             if ($this->_army = $this->_player->getArmies()->getComputerArmyToMove()) {
-                $this->_l->log('BIORĘ KOLEJNĄ ARMIĘ');
+                $this->_l->log('(armyId='.$this->_army->getId().')BIORĘ KOLEJNĄ ARMIĘ');
                 $this->_armyId = $this->_army->getId();
                 $this->_armyX = $this->_army->getX();
                 $this->_armyY = $this->_army->getY();

@@ -5,13 +5,13 @@ var Fields = new function () {
             for (var x in fields[y]) {
                 switch (fields[y][x].type) {
                     case 'm':
-                        //Three.addMountain(x, y)
+                        Three.addMountain(x, y)
                         break
                     case 'h':
-                        //Three.addHill(x, y)
+                        Three.addHill(x, y)
                         break
                     case 'f':
-                        //Three.addTree(x, y)
+                        Three.addTree(x, y)
                         break
                         //case 'w':
                         //    Three.addWater(x, y)
