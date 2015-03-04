@@ -30,7 +30,7 @@ class Cli_Model_Game
     private $_players;
     private $_ruins;
 
-    private $_numberOfGarrisonUnits = 0;
+    private $_numberOfGarrisonUnits;
 
     public function __construct($playerId, $gameId, Zend_Db_Adapter_Pdo_Pgsql $db)
     {
@@ -100,6 +100,7 @@ class Cli_Model_Game
         $this->initRuins($db);
 
         $this->_players->initFields($this->_fields);
+        $this->updateNumberOfGarrisonUnits();
     }
 
     private function initPlayers(Application_Model_MapPlayers $mMapPlayers, Zend_Db_Adapter_Pdo_Pgsql $db)
@@ -227,10 +228,7 @@ class Cli_Model_Game
     public function turnNumberIncrement()
     {
         $this->_turnNumber++;
-        $this->_numberOfGarrisonUnits = floor($this->_turnNumber / 7 + 0.5);
-        if ($this->_numberOfGarrisonUnits > 4) {
-            $this->_numberOfGarrisonUnits = 4;
-        }
+        $this->updateNumberOfGarrisonUnits();
     }
 
     public function setTurnPlayerId($playerId)
@@ -283,6 +281,12 @@ class Cli_Model_Game
         return $this->_begin;
     }
 
+    private function updateNumberOfGarrisonUnits(){
+        $this->_numberOfGarrisonUnits = floor($this->_turnNumber / 7 + 0.5);
+        if ($this->_numberOfGarrisonUnits > 4) {
+            $this->_numberOfGarrisonUnits = 4;
+        }
+    }
     public function getNumberOfGarrisonUnits()
     {
         return $this->_numberOfGarrisonUnits;

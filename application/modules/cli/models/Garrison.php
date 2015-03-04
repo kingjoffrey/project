@@ -4,19 +4,19 @@ class Cli_Model_Garrison
 {
     private $_newArmyId = 0;
 
-    public function __construct($numberOfUnits, $x, $y, Cli_Model_Armies $armies, IWebSocketConnection $user, Cli_Model_Game $game, Zend_Db_Adapter_Pdo_Pgsql $db, Cli_GameHumansHandler $gameHandler)
+    public function __construct($numberOfUnits, $x, $y, $color, Cli_Model_Armies $armies, IWebSocketConnection $user, Cli_Model_Game $game, Zend_Db_Adapter_Pdo_Pgsql $db, Cli_GameHumansHandler $gameHandler)
     {
         $gameId = $game->getId();
+        $fields = $game->getFields();
 
-        foreach ($armies->getKeys() as $armyId) {
-            echo 'aaa';
-            $army = $armies->getArmy($armyId);
-            for ($i = $x; $i <= $x + 1; $i++) {
-                for ($j = $y; $j <= $y + 1; $j++) {
-                    if ($army->getX() == $i && $army->getY() == $j) {
-                        echo 'eee';
-                        if ($army->getX() != $x || $army->getY() != $y) {
+        for ($i = $x; $i <= $x + 1; $i++) {
+            for ($j = $y; $j <= $y + 1; $j++) {
+                if ($i != $x || $j != $y) {
+                    foreach ($fields->getField($i, $j)->getArmies() as $fieldArmyId => $fieldArmyColor) {
+                        echo 'aaa';
+                        if ($fieldArmyColor == $color) {
                             echo 'fff';
+                            $army = $armies->getArmy($fieldArmyId);
                             $path = new Cli_Model_Path(array(0 => array(
                                 'x' => $x,
                                 'y' => $y,
@@ -29,9 +29,14 @@ class Cli_Model_Garrison
             }
         }
 
-        if (!isset($army)) {
-            return;
+        foreach ($fields->getField($x, $y)->getArmies() as $fieldArmyId => $fieldArmyColor) {
+            if ($fieldArmyColor == $color) {
+                echo 'GGG';
+                $army = $armies->getArmy($fieldArmyId);
+                $armyId = $army->getId();
+            }
         }
+
         echo 'ggg';
         $army->setFortified(true, $gameId, $db);
         $countGarrisonUnits = $army->getSoldiers()->count();

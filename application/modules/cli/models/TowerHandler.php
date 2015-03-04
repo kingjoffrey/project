@@ -20,7 +20,7 @@ class Cli_Model_TowerHandler
         foreach ($current as $step) {
             for ($y = $step['y'] - 1; $y <= $step['y'] + 1; $y++) {
                 for ($x = $step['x'] - 1; $x <= $step['x'] + 1; $x++) {
-                    if ($towerId = $fields->isTower($x, $y)) {
+                    if ($fields->hasField($x, $y) && $towerId = $fields->isTower($x, $y)) {
                         if ($fields->getField($x, $y)->isArmy() && !$player->getArmies()->getArmyIdFromField($fields->getField($x, $y))) {
                             continue;
                         }

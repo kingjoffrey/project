@@ -10,7 +10,7 @@ class Cli_Model_ComputerMove extends Cli_Model_ComputerMethods
         $this->_l->log('');
         $this->_l->log($this->_playerId, 'playerId: ');
         $this->_l->log($this->_color, 'color: ');
-$aaa=$this->_game->getPlayers()->getPlayer($this->_color)->getArmies()->getArmy($this->_army->getId());
+        $aaa = $this->_game->getPlayers()->getPlayer($this->_color)->getArmies()->getArmy($this->_army->getId());
         if ($this->_army->hasOldPath()) {
             $this->goByThePath();
         } else {
@@ -22,7 +22,7 @@ $aaa=$this->_game->getPlayers()->getPlayer($this->_color)->getArmies()->getArmy(
     {
         $this->_l->logMethodName();
         $this->_l->log($this->_armyId, 'armyId: ');
-        $aaa=$this->_game->getPlayers()->getPlayer($this->_color)->getArmies()->getArmy($this->_army->getId());
+        $aaa = $this->_game->getPlayers()->getPlayer($this->_color)->getArmies()->getArmy($this->_army->getId());
         if ($castleId = $this->_fields->isPlayerCastle($this->_color, $this->_armyX, $this->_armyY)) {
             return $this->inside($castleId);
         } else {
@@ -34,10 +34,10 @@ $aaa=$this->_game->getPlayers()->getPlayer($this->_color)->getArmies()->getArmy(
     {
         $this->_l->logMethodName();
         $this->_l->log('W ZAMKU');
-        $aaa=$this->_game->getPlayers()->getPlayer($this->_color)->getArmies()->getArmy($this->_army->getId());
+        $aaa = $this->_game->getPlayers()->getPlayer($this->_color)->getArmies()->getArmy($this->_army->getId());
         $myCastle = $this->_player->getCastles()->getCastle($castleId);
         if ($numberOfUnits = $this->_game->getNumberOfGarrisonUnits()) {
-            $garrison = new Cli_Model_Garrison($numberOfUnits, $myCastle->getX(), $myCastle->getY(), $this->_player->getArmies(), $this->_user, $this->_game, $this->_db, $this->_gameHandler);
+            $garrison = new Cli_Model_Garrison($numberOfUnits, $myCastle->getX(), $myCastle->getY(), $this->_color, $this->_player->getArmies(), $this->_user, $this->_game, $this->_db, $this->_gameHandler);
             if ($armyId = $garrison->getNewArmyId()) {
                 $this->_l->log('NOWA ARMIA');
                 $this->_army = $this->_player->getArmies()->getArmy($armyId);
@@ -123,7 +123,7 @@ $aaa=$this->_game->getPlayers()->getPlayer($this->_color)->getArmies()->getArmy(
     {
         $this->_l->logMethodName();
         $this->_l->log('POZA ZAMKIEM');
-        $aaa=$this->_game->getPlayers()->getPlayer($this->_color)->getArmies()->getArmy($this->_army->getId());
+        $aaa = $this->_game->getPlayers()->getPlayer($this->_color)->getArmies()->getArmy($this->_army->getId());
         $path = $this->getComputerEmptyCastleInComputerRange();
         if ($path && $path->targetWithin()) {
             $this->_l->log('JEST MÓJ PUSTY ZAMEK W ZASIĘGU');
@@ -143,7 +143,7 @@ $aaa=$this->_game->getPlayers()->getPlayer($this->_color)->getArmies()->getArmy(
     private function firstBlock()
     {
         $this->_l->logMethodName();
-        $aaa=$this->_game->getPlayers()->getPlayer($this->_color)->getArmies()->getArmy($this->_army->getId());
+        $aaa = $this->_game->getPlayers()->getPlayer($this->_color)->getArmies()->getArmy($this->_army->getId());
         if ($this->_players->noEnemyCastles($this->_color)) {
             $this->_l->log('BRAK ZAMKÓW WROGA');
             return $this->noEnemyCastlesToAttack();
@@ -194,7 +194,7 @@ $aaa=$this->_game->getPlayers()->getPlayer($this->_color)->getArmies()->getArmy(
     private function noEnemyCastlesToAttack()
     {
         $this->_l->logMethodName();
-        $aaa=$this->_game->getPlayers()->getPlayer($this->_color)->getArmies()->getArmy($this->_army->getId());
+        $aaa = $this->_game->getPlayers()->getPlayer($this->_color)->getArmies()->getArmy($this->_army->getId());
         foreach ($this->_players->getEnemies($this->_color) as $enemy) {
             if ($this->_fields->getCastleId($enemy->getX(), $enemy->getY())) {
                 // pomijam wrogów w zamku
@@ -248,7 +248,7 @@ $aaa=$this->_game->getPlayers()->getPlayer($this->_color)->getArmies()->getArmy(
     private function ruinBlock()
     {
         $this->_l->logMethodName();
-        $aaa=$this->_game->getPlayers()->getPlayer($this->_color)->getArmies()->getArmy($this->_army->getId());
+        $aaa = $this->_game->getPlayers()->getPlayer($this->_color)->getArmies()->getArmy($this->_army->getId());
         if (!$heroId = $this->_army->getHeroes()->getAnyHeroId()) {
             $this->_l->log('BRAK HEROSA');
             return $this->firstBlock();
@@ -272,7 +272,7 @@ $aaa=$this->_game->getPlayers()->getPlayer($this->_color)->getArmies()->getArmy(
     private function savePath(Cli_Model_Path $path)
     {
         $this->_l->log('ZAPISUJĘ ŚCIEŻKĘ');
-        $aaa=$this->_game->getPlayers()->getPlayer($this->_color)->getArmies()->getArmy($this->_army->getId());
+        $aaa = $this->_game->getPlayers()->getPlayer($this->_color)->getArmies()->getArmy($this->_army->getId());
         $this->_army->saveOldPath($path);
         $this->_army->setFortified(true);
         $this->move($path);
@@ -281,7 +281,7 @@ $aaa=$this->_game->getPlayers()->getPlayer($this->_color)->getArmies()->getArmy(
     private function goByThePath()
     {
         $this->_l->log('IDĘ ŚCIEŻKĄ');
-        $aaa=$this->_game->getPlayers()->getPlayer($this->_color)->getArmies()->getArmy($this->_army->getId());
+        $aaa = $this->_game->getPlayers()->getPlayer($this->_color)->getArmies()->getArmy($this->_army->getId());
         $this->_l->log($this->_armyId, 'armyId: ');
 
         $path = new Cli_Model_Path($this->_army->getOldPath(), $this->_army);
@@ -298,13 +298,13 @@ $aaa=$this->_game->getPlayers()->getPlayer($this->_color)->getArmies()->getArmy(
     private function move(Cli_Model_Path $path = null)
     {
         if ($path && $path->exists()) {
-            $this->_l->log('(armyId='.$this->_army->getId().')IDĘ/WALCZĘ');
+            $this->_l->log('(armyId=' . $this->_army->getId() . ')IDĘ/WALCZĘ');
             $this->_army->move($this->_game, $path, $this->_db, $this->_gameHandler);
         } else {
-            $this->_l->log('(armyId='.$this->_army->getId().')BRAK ŚCIEŻKI');
+            $this->_l->log('(armyId=' . $this->_army->getId() . ')BRAK ŚCIEŻKI');
             $this->_army->setFortified(true);
             if ($this->_army = $this->_player->getArmies()->getComputerArmyToMove()) {
-                $this->_l->log('(armyId='.$this->_army->getId().')BIORĘ KOLEJNĄ ARMIĘ');
+                $this->_l->log('(armyId=' . $this->_army->getId() . ')BIORĘ KOLEJNĄ ARMIĘ');
                 $this->_armyId = $this->_army->getId();
                 $this->_armyX = $this->_army->getX();
                 $this->_armyY = $this->_army->getY();
