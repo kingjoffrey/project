@@ -65,7 +65,6 @@ class Cli_Model_Army
         if (isset($army['fortified'])) {
             $this->setFortified($army['fortified']);
         }
-//        $this->resetMovesLeft();
     }
 
     public function toArray()
@@ -234,7 +233,7 @@ class Cli_Model_Army
     public function setFortified($fortified, $gameId = null, Zend_Db_Adapter_Pdo_Pgsql $db = null)
     {
         $this->_fortified = $fortified;
-        echo '(armyId=' . $this->getId() . ')FORTIFY VALUE = ' . $this->_fortified . "\n";
+//        echo '(armyId=' . $this->getId() . ')FORTIFY VALUE = ' . $this->_fortified . "\n";
         if ($db) {
             $mArmy = new Application_Model_Army($gameId, $db);
             $mArmy->fortify($this->getId(), $fortified);
@@ -505,8 +504,8 @@ class Cli_Model_Army
 
     private function setMovesLeft($movesLeft)
     {
-        echo "\n";
-        echo 'armyId=' . $this->_id . ' setMovesLeft($movesLeft)=' . $movesLeft . ' BEFORE: ' . $this->_movesLeft . "\n";
+//        echo "\n";
+//        echo 'armyId=' . $this->_id . ' setMovesLeft($movesLeft)=' . $movesLeft . ' BEFORE: ' . $this->_movesLeft . "\n";
         $this->_movesLeft = $movesLeft;
     }
 }

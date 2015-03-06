@@ -19,29 +19,22 @@ class Cli_Model_Field
     public function toArray()
     {
         return array(
-            'type' => $this->_type,
-//            'temporaryType' => $this->_temporaryType,
-//            'armies' => $this->_armies,
-//            'castleId' => $this->_castleId,
-//            'towerId' => $this->_towerId,
-//            'ruinId' => $this->_ruinId,
-//            'castleColor' => $this->_castleColor,
-//            'towerColor' => $this->_towerColor
+            'type' => $this->_type
         );
     }
 
     public function addArmy($armyId, $color)
     {
         $this->_armies[$armyId] = $color;
-        echo 'ADD:'."\n";
-        print_r($this->_armies);
+//        echo 'ADD:'."\n";
+//        print_r($this->_armies);
     }
 
     public function removeArmy($armyId)
     {
         unset($this->_armies[$armyId]);
-        echo 'REMOVE:'."\n";
-        print_r($this->_armies);
+//        echo 'REMOVE:'."\n";
+//        print_r($this->_armies);
     }
 
     public function isArmy()

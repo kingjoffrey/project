@@ -229,7 +229,7 @@ class Application_Model_HeroesInGame extends Coret_Db_Table_Abstract
             ->from(array('a' => 'hero'), array('numberOfMoves', 'attackPoints', 'defensePoints', 'name'))
             ->join(array('b' => $this->_name), 'a."heroId" = b."heroId"', array('heroId', 'movesLeft'))
             ->where($this->_db->quoteIdentifier('gameId') . ' = ?', $this->_gameId)
-            ->where($this->_db->quoteIdentifier('heroId') . ' = ?', $heroId);
+            ->where('a."heroId" = ?', $heroId);
         return $this->selectRow($select);
     }
 }
