@@ -19,9 +19,9 @@ var Army = function (army, bgColor, miniMapColor, textColor, color) {
     this.skippedSoldiers = {}
     this.update = function (a) {
         console.log(a)
-        console.log('NEW ARMY DATA armyId=' + a.id)
+        console.log('NEW ARMY DATAAAAAAAAAAAAAAAAAAAAAAA armyId=' + a.id)
         console.log(army)
-        console.log('OLD ARMY DATA armyId=' + army.id)
+        console.log('OLD ARMY DATAAAAAAAAAAAAAAAAAAAAAAA armyId=' + army.id)
         Fields.get(army.x, army.y).removeArmyId(army.id)
         //if (isSet(a.x)) {
         //    army.x = a.x
@@ -32,7 +32,7 @@ var Army = function (army, bgColor, miniMapColor, textColor, color) {
         for (var key in a) {
             if (key == 'soldiers') {
                 for (var soldierId in army.soldiers) {
-                    if (!isTruthful(a.soldiers[soldierId])) {
+                    if (notSet(a.soldiers[soldierId])) {
                         delete army.soldiers[soldierId]
                     }
                 }
@@ -43,7 +43,7 @@ var Army = function (army, bgColor, miniMapColor, textColor, color) {
                 }
             } else if (key == 'heroes') {
                 for (var heroId in army.heroes) {
-                    if (!isTruthful(a.heroes[heroId])) {
+                    if (notSet(a.heroes[heroId])) {
                         delete army.heroes[heroId]
                     }
                 }
@@ -154,6 +154,12 @@ var Army = function (army, bgColor, miniMapColor, textColor, color) {
             numberOfUnits = 8
         }
         return numberOfUnits
+    }
+    this.deleteSoldier = function (soldierId) {
+        delete army.soldiers[soldierId]
+    }
+    this.deleteHero = function (heroId) {
+        delete army.heroes[heroId]
     }
 }
 

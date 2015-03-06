@@ -5,11 +5,14 @@ class Cli_Model_StartTurn
 
     public function __construct($playerId, IWebSocketConnection $user, Cli_Model_Game $game, Zend_Db_Adapter_Pdo_Pgsql $db, Cli_GameHumansHandler $gameHandler)
     {
-        $fields = $game->getFields();
         $players = $game->getPlayers();
-        $gameId = $game->getId();
         $color = $game->getPlayerColor($playerId);
         $player = $players->getPlayer($color);
+        if ($player->getTurnActive()) {
+            return;
+        }
+        $gameId = $game->getId();
+        $fields = $game->getFields();
         $armies = $player->getArmies();
         $castles = $player->getCastles();
         $towers = $player->getTowers();

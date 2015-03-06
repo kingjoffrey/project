@@ -263,10 +263,11 @@ class Cli_Model_ComputerMove extends Cli_Model_ComputerMethods
         }
 
         $this->_l->log('IDĘ DO RUIN');
+        $army = $this->_army;
         $this->move($ptnr->getPath());
-        $this->_army->setFortified(true);
+        $army->setFortified(true);
 
-        $this->_game->getRuins()->getRuin($ruinId)->search($this->_game, $this->_army, $heroId, $this->_playerId, $this->_db, $this->_gameHandler);
+        $this->_game->getRuins()->getRuin($ruinId)->search($this->_game, $army, $heroId, $this->_playerId, $this->_db, $this->_gameHandler);
     }
 
     private function savePath(Cli_Model_Path $path)

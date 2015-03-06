@@ -49,17 +49,6 @@ class Application_Model_CastlesInGame extends Coret_Db_Table_Abstract
         return $this->update($data, $where);
     }
 
-    public function getProduction($castleId, $playerId)
-    {
-        $select = $this->_db->select()
-            ->from($this->_name, array('productionId', 'productionTurn', 'relocationCastleId'))
-            ->where('"gameId" = ?', $this->_gameId)
-            ->where('"castleId" = ?', $castleId)
-            ->where('"playerId" = ?', $playerId);
-
-        return $this->selectRow($select);
-    }
-
     public function razeCastle($castleId, $playerId)
     {
         $mCastlesDestroyed = new Application_Model_CastlesDestroyed($this->_gameId, $this->_db);

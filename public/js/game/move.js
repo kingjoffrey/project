@@ -127,15 +127,12 @@ var Move = new function () {
                         Players.get(color).getArmies().delete(armyId, 1)
                     }
                 }
-                if (isDigit(r.battle.castleId)) {
+
+                if (r.battle.castleId) {
                     var castleColor = Fields.get(army.getX(), army.getY()).getCastleColor()
-                    //console.log(castleColor)
                     var castles = Players.get(castleColor).getCastles()
-                    //console.log(castles.toArray())
                     Players.get(r.color).getCastles().add(r.battle.castleId, castles.get(r.battle.castleId))
                     castles.remove(r.battle.castleId)
-                    //console.log(Players.get(r.color).getCastles())
-                    //console.log(castles.toArray())
                 }
                 if (Me.colorEquals(r.color)) {
                     if (r.battle.castleId) {
@@ -146,19 +143,31 @@ var Move = new function () {
                 }
             } else {
                 Players.get(r.color).getArmies().delete(army.getArmyId(), 1)
-                for (var color in r.battle.defenders) {
-                    if (color == 'neutral') {
-                        continue
-                    }
-                    for (var armyId in r.battle.defenders[color]) {
-                        Players.get(color).getArmies().get(armyId).update(r.battle.defenders[color][armyId])
-                    }
-                }
                 if (Me.colorEquals(r.color)) {
                     if (!Hero.findMy()) {
                         $('#heroResurrection').removeClass('buttonOff')
                     }
                 }
+                for (var color in r.battle.defenders) {
+                    if (color == 'neutral') {
+                        continue
+                    }
+                    for (var armyId in r.battle.defenders[color]) {
+                        var battleArmy = r.battle.defenders[color][armyId]
+                        var playerArmy=Players.get(color).getArmies().get(armyId)
+                        for (var soldierId in battleArmy.soldiers) {
+                            if (battleArmy.soldiers[soldierId]) {
+                                playerArmy.deleteSoldier(soldierId)
+                            }
+                        }
+                        for (var heroId in battleArmy.heroes) {
+                            if (battleArmy.heroes[heroId]) {
+                                playerArmy.deleteHero(heroId)
+                            }
+                        }
+                    }
+                }
+
             }
         }
 

@@ -30,6 +30,7 @@ class Cli_Model_ComputerHeroResurrection
 
         $army = $player->getArmies()->getArmy($armyId);
         $army->addHero($hero['heroId'], new Cli_Model_Hero($hero), $gameId, $db);
+        $army->zeroHeroMovesLeft($hero['heroId'], $gameId, $db);
 
         $l = new Coret_Model_Logger();
         $l->log('WSKRZESZAM HEROSA id = ' . $hero['heroId']);
