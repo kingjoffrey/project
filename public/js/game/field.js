@@ -1,9 +1,26 @@
 var Field = function (field) {
+    field.armies = {}
+    field.ruinId = 0
+    field.towerId = 0
+    field.castleId = 0
+    field.towerColor = 0
+    field.castleColor = 0
+    field.temporaryType = 0
+
+    this.setRuinId = function (ruinId) {
+        field.ruinId = ruinId
+    }
     this.getRuinId = function () {
         return field.ruinId
     }
+    this.setTowerId = function (towerId) {
+        field.towerId = towerId
+    }
     this.getTowerId = function () {
         return field.towerId
+    }
+    this.setCastleId = function (castleId) {
+        field.castleId = castleId
     }
     this.getCastleId = function () {
         return field.castleId
@@ -20,15 +37,21 @@ var Field = function (field) {
         return field.armies
     }
     this.hasArmies = function () {
-        for(var armyId in field.armies){
+        for (var armyId in field.armies) {
             return armyId
         }
     }
     this.getTowerColor = function () {
         return field.towerColor
     }
+    this.setTowerColor = function (towerColor) {
+        field.towerColor = towerColor
+    }
     this.getCastleColor = function () {
         return field.castleColor
+    }
+    this.setCastleColor = function (color) {
+        field.castleColor = color
     }
     this.getType = function () {
         if (field.temporaryType) {
@@ -39,8 +62,5 @@ var Field = function (field) {
     }
     this.setTemporaryType = function (value) {
         field.temporaryType = value
-    }
-    this.setCastleColor = function (color) {
-        field.castleColor = color
     }
 }

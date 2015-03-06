@@ -24,6 +24,14 @@ var Castles = function () {
             castle.update(bgColor, miniMapColor, textColor)
         } else {
             castles[castleId] = new Castle(castle, bgColor, miniMapColor, textColor)
+            for (var x = castle.x; x <= castle.x + 1; x++) {
+                for (var y = castle.y; y <= castle.y + 1; y++) {
+                    var field = Fields.get(x, y)
+                    field.setTemporaryType(type)
+                    field.setCastleColor(color)
+                    field.setCastleId(castleId)
+                }
+            }
         }
     }
     this.remove = function (castleId) {

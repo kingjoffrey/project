@@ -3,7 +3,7 @@
 class Cli_Model_DisbandArmy
 {
 
-    public function __construct($armyId, IWebSocketConnection $user, Cli_Model_Game $game, Zend_Db_Adapter_Pdo_Pgsql $db, Cli_GameHumansHandler $gameHandler)
+    public function __construct($armyId, IWebSocketConnection $user, Cli_Model_Game $game, Zend_Db_Adapter_Pdo_Pgsql $db, Cli_GameHandler $gameHandler)
     {
         if (empty($armyId)) {
             $gameHandler->sendError($user, 'Brak "armyId"!');

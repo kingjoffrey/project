@@ -184,7 +184,7 @@ var Websocket = {
                 break;
 
             case 'defense':
-                Castle.updateDefense(r.castleId, r.defenseMod);
+                Players.get(r.color).getCastles().get(r.castleId).setDefense(r.defense)
                 if (Turn.isMy()) {
                     Message.remove()
                     Me.setGold(r.gold)
@@ -522,15 +522,28 @@ var Websocket = {
 
         ws.send(JSON.stringify(token));
     },
-    fortify: function (armyId) {
+    fortify: function () {
         if (Websocket.closed) {
             Message.error(translations.sorryServerIsDisconnected)
             return;
         }
 
         if (!Turn.isMy()) {
-            return;
+            return
         }
+        if (Gui.lock) {
+            return
+        }
+
+        var armyId
+
+        if (!(armyId = Me.getSelectedArmyId())) {
+            return
+        }
+
+        Me.addQuited(armyId)
+        Me.deselectArmy()
+        Me.findNext()
 
         var token = {
             type: 'fortify',
@@ -547,7 +560,10 @@ var Websocket = {
         }
 
         if (!Turn.isMy()) {
-            return;
+            return
+        }
+        if (Gui.lock) {
+            return
         }
 
         var token = {

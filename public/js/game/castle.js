@@ -91,6 +91,9 @@ var Castle = function (castle, bgColor, miniMapColor, textColor) {
             return
         }
     }
+    this.setDefense = function (defense) {
+        castle.defense = defense
+    }
 }
 
 var Castleeee = {

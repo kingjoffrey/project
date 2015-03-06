@@ -13,7 +13,7 @@ abstract class Cli_Model_ComputerMethods
     protected $_gameHandler;
     protected $_l;
 
-    public function __construct(Cli_Model_Army $army, IWebSocketConnection $user, Cli_Model_Game $game, Zend_Db_Adapter_Pdo_Pgsql $db, Cli_GameHumansHandler $gameHandler)
+    public function __construct(Cli_Model_Army $army, IWebSocketConnection $user, Cli_Model_Game $game, Zend_Db_Adapter_Pdo_Pgsql $db, Cli_GameHandler $gameHandler)
     {
         $this->_army = $army;
         $this->_user = $user;

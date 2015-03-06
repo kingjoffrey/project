@@ -3,7 +3,7 @@
 class Cli_Model_StartTurn
 {
 
-    public function __construct($playerId, IWebSocketConnection $user, Cli_Model_Game $game, Zend_Db_Adapter_Pdo_Pgsql $db, Cli_GameHumansHandler $gameHandler)
+    public function __construct($playerId, IWebSocketConnection $user, Cli_Model_Game $game, Zend_Db_Adapter_Pdo_Pgsql $db, Cli_GameHandler $gameHandler)
     {
         $players = $game->getPlayers();
         $color = $game->getPlayerColor($playerId);

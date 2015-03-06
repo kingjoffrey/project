@@ -2,7 +2,7 @@
 
 class Cli_Model_ComputerHeroResurrection
 {
-    static public function handle($playerId, Cli_Model_Game $game, Zend_Db_Adapter_Pdo_Pgsql $db, Cli_GameHumansHandler $gameHandler)
+    static public function handle($playerId, Cli_Model_Game $game, Zend_Db_Adapter_Pdo_Pgsql $db, Cli_GameHandler $gameHandler)
     {
         $gameId = $game->getId();
         $players = $game->getPlayers();

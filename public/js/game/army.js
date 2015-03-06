@@ -161,6 +161,9 @@ var Army = function (army, bgColor, miniMapColor, textColor, color) {
     this.deleteHero = function (heroId) {
         delete army.heroes[heroId]
     }
+    this.getFortified = function () {
+        return army.fortified
+    }
 }
 
 // *** UNITS ***

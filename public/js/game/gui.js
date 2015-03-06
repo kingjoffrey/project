@@ -75,7 +75,7 @@ var Gui = {
                 Message.nextTurn();
                 break;
             case 70: //f
-                Me.fortify()
+                Websocket.fortify()
                 break;
             case 78: //n
                 Me.findNext()
@@ -172,7 +172,7 @@ var Gui = {
         });
 
         $('#quitArmy').click(function () {
-            Me.fortify()
+            Websocket.fortify()
         });
 
         $('#splitArmy').click(function () {

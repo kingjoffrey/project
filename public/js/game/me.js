@@ -20,7 +20,12 @@ var Me = new function () {
         color = c
         me = Players.get(color)
 
-        //this.attachPicker()
+        for (var armyId in Players.get(color).getArmies().toArray()) {
+            var army = Players.get(color).getArmies().get(armyId)
+            if (army.getFortified()) {
+                this.addQuited(armyId)
+            }
+        }
 
         updateGold()
         updateCosts()
@@ -130,7 +135,7 @@ var Me = new function () {
         //Castle.myRemoveCursor();
 
         this.removeFromSkipped(armyId)
-        this.unfortify(armyId)
+        this.deleteQuited(armyId)
         this.updateInfo(armyId)
         $('#name').html('Army')
 
@@ -289,27 +294,10 @@ var Me = new function () {
         $('#defense').html(army.defense);
         $('#moves').html(army.moves);
     }
-    this.fortify = function () {
-        if (!Turn.isMy()) {
-            return
-        }
-        if (Gui.lock) {
-            return
-        }
-        if (selectedArmyId) {
-            Websocket.fortify(selectedArmyId)
-            quitedArmies[selectedArmyId] = 1
-            this.deselectArmy()
-            this.findNext()
-        }
+    this.addQuited = function (armyId) {
+        quitedArmies[armyId] = 1
     }
-    this.unfortify = function (armyId) {
-        if (!Turn.isMy()) {
-            return
-        }
-        if (Gui.lock) {
-            return
-        }
+    this.deleteQuited = function (armyId) {
         if (isTruthful(quitedArmies[armyId])) {
             Websocket.unfortify(armyId, 0)
             delete quitedArmies[armyId]

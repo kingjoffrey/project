@@ -911,7 +911,7 @@ var Message = {
         console.log('kill end')
     },
     raze: function () {
-        if (Me.getSelectedArmyId()) {
+        if (!Me.getSelectedArmyId()) {
             return;
         }
         var id = this.simple(translations.destroyCastle, translations.areYouSure)
@@ -919,7 +919,7 @@ var Message = {
         this.cancel(id)
     },
     build: function () {
-        if (Me.getSelectedArmyId()) {
+        if (!Me.getSelectedArmyId()) {
             return;
         }
 

@@ -31,13 +31,11 @@ class Cli_WofSocketServer implements IWebSocketServerObserver
         $this->server->addObserver($this);
 
         include_once(APPLICATION_PATH . '/modules/cli/handlers/EditorHandler.php');
-        include_once(APPLICATION_PATH . '/modules/cli/handlers/GameHumansHandler.php');
-        include_once(APPLICATION_PATH . '/modules/cli/handlers/GameComputerHandler.php');
+        include_once(APPLICATION_PATH . '/modules/cli/handlers/GameHandler.php');
         include_once(APPLICATION_PATH . '/modules/cli/handlers/PublicHandler.php');
 
         $this->server->addUriHandler('editor', new Cli_EditorHandler());
-        $this->server->addUriHandler('game', new Cli_GameHumansHandler());
-        $this->server->addUriHandler('computer', new Cli_GameComputerHandler());
+        $this->server->addUriHandler('game', new Cli_GameHandler());
         $this->server->addUriHandler('public', new Cli_PublicHandler());
     }
 

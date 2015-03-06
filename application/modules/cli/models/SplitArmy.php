@@ -4,7 +4,7 @@ class Cli_Model_SplitArmy
 {
     private $_childArmyId = null;
 
-    function  __construct($parentArmyId, $s, $h, $playerId, IWebSocketConnection $user, Cli_Model_Game $game, Zend_Db_Adapter_Pdo_Pgsql $db, Cli_GameHumansHandler $gameHandler)
+    function  __construct($parentArmyId, $s, $h, $playerId, IWebSocketConnection $user, Cli_Model_Game $game, Zend_Db_Adapter_Pdo_Pgsql $db, Cli_GameHandler $gameHandler)
     {
         if (empty($parentArmyId) || (empty($h) && empty($s))) {
             $gameHandler->sendError($user, 'Brak "armyId", "s" lub "h"!');

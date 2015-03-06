@@ -33,7 +33,7 @@ class Cli_Model_Ruin extends Cli_Model_Entity
         $this->_empty = true;
     }
 
-    public function search(Cli_Model_Game $game, Cli_Model_Army $army, $heroId, $playerId, Zend_Db_Adapter_Pdo_Pgsql $db, Cli_GameHumansHandler $gameHandler)
+    public function search(Cli_Model_Game $game, Cli_Model_Army $army, $heroId, $playerId, Zend_Db_Adapter_Pdo_Pgsql $db, Cli_GameHandler $gameHandler)
     {
         $random = rand(0, 100);
         $gameId = $game->getId();

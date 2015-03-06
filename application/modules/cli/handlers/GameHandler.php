@@ -8,7 +8,7 @@
  * @author Bartosz Krzeszewski
  *
  */
-class Cli_GameHumansHandler extends Cli_WofHandler
+class Cli_GameHandler extends Cli_WofHandler
 {
     private $_game;
 

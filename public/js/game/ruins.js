@@ -7,6 +7,7 @@ var Ruins = new function () {
     }
     this.add = function (ruinId, ruin) {
         ruins[ruinId] = ruin
+        Fields.get(ruin.getX(), ruin.getY()).setRuinId(ruinId)
     }
     this.get = function (ruinId) {
         return ruins[ruinId]

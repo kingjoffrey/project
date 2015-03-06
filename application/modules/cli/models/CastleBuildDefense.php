@@ -3,7 +3,7 @@
 class Cli_Model_CastleBuildDefense
 {
 
-    public function __construct($castleId, IWebSocketConnection $user, Cli_Model_Game $game, Zend_Db_Adapter_Pdo_Pgsql $db, Cli_GameHumansHandler $gameHandler)
+    public function __construct($castleId, IWebSocketConnection $user, Cli_Model_Game $game, Zend_Db_Adapter_Pdo_Pgsql $db, Cli_GameHandler $gameHandler)
     {
         if ($castleId == null) {
             $gameHandler->sendError($user, 'Brak "castleId"!');

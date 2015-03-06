@@ -10,7 +10,6 @@ class Cli_Model_Field
     private $_ruinId;
     private $_castleColor;
     private $_towerColor;
-    private $_empty;
 
     public function __construct($type)
     {
@@ -21,14 +20,13 @@ class Cli_Model_Field
     {
         return array(
             'type' => $this->_type,
-            'temporaryType' => $this->_temporaryType,
-            'armies' => $this->_armies,
-            'castleId' => $this->_castleId,
-            'towerId' => $this->_towerId,
-            'ruinId' => $this->_ruinId,
-            'castleColor' => $this->_castleColor,
-            'towerColor' => $this->_towerColor,
-            'empty' => $this->_empty,
+//            'temporaryType' => $this->_temporaryType,
+//            'armies' => $this->_armies,
+//            'castleId' => $this->_castleId,
+//            'towerId' => $this->_towerId,
+//            'ruinId' => $this->_ruinId,
+//            'castleColor' => $this->_castleColor,
+//            'towerColor' => $this->_towerColor
         );
     }
 
@@ -84,11 +82,6 @@ class Cli_Model_Field
     {
         $this->_ruinId = $ruinId;
         $this->_empty = $empty;
-    }
-
-    public function getEmpty()
-    {
-        return $this->_empty;
     }
 
     public function getCastleId()

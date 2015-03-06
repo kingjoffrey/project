@@ -16,10 +16,11 @@ var Armies = function () {
     }
     this.add = function (armyId, army) {
         armies[armyId] = new Army(army, bgColor, miniMapColor, textColor, color)
+        Fields.get(army.x, army.y).addArmyId(armyId, color)
     }
-    this.update = function (armyId, army) {
-        armies[armyId].update(army)
-    }
+    //this.update = function (armyId, army) {
+    //    armies[armyId].update(army)
+    //}
     this.get = function (armyId) {
         return armies[armyId]
     }
@@ -31,14 +32,14 @@ var Armies = function () {
             throw ('Brak armi o armyId = ' + armyId );
             return
         }
-
-        Fields.get(armies[armyId].getX(), armies[armyId].getY()).removeArmyId(armyId)
+        var army = this.get(armyId)
+        Fields.get(army.getX(), army.getY()).removeArmyId(armyId)
 
         if (isTruthful(quiet)) {
-            Zoom.lens.setcenter(armies[armyId].getX(), armies[armyId].getY())
+            Zoom.lens.setcenter(army.getX(), army.getY())
         }
 
-        var mesh = Three.getScene().getObjectById(this.get(armyId).getMeshId())
+        var mesh = Three.getScene().getObjectById(army.getMeshId())
         Three.getScene().remove(mesh)
         $('#' + armyId).remove()
         delete armies[armyId]

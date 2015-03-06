@@ -4,7 +4,7 @@ class Cli_Model_Garrison
 {
     private $_newArmyId = 0;
 
-    public function __construct($numberOfUnits, $x, $y, $color, Cli_Model_Armies $armies, IWebSocketConnection $user, Cli_Model_Game $game, Zend_Db_Adapter_Pdo_Pgsql $db, Cli_GameHumansHandler $gameHandler)
+    public function __construct($numberOfUnits, $x, $y, $color, Cli_Model_Armies $armies, IWebSocketConnection $user, Cli_Model_Game $game, Zend_Db_Adapter_Pdo_Pgsql $db, Cli_GameHandler $gameHandler)
     {
         $gameId = $game->getId();
         $fields = $game->getFields();

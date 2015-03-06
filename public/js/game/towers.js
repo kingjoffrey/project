@@ -1,7 +1,8 @@
 var Towers = function () {
-    var towers = {}, bgColor
-    this.init = function (towers, bgC) {
+    var towers = {}, bgColor, color
+    this.init = function (towers, bgC, c) {
         bgColor = bgC
+        color = c
         for (var towerId in towers) {
             this.add(towerId, towers[towerId])
         }
@@ -10,9 +11,13 @@ var Towers = function () {
         if (tower instanceof Tower) {
             towers[towerId] = tower
             tower.update(bgColor)
+            Fields.get(tower.getX(), tower.getY()).setTowerColor(color)
         } else {
             towers[towerId] = new Tower(tower, bgColor)
+            Fields.get(tower.x, tower.y).setTowerColor(color)
+            Fields.get(tower.x, tower.y).setTowerId(towerId)
         }
+
     }
     this.get = function (towerId) {
         return towers[towerId]

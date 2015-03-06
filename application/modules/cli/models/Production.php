@@ -2,7 +2,7 @@
 
 class Cli_Model_Production
 {
-    public function __construct($dataIn, IWebSocketConnection $user, Cli_Model_Game $game, Zend_Db_Adapter_Pdo_Pgsql $db, Cli_GameHumansHandler $gameHandler)
+    public function __construct($dataIn, IWebSocketConnection $user, Cli_Model_Game $game, Zend_Db_Adapter_Pdo_Pgsql $db, Cli_GameHandler $gameHandler)
     {
         $castleId = $dataIn['castleId'];
         $unitId = $dataIn['unitId'];

@@ -10,5 +10,11 @@ var Ruin = function (ruin) {
             return '#FFD700'
         }
     }
+    this.getX = function () {
+        return ruin.x
+    }
+    this.getY = function () {
+        return ruin.y
+    }
     var meshId = Three.addRuin(ruin.x, ruin.y, this.getColor())
 }
