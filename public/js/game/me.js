@@ -23,6 +23,7 @@ var Me = new function () {
         for (var armyId in Players.get(color).getArmies().toArray()) {
             var army = Players.get(color).getArmies().get(armyId)
             if (army.getFortified()) {
+                console.log(armyId)
                 this.addQuited(armyId)
             }
         }
@@ -111,9 +112,6 @@ var Me = new function () {
     }
     this.resetSkippedArmies = function () {
         skippedArmies = {}
-    }
-    this.resetQuitedArmies = function () {
-        quitedArmies = {}
     }
     this.getSelectedArmyId = function () {
         return selectedArmyId

@@ -35,7 +35,7 @@ var Websocket = {
                     for (var castleId in r.castles) {
                         castles.get(castleId).setProductionTurn(r.castles[castleId].productionTurn)
                     }
-                    Me.resetQuitedArmies()
+                    Me.resetSkippedArmies()
                     Sound.play('startturn')
                     Me.setGold(r.gold)
                     Me.setCosts(r.costs)
@@ -63,7 +63,7 @@ var Websocket = {
             case 'ruin':
                 //board.append($('<div>').addClass('ruinSearch').css({'top': Y + 'px', 'left': X + 'px'}));
                 Zoom.lens.setcenter(r.army.x, r.army.y);
-                Players.get(r.color).getArmies().update(r.army.id, r.army)
+                Players.get(r.color).getArmies().get(r.army.id).update(r.army)
                 Ruins.get(r.ruin.ruinId).update(r.ruin.empty)
                 if (Me.colorEquals(r.color)) {
                     switch (r.find[0]) {

@@ -10,7 +10,8 @@ var AStar = new function () {
         army,
         soldierSplitKey,
         heroSplitKey,
-        myCastleId = {}
+        myCastleId = {},
+        movementType
 
     this.getX = function () {
         return destX
@@ -46,6 +47,7 @@ var AStar = new function () {
         open = {}
         close = {}
         nr = 0
+        movementType = army.getMovementType()
         Three.clearPathCircles()
         var startX = army.getX(),
             startY = army.getY(),
@@ -167,22 +169,22 @@ var AStar = new function () {
             }
         },
         getG = function (terrainType) {
-            var soldierSplitKey = army.getSoldierSplitKey()
-            if (soldierSplitKey) {
-                if (Units.get(army.getSoldiers[soldierSplitKey].unitId).canFly) {
-                    return Terrain.get(terrainType).flying
-                } else if (Units.get(army.getSoldiers[soldierSplitKey].unitId).canSwim) {
-                    return Terrain.get(terrainType).swimming
-                } else {
-                    if (terrainType == 'f' || terrainType == 's' || terrainType == 'm') {
-                        return Units.get(army.getSoldiers[soldierSplitKey].unitId)[terrainType]
-                    } else {
-                        return Terrain.get(terrainType).walking
-                    }
-                }
-            } else {
-                return Terrain.get(terrainType).walking
-            }
+            //var soldierSplitKey = army.getSoldierSplitKey()
+            //if (soldierSplitKey) {
+            //    if (Units.get(army.getSoldiers[soldierSplitKey].unitId).canFly) {
+            //        return Terrain.get(terrainType).flying
+            //    } else if (Units.get(army.getSoldiers[soldierSplitKey].unitId).canSwim) {
+            //        return Terrain.get(terrainType).swimming
+            //    } else {
+            //        if (terrainType == 'f' || terrainType == 's' || terrainType == 'm') {
+            //            return Units.get(army.getSoldiers[soldierSplitKey].unitId)[terrainType]
+            //        } else {
+            //            return Terrain.get(terrainType).walking
+            //        }
+            //    }
+            //} else {
+            return Terrain.get(terrainType)[movementType]
+            //}
         },
         openIsEmpty = function () {
             for (var key in open) {
