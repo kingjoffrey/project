@@ -3,12 +3,12 @@
 class Cli_Model_Game
 {
     private $_id;
-
     private $_mapId;
 
     private $_capitals = array();
     private $_playersInGameColors;
     private $_online = array();
+    private $_numberOfGarrisonUnits;
 
     private $_begin;
     private $_turnsLimit;
@@ -24,11 +24,10 @@ class Cli_Model_Game
     private $_units;
     private $_specialUnits = array();
     private $_firstUnitId;
-
     private $_players;
     private $_ruins;
 
-    private $_numberOfGarrisonUnits;
+    private $_loaded = false;
 
     public function __construct($gameId, Zend_Db_Adapter_Pdo_Pgsql $db)
     {
@@ -94,6 +93,8 @@ class Cli_Model_Game
 
         $this->_players->initFields($this->_fields);
         $this->updateNumberOfGarrisonUnits();
+
+        $this->_loaded = true;
     }
 
     private function initPlayers(Application_Model_MapPlayers $mMapPlayers, Zend_Db_Adapter_Pdo_Pgsql $db)
@@ -268,14 +269,21 @@ class Cli_Model_Game
         return $this->_begin;
     }
 
-    private function updateNumberOfGarrisonUnits(){
+    private function updateNumberOfGarrisonUnits()
+    {
         $this->_numberOfGarrisonUnits = floor($this->_turnNumber / 7 + 0.5);
         if ($this->_numberOfGarrisonUnits > 4) {
             $this->_numberOfGarrisonUnits = 4;
         }
     }
+
     public function getNumberOfGarrisonUnits()
     {
         return $this->_numberOfGarrisonUnits;
+    }
+
+    public function isLoaded()
+    {
+        return $this->_loaded;
     }
 }

@@ -1,6 +1,6 @@
 <?php
 
-abstract class Game_Controller_Ajax extends Game_Controller_Action
+abstract class Game_Controller_Ajax extends Coret_Controller_Authorized
 {
 
     public final function init()

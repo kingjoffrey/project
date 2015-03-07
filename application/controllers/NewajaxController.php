@@ -1,9 +1,9 @@
 <?php
 
-class NewajaxController extends Game_Controller_Action
+class NewajaxController extends Coret_Controller_Authorized
 {
 
-    public function _init()
+    public function init()
     {
         $this->_helper->layout->disableLayout();
         $this->_helper->viewRenderer->setNoRender(true);

@@ -137,7 +137,7 @@ class Cli_GameHandler extends Cli_WofHandler
                 break;
 
             case 'startTurn':
-                new Cli_Model_StartTurn($playerId, $user, $this->_me, $db, $this);
+                new Cli_Model_StartTurn($playerId, $user, $db, $this);
                 break;
 
             case 'raze':
