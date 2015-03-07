@@ -43,33 +43,5 @@ class Application_Model_RuinsInGame extends Coret_Db_Table_Abstract
 
         return $this->insert($data);
     }
-
-    public function ruinExists($ruinId)
-    {
-        $select = $this->_db->select()
-            ->from($this->_name, $this->_foreign_2)
-            ->where($this->_db->quoteIdentifier($this->_foreign_2) . ' = ?', $ruinId)
-            ->where($this->_db->quoteIdentifier($this->_foreign_1) . ' = ?', $this->_gameId);
-
-        return Zend_Validate::is($this->selectOne($select), 'Digits');
-    }
-
-    public function getFullRuins()
-    {
-        $select = $this->_db->select()
-            ->from($this->_name, $this->_foreign_2)
-            ->where($this->_db->quoteIdentifier($this->_foreign_1) . ' = ?', $this->_gameId);
-
-        $result = $this->selectAll($select);
-
-        $ruins = Zend_Registry::get('ruins');
-        foreach ($result as $row) {
-            if (isset($ruins[$row['ruinId']])) {
-                unset($ruins[$row['ruinId']]);
-            }
-        }
-
-        return $ruins;
-    }
 }
 

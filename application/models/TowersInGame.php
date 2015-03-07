@@ -19,9 +19,7 @@ class Application_Model_TowersInGame extends Coret_Db_Table_Abstract
     public function getTowers()
     {
         $select = $this->_db->select()
-            ->from(array('a' => $this->_name), $this->_primary)
-            ->join(array('b' => 'playersingame'), 'a."playerId" = b."playerId" AND a."gameId" = b."gameId"')
-            ->join(array('c' => 'mapplayers'), 'b . "mapPlayerId" = c . "mapPlayerId"', array('color' => 'shortName'))
+            ->from(array('a' => $this->_name), array($this->_primary, 'playerId'))
             ->where('a.' . $this->_db->quoteIdentifier('gameId') . ' = ?', $this->_gameId);
 
         $result = $this->selectAll($select);
@@ -29,64 +27,10 @@ class Application_Model_TowersInGame extends Coret_Db_Table_Abstract
         $towers = array();
 
         foreach ($result as $row) {
-            $towers[$row['towerId']] = $row['color'];
+            $towers[$row['towerId']] = $row['playerId'];
         }
 
         return $towers;
-    }
-
-    public function getPlayerTowers($playerId)
-    {
-        $select = $this->_db->select()
-            ->from(array('a' => $this->_name), $this->_primary)
-            ->where('"playerId" = ?', $playerId)
-            ->where($this->_db->quoteIdentifier('gameId') . ' = ?', $this->_gameId);
-
-        return $this->selectAll($select);
-    }
-
-    public function getTower($towerId)
-    {
-        $select = $this->_db->select()
-            ->from(array('a' => $this->_name), $this->_primary)
-            ->join(array('b' => 'playersingame'), 'a."playerId" = b."playerId" AND a."gameId" = b."gameId"')
-            ->join(array('c' => 'mapplayers'), 'b . "mapPlayerId" = c . "mapPlayerId"', array('color' => 'shortName'))
-            ->where('"' . $this->_primary . '" = ?', $towerId)
-            ->where('a.' . $this->_db->quoteIdentifier('gameId') . ' = ?', $this->_gameId);
-
-        return $this->selectOne($select);
-    }
-
-    public function getTowerOwnerId($towerId)
-    {
-        $select = $this->_db->select()
-            ->from(array('a' => $this->_name), 'playerId')
-            ->where('"' . $this->_primary . '" = ?', $towerId)
-            ->where('a.' . $this->_db->quoteIdentifier('gameId') . ' = ?', $this->_gameId);
-
-        return $this->selectOne($select);
-    }
-
-    public function calculateIncomeFromTowers($playerId)
-    {
-        $select = $this->_db->select()
-            ->from($this->_name, 'towerId')
-            ->where($this->_db->quoteIdentifier('gameId') . ' = ?', $this->_gameId)
-            ->where('"playerId" = ?', $playerId);
-
-        $towers = $this->selectAll($select);
-
-        return count($towers) * 5;
-    }
-
-    public function towerExists($towerId)
-    {
-        $select = $this->_db->select()
-            ->from($this->_name, 'towerId')
-            ->where('"towerId" = ?', $towerId)
-            ->where($this->_db->quoteIdentifier('gameId') . ' = ?', $this->_gameId);
-
-        return $this->selectOne($select);
     }
 
     public function changeTowerOwner($towerId, $playerId)

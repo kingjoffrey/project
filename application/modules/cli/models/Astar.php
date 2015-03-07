@@ -95,7 +95,7 @@ class Cli_Model_Astar extends Cli_Model_Heuristics
             }
             foreach ($aaa as $armyId => $armyColor) {
                 if (!$players->sameTeam($armyColor, $this->_color)) {
-                    $this->_fields->setTemporaryType($this->destX, $this->destY, 'E');
+                    $this->_fields->getField($this->destX, $this->destY)->setTemporaryType('E');
                     break;
                 }
             }
@@ -129,7 +129,7 @@ class Cli_Model_Astar extends Cli_Model_Heuristics
             if ($this->_enemyCastle) {
                 $this->_fields->setCastleTemporaryType($this->_enemyCastle->getX(), $this->_enemyCastle->getY(), 'e');
             } elseif ($this->_enemyArmy) {
-                $this->_fields->setTemporaryType($this->destX, $this->destY, 'e');
+                $this->_fields->getField($this->destX, $this->destY)->setTemporaryType('e');
             }
             return;
         }

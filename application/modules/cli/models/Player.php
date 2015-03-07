@@ -9,7 +9,6 @@ class Cli_Model_Player extends Cli_Model_DefaultPlayer
     private $_lost;
 
     private $_gold;
-    private $_income = 0;
 
     private $_miniMapColor;
     private $_backgroundColor;
@@ -21,7 +20,7 @@ class Cli_Model_Player extends Cli_Model_DefaultPlayer
     private $_attackSequence;
     private $_defenceSequence;
 
-    public function __construct($player, $gameId, $mapCastles, $mapTowers, Application_Model_MapPlayers $mMapPlayers, Zend_Db_Adapter_Pdo_Pgsql $db)
+    public function __construct($player, $gameId, $mapCastles, $mapTowers, $playersTowers, Application_Model_MapPlayers $mMapPlayers, Zend_Db_Adapter_Pdo_Pgsql $db)
     {
         $this->_id = $player['playerId'];
         $this->_lost = $player['lost'];
@@ -47,7 +46,7 @@ class Cli_Model_Player extends Cli_Model_DefaultPlayer
 
         $this->initArmies($gameId, $db);
         $this->initCastles($gameId, $mapCastles, $db);
-        $this->initTowers($gameId, $mapTowers, $db);
+        $this->initTowers($mapTowers, $playersTowers);
         $this->initBattleSequence($gameId, $db);
     }
 
@@ -85,19 +84,18 @@ class Cli_Model_Player extends Cli_Model_DefaultPlayer
             $this->_castles->addCastle($castleId, new Cli_Model_Castle($c, $mapCastles[$castleId]));
             $castle = $this->_castles->getCastle($castleId);
             $castle->initProduction($mCastleProduction->getCastleProduction($castleId));
-            $this->addIncome($castle->getIncome());
         }
     }
 
-    private function initTowers($gameId, $mapTowers, Zend_Db_Adapter_Pdo_Pgsql $db)
+    private function initTowers($mapTowers, $playersTowers)
     {
-        $mTowersInGame = new Application_Model_TowersInGame($gameId, $db);
-        foreach ($mTowersInGame->getPlayerTowers($this->_id) as $tower) {
-            $towerId = $tower['towerId'];
+        foreach ($playersTowers as $towerId => $playerId) {
+            if ($playerId != $this->_id) {
+                continue;
+            }
             $tower = $mapTowers[$towerId];
             $tower['towerId'] = $towerId;
             $this->_towers->add($towerId, new Cli_Model_Tower($tower));
-            $this->addIncome(5);
         }
     }
 
@@ -116,21 +114,6 @@ class Cli_Model_Player extends Cli_Model_DefaultPlayer
             'castles' => $this->_castles->toArray(),
             'towers' => $this->_towers->toArray()
         );
-    }
-
-    public function canCastleProduceThisUnit($castleId, $unitId)
-    {
-        return $this->_castles[$castleId]->canProduceThisUnit($unitId);
-    }
-
-    public function getCastleCurrentProductionId($castleId)
-    {
-        return $this->_castles[$castleId]->getProductionId();
-    }
-
-    public function setProduction($gameId, $castleId, $unitId, $relocationToCastleId, $db)
-    {
-        $this->_castles[$castleId]->setProductionId($gameId, $this->_id, $castleId, $unitId, $relocationToCastleId, $db);
     }
 
     public function getArmies()
@@ -170,16 +153,6 @@ class Cli_Model_Player extends Cli_Model_DefaultPlayer
         return $this->_gold;
     }
 
-    public function addIncome($income)
-    {
-        $this->_income += $income;
-    }
-
-    public function subtractIncome($income)
-    {
-        $this->_income -= $income;
-    }
-
     public function subtractGold($gold)
     {
         $this->_gold -= $gold;
@@ -195,30 +168,10 @@ class Cli_Model_Player extends Cli_Model_DefaultPlayer
         $this->_turnActive = $turnActive;
     }
 
-    public function addCastle($castleId, Cli_Model_Castle $castle, $oldColor, Cli_Model_Fields $fields, $gameId, $db)
-    {
-        $this->addIncome($castle->getIncome());
-        $this->_castles->addCastle($castleId, $castle, $oldColor, $this->_id, $gameId, $db);
-        $fields->changeCastle($castle->getX(), $castle->getY(), $this->_color);
-    }
-
-    public function removeCastle($castleId)
-    {
-        $this->subtractIncome($this->_castles->getCastle($castleId)->getIncome());
-        parent::removeCastle($castleId);
-    }
-
     public function addTower($towerId, Cli_Model_Tower $tower, $oldColor, Cli_Model_Fields $fields, $gameId, $db)
     {
-        $this->addIncome(5);
         $fields->getField($tower->getX(), $tower->getY())->setTowerColor($this->_color);
         $this->_towers->add($towerId, $tower, $oldColor, $this->_id, $gameId, $db);
-    }
-
-    public function removeTower($towerId)
-    {
-        $this->subtractIncome(5);
-        parent::removeTower($towerId);
     }
 
     public function getComputer()

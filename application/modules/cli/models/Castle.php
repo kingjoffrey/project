@@ -60,7 +60,6 @@ class Cli_Model_Castle extends Cli_Model_Entity
             'y' => $this->_y,
             'productionId' => $this->_productionId,
             'productionTurn' => $this->_productionTurn,
-//            'defenseMod' => $this->_defenseMod,
             'relocationCastleId' => $this->_relocationCastleId,
             'defense' => $this->getDefenseModifier(),
             'name' => $this->_name,

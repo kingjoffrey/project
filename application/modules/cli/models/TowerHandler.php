@@ -37,7 +37,7 @@ class Cli_Model_TowerHandler
                         }
 
                         $player->addTower($towerId, $oldOwner->getTowers()->getTower($towerId), $towerColor, $fields, $gameId, $db);
-                        $oldOwner->removeTower($towerId);
+                        $oldOwner->getTowers()->removeTower($towerId);
 
                         $token = array(
                             'type' => 'tower',

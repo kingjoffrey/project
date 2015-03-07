@@ -33,15 +33,6 @@ class Cli_Model_Fields
         }
     }
 
-    public function changeCastle($x, $y, $color)
-    {
-        for ($i = $y; $i <= $y + 1; $i++) {
-            for ($j = $x; $j <= $x + 1; $j++) {
-                $this->_fields[$i][$j]->setCastleColor($color);
-            }
-        }
-    }
-
     public function setCastleTemporaryType($x, $y, $type)
     {
         for ($i = $y; $i <= $y + 1; $i++) {
@@ -49,16 +40,6 @@ class Cli_Model_Fields
                 $this->_fields[$i][$j]->setTemporaryType($type);
             }
         }
-    }
-
-    public function setTemporaryType($x, $y, $type)
-    {
-        $this->getField($x, $y)->setTemporaryType($type);
-    }
-
-    public function resetTemporaryType($x, $y)
-    {
-        $this->getField($x, $y)->reset();
     }
 
     public function resetCastleTemporaryType($x, $y)

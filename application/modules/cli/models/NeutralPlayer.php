@@ -6,7 +6,7 @@ class Cli_Model_NeutralPlayer extends Cli_Model_DefaultPlayer
     private $_team = 'neutral';
     private $_backgroundColor = '#808080';
 
-    public function __construct($mapId, $gameId, $mapCastles, Zend_Db_Adapter_Pdo_Pgsql $db)
+    public function __construct($gameId, $mapCastles, $mapTowers, $playersTowers, Zend_Db_Adapter_Pdo_Pgsql $db)
     {
         $this->_color = 'neutral';
 
@@ -14,7 +14,7 @@ class Cli_Model_NeutralPlayer extends Cli_Model_DefaultPlayer
         $this->_towers = new Cli_Model_Towers();
         $this->_armies = new Cli_Model_Armies();
         $this->initCastles($gameId, $mapCastles, $db);
-        $this->initTowers($mapId, $gameId, $db);
+        $this->initTowers($mapTowers, $playersTowers);
     }
 
     public function initCastles($gameId, $mapCastles, Zend_Db_Adapter_Pdo_Pgsql $db)
@@ -32,13 +32,9 @@ class Cli_Model_NeutralPlayer extends Cli_Model_DefaultPlayer
         }
     }
 
-    public function initTowers($mapId, $gameId, Zend_Db_Adapter_Pdo_Pgsql $db)
+    public function initTowers($mapTowers, $playersTowers)
     {
-        $mTowersInGame = new Application_Model_TowersInGame($gameId, $db);
-        $playersTowers = $mTowersInGame->getTowers();
-
-        $mMapTowers = new Application_Model_MapTowers($mapId, $db);
-        foreach ($mMapTowers->getMapTowers() as $towerId => $tower) {
+        foreach ($mapTowers as $towerId => $tower) {
             if (isset($playersTowers[$towerId])) {
                 continue;
             }

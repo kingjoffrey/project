@@ -245,13 +245,31 @@ class Cli_Model_Battle
             $this->_result->victory();
             if ($this->_castleId) {
                 $castleOwner = $this->_players->getPlayer($this->_castleColor);
-                $this->_players->getPlayer($this->_attacker->getColor())->addCastle($this->_castleId, $castleOwner->getCastles()->getCastle($this->_castleId), $this->_castleColor, $this->_fields, $this->_gameId, $this->_db);
-                $castleOwner->removeCastle($this->_castleId);
+                $castle = $castleOwner->getCastles()->getCastle($this->_castleId);
+                $attackingPlayer = $this->_players->getPlayer($this->_attacker->getColor());
+                $attackingPlayer->getCastles()->addCastle(
+                    $this->_castleId,
+                    $castle,
+                    $this->_castleColor,
+                    $attackingPlayer->getId(),
+                    $this->_gameId,
+                    $this->_db
+                );
+                $castleX = $castle->getX();
+                $castleY = $castle->getY();
+                for ($x = $castleX; $x <= $castleX + 1; $x++) {
+                    for ($y = $castleY; $y <= $castleY + 1; $y++) {
+                        $field = $this->_fields->getField($x, $y);
+                        $field->setCastleColor($this->_color);
+                        $field->setTemporaryType('c');
+                    }
+                }
+                $castleOwner->getCastles()->removeCastle($this->_castleId);
 
             } elseif ($this->_towerId) {
                 $towerOwner = $this->_players->getPlayer($this->_towerColor);
                 $this->_players->getPlayer($this->_attacker->getColor())->addTower($this->_towerId, $towerOwner->getTowers()->getTower($this->_towerId), $this->_towerColor, $this->_fields, $this->_gameId, $this->_db);
-                $towerOwner->removeTower($this->_towerId);
+                $towerOwner->getTowers()->removeTower($this->_towerId);
             }
 
         } else {

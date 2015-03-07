@@ -111,11 +111,13 @@ class Cli_Model_Game
         $mapCastles = $mMapCastles->getMapCastles();
         $mMapTowers = new Application_Model_MapTowers($this->_mapId, $db);
         $mapTowers = $mMapTowers->getMapTowers();
+        $mTowersInGame = new Application_Model_TowersInGame($this->_id, $db);
+        $playersTowers = $mTowersInGame->getTowers();
 
         foreach ($this->_playersInGameColors as $playerId => $color) {
-            $this->_players->addPlayer($color, new Cli_Model_Player($players[$playerId], $this->_id, $mapCastles, $mapTowers, $mMapPlayers, $db));
+            $this->_players->addPlayer($color, new Cli_Model_Player($players[$playerId], $this->_id, $mapCastles, $mapTowers, $playersTowers, $mMapPlayers, $db));
         }
-        $this->_players->addPlayer('neutral', new Cli_Model_NeutralPlayer($this->_mapId, $this->_id, $mapCastles, $db));
+        $this->_players->addPlayer('neutral', new Cli_Model_NeutralPlayer($this->_id, $mapCastles, $mapTowers, $playersTowers, $db));
 
         $myColor = $this->_me->getColor();
         foreach ($this->_players->getKeys() as $color) {

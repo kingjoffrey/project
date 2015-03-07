@@ -69,22 +69,6 @@ class Application_Model_CastlesInGame extends Coret_Db_Table_Abstract
         return $this->update($data, $where);
     }
 
-    public function getRazedCastles()
-    {
-        $castles = array();
-
-        $select = $this->_db->select()
-            ->from($this->_name)
-            ->where('"gameId" = ?', $this->_gameId)
-            ->where('razed = true');
-
-        foreach ($this->selectAll($select) as $val) {
-            $castles[$val['castleId']] = $val;
-        }
-
-        return $castles;
-    }
-
     public function getPlayerCastles($playerId)
     {
         $playersCastles = array();
@@ -100,24 +84,6 @@ class Application_Model_CastlesInGame extends Coret_Db_Table_Abstract
         }
 
         return $playersCastles;
-    }
-
-    public function getTeamCastles($playerId, $subSelect)
-    {
-        $teamCastles = array();
-
-        $select = $this->_db->select()
-            ->from($this->_name, 'castleId')
-            ->where('"playerId" != ?', $playerId)
-            ->where('"playerId" IN (?)', new Zend_Db_Expr($subSelect))
-            ->where('"gameId" = ?', $this->_gameId)
-            ->where('razed = false');
-
-        foreach ($this->selectAll($select) as $val) {
-            $teamCastles[$val['castleId']] = true;
-        }
-
-        return $teamCastles;
     }
 
     public function buildDefense($castleId, $playerId, $defenseMod)
@@ -159,16 +125,6 @@ class Application_Model_CastlesInGame extends Coret_Db_Table_Abstract
         );
 
         $this->update($data, $where);
-    }
-
-    public function getCastleDefenseModifier($castleId)
-    {
-        $select = $this->_db->select()
-            ->from($this->_name, 'defenseMod')
-            ->where('"gameId" = ?', $this->_gameId)
-            ->where('"castleId" = ?', $castleId);
-
-        return $this->selectOne($select);
     }
 
     public function addCastle($castleId, $playerId)
@@ -224,87 +180,5 @@ class Application_Model_CastlesInGame extends Coret_Db_Table_Abstract
 
         return $this->update($data, $where);
     }
-
-    public function getColorByCastleId($castleId)
-    {
-        $select = $this->_db->select()
-            ->from($this->_name, 'playerId')
-            ->where('"gameId" = ?', $this->_gameId)
-            ->where('"castleId" = ?', $castleId);
-
-        $playerId = $this->selectOne($select);
-
-        if ($playerId) {
-            $mPlayersInGame = new Application_Model_PlayersInGame($this->_gameId, $this->_db);
-            return $mPlayersInGame->getColorByPlayerId($playerId);
-        } else {
-            print_r(debug_backtrace(0, 2));
-        }
-    }
-
-    public function getPlayerIdByCastleId($castleId)
-    {
-        $select = $this->_db->select()
-            ->from($this->_name, 'playerId')
-            ->where('"gameId" = ?', $this->_gameId)
-            ->where('"castleId" = ?', $castleId);
-
-        return $this->selectOne($select);
-    }
-
-    public function playerCastlesExists($playerId)
-    {
-        $select = $this->_db->select()
-            ->from($this->_name, $this->_primary)
-            ->where('"playerId" = ?', $playerId)
-            ->where('"gameId" = ?', $this->_gameId)
-            ->where('razed = false');
-
-        $result = $this->selectAll($select);
-
-        if (count($result)) {
-            return true;
-        }
-    }
-
-    public function isPlayerCastle($castleId, $playerId)
-    {
-        $select = $this->_db->select()
-            ->from($this->_name, 'castleId')
-            ->where('razed = false')
-            ->where('"gameId" = ?', $this->_gameId)
-            ->where('"playerId" = ?', $playerId)
-            ->where('"castleId" = ?', $castleId);
-
-        return $this->selectOne($select);
-    }
-
-    public function isEnemyCastle($castleId, $playerId)
-    {
-        $select = $this->_db->select()
-            ->from($this->_name, 'castleId')
-            ->where('razed = false')
-            ->where('"gameId" = ?', $this->_gameId)
-            ->where('"playerId" != ?', $playerId)
-            ->where('"castleId" = ?', $castleId);
-
-        return $this->selectOne($select);
-    }
-
-    public function enemiesCastlesExist($playerId, $select)
-    {
-        $select = $this->_db->select()
-            ->from($this->_name, 'castleId')
-            ->where('"playerId" != ?', $playerId)
-            ->where('"playerId" NOT IN (?)', new Zend_Db_Expr($select))
-            ->where('"gameId" = ?', $this->_gameId)
-            ->where('razed = false');
-
-        $result = $this->selectAll($select);
-        if (count($result)) {
-            return true;
-        }
-    }
-
 }
 

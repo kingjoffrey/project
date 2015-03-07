@@ -86,7 +86,6 @@ class Cli_Model_Castles
 
     public function increaseAllProductionTurn($playerId, $gameId, $db)
     {
-        echo 'PLAYER ID=' . $playerId . "\n";
         $mCastlesInGame = new Application_Model_CastlesInGame($gameId, $db);
         $mCastlesInGame->increaseAllCastlesProductionTurn($playerId);
         foreach ($this->_castles as $castle) {

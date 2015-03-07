@@ -176,16 +176,6 @@ class Application_Model_Game extends Coret_Db_Table_Abstract
         return $this->update($data, $where);
     }
 
-    public function isPlayerTurn($playerId)
-    {
-        $select = $this->_db->select()
-            ->from($this->_name, 'turnPlayerId')
-            ->where('"turnPlayerId" = ?', $playerId)
-            ->where($this->_db->quoteIdentifier($this->_primary) . ' = ?', $this->_gameId);
-
-        return $this->selectOne($select);
-    }
-
     public function getTurnPlayerId()
     {
         $select = $this->_db->select()
@@ -211,23 +201,6 @@ class Application_Model_Game extends Coret_Db_Table_Abstract
         $data['isActive'] = 'false';
 
         $this->updateGame($data);
-    }
-
-    public function getTurnNumber()
-    {
-        $select = $this->_db->select()
-            ->from($this->_name, 'turnNumber')
-            ->where($this->_db->quoteIdentifier($this->_primary) . ' = ?', $this->_gameId);
-
-        return $this->selectOne($select);
-    }
-
-    public function getNumberOfPlayers()
-    {
-        $select = $this->_db->select()
-            ->from($this->_name, 'numberOfPlayers')
-            ->where($this->_db->quoteIdentifier($this->_primary) . ' = ?', $this->_gameId);
-        return $this->_db->fetchOne($select);
     }
 
     public function getMapId()

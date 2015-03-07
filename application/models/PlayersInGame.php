@@ -53,24 +53,6 @@ class Application_Model_PlayersInGame extends Coret_Db_Table_Abstract
         return $colors;
     }
 
-    public function getTeams()
-    {
-        $select = $this->_db->select()
-            ->from(array('a' => $this->_name), array('playerId', 'team'))
-            ->join(array('b' => 'mapplayers'), 'a . "mapPlayerId" = b . "mapPlayerId"', null)
-            ->where('a . ' . $this->_db->quoteIdentifier('gameId') . ' = ?', $this->_gameId)
-            ->where('a . ' . $this->_db->quoteIdentifier('mapPlayerId') . ' IS NOT NULL')
-            ->order('startOrder');
-
-        $teams = array();
-
-        foreach ($this->selectAll($select) as $row) {
-            $teams[$row['playerId']] = $row['team'];
-        }
-
-        return $teams;
-    }
-
     public function getPlayersWaitingForGame()
     {
         $select = $this->_db->select()
@@ -88,17 +70,6 @@ class Application_Model_PlayersInGame extends Coret_Db_Table_Abstract
             ->from(array('a' => $this->_name), 'playerId')
             ->where($this->_db->quoteIdentifier('gameId') . ' = ?', $this->_gameId)
             ->where($this->_db->quoteIdentifier('mapPlayerId') . ' = ?', $mapPlayerId);
-
-        return $this->selectOne($select);
-    }
-
-    public function getPlayerIdByColor($color)
-    {
-        $select = $this->_db->select()
-            ->from(array('a' => $this->_name), 'playerId')
-            ->join(array('b' => 'mapplayers'), 'a . "mapPlayerId" = b . "mapPlayerId"')
-            ->where($this->_db->quoteIdentifier('gameId') . ' = ?', $this->_gameId)
-            ->where($this->_db->quoteIdentifier('shortName') . ' = ?', $color);
 
         return $this->selectOne($select);
     }
@@ -300,26 +271,6 @@ class Application_Model_PlayersInGame extends Coret_Db_Table_Abstract
         return $array;
     }
 
-    public function getMe($playerId)
-    {
-        $select = $this->_db->select()
-            ->from($this->_name, array('gold', 'accessKey', 'playerId'))
-            ->where($this->_db->quoteIdentifier('playerId') . ' = ?', $playerId)
-            ->where($this->_db->quoteIdentifier('gameId') . ' = ?', $this->_gameId);
-
-        return $this->selectRow($select);
-    }
-
-    public function getPlayerGold($playerId)
-    {
-        $select = $this->_db->select()
-            ->from($this->_name, 'gold')
-            ->where($this->_db->quoteIdentifier('playerId') . ' = ?', $playerId)
-            ->where($this->_db->quoteIdentifier('gameId') . ' = ?', $this->_gameId);
-
-        return $this->selectOne($select);
-    }
-
     public function updatePlayerGold($playerId, $gold)
     {
         $data['gold'] = $gold;
@@ -329,17 +280,6 @@ class Application_Model_PlayersInGame extends Coret_Db_Table_Abstract
         );
 
         return $this->update($data, $where);
-    }
-
-    public function playerTurnActive($playerId)
-    {
-        $select = $this->_db->select()
-            ->from($this->_name, 'turnActive')
-            ->where($this->_db->quoteIdentifier('playerId') . ' = ?', $playerId)
-            ->where($this->_db->quoteIdentifier('turnActive') . ' = ?', true)
-            ->where($this->_db->quoteIdentifier('gameId') . ' = ?', $this->_gameId);
-
-        return $this->selectOne($select);
     }
 
     public function turnActivate($playerId)
@@ -376,17 +316,6 @@ class Application_Model_PlayersInGame extends Coret_Db_Table_Abstract
         );
 
         $this->update($data, $where);
-    }
-
-    public function playerLost($playerId)
-    {
-        $select = $this->_db->select()
-            ->from($this->_name, 'lost')
-            ->where($this->_db->quoteIdentifier('playerId') . ' = ?', $playerId)
-            ->where('lost = ?', true)
-            ->where($this->_db->quoteIdentifier('gameId') . ' = ?', $this->_gameId);
-
-        return $this->selectOne($select);
     }
 
     public function checkAccessKey($playerId, $accessKey)
@@ -428,27 +357,6 @@ class Application_Model_PlayersInGame extends Coret_Db_Table_Abstract
         $this->update($data, $where);
     }
 
-    public function isPlayerReady($playerId)
-    {
-        $select = $this->_db->select()
-            ->from($this->_name, 'mapPlayerId')
-            ->where($this->_db->quoteIdentifier('gameId') . ' = ?', $this->_gameId)
-            ->where($this->_db->quoteIdentifier('playerId') . ' = ?', $playerId)
-            ->where($this->_db->quoteIdentifier('mapPlayerId') . ' IS NOT NULL');
-
-        return $this->selectOne($select);
-    }
-
-    public function getNumberOfPlayers()
-    {
-        $select = $this->_db->select()
-            ->from($this->_name, 'count(*) as number')
-            ->where($this->_db->quoteIdentifier('gameId') . ' = ?', $this->_gameId)
-            ->where($this->_db->quoteIdentifier('mapPlayerId') . ' IS NOT NULL');
-
-        return $this->_db->fetchOne($select);
-    }
-
     public function getSelectForMyGames($playerId)
     {
         return $this->_db->select()
@@ -456,19 +364,6 @@ class Application_Model_PlayersInGame extends Coret_Db_Table_Abstract
             ->where($this->_db->quoteIdentifier('mapPlayerId') . ' is not null')
             ->where('lost = false')
             ->where($this->_db->quoteIdentifier('playerId') . ' = ?', $playerId);
-    }
-
-    public function getPlayersInGame()
-    {
-        $select = $this->_db->select()
-            ->from(array('a' => $this->_name))
-            ->join(array('b' => 'player'), 'a."playerId" = b."playerId"', array('computer'))
-            ->join(array('c' => 'mapplayers'), 'a . "mapPlayerId" = c . "mapPlayerId"', array('color' => 'shortName', 'minimapColor', 'backgroundColor', 'textColor', 'longName'))
-            ->where('a . ' . $this->_db->quoteIdentifier('mapPlayerId') . ' IS NOT NULL')
-            ->where($this->_db->quoteIdentifier('gameId') . ' = ?', $this->_gameId)
-            ->order('startOrder');
-
-        return $this->selectAll($select);
     }
 
     public function getGamePlayers()
@@ -497,43 +392,6 @@ class Application_Model_PlayersInGame extends Coret_Db_Table_Abstract
             ->where($this->_db->quoteIdentifier('gameId') . ' = ?', $this->_gameId);
 
         return $this->_db->fetchOne($select);
-    }
-
-    public function selectPlayerTeamExceptPlayer($playerId)
-    {
-        return $this->_db->select()
-            ->from($this->_name, 'playerId')
-            ->where('"playerId" != ?', $playerId)
-            ->where('"team" = (?)', new Zend_Db_Expr($this->selectPlayerTeam($playerId)))
-            ->where($this->_db->quoteIdentifier('gameId') . ' = ?', $this->_gameId);
-    }
-
-    public function getTeamPlayerIds($playerId)
-    {
-        $ids = array();
-
-        foreach ($this->selectAll($this->selectPlayerTeamExceptPlayer($playerId)) as $row) {
-            $ids[$row['playerId']] = true;
-        }
-
-        return $ids;
-    }
-
-    public function selectPlayerTeam($playerId)
-    {
-        return $this->_db->select()
-            ->from($this->_name, 'team')
-            ->where('"playerId" = ?', $playerId)
-            ->where($this->_db->quoteIdentifier('gameId') . ' = ?', $this->_gameId);
-    }
-
-    public function isEnemyAlive($playerId)
-    {
-        return $this->_db->fetchOne($this->_db->select()
-            ->from($this->_name, 'team')
-            ->where('lost = false')
-            ->where('team != (?)', new Zend_Db_Expr($this->selectPlayerTeam($playerId)))
-            ->where($this->_db->quoteIdentifier('gameId') . ' = ?', $this->_gameId));
     }
 }
 
