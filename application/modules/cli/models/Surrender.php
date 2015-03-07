@@ -3,9 +3,9 @@
 class Cli_Model_Surrender
 {
 
-    public function __construct(IWebSocketConnection $user, Cli_Model_Me $me, Zend_Db_Adapter_Pdo_Pgsql $db, Cli_GameHandler $gameHandler)
+    public function __construct(IWebSocketConnection $user, Zend_Db_Adapter_Pdo_Pgsql $db, Cli_GameHandler $gameHandler)
     {
-        $playerId = $me->getId();
+        $playerId = $user->parameters['me']->getId();
         $color = $user->parameters['game']->getPlayerColor($playerId);
         $player = $user->parameters['game']->getPlayers()->getPlayer($color);
         $armies = $player->getArmies();

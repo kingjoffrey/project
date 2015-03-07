@@ -4,7 +4,7 @@ class Cli_Model_SplitArmy
 {
     private $_childArmyId = null;
 
-    function  __construct($parentArmyId, $s, $h, $playerId, IWebSocketConnection $user, Cli_Model_Game $game, Zend_Db_Adapter_Pdo_Pgsql $db, Cli_GameHandler $gameHandler)
+    function  __construct($parentArmyId, $s, $h, $playerId, IWebSocketConnection $user, Zend_Db_Adapter_Pdo_Pgsql $db, Cli_GameHandler $gameHandler)
     {
         if (empty($parentArmyId) || (empty($h) && empty($s))) {
             $gameHandler->sendError($user, 'Brak "armyId", "s" lub "h"!');
@@ -13,9 +13,9 @@ class Cli_Model_SplitArmy
 
         $heroesIds = explode(',', $h);
         $soldiersIds = explode(',', $s);
-        $gameId = $game->getId();
-        $color = $game->getPlayerColor($playerId);
-        $armies = $game->getPlayers()->getPlayer($color)->getArmies();
+        $gameId = $user->parameters['game']->getId();
+        $color = $user->parameters['game']->getPlayerColor($playerId);
+        $armies = $user->parameters['game']->getPlayers()->getPlayer($color)->getArmies();
         $army = $armies->getArmy($parentArmyId);
 
         if (isset($heroesIds[0]) && $heroesIds[0]) {
@@ -29,7 +29,7 @@ class Cli_Model_SplitArmy
                 }
 
                 if (empty($this->_childArmyId)) {
-                    $this->_childArmyId = $armies->create($army->getX(), $army->getY(), $color, $game, $db);
+                    $this->_childArmyId = $armies->create($army->getX(), $army->getY(), $color, $user->parameters['game'], $db);
                     $childArmy = $armies->getArmy($this->_childArmyId);
                 }
 
@@ -48,7 +48,7 @@ class Cli_Model_SplitArmy
                 }
 
                 if (empty($this->_childArmyId)) {
-                    $this->_childArmyId = $armies->create($army->getX(), $army->getY(), $color, $game, $db);
+                    $this->_childArmyId = $armies->create($army->getX(), $army->getY(), $color, $user->parameters['game'], $db);
                     $childArmy = $armies->getArmy($this->_childArmyId);
                 }
 

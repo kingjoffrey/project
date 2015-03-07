@@ -308,7 +308,7 @@ class Cli_Model_ComputerMove extends Cli_Model_ComputerMethods
                 }
             } else {
                 $this->_l->log('NASTĘPNA TURA');
-                new Cli_Model_NextTurn($this->_game, $this->_db, $this->_gameHandler);
+                new Cli_Model_NextTurn($this->_user, $this->_db, $this->_gameHandler);
             }
         }
     }

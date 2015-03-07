@@ -3,14 +3,14 @@
 class Cli_Model_CastleRaze
 {
 
-    public function __construct($armyId, IWebSocketConnection $user, Cli_Model_Me $me, Zend_Db_Adapter_Pdo_Pgsql $db, Cli_GameHandler $gameHandler)
+    public function __construct($armyId, IWebSocketConnection $user, Zend_Db_Adapter_Pdo_Pgsql $db, Cli_GameHandler $gameHandler)
     {
         if ($armyId == null) {
             $gameHandler->sendError($user, 'No "armyId"!');
             return;
         }
 
-        $playerId = $me->getId();
+        $playerId = $user->parameters['me']->getId();
         $color = $user->parameters['game']->getPlayerColor($playerId);
         $player = $user->parameters['game']->getPlayers()->getPlayer($color);
         $army = $player->getArmies()->getArmy($armyId);

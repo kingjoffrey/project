@@ -8,7 +8,7 @@ var Game = new function () {
         if (loading) {
             game = g
             loading = false
-
+console.log(game.me)
             Units.init(game.units)
             Terrain.init(game.terrain)
             Three.init()
@@ -20,6 +20,7 @@ var Game = new function () {
             Timer.init(game.begin, game.turnTimeLimit, game.timeLimit)
             Ruins.init(game.ruins)
             Me.init(game.me.color)
+            Me.setGold(game.gold)
 
             Chat.init(game.chatHistory)
         }

@@ -2,11 +2,11 @@
 
 class Cli_Model_HeroHire
 {
-    public function __construct(IWebSocketConnection $user, Cli_Model_Me $me, Zend_Db_Adapter_Pdo_Pgsql $db, Cli_GameHandler $gameHandler)
+    public function __construct(IWebSocketConnection $user, Zend_Db_Adapter_Pdo_Pgsql $db, Cli_GameHandler $gameHandler)
     {
         $gameId = $user->parameters['game']->getId();
-        $color = $me->getColor();
-        $playerId = $me->getId();
+        $color = $user->parameters['me']->getColor();
+        $playerId = $user->parameters['me']->getId();
         $player = $user->parameters['game']->getPlayers()->getPlayer($color);
 
         if ($player->getGold() < 1000) {

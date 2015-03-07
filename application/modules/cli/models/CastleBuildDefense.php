@@ -2,15 +2,16 @@
 
 class Cli_Model_CastleBuildDefense
 {
-
-    public function __construct($castleId, IWebSocketConnection $user, Cli_Model_Game $game, Zend_Db_Adapter_Pdo_Pgsql $db, Cli_GameHandler $gameHandler)
+    public function __construct($castleId, IWebSocketConnection $user, Zend_Db_Adapter_Pdo_Pgsql $db, Cli_GameHandler $gameHandler)
     {
         if ($castleId == null) {
             $gameHandler->sendError($user, 'Brak "castleId"!');
             return;
         }
 
-        $playerId = $game->getMe()->getId();
+
+        $playerId = $user->parameters['me']->getId();
+        $game = $gameHandler->getGame($user->parameters['gameId']);
         $color = $game->getPlayerColor($playerId);
         $player = $game->getPlayers()->getPlayer($color);
         $castle = $player->getCastles()->getCastle($castleId);
@@ -43,5 +44,4 @@ class Cli_Model_CastleBuildDefense
 
         $gameHandler->sendToChannel($db, $token, $gameId);
     }
-
 }

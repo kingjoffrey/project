@@ -3,7 +3,7 @@
 class Cli_Model_Move
 {
 
-    public function __construct($dataIn, IWebSocketConnection $user, Cli_Model_Me $me, Zend_Db_Adapter_Pdo_Pgsql $db, Cli_GameHandler $gameHandler)
+    public function __construct($dataIn, IWebSocketConnection $user, Zend_Db_Adapter_Pdo_Pgsql $db, Cli_GameHandler $gameHandler)
     {
         if (!isset($dataIn['armyId'])) {
             $gameHandler->sendError($user, 'No "armyId"!');
@@ -24,7 +24,7 @@ class Cli_Model_Move
         $x = $dataIn['x'];
         $y = $dataIn['y'];
 
-        $playerId = $me->getId();
+        $playerId = $user->parameters['me']->getId();
 
         if (!Zend_Validate::is($attackerArmyId, 'Digits') || !Zend_Validate::is($x, 'Digits') || !Zend_Validate::is($y, 'Digits')) {
             $gameHandler->sendError($user, 'Niepoprawny format danych!');
@@ -57,7 +57,7 @@ class Cli_Model_Move
                 if ($otherArmyId) {
                     $otherArmy = $player->getArmy($otherArmyId);
                     if (!$otherArmy->canSwim() && !$otherArmy->canFly()) {
-                        new Cli_Model_JoinArmy($otherArmyId, $user, $me, $db, $gameHandler);
+                        new Cli_Model_JoinArmy($otherArmyId, $user, $db, $gameHandler);
                         $gameHandler->sendError($user, 'Nie możesz zostawić armii na wodzie.');
                         return;
                     }
@@ -68,7 +68,7 @@ class Cli_Model_Move
                 if ($otherArmyId) {
                     $otherArmy = $player->getArmy($otherArmyId);
                     if (!$otherArmy->canFly()) {
-                        new Cli_Model_JoinArmy($otherArmyId, $user, $me, $db, $gameHandler);
+                        new Cli_Model_JoinArmy($otherArmyId, $user, $db, $gameHandler);
                         $gameHandler->sendError($user, 'Nie możesz zostawić armii w górach.');
                         return;
                     }

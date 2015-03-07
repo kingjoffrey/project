@@ -2,8 +2,7 @@
 
 class Cli_Model_BattleSequence
 {
-
-    public function __construct($data, $user, $db, $gameHandler)
+    public function __construct($data, IWebSocketConnection $user, Zend_Db_Adapter_Pdo_Pgsql $db, Cli_GameHandler $gameHandler)
     {
         $mBattleSequence = new Application_Model_BattleSequence($user->parameters['gameId'], $db);
 
@@ -16,7 +15,7 @@ class Cli_Model_BattleSequence
         }
 
         foreach ($data['sequence'] as $sequence => $unitId) {
-            $result += $mBattleSequence->edit($user->parameters['playerId'], $unitId, $sequence, $attack);
+            $result += $mBattleSequence->edit($user->parameters['me']->getId(), $unitId, $sequence, $attack);
         }
 
         if ($result != count($data['sequence'])) {
@@ -34,5 +33,4 @@ class Cli_Model_BattleSequence
 
         $gameHandler->sendToUser($user, $db, $token, $user->parameters['gameId']);
     }
-
 }

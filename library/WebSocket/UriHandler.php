@@ -1,6 +1,7 @@
 <?php
 
-interface IWebSocketUriHandler {
+interface IWebSocketUriHandler
+{
 
     public function addConnection(IWebSocketConnection $user);
 
@@ -15,7 +16,8 @@ interface IWebSocketUriHandler {
     public function getConnections();
 }
 
-abstract class WebSocket_UriHandler implements IWebSocketUriHandler {
+abstract class WebSocket_UriHandler implements IWebSocketUriHandler
+{
 
     /**
      *
@@ -24,6 +26,8 @@ abstract class WebSocket_UriHandler implements IWebSocketUriHandler {
      */
     protected $users;
 
+    protected $game = array();
+
     /**
      *
      * Enter description here ...
@@ -31,47 +35,68 @@ abstract class WebSocket_UriHandler implements IWebSocketUriHandler {
      */
     protected $server;
 
-    public function __construct() {
+    public function __construct()
+    {
         $this->users = new SplObjectStorage();
     }
 
-    public function addConnection(IWebSocketConnection $user) {
+    public function addConnection(IWebSocketConnection $user)
+    {
         $this->users->attach($user);
     }
 
-    public function removeConnection(IWebSocketConnection $user) {
+    public function removeConnection(IWebSocketConnection $user)
+    {
         $this->users->detach($user);
         $this->onDisconnect($user);
     }
 
-    public function setServer(WebSocket_Server $server) {
+    public function setServer(WebSocket_Server $server)
+    {
         $this->server = $server;
     }
 
-    public function say($msg = '') {
+    public function say($msg = '')
+    {
         return $this->server->say($msg);
     }
 
-    public function send(IWebSocketConnection $client, $str) {
+    public function send(IWebSocketConnection $client, $str)
+    {
         return $client->sendString($str);
     }
 
-    public function onDisconnect(IWebSocketConnection $user) {
+    public function onDisconnect(IWebSocketConnection $user)
+    {
 
     }
 
-    public function onMessage(IWebSocketConnection $user, IWebSocketMessage $msg) {
+    public function onMessage(IWebSocketConnection $user, IWebSocketMessage $msg)
+    {
 
     }
 
-    public function onAdminMessage(IWebSocketConnection $user, IWebSocketMessage $msg) {
+    public function onAdminMessage(IWebSocketConnection $user, IWebSocketMessage $msg)
+    {
 
     }
 
     //abstract public function onMessage(WebSocketUser $user, IWebSocketMessage $msg);
 
-    public function getConnections() {
+    public function getConnections()
+    {
         return $this->users;
     }
 
+    public function getGame($gameId)
+    {
+        if (isset($this->game[$gameId])) {
+            return $this->game[$gameId];
+        }
+    }
+
+    public function addGame($gameId, $game)
+    {
+        $this->game[$gameId] = $game;
+    }
 }

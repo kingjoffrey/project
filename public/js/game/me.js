@@ -27,7 +27,18 @@ var Me = new function () {
                 this.addQuited(armyId)
             }
         }
-
+        var armies = this.getArmies()
+        for (var armyId in armies.toArray()) {
+            var army = armies.get(armyId)
+            for (var soldierId in army.getSoldiers()) {
+                this.costIncrement(Units.get(army.getSoldiers()[soldierId].unitId).cost)
+            }
+        }
+        var castles = this.getCastles()
+        for (var castleId in castles.toArray()) {
+            this.incomeIncrement(castles.get(castleId).getIncome())
+        }
+        this.incomeIncrement(this.getTowers().count() * 5)
         updateGold()
         updateCosts()
         updateIncome()
@@ -52,7 +63,7 @@ var Me = new function () {
     }
     var updateCosts = function () {
         $('#costs #value').fadeOut(300, function () {
-            $('#costs #value').html(gold)
+            $('#costs #value').html(costs)
             $('#costs #value').fadeIn(300)
         })
     }

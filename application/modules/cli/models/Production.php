@@ -2,12 +2,12 @@
 
 class Cli_Model_Production
 {
-    public function __construct($dataIn, IWebSocketConnection $user, Cli_Model_Me $me, Zend_Db_Adapter_Pdo_Pgsql $db, Cli_GameHandler $gameHandler)
+    public function __construct($dataIn, IWebSocketConnection $user, Zend_Db_Adapter_Pdo_Pgsql $db, Cli_GameHandler $gameHandler)
     {
         $castleId = $dataIn['castleId'];
         $unitId = $dataIn['unitId'];
         $gameId = $user->parameters['game']->getId();
-        $playerId = $me->getId();
+        $playerId = $user->parameters['me']->getId();
 
         if (isset($dataIn['relocationToCastleId'])) {
             if ($dataIn['relocationToCastleId'] == $castleId) {

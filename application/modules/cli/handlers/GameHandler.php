@@ -10,8 +10,6 @@
  */
 class Cli_GameHandler extends Cli_WofHandler
 {
-    private $_me;
-
     public function onMessage(IWebSocketConnection $user, IWebSocketMessage $msg)
     {
         $config = Zend_Registry::get('config');
@@ -28,13 +26,13 @@ class Cli_GameHandler extends Cli_WofHandler
         $db = Cli_Model_Database::getDb();
 
         if ($dataIn['type'] == 'open') {
-            $open = new Cli_Model_Open($dataIn, $user, $db, $this);
-            $this->_me = $open->getMe();
+            new Cli_Model_Open($dataIn, $user, $db, $this);
             return;
         }
 
         $gameId = $user->parameters['game']->getId();
-        $playerId = $this->_me->getId();
+        $playerId = $user->parameters['me']->getId();
+        echo $playerId . 'ccc' . "\n";
 
         // AUTHORIZATION
         if (!Zend_Validate::is($gameId, 'Digits') || !Zend_Validate::is($playerId, 'Digits')) {
@@ -81,7 +79,7 @@ class Cli_GameHandler extends Cli_WofHandler
         }
 
         if ($dataIn['type'] == 'production') {
-            new Cli_Model_Production($dataIn, $user, $this->_me, $db, $this);
+            new Cli_Model_Production($dataIn, $user, $db, $this);
             return;
         }
 
@@ -101,39 +99,39 @@ class Cli_GameHandler extends Cli_WofHandler
 
         switch ($dataIn['type']) {
             case 'move':
-                new Cli_Model_Move($dataIn, $user, $this->_me, $db, $this);
+                new Cli_Model_Move($dataIn, $user, $db, $this);
                 break;
 
             case 'split':
-                new Cli_Model_SplitArmy($dataIn['armyId'], $dataIn['s'], $dataIn['h'], $playerId, $user, $this->_me, $db, $this);
+                new Cli_Model_SplitArmy($dataIn['armyId'], $dataIn['s'], $dataIn['h'], $playerId, $user, $db, $this);
                 break;
 
             case 'join':
-                new Cli_Model_JoinArmy($dataIn['armyId'], $user, $this->_me, $db, $this);
+                new Cli_Model_JoinArmy($dataIn['armyId'], $user, $db, $this);
                 break;
 
             case 'fortify':
-                new Cli_Model_Fortify($dataIn['armyId'], $dataIn['fortify'], $user, $this->_me, $db, $this);
+                new Cli_Model_Fortify($dataIn['armyId'], $dataIn['fortify'], $user, $db, $this);
                 break;
 
             case 'disband':
-                new Cli_Model_DisbandArmy($dataIn['armyId'], $user, $this->_me, $db, $this);
+                new Cli_Model_DisbandArmy($dataIn['armyId'], $user, $db, $this);
                 break;
 
             case 'resurrection':
-                new Cli_Model_HeroResurrection($user, $this->_me, $db, $this);
+                new Cli_Model_HeroResurrection($user, $db, $this);
                 break;
 
             case 'hire':
-                new Cli_Model_HeroHire($user, $this->_me, $db, $this);
+                new Cli_Model_HeroHire($user, $db, $this);
                 break;
 
             case 'ruin':
-                new Cli_Model_SearchRuinHandler($dataIn['armyId'], $user, $this->_me, $db, $this);
+                new Cli_Model_SearchRuinHandler($dataIn['armyId'], $user, $db, $this);
                 break;
 
             case 'nextTurn':
-                new Cli_Model_NextTurn($this->_me, $db, $this);
+                new Cli_Model_NextTurn($user, $db, $this);
                 break;
 
             case 'startTurn':
@@ -141,11 +139,11 @@ class Cli_GameHandler extends Cli_WofHandler
                 break;
 
             case 'raze':
-                new Cli_Model_CastleRaze($dataIn['armyId'], $user, $this->_me, $db, $this);
+                new Cli_Model_CastleRaze($dataIn['armyId'], $user, $db, $this);
                 break;
 
             case 'defense':
-                new Cli_Model_CastleBuildDefense($dataIn['castleId'], $user, $this->_me, $db, $this);
+                new Cli_Model_CastleBuildDefense($dataIn['castleId'], $user, $db, $this);
                 break;
 
             case 'inventoryDel':
@@ -153,7 +151,7 @@ class Cli_GameHandler extends Cli_WofHandler
                 break;
 
             case 'surrender':
-                new Cli_Model_Surrender($user, $this->_me, $db, $this);
+                new Cli_Model_Surrender($user, $db, $this);
                 break;
         }
     }
@@ -163,7 +161,7 @@ class Cli_GameHandler extends Cli_WofHandler
         if ($user->parameters['game']) {
             $db = Cli_Model_Database::getDb();
             $gameId = $user->parameters['game']->getId();
-            $playerId = $this->_me->getId();
+            $playerId = $user->parameters['me']->getId();
 
             $mPlayersInGame = new Application_Model_PlayersInGame($gameId, $db);
             $mPlayersInGame->updateWSSUId($playerId, null);

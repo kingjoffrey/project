@@ -30,7 +30,7 @@ class Cli_Model_Computer
             new Cli_Model_ComputerMove($army, $user, $db, $gameHandler);
         } else {
             $l->log('NASTĘPNA TURA');
-            new Cli_Model_NextTurn($user->parameters['game'], $db, $gameHandler);
+            new Cli_Model_NextTurn($user, $db, $gameHandler);
         }
     }
 }

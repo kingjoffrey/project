@@ -3,15 +3,14 @@
 class Cli_Model_SearchRuinHandler
 {
 
-    public function __construct($armyId, IWebSocketConnection $user, Cli_Model_Me $me, Zend_Db_Adapter_Pdo_Pgsql $db, Cli_GameHandler $gameHandler)
+    public function __construct($armyId, IWebSocketConnection $user, Zend_Db_Adapter_Pdo_Pgsql $db, Cli_GameHandler $gameHandler)
     {
         if (!Zend_Validate::is($armyId, 'Digits')) {
             $gameHandler->sendError($user, 'Brak armii!');
             return;
         }
 
-        $gameId = $user->parameters['game']->getId();
-        $playerId = $me->getId();
+        $playerId = $user->parameters['me']->getId();
         $color = $user->parameters['game']->getPlayerColor($playerId);
         $army = $user->parameters['game']->getPlayers()->getPlayer($color)->getArmies()->getArmy($armyId);
 
