@@ -2,19 +2,19 @@
 
 class Cli_Model_HeroHire
 {
-    public function __construct(Cli_Model_Me $me, IWebSocketConnection $user, Cli_Model_Game $game, Zend_Db_Adapter_Pdo_Pgsql $db, Cli_GameHandler $gameHandler)
+    public function __construct(IWebSocketConnection $user, Cli_Model_Me $me, Zend_Db_Adapter_Pdo_Pgsql $db, Cli_GameHandler $gameHandler)
     {
-        $gameId = $game->getId();
+        $gameId = $user->parameters['game']->getId();
         $color = $me->getColor();
         $playerId = $me->getId();
-        $player = $game->getPlayers()->getPlayer($color);
+        $player = $user->parameters['game']->getPlayers()->getPlayer($color);
 
         if ($player->getGold() < 1000) {
             $gameHandler->sendError($user, 'Za mało złota!');
             return;
         }
 
-        if (!$capital = $player->getCastles()->getCastle($game->getPlayerCapitalId($color))) {
+        if (!$capital = $player->getCastles()->getCastle($user->parameters['game']->getPlayerCapitalId($color))) {
             $gameHandler->sendError($user, 'Aby wynająć herosa musisz posiadać stolicę!');
             return;
         }
@@ -22,8 +22,8 @@ class Cli_Model_HeroHire
         $mHero = new Application_Model_Hero($playerId, $db);
         $heroId = $mHero->createHero();
 
-        if (!$armyId = $player->getArmies()->getArmyIdFromField($game->getFields()->getField($capital->getX(), $capital->getY()))) {
-            $armyId = $player->getArmies()->create($capital->getX(), $capital->getY(), $color, $game, $db);
+        if (!$armyId = $player->getArmies()->getArmyIdFromField($user->parameters['game']->getFields()->getField($capital->getX(), $capital->getY()))) {
+            $armyId = $player->getArmies()->create($capital->getX(), $capital->getY(), $color, $user->parameters['game'], $db);
         }
 
         $mHeroesInGame = new Application_Model_HeroesInGame($gameId, $db);
@@ -32,7 +32,8 @@ class Cli_Model_HeroHire
         $army = $player->getArmies()->getArmy($armyId);
         $army->addHero($heroId, new Cli_Model_Hero($mHeroesInGame->getHero($heroId)), $gameId, $db);
 
-        $player->subtractGold(1000, $gameId, $db);
+        $player->subtractGold(1000);
+        $player->saveGold($gameId, $db);
 
         $token = array(
             'type' => 'resurrection',

@@ -2,17 +2,17 @@
 
 class Cli_Model_Computer
 {
-    public function __construct(IWebSocketConnection $user, Cli_Model_Game $game, Zend_Db_Adapter_Pdo_Pgsql $db, Cli_GameHandler $gameHandler)
+    public function __construct(IWebSocketConnection $user, Zend_Db_Adapter_Pdo_Pgsql $db, Cli_GameHandler $gameHandler)
     {
         $l = new Coret_Model_Logger();
-        $playerId = $game->getTurnPlayerId();
-        $players = $game->getPlayers();
-        $color = $game->getPlayerColor($playerId);
+        $playerId = $user->parameters['game']->getTurnPlayerId();
+        $players = $user->parameters['game']->getPlayers();
+        $color = $user->parameters['game']->getPlayerColor($playerId);
         $player = $players->getPlayer($color);
 
         if (!$player->getTurnActive()) {
             $l->log('START TURY');
-            new Cli_Model_StartTurn($playerId, $user, $game, $db, $gameHandler);
+            new Cli_Model_StartTurn($playerId, $user, $db, $gameHandler);
             return;
         }
 
@@ -22,15 +22,15 @@ class Cli_Model_Computer
             return;
         }
 
-        if (Cli_Model_ComputerHeroResurrection::handle($playerId, $game, $db, $gameHandler)) {
+        if (Cli_Model_ComputerHeroResurrection::handle($playerId, $user, $db, $gameHandler)) {
             return;
         }
 
         if ($army = $player->getArmies()->getComputerArmyToMove()) {
-            new Cli_Model_ComputerMove($army, $user, $game, $db, $gameHandler);
+            new Cli_Model_ComputerMove($army, $user, $db, $gameHandler);
         } else {
             $l->log('NASTĘPNA TURA');
-            new Cli_Model_NextTurn($game, $db, $gameHandler);
+            new Cli_Model_NextTurn($user->parameters['game'], $db, $gameHandler);
         }
     }
 }

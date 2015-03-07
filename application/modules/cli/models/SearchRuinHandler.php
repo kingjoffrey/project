@@ -3,24 +3,24 @@
 class Cli_Model_SearchRuinHandler
 {
 
-    public function __construct($armyId, Cli_Model_Me $me, IWebSocketConnection $user, Cli_Model_Game $game, Zend_Db_Adapter_Pdo_Pgsql $db, Cli_GameHandler $gameHandler)
+    public function __construct($armyId, IWebSocketConnection $user, Cli_Model_Me $me, Zend_Db_Adapter_Pdo_Pgsql $db, Cli_GameHandler $gameHandler)
     {
         if (!Zend_Validate::is($armyId, 'Digits')) {
             $gameHandler->sendError($user, 'Brak armii!');
             return;
         }
 
-        $gameId = $game->getId();
+        $gameId = $user->parameters['game']->getId();
         $playerId = $me->getId();
-        $color = $game->getPlayerColor($playerId);
-        $army = $game->getPlayers()->getPlayer($color)->getArmies()->getArmy($armyId);
+        $color = $user->parameters['game']->getPlayerColor($playerId);
+        $army = $user->parameters['game']->getPlayers()->getPlayer($color)->getArmies()->getArmy($armyId);
 
-        if (!$ruinId = $game->getFields()->isRuin($army->getX(), $army->getY())) {
+        if (!$ruinId = $user->parameters['game']->getFields()->isRuin($army->getX(), $army->getY())) {
             $gameHandler->sendError($user, 'Brak ruin');
             return;
         }
 
-        $ruin = $game->getRuins()->getRuin($ruinId);
+        $ruin = $user->parameters['game']->getRuins()->getRuin($ruinId);
 
         if ($ruin->getEmpty()) {
             $gameHandler->sendError($user, 'Ruiny są już przeszukane.');
@@ -39,6 +39,6 @@ class Cli_Model_SearchRuinHandler
             return;
         }
 
-        $ruin->search($game, $army, $heroId, $playerId, $db, $gameHandler);
+        $ruin->search($user->parameters['game'], $army, $heroId, $playerId, $db, $gameHandler);
     }
 }

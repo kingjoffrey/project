@@ -2,11 +2,11 @@
 
 class Cli_Model_Production
 {
-    public function __construct($dataIn, Cli_Model_Me $me, IWebSocketConnection $user, Cli_Model_Game $game, Zend_Db_Adapter_Pdo_Pgsql $db, Cli_GameHandler $gameHandler)
+    public function __construct($dataIn, IWebSocketConnection $user, Cli_Model_Me $me, Zend_Db_Adapter_Pdo_Pgsql $db, Cli_GameHandler $gameHandler)
     {
         $castleId = $dataIn['castleId'];
         $unitId = $dataIn['unitId'];
-        $gameId = $game->getId();
+        $gameId = $user->parameters['game']->getId();
         $playerId = $me->getId();
 
         if (isset($dataIn['relocationToCastleId'])) {
@@ -29,16 +29,16 @@ class Cli_Model_Production
             return;
         }
 
-        $color = $game->getPlayerColor($playerId);
+        $color = $user->parameters['game']->getPlayerColor($playerId);
 
-        $castle = $game->getPlayers()->getPlayer($color)->getCastles()->getCastle($castleId);
+        $castle = $user->parameters['game']->getPlayers()->getPlayer($color)->getCastles()->getCastle($castleId);
 
         if (!$castle) {
             $gameHandler->sendError($user, 'To nie jest Twój zamek!');
             return;
         }
 
-        $relocationToCastle = $game->getPlayers()->getPlayer($color)->getCastles()->getCastle($relocationToCastleId);
+        $relocationToCastle = $user->parameters['game']->getPlayers()->getPlayer($color)->getCastles()->getCastle($relocationToCastleId);
 
         if ($relocationToCastleId && !$relocationToCastle) {
             $gameHandler->sendError($user, 'To nie jest Twój zamek!');

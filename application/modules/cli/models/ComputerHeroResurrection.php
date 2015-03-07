@@ -2,18 +2,18 @@
 
 class Cli_Model_ComputerHeroResurrection
 {
-    static public function handle($playerId, Cli_Model_Game $game, Zend_Db_Adapter_Pdo_Pgsql $db, Cli_GameHandler $gameHandler)
+    static public function handle($playerId, IWebSocketConnection $user, Zend_Db_Adapter_Pdo_Pgsql $db, Cli_GameHandler $gameHandler)
     {
-        $gameId = $game->getId();
-        $players = $game->getPlayers();
-        $color = $game->getPlayerColor($playerId);
+        $gameId = $user->parameters['game']->getId();
+        $players = $user->parameters['game']->getPlayers();
+        $color = $user->parameters['game']->getPlayerColor($playerId);
         $player = $players->getPlayer($color);
 
         if ($player->getGold() < 100) {
             return;
         }
 
-        if (!$capital = $player->getCastles()->getCastle($game->getPlayerCapitalId($color))) {
+        if (!$capital = $player->getCastles()->getCastle($user->parameters['game']->getPlayerCapitalId($color))) {
             return;
         }
 
@@ -24,8 +24,8 @@ class Cli_Model_ComputerHeroResurrection
             return;
         }
 
-        if (!$armyId = $player->getArmies()->getArmyIdFromField($game->getFields()->getField($capital->getX(), $capital->getY()))) {
-            $armyId = $player->getArmies()->create($capital->getX(), $capital->getY(), $color, $game, $db);
+        if (!$armyId = $player->getArmies()->getArmyIdFromField($user->parameters['game']->getFields()->getField($capital->getX(), $capital->getY()))) {
+            $armyId = $player->getArmies()->create($capital->getX(), $capital->getY(), $color, $user->parameters['game'], $db);
         }
 
         $army = $player->getArmies()->getArmy($armyId);
@@ -35,7 +35,8 @@ class Cli_Model_ComputerHeroResurrection
         $l = new Coret_Model_Logger();
         $l->log('WSKRZESZAM HEROSA id = ' . $hero['heroId']);
 
-        $player->subtractGold(100, $gameId, $db);
+        $player->subtractGold(100);
+        $player->saveGold($gameId, $db);
 
         $token = array(
             'type' => 'resurrection',

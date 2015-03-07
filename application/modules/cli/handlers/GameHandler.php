@@ -71,7 +71,7 @@ class Cli_GameHandler extends Cli_WofHandler
             Cli_Model_Database::addTokensIn($db, $gameId, $playerId, $dataIn);
         }
         if ($dataIn['type'] == 'computer') {
-            new Cli_Model_Computer($user, $this->_me, $db, $this);
+            new Cli_Model_Computer($user, $db, $this);
             return;
         }
 
@@ -146,10 +146,6 @@ class Cli_GameHandler extends Cli_WofHandler
 
             case 'defense':
                 new Cli_Model_CastleBuildDefense($dataIn['castleId'], $user, $this->_me, $db, $this);
-                break;
-
-            case 'inventoryAdd':
-                new Cli_Model_InventoryAdd($dataIn['heroId'], $dataIn['artifactId'], $user, $db, $this);
                 break;
 
             case 'inventoryDel':
