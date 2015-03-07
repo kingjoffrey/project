@@ -2,7 +2,7 @@
 
 class Cli_Model_Open
 {
-    private $_game;
+    private $_me;
 
     public function __construct($dataIn, $user, Zend_Db_Adapter_Pdo_Pgsql $db, $gameHandler)
     {
@@ -23,15 +23,30 @@ class Cli_Model_Open
         Zend_Registry::set('id_lang', $dataIn['langId']);
         Zend_Registry::set('playersInGameColors', $mPlayersInGame->getAllColors());
 
-        $this->_game = new Cli_Model_Game($dataIn['playerId'], $dataIn['gameId'], $db);
-        $token = $this->_game->toArray();
+        if (!isset($user->parameters['game'])) {
+            $user->parameters['game'] = new Cli_Model_Game($dataIn['gameId'], $db);
+        }
+        $this->_me = new Cli_Model_Me($user->parameters['game']->getPlayerColor($dataIn['playerId']), $dataIn['playerId']);
+        $myColor = $this->_me->getColor();
+        foreach ($user->parameters['game']->getPlayers()->getKeys() as $color) {
+            if (!$user->parameters['game']->getPlayers()->sameTeam($myColor, $color)) {
+                $user->parameters['game']->getPlayers()->getPlayer($color)->initFieldsTemporaryType($this->_fields);
+            }
+        }
+
+        $token = $user->parameters['game']->toArray();
+        $token['me'] = $this->_me->toArray();
+        $token['gold'] = $user->parameters['game']->getPlayers()->getPlayer($color)->getGold();
         $token['type'] = 'open';
 
         $gameHandler->sendToUser($user, $db, $token, $dataIn['gameId']);
     }
 
-    public function getGame()
+    /**
+     * @return Cli_Model_Me
+     */
+    public function getMe()
     {
-        return $this->_game;
+        return $this->_me;
     }
 }

@@ -10,7 +10,7 @@
  */
 class Cli_GameHandler extends Cli_WofHandler
 {
-    private $_game;
+    private $_me;
 
     public function onMessage(IWebSocketConnection $user, IWebSocketMessage $msg)
     {
@@ -29,12 +29,12 @@ class Cli_GameHandler extends Cli_WofHandler
 
         if ($dataIn['type'] == 'open') {
             $open = new Cli_Model_Open($dataIn, $user, $db, $this);
-            $this->_game = $open->getGame();
+            $this->_me = $open->getMe();
             return;
         }
 
-        $gameId = $this->_game->getId();
-        $playerId = $this->_game->getMe()->getId();
+        $gameId = $user->parameters['game']->getId();
+        $playerId = $this->_me->getId();
 
         // AUTHORIZATION
         if (!Zend_Validate::is($gameId, 'Digits') || !Zend_Validate::is($playerId, 'Digits')) {
@@ -47,8 +47,8 @@ class Cli_GameHandler extends Cli_WofHandler
             return;
         }
 
-        if ($timeLimit = $this->_game->getTimeLimit()) {
-            if (time() - $this->_game->getBegin() > $timeLimit * 600) {
+        if ($timeLimit = $user->parameters['game']->getTimeLimit()) {
+            if (time() - $user->parameters['game']->getBegin() > $timeLimit * 600) {
                 $mGame = new Application_Model_Game($gameId, $db);
                 $mGame->endGame();
                 new Cli_Model_SaveResults($gameId, $db, $this);
@@ -56,7 +56,7 @@ class Cli_GameHandler extends Cli_WofHandler
             }
         }
 
-        if ($turnTimeLimit = $this->_game->getTurnTimeLimit()) {
+        if ($turnTimeLimit = $user->parameters['game']->getTurnTimeLimit()) {
             $mTurn = new Application_Model_TurnHistory($gameId, $db);
             $turn = $mTurn->getCurrentStatus();
             if (time() - strtotime($turn['date']) > $turnTimeLimit * 60) {
@@ -71,7 +71,7 @@ class Cli_GameHandler extends Cli_WofHandler
             Cli_Model_Database::addTokensIn($db, $gameId, $playerId, $dataIn);
         }
         if ($dataIn['type'] == 'computer') {
-            new Cli_Model_Computer($user, $this->_game, $db, $this);
+            new Cli_Model_Computer($user, $this->_me, $db, $this);
             return;
         }
 
@@ -81,7 +81,7 @@ class Cli_GameHandler extends Cli_WofHandler
         }
 
         if ($dataIn['type'] == 'production') {
-            new Cli_Model_Production($dataIn, $user, $this->_game, $db, $this);
+            new Cli_Model_Production($dataIn, $user, $this->_me, $db, $this);
             return;
         }
 
@@ -90,7 +90,7 @@ class Cli_GameHandler extends Cli_WofHandler
             return;
         }
 
-        if (!$this->_game->isPlayerTurn($playerId)) {
+        if (!$user->parameters['game']->isPlayerTurn($playerId)) {
             $this->sendError($user, 'Not your turn.');
 
             if ($config->exitOnErrors) {
@@ -101,51 +101,51 @@ class Cli_GameHandler extends Cli_WofHandler
 
         switch ($dataIn['type']) {
             case 'move':
-                new Cli_Model_Move($dataIn, $user, $this->_game, $db, $this);
+                new Cli_Model_Move($dataIn, $user, $this->_me, $db, $this);
                 break;
 
             case 'split':
-                new Cli_Model_SplitArmy($dataIn['armyId'], $dataIn['s'], $dataIn['h'], $playerId, $user, $this->_game, $db, $this);
+                new Cli_Model_SplitArmy($dataIn['armyId'], $dataIn['s'], $dataIn['h'], $playerId, $user, $this->_me, $db, $this);
                 break;
 
             case 'join':
-                new Cli_Model_JoinArmy($dataIn['armyId'], $user, $this->_game, $db, $this);
+                new Cli_Model_JoinArmy($dataIn['armyId'], $user, $this->_me, $db, $this);
                 break;
 
             case 'fortify':
-                new Cli_Model_Fortify($dataIn['armyId'], $dataIn['fortify'], $user, $this->_game, $db, $this);
+                new Cli_Model_Fortify($dataIn['armyId'], $dataIn['fortify'], $user, $this->_me, $db, $this);
                 break;
 
             case 'disband':
-                new Cli_Model_DisbandArmy($dataIn['armyId'], $user, $this->_game, $db, $this);
+                new Cli_Model_DisbandArmy($dataIn['armyId'], $user, $this->_me, $db, $this);
                 break;
 
             case 'resurrection':
-                new Cli_Model_HeroResurrection($user, $this->_game, $db, $this);
+                new Cli_Model_HeroResurrection($user, $this->_me, $db, $this);
                 break;
 
             case 'hire':
-                new Cli_Model_HeroHire($user, $this->_game,$db, $this);
+                new Cli_Model_HeroHire($user, $this->_me, $db, $this);
                 break;
 
             case 'ruin':
-                new Cli_Model_SearchRuinHandler($dataIn['armyId'], $user, $this->_game, $db, $this);
+                new Cli_Model_SearchRuinHandler($dataIn['armyId'], $user, $this->_me, $db, $this);
                 break;
 
             case 'nextTurn':
-                new Cli_Model_NextTurn($this->_game, $db, $this);
+                new Cli_Model_NextTurn($this->_me, $db, $this);
                 break;
 
             case 'startTurn':
-                new Cli_Model_StartTurn($playerId, $user, $this->_game, $db, $this);
+                new Cli_Model_StartTurn($playerId, $user, $this->_me, $db, $this);
                 break;
 
             case 'raze':
-                new Cli_Model_CastleRaze($dataIn['armyId'], $user, $this->_game, $db, $this);
+                new Cli_Model_CastleRaze($dataIn['armyId'], $user, $this->_me, $db, $this);
                 break;
 
             case 'defense':
-                new Cli_Model_CastleBuildDefense($dataIn['castleId'], $user, $this->_game, $db, $this);
+                new Cli_Model_CastleBuildDefense($dataIn['castleId'], $user, $this->_me, $db, $this);
                 break;
 
             case 'inventoryAdd':
@@ -157,17 +157,17 @@ class Cli_GameHandler extends Cli_WofHandler
                 break;
 
             case 'surrender':
-                new Cli_Model_Surrender($user, $this->_game, $db, $this);
+                new Cli_Model_Surrender($user, $this->_me, $db, $this);
                 break;
         }
     }
 
     public function onDisconnect(IWebSocketConnection $user)
     {
-        if ($this->_game) {
+        if ($user->parameters['game']) {
             $db = Cli_Model_Database::getDb();
-            $gameId = $this->_game->getId();
-            $playerId = $this->_game->getMe()->getId();
+            $gameId = $user->parameters['game']->getId();
+            $playerId = $this->_me->getId();
 
             $mPlayersInGame = new Application_Model_PlayersInGame($gameId, $db);
             $mPlayersInGame->updateWSSUId($playerId, null);

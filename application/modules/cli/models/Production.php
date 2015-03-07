@@ -2,12 +2,12 @@
 
 class Cli_Model_Production
 {
-    public function __construct($dataIn, IWebSocketConnection $user, Cli_Model_Game $game, Zend_Db_Adapter_Pdo_Pgsql $db, Cli_GameHandler $gameHandler)
+    public function __construct($dataIn, Cli_Model_Me $me, IWebSocketConnection $user, Cli_Model_Game $game, Zend_Db_Adapter_Pdo_Pgsql $db, Cli_GameHandler $gameHandler)
     {
         $castleId = $dataIn['castleId'];
         $unitId = $dataIn['unitId'];
         $gameId = $game->getId();
-        $playerId = $game->getMe()->getId();
+        $playerId = $me->getId();
 
         if (isset($dataIn['relocationToCastleId'])) {
             if ($dataIn['relocationToCastleId'] == $castleId) {
@@ -29,7 +29,7 @@ class Cli_Model_Production
             return;
         }
 
-        $color=$game->getPlayerColor($playerId);
+        $color = $game->getPlayerColor($playerId);
 
         $castle = $game->getPlayers()->getPlayer($color)->getCastles()->getCastle($castleId);
 

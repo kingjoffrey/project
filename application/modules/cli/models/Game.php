@@ -19,8 +19,6 @@ class Cli_Model_Game
     private $_turnNumber;
     private $_turnPlayerId;
 
-    private $_me;
-
     private $_fields;
     private $_terrain;
     private $_units;
@@ -32,7 +30,7 @@ class Cli_Model_Game
 
     private $_numberOfGarrisonUnits;
 
-    public function __construct($playerId, $gameId, Zend_Db_Adapter_Pdo_Pgsql $db)
+    public function __construct($gameId, Zend_Db_Adapter_Pdo_Pgsql $db)
     {
         $this->_l = new Coret_Model_Logger();
 
@@ -57,11 +55,6 @@ class Cli_Model_Game
 
         $mPlayersInGame = new Application_Model_PlayersInGame($this->_id, $db);
         $this->_playersInGameColors = Zend_Registry::get('playersInGameColors');
-
-        $this->_me = new Cli_Model_Me(
-            $this->getPlayerColor($playerId),
-            $playerId
-        );
 
         foreach ($mPlayersInGame->getInGamePlayerIds() as $row) {
             $this->_online[$this->_playersInGameColors[$row['playerId']]] = 1;
@@ -118,13 +111,6 @@ class Cli_Model_Game
             $this->_players->addPlayer($color, new Cli_Model_Player($players[$playerId], $this->_id, $mapCastles, $mapTowers, $playersTowers, $mMapPlayers, $db));
         }
         $this->_players->addPlayer('neutral', new Cli_Model_NeutralPlayer($this->_id, $mapCastles, $mapTowers, $playersTowers, $db));
-
-        $myColor = $this->_me->getColor();
-        foreach ($this->_players->getKeys() as $color) {
-            if (!$this->_players->sameTeam($myColor, $color)) {
-                $this->_players->getPlayer($color)->initFieldsTemporaryType($this->_fields);
-            }
-        }
     }
 
     private function initRuins(Zend_Db_Adapter_Pdo_Pgsql $db)
@@ -183,7 +169,6 @@ class Cli_Model_Game
             'online' => $this->_online,
             'chatHistory' => $this->_chatHistory,
             'turnHistory' => $this->_turnHistory,
-            'me' => $this->_me->toArray(),
             'players' => $this->_players->toArray(),
             'ruins' => $this->_ruins->toArray()
         );

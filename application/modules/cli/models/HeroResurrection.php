@@ -3,11 +3,11 @@
 class Cli_Model_HeroResurrection
 {
 
-    public function __construct(IWebSocketConnection $user, Cli_Model_Game $game, Zend_Db_Adapter_Pdo_Pgsql $db, Cli_GameHandler $gameHandler)
+    public function __construct(Cli_Model_Me $me, IWebSocketConnection $user, Cli_Model_Game $game, Zend_Db_Adapter_Pdo_Pgsql $db, Cli_GameHandler $gameHandler)
     {
         $gameId = $game->getId();
-        $color = $game->getMe()->getColor();
-        $playerId = $game->getMe()->getId();
+        $color = $me->getColor();
+        $playerId = $me->getId();
         $player = $game->getPlayers()->getPlayer($color);
 
         if ($player->getGold() < 100) {

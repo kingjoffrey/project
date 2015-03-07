@@ -3,20 +3,20 @@
 class Cli_Model_Surrender
 {
 
-    public function __construct(IWebSocketConnection $user, Cli_Model_Game $game, Zend_Db_Adapter_Pdo_Pgsql $db, Cli_GameHandler $gameHandler)
+    public function __construct(IWebSocketConnection $user, Cli_Model_Me $me, Zend_Db_Adapter_Pdo_Pgsql $db, Cli_GameHandler $gameHandler)
     {
-        $playerId = $game->getMe()->getId();
-        $color = $game->getPlayerColor($playerId);
-        $player = $game->getPlayers()->getPlayer($color);
+        $playerId = $me->getId();
+        $color = $user->parameters['game']->getPlayerColor($playerId);
+        $player = $user->parameters['game']->getPlayers()->getPlayer($color);
         $armies = $player->getArmies();
         $castles = $player->getCastles();
 
         foreach ($armies->getKeys() as $armyId) {
-            $armies->removeArmy($armyId, $game, $db);
+            $armies->removeArmy($armyId, $user->parameters['game'], $db);
         }
 
         foreach ($castles->getKeys() as $castleId) {
-            $castles->razeCastle($castleId, $playerId, $game, $db);
+            $castles->razeCastle($castleId, $playerId, $user->parameters['game'], $db);
         }
 
         $token = array(
@@ -24,7 +24,7 @@ class Cli_Model_Surrender
             'color' => $color
         );
 
-        $gameHandler->sendToChannel($db, $token, $game->getId());
+        $gameHandler->sendToChannel($db, $token, $user->parameters['game']->getId());
     }
 
 }

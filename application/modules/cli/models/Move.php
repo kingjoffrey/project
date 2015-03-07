@@ -3,7 +3,7 @@
 class Cli_Model_Move
 {
 
-    public function __construct($dataIn, IWebSocketConnection $user, Cli_Model_Game $game, Zend_Db_Adapter_Pdo_Pgsql $db, Cli_GameHandler $gameHandler)
+    public function __construct($dataIn, Cli_Model_Me $me, IWebSocketConnection $user, Cli_Model_Game $game, Zend_Db_Adapter_Pdo_Pgsql $db, Cli_GameHandler $gameHandler)
     {
         if (!isset($dataIn['armyId'])) {
             $gameHandler->sendError($user, 'No "armyId"!');
@@ -24,7 +24,6 @@ class Cli_Model_Move
         $x = $dataIn['x'];
         $y = $dataIn['y'];
 
-        $me = $game->getMe();
         $playerId = $me->getId();
 
         if (!Zend_Validate::is($attackerArmyId, 'Digits') || !Zend_Validate::is($x, 'Digits') || !Zend_Validate::is($y, 'Digits')) {
