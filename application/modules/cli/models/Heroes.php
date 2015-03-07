@@ -91,7 +91,6 @@ class Cli_Model_Heroes
                 $movesLeft = $hero->getMovesLeft();
             }
         }
-
         return $movesLeft;
     }
 

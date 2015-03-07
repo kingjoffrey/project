@@ -121,6 +121,7 @@ class Cli_Model_Soldiers
                 $movesLeft = $soldier->getMovesLeft();
             }
         }
+        return $movesLeft;
     }
 
     public function resetMovesLeft($gameId, Zend_Db_Adapter_Pdo_Pgsql $db)

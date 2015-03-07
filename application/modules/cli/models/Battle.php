@@ -246,7 +246,8 @@ class Cli_Model_Battle
             if ($this->_castleId) {
                 $castleOwner = $this->_players->getPlayer($this->_castleColor);
                 $castle = $castleOwner->getCastles()->getCastle($this->_castleId);
-                $attackingPlayer = $this->_players->getPlayer($this->_attacker->getColor());
+                $attackerColor = $this->_attacker->getColor();
+                $attackingPlayer = $this->_players->getPlayer($attackerColor);
                 $attackingPlayer->getCastles()->addCastle(
                     $this->_castleId,
                     $castle,
@@ -260,7 +261,7 @@ class Cli_Model_Battle
                 for ($x = $castleX; $x <= $castleX + 1; $x++) {
                     for ($y = $castleY; $y <= $castleY + 1; $y++) {
                         $field = $this->_fields->getField($x, $y);
-                        $field->setCastleColor($this->_color);
+                        $field->setCastleColor($attackerColor);
                         $field->setTemporaryType('c');
                     }
                 }
