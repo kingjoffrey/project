@@ -175,8 +175,22 @@ var Three = new function () {
         armyModel = loader.parse(hero)
         flag_1.scale = 5
         flag_1Model = loader.parse(flag_1)
+        flag_2.scale = 5
+        flag_2Model = loader.parse(flag_2)
+        flag_3.scale = 5
+        flag_3Model = loader.parse(flag_3)
+        flag_4.scale = 5
+        flag_4Model = loader.parse(flag_4)
+        flag_5.scale = 5
+        flag_5Model = loader.parse(flag_5)
+        flag_6.scale = 5
+        flag_6Model = loader.parse(flag_6)
+        flag_7.scale = 5
+        flag_7Model = loader.parse(flag_7)
+        flag_8.scale = 5
+        flag_8Model = loader.parse(flag_8)
     }
-    this.addArmy = function (x, y, color, armyId) {
+    this.addArmy = function (x, y, color, number) {
         var material = new THREE.MeshLambertMaterial({color: color})
         material.side = THREE.DoubleSide
 
@@ -188,20 +202,37 @@ var Three = new function () {
         mesh.position.set(x * 4 - 216, 0, y * 4 - 311)
         mesh.rotation.y = Math.PI / 2 + Math.PI / 4
 
-        mesh.name = 'army'
-        mesh.identification = armyId
-
         if (showShadows) {
             mesh.castShadow = true
             mesh.receiveShadow = true
         }
-        var flagMesh = new THREE.Mesh(flag_1Model.geometry, material)
+        var flagMesh = new THREE.Mesh(getFlag(number).geometry, material)
         flagMesh.position.set(-2, 0, 0)
         mesh.add(flagMesh)
 
         scene.add(mesh)
 
         return mesh.id
+    }
+    var getFlag = function (number) {
+        switch (number) {
+            case 1:
+                return flag_1Model
+            case 2:
+                return flag_2Model
+            case 3:
+                return flag_3Model
+            case 4:
+                return flag_4Model
+            case 5:
+                return flag_5Model
+            case 6:
+                return flag_6Model
+            case 7:
+                return flag_7Model
+            default :
+                return flag_8Model
+        }
     }
 
     var loadGround = function () {

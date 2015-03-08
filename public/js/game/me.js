@@ -23,7 +23,6 @@ var Me = new function () {
         for (var armyId in Players.get(color).getArmies().toArray()) {
             var army = Players.get(color).getArmies().get(armyId)
             if (army.getFortified()) {
-                console.log(armyId)
                 this.addQuited(armyId)
             }
         }

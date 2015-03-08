@@ -506,6 +506,9 @@ class Cli_Model_Army
     {
 //        echo "\n";
 //        echo 'armyId=' . $this->_id . ' setMovesLeft($movesLeft)=' . $movesLeft . ' BEFORE: ' . $this->_movesLeft . "\n";
+        if ($movesLeft === null) {
+            throw new Exception('wtf!');
+        }
         $this->_movesLeft = $movesLeft;
     }
 }

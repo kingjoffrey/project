@@ -37,7 +37,7 @@ class Cli_Model_Open
         }
 
         $token = $user->parameters['game']->toArray();
-        $token['me'] = $user->parameters['me']->toArray();
+        $token['color'] = $myColor;
         $token['gold'] = $user->parameters['game']->getPlayers()->getPlayer($myColor)->getGold();
         $token['type'] = 'open';
 

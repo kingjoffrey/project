@@ -1,20 +1,4 @@
 var Army = function (army, bgColor, miniMapColor, textColor, color) {
-    var meshId = Three.addArmy(army.x, army.y, bgColor, army.id),
-        heroSplitKey = null,
-        soldierSplitKey = null
-    Fields.get(army.x, army.y).addArmyId(army.id, color)
-    map.append(
-        $('<div>')
-            .css({
-                'left': army.x * 2 + 'px',
-                'top': army.y * 2 + 'px',
-                'background': miniMapColor,
-                'border-color': textColor,
-                'z-index': 10
-            })
-            .attr('id', army.id)
-            .addClass('a')
-    )
     this.skippedHeroes = {}
     this.skippedSoldiers = {}
     this.update = function (a) {
@@ -164,6 +148,23 @@ var Army = function (army, bgColor, miniMapColor, textColor, color) {
     this.getFortified = function () {
         return army.fortified
     }
+
+    var meshId = Three.addArmy(army.x, army.y, bgColor, this.getNumberOfUnits()),
+        heroSplitKey = null,
+        soldierSplitKey = null
+    Fields.get(army.x, army.y).addArmyId(army.id, color)
+    map.append(
+        $('<div>')
+            .css({
+                'left': army.x * 2 + 'px',
+                'top': army.y * 2 + 'px',
+                'background': miniMapColor,
+                'border-color': textColor,
+                'z-index': 10
+            })
+            .attr('id', army.id)
+            .addClass('a')
+    )
 }
 
 // *** UNITS ***
