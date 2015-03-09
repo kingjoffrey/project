@@ -2,9 +2,14 @@
 
 class Cli_Model_Open
 {
-    private $_me;
-
-    public function __construct($dataIn, $user, Zend_Db_Adapter_Pdo_Pgsql $db, Cli_GameHandler $gameHandler)
+    /**
+     * @param $dataIn
+     * @param IWebSocketConnection $user
+     * @param Zend_Db_Adapter_Pdo_Pgsql $db
+     * @param Cli_GameHandler $gameHandler
+     * @throws Exception
+     */
+    public function __construct($dataIn, IWebSocketConnection $user, Zend_Db_Adapter_Pdo_Pgsql $db, Cli_GameHandler $gameHandler)
     {
         if (!isset($dataIn['gameId']) || !isset($dataIn['playerId']) || !isset($dataIn['langId'])) {
             $gameHandler->sendError($user, 'Brak "gameId" lub "playerId" lub "langId');
@@ -28,19 +33,44 @@ class Cli_Model_Open
             $gameHandler->addGame($dataIn['gameId'], new Cli_Model_Game($dataIn['gameId'], $db));
             $user->parameters['game'] = $gameHandler->getGame($dataIn['gameId']);
         }
-        $user->parameters['me'] = new Cli_Model_Me($user->parameters['game']->getPlayerColor($dataIn['playerId']), $dataIn['playerId']);
-        $myColor = $user->parameters['me']->getColor();
-        foreach ($user->parameters['game']->getPlayers()->getKeys() as $color) {
-            if (!$user->parameters['game']->getPlayers()->sameTeam($myColor, $color)) {
-                $user->parameters['game']->getPlayers()->getPlayer($color)->initFieldsTemporaryType($user->parameters['game']->getFields());
+
+        $game = $this->getGame($user);
+        $myColor = $game->getPlayerColor($dataIn['playerId']);
+        $user->parameters['me'] = new Cli_Model_Me($myColor, $dataIn['playerId']);
+
+        $fields = $game->getFields();
+
+        foreach ($game->getPlayers()->getKeys() as $color) {
+            $player = $game->getPlayers()->getPlayer($color);
+            if (!$game->getPlayers()->sameTeam($myColor, $color)) {
+                $player->initFieldsTemporaryType($fields);
+            } elseif ($color == $myColor) {
+                $castles = $player->getCastles();
+                foreach ($castles->getKeys() as $castleId) {
+                    $castle = $castles->getCastle($castleId);
+                    for ($x = $castle->getX(); $x <= $castle->getX() + 1; $x++) {
+                        for ($y = $castle->getY(); $y <= $castle->getY(); $y++) {
+                            $fields->getField($x, $y)->setTemporaryType('c');
+                        }
+                    }
+                }
             }
         }
 
-        $token = $user->parameters['game']->toArray();
+        $token = $game->toArray();
         $token['color'] = $myColor;
-        $token['gold'] = $user->parameters['game']->getPlayers()->getPlayer($myColor)->getGold();
+        $token['gold'] = $game->getPlayers()->getPlayer($myColor)->getGold();
         $token['type'] = 'open';
 
         $gameHandler->sendToUser($user, $db, $token, $dataIn['gameId']);
+    }
+
+    /**
+     * @param IWebSocketConnection $user
+     * @return Cli_Model_Game
+     */
+    private function getGame(IWebSocketConnection $user)
+    {
+        return $user->parameters['game'];
     }
 }

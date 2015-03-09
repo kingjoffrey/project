@@ -89,7 +89,7 @@ class Cli_Model_Soldiers
 
     public function saveMove($x, $y, $movesLeft, $type, Cli_Model_Path $path, $gameId, $db)
     {
-        if (!count($this->_soldiers)) {
+        if (empty($this->_soldiers)) {
             return $movesLeft;
         }
 

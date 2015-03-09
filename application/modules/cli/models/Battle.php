@@ -272,6 +272,7 @@ class Cli_Model_Battle
                 $this->_players->getPlayer($this->_attacker->getColor())->addTower($this->_towerId, $towerOwner->getTowers()->getTower($this->_towerId), $this->_towerColor, $this->_fields, $this->_gameId, $this->_db);
                 $towerOwner->getTowers()->removeTower($this->_towerId);
             }
+            $this->_attacker->resetAttributes();
 
         } else {
             $this->_players->getPlayer($this->_attacker->getColor())->getArmies()->removeArmy($this->_attacker->getId(), $this->_game, $this->_db);
@@ -282,7 +283,9 @@ class Cli_Model_Battle
                 continue;
             }
 
-            if (!$this->defenderVictory($defender, $color)) {
+            if ($this->defenderVictory($defender, $color)) {
+                $defender->resetAttributes();
+            } else {
                 $this->_players->getPlayer($color)->getArmies()->removeArmy($defender->getId(), $this->_game, $this->_db);
             }
         }
