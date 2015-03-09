@@ -214,6 +214,16 @@ var Three = new function () {
 
         return mesh.id
     }
+    this.armyChangerFlag = function (id, color, number) {
+        var mesh = scene.getObjectById(id)
+        mesh.children.splice(0, 1)
+
+        var material = new THREE.MeshLambertMaterial({color: color})
+        material.side = THREE.DoubleSide
+        var flagMesh = new THREE.Mesh(getFlag(number).geometry, material)
+        flagMesh.position.set(-2, 0, 0)
+        mesh.add(flagMesh)
+    }
     var getFlag = function (number) {
         switch (number) {
             case 1:

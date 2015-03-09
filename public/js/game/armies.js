@@ -18,9 +18,6 @@ var Armies = function () {
         armies[armyId] = new Army(army, bgColor, miniMapColor, textColor, color)
         Fields.get(army.x, army.y).addArmyId(armyId, color)
     }
-    //this.update = function (armyId, army) {
-    //    armies[armyId].update(army)
-    //}
     this.get = function (armyId) {
         return armies[armyId]
     }

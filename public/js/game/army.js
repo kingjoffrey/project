@@ -40,6 +40,7 @@ var Army = function (army, bgColor, miniMapColor, textColor, color) {
             army[key] = a[key]
         }
         Fields.get(army.x, army.y).addArmyId(army.id, color)
+        Three.armyChangerFlag(this.getMeshId(), color, this.getNumberOfUnits())
     }
     this.getMeshId = function () {
         return meshId
