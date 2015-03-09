@@ -82,6 +82,7 @@ class Cli_Model_Heroes
                 }
                 if (!isset($step['cc'])) {
                     $movesSpend += $terrain[$step['tt']][$type];
+                    echo $movesSpend . ' ' . $step['tt'] . "\n";
                 }
             }
 

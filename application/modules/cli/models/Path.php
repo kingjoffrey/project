@@ -18,9 +18,6 @@ class Cli_Model_Path
         $this->_full = $fullPath;
         $skip = false;
         $stop = false;
-//        $start = false;
-//        $x = $army->getX();
-//        $y = $army->getY();
 
         if ($army->canFly()) {
             $type = 'flying';
@@ -31,13 +28,6 @@ class Cli_Model_Path
         }
 
         foreach ($this->_full as $step) {
-//            if ($step['x'] == $x && $step['y'] == $y) {
-//                $start = true;
-//            }
-//            if (empty($start)) {
-//                continue;
-//            }
-
             foreach ($army->getSoldiers()->getKeys() as $soldierId) {
                 $soldier = $army->getSoldiers()->getSoldier($soldierId);
                 if (!isset($soldiersMovesLeft[$soldierId])) {
@@ -107,12 +97,17 @@ class Cli_Model_Path
                 break;
             }
 
+            if (isset($step['cc'])) {
+                $cc = true;
+            } else {
+                $cc = false;
+            }
             $this->_current[] = array(
                 'x' => $step['x'],
                 'y' => $step['y'],
                 'tt' => $step['tt'],
+                'cc' => $cc
             );
-//            $this->_current[] = $step;
 
             if ($step['tt'] == 'E') {
                 break;
