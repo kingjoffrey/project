@@ -120,7 +120,7 @@ class Cli_Model_Castle extends Cli_Model_Entity
 
     static public function countUnitValue(Cli_Model_Unit $unit, $productionTime)
     {
-        return ($unit->getAttackPoints() + $unit->getDefensePoints() + $unit->canFly()) / ($productionTime + $unit['cost']);
+        return ($unit->getAttackPoints() + $unit->getDefensePoints() + $unit->canFly()) / ($productionTime + $unit->getCost());
     }
 
     public function findBestCastleProduction()

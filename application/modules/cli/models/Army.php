@@ -293,9 +293,10 @@ class Cli_Model_Army
     {
         $units = Zend_Registry::get('units');
         $mSoldier = new Application_Model_UnitsInGame($gameId, $db);
-        $soldierId = $mSoldier->add($this->_id, $unitId);
+        $unit = $units->getUnit($unitId);
+        $soldierId = $mSoldier->add($this->_id, $unitId, $unit->getNumberOfMoves());
 
-        $soldier = new Cli_Model_Soldier(array('unitId' => $unitId, 'soldierId' => $soldierId), $units->getUnit($unitId));
+        $soldier = new Cli_Model_Soldier(array('unitId' => $unitId, 'soldierId' => $soldierId), $unit);
         $this->_Soldiers->add($soldierId, $soldier);
 
         if ($soldier->canFly()) {

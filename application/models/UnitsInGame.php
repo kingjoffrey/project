@@ -18,15 +18,13 @@ class Application_Model_UnitsInGame extends Coret_Db_Table_Abstract
         }
     }
 
-    public function add($armyId, $unitId)
+    public function add($armyId, $unitId, $numberOfMoves)
     {
-        $units = Zend_Registry::get('units');
-
         $data = array(
             'armyId' => $armyId,
             'gameId' => $this->_gameId,
             'unitId' => $unitId,
-            'movesLeft' => $units[$unitId]['numberOfMoves']
+            'movesLeft' => $numberOfMoves
         );
 
         $this->insert($data);
