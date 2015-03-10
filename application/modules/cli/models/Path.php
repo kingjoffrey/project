@@ -10,6 +10,7 @@ class Cli_Model_Path
 
     public function __construct($fullPath, Cli_Model_Army $army)
     {
+        echo '********************* PATH                             !!!';
         if (empty($fullPath)) {
             return $this;
         }
@@ -28,6 +29,7 @@ class Cli_Model_Path
         }
 
         foreach ($this->_full as $step) {
+            echo $step['t'] . "\n";
             foreach ($army->getSoldiers()->getKeys() as $soldierId) {
                 $soldier = $army->getSoldiers()->getSoldier($soldierId);
                 if (!isset($soldiersMovesLeft[$soldierId])) {
@@ -38,7 +40,8 @@ class Cli_Model_Path
                     continue;
                 }
 
-                $soldiersMovesLeft[$soldierId] -= $soldier->getStepCost($terrain, $step['tt'], $type);
+                $soldiersMovesLeft[$soldierId] -= $soldier->getStepCost($terrain, $step['t'], $type);
+                echo $soldiersMovesLeft[$soldierId] . "\n";
 
                 if ($soldiersMovesLeft[$soldierId] < 0) {
                     $skip = true;
@@ -60,7 +63,7 @@ class Cli_Model_Path
                     continue;
                 }
 
-                $soldiersMovesLeft[$soldierId] -= $soldier->getStepCost($terrain, $step['tt'], $type);
+                $soldiersMovesLeft[$soldierId] -= $soldier->getStepCost($terrain, $step['t'], $type);
 
                 if ($soldiersMovesLeft[$soldierId] < 0) {
                     $skip = true;
@@ -81,7 +84,7 @@ class Cli_Model_Path
                     continue;
                 }
 
-                $heroesMovesLeft[$heroId] -= $terrain[$step['tt']][$type];
+                $heroesMovesLeft[$heroId] -= $terrain[$step['t']][$type];
 
                 if ($heroesMovesLeft[$heroId] < 0) {
                     $skip = true;
@@ -94,6 +97,7 @@ class Cli_Model_Path
             }
 
             if ($skip) {
+                echo 'skip' . "\n";
                 break;
             }
 
@@ -105,15 +109,17 @@ class Cli_Model_Path
             $this->_current[] = array(
                 'x' => $step['x'],
                 'y' => $step['y'],
-                'tt' => $step['tt'],
-                'cc' => $cc
+                't' => $step['t'],
+                'c' => $cc
             );
 
-            if ($step['tt'] == 'E') {
+            if ($step['t'] == 'E') {
+                echo 'E' . "\n";
                 break;
             }
 
             if ($stop) {
+                echo 'stop' . "\n";
                 break;
             }
         }
@@ -150,7 +156,7 @@ class Cli_Model_Path
 
     public function enemyInRange()
     {
-        return $this->_end['tt'] == 'E';
+        return $this->_end['t'] == 'E';
     }
 
     public function targetWithin()
@@ -181,24 +187,24 @@ class Cli_Model_Path
 
             foreach ($fullPath as $step) {
                 // odejmuję
-                if ($step['tt'] == 'f') {
+                if ($step['t'] == 'f') {
                     $soldiersMovesLeft[$soldierId] -= $this->_units[$soldier['unitId']]['modMovesForest'];
-                } elseif ($step['tt'] == 's') {
+                } elseif ($step['t'] == 's') {
                     $soldiersMovesLeft[$soldierId] -= $this->_units[$soldier['unitId']]['modMovesSwamp'];
-                } elseif ($step['tt'] == 'm') {
+                } elseif ($step['t'] == 'm') {
                     $soldiersMovesLeft[$soldierId] -= $this->_units[$soldier['unitId']]['modMovesHills'];
                 } else {
                     if ($this->_units[$soldier['unitId']]['canFly']) {
-                        $soldiersMovesLeft[$soldierId] -= $this->_terrain[$step['tt']]['flying'];
+                        $soldiersMovesLeft[$soldierId] -= $this->_terrain[$step['t']]['flying'];
                     } elseif ($this->_units[$soldier['unitId']]['canSwim']) {
-                        $soldiersMovesLeft[$soldierId] -= $this->_terrain[$step['tt']]['swimming'];
+                        $soldiersMovesLeft[$soldierId] -= $this->_terrain[$step['t']]['swimming'];
                     } else {
-                        $soldiersMovesLeft[$soldierId] -= $this->_terrain[$step['tt']]['walking'];
+                        $soldiersMovesLeft[$soldierId] -= $this->_terrain[$step['t']]['walking'];
 
                     }
                 }
 
-                if ($step['tt'] == 'E') {
+                if ($step['t'] == 'E') {
                     break;
                 }
 
@@ -219,9 +225,9 @@ class Cli_Model_Path
             }
 
             foreach ($fullPath as $step) {
-                $heroesMovesLeft[$heroId] -= $this->_terrain[$step['tt']]['walking'];
+                $heroesMovesLeft[$heroId] -= $this->_terrain[$step['t']]['walking'];
 
-                if ($step['tt'] == 'E') {
+                if ($step['t'] == 'E') {
                     break;
                 }
 

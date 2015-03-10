@@ -160,7 +160,7 @@ var Websocket = {
                 Players.get(r.color).getArmies().handle(r.army)
                 if (Turn.isMy()) {
                     Message.remove()
-                    Me.setGold(r.gold)
+                    Me.goldIncrement(-r.gold)
                     if (Hero.findMy()) {
                         $('#heroResurrection').addClass('buttonOff')
                     }

@@ -101,17 +101,13 @@ class Cli_Model_Soldiers
             $soldier = $this->getSoldier($soldierId);
             $movesSpend = 0;
 
-//            if ($type == 'walking') {
-//                $terrain['f'][$type] = $soldier->getForest();
-//                $terrain['h'][$type] = $soldier->getHills();
-//                $terrain['s'][$type] = $soldier->getSwamp();
-//            }
             foreach ($current as $step) {
                 if ($step['x'] == $x && $step['y'] == $y) {
                     break;
                 }
-                if (!isset($step['cc'])) {
-                    $movesSpend += $soldier->getStepCost($terrain, $step['tt'], $type);//$terrain[$step['tt']][$type];
+                if (!$step['c']) {
+                    $movesSpend += $soldier->getStepCost($terrain, $step['t'], $type);
+                    echo $step['t'] . ' ' . $type . "\n";
                 }
             }
 

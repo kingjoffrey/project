@@ -80,9 +80,8 @@ class Cli_Model_Heroes
                 if ($step['x'] == $x && $step['y'] == $y) {
                     break;
                 }
-                if (!isset($step['cc'])) {
-                    $movesSpend += $terrain[$step['tt']][$type];
-                    echo $movesSpend . ' ' . $step['tt'] . "\n";
+                if (!$step['c']) {
+                    $movesSpend += $terrain[$step['t']][$type];
                 }
             }
 

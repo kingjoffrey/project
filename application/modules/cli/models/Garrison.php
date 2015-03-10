@@ -20,7 +20,7 @@ class Cli_Model_Garrison
                             $path = new Cli_Model_Path(array(0 => array(
                                 'x' => $x,
                                 'y' => $y,
-                                'tt' => 'c')
+                                't' => 'c')
                             ), $army);
                             $army->move($game, $path, $db, $gameHandler);
                         }

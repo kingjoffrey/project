@@ -270,7 +270,7 @@ class Cli_Model_Astar extends Cli_Model_Heuristics
             'H' => $h,
             'F' => $h + $g,
             'parent' => $parent,
-            'tt' => $terrainType
+            't' => $terrainType
         );
     }
 
@@ -287,7 +287,7 @@ class Cli_Model_Astar extends Cli_Model_Heuristics
             $path = array_reverse($path);
 
             foreach ($path as $k => $step) {
-                if ($step['tt'] == 'c') {
+                if ($step['t'] == 'c') {
                     $castleId = $this->_fields->isPlayerCastle($this->_color, $step['x'], $step['y']);
                     if (isset($this->myCastleId[$castleId])) {
                         $path[$k]['cc'] = true;

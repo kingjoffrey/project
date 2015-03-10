@@ -595,14 +595,14 @@ var Message = {
                             .append(
                             $('<tr>')
                                 .append($('<td>').html(translations.defaultMoves + ': '))
-                                .append($('<td>').html(soldier.moves).addClass('value'))
+                                .append($('<td>').html(Units.get(soldier.unitId).moves).addClass('value'))
                         )
                             .append(
                             $('<tr>')
                                 .append($('<td>').html(translations.attackPoints + ': '))
                                 .append(
                                 $('<td>')
-                                    .append($('<div>').html(soldier.attack))
+                                    .append($('<div>').html(Units.get(soldier.unitId).attack))
                                     .append(attackFlyBonus.clone())
                                     .append(attackHeroBonus.clone())
                                     .addClass('value')
@@ -613,7 +613,7 @@ var Message = {
                                 .append($('<td>').html(translations.defencePoints + ': '))
                                 .append(
                                 $('<td>')
-                                    .append($('<div>').html(soldier.defense))
+                                    .append($('<div>').html(Units.get(soldier.unitId).defense))
                                     .append(defenseFlyBonus.clone())
                                     .append(defenseHeroBonus.clone())
                                     .append(defenseTowerBonus.clone())

@@ -32,7 +32,7 @@ class Cli_GameHandler extends Cli_WofHandler
 
         $gameId = $user->parameters['game']->getId();
         $playerId = $user->parameters['me']->getId();
-        echo $playerId . 'ccc' . "\n";
+        echo $playerId . '- Handler player ID' . "\n";
 
         // AUTHORIZATION
         if (!Zend_Validate::is($gameId, 'Digits') || !Zend_Validate::is($playerId, 'Digits')) {

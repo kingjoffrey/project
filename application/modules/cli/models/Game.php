@@ -19,13 +19,12 @@ class Cli_Model_Game
     private $_turnNumber;
     private $_turnPlayerId;
 
-    private $_fields;
+    private $_Fields;
     private $_terrain;
-    private $_units;
-    private $_specialUnits = array();
+    private $_Units;
     private $_firstUnitId;
-    private $_players;
-    private $_ruins;
+    private $_Players;
+    private $_Ruins;
 
     private $_loaded = false;
 
@@ -33,8 +32,8 @@ class Cli_Model_Game
     {
         $this->_l = new Coret_Model_Logger();
 
-        $this->_players = new Cli_Model_Players();
-        $this->_ruins = new Cli_Model_Ruins();
+        $this->_Players = new Cli_Model_Players();
+        $this->_Ruins = new Cli_Model_Ruins();
         $this->_id = $gameId;
 
         $mGame = new Application_Model_Game($this->_id, $db);
@@ -69,29 +68,25 @@ class Cli_Model_Game
         $this->_capitals = $mMapPlayers->getCapitals();
 
         $mMapFields = new Application_Model_MapFields($this->_mapId, $db);
-        $this->_fields = new Cli_Model_Fields($mMapFields->getMapFields());
+        $this->_Fields = new Cli_Model_Fields($mMapFields->getMapFields());
 
         $mMapTerrain = new Application_Model_MapTerrain($this->_mapId, $db);
         $this->_terrain = $mMapTerrain->getTerrain();
         Zend_Registry::set('terrain', $this->_terrain);
 
         $mMapUnits = new Application_Model_MapUnits($this->_mapId, $db);
-        $this->_units = $mMapUnits->getUnits();
-        Zend_Registry::set('units', $this->_units);
-
-        foreach ($this->_units as $unit) {
-            if ($unit['special']) {
-                $this->_specialUnits[] = $unit;
-            }
+        $this->_Units = new Cli_Model_Units();
+        foreach ($mMapUnits->getUnits() as $unitId => $unit) {
+            $this->_Units->add($unitId, new Cli_Model_Unit($unit));
         }
+        Zend_Registry::set('units', $this->_Units);
 
-        reset($this->_units);
-        $this->_firstUnitId = key($this->_units);
+        $this->_firstUnitId = $this->_Units->getFirstUnitId();
 
         $this->initPlayers($mMapPlayers, $db);
         $this->initRuins($db);
 
-        $this->_players->initFields($this->_fields);
+        $this->_Players->initFields($this->_Fields);
         $this->updateNumberOfGarrisonUnits();
 
         $this->_loaded = true;
@@ -109,9 +104,9 @@ class Cli_Model_Game
         $playersTowers = $mTowersInGame->getTowers();
 
         foreach ($this->_playersInGameColors as $playerId => $color) {
-            $this->_players->addPlayer($color, new Cli_Model_Player($players[$playerId], $this->_id, $mapCastles, $mapTowers, $playersTowers, $mMapPlayers, $db));
+            $this->_Players->addPlayer($color, new Cli_Model_Player($players[$playerId], $this->_id, $mapCastles, $mapTowers, $playersTowers, $mMapPlayers, $db));
         }
-        $this->_players->addPlayer('neutral', new Cli_Model_NeutralPlayer($this->_id, $mapCastles, $mapTowers, $playersTowers, $db));
+        $this->_Players->addPlayer('neutral', new Cli_Model_NeutralPlayer($this->_id, $mapCastles, $mapTowers, $playersTowers, $db));
     }
 
     private function initRuins(Zend_Db_Adapter_Pdo_Pgsql $db)
@@ -127,8 +122,8 @@ class Cli_Model_Game
                 $empty = false;
             }
             $position['ruinId'] = $ruinId;
-            $this->_ruins->add($ruinId, new Cli_Model_Ruin($position, $empty));
-            $this->_fields->getField($position['x'], $position['y'])->setRuin($ruinId, $empty);
+            $this->_Ruins->add($ruinId, new Cli_Model_Ruin($position, $empty));
+            $this->_Fields->getField($position['x'], $position['y'])->setRuin($ruinId, $empty);
         }
     }
 
@@ -160,18 +155,18 @@ class Cli_Model_Game
             'turnsLimit' => $this->_turnsLimit,
             'turnTimeLimit' => $this->_turnTimeLimit,
             'turnNumber' => $this->_turnNumber,
-            'units' => $this->_units,
+            'units' => $this->_Units->toArray(),
             'firstUnitId' => $this->_firstUnitId,
-            'specialUnits' => $this->_specialUnits,
-            'fields' => $this->_fields->toArray(),
+//            'specialUnits' => $this->_specialUnits,
+            'fields' => $this->_Fields->toArray(),
             'terrain' => $this->_terrain,
             'capitals' => $this->_capitals,
-            'playersInGameColors' => $this->_playersInGameColors,
+//            'playersInGameColors' => $this->_playersInGameColors,
             'online' => $this->_online,
             'chatHistory' => $this->_chatHistory,
             'turnHistory' => $this->_turnHistory,
-            'players' => $this->_players->toArray(),
-            'ruins' => $this->_ruins->toArray()
+            'players' => $this->_Players->toArray(),
+            'ruins' => $this->_Ruins->toArray()
         );
     }
 
@@ -185,7 +180,7 @@ class Cli_Model_Game
      */
     public function getFields()
     {
-        return $this->_fields;
+        return $this->_Fields;
     }
 
     /**
@@ -193,7 +188,7 @@ class Cli_Model_Game
      */
     public function getRuins()
     {
-        return $this->_ruins;
+        return $this->_Ruins;
     }
 
     /**
@@ -201,7 +196,15 @@ class Cli_Model_Game
      */
     public function getPlayers()
     {
-        return $this->_players;
+        return $this->_Players;
+    }
+
+    /**
+     * @return Cli_Model_Units
+     */
+    public function getUnits()
+    {
+        return $this->_Units;
     }
 
     public function getPlayerColor($playerId)
@@ -254,12 +257,7 @@ class Cli_Model_Game
         return $this->_firstUnitId;
     }
 
-    public function getSpecialUnits()
-    {
-        return $this->_specialUnits;
-    }
-
-    public function getPlayersInGameColors()
+   public function getPlayersInGameColors()
     {
         return $this->_playersInGameColors;
     }
