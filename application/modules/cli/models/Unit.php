@@ -101,4 +101,9 @@ class Cli_Model_Unit
     {
         return $this->_numberOfMoves;
     }
+
+    public function getId()
+    {
+        return $this->_id;
+    }
 }

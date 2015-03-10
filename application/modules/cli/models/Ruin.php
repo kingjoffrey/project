@@ -148,12 +148,10 @@ class Cli_Model_Ruin extends Cli_Model_Entity
                 $max2 = 11;
             }
 
-            $specialUnits = $game->getUnits()->getSpecialUnits();
-            $unitId = $specialUnits[rand($min1, $max1)]['unitId'];
             $numberOfUnits = rand($min2, $max2);
 
             for ($i = 0; $i < $numberOfUnits; $i++) {
-                $army->createSoldier($gameId, $playerId, $unitId, $db);
+                $army->createSoldier($gameId, $playerId, $game->getUnits()->getSpecialUnitId(rand($min1, $max1)), $db);
             }
 
             $army->zeroHeroMovesLeft($heroId, $gameId, $db);

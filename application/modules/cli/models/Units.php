@@ -44,15 +44,15 @@ class Cli_Model_Units
         return key($this->_units);
     }
 
-    public function getSpecialUnits()
+    public function getSpecialUnitId($key)
     {
         if (!$this->_special) {
-            foreach ($this->_units as $unit) {
+            foreach ($this->_units as $unitId => $unit) {
                 if ($unit->getSpecial()) {
-                    $this->_special[] = $unit;
+                    $this->_special[] = $unitId;
                 }
             }
         }
-        return $this->_special;
+        return $this->_special[$key];
     }
 }

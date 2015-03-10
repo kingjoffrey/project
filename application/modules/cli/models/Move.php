@@ -25,6 +25,7 @@ class Cli_Model_Move
         $y = $dataIn['y'];
 
         $playerId = $user->parameters['me']->getId();
+        $game=$this->getGame($user);
 
         if (!Zend_Validate::is($attackerArmyId, 'Digits') || !Zend_Validate::is($x, 'Digits') || !Zend_Validate::is($y, 'Digits')) {
             $gameHandler->sendError($user, 'Niepoprawny format danych!');
@@ -32,12 +33,12 @@ class Cli_Model_Move
         }
 
         if (Zend_Validate::is($dataIn['s'], 'Digits') || Zend_Validate::is($dataIn['h'], 'Digits')) {
-            $sa = new Cli_Model_SplitArmy($dataIn['armyId'], $dataIn['s'], $dataIn['h'], $playerId, $user, $user->parameters['game'], $db, $gameHandler);
+            $sa = new Cli_Model_SplitArmy($dataIn['armyId'], $dataIn['s'], $dataIn['h'], $playerId, $user, $game, $db, $gameHandler);
             $attackerArmyId = $sa->getChildArmyId();
         }
 
-        $players = $user->parameters['game']->getPlayers();
-        $attackerColor = $user->parameters['game']->getPlayerColor($playerId);
+        $players = $game->getPlayers();
+        $attackerColor = $game->getPlayerColor($playerId);
         $player = $players->getPlayer($attackerColor);
         $army = $player->getArmies()->getArmy($attackerArmyId);
 
@@ -46,7 +47,7 @@ class Cli_Model_Move
             return;
         }
 
-        $fields = $user->parameters['game']->getFields();
+        $fields = $game->getFields();
 
         $armyX = $army->getX();
         $armyY = $army->getY();
@@ -55,7 +56,7 @@ class Cli_Model_Move
             case 'w':
                 $otherArmyId = $fields->isPlayerArmy($armyX, $armyY, $attackerColor);
                 if ($otherArmyId) {
-                    $otherArmy = $player->getArmy($otherArmyId);
+                    $otherArmy = $player->getArmies()->getArmy($otherArmyId);
                     if (!$otherArmy->canSwim() && !$otherArmy->canFly()) {
                         new Cli_Model_JoinArmy($otherArmyId, $user, $db, $gameHandler);
                         $gameHandler->sendError($user, 'Nie możesz zostawić armii na wodzie.');
@@ -66,7 +67,7 @@ class Cli_Model_Move
             case'M':
                 $otherArmyId = $fields->isPlayerArmy($armyX, $armyY, $attackerColor);
                 if ($otherArmyId) {
-                    $otherArmy = $player->getArmy($otherArmyId);
+                    $otherArmy = $player->getArmies()->getArmy($otherArmyId);
                     if (!$otherArmy->canFly()) {
                         new Cli_Model_JoinArmy($otherArmyId, $user, $db, $gameHandler);
                         $gameHandler->sendError($user, 'Nie możesz zostawić armii w górach.');
@@ -77,7 +78,7 @@ class Cli_Model_Move
         }
 
         try {
-            $A_Star = new Cli_Model_Astar($army, $x, $y, $user->parameters['game']);
+            $A_Star = new Cli_Model_Astar($army, $x, $y, $game);
             $path = $A_Star->path();
         } catch (Exception $e) {
             $l = new Coret_Model_Logger();
@@ -86,6 +87,15 @@ class Cli_Model_Move
             return;
         }
 
-        $army->move($user->parameters['game'], $path, $db, $gameHandler);
+        $army->move($game, $path, $db, $gameHandler);
+    }
+
+    /**
+     * @param IWebSocketConnection $user
+     * @return Cli_Model_Game
+     */
+    private function getGame(IWebSocketConnection $user)
+    {
+        return $user->parameters['game'];
     }
 }
