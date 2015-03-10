@@ -142,7 +142,7 @@ var Websocket = {
                     for (var i in soldiers) {
                         upkeep += Units.get(soldiers[i].unitId).cost
                     }
-
+console.log(upkeep)
                     Me.costIncrement(-upkeep)
 
                     if (!Hero.findMy()) {
