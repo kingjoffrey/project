@@ -602,7 +602,7 @@ var Message = {
                                 .append($('<td>').html(translations.attackPoints + ': '))
                                 .append(
                                 $('<td>')
-                                    .append($('<div>').html(Units.get(soldier.unitId).attack))
+                                    .append($('<div>').html(Units.get(soldier.unitId).a))
                                     .append(attackFlyBonus.clone())
                                     .append(attackHeroBonus.clone())
                                     .addClass('value')
@@ -613,7 +613,7 @@ var Message = {
                                 .append($('<td>').html(translations.defencePoints + ': '))
                                 .append(
                                 $('<td>')
-                                    .append($('<div>').html(Units.get(soldier.unitId).defense))
+                                    .append($('<div>').html(Units.get(soldier.unitId).d))
                                     .append(defenseFlyBonus.clone())
                                     .append(defenseHeroBonus.clone())
                                     .append(defenseTowerBonus.clone())

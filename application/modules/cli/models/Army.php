@@ -295,7 +295,7 @@ class Cli_Model_Army
         $mSoldier = new Application_Model_UnitsInGame($gameId, $db);
         $soldierId = $mSoldier->add($this->_id, $unitId);
 
-        $soldier = new Cli_Model_Soldier(array('unitId' => $unitId, 'soldierId' => $soldierId), $units[$unitId]);
+        $soldier = new Cli_Model_Soldier(array('unitId' => $unitId, 'soldierId' => $soldierId), $units->getUnit($unitId));
         $this->_Soldiers->add($soldierId, $soldier);
 
         if ($soldier->canFly()) {
@@ -359,8 +359,8 @@ class Cli_Model_Army
     {
         $units = Zend_Registry::get('units');
         foreach ($soldiers as $soldier) {
-            $unit = $units[$soldier['unitId']];
-            if ($unit['canSwim']) {
+            $unit = $units->getUnit($soldier['unitId']);
+            if ($unit->canSwim()) {
                 $this->_Ships->add($soldier['soldierId'], new Cli_Model_Soldier($soldier, $unit));
                 $soldier = $this->_Ships->getSoldier($soldier['soldierId']);
             } else {

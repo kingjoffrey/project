@@ -74,7 +74,7 @@ class Cli_Model_Enemies
                 'defensePoints' => 3,
                 'soldierId' => $soldierId,
                 'unitId' => $firstUnitId
-            ), $units[$firstUnitId]));
+            ), $units->getUnit($firstUnitId)));
         }
 
         $this->_enemies = array($army);

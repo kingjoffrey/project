@@ -118,9 +118,9 @@ class Cli_Model_Castle extends Cli_Model_Entity
         $mCastlesInGame->cancelProductionRelocation($this->_id);
     }
 
-    static public function countUnitValue($unit, $productionTime)
+    static public function countUnitValue(Cli_Model_Unit $unit, $productionTime)
     {
-        return ($unit['attackPoints'] + $unit['defensePoints'] + $unit['canFly']) / ($productionTime + $unit['cost']);
+        return ($unit->getAttackPoints() + $unit->getDefensePoints() + $unit->canFly()) / ($productionTime + $unit['cost']);
     }
 
     public function findBestCastleProduction()
@@ -132,7 +132,7 @@ class Cli_Model_Castle extends Cli_Model_Entity
 
         foreach ($this->_production as $unitId => $row) {
 
-            $tmpValue = self::countUnitValue($units[$unitId], $row['time']);
+            $tmpValue = self::countUnitValue($units->getUnit($unitId), $row['time']);
 
             if ($tmpValue > $value) {
                 $value = $tmpValue;

@@ -10,7 +10,7 @@ class Cli_Model_Path
 
     public function __construct($fullPath, Cli_Model_Army $army)
     {
-        echo '********************* PATH                             !!!';
+        echo '********************* PATH                             !!!' . "\n";
         if (empty($fullPath)) {
             return $this;
         }

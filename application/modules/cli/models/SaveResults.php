@@ -80,7 +80,7 @@ class Cli_Model_SaveResults
             if (isset($soldiersCreated[$playerId])) {
                 foreach ($soldiersCreated[$playerId] as $unitId) {
                     $playerSoldiersCreated++;
-                    $points['soldiersCreated'] += $units[$unitId]['attackPoints'] + $units[$unitId]['defensePoints'];
+                    $points['soldiersCreated'] += $units->getUnit($unitId)->getAttackPoints() + $units->getUnit($unitId)->getDefensePoints();
                 }
             }
             $sumPoints += $points['soldiersCreated'];
@@ -90,7 +90,7 @@ class Cli_Model_SaveResults
             if (isset($soldiersKilled[$playerId])) {
                 foreach ($soldiersKilled[$playerId] as $unitId) {
                     $playerSoldiersKilled++;
-                    $points['soldiersKilled'] += $units[$unitId]['attackPoints'] + $units[$unitId]['defensePoints'];
+                    $points['soldiersKilled'] += $units->getUnit($unitId)->getAttackPoints() + $units->getUnit($unitId)->getDefensePoints();
                 }
             }
             $sumPoints += $points['soldiersKilled'];
@@ -100,7 +100,7 @@ class Cli_Model_SaveResults
             if (isset($soldiersLost[$playerId])) {
                 foreach ($soldiersLost[$playerId] as $unitId) {
                     $playerSoldiersLost++;
-                    $points['soldiersLost'] -= $units[$unitId]['attackPoints'];
+                    $points['soldiersLost'] -= $units->getUnit($unitId)->getAttackPoints();
                 }
             }
 

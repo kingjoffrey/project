@@ -14,6 +14,7 @@ class Cli_Model_Unit
     private $_id;
     private $_special;
     private $_name;
+    private $_nameLang;
 
     public function __construct($unit)
     {
@@ -29,6 +30,7 @@ class Cli_Model_Unit
         $this->_numberOfMoves = $unit['numberOfMoves'];
         $this->_special = $unit['special'];
         $this->_name = $unit['name'];
+        $this->_nameLang = $unit['name_lang'];
     }
 
     public function toArray()
@@ -45,7 +47,8 @@ class Cli_Model_Unit
             'h' => $this->_modMovesHills,
             'moves' => $this->_numberOfMoves,
             'special' => $this->_special,
-            'name' => $this->_name
+            'name' => $this->_name,
+            'name_lang' => $this->_nameLang
         );
     }
 
@@ -54,4 +57,48 @@ class Cli_Model_Unit
         return $this->_special;
     }
 
+    public function canSwim()
+    {
+        return $this->_canSwim;
+    }
+
+    public function getModMovesForest()
+    {
+        return $this->_modMovesForest;
+    }
+
+    public function getModMovesHills()
+    {
+        return $this->_modMovesHills;
+    }
+
+    public function getModMovesSwamp()
+    {
+        return $this->_modMovesSwamp;
+    }
+
+    public function canFly()
+    {
+        return $this->_canFly;
+    }
+
+    public function getCost()
+    {
+        return $this->_cost;
+    }
+
+    public function getAttackPoints()
+    {
+        return $this->_attackPoints;
+    }
+
+    public function getDefensePoints()
+    {
+        return $this->_defensePoints;
+    }
+
+    public function getNumberOfMoves()
+    {
+        return $this->_numberOfMoves;
+    }
 }

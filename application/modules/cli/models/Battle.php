@@ -54,7 +54,7 @@ class Cli_Model_Battle
         $attackerBattleSequence = $this->_players->getPlayer($this->_attacker->getColor())->getAttackSequence();
         if (empty($attackerBattleSequence)) {
             $units = Zend_Registry::get('units');
-            $attackerBattleSequence = array_keys($units);
+            $attackerBattleSequence = $units->getKeys();
         }
         $this->_attacker->setAttackBattleSequence($attackerBattleSequence);
         foreach ($this->_defenders as $defender) {
@@ -63,7 +63,7 @@ class Cli_Model_Battle
                 if (!isset($units)) {
                     $units = Zend_Registry::get('units');
                 }
-                $defenderBattleSequence = array_keys($units);
+                $defenderBattleSequence =  $units->getKeys();
             }
             $defender->setDefenceBattleSequence($defenderBattleSequence);
         }

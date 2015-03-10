@@ -25,36 +25,28 @@ class Cli_Model_Soldier extends Cli_Model_Being
         if (isset($soldier['movesLeft'])) {
             $this->setMovesLeft($soldier['movesLeft']);
         } else {
-            $this->setMovesLeft($unit['numberOfMoves']);
+            $this->setMovesLeft($unit->getNumberOfMoves());
         }
 
-        $this->_forest = $unit['modMovesForest'];
-        $this->_hills = $unit['modMovesHills'];
-        $this->_swamp = $unit['modMovesSwamp'];
+        $this->_forest = $unit->getModMovesForest();
+        $this->_hills = $unit->getModMovesHills();
+        $this->_swamp = $unit->getModMovesSwamp();
 
-        $this->_fly = $unit['canFly'];
-        $this->_swim = $unit['canSwim'];
+        $this->_fly = $unit->canFly();
+        $this->_swim = $unit->canSwim();
 
-        $this->_cost = $unit['cost'];
+        $this->_cost = $unit->getCost();
 
-        $this->_attack = $unit['attackPoints'];
-        $this->_defense = $unit['defensePoints'];
-        $this->_moves = $unit['numberOfMoves'];
+        $this->_attack = $unit->getAttackPoints();
+        $this->_defense = $unit->getDefensePoints();
+        $this->_moves = $unit->getNumberOfMoves();
     }
 
     public function toArray()
     {
         return array(
             'unitId' => $this->_unitId,
-            'movesLeft' => $this->_movesLeft,
-//            'forest' => $this->_forest,
-//            'hills' => $this->_hills,
-//            'swamp' => $this->_swamp,
-//            'fly' => $this->_fly,
-//            'swim' => $this->_swim,
-//            'attack' => $this->_attack,
-//            'defense' => $this->_defense,
-//            'moves' => $this->_moves
+            'movesLeft' => $this->_movesLeft
         );
     }
 
