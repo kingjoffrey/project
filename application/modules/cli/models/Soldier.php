@@ -109,10 +109,10 @@ class Cli_Model_Soldier extends Cli_Model_Being
                 case 'h':
                     return $this->getHills();
                 default:
-                    return $terrain[$terrainType][$movementType];
+                    return $terrain->getTereinType($terrainType)->getCost($movementType);
             }
         }
-        return $terrain[$terrainType][$movementType];
+        return $terrain->getTereinType($terrainType)->getCost($movementType);
     }
 
     public function getForest()

@@ -122,10 +122,12 @@ class Cli_Model_Army
             $battle->fight();
             $battleResult = $battle->getResult();
             if ($battleResult->getVictory()) {
-                $this->saveMove($game, $path, $db);
+                $this->updateArmyPosition($game, $path, $db);
+            } else {
+                $game->getFields()->getField($this->_x, $this->_y)->removeArmy($this->_id);
             }
         } else {
-            $this->saveMove($game, $path, $db);
+            $this->updateArmyPosition($game, $path, $db);
             $joinIds = $player->getArmies()->joinAtPosition($this->_id, $game, $db);
         }
 
@@ -143,7 +145,7 @@ class Cli_Model_Army
         $gameHandler->sendToChannel($db, $token, $gameId);
     }
 
-    private function saveMove(Cli_Model_Game $game, Cli_Model_Path $path, Zend_Db_Adapter_Pdo_Pgsql $db)
+    private function updateArmyPosition(Cli_Model_Game $game, Cli_Model_Path $path, Zend_Db_Adapter_Pdo_Pgsql $db)
     {
         if ($this->canFly()) {
             $type = 'flying';

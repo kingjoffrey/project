@@ -81,7 +81,7 @@ class Cli_Model_Heroes
                     break;
                 }
                 if (!$step['c']) {
-                    $movesSpend += $terrain[$step['t']][$type];
+                    $movesSpend += $terrain->getTereinType($step['t'])->getCost($type);
                 }
             }
 

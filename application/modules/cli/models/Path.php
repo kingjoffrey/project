@@ -79,7 +79,7 @@ class Cli_Model_Path
                     $heroesMovesLeft[$heroId] = $army->getHeroes()->getHero($heroId)->getMovesLeft();
                 }
 
-                $heroesMovesLeft[$heroId] -= $terrain[$step['t']][$type];
+                $heroesMovesLeft[$heroId] -= $terrain->getTereinType($step['t'])->getCost($type);
 
                 if ($heroesMovesLeft[$heroId] < 0) {
                     $skip = true;

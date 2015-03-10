@@ -28,22 +28,26 @@ class Cli_Model_Astar extends Cli_Model_Heuristics
     private $nr = 0;
 
     /**
-     * All map fields
-     *
-     * @var array
+     * @var Cli_Model_Fields
      */
     private $_fields;
+    /**
+     * @var Cli_Model_TerrainTypes
+     */
     private $terrain;
     private $limit;
     private $myCastleId = array();
     private $movementType;
 
-    private $_enemyCastle = null;
-    private $_enemyArmy = null;
-
+    /**
+     * @var Cli_Model_Army
+     */
     private $_army;
     private $_movesLeft;
     private $_color;
+    /**
+     * @var Cli_Model_Players
+     */
     private $_players;
 
     /**
