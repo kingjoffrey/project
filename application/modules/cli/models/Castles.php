@@ -80,7 +80,6 @@ class Cli_Model_Castles
         $mCastlesInGame = new Application_Model_CastlesInGame($game->getId(), $db);
         $mCastlesInGame->razeCastle($castleId, $playerId);
         $castle = $this->getCastle($castleId);
-        $game->getFields()->resetCastleTemporaryType($castle->getX(), $castle->getY());
         $this->removeCastle($castleId);
     }
 

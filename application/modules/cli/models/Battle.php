@@ -70,8 +70,8 @@ class Cli_Model_Battle
 
         if ($this->_castleId) {
             $this->_externalDefenceModifier = $this->_players->getPlayer($this->_castleColor)->getCastles()->getCastle($this->_castleId)->getDefenseModifier();
-        } elseif ($this->_towerId = $this->_fields->getTowerId($defender->getX(), $defender->getY())) {
-            $this->_towerColor = $this->_fields->getTowerColor($defender->getX(), $defender->getY());
+        } elseif ($this->_towerId = $this->_fields->getField($defender->getX(), $defender->getY())->getTowerId()) {
+            $this->_towerColor = $this->_fields->getField($defender->getX(), $defender->getY())->getTowerColor();
             $this->_externalDefenceModifier = 1;
         }
         $this->_attackModifier = $this->_attacker->getAttackModifier();
@@ -262,7 +262,6 @@ class Cli_Model_Battle
                     for ($y = $castleY; $y <= $castleY + 1; $y++) {
                         $field = $this->_fields->getField($x, $y);
                         $field->setCastleColor($attackerColor);
-                        $field->setTemporaryType('c');
                     }
                 }
                 $castleOwner->getCastles()->removeCastle($this->_castleId);

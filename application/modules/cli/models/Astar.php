@@ -44,6 +44,7 @@ class Cli_Model_Astar extends Cli_Model_Heuristics
     private $_army;
     private $_movesLeft;
     private $_color;
+    private $_players;
 
     /**
      * Constructor
@@ -67,6 +68,7 @@ class Cli_Model_Astar extends Cli_Model_Heuristics
         $this->_movesLeft = $army->getMovesLeft();
         $this->_color = $army->getColor();
         $this->_army = $army;
+        $this->_players = $game->getPlayers();
 
         if ($army->canFly()) {
             $this->movementType = 'flying';
@@ -76,30 +78,14 @@ class Cli_Model_Astar extends Cli_Model_Heuristics
             $this->movementType = 'walking';
         }
 
-        $this->init($game->getPlayers());
+        $this->init();
         $this->aStar();
     }
 
-    private function init(Cli_Model_Players $players)
+    private function init()
     {
         $x = $this->_army->getX();
         $y = $this->_army->getY();
-        $castleColor = $this->_fields->getCastleColor($this->destX, $this->destY);
-        if ($castleColor && !$players->sameTeam($castleColor, $this->_color)) {
-            $this->_enemyCastle = $players->getPlayer($castleColor)->getCastles()->getCastle($this->_fields->getCastleId($this->destX, $this->destY));
-            $this->_fields->setCastleTemporaryType($this->_enemyCastle->getX(), $this->_enemyCastle->getY(), 'E');
-        } else {
-            $aaa = $this->_fields->getField($this->destX, $this->destY)->getArmies();
-            if (!is_array($aaa)) {
-                var_dump($aaa);
-            }
-            foreach ($aaa as $armyId => $armyColor) {
-                if (!$players->sameTeam($armyColor, $this->_color)) {
-                    $this->_fields->getField($this->destX, $this->destY)->setTemporaryType('E');
-                    break;
-                }
-            }
-        }
 
         if ($castleId = $this->_fields->isPlayerCastle($this->_color, $x, $y)) {
             $this->myCastleId[$castleId] = true;
@@ -126,11 +112,6 @@ class Cli_Model_Astar extends Cli_Model_Heuristics
         $y = $this->_open[$key]['y'];
         $this->_close[$key] = $this->_open[$key];
         if ($x == $this->destX && $y == $this->destY) {
-            if ($this->_enemyCastle) {
-                $this->_fields->setCastleTemporaryType($this->_enemyCastle->getX(), $this->_enemyCastle->getY(), 'e');
-            } elseif ($this->_enemyArmy) {
-                $this->_fields->getField($this->destX, $this->destY)->setTemporaryType('e');
-            }
             return;
         }
         unset($this->_open[$key]);
@@ -197,7 +178,7 @@ class Cli_Model_Astar extends Cli_Model_Heuristics
                     continue;
                 }
 
-                $terrainType = $this->_fields->getAStarType($i, $j);
+                $terrainType = $this->_fields->getAStarType($i, $j, $this->_color, $this->destX, $this->destY, $this->_players);
                 if (!$terrainType) {
                     continue;
                 }

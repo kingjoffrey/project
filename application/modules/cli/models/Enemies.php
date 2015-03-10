@@ -10,8 +10,8 @@ class Cli_Model_Enemies
     {
         $fields = $game->getFields();
         $players = $game->getPlayers();
-        if ($castleId = $fields->getCastleId($x, $y)) {
-            $castleColor = $fields->getCastleColor($x, $y);
+        if ($castleId = $fields->getField($x, $y)->getCastleId()) {
+            $castleColor = $fields->getField($x, $y)->getCastleColor();
             if ($castleColor == 'neutral') {
                 $this->neutralCastleGarrison($game, $castleId);
             } elseif ($players->sameTeam($castleColor, $playerColor)) {

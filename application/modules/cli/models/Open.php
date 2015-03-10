@@ -38,24 +38,24 @@ class Cli_Model_Open
         $myColor = $game->getPlayerColor($dataIn['playerId']);
         $user->parameters['me'] = new Cli_Model_Me($myColor, $dataIn['playerId']);
 
-        $fields = $game->getFields();
-
-        foreach ($game->getPlayers()->getKeys() as $color) {
-            $player = $game->getPlayers()->getPlayer($color);
-            if (!$game->getPlayers()->sameTeam($myColor, $color)) {
-                $player->initFieldsTemporaryType($fields);
-            } elseif ($color == $myColor) {
-                $castles = $player->getCastles();
-                foreach ($castles->getKeys() as $castleId) {
-                    $castle = $castles->getCastle($castleId);
-                    for ($x = $castle->getX(); $x <= $castle->getX() + 1; $x++) {
-                        for ($y = $castle->getY(); $y <= $castle->getY(); $y++) {
-                            $fields->getField($x, $y)->setTemporaryType('c');
-                        }
-                    }
-                }
-            }
-        }
+//        $fields = $game->getFields();
+//
+//        foreach ($game->getPlayers()->getKeys() as $color) {
+//            $player = $game->getPlayers()->getPlayer($color);
+//            if (!$game->getPlayers()->sameTeam($myColor, $color)) {
+//                $player->initFieldsTemporaryType($fields);
+//            } elseif ($color == $myColor) {
+//                $castles = $player->getCastles();
+//                foreach ($castles->getKeys() as $castleId) {
+//                    $castle = $castles->getCastle($castleId);
+//                    for ($x = $castle->getX(); $x <= $castle->getX() + 1; $x++) {
+//                        for ($y = $castle->getY(); $y <= $castle->getY(); $y++) {
+//                            $fields->getField($x, $y)->setTemporaryType('c');
+//                        }
+//                    }
+//                }
+//            }
+//        }
 
         $token = $game->toArray();
         $token['color'] = $myColor;

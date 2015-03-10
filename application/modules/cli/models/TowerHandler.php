@@ -20,12 +20,12 @@ class Cli_Model_TowerHandler
         foreach ($current as $step) {
             for ($y = $step['y'] - 1; $y <= $step['y'] + 1; $y++) {
                 for ($x = $step['x'] - 1; $x <= $step['x'] + 1; $x++) {
-                    if ($fields->hasField($x, $y) && $towerId = $fields->isTower($x, $y)) {
+                    if ($fields->hasField($x, $y) && $towerId = $fields->getField($x, $y)->getTowerId()) {
                         if ($fields->getField($x, $y)->isArmy() && !$player->getArmies()->getArmyIdFromField($fields->getField($x, $y))) {
                             continue;
                         }
 
-                        $towerColor = $fields->getTowerColor($x, $y);
+                        $towerColor = $fields->getField($x, $y)->getTowerColor();
 
                         if ($towerColor == $playerColor) {
                             continue;

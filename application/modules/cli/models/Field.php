@@ -3,7 +3,7 @@
 class Cli_Model_Field
 {
     private $_type;
-    private $_temporaryType;
+//    private $_temporaryType;
     private $_armies = array();
     private $_castleId;
     private $_towerId;
@@ -71,10 +71,9 @@ class Cli_Model_Field
         $this->_towerColor = $color;
     }
 
-    public function setRuin($ruinId, $empty)
+    public function setRuin($ruinId)
     {
         $this->_ruinId = $ruinId;
-        $this->_empty = $empty;
     }
 
     public function getCastleId()
@@ -89,11 +88,7 @@ class Cli_Model_Field
 
     public function getType()
     {
-        if ($this->_temporaryType) {
-            return $this->_temporaryType;
-        } else {
-            return $this->_type;
-        }
+        return $this->_type;
     }
 
     public function getCastleColor()
@@ -114,16 +109,6 @@ class Cli_Model_Field
     public function setTowerColor($color)
     {
         $this->_towerColor = $color;
-    }
-
-    public function setTemporaryType($type)
-    {
-        $this->_temporaryType = $type;
-    }
-
-    public function reset()
-    {
-        $this->_temporaryType = null;
     }
 
     public function getRuinId()

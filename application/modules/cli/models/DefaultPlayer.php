@@ -32,33 +32,4 @@ abstract class Cli_Model_DefaultPlayer
     {
         return $this->_towers;
     }
-
-    /**
-     * @param $fields Cli_Model_Fields
-     */
-    public function initFieldsTemporaryType(Cli_Model_Fields $fields)
-    {
-        foreach ($this->_armies->getKeys() as $armyId) {
-            $army = $this->_armies->getArmy($armyId);
-            $field = $fields->getField($army->getX(), $army->getY());
-            $field->setTemporaryType('e');
-        }
-
-        foreach ($this->_castles->getKeys() as $castleId) {
-            $castle = $this->_castles->getCastle($castleId);
-            $x = $castle->getX();
-            $y = $castle->getY();
-            for ($i = $x; $i <= $x + 1; $i++) {
-                for ($j = $y; $j <= $y + 1; $j++) {
-                    $fields->getField($i, $j)->setTemporaryType('e');
-                }
-            }
-        }
-
-//        foreach ($this->_towers->getKeys() as $towerId) {
-//            $tower = $this->_towers->getTower($towerId);
-//            $field = $fields->getField($tower->getX(), $tower->getY());
-//            $field->setTemporaryType('e');
-//        }
-    }
 }

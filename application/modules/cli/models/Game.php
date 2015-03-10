@@ -86,7 +86,6 @@ class Cli_Model_Game
         $this->initPlayers($mMapPlayers, $db);
         $this->initRuins($db);
 
-        $this->_Players->initFields($this->_Fields);
         $this->updateNumberOfGarrisonUnits();
 
         $this->_loaded = true;
@@ -107,6 +106,7 @@ class Cli_Model_Game
             $this->_Players->addPlayer($color, new Cli_Model_Player($players[$playerId], $this->_id, $mapCastles, $mapTowers, $playersTowers, $mMapPlayers, $db));
         }
         $this->_Players->addPlayer('neutral', new Cli_Model_NeutralPlayer($this->_id, $mapCastles, $mapTowers, $playersTowers, $db));
+        $this->_Players->initFields($this->_Fields);
     }
 
     private function initRuins(Zend_Db_Adapter_Pdo_Pgsql $db)
@@ -123,7 +123,7 @@ class Cli_Model_Game
             }
             $position['ruinId'] = $ruinId;
             $this->_Ruins->add($ruinId, new Cli_Model_Ruin($position, $empty));
-            $this->_Fields->getField($position['x'], $position['y'])->setRuin($ruinId, $empty);
+            $this->_Fields->getField($position['x'], $position['y'])->setRuin($ruinId);
         }
     }
 
