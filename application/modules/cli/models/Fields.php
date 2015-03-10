@@ -114,4 +114,15 @@ class Cli_Model_Fields
         }
         return $fields;
     }
+
+    public function areArmiesInCastle($x, $y)
+    {
+        for ($i = $y; $i <= $y + 1; $i++) {
+            for ($j = $x; $j <= $x + 1; $j++) {
+                if ($this->_fields[$i][$j]->isArmy()) {
+                    return true;
+                }
+            }
+        }
+    }
 }

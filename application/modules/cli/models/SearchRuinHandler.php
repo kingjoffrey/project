@@ -11,15 +11,16 @@ class Cli_Model_SearchRuinHandler
         }
 
         $playerId = $user->parameters['me']->getId();
-        $color = $user->parameters['game']->getPlayerColor($playerId);
-        $army = $user->parameters['game']->getPlayers()->getPlayer($color)->getArmies()->getArmy($armyId);
+        $game = $this->getGame($user);
+        $color = $game->getPlayerColor($playerId);
+        $army = $game->getPlayers()->getPlayer($color)->getArmies()->getArmy($armyId);
 
-        if (!$ruinId = $user->parameters['game']->getFields()->isRuin($army->getX(), $army->getY())) {
+        if (!$ruinId = $game->getFields()->getField($army->getX(), $army->getY())->getRuinId()) {
             $gameHandler->sendError($user, 'Brak ruin');
             return;
         }
 
-        $ruin = $user->parameters['game']->getRuins()->getRuin($ruinId);
+        $ruin = $game->getRuins()->getRuin($ruinId);
 
         if ($ruin->getEmpty()) {
             $gameHandler->sendError($user, 'Ruiny są już przeszukane.');
@@ -38,6 +39,15 @@ class Cli_Model_SearchRuinHandler
             return;
         }
 
-        $ruin->search($user->parameters['game'], $army, $heroId, $playerId, $db, $gameHandler);
+        $ruin->search($game, $army, $heroId, $playerId, $db, $gameHandler);
+    }
+
+    /**
+     * @param IWebSocketConnection $user
+     * @return Cli_Model_Game
+     */
+    private function getGame(IWebSocketConnection $user)
+    {
+        return $user->parameters['game'];
     }
 }

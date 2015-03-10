@@ -17,7 +17,7 @@ abstract class Cli_Model_ComputerMethods
     {
         $this->_army = $army;
         $this->_user = $user;
-        $this->_game = $user->parameters['game'];
+        $this->_game = $this->getGame();
         $this->_db = $db;
         $this->_gameHandler = $gameHandler;
         $this->_playerId = $this->_game->getTurnPlayerId();
@@ -30,6 +30,14 @@ abstract class Cli_Model_ComputerMethods
         $this->_movesLeft = $this->_army->getMovesLeft();
         $this->_gameId = $this->_game->getId();
         $this->_fields = $this->_game->getFields();
+    }
+
+    /**
+     * @return Cli_Model_Game
+     */
+    private function getGame()
+    {
+        return $this->_user->parameters['game'];
     }
 
     protected function getComputerEmptyCastleInComputerRange()

@@ -190,7 +190,7 @@ class Cli_Model_Astar extends Cli_Model_Heuristics
 
                 $g = $this->terrain[$terrainType][$this->movementType];
 
-                // jeżeli koszt ruchu większy od 99 to pomiń to pole
+                // jeżeli koszt ruchu większy od 6 to pomiń to pole
                 if ($g > 6) {
                     continue;
                 }

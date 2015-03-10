@@ -11,7 +11,7 @@ class Cli_Model_CastleBuildDefense
 
 
         $playerId = $user->parameters['me']->getId();
-        $game = $gameHandler->getGame($user->parameters['gameId']);
+        $game = $this->getGame($user);
         $color = $game->getPlayerColor($playerId);
         $player = $game->getPlayers()->getPlayer($color);
         $castle = $player->getCastles()->getCastle($castleId);
@@ -43,5 +43,14 @@ class Cli_Model_CastleBuildDefense
         );
 
         $gameHandler->sendToChannel($db, $token, $gameId);
+    }
+
+    /**
+     * @param IWebSocketConnection $user
+     * @return Cli_Model_Game
+     */
+    private function getGame(IWebSocketConnection $user)
+    {
+        return $user->parameters['game'];
     }
 }

@@ -190,7 +190,7 @@ class Cli_Model_ComputerMove extends Cli_Model_ComputerMethods
     {
         $this->_l->logMethodName();
         foreach ($this->_players->getEnemies($this->_color) as $enemy) {
-            if ($this->_fields->getCastleId($enemy->getX(), $enemy->getY())) {
+            if ($this->_fields->getField($enemy->getX(), $enemy->getY())->getCastleId()) {
                 // pomijam wrogów w zamku
                 continue;
             }
