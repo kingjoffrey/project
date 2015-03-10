@@ -664,17 +664,17 @@ var Message = {
                         $('<table>').addClass('leftTable')
                             .append(
                             $('<tr>')
-                                .append($('<td>').html('Current moves: '))
+                                .append($('<td>').html(translations.currentMoves + ': '))
                                 .append($('<td>').html(hero.movesLeft).addClass('value'))
                         )
                             .append(
                             $('<tr>')
-                                .append($('<td>').html('Default moves: '))
+                                .append($('<td>').html(translations.defaultMoves + ': '))
                                 .append($('<td>').html(hero.moves).addClass('value'))
                         )
                             .append(
                             $('<tr>')
-                                .append($('<td>').html('Attack points: '))
+                                .append($('<td>').html(translations.attackPoints + ': '))
                                 .append(
                                 $('<td>')
                                     .append($('<div>').html(hero.attack))
@@ -685,7 +685,7 @@ var Message = {
                         )
                             .append(
                             $('<tr>')
-                                .append($('<td>').html('Defense points: '))
+                                .append($('<td>').html(translations.defencePoints + ': '))
                                 .append(
                                 $('<td>')
                                     .append($('<div>').html(hero.defense))

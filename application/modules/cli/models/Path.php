@@ -28,6 +28,8 @@ class Cli_Model_Path
             $type = 'walking';
         }
 
+        echo $type . "\n";
+
         foreach ($this->_full as $step) {
             echo $step['t'] . "\n";
             foreach ($army->getSoldiers()->getKeys() as $soldierId) {
