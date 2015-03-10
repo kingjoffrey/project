@@ -20,7 +20,7 @@ class Cli_Model_Game
     private $_turnPlayerId;
 
     private $_Fields;
-    private $_terrain;
+    private $_Terrain;
     private $_Units;
     private $_firstUnitId;
     private $_Players;
@@ -71,8 +71,8 @@ class Cli_Model_Game
         $this->_Fields = new Cli_Model_Fields($mMapFields->getMapFields());
 
         $mMapTerrain = new Application_Model_MapTerrain($this->_mapId, $db);
-        $this->_terrain = new Cli_Model_TerrainTypes($mMapTerrain->getTerrain());
-        Zend_Registry::set('terrain', $this->_terrain);
+        $this->_Terrain = new Cli_Model_TerrainTypes($mMapTerrain->getTerrain());
+        Zend_Registry::set('terrain', $this->_Terrain);
 
         $mMapUnits = new Application_Model_MapUnits($this->_mapId, $db);
         $this->_Units = new Cli_Model_Units();
@@ -159,7 +159,7 @@ class Cli_Model_Game
             'firstUnitId' => $this->_firstUnitId,
 //            'specialUnits' => $this->_specialUnits,
             'fields' => $this->_Fields->toArray(),
-            'terrain' => $this->_terrain,
+            'terrain' => $this->_Terrain->toArray(),
             'capitals' => $this->_capitals,
 //            'playersInGameColors' => $this->_playersInGameColors,
             'online' => $this->_online,

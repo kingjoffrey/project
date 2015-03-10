@@ -22,6 +22,7 @@ class Cli_Model_TerrainCosts
 
     public function getCost($type)
     {
+        echo 'type=' . $type . ' $this->_costs[$type]=' . $this->_costs[$type] . "\n";
         $this->_costs[$type];
     }
 

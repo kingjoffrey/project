@@ -1,6 +1,7 @@
 var Terrain = new function () {
     var terrain
     this.init = function (value) {
+        console.log(value)
         terrain = value
     }
     this.get = function (type) {

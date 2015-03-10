@@ -192,7 +192,7 @@ class Cli_Model_Astar extends Cli_Model_Heuristics
                     continue;
                 }
 
-                $g = $this->terrain->getTereinType($terrainType)->getCost($this->movementType);
+                $g = $this->terrain->getTerrainType($terrainType)->getCost($this->movementType);
 
                 // jeżeli koszt ruchu większy od 6 to pomiń to pole
                 if ($g > 6) {

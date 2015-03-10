@@ -33,6 +33,12 @@ class Cli_Model_Path
         foreach ($this->_full as $step) {
             echo 'step[t]= ' . $step['t'] . "\n";
             if (isset($step['cc'])) {
+                $this->_current[] = array(
+                    'x' => $step['x'],
+                    'y' => $step['y'],
+                    't' => $step['t'],
+                    'c' => true
+                );
                 continue;
             }
 
@@ -79,7 +85,7 @@ class Cli_Model_Path
                     $heroesMovesLeft[$heroId] = $army->getHeroes()->getHero($heroId)->getMovesLeft();
                 }
 
-                $heroesMovesLeft[$heroId] -= $terrain->getTereinType($step['t'])->getCost($type);
+                $heroesMovesLeft[$heroId] -= $terrain->getTerrainType($step['t'])->getCost($type);
 
                 if ($heroesMovesLeft[$heroId] < 0) {
                     $skip = true;
@@ -96,16 +102,11 @@ class Cli_Model_Path
                 break;
             }
 
-            if (isset($step['cc'])) {
-                $cc = true;
-            } else {
-                $cc = false;
-            }
             $this->_current[] = array(
                 'x' => $step['x'],
                 'y' => $step['y'],
                 't' => $step['t'],
-                'c' => $cc
+                'c' => false
             );
 
             if ($step['t'] == 'E') {
