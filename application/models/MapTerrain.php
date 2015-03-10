@@ -19,8 +19,6 @@ class Application_Model_MapTerrain extends Coret_Db_Table_Abstract
 
     public function getTerrain()
     {
-        $terrain = array();
-
         $select = $this->_db->select()
             ->from($this->_name, array('flying', 'swimming', 'walking', 'type'))
             ->where($this->_db->quoteIdentifier('mapId') . ' = ?', $this->mapId)
@@ -28,12 +26,7 @@ class Application_Model_MapTerrain extends Coret_Db_Table_Abstract
             ->join($this->_name . '_Lang', $this->_name . ' . ' . $this->_db->quoteIdentifier($this->_primary) . ' = ' . $this->_db->quoteIdentifier($this->_name . '_Lang') . ' . ' . $this->_db->quoteIdentifier($this->_primary), 'name')
             ->order($this->_name . '.' . $this->_primary);
 
-        foreach ($this->selectAll($select) as $row) {
-            $terrain[$row['type']] = $row;
-            unset($terrain[$row['type']]['type']);
-        }
-
-        return $terrain;
+        return $this->selectAll($select);
     }
 
 }

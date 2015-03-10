@@ -31,19 +31,20 @@ class Cli_Model_Path
         echo $type . "\n";
 
         foreach ($this->_full as $step) {
-            echo $step['t'] . "\n";
+            echo 'step[t]= ' . $step['t'] . "\n";
+            if (isset($step['cc'])) {
+                continue;
+            }
+
             foreach ($army->getSoldiers()->getKeys() as $soldierId) {
                 $soldier = $army->getSoldiers()->getSoldier($soldierId);
                 if (!isset($soldiersMovesLeft[$soldierId])) {
                     $soldiersMovesLeft[$soldierId] = $soldier->getMovesLeft();
-                }
-
-                if (isset($step['cc'])) {
-                    continue;
+                    echo 'FIRST $soldiersMovesLeft= ' . $soldiersMovesLeft[$soldierId] . "\n";
                 }
 
                 $soldiersMovesLeft[$soldierId] -= $soldier->getStepCost($terrain, $step['t'], $type);
-                echo $soldiersMovesLeft[$soldierId] . "\n";
+                echo '$soldiersMovesLeft= ' . $soldiersMovesLeft[$soldierId] . "\n";
 
                 if ($soldiersMovesLeft[$soldierId] < 0) {
                     $skip = true;
@@ -61,10 +62,6 @@ class Cli_Model_Path
                     $soldiersMovesLeft[$soldierId] = $soldier->getMovesLeft();
                 }
 
-                if (isset($step['cc'])) {
-                    continue;
-                }
-
                 $soldiersMovesLeft[$soldierId] -= $soldier->getStepCost($terrain, $step['t'], $type);
 
                 if ($soldiersMovesLeft[$soldierId] < 0) {
@@ -80,10 +77,6 @@ class Cli_Model_Path
             foreach ($army->getHeroes()->getKeys() as $heroId) {
                 if (!isset($heroesMovesLeft[$heroId])) {
                     $heroesMovesLeft[$heroId] = $army->getHeroes()->getHero($heroId)->getMovesLeft();
-                }
-
-                if (isset($step['cc'])) {
-                    continue;
                 }
 
                 $heroesMovesLeft[$heroId] -= $terrain[$step['t']][$type];
@@ -116,7 +109,7 @@ class Cli_Model_Path
             );
 
             if ($step['t'] == 'E') {
-                echo 'E' . "\n";
+                echo 'E - break' . "\n";
                 break;
             }
 

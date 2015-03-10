@@ -71,7 +71,7 @@ class Cli_Model_Game
         $this->_Fields = new Cli_Model_Fields($mMapFields->getMapFields());
 
         $mMapTerrain = new Application_Model_MapTerrain($this->_mapId, $db);
-        $this->_terrain = $mMapTerrain->getTerrain();
+        $this->_terrain = new Cli_Model_TerrainTypes($mMapTerrain->getTerrain());
         Zend_Registry::set('terrain', $this->_terrain);
 
         $mMapUnits = new Application_Model_MapUnits($this->_mapId, $db);
@@ -257,7 +257,7 @@ class Cli_Model_Game
         return $this->_firstUnitId;
     }
 
-   public function getPlayersInGameColors()
+    public function getPlayersInGameColors()
     {
         return $this->_playersInGameColors;
     }
