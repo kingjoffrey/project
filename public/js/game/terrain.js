@@ -1,14 +1,13 @@
 var Terrain = new function () {
     var terrain
     this.init = function (value) {
-        console.log(value)
         terrain = value
     }
     this.get = function (type) {
         if (isSet(terrain[type])) {
             return terrain[type]
         } else {
-            console.log('type: ' + type)
+            console.log('Get terrain type                 ERROR: ' + type)
         }
     }
     this.toArray = function () {

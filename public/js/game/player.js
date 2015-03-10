@@ -31,4 +31,7 @@ var Player = function (player, color) {
     this.getLongName = function () {
         return player.longName
     }
+    this.getLost = function () {
+        return player.lost
+    }
 }
