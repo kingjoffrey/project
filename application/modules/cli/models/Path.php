@@ -10,7 +10,8 @@ class Cli_Model_Path
 
     public function __construct($fullPath, Cli_Model_Army $army)
     {
-        echo '********************* PATH                             !!!' . "\n";
+        echo "\n";
+        echo '***                       PATH                             !!!' . "\n";
         if (empty($fullPath)) {
             return $this;
         }
@@ -28,7 +29,7 @@ class Cli_Model_Path
             $type = 'walking';
         }
 
-        echo $type . "\n";
+        echo '      ' . $type . "\n";
 
         foreach ($this->_full as $step) {
             echo 'step[t]= ' . $step['t'] . "\n";
@@ -46,7 +47,7 @@ class Cli_Model_Path
                 $soldier = $army->getSoldiers()->getSoldier($soldierId);
                 if (!isset($soldiersMovesLeft[$soldierId])) {
                     $soldiersMovesLeft[$soldierId] = $soldier->getMovesLeft();
-                    echo 'FIRST $soldiersMovesLeft= ' . $soldiersMovesLeft[$soldierId] . "\n";
+                    echo 'FIRST             $soldiersMovesLeft=    ' . $soldiersMovesLeft[$soldierId] . "\n";
                 }
 
                 $soldiersMovesLeft[$soldierId] -= $soldier->getStepCost($terrain, $step['t'], $type);
