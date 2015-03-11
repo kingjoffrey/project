@@ -98,7 +98,7 @@ class Cli_Model_Soldier extends Cli_Model_Being
         $mSoldiersKilled->add($this->_unitId, $winnerId, $loserId);
     }
 
-    public function getStepCost($terrain, $terrainType, $movementType)
+    public function getStepCost(Cli_Model_TerrainTypes $terrain, $terrainType, $movementType)
     {
         if ($movementType == 'walking') {
             switch ($terrainType) {

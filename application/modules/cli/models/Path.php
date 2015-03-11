@@ -8,18 +8,18 @@ class Cli_Model_Path
     private $_x;
     private $_y;
 
-    public function __construct($fullPath, Cli_Model_Army $army)
+    public function __construct($fullPath, Cli_Model_Army $army, Cli_Model_TerrainTypes $terrain)
     {
+        echo "-------------------------------------------------------------------\n";
         echo "\n";
         echo '***                       PATH                             !!!' . "\n";
         if (empty($fullPath)) {
             return $this;
         }
 
-        $terrain = Zend_Registry::get('terrain');
         $this->_full = $fullPath;
-        $skip = false;
-        $stop = false;
+        $skip = null;
+        $stop = null;
 
         if ($army->canFly()) {
             $type = 'flying';
@@ -31,8 +31,9 @@ class Cli_Model_Path
 
         echo '      ' . $type . "\n";
 
-        foreach ($this->_full as $step) {
+        foreach ($this->_full as $key => $step) {
             echo 'step[t]= ' . $step['t'] . "\n";
+            echo 'key= ' . $key . "\n";
             if (isset($step['cc'])) {
                 $this->_current[] = array(
                     'x' => $step['x'],
@@ -48,36 +49,22 @@ class Cli_Model_Path
                 if (!isset($soldiersMovesLeft[$soldierId])) {
                     $soldiersMovesLeft[$soldierId] = $soldier->getMovesLeft();
                     echo 'FIRST             $soldiersMovesLeft=    ' . $soldiersMovesLeft[$soldierId] . "\n";
+                    echo "\n";
                 }
 
                 $soldiersMovesLeft[$soldierId] -= $soldier->getStepCost($terrain, $step['t'], $type);
                 echo '$soldiersMovesLeft= ' . $soldiersMovesLeft[$soldierId] . "\n";
 
                 if ($soldiersMovesLeft[$soldierId] < 0) {
-                    $skip = true;
+                    if ($skip === null) {
+                        $skip = $key;
+                    }
                 }
 
                 if ($soldiersMovesLeft[$soldierId] <= 0) {
-                    $stop = true;
-                    break;
-                }
-            }
-
-            foreach ($army->getShips()->getKeys() as $soldierId) {
-                $soldier = $army->getShips()->getSoldier($soldierId);
-                if (!isset($soldiersMovesLeft[$soldierId])) {
-                    $soldiersMovesLeft[$soldierId] = $soldier->getMovesLeft();
-                }
-
-                $soldiersMovesLeft[$soldierId] -= $soldier->getStepCost($terrain, $step['t'], $type);
-
-                if ($soldiersMovesLeft[$soldierId] < 0) {
-                    $skip = true;
-                }
-
-                if ($soldiersMovesLeft[$soldierId] <= 0) {
-                    $stop = true;
-                    break;
+                    if ($stop === null) {
+                        $stop = $key;
+                    }
                 }
             }
 
@@ -89,17 +76,26 @@ class Cli_Model_Path
                 $heroesMovesLeft[$heroId] -= $terrain->getTerrainType($step['t'])->getCost($type);
 
                 if ($heroesMovesLeft[$heroId] < 0) {
-                    $skip = true;
+                    if ($skip === null || $key < $skip) {
+                        $skip = $key;
+                    }
                 }
 
                 if ($heroesMovesLeft[$heroId] <= 0) {
-                    $stop = true;
-                    break;
+                    if ($stop === null || $key < $stop) {
+                        $stop = $key;
+                    }
                 }
             }
+        }
 
-            if ($skip) {
-                echo 'skip' . "\n";
+        foreach ($this->_full as $key => $step) {
+            if (isset($step['cc'])) {
+                continue;
+            }
+
+            if ($skip === $key) {
+                echo 'skip=' . $skip . "\n";
                 break;
             }
 
@@ -115,8 +111,8 @@ class Cli_Model_Path
                 break;
             }
 
-            if ($stop) {
-                echo 'stop' . "\n";
+            if ($stop === $key) {
+                echo 'stop=' . $stop . "\n";
                 break;
             }
         }

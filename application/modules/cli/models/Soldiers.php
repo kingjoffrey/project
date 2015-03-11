@@ -20,6 +20,9 @@ class Cli_Model_Soldiers
      */
     public function getSoldier($soldierId)
     {
+        if (!isset($this->_soldiers[$soldierId])) {
+            throw new Exception('');
+        }
         return $this->_soldiers[$soldierId];
     }
 
@@ -87,13 +90,12 @@ class Cli_Model_Soldiers
         return array_keys($this->_soldiers);
     }
 
-    public function saveMove($x, $y, $movesLeft, $type, Cli_Model_Path $path, $gameId, $db)
+    public function saveMove($x, $y, $movesLeft, $type, Cli_Model_Path $path, Cli_Model_TerrainTypes $terrain, $gameId, $db)
     {
         if (empty($this->_soldiers)) {
             return $movesLeft;
         }
 
-        $terrain = Zend_Registry::get('terrain');
         $current = $path->getCurrent();
         $mSoldier = new Application_Model_UnitsInGame($gameId, $db);
 
@@ -107,7 +109,7 @@ class Cli_Model_Soldiers
                 }
                 if (!$step['c']) {
                     $movesSpend += $soldier->getStepCost($terrain, $step['t'], $type);
-                    echo $step['t'] . ' ' . $movesSpend . "\n";
+                    echo 'step[t]=' . $step['t'] . '    movesSpend=' . $movesSpend . "\n";
                 }
             }
 

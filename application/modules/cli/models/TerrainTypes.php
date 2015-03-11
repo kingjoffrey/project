@@ -20,6 +20,10 @@ class Cli_Model_TerrainTypes
         return $types;
     }
 
+    /**
+     * @param $terrainType
+     * @return Cli_Model_TerrainCosts
+     */
     public function getTerrainType($terrainType)
     {
         return $this->_movingTypes[$terrainType];

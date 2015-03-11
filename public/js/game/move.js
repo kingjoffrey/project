@@ -4,7 +4,7 @@ var Move = new function () {
         army
 
     this.start = function (r, ii) {
-        if (notSet(r.color)) {
+        if (notSet(r.path)) {
             Gui.unlock()
             Websocket.executing = 0
             if (Me.colorEquals(r.color)) {

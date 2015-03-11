@@ -21,7 +21,7 @@ class Cli_Model_Garrison
                                 'x' => $x,
                                 'y' => $y,
                                 't' => 'c')
-                            ), $army);
+                            ), $army, Zend_Registry::get('terrain'));
                             $army->move($game, $path, $db, $gameHandler);
                         }
                     }
@@ -51,19 +51,6 @@ class Cli_Model_Garrison
                 $armies->changeHeroAffiliation($armyId, $this->_newArmyId, $heroId, $gameId, $db);
             }
         }
-
-//        if ($heroes->exists() || $ships->exists()) {
-//            echo 'hhh';
-//            $this->_newArmyId = $armies->create($army->getX(), $army->getY(), $army->getColor(), $game, $db);
-//            foreach ($heroes->getKeys() as $heroId) {
-//                echo 'iii';
-//                $armies->changeHeroAffiliation($armyId, $this->_newArmyId, $heroId, $gameId, $db);
-//            }
-//            foreach ($ships->getKeys() as $soldierId) {
-//                echo 'jjj';
-//                $armies->changeShipAffiliation($armyId, $this->_newArmyId, $soldierId, $gameId, $db);
-//            }
-//        }
 
         echo '$countGarrisonUnits=' . $countGarrisonUnits . ' > $numberOfUnits=' . $numberOfUnits . "\n";
         // znajduję nadmiarowe jednostki
