@@ -212,10 +212,9 @@ var Three = new function () {
 
         scene.add(mesh)
 
-        return mesh.id
+        return mesh
     }
-    this.armyChangerFlag = function (id, color, number) {
-        var mesh = scene.getObjectById(id)
+    this.armyChangeFlag = function (mesh, color, number) {
         mesh.children.splice(0, 1)
 
         var material = new THREE.MeshLambertMaterial({color: color})

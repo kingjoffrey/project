@@ -36,8 +36,7 @@ var Armies = function () {
             Zoom.lens.setcenter(army.getX(), army.getY())
         }
 
-        var mesh = Three.getScene().getObjectById(army.getMeshId())
-        Three.getScene().remove(mesh)
+        Three.getScene().remove(army.getMesh())
         $('#' + armyId).remove()
         delete armies[armyId]
     }

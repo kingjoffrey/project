@@ -44,10 +44,13 @@ var Move = new function () {
     var stepLoop = function (r, ii) {
         console.log('move.stepLoop(' + ii + ') start')
         for (var step in r.path) {
+            if (notSet(r.path[step].c)) {
+                continue
+            }
             break
         }
 
-        if (isSet(r.path[step])) {
+        if (isSet(r.path[step].c)) {
             console.log(step)
             console.log(r.path[step])
             if (!player.isComputer() || Gui.show) {
@@ -64,7 +67,7 @@ var Move = new function () {
                             throw('error20150224')
                         }
                         army.setPosition(r.path[step].x, r.path[step].y)
-                        delete r.path[step]
+                        delete r.path[step].c
                         stepLoop(r, ii);
                     })
             } else {
@@ -144,7 +147,7 @@ var Move = new function () {
                     }
                     for (var armyId in r.battle.defenders[color]) {
                         var battleArmy = r.battle.defenders[color][armyId]
-                        var playerArmy=Players.get(color).getArmies().get(armyId)
+                        var playerArmy = Players.get(color).getArmies().get(armyId)
                         for (var soldierId in battleArmy.soldiers) {
                             if (battleArmy.soldiers[soldierId]) {
                                 playerArmy.deleteSoldier(soldierId)

@@ -1,4 +1,7 @@
 var Army = function (army, bgColor, miniMapColor, textColor, color) {
+    var heroSplitKey = null,
+        soldierSplitKey = null
+
     this.skippedHeroes = {}
     this.skippedSoldiers = {}
     this.update = function (a) {
@@ -36,7 +39,7 @@ var Army = function (army, bgColor, miniMapColor, textColor, color) {
                         army.ships[soldierId] = a.ships[soldierId]
                     }
                 }
-            }else if (key == 'heroes') {
+            } else if (key == 'heroes') {
                 for (var heroId in army.heroes) {
                     if (notSet(a.heroes[heroId])) {
                         delete army.heroes[heroId]
@@ -51,11 +54,11 @@ var Army = function (army, bgColor, miniMapColor, textColor, color) {
             army[key] = a[key]
         }
         Fields.get(army.x, army.y).addArmyId(army.id, color)
-        Three.armyChangerFlag(this.getMeshId(), color, this.getNumberOfUnits())
+        Three.armyChangeFlag(army.mesh, color, this.getNumberOfUnits())
         $('#' + this.getArmyId() + '.a').css({left: army.x * 2 + 'px', top: army.y * 2 + 'px'})
     }
-    this.getMeshId = function () {
-        return meshId
+    this.getMesh = function () {
+        return army.mesh
     }
     this.getArmyId = function () {
         return army.id
@@ -156,7 +159,7 @@ var Army = function (army, bgColor, miniMapColor, textColor, color) {
         return army.ships[soldierId]
     }
     this.setPosition = function (x, y) {
-        Three.getScene().getObjectById(meshId).position.set(x * 4 - 216, 0, y * 4 - 311)
+        army.mesh.position.set(x * 4 - 216, 0, y * 4 - 311)
     }
     this.getNumberOfUnits = function () {
         var numberOfUnits = countProperties(army.heroes) + countProperties(army.soldiers)
@@ -179,9 +182,7 @@ var Army = function (army, bgColor, miniMapColor, textColor, color) {
         return army.fortified
     }
 
-    var meshId = Three.addArmy(army.x, army.y, bgColor, this.getNumberOfUnits()),
-        heroSplitKey = null,
-        soldierSplitKey = null
+    army.mesh = Three.addArmy(army.x, army.y, bgColor, this.getNumberOfUnits())
 
     Fields.get(army.x, army.y).addArmyId(army.id, color)
     map.append(
