@@ -35,12 +35,6 @@ class Cli_Model_Path
             echo 'step[t]= ' . $step['t'] . "\n";
             echo 'key= ' . $key . "\n";
             if (isset($step['cc'])) {
-                $this->_current[] = array(
-                    'x' => $step['x'],
-                    'y' => $step['y'],
-                    't' => $step['t'],
-                    'c' => true
-                );
                 continue;
             }
 
@@ -91,6 +85,12 @@ class Cli_Model_Path
 
         foreach ($this->_full as $key => $step) {
             if (isset($step['cc'])) {
+                $this->_current[] = array(
+                    'x' => $step['x'],
+                    'y' => $step['y'],
+                    't' => $step['t'],
+                    'c' => true
+                );
                 continue;
             }
 

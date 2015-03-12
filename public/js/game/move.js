@@ -42,7 +42,6 @@ var Move = new function () {
         stepLoop(r, ii)
     }
     var stepLoop = function (r, ii) {
-        console.log('move.stepLoop(' + ii + ') start')
         for (var step in r.path) {
             if (notSet(r.path[step].c)) {
                 continue
@@ -99,7 +98,6 @@ var Move = new function () {
                 Move.end(r, ii)
             }
         }
-        console.log('move.stepLoop(' + ii + ') end')
     }
     this.end = function (r, ii) {
         console.log('move.end(' + ii + ') start')
