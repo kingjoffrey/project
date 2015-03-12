@@ -226,7 +226,7 @@ class Cli_Model_Army
             }
         }
         foreach ($this->_Ships->getKeys() as $soldierId) {
-            $soldier = $this->_Soldiers->getSoldier($soldierId);
+            $soldier = $this->_Ships->getSoldier($soldierId);
             if ($this->_movesLeft > $soldier->getMovesLeft()) {
                 $this->setMovesLeft($soldier->getMovesLeft());
             }
@@ -340,6 +340,8 @@ class Cli_Model_Army
         $this->_Ships->add($soldierId, $soldier);
         $mSoldier = new Application_Model_UnitsInGame($gameId, $db);
         $mSoldier->soldierUpdateArmyId($soldierId, $this->_id);
+
+        $this->_canFly--;
 
         if ($this->_movesLeft > $soldier->getMovesLeft()) {
             $this->setMovesLeft($soldier->getMovesLeft());

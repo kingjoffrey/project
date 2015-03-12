@@ -25,7 +25,18 @@ var Army = function (army, bgColor, miniMapColor, textColor, color) {
                         army.soldiers[soldierId] = a.soldiers[soldierId]
                     }
                 }
-            } else if (key == 'heroes') {
+            } else if (key == 'ships') {
+                for (var soldierId in army.ships) {
+                    if (notSet(a.ships[soldierId])) {
+                        delete army.ships[soldierId]
+                    }
+                }
+                for (var soldierId in a.ships) {
+                    if (a.ships[soldierId]) {
+                        army.ships[soldierId] = a.ships[soldierId]
+                    }
+                }
+            }else if (key == 'heroes') {
                 for (var heroId in army.heroes) {
                     if (notSet(a.heroes[heroId])) {
                         delete army.heroes[heroId]
@@ -41,6 +52,7 @@ var Army = function (army, bgColor, miniMapColor, textColor, color) {
         }
         Fields.get(army.x, army.y).addArmyId(army.id, color)
         Three.armyChangerFlag(this.getMeshId(), color, this.getNumberOfUnits())
+        $('#' + this.getArmyId() + '.a').css({left: army.x * 2 + 'px', top: army.y * 2 + 'px'})
     }
     this.getMeshId = function () {
         return meshId
@@ -62,6 +74,14 @@ var Army = function (army, bgColor, miniMapColor, textColor, color) {
             }
             if (moves > army.soldiers[i].movesLeft) {
                 moves = army.soldiers[i].movesLeft
+            }
+        }
+        for (var i in  army.ships) {
+            if (notSet(moves)) {
+                moves = army.ships[i].movesLeft
+            }
+            if (moves > army.ships[i].movesLeft) {
+                moves = army.ships[i].movesLeft
             }
         }
         for (var i in army.heroes) {
@@ -129,6 +149,12 @@ var Army = function (army, bgColor, miniMapColor, textColor, color) {
     this.getSoldier = function (soldierId) {
         return army.soldiers[soldierId]
     }
+    this.getShips = function () {
+        return army.ships
+    }
+    this.getShip = function (soldierId) {
+        return army.ships[soldierId]
+    }
     this.setPosition = function (x, y) {
         Three.getScene().getObjectById(meshId).position.set(x * 4 - 216, 0, y * 4 - 311)
     }
@@ -143,6 +169,9 @@ var Army = function (army, bgColor, miniMapColor, textColor, color) {
     this.deleteSoldier = function (soldierId) {
         delete army.soldiers[soldierId]
     }
+    this.deleteShip = function (soldierId) {
+        delete army.ships[soldierId]
+    }
     this.deleteHero = function (heroId) {
         delete army.heroes[heroId]
     }
@@ -153,6 +182,7 @@ var Army = function (army, bgColor, miniMapColor, textColor, color) {
     var meshId = Three.addArmy(army.x, army.y, bgColor, this.getNumberOfUnits()),
         heroSplitKey = null,
         soldierSplitKey = null
+
     Fields.get(army.x, army.y).addArmyId(army.id, color)
     map.append(
         $('<div>')

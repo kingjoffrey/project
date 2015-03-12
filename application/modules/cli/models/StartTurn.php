@@ -5,14 +5,15 @@ class Cli_Model_StartTurn
 
     public function __construct($playerId, IWebSocketConnection $user, Zend_Db_Adapter_Pdo_Pgsql $db, Cli_GameHandler $gameHandler)
     {
-        $players = $user->parameters['game']->getPlayers();
-        $color = $user->parameters['game']->getPlayerColor($playerId);
+        $game = $this->getGame($user);
+        $players = $game->getPlayers();
+        $color = $game->getPlayerColor($playerId);
         $player = $players->getPlayer($color);
         if ($player->getTurnActive()) {
             return;
         }
-        $gameId = $user->parameters['game']->getId();
-        $fields = $user->parameters['game']->getFields();
+        $gameId = $game->getId();
+        $fields = $game->getFields();
         $armies = $player->getArmies();
         $castles = $player->getCastles();
         $towers = $player->getTowers();
@@ -40,7 +41,7 @@ class Cli_Model_StartTurn
             $production = $castle->getProduction();
 
             if ($isComputer) {
-                if ($user->parameters['game']->getTurnNumber() < 7) {
+                if ($game->getTurnNumber() < 7) {
                     $unitId = $castle->getUnitIdWithShortestProductionTime($production);
                 } else {
                     $unitId = $castle->findBestCastleProduction();
@@ -83,7 +84,7 @@ class Cli_Model_StartTurn
                 }
 
                 if (empty($armyId)) {
-                    $armyId = $armies->create($x, $y, $color, $user->parameters['game'], $db);
+                    $armyId = $armies->create($x, $y, $color, $game, $db);
                 }
 
                 $armies->getArmy($armyId)->createSoldier($gameId, $playerId, $unitId, $db);
@@ -100,6 +101,15 @@ class Cli_Model_StartTurn
             'color' => $color
         );
         $gameHandler->sendToChannel($db, $token, $gameId);
+    }
+
+    /**
+     * @param IWebSocketConnection $user
+     * @return Cli_Model_Game
+     */
+    private function getGame(IWebSocketConnection $user)
+    {
+        return $user->parameters['game'];
     }
 
 }

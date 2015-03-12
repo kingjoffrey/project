@@ -78,10 +78,14 @@ class Cli_Model_Fields
                         return 'e';
                     }
                 }
-            } elseif ($field->getArmies()) {
-                foreach ($field->getArmies() as $armyId => $armyColor) {
+            } elseif ($armies = $field->getArmies()) {
+                foreach ($armies as $armyId => $armyColor) {
                     if ($players->sameTeam($armyColor, $color)) {
-                        return $field->getType();
+                        if ($field->getType() == 'w' && $armyColor == $color) {
+                            return 'S';
+                        } else {
+                            return $field->getType();
+                        }
                     } else {
                         if ($destX == $x && $destY == $y) {
                             return 'E';

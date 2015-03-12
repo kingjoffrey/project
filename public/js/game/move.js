@@ -15,10 +15,6 @@ var Move = new function () {
         player = Players.get(r.color)
         army = player.getArmies().get(r.army.id)
 
-        console.log(' ')
-        console.log('move.start(' + ii + ') start')
-        console.log(r)
-
         switch (army.getMovementType()) {
             case 'flying':
                 Sound.play('fly');
@@ -35,12 +31,7 @@ var Move = new function () {
             Message.remove()
         }
 
-        //if (notSet(r.path[1])) {
-        //    Zoom.lens.setcenter(r.army.x, r.army.y)
-        //} else {
-        //    Fields.get(army.getX(), army.getY()).removeArmyId(army.getArmyId())
         Zoom.lens.setcenter(r.path[0].x, r.path[0].y)
-        //}
 
         if (player.isComputer()) {
             stepTime = 100
@@ -49,7 +40,6 @@ var Move = new function () {
         }
 
         stepLoop(r, ii)
-        console.log('move.start(' + ii + ') end')
     }
     var stepLoop = function (r, ii) {
         console.log('move.stepLoop(' + ii + ') start')

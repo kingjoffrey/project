@@ -48,6 +48,7 @@ var AStar = new function () {
         close = {}
         nr = 0
         movementType = army.getMovementType()
+        console.log(movementType)
         Three.clearPathCircles()
         var startX = army.getX(),
             startY = army.getY(),

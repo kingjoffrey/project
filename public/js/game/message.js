@@ -570,78 +570,12 @@ var Message = {
 
         for (var i in army.getSoldiers()) {
             numberOfUnits++
-            var soldier = army.getSoldier(i)
-            div.append(
-                $('<div>')
-                    .addClass('row')
-                    .append(
-                    $('<div>')
-                        .addClass('rowContent')
-                        .append($('<div>').addClass('nr').html(numberOfUnits))
-                        .append($('<div>').addClass('img').html(
-                            $('<img>').attr({
-                                'src': Unit.getImage(soldier.unitId, color),
-                                'id': 'unit' + soldier.soldierId
-                            })
-                        ))
-                        .append(
-                        $('<table>')
-                            .addClass('leftTable')
-                            .append(
-                            $('<tr>')
-                                .append($('<td>').html(translations.currentMoves + ': '))
-                                .append($('<td>').html(soldier.movesLeft).addClass('value'))
-                        )
-                            .append(
-                            $('<tr>')
-                                .append($('<td>').html(translations.defaultMoves + ': '))
-                                .append($('<td>').html(Units.get(soldier.unitId).moves).addClass('value'))
-                        )
-                            .append(
-                            $('<tr>')
-                                .append($('<td>').html(translations.attackPoints + ': '))
-                                .append(
-                                $('<td>')
-                                    .append($('<div>').html(Units.get(soldier.unitId).a))
-                                    .append(attackFlyBonus.clone())
-                                    .append(attackHeroBonus.clone())
-                                    .addClass('value')
-                            )
-                        )
-                            .append(
-                            $('<tr>')
-                                .append($('<td>').html(translations.defencePoints + ': '))
-                                .append(
-                                $('<td>')
-                                    .append($('<div>').html(Units.get(soldier.unitId).d))
-                                    .append(defenseFlyBonus.clone())
-                                    .append(defenseHeroBonus.clone())
-                                    .append(defenseTowerBonus.clone())
-                                    .append(defenseCastleBonus.clone())
-                                    .addClass('value')
-                            )
-                        )
-                    )
-                        .append(
-                        $('<table>')
-                            .addClass('rightTable')
-                            .append(
-                            $('<tr>')
-                                .append($('<td>').html(translations.movementCostThroughTheForest + ': '))
-                                .append($('<td>').html(Units.get(soldier.unitId).f).addClass('value'))
-                        )
-                            .append(
-                            $('<tr>')
-                                .append($('<td>').html(translations.movementCostThroughTheSwamp + ': '))
-                                .append($('<p>').html(Units.get(soldier.unitId).s).addClass('value')))
-                            .append(
-                            $('<tr>')
-                                .append($('<td>').html(translations.movementCostThroughTheHills + ': '))
-                                .append($('<p>').html(Units.get(soldier.unitId).h).addClass('value'))
-                        )
-                    )
-                )
-            );
+            div.append(this.statusContent(numberOfUnits, army.getSoldier(i), color, attackFlyBonus, attackHeroBonus, defenseFlyBonus, defenseHeroBonus, defenseTowerBonus, defenseCastleBonus));
+        }
+
+        for (var i in army.getShips()) {
+            numberOfUnits++
+            div.append(this.statusContent(numberOfUnits, army.getShip(i), color, attackFlyBonus, attackHeroBonus, defenseFlyBonus, defenseHeroBonus, defenseTowerBonus, defenseCastleBonus));
         }
 
         for (var i in army.getHeroes()) {
@@ -842,7 +776,6 @@ var Message = {
         }
     },
     kill: function (b, r, ii) {
-        console.log('kill start')
         for (var i in b) {
             break
         }
@@ -908,7 +841,6 @@ var Message = {
                 Message.kill(b, r, ii);
             });
         }
-        console.log('kill end')
     },
     raze: function () {
         if (!Me.getSelectedArmyId()) {
@@ -1067,11 +999,28 @@ var Message = {
     },
     treasury: function () {
         var myTowers = Me.getTowers().count(),
-            myCastles = Me.getCastles().count(),
-            myCastlesIncome = Me.getCastles().countIncome(),
-            myUnits = Me.getArmies().countSoldiers(),
-            myUnitsOutcome = Me.getArmies().countOutcome()
+            myCastles = 0,
+            myCastlesIncome = 0,
+            myUnits = 0,
+            myUnitsOutcome = 0
 
+        for (var i in Me.getCastles().toArray()) {
+            var castle = Me.getCastle(i)
+            myCastles++
+            myCastlesIncome += castle.getIncome()
+        }
+
+        for (var i in Me.getArmies().toArray()) {
+            var army = Me.getArmy(i)
+            for (var j in army.getSoldiers()) {
+                myUnitsOutcome += Units.get(army.getSoldier(j).unitId).cost
+                myUnits++
+            }
+            for (var j in army.getShips()) {
+                myUnitsOutcome += Units.get(army.getShip(j).unitId).cost
+                myUnits++
+            }
+        }
 
         var div = $('<div>')
             .addClass('overflow')
@@ -1114,51 +1063,43 @@ var Message = {
         this.ok(id)
     },
     income: function () {
-        var myTowers = 0,
+        var myTowers = Me.getTowers().count(),
             myCastles = 0,
             myCastlesIncome = 0
-
-        for (i in towers) {
-            if (towers[i].color == Me.getColor()) {
-                myTowers++
-            }
-        }
-
 
         var table = $('<table>')
             .addClass('treasury')
 
         var click = function (i) {
             return function () {
-                zoom.lens.setcenter(castles[i].x * 40, castles[i].y * 40)
+                Zoom.lens.setcenter(Me.getCastle(i).getX(), Me.getCastle(i).getY())
             }
         }
 
-        for (i in castles) {
-            if (castles[i].color == Me.getColor()) {
-                myCastles++
-                myCastlesIncome += castles[i].income
-                table.append(
-                    $('<tr>')
-                        .append($('<td>'))
-                        .append($('<td>').html(castles[i].name))
-                        .append($('<td>').html(castles[i].income + ' ' + translations.gold).addClass('r'))
-                        .click(click(i))
-                        .mouseover(function () {
-                            $(this).children().css({
-                                background: 'lime',
-                                color: '#000'
-                            })
+        for (var i in Me.getCastles().toArray()) {
+            var castle = Me.getCastle(i)
+            myCastles++
+            myCastlesIncome += castle.getIncome()
+            table.append(
+                $('<tr>')
+                    .append($('<td>'))
+                    .append($('<td>').html(castle.getName()))
+                    .append($('<td>').html(castle.getIncome() + ' ' + translations.gold).addClass('r'))
+                    .click(click(i))
+                    .mouseover(function () {
+                        $(this).children().css({
+                            background: 'lime',
+                            color: '#000'
                         })
-                        .mouseout(function () {
-                            $(this).children().css({
-                                background: '#000',
-                                color: 'lime'
-                            })
+                    })
+                    .mouseout(function () {
+                        $(this).children().css({
+                            background: '#000',
+                            color: 'lime'
                         })
-                        .css('color', 'lime')
-                )
-            }
+                    })
+                    .css('color', 'lime')
+            )
         }
         table.append(
             $('<tr>')
@@ -1186,28 +1127,45 @@ var Message = {
     },
     upkeep: function () {
         var myUnits = 0,
-            myUnitsGold = 0,
-            i
+            myUnitsGold = 0
 
         var table = $('<table>')
             .addClass('treasury')
 
         var center = function (i) {
             return function () {
-                zoom.lens.setcenter(game.players[Me.getColor()].armies[i].x * 40, game.players[Me.getColor()].armies[i].y * 40)
+                Zoom.lens.setcenter(Me.getArmy(i).getX(), Me.getArmy(i).getY())
             }
         }
 
         for (var i in Me.getArmies().toArray()) {
-            for (j in Me.getArmy(i).soldiers) {
+            var army = Me.getArmy(i)
+            for (var j in army.getSoldiers()) {
+                var soldier = army.getSoldier(j)
+                myUnitsGold += Units.get(soldier.unitId).cost
                 myUnits++
-                var army = Me.getArmy(i)
-                myUnitsGold += Units.get(army.soldiers[j].unitId).cost
                 table.append(
                     $('<tr>')
-                        .append($('<td>').html($('<img>').attr('src', Unit.getImage(army.soldiers[j].unitId, Me.getColor()))))
-                        .append($('<td>').html(Units.get(army.soldiers[j].unitId).name_lang))
-                        .append($('<td>').html(Units.get(army.soldiers[j].unitId).cost + ' ' + translations.gold).addClass('r'))
+                        .append($('<td>').html($('<img>').attr('src', Unit.getImage(soldier.unitId, Me.getColor()))))
+                        .append($('<td>').html(Units.get(soldier.unitId).name_lang))
+                        .append($('<td>').html(Units.get(soldier.unitId).cost + ' ' + translations.gold).addClass('r'))
+                        .append(
+                        $('<td>')
+                            .html($('<img>').attr('src', '/img/game/center.png'))
+                            .addClass('iconButton buttonColors')
+                            .click(center(i))
+                    )
+                )
+            }
+            for (var j in army.getShips()) {
+                var soldier = army.getShip(j)
+                myUnitsGold += Units.get(soldier.unitId).cost
+                myUnits++
+                table.append(
+                    $('<tr>')
+                        .append($('<td>').html($('<img>').attr('src', Unit.getImage(soldier.unitId, Me.getColor()))))
+                        .append($('<td>').html(Units.get(soldier.unitId).name_lang))
+                        .append($('<td>').html(Units.get(soldier.unitId).cost + ' ' + translations.gold).addClass('r'))
                         .append(
                         $('<td>')
                             .html($('<img>').attr('src', '/img/game/center.png'))
@@ -1302,5 +1260,64 @@ var Message = {
         $("#sortable").sortable()
         $("#sortable").disableSelection()
 
+    },
+    statusContent: function (numberOfUnits, soldier, color, attackFlyBonus, attackHeroBonus, defenseFlyBonus, defenseHeroBonus, defenseTowerBonus, defenseCastleBonus) {
+        return $('<div>')
+            .addClass('row')
+            .append($('<div>')
+                .addClass('rowContent')
+                .append($('<div>').addClass('nr').html(numberOfUnits))
+                .append($('<div>').addClass('img').html(
+                    $('<img>').attr({
+                        'src': Unit.getImage(soldier.unitId, color),
+                        'id': 'unit' + soldier.soldierId
+                    })
+                ))
+                .append($('<table>')
+                    .addClass('leftTable')
+                    .append($('<tr>')
+                        .append($('<td>').html(translations.currentMoves + ': '))
+                        .append($('<td>').html(soldier.movesLeft).addClass('value'))
+                )
+                    .append($('<tr>')
+                        .append($('<td>').html(translations.defaultMoves + ': '))
+                        .append($('<td>').html(Units.get(soldier.unitId).moves).addClass('value'))
+                )
+                    .append($('<tr>')
+                        .append($('<td>').html(translations.attackPoints + ': '))
+                        .append($('<td>')
+                            .append($('<div>').html(Units.get(soldier.unitId).a))
+                            .append(attackFlyBonus.clone())
+                            .append(attackHeroBonus.clone())
+                            .addClass('value')
+                    )
+                )
+                    .append($('<tr>')
+                        .append($('<td>').html(translations.defencePoints + ': '))
+                        .append($('<td>')
+                            .append($('<div>').html(Units.get(soldier.unitId).d))
+                            .append(defenseFlyBonus.clone())
+                            .append(defenseHeroBonus.clone())
+                            .append(defenseTowerBonus.clone())
+                            .append(defenseCastleBonus.clone())
+                            .addClass('value')
+                    )
+                )
+            )
+                .append($('<table>')
+                    .addClass('rightTable')
+                    .append($('<tr>')
+                        .append($('<td>').html(translations.movementCostThroughTheForest + ': '))
+                        .append($('<td>').html(Units.get(soldier.unitId).f).addClass('value'))
+                )
+                    .append($('<tr>')
+                        .append($('<td>').html(translations.movementCostThroughTheSwamp + ': '))
+                        .append($('<p>').html(Units.get(soldier.unitId).s).addClass('value')))
+                    .append($('<tr>')
+                        .append($('<td>').html(translations.movementCostThroughTheHills + ': '))
+                        .append($('<p>').html(Units.get(soldier.unitId).h).addClass('value'))
+                )
+            )
+        )
     }
 }
