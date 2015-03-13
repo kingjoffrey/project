@@ -119,9 +119,19 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
             )
         );
 
+        $testRoute = new Zend_Controller_Router_Route(
+            'test/:controller/:action/*',
+            array(
+                'module' => 'default',
+                'controller' => 'test',
+                'action' => 'index'
+            )
+        );
+
         $router->addRoute('langRoute', $langRoute);
         $router->addRoute('defaultRoute', $defaultRoute);
         $router->addRoute('adminRoute', $adminRoute);
+        $router->addRoute('testRoute', $testRoute);
     }
 
     protected function _initTranslate()

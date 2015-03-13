@@ -24,23 +24,23 @@ var Three = new function () {
 
     var loader = new THREE.JSONLoader();
     this.loadMountains = function () {
-        loader.load('/models/mountain.json', Three.getGeomHandler())
+        var i = 0
+        for (var y = -70; y < 70; y++) {
+            for (var x = -50; x < 50; x++) {
+                i++
+                loader.load('/models/mountain.json', Three.getGeomHandler(x, y))
+            }
+        }
+        console.log(i)
     }
 
-    this.getGeomHandler = function () {
+    this.getGeomHandler = function (x, y) {
         return function (geometry) {
             var material = new THREE.MeshLambertMaterial({color: '#808080'})
-            var i = 0
-            for (var y = -70; y < 70; y++) {
-                for (var x = -50; x < 50; x++) {
-                    i++
-                    var model = new THREE.Mesh(geometry, material);
-                    model.scale.set(1, 1, 1);
-                    model.position.set(x * 4, 0, y * 4);
-                    Three.scene.add(model);
-                }
-            }
-            console.log(i)
+            var mesh = new THREE.Mesh(geometry, material);
+            mesh.scale.set(1, 1, 1);
+            mesh.position.set(x * 4, 0, y * 4);
+            Three.scene.add(mesh);
         };
     }
 
