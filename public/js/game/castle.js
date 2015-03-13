@@ -1,5 +1,5 @@
 var Castle = function (castle, bgColor, miniMapColor, textColor) {
-    var meshId = Three.addCastle(castle.x, castle.y, bgColor, castle.id)
+    var meshId = Three.addCastle(castle.x, castle.y, bgColor, castle.defense)
 
     map.append(
         $('<div>').css({

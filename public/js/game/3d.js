@@ -113,6 +113,7 @@ var Three = new function () {
     }
 
     var initTower = function () {
+        tower.scale = 1.5
         towerModel = loader.parse(tower)
         flagModel = loader.parse(flag)
     }
@@ -140,22 +141,39 @@ var Three = new function () {
     }
 
     var initCastle = function () {
-        castle.scale = 2
-        castleModel = loader.parse(castle)
-        flagModel = loader.parse(flag)
-    }
-    this.addCastle = function (x, y, color, castleId) {
+            castle_1.scale = 3
+            castle_2.scale = 3
+            castle_3.scale = 3
+            castle_4.scale = 3
+            castleModel_1 = loader.parse(castle_1)
+            castleModel_2 = loader.parse(castle_2)
+            castleModel_3 = loader.parse(castle_3)
+            castleModel_4 = loader.parse(castle_4)
+        },
+        getCastleModel = function (defence) {
+            switch (defence) {
+                case 2:
+                    return castleModel_2.geometry
+                    break
+                case 3:
+                    return castleModel_3.geometry
+                    break
+                case 4:
+                    return castleModel_4.geometry
+                    break
+            }
+        }
+
+
+    this.addCastle = function (x, y, color, defence) {
         var material = new THREE.MeshLambertMaterial({color: color})
         material.side = THREE.DoubleSide
 
         var castleMaterial = new THREE.MeshLambertMaterial({color: color})
         castleMaterial.side = THREE.DoubleSide
 
-        var mesh = new THREE.Mesh(castleModel.geometry, castleMaterial)
+        var mesh = new THREE.Mesh(castleModel_1.geometry, castleMaterial)
         mesh.position.set(x * 4 - 214, 0, y * 4 - 309)
-
-        mesh.name = 'castle'
-        mesh.identification = castleId
 
         if (showShadows) {
             mesh.castShadow = true
@@ -163,15 +181,21 @@ var Three = new function () {
         }
         scene.add(mesh)
 
-        var flagMesh = new THREE.Mesh(flagModel.geometry, material)
-        flagMesh.position.set(x * 4 - 210.8, 1.7, y * 4 - 312.4)
-        scene.add(flagMesh)
+        for (var i = 2; i <= defence; i++) {
+            var m = new THREE.Mesh(getCastleModel(i), castleMaterial)
+            //m.position.set(x * 4 - 214, 0, y * 4 - 309)
 
+            if (showShadows) {
+                m.castShadow = true
+                m.receiveShadow = true
+            }
+            mesh.add(m)
+        }
         return mesh.id
     }
 
     var initArmy = function () {
-        hero.scale = 4
+        hero.scale = 6
         armyModel = loader.parse(hero)
         flag_1.scale = 5
         flag_1Model = loader.parse(flag_1)
