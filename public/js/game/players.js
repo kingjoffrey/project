@@ -79,7 +79,6 @@ var Players = new function () {
             kineticLayer.draw()
         }
     }
-
     this.updateOnline = function () {
         for (var shortName in game.online) {
             if (isSet(wedges[shortName].online)) {
@@ -98,20 +97,6 @@ var Players = new function () {
         }
         kineticLayer.draw()
     }
-
-    //var isMy = function () {
-    //    for (color in game.online) {
-    //        if (game.online[color]) {
-    //            if (game.me.color == color) {
-    //                return 1
-    //            } else {
-    //                return 0
-    //            }
-    //        }
-    //    }
-    //}
-
-
     this.init = function (players) {
         kineticStage = new Kinetic.Stage({
             container: 'playersCanvas',
