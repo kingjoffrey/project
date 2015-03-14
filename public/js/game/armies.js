@@ -24,7 +24,7 @@ var Armies = function () {
     this.toArray = function () {
         return armies
     }
-    this.delete = function (armyId, quiet) {
+    this.delete = function (armyId, show) {
         if (!this.hasArmy(armyId)) {
             throw ('Brak armi o armyId = ' + armyId );
             return
@@ -32,7 +32,7 @@ var Armies = function () {
         var army = this.get(armyId)
         Fields.get(army.getX(), army.getY()).removeArmyId(armyId)
 
-        if (isTruthful(quiet)) {
+        if (isTruthful(show)) {
             Zoom.lens.setcenter(army.getX(), army.getY())
         }
 
@@ -56,5 +56,30 @@ var Armies = function () {
             i++
         }
         return i
+    }
+    this.updateDefenderArmy = function (armyId) {
+        var army = this.get(armyId)
+        if (army.getNumberOfUnits()) {
+            if (countProperties(army.getShips())) {
+                army.setCanSwim(1)
+                army.setCanFly(0)
+            } else {
+                var soldiers = army.getSoldiers(),
+                    canFly = -countProperties(army.getHeroes())
+                if (canFly) {
+                    canFly++
+                }
+                for (var soldierId in soldiers) {
+                    if (Units.get(soldiers[soldierId].unitId).canFly) {
+                        canFly++
+                    } else {
+                        canFly--
+                    }
+                }
+                army.setCanFly(canFly)
+            }
+        } else {
+            this.delete(armyId)
+        }
     }
 }

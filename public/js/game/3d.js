@@ -198,7 +198,7 @@ var Three = new function () {
         updateCastleModel(mesh, defense, castleMaterial)
         return mesh
     }
-    this.castleChangeDefense = function (mesh, defense) {
+    this.castleChangeDefense = function (mesh, defense, color) {
         mesh.children.splice(0, 3)
 
         var castleMaterial = new THREE.MeshLambertMaterial({color: color})

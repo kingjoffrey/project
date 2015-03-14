@@ -1,23 +1,3 @@
-// *** OTHER ***
-
-function makeMyCursorUnlock() {
-    //board.css('cursor', 'url(/img/game/cursor.png), auto')
-    $('.tower').css('cursor', 'url(/img/game/cursor.png), auto')
-    $('.ruin').css('cursor', 'url(/img/game/cursor.png), auto')
-    $('.castle:not(.' + game.me.color + ')').css('cursor', 'url(/img/game/cursor.png), auto')
-    $('.army').css('cursor', 'url(/img/game/cursor.png), auto')
-
-    Castle.myCursor()
-}
-
-function makeMyCursorLock() {
-    //board.css('cursor', 'url(/img/game/cursor_hourglass.png), wait')
-    $('.tower').css('cursor', 'url(/img/game/cursor_hourglass.png), wait')
-    $('.ruin').css('cursor', 'url(/img/game/cursor_hourglass.png), wait')
-    $('.castle:not(.' + Me.getColor() + ')').css('cursor', 'url(/img/game/cursor_hourglass.png), wait')
-    $('.army').css('cursor', 'url(/img/game/cursor_hourglass.png), wait')
-}
-
 function titleBlink(msg) {
     var timeoutId = Game.getTimeoutId()
     if (timeoutId) {
@@ -124,16 +104,4 @@ function countProperties(obj) {
     }
 
     return count;
-}
-
-function artifactsReformat() {
-//    for (i in artifacts) {
-//        for (j in artifacts[i]) {
-//            if (artifacts[i][j]) {
-//                console.log(j);
-//                console.log(artifacts[i][j]);
-//            }
-//        }
-//        break;
-//    }
 }

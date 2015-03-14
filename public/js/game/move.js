@@ -154,19 +154,27 @@ var Move = new function () {
                     if (color == 'neutral') {
                         continue
                     }
+                    var defenderArmies = Players.get(color).getArmies()
                     for (var armyId in r.battle.defenders[color]) {
-                        var battleArmy = r.battle.defenders[color][armyId]
-                        var playerArmy = Players.get(color).getArmies().get(armyId)
+                        var battleArmy = r.battle.defenders[color][armyId],
+                            defenderArmy = defenderArmy.get(armyId)
+
                         for (var soldierId in battleArmy.soldiers) {
                             if (battleArmy.soldiers[soldierId]) {
-                                playerArmy.deleteSoldier(soldierId)
+                                defenderArmy.deleteSoldier(soldierId)
+                            }
+                        }
+                        for (var soldierId in battleArmy.ships) {
+                            if (battleArmy.ships[soldierId]) {
+                                defenderArmy.deleteShip(soldierId)
                             }
                         }
                         for (var heroId in battleArmy.heroes) {
                             if (battleArmy.heroes[heroId]) {
-                                playerArmy.deleteHero(heroId)
+                                defenderArmy.deleteHero(heroId)
                             }
                         }
+                        defenderArmies.updateDefenderArmy(armyId)
                     }
                 }
 

@@ -682,6 +682,19 @@ var Message = {
                     .addClass('battleUnit')
             );
         }
+        for (var soldierId in r.battle.attack.ships) {
+            if (r.battle.attack.ships[soldierId]) {
+                killed[r.battle.attack.ships[soldierId]] = {
+                    'soldierId': soldierId
+                };
+            }
+            attack.append(
+                $('<div>')
+                    .attr('id', 'unit' + soldierId)
+                    .css('background', 'url(' + Unit.getImage(Players.get(r.color).getArmies().get(r.army.id).getShips()[soldierId].unitId, r.color) + ') no-repeat')
+                    .addClass('battleUnit')
+            );
+        }
         for (var heroId in r.battle.attack.heroes) {
             if (r.battle.attack.heroes[heroId]) {
                 killed[r.battle.attack.heroes[heroId]] = {
@@ -716,6 +729,20 @@ var Message = {
                     } else {
                         var unitId = Players.get(color).getArmies().get(armyId).getSoldiers()[soldierId].unitId
                     }
+                    defense.append(
+                        $('<div>')
+                            .attr('id', 'unit' + soldierId)
+                            .css('background', 'url(' + Unit.getImage(unitId, color) + ') no-repeat')
+                            .addClass('battleUnit')
+                    );
+                }
+                for (var soldierId in r.battle.defenders[color][armyId].ships) {
+                    if (r.battle.defenders[color][armyId].ships[soldierId]) {
+                        killed[r.battle.defenders[color][armyId].ships[soldierId]] = {
+                            'soldierId': soldierId
+                        };
+                    }
+                    var unitId = Players.get(color).getArmies().get(armyId).getShips()[soldierId].unitId
                     defense.append(
                         $('<div>')
                             .attr('id', 'unit' + soldierId)
