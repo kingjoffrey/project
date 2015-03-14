@@ -34,10 +34,43 @@ var Fields = new function () {
             console.log('no field at x=' + x + ' y=' + y)
         }
     }
-    this.getAStarType = function (x, y) {
+    this.getAStarType = function (x, y, destX, destY) {
         if (isSet(fields[y]) && isSet(fields[y][x])) {
-            return fields[y][x].getType()
+            var castleId,
+                field = fields[y][x],
+                armies
+
+            if (castleId = field.getCastleId()) {
+                if (Me.sameTeam(field.getCastleColor())) {
+                    return 'c'
+                } else {
+                    if (destX == x && destY == y) {
+                        return 'E'
+                    } else if (castleId == this.get(destX, destY).getCastleId()) {
+                        return 'E'
+                    } else {
+                        return 'e'
+                    }
+                }
+            } else if (armies = field.getArmies()) {
+                for (var armyId in armies) {
+                    if (Me.sameTeam(armies[armyId])) {
+                        if (field.getType() == 'w' && Me.colorEquals(armies[armyId])) {
+                            return 'S'
+                        } else {
+                            return field.getType()
+                        }
+                    } else {
+                        if (destX == x && destY == y) {
+                            return 'E'
+                        } else {
+                            return 'e'
+                        }
+                    }
+                }
+            } else {
+                return field.getType()
+            }
         }
-        return 0
     }
 }

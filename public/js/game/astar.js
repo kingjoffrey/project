@@ -89,38 +89,42 @@ var AStar = new function () {
     }
 
     var getPath = function (key) {
-        var path = [],
-            i = 0
+            var path = [],
+                i = 0
 
-        while (isSet(close[key].parent)) {
-            path[path.length] = close[key];
-            key = close[key].parent.x + '_' + close[key].parent.y;
-        }
-        path = path.reverse();
-
-        if (isSet(path[0])) {
-            if (path[0].tt == 'c') {
-                var castleId = Castle.getMy(path[0].x, path[0].y)
-                myCastleId[castleId] = true;
+            while (isSet(close[key].parent)) {
+                path[path.length] = close[key];
+                key = close[key].parent.x + '_' + close[key].parent.y;
             }
-        }
+            path = path.reverse();
 
-        for (var k in path) {
-            if (path[k].tt == 'c') {
-                var castleId = Castle.getMy(path[k].x, path[k].y);
-                if (myCastleId[castleId]) {
-                    i++;
-                } else {
-                    myCastleId[castleId] = true;
+            if (isSet(path[0])) {
+                if (path[0].tt == 'c') {
+                    var castleId = Fields.get(path[0].x, path[0].y).getCastleId()
+                    if (Me.colorEquals(Fields.get(path[0].x, path[0].y).getCastleColor())) {
+                        myCastleId[castleId] = true
+                    }
                 }
             }
-            path[k].F -= i;
-            path[k].G -= i;
-        }
 
-        return path;
-    }
-    var addOpen = function (currX, currY) {
+            for (var k in path) {
+                if (path[k].tt == 'c') {
+                    var castleId = Fields.get(path[0].x, path[0].y).getCastleId()
+                    if (Me.colorEquals(Fields.get(path[0].x, path[0].y).getCastleColor())) {
+                        if (isSet(myCastleId[castleId])) {
+                            i++
+                        } else {
+                            myCastleId[castleId] = true
+                        }
+                    }
+                }
+                path[k].F -= i;
+                path[k].G -= i;
+            }
+
+            return path;
+        },
+        addOpen = function (currX, currY) {
             var startX = currX - 1,
                 startY = currY - 1,
                 endX = currX + 1,
@@ -138,7 +142,7 @@ var AStar = new function () {
                         continue
                     }
 
-                    terrainType = Fields.getAStarType(i, j)
+                    terrainType = Fields.getAStarType(i, j, destX, destY)
                     if (!terrainType) {
                         continue
                     }
@@ -158,12 +162,8 @@ var AStar = new function () {
                     if (isSet(open[key])) {
                         calculatePath(currX + '_' + currY, g, key);
                     } else {
-                        var parent = {
-                            x: currX,
-                            y: currY
-                        };
                         g += close[currX + '_' + currY].G;
-                        open[key] = new node(i, j, destX, destY, g, parent, terrainType)
+                        open[key] = new node(i, j, destX, destY, g, {x: currX, y: currY}, terrainType)
                     }
                 }
             }
