@@ -1,5 +1,5 @@
 var Castle = function (castle, bgColor, miniMapColor, textColor) {
-    var meshId = Three.addCastle(castle.x, castle.y, bgColor, castle.defense)
+    var mesh = Three.addCastle(castle.x, castle.y, bgColor, castle.defense)
 
     map.append(
         $('<div>').css({
@@ -15,8 +15,8 @@ var Castle = function (castle, bgColor, miniMapColor, textColor) {
     this.toArray = function () {
         return castle
     }
-    this.getMeshId = function () {
-        return meshId
+    this.getMesh = function () {
+        return mesh
     }
     this.setProductionId = function (value) {
         castle.productionId = value
@@ -66,7 +66,7 @@ var Castle = function (castle, bgColor, miniMapColor, textColor) {
             'background': miniMapColor,
             'border-color': textColor
         })
-        Three.getScene().getObjectById(meshId).material.color.set(bgColor)
+        mesh.material.color.set(bgColor)
     }
     this.handle = function (stop, relocation) {
         var unitId = $('input:radio[name=production]:checked').val()
@@ -93,6 +93,7 @@ var Castle = function (castle, bgColor, miniMapColor, textColor) {
     }
     this.setDefense = function (defense) {
         castle.defense = defense
+
     }
 }
 

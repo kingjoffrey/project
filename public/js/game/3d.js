@@ -2,7 +2,10 @@ var Three = new function () {
     var ruinModel,
         towerModel,
         flagModel,
-        castleModel,
+        castleModel_1,
+        castleModel_2,
+        castleModel_3,
+        castleModel_4,
         armyModel,
         mountainModel,
         hillModel,
@@ -141,17 +144,17 @@ var Three = new function () {
     }
 
     var initCastle = function () {
-            castle_1.scale = 3
-            castle_2.scale = 3
-            castle_3.scale = 3
-            castle_4.scale = 3
+            castle_1.scale = 2.3
+            castle_2.scale = 2.3
+            castle_3.scale = 2.3
+            castle_4.scale = 2.3
             castleModel_1 = loader.parse(castle_1)
             castleModel_2 = loader.parse(castle_2)
             castleModel_3 = loader.parse(castle_3)
             castleModel_4 = loader.parse(castle_4)
         },
-        getCastleModel = function (defence) {
-            switch (defence) {
+        getCastleModel = function (defense) {
+            switch (defense) {
                 case 2:
                     return castleModel_2.geometry
                     break
@@ -162,10 +165,21 @@ var Three = new function () {
                     return castleModel_4.geometry
                     break
             }
+        },
+        updateCastleModel = function (mesh, defense, castleMaterial) {
+            for (var i = 2; i <= defense; i++) {
+                var m = new THREE.Mesh(getCastleModel(i), castleMaterial)
+
+                if (showShadows) {
+                    m.castShadow = true
+                    m.receiveShadow = true
+                }
+                mesh.add(m)
+            }
         }
 
 
-    this.addCastle = function (x, y, color, defence) {
+    this.addCastle = function (x, y, color, defense) {
         var material = new THREE.MeshLambertMaterial({color: color})
         material.side = THREE.DoubleSide
 
@@ -173,7 +187,7 @@ var Three = new function () {
         castleMaterial.side = THREE.DoubleSide
 
         var mesh = new THREE.Mesh(castleModel_1.geometry, castleMaterial)
-        mesh.position.set(x * 4 - 214, 0, y * 4 - 309)
+        mesh.position.set(x * 4 - 214, 0, y * 4 - 308)
 
         if (showShadows) {
             mesh.castShadow = true
@@ -181,17 +195,16 @@ var Three = new function () {
         }
         scene.add(mesh)
 
-        for (var i = 2; i <= defence; i++) {
-            var m = new THREE.Mesh(getCastleModel(i), castleMaterial)
-            //m.position.set(x * 4 - 214, 0, y * 4 - 309)
+        updateCastleModel(mesh, defense, castleMaterial)
+        return mesh
+    }
+    this.castleChangeDefense = function (mesh, defense) {
+        mesh.children.splice(0, 3)
 
-            if (showShadows) {
-                m.castShadow = true
-                m.receiveShadow = true
-            }
-            mesh.add(m)
-        }
-        return mesh.id
+        var castleMaterial = new THREE.MeshLambertMaterial({color: color})
+        castleMaterial.side = THREE.DoubleSide
+
+        updateCastleModel(mesh, defense, castleMaterial)
     }
 
     var initArmy = function () {

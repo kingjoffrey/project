@@ -162,7 +162,7 @@ var Army = function (army, bgColor, miniMapColor, textColor, color) {
         army.mesh.position.set(x * 4 - 216, 0, y * 4 - 311)
     }
     this.getNumberOfUnits = function () {
-        var numberOfUnits = countProperties(army.heroes) + countProperties(army.soldiers)
+        var numberOfUnits = countProperties(army.heroes) + countProperties(army.soldiers) + countProperties(army.ships)
 
         if (numberOfUnits > 8) {
             numberOfUnits = 8

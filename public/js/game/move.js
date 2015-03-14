@@ -120,10 +120,21 @@ var Move = new function () {
                 }
 
                 if (r.battle.castleId) {
-                    var castleColor = Fields.get(army.getX(), army.getY()).getCastleColor()
-                    var castles = Players.get(castleColor).getCastles()
-                    Players.get(r.color).getCastles().add(r.battle.castleId, castles.get(r.battle.castleId))
-                    castles.remove(r.battle.castleId)
+                    var castleColor = Fields.get(army.getX(), army.getY()).getCastleColor(),
+                        oldCastles = Players.get(castleColor).getCastles(),
+                        newCastles = Players.get(r.color).getCastles()
+
+                    newCastles.add(r.battle.castleId, oldCastles.get(r.battle.castleId))
+                    oldCastles.remove(r.battle.castleId)
+
+                    if (castleColor != 'neutral') {
+                        var castle = newCastles.get(r.battle.castleId),
+                            defense = castle.getDefense()
+                        if (defense > 1) {
+                            defense--
+                            castle.setDefense(defense)
+                        }
+                    }
                 }
                 if (Me.colorEquals(r.color)) {
                     if (r.battle.castleId) {

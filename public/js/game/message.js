@@ -478,6 +478,7 @@ var Message = {
         )
         var numberOfUnits = 0,
             soldiers = Me.getSelectedArmy().getSoldiers(),
+            ships = Me.getSelectedArmy().getShips(),
             heroes = Me.getSelectedArmy().getHeroes()
 
         for (var soldierId in soldiers) {
@@ -493,6 +494,28 @@ var Message = {
                         })
                     ))
                     .append($('<span>').html(translations.movesLeft + ': ' + soldiers[soldierId].movesLeft + ' '))
+                    .append($('<div>').addClass('right').html($('<input>').attr({
+                        type: 'checkbox',
+                        name: 'soldierId',
+                        value: soldierId
+                    })))
+            );
+        }
+
+        for (var soldierId in ships) {
+            var ship = ships[soldierId]
+            numberOfUnits++;
+            div.append(
+                $('<div>')
+                    .addClass('row')
+                    .append($('<div>').addClass('nr').html(numberOfUnits))
+                    .append($('<div>').addClass('img').html(
+                        $('<img>').attr({
+                            'src': Unit.getImage(ship.unitId, Me.getColor()),
+                            'id': 'unit' + soldierId
+                        })
+                    ))
+                    .append($('<span>').html(translations.movesLeft + ': ' + ship.movesLeft + ' '))
                     .append($('<div>').addClass('right').html($('<input>').attr({
                         type: 'checkbox',
                         name: 'soldierId',

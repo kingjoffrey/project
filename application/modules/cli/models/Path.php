@@ -63,6 +63,30 @@ class Cli_Model_Path
                 }
             }
 
+            foreach ($army->getShips()->getKeys() as $soldierId) {
+                $soldier = $army->getShips()->getSoldier($soldierId);
+                if (!isset($soldiersMovesLeft[$soldierId])) {
+                    $soldiersMovesLeft[$soldierId] = $soldier->getMovesLeft();
+                    echo 'FIRST             $soldiersMovesLeft=    ' . $soldiersMovesLeft[$soldierId] . "\n";
+                }
+
+                $soldiersMovesLeft[$soldierId] -= $soldier->getStepCost($terrain, $step['t'], $type);
+                echo '$soldiersMovesLeft= ' . $soldiersMovesLeft[$soldierId] . "\n";
+                echo "\n";
+
+                if ($soldiersMovesLeft[$soldierId] < 0) {
+                    if ($skip === null) {
+                        $skip = $key;
+                    }
+                }
+
+                if ($soldiersMovesLeft[$soldierId] <= 0) {
+                    if ($stop === null) {
+                        $stop = $key;
+                    }
+                }
+            }
+
             foreach ($army->getHeroes()->getKeys() as $heroId) {
                 if (!isset($heroesMovesLeft[$heroId])) {
                     $heroesMovesLeft[$heroId] = $army->getHeroes()->getHero($heroId)->getMovesLeft();
