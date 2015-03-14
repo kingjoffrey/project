@@ -52,17 +52,32 @@ var Fields = new function () {
                         return 'e'
                     }
                 }
-            } else if (armies = field.getArmies()) {
+            } else if (field.hasArmies()) {
+                armies = field.getArmies()
                 for (var armyId in armies) {
                     if (Me.sameTeam(armies[armyId])) {
-                        if (field.getType() == 'w' && Me.colorEquals(armies[armyId])) {
+                        if (Me.colorEquals(armies[armyId]) && field.getType() == 'w' && Me.getArmy(armyId).canSwim()) {
                             return 'S'
                         } else {
                             return field.getType()
                         }
                     } else {
                         if (destX == x && destY == y) {
-                            return 'E'
+                            if (field.getType() == 'w') {
+                                if (Me.getSelectedArmy().canSwim() || Me.getSelectedArmy().canFly()) {
+                                    return 'E'
+                                } else {
+                                    return 'e'
+                                }
+                            } else if (field.getType() == 'm') {
+                                if (Me.getSelectedArmy().canFly()) {
+                                    return 'E'
+                                } else {
+                                    return 'e'
+                                }
+                            } else {
+                                return 'E'
+                            }
                         } else {
                             return 'e'
                         }

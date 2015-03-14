@@ -41,7 +41,7 @@ var AStar = new function () {
     }
     this.showPath = function () {
         army = Me.getSelectedArmy()
-        if (getG(field.getType()) > 6 && field.getType() != 'e') {
+        if (getG(field.getType()) > 6 && !field.hasArmies()) {
             return
         }
         open = {}
@@ -147,11 +147,7 @@ var AStar = new function () {
                         continue
                     }
                     if (terrainType == 'e') {
-                        if (i == destX && j == destY) {
-                            terrainType = 'g'
-                        } else {
-                            continue
-                        }
+                        continue
                     }
 
                     g = getG(terrainType)
@@ -169,22 +165,7 @@ var AStar = new function () {
             }
         },
         getG = function (terrainType) {
-            //var soldierSplitKey = army.getSoldierSplitKey()
-            //if (soldierSplitKey) {
-            //    if (Units.get(army.getSoldiers[soldierSplitKey].unitId).canFly) {
-            //        return Terrain.get(terrainType).flying
-            //    } else if (Units.get(army.getSoldiers[soldierSplitKey].unitId).canSwim) {
-            //        return Terrain.get(terrainType).swimming
-            //    } else {
-            //        if (terrainType == 'f' || terrainType == 's' || terrainType == 'm') {
-            //            return Units.get(army.getSoldiers[soldierSplitKey].unitId)[terrainType]
-            //        } else {
-            //            return Terrain.get(terrainType).walking
-            //        }
-            //    }
-            //} else {
             return Terrain.get(terrainType)[movementType]
-            //}
         },
         openIsEmpty = function () {
             for (var key in open) {

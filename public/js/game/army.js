@@ -116,6 +116,12 @@ var Army = function (army, bgColor, miniMapColor, textColor, color) {
             return 'walking'
         }
     }
+    this.canSwim = function () {
+        return army.canSwim
+    }
+    this.canFly = function () {
+        return army.canFly > 0
+    }
     this.getHeroMovesLeft = function (key) {
         return army.heroes[key].movesLeft
     }

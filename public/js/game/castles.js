@@ -16,7 +16,6 @@ var Castles = function () {
             for (var x = castle.getX(); x <= castle.getX() + 1; x++) {
                 for (var y = castle.getY(); y <= castle.getY() + 1; y++) {
                     var field = Fields.get(x, y)
-                    field.setTemporaryType(type)
                     field.setCastleColor(color)
                 }
             }
@@ -27,7 +26,6 @@ var Castles = function () {
             for (var x = castle.x; x <= castle.x + 1; x++) {
                 for (var y = castle.y; y <= castle.y + 1; y++) {
                     var field = Fields.get(x, y)
-                    field.setTemporaryType(type)
                     field.setCastleColor(color)
                     field.setCastleId(castleId)
                 }

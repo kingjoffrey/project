@@ -5,7 +5,6 @@ var Field = function (field) {
     field.castleId = 0
     field.towerColor = 0
     field.castleColor = 0
-    field.temporaryType = 0
 
     this.setRuinId = function (ruinId) {
         field.ruinId = ruinId
@@ -54,13 +53,6 @@ var Field = function (field) {
         field.castleColor = color
     }
     this.getType = function () {
-        if (field.temporaryType) {
-            return field.temporaryType
-        } else {
-            return field.type
-        }
-    }
-    this.setTemporaryType = function (value) {
-        field.temporaryType = value
+        return field.type
     }
 }

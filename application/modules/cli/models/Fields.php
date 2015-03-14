@@ -81,14 +81,28 @@ class Cli_Model_Fields
             } elseif ($armies = $field->getArmies()) {
                 foreach ($armies as $armyId => $armyColor) {
                     if ($players->sameTeam($armyColor, $color)) {
-                        if ($field->getType() == 'w' && $armyColor == $color) {
+                        if ($armyColor == $color && $field->getType() == 'w' && $players->getPlayer($armyColor)->getArmies()->getArmy($armyId)->canSwim()) {
                             return 'S';
                         } else {
                             return $field->getType();
                         }
                     } else {
                         if ($destX == $x && $destY == $y) {
-                            return 'E';
+                            if ($field->getType() == 'w') {
+                                if ($players->getPlayer($armyColor)->getArmies()->getArmy($armyId)->canSwim() || $players->getPlayer($armyColor)->getArmies()->getArmy($armyId)->canFly()) {
+                                    return 'E';
+                                } else {
+                                    return 'e';
+                                }
+                            } else if ($field->getType() == 'm') {
+                                if ($players->getPlayer($armyColor)->getArmies()->getArmy($armyId)->canFly()) {
+                                    return 'E';
+                                } else {
+                                    return 'e';
+                                }
+                            } else {
+                                return 'E';
+                            }
                         } else {
                             return 'e';
                         }
