@@ -13,7 +13,6 @@ class Cli_Model_Soldier extends Cli_Model_Being
     private $_swamp;
 
     private $_fly;
-    private $_swim;
 
     private $_cost;
 
@@ -33,7 +32,6 @@ class Cli_Model_Soldier extends Cli_Model_Being
         $this->_swamp = $unit->getModMovesSwamp();
 
         $this->_fly = $unit->canFly();
-        $this->_swim = $unit->canSwim();
 
         $this->_cost = $unit->getCost();
 
@@ -53,11 +51,6 @@ class Cli_Model_Soldier extends Cli_Model_Being
     public function canFly()
     {
         return $this->_fly;
-    }
-
-    public function canSwim()
-    {
-        return $this->_swim;
     }
 
     public function updateMovesLeft($soldierId, $movesSpend, Application_Model_UnitsInGame $mSoldier)

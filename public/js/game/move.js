@@ -152,12 +152,13 @@ var Move = new function () {
                 }
                 for (var color in r.battle.defenders) {
                     if (color == 'neutral') {
-                        continue
+                        break
                     }
+
                     var defenderArmies = Players.get(color).getArmies()
                     for (var armyId in r.battle.defenders[color]) {
                         var battleArmy = r.battle.defenders[color][armyId],
-                            defenderArmy = defenderArmy.get(armyId)
+                            defenderArmy = defenderArmies.get(armyId)
 
                         for (var soldierId in battleArmy.soldiers) {
                             if (battleArmy.soldiers[soldierId]) {

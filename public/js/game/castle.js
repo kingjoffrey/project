@@ -1,5 +1,6 @@
-var Castle = function (castle, bgColor, miniMapColor, textColor) {
-    var mesh = Three.addCastle(castle.x, castle.y, bgColor, castle.defense)
+var Castle = function (castle, bgC, miniMapColor, textColor) {
+    var mesh = Three.addCastle(castle.x, castle.y, bgC, castle.defense),
+        bgColor = bgC
 
     map.append(
         $('<div>').css({
@@ -60,7 +61,8 @@ var Castle = function (castle, bgColor, miniMapColor, textColor) {
     this.getCastleId = function () {
         return castle.id
     }
-    this.update = function (bgColor, miniMapColor, textColor) {
+    this.update = function (bgC, miniMapColor, textColor) {
+        bgColor = bgC
         this.setProductionId(null)
         $('#c' + castle.id).css({
             'background': miniMapColor,

@@ -239,7 +239,7 @@ var Message = {
                     .addClass('attributes')
                     .append($('<p>').html(translations.time + ':&nbsp;' + time + castle.getProduction()[unitId].time + ' ' + translations.turn))
                     .append($('<p>').html(translations.cost + ':&nbsp;' + unit.cost + ' ' + translations.gold))
-                    .append($('<p>').html(translations.moves + '&nbsp;' + unit.numberOfMoves + '&nbsp;/&nbsp;' + translations.attack + '&nbsp;' + unit.attackPoints + '&nbsp;/&nbsp;' + translations.defence + '&nbsp;' + unit.defensePoints))
+                    .append($('<p>').html(translations.moves + '&nbsp;' + unit.moves + '&nbsp;/&nbsp;' + translations.attack + '&nbsp;' + unit.a + '&nbsp;/&nbsp;' + translations.defence + '&nbsp;' + unit.d))
             );
             j++;
         }

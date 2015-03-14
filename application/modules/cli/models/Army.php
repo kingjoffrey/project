@@ -302,7 +302,11 @@ class Cli_Model_Army
         $soldierId = $mSoldier->add($this->_id, $unitId, $unit->getNumberOfMoves());
 
         $soldier = new Cli_Model_Soldier(array('unitId' => $unitId, 'soldierId' => $soldierId), $unit);
-        $this->_Soldiers->add($soldierId, $soldier);
+        if ($unit['canSwim']) {
+            $this->_Ships->add($soldierId, $soldier);
+        } else {
+            $this->_Soldiers->add($soldierId, $soldier);
+        }
 
         if ($soldier->canFly()) {
             $this->_attackFlyModifier->increment();
