@@ -67,11 +67,11 @@ class Cli_Model_Path
                 $soldier = $army->getShips()->getSoldier($soldierId);
                 if (!isset($soldiersMovesLeft[$soldierId])) {
                     $soldiersMovesLeft[$soldierId] = $soldier->getMovesLeft();
-                    echo 'FIRST             $soldiersMovesLeft=    ' . $soldiersMovesLeft[$soldierId] . "\n";
+                    echo 'FIRST             ship MovesLeft=    ' . $soldiersMovesLeft[$soldierId] . "\n";
                 }
 
                 $soldiersMovesLeft[$soldierId] -= $soldier->getStepCost($terrain, $step['t'], $type);
-                echo '$soldiersMovesLeft= ' . $soldiersMovesLeft[$soldierId] . "\n";
+                echo 'ship MovesLeft= ' . $soldiersMovesLeft[$soldierId] . "\n";
                 echo "\n";
 
                 if ($soldiersMovesLeft[$soldierId] < 0) {

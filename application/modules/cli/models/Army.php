@@ -156,8 +156,10 @@ class Cli_Model_Army
             $type = 'walking';
         }
         $gameId = $game->getId();
+        $terrain = Zend_Registry::get('terrain');
         $this->setMovesLeft($this->_Heroes->saveMove($this->_x, $this->_y, $this->_movesLeft, $type, $path, $gameId, $db));
-        $this->setMovesLeft($this->_Soldiers->saveMove($this->_x, $this->_y, $this->_movesLeft, $type, $path, Zend_Registry::get('terrain'), $gameId, $db));
+        $this->setMovesLeft($this->_Ships->saveMove($this->_x, $this->_y, $this->_movesLeft, $type, $path, $terrain, $gameId, $db));
+        $this->setMovesLeft($this->_Soldiers->saveMove($this->_x, $this->_y, $this->_movesLeft, $type, $path, $terrain, $gameId, $db));
 
         $game->getFields()->getField($this->_x, $this->_y)->removeArmy($this->_id);
         $this->_x = $path->getX();
