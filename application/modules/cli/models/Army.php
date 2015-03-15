@@ -14,13 +14,15 @@ class Cli_Model_Army
     private $_defenseHeroModifier;
 
     private $_attackBattleSequence = array(
-        'soldiers' => array(),
-        'ships' => array(),
+        'wSoldiers' => array(),
+        'sSoldiers' => array(),
+        'fSoldiers' => array(),
         'heroes' => array()
     );
     private $_defenceBattleSequence = array(
-        'soldiers' => array(),
-        'ships' => array(),
+        'wSoldiers' => array(),
+        'sSoldiers' => array(),
+        'fSoldiers' => array(),
         'heroes' => array()
     );
 
@@ -33,8 +35,10 @@ class Cli_Model_Army
 
     private $_oldPath = array();
 
-    /*
+    /**
      * @param array $army
+     * @param $color
+     * @throws Exception
      */
     public function __construct(array $army, $color)
     {
@@ -451,8 +455,6 @@ class Cli_Model_Army
                 $this->setMovesLeft($hero->getMovesLeft());
             }
             $this->_Heroes->add($heroId, $hero);
-            $this->_attackHeroModifier->increment();
-            $this->_defenseHeroModifier->increment();
         }
     }
 

@@ -85,6 +85,7 @@ class Cli_Model_Armies
                 $excludedArmy->joinHeroes($army->getHeroes());
                 $excludedArmy->joinWalkingSoldiers($army->getWalkingSoldiers());
                 $excludedArmy->joinSwimmingSoldiers($army->getSwimmingSoldiers());
+                $excludedArmy->joinFlyingSoldiers($army->getFlyingSoldiers());
                 $mHeroesInGame->heroesUpdateArmyId($armyId, $excludedArmyId);
                 $mSoldier->soldiersUpdateArmyId($armyId, $excludedArmyId);
                 $this->removeArmy($armyId, $game, $db);
@@ -165,16 +166,22 @@ class Cli_Model_Armies
         $this->getArmy($oldArmyId)->getHeroes()->remove($heroId);
     }
 
-    public function changeSoldierAffiliation($oldArmyId, $newArmyId, $soldierId, $gameId, Zend_Db_Adapter_Pdo_Pgsql $db)
+    public function changeWalkingSoldierAffiliation($oldArmyId, $newArmyId, $soldierId, $gameId, Zend_Db_Adapter_Pdo_Pgsql $db)
     {
         $this->getArmy($newArmyId)->addWalkingSoldier($soldierId, $this->getArmy($oldArmyId)->getWalkingSoldiers()->getSoldier($soldierId), $gameId, $db);
         $this->getArmy($oldArmyId)->getWalkingSoldiers()->remove($soldierId);
     }
 
-    public function changeShipAffiliation($oldArmyId, $newArmyId, $soldierId, $gameId, Zend_Db_Adapter_Pdo_Pgsql $db)
+    public function changeSwimmingSoldierAffiliation($oldArmyId, $newArmyId, $soldierId, $gameId, Zend_Db_Adapter_Pdo_Pgsql $db)
     {
         $this->getArmy($newArmyId)->addSwimmingSoldier($soldierId, $this->getArmy($oldArmyId)->getSwimmingSoldiers()->getSoldier($soldierId), $gameId, $db);
         $this->getArmy($oldArmyId)->getSwimmingSoldiers()->remove($soldierId);
+    }
+
+    public function changeFlyingSoldierAffiliation($oldArmyId, $newArmyId, $soldierId, $gameId, Zend_Db_Adapter_Pdo_Pgsql $db)
+    {
+        $this->getArmy($newArmyId)->addFlyingSoldiers($soldierId, $this->getArmy($oldArmyId)->getFlyingSoldiers()->getSoldier($soldierId), $gameId, $db);
+        $this->getArmy($oldArmyId)->getFlyingSoldiers()->remove($soldierId);
     }
 
     public function count()

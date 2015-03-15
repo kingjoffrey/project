@@ -1,11 +1,11 @@
 <?php
 
-class Cli_Model_BattleSequence
+class Cli_Model_BattleSequenceHandler
 {
     public function __construct($data, IWebSocketConnection $user, Zend_Db_Adapter_Pdo_Pgsql $db, Cli_GameHandler $gameHandler)
     {
-        $mBattleSequence = new Application_Model_BattleSequence($user->parameters['gameId'], $db);
-
+        $game = $this->getGame($user);
+        $mBattleSequence = new Application_Model_BattleSequence($game->getId(), $db);
         $result = 0;
 
         if ($data['attack']) {
@@ -23,7 +23,7 @@ class Cli_Model_BattleSequence
             return;
         }
 
-        $user->parameters['game']->setBattleSequence($data['sequence']);
+        $game->setBattleSequence($data['sequence']);
 
         $token = array(
             'type' => 'bSequence',
@@ -31,6 +31,15 @@ class Cli_Model_BattleSequence
             'attack' => $attack
         );
 
-        $gameHandler->sendToUser($user, $db, $token, $user->parameters['gameId']);
+        $gameHandler->sendToUser($user, $db, $token, $game->getId());
+    }
+
+    /**
+     * @param IWebSocketConnection $user
+     * @return Cli_Model_Game
+     */
+    private function getGame(IWebSocketConnection $user)
+    {
+        return $user->parameters['game'];
     }
 }

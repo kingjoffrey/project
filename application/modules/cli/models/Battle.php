@@ -63,7 +63,7 @@ class Cli_Model_Battle
                 if (!isset($units)) {
                     $units = Zend_Registry::get('units');
                 }
-                $defenderBattleSequence =  $units->getKeys();
+                $defenderBattleSequence = $units->getKeys();
             }
             $defender->setDefenceBattleSequence($defenderBattleSequence);
         }
@@ -84,14 +84,17 @@ class Cli_Model_Battle
                 return true;
             }
         }
-
         foreach ($this->_attacker->getWalkingSoldiers()->getKeys() as $soldierId) {
             if (!$this->_result->isAttackingSoldierDead($soldierId)) {
                 return true;
             }
         }
-
         foreach ($this->_attacker->getSwimmingSoldiers()->getKeys() as $soldierId) {
+            if (!$this->_result->isAttackingSoldierDead($soldierId)) {
+                return true;
+            }
+        }
+        foreach ($this->_attacker->getFlyingSoldiers()->getKeys() as $soldierId) {
             if (!$this->_result->isAttackingSoldierDead($soldierId)) {
                 return true;
             }
@@ -124,7 +127,7 @@ class Cli_Model_Battle
         $attack = $this->_attacker->getAttackBattleSequence();
 
         foreach ($this->_defenders as $defenderArmy) {
-            $this->_defender = $defenderArmy;
+            $this->_defender = $this->getDefender($defenderArmy);
             $this->_defenceModifier = $this->_defender->getDefenseModifier();
             $this->_defenderColor = $this->_defender->getColor();
             $this->_defenderArmyId = $this->_defender->getId();
@@ -333,11 +336,23 @@ class Cli_Model_Battle
                     $heroId = $defendingFighter->getId();
                     $this->_result->addDefendingHeroSuccession($this->_defenderColor, $this->_defenderArmyId, $heroId, $this->_succession);
                     $this->_defender->removeHero($heroId, $this->_attackerId, $this->_defenderId, $this->_gameId, $this->_db);
+                } elseif ($defendingFighter->getType() == 'swimming') {
+                    $soldierId = $defendingFighter->getId();
+                    $this->_result->addDefendingSoldierSuccession($this->_defenderColor, $this->_defenderArmyId, $soldierId, $this->_succession);
+                    if ($this->_defenderId) {
+                        $this->_defender->removeSwimmingSoldier($soldierId, $this->_attackerId, $this->_defenderId, $this->_gameId, $this->_db);
+                    }
+                } elseif ($defendingFighter->getType() == 'flying') {
+                    $soldierId = $defendingFighter->getId();
+                    $this->_result->addDefendingSoldierSuccession($this->_defenderColor, $this->_defenderArmyId, $soldierId, $this->_succession);
+                    if ($this->_defenderId) {
+                        $this->_defender->removeFlyingSoldier($soldierId, $this->_attackerId, $this->_defenderId, $this->_gameId, $this->_db);
+                    }
                 } else {
                     $soldierId = $defendingFighter->getId();
                     $this->_result->addDefendingSoldierSuccession($this->_defenderColor, $this->_defenderArmyId, $soldierId, $this->_succession);
                     if ($this->_defenderId) {
-                        $this->_defender->removeSoldier($soldierId, $this->_attackerId, $this->_defenderId, $this->_gameId, $this->_db);
+                        $this->_defender->removeWalkingSoldier($soldierId, $this->_attackerId, $this->_defenderId, $this->_gameId, $this->_db);
                     }
                 }
             } else {
@@ -345,6 +360,14 @@ class Cli_Model_Battle
                     $heroId = $attackingFighter->getId();
                     $this->_result->addAttackingHeroSuccession($heroId, $this->_succession);
                     $this->_attacker->removeHero($heroId, $this->_defenderId, $this->_attackerId, $this->_gameId, $this->_db);
+                } elseif ($attackingFighter->getType() == 'swimming') {
+                    $soldierId = $attackingFighter->getId();
+                    $this->_result->addAttackingSoldierSuccession($soldierId, $this->_succession);
+                    $this->_attacker->removeSwimmingSoldier($soldierId, $this->_defenderId, $this->_attackerId, $this->_gameId, $this->_db);
+                } elseif ($attackingFighter->getType() == 'flying') {
+                    $soldierId = $attackingFighter->getId();
+                    $this->_result->addAttackingSoldierSuccession($soldierId, $this->_succession);
+                    $this->_attacker->removeFlyingSoldier($soldierId, $this->_defenderId, $this->_attackerId, $this->_gameId, $this->_db);
                 } else {
                     $soldierId = $attackingFighter->getId();
                     $this->_result->addAttackingSoldierSuccession($soldierId, $this->_succession);
@@ -364,18 +387,20 @@ class Cli_Model_Battle
     public function getResult()
     {
         foreach ($this->_defenders as $defender) {
+            $defender = $this->getDefender($defender);
             $color = $defender->getColor();
             $armyId = $defender->getId();
             foreach ($defender->getHeroes()->getKeys() as $heroId) {
                 $this->_result->addDefendingHero($color, $armyId, $heroId);
             }
-
-            foreach ($defender->getSoldiers()->getKeys() as $soldierId) {
-                $this->_result->addDefendingSoldier($color, $armyId, $soldierId);
+            foreach ($defender->getWalkingSoldiers()->getKeys() as $soldierId) {
+                $this->_result->addDefendingWalkingSoldier($color, $armyId, $soldierId);
             }
-
-            foreach ($defender->getShips()->getKeys() as $soldierId) {
-                $this->_result->addDefendingShip($color, $armyId, $soldierId);
+            foreach ($defender->getSwimmingSoldiers()->getKeys() as $soldierId) {
+                $this->_result->addDefendingSwimmingSoldier($color, $armyId, $soldierId);
+            }
+            foreach ($defender->getFlyingSoldiers()->getKeys() as $soldierId) {
+                $this->_result->addDefending($color, $armyId, $soldierId);
             }
         }
 
@@ -392,6 +417,15 @@ class Cli_Model_Battle
         }
 
         return $this->_result;
+    }
+
+    /**
+     * @param Cli_Model_Army $defenderArmy
+     * @return Cli_Model_Army
+     */
+    private function getDefender(Cli_Model_Army $defenderArmy)
+    {
+        return $defenderArmy;
     }
 }
 

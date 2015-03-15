@@ -68,7 +68,7 @@ class Cli_Model_Garrison
                 $count++;
                 if ($count > $numberOfUnits) {
                     echo 'nnn';
-                    $armies->changeSoldierAffiliation($armyId, $this->_newArmyId, $soldierId, $gameId, $db);
+                    $armies->changeWalkingSoldierAffiliation($armyId, $this->_newArmyId, $soldierId, $gameId, $db);
                 }
             }
         }

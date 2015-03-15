@@ -74,7 +74,7 @@ class Cli_GameHandler extends Cli_WofHandler
         }
 
         if ($dataIn['type'] == 'bSequence') {
-            new Cli_Model_BattleSequence($dataIn, $user, $db, $this);
+            new Cli_Model_BattleSequenceHandler($dataIn, $user, $db, $this);
             return;
         }
 
