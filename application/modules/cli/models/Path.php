@@ -39,8 +39,8 @@ class Cli_Model_Path
                 continue;
             }
 
-            foreach ($army->getSoldiers()->getKeys() as $soldierId) {
-                $soldier = $army->getSoldiers()->getSoldier($soldierId);
+            foreach ($army->getWalkingSoldiers()->getKeys() as $soldierId) {
+                $soldier = $army->getWalkingSoldiers()->getSoldier($soldierId);
                 if (!isset($soldiersMovesLeft[$soldierId])) {
                     $soldiersMovesLeft[$soldierId] = $soldier->getMovesLeft();
                     echo 'FIRST             $soldiersMovesLeft=    ' . $soldiersMovesLeft[$soldierId] . "\n";
@@ -63,8 +63,8 @@ class Cli_Model_Path
                 }
             }
 
-            foreach ($army->getShips()->getKeys() as $soldierId) {
-                $soldier = $army->getShips()->getSoldier($soldierId);
+            foreach ($army->getSwimmingSoldiers()->getKeys() as $soldierId) {
+                $soldier = $army->getSwimmingSoldiers()->getSoldier($soldierId);
                 if (!isset($soldiersMovesLeft[$soldierId])) {
                     $soldiersMovesLeft[$soldierId] = $soldier->getMovesLeft();
                     echo 'FIRST             ship MovesLeft=    ' . $soldiersMovesLeft[$soldierId] . "\n";

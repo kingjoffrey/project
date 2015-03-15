@@ -24,11 +24,11 @@ class Cli_Model_Army
         'heroes' => array()
     );
 
-    private $_Heroes = array();
-    private $_Soldiers = array();
-    private $_Ships = array();
+    private $_Heroes;
+    private $_WalkingSoldiers;
+    private $_SwimmingSoldiers;
+    private $_FlyingSoldiers;
 
-    private $_canFly = 0;
     private $_movesLeft = 1000;
 
     private $_oldPath = array();
@@ -59,8 +59,9 @@ class Cli_Model_Army
         $this->_defenseHeroModifier = new Cli_Model_BattleModifier();
 
         $this->_Heroes = new Cli_Model_Heroes();
-        $this->_Soldiers = new Cli_Model_Soldiers();
-        $this->_Ships = new Cli_Model_Soldiers();
+        $this->_WalkingSoldiers = new Cli_Model_Soldiers();
+        $this->_SwimmingSoldiers = new Cli_Model_Soldiers();
+        $this->_FlyingSoldiers = new Cli_Model_Soldiers();
 
         if (isset($army['fortified'])) {
             $this->setFortified($army['fortified']);
@@ -71,27 +72,30 @@ class Cli_Model_Army
     {
         return array(
             'id' => $this->_id,
-            'soldiers' => $this->_Soldiers->toArray(),
-            'ships' => $this->_Ships->toArray(),
+            'wSoldiers' => $this->_WalkingSoldiers->toArray(),
+            'sSoldiers' => $this->_SwimmingSoldiers->toArray(),
+            'fSoldiers' => $this->_FlyingSoldiers->toArray(),
             'heroes' => $this->_Heroes->toArray(),
             'x' => $this->_x,
             'y' => $this->_y,
-            'fortified' => $this->_fortified,
-            'destroyed' => $this->_destroyed,
-            'canFly' => $this->canFly(),
-            'canSwim' => $this->canSwim(),
-            'movesLeft' => $this->_movesLeft
+            'fortified' => $this->_fortified
         );
     }
 
     public function canSwim()
     {
-        return $this->_Ships->exists();
+        return $this->_SwimmingSoldiers->exists();
     }
 
     public function canFly()
     {
-        if ($this->_canFly > 0) {
+        if ($this->canSwim()) {
+            return false;
+        }
+        if ($this->_WalkingSoldiers->exists()) {
+            return false;
+        }
+        if ($this->_FlyingSoldiers->count() >= $this->_Heroes->count()) {
             return true;
         }
     }
@@ -158,8 +162,9 @@ class Cli_Model_Army
         $gameId = $game->getId();
         $terrain = Zend_Registry::get('terrain');
         $this->setMovesLeft($this->_Heroes->saveMove($this->_x, $this->_y, $this->_movesLeft, $type, $path, $gameId, $db));
-        $this->setMovesLeft($this->_Ships->saveMove($this->_x, $this->_y, $this->_movesLeft, $type, $path, $terrain, $gameId, $db));
-        $this->setMovesLeft($this->_Soldiers->saveMove($this->_x, $this->_y, $this->_movesLeft, $type, $path, $terrain, $gameId, $db));
+        $this->setMovesLeft($this->_SwimmingSoldiers->saveMove($this->_x, $this->_y, $this->_movesLeft, $type, $path, $terrain, $gameId, $db));
+        $this->setMovesLeft($this->_WalkingSoldiers->saveMove($this->_x, $this->_y, $this->_movesLeft, $type, $path, $terrain, $gameId, $db));
+        $this->setMovesLeft($this->_FlyingSoldiers->saveMove($this->_x, $this->_y, $this->_movesLeft, $type, $path, $terrain, $gameId, $db));
 
         $game->getFields()->getField($this->_x, $this->_y)->removeArmy($this->_id);
         $this->_x = $path->getX();
@@ -195,22 +200,28 @@ class Cli_Model_Army
         return $this->_Heroes;
     }
 
-    public function getSoldiers()
+    public function getWalkingSoldiers()
     {
-        return $this->_Soldiers;
+        return $this->_WalkingSoldiers;
     }
 
-    public function getShips()
+    public function getSwimmingSoldiers()
     {
-        return $this->_Ships;
+        return $this->_SwimmingSoldiers;
+    }
+
+    public function getFlyingSoldiers()
+    {
+        return $this->_FlyingSoldiers;
     }
 
     public function resetMovesLeft($gameId = null, Zend_Db_Adapter_Pdo_Pgsql $db = null)
     {
         if ($db) {
             $this->_Heroes->resetMovesLeft($gameId, $db);
-            $this->_Soldiers->resetMovesLeft($gameId, $db);
-            $this->_Ships->resetMovesLeft($gameId, $db);
+            $this->_WalkingSoldiers->resetMovesLeft($gameId, $db);
+            $this->_SwimmingSoldiers->resetMovesLeft($gameId, $db);
+            $this->_FlyingSoldiers->resetMovesLeft($gameId, $db);
         }
 
         $this->setMovesLeft(1000);
@@ -221,14 +232,20 @@ class Cli_Model_Army
                 $this->setMovesLeft($hero->getMovesLeft());
             }
         }
-        foreach ($this->_Soldiers->getKeys() as $soldierId) {
-            $soldier = $this->_Soldiers->getSoldier($soldierId);
+        foreach ($this->_WalkingSoldiers->getKeys() as $soldierId) {
+            $soldier = $this->_WalkingSoldiers->getSoldier($soldierId);
             if ($this->_movesLeft > $soldier->getMovesLeft()) {
                 $this->setMovesLeft($soldier->getMovesLeft());
             }
         }
-        foreach ($this->_Ships->getKeys() as $soldierId) {
-            $soldier = $this->_Ships->getSoldier($soldierId);
+        foreach ($this->_SwimmingSoldiers->getKeys() as $soldierId) {
+            $soldier = $this->_SwimmingSoldiers->getSoldier($soldierId);
+            if ($this->_movesLeft > $soldier->getMovesLeft()) {
+                $this->setMovesLeft($soldier->getMovesLeft());
+            }
+        }
+        foreach ($this->_FlyingSoldiers->getKeys() as $soldierId) {
+            $soldier = $this->_FlyingSoldiers->getSoldier($soldierId);
             if ($this->_movesLeft > $soldier->getMovesLeft()) {
                 $this->setMovesLeft($soldier->getMovesLeft());
             }
@@ -257,16 +274,18 @@ class Cli_Model_Army
 
     public function setAttackBattleSequence($attackBattleSequence)
     {
-        $this->_attackBattleSequence['soldiers'] = $this->_Soldiers->setAttackBattleSequence($attackBattleSequence);
+        $this->_attackBattleSequence['wSoldiers'] = $this->_WalkingSoldiers->setAttackBattleSequence($attackBattleSequence);
         $this->_attackBattleSequence['heroes'] = $this->_Heroes->get();
-        $this->_attackBattleSequence['ships'] = $this->_Ships->get();
+        $this->_attackBattleSequence['fSoldiers'] = $this->_FlyingSoldiers->get();
+        $this->_attackBattleSequence['sSoldiers'] = $this->_SwimmingSoldiers->get();
     }
 
     public function setDefenceBattleSequence($defenceBattleSequence)
     {
-        $this->_defenceBattleSequence['soldiers'] = $this->_Soldiers->setDefenceBattleSequence($defenceBattleSequence);
-        $this->_defenceBattleSequence['ships'] = $this->_Ships->get();
+        $this->_defenceBattleSequence['wSoldiers'] = $this->_WalkingSoldiers->setDefenceBattleSequence($defenceBattleSequence);
         $this->_defenceBattleSequence['heroes'] = $this->_Heroes->get();
+        $this->_defenceBattleSequence['fSoldiers'] = $this->_FlyingSoldiers->get();
+        $this->_defenceBattleSequence['sSoldiers'] = $this->_SwimmingSoldiers->get();
     }
 
     public function getAttackBattleSequence()
@@ -291,7 +310,7 @@ class Cli_Model_Army
 
     public function getCosts()
     {
-        return $this->_Soldiers->getCosts() + $this->_Ships->getCosts();
+        return $this->_WalkingSoldiers->getCosts() + $this->_SwimmingSoldiers->getCosts();
     }
 
     public function createSoldier($gameId, $playerId, $unitId, Zend_Db_Adapter_Pdo_Pgsql $db)
@@ -303,16 +322,11 @@ class Cli_Model_Army
 
         $soldier = new Cli_Model_Soldier(array('unitId' => $unitId, 'soldierId' => $soldierId), $unit);
         if ($unit->canSwim()) {
-            $this->_Ships->add($soldierId, $soldier);
+            $this->_SwimmingSoldiers->add($soldierId, $soldier);
+        } elseif ($unit->canFly()) {
+            $this->_FlyingSoldiers->add($soldierId, $soldier);
         } else {
-            $this->_Soldiers->add($soldierId, $soldier);
-        }
-
-        if ($soldier->canFly()) {
-            $this->_attackFlyModifier->increment();
-            $this->_canFly++;
-        } else {
-            $this->_canFly--;
+            $this->_WalkingSoldiers->add($soldierId, $soldier);
         }
 
         if ($this->_movesLeft > $soldier->getMovesLeft()) {
@@ -323,35 +337,32 @@ class Cli_Model_Army
         $mSoldiersCreated->add($unitId, $playerId);
     }
 
-    public function addSoldier($soldierId, $soldier, $gameId, Zend_Db_Adapter_Pdo_Pgsql $db)
+    private function addSoldier($soldier, $soldierId, $gameId, $db)
     {
-        $this->_Soldiers->add($soldierId, $soldier);
         $mSoldier = new Application_Model_UnitsInGame($gameId, $db);
         $mSoldier->soldierUpdateArmyId($soldierId, $this->_id);
-
-        if ($soldier->canFly()) {
-            $this->_attackFlyModifier->increment();
-            $this->_canFly++;
-        } else {
-            $this->_canFly--;
-        }
 
         if ($this->_movesLeft > $soldier->getMovesLeft()) {
             $this->setMovesLeft($soldier->getMovesLeft());
         }
     }
 
-    public function addShip($soldierId, $soldier, $gameId, Zend_Db_Adapter_Pdo_Pgsql $db)
+    public function addWalkingSoldier($soldierId, $soldier, $gameId, Zend_Db_Adapter_Pdo_Pgsql $db)
     {
-        $this->_Ships->add($soldierId, $soldier);
-        $mSoldier = new Application_Model_UnitsInGame($gameId, $db);
-        $mSoldier->soldierUpdateArmyId($soldierId, $this->_id);
+        $this->_WalkingSoldiers->add($soldierId, $soldier);
+        $this->addSoldier($soldierId, $soldier, $gameId, $db);
+    }
 
-        $this->_canFly--;
+    public function addSwimmingSoldier($soldierId, $soldier, $gameId, Zend_Db_Adapter_Pdo_Pgsql $db)
+    {
+        $this->_SwimmingSoldiers->add($soldierId, $soldier);
+        $this->addSoldier($soldierId, $soldier, $gameId, $db);
+    }
 
-        if ($this->_movesLeft > $soldier->getMovesLeft()) {
-            $this->setMovesLeft($soldier->getMovesLeft());
-        }
+    public function addFlyingSoldiers($soldierId, $soldier, $gameId, Zend_Db_Adapter_Pdo_Pgsql $db)
+    {
+        $this->_FlyingSoldiers->add($soldierId, $soldier);
+        $this->addSoldier($soldierId, $soldier, $gameId, $db);
     }
 
     public function addHero($heroId, $hero, $gameId, Zend_Db_Adapter_Pdo_Pgsql $db)
@@ -363,8 +374,6 @@ class Cli_Model_Army
         if ($this->_movesLeft > $hero->getMovesLeft()) {
             $this->setMovesLeft($hero->getMovesLeft());
         }
-        $this->_attackHeroModifier->increment();
-        $this->_defenseHeroModifier->increment();
     }
 
     public function initSoldiers($soldiers)
@@ -373,71 +382,69 @@ class Cli_Model_Army
         foreach ($soldiers as $soldier) {
             $unit = $units->getUnit($soldier['unitId']);
             if ($unit->canSwim()) {
-                $this->_Ships->add($soldier['soldierId'], new Cli_Model_Soldier($soldier, $unit));
-                $soldier = $this->_Ships->getSoldier($soldier['soldierId']);
+                $this->_SwimmingSoldiers->add($soldier['soldierId'], new Cli_Model_Soldier($soldier, $unit));
+                $soldier = $this->_SwimmingSoldiers->getSoldier($soldier['soldierId']);
+            } elseif ($unit->canFly()) {
+                $this->_FlyingSoldiers->add($soldier['soldierId'], new Cli_Model_Soldier($soldier, $unit));
+                $soldier = $this->_FlyingSoldiers->getSoldier($soldier['soldierId']);
             } else {
-                $this->_Soldiers->add($soldier['soldierId'], new Cli_Model_Soldier($soldier, $unit));
-                $soldier = $this->_Soldiers->getSoldier($soldier['soldierId']);
+                $this->_WalkingSoldiers->add($soldier['soldierId'], new Cli_Model_Soldier($soldier, $unit));
+                $soldier = $this->_WalkingSoldiers->getSoldier($soldier['soldierId']);
             }
+
             if ($this->_movesLeft > $soldier->getMovesLeft()) {
                 $this->setMovesLeft($soldier->getMovesLeft());
-            }
-            if ($soldier->canFly()) {
-                $this->_attackFlyModifier->increment();
-                $this->_canFly++;
-            } else {
-                $this->_canFly--;
             }
         }
     }
 
     public function initHeroes($heroes)
     {
-        $numberOfHeroes = 0;
         foreach ($heroes as $hero) {
             $this->_Heroes->add($hero['heroId'], new Cli_Model_Hero($hero));
             $hero = $this->_Heroes->getHero($hero['heroId']);
+
             if ($this->_movesLeft > $hero->getMovesLeft()) {
                 $this->setMovesLeft($hero->getMovesLeft());
             }
-            $this->_attackHeroModifier->increment();
-            $this->_defenseHeroModifier->increment();
-            $numberOfHeroes++;
-        }
-        $this->_canFly += -$numberOfHeroes + 1; // ????? todo
-    }
-
-    public function joinSoldiers(Cli_Model_Soldiers $soldiers)
-    {
-        foreach ($soldiers->getKeys() as $soldierId) {
-            $soldier = $soldiers->getSoldier($soldierId);
-            if ($soldier->canFly()) {
-                $this->_attackFlyModifier->increment();
-                $this->_canFly++;
-            } else {
-                $this->_canFly--;
-            }
-            if ($this->_movesLeft > $soldier->getMovesLeft()) {
-                $this->setMovesLeft($soldier->getMovesLeft());
-            }
-            $this->_Soldiers->add($soldierId, $soldier);
         }
     }
 
-    public function joinShips(Cli_Model_Soldiers $soldiers)
+    public function joinWalkingSoldiers(Cli_Model_Soldiers $soldiers)
     {
         foreach ($soldiers->getKeys() as $soldierId) {
             $soldier = $soldiers->getSoldier($soldierId);
             if ($this->_movesLeft > $soldier->getMovesLeft()) {
                 $this->setMovesLeft($soldier->getMovesLeft());
             }
-            $this->_Ships->add($soldierId, $soldier);
+            $this->_WalkingSoldiers->add($soldierId, $soldier);
+        }
+    }
+
+    public function joinSwimmingSoldiers(Cli_Model_Soldiers $soldiers)
+    {
+        foreach ($soldiers->getKeys() as $soldierId) {
+            $soldier = $soldiers->getSoldier($soldierId);
+            if ($this->_movesLeft > $soldier->getMovesLeft()) {
+                $this->setMovesLeft($soldier->getMovesLeft());
+            }
+            $this->_SwimmingSoldiers->add($soldierId, $soldier);
+        }
+    }
+
+    public function joinFlyingSoldiers(Cli_Model_Soldiers $soldiers)
+    {
+        foreach ($soldiers->getKeys() as $soldierId) {
+            $soldier = $soldiers->getSoldier($soldierId);
+            if ($this->_movesLeft > $soldier->getMovesLeft()) {
+                $this->setMovesLeft($soldier->getMovesLeft());
+            }
+            $this->_FlyingSoldiers->add($soldierId, $soldier);
         }
     }
 
     public function joinHeroes(Cli_Model_Heroes $heroes)
     {
-        $numberOfHeroes = 0;
         foreach ($heroes->getKeys() as $heroId) {
             $hero = $heroes->getHero($heroId);
             if ($this->_movesLeft > $hero->getMovesLeft()) {
@@ -446,54 +453,62 @@ class Cli_Model_Army
             $this->_Heroes->add($heroId, $hero);
             $this->_attackHeroModifier->increment();
             $this->_defenseHeroModifier->increment();
-            $numberOfHeroes++;
         }
-        $this->_canFly += -$numberOfHeroes + 1; // ?????? todo
     }
 
     public function removeHero($heroId, $winnerId, $loserId, $gameId, $db)
     {
         $hero = $this->_Heroes->getHero($heroId);
         $hero->death($gameId, $db, $winnerId, $loserId);
-        $this->_attackHeroModifier->decrement();
-        $this->_defenseHeroModifier->decrement();
         $this->_Heroes->remove($heroId);
     }
 
-    public function removeSoldier($soldierId, $winnerId, $loserId, $gameId, Zend_Db_Adapter_Pdo_Pgsql $db)
+    public function removeWalkingSoldier($soldierId, $winnerId, $loserId, $gameId, Zend_Db_Adapter_Pdo_Pgsql $db)
     {
-        $soldier = $this->_Soldiers->getSoldier($soldierId);
+        $soldier = $this->_WalkingSoldiers->getSoldier($soldierId);
         $soldier->death($gameId, $db, $winnerId, $loserId);
-        if ($soldier->canFly()) {
-            $this->_attackFlyModifier->decrement();
-        }
-        $this->_Soldiers->remove($soldierId);
+        $this->_WalkingSoldiers->remove($soldierId);
+    }
+
+    public function removeSwimmingSoldier($soldierId, $winnerId, $loserId, $gameId, Zend_Db_Adapter_Pdo_Pgsql $db)
+    {
+        $soldier = $this->_SwimmingSoldiers->getSoldier($soldierId);
+        $soldier->death($gameId, $db, $winnerId, $loserId);
+        $this->_SwimmingSoldiers->remove($soldierId);
+    }
+
+    public function removeFlyingSoldier($soldierId, $winnerId, $loserId, $gameId, Zend_Db_Adapter_Pdo_Pgsql $db)
+    {
+        $soldier = $this->_FlyingSoldiers->getSoldier($soldierId);
+        $soldier->death($gameId, $db, $winnerId, $loserId);
+        $this->_FlyingSoldiers->remove($soldierId);
     }
 
     public function resetAttributes()
     {
         $this->setMovesLeft(1000);
-        $this->_canFly = 0;
-        $numberOfHeroes = 0;
 
         foreach ($this->_Heroes->getKeys() as $heroId) {
             $hero = $this->_Heroes->getHero($heroId);
             if ($this->_movesLeft > $hero->getMovesLeft()) {
                 $this->setMovesLeft($hero->getMovesLeft());
             }
-            $numberOfHeroes++;
         }
 
-        $this->_canFly += -$numberOfHeroes + 1;
-
-        foreach ($this->_Soldiers->getKeys() as $soldierId) {
-            $soldier = $this->_Soldiers->getSoldier($soldierId);
-            if ($soldier->canFly()) {
-                $this->_attackFlyModifier->increment();
-                $this->_canFly++;
-            } else {
-                $this->_canFly--;
+        foreach ($this->_WalkingSoldiers->getKeys() as $soldierId) {
+            $soldier = $this->_WalkingSoldiers->getSoldier($soldierId);
+            if ($this->_movesLeft > $soldier->getMovesLeft()) {
+                $this->setMovesLeft($soldier->getMovesLeft());
             }
+        }
+        foreach ($this->_SwimmingSoldiers->getKeys() as $soldierId) {
+            $soldier = $this->_SwimmingSoldiers->getSoldier($soldierId);
+            if ($this->_movesLeft > $soldier->getMovesLeft()) {
+                $this->setMovesLeft($soldier->getMovesLeft());
+            }
+        }
+        foreach ($this->_FlyingSoldiers->getKeys() as $soldierId) {
+            $soldier = $this->_FlyingSoldiers->getSoldier($soldierId);
             if ($this->_movesLeft > $soldier->getMovesLeft()) {
                 $this->setMovesLeft($soldier->getMovesLeft());
             }
@@ -512,7 +527,7 @@ class Cli_Model_Army
 
     public function count()
     {
-        return $this->_Soldiers->count() + $this->_Ships->count() + $this->_Heroes->count();
+        return $this->_WalkingSoldiers->count() + $this->_SwimmingSoldiers->count() + $this->_FlyingSoldiers->count() + $this->_Heroes->count();
     }
 
     public function saveOldPath(Cli_Model_Path $path)

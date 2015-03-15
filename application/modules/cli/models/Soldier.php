@@ -6,20 +6,24 @@
  */
 class Cli_Model_Soldier extends Cli_Model_Being
 {
-    protected $_type = 'soldier';
+    protected $_type;
 
     private $_forest;
     private $_hills;
     private $_swamp;
 
-    private $_fly;
-
-    private $_cost;
-
     public function __construct($soldier, $unit)
     {
         $this->_id = $soldier['soldierId'];
         $this->_unitId = $soldier['unitId'];
+
+        if ($unit->canSwim()) {
+            $this->_type = 'swimming';
+        } elseif ($unit->canFly()) {
+            $this->_type = 'flying';
+        } else {
+            $this->_type = 'walking';
+        }
 
         if (isset($soldier['movesLeft'])) {
             $this->setMovesLeft($soldier['movesLeft']);
@@ -30,10 +34,6 @@ class Cli_Model_Soldier extends Cli_Model_Being
         $this->_forest = $unit->getModMovesForest();
         $this->_hills = $unit->getModMovesHills();
         $this->_swamp = $unit->getModMovesSwamp();
-
-        $this->_fly = $unit->canFly();
-
-        $this->_cost = $unit->getCost();
 
         $this->_attack = $unit->getAttackPoints();
         $this->_defense = $unit->getDefensePoints();
@@ -46,11 +46,6 @@ class Cli_Model_Soldier extends Cli_Model_Being
             'unitId' => $this->_unitId,
             'movesLeft' => $this->_movesLeft
         );
-    }
-
-    public function canFly()
-    {
-        return $this->_fly;
     }
 
     public function updateMovesLeft($soldierId, $movesSpend, Application_Model_UnitsInGame $mSoldier)
@@ -121,10 +116,5 @@ class Cli_Model_Soldier extends Cli_Model_Being
     public function getSwamp()
     {
         return $this->_swamp;
-    }
-
-    public function getCost()
-    {
-        return $this->_cost;
     }
 }

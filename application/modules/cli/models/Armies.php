@@ -83,8 +83,8 @@ class Cli_Model_Armies
             if ($color == $armyColor) {
                 $army = $this->getArmy($armyId);
                 $excludedArmy->joinHeroes($army->getHeroes());
-                $excludedArmy->joinSoldiers($army->getSoldiers());
-                $excludedArmy->joinShips($army->getShips());
+                $excludedArmy->joinWalkingSoldiers($army->getWalkingSoldiers());
+                $excludedArmy->joinSwimmingSoldiers($army->getSwimmingSoldiers());
                 $mHeroesInGame->heroesUpdateArmyId($armyId, $excludedArmyId);
                 $mSoldier->soldiersUpdateArmyId($armyId, $excludedArmyId);
                 $this->removeArmy($armyId, $game, $db);
@@ -167,14 +167,14 @@ class Cli_Model_Armies
 
     public function changeSoldierAffiliation($oldArmyId, $newArmyId, $soldierId, $gameId, Zend_Db_Adapter_Pdo_Pgsql $db)
     {
-        $this->getArmy($newArmyId)->addSoldier($soldierId, $this->getArmy($oldArmyId)->getSoldiers()->getSoldier($soldierId), $gameId, $db);
-        $this->getArmy($oldArmyId)->getSoldiers()->remove($soldierId);
+        $this->getArmy($newArmyId)->addWalkingSoldier($soldierId, $this->getArmy($oldArmyId)->getWalkingSoldiers()->getSoldier($soldierId), $gameId, $db);
+        $this->getArmy($oldArmyId)->getWalkingSoldiers()->remove($soldierId);
     }
 
     public function changeShipAffiliation($oldArmyId, $newArmyId, $soldierId, $gameId, Zend_Db_Adapter_Pdo_Pgsql $db)
     {
-        $this->getArmy($newArmyId)->addShip($soldierId, $this->getArmy($oldArmyId)->getShips()->getSoldier($soldierId), $gameId, $db);
-        $this->getArmy($oldArmyId)->getShips()->remove($soldierId);
+        $this->getArmy($newArmyId)->addSwimmingSoldier($soldierId, $this->getArmy($oldArmyId)->getSwimmingSoldiers()->getSoldier($soldierId), $gameId, $db);
+        $this->getArmy($oldArmyId)->getSwimmingSoldiers()->remove($soldierId);
     }
 
     public function count()

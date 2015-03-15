@@ -39,9 +39,9 @@ class Cli_Model_Garrison
 
         echo 'ggg';
         $army->setFortified(true, $gameId, $db);
-        $countGarrisonUnits = $army->getSoldiers()->count();
+        $countGarrisonUnits = $army->getWalkingSoldiers()->count();
         $heroes = $army->getHeroes();
-        $ships = $army->getShips();
+        $ships = $army->getSwimmingSoldiers();
 
         if ($heroes->exists() && $heroes->getMovesLeft() > 2) {
             echo 'hhh';
@@ -57,7 +57,7 @@ class Cli_Model_Garrison
         if ($countGarrisonUnits > $numberOfUnits) {
             echo 'kkk';
             $count = 0;
-            $armySoldiers = $army->getSoldiers();
+            $armySoldiers = $army->getWalkingSoldiers();
             if (empty($this->_newArmyId)) {
                 echo 'lll';
                 $this->_newArmyId = $armies->create($army->getX(), $army->getY(), $army->getColor(), $game, $db);

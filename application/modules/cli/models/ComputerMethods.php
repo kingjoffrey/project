@@ -214,7 +214,7 @@ abstract class Cli_Model_ComputerMethods
 
         foreach ($myArmies->getKeys() as $armyId) {
             $army = $myArmies->getArmy($armyId);
-            $numberOfSoldiers = $army->getSoldiers()->count();
+            $numberOfSoldiers = $army->getWalkingSoldiers()->count();
             $armyX = $army->getX();
             $armyY = $army->getY();
 

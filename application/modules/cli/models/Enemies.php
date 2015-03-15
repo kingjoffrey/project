@@ -70,7 +70,7 @@ class Cli_Model_Enemies
         ), 'neutral');
         for ($i = 1; $i <= $numberOfSoldiers; $i++) {
             $soldierId = 's' . $i;
-            $army->getSoldiers()->add($soldierId, new Cli_Model_Soldier(array(
+            $army->getWalkingSoldiers()->add($soldierId, new Cli_Model_Soldier(array(
                 'defensePoints' => 3,
                 'soldierId' => $soldierId,
                 'unitId' => $firstUnitId
