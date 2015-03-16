@@ -60,11 +60,11 @@ var Armies = function () {
     this.updateDefenderArmy = function (armyId) {
         var army = this.get(armyId)
         if (army.getNumberOfUnits()) {
-            if (countProperties(army.getShips())) {
+            if (countProperties(army.getSwimmingSoldiers())) {
                 army.setCanSwim(1)
                 army.setCanFly(0)
             } else {
-                var soldiers = army.getSoldiers(),
+                var soldiers = army.getWalkingSoldiers(),
                     canFly = -countProperties(army.getHeroes())
                 if (canFly) {
                     canFly++

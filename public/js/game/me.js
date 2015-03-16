@@ -29,8 +29,8 @@ var Me = new function () {
         var armies = this.getArmies()
         for (var armyId in armies.toArray()) {
             var army = armies.get(armyId)
-            for (var soldierId in army.getSoldiers()) {
-                this.costIncrement(Units.get(army.getSoldiers()[soldierId].unitId).cost)
+            for (var soldierId in army.getWalkingSoldiers()) {
+                this.costIncrement(Units.get(army.getWalkingSoldiers()[soldierId].unitId).cost)
             }
         }
         var castles = this.getCastles()
@@ -326,72 +326,8 @@ var Me = new function () {
             return
         }
 
-        if (selectedArmyId) {
-            var army = this.getArmy(selectedArmyId)
-            if (army.countHeroes() + army.countSoldiers() == 1) {
-                return
-            }
-
-            //$('#army' + army.armyId).css('background', 'none');
-            //$('#army' + army.armyId + ' .unit').css('background', 'url(/img/game/units/' + army.color + '/border_unit.gif)');
-
-            var newHeroKey = null;
-            var newSoldierKey = null;
-
-            army.setHeroSplitKey(null)
-            army.setSoldierSplitKey(null)
-
-            for (var key in army.getHeroes()) {
-                if (army.skippedHeroes[key]) {
-                    continue
-                }
-                army.skippedHeroes[key] = true
-                newHeroKey = key
-                army.setHeroSplitKey(key)
-                break
-            }
-
-            if (newHeroKey !== null) {
-                //Army.setImg(army, newHeroKey, null);
-                //Army.changeImg(army)
-                Me.updateInfo(selectedArmyId)
-                $('#moves').html(army.getHeroMovesLeft(newHeroKey))
-                return
-            }
-
-            for (var key in army.getSoldiers()) {
-                if (army.skippedSoldiers[key]) {
-                    continue;
-                }
-                army.skippedSoldiers[key] = true
-                newSoldierKey = key
-                army.soldierSplitKey = key
-                break;
-            }
-
-            if (newSoldierKey !== null) {
-                //Army.setImg(army, null, newSoldierKey);
-                //Army.changeImg(army)
-                Me.updateInfo(selectedArmyId)
-                $('#moves').html(army.getSoldierMovesLeft(newSoldierKey));
-                return;
-            }
-
-            //Army.setImg(army, army.heroKey, army.soldierKey);
-            //Army.changeImg(army)
-            army.getMovementType()
-            Me.updateInfo(selectedArmyId)
-            $('#name').html('Army')
-
-            //$('#army' + army.armyId).css('background', 'url(/img/game/units/' + army.color + '/border_army.gif)');
-            //$('#army' + army.armyId + ' .unit').css('background', 'none');
-
-            army.skippedHeroes = {}
-            army.skippedSoldiers = {}
-        } else {
-            Sound.play('slash')
-            this.selectArmy(armyId, 0)
-        }
+        Sound.play('slash')
+        this.selectArmy(armyId, 0)
     }
     this.turnOn = function () {
         this.resetSkippedArmies()

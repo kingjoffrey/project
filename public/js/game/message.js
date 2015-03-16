@@ -477,8 +477,8 @@ var Message = {
                 .attr('id', 'selectAll')
         )
         var numberOfUnits = 0,
-            soldiers = Me.getSelectedArmy().getSoldiers(),
-            ships = Me.getSelectedArmy().getShips(),
+            soldiers = Me.getSelectedArmy().getWalkingSoldiers(),
+            ships = Me.getSelectedArmy().getSwimmingSoldiers(),
             heroes = Me.getSelectedArmy().getHeroes()
 
         for (var soldierId in soldiers) {
@@ -591,14 +591,14 @@ var Message = {
             defenseCastleBonus.html(' +' + castleDefense).addClass('value plus')
         }
 
-        for (var i in army.getSoldiers()) {
+        for (var i in army.getWalkingSoldiers()) {
             numberOfUnits++
-            div.append(this.statusContent(numberOfUnits, army.getSoldier(i), color, attackFlyBonus, attackHeroBonus, defenseFlyBonus, defenseHeroBonus, defenseTowerBonus, defenseCastleBonus));
+            div.append(this.statusContent(numberOfUnits, army.getWalkingSoldier(i), color, attackFlyBonus, attackHeroBonus, defenseFlyBonus, defenseHeroBonus, defenseTowerBonus, defenseCastleBonus));
         }
 
-        for (var i in army.getShips()) {
+        for (var i in army.getSwimmingSoldiers()) {
             numberOfUnits++
-            div.append(this.statusContent(numberOfUnits, army.getShip(i), color, attackFlyBonus, attackHeroBonus, defenseFlyBonus, defenseHeroBonus, defenseTowerBonus, defenseCastleBonus));
+            div.append(this.statusContent(numberOfUnits, army.getSwimmingSoldier(i), color, attackFlyBonus, attackHeroBonus, defenseFlyBonus, defenseHeroBonus, defenseTowerBonus, defenseCastleBonus));
         }
 
         for (var i in army.getHeroes()) {
@@ -678,7 +678,7 @@ var Message = {
             attack.append(
                 $('<div>')
                     .attr('id', 'unit' + soldierId)
-                    .css('background', 'url(' + Unit.getImage(Players.get(r.color).getArmies().get(r.army.id).getSoldiers()[soldierId].unitId, r.color) + ') no-repeat')
+                    .css('background', 'url(' + Unit.getImage(Players.get(r.color).getArmies().get(r.army.id).getWalkingSoldiers()[soldierId].unitId, r.color) + ') no-repeat')
                     .addClass('battleUnit')
             );
         }
@@ -691,7 +691,7 @@ var Message = {
             attack.append(
                 $('<div>')
                     .attr('id', 'unit' + soldierId)
-                    .css('background', 'url(' + Unit.getImage(Players.get(r.color).getArmies().get(r.army.id).getShips()[soldierId].unitId, r.color) + ') no-repeat')
+                    .css('background', 'url(' + Unit.getImage(Players.get(r.color).getArmies().get(r.army.id).getSwimmingSoldiers()[soldierId].unitId, r.color) + ') no-repeat')
                     .addClass('battleUnit')
             );
         }
@@ -727,7 +727,7 @@ var Message = {
                     if (color == 'neutral') {
                         var unitId = Game.getFirstUnitId()
                     } else {
-                        var unitId = Players.get(color).getArmies().get(armyId).getSoldiers()[soldierId].unitId
+                        var unitId = Players.get(color).getArmies().get(armyId).getWalkingSoldiers()[soldierId].unitId
                     }
                     defense.append(
                         $('<div>')
@@ -742,7 +742,7 @@ var Message = {
                             'soldierId': soldierId
                         };
                     }
-                    var unitId = Players.get(color).getArmies().get(armyId).getShips()[soldierId].unitId
+                    var unitId = Players.get(color).getArmies().get(armyId).getSwimmingSoldiers()[soldierId].unitId
                     defense.append(
                         $('<div>')
                             .attr('id', 'unit' + soldierId)
@@ -852,9 +852,9 @@ var Message = {
             }
             $('#unit' + b[i].soldierId + ' .killed').fadeIn(1000, function () {
                 if (Me.colorEquals(r.color)) {
-                    for (var k in Me.getArmy(r.army.id).getSoldiers()) {
-                        if (Me.getArmy(r.army.id).getSoldiers()[k].soldierId == b[i].soldierId) {
-                            Me.costIncrement(-Units[Me.getArmy(r.army.id).getSoldiers()[k].unitId].cost)
+                    for (var k in Me.getArmy(r.army.id).getWalkingSoldiers()) {
+                        if (Me.getArmy(r.army.id).getWalkingSoldiers()[k].soldierId == b[i].soldierId) {
+                            Me.costIncrement(-Units[Me.getArmy(r.army.id).getWalkingSoldiers()[k].unitId].cost)
                         }
                     }
                 }
@@ -862,9 +862,9 @@ var Message = {
                 for (var color in r.defenders) {
                     if (Me.colorEquals(color)) {
                         for (var armyId in r.defenders[color]) {
-                            for (var soldierId in Me.getArmy(armyId).getSoldiers()) {
-                                if (Me.getArmy().getSoldiers()[soldierId].soldierId == b[i].soldierId) {
-                                    Me.costIncrement(-Units[Me.getArmy(armyId).getSoldiers()[soldierId].unitId].cost)
+                            for (var soldierId in Me.getArmy(armyId).getWalkingSoldiers()) {
+                                if (Me.getArmy().getWalkingSoldiers()[soldierId].soldierId == b[i].soldierId) {
+                                    Me.costIncrement(-Units[Me.getArmy(armyId).getWalkingSoldiers()[soldierId].unitId].cost)
                                 }
                             }
                         }
@@ -1062,12 +1062,12 @@ var Message = {
 
         for (var i in Me.getArmies().toArray()) {
             var army = Me.getArmy(i)
-            for (var j in army.getSoldiers()) {
-                myUnitsOutcome += Units.get(army.getSoldier(j).unitId).cost
+            for (var j in army.getWalkingSoldiers()) {
+                myUnitsOutcome += Units.get(army.getWalkingSoldier(j).unitId).cost
                 myUnits++
             }
-            for (var j in army.getShips()) {
-                myUnitsOutcome += Units.get(army.getShip(j).unitId).cost
+            for (var j in army.getSwimmingSoldiers()) {
+                myUnitsOutcome += Units.get(army.getSwimmingSoldier(j).unitId).cost
                 myUnits++
             }
         }
@@ -1190,8 +1190,8 @@ var Message = {
 
         for (var i in Me.getArmies().toArray()) {
             var army = Me.getArmy(i)
-            for (var j in army.getSoldiers()) {
-                var soldier = army.getSoldier(j)
+            for (var j in army.getWalkingSoldiers()) {
+                var soldier = army.getWalkingSoldier(j)
                 myUnitsGold += Units.get(soldier.unitId).cost
                 myUnits++
                 table.append(
@@ -1207,8 +1207,8 @@ var Message = {
                     )
                 )
             }
-            for (var j in army.getShips()) {
-                var soldier = army.getShip(j)
+            for (var j in army.getSwimmingSoldiers()) {
+                var soldier = army.getSwimmingSoldier(j)
                 myUnitsGold += Units.get(soldier.unitId).cost
                 myUnits++
                 table.append(

@@ -138,7 +138,7 @@ var Websocket = {
                 if (Turn.isMy()) {
                     Message.remove()
                     var upkeep = 0,
-                        soldiers = Players.get(r.color).getArmies().get(r.id).getSoldiers()
+                        soldiers = Players.get(r.color).getArmies().get(r.id).getWalkingSoldiers()
                     for (var i in soldiers) {
                         upkeep += Units.get(soldiers[i].unitId).cost
                     }

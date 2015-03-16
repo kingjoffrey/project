@@ -68,7 +68,7 @@ var AStar = new function () {
         //moves = 0
 
         //if (soldierSplitKey) {
-        //    moves = army.getSoldiers()[soldierSplitKey].movesLeft
+        //    moves = army.getWalkingSoldiers()[soldierSplitKey].movesLeft
         //} else if (heroSplitKey) {
         //    moves = army.getHeroes()[heroSplitKey].movesLeft
         //} else {

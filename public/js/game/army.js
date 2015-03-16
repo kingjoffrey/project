@@ -17,26 +17,37 @@ var Army = function (army, bgColor, miniMapColor, textColor, color) {
         //    army.y = a.y
         //}
         for (var key in a) {
-            if (key == 'soldiers') {
-                for (var soldierId in army.soldiers) {
-                    if (notSet(a.soldiers[soldierId])) {
-                        delete army.soldiers[soldierId]
+            if (key == 'walk') {
+                for (var soldierId in army.walk) {
+                    if (notSet(a.walk[soldierId])) {
+                        delete army.walk[soldierId]
                     }
                 }
-                for (var soldierId in a.soldiers) {
-                    if (a.soldiers[soldierId]) {
-                        army.soldiers[soldierId] = a.soldiers[soldierId]
+                for (var soldierId in a.walk) {
+                    if (a.walk[soldierId]) {
+                        army.walk[soldierId] = a.walk[soldierId]
                     }
                 }
-            } else if (key == 'ships') {
-                for (var soldierId in army.ships) {
-                    if (notSet(a.ships[soldierId])) {
-                        delete army.ships[soldierId]
+            } else if (key == 'swim') {
+                for (var soldierId in army.swim) {
+                    if (notSet(a.swim[soldierId])) {
+                        delete army.swim[soldierId]
                     }
                 }
-                for (var soldierId in a.ships) {
-                    if (a.ships[soldierId]) {
-                        army.ships[soldierId] = a.ships[soldierId]
+                for (var soldierId in a.swim) {
+                    if (a.swim[soldierId]) {
+                        army.swim[soldierId] = a.swim[soldierId]
+                    }
+                }
+            } else if (key == 'fly') {
+                for (var soldierId in army.fly) {
+                    if (notSet(a.fly[soldierId])) {
+                        delete army.fly[soldierId]
+                    }
+                }
+                for (var soldierId in a.fly) {
+                    if (a.fly[soldierId]) {
+                        army.fly[soldierId] = a.fly[soldierId]
                     }
                 }
             } else if (key == 'heroes') {
@@ -71,20 +82,20 @@ var Army = function (army, bgColor, miniMapColor, textColor, color) {
     }
     this.getMoves = function () {
         var moves
-        for (var i in  army.soldiers) {
+        for (var i in  army.walk) {
             if (notSet(moves)) {
-                moves = army.soldiers[i].movesLeft
+                moves = army.walk[i].movesLeft
             }
-            if (moves > army.soldiers[i].movesLeft) {
-                moves = army.soldiers[i].movesLeft
+            if (moves > army.walk[i].movesLeft) {
+                moves = army.walk[i].movesLeft
             }
         }
-        for (var i in  army.ships) {
+        for (var i in  army.swim) {
             if (notSet(moves)) {
-                moves = army.ships[i].movesLeft
+                moves = army.swim[i].movesLeft
             }
-            if (moves > army.ships[i].movesLeft) {
-                moves = army.ships[i].movesLeft
+            if (moves > army.swim[i].movesLeft) {
+                moves = army.swim[i].movesLeft
             }
         }
         for (var i in army.heroes) {
@@ -103,42 +114,24 @@ var Army = function (army, bgColor, miniMapColor, textColor, color) {
         }
     }
     this.getSoldierKey = function () {
-        for (var key in army.soldiers) {
+        for (var key in army.walk) {
             return key
         }
     }
     this.getMovementType = function () {
-        if (army.canSwim) {
-            return 'swimming';
-        } else if (army.canFly > 0) {
-            return 'flying'
+        if (this.canSwim()) {
+            return 'swim';
+        } else if (this.canFly()) {
+            return 'fly'
         } else {
-            return 'walking'
+            return 'walk'
         }
     }
     this.canSwim = function () {
-        return army.canSwim
-    }
-    this.setCanSwim = function (value) {
-        army.canSwim = value
+        return countProperties(army.swim)
     }
     this.canFly = function () {
         return army.canFly > 0
-    }
-    this.setCanFly = function (value) {
-        army.canFly = value
-    }
-    this.getHeroMovesLeft = function (key) {
-        return army.heroes[key].movesLeft
-    }
-    this.getSoldierMovesLeft = function (key) {
-        return army.soldiers[key].movesLeft
-    }
-    this.countHeroes = function () {
-        return army.heroes.length
-    }
-    this.countSoldiers = function () {
-        return army.soldiers.length
     }
     this.setHeroSplitKey = function (value) {
         heroSplitKey = value
@@ -158,23 +151,29 @@ var Army = function (army, bgColor, miniMapColor, textColor, color) {
     this.getHero = function (heroId) {
         return army.heroes[heroId]
     }
-    this.getSoldiers = function () {
-        return army.soldiers
+    this.getWalkingSoldiers = function () {
+        return army.walk
     }
-    this.getSoldier = function (soldierId) {
-        return army.soldiers[soldierId]
+    this.getWalkingSoldier = function (soldierId) {
+        return army.walk[soldierId]
     }
-    this.getShips = function () {
-        return army.ships
+    this.getSwimmingSoldiers = function () {
+        return army.swim
     }
-    this.getShip = function (soldierId) {
-        return army.ships[soldierId]
+    this.getSwimmingSoldier = function (soldierId) {
+        return army.swim[soldierId]
+    }
+    this.getFlyingSoldiers = function () {
+        return army.fly
+    }
+    this.getFlyingSoldier = function (soldierId) {
+        return army.fly[soldierId]
     }
     this.setPosition = function (x, y) {
         army.mesh.position.set(x * 4 - 216, 0, y * 4 - 311)
     }
     this.getNumberOfUnits = function () {
-        var numberOfUnits = countProperties(army.heroes) + countProperties(army.soldiers) + countProperties(army.ships)
+        var numberOfUnits = countProperties(army.heroes) + countProperties(army.walk) + countProperties(army.swim) + countProperties(army.fly)
 
         if (numberOfUnits > 8) {
             numberOfUnits = 8
@@ -182,10 +181,10 @@ var Army = function (army, bgColor, miniMapColor, textColor, color) {
         return numberOfUnits
     }
     this.deleteSoldier = function (soldierId) {
-        delete army.soldiers[soldierId]
+        delete army.walk[soldierId]
     }
     this.deleteShip = function (soldierId) {
-        delete army.ships[soldierId]
+        delete army.swim[soldierId]
     }
     this.deleteHero = function (heroId) {
         delete army.heroes[heroId]
