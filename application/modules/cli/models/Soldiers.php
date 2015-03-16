@@ -47,9 +47,10 @@ class Cli_Model_Soldiers
 
     public function getCosts()
     {
+        $units = Zend_Registry::get('units');
         $costs = 0;
         foreach ($this->_soldiers as $soldier) {
-            $costs += $soldier->getCost();
+            $costs += $units->getUnit($soldier->getUnitId())->getCost();
         }
         return $costs;
     }

@@ -33,7 +33,6 @@ class Cli_Model_SplitArmy
                     $this->_childArmyId = $armies->create($army->getX(), $army->getY(), $color, $game, $db);
                     $childArmy = $armies->getArmy($this->_childArmyId);
                 }
-
                 $armies->changeHeroAffiliation($parentArmyId, $this->_childArmyId, $heroId, $gameId, $db);
             }
         }
@@ -44,16 +43,25 @@ class Cli_Model_SplitArmy
                     continue;
                 }
 
-                if (!$army->getWalkingSoldiers()->hasSoldier($soldierId)) {
-                    continue;
+                if ($army->getWalkingSoldiers()->hasSoldier($soldierId)) {
+                    if (empty($this->_childArmyId)) {
+                        $this->_childArmyId = $armies->create($army->getX(), $army->getY(), $color, $game, $db);
+                        $childArmy = $armies->getArmy($this->_childArmyId);
+                    }
+                    $armies->changeWalkingSoldierAffiliation($parentArmyId, $this->_childArmyId, $soldierId, $gameId, $db);
+                } elseif ($army->getSwimmingSoldiers()->hasSoldier($soldierId)) {
+                    if (empty($this->_childArmyId)) {
+                        $this->_childArmyId = $armies->create($army->getX(), $army->getY(), $color, $game, $db);
+                        $childArmy = $armies->getArmy($this->_childArmyId);
+                    }
+                    $armies->changeSwimmingSoldierAffiliation($parentArmyId, $this->_childArmyId, $soldierId, $gameId, $db);
+                } elseif ($army->getFlyingSoldiers()->hasSoldier($soldierId)) {
+                    if (empty($this->_childArmyId)) {
+                        $this->_childArmyId = $armies->create($army->getX(), $army->getY(), $color, $game, $db);
+                        $childArmy = $armies->getArmy($this->_childArmyId);
+                    }
+                    $armies->changeFlyingSoldierAffiliation($parentArmyId, $this->_childArmyId, $soldierId, $gameId, $db);
                 }
-
-                if (empty($this->_childArmyId)) {
-                    $this->_childArmyId = $armies->create($army->getX(), $army->getY(), $color, $game, $db);
-                    $childArmy = $armies->getArmy($this->_childArmyId);
-                }
-
-                $armies->changeWalkingSoldierAffiliation($parentArmyId, $this->_childArmyId, $soldierId, $gameId, $db);
             }
         }
 

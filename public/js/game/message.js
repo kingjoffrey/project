@@ -700,7 +700,7 @@ var Message = {
             attack.append(
                 $('<div>')
                     .attr('id', 'unit' + soldierId)
-                    .css('background', 'url(' + Unit.getImage(Players.get(r.color).getArmies().get(r.army.id).getWalkingSoldiers()[soldierId].unitId, r.color) + ') no-repeat')
+                    .css('background', 'url(' + Unit.getImage(Players.get(r.color).getArmies().get(r.army.id).getWalkingSoldier(soldierId).unitId, r.color) + ') no-repeat')
                     .addClass('battleUnit')
             );
         }
@@ -713,7 +713,7 @@ var Message = {
             attack.append(
                 $('<div>')
                     .attr('id', 'unit' + soldierId)
-                    .css('background', 'url(' + Unit.getImage(Players.get(r.color).getArmies().get(r.army.id).getSwimmingSoldiers()[soldierId].unitId, r.color) + ') no-repeat')
+                    .css('background', 'url(' + Unit.getImage(Players.get(r.color).getArmies().get(r.army.id).getSwimmingSoldier(soldierId).unitId, r.color) + ') no-repeat')
                     .addClass('battleUnit')
             );
         }
@@ -726,13 +726,13 @@ var Message = {
             attack.append(
                 $('<div>')
                     .attr('id', 'unit' + soldierId)
-                    .css('background', 'url(' + Unit.getImage(Players.get(r.color).getArmies().get(r.army.id).getSwimmingSoldiers()[soldierId].unitId, r.color) + ') no-repeat')
+                    .css('background', 'url(' + Unit.getImage(Players.get(r.color).getArmies().get(r.army.id).getFlyingSoldier(soldierId).unitId, r.color) + ') no-repeat')
                     .addClass('battleUnit')
             );
         }
-        for (var heroId in r.battle.attack.heroes) {
-            if (r.battle.attack.heroes[heroId]) {
-                killed[r.battle.attack.heroes[heroId]] = {
+        for (var heroId in r.battle.attack.hero) {
+            if (r.battle.attack.hero[heroId]) {
+                killed[r.battle.attack.hero[heroId]] = {
                     'heroId': heroId
                 };
             }
@@ -799,9 +799,9 @@ var Message = {
                             .addClass('battleUnit')
                     );
                 }
-                for (var heroId in r.battle.defenders[color][armyId].heroes) {
-                    if (r.battle.defenders[color][armyId].heroes[heroId]) {
-                        killed[r.battle.defenders[color][armyId].heroes[heroId]] = {
+                for (var heroId in r.battle.defenders[color][armyId].hero) {
+                    if (r.battle.defenders[color][armyId].hero[heroId]) {
+                        killed[r.battle.defenders[color][armyId].hero[heroId]] = {
                             'heroId': heroId
                         };
                     }
