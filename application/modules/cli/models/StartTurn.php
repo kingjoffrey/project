@@ -48,7 +48,7 @@ class Cli_Model_StartTurn
                 }
                 if ($unitId != $castle->getProductionId()) {
                     $relocationToCastleId = null;
-                    $castle->setProductionId($gameId, $playerId, $unitId, $relocationToCastleId, $db);
+                    $castle->setProductionId($unitId, $relocationToCastleId, $playerId, $gameId, $db);
                 }
             } else {
                 $unitId = $castle->getProductionId();

@@ -90,10 +90,12 @@ class Cli_Model_Castle extends Cli_Model_Entity
         return $this->_productionTurn++;
     }
 
-    public function setProductionId($gameId, $playerId, $unitId, $relocationToCastleId, Zend_Db_Adapter_Pdo_Pgsql $db)
+    public function setProductionId($unitId = null, $relocationToCastleId = null, $playerId = null, $gameId = null, Zend_Db_Adapter_Pdo_Pgsql $db = null)
     {
-        $mCastlesInGame = new Application_Model_CastlesInGame($gameId, $db);
-        $mCastlesInGame->setProduction($playerId, $this->_id, $unitId, $relocationToCastleId);
+        if ($db) {
+            $mCastlesInGame = new Application_Model_CastlesInGame($gameId, $db);
+            $mCastlesInGame->setProduction($playerId, $this->_id, $unitId, $relocationToCastleId);
+        }
         $this->_productionId = $unitId;
         $this->_productionTurn = 0;
         $this->_relocationCastleId = $relocationToCastleId;

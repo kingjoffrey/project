@@ -9,8 +9,6 @@ class Cli_Model_Army
     private $_fortified = false;
     private $_destroyed = false;
 
-    private $_attackHeroModifier;
-    private $_attackFlyModifier;
     private $_defenseHeroModifier;
 
     private $_attackBattleSequence = array(
@@ -58,8 +56,6 @@ class Cli_Model_Army
         $this->_x = $army['x'];
         $this->_y = $army['y'];
 
-        $this->_attackFlyModifier = new Cli_Model_BattleModifier();
-        $this->_attackHeroModifier = new Cli_Model_BattleModifier();
         $this->_defenseHeroModifier = new Cli_Model_BattleModifier();
 
         $this->_Heroes = new Cli_Model_Heroes();
@@ -307,12 +303,26 @@ class Cli_Model_Army
 
     public function getAttackModifier()
     {
-        return $this->_attackHeroModifier->get() + $this->_attackFlyModifier->get();
+        $mod = 0;
+        if ($this->_Heroes->exists()) {
+            $mod++;
+        }
+        if ($this->_FlyingSoldiers->exists()) {
+            $mod++;
+        }
+        return $mod;
     }
 
     public function getDefenseModifier()
     {
-        return $this->_defenseHeroModifier->get();
+        $mod = 0;
+        if ($this->_Heroes->exists()) {
+            $mod++;
+        }
+        if ($this->_SwimmingSoldiers->exists()) {
+            $mod++;
+        }
+        return $mod;
     }
 
     public function getCosts()

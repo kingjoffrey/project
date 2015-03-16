@@ -6,7 +6,8 @@ class Cli_Model_Production
     {
         $castleId = $dataIn['castleId'];
         $unitId = $dataIn['unitId'];
-        $gameId = $user->parameters['game']->getId();
+        $game = $this->getGame($user);
+        $gameId = $game->getId();
         $playerId = $user->parameters['me']->getId();
 
         if (isset($dataIn['relocationToCastleId'])) {
@@ -29,16 +30,16 @@ class Cli_Model_Production
             return;
         }
 
-        $color = $user->parameters['game']->getPlayerColor($playerId);
+        $color = $game->getPlayerColor($playerId);
 
-        $castle = $user->parameters['game']->getPlayers()->getPlayer($color)->getCastles()->getCastle($castleId);
+        $castle = $game->getPlayers()->getPlayer($color)->getCastles()->getCastle($castleId);
 
         if (!$castle) {
             $gameHandler->sendError($user, 'To nie jest Twój zamek!');
             return;
         }
 
-        $relocationToCastle = $user->parameters['game']->getPlayers()->getPlayer($color)->getCastles()->getCastle($relocationToCastleId);
+        $relocationToCastle = $game->getPlayers()->getPlayer($color)->getCastles()->getCastle($relocationToCastleId);
 
         if ($relocationToCastleId && !$relocationToCastle) {
             $gameHandler->sendError($user, 'To nie jest Twój zamek!');
@@ -59,7 +60,7 @@ class Cli_Model_Production
         }
 
         try {
-            $castle->setProductionId($gameId, $playerId, $unitId, $relocationToCastleId, $db);
+            $castle->setProductionId($unitId, $relocationToCastleId, $playerId, $gameId, $db);
         } catch (Exception $e) {
             $gameHandler->sendError($user, 'Set castle production error!');
             $l = new Coret_Model_Logger('Production');
@@ -74,5 +75,14 @@ class Cli_Model_Production
         );
 
         $gameHandler->sendToUser($user, $db, $token, $gameId);
+    }
+
+    /**
+     * @param IWebSocketConnection $user
+     * @return Cli_Model_Game
+     */
+    private function getGame(IWebSocketConnection $user)
+    {
+        return $user->parameters['game'];
     }
 }
