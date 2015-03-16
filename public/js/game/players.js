@@ -1,141 +1,4 @@
 var Players = new function () {
-    this.rotate = function (color) {
-        var i = 0,
-            start = 0,
-            end = 0
-
-        for (var shortName in players) {
-            i++
-            if (color == shortName) {
-                end = i
-            }
-            if (Turn.getColor() == shortName) {
-                start = i
-            }
-        }
-
-        var angle = (end - start) * (Math.PI * 2 / length)
-
-        if (angle < 0) {
-            angle = 2 * Math.PI + angle
-        }
-
-        var angularSpeed = Math.PI / 2
-        var currentAngle = 0;
-        var animation = new Kinetic.Animation(function (frame) {
-            var angleDiff = frame.timeDiff * angularSpeed / 1000;
-            currentAngle += angleDiff
-            if (currentAngle >= angle) {
-                circle.rotate(angle - (currentAngle - angleDiff))
-                animation.stop()
-            } else {
-                circle.rotate(angleDiff)
-            }
-        }, kineticLayer)
-        animation.start()
-    }
-
-    this.hasSkull = function (shortName) {
-        return isSet(wedges[shortName].skull)
-    }
-    this.drawSkull = function (shortName) {
-        var imageObj = new Image();
-        imageObj.onload = function () {
-            wedges[shortName].skull = new Kinetic.Image({
-                x: wedges[shortName].x + 3,
-                y: wedges[shortName].y + 7,
-                image: imageObj,
-                width: 16,
-                height: 16
-            })
-            wedges[shortName].img.remove()
-            kineticLayer.add(wedges[shortName].skull);
-            kineticLayer.draw()
-        };
-        imageObj.src = '/img/game/skull_and_crossbones.png'
-    }
-
-    this.drawTurn = function () {
-        var turnNumber = Turn.getNumber()
-        if (Game.getTurnsLimit()) {
-            turnNumber = Turn.getNumber() + '/' + Game.getTurnsLimit()
-        }
-        if (kineticTurnNumber) {
-            kineticTurnNumber.setText(turnNumber)
-            kineticLayer.draw()
-        } else {
-            kineticTurnNumber = new Kinetic.Text({
-                x: center.x - 70,
-                y: center.y - 15,
-                text: turnNumber,
-                fontSize: 30,
-                fontFamily: 'fantasy',
-                fill: 'graphite',
-                width: 140,
-                align: 'center'
-            });
-
-            kineticLayer.add(kineticTurnNumber);
-            kineticLayer.draw()
-        }
-    }
-    this.updateOnline = function () {
-        for (var shortName in game.online) {
-            if (isSet(wedges[shortName].online)) {
-                wedges[shortName].online.remove()
-            }
-
-            wedges[shortName].online = new Kinetic.Circle({
-                x: center.x,
-                y: center.y,
-                radius: 18,
-                offset: [center.x - wedges[shortName].x - 11, center.y - wedges[shortName].y - 14],
-                stroke: '#0f0',
-                strokeWidth: 1
-            });
-            kineticLayer.add(wedges[shortName].online);
-        }
-        kineticLayer.draw()
-    }
-    this.init = function (players) {
-        kineticStage = new Kinetic.Stage({
-            container: 'playersCanvas',
-            width: 180,
-            height: 180
-        })
-        kineticLayer = new Kinetic.Layer()
-        center.x = kineticStage.getWidth() / 2
-        center.y = kineticStage.getHeight() / 2
-
-        length = Object.size(players) - 1
-
-        for (var color in players) {
-            //if (!players[color].computer && color != 'neutral') {
-            //    game.online[color] = 0
-            //}
-
-            //$('.' + color + ' .color').addClass(color + 'bg');
-
-            this.add(color, players[color])
-        }
-
-        draw(players)
-    }
-    this.add = function (color, player) {
-        players[color] = new Player(player, color)
-    }
-    /**
-     *
-     * @param color
-     * @returns Player
-     */
-    this.get = function (color) {
-        return players[color]
-    }
-    this.count = function () {
-        return Object.size(players) - 1
-    }
-
     var center = {x: 0, y: 0},
         kineticStage = null,
         kineticLayer = null,
@@ -237,6 +100,143 @@ var Players = new function () {
 
             kineticLayer.add(circle)
         }
+
+    this.rotate = function (color) {
+        var i = 0,
+            start = 0,
+            end = 0
+
+        for (var shortName in players) {
+            i++
+            if (color == shortName) {
+                end = i
+            }
+            if (Turn.getColor() == shortName) {
+                start = i
+            }
+        }
+
+        var angle = (end - start) * (Math.PI * 2 / length)
+
+        if (angle < 0) {
+            angle = 2 * Math.PI + angle
+        }
+
+        var angularSpeed = Math.PI / 2
+        var currentAngle = 0;
+        var animation = new Kinetic.Animation(function (frame) {
+            var angleDiff = frame.timeDiff * angularSpeed / 1000;
+            currentAngle += angleDiff
+            if (currentAngle >= angle) {
+                circle.rotate(angle - (currentAngle - angleDiff))
+                animation.stop()
+            } else {
+                circle.rotate(angleDiff)
+            }
+        }, kineticLayer)
+        animation.start()
+    }
+
+    this.hasSkull = function (shortName) {
+        return isSet(wedges[shortName].skull)
+    }
+    this.drawSkull = function (shortName) {
+        var imageObj = new Image();
+        imageObj.onload = function () {
+            wedges[shortName].skull = new Kinetic.Image({
+                x: wedges[shortName].x + 3,
+                y: wedges[shortName].y + 7,
+                image: imageObj,
+                width: 16,
+                height: 16
+            })
+            //wedges[shortName].img.remove()
+            kineticLayer.add(wedges[shortName].skull);
+            kineticLayer.draw()
+        };
+        imageObj.src = '/img/game/skull_and_crossbones.png'
+    }
+
+    this.drawTurn = function () {
+        var turnNumber = Turn.getNumber()
+        if (Game.getTurnsLimit()) {
+            turnNumber = Turn.getNumber() + '/' + Game.getTurnsLimit()
+        }
+        if (kineticTurnNumber) {
+            kineticTurnNumber.setText(turnNumber)
+            kineticLayer.draw()
+        } else {
+            kineticTurnNumber = new Kinetic.Text({
+                x: center.x - 70,
+                y: center.y - 15,
+                text: turnNumber,
+                fontSize: 30,
+                fontFamily: 'fantasy',
+                fill: 'graphite',
+                width: 140,
+                align: 'center'
+            });
+
+            kineticLayer.add(kineticTurnNumber);
+            kineticLayer.draw()
+        }
+    }
+    this.updateOnline = function () {
+        for (var shortName in game.online) {
+            if (isSet(wedges[shortName].online)) {
+                wedges[shortName].online.remove()
+            }
+
+            wedges[shortName].online = new Kinetic.Circle({
+                x: center.x,
+                y: center.y,
+                radius: 18,
+                offset: [center.x - wedges[shortName].x - 11, center.y - wedges[shortName].y - 14],
+                stroke: '#0f0',
+                strokeWidth: 1
+            });
+            kineticLayer.add(wedges[shortName].online);
+        }
+        kineticLayer.draw()
+    }
+    this.init = function (players) {
+        kineticStage = new Kinetic.Stage({
+            container: 'playersCanvas',
+            width: 180,
+            height: 180
+        })
+        kineticLayer = new Kinetic.Layer()
+        center.x = kineticStage.getWidth() / 2
+        center.y = kineticStage.getHeight() / 2
+
+        length = Object.size(players) - 1
+
+        for (var color in players) {
+            //if (!players[color].computer && color != 'neutral') {
+            //    game.online[color] = 0
+            //}
+
+            //$('.' + color + ' .color').addClass(color + 'bg');
+
+            this.add(color, players[color])
+        }
+
+        draw(players)
+    }
+    this.add = function (color, player) {
+        players[color] = new Player(player, color)
+    }
+    /**
+     *
+     * @param color
+     * @returns Player
+     */
+    this.get = function (color) {
+        return players[color]
+    }
+    this.count = function () {
+        return Object.size(players) - 1
+    }
 }
 
 Object.size = function (obj) {

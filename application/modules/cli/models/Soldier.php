@@ -88,7 +88,7 @@ class Cli_Model_Soldier extends Cli_Model_Being
 
     public function getStepCost(Cli_Model_TerrainTypes $terrain, $terrainType, $movementType)
     {
-        if ($movementType == 'walking') {
+        if ($movementType == 'walk') {
             switch ($terrainType) {
                 case 'f':
                     return $this->getForest();

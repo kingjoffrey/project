@@ -29,4 +29,9 @@ class Cli_Model_BattleResultDefenders
         }
         return $this->_defenders[$color][$armyId]->get($type);
     }
+
+    public function hasDefenders()
+    {
+        return count($this->_defenders);
+    }
 }

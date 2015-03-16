@@ -21,13 +21,7 @@ class Cli_Model_Path
         $skip = null;
         $stop = null;
 
-        if ($army->canFly()) {
-            $type = 'flying';
-        } elseif ($army->canSwim()) {
-            $type = 'swimming';
-        } else {
-            $type = 'walking';
-        }
+        $type = $army->getMovementType();
 
         echo '      ' . $type . "\n";
 

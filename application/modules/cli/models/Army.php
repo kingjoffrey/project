@@ -154,17 +154,22 @@ class Cli_Model_Army
         $gameHandler->sendToChannel($db, $token, $gameId);
     }
 
-    private function updateArmyPosition(Cli_Model_Game $game, Cli_Model_Path $path, Zend_Db_Adapter_Pdo_Pgsql $db)
+    public function getMovementType()
     {
         if ($this->canFly()) {
-            $type = 'fly';
+            return 'fly';
         } elseif ($this->canSwim()) {
-            $type = 'swim';
+            return 'swim';
         } else {
-            $type = 'walk';
+            return 'walk';
         }
+    }
+
+    private function updateArmyPosition(Cli_Model_Game $game, Cli_Model_Path $path, Zend_Db_Adapter_Pdo_Pgsql $db)
+    {
         $gameId = $game->getId();
         $terrain = Zend_Registry::get('terrain');
+        $type = $this->getMovementType();
         $this->setMovesLeft($this->_Heroes->saveMove($this->_x, $this->_y, $this->_movesLeft, $type, $path, $gameId, $db));
         $this->setMovesLeft($this->_SwimmingSoldiers->saveMove($this->_x, $this->_y, $this->_movesLeft, $type, $path, $terrain, $gameId, $db));
         $this->setMovesLeft($this->_WalkingSoldiers->saveMove($this->_x, $this->_y, $this->_movesLeft, $type, $path, $terrain, $gameId, $db));
@@ -341,7 +346,7 @@ class Cli_Model_Army
         $mSoldiersCreated->add($unitId, $playerId);
     }
 
-    private function addSoldier($soldier, $soldierId, $gameId, $db)
+    private function addSoldier($soldierId, Cli_Model_Soldier $soldier, $gameId, Zend_Db_Adapter_Pdo_Pgsql $db)
     {
         $mSoldier = new Application_Model_UnitsInGame($gameId, $db);
         $mSoldier->soldierUpdateArmyId($soldierId, $this->_id);

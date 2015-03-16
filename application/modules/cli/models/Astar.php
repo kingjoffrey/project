@@ -74,13 +74,7 @@ class Cli_Model_Astar extends Cli_Model_Heuristics
         $this->_army = $army;
         $this->_players = $game->getPlayers();
 
-        if ($army->canFly()) {
-            $this->movementType = 'flying';
-        } elseif ($army->canSwim()) {
-            $this->movementType = 'swimming';
-        } else {
-            $this->movementType = 'walking';
-        }
+        $this->movementType = $army->getMovementType();
 
         $this->init();
         $this->aStar();

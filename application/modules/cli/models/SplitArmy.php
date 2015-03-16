@@ -13,9 +13,10 @@ class Cli_Model_SplitArmy
 
         $heroesIds = explode(',', $h);
         $soldiersIds = explode(',', $s);
-        $gameId = $user->parameters['game']->getId();
-        $color = $user->parameters['game']->getPlayerColor($playerId);
-        $armies = $user->parameters['game']->getPlayers()->getPlayer($color)->getArmies();
+        $game = $this->getGame($user);
+        $gameId = $game->getId();
+        $color = $game->getPlayerColor($playerId);
+        $armies = $game->getPlayers()->getPlayer($color)->getArmies();
         $army = $armies->getArmy($parentArmyId);
 
         if (isset($heroesIds[0]) && $heroesIds[0]) {
@@ -29,7 +30,7 @@ class Cli_Model_SplitArmy
                 }
 
                 if (empty($this->_childArmyId)) {
-                    $this->_childArmyId = $armies->create($army->getX(), $army->getY(), $color, $user->parameters['game'], $db);
+                    $this->_childArmyId = $armies->create($army->getX(), $army->getY(), $color, $game, $db);
                     $childArmy = $armies->getArmy($this->_childArmyId);
                 }
 
@@ -43,16 +44,16 @@ class Cli_Model_SplitArmy
                     continue;
                 }
 
-                if (!$army->getSoldiers()->hasSoldier($soldierId)) {
+                if (!$army->getWalkingSoldiers()->hasSoldier($soldierId)) {
                     continue;
                 }
 
                 if (empty($this->_childArmyId)) {
-                    $this->_childArmyId = $armies->create($army->getX(), $army->getY(), $color, $user->parameters['game'], $db);
+                    $this->_childArmyId = $armies->create($army->getX(), $army->getY(), $color, $game, $db);
                     $childArmy = $armies->getArmy($this->_childArmyId);
                 }
 
-                $armies->changeSoldierAffiliation($parentArmyId, $this->_childArmyId, $soldierId, $gameId, $db);
+                $armies->changeWalkingSoldierAffiliation($parentArmyId, $this->_childArmyId, $soldierId, $gameId, $db);
             }
         }
 
@@ -74,5 +75,14 @@ class Cli_Model_SplitArmy
     public function getChildArmyId()
     {
         return $this->_childArmyId;
+    }
+
+    /**
+     * @param IWebSocketConnection $user
+     * @return Cli_Model_Game
+     */
+    private function getGame(IWebSocketConnection $user)
+    {
+        return $user->parameters['game'];
     }
 }

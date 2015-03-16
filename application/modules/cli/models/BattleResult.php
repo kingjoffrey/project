@@ -16,7 +16,7 @@ class Cli_Model_BattleResult
 
     public function toArray()
     {
-        if ($this->_defenders || $this->_castleId) {
+        if ($this->_defenders->hasDefenders() || $this->_castleId) {
             return array(
                 'attack' => $this->_attack->toArray(),
                 'defenders' => $this->_defenders->toArray(),
