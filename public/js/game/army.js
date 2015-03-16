@@ -131,7 +131,13 @@ var Army = function (army, bgColor, miniMapColor, textColor, color) {
         return countProperties(army.swim)
     }
     this.canFly = function () {
-        return army.canFly > 0
+        if (this.canSwim() || countProperties(army.walk)) {
+            return false
+        } else if (countProperties(army.fly) >= countProperties(army.heroes)) {
+            return true
+        } else {
+            return false
+        }
     }
     this.setHeroSplitKey = function (value) {
         heroSplitKey = value

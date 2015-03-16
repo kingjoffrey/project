@@ -64,27 +64,9 @@ var AStar = new function () {
         heroSplitKey = army.getHeroSplitKey()
 
         var path = getPath(key)
-        //className = 'path1',
-        //moves = 0
-
-        //if (soldierSplitKey) {
-        //    moves = army.getWalkingSoldiers()[soldierSplitKey].movesLeft
-        //} else if (heroSplitKey) {
-        //    moves = army.getHeroes()[heroSplitKey].movesLeft
-        //} else {
-        //    moves = army.getMoves()
-        //}
 
         for (var i in path) {
             Three.addPathCircle(path[i].x, path[i].y)
-            //var pathX = path[i].x;
-            //var pathY = path[i].y;
-
-            //if (moves < path[i].G) {
-            //    if (className == 'path1') {
-            //        className = 'path2';
-            //    }
-            //}
         }
     }
 
