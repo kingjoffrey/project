@@ -7,9 +7,9 @@ class Cli_Model_TerrainCosts
 
     public function __construct($row)
     {
-        $this->_costs['flying'] = $row['flying'];
-        $this->_costs['walking'] = $row['walking'];
-        $this->_costs['swimming'] = $row['swimming'];
+        $this->_costs['fly'] = $row['flying'];
+        $this->_costs['walk'] = $row['walking'];
+        $this->_costs['swim'] = $row['swimming'];
         $this->_name = $row['name'];
     }
 

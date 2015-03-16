@@ -477,11 +477,12 @@ var Message = {
                 .attr('id', 'selectAll')
         )
         var numberOfUnits = 0,
-            soldiers = Me.getSelectedArmy().getWalkingSoldiers(),
-            ships = Me.getSelectedArmy().getSwimmingSoldiers(),
+            walk = Me.getSelectedArmy().getWalkingSoldiers(),
+            swim = Me.getSelectedArmy().getSwimmingSoldiers(),
+            fly = Me.getSelectedArmy().getFlyingSoldiers(),
             heroes = Me.getSelectedArmy().getHeroes()
 
-        for (var soldierId in soldiers) {
+        for (var soldierId in walk) {
             numberOfUnits++;
             div.append(
                 $('<div>')
@@ -489,11 +490,11 @@ var Message = {
                     .append($('<div>').addClass('nr').html(numberOfUnits))
                     .append($('<div>').addClass('img').html(
                         $('<img>').attr({
-                            'src': Unit.getImage(soldiers[soldierId].unitId, Me.getColor()),
+                            'src': Unit.getImage(walk[soldierId].unitId, Me.getColor()),
                             'id': 'unit' + soldierId
                         })
                     ))
-                    .append($('<span>').html(translations.movesLeft + ': ' + soldiers[soldierId].movesLeft + ' '))
+                    .append($('<span>').html(translations.movesLeft + ': ' + walk[soldierId].movesLeft + ' '))
                     .append($('<div>').addClass('right').html($('<input>').attr({
                         type: 'checkbox',
                         name: 'soldierId',
@@ -501,9 +502,8 @@ var Message = {
                     })))
             );
         }
-
-        for (var soldierId in ships) {
-            var ship = ships[soldierId]
+        for (var soldierId in swim) {
+            var soldier = swim[soldierId]
             numberOfUnits++;
             div.append(
                 $('<div>')
@@ -511,11 +511,11 @@ var Message = {
                     .append($('<div>').addClass('nr').html(numberOfUnits))
                     .append($('<div>').addClass('img').html(
                         $('<img>').attr({
-                            'src': Unit.getImage(ship.unitId, Me.getColor()),
+                            'src': Unit.getImage(soldier.unitId, Me.getColor()),
                             'id': 'unit' + soldierId
                         })
                     ))
-                    .append($('<span>').html(translations.movesLeft + ': ' + ship.movesLeft + ' '))
+                    .append($('<span>').html(translations.movesLeft + ': ' + soldier.movesLeft + ' '))
                     .append($('<div>').addClass('right').html($('<input>').attr({
                         type: 'checkbox',
                         name: 'soldierId',
@@ -523,7 +523,27 @@ var Message = {
                     })))
             );
         }
-
+        for (var soldierId in fly) {
+            var soldier = fly[soldierId]
+            numberOfUnits++;
+            div.append(
+                $('<div>')
+                    .addClass('row')
+                    .append($('<div>').addClass('nr').html(numberOfUnits))
+                    .append($('<div>').addClass('img').html(
+                        $('<img>').attr({
+                            'src': Unit.getImage(soldier.unitId, Me.getColor()),
+                            'id': 'unit' + soldierId
+                        })
+                    ))
+                    .append($('<span>').html(translations.movesLeft + ': ' + soldier.movesLeft + ' '))
+                    .append($('<div>').addClass('right').html($('<input>').attr({
+                        type: 'checkbox',
+                        name: 'soldierId',
+                        value: soldierId
+                    })))
+            );
+        }
         for (var heroId in heroes) {
             numberOfUnits++;
             div.append(
@@ -576,11 +596,11 @@ var Message = {
             bonusTower = 1;
         }
 
-        if (army.flyBonus) {
+        if (army.getFlyBonus()) {
             attackFlyBonus.html(' +1').addClass('value plus')
             defenseFlyBonus.html(' +1').addClass('value plus')
         }
-        if (army.getHeroKey()) {
+        if (army.getHeroBonus()) {
             attackHeroBonus.html(' +1').addClass('value plus')
             defenseHeroBonus.html(' +1').addClass('value plus')
         }
@@ -595,12 +615,14 @@ var Message = {
             numberOfUnits++
             div.append(this.statusContent(numberOfUnits, army.getWalkingSoldier(i), color, attackFlyBonus, attackHeroBonus, defenseFlyBonus, defenseHeroBonus, defenseTowerBonus, defenseCastleBonus));
         }
-
         for (var i in army.getSwimmingSoldiers()) {
             numberOfUnits++
             div.append(this.statusContent(numberOfUnits, army.getSwimmingSoldier(i), color, attackFlyBonus, attackHeroBonus, defenseFlyBonus, defenseHeroBonus, defenseTowerBonus, defenseCastleBonus));
         }
-
+        for (var i in army.getFlyingSoldiers()) {
+            numberOfUnits++
+            div.append(this.statusContent(numberOfUnits, army.getFlyingSoldier(i), color, attackFlyBonus, attackHeroBonus, defenseFlyBonus, defenseHeroBonus, defenseTowerBonus, defenseCastleBonus));
+        }
         for (var i in army.getHeroes()) {
             numberOfUnits++
             var hero = army.getHero(i)
@@ -669,9 +691,9 @@ var Message = {
 
         var attack = $('<div>').addClass('battle attack');
 
-        for (var soldierId in r.battle.attack.soldiers) {
-            if (r.battle.attack.soldiers[soldierId]) {
-                killed[r.battle.attack.soldiers[soldierId]] = {
+        for (var soldierId in r.battle.attack.walk) {
+            if (r.battle.attack.walk[soldierId]) {
+                killed[r.battle.attack.walk[soldierId]] = {
                     'soldierId': soldierId
                 };
             }
@@ -682,9 +704,22 @@ var Message = {
                     .addClass('battleUnit')
             );
         }
-        for (var soldierId in r.battle.attack.ships) {
-            if (r.battle.attack.ships[soldierId]) {
-                killed[r.battle.attack.ships[soldierId]] = {
+        for (var soldierId in r.battle.attack.swim) {
+            if (r.battle.attack.swim[soldierId]) {
+                killed[r.battle.attack.swim[soldierId]] = {
+                    'soldierId': soldierId
+                };
+            }
+            attack.append(
+                $('<div>')
+                    .attr('id', 'unit' + soldierId)
+                    .css('background', 'url(' + Unit.getImage(Players.get(r.color).getArmies().get(r.army.id).getSwimmingSoldiers()[soldierId].unitId, r.color) + ') no-repeat')
+                    .addClass('battleUnit')
+            );
+        }
+        for (var soldierId in r.battle.attack.fly) {
+            if (r.battle.attack.fly[soldierId]) {
+                killed[r.battle.attack.fly[soldierId]] = {
                     'soldierId': soldierId
                 };
             }
@@ -718,16 +753,16 @@ var Message = {
 
         for (var color in r.battle.defenders) {
             for (var armyId in r.battle.defenders[color]) {
-                for (var soldierId in r.battle.defenders[color][armyId].soldiers) {
-                    if (r.battle.defenders[color][armyId].soldiers[soldierId]) {
-                        killed[r.battle.defenders[color][armyId].soldiers[soldierId]] = {
+                for (var soldierId in r.battle.defenders[color][armyId].walk) {
+                    if (r.battle.defenders[color][armyId].walk[soldierId]) {
+                        killed[r.battle.defenders[color][armyId].walk[soldierId]] = {
                             'soldierId': soldierId
                         };
                     }
                     if (color == 'neutral') {
                         var unitId = Game.getFirstUnitId()
                     } else {
-                        var unitId = Players.get(color).getArmies().get(armyId).getWalkingSoldiers()[soldierId].unitId
+                        var unitId = Players.get(color).getArmies().get(armyId).getWalkingSoldier(soldierId).unitId
                     }
                     defense.append(
                         $('<div>')
@@ -736,13 +771,27 @@ var Message = {
                             .addClass('battleUnit')
                     );
                 }
-                for (var soldierId in r.battle.defenders[color][armyId].ships) {
-                    if (r.battle.defenders[color][armyId].ships[soldierId]) {
-                        killed[r.battle.defenders[color][armyId].ships[soldierId]] = {
+                for (var soldierId in r.battle.defenders[color][armyId].swim) {
+                    if (r.battle.defenders[color][armyId].swim[soldierId]) {
+                        killed[r.battle.defenders[color][armyId].swim[soldierId]] = {
                             'soldierId': soldierId
                         };
                     }
-                    var unitId = Players.get(color).getArmies().get(armyId).getSwimmingSoldiers()[soldierId].unitId
+                    var unitId = Players.get(color).getArmies().get(armyId).getSwimmingSoldier(soldierId).unitId
+                    defense.append(
+                        $('<div>')
+                            .attr('id', 'unit' + soldierId)
+                            .css('background', 'url(' + Unit.getImage(unitId, color) + ') no-repeat')
+                            .addClass('battleUnit')
+                    );
+                }
+                for (var soldierId in r.battle.defenders[color][armyId].fly) {
+                    if (r.battle.defenders[color][armyId].fly[soldierId]) {
+                        killed[r.battle.defenders[color][armyId].fly[soldierId]] = {
+                            'soldierId': soldierId
+                        };
+                    }
+                    var unitId = Players.get(color).getArmies().get(armyId).getFlyingSoldier(soldierId).unitId
                     defense.append(
                         $('<div>')
                             .attr('id', 'unit' + soldierId)
@@ -853,8 +902,18 @@ var Message = {
             $('#unit' + b[i].soldierId + ' .killed').fadeIn(1000, function () {
                 if (Me.colorEquals(r.color)) {
                     for (var k in Me.getArmy(r.army.id).getWalkingSoldiers()) {
-                        if (Me.getArmy(r.army.id).getWalkingSoldiers()[k].soldierId == b[i].soldierId) {
-                            Me.costIncrement(-Units[Me.getArmy(r.army.id).getWalkingSoldiers()[k].unitId].cost)
+                        if (Me.getArmy(r.army.id).getWalkingSoldier(k).soldierId == b[i].soldierId) {
+                            Me.costIncrement(-Units[Me.getArmy(r.army.id).getWalkingSoldier(k).unitId].cost)
+                        }
+                    }
+                    for (var k in Me.getArmy(r.army.id).getSwimmingSoldiers()) {
+                        if (Me.getArmy(r.army.id).getSwimmingSoldier(k).soldierId == b[i].soldierId) {
+                            Me.costIncrement(-Units[Me.getArmy(r.army.id).getSwimmingSoldier(k).unitId].cost)
+                        }
+                    }
+                    for (var k in Me.getArmy(r.army.id).getFlyingSoldiers()) {
+                        if (Me.getArmy(r.army.id).getFlyingSoldier(k).soldierId == b[i].soldierId) {
+                            Me.costIncrement(-Units[Me.getArmy(r.army.id).getFlyingSoldier(k).unitId].cost)
                         }
                     }
                 }
@@ -863,8 +922,18 @@ var Message = {
                     if (Me.colorEquals(color)) {
                         for (var armyId in r.defenders[color]) {
                             for (var soldierId in Me.getArmy(armyId).getWalkingSoldiers()) {
-                                if (Me.getArmy().getWalkingSoldiers()[soldierId].soldierId == b[i].soldierId) {
-                                    Me.costIncrement(-Units[Me.getArmy(armyId).getWalkingSoldiers()[soldierId].unitId].cost)
+                                if (Me.getArmy().getWalkingSoldier(soldierId).soldierId == b[i].soldierId) {
+                                    Me.costIncrement(-Units[Me.getArmy(armyId).getWalkingSoldier(soldierId).unitId].cost)
+                                }
+                            }
+                            for (var soldierId in Me.getArmy(armyId).getSwimmingSoldiers()) {
+                                if (Me.getArmy().getSwimmingSoldier(soldierId).soldierId == b[i].soldierId) {
+                                    Me.costIncrement(-Units[Me.getArmy(armyId).getSwimmingSoldier(soldierId).unitId].cost)
+                                }
+                            }
+                            for (var soldierId in Me.getArmy(armyId).getFlyingSoldiers()) {
+                                if (Me.getArmy().getFlyingSoldier(soldierId).soldierId == b[i].soldierId) {
+                                    Me.costIncrement(-Units[Me.getArmy(armyId).getFlyingSoldier(soldierId).unitId].cost)
                                 }
                             }
                         }

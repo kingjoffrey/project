@@ -180,6 +180,12 @@ var Army = function (army, bgColor, miniMapColor, textColor, color) {
         }
         return numberOfUnits
     }
+    this.getHeroBonus = function () {
+        return countProperties(army.heroes)
+    }
+    this.getFlyBonus = function () {
+        return countProperties(army.fly)
+    }
     this.deleteSoldier = function (soldierId) {
         delete army.walk[soldierId]
     }
