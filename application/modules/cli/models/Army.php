@@ -14,15 +14,15 @@ class Cli_Model_Army
     private $_defenseHeroModifier;
 
     private $_attackBattleSequence = array(
-        'wSoldiers' => array(),
-        'sSoldiers' => array(),
-        'fSoldiers' => array(),
+        'walk' => array(),
+        'swim' => array(),
+        'fly' => array(),
         'heroes' => array()
     );
     private $_defenceBattleSequence = array(
-        'wSoldiers' => array(),
-        'sSoldiers' => array(),
-        'fSoldiers' => array(),
+        'walk' => array(),
+        'swim' => array(),
+        'fly' => array(),
         'heroes' => array()
     );
 
@@ -76,9 +76,9 @@ class Cli_Model_Army
     {
         return array(
             'id' => $this->_id,
-            'wSoldiers' => $this->_WalkingSoldiers->toArray(),
-            'sSoldiers' => $this->_SwimmingSoldiers->toArray(),
-            'fSoldiers' => $this->_FlyingSoldiers->toArray(),
+            'walk' => $this->_WalkingSoldiers->toArray(),
+            'swim' => $this->_SwimmingSoldiers->toArray(),
+            'fly' => $this->_FlyingSoldiers->toArray(),
             'heroes' => $this->_Heroes->toArray(),
             'x' => $this->_x,
             'y' => $this->_y,
@@ -157,11 +157,11 @@ class Cli_Model_Army
     private function updateArmyPosition(Cli_Model_Game $game, Cli_Model_Path $path, Zend_Db_Adapter_Pdo_Pgsql $db)
     {
         if ($this->canFly()) {
-            $type = 'flying';
+            $type = 'fly';
         } elseif ($this->canSwim()) {
-            $type = 'swimming';
+            $type = 'swim';
         } else {
-            $type = 'walking';
+            $type = 'walk';
         }
         $gameId = $game->getId();
         $terrain = Zend_Registry::get('terrain');
@@ -278,18 +278,18 @@ class Cli_Model_Army
 
     public function setAttackBattleSequence($attackBattleSequence)
     {
-        $this->_attackBattleSequence['wSoldiers'] = $this->_WalkingSoldiers->setAttackBattleSequence($attackBattleSequence);
+        $this->_attackBattleSequence['walk'] = $this->_WalkingSoldiers->setAttackBattleSequence($attackBattleSequence);
         $this->_attackBattleSequence['heroes'] = $this->_Heroes->get();
-        $this->_attackBattleSequence['fSoldiers'] = $this->_FlyingSoldiers->get();
-        $this->_attackBattleSequence['sSoldiers'] = $this->_SwimmingSoldiers->get();
+        $this->_attackBattleSequence['fly'] = $this->_FlyingSoldiers->get();
+        $this->_attackBattleSequence['swim'] = $this->_SwimmingSoldiers->get();
     }
 
     public function setDefenceBattleSequence($defenceBattleSequence)
     {
-        $this->_defenceBattleSequence['wSoldiers'] = $this->_WalkingSoldiers->setDefenceBattleSequence($defenceBattleSequence);
+        $this->_defenceBattleSequence['walk'] = $this->_WalkingSoldiers->setDefenceBattleSequence($defenceBattleSequence);
         $this->_defenceBattleSequence['heroes'] = $this->_Heroes->get();
-        $this->_defenceBattleSequence['fSoldiers'] = $this->_FlyingSoldiers->get();
-        $this->_defenceBattleSequence['sSoldiers'] = $this->_SwimmingSoldiers->get();
+        $this->_defenceBattleSequence['fly'] = $this->_FlyingSoldiers->get();
+        $this->_defenceBattleSequence['swim'] = $this->_SwimmingSoldiers->get();
     }
 
     public function getAttackBattleSequence()

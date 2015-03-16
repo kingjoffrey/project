@@ -2,15 +2,21 @@
 
 class Cli_Model_BattleResult
 {
-    private $_attack = array(
-        'heroes' => array(),
-        'soldiers' => array(),
-        'ships' => array(),
-    );
+    private $_attack = array();
     private $_defenders = array();
     private $_castleId = null;
     private $_towerId = null;
     private $_victory = false;
+
+    public function __construct()
+    {
+        $this->_attack = array(
+            'hero' => new Cli_Model_BattleResultContainer(),
+            'walk' => new Cli_Model_BattleResultContainer(),
+            'swim' => new Cli_Model_BattleResultContainer(),
+            'fly' => new Cli_Model_BattleResultContainer()
+        );
+    }
 
     public function toArray()
     {
@@ -40,54 +46,13 @@ class Cli_Model_BattleResult
         $this->_towerId = $towerId;
     }
 
-    public function addAttackingHeroSuccession($heroId, $succession)
+    /**
+     * @param $type
+     * @return Cli_Model_BattleResultContainer
+     */
+    public function getAttacking($type)
     {
-        $this->_attack['heroes'][$heroId] = $succession;
-    }
-
-    public function addAttackingHero($heroId)
-    {
-        if (isset($this->_attack['heroes'][$heroId])) {
-            return true;
-        }
-        $this->_attack['heroes'][$heroId] = null;
-    }
-
-    public function isAttackingHeroDead($heroId)
-    {
-        if (isset($this->_attack['heroes'][$heroId])) {
-            return true;
-        }
-    }
-
-    public function addAttackingSoldierSuccession($soldierId, $succession)
-    {
-        $this->_attack['soldiers'][$soldierId] = $succession;
-    }
-
-    public function addAttackingSoldier($soldierId)
-    {
-        if (isset($this->_attack['soldiers'][$soldierId])) {
-            return true;
-        }
-        $this->_attack['soldiers'][$soldierId] = null;
-    }
-
-    public function isAttackingSoldierDead($soldierId)
-    {
-        if (isset($this->_attack['soldiers'][$soldierId])) {
-            return true;
-        }
-    }
-
-    public function addAttackingShip($soldierId)
-    {
-        if (isset($this->_attack['soldiers'][$soldierId])) {
-            $this->_attack['ships'][$soldierId] = $this->_attack['soldiers'][$soldierId];
-            unset($this->_attack['soldiers'][$soldierId]);
-            return true;
-        }
-        $this->_attack['ships'][$soldierId] = null;
+        return $this->_attack[$type];
     }
 
     public function addDefendingHeroSuccession($color, $armyId, $heroId, $succession)

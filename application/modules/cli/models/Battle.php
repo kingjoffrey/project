@@ -80,22 +80,22 @@ class Cli_Model_Battle
     private function attackerVictory()
     {
         foreach ($this->_attacker->getHeroes()->getKeys() as $heroId) {
-            if (!$this->_result->isAttackingHeroDead($heroId)) {
+            if (!$this->_result->getAttacking('hero')->isDead($heroId)) {
                 return true;
             }
         }
         foreach ($this->_attacker->getWalkingSoldiers()->getKeys() as $soldierId) {
-            if (!$this->_result->isAttackingSoldierDead($soldierId)) {
+            if (!$this->_result->getAttacking('walk')->isDead($soldierId)) {
                 return true;
             }
         }
         foreach ($this->_attacker->getSwimmingSoldiers()->getKeys() as $soldierId) {
-            if (!$this->_result->isAttackingSoldierDead($soldierId)) {
+            if (!$this->_result->getAttacking('swim')->isDead($soldierId)) {
                 return true;
             }
         }
         foreach ($this->_attacker->getFlyingSoldiers()->getKeys() as $soldierId) {
-            if (!$this->_result->isAttackingSoldierDead($soldierId)) {
+            if (!$this->_result->getAttacking('fly')->isDead($soldierId)) {
                 return true;
             }
         }
@@ -358,19 +358,19 @@ class Cli_Model_Battle
             } else {
                 if ($attackingFighter->getType() == 'hero') {
                     $heroId = $attackingFighter->getId();
-                    $this->_result->addAttackingHeroSuccession($heroId, $this->_succession);
+                    $this->_result->getAttacking($attackingFighter->getType())->addSuccession($heroId, $this->_succession);
                     $this->_attacker->removeHero($heroId, $this->_defenderId, $this->_attackerId, $this->_gameId, $this->_db);
-                } elseif ($attackingFighter->getType() == 'swimming') {
+                } elseif ($attackingFighter->getType() == 'swim') {
                     $soldierId = $attackingFighter->getId();
-                    $this->_result->addAttackingSoldierSuccession($soldierId, $this->_succession);
+                    $this->_result->getAttacking($attackingFighter->getType())->addSuccession($soldierId, $this->_succession);
                     $this->_attacker->removeSwimmingSoldier($soldierId, $this->_defenderId, $this->_attackerId, $this->_gameId, $this->_db);
-                } elseif ($attackingFighter->getType() == 'flying') {
+                } elseif ($attackingFighter->getType() == 'fly') {
                     $soldierId = $attackingFighter->getId();
-                    $this->_result->addAttackingSoldierSuccession($soldierId, $this->_succession);
+                    $this->_result->getAttacking($attackingFighter->getType())->addSuccession($soldierId, $this->_succession);
                     $this->_attacker->removeFlyingSoldier($soldierId, $this->_defenderId, $this->_attackerId, $this->_gameId, $this->_db);
                 } else {
                     $soldierId = $attackingFighter->getId();
-                    $this->_result->addAttackingSoldierSuccession($soldierId, $this->_succession);
+                    $this->_result->getAttacking($attackingFighter->getType())->addSuccession($soldierId, $this->_succession);
                     $this->_attacker->removeWalkingSoldier($soldierId, $this->_defenderId, $this->_attackerId, $this->_gameId, $this->_db);
                 }
             }
@@ -405,15 +405,16 @@ class Cli_Model_Battle
         }
 
         foreach ($this->_attacker->getHeroes()->getKeys() as $heroId) {
-            $this->_result->addAttackingHero($heroId);
+            $this->_result->getAttacking('hero')->add($heroId);
         }
-
         foreach ($this->_attacker->getWalkingSoldiers()->getKeys() as $soldierId) {
-            $this->_result->addAttackingSoldier($soldierId);
+            $this->_result->getAttacking('walk')->add($soldierId);
         }
-
         foreach ($this->_attacker->getSwimmingSoldiers()->getKeys() as $soldierId) {
-            $this->_result->addAttackingShip($soldierId);
+            $this->_result->getAttacking('swim')->add($soldierId);
+        }
+        foreach ($this->_attacker->getFlyingSoldiers()->getKeys() as $soldierId) {
+            $this->_result->getAttacking('fly')->add($soldierId);
         }
 
         return $this->_result;

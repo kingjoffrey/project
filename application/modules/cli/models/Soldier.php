@@ -18,11 +18,11 @@ class Cli_Model_Soldier extends Cli_Model_Being
         $this->_unitId = $soldier['unitId'];
 
         if ($unit->canSwim()) {
-            $this->_type = 'swimming';
+            $this->_type = 'swim';
         } elseif ($unit->canFly()) {
-            $this->_type = 'flying';
+            $this->_type = 'fly';
         } else {
-            $this->_type = 'walking';
+            $this->_type = 'walk';
         }
 
         if (isset($soldier['movesLeft'])) {
