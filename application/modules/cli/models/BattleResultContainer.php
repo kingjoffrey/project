@@ -6,9 +6,7 @@ class Cli_Model_BattleResultContainer
 
     public function toArray()
     {
-        return array(
-            'attack' => $this->_attack,
-        );
+        return $this->_container;
     }
 
     public function addSuccession($id, $succession)

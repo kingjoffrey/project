@@ -16,9 +16,17 @@ class Cli_Model_BattleResultArmyContainer
 
     public function toArray()
     {
-        return $this->_army;
+        $army = array();
+        foreach (array_keys($this->_army) as $type) {
+            $army[$type] = $this->get($type)->toArray();
+        }
+        return $army;
     }
 
+    /**
+     * @param $type
+     * @return Cli_Model_BattleResultContainer
+     */
     public function get($type)
     {
         return $this->_army[$type];

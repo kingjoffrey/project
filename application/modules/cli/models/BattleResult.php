@@ -2,8 +2,8 @@
 
 class Cli_Model_BattleResult
 {
-    private $_attack = array();
-    private $_defenders = array();
+    private $_attack;
+    private $_defenders;
     private $_castleId = null;
     private $_towerId = null;
     private $_victory = false;
@@ -11,6 +11,7 @@ class Cli_Model_BattleResult
     public function __construct()
     {
         $this->_attack = new Cli_Model_BattleResultArmyContainer();
+        $this->_defenders = new Cli_Model_BattleResultDefenders();
     }
 
     public function toArray()
@@ -18,7 +19,7 @@ class Cli_Model_BattleResult
         if ($this->_defenders || $this->_castleId) {
             return array(
                 'attack' => $this->_attack->toArray(),
-                'defenders' => $this->_defenders,
+                'defenders' => $this->_defenders->toArray(),
                 'castleId' => $this->_castleId,
                 'towerId' => $this->_towerId,
                 'victory' => $this->_victory
@@ -54,14 +55,11 @@ class Cli_Model_BattleResult
      * @param $color
      * @param $armyId
      * @param $type
-     * @return Cli_Model_BattleResultContainer
+     * @return Cli_Model_BattleResultDefenders
      */
     public function getDefending($color, $armyId, $type)
     {
-        if (!isset($this->_defenders[$color][$armyId])) {
-            $this->_defenders[$color][$armyId] = new Cli_Model_BattleResultArmyContainer();
-        }
-        return $this->_defenders[$color][$armyId]->get($type);
+        return $this->_defenders->get($color, $armyId, $type);
     }
 
     public function getVictory()
