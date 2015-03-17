@@ -15,7 +15,7 @@ var Me = new function () {
         me,
         selectedCastleId = null,
         selectedUnitId = null,
-        battleSequence = null
+        battleSequence = []
 
     this.init = function (c, g, bSequence) {
         color = c
@@ -412,11 +412,13 @@ var Me = new function () {
         return battleSequence[type]
     }
     this.setBattleSequence = function (bSequence) {
-        if (isSet(bSequence['attack'])) {
-            battleSequence['attack'] = bSequence['attack']
-        }
-        if (isSet(bSequence['defense'])) {
-            battleSequence['defense'] = bSequence['defense']
-        }
+        this.setAttackBattleSequence(bSequence['attack'])
+        this.setDefenseBattleSequence(bSequence['defense'])
+    }
+    this.setAttackBattleSequence = function (bSequence) {
+        battleSequence['attack'] = bSequence
+    }
+    this.setDefenseBattleSequence = function (bSequence) {
+        battleSequence['defense'] = bSequence
     }
 }

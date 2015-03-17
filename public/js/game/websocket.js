@@ -359,10 +359,10 @@ console.log(upkeep)
                     case 'bSequence':
                         if (r.attack == 'true') {
                             Message.simple(translations.battleSequence, translations.attackSequenceSuccessfullyUpdated)
-                            game.me.battleSequence['attack'] = r.sequence
+                            Me.setAttackBattleSequence(r.sequence)
                         } else {
                             Message.simple(translations.battleSequence, translations.defenceSequenceSuccessfullyUpdated)
-                            game.me.battleSequence['defence'] = r.sequence
+                            Me.setDefenseBattleSequence(r.sequence)
                         }
                         break
 

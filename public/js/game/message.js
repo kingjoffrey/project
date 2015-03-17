@@ -1374,7 +1374,7 @@ var Message = {
         var div = $('<div>')
             .append($('<div>').html(translations.changeBattleDefenceSequenceByMovingUnits))
             .append($('<br>'))
-            .append(this.battleConfiguration('defence'))
+            .append(this.battleConfiguration('defense'))
 
         var id = this.show(translations.battleConfiguration, div)
         this.ok(id, Websocket.battleDefence)
