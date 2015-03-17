@@ -6,7 +6,7 @@ class Cli_Model_Production
     {
         $castleId = $dataIn['castleId'];
         $unitId = $dataIn['unitId'];
-        $game = $this->getGame($user);
+        $game = Cli_Model_Game::getGame($user);
         $gameId = $game->getId();
         $playerId = $user->parameters['me']->getId();
 
@@ -75,14 +75,5 @@ class Cli_Model_Production
         );
 
         $gameHandler->sendToUser($user, $db, $token, $gameId);
-    }
-
-    /**
-     * @param IWebSocketConnection $user
-     * @return Cli_Model_Game
-     */
-    private function getGame(IWebSocketConnection $user)
-    {
-        return $user->parameters['game'];
     }
 }

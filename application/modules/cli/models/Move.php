@@ -25,7 +25,7 @@ class Cli_Model_Move
         $y = $dataIn['y'];
 
         $playerId = $user->parameters['me']->getId();
-        $game=$this->getGame($user);
+        $game = Cli_Model_Game::getGame($user);
 
         if (!Zend_Validate::is($attackerArmyId, 'Digits') || !Zend_Validate::is($x, 'Digits') || !Zend_Validate::is($y, 'Digits')) {
             $gameHandler->sendError($user, 'Niepoprawny format danych!');
@@ -88,14 +88,5 @@ class Cli_Model_Move
         }
 
         $army->move($game, $path, $db, $gameHandler);
-    }
-
-    /**
-     * @param IWebSocketConnection $user
-     * @return Cli_Model_Game
-     */
-    private function getGame(IWebSocketConnection $user)
-    {
-        return $user->parameters['game'];
     }
 }

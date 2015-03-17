@@ -13,7 +13,7 @@ class Cli_Model_SplitArmy
 
         $heroesIds = explode(',', $h);
         $soldiersIds = explode(',', $s);
-        $game = $this->getGame($user);
+        $game = Cli_Model_Game::getGame($user);
         $gameId = $game->getId();
         $color = $game->getPlayerColor($playerId);
         $armies = $game->getPlayers()->getPlayer($color)->getArmies();
@@ -83,14 +83,5 @@ class Cli_Model_SplitArmy
     public function getChildArmyId()
     {
         return $this->_childArmyId;
-    }
-
-    /**
-     * @param IWebSocketConnection $user
-     * @return Cli_Model_Game
-     */
-    private function getGame(IWebSocketConnection $user)
-    {
-        return $user->parameters['game'];
     }
 }

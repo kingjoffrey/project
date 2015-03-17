@@ -11,7 +11,7 @@ class Cli_Model_SearchRuinHandler
         }
 
         $playerId = $user->parameters['me']->getId();
-        $game = $this->getGame($user);
+        $game = Cli_Model_Game::getGame($user);
         $color = $game->getPlayerColor($playerId);
         $army = $game->getPlayers()->getPlayer($color)->getArmies()->getArmy($armyId);
 
@@ -40,14 +40,5 @@ class Cli_Model_SearchRuinHandler
         }
 
         $ruin->search($game, $army, $heroId, $playerId, $db, $gameHandler);
-    }
-
-    /**
-     * @param IWebSocketConnection $user
-     * @return Cli_Model_Game
-     */
-    private function getGame(IWebSocketConnection $user)
-    {
-        return $user->parameters['game'];
     }
 }

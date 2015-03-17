@@ -5,7 +5,7 @@ class Cli_Model_StartTurn
 
     public function __construct($playerId, IWebSocketConnection $user, Zend_Db_Adapter_Pdo_Pgsql $db, Cli_GameHandler $gameHandler)
     {
-        $game = $this->getGame($user);
+        $game = Cli_Model_Game::getGame($user);
         $players = $game->getPlayers();
         $color = $game->getPlayerColor($playerId);
         $player = $players->getPlayer($color);
@@ -102,14 +102,4 @@ class Cli_Model_StartTurn
         );
         $gameHandler->sendToChannel($db, $token, $gameId);
     }
-
-    /**
-     * @param IWebSocketConnection $user
-     * @return Cli_Model_Game
-     */
-    private function getGame(IWebSocketConnection $user)
-    {
-        return $user->parameters['game'];
-    }
-
 }

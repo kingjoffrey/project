@@ -16,7 +16,7 @@ var Me = new function () {
         selectedCastleId = null,
         selectedUnitId = null
 
-    this.init = function (c) {
+    this.init = function (c, ) {
         color = c
         me = Players.get(color)
 
