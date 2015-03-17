@@ -110,7 +110,7 @@ class Cli_Model_Soldiers
                 }
                 if (!$step['c']) {
                     $movesSpend += $soldier->getStepCost($terrain, $step['t'], $type);
-                    echo 'step[t]=' . $step['t'] . '    movesSpend=' . $movesSpend . "\n";
+//                    echo 'step[t]=' . $step['t'] . '    movesSpend=' . $movesSpend . "\n";
                 }
             }
 

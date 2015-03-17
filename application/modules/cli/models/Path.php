@@ -114,7 +114,7 @@ class Cli_Model_Path
             }
 
             if ($skip === $key) {
-                echo 'skip=' . $skip . "\n";
+//                echo 'skip=' . $skip . "\n";
                 break;
             }
 
@@ -126,12 +126,12 @@ class Cli_Model_Path
             );
 
             if ($step['t'] == 'E') {
-                echo 'E - break' . "\n";
+//                echo 'E - break' . "\n";
                 break;
             }
 
             if ($stop === $key) {
-                echo 'stop=' . $stop . "\n";
+//                echo 'stop=' . $stop . "\n";
                 break;
             }
         }
