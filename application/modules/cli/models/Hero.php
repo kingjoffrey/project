@@ -59,7 +59,7 @@ class Cli_Model_Hero extends Cli_Model_Being
     {
         $this->_movesLeft = 0;
         $mHeroesInGame = new Application_Model_HeroesInGame($gameId, $db);
-        $mHeroesInGame->zeroHeroMovesLeft($this->_id);
+        $mHeroesInGame->zeroMovesLeft($this->_id);
     }
 
     public function death($gameId, $db, $winnerId, $loserId)

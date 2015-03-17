@@ -13,7 +13,7 @@ class Cli_Model_Garrison
             for ($j = $y; $j <= $y + 1; $j++) {
                 if ($i != $x || $j != $y) {
                     foreach ($fields->getField($i, $j)->getArmies() as $fieldArmyId => $fieldArmyColor) {
-                        echo 'aaa';
+                        echo 'aaa ';
                         if ($fieldArmyColor == $color) {
                             echo 'fff';
                             $army = $armies->getArmy($fieldArmyId);
@@ -31,50 +31,80 @@ class Cli_Model_Garrison
 
         foreach ($fields->getField($x, $y)->getArmies() as $fieldArmyId => $fieldArmyColor) {
             if ($fieldArmyColor == $color) {
-                echo 'GGG';
+                echo 'GGG ';
                 $army = $armies->getArmy($fieldArmyId);
                 $armyId = $army->getId();
             }
         }
 
-        echo 'ggg';
         $army->setFortified(true, $gameId, $db);
         $countGarrisonUnits = $army->getWalkingSoldiers()->count();
         $heroes = $army->getHeroes();
-        $ships = $army->getSwimmingSoldiers();
+        $walk = $army->getWalkingSoldiers();
+        $swim = $army->getSwimmingSoldiers();
+        $fly = $army->getFlyingSoldiers();
 
-        if ($heroes->exists() && $heroes->getMovesLeft() > 2) {
-            echo 'hhh';
-            $this->_newArmyId = $armies->create($army->getX(), $army->getY(), $army->getColor(), $game, $db);
-            foreach ($heroes->getKeys() as $heroId) {
-                echo 'iii';
-                $armies->changeHeroAffiliation($armyId, $this->_newArmyId, $heroId, $gameId, $db);
+        if ($heroes->exists()) {
+            if ($walk->exists() && $heroes->getMovesLeft() > 2) {
+                $this->_newArmyId = $armies->create($army->getX(), $army->getY(), $army->getColor(), $game, $db);
+                foreach ($heroes->getKeys() as $heroId) {
+                    $armies->changeHeroAffiliation($armyId, $this->_newArmyId, $heroId, $gameId, $db);
+                }
+            } else {
+                foreach ($heroes->getKeys() as $heroId) {
+                    $heroes->getHero($heroId)->zeroMovesLeft($game, $db);
+                }
+            }
+        }
+
+        if ($swim->exists()) {
+            if ($walk->exists() && $swim->getMovesLeft() > 2) {
+                $this->_newArmyId = $armies->create($army->getX(), $army->getY(), $army->getColor(), $game, $db);
+                foreach ($swim->getKeys() as $soldierId) {
+                    $armies->changeSwimmingSoldierAffiliation($armyId, $this->_newArmyId, $soldierId, $gameId, $db);
+                }
+            } else {
+                foreach ($swim->getKeys() as $soldierId) {
+                    $swim->getSoldier($soldierId)->zeroMovesLeft($game, $db);
+                }
+            }
+        }
+
+        if ($fly->exists()) {
+            if ($walk->exists() && $fly->getMovesLeft() > 2) {
+                $this->_newArmyId = $armies->create($army->getX(), $army->getY(), $army->getColor(), $game, $db);
+                foreach ($fly->getKeys() as $soldierId) {
+                    $armies->changeSwimmingSoldierAffiliation($armyId, $this->_newArmyId, $soldierId, $gameId, $db);
+                }
+            } else {
+                foreach ($fly->getKeys() as $soldierId) {
+                    $fly->getSoldier($soldierId)->zeroMovesLeft($game, $db);
+                }
             }
         }
 
         echo '$countGarrisonUnits=' . $countGarrisonUnits . ' > $numberOfUnits=' . $numberOfUnits . "\n";
         // znajduję nadmiarowe jednostki
         if ($countGarrisonUnits > $numberOfUnits) {
-            echo 'kkk';
+            echo 'kkk ';
             $count = 0;
-            $armySoldiers = $army->getWalkingSoldiers();
             if (empty($this->_newArmyId)) {
-                echo 'lll';
+                echo 'lll ';
                 $this->_newArmyId = $armies->create($army->getX(), $army->getY(), $army->getColor(), $game, $db);
             }
 
-            foreach ($armySoldiers->getKeys() as $soldierId) {
-                echo 'mmm';
+            foreach ($walk->getKeys() as $soldierId) {
+                echo 'mmm ';
                 $count++;
                 if ($count > $numberOfUnits) {
-                    echo 'nnn';
+                    echo 'nnn ';
                     $armies->changeWalkingSoldierAffiliation($armyId, $this->_newArmyId, $soldierId, $gameId, $db);
                 }
             }
         }
 
         if ($this->_newArmyId) {
-            echo 'ooo';
+            echo 'ooo ';
             $token = array(
                 'type' => 'split',
                 'parentArmy' => $army->toArray(),

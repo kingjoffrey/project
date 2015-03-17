@@ -231,7 +231,7 @@ tr:hover td {
 }
 
 tr:nth-child(odd) {
-    background: url(/img/bg_1.jpg);
+    /*background: url(/img/bg_1.jpg);*/
     color: #D7DAA4;
 }
 

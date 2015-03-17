@@ -3,7 +3,6 @@
 class Cli_Model_Field
 {
     private $_type;
-//    private $_temporaryType;
     private $_armies = array();
     private $_castleId;
     private $_towerId;

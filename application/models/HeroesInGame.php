@@ -97,7 +97,7 @@ class Application_Model_HeroesInGame extends Coret_Db_Table_Abstract
         return $this->update($data, $where);
     }
 
-    public function zeroHeroMovesLeft($heroId)
+    public function zeroMovesLeft($heroId)
     {
         $data = array(
             'movesLeft' => 0

@@ -117,4 +117,11 @@ class Cli_Model_Soldier extends Cli_Model_Being
     {
         return $this->_swamp;
     }
+
+    public function zeroMovesLeft($gameId, $db)
+    {
+        $this->_movesLeft = 0;
+        $mUnitsInGame = new Application_Model_UnitsInGame($gameId, $db);
+        $mUnitsInGame->updateMovesLeft($this->_movesLeft, $this->_id);
+    }
 }
