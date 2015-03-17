@@ -12,7 +12,7 @@ class Cli_Model_Soldier extends Cli_Model_Being
     private $_hills;
     private $_swamp;
 
-    public function __construct($soldier, $unit)
+    public function __construct($soldier, Cli_Model_Unit $unit)
     {
         $this->_id = $soldier['soldierId'];
         $this->_unitId = $soldier['unitId'];
@@ -118,7 +118,7 @@ class Cli_Model_Soldier extends Cli_Model_Being
         return $this->_swamp;
     }
 
-    public function zeroMovesLeft($gameId, $db)
+    public function zeroMovesLeft($gameId, Zend_Db_Adapter_Pdo_Pgsql $db)
     {
         $this->_movesLeft = 0;
         $mUnitsInGame = new Application_Model_UnitsInGame($gameId, $db);

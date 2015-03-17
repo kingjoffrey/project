@@ -43,7 +43,7 @@ class Cli_Model_Hero extends Cli_Model_Being
         $mHeroesInGame->updateMovesLeft($this->_movesLeft, $this->_id);
     }
 
-    public function resetMovesLeft($gameId, $db)
+    public function resetMovesLeft($gameId, Zend_Db_Adapter_Pdo_Pgsql $db)
     {
         if ($this->_movesLeft > 2) {
             $this->setMovesLeft($this->_moves + 2);
@@ -55,14 +55,14 @@ class Cli_Model_Hero extends Cli_Model_Being
         $mHeroesInGame->updateMovesLeft($this->_movesLeft, $this->_id);
     }
 
-    public function zeroMovesLeft($gameId, $db)
+    public function zeroMovesLeft($gameId, Zend_Db_Adapter_Pdo_Pgsql $db)
     {
         $this->_movesLeft = 0;
         $mHeroesInGame = new Application_Model_HeroesInGame($gameId, $db);
-        $mHeroesInGame->zeroMovesLeft($this->_id);
+        $mHeroesInGame->updateMovesLeft($this->_movesLeft, $this->_id);
     }
 
-    public function death($gameId, $db, $winnerId, $loserId)
+    public function death($gameId, Zend_Db_Adapter_Pdo_Pgsql $db, $winnerId, $loserId)
     {
         $mHeroesInGame = new Application_Model_HeroesInGame($gameId, $db);
         $mHeroesInGame->armyRemoveHero($this->_id);

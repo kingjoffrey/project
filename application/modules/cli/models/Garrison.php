@@ -37,7 +37,7 @@ class Cli_Model_Garrison
             }
         }
 
-        $army->setFortified(true, $gameId, $db);
+//        $army->setFortified(true, $gameId, $db);
         $countGarrisonUnits = $army->getWalkingSoldiers()->count();
         $heroes = $army->getHeroes();
         $walk = $army->getWalkingSoldiers();
@@ -52,12 +52,10 @@ class Cli_Model_Garrison
                 }
             } else {
                 foreach ($heroes->getKeys() as $heroId) {
-                    $heroes->getHero($heroId)->zeroMovesLeft($game, $db);
+                    $heroes->getHero($heroId)->zeroMovesLeft($gameId, $db);
                 }
             }
-        }
-
-        if ($swim->exists()) {
+        } elseif ($swim->exists()) {
             if ($walk->exists() && $swim->getMovesLeft() > 2) {
                 $this->_newArmyId = $armies->create($army->getX(), $army->getY(), $army->getColor(), $game, $db);
                 foreach ($swim->getKeys() as $soldierId) {
@@ -65,20 +63,18 @@ class Cli_Model_Garrison
                 }
             } else {
                 foreach ($swim->getKeys() as $soldierId) {
-                    $swim->getSoldier($soldierId)->zeroMovesLeft($game, $db);
+                    $swim->getSoldier($soldierId)->zeroMovesLeft($gameId, $db);
                 }
             }
-        }
-
-        if ($fly->exists()) {
+        } elseif ($fly->exists()) {
             if ($walk->exists() && $fly->getMovesLeft() > 2) {
                 $this->_newArmyId = $armies->create($army->getX(), $army->getY(), $army->getColor(), $game, $db);
                 foreach ($fly->getKeys() as $soldierId) {
-                    $armies->changeSwimmingSoldierAffiliation($armyId, $this->_newArmyId, $soldierId, $gameId, $db);
+                    $armies->changeFlyingSoldierAffiliation($armyId, $this->_newArmyId, $soldierId, $gameId, $db);
                 }
             } else {
                 foreach ($fly->getKeys() as $soldierId) {
-                    $fly->getSoldier($soldierId)->zeroMovesLeft($game, $db);
+                    $fly->getSoldier($soldierId)->zeroMovesLeft($gameId, $db);
                 }
             }
         }
