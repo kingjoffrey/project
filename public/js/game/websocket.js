@@ -63,7 +63,6 @@ var Websocket = {
             case 'ruin':
                 //board.append($('<div>').addClass('ruinSearch').css({'top': Y + 'px', 'left': X + 'px'}));
                 Zoom.lens.setcenter(r.army.x, r.army.y);
-                Players.get(r.color).getArmies().get(r.army.id).update(r.army)
                 Ruins.get(r.ruin.ruinId).update(r.ruin.empty)
                 if (Me.colorEquals(r.color)) {
                     switch (r.find[0]) {
@@ -75,12 +74,14 @@ var Websocket = {
                         case 'death':
                             Sound.play('death');
                             Message.simple(translations.ruins, translations.youHaveFound + ' ' + translations.death);
+                            Players.get(r.color).getArmies().delete(r.army.id)
                             if (!Hero.findMy()) {
                                 $('#heroResurrection').removeClass('buttonOff')
                             }
                             break
                         case 'allies':
                             Sound.play('allies');
+                            Players.get(r.color).getArmies().get(r.army.id).update(r.army)
                             Message.simple(translations.ruins, r.find[1] + ' ' + translations.alliesJoinedYourArmy);
                             break
                         case 'null':
