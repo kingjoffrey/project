@@ -348,12 +348,7 @@ console.log(upkeep)
                         break
 
                     case 'statistics':
-                        castlesConquered = r.castlesConquered;
-                        castlesDestroyed = r.castlesDestroyed;
-                        heroesKilled = r.heroesKilled;
-                        soldiersCreated = r.soldiersCreated;
-                        soldiersKilled = r.soldiersKilled;
-                        Message.statistics();
+                        Message.statistics(r);
                         break;
 
                     case 'bSequence':

@@ -237,6 +237,9 @@ var Players = new function () {
     this.count = function () {
         return Object.size(players) - 1
     }
+    this.toArray = function () {
+        return players
+    }
 }
 
 Object.size = function (obj) {

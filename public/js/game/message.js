@@ -992,24 +992,25 @@ var Message = {
         this.ok(id, Websocket.defense);
         this.cancel(id)
     },
-    statistics: function () {
-        var statistics = $('<div>')
-        var table = $('<table>')
-            .addClass('statistics')
-            .append($('<tr>')
-                .append($('<th>'))
-                .append($('<th>'))
-                .append($('<th>').html(translations.castlesHeld))
-                .append($('<th>').html(translations.castlesConquered))
-                .append($('<th>').html(translations.castlesLost))
-                .append($('<th>').html(translations.castlesRazed))
-                .append($('<th>').html(translations.unitsCreated))
-                .append($('<th>').html(translations.unitsKilled))
-                .append($('<th>').html(translations.unitsLost))
-                .append($('<th>').html(translations.heroesKilled))
-                .append($('<th>').html(translations.heroesLost))
-        );
-        var color
+    statistics: function (r) {
+        var statistics = $('<div>'),
+            table = $('<table>')
+                .addClass('statistics')
+                .append($('<tr>')
+                    .append($('<th>'))
+                    .append($('<th>'))
+                    .append($('<th>').html(translations.castlesHeld))
+                    .append($('<th>').html(translations.castlesConquered))
+                    .append($('<th>').html(translations.castlesLost))
+                    .append($('<th>').html(translations.castlesRazed))
+                    .append($('<th>').html(translations.unitsCreated))
+                    .append($('<th>').html(translations.unitsKilled))
+                    .append($('<th>').html(translations.unitsLost))
+                    .append($('<th>').html(translations.heroesKilled))
+                    .append($('<th>').html(translations.heroesLost))
+            ),
+            color
+
         for (var color in Players.toArray()) {
             var tr = $('<tr>'),
                 player = Players.get(color),
@@ -1034,8 +1035,8 @@ var Message = {
             var td = $('<td>').css({
                 border: '1px solid ' + backgroundColor
             })
-            if (isSet(castlesConquered.winners[color])) {
-                tr.append(td.html(castlesConquered.winners[color]))
+            if (isSet(r.castlesConquered.winners[color])) {
+                tr.append(td.html(r.castlesConquered.winners[color]))
             } else {
                 tr.append(td.html('0'))
             }
@@ -1043,8 +1044,8 @@ var Message = {
             var td = $('<td>').css({
                 border: '1px solid ' + backgroundColor
             })
-            if (isSet(castlesConquered.losers[color])) {
-                tr.append(td.html(castlesConquered.losers[color]))
+            if (isSet(r.castlesConquered.losers[color])) {
+                tr.append(td.html(r.castlesConquered.losers[color]))
             } else {
                 tr.append(td.html('0'))
             }
@@ -1052,8 +1053,8 @@ var Message = {
             var td = $('<td>').css({
                 border: '1px solid ' + backgroundColor
             })
-            if (isSet(castlesDestroyed[color])) {
-                tr.append(td.html(castlesConquered[color]))
+            if (isSet(r.castlesDestroyed[color])) {
+                tr.append(td.html(r.castlesConquered[color]))
             } else {
                 tr.append(td.html('0'))
             }
@@ -1061,8 +1062,8 @@ var Message = {
             var td = $('<td>').css({
                 border: '1px solid ' + backgroundColor
             })
-            if (isSet(soldiersCreated[color])) {
-                tr.append(td.html(soldiersCreated[color]))
+            if (isSet(r.soldiersCreated[color])) {
+                tr.append(td.html(r.soldiersCreated[color]))
             } else {
                 tr.append(td.html('0'))
             }
@@ -1070,8 +1071,8 @@ var Message = {
             var td = $('<td>').css({
                 border: '1px solid ' + backgroundColor
             })
-            if (isSet(soldiersKilled.winners[color])) {
-                tr.append(td.html(soldiersKilled.winners[color]))
+            if (isSet(r.soldiersKilled.winners[color])) {
+                tr.append(td.html(r.soldiersKilled.winners[color]))
             } else {
                 tr.append(td.html('0'))
             }
@@ -1079,8 +1080,8 @@ var Message = {
             var td = $('<td>').css({
                 border: '1px solid ' + backgroundColor
             })
-            if (isSet(soldiersKilled.losers[color])) {
-                tr.append(td.html(soldiersKilled.losers[color]))
+            if (isSet(r.soldiersKilled.losers[color])) {
+                tr.append(td.html(r.soldiersKilled.losers[color]))
             } else {
                 tr.append(td.html('0'))
             }
@@ -1088,8 +1089,8 @@ var Message = {
             var td = $('<td>').css({
                 border: '1px solid ' + backgroundColor
             })
-            if (isSet(heroesKilled.winners[color])) {
-                tr.append(td.html(heroesKilled.winners[color]))
+            if (isSet(r.heroesKilled.winners[color])) {
+                tr.append(td.html(r.heroesKilled.winners[color]))
             } else {
                 tr.append(td.html('0'))
             }
@@ -1097,8 +1098,8 @@ var Message = {
             var td = $('<td>').css({
                 border: '1px solid ' + backgroundColor
             })
-            if (isSet(heroesKilled.losers[color])) {
-                tr.append(td.html(heroesKilled.losers[color]))
+            if (isSet(r.heroesKilled.losers[color])) {
+                tr.append(td.html(r.heroesKilled.losers[color]))
             } else {
                 tr.append(td.html('0'))
             }

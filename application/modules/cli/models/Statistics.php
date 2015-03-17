@@ -2,47 +2,41 @@
 
 class Cli_Model_Statistics
 {
-
-    private $_castlesConquered;
-    private $_heroesKilled;
-    private $_soldiersKilled;
-    private $_soldiersCreated;
-    private $_castlesDestroyed;
-
-    public function __construct($gameId, $db)
+    public function __construct(IWebSocketConnection $user, Zend_Db_Adapter_Pdo_Pgsql $db, Cli_GameHandler $gameHandler)
     {
-        $playersInGameColors = Zend_Registry::get('playersInGameColors');
+        $game = Cli_Model_Game::getGame($user);
+        $playersInGameColors = $game->getPlayersInGameColors();
 
-        $mCastlesConquered = new Application_Model_CastlesConquered($gameId, $db);
-        $mCastlesDestroyed = new Application_Model_CastlesDestroyed($gameId, $db);
-        $mHeroesKilled = new Application_Model_HeroesKilled($gameId, $db);
-        $mSoldiersKilled = new Application_Model_SoldiersKilled($gameId, $db);
-        $mSoldiersCreated = new Application_Model_SoldiersCreated($gameId, $db);
+        $mCastlesConquered = new Application_Model_CastlesConquered($game->getId(), $db);
+        $mCastlesDestroyed = new Application_Model_CastlesDestroyed($game->getId(), $db);
+        $mHeroesKilled = new Application_Model_HeroesKilled($game->getId(), $db);
+        $mSoldiersKilled = new Application_Model_SoldiersKilled($game->getId(), $db);
+        $mSoldiersCreated = new Application_Model_SoldiersCreated($game->getId(), $db);
 
-        $this->_castlesConquered = array(
+        $castlesConquered = array(
             'winners' => $mCastlesConquered->countConquered($playersInGameColors),
             'losers' => $mCastlesConquered->countLost($playersInGameColors)
         );
-        $this->_heroesKilled = array(
+        $heroesKilled = array(
             'winners' => $mHeroesKilled->countKilled($playersInGameColors),
             'losers' => $mHeroesKilled->countLost($playersInGameColors)
         );
-        $this->_soldiersKilled = array(
+        $soldiersKilled = array(
             'winners' => $mSoldiersKilled->countKilled($playersInGameColors),
             'losers' => $mSoldiersKilled->countLost($playersInGameColors)
         );
-        $this->_soldiersCreated = $mSoldiersCreated->countCreated($playersInGameColors);
-        $this->_castlesDestroyed = $mCastlesDestroyed->countAll($playersInGameColors);
-    }
+        $soldiersCreated = $mSoldiersCreated->countCreated($playersInGameColors);
+        $castlesDestroyed = $mCastlesDestroyed->countAll($playersInGameColors);
 
-    public function toArray()
-    {
-        return array(
-            'castlesConquered' => $this->_castlesConquered,
-            'heroesKilled' => $this->_heroesKilled,
-            'soldiersKilled' => $this->_soldiersKilled,
-            'soldiersCreated' => $this->_soldiersCreated,
-            'castlesDestroyed' => $this->_castlesDestroyed
+        $token = array(
+            'type' => 'statistics',
+            'castlesConquered' => $castlesConquered,
+            'heroesKilled' => $heroesKilled,
+            'soldiersKilled' => $soldiersKilled,
+            'soldiersCreated' => $soldiersCreated,
+            'castlesDestroyed' => $castlesDestroyed
         );
+
+        $gameHandler->sendToUser($user, $db, $token, $game->getId());
     }
 }
