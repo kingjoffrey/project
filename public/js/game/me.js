@@ -405,4 +405,7 @@ var Me = new function () {
             return true
         }
     }
+    this.getBattleSequence = function (type) {
+
+    }
 }

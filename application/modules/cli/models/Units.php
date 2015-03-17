@@ -31,7 +31,7 @@ class Cli_Model_Units
 
     /**
      * @param $unitId
-     * @return Cli_Model_Units
+     * @return Cli_Model_Unit
      */
     public function getUnit($unitId)
     {

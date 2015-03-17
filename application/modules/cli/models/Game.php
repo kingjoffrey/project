@@ -157,11 +157,9 @@ class Cli_Model_Game
             'turnNumber' => $this->_turnNumber,
             'units' => $this->_Units->toArray(),
             'firstUnitId' => $this->_firstUnitId,
-//            'specialUnits' => $this->_specialUnits,
             'fields' => $this->_Fields->toArray(),
             'terrain' => $this->_Terrain->toArray(),
             'capitals' => $this->_capitals,
-//            'playersInGameColors' => $this->_playersInGameColors,
             'online' => $this->_online,
             'chatHistory' => $this->_chatHistory,
             'turnHistory' => $this->_turnHistory,
@@ -283,5 +281,14 @@ class Cli_Model_Game
     public function isLoaded()
     {
         return $this->_loaded;
+    }
+
+    /**
+     * @param IWebSocketConnection $user
+     * @return Cli_Model_Game
+     */
+    static public function getGame(IWebSocketConnection $user)
+    {
+        return $user->parameters['game'];
     }
 }

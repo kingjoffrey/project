@@ -34,43 +34,17 @@ class Cli_Model_Open
             $user->parameters['game'] = $gameHandler->getGame($dataIn['gameId']);
         }
 
-        $game = $this->getGame($user);
+        $game = Cli_Model_Game::getGame($user);
         $myColor = $game->getPlayerColor($dataIn['playerId']);
         $user->parameters['me'] = new Cli_Model_Me($myColor, $dataIn['playerId']);
-
-//        $fields = $game->getFields();
-//
-//        foreach ($game->getPlayers()->getKeys() as $color) {
-//            $player = $game->getPlayers()->getPlayer($color);
-//            if (!$game->getPlayers()->sameTeam($myColor, $color)) {
-//                $player->initFieldsTemporaryType($fields);
-//            } elseif ($color == $myColor) {
-//                $castles = $player->getCastles();
-//                foreach ($castles->getKeys() as $castleId) {
-//                    $castle = $castles->getCastle($castleId);
-//                    for ($x = $castle->getX(); $x <= $castle->getX() + 1; $x++) {
-//                        for ($y = $castle->getY(); $y <= $castle->getY(); $y++) {
-//                            $fields->getField($x, $y)->setTemporaryType('c');
-//                        }
-//                    }
-//                }
-//            }
-//        }
+        $player = $game->getPlayers()->getPlayer($myColor);
 
         $token = $game->toArray();
         $token['color'] = $myColor;
-        $token['gold'] = $game->getPlayers()->getPlayer($myColor)->getGold();
+        $token['gold'] = $player->getGold();
+        $token['battleSequence'] = array('attack' => $player->getAttackSequence(), 'defense' => $player->getDefenceSequence());
         $token['type'] = 'open';
 
         $gameHandler->sendToUser($user, $db, $token, $dataIn['gameId']);
-    }
-
-    /**
-     * @param IWebSocketConnection $user
-     * @return Cli_Model_Game
-     */
-    private function getGame(IWebSocketConnection $user)
-    {
-        return $user->parameters['game'];
     }
 }

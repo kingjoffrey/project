@@ -27,4 +27,13 @@ class Cli_Model_Me
     {
         return $this->_color;
     }
+
+    /**
+     * @param IWebSocketConnection $user
+     * @return Cli_Model_Me
+     */
+    static public function getMe(IWebSocketConnection $user)
+    {
+        return $user->parameters['me'];
+    }
 }

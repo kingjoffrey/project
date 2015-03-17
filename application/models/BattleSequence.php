@@ -16,11 +16,15 @@ class Application_Model_BattleSequence extends Coret_Db_Table_Abstract
         }
     }
 
-    public function initiate($playerId, $units)
+    public function initiate($playerId, Cli_Model_Units $units)
     {
         $sequence = 0;
-        foreach ($units as $unitId => $unit) {
-            if (isset($unit['canSwimm']) && $unit['canSwimm']) {
+        foreach ($units->getKeys() as $unitId) {
+            $unit = $units->getUnit($unitId);
+            if ($unit->canSwim()) {
+                continue;
+            }
+            if ($unit->canFly()) {
                 continue;
             }
             $sequence++;

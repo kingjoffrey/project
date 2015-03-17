@@ -54,6 +54,15 @@ class Cli_Model_Player extends Cli_Model_DefaultPlayer
     {
         $mBattleSequence = new Application_Model_BattleSequence($gameId, $db);
         $battleSequence = $mBattleSequence->get($this->_id);
+        if (empty($battleSequence['attack'])) {
+            $mBattleSequence->initiate($this->_id, Zend_Registry::get('units'));
+            $battleSequence = $mBattleSequence->get($this->_id);
+        }
+        $this->setBattleSequence($battleSequence);
+    }
+
+    public function setBattleSequence($battleSequence)
+    {
         if (isset($battleSequence['attack'])) {
             $this->_attackSequence = $battleSequence['attack'];
         }
