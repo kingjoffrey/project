@@ -20,8 +20,7 @@ var Game = new function () {
             Players.init(game.players)
             Timer.init(game.begin, game.turnTimeLimit, game.timeLimit)
             Ruins.init(game.ruins)
-            Me.init(game.color)
-            Me.setGold(game.gold)
+            Me.init(game.color, game.gold, game.bSequence)
 
             Chat.init(game.chatHistory)
         }

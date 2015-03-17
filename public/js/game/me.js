@@ -14,12 +14,15 @@ var Me = new function () {
         isNextSelected = null,
         me,
         selectedCastleId = null,
-        selectedUnitId = null
+        selectedUnitId = null,
+        battleSequence = null
 
-    this.init = function (c, ) {
+    this.init = function (c, g, bSequence) {
         color = c
         me = Players.get(color)
 
+        this.setBattleSequence(bSequence)
+        this.setGold(g)
         for (var armyId in Players.get(color).getArmies().toArray()) {
             var army = Players.get(color).getArmies().get(armyId)
             if (army.getFortified()) {
@@ -406,6 +409,14 @@ var Me = new function () {
         }
     }
     this.getBattleSequence = function (type) {
-
+        return battleSequence[type]
+    }
+    this.setBattleSequence = function (bSequence) {
+        if (isSet(bSequence['attack'])) {
+            battleSequence['attack'] = bSequence['attack']
+        }
+        if (isSet(bSequence['defense'])) {
+            battleSequence['defense'] = bSequence['defense']
+        }
     }
 }

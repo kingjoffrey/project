@@ -42,7 +42,7 @@ class Cli_Model_Open
         $token = $game->toArray();
         $token['color'] = $myColor;
         $token['gold'] = $player->getGold();
-        $token['battleSequence'] = array('attack' => $player->getAttackSequence(), 'defense' => $player->getDefenceSequence());
+        $token['bSequence'] = array('attack' => $player->getAttackSequence(), 'defense' => $player->getDefenceSequence());
         $token['type'] = 'open';
 
         $gameHandler->sendToUser($user, $db, $token, $dataIn['gameId']);

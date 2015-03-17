@@ -1324,15 +1324,19 @@ var Message = {
             i = 0
 
         for (k in Me.getBattleSequence(type)) {
-            var unitId = Me.battleSequence[type][k]
-            if (parseInt(unitId) == shipId) {
+            var unitId = Me.getBattleSequence(type)[k],
+                unit = Units.get(unitId)
+            if (unit.canFly) {
+                continue
+            }
+            if (unit.canSwim) {
                 continue
             }
             i++
-            if (isSet(game.units[unitId].name_lang)) {
-                var name = game.units[unitId].name_lang
+            if (isSet(unit.name_lang)) {
+                var name = unit.name_lang
             } else {
-                var name = game.units[unitId].name
+                var name = unit.name
             }
             sequenceNumber
                 .append($('<div>').html(i).addClass('battleNumber'))
