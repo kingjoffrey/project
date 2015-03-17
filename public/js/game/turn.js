@@ -2,6 +2,7 @@ var Turn = new function () {
     var number = null,
         color = null,
         beginDate = null
+
     this.init = function (turnHistory) {
         var j = 0,
             history = {}

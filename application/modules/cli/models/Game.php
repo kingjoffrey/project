@@ -127,11 +127,6 @@ class Cli_Model_Game
         }
     }
 
-    public function incrementTurnNumber()
-    {
-        $this->_turnNumber++;
-    }
-
     public function getTurnNumber()
     {
         return $this->_turnNumber;
@@ -154,7 +149,6 @@ class Cli_Model_Game
             'timeLimit' => $this->_timeLimit,
             'turnsLimit' => $this->_turnsLimit,
             'turnTimeLimit' => $this->_turnTimeLimit,
-            'turnNumber' => $this->_turnNumber,
             'units' => $this->_Units->toArray(),
             'firstUnitId' => $this->_firstUnitId,
             'fields' => $this->_Fields->toArray(),
@@ -223,6 +217,11 @@ class Cli_Model_Game
     public function setTurnPlayerId($playerId)
     {
         $this->_turnPlayerId = $playerId;
+        $this->_turnHistory[] = array(
+            'date' => date('Y-m-d H:i:s'),
+            'number' => $this->_turnNumber,
+            'shortName' => $this->getPlayerColor($playerId)
+        );
     }
 
     public function getTurnPlayerId()

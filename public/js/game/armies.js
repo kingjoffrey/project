@@ -58,7 +58,7 @@ var Armies = function () {
         return i
     }
     this.updateDefenderArmy = function (armyId) {
-        if (this.get(armyId).getNumberOfUnits()) {
+        if (!this.get(armyId).getNumberOfUnits()) {
             this.delete(armyId)
         }
     }

@@ -7,7 +7,7 @@ var Game = new function () {
     this.init = function (g) {
         if (loading) {
             game = g
-            //console.log(g)
+            //console.log(g.turnHistory)
             loading = false
 
             Units.init(game.units)

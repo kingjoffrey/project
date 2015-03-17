@@ -5,18 +5,19 @@ class Cli_Model_NextTurn
 
     public function __construct(IWebSocketConnection $user, Zend_Db_Adapter_Pdo_Pgsql $db, Cli_GameHandler $gameHandler)
     {
-        $gameId = $user->parameters['game']->getId();
-        $players = $user->parameters['game']->getPlayers();
+        $game = Cli_Model_Game::getGame($user);
+        $gameId = $game->getId();
+        $players = $game->getPlayers();
 
         while (true) {
-            $nextPlayerId = $this->getExpectedNextTurnPlayer($user->parameters['game'], $db);
-            $nextPlayerColor = $user->parameters['game']->getPlayerColor($nextPlayerId);
+            $nextPlayerId = $this->getExpectedNextTurnPlayer($game, $db);
+            $nextPlayerColor = $game->getPlayerColor($nextPlayerId);
 
             $player = $players->getPlayer($nextPlayerColor);
             if ($player->armiesOrCastlesExists()) {
 
-                $turnNumber = $user->parameters['game']->getTurnNumber();
-                $turnsLimit = $user->parameters['game']->getTurnsLimit();
+                $turnNumber = $game->getTurnNumber();
+                $turnsLimit = $game->getTurnsLimit();
 
                 if ($turnsLimit && $turnNumber > $turnsLimit) {
                     new Cli_Model_SaveResults($gameId, $db, $gameHandler);
