@@ -76,23 +76,6 @@ var Move = new function () {
         } else {
             if (isTruthful(r.battle) && (!player.isComputer() || Gui.show)) {
                 Sound.play('fight');
-
-                //if (isTruthful(r.battle.castleId)) {
-                //    board.append($('<div>')
-                //        .addClass('war')
-                //        .css({
-                //            top: 40 * game.players[r.color].castles[r.battle.castleId].y - 12 + 'px',
-                //            left: 40 * game.players[r.color].castles[r.battle.castleId].x - 11 + 'px'
-                //        }));
-                //} else {
-                //board.append($('<div>')
-                //    .addClass('war')
-                //    .css({
-                //        top: 40 * r.army.y - 42 + 'px',
-                //        left: 40 * r.army.x - 41 + 'px'
-                //    }));
-                //}
-
                 Message.battle(r, ii)
             } else {
                 Move.end(r, ii)

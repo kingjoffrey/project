@@ -816,7 +816,6 @@ var Message = {
 
             defenseLayout.append($('<div>').html(Players.get(color).getLongName() + ' (' + translations.defence + ')'))
 
-            //if (r.battle.castleId && isSet(Players.get(color).getCastles()[r.battle.castleId])) {
             if (r.battle.castleId) {
                 defenseLayout.append(
                     $('<div>')
@@ -829,7 +828,6 @@ var Message = {
                 )
             }
 
-            //if (r.battle.towerId && isSet(game.players[color].towers[r.battle.towerId])) {
             if (r.battle.towerId) {
                 defenseLayout.append(
                     $('<div>')
