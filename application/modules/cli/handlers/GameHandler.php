@@ -37,7 +37,7 @@ class Cli_GameHandler extends Cli_WofHandler
         $game = Cli_Model_Game::getGame($user);
         $gameId = $game->getId();
         $playerId = $user->parameters['me']->getId();
-        echo $playerId . '- Handler player ID' . "\n";
+//        echo $playerId . '- Handler player ID' . "\n";
 
         // AUTHORIZATION
         if (!Zend_Validate::is($gameId, 'Digits') || !Zend_Validate::is($playerId, 'Digits')) {
@@ -73,10 +73,10 @@ class Cli_GameHandler extends Cli_WofHandler
         if (!$config->turnOffDatabaseLogging) {
             Cli_Model_Database::addTokensIn($db, $gameId, $playerId, $dataIn);
         }
-//        if ($dataIn['type'] == 'computer') {
-//            new Cli_Model_Computer($user, $db, $this);
-//            return;
-//        }
+        if ($dataIn['type'] == 'computer') {
+            new Cli_Model_Computer($user, $db, $this);
+            return;
+        }
 
         if ($dataIn['type'] == 'bSequence') {
             new Cli_Model_BattleSequenceHandler($dataIn, $user, $db, $this);

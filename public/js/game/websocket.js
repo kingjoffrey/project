@@ -53,6 +53,9 @@ var Websocket = {
             case 'nextTurn':
                 Me.deselectArmy()
                 Turn.change(r.color, r.nr)
+                if (Players.get(r.color).isComputer()) {
+                    this.computer()
+                }
                 this.executing = 0
                 break;
 
@@ -781,6 +784,24 @@ var Websocket = {
             type: 'bSequence',
             attack: attack,
             sequence: sequence
+        }
+
+        ws.send(JSON.stringify(token));
+    },
+    computer: function () {
+        if (Websocket.closed) {
+            Message.error(translations.sorryServerIsDisconnected)
+            return;
+        }
+
+
+        //if (Game.getStop()) {
+        //    return
+        //}
+
+
+        var token = {
+            type: 'computer'
         }
 
         ws.send(JSON.stringify(token));

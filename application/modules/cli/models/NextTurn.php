@@ -35,9 +35,9 @@ class Cli_Model_NextTurn
                 $gameHandler->sendToChannel($db, $token, $gameId);
 
 
-                if ($player->getComputer()) {
-                    new Cli_Model_Computer($user, $db, $gameHandler);
-                }
+//                if ($player->getComputer()) {
+//                    new Cli_Model_Computer($user, $db, $gameHandler);
+//                }
                 return;
             } else {
                 $players->getPlayer($nextPlayerColor)->setLost($gameId, $db);
