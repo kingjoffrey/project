@@ -471,30 +471,27 @@ var Websocket = {
             ws.send(JSON.stringify(token));
         }
     },
-    computer: function () {
-        if (Websocket.closed) {
-            Message.error(translations.sorryServerIsDisconnected)
-            return;
-        }
-
-        if (!Players.get(Turn.getColor()).isComputer()) {
-            return
-        }
-
-        if (Game.getStop()) {
-            return
-        }
-
-        //if (Move.getMoving()) {
-        //    return
-        //}
-
-        var token = {
-            type: 'computer'
-        }
-
-        ws.send(JSON.stringify(token));
-    },
+    //computer: function () {
+    //    if (Websocket.closed) {
+    //        Message.error(translations.sorryServerIsDisconnected)
+    //        return;
+    //    }
+    //
+    //    if (!Players.get(Turn.getColor()).isComputer()) {
+    //        return
+    //    }
+    //
+    //    if (Game.getStop()) {
+    //        return
+    //    }
+    //
+    //
+    //var token = {
+    //    type: 'computer'
+    //}
+    //
+    //ws.send(JSON.stringify(token));
+    //},
     ruin: function () {
         if (Websocket.closed) {
             Message.error(translations.sorryServerIsDisconnected)
