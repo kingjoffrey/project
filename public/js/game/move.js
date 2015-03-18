@@ -70,7 +70,7 @@ var Move = new function () {
                         stepLoop(r, ii);
                     })
             } else {
-                delete r.path[step];
+                delete r.path[step].c;
                 stepLoop(r, ii);
             }
         } else {

@@ -143,7 +143,6 @@ var Websocket = {
                     for (var i in soldiers) {
                         upkeep += Units.get(soldiers[i].unitId).cost
                     }
-console.log(upkeep)
                     Me.costIncrement(-upkeep)
 
                     if (!Hero.findMy()) {
@@ -242,9 +241,9 @@ console.log(upkeep)
                         Websocket.addQueue(r)
                         break;
 
-                    case 'computer':
-                        Websocket.addQueue(r)
-                        break;
+                    //case 'computer':
+                    //    Websocket.addQueue(r)
+                    //    break;
 
                     case 'tower':
                         var field = Fields.get(r.x, r.y),
@@ -262,9 +261,9 @@ console.log(upkeep)
                         }
                         break
 
-                    case 'computerStart':
-                        Websocket.addQueue(r)
-                        break;
+                    //case 'computerStart':
+                    //    Websocket.addQueue(r)
+                    //    break;
 
                     case 'nextTurn':
                         Websocket.addQueue(r)

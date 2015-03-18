@@ -2,20 +2,12 @@ var Army = function (army, bgColor, miniMapColor, textColor, color) {
     var heroSplitKey = null,
         soldierSplitKey = null
 
-    this.skippedHeroes = {}
-    this.skippedSoldiers = {}
     this.update = function (a) {
         console.log(a)
         console.log('NEW ARMY DATAAAAAAAAAAAAAAAAAAAAAAA armyId=' + a.id)
         console.log(army)
         console.log('OLD ARMY DATAAAAAAAAAAAAAAAAAAAAAAA armyId=' + army.id)
         Fields.get(army.x, army.y).removeArmyId(army.id)
-        //if (isSet(a.x)) {
-        //    army.x = a.x
-        //}
-        //if (isSet(a.y)) {
-        //    army.y = a.y
-        //}
         for (var key in a) {
             if (key == 'walk') {
                 for (var soldierId in army.walk) {
@@ -65,7 +57,7 @@ var Army = function (army, bgColor, miniMapColor, textColor, color) {
             army[key] = a[key]
         }
         Fields.get(army.x, army.y).addArmyId(army.id, color)
-        Three.armyChangeFlag(army.mesh, color, this.getNumberOfUnits())
+        Three.armyChangeFlag(army.mesh, bgColor, this.getNumberOfUnits())
         $('#' + this.getArmyId() + '.a').css({left: army.x * 2 + 'px', top: army.y * 2 + 'px'})
     }
     this.getMesh = function () {
