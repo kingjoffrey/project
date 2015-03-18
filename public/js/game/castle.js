@@ -68,7 +68,6 @@ var Castle = function (castle, bgC, miniMapColor, textColor) {
             'background': miniMapColor,
             'border-color': textColor
         })
-        mesh.material.color.set(bgColor)
     }
     this.handle = function (stop, relocation) {
         var unitId = $('input:radio[name=production]:checked').val()

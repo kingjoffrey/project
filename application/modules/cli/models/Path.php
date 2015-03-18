@@ -263,8 +263,11 @@ class Cli_Model_Path
         }
     }
 
-    public function rewind()
+    public function setCurrent($current)
     {
-
+        $this->_current = $current;
+        $this->_end = end($this->_current);
+        $this->_x = $this->_end['x'];
+        $this->_y = $this->_end['y'];
     }
 }

@@ -277,6 +277,16 @@ class Cli_Model_ComputerMove extends Cli_Model_ComputerMethods
         $this->_l->log($this->_armyId, 'armyId: ');
 
         $path = new Cli_Model_Path($this->_army->getOldPath(), $this->_army, Zend_Registry::get('terrain'));
+        $current = array();
+
+        foreach ($path->getCurrent() as $step) {
+            $current[] = $step;
+            $enemies = new Cli_Model_Enemies($this->_game, $step['x'], $step['y'], $this->_color);
+            if ($enemies->hasEnemies()) {
+                $path->setCurrent($current);
+                break;
+            }
+        }
 
         if (!$path->enemyInRange()) {
             $this->savePath($path);

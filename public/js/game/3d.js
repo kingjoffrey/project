@@ -121,10 +121,7 @@ var Three = new function () {
         flagModel = loader.parse(flag)
     }
     this.addTower = function (x, y, color) {
-        var material = new THREE.MeshLambertMaterial({color: color})
-        material.side = THREE.DoubleSide
-
-        var towerMaterial = new THREE.MeshLambertMaterial({color: color})
+        var towerMaterial = new THREE.MeshLambertMaterial({color: '#6B6B6B'})
         towerMaterial.side = THREE.DoubleSide
 
         var mesh = new THREE.Mesh(towerModel.geometry, towerMaterial)
@@ -136,11 +133,12 @@ var Three = new function () {
         }
         scene.add(mesh)
 
+        var material = new THREE.MeshLambertMaterial({color: color})
+        material.side = THREE.DoubleSide
         var flagMesh = new THREE.Mesh(flagModel.geometry, material)
-        flagMesh.position.set(x * 4 - 216, 3.5, y * 4 - 311)
-        scene.add(flagMesh)
+        mesh.add(flagMesh)
 
-        return mesh.id
+        return mesh
     }
 
     var initCastle = function () {
@@ -152,23 +150,28 @@ var Three = new function () {
             castleModel_2 = loader.parse(castle_2)
             castleModel_3 = loader.parse(castle_3)
             castleModel_4 = loader.parse(castle_4)
+            flag.scale = 0.3
+            flagModel = loader.parse(flag)
         },
         getCastleModel = function (defense) {
             switch (defense) {
                 case 2:
-                    return castleModel_2.geometry
-                    break
+                    var material = new THREE.MeshLambertMaterial({color: '#65402C'})
+                    material.side = THREE.DoubleSide
+                    return new THREE.Mesh(castleModel_2.geometry, material)
                 case 3:
-                    return castleModel_3.geometry
-                    break
+                    var material = new THREE.MeshPhongMaterial({color: '#0054C4'})
+                    material.side = THREE.DoubleSide
+                    return new THREE.Mesh(castleModel_3.geometry, material)
                 case 4:
-                    return castleModel_4.geometry
-                    break
+                    var material = new THREE.MeshLambertMaterial({color: '#6B6B6B'})
+                    material.side = THREE.DoubleSide
+                    return new THREE.Mesh(castleModel_4.geometry, material)
             }
         },
-        updateCastleModel = function (mesh, defense, castleMaterial) {
+        updateCastleModel = function (mesh, defense) {
             for (var i = 2; i <= defense; i++) {
-                var m = new THREE.Mesh(getCastleModel(i), castleMaterial)
+                var m = getCastleModel(i)
 
                 if (showShadows) {
                     m.castShadow = true
@@ -180,10 +183,7 @@ var Three = new function () {
 
 
     this.addCastle = function (x, y, color, defense) {
-        var material = new THREE.MeshLambertMaterial({color: color})
-        material.side = THREE.DoubleSide
-
-        var castleMaterial = new THREE.MeshLambertMaterial({color: color})
+        var castleMaterial = new THREE.MeshLambertMaterial({color: '#3B3028'})
         castleMaterial.side = THREE.DoubleSide
 
         var mesh = new THREE.Mesh(castleModel_1.geometry, castleMaterial)
@@ -195,16 +195,19 @@ var Three = new function () {
         }
         scene.add(mesh)
 
-        updateCastleModel(mesh, defense, castleMaterial)
+        var material = new THREE.MeshLambertMaterial({color: color})
+        material.side = THREE.DoubleSide
+        var flag = new THREE.Mesh(flagModel.geometry, material)
+        mesh.add(flag)
+
+        updateCastleModel(mesh, defense)
         return mesh
     }
     this.castleChangeDefense = function (mesh, defense, color) {
-        mesh.children.splice(0, 3)
-
-        var castleMaterial = new THREE.MeshLambertMaterial({color: color})
-        castleMaterial.side = THREE.DoubleSide
-
-        updateCastleModel(mesh, defense, castleMaterial)
+        console.log(mesh.children)
+        mesh.children[0].material.color.set(color)
+        mesh.children.splice(1, 3)
+        updateCastleModel(mesh, defense)
     }
 
     var initArmy = function () {
