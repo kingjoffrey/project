@@ -23,9 +23,7 @@ class Cli_Model_Computer
             return;
         }
 
-        if (Cli_Model_ComputerHeroResurrection::handle($playerId, $user, $db, $gameHandler)) {
-            return;
-        }
+        new Cli_Model_ComputerHeroResurrection($playerId, $user, $db, $gameHandler);
 
         if ($army = $player->getArmies()->getComputerArmyToMove()) {
             new Cli_Model_ComputerMove($army, $user, $db, $gameHandler);

@@ -47,16 +47,12 @@ var Websocket = {
                 for (var armyId in r.armies) {
                     armies.handle(r.armies[armyId])
                 }
-                //if (Players.get(r.color).isComputer()) {
-                //    this.computer()
-                //}
                 this.executing = 0
                 break;
 
             case 'nextTurn':
                 Me.deselectArmy()
                 Turn.change(r.color, r.nr)
-                //this.computer()
                 this.executing = 0
                 break;
 
@@ -165,9 +161,6 @@ var Websocket = {
                         $('#heroResurrection').addClass('buttonOff')
                     }
                 }
-                //else if (Players.get(r.color).isComputer()) {
-                //    Websocket.computer()
-                //}
                 this.executing = 0
                 break;
 
@@ -242,10 +235,6 @@ var Websocket = {
                         Websocket.addQueue(r)
                         break;
 
-                    //case 'computer':
-                    //    Websocket.addQueue(r)
-                    //    break;
-
                     case 'tower':
                         var field = Fields.get(r.x, r.y),
                             towerId = field.getTowerId(),
@@ -261,10 +250,6 @@ var Websocket = {
                             Me.incomeIncrement(5)
                         }
                         break
-
-                    //case 'computerStart':
-                    //    Websocket.addQueue(r)
-                    //    break;
 
                     case 'nextTurn':
                         Websocket.addQueue(r)
@@ -472,27 +457,6 @@ var Websocket = {
             ws.send(JSON.stringify(token));
         }
     },
-    //computer: function () {
-    //    if (Websocket.closed) {
-    //        Message.error(translations.sorryServerIsDisconnected)
-    //        return;
-    //    }
-    //
-    //    if (!Players.get(Turn.getColor()).isComputer()) {
-    //        return
-    //    }
-    //
-    //    if (Game.getStop()) {
-    //        return
-    //    }
-    //
-    //
-    //var token = {
-    //    type: 'computer'
-    //}
-    //
-    //ws.send(JSON.stringify(token));
-    //},
     ruin: function () {
         if (Websocket.closed) {
             Message.error(translations.sorryServerIsDisconnected)

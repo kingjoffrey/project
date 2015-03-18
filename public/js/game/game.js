@@ -34,12 +34,9 @@ var Game = new function () {
             }
         } else {
             Me.turnOff()
-            //if (Players.get(Turn.getColor()).isComputer()) {
-            //    setTimeout('Websocket.computer()', 1000)
-            //}
         }
 
-        //Sound.play('gamestart')
+        Sound.play('gamestart')
     }
     this.getTimeoutId = function () {
         return timeoutId
