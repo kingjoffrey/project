@@ -27,10 +27,15 @@ class Cli_GameHandler extends Cli_WofHandler
 
         if ($dataIn['type'] == 'open') {
             new Cli_Model_Open($dataIn, $user, $db, $this);
+            $game = Cli_Model_Game::getGame($user);
+            if ($game->getPlayers()->getPlayer($game->getPlayerColor($game->getTurnPlayerId()))->getComputer()) {
+                new Cli_Model_Computer($user, $db, $this);
+            }
             return;
         }
 
-        $gameId = $user->parameters['game']->getId();
+        $game = Cli_Model_Game::getGame($user);
+        $gameId = $game->getId();
         $playerId = $user->parameters['me']->getId();
         echo $playerId . '- Handler player ID' . "\n";
 
@@ -45,8 +50,8 @@ class Cli_GameHandler extends Cli_WofHandler
             return;
         }
 
-        if ($timeLimit = $user->parameters['game']->getTimeLimit()) {
-            if (time() - $user->parameters['game']->getBegin() > $timeLimit * 600) {
+        if ($timeLimit = $game->getTimeLimit()) {
+            if (time() - $game->getBegin() > $timeLimit * 600) {
                 $mGame = new Application_Model_Game($gameId, $db);
                 $mGame->endGame();
                 new Cli_Model_SaveResults($gameId, $db, $this);
@@ -54,7 +59,7 @@ class Cli_GameHandler extends Cli_WofHandler
             }
         }
 
-        if ($turnTimeLimit = $user->parameters['game']->getTurnTimeLimit()) {
+        if ($turnTimeLimit = $game->getTurnTimeLimit()) {
             $mTurn = new Application_Model_TurnHistory($gameId, $db);
             $turn = $mTurn->getCurrentStatus();
             if (time() - strtotime($turn['date']) > $turnTimeLimit * 60) {
@@ -88,7 +93,7 @@ class Cli_GameHandler extends Cli_WofHandler
             return;
         }
 
-        if (!$user->parameters['game']->isPlayerTurn($playerId)) {
+        if (!$game->isPlayerTurn($playerId)) {
             $this->sendError($user, 'Not your turn.');
 
             if ($config->exitOnErrors) {
@@ -158,9 +163,10 @@ class Cli_GameHandler extends Cli_WofHandler
 
     public function onDisconnect(IWebSocketConnection $user)
     {
-        if ($user->parameters['game']) {
+        $game = Cli_Model_Game::getGame($user);
+        if ($game) {
             $db = Cli_Model_Database::getDb();
-            $gameId = $user->parameters['game']->getId();
+            $gameId = $game->getId();
             $playerId = $user->parameters['me']->getId();
 
             $mPlayersInGame = new Application_Model_PlayersInGame($gameId, $db);

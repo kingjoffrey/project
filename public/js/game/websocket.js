@@ -164,9 +164,10 @@ var Websocket = {
                     if (Hero.findMy()) {
                         $('#heroResurrection').addClass('buttonOff')
                     }
-                } else if (Players.get(r.color).isComputer()) {
-                    Websocket.computer()
                 }
+                //else if (Players.get(r.color).isComputer()) {
+                //    Websocket.computer()
+                //}
                 this.executing = 0
                 break;
 

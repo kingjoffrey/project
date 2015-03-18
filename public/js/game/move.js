@@ -174,9 +174,9 @@ var Move = new function () {
             Players.get(r.color).getArmies().delete(r.deletedIds[i], 1)
         }
 
-        if (player.isComputer()) {
-            Websocket.computer()
-        }
+        //if (player.isComputer()) {
+        //    Websocket.computer()
+        //}
 
         //setTimeout('$(".war").remove()', 100);
         console.log('move.end(' + ii + ') end')
