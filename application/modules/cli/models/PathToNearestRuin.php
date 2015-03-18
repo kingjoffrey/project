@@ -22,7 +22,7 @@ class Cli_Model_PathToNearestRuin
             $mHeuristics = new Cli_Model_Heuristics($armyX, $armyY);
             $h = $mHeuristics->calculateH($ruinX, $ruinY);
             if ($h < $movesLeft) {
-                echo '$h=' . $h . '<$movesLeft=' . $movesLeft . "\n";
+//                echo '$h=' . $h . '<$movesLeft=' . $movesLeft . "\n";
                 try {
                     $aStar = new Cli_Model_Astar($army, $ruinX, $ruinY, $game);
                 } catch (Exception $e) {

@@ -34,7 +34,7 @@ class Cli_Model_ComputerMove extends Cli_Model_ComputerMethods
         $this->_l->log('W ZAMKU');
         $myCastle = $this->_player->getCastles()->getCastle($castleId);
         if ($numberOfUnits = $this->_game->getNumberOfGarrisonUnits()) {
-            $garrison = new Cli_Model_Garrison($numberOfUnits, $myCastle->getX(), $myCastle->getY(), $this->_color, $this->_player->getArmies(), $this->_user, $this->_game, $this->_db, $this->_gameHandler);
+            $garrison = new Cli_Model_Garrison($numberOfUnits, $myCastle->getX(), $myCastle->getY(), $this->_color, $this->_player->getArmies(), $this->_game, $this->_db, $this->_gameHandler);
             if ($armyId = $garrison->getNewArmyId()) {
                 $this->_l->log('NOWA ARMIA');
                 $this->_army = $this->_player->getArmies()->getArmy($armyId);

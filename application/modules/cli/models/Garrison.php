@@ -4,7 +4,7 @@ class Cli_Model_Garrison
 {
     private $_newArmyId = 0;
 
-    public function __construct($numberOfUnits, $x, $y, $color, Cli_Model_Armies $armies, IWebSocketConnection $user, Cli_Model_Game $game, Zend_Db_Adapter_Pdo_Pgsql $db, Cli_GameHandler $gameHandler)
+    public function __construct($numberOfUnits, $x, $y, $color, Cli_Model_Armies $armies, Cli_Model_Game $game, Zend_Db_Adapter_Pdo_Pgsql $db, Cli_GameHandler $gameHandler)
     {
         $gameId = $game->getId();
         $fields = $game->getFields();
@@ -13,9 +13,9 @@ class Cli_Model_Garrison
             for ($j = $y; $j <= $y + 1; $j++) {
                 if ($i != $x || $j != $y) {
                     foreach ($fields->getField($i, $j)->getArmies() as $fieldArmyId => $fieldArmyColor) {
-                        echo 'aaa ';
+//                        echo 'aaa ';
                         if ($fieldArmyColor == $color) {
-                            echo 'fff';
+//                            echo 'fff';
                             $army = $armies->getArmy($fieldArmyId);
                             $path = new Cli_Model_Path(array(0 => array(
                                 'x' => $x,
@@ -31,7 +31,7 @@ class Cli_Model_Garrison
 
         foreach ($fields->getField($x, $y)->getArmies() as $fieldArmyId => $fieldArmyColor) {
             if ($fieldArmyColor == $color) {
-                echo 'GGG ';
+//                echo 'GGG ';
                 $army = $armies->getArmy($fieldArmyId);
                 $armyId = $army->getId();
             }
@@ -79,28 +79,28 @@ class Cli_Model_Garrison
             }
         }
 
-        echo '$countGarrisonUnits=' . $countGarrisonUnits . ' > $numberOfUnits=' . $numberOfUnits . "\n";
+//        echo '$countGarrisonUnits=' . $countGarrisonUnits . ' > $numberOfUnits=' . $numberOfUnits . "\n";
         // znajduję nadmiarowe jednostki
         if ($countGarrisonUnits > $numberOfUnits) {
-            echo 'kkk ';
+//            echo 'kkk ';
             $count = 0;
             if (empty($this->_newArmyId)) {
-                echo 'lll ';
+//                echo 'lll ';
                 $this->_newArmyId = $armies->create($army->getX(), $army->getY(), $army->getColor(), $game, $db);
             }
 
             foreach ($walk->getKeys() as $soldierId) {
-                echo 'mmm ';
+//                echo 'mmm ';
                 $count++;
                 if ($count > $numberOfUnits) {
-                    echo 'nnn ';
+//                    echo 'nnn ';
                     $armies->changeWalkingSoldierAffiliation($armyId, $this->_newArmyId, $soldierId, $gameId, $db);
                 }
             }
         }
 
         if ($this->_newArmyId) {
-            echo 'ooo ';
+//            echo 'ooo ';
             $token = array(
                 'type' => 'split',
                 'parentArmy' => $army->toArray(),
