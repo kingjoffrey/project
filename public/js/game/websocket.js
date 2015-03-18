@@ -47,16 +47,16 @@ var Websocket = {
                 for (var armyId in r.armies) {
                     armies.handle(r.armies[armyId])
                 }
-                if (Players.get(r.color).isComputer()) {
-                    this.computer()
-                }
+                //if (Players.get(r.color).isComputer()) {
+                //    this.computer()
+                //}
                 this.executing = 0
                 break;
 
             case 'nextTurn':
                 Me.deselectArmy()
                 Turn.change(r.color, r.nr)
-                this.computer()
+                //this.computer()
                 this.executing = 0
                 break;
 

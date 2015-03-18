@@ -101,5 +101,9 @@ class Cli_Model_StartTurn
             'color' => $color
         );
         $gameHandler->sendToChannel($db, $token, $gameId);
+
+        if ($player->getComputer()) {
+            new Cli_Model_Computer($user, $db, $gameHandler);
+        }
     }
 }

@@ -257,8 +257,8 @@ class Cli_Model_ComputerMove extends Cli_Model_ComputerMethods
 
         $this->_l->log('IDĘ DO RUIN');
         $army = $this->_army;
-        $this->move($ptnr->getPath());
         $army->setFortified(true);
+        $this->move($ptnr->getPath());
 
         $this->_game->getRuins()->getRuin($ruinId)->search($this->_game, $army, $heroId, $this->_playerId, $this->_db, $this->_gameHandler);
     }
@@ -302,24 +302,30 @@ class Cli_Model_ComputerMove extends Cli_Model_ComputerMethods
         if ($path && $path->exists()) {
             $this->_l->log('(armyId=' . $this->_army->getId() . ')IDĘ/WALCZĘ');
             $this->_army->move($this->_game, $path, $this->_db, $this->_gameHandler);
+            $this->next();
         } else {
             $this->_l->log('(armyId=' . $this->_army->getId() . ')BRAK ŚCIEŻKI');
             $this->_army->setFortified(true);
-            if ($this->_army = $this->_player->getArmies()->getComputerArmyToMove()) {
-                $this->_l->log('(armyId=' . $this->_army->getId() . ')BIORĘ KOLEJNĄ ARMIĘ');
-                $this->_armyId = $this->_army->getId();
-                $this->_armyX = $this->_army->getX();
-                $this->_armyY = $this->_army->getY();
-                $this->_movesLeft = $this->_army->getMovesLeft();
-                if ($this->_army->hasOldPath()) {
-                    $this->goByThePath();
-                } else {
-                    $this->findPath();
-                }
+            $this->next();
+        }
+    }
+
+    private function next()
+    {
+        if ($this->_army = $this->_player->getArmies()->getComputerArmyToMove()) {
+            $this->_l->log('(armyId=' . $this->_army->getId() . ')BIORĘ KOLEJNĄ ARMIĘ');
+            $this->_armyId = $this->_army->getId();
+            $this->_armyX = $this->_army->getX();
+            $this->_armyY = $this->_army->getY();
+            $this->_movesLeft = $this->_army->getMovesLeft();
+            if ($this->_army->hasOldPath()) {
+                $this->goByThePath();
             } else {
-                $this->_l->log('NASTĘPNA TURA');
-                new Cli_Model_NextTurn($this->_user, $this->_db, $this->_gameHandler);
+                $this->findPath();
             }
+        } else {
+            $this->_l->log('NASTĘPNA TURA');
+            new Cli_Model_NextTurn($this->_user, $this->_db, $this->_gameHandler);
         }
     }
 }

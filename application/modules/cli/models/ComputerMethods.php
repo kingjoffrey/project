@@ -2,22 +2,53 @@
 
 abstract class Cli_Model_ComputerMethods
 {
+    /**
+     * @var Cli_Model_Game
+     */
     protected $_game;
     protected $_gameId;
     protected $_playerId;
+
+    /**
+     * @var Cli_Model_Players
+     */
     protected $_players;
+
+    /**
+     * @var Cli_Model_Player
+     */
     protected $_player;
+
+    /**
+     * @var Cli_Model_Fields
+     */
     protected $_fields;
+
+    /**
+     * @var Zend_Db_Adapter_Pdo_Pgsql
+     */
     protected $_db;
+
+    /**
+     * @var Cli_Model_Army
+     */
     protected $_army;
+
+    /**
+     * @var Cli_GameHandler
+     */
     protected $_gameHandler;
+
+    /**
+     * @var Coret_Model_Logger
+     */
     protected $_l;
 
     public function __construct(Cli_Model_Army $army, IWebSocketConnection $user, Zend_Db_Adapter_Pdo_Pgsql $db, Cli_GameHandler $gameHandler)
     {
         $this->_army = $army;
         $this->_user = $user;
-        $this->_game = $this->getGame();
+        $this->_game = Cli_Model_Game::getGame($user);
         $this->_db = $db;
         $this->_gameHandler = $gameHandler;
         $this->_playerId = $this->_game->getTurnPlayerId();
@@ -30,14 +61,6 @@ abstract class Cli_Model_ComputerMethods
         $this->_movesLeft = $this->_army->getMovesLeft();
         $this->_gameId = $this->_game->getId();
         $this->_fields = $this->_game->getFields();
-    }
-
-    /**
-     * @return Cli_Model_Game
-     */
-    private function getGame()
-    {
-        return $this->_user->parameters['game'];
     }
 
     protected function getComputerEmptyCastleInComputerRange()
