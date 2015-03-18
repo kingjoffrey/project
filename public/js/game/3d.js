@@ -210,7 +210,9 @@ var Three = new function () {
 
     var initArmy = function () {
         hero.scale = 6
-        armyModel = loader.parse(hero)
+        light_infantry.scale = 6
+        heroModel = loader.parse(hero)
+        light_infantryModel = loader.parse(light_infantry)
         flag_1.scale = 5
         flag_1Model = loader.parse(flag_1)
         flag_2.scale = 5
@@ -235,8 +237,12 @@ var Three = new function () {
         var armyMaterial = new THREE.MeshLambertMaterial({color: color})
         armyMaterial.side = THREE.DoubleSide
 
+        if (number > 1) {
+            var mesh = new THREE.Mesh(heroModel.geometry, armyMaterial)
+        } else {
+            var mesh = new THREE.Mesh(light_infantryModel.geometry, armyMaterial)
+        }
 
-        var mesh = new THREE.Mesh(armyModel.geometry, armyMaterial)
         mesh.position.set(x * 4 - 216, 0, y * 4 - 311)
         mesh.rotation.y = Math.PI / 2 + Math.PI / 4
 
