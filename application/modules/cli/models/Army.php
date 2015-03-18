@@ -270,11 +270,6 @@ class Cli_Model_Army
         return $this->_fortified;
     }
 
-    public function zeroHeroMovesLeft($heroId, $gameId, Zend_Db_Adapter_Pdo_Pgsql $db)
-    {
-        $this->_Heroes->getHero($heroId)->zeroMovesLeft($gameId, $db);
-    }
-
     public function setAttackBattleSequence($attackBattleSequence)
     {
         $this->_attackBattleSequence['walk'] = $this->_WalkingSoldiers->setAttackBattleSequence($attackBattleSequence);

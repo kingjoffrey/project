@@ -43,7 +43,7 @@ class Cli_Model_Ruin extends Cli_Model_Entity
 //śmierć
             $turnNumber = $game->getTurnNumber();
             if ($turnNumber <= 7) {
-                $army->zeroHeroMovesLeft($heroId, $gameId, $db);
+                $army->getHeroes()->getHero($heroId)->zeroMovesLeft($gameId, $db);
                 $found = array('null', 1);
             } else {
                 $found = array('death', 1);
@@ -59,7 +59,7 @@ class Cli_Model_Ruin extends Cli_Model_Entity
             $player = $game->getPlayers()->getPlayer($color);
             $player->addGold($gold);
             $player->saveGold($gameId, $db);
-            $army->zeroHeroMovesLeft($heroId, $gameId, $db);
+            $army->getHeroes()->getHero($heroId)->zeroMovesLeft($gameId, $db);
             $this->setEmpty($gameId, $db);
         } elseif ($random < 85) { //30%
 //jednostki
@@ -157,13 +157,13 @@ class Cli_Model_Ruin extends Cli_Model_Entity
                 $army->createSoldier($gameId, $playerId, $game->getUnits()->getSpecialUnitId(rand($min1, $max1)), $db);
             }
 
-            $army->zeroHeroMovesLeft($heroId, $gameId, $db);
+            $army->getHeroes()->getHero($heroId)->zeroMovesLeft($gameId, $db);
             $this->setEmpty($gameId, $db);
             $found = array('allies', $numberOfUnits);
 //        } elseif ($random < 95) { //10%
         } else {
 //nic
-            $army->zeroHeroMovesLeft($heroId, $gameId, $db);
+            $army->getHeroes()->getHero($heroId)->zeroMovesLeft($gameId, $db);
             $found = array('null', 1);
 
 //        } else { //5%

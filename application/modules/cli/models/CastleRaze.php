@@ -10,11 +10,12 @@ class Cli_Model_CastleRaze
             return;
         }
 
+        $game = Cli_Model_Game::getGame($user);
         $playerId = $user->parameters['me']->getId();
-        $color = $user->parameters['game']->getPlayerColor($playerId);
-        $player = $user->parameters['game']->getPlayers()->getPlayer($color);
+        $color = $game->getPlayerColor($playerId);
+        $player = $game->getPlayers()->getPlayer($color);
         $army = $player->getArmies()->getArmy($armyId);
-        $field = $user->parameters['game']->getFields()->getField($army->getX(), $army->getY());
+        $field = $game->getFields()->getField($army->getX(), $army->getY());
         $castleId = $field->getCastleId();
         if (!$castleId) {
             $gameHandler->sendError($user, 'Brak zamku!');
@@ -28,7 +29,7 @@ class Cli_Model_CastleRaze
         $castles = $player->getCastles();
         $defense = $castles->getCastle($castleId)->getDefenseModifier();
 
-        $castles->razeCastle($castleId, $playerId, $user->parameters['game'], $db);
+        $castles->razeCastle($castleId, $playerId, $game, $db);
         $player->addGold($defense * 200);
 
         $token = array(
@@ -38,7 +39,7 @@ class Cli_Model_CastleRaze
             'castleId' => $castleId
         );
 
-        $gameHandler->sendToChannel($db, $token, $user->parameters['game']->getId());
+        $gameHandler->sendToChannel($db, $token, $game->getId());
     }
 
 }

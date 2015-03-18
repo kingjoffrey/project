@@ -177,8 +177,9 @@ var Me = new function () {
     }
     this.deselectArmy = function (skipJoin) {
         if (notSet(skipJoin) && parentArmyId && selectedArmyId) {
-            var selectedArmy = this.getArmy(selectedArmyId)
-            var parentArmy = this.getArmy(parentArmyId)
+            var selectedArmy = this.getArmy(selectedArmyId),
+                parentArmy = this.getArmy(parentArmyId)
+            parentArmy.getX()
             if (selectedArmy.getX() == parentArmy.getX() && selectedArmy.getY() == parentArmy.getY()) {
                 Websocket.join(selectedArmyId)
             }

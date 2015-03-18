@@ -5,9 +5,10 @@ class Cli_Model_Computer
     public function __construct(IWebSocketConnection $user, Zend_Db_Adapter_Pdo_Pgsql $db, Cli_GameHandler $gameHandler)
     {
         $l = new Coret_Model_Logger();
-        $playerId = $user->parameters['game']->getTurnPlayerId();
-        $players = $user->parameters['game']->getPlayers();
-        $color = $user->parameters['game']->getPlayerColor($playerId);
+        $game = Cli_Model_Game::getGame($user);
+        $playerId = $game->getTurnPlayerId();
+        $players = $game->getPlayers();
+        $color = $game->getPlayerColor($playerId);
         $player = $players->getPlayer($color);
 
         if (!$player->getTurnActive()) {

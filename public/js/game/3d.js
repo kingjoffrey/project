@@ -203,9 +203,7 @@ var Three = new function () {
         updateCastleModel(mesh, defense)
         return mesh
     }
-    this.castleChangeDefense = function (mesh, defense, color) {
-        console.log(mesh.children)
-        mesh.children[0].material.color.set(color)
+    this.castleChangeDefense = function (mesh, defense) {
         mesh.children.splice(1, 3)
         updateCastleModel(mesh, defense)
     }

@@ -11,8 +11,9 @@ class Cli_Model_JoinArmy
         }
 
         $color = $user->parameters['me']->getColor();
-        $armies = $user->parameters['game']->getPlayers()->getPlayer($color)->getArmies();
-        $joinIds = $armies->joinAtPosition($armyId, $user->parameters['game'], $db);
+        $game = Cli_Model_Game::getGame($user);
+        $armies = $game->getPlayers()->getPlayer($color)->getArmies();
+        $joinIds = $armies->joinAtPosition($armyId, $game, $db);
 
         $token = array(
             'type' => 'join',
@@ -21,6 +22,6 @@ class Cli_Model_JoinArmy
             'color' => $color
         );
 
-        $gameHandler->sendToChannel($db, $token, $user->parameters['game']->getId());
+        $gameHandler->sendToChannel($db, $token, $game->getId());
     }
 }

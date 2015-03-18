@@ -4,16 +4,17 @@ class Cli_Model_ComputerHeroResurrection
 {
     static public function handle($playerId, IWebSocketConnection $user, Zend_Db_Adapter_Pdo_Pgsql $db, Cli_GameHandler $gameHandler)
     {
-        $gameId = $user->parameters['game']->getId();
-        $players = $user->parameters['game']->getPlayers();
-        $color = $user->parameters['game']->getPlayerColor($playerId);
+        $game = Cli_Model_Game::getGame($user);
+        $gameId = $game->getId();
+        $players = $game->getPlayers();
+        $color = $game->getPlayerColor($playerId);
         $player = $players->getPlayer($color);
 
         if ($player->getGold() < 100) {
             return;
         }
 
-        if (!$capital = $player->getCastles()->getCastle($user->parameters['game']->getPlayerCapitalId($color))) {
+        if (!$capital = $player->getCastles()->getCastle($game->getPlayerCapitalId($color))) {
             return;
         }
 
@@ -24,13 +25,13 @@ class Cli_Model_ComputerHeroResurrection
             return;
         }
 
-        if (!$armyId = $player->getArmies()->getArmyIdFromField($user->parameters['game']->getFields()->getField($capital->getX(), $capital->getY()))) {
-            $armyId = $player->getArmies()->create($capital->getX(), $capital->getY(), $color, $user->parameters['game'], $db);
+        if (!$armyId = $player->getArmies()->getArmyIdFromField($game->getFields()->getField($capital->getX(), $capital->getY()))) {
+            $armyId = $player->getArmies()->create($capital->getX(), $capital->getY(), $color, $game, $db);
         }
 
         $army = $player->getArmies()->getArmy($armyId);
         $army->addHero($hero['heroId'], new Cli_Model_Hero($hero), $gameId, $db);
-        $army->zeroHeroMovesLeft($hero['heroId'], $gameId, $db);
+        $army->getHeroes()->getHero($hero['heroId'])->zeroMovesLeft($gameId, $db);
 
         $l = new Coret_Model_Logger();
         $l->log('WSKRZESZAM HEROSA id = ' . $hero['heroId']);

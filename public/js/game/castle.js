@@ -68,6 +68,7 @@ var Castle = function (castle, bgC, miniMapColor, textColor) {
             'background': miniMapColor,
             'border-color': textColor
         })
+        mesh.children[0].material.color.set(bgColor)
     }
     this.handle = function (stop, relocation) {
         var unitId = $('input:radio[name=production]:checked').val()
@@ -94,7 +95,7 @@ var Castle = function (castle, bgC, miniMapColor, textColor) {
     }
     this.setDefense = function (defense) {
         castle.defense = defense
-        Three.castleChangeDefense(mesh, defense, bgColor)
+        Three.castleChangeDefense(mesh, defense)
     }
 }
 

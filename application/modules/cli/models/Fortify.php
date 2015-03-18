@@ -10,7 +10,8 @@ class Cli_Model_Fortify
             return;
         }
 
-        $user->parameters['game']->getPlayers()->getPlayer($user->parameters['me']->getColor())->getArmies()->getArmy($armyId)->setFortified($fortify, $user->parameters['game']->getId(), $db);
+        $game = Cli_Model_Game::getGame($user);
+        $game->getPlayers()->getPlayer($user->parameters['me']->getColor())->getArmies()->getArmy($armyId)->setFortified($fortify, $game->getId(), $db);
     }
 
 }
