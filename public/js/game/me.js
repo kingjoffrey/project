@@ -184,6 +184,7 @@ var Me = new function () {
                 Websocket.join(selectedArmyId)
             }
         }
+        parentArmyId = null
 
         Three.clearArmyCircles()
         Three.clearPathCircles()

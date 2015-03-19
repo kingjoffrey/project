@@ -3,10 +3,10 @@ var Army = function (army, bgColor, miniMapColor, textColor, color) {
         soldierSplitKey = null
 
     this.update = function (a) {
-        console.log(a)
-        console.log('NEW ARMY DATAAAAAAAAAAAAAAAAAAAAAAA armyId=' + a.id)
-        console.log(army)
-        console.log('OLD ARMY DATAAAAAAAAAAAAAAAAAAAAAAA armyId=' + army.id)
+        //console.log(a)
+        //console.log('NEW ARMY DATAAAAAAAAAAAAAAAAAAAAAAA armyId=' + a.id)
+        //console.log(army)
+        //console.log('OLD ARMY DATAAAAAAAAAAAAAAAAAAAAAAA armyId=' + army.id)
         Fields.get(army.x, army.y).removeArmyId(army.id)
         for (var key in a) {
             if (key == 'walk') {

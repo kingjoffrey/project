@@ -50,8 +50,8 @@ var Move = new function () {
         }
 
         if (isSet(r.path[step].c)) {
-            console.log(step)
-            console.log(r.path[step])
+            //console.log(step)
+            //console.log(r.path[step])
             if (!player.isComputer() || Gui.show) {
                 //zoomer.setCenterIfOutOfScreen(r.path[step].x * 40, r.path[step].y * 40);
 
@@ -83,8 +83,6 @@ var Move = new function () {
         }
     }
     this.end = function (r, ii) {
-        console.log('move.end(' + ii + ') start')
-
         army.update(r.army)
         if (player.isComputer() && !Gui.show) {
             army.setPosition(army.getX(), army.getY())
@@ -175,10 +173,9 @@ var Move = new function () {
         }
 
         //setTimeout('$(".war").remove()', 100);
-        console.log('move.end(' + ii + ') end')
-        Websocket.executing = 0
         if (Me.colorEquals(r.color)) {
             Gui.unlock()
         }
+        Websocket.executing = 0
     }
 }
