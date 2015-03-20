@@ -199,8 +199,40 @@ var Army = function (army, bgColor, miniMapColor, textColor, color) {
     this.getFortified = function () {
         return army.fortified
     }
+    this.getModelName = function () {
+        var attack = 0,
+            name
 
-    army.mesh = Three.addArmy(army.x, army.y, bgColor, this.getNumberOfUnits())
+        if (countProperties(army.heroes)) {
+            return 'hero'
+        } else if (countProperties(army.swim)) {
+            for (var soldierId in army.swim) {
+                var soldier = army.swim[soldierId]
+                if (Units.get(soldier.unitId).a > attack) {
+                    attack = Units.get(soldier.unitId).a
+                    name = Units.get(soldier.unitId).name
+                }
+            }
+        } else {
+            for (var soldierId in army.walk) {
+                var soldier = army.walk[soldierId]
+                if (Units.get(soldier.unitId).a > attack) {
+                    attack = Units.get(soldier.unitId).a
+                    name = Units.get(soldier.unitId).name
+                }
+            }
+            for (var soldierId in army.fly) {
+                var soldier = army.fly[soldierId]
+                if (Units.get(soldier.unitId).a > attack) {
+                    attack = Units.get(soldier.unitId).a
+                    name = Units.get(soldier.unitId).name
+                }
+            }
+        }
+        return name.replace(' ', '_').toLowerCase()
+    }
+
+    army.mesh = Three.addArmy(army.x, army.y, bgColor, this.getNumberOfUnits(), this.getModelName())
 
     Fields.get(army.x, army.y).addArmyId(army.id, color)
     map.append(
@@ -217,32 +249,6 @@ var Army = function (army, bgColor, miniMapColor, textColor, color) {
     )
 }
 
-// *** UNITS ***
-
-var Unit = {
-    getId: function (name) {
-        for (var unitId in Units.get) {
-            if (Units.get(unitId) != null && Units.get(unitId).name == name) {
-                return Units[i].mapUnitId;
-            }
-        }
-
-        return null;
-    },
-    getImage: function (unitId, color) {
-        return '/img/game/units/' + color + '/' + Units.get(unitId).name.replace(' ', '_').toLowerCase() + '.png'
-    },
-    getShipId: function () {
-        for (i in game.units) {
-            if (Units.get(i) == null) {
-                continue;
-            }
-            if (Units.get(i).canSwim) {
-                return i;
-            }
-        }
-    }
-}
 
 var Hero = {
     getImage: function (color) {

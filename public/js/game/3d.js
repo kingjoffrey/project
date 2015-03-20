@@ -209,10 +209,16 @@ var Three = new function () {
     }
 
     var initArmy = function () {
+        archers.scale = 6
         hero.scale = 6
         light_infantry.scale = 6
+        heavy_infantry.scale = 6
+
+        archersModel = loader.parse(archers)
         heroModel = loader.parse(hero)
         light_infantryModel = loader.parse(light_infantry)
+        heavy_infantryModel = loader.parse(heavy_infantry)
+
         flag_1.scale = 5
         flag_1Model = loader.parse(flag_1)
         flag_2.scale = 5
@@ -230,17 +236,17 @@ var Three = new function () {
         flag_8.scale = 5
         flag_8Model = loader.parse(flag_8)
     }
-    this.addArmy = function (x, y, color, number) {
+    this.addArmy = function (x, y, color, number, modelName) {
         var material = new THREE.MeshLambertMaterial({color: color})
         material.side = THREE.DoubleSide
 
         var armyMaterial = new THREE.MeshLambertMaterial({color: color})
         armyMaterial.side = THREE.DoubleSide
 
-        if (number > 1) {
+        if (typeof window[modelName] == 'undefined') {
             var mesh = new THREE.Mesh(heroModel.geometry, armyMaterial)
         } else {
-            var mesh = new THREE.Mesh(light_infantryModel.geometry, armyMaterial)
+            var mesh = new THREE.Mesh(window[modelName + 'Model'].geometry, armyMaterial)
         }
 
         mesh.position.set(x * 4 - 216, 0, y * 4 - 311)

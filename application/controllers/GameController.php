@@ -19,6 +19,7 @@ class GameController extends Game_Controller_Game
         $this->view->headScript()->appendFile('/js/game/game.js?v=' . Zend_Registry::get('config')->version);
         $this->view->headScript()->appendFile('/js/game/me.js?v=' . Zend_Registry::get('config')->version);
         $this->view->headScript()->appendFile('/js/game/units.js?v=' . Zend_Registry::get('config')->version);
+        $this->view->headScript()->appendFile('/js/game/unit.js?v=' . Zend_Registry::get('config')->version);
         $this->view->headScript()->appendFile('/js/game/terrain.js?v=' . Zend_Registry::get('config')->version);
 
         $this->view->headScript()->appendFile('/js/game/players.js?v=' . Zend_Registry::get('config')->version);
