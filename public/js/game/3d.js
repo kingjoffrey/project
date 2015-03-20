@@ -209,15 +209,17 @@ var Three = new function () {
     }
 
     var initArmy = function () {
-        archers.scale = 6
-        hero.scale = 6
-        light_infantry.scale = 6
-        heavy_infantry.scale = 6
-
-        archersModel = loader.parse(archers)
-        heroModel = loader.parse(hero)
-        light_infantryModel = loader.parse(light_infantry)
-        heavy_infantryModel = loader.parse(heavy_infantry)
+        var armyModels = {
+            'archers': archers,
+            'hero': hero,
+            'light_infantry': light_infantry,
+            'heavy_infantry': heavy_infantry,
+            'giants': giants
+        }
+        for (var i in armyModels) {
+            armyModels[i].scale = 6
+            window[i + 'Model'] = loader.parse(armyModels[i])
+        }
 
         flag_1.scale = 5
         flag_1Model = loader.parse(flag_1)
@@ -264,8 +266,14 @@ var Three = new function () {
 
         return mesh
     }
-    this.armyChangeFlag = function (mesh, color, number) {
+    this.armyChangeFlag = function (mesh, color, number, modelName) {
         mesh.children.splice(0, 1)
+
+        if (typeof window[modelName] == 'undefined') {
+            mesh.geometry = heroModel.geometry
+        } else {
+            mesh = window[modelName + 'Model'].geometry
+        }
 
         var material = new THREE.MeshLambertMaterial({color: color})
         material.side = THREE.DoubleSide
