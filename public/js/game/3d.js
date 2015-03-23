@@ -216,7 +216,9 @@ var Three = new function () {
             'heavy_infantry': heavy_infantry,
             'giants': giants,
             'dwarves': dwarves,
-            'griffins': griffins
+            'griffins': griffins,
+            'dragon': dragon,
+            'cavalry': cavalry
         }
         for (var i in armyModels) {
             armyModels[i].scale = 6
