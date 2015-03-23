@@ -210,6 +210,7 @@ var Three = new function () {
 
     var initArmy = function () {
         var armyModels = {
+            'untitled': untitled,
             'archers': archers,
             'hero': hero,
             'light_infantry': light_infantry,
@@ -218,7 +219,8 @@ var Three = new function () {
             'dwarves': dwarves,
             'griffins': griffins,
             'dragon': dragon,
-            'cavalry': cavalry
+            'cavalry': cavalry,
+            'ship': ship
         }
         for (var i in armyModels) {
             armyModels[i].scale = 6
@@ -250,7 +252,7 @@ var Three = new function () {
         armyMaterial.side = THREE.DoubleSide
 
         if (typeof window[modelName] == 'undefined') {
-            var mesh = new THREE.Mesh(heroModel.geometry, armyMaterial)
+            var mesh = new THREE.Mesh(untitledModel.geometry, armyMaterial)
         } else {
             var mesh = new THREE.Mesh(window[modelName + 'Model'].geometry, armyMaterial)
         }
