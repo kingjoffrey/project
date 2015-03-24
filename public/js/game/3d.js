@@ -220,7 +220,8 @@ var Three = new function () {
             'griffins': griffins,
             'dragon': dragon,
             'cavalry': cavalry,
-            'navy': navy
+            'navy': navy,
+            'wolves': wolves
         }
         for (var i in armyModels) {
             armyModels[i].scale = 6
@@ -251,10 +252,10 @@ var Three = new function () {
         var armyMaterial = new THREE.MeshLambertMaterial({color: color})
         armyMaterial.side = THREE.DoubleSide
 
-        if (typeof window[modelName] == 'undefined') {
-            var mesh = new THREE.Mesh(untitledModel.geometry, armyMaterial)
-        } else {
+        if (modelName + 'Model' in window) {
             var mesh = new THREE.Mesh(window[modelName + 'Model'].geometry, armyMaterial)
+        } else {
+            var mesh = new THREE.Mesh(untitledModel.geometry, armyMaterial)
         }
 
         mesh.position.set(x * 4 - 216, 0, y * 4 - 311)

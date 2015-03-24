@@ -175,6 +175,7 @@ class Cli_Model_ComputerMove extends Cli_Model_ComputerMethods
             $path = $this->getPathToMyArmyInRange();
             if ($path && $path->targetWithin()) {
                 $this->_l->log('JEST MOJA ARMIA W ZASIĘGU - DOŁĄCZ!');
+                $this->_army->setFortified(1);
                 $this->move($path);
                 return;
             }
