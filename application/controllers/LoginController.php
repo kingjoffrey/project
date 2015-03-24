@@ -24,6 +24,17 @@ class LoginController extends Coret_Controller_AuthenticateFrontend
 
     public function registrationAction()
     {
+        $this->_helper->layout->setLayout('login');
+
+        $this->view->headLink()->prependStylesheet($this->view->baseUrl() . '/css/main.css');
+        $this->view->headLink()->prependStylesheet($this->view->baseUrl() . '/css/login.css');
+
+        $this->view->jquery();
+        $this->view->headScript()->appendFile('/js/login.js?v=' . Zend_Registry::get('config')->version);
+
+        $this->view->title();
+        $this->view->Version();
+
         $form = new Application_Form_Registration();
         if ($this->_request->isPost()) {
             if ($form->isValid($this->_request->getPost())) {

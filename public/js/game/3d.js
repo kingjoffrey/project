@@ -220,7 +220,7 @@ var Three = new function () {
             'griffins': griffins,
             'dragon': dragon,
             'cavalry': cavalry,
-            'ship': ship
+            'navy': navy
         }
         for (var i in armyModels) {
             armyModels[i].scale = 6
