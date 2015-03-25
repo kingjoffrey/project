@@ -28,7 +28,7 @@ var Game = new function () {
             Chat.init(game.chatHistory)
         }
 
-        Players.initOnline(Game.online)
+        Players.initOnline(game.online)
 
         if (Turn.isMy()) {
             Me.turnOn()

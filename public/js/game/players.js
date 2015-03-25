@@ -97,7 +97,6 @@ var Players = new function () {
                 offset: [center.x - wedges[Turn.getColor()].x - 11, center.y - wedges[Turn.getColor()].y - 14],
                 strokeWidth: 0
             });
-
             kineticLayer.add(circle)
         }
 
@@ -150,7 +149,6 @@ var Players = new function () {
                 width: 16,
                 height: 16
             })
-            //wedges[shortName].img.remove()
             kineticLayer.add(wedges[shortName].skull);
             kineticLayer.draw()
         };
@@ -187,33 +185,30 @@ var Players = new function () {
         }
         if (value) {
             wedges[shortName].online = new Kinetic.Circle({
-                x: center.x,
-                y: center.y,
-                radius: 18,
-                offset: [center.x - wedges[shortName].x - 11, center.y - wedges[shortName].y - 14],
+                x: wedges[shortName].x,
+                y: wedges[shortName].y,
+                radius: 5,
                 stroke: '#0f0',
+                fill: 'green',
                 strokeWidth: 1
             });
-            kineticLayer.add(wedges[shortName].online)
+            kineticLayer.add(wedges[shortName].online);
+        } else {
+            wedges[shortName].online = new Kinetic.Circle({
+                x: wedges[shortName].x,
+                y: wedges[shortName].y,
+                radius: 5,
+                stroke: '#0f0',
+                fill: 'grey',
+                strokeWidth: 1
+            });
+            kineticLayer.add(wedges[shortName].online);
         }
         kineticLayer.draw()
     }
     this.initOnline = function (online) {
         for (var shortName in online) {
-            console.log(shortName)
-            if (isSet(wedges[shortName].online)) {
-                wedges[shortName].online.remove()
-            }
-
-            wedges[shortName].online = new Kinetic.Circle({
-                x: center.x,
-                y: center.y,
-                radius: 18,
-                offset: [center.x - wedges[shortName].x - 11, center.y - wedges[shortName].y - 14],
-                stroke: '#0f0',
-                strokeWidth: 1
-            });
-            kineticLayer.add(wedges[shortName].online);
+            this.setOnline(shortName, online[shortName])
         }
         kineticLayer.draw()
     }
