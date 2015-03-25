@@ -27,34 +27,6 @@ var Message = {
                 .append($(txt).addClass('overflow'))
                 .attr('id', id)
                 .fadeIn(200)
-//                .mousedown(function (e) {
-//                    Message.drag = 1
-//                    Message.x = e.pageX - parseInt($(this).css('left'))
-//                    Message.y = e.pageY - parseInt($(this).css('top'))
-//                    $(this).css('cursor', 'url(/img/game/cursor_hand_drag.png) 15 15, default')
-//                })
-//                .mouseup(function () {
-//                    Message.drag = 0
-//                    $(this).css('cursor', 'url(/img/game/cursor_hand.png) 15 15, default')
-//                })
-//                .mouseout(function () {
-//                    if (Message.drag) {
-//                        return
-//                    }
-//                    Message.drag = 0
-//                    $(this).css('cursor', 'url(/img/game/cursor_hand.png) 15 15, default')
-//                })
-//                .mousemove(function (e) {
-//                    if (Message.drag == 0) {
-//                        return
-//                    }
-//                    var top = e.pageY - Message.y
-//                    var left = e.pageX - Message.x
-//                    $(this).css({
-//                        top: top,
-//                        left: left
-//                    })
-//                })
         )
         this.adjust(id)
         return id

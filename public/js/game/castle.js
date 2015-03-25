@@ -75,9 +75,12 @@ var Castle = function (castle, bgC, miniMapColor, textColor) {
 
         if (relocation) {
             if (!unitId) {
-                Message.error('No unit selected')
+                Message.error(translations.noUnitSelected)
             } else {
-                Message.simple(translations.relocation, translations.selectCastleToWhichYouWantToRelocateThisProduction)
+                var id = Message.simple(translations.relocation, translations.selectCastleToWhichYouWantToRelocateThisProduction)
+                Message.cancel(id, function () {
+                    Me.setSelectedCastleId(0)
+                })
                 Me.setSelectedCastleId(castle.id)
                 Me.setSelectedUnitId(unitId)
             }

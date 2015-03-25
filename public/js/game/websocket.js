@@ -31,6 +31,7 @@ var Websocket = {
 
             case 'startTurn':
                 if (Me.colorEquals(r.color)) {
+                    Me.setSelectedCastleId(0)
                     var castles = Players.get(r.color).getCastles()
                     for (var castleId in r.castles) {
                         castles.get(castleId).setProductionTurn(r.castles[castleId].productionTurn)

@@ -103,7 +103,7 @@ class Zend_View_Helper_Translations extends Zend_View_Helper_Abstract
             'nextArmy' => $this->view->translate('Next army'),
             'army' => $this->view->translate('Army'),
             'noMoreMoves' => $this->view->translate('No more moves'),
-            '' => $this->view->translate(''),
+            'noUnitSelected' => $this->view->translate('No unit selected'),
             '' => $this->view->translate(''),
             '' => $this->view->translate(''),
         ));
