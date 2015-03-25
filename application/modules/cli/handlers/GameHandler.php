@@ -75,7 +75,6 @@ class Cli_GameHandler extends Cli_WofHandler
         }
 
         if ($dataIn['type'] == 'computer') {
-            echo 'computer' . "\n";
             new Cli_Model_Computer($user, $db, $this);
             return;
         }

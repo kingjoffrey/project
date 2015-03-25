@@ -181,8 +181,26 @@ var Players = new function () {
             kineticLayer.draw()
         }
     }
-    this.updateOnline = function () {
-        for (var shortName in game.online) {
+    this.setOnline = function (shortName, value) {
+        if (isSet(wedges[shortName].online)) {
+            wedges[shortName].online.remove()
+        }
+        if (value) {
+            wedges[shortName].online = new Kinetic.Circle({
+                x: center.x,
+                y: center.y,
+                radius: 18,
+                offset: [center.x - wedges[shortName].x - 11, center.y - wedges[shortName].y - 14],
+                stroke: '#0f0',
+                strokeWidth: 1
+            });
+            kineticLayer.add(wedges[shortName].online)
+        }
+        kineticLayer.draw()
+    }
+    this.initOnline = function (online) {
+        for (var shortName in online) {
+            console.log(shortName)
             if (isSet(wedges[shortName].online)) {
                 wedges[shortName].online.remove()
             }
@@ -212,12 +230,6 @@ var Players = new function () {
         length = Object.size(players) - 1
 
         for (var color in players) {
-            //if (!players[color].computer && color != 'neutral') {
-            //    game.online[color] = 0
-            //}
-
-            //$('.' + color + ' .color').addClass(color + 'bg');
-
             this.add(color, players[color])
         }
 

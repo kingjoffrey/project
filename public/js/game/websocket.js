@@ -313,8 +313,7 @@ var Websocket = {
                         break;
 
                     case 'close':
-                        game.online[r.color] = 0
-                        Players.updateOnline()
+                        Players.setOnline(r.color, 0)
                         break;
 
                     case 'chat':
