@@ -332,6 +332,11 @@ class Cli_Model_Battle
                 $castleOwner = $this->_players->getPlayer($this->_castleColor);
                 $castle = $castleOwner->getCastles()->getCastle($this->_castleId);
                 $castle->setProductionId();
+
+
+//                if ($castle->getDefenseMod()) {
+//                    throw new Exception('');
+//                }
                 $attackerColor = $this->_attacker->getColor();
                 $attackingPlayer = $this->_players->getPlayer($attackerColor);
                 $attackingPlayer->getCastles()->addCastle(
