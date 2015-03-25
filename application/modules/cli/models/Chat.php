@@ -5,18 +5,19 @@ class Cli_Model_Chat
 
     public function __construct($msg, $user, $db, $gameHandler)
     {
-        $mChat = new Application_Model_Chat($user->parameters['gameId'], $db);
-        $mChat->insertChatMessage($user->parameters['playerId'], $msg);
+        $game = Cli_Model_Game::getGame($user);
+        $me = Cli_Model_Me::getMe($user);
 
-        $playersInGameColors = Zend_Registry::get('playersInGameColors');
+        $mChat = new Application_Model_Chat($game->getId(), $db);
+        $mChat->insertChatMessage($me->getId(), $msg);
 
         $token = array(
             'type' => 'chat',
             'msg' => $msg,
-            'color' => $playersInGameColors[$user->parameters['playerId']]
+            'color' => $me->getColor()
         );
 
-        $gameHandler->sendToChannel($db, $token, $user->parameters['gameId']);
+        $gameHandler->sendToChannel($db, $token, $game->getId());
     }
 
 }
