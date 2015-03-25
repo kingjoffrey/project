@@ -123,10 +123,7 @@ class Application_Model_CastlesInGame extends Coret_Db_Table_Abstract
             'productionId' => null,
             'productionTurn' => 0,
         );
-        print_r($data);
-        if(!$this->update($data, $where)){
-            exit;
-        }
+        $this->update($data, $where);
     }
 
     public function addCastle($castleId, $playerId)

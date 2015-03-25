@@ -10,7 +10,7 @@ class Cli_Model_Castle extends Cli_Model_Entity
 
     private $_productionId;
     private $_productionTurn;
-    private $_defenseMod;
+    private $_defenseMod = 0;
     private $_relocationCastleId;
 
     private $_production = array();
@@ -27,14 +27,13 @@ class Cli_Model_Castle extends Cli_Model_Entity
 
         if (empty($playerCastle)) {
             $this->_id = $mapCastle['castleId'];
-            return;
+        } else {
+            $this->_id = $playerCastle['castleId'];
+            $this->_productionId = $playerCastle['productionId'];
+            $this->_productionTurn = $playerCastle['productionTurn'];
+            $this->_defenseMod = $playerCastle['defenseMod'];
+            $this->_relocationCastleId = $playerCastle['relocationCastleId'];
         }
-
-        $this->_id = $playerCastle['castleId'];
-        $this->_productionId = $playerCastle['productionId'];
-        $this->_productionTurn = $playerCastle['productionTurn'];
-        $this->_defenseMod = $playerCastle['defenseMod'];
-        $this->_relocationCastleId = $playerCastle['relocationCastleId'];
     }
 
     public function initProduction($production)
@@ -171,7 +170,7 @@ class Cli_Model_Castle extends Cli_Model_Entity
     {
         if ($this->getDefenseModifier() > 1) {
             $this->_defenseMod--;
-            $this->setDefenceMod($playerId, $gameId, $db);
+            $this->saveDefenceMod($playerId, $gameId, $db);
         }
     }
 
@@ -179,11 +178,11 @@ class Cli_Model_Castle extends Cli_Model_Entity
     {
         if ($this->getDefenseModifier() < 4) {
             $this->_defenseMod++;
-            $this->setDefenceMod($playerId, $gameId, $db);
+            $this->saveDefenceMod($playerId, $gameId, $db);
         }
     }
 
-    private function setDefenceMod($playerId, $gameId, $db)
+    private function saveDefenceMod($playerId, $gameId, $db)
     {
         $mCastlesInGame = new Application_Model_CastlesInGame($gameId, $db);
         $mCastlesInGame->buildDefense($this->_id, $playerId, $this->_defenseMod);
