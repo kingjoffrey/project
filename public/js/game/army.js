@@ -201,7 +201,7 @@ var Army = function (army, bgColor, miniMapColor, textColor, color) {
     }
     this.getModelName = function () {
         var attack = 0,
-            name
+            name = null
 
         if (countProperties(army.heroes)) {
             return 'hero'
@@ -229,7 +229,9 @@ var Army = function (army, bgColor, miniMapColor, textColor, color) {
                 }
             }
         }
-        return name.replace(' ', '_').toLowerCase()
+        if (name) {
+            return name.replace(' ', '_').toLowerCase()
+        }
     }
 
     army.mesh = Three.addArmy(army.x, army.y, bgColor, this.getNumberOfUnits(), this.getModelName())
