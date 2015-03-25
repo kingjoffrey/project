@@ -57,7 +57,7 @@ var Army = function (army, bgColor, miniMapColor, textColor, color) {
             army[key] = a[key]
         }
         Fields.get(army.x, army.y).addArmyId(army.id, color)
-        Three.armyChangeFlag(army.mesh, bgColor, this.getNumberOfUnits())
+        Three.armyChangeFlag(army.mesh, bgColor, this.getNumberOfUnits(), this.getModelName())
         $('#' + this.getArmyId() + '.a').css({left: army.x * 2 + 'px', top: army.y * 2 + 'px'})
     }
     this.getMesh = function () {

@@ -13,8 +13,6 @@ var Gui = {
         $(window).resize(function () {
             Gui.adjust();
         })
-        map = $('#map')
-        coord = $('#coord')
         Zoom.init()
         this.prepareButtons()
         this.adjust()
@@ -378,8 +376,12 @@ var Gui = {
         )
 
         var numberOfHumanPlayers = 0
-        for (sn in game.players) {
-            if (!game.players[sn].computer) {
+        for (var color in Players.toArray()) {
+            if (color == 'neutral') {
+                continue
+            }
+            var player = Players.get(color)
+            if (!player.isComputer()) {
                 numberOfHumanPlayers++
             }
         }

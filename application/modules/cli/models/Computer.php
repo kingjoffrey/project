@@ -7,9 +7,7 @@ class Cli_Model_Computer
         $l = new Coret_Model_Logger();
         $game = Cli_Model_Game::getGame($user);
         $playerId = $game->getTurnPlayerId();
-        $players = $game->getPlayers();
-        $color = $game->getPlayerColor($playerId);
-        $player = $players->getPlayer($color);
+        $player = $game->getPlayers()->getPlayer($game->getPlayerColor($playerId));
 
         if (!$player->getTurnActive()) {
             $l->log('START TURY');

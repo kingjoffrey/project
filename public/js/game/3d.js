@@ -276,10 +276,13 @@ var Three = new function () {
     this.armyChangeFlag = function (mesh, color, number, modelName) {
         mesh.children.splice(0, 1)
 
-        if (typeof window[modelName] == 'undefined') {
-            mesh.geometry = heroModel.geometry
+        var armyMaterial = new THREE.MeshLambertMaterial({color: color})
+        armyMaterial.side = THREE.DoubleSide
+
+        if (modelName + 'Model' in window) {
+            mesh.geometry = window[modelName + 'Model'].geometry
         } else {
-            mesh = window[modelName + 'Model'].geometry
+            mesh.geometry = untitledModel.geometry
         }
 
         var material = new THREE.MeshLambertMaterial({color: color})

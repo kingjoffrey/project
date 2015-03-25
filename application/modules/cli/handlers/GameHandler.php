@@ -73,7 +73,9 @@ class Cli_GameHandler extends Cli_WofHandler
         if (!$config->turnOffDatabaseLogging) {
             Cli_Model_Database::addTokensIn($db, $gameId, $playerId, $dataIn);
         }
+
         if ($dataIn['type'] == 'computer') {
+            echo 'computer' . "\n";
             new Cli_Model_Computer($user, $db, $this);
             return;
         }

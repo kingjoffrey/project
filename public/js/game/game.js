@@ -7,6 +7,9 @@ var Game = new function () {
     this.init = function (g) {
         if (loading) {
             game = g
+            map = $('#map')
+            coord = $('#coord')
+
             //console.log(g.turnHistory)
             loading = false
 
@@ -15,9 +18,9 @@ var Game = new function () {
             Three.init()
             Picker.init(Three.getCamera(), Three.getRenderer().domElement)
             Fields.init(game.fields)
-            Gui.init()
             Turn.init(game.turnHistory)
             Players.init(game.players)
+            Gui.init()
             Timer.init(game.begin, game.turnTimeLimit, game.timeLimit)
             Ruins.init(game.ruins)
             Me.init(game.color, game.gold, game.bSequence)
