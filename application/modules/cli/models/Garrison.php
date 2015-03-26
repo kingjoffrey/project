@@ -37,7 +37,6 @@ class Cli_Model_Garrison
             }
         }
 
-//        $army->setFortified(true, $gameId, $db);
         $countGarrisonUnits = $army->getWalkingSoldiers()->count();
         $heroes = $army->getHeroes();
         $walk = $army->getWalkingSoldiers();

@@ -134,4 +134,21 @@ class Cli_Model_Soldiers
     {
         return count($this->_soldiers);
     }
+
+    public function getMovesLeft()
+    {
+        foreach ($this->getKeys() as $soldierId) {
+            $soldier = $this->getSoldier($soldierId);
+            if (!isset($movesLeft)) {
+                $movesLeft = $soldier->getMovesLeft();
+                continue;
+            }
+            if ($soldier->getMovesLeft() < $movesLeft) {
+                $movesLeft = $soldier->getMovesLeft();
+            }
+        }
+        if ($movesLeft) {
+            return $movesLeft;
+        }
+    }
 }

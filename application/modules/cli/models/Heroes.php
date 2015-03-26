@@ -99,7 +99,6 @@ class Cli_Model_Heroes
         foreach ($this->getKeys() as $heroId) {
             $this->getHero($heroId)->resetMovesLeft($gameId, $db);
         }
-
     }
 
     public function count()
