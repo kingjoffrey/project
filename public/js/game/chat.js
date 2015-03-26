@@ -1,39 +1,29 @@
 var Chat = new function () {
-    var chatContent = $('#chatWindow #chatContent')
-    var renderChatCloud = function (date, message, color) {
-        var div = $('<div>')
-            .append($('<span>').html(Players.get(color).getLongName() + ' (' + date + ')'))
-            .append('<br>')
-            .append(message)
-            .addClass('chatCloud')
-        if (Me.colorEquals(color)) {
-            var align = 'right'
-            div
-                .css({
-                    'text-align': align
-                })
-            div = div.add($('<img>').attr('src', Hero.getImage(color)))
+    var chatContent,
+        renderChatCloud = function (date, message, color) {
+            var div = $('<div>')
+                .append($('<span>').html(Players.get(color).getLongName() + ' (' + date + ')'))
+                .append('<br>')
+                .append(message)
+                .addClass('chatCloud')
 
-        } else {
-            var align = 'left'
-            div
-                .css({
+            if (Me.colorEquals(color)) {
+                var align = 'right'
+                div.css({
                     'text-align': align
                 })
-            div =
-                $('<img>').attr('src', Hero.getImage(color)).add(div)
+                div = div.add($('<img>').attr('src', Hero.getImage(color)))
+
+            } else {
+                var align = 'left'
+                div.css({'text-align': align})
+                div = $('<img>').attr('src', Hero.getImage(color)).add(div)
+            }
+            chatContent.append($('<div>').css({'text-align': align}).append(div).addClass('chatCloudContainer'))
         }
-        chatContent
-            .append(
-            $('<div>')
-                .css({
-                    'text-align': align
-                })
-                .append(div)
-                .addClass('chatCloudContainer')
-        )
-    }
+
     this.init = function (chatHistory) {
+        chatContent = $('#chatWindow #chatContent')
         for (var i in chatHistory) {
             renderChatCloud(getISODateTime(chatHistory[i]['date']), chatHistory[i]['message'], chatHistory[i]['color'])
         }

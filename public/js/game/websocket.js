@@ -318,7 +318,7 @@ var Websocket = {
                         break;
 
                     case 'chat':
-                        chat(r.color, r.msg, makeTime());
+                        Chat.message(r.color, r.msg, makeTime());
                         break;
 
                     case 'production':

@@ -62,6 +62,7 @@ class Cli_Model_Game
         $this->_chatHistory = $mChat->getChatHistory();
         foreach ($this->_chatHistory as $k => $v) {
             $this->_chatHistory[$k]['color'] = $this->_playersInGameColors[$v['playerId']];
+            unset($this->_chatHistory[$k]['playerId']);
         }
 
         $mMapPlayers = new Application_Model_MapPlayers($this->_mapId, $db);
@@ -275,6 +276,11 @@ class Cli_Model_Game
     public function getNumberOfGarrisonUnits()
     {
         return $this->_numberOfGarrisonUnits;
+    }
+
+    public function updateChatHistory($message, $color)
+    {
+        $this->_chatHistory[] = array('date' => date('Y-m-d H:i:s', mktime()), 'message' => $message, 'color' => $color);
     }
 
     public function isLoaded()

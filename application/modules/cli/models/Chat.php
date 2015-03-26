@@ -11,6 +11,8 @@ class Cli_Model_Chat
         $mChat = new Application_Model_Chat($game->getId(), $db);
         $mChat->insertChatMessage($me->getId(), $msg);
 
+        $game->updateChatHistory($msg, $me->getColor());
+
         $token = array(
             'type' => 'chat',
             'msg' => $msg,
