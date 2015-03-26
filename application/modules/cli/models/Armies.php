@@ -97,10 +97,11 @@ class Cli_Model_Armies
 
     public function removeArmy($armyId, Cli_Model_Game $game = null, Zend_Db_Adapter_Pdo_Pgsql $db = null)
     {
+        $army = $this->getArmy($armyId);
+        $army->setDestroyed(true);
         if ($db) {
             $mArmy = new Application_Model_Army($game->getId(), $db);
             $mArmy->destroyArmy($armyId);
-            $army = $this->getArmy($armyId);
             $game->getFields()->getField($army->getX(), $army->getY())->removeArmy($army->getId());
         }
         unset($this->_armies[$armyId]);

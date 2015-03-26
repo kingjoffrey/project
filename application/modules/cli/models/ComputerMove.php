@@ -258,7 +258,9 @@ class Cli_Model_ComputerMove extends Cli_Model_ComputerMethods
             $army->setFortified(true);
             $this->move($ptnr->getPath());
 
-            $this->_game->getRuins()->getRuin($ruinId)->search($this->_game, $army, $heroId, $this->_playerId, $this->_db, $this->_gameHandler);
+            if (!$army->getDestroyed()) {
+                $this->_game->getRuins()->getRuin($ruinId)->search($this->_game, $army, $heroId, $this->_playerId, $this->_db, $this->_gameHandler);
+            }
         } else {
             $this->_l->log('BRAK RUIN');
             $this->firstBlock();

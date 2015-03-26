@@ -535,6 +535,11 @@ class Cli_Model_Army
         $this->_destroyed = $destroyed;
     }
 
+    public function getDestroyed()
+    {
+        return $this->_destroyed;
+    }
+
     public function count()
     {
         return $this->_WalkingSoldiers->count() + $this->_SwimmingSoldiers->count() + $this->_FlyingSoldiers->count() + $this->_Heroes->count();
