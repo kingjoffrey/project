@@ -48,7 +48,7 @@ class LoginController extends Coret_Controller_AuthenticateFrontend
                 if ($playerId = $mPlayer->createPlayer($data)) {
                     $modelHero = new Application_Model_Hero($playerId);
                     $modelHero->createHero();
-                    $this->_authAdapter = $this->getAuthAdapter($this->view->form->getValues());
+                    $this->_authAdapter = $this->getAuthAdapter($form->getValues());
                     $this->_auth->authenticate($this->_authAdapter);
                     $this->handleAuthenticated();
                 }
