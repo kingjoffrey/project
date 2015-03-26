@@ -247,6 +247,27 @@ var Players = new function () {
     this.toArray = function () {
         return players
     }
+    this.showFirst = function (color) {
+        var castleId = Game.getCapitalId(color),
+            firstCastleId,
+            player = this.get(color),
+            castles = player.getCastles()
+
+        if (castles.has(castleId)) {
+            var castle = castles.get(castleId)
+            Zoom.lens.setcenter(castle.getX(), castle.getY())
+        } else if (firstCastleId = castles.getFirsCastleId()) {
+            var castle = castles.get(firstCastleId)
+            Zoom.lens.setcenter(castle.getX(), castle.getY())
+        } else {
+            var armies = player.getArmies()
+            for (var armyId in armies.toArray()) {
+                var army = armies.get(armyId)
+                Zoom.lens.setcenter(army.getX(), army.getY())
+                break
+            }
+        }
+    }
 }
 
 Object.size = function (obj) {

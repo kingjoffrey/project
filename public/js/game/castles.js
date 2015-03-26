@@ -73,4 +73,9 @@ var Castles = function () {
     this.toArray = function () {
         return castles
     }
+    this.getFirsCastleId = function () {
+        for (var castleId in castles) {
+            return castleId
+        }
+    }
 }

@@ -1,6 +1,7 @@
-var Army = function (army, bgColor, miniMapColor, textColor, color) {
+var Army = function (a, bgColor, miniMapColor, textColor, color) {
     var heroSplitKey = null,
-        soldierSplitKey = null
+        soldierSplitKey = null,
+        army = a
 
     this.update = function (a) {
         //console.log(a)

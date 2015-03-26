@@ -336,7 +336,6 @@ var Me = new function () {
     }
     this.turnOn = function () {
         this.resetSkippedArmies()
-        this.showFirst()
         Message.turn()
         Gui.unlock()
         titleBlink('Your turn!')
@@ -358,25 +357,8 @@ var Me = new function () {
     this.getTurnActive = function () {
         return me.getTurnActive()
     }
-    this.showFirst = function () {
-        var castleId = Game.getCapitalId(color)
-        var firstCastleId
-        if (me.getCastles().has(castleId)) {
-            Zoom.lens.setcenter(this.getCastle(castleId).getX(), this.getCastle(castleId).getY())
-        } else if (firstCastleId = this.getFirsCastleId()) {
-            Zoom.lens.setcenter(this.getCastle(firstCastleId).getX(), this.getCastle(firstCastleId).getY())
-        } else {
-            var armies = me.getArmies().toArray()
-            for (var armyId in armies) {
-                Zoom.lens.setcenter(armies[armyId].getX(), armies[armyId].getY())
-                return
-            }
-        }
-    }
     this.getFirsCastleId = function () {
-        for (var castleId in me.getCastles().toArray()) {
-            return castleId
-        }
+        return me.getCastles().getFirsCastleId()
     }
     this.getMyCastleDefenseFromPosition = function (x, y) {
         var castleId = Fields.get(x, y).getCastleId()

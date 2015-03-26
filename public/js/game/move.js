@@ -99,7 +99,9 @@ var Move = new function () {
                         Players.get(color).getArmies().delete(armyId, 1)
                     }
                 }
-
+                if (r.battle.towerId) {
+                    Players.get(r.color).getTowers().update(Players.get(r.color).getBackgroundColor())
+                }
                 if (r.battle.castleId) {
                     var castleColor = Fields.get(army.getX(), army.getY()).getCastleColor(),
                         oldCastles = Players.get(castleColor).getCastles(),

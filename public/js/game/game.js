@@ -10,7 +10,6 @@ var Game = new function () {
             map = $('#map')
             coord = $('#coord')
 
-            //console.log(g.turnHistory)
             loading = false
 
             Units.init(game.units)
@@ -24,7 +23,6 @@ var Game = new function () {
             Timer.init(game.begin, game.turnTimeLimit, game.timeLimit)
             Ruins.init(game.ruins)
             Me.init(game.color, game.gold, game.bSequence)
-
             Chat.init(game.chatHistory)
         }
 
