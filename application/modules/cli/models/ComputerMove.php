@@ -2,6 +2,7 @@
 
 class Cli_Model_ComputerMove extends Cli_Model_ComputerMethods
 {
+    private $_searchRuin = false;
 
     public function __construct(Cli_Model_Army $army, IWebSocketConnection $user, Zend_Db_Adapter_Pdo_Pgsql $db, Cli_GameHandler $gameHandler)
     {
@@ -254,6 +255,8 @@ class Cli_Model_ComputerMove extends Cli_Model_ComputerMethods
             if (!$this->_game->getRuins()->getRuin($ruinId)->getEmpty()) {
                 $this->_l->log('PRZESZUKUJĘ RUINY');
                 $this->_game->getRuins()->getRuin($ruinId)->search($this->_game, $this->_army, $heroId, $this->_playerId, $this->_db, $this->_gameHandler);
+                $this->_searchRuin = false;
+                $this->move();
                 return;
             }
         }
@@ -261,6 +264,7 @@ class Cli_Model_ComputerMove extends Cli_Model_ComputerMethods
         $ptnr = new Cli_Model_PathToNearestRuin($this->_game, $this->_army);
         if ($ruinId = $ptnr->getRuinId()) {
             $this->_l->log('IDĘ DO RUIN');
+            $this->_searchRuin = true;
             $this->move($ptnr->getPath());
         } else {
             $this->_l->log('BRAK RUIN');
@@ -325,6 +329,8 @@ class Cli_Model_ComputerMove extends Cli_Model_ComputerMethods
             $this->_movesLeft = $this->_army->getMovesLeft();
             if ($this->_army->hasOldPath()) {
                 $this->goByThePath();
+            } elseif ($this->_searchRuin) {
+                $this->ruinBlock();
             } else {
                 $this->findPath();
             }
