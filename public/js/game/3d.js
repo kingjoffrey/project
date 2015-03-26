@@ -273,24 +273,24 @@ var Three = new function () {
 
         return mesh
     }
-    this.armyChangeFlag = function (mesh, color, number, modelName) {
-        mesh.children.splice(0, 1)
-
-        var armyMaterial = new THREE.MeshLambertMaterial({color: color})
-        armyMaterial.side = THREE.DoubleSide
-
-        if (modelName + 'Model' in window) {
-            mesh.geometry = window[modelName + 'Model'].geometry
-        } else {
-            mesh.geometry = untitledModel.geometry
-        }
-
-        var material = new THREE.MeshLambertMaterial({color: color})
-        material.side = THREE.DoubleSide
-        var flagMesh = new THREE.Mesh(getFlag(number).geometry, material)
-        flagMesh.position.set(-2, 0, 0)
-        mesh.add(flagMesh)
-    }
+    //this.armyChangeFlag = function (mesh, color, number, modelName) {
+    //    mesh.children.splice(0, 1)
+    //
+    //    var armyMaterial = new THREE.MeshLambertMaterial({color: color})
+    //    armyMaterial.side = THREE.DoubleSide
+    //
+    //    if (modelName + 'Model' in window) {
+    //        mesh.geometry = window[modelName + 'Model'].geometry
+    //    } else {
+    //        mesh.geometry = untitledModel.geometry
+    //    }
+    //
+    //    var material = new THREE.MeshLambertMaterial({color: color})
+    //    material.side = THREE.DoubleSide
+    //    var flagMesh = new THREE.Mesh(getFlag(number).geometry, material)
+    //    flagMesh.position.set(-2, 0, 0)
+    //    mesh.add(flagMesh)
+    //}
     var getFlag = function (number) {
         switch (number) {
             case 1:

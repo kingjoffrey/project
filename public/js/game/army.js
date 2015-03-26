@@ -1,13 +1,8 @@
-var Army = function (a, bgColor, miniMapColor, textColor, color) {
+var Army = function (army, bgColor, miniMapColor, textColor, color) {
     var heroSplitKey = null,
-        soldierSplitKey = null,
-        army = a
+        soldierSplitKey = null
 
     this.update = function (a) {
-        //console.log(a)
-        //console.log('NEW ARMY DATAAAAAAAAAAAAAAAAAAAAAAA armyId=' + a.id)
-        //console.log(army)
-        //console.log('OLD ARMY DATAAAAAAAAAAAAAAAAAAAAAAA armyId=' + army.id)
         Fields.get(army.x, army.y).removeArmyId(army.id)
         for (var key in a) {
             if (key == 'walk') {
@@ -58,7 +53,8 @@ var Army = function (a, bgColor, miniMapColor, textColor, color) {
             army[key] = a[key]
         }
         Fields.get(army.x, army.y).addArmyId(army.id, color)
-        Three.armyChangeFlag(army.mesh, bgColor, this.getNumberOfUnits(), this.getModelName())
+        Three.getScene().remove(army.mesh)
+        army.mesh = Three.addArmy(army.x, army.y, bgColor, this.getNumberOfUnits(), this.getModelName())
         $('#' + this.getArmyId() + '.a').css({left: army.x * 2 + 'px', top: army.y * 2 + 'px'})
     }
     this.getMesh = function () {
@@ -208,25 +204,25 @@ var Army = function (a, bgColor, miniMapColor, textColor, color) {
             return 'hero'
         } else if (countProperties(army.swim)) {
             for (var soldierId in army.swim) {
-                var soldier = army.swim[soldierId]
-                if (Units.get(soldier.unitId).a > attack) {
-                    attack = Units.get(soldier.unitId).a
-                    name = Units.get(soldier.unitId).name
+                var unit = Units.get(army.swim[soldierId].unitId)
+                if (unit.a > attack) {
+                    attack = unit.a
+                    name = unit.name
                 }
             }
         } else {
             for (var soldierId in army.walk) {
-                var soldier = army.walk[soldierId]
-                if (Units.get(soldier.unitId).a > attack) {
-                    attack = Units.get(soldier.unitId).a
-                    name = Units.get(soldier.unitId).name
+                var unit = Units.get(army.walk[soldierId].unitId)
+                if (unit.a > attack) {
+                    attack = unit.a
+                    name = unit.name
                 }
             }
             for (var soldierId in army.fly) {
-                var soldier = army.fly[soldierId]
-                if (Units.get(soldier.unitId).a > attack) {
-                    attack = Units.get(soldier.unitId).a
-                    name = Units.get(soldier.unitId).name
+                var unit = Units.get(army.fly[soldierId].unitId)
+                if (unit.a > attack) {
+                    attack = unit.a
+                    name = unit.name
                 }
             }
         }
