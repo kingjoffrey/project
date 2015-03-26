@@ -100,7 +100,16 @@ var Move = new function () {
                     }
                 }
                 if (r.battle.towerId) {
-                    Players.get(r.color).getTowers().update(Players.get(r.color).getBackgroundColor())
+                    var field = Fields.get(army.getX(), army.getY()),
+                        towerId = field.getTowerId(),
+                        towerColor = field.getTowerColor(),
+                        towers = Players.get(towerColor).getTowers(),
+                        tower = towers.get(towerId)
+                    if (r.battle.towerId != towerId) {
+                        console.log('błąd                           !!!')
+                    }
+                    Players.get(r.color).getTowers().add(towerId, tower)
+                    towers.remove(towerId)
                 }
                 if (r.battle.castleId) {
                     var castleColor = Fields.get(army.getX(), army.getY()).getCastleColor(),

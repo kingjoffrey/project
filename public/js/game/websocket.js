@@ -21,7 +21,6 @@ var Websocket = {
         }
     },
     execute: function (r) {
-        console.log(r)
         this.executing = 1
 
         switch (r.type) {
@@ -30,6 +29,7 @@ var Websocket = {
                 break
 
             case 'startTurn':
+                Players.showFirst(r.color)
                 if (Me.colorEquals(r.color)) {
                     Me.setSelectedCastleId(0)
                     var castles = Players.get(r.color).getCastles()
@@ -53,7 +53,6 @@ var Websocket = {
 
             case 'nextTurn':
                 Me.deselectArmy()
-                Players.showFirst(r.color)
                 Turn.change(r.color, r.nr)
                 if (Players.get(r.color).isComputer()) {
                     this.computer()
@@ -233,6 +232,7 @@ var Websocket = {
             var r = $.parseJSON(e.data);
 
             if (isSet(r['type'])) {
+                console.log(r)
 
                 switch (r.type) {
 
