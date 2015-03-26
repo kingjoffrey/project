@@ -38,19 +38,19 @@ class LoginController extends Coret_Controller_AuthenticateFrontend
         $form = new Application_Form_Registration();
         if ($this->_request->isPost()) {
             if ($form->isValid($this->_request->getPost())) {
-                $mPlayer = new Application_Model_Player();
                 $data = array(
                     'firstName' => $this->_request->getParam('firstName'),
                     'lastName' => $this->_request->getParam('lastName'),
                     'login' => $this->_request->getParam('login'),
                     'password' => md5($this->_request->getParam('password'))
                 );
-                $playerId = $mPlayer->createPlayer($data);
-                if ($playerId) {
+                $mPlayer = new Application_Model_Player();
+                if ($playerId = $mPlayer->createPlayer($data)) {
                     $modelHero = new Application_Model_Hero($playerId);
                     $modelHero->createHero();
-                    $this->_namespace->player = $mPlayer->getPlayer($playerId);
-                    $this->redirect($this->view->url(array('controller' => 'index', 'action' => null)));
+                    $this->_authAdapter = $this->getAuthAdapter($this->view->form->getValues());
+                    $this->_auth->authenticate($this->_authAdapter);
+                    $this->handleAuthenticated();
                 }
             }
         }
@@ -61,22 +61,25 @@ class LoginController extends Coret_Controller_AuthenticateFrontend
     {
         $facebookId = $userProfile->getId();
 
-        $mPlayer = new Application_Model_Player();
-        if ($playerId = $mPlayer->hasFacebookId($facebookId)) {
-            $this->_namespace->player = $mPlayer->getPlayer($playerId);
-            $this->redirect($this->view->url(array('controller' => 'index', 'action' => null)));
-        } else {
+        $this->_authAdapter = $this->getAuthAdapterFacebook($facebookId);
+        $result = $this->_auth->authenticate($this->_authAdapter);
+
+        if ($result->isValid()) {
+            $this->handleAuthenticated();
+        } elseif ($facebookId) {
             $data = array(
                 'fbId' => $facebookId,
                 'firstName' => $userProfile->getFirstName(),
                 'lastName' => $userProfile->getLastName(),
             );
+            $mPlayer = new Application_Model_Player();
             if ($playerId = $mPlayer->createPlayer($data)) {
                 $modelHero = new Application_Model_Hero($playerId);
                 $modelHero->createHero();
-                $this->_namespace->player = $mPlayer->getPlayer($playerId);
-                $this->redirect($this->view->url(array('controller' => 'index', 'action' => null)));
+                $this->handleAuthenticated();
             }
+        } else {
+            $this->view->form->setDescription($this->view->translate('Incorrect login details'));
         }
     }
 }

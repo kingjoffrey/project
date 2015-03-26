@@ -65,20 +65,13 @@ abstract class Coret_Controller_AuthenticateFrontend extends Coret_Controller_Au
         }
 
         if ($session) {
-            $this->_helper->layout->disableLayout();
-            $this->_helper->viewRenderer->setNoRender(true);
-
             try {
                 $request = new Facebook\FacebookRequest($session, 'GET', '/me');
                 $response = $request->execute();
-
                 $this->handleFacebookUser($response->getGraphObject(Facebook\GraphUser::className()));
-
             } catch (FacebookRequestException $e) {
-
                 echo "Exception occured, code: " . $e->getCode();
                 echo " with message: " . $e->getMessage();
-
             }
         }
     }
