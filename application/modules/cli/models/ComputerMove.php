@@ -250,21 +250,21 @@ class Cli_Model_ComputerMove extends Cli_Model_ComputerMethods
         }
 
         $this->_l->log('JEST HEROS');
-        $ptnr = new Cli_Model_PathToNearestRuin($this->_game, $this->_army);
+        if ($ruinId = $this->_fields->getField($this->_armyX, $this->_armyY)->getRuinId()) {
+            if (!$this->_game->getRuins()->getRuin($ruinId)->getEmpty()) {
+                $this->_l->log('PRZESZUKUJĘ RUINY');
+                $this->_game->getRuins()->getRuin($ruinId)->search($this->_game, $this->_army, $heroId, $this->_playerId, $this->_db, $this->_gameHandler);
+                return;
+            }
+        }
 
+        $ptnr = new Cli_Model_PathToNearestRuin($this->_game, $this->_army);
         if ($ruinId = $ptnr->getRuinId()) {
             $this->_l->log('IDĘ DO RUIN');
-            $army = $this->_army;
-            $army->setFortified(true);
             $this->move($ptnr->getPath());
-
-            if (!$army->getDestroyed()) {
-                $this->_game->getRuins()->getRuin($ruinId)->search($this->_game, $army, $heroId, $this->_playerId, $this->_db, $this->_gameHandler);
-            }
         } else {
             $this->_l->log('BRAK RUIN');
             $this->firstBlock();
-            return;
         }
     }
 
