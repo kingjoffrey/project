@@ -121,7 +121,7 @@ var Three = new function () {
     }
 
     var initTower = function () {
-        tower.scale = 1.5
+        tower.scale = 1.2
         towerModel = loader.parse(tower)
         flagModel = loader.parse(flag)
     }
@@ -335,6 +335,7 @@ var Three = new function () {
     var initFields = function () {
         tree.scale = 3
         water.scale = 1.7
+        hill.scale = 1.3
 
         mountainModel = loader.parse(mountain)
         hillModel = loader.parse(hill)
@@ -346,7 +347,6 @@ var Three = new function () {
 
         hillModel.material = new THREE.MeshLambertMaterial({color: '#00a000'})
         hillModel.material.side = THREE.DoubleSide
-        //hillModel.scale = 0.7
 
         treeModel.material = new THREE.MeshLambertMaterial({color: '#008000'})
         treeModel.material.side = THREE.DoubleSide
