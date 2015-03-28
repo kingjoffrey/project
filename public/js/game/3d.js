@@ -12,7 +12,7 @@ var Three = new function () {
         treeModel,
         waterModel,
         scene = new THREE.Scene(),
-        camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 1, 1000),
+        camera = new THREE.PerspectiveCamera(22, window.innerWidth / window.innerHeight, 1, 1000),
         renderer = new THREE.WebGLRenderer({antialias: true}),
         pointLight = new THREE.PointLight(0xdddddd),
         theLight = new THREE.DirectionalLight(0xffffff, 1),
@@ -222,7 +222,8 @@ var Three = new function () {
             'dragon': dragon,
             'cavalry': cavalry,
             'navy': navy,
-            'wolves': wolves
+            'wolves': wolves,
+            'undead': undead
         }
         for (var i in armyModels) {
             armyModels[i].scale = 6
