@@ -185,6 +185,11 @@ var Move = new function () {
 
         //setTimeout('$(".war").remove()', 100);
         if (Me.colorEquals(r.color)) {
+            if (army.getNumberOfUnits()) {
+                if (army.getMoves() > 0) {
+                    Me.selectArmy(r.army.id)
+                }
+            }
             Gui.unlock()
         }
         Websocket.executing = 0

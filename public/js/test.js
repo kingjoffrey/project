@@ -1,57 +1,43 @@
 var Three = new function () {
-    this.scene = new THREE.Scene()
+    var scene = new THREE.Scene()
 
-    this.camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 1, 1000)
-    this.camera.position.set(-380, 252, 420);
-    this.camera.rotation.order = 'YXZ';
-    this.camera.rotation.y = -Math.PI / 4;
-    this.camera.rotation.x = Math.atan(-1 / Math.sqrt(2));
-    this.camera.scale.addScalar(1);
+    var camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 1, 1000)
+    camera.position.set(-380, 252, 420);
+    camera.rotation.order = 'YXZ';
+    camera.rotation.y = -Math.PI / 4;
+    camera.rotation.x = Math.atan(-1 / Math.sqrt(2));
 
-    this.renderer = new THREE.WebGLRenderer()
-    this.renderer.setSize(window.innerWidth, window.innerHeight);
+    var renderer = new THREE.WebGLRenderer()
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    renderer.shadowMapEnabled = true
+
+    var light = new THREE.DirectionalLight(0xffffff, 1)
+    light.position.set(150, 100, 100)
+    light.castShadow = true
+    light.shadowDarkness = 0.3
+    light.shadowCameraVisible = true
+    light.shadowCameraRight = 50;
+    light.shadowCameraLeft = -50;
+    light.shadowCameraTop = 50;
+    light.shadowCameraBottom = -50;
+    scene.add(light);
 
     var ground = new THREE.Mesh(
         new THREE.PlaneBufferGeometry(436, 624),
-        new THREE.MeshLambertMaterial({color: '#808080'}));
-    ground.rotation.x = -Math.PI / 2; //-90 degrees around the x axis
+        new THREE.MeshLambertMaterial({color: '#808080'})
+    );
+    ground.rotation.x = -Math.PI / 2;
+    ground.receiveShadow = true
 
-    this.scene.add(ground);
-
-    var light = new THREE.PointLight(0xFFFFDD);
-    light.position.set(-1000, 1000, 1000);
-    this.scene.add(light);
-
-    var loader = new THREE.JSONLoader();
-    this.loadMountains = function () {
-        var i = 0
-        for (var y = -70; y < 70; y++) {
-            for (var x = -50; x < 50; x++) {
-                i++
-                loader.load('/models/mountain.json', Three.getGeomHandler(x, y))
-            }
-        }
-        console.log(i)
-    }
-
-    this.getGeomHandler = function (x, y) {
-        return function (geometry) {
-            var material = new THREE.MeshLambertMaterial({color: '#808080'})
-            var mesh = new THREE.Mesh(geometry, material);
-            mesh.scale.set(1, 1, 1);
-            mesh.position.set(x * 4, 0, y * 4);
-            Three.scene.add(mesh);
-        };
-    }
+    scene.add(ground);
 
     this.init = function () {
-        $('body').append(Three.renderer.domElement);
-        Three.loadMountains()
+        $('body').append(renderer.domElement);
         Three.render();
     }
     this.render = function () {
         requestAnimationFrame(Three.render);
-        Three.renderer.render(Three.scene, Three.camera);
+        renderer.render(scene, camera);
     };
 }
 

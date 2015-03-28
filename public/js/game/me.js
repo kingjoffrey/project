@@ -345,6 +345,11 @@ var Me = new function () {
         if (gold > 1000) {
             $('#heroHire').removeClass('buttonOff')
         }
+
+        Players.showFirst(color)
+        if (Me.getArmies().count()) {
+            this.findNext()
+        }
     }
     this.turnOff = function () {
         this.deselectArmy()
