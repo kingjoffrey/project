@@ -244,6 +244,19 @@ var Players = new function () {
     this.count = function () {
         return Object.size(players) - 1
     }
+    this.countHumans = function () {
+        var numberOfHumans = 0
+        for (var color in players) {
+            if (color == 'neutral') {
+                continue
+            }
+            var player = this.get(color)
+            if (!player.isComputer()) {
+                numberOfHumans++
+            }
+        }
+        return numberOfHumans;
+    }
     this.toArray = function () {
         return players
     }

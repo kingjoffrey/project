@@ -106,7 +106,6 @@ var Zoom = {
             if (Players.get(Turn.getColor()).isComputer() && !Gui.show) {
                 return
             }
-
             $obj.node.top = (y * 40 - Zoom.gameHeight / 2) / Zoom.scale.y
             $obj.node.left = (x * 40 - Zoom.gameWidth / 2) / Zoom.scale.x
             $obj.node.css({
@@ -114,8 +113,9 @@ var Zoom = {
                 left: $obj.node.left
             });
 
-            Three.getCamera().position.x = x * 4 - 262
-            Three.getCamera().position.z = y * 4 - 262
+            var yOffset = Three.getCamera().position.y - 22
+            Three.getCamera().position.x = x * 4 - 243 - yOffset
+            Three.getCamera().position.z = y * 4 - 285 + yOffset
         };
         $obj.setposition = function (e) {
             $obj.mousepos.x = e.pageX;
@@ -160,8 +160,9 @@ var Zoom = {
                 'top': lenstop + 'px'
             });
 
-            Three.getCamera().position.x = ($obj.node.left * Zoom.scale.x + Zoom.gameWidth / 2) / 10 - 262
-            Three.getCamera().position.z = ($obj.node.top * Zoom.scale.y + Zoom.gameHeight / 2) / 10 - 262
+            var yOffset = Three.getCamera().position.y - 22
+            Three.getCamera().position.x = ($obj.node.left * Zoom.scale.x + Zoom.gameWidth / 2) / 10 - 243 - yOffset
+            Three.getCamera().position.z = ($obj.node.top * Zoom.scale.y + Zoom.gameHeight / 2) / 10 - 285 + yOffset
         };
         $obj.show = function () {
             $obj.node.show();

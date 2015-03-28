@@ -1,7 +1,7 @@
 var Gui = {
     lock: true,
     show: true,
-    armyBox: {'close': 0},
+    commandsBox: {'close': 0},
     chatBox: {'close': 0},
     playerBox: {'close': 0},
     limitBox: {'close': 0},
@@ -16,7 +16,7 @@ var Gui = {
         Zoom.init()
         this.prepareButtons()
         this.adjust()
-        $('body').mousewheel(function (event) {
+        $('#game canvas').mousewheel(function (event) {
             if (event.deltaY > 0) {
                 if (Three.getCamera().position.y < 230) {
                     Three.getCamera().position.y += 2
@@ -313,20 +313,20 @@ var Gui = {
                 Gui.changeCloseArrowLR(Gui.chatBox['move'], Gui.chatBox['el']);
             });
         });
-        $('#armyBox .close').click(function () {
-            var left = parseInt($('#armyBox').css('left'));
+        $('#commandsBox .close').click(function () {
+            var left = parseInt($('#commandsBox').css('left'));
             var move = 220;
-            Gui.armyBox['el'] = this;
+            Gui.commandsBox['el'] = this;
 
-            if (Gui.armyBox['close']) {
+            if (Gui.commandsBox['close']) {
                 move = -move;
             }
 
-            Gui.armyBox['move'] = move;
+            Gui.commandsBox['move'] = move;
 
-            $('#armyBox').animate({'left': left + Gui.armyBox['move'] + 'px'}, Gui.speed, function () {
-                Gui.armyBox['close'] = !Gui.armyBox['close'];
-                Gui.changeCloseArrowLR(Gui.armyBox['move'], Gui.armyBox['el']);
+            $('#commandsBox').animate({'left': left + Gui.commandsBox['move'] + 'px'}, Gui.speed, function () {
+                Gui.commandsBox['close'] = !Gui.commandsBox['close'];
+                Gui.changeCloseArrowLR(Gui.commandsBox['move'], Gui.commandsBox['el']);
             });
         });
     },
@@ -345,7 +345,7 @@ var Gui = {
         }
     },
     adjust: function () {
-        this.armyBox.close = 0
+        this.commandsBox.close = 0
         this.chatBox.close = 0
         this.playerBox.close = 0
         this.limitBox.close = 0
@@ -360,7 +360,7 @@ var Gui = {
         });
 
         var minWidth = parseInt($('#mapBox').css('width')) + parseInt($('#playersBox').css('width')) + 450
-        var minHeight = parseInt($('#playersBox').css('height')) + parseInt($('#armyBox').css('height')) + 50
+        var minHeight = parseInt($('#playersBox').css('height')) + parseInt($('#commandsBox').css('height')) + 50
 
         if (Zoom.gameWidth < minWidth) {
             Zoom.gameWidth = minWidth
@@ -375,18 +375,7 @@ var Gui = {
             }
         )
 
-        var numberOfHumanPlayers = 0
-        for (var color in Players.toArray()) {
-            if (color == 'neutral') {
-                continue
-            }
-            var player = Players.get(color)
-            if (!player.isComputer()) {
-                numberOfHumanPlayers++
-            }
-        }
-
-        if (numberOfHumanPlayers > 1) {
+        if (Players.countHumans() > 1) {
             var chatLeft = Zoom.gameWidth - 507;
             var chatTop = Zoom.gameHeight - 169;
 
@@ -413,9 +402,13 @@ var Gui = {
         $('#playersBox').css({
             'left': left + 'px'
         });
-        $('#armyBox').css({
+        $('#commandsBox').css({
             top: parseInt($('#playersBox').css('height')) + 19 + 'px',
             'left': left + 'px'
+        })
+        $('#armyBox').css({
+            top: Zoom.gameHeight - 40 + 'px',
+            'left': Zoom.gameWidth / 2 - 115 + 'px'
         })
 
         $('#terrain').css('top', mapBoxHeight + 19 + 'px');

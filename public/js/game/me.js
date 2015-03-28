@@ -136,8 +136,24 @@ var Me = new function () {
         parentArmyId = armyId
     }
     this.selectArmy = function (armyId, center) {
+        var army = this.getArmy(armyId),
+            unitsBox = $('#unitsBox')
+
+        for (var heroId in army.getHeroes()) {
+            unitsBox.append($('<img>').attr('src', Hero.getImage(Me.getColor())))
+        }
+        for (var soldierId in army.getWalkingSoldiers()) {
+            unitsBox.append($('<img>').attr('src', Unit.getImage(army.getWalkingSoldier(soldierId).unitId, Me.getColor())))
+        }
+        for (var soldierId in army.getFlyingSoldiers()) {
+            unitsBox.append($('<img>').attr('src', Unit.getImage(army.getFlyingSoldier(soldierId).unitId, Me.getColor())))
+        }
+        for (var soldierId in army.getSwimmingSoldiers()) {
+            unitsBox.append($('<img>').attr('src', Unit.getImage(army.getSwimmingSoldier(soldierId).unitId, Me.getColor())))
+        }
+        $('#armyBox').css({left: Zoom.gameWidth / 2 - $('#armyBox').width() / 2 + 'px'})
+
         selectedArmyId = armyId
-        var army = this.getArmy(armyId)
         Three.addArmyCircle(army.getX(), army.getY())
         Message.remove()
 
@@ -186,6 +202,7 @@ var Me = new function () {
         }
         parentArmyId = null
 
+        $('#unitsBox').html('')
         Three.clearArmyCircles()
         Three.clearPathCircles()
         Me.setIsSelected(0)
