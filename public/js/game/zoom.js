@@ -113,9 +113,9 @@ var Zoom = {
                 left: $obj.node.left
             });
 
-            var yOffset = Three.getCamera().position.y - 22
-            Three.getCamera().position.x = x * 4 - 243 - yOffset
-            Three.getCamera().position.z = y * 4 - 285 + yOffset
+            var yOffset = Three.getCamera().position.y - Three.getCameraY()
+            Three.getCamera().position.x = x * 4 - (221 + Three.getCameraY()) - yOffset
+            Three.getCamera().position.z = y * 4 - (307 - Three.getCameraY()) + yOffset
         };
         $obj.setposition = function (e) {
             $obj.mousepos.x = e.pageX;
@@ -160,9 +160,9 @@ var Zoom = {
                 'top': lenstop + 'px'
             });
 
-            var yOffset = Three.getCamera().position.y - 22
-            Three.getCamera().position.x = ($obj.node.left * Zoom.scale.x + Zoom.gameWidth / 2) / 10 - 243 - yOffset
-            Three.getCamera().position.z = ($obj.node.top * Zoom.scale.y + Zoom.gameHeight / 2) / 10 - 285 + yOffset
+            var yOffset = Three.getCamera().position.y - Three.getCameraY()
+            Three.getCamera().position.x = ($obj.node.left * Zoom.scale.x + Zoom.gameWidth / 2) / 10 - (221 + Three.getCameraY()) - yOffset
+            Three.getCamera().position.z = ($obj.node.top * Zoom.scale.y + Zoom.gameHeight / 2) / 10 - (307 - Three.getCameraY()) + yOffset
         };
         $obj.show = function () {
             $obj.node.show();

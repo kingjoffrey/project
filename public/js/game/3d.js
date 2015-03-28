@@ -19,12 +19,13 @@ var Three = new function () {
         loader = new THREE.JSONLoader(),
         circles = [],
         armyCircles = [],
-        showShadows = 0
+        showShadows = 0,
+        cameraY = 76
 
     camera.rotation.order = 'YXZ'
     camera.rotation.y = -Math.PI / 4
     camera.rotation.x = Math.atan(-1 / Math.sqrt(2))
-    camera.position.set(0, 22, 0)
+    camera.position.set(0, cameraY, 0)
     camera.scale.addScalar(1)
 
     renderer.setSize(window.innerWidth, window.innerHeight)
@@ -46,6 +47,9 @@ var Three = new function () {
     }
     scene.add(theLight);
 
+    this.getCameraY = function () {
+        return cameraY
+    }
     this.getScene = function () {
         return scene
     }
@@ -223,7 +227,8 @@ var Three = new function () {
             'cavalry': cavalry,
             'navy': navy,
             'wolves': wolves,
-            'undead': undead
+            'undead': undead,
+            'wizard': wizard
         }
         for (var i in armyModels) {
             armyModels[i].scale = 6
