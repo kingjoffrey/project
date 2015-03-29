@@ -36,7 +36,7 @@ var Move = new function () {
         //if (player.isComputer()) {
         //    stepTime = 100
         //} else {
-        stepTime = 200
+            stepTime = 200
         //}
 
         stepLoop(r, ii)
@@ -132,6 +132,8 @@ var Move = new function () {
                     if (r.battle.castleId) {
                         Message.castle(Me.getCastle(r.battle.castleId))
                         Me.incomeIncrement(Me.getCastle(r.battle.castleId).getIncome())
+                    } else if (Me.getArmy(army.getArmyId()).getMoves()) {
+                        Me.selectArmy(army.getArmyId())
                     }
                 }
             } else {
@@ -183,7 +185,7 @@ var Move = new function () {
         }
 
         //setTimeout('$(".war").remove()', 100);
-        if (Me.colorEquals(r.color)) {
+        if (Me.colorEquals(r.color) && !r.battle.castleId) {
             if (army.getNumberOfUnits()) {
                 if (army.getMoves() > 0) {
                     Me.selectArmy(r.army.id)
