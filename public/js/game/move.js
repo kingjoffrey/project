@@ -33,11 +33,11 @@ var Move = new function () {
 
         Zoom.lens.setcenter(r.path[0].x, r.path[0].y)
 
-        if (player.isComputer()) {
-            stepTime = 100
-        } else {
+        //if (player.isComputer()) {
+        //    stepTime = 100
+        //} else {
             stepTime = 200
-        }
+        //}
 
         stepLoop(r, ii)
     }
@@ -87,7 +87,7 @@ var Move = new function () {
         if (player.isComputer() && !Gui.show) {
             army.setPosition(army.getX(), army.getY())
         }
-        Zoom.lens.setcenter(army.getX(), army.getY())
+        //Zoom.lens.setcenter(army.getX(), army.getY())
 
         if (r.battle) {
             if (r.battle.victory) {
