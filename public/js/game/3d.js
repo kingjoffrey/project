@@ -26,8 +26,8 @@ var Three = new function () {
                 size: 1,
                 height: 0.1
             }), new THREE.MeshPhongMaterial({color: color}))
-            mesh.position.set(0, 6, 0)
-            mesh.rotation.x = Math.PI / 2
+            mesh.position.set(0, 7, 0)
+            mesh.rotation.y = -Math.PI / 4
             return mesh
         }
 
@@ -218,8 +218,6 @@ var Three = new function () {
         }
         scene.add(mesh)
 
-        mesh.add(createTextMesh(castle.name, color))
-
         var material = new THREE.MeshLambertMaterial({color: color})
         material.side = THREE.DoubleSide
         var flagMesh = new THREE.Mesh(flagModel.geometry, material)
@@ -228,6 +226,8 @@ var Three = new function () {
             flagMesh.receiveShadow = true
         }
         mesh.add(flagMesh)
+
+        mesh.add(createTextMesh(castle.name, '#ffffff'))
 
         updateCastleModel(mesh, castle.defense)
         return mesh

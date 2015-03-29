@@ -184,6 +184,7 @@ var Me = new function () {
         }
     }
     this.deselectArmy = function (skipJoin) {
+        Message.remove()
         if (notSet(skipJoin) && parentArmyId && selectedArmyId) {
             var selectedArmy = this.getArmy(selectedArmyId),
                 parentArmy = this.getArmy(parentArmyId)
