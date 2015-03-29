@@ -79,14 +79,6 @@ var Me = new function () {
         gold = value
         updateGold()
     }
-    this.setCosts = function (value) {
-        costs = value
-        updateCosts()
-    }
-    this.setIncome = function (value) {
-        income = value
-        updateIncome()
-    }
     this.goldIncrement = function (value) {
         gold += value
         updateGold()

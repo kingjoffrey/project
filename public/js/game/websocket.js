@@ -29,7 +29,6 @@ var Websocket = {
                 break
 
             case 'startTurn':
-                Players.showFirst(r.color)
                 if (Me.colorEquals(r.color)) {
                     Me.setSelectedCastleId(0)
                     var castles = Players.get(r.color).getCastles()
@@ -39,9 +38,9 @@ var Websocket = {
                     Me.resetSkippedArmies()
                     Sound.play('startturn')
                     Me.setGold(r.gold)
-                    Me.setCosts(r.costs)
-                    Me.setIncome(r.income)
                     Gui.unlock()
+                } else {
+                    Players.showFirst(r.color)
                 }
 
                 var armies = Players.get(r.color).getArmies()

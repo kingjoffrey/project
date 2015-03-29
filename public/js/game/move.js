@@ -36,7 +36,7 @@ var Move = new function () {
         //if (player.isComputer()) {
         //    stepTime = 100
         //} else {
-            stepTime = 200
+        stepTime = 200
         //}
 
         stepLoop(r, ii)
@@ -131,8 +131,7 @@ var Move = new function () {
                 if (Me.colorEquals(r.color)) {
                     if (r.battle.castleId) {
                         Message.castle(Me.getCastle(r.battle.castleId))
-                    } else if (Me.getArmy(army.getArmyId()).getMoves()) {
-                        Me.selectArmy(army.getArmyId())
+                        Me.incomeIncrement(Me.getCastle(r.battle.castleId).getIncome())
                     }
                 }
             } else {

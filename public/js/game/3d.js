@@ -155,10 +155,10 @@ var Three = new function () {
     }
 
     var initCastle = function () {
-            castle_1.scale = 2
-            castle_2.scale = 2
-            castle_3.scale = 2
-            castle_4.scale = 2
+            castle_1.scale = 1.9
+            castle_2.scale = 1.9
+            castle_3.scale = 1.9
+            castle_4.scale = 1.9
             castleModel_1 = loader.parse(castle_1)
             castleModel_2 = loader.parse(castle_2)
             castleModel_3 = loader.parse(castle_3)
