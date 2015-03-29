@@ -19,7 +19,7 @@ var Three = new function () {
         loader = new THREE.JSONLoader(),
         circles = [],
         armyCircles = [],
-        showShadows = 1,
+        showShadows = 0,
         cameraY = 76,
         createTextMesh = function (text, color) {
             var mesh = new THREE.Mesh(new THREE.TextGeometry(text, {
@@ -227,7 +227,7 @@ var Three = new function () {
         }
         mesh.add(flagMesh)
 
-        mesh.add(createTextMesh(castle.name, '#ffffff'))
+        //mesh.add(createTextMesh(castle.name, '#ffffff'))
 
         updateCastleModel(mesh, castle.defense)
         return mesh

@@ -99,8 +99,11 @@ class Cli_Model_Soldier extends Cli_Model_Being
                 default:
                     return $terrain->getTerrainType($terrainType)->getCost($movementType);
             }
+        } elseif ($movementType == 'swim' && $this->_type != 'swim') {
+            return 0;
+        } else {
+            return $terrain->getTerrainType($terrainType)->getCost($movementType);
         }
-        return $terrain->getTerrainType($terrainType)->getCost($movementType);
     }
 
     public function getForest()

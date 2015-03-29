@@ -549,7 +549,9 @@ class Cli_Model_Army
     {
         $start = false;
         $this->resetOldPath();
-
+        if (!is_array($path->getFull())) {
+            throw new Exception('brak full path');
+        }
         foreach ($path->getFull() as $step) {
             if ($path->getX() == $step['x'] && $path->getY() == $step['y']) {
                 $start = true;

@@ -69,4 +69,13 @@ class Cli_Model_Hero extends Cli_Model_Being
         $mHeroesKilled = new Application_Model_HeroesKilled($gameId, $db);
         $mHeroesKilled->add($this->_id, $winnerId, $loserId);
     }
+
+    public function getStepCost(Cli_Model_TerrainTypes $terrain, $terrainType, $movementType)
+    {
+        if ($movementType == 'swim') {
+            return 0;
+        } else {
+            return $terrain->getTerrainType($terrainType)->getCost($movementType);
+        }
+    }
 }
