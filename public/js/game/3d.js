@@ -20,7 +20,16 @@ var Three = new function () {
         circles = [],
         armyCircles = [],
         showShadows = 1,
-        cameraY = 76
+        cameraY = 76,
+        createTextMesh = function (text, color) {
+            var mesh = new THREE.Mesh(new THREE.TextGeometry(text, {
+                size: 1,
+                height: 0.1
+            }), new THREE.MeshPhongMaterial({color: color}))
+            mesh.position.set(0, 6, 0)
+            mesh.rotation.x = Math.PI / 2
+            return mesh
+        }
 
     camera.rotation.order = 'YXZ'
     camera.rotation.y = -Math.PI / 4
@@ -195,18 +204,21 @@ var Three = new function () {
         }
 
 
-    this.addCastle = function (x, y, color, defense) {
+    this.addCastle = function (castle, color) {
+        //castle.x, castle.y, bgC, castle.defense
         var castleMaterial = new THREE.MeshLambertMaterial({color: '#3B3028'})
         castleMaterial.side = THREE.DoubleSide
 
         var mesh = new THREE.Mesh(castleModel_1.geometry, castleMaterial)
-        mesh.position.set(x * 4 - 214, 0, y * 4 - 308)
+        mesh.position.set(castle.x * 4 - 214, 0, castle.y * 4 - 308)
 
         if (showShadows) {
             mesh.castShadow = true
             mesh.receiveShadow = true
         }
         scene.add(mesh)
+
+        mesh.add(createTextMesh(castle.name, color))
 
         var material = new THREE.MeshLambertMaterial({color: color})
         material.side = THREE.DoubleSide
@@ -217,7 +229,7 @@ var Three = new function () {
         }
         mesh.add(flagMesh)
 
-        updateCastleModel(mesh, defense)
+        updateCastleModel(mesh, castle.defense)
         return mesh
     }
     this.castleChangeDefense = function (mesh, defense) {
@@ -287,8 +299,8 @@ var Three = new function () {
             mesh.receiveShadow = true
         }
         var flagMesh = new THREE.Mesh(getFlag(number).geometry, material)
-         if (showShadows) {
-             flagMesh.castShadow = true
+        if (showShadows) {
+            flagMesh.castShadow = true
         }
         flagMesh.position.set(-2, 0, 0)
         mesh.add(flagMesh)

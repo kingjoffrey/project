@@ -1,5 +1,5 @@
 var Castle = function (castle, bgC, miniMapColor, textColor) {
-    var mesh = Three.addCastle(castle.x, castle.y, bgC, castle.defense),
+    var mesh = Three.addCastle(castle, bgC),
         bgColor = bgC
 
     map.append(
