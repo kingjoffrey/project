@@ -36,7 +36,7 @@ var Move = new function () {
         //if (player.isComputer()) {
         //    stepTime = 100
         //} else {
-            stepTime = 200
+        stepTime = 200
         //}
 
         stepLoop(r, ii)
@@ -135,14 +135,10 @@ var Move = new function () {
                     } else if (Me.getArmy(army.getArmyId()).getMoves()) {
                         Me.selectArmy(army.getArmyId())
                     }
+                    Gui.unlock()
                 }
             } else {
                 Players.get(r.color).getArmies().delete(army.getArmyId(), 1)
-                if (Me.colorEquals(r.color)) {
-                    if (!Hero.findMy()) {
-                        $('#heroResurrection').removeClass('buttonOff')
-                    }
-                }
                 for (var color in r.battle.defenders) {
                     if (color == 'neutral') {
                         break
@@ -176,16 +172,14 @@ var Move = new function () {
                         defenderArmies.updateDefenderArmy(armyId)
                     }
                 }
-
+                if (Me.colorEquals(r.color)) {
+                    if (!Hero.findMy()) {
+                        $('#heroResurrection').removeClass('buttonOff')
+                    }
+                    Gui.unlock()
+                }
             }
-        }
-
-        for (var i in r.deletedIds) {
-            Players.get(r.color).getArmies().delete(r.deletedIds[i], 1)
-        }
-
-        //setTimeout('$(".war").remove()', 100);
-        if (Me.colorEquals(r.color) && !r.battle.castleId) {
+        } else if (Me.colorEquals(r.color)) {
             if (army.getNumberOfUnits()) {
                 if (army.getMoves() > 0) {
                     Me.selectArmy(r.army.id)
@@ -193,6 +187,11 @@ var Move = new function () {
             }
             Gui.unlock()
         }
+
+        for (var i in r.deletedIds) {
+            Players.get(r.color).getArmies().delete(r.deletedIds[i], 1)
+        }
+
         Websocket.executing = 0
     }
 }
