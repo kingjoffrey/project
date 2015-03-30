@@ -5,7 +5,7 @@ class Cli_Model_BattleResult
     private $_attack;
     private $_defenders;
     private $_castleId = null;
-    private $_towers = null;
+    private $_towerId = null;
     private $_victory = false;
 
     public function __construct()
@@ -21,7 +21,7 @@ class Cli_Model_BattleResult
                 'attack' => $this->_attack->toArray(),
                 'defenders' => $this->_defenders->toArray(),
                 'castleId' => $this->_castleId,
-                'towers' => $this->_towers,
+                'towerId' => $this->_towerId,
                 'victory' => $this->_victory
             );
         }
@@ -37,9 +37,9 @@ class Cli_Model_BattleResult
         $this->_castleId = $castleId;
     }
 
-    public function addTowerId($towerId)
+    public function setTowerId($towerId)
     {
-        $this->_towers[] = $towerId;
+        $this->_towerId = $towerId;
     }
 
     /**
