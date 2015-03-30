@@ -24,7 +24,6 @@ class Cli_Model_Battle
 
     private $_castleId;
     private $_castleColor;
-    private $_towerId;
     private $_towerColor;
 
     public function __construct(Cli_Model_Army $attacker, Cli_Model_Enemies $defenders, Cli_Model_Game $game, Zend_Db_Adapter_Pdo_Pgsql $db = null, Cli_Model_BattleResult $result = null)
@@ -70,7 +69,7 @@ class Cli_Model_Battle
 
         if ($this->_castleId) {
             $this->_externalDefenceModifier = $this->_players->getPlayer($this->_castleColor)->getCastles()->getCastle($this->_castleId)->getDefenseModifier();
-        } elseif ($this->_towerId = $this->_fields->getField($defender->getX(), $defender->getY())->getTowerId()) {
+        } elseif ($this->_fields->getField($defender->getX(), $defender->getY())->getTowerId()) {
             $this->_towerColor = $this->_fields->getField($defender->getX(), $defender->getY())->getTowerColor();
             $this->_externalDefenceModifier = 1;
         }
@@ -326,14 +325,17 @@ class Cli_Model_Battle
 
     private function saveFight()
     {
+        $attackerColor = $this->_attacker->getColor();
+        $attackingPlayer = $this->_players->getPlayer($attackerColor);
+
         if ($this->attackerVictory()) {
             $this->_result->victory();
+            $playerTeam = $attackingPlayer->getTeam();
+
             if ($this->_castleId) {
                 $castleOwner = $this->_players->getPlayer($this->_castleColor);
                 $castle = $castleOwner->getCastles()->getCastle($this->_castleId);
                 $castle->setProductionId();
-                $attackerColor = $this->_attacker->getColor();
-                $attackingPlayer = $this->_players->getPlayer($attackerColor);
                 $attackingPlayer->getCastles()->addCastle(
                     $this->_castleId,
                     $castle,
@@ -351,17 +353,39 @@ class Cli_Model_Battle
                     }
                 }
                 $castleOwner->getCastles()->removeCastle($this->_castleId);
-
-            } elseif ($this->_towerId) {
-                $towerOwner = $this->_players->getPlayer($this->_towerColor);
-                $this->_players->getPlayer($this->_attacker->getColor())->addTower($this->_towerId, $towerOwner->getTowers()->getTower($this->_towerId), $this->_towerColor, $this->_fields, $this->_gameId, $this->_db);
-                $towerOwner->getTowers()->removeTower($this->_towerId);
             }
-            $this->_attacker->resetAttributes();
 
+            for ($y = $this->_attacker->getY() - 1; $y <= $this->_attacker->getY() + 1; $y++) {
+                for ($x = $this->_attacker->getX() - 1; $x <= $this->_attacker->getX() + 1; $x++) {
+                    if ($this->_fields->hasField($x, $y) && $towerId = $this->_fields->getField($x, $y)->getTowerId()) {
+                        if ($this->_fields->getField($x, $y)->isArmy() && !$attackingPlayer->getArmies()->getArmyIdFromField($this->_fields->getField($x, $y))) {
+                            continue;
+                        }
+
+                        $towerColor = $this->_fields->getField($x, $y)->getTowerColor();
+
+                        if ($towerColor == $attackerColor) {
+                            continue;
+                        }
+
+                        $oldOwner = $this->_players->getPlayer($towerColor);
+                        if ($playerTeam == $oldOwner->getTeam()) {
+                            continue;
+                        }
+
+                        $attackingPlayer->addTower($towerId, $oldOwner->getTowers()->getTower($towerId), $towerColor, $this->_fields, $this->_gameId, $this->_db);
+                        $oldOwner->getTowers()->removeTower($towerId);
+
+                        $this->_result->addTowerId($towerId);
+                    }
+                }
+            }
+
+            $this->_attacker->resetAttributes();
         } else {
-            $this->_players->getPlayer($this->_attacker->getColor())->getArmies()->removeArmy($this->_attacker->getId(), $this->_game, $this->_db);
+            $attackingPlayer->getArmies()->removeArmy($this->_attacker->getId(), $this->_game, $this->_db);
         }
+
         foreach ($this->_defenders as $defender) {
             $color = $defender->getColor();
             if ($color == 'neutral') {
@@ -375,7 +399,6 @@ class Cli_Model_Battle
             }
         }
         $this->_result->setCastleId($this->_castleId);
-        $this->_result->setTowerId($this->_towerId);
     }
 
     private function combat($attackingFighter, $defendingFighter, $lives)
