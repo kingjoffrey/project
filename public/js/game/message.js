@@ -23,7 +23,7 @@ var Message = {
         this.element().after(
             $('<div>')
                 .addClass('message box')
-                .append($('<h3>').html(title))
+                .append($('<h3>').html(title).addClass('msgTitle'))
                 .append($(txt).addClass('overflow'))
                 .attr('id', id)
                 .fadeIn(200)

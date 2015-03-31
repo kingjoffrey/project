@@ -40,7 +40,7 @@ class Zend_View_Helper_Translations extends Zend_View_Helper_Abstract
             'areYouSure' => $this->view->translate('Are you sure?'),
             'yourTurn' => $this->view->translate('Your turn'),
             'thisIsYourTurnNow' => $this->view->translate('This is your turn now'),
-            'capitalCity' => $this->view->translate('capital city'),
+            'capitalCity' => $this->view->translate('Capital city'),
             'ground' => $this->view->translate('ground'),
             'air' => $this->view->translate('air'),
             'water' => $this->view->translate('water'),
