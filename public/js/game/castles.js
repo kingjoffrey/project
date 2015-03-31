@@ -32,6 +32,19 @@ var Castles = function () {
             }
         }
     }
+    this.raze = function (castleId) {
+        var castle = this.get(castleId)
+
+        for (var x = castle.getX(); x <= castle.getX() + 1; x++) {
+            for (var y = castle.getY(); y <= castle.getY() + 1; y++) {
+                var field = Fields.get(x, y)
+                field.setCastleColor(0)
+                field.setCastleId(0)
+            }
+        }
+        Three.getScene().remove(castle.getMesh())
+        this.remove(castleId)
+    }
     this.remove = function (castleId) {
         delete castles[castleId]
     }
