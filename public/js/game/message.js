@@ -33,7 +33,7 @@ var Message = {
     },
     adjust: function (id) {
         if (isSet(id)) {
-            var maxHeight = Zoom.gameHeight - 120
+            var maxHeight = Zoom.gameHeight - 140
             if (maxHeight < parseInt($('#' + id).css('min-height'))) {
                 maxHeight = parseInt($('#' + id).css('min-height'))
             }
@@ -53,7 +53,7 @@ var Message = {
                     left: left + 'px'
                 })
         } else if ($('.message').length) {
-            var maxHeight = Zoom.gameHeight - 120
+            var maxHeight = Zoom.gameHeight - 140
             if (maxHeight < parseInt($('.message').css('min-height'))) {
                 console.log(maxHeight)
                 maxHeight = parseInt($('.message').css('min-height'))
@@ -77,11 +77,7 @@ var Message = {
         }
     },
     setOverflowHeight: function (id) {
-        if ($('.showCastle').length) {
-            var minus = 70
-        } else {
-            var minus = 90
-        }
+        var minus = 50
         if (isSet(id)) {
             var height = parseInt($('#' + id).css('height')) - minus;
             $('#' + id + ' div.overflow').css('height', height + 'px')
