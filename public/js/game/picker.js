@@ -79,7 +79,7 @@ var Picker = new function () {
                             Me.setSelectedCastleId(null)
                             Me.setSelectedUnitId(null)
                         } else {
-                            Message.castle(Me.getCastle(castleId))
+                            CastleWindow.show(Me.getCastle(castleId))
                         }
                     }
                 }
