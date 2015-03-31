@@ -169,11 +169,11 @@ var Websocket = {
 
             case 'raze':
                 $('#razeCastle').addClass('buttonOff');
-                Castles.raze(r.castleId)
+                Players.get(r.color).getCastles().raze(r.castleId)
                 if (Turn.isMy()) {
                     Sound.play('gold1');
                     Message.remove()
-                    Me.setGold(r.data.gold)
+                    Me.setGold(r.gold)
                 } else {
                     Sound.play('raze');
                 }
