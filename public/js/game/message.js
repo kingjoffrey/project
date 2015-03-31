@@ -77,7 +77,7 @@ var Message = {
         }
     },
     setOverflowHeight: function (id) {
-        var minus = 50
+        var minus = 65
         if (isSet(id)) {
             var height = parseInt($('#' + id).css('height')) - minus;
             $('#' + id + ' div.overflow').css('height', height + 'px')
@@ -128,7 +128,7 @@ var Message = {
         this.simple(translations.error, div);
     },
     surrender: function () {
-        var id = this.simple(translations.surrender, translations.areYouSure)
+        var id = this.show(translations.surrender, $('<div>').html(translations.areYouSure))
         this.ok(id, Websocket.surrender);
         this.cancel(id)
     },
@@ -150,29 +150,29 @@ var Message = {
         this.ok(id, Websocket.disband);
         this.cancel(id)
     },
-    split: function (a) {
+    split: function () {
         var div = $('<div>')
-            .addClass('split')
-            .append(
-            $('<div>')
-                .html(
-                $('<input>')
-                    .attr({
-                        type: 'checkbox'
-                    })
-                    .change(function () {
-                        $('.message .row input').each(function () {
-                            if ($(this).is(':checked')) {
-                                $(this).prop('checked', false)
-                            } else {
-                                $(this).prop('checked', true)
-                            }
+                .addClass('split')
+                .append(
+                $('<div>')
+                    .html(
+                    $('<input>')
+                        .attr({
+                            type: 'checkbox'
                         })
-                    })
-            )
-                .attr('id', 'selectAll')
-        )
-        var numberOfUnits = 0,
+                        .change(function () {
+                            $('.message .row input').each(function () {
+                                if ($(this).is(':checked')) {
+                                    $(this).prop('checked', false)
+                                } else {
+                                    $(this).prop('checked', true)
+                                }
+                            })
+                        })
+                )
+                    .attr('id', 'selectAll')
+            ),
+            numberOfUnits = 0,
             walk = Me.getSelectedArmy().getWalkingSoldiers(),
             swim = Me.getSelectedArmy().getSwimmingSoldiers(),
             fly = Me.getSelectedArmy().getFlyingSoldiers(),
@@ -261,7 +261,7 @@ var Message = {
             );
         }
 
-        var id = this.show(translations.split, div);
+        var id = this.show(translations.splitArmy, div);
         this.ok(id, Websocket.split);
         this.cancel(id)
 
@@ -379,7 +379,7 @@ var Message = {
             );
         }
 
-        var id = this.show(translations.status, div);
+        var id = this.show(translations.armyStatus, div);
         this.ok(id)
     },
     battle: function (r, ii) {
@@ -659,7 +659,7 @@ var Message = {
         if (!Me.getSelectedArmyId()) {
             return;
         }
-        var id = this.simple(translations.destroyCastle, translations.areYouSure)
+        var id = this.show(translations.destroyCastle, $('<div>').html(translations.areYouSure))
         this.ok(id, Websocket.raze);
         this.cancel(id)
     },
@@ -671,19 +671,26 @@ var Message = {
         var army = Me.getArmy(Me.getSelectedArmyId())
         var castle = Me.getCastle(Fields.get(army.getX(), army.getY()).getCastleId())
 
-        var costBuildDefense = 0;
-        for (i = 1; i <= castle.getDefense(); i++) {
-            costBuildDefense += i * 100;
+        if (castle.getDefense() == 4) {
+            var div = $('<div>')
+                .append($('<h3>').html(translations.maximumCastleDefenceReached))
+                .append($('<div>').html(translations.currentDefense + ': ' + castle.getDefense()))
+            var id = this.show(translations.buildCastleDefense, div);
+        } else {
+            var costBuildDefense = 0;
+            for (i = 1; i <= castle.getDefense(); i++) {
+                costBuildDefense += i * 100;
+            }
+            var newDefense = castle.getDefense() + 1;
+
+            var div = $('<div>')
+                .append($('<h3>').html(translations.doYouWantToBuildCastleDefense))
+                .append($('<div>').html(translations.currentDefense + ': ' + castle.getDefense()))
+                .append($('<div>').html(translations.newDefense + ': ' + newDefense))
+                .append($('<div>').html(translations.cost + ': ' + costBuildDefense + ' ' + translations.gold))
+            var id = this.show(translations.buildCastleDefense, div);
+            this.ok(id, Websocket.defense);
         }
-        var newDefense = castle.getDefense() + 1;
-
-        var div = $('<div>')
-            .append($('<div>').html(translations.currentDefense + ': ' + castle.getDefense()))
-            .append($('<div>').html(translations.newDefense + ': ' + newDefense))
-            .append($('<div>').html(translations.cost + ': ' + costBuildDefense + ' ' + translations.gold))
-
-        var id = this.show(translations.doYouWantToBuildCastleDefense, div);
-        this.ok(id, Websocket.defense);
         this.cancel(id)
     },
     statistics: function (r) {

@@ -402,13 +402,12 @@
 
 .message .split #selectAll {
     text-align: right;
-    margin: 4px;
+    height: 20px;
 }
 
 .message .split div.row {
     clear: both;
     height: 31px;
-    margin: 1px;
     padding: 3px;
     border: 1px solid #222;
     border-radius: 3px;
@@ -530,6 +529,11 @@
 }
 
 .message .go {
+    margin: 20px auto;
+    min-width: 50px;
+}
+
+.message .cancel {
     margin: 20px auto;
     min-width: 50px;
 }
