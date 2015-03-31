@@ -254,7 +254,8 @@ var Three = new function () {
             'undead': undead,
             'wizard': wizard,
             'devil': devil,
-            'demon': demon
+            'demon': demon,
+            'pegasi': pegasi
         }
         for (var i in armyModels) {
             armyModels[i].scale = 6
