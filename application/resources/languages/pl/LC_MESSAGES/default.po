@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: WOF\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-03-31 03:46+0100\n"
-"PO-Revision-Date: 2015-03-31 03:48+0100\n"
+"POT-Creation-Date: 2015-03-31 03:50+0100\n"
+"PO-Revision-Date: 2015-03-31 03:50+0100\n"
 "Last-Translator: Bartosz Krzeszewski <bartek@core-t.pl>\n"
 "Language-Team: \n"
 "Language: pl\n"
@@ -479,6 +479,10 @@ msgstr "Zamknij"
 #: application/layouts/scripts/editor.phtml:18
 msgid "Castle"
 msgstr "Zamek"
+
+#: application/views/helpers/Translations.php:116
+msgid "Income from castle"
+msgstr "Przychód z zamku"
 
 #: application/views/helpers/Logout.php:8
 msgid "Logout"

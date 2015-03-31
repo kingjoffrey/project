@@ -77,11 +77,11 @@ var CastleWindow = new function () {
                     .addClass('img'))
                 .append($('<div>')
                     .addClass('attributes')
-                    .append($('<p>').html(translations.productionTime + ':&nbsp;' + time + '<span class="yellow">' + castle.getProduction()[unitId].time + '</span>&nbsp;' + translations.turn))
-                    .append($('<p>').html(translations.costOfLiving + ':&nbsp;' + '<span class="yellow">' + unit.cost + '</span>&nbsp;' + translations.gold + '/' + translations.turn))
-                    .append($('<p>').html(translations.movementPoints + ':&nbsp;' + '<span class="yellow">' + unit.moves + '</span>'))
-                    .append($('<p>').html(translations.attackPoints + ':&nbsp;' + '<span class="yellow">' + unit.a + '</span>'))
-                    .append($('<p>').html(translations.defencePoints + ':&nbsp;' + '<span class="yellow">' + unit.d + '</span>')))
+                    .append($('<p>').html(translations.productionTime + ':&nbsp;' + time + '<span>' + castle.getProduction()[unitId].time + '</span>&nbsp;' + translations.turn))
+                    .append($('<p>').html(translations.costOfLiving + ':&nbsp;' + '<span>' + unit.cost + '</span>&nbsp;' + translations.gold + '/' + translations.turn))
+                    .append($('<p>').html(translations.movementPoints + ':&nbsp;' + '<span>' + unit.moves + '</span>'))
+                    .append($('<p>').html(translations.attackPoints + ':&nbsp;' + '<span>' + unit.a + '</span>'))
+                    .append($('<p>').html(translations.defencePoints + ':&nbsp;' + '<span>' + unit.d + '</span>')))
             j++;
         }
         var k = Math.ceil(j / 2);
@@ -120,12 +120,12 @@ var CastleWindow = new function () {
                 .append($('<td>').append(translations.castleDefense + ': '))
                 .append($('<td>').append(castle.getDefense())))
             .append($('<tr>')
-                .append($('<td>').append(translations.income + ': '))
+                .append($('<td>').append(translations.incomeFromCastle + ': '))
                 .append($('<td>').append(castle.getIncome() + ' ' + translations.gold_turn)))
         window
             .append(info)
-            .append($('<div>').addClass('production').append($('<div>').html(translations.availableUnits)).append(table).attr('id', castle.getCastleId()))
-            .append($('<div>').html($('<a>')
+            .append($('<div>').addClass('production').append($('<div>').html(translations.availableUnits).addClass('title')).append(table).attr('id', castle.getCastleId()))
+            .append($('<div>')
                 .html(translations.stopProduction)
                 .addClass('button buttonColors' + stopButtonOff)
                 .attr('id', 'stop')
@@ -133,8 +133,8 @@ var CastleWindow = new function () {
                     if ($('input:radio[name=production]:checked').val()) {
                         castle.handle(1, 0)
                     }
-                })))
-            .append($('<div>').html($('<a>')
+                }))
+            .append($('<div>')
                 .html(translations.productionRelocation)
                 .addClass('button buttonColors' + relocationButtonOff)
                 .attr('id', 'relocation')
@@ -142,9 +142,10 @@ var CastleWindow = new function () {
                     if ($('input:radio[name=production]:checked').val()) {
                         castle.handle(0, 1)
                     }
-                })))
+                }))
             .append($('<div>')
-                .addClass('button buttonColors go')
+                .addClass('button buttonColors')
+                .attr('id', 'go')
                 .html(translations.startProduction)
                 .click(function () {
                     castle.handle()
@@ -161,7 +162,7 @@ var CastleWindow = new function () {
 
         if (castle.getRelocationCastleId() && Me.getCastles().has(castle.getRelocationCastleId())) {
             window
-                .append($('<div>').addClass('relocatedProduction').append($('<div>').html(translations.relocatingTo)).append(
+                .append($('<div>').addClass('relocatedProduction').append($('<div>').html(translations.relocatingTo).addClass('title')).append(
                     $('<table>').append(
                         $('<tr>')
                             .append(
@@ -226,43 +227,57 @@ var CastleWindow = new function () {
                 )
             }
             window
-                .append($('<div>').addClass('relocatedProduction').append($('<div>').html(translations.relocatingFrom)).append(relocatingFrom))
+                .append($('<div>').addClass('relocatedProduction').append($('<div>').html(translations.relocatingFrom).addClass('title')).append(relocatingFrom))
         }
 
-        Message.show(translations.castle + castle.getName(), window);
+        Message.show(translations.castle + '&nbsp;' + castle.getName(), window);
         //Message.setOverflowHeight(id)
 
         $('.production .unit input[type=radio]:checked').parent().parent().css({
             background: 'url(/img/bg_1.jpg)',
             color: '#fff'
         })
+        $('.production .unit input[type=radio]:checked').parent().parent().find('.attributes span').css({
+            color: 'yellow'
+        })
 
         // click
 
         $('.production .unit').click(function (e) {
             $('.production .unit :radio').each(function () {
-                $(this)
-                    .prop('checked', false)
-                    .parent().parent().css({
-                        background: '#fff',
-                        color: '#000'
-                    })
+                $(this).prop('checked', false).parent().parent().css({
+                    background: '#fff',
+                    color: '#000'
+                })
             })
 
-            $('td#' + $(this).attr('id') + '.unit input')
-                .prop('checked', true)
-                .parent().parent().css({
-                    background: 'url(/img/bg_1.jpg)',
-                    color: '#fff'
-                })
+            $('td#' + $(this).attr('id') + '.unit input').prop('checked', true).parent().parent().css({
+                background: 'url(/img/bg_1.jpg)',
+                color: '#fff'
+            })
+
+            $('td#' + $(this).attr('id') + '.unit .attributes span').css({
+                color: 'yellow'
+            })
+
+            $('td:not(#' + $(this).attr('id') + ').unit .attributes span').css({
+                color: '#000'
+            })
 
             if (Me.getCastles().count() > 1) {
-                $('.production #relocation').removeClass('buttonOff')
+                $('.showCastle #relocation').removeClass('buttonOff')
+            }
+            console.log(castle.getProductionId())
+            console.log($(this).attr('id'))
+            if (castle.getProductionId() == $(this).attr('id')) {
+                $('.showCastle #go').addClass('buttonOff')
+            } else {
+                $('.showCastle #go').removeClass('buttonOff')
             }
         })
 
-        $('.relocatedProduction').css({
-            width: parseInt($('.production').css('width')) + 'px'
-        })
+        //$('.relocatedProduction').css({
+        //    width: parseInt($('.production').css('width')) + 'px'
+        //})
     }
 }

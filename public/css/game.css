@@ -293,7 +293,7 @@
     margin: 10px 0;
 }
 
-.message div.production div, .message div.relocatedProduction div {
+.message div.production div.title, .message div.relocatedProduction div.title {
     padding-bottom: 10px;
 }
 

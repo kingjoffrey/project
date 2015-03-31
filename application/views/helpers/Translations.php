@@ -113,7 +113,7 @@ class Zend_View_Helper_Translations extends Zend_View_Helper_Abstract
             'startProduction' => $this->view->translate('Start production'),
             'close' => $this->view->translate('Close'),
             'castle' => $this->view->translate('Castle'),
-            '' => $this->view->translate(''),
+            'incomeFromCastle' => $this->view->translate('Income from castle'),
             '' => $this->view->translate(''),
             '' => $this->view->translate(''),
             '' => $this->view->translate(''),
