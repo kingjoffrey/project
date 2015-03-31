@@ -69,7 +69,7 @@ var CastleWindow = new function () {
                 .append($('<div>')
                     .append($('<input>').attr(attr))
                     .append($('<div>')
-                        .html(name + '<br/> (' + travelBy + ')')
+                        .html('<b>' + name + '</b>' + '<br/> (' + travelBy + ')')
                         .addClass('name'))
                     .addClass('top'))
                 .append($('<div>')
@@ -77,11 +77,11 @@ var CastleWindow = new function () {
                     .addClass('img'))
                 .append($('<div>')
                     .addClass('attributes')
-                    .append($('<p>').html(translations.productionTime + ':&nbsp;' + time + castle.getProduction()[unitId].time + ' ' + translations.turn))
-                    .append($('<p>').html(translations.costOfLiving + ':&nbsp;' + unit.cost + ' ' + translations.gold + ' / ' + translations.turn))
-                    .append($('<p>').html(translations.movementPoints + '&nbsp;' + unit.moves))
-                    .append($('<p>').html(translations.attackPoints + '&nbsp;' + unit.a))
-                    .append($('<p>').html(translations.defencePoints + '&nbsp;' + unit.d)))
+                    .append($('<p>').html(translations.productionTime + ':&nbsp;' + time + '<span class="yellow">' + castle.getProduction()[unitId].time + '</span>&nbsp;' + translations.turn))
+                    .append($('<p>').html(translations.costOfLiving + ':&nbsp;' + '<span class="yellow">' + unit.cost + '</span>&nbsp;' + translations.gold + '/' + translations.turn))
+                    .append($('<p>').html(translations.movementPoints + ':&nbsp;' + '<span class="yellow">' + unit.moves + '</span>'))
+                    .append($('<p>').html(translations.attackPoints + ':&nbsp;' + '<span class="yellow">' + unit.a + '</span>'))
+                    .append($('<p>').html(translations.defencePoints + ':&nbsp;' + '<span class="yellow">' + unit.d + '</span>')))
             j++;
         }
         var k = Math.ceil(j / 2);
@@ -125,7 +125,6 @@ var CastleWindow = new function () {
         window
             .append(info)
             .append($('<div>').addClass('production').append($('<div>').html(translations.availableUnits)).append(table).attr('id', castle.getCastleId()))
-        window
             .append($('<div>').html($('<a>')
                 .html(translations.stopProduction)
                 .addClass('button buttonColors' + stopButtonOff)
@@ -144,6 +143,19 @@ var CastleWindow = new function () {
                         castle.handle(0, 1)
                     }
                 })))
+            .append($('<div>')
+                .addClass('button buttonColors go')
+                .html(translations.startProduction)
+                .click(function () {
+                    castle.handle()
+                    Message.remove()
+                }))
+            .append($('<div>')
+                .addClass('button buttonColors cancel')
+                .html(translations.close)
+                .click(function () {
+                    Message.remove()
+                }))
 
         // relocation to
 
@@ -217,19 +229,8 @@ var CastleWindow = new function () {
                 .append($('<div>').addClass('relocatedProduction').append($('<div>').html(translations.relocatingFrom)).append(relocatingFrom))
         }
 
-        window
-            .append($('<div>')
-                .addClass('button buttonColors go')
-                .html(translations.startProduction)
-                .click(function () {
-                    castle.handle()
-                    Message.remove()
-                }))
-
-        var id = Message.show('Castle ' + castle.getName(), window);
-        //Message.ok(id, castle.handle)
-        Message.setOverflowHeight(id)
-        Message.cancel(id)
+        Message.show(translations.castle + castle.getName(), window);
+        //Message.setOverflowHeight(id)
 
         $('.production .unit input[type=radio]:checked').parent().parent().css({
             background: 'url(/img/bg_1.jpg)',

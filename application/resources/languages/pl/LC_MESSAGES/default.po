@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: WOF\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-10-10 02:07+0100\n"
-"PO-Revision-Date: 2014-10-10 02:07+0100\n"
+"POT-Creation-Date: 2015-03-31 03:46+0100\n"
+"PO-Revision-Date: 2015-03-31 03:48+0100\n"
 "Last-Translator: Bartosz Krzeszewski <bartek@core-t.pl>\n"
 "Language-Team: \n"
 "Language: pl\n"
@@ -93,349 +93,392 @@ msgid "towers"
 msgstr "wieże"
 
 #: application/views/helpers/Translations.php:22
+#: application/layouts/scripts/editor.phtml:20
+msgid "Tower"
+msgstr "Wieża"
+
+#: application/views/helpers/Translations.php:23
 msgid "gold"
 msgstr "złoto"
 
-#: application/views/helpers/Translations.php:23
+#: application/views/helpers/Translations.php:24
 msgid "castles"
 msgstr "zamki"
 
-#: application/views/helpers/Translations.php:24
+#: application/views/helpers/Translations.php:25
 #: application/layouts/scripts/game.phtml:57
 msgid "Upkeep"
 msgstr "Utrzymanie"
 
-#: application/views/helpers/Translations.php:25
+#: application/views/helpers/Translations.php:26
 msgid "gold per turn"
 msgstr "złoto na turę"
 
-#: application/views/helpers/Translations.php:26
+#: application/views/helpers/Translations.php:27
 msgid "Summation"
 msgstr "Podsumowanie"
 
-#: application/views/helpers/Translations.php:27
+#: application/views/helpers/Translations.php:28
 #: application/layouts/scripts/game.phtml:53
 msgid "Income"
 msgstr "Przychód"
 
-#: application/views/helpers/Translations.php:28
+#: application/views/helpers/Translations.php:29
 #: application/layouts/scripts/game.phtml:101
 msgid "Hire hero"
 msgstr "Wynajmij herosa"
 
-#: application/views/helpers/Translations.php:29
+#: application/views/helpers/Translations.php:30
 msgid "Do you want to hire new hero for 1000 gold?"
 msgstr "Czy chcesz wynająć nowego herosa za 1000 złota?"
 
-#: application/views/helpers/Translations.php:30
+#: application/views/helpers/Translations.php:31
 #: application/layouts/scripts/game.phtml:99
 msgid "Resurrect hero"
 msgstr "Wskrześ herosa"
 
-#: application/views/helpers/Translations.php:31
+#: application/views/helpers/Translations.php:32
 msgid "Do you want to resurrect hero for 100 gold?"
 msgstr "Czy chcesz wskrzesić herosa za 100 złota?"
 
-#: application/views/helpers/Translations.php:32
+#: application/views/helpers/Translations.php:33
 msgid "Battle configuration"
 msgstr "Konfiguracja walki"
 
-#: application/views/helpers/Translations.php:33
+#: application/views/helpers/Translations.php:34
 msgid "Change battle attack sequence by moving units"
 msgstr "Zmień sekwencję ataku poprzez przesuwanie jednostek"
 
-#: application/views/helpers/Translations.php:34
+#: application/views/helpers/Translations.php:35
 msgid "Change battle defence sequence by moving units"
 msgstr "Zmień sekwencję obrony poprzez przesuwanie jednostek"
 
-#: application/views/helpers/Translations.php:35
+#: application/views/helpers/Translations.php:36
 msgid "Ok"
 msgstr "Ok"
 
-#: application/views/helpers/Translations.php:36
+#: application/views/helpers/Translations.php:37
 msgid "Cancel"
 msgstr "Anuluj"
 
-#: application/views/helpers/Translations.php:37
+#: application/views/helpers/Translations.php:38
 msgid "Error"
 msgstr "Błąd"
 
-#: application/views/helpers/Translations.php:38
+#: application/views/helpers/Translations.php:39
 #: application/layouts/scripts/game.phtml:90
 msgid "Surrender"
 msgstr "Poddaj się"
 
-#: application/views/helpers/Translations.php:39
+#: application/views/helpers/Translations.php:40
 msgid "Are you sure?"
 msgstr "Czy aby na pewno chcesz to zrobić?"
 
-#: application/views/helpers/Translations.php:40
+#: application/views/helpers/Translations.php:41
 msgid "Your turn"
 msgstr "Twoja tura"
 
-#: application/views/helpers/Translations.php:41
+#: application/views/helpers/Translations.php:42
 msgid "This is your turn now"
 msgstr "Teraz twoja kolej"
 
-#: application/views/helpers/Translations.php:42
+#: application/views/helpers/Translations.php:43
 msgid "capital city"
 msgstr "stolica"
 
-#: application/views/helpers/Translations.php:43
+#: application/views/helpers/Translations.php:44
 msgid "ground"
 msgstr "ziemia"
 
-#: application/views/helpers/Translations.php:44
+#: application/views/helpers/Translations.php:45
 msgid "air"
 msgstr "powietrze"
 
-#: application/views/helpers/Translations.php:45
+#: application/views/helpers/Translations.php:46
 msgid "water"
 msgstr "woda"
 
-#: application/views/helpers/Translations.php:46
+#: application/views/helpers/Translations.php:47
 msgid "Time"
 msgstr "Czas"
 
-#: application/views/helpers/Translations.php:47
+#: application/views/helpers/Translations.php:48
 #: application/views/scripts/help/index.phtml:16
 msgid "Cost"
 msgstr "Koszt"
 
-#: application/views/helpers/Translations.php:48
+#: application/views/helpers/Translations.php:49
 msgid "Stop production"
 msgstr "Zatrzymaj produkcję"
 
-#: application/views/helpers/Translations.php:49
+#: application/views/helpers/Translations.php:50
 msgid "Production relocation"
 msgstr "Relokuj produkcję"
 
-#: application/views/helpers/Translations.php:50
+#: application/views/helpers/Translations.php:51
 msgid "Sorry, server is disconnected"
 msgstr "Przepraszamy, serwer jest rozłączony"
 
-#: application/views/helpers/Translations.php:51
+#: application/views/helpers/Translations.php:52
 msgid "Relocation"
 msgstr "Relokacja"
 
-#: application/views/helpers/Translations.php:52
+#: application/views/helpers/Translations.php:53
 msgid "Select castle to which you want to relocate this production"
 msgstr "Wybierz zamek, do którego chcesz relokować produkcję"
 
-#: application/views/helpers/Translations.php:53
+#: application/views/helpers/Translations.php:54
 msgid "Production relocated"
 msgstr "Produkcja została przeniesiona"
 
-#: application/views/helpers/Translations.php:54
+#: application/views/helpers/Translations.php:55
 msgid "Production stopped"
 msgstr "Produkcja została zatrzymana"
 
-#: application/views/helpers/Translations.php:55
+#: application/views/helpers/Translations.php:56
 msgid "Production set"
 msgstr "Ustawiono produkcję"
 
-#: application/views/helpers/Translations.php:56
+#: application/views/helpers/Translations.php:57
 msgid "Production"
 msgstr "Produkcja"
 
-#: application/views/helpers/Translations.php:57
+#: application/views/helpers/Translations.php:58
 msgid "Relocating to"
 msgstr "Relokacja do"
 
-#: application/views/helpers/Translations.php:58
+#: application/views/helpers/Translations.php:59
 msgid "Relocating from"
 msgstr "Relokacja z"
 
-#: application/views/helpers/Translations.php:59
+#: application/views/helpers/Translations.php:60
 #: application/layouts/scripts/game.phtml:97
 msgid "Next turn"
 msgstr "Następna tura"
 
-#: application/views/helpers/Translations.php:60
-#: application/layouts/scripts/game.phtml:125
+#: application/views/helpers/Translations.php:61
+#: application/layouts/scripts/game.phtml:112
 msgid "Disband army"
 msgstr "Rozwiąż armię"
 
-#: application/views/helpers/Translations.php:61
+#: application/views/helpers/Translations.php:62
 msgid "Castle defense"
 msgstr "Obrona zamku"
 
-#: application/views/helpers/Translations.php:62
+#: application/views/helpers/Translations.php:63
 msgid "gold/turn"
 msgstr "złoto/turę"
 
-#: application/views/helpers/Translations.php:63
+#: application/views/helpers/Translations.php:64
 msgid "Moves left"
 msgstr "Pozostałe ruchy"
 
-#: application/views/helpers/Translations.php:64
+#: application/views/helpers/Translations.php:65
 msgid "Status"
 msgstr "Status"
 
-#: application/views/helpers/Translations.php:65
+#: application/views/helpers/Translations.php:66
 msgid "Split"
 msgstr "Podziel"
 
-#: application/views/helpers/Translations.php:66
+#: application/views/helpers/Translations.php:67
 #: application/views/scripts/help/index.phtml:25
-#: application/layouts/scripts/game.phtml:115
 msgid "Attack"
 msgstr "Atak"
 
-#: application/views/helpers/Translations.php:67
+#: application/views/helpers/Translations.php:68
 msgid "Defence"
 msgstr "Obrona"
 
-#: application/views/helpers/Translations.php:68
+#: application/views/helpers/Translations.php:69
 msgid "Human"
 msgstr "Człowiek"
 
-#: application/views/helpers/Translations.php:69
+#: application/views/helpers/Translations.php:70
 msgid "Select"
 msgstr "Wybierz"
 
-#: application/views/helpers/Translations.php:70
+#: application/views/helpers/Translations.php:71
 msgid "Deselect"
 msgstr "Odznacz"
 
-#: application/views/helpers/Translations.php:71
+#: application/views/helpers/Translations.php:72
 msgid "Computer"
 msgstr "Komputer"
 
-#: application/views/helpers/Translations.php:72
+#: application/views/helpers/Translations.php:73
 msgid "Start game"
 msgstr "Rozpocznij grę"
 
-#: application/views/helpers/Translations.php:73
+#: application/views/helpers/Translations.php:74
+#: application/views/helpers/Translations.php:112
 msgid "Defence points"
 msgstr "Punkty obrony"
 
-#: application/views/helpers/Translations.php:74
+#: application/views/helpers/Translations.php:75
+#: application/views/helpers/Translations.php:111
 #: application/views/scripts/hero/index.phtml:7
 msgid "Attack points"
 msgstr "Punkty ataku"
 
-#: application/views/helpers/Translations.php:75
+#: application/views/helpers/Translations.php:76
 msgid "Default moves"
 msgstr "Domyślna ilość ruchów"
 
-#: application/views/helpers/Translations.php:76
+#: application/views/helpers/Translations.php:77
 msgid "Current moves"
 msgstr "Aktualna ilość ruchów"
 
-#: application/views/helpers/Translations.php:77
+#: application/views/helpers/Translations.php:78
 #: application/views/scripts/help/index.phtml:49
 msgid "Movement cost through the forest"
 msgstr "Koszt poruszania się po lesie"
 
-#: application/views/helpers/Translations.php:78
+#: application/views/helpers/Translations.php:79
 #: application/views/scripts/help/index.phtml:53
 msgid "Movement cost through the hills"
 msgstr "Koszt poruszania się po wzgórzach"
 
-#: application/views/helpers/Translations.php:79
+#: application/views/helpers/Translations.php:80
 #: application/views/scripts/help/index.phtml:51
 msgid "Movement cost through the swamp"
 msgstr "Koszt poruszania się po bagnie"
 
-#: application/views/helpers/Translations.php:80
+#: application/views/helpers/Translations.php:81
 msgid "Destroy castle"
 msgstr "Zburz zamek"
 
-#: application/views/helpers/Translations.php:81
+#: application/views/helpers/Translations.php:82
 msgid "Battle sequence"
 msgstr "Kolejność walki"
 
-#: application/views/helpers/Translations.php:82
+#: application/views/helpers/Translations.php:83
 msgid "Attack sequence successfully updated"
 msgstr "Kolejność atakowania została zaktualizowana pomyślnie"
 
-#: application/views/helpers/Translations.php:83
+#: application/views/helpers/Translations.php:84
 msgid "Defence sequence successfully updated"
 msgstr "Kolejność obrony została zaktualizowana pomyślnie"
 
-#: application/views/helpers/Translations.php:84
+#: application/views/helpers/Translations.php:85
 msgid "Ruins"
 msgstr "Ruiny"
 
-#: application/views/helpers/Translations.php:85
+#: application/views/helpers/Translations.php:86
+#: application/layouts/scripts/editor.phtml:19
+msgid "Ruin"
+msgstr "Ruiny"
+
+#: application/views/helpers/Translations.php:87
 msgid "You have found"
 msgstr "Twój heros znalazł"
 
-#: application/views/helpers/Translations.php:86
+#: application/views/helpers/Translations.php:88
 msgid "Ruins are empty"
 msgstr "Ruiny są puste"
 
-#: application/views/helpers/Translations.php:87
+#: application/views/helpers/Translations.php:89
 msgid "death"
 msgstr "śmierć"
 
-#: application/views/helpers/Translations.php:88
+#: application/views/helpers/Translations.php:90
 msgid "You have found nothing"
 msgstr "Nic nie znaleziono"
 
-#: application/views/helpers/Translations.php:89
+#: application/views/helpers/Translations.php:91
 msgid "allies joined your army"
 msgstr "sojuszników dołączyło do Twojej armii"
 
-#: application/views/helpers/Translations.php:90
+#: application/views/helpers/Translations.php:92
 msgid "an ancient artifact"
 msgstr "starożytny artefakt"
 
-#: application/views/helpers/Translations.php:91
+#: application/views/helpers/Translations.php:93
 msgid "It is not your turn"
 msgstr "To nie Twoja tura"
 
-#: application/views/helpers/Translations.php:92
+#: application/views/helpers/Translations.php:94
 msgid "No castle to destroy"
 msgstr "Brak zamku do zburzenia"
 
-#: application/views/helpers/Translations.php:93
+#: application/views/helpers/Translations.php:95
 msgid "No castle to build defense"
 msgstr "Brak zamku do podniesienia obrony"
 
-#: application/views/helpers/Translations.php:94
+#: application/views/helpers/Translations.php:96
 msgid "Current defense"
 msgstr "Aktualna obrona"
 
-#: application/views/helpers/Translations.php:95
+#: application/views/helpers/Translations.php:97
 msgid "New defense"
 msgstr "Nowa obrona"
 
-#: application/views/helpers/Translations.php:96
+#: application/views/helpers/Translations.php:98
 msgid "Do you want to build castle defense?"
 msgstr "Czy chcesz podnieść obronę zamku?"
 
-#: application/views/helpers/Translations.php:97
+#: application/views/helpers/Translations.php:99
 msgid "turn"
 msgstr "tura"
 
-#: application/views/helpers/Translations.php:98
+#: application/views/helpers/Translations.php:100
 #: application/views/scripts/help/index.phtml:29
-#: application/layouts/scripts/game.phtml:112
 msgid "Moves"
 msgstr "Ruchy"
 
-#: application/views/helpers/Translations.php:99
+#: application/views/helpers/Translations.php:101
 msgid "Battle"
 msgstr "Bitwa"
 
-#: application/views/helpers/Translations.php:100
+#: application/views/helpers/Translations.php:102
 msgid "There is no free army with spare move points. Change turn!"
 msgstr "Brak wolnej armii, która posiada jeszcze punkty ruchu. Zmień turę!"
 
-#: application/views/helpers/Translations.php:101
+#: application/views/helpers/Translations.php:103
 #: application/layouts/scripts/game.phtml:103
 msgid "Next army"
 msgstr "Następna armia"
 
-#: application/views/helpers/Translations.php:102
+#: application/views/helpers/Translations.php:104
 msgid "Army"
 msgstr "Armia"
 
-#: application/views/helpers/Translations.php:103
+#: application/views/helpers/Translations.php:105
 msgid "No more moves"
 msgstr "Za mało punktów ruchu aby wykonać akcję"
+
+#: application/views/helpers/Translations.php:106
+msgid "No unit selected"
+msgstr "Brak wybranych jednostek"
+
+#: application/views/helpers/Translations.php:107
+msgid "Available units"
+msgstr "Dostępne jednostki"
+
+#: application/views/helpers/Translations.php:108
+msgid "Production time"
+msgstr "Czas produkcji"
+
+#: application/views/helpers/Translations.php:109
+msgid "Cost of living"
+msgstr "Koszt utrzymania"
+
+#: application/views/helpers/Translations.php:110
+msgid "Movement points"
+msgstr "Punkty ruchu"
+
+#: application/views/helpers/Translations.php:113
+msgid "Start production"
+msgstr "Rozpocznij produkcję"
+
+#: application/views/helpers/Translations.php:114
+msgid "Close"
+msgstr "Zamknij"
+
+#: application/views/helpers/Translations.php:115
+#: application/layouts/scripts/editor.phtml:18
+msgid "Castle"
+msgstr "Zamek"
 
 #: application/views/helpers/Logout.php:8
 msgid "Logout"
@@ -471,12 +514,6 @@ msgstr "Profil"
 msgid "Help"
 msgstr "Pomoc"
 
-#: application/views/helpers/MainMenu.php:23
-#: application/views/scripts/editor/create.phtml:1
-#: application/views/scripts/editor/index.phtml:1
-msgid "Map editor"
-msgstr "Edytor map"
-
 #: application/views/helpers/Version.php:6
 msgid "Version number"
 msgstr "Numer wersji"
@@ -503,7 +540,7 @@ msgid "Select time limit"
 msgstr "Ustaw limit czasu"
 
 #: application/forms/Creategame.php:32
-#: application/views/scripts/load/index.phtml:18
+#: application/views/scripts/load/index.phtml:16
 msgid "Turns limit"
 msgstr "Limit tur"
 
@@ -550,13 +587,17 @@ msgstr "Rejestracja"
 msgid "First name"
 msgstr "Imię"
 
+#: application/forms/Player.php:9 application/forms/Player.php:16
+msgid "imaginary"
+msgstr "zmyślone"
+
 #: application/forms/Player.php:16
 msgid "Last name"
 msgstr "Nazwisko"
 
 #: application/models/Limit.php:11 application/models/Limit.php:33
 #: application/views/scripts/setup/index.phtml:46
-#: application/views/scripts/load/index.phtml:48
+#: application/views/scripts/load/index.phtml:45
 msgid "no limit"
 msgstr "bez limitu"
 
@@ -619,8 +660,9 @@ msgstr "5 minut"
 msgid "1 day"
 msgstr "1 dzień"
 
-#: application/controllers/LoginController.php:36
-msgid "Incorrect login or password!"
+#: application/controllers/LoginController.php:82
+#: library/Coret/Controller/Authenticate.php:29
+msgid "Incorrect login details"
 msgstr "Nieprawidłowy e-mail lub hasło!"
 
 #: application/controllers/ProfileController.php:13
@@ -631,10 +673,6 @@ msgstr "Potwierdź"
 #: library/Coret/View/Helper/Copyright.php:6
 msgid "All rights reserved"
 msgstr "Wszelkie prawa zastrzeżone"
-
-#: library/Coret/Controller/Authenticate.php:24
-msgid "Incorrect login details"
-msgstr "Nieprawidłowy e-mail lub hasło!"
 
 #: application/modules/admin/views/scripts/pagination_control.phtml:6
 msgid "First"
@@ -704,7 +742,7 @@ msgid "Required number of players"
 msgstr "Wymagana ilość graczy"
 
 #: application/views/scripts/setup/index.phtml:41
-#: application/views/scripts/load/index.phtml:16
+#: application/views/scripts/load/index.phtml:14
 msgid "Time limit"
 msgstr "Limit czasu"
 
@@ -713,7 +751,7 @@ msgid "Limit of the number of turns"
 msgstr "Limit ilości tur"
 
 #: application/views/scripts/setup/index.phtml:47
-#: application/views/scripts/load/index.phtml:20
+#: application/views/scripts/load/index.phtml:18
 msgid "Time limit per turn"
 msgstr "Czas trwania tury"
 
@@ -757,6 +795,11 @@ msgstr "Ilość ruchów"
 msgid "Change name"
 msgstr "Zmień nazwę"
 
+#: application/views/scripts/editor/create.phtml:1
+#: application/views/scripts/editor/index.phtml:1
+msgid "Map editor"
+msgstr "Edytor map"
+
 #: application/views/scripts/editor/create.phtml:3
 msgid "Create new map"
 msgstr "Utwórz nową mapę"
@@ -778,31 +821,35 @@ msgid "Game master"
 msgstr "Mistrz gry"
 
 #: application/views/scripts/load/index.phtml:9
-msgid "Player turn"
-msgstr "Tura gracza"
+msgid "Start date"
+msgstr "Data rozpoczęcia"
 
-#: application/views/scripts/load/index.phtml:12
-msgid "Turn nr"
-msgstr "Numer tury"
-
-#: application/views/scripts/load/index.phtml:14
-msgid "Number of Players"
-msgstr "Ilość graczy"
-
-#: application/views/scripts/load/index.phtml:22
+#: application/views/scripts/load/index.phtml:20
 #: application/views/scripts/halloffame/index.phtml:7
 msgid "Player name"
 msgstr "Nazwa gracza"
 
-#: application/views/scripts/load/index.phtml:23
+#: application/views/scripts/load/index.phtml:20
 msgid "Player color"
 msgstr "Kolor gracza"
 
-#: application/views/scripts/load/index.phtml:25
-msgid "Start date"
-msgstr "Data rozpoczęcia"
+#: application/views/scripts/load/index.phtml:20
+msgid "Team color"
+msgstr "Kolor drużyny"
 
-#: application/views/scripts/load/index.phtml:27
+#: application/views/scripts/load/index.phtml:20
+msgid "Kingdom name"
+msgstr "Nazwa królestwa"
+
+#: application/views/scripts/load/index.phtml:22
+msgid "Turn nr"
+msgstr "Numer tury"
+
+#: application/views/scripts/load/index.phtml:24
+msgid "Player turn"
+msgstr "Tura gracza"
+
+#: application/views/scripts/load/index.phtml:26
 msgid "Pause date"
 msgstr "Data wstrzymania"
 
@@ -827,7 +874,6 @@ msgid "Special unit"
 msgstr "Jednostka specjalna"
 
 #: application/views/scripts/help/index.phtml:27
-#: application/layouts/scripts/game.phtml:118
 msgid "Defense"
 msgstr "Obrona"
 
@@ -890,43 +936,43 @@ msgstr "Pokaż innych"
 msgid "Sound"
 msgstr "Dźwięk"
 
-#: application/layouts/scripts/game.phtml:127
+#: application/layouts/scripts/game.phtml:114
 msgid "Deselect army"
 msgstr "Odznacz armię"
 
-#: application/layouts/scripts/game.phtml:129
+#: application/layouts/scripts/game.phtml:116
 msgid "Search ruins"
 msgstr "Przeszukaj ruiny"
 
-#: application/layouts/scripts/game.phtml:131
+#: application/layouts/scripts/game.phtml:118
 msgid "Show castle"
 msgstr "Pokaż zamek"
 
-#: application/layouts/scripts/game.phtml:133
+#: application/layouts/scripts/game.phtml:120
 msgid "Build defense"
 msgstr "Podnieś obronę"
 
-#: application/layouts/scripts/game.phtml:135
+#: application/layouts/scripts/game.phtml:122
 msgid "Raze castle"
 msgstr "Zburz zamek"
 
-#: application/layouts/scripts/game.phtml:138
+#: application/layouts/scripts/game.phtml:125
 msgid "Split army"
 msgstr "Podziel amię"
 
-#: application/layouts/scripts/game.phtml:140
+#: application/layouts/scripts/game.phtml:127
 msgid "Army status"
 msgstr "Status armii"
 
-#: application/layouts/scripts/game.phtml:142
+#: application/layouts/scripts/game.phtml:129
 msgid "Fortify army"
 msgstr "Fortyfikuj armię"
 
-#: application/layouts/scripts/game.phtml:144
+#: application/layouts/scripts/game.phtml:131
 msgid "Skip in this turn"
 msgstr "Pomiń w tej turze"
 
-#: application/layouts/scripts/game.phtml:156
+#: application/layouts/scripts/game.phtml:146
 msgid "Send"
 msgstr "Wyślij"
 
@@ -937,18 +983,6 @@ msgstr "Generuj"
 #: application/layouts/scripts/editor.phtml:17
 msgid "Save"
 msgstr "Zapisz"
-
-#: application/layouts/scripts/editor.phtml:18
-msgid "Castle"
-msgstr "Zamek"
-
-#: application/layouts/scripts/editor.phtml:19
-msgid "Ruin"
-msgstr "Ruiny"
-
-#: application/layouts/scripts/editor.phtml:20
-msgid "Tower"
-msgstr "Wieża"
 
 #: application/layouts/scripts/editor.phtml:21
 msgid "Road"
@@ -969,6 +1003,12 @@ msgstr "Bagno"
 #: application/layouts/scripts/editor.phtml:25
 msgid "Eraser"
 msgstr "Gumka"
+
+#~ msgid "Incorrect login or password!"
+#~ msgstr "Nieprawidłowy e-mail lub hasło!"
+
+#~ msgid "Number of Players"
+#~ msgstr "Ilość graczy"
 
 #~ msgid "Kick"
 #~ msgstr "Wykop"

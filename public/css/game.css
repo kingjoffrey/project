@@ -341,9 +341,17 @@
     background: lime;
 }
 
-.message .production .empty {
-    border: none;
+.message .production td.empty {
     width: 158px;
+    background: #fff;
+}
+
+.message .production tr:first-of-type td.empty:last-of-type {
+    border-top-right-radius: 5px;
+}
+
+.message .production tr:last-of-type td.empty:last-of-type {
+    border-bottom-right-radius: 5px;
 }
 
 .message .production #blank {
