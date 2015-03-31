@@ -135,7 +135,7 @@ var Message = {
     turn: function () {
         this.remove();
         if (Turn.isMy() && Turn.getNumber() == 1 && !Me.getCastle(Me.getFirsCastleId()).getProductionId()) {
-            Message.castle(Me.getCastle(Me.getFirsCastleId()))
+            CastleWindow.show(Me.getCastle(Me.getFirsCastleId()))
         } else {
             var id = this.simple(translations.yourTurn, translations.thisIsYourTurnNow)
         }

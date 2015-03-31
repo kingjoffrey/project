@@ -130,7 +130,7 @@ var Move = new function () {
                 }
                 if (Me.colorEquals(r.color)) {
                     if (r.battle.castleId) {
-                        Message.castle(Me.getCastle(r.battle.castleId))
+                        CastleWindow.show(Me.getCastle(r.battle.castleId))
                         Me.incomeIncrement(Me.getCastle(r.battle.castleId).getIncome())
                     } else if (Me.getArmy(army.getArmyId()).getMoves()) {
                         Me.selectArmy(army.getArmyId())

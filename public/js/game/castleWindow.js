@@ -169,7 +169,7 @@ var CastleWindow = new function () {
                                 .html(Me.getCastle(castle.getRelocationCastleId()).getName())
                                 .addClass('button buttonColors')
                                 .click(function () {
-                                    Message.castle(Me.getCastle(castle.getRelocationCastleId()))
+                                    CastleWindow.show(Me.getCastle(castle.getRelocationCastleId()))
                                 })
                         )
                             .append(
