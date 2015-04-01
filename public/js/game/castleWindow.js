@@ -136,7 +136,7 @@ var CastleWindow = new function () {
                 .click(center(castle.getCastleId()))
                 .attr('id', 'center'))
             .append($('<div>')
-                .addClass('button buttonColors')
+                .addClass('button buttonColors buttonOff')
                 .attr('id', 'go')
                 .html(translations.startProduction)
                 .click(function () {
@@ -223,12 +223,12 @@ var CastleWindow = new function () {
         }
 
         if (castle.getCapital()) {
-            Message.show(translations.capitalCity + '&nbsp;' + castle.getName(), window);
+            var id = Message.show(translations.capitalCity + '&nbsp;' + castle.getName(), window)
         } else {
-            Message.show(translations.castle + '&nbsp;' + castle.getName(), window);
+            var id = Message.show(translations.castle + '&nbsp;' + castle.getName(), window)
         }
 
-        //Message.setOverflowHeight(id)
+        Message.setOverflowHeight(id)
 
         $('.production .unit input[type=radio]:checked').parent().parent().css({
             background: 'url(/img/bg_1.jpg)',
@@ -239,7 +239,7 @@ var CastleWindow = new function () {
         })
 
         if (castle.getProductionId()) {
-            $('.showCastle #go').addClass('buttonOff')
+            $('.showCastle #go').removeClass('buttonOff')
         }
 
         // unit click

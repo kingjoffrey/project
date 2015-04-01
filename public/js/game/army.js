@@ -202,7 +202,7 @@ var Army = function (army, bgColor, miniMapColor, textColor, color) {
 
         if (countProperties(army.swim)) {
             for (var soldierId in army.swim) {
-                name = unit.name
+                name = Units.get(army.swim[soldierId].unitId).name
                 break
             }
         } else if (countProperties(army.heroes)) {
