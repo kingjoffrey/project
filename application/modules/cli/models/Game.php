@@ -99,7 +99,11 @@ class Cli_Model_Game
         $playersTowers = $mTowersInGame->getTowers();
 
         foreach ($this->_playersInGameColors as $playerId => $color) {
-            $this->_Players->addPlayer($color, new Cli_Model_Player($players[$playerId], $this->_id, $mapCastles, $mapTowers, $playersTowers, $mMapPlayers, $db));
+            $player = new Cli_Model_Player($players[$playerId], $this->_id, $mapCastles, $mapTowers, $playersTowers, $mMapPlayers, $db);
+            $this->_Players->addPlayer($color, $player);
+            if (!$player->getComputer()) {
+                $this->updateOnline($color, 0);
+            }
         }
         $this->_Players->addPlayer('neutral', new Cli_Model_NeutralPlayer($this->_id, $mapCastles, $mapTowers, $playersTowers, $db));
         $this->_Players->initFields($this->_Fields);
