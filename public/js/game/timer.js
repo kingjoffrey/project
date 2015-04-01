@@ -115,9 +115,9 @@ var Timer = new function () {
         }, 1000);
     }
     this.update = function () {
-        $('#timerBox #' + Turn.getColor() + Turn.getNumber() + ' #hour').html(elHour1.html())
-        $('#timerBox #' + Turn.getColor() + Turn.getNumber() + ' #minute').html(elMinute1.html())
-        $('#timerBox #' + Turn.getColor() + Turn.getNumber() + ' #second').html(elSecond1.html())
+        $('#limitBox #' + Turn.getColor() + Turn.getNumber() + ' #hour').html(elHour1.html())
+        $('#limitBox #' + Turn.getColor() + Turn.getNumber() + ' #minute').html(elMinute1.html())
+        $('#limitBox #' + Turn.getColor() + Turn.getNumber() + ' #second').html(elSecond1.html())
         this.scroll()
     }
     this.append = function (color, number, start, end) {

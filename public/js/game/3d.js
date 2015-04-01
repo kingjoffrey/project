@@ -436,6 +436,12 @@ var Three = new function () {
         loadGround()
         render()
     }
+    this.resize = function () {
+        camera.aspect = window.innerWidth / window.innerHeight
+        //camera.updateProjectionMatrix()
+        renderer.setSize(window.innerWidth, window.innerHeight)
+    }
+
     var render = function () {
         setTimeout(function () {
             requestAnimationFrame(render)

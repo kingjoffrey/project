@@ -5,7 +5,6 @@ var Gui = new function () {
         chatBox = {'close': 0},
         playerBox = {'close': 0},
         limitBox = {'close': 0},
-        timerBox = {'close': 0},
         mapBox = {'close': 0},
         speed = 200,
         documentTitle = 'WoF',
@@ -30,6 +29,7 @@ var Gui = new function () {
 
     this.init = function () {
         $(window).resize(function () {
+            console.log('aaa')
             Gui.adjust()
         })
         $('body')
@@ -41,7 +41,6 @@ var Gui = new function () {
                 return false
             })
 
-        Zoom.init()
         this.prepareButtons()
         this.prepareBoxes()
         this.adjust()
@@ -297,23 +296,6 @@ var Gui = new function () {
                 changeCloseArrowLR(limitBox['move'], limitBox['el']);
             });
         });
-        $('#timerBox .close').click(function () {
-            var left = parseInt($('#timerBox').css('left')),
-                move = -leftMenuWidth
-
-            timerBox['el'] = this
-
-            if (timerBox['close']) {
-                move = -move;
-            }
-
-            timerBox['move'] = move;
-
-            $('#timerBox').animate({'left': left + move + 'px'}, speed, function () {
-                timerBox['close'] = !timerBox['close'];
-                changeCloseArrowLR(timerBox['move'], timerBox['el']);
-            });
-        });
         $('#playersBox .close').click(function () {
             var left = parseInt($('#playersBox').css('left')),
                 move = leftMenuWidth
@@ -367,22 +349,13 @@ var Gui = new function () {
         });
     }
     this.adjust = function () {
+        Zoom.init()
+
         commandsBox.close = 0
         chatBox.close = 0
         playerBox.close = 0
         limitBox.close = 0
-        timerBox.close = 0
         mapBox.close = 0
-
-        var mapBoxHeight = parseInt($('#mapImage').css('height'));
-
-        $('#mapBox').css({
-            width: parseInt($('#mapImage').css('width')) + 2 + 'px',
-            height: mapBoxHeight + 19 + 'px'
-        });
-
-        //var minHeight = parseInt($('#playersBox').css('height')) + parseInt($('#commandsBox').css('height')) + 50
-        //var minWidth = parseInt($('#mapBox').css('width')) + parseInt($('#playersBox').css('width')) + 450
 
         if (Zoom.gameWidth < minWidth) {
             Zoom.gameWidth = minWidth
@@ -396,6 +369,15 @@ var Gui = new function () {
                 height: Zoom.gameHeight + 'px'
             }
         )
+
+        Three.resize()
+
+        var mapBoxHeight = parseInt($('#mapImage').css('height'))
+
+        $('#mapBox').css({
+            width: parseInt($('#mapImage').css('width')) + 7 + 'px',
+            height: mapBoxHeight + 24 + 'px'
+        });
 
         if (Players.countHumans() > 1) {
             var chatLeft = Zoom.gameWidth - 507;
@@ -415,44 +397,31 @@ var Gui = new function () {
             'left': goldBoxLeft + 'px'
         })
 
-        $('#battleSettingsBox').css({
-            'left': 20 + goldBoxLeft + parseInt($('#goldBox').width()) + 'px'
-        })
-
-        var left = Zoom.gameWidth - 237;
+        var left = Zoom.gameWidth - $('#playersBox').width();
 
         $('#playersBox').css({
             'left': left + 'px'
         });
         $('#commandsBox').css({
-            top: parseInt($('#playersBox').css('height')) + 19 + 'px',
+            top: parseInt($('#playersBox').css('height')) + 14 + 'px',
             'left': left + 'px'
         })
         $('#armyBox').css({
-            top: Zoom.gameHeight - 40 + 'px',
+            top: Zoom.gameHeight - 34 + 'px',
             'left': Zoom.gameWidth / 2 - 115 + 'px'
         })
 
         $('#terrain').css('top', mapBoxHeight + 12 + 'px');
 
-        var closeLeft = parseInt($('#mapImage').css('width')) + 10
-
         $('#mapBox .close').css({
-            left: closeLeft + 'px'
+            left: $('#mapBox').width() + 4 + 'px'
         })
         $('#limitBox .close').css({
-            left: closeLeft + 'px'
-        })
-        $('#timerBox .close').css({
-            left: closeLeft + 'px'
+            left: $('#limitBox').width() + 4 + 'px'
         })
 
         $('#limitBox').css({
-            top: mapBoxHeight + 51 + 'px'
-        })
-
-        $('#timerBox').css({
-            top: mapBoxHeight + 72 + parseInt($('#limitBox').css('height')) + 'px'
+            top: mapBoxHeight + 30 + 'px'
         })
 
         Message.adjust()

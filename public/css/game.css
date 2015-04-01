@@ -174,8 +174,8 @@
 #playersBox {
     border-top: none;
     border-bottom-left-radius: 10px;
-    width: 230px;
-    height: 310px;
+    width: 188px;
+    height: 343px;
     clear: both;
 }
 
@@ -184,12 +184,12 @@
     line-height: 32px;
     height: 32px;
     position: absolute;
-    left: 198px;
+    /*left: 198px;*/
 }
 
 #playersBox #buttons {
     position: absolute;
-    top: 190px;
+    top: 222px;
 }
 
 #playersLabel {
@@ -655,80 +655,75 @@
     width: 92px;
 }
 
-#timerBox {
+#limitBox {
     left: -10px;
     border-top-right-radius: 10px;
     border-bottom-right-radius: 10px;
-    width: 238px;
+    width: 229px;
 }
 
-#timerBox .row {
+#limitBox .row {
     height: 30px;
 }
 
-#timerBox .left {
+#limitBox .left {
     padding: 1px;
     background: none;
     text-align: center;
     line-height: 30px;
 }
 
-#timerBox #timerScroll {
+#limitBox #timerScroll {
     overflow: hidden;
     overflow-y: scroll;
     width: 230px;
     margin-bottom: 5px;
 }
 
-#timerBox #timerRows {
+#limitBox #timerRows {
     width: 230px;
 }
 
-#timerBox .color {
+#timerScroll .color {
     width: 37px;
 }
 
-#timerBox .nr {
+#timerScroll .nr {
     width: 50px;
 }
 
-#timerBox .time {
+#timerScroll .time {
     width: 122px;
     overflow: hidden;
 }
 
-#timerBox .time {
+#timerScroll .time {
     overflow: hidden;
 }
 
-#timerBox .time div {
+#timerScroll .time div {
     float: right;
 }
 
-#timerBox #second {
+#timerScroll #second {
     width: 20px;
     text-align: left;
     padding: 0 3px;
 }
 
-#timerBox #minute {
+#timerScroll #minute {
     width: 20px;
     text-align: left;
     padding: 0 3px;
 }
 
-#timerBox #hour {
+#timerScroll #hour {
     min-width: 30px;
     text-align: left;
     padding: 0 3px;
 }
 
-#limitBox {
-    left: -10px;
-    border-top-right-radius: 10px;
-    border-bottom-right-radius: 10px;
-    width: 238px;
-}
+/*888888888888888888*/
 
 #limitBox span {
     width: 16px;
@@ -752,6 +747,7 @@
     width: auto;
     min-width: 0;
     border-spacing: 0;
+    display: inline-flex;
 }
 
 #goldBox table tr:nth-child(odd) {
@@ -760,10 +756,10 @@
 
 #goldBox td {
     height: 25px;
-    padding: 0 5px;
+    padding: 2px;
     width: 116px;
     text-align: center;
-    border: none !important;
+    /*border: none !important;*/
 }
 
 #goldBox td div {
@@ -827,14 +823,13 @@
     background: transparent url('/img/game/message_bg.png');
     border: 2px solid orange;
     box-shadow: 5px 5px 20px #000;
-    padding: 5px;
+    padding: 2px;
     color: #fff;
-    /*display: none;*/
 }
 
 #playersCanvas {
     position: absolute;
-    left: 10px;
+    top: 40px;
     width: 180px;
     height: 180px;
 }
@@ -885,7 +880,8 @@ html {
 
 #buttons .button, .armyButtons .button {
     padding: 0;
-    width: 224px;
+    width: 172px;
+    overflow: hidden;
 }
 
 #buttons .button.buttonOff, .armyButtons .button.buttonOff {
@@ -908,6 +904,7 @@ html {
 .iconButton {
     cursor: url(/img/game/cursor_pointer.png), pointer;
     text-align: center;
+    display: inline-block;
 }
 
 .iconButton img {
@@ -1128,12 +1125,6 @@ table.treasury td.c {
     border-bottom-right-radius: 5px;
 }
 
-#timerBox .close {
-    top: 8px;
-    border-top-right-radius: 5px;
-    border-bottom-right-radius: 5px;
-}
-
 #playersBox .close {
     left: -23px;
     border-top-left-radius: 5px;
@@ -1154,3 +1145,12 @@ table.treasury td.c {
     border-bottom-left-radius: 5px;
 }
 
+#battleAttack {
+    width: 27px;
+    height: 27px;
+}
+
+#battleDefence {
+    width: 27px;
+    height: 27px;
+}

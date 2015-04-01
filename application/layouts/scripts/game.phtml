@@ -39,14 +39,15 @@
                 <td id="timeLimit2" class="font-yellow"></td>
             </tr>
         </table>
-    </div>
-    <div id="timerBox" class="box">
-        <div class="close">&#x25C0</div>
         <div id="timerScroll">
             <div id="timerRows"></div>
         </div>
     </div>
     <div id="goldBox" class="box">
+        <div id="battleAttack" class="iconButton buttonColors"
+             title="<?php echo $this->translate('Battle attack sequence') ?>">
+            <img src="/img/game/attack_settings.png" alt="<?php echo $this->translate('Battle attack sequence') ?>"/>
+        </div>
         <table>
             <tr>
                 <td id="income" class="button buttonColors">
@@ -63,12 +64,6 @@
                 </td>
             </tr>
         </table>
-    </div>
-    <div id="battleSettingsBox" class="box">
-        <div id="battleAttack" class="iconButton buttonColors"
-             title="<?php echo $this->translate('Battle attack sequence') ?>">
-            <img src="/img/game/attack_settings.png" alt="<?php echo $this->translate('Battle attack sequence') ?>"/>
-        </div>
         <div id="battleDefence" class="iconButton buttonColors"
              title="<?php echo $this->translate('Battle defence sequence') ?>">
             <img src="/img/game/defence_settings.png" alt="<?php echo $this->translate('Battle defence sequence') ?>"/>
@@ -80,18 +75,18 @@
             <span class="Centerer"></span>
             <img src="/img/game/exit.png" alt="<?php echo $this->translate('Exit game') ?>"/>
         </div>
-        <div id="show" class="iconButton buttonColors">
-            <img src="/img/game/show.png" alt="<?php echo $this->translate('Show others') ?>"/>
-        </div>
-        <div id="sound" class="iconButton buttonColors">
-            <img src="/img/game/sound_on.png" alt="<?php echo $this->translate('Sound') ?>"/>
-        </div>
-        <div id="surrender" class="iconButton buttonColors">
-            <img src="/img/game/white_flag.png" alt="<?php echo $this->translate('Surrender') ?>"/>
-        </div>
-        <div id="statistics" class="iconButton buttonColors">
-            <img src="/img/game/statistics.png" alt="<?php echo $this->translate('Statistics') ?>"/>
-        </div>
+<!--        <div id="show" class="iconButton buttonColors">-->
+<!--            <img src="/img/game/show.png" alt="--><?php //echo $this->translate('Show others') ?><!--"/>-->
+<!--        </div>-->
+<!--        <div id="sound" class="iconButton buttonColors">-->
+<!--            <img src="/img/game/sound_on.png" alt="--><?php //echo $this->translate('Sound') ?><!--"/>-->
+<!--        </div>-->
+<!--        <div id="surrender" class="iconButton buttonColors">-->
+<!--            <img src="/img/game/white_flag.png" alt="--><?php //echo $this->translate('Surrender') ?><!--"/>-->
+<!--        </div>-->
+<!--        <div id="statistics" class="iconButton buttonColors">-->
+<!--            <img src="/img/game/statistics.png" alt="--><?php //echo $this->translate('Statistics') ?><!--"/>-->
+<!--        </div>-->
         <div id="playersCanvas"></div>
         <div id="buttons">
             <a id="nextTurn" class="button buttonColors">(e) <?php echo $this->translate('Next turn') ?> &raquo;</a>
