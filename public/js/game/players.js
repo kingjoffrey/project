@@ -198,7 +198,7 @@ var Players = new function () {
                 x: wedges[shortName].x,
                 y: wedges[shortName].y,
                 radius: 5,
-                stroke: '#0f0',
+                stroke: 'grey',
                 fill: 'grey',
                 strokeWidth: 1
             });

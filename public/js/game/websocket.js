@@ -316,6 +316,10 @@ var Websocket = {
                         Players.setOnline(r.color, 0)
                         break;
 
+                    case 'online':
+                        Players.setOnline(r.color, 1)
+                        break;
+
                     case 'chat':
                         Chat.message(r.color, r.msg, makeTime());
                         break;

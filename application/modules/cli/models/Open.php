@@ -45,6 +45,12 @@ class Cli_Model_Open
         $token['bSequence'] = array('attack' => $player->getAttackSequence(), 'defense' => $player->getDefenceSequence());
         $token['type'] = 'open';
 
-        $gameHandler->sendToUser($user, $db, $token, $dataIn['gameId']);
+        $gameHandler->sendToUser($user, $db, $token, $game->getId());
+
+        $token = array(
+            'type' => 'online',
+            'color' => $myColor
+        );
+        $gameHandler->sendToChannel($db, $token, $game->getId());
     }
 }
