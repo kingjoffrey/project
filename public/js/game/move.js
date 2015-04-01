@@ -169,7 +169,12 @@ var Move = new function () {
                                 defenderArmy.deleteHero(heroId)
                             }
                         }
-                        defenderArmies.updateDefenderArmy(armyId)
+                        if (defenderArmy.getNumberOfUnits()) {
+                            defenderArmy.update(defenderArmy)
+                        } else {
+                            defenderArmies.delete(armyId)
+
+                        }
                     }
                 }
                 if (Me.colorEquals(r.color)) {
