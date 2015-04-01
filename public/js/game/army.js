@@ -200,16 +200,13 @@ var Army = function (army, bgColor, miniMapColor, textColor, color) {
         var attack = 0,
             name = null
 
-        if (countProperties(army.heroes)) {
-            return 'hero'
-        } else if (countProperties(army.swim)) {
+        if (countProperties(army.swim)) {
             for (var soldierId in army.swim) {
-                var unit = Units.get(army.swim[soldierId].unitId)
-                if (unit.a > attack) {
-                    attack = unit.a
-                    name = unit.name
-                }
+                name = unit.name
+                break
             }
+        } else if (countProperties(army.heroes)) {
+            return 'hero'
         } else {
             for (var soldierId in army.walk) {
                 var unit = Units.get(army.walk[soldierId].unitId)

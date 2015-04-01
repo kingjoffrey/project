@@ -595,40 +595,34 @@ var Message = {
             }
             $('#unit' + b[i].soldierId + ' .killed').fadeIn(1000, function () {
                 if (Me.colorEquals(r.color)) {
-                    for (var k in Me.getArmy(r.army.id).getWalkingSoldiers()) {
-                        if (Me.getArmy(r.army.id).getWalkingSoldier(k).soldierId == b[i].soldierId) {
-                            Me.costIncrement(-Units[Me.getArmy(r.army.id).getWalkingSoldier(k).unitId].cost)
-                        }
+                    var soldier = Me.getArmy(r.army.id).getWalkingSoldier(b[i].soldierId)
+                    if (isTruthful(soldier)) {
+                        Me.costIncrement(-Units.get(soldier.unitId).cost)
                     }
-                    for (var k in Me.getArmy(r.army.id).getSwimmingSoldiers()) {
-                        if (Me.getArmy(r.army.id).getSwimmingSoldier(k).soldierId == b[i].soldierId) {
-                            Me.costIncrement(-Units[Me.getArmy(r.army.id).getSwimmingSoldier(k).unitId].cost)
-                        }
+                    soldier = Me.getArmy(r.army.id).getFlyingSoldier(b[i].soldierId)
+                    if (isTruthful(soldier)) {
+                        Me.costIncrement(-Units.get(soldier.unitId).cost)
                     }
-                    for (var k in Me.getArmy(r.army.id).getFlyingSoldiers()) {
-                        if (Me.getArmy(r.army.id).getFlyingSoldier(k).soldierId == b[i].soldierId) {
-                            Me.costIncrement(-Units[Me.getArmy(r.army.id).getFlyingSoldier(k).unitId].cost)
-                        }
+                    soldier = Me.getArmy(r.army.id).getSwimmingSoldier(b[i].soldierId)
+                    if (isTruthful(soldier)) {
+                        Me.costIncrement(-Units.get(soldier.unitId).cost)
                     }
                 }
 
                 for (var color in r.defenders) {
                     if (Me.colorEquals(color)) {
                         for (var armyId in r.defenders[color]) {
-                            for (var soldierId in Me.getArmy(armyId).getWalkingSoldiers()) {
-                                if (Me.getArmy().getWalkingSoldier(soldierId).soldierId == b[i].soldierId) {
-                                    Me.costIncrement(-Units[Me.getArmy(armyId).getWalkingSoldier(soldierId).unitId].cost)
-                                }
+                            var soldier = Me.getArmy(armyId).getWalkingSoldier(b[i].soldierId)
+                            if (isTruthful(soldier)) {
+                                Me.costIncrement(-Units.get(soldier.unitId).cost)
                             }
-                            for (var soldierId in Me.getArmy(armyId).getSwimmingSoldiers()) {
-                                if (Me.getArmy().getSwimmingSoldier(soldierId).soldierId == b[i].soldierId) {
-                                    Me.costIncrement(-Units[Me.getArmy(armyId).getSwimmingSoldier(soldierId).unitId].cost)
-                                }
+                            soldier = Me.getArmy(r.army.id).getFlyingSoldier(b[i].soldierId)
+                            if (isTruthful(soldier)) {
+                                Me.costIncrement(-Units.get(soldier.unitId).cost)
                             }
-                            for (var soldierId in Me.getArmy(armyId).getFlyingSoldiers()) {
-                                if (Me.getArmy().getFlyingSoldier(soldierId).soldierId == b[i].soldierId) {
-                                    Me.costIncrement(-Units[Me.getArmy(armyId).getFlyingSoldier(soldierId).unitId].cost)
-                                }
+                            soldier = Me.getArmy(r.army.id).getSwimmingSoldier(b[i].soldierId)
+                            if (isTruthful(soldier)) {
+                                Me.costIncrement(-Units.get(soldier.unitId).cost)
                             }
                         }
                         break;
@@ -636,7 +630,7 @@ var Message = {
                 }
                 delete b[i];
                 Message.kill(b, r, ii);
-            });
+            })
         } else if (isSet(b[i].heroId)) {
             var heroElement = $('#hero' + b[i].heroId)
             if (!heroElement.length) {
