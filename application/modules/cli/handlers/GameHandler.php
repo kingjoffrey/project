@@ -52,8 +52,6 @@ class Cli_GameHandler extends Cli_WofHandler
 
         if ($timeLimit = $game->getTimeLimit()) {
             if (time() - $game->getBegin() > $timeLimit * 600) {
-                $mGame = new Application_Model_Game($gameId, $db);
-                $mGame->endGame();
                 new Cli_Model_SaveResults($gameId, $db, $this);
                 return;
             }
@@ -169,15 +167,16 @@ class Cli_GameHandler extends Cli_WofHandler
             $db = Cli_Model_Database::getDb();
             $gameId = $game->getId();
             $playerId = $user->parameters['me']->getId();
+            $color = $game->getPlayerColor($playerId);
+
+            $game->updateOnline($color, 0);
 
             $mPlayersInGame = new Application_Model_PlayersInGame($gameId, $db);
             $mPlayersInGame->updateWSSUId($playerId, null);
 
-            $playersInGameColors = Zend_Registry::get('playersInGameColors');
-
             $token = array(
                 'type' => 'close',
-                'color' => $playersInGameColors[$playerId]
+                'color' => $color
             );
 
             $this->sendToChannel($db, $token, $gameId);

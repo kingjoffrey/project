@@ -36,6 +36,7 @@ class Cli_Model_Open
 
         $game = Cli_Model_Game::getGame($user);
         $myColor = $game->getPlayerColor($dataIn['playerId']);
+        $game->updateOnline($myColor, 1);
         $user->parameters['me'] = new Cli_Model_Me($myColor, $dataIn['playerId']);
         $player = $game->getPlayers()->getPlayer($myColor);
 

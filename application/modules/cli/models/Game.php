@@ -51,12 +51,7 @@ class Cli_Model_Game
         $mTurnHistory = new Application_Model_TurnHistory($this->_id, $db);
         $this->_turnHistory = $mTurnHistory->getTurnHistory();
 
-        $mPlayersInGame = new Application_Model_PlayersInGame($this->_id, $db);
         $this->_playersInGameColors = Zend_Registry::get('playersInGameColors');
-
-        foreach ($mPlayersInGame->getInGamePlayerIds() as $row) {
-            $this->_online[$this->_playersInGameColors[$row['playerId']]] = 1;
-        }
 
         $mChat = new Application_Model_Chat($this->_id, $db);
         $this->_chatHistory = $mChat->getChatHistory();
@@ -281,6 +276,11 @@ class Cli_Model_Game
     public function updateChatHistory($message, $color)
     {
         $this->_chatHistory[] = array('date' => date('Y-m-d H:i:s', mktime()), 'message' => $message, 'color' => $color);
+    }
+
+    public function updateOnline($color, $value)
+    {
+        $this->_online[$color] = $value;
     }
 
     public function isLoaded()

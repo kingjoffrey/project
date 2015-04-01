@@ -317,7 +317,9 @@ var Websocket = {
                         break;
 
                     case 'online':
-                        Players.setOnline(r.color, 1)
+                        if (!Me.colorEquals(r.color)) {
+                            Players.setOnline(r.color, 1)
+                        }
                         break;
 
                     case 'chat':
