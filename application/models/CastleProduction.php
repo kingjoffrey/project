@@ -18,7 +18,7 @@ class Application_Model_CastleProduction extends Coret_Db_Table_Abstract
     public function getCastleProduction($castleId)
     {
         $select = $this->_db->select()
-            ->from($this->_name)
+            ->from($this->_name, array('time', 'unitId'))
             ->where($this->_db->quoteIdentifier('castleId') . ' = ?', $castleId);
 
         $production = array();

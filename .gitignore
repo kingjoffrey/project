@@ -7,3 +7,4 @@ Zend
 */maps/*.png
 public/img/maps/*
 .idea
+*log/*

@@ -7,10 +7,6 @@ var Zoom = {
         this.gameWidth = $(window).width()
         this.gameHeight = $(window).height()
 
-        document.body.ondragstart = function () {
-            return false;
-        };
-
         map.bind('mousedown', function (e) {
             if (e.pageX > Zoom.smallimage.pos.r || e.pageX < Zoom.smallimage.pos.l || e.pageY < Zoom.smallimage.pos.t || e.pageY > Zoom.smallimage.pos.b) {
                 return false;
