@@ -11,8 +11,12 @@ var Three = new function () {
         hillModel,
         treeModel,
         waterModel,
+        minHeight = 700,
+        minWidth = 960,
+        gameWidth = window.innerWidth,
+        gameHeight = window.innerHeight,
         scene = new THREE.Scene(),
-        camera = new THREE.PerspectiveCamera(22, window.innerWidth / window.innerHeight, 1, 1000),
+        camera,
         renderer = new THREE.WebGLRenderer({antialias: true}),
         pointLight = new THREE.PointLight(0xdddddd),
         theLight = new THREE.DirectionalLight(0xffffff, 1),
@@ -29,15 +33,14 @@ var Three = new function () {
             mesh.position.set(0, 7, 0)
             mesh.rotation.y = -Math.PI / 4
             return mesh
+        },
+        render = function () {
+            setTimeout(function () {
+                requestAnimationFrame(render)
+            }, 100);
+            renderer.render(scene, camera)
         }
 
-    camera.rotation.order = 'YXZ'
-    camera.rotation.y = -Math.PI / 4
-    camera.rotation.x = Math.atan(-1 / Math.sqrt(2))
-    camera.position.set(0, cameraY, 0)
-    camera.scale.addScalar(1)
-
-    renderer.setSize(window.innerWidth, window.innerHeight)
     if (showShadows) {
         renderer.shadowMapEnabled = true
         renderer.shadowMapSoft = false
@@ -427,25 +430,59 @@ var Three = new function () {
     }
 
     this.init = function (fields) {
+        if (gameWidth < minWidth) {
+            gameWidth = minWidth
+        }
+        if (gameHeight < minHeight) {
+            gameHeight = minHeight
+        }
+
+        $('#game')
+            .append(renderer.domElement)
+            .css({
+                width: gameWidth + 'px',
+                height: gameHeight + 'px'
+            }
+        )
+
+        camera = new THREE.PerspectiveCamera(22, gameWidth / gameHeight, 1, 1000)
+        camera.rotation.order = 'YXZ'
+        camera.rotation.y = -Math.PI / 4
+        camera.rotation.x = Math.atan(-1 / Math.sqrt(2))
+        camera.position.set(0, cameraY, 0)
+        camera.scale.addScalar(1)
+        renderer.setSize(gameWidth, gameHeight)
+
         initRuin()
         initTower()
         initCastle()
         initArmy()
         initFields()
-        $('#game').append(renderer.domElement)
         loadGround()
         render()
     }
     this.resize = function () {
-        camera.aspect = window.innerWidth / window.innerHeight
-        //camera.updateProjectionMatrix()
-        renderer.setSize(window.innerWidth, window.innerHeight)
+        gameWidth = window.innerWidth
+        gameHeight = window.innerHeight
+        if (gameWidth < minWidth) {
+            gameWidth = minWidth
+        }
+        if (gameHeight < minHeight) {
+            gameHeight = minHeight
+        }
+        $('#game')
+            .css({
+                width: gameWidth + 'px',
+                height: gameHeight + 'px'
+            }
+        )
+        camera.aspect = gameWidth / gameHeight
+        renderer.setSize(gameWidth, gameHeight)
     }
-
-    var render = function () {
-        setTimeout(function () {
-            requestAnimationFrame(render)
-        }, 100);
-        renderer.render(scene, camera)
+    this.getWidth = function () {
+        return gameWidth
+    }
+    this.getHeight = function () {
+        return gameHeight
     }
 }

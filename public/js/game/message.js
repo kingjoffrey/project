@@ -32,8 +32,8 @@ var Message = {
         return id
     },
     adjust: function (id) {
-        var maxHeight = Zoom.gameHeight - 140,
-            maxWidth = Zoom.gameWidth - 480
+        var maxHeight = Three.getHeight() - 140,
+            maxWidth = Three.getWidth() - 480
 
         if (isSet(id)) {
             if (maxHeight < parseInt($('#' + id).css('min-height'))) {
@@ -48,7 +48,7 @@ var Message = {
                 'max-height': maxHeight + 'px'
             })
 
-            var left = Zoom.gameWidth / 2 - $('#' + id).outerWidth() / 2
+            var left = Three.getWidth() / 2 - $('#' + id).outerWidth() / 2
 
             if (left < $('#mapBox').width() + 30) {
                 left = $('#mapBox').width() + 30
@@ -70,7 +70,7 @@ var Message = {
                 'max-height': maxHeight + 'px'
             })
 
-            var left = Zoom.gameWidth / 2 - $('.message').outerWidth() / 2;
+            var left = Three.getWidth() / 2 - $('.message').outerWidth() / 2;
 
             if (left < $('#mapBox').width() + 30) {
                 left = $('#mapBox').width() + 30

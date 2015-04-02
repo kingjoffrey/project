@@ -143,7 +143,7 @@ var Me = new function () {
         for (var soldierId in army.getSwimmingSoldiers()) {
             unitsBox.append($('<img>').attr('src', Unit.getImage(army.getSwimmingSoldier(soldierId).unitId, Me.getColor())))
         }
-        $('#armyBox').css({left: Zoom.gameWidth / 2 - $('#armyBox').width() / 2 + 'px'})
+        $('#armyBox').css({left: Three.getWidth() / 2 - $('#armyBox').width() / 2 + 'px'})
 
         selectedArmyId = armyId
         Three.addArmyCircle(army.getX(), army.getY())

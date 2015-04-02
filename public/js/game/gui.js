@@ -8,8 +8,6 @@ var Gui = new function () {
         mapBox = {close: 0},
         speed = 200,
         documentTitle = 'WoF',
-        minHeight = 700,
-        minWidth = 960,
         changeCloseArrowLR = function (move, el) {
             if (move > 0) {
                 $(el).html('&#x25C0');
@@ -94,11 +92,9 @@ var Gui = new function () {
                 doKey(event)
             })
             .on('contextmenu', function () {
-                console.log('ccc')
                 return false
             })
             .on('dragstart', function () {
-                console.log('ddd')
                 return false
             })
         $('#game canvas').mousewheel(function (event) {
@@ -343,19 +339,6 @@ var Gui = new function () {
         limitBox.close = 0
         mapBox.close = 0
 
-        if (Zoom.gameWidth < minWidth) {
-            Zoom.gameWidth = minWidth
-        }
-        if (Zoom.gameHeight < minHeight) {
-            Zoom.gameHeight = minHeight
-        }
-
-        $('#game').css({
-                width: Zoom.gameWidth + 'px',
-                height: Zoom.gameHeight + 'px'
-            }
-        )
-
         Three.resize()
 
         var mapBoxHeight = parseInt($('#mapImage').css('height'))
@@ -366,8 +349,8 @@ var Gui = new function () {
         });
 
         if (Players.countHumans() > 1) {
-            var chatLeft = Zoom.gameWidth - $('#chatBox').width(),
-                chatTop = Zoom.gameHeight - $('#chatBox').height() - 5
+            var chatLeft = Three.getWidth() - $('#chatBox').width(),
+                chatTop = Three.getHeight() - $('#chatBox').height() - 5
 
             $('#chatBox').css({
                 'left': chatLeft + 'px',
@@ -377,13 +360,13 @@ var Gui = new function () {
             $('#chatBox').css({display: 'none'});
         }
 
-        var goldBoxLeft = Zoom.gameWidth / 2 - $('#goldBox').outerWidth() / 2
+        var goldBoxLeft = Three.getWidth() / 2 - $('#goldBox').outerWidth() / 2
 
         $('#goldBox').css({
             'left': goldBoxLeft + 'px'
         })
 
-        var left = Zoom.gameWidth - $('#playersBox').width();
+        var left = Three.getWidth() - $('#playersBox').width();
 
         $('#playersBox').css({
             'left': left + 'px'
@@ -393,8 +376,8 @@ var Gui = new function () {
             'left': left + 'px'
         })
         $('#armyBox').css({
-            top: Zoom.gameHeight - 34 + 'px',
-            'left': Zoom.gameWidth / 2 - 115 + 'px'
+            top: Three.getHeight() - 34 + 'px',
+            'left': Three.getWidth() / 2 - 115 + 'px'
         })
 
         $('#terrain').css('top', mapBoxHeight + 12 + 'px');
