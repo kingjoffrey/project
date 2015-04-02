@@ -73,11 +73,11 @@ var CastleWindow = new function () {
                     .addClass('img'))
                 .append($('<div>')
                     .addClass('attributes')
-                    .append($('<p>').html(translations.productionTime + ':&nbsp;' + time + '<span>' + castle.getProduction()[unitId].time + '</span>&nbsp;' + translations.turn))
-                    .append($('<p>').html(translations.costOfLiving + ':&nbsp;' + '<span>' + unit.cost + '</span>&nbsp;' + translations.gold + '/' + translations.turn))
-                    .append($('<p>').html(translations.movementPoints + ':&nbsp;' + '<span>' + unit.moves + '</span>'))
-                    .append($('<p>').html(translations.attackPoints + ':&nbsp;' + '<span>' + unit.a + '</span>'))
-                    .append($('<p>').html(translations.defencePoints + ':&nbsp;' + '<span>' + unit.d + '</span>')))
+                    .append($('<p>').html(translations.productionTime + ': ' + time + '<span>' + castle.getProduction()[unitId].time + '</span>&nbsp;' + translations.turn))
+                    .append($('<p>').html(translations.costOfLiving + ': ' + '<span>' + unit.cost + '</span>&nbsp;' + translations.gold + '/' + translations.turn))
+                    .append($('<p>').html(translations.movementPoints + ': ' + '<span>' + unit.moves + '</span>'))
+                    .append($('<p>').html(translations.attackPoints + ': ' + '<span>' + unit.a + '</span>'))
+                    .append($('<p>').html(translations.defencePoints + ': ' + '<span>' + unit.d + '</span>')))
             j++;
         }
         var k = Math.ceil(j / 2);

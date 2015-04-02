@@ -3,7 +3,7 @@ var Message = {
     x: 0,
     y: 0,
     element: function () {
-        return $('#goldBox');
+        return $('#goldBox')
     },
     remove: function (id) {
         if (isSet(id)) {
@@ -32,57 +32,62 @@ var Message = {
         return id
     },
     adjust: function (id) {
+        var maxHeight = Zoom.gameHeight - 140,
+            maxWidth = Zoom.gameWidth - 480
+
         if (isSet(id)) {
-            var maxHeight = Zoom.gameHeight - 140
             if (maxHeight < parseInt($('#' + id).css('min-height'))) {
                 maxHeight = parseInt($('#' + id).css('min-height'))
             }
-            var maxWidth = Zoom.gameWidth - 600
             if (maxWidth < parseInt($('#' + id).css('min-width'))) {
                 maxWidth = parseInt($('#' + id).css('min-width'))
             }
-            $('#' + id)
-                .css({
-                    'max-width': maxWidth + 'px',
-                    'max-height': maxHeight + 'px'
-                })
-//                .jScrollPane()
-            var left = Zoom.gameWidth / 2 - $('#' + id).outerWidth() / 2;
-            $('#' + id)
-                .css({
-                    left: left + 'px'
-                })
+
+            $('#' + id).css({
+                'max-width': maxWidth + 'px',
+                'max-height': maxHeight + 'px'
+            })
+
+            var left = Zoom.gameWidth / 2 - $('#' + id).outerWidth() / 2
+
+            if (left < $('#mapBox').width() + 30) {
+                left = $('#mapBox').width() + 30
+            }
+
+            $('#' + id).css({
+                left: left + 'px'
+            })
         } else if ($('.message').length) {
-            var maxHeight = Zoom.gameHeight - 140
             if (maxHeight < parseInt($('.message').css('min-height'))) {
-                console.log(maxHeight)
                 maxHeight = parseInt($('.message').css('min-height'))
             }
-            var maxWidth = Zoom.gameWidth - 600
             if (maxWidth < parseInt($('.message').css('min-width'))) {
                 maxWidth = parseInt($('.message').css('min-width'))
             }
-            $('.message')
-                .css({
-                    'max-width': maxWidth + 'px',
-                    'max-height': maxHeight + 'px'
-                })
-//                .jScrollPane()
-            $('.message')
+
+            $('.message').css({
+                'max-width': maxWidth + 'px',
+                'max-height': maxHeight + 'px'
+            })
+
             var left = Zoom.gameWidth / 2 - $('.message').outerWidth() / 2;
-            $('.message')
-                .css({
-                    left: left + 'px'
-                })
+
+            if (left < $('#mapBox').width() + 30) {
+                left = $('#mapBox').width() + 30
+            }
+
+            $('.message').css({
+                left: left + 'px'
+            })
         }
     },
     setOverflowHeight: function (id) {
-        var minus = 65
+        var minus = 0
         if (isSet(id)) {
-            var height = parseInt($('#' + id).css('height')) - minus;
+            var height = $('#' + id).height() - minus;
             $('#' + id + ' div.overflow').css('height', height + 'px')
         } else {
-            var height = parseInt($('.message').css('height')) - minus;
+            var height = $('.message').height() - minus;
             $('.message' + ' div.overflow').css('height', height + 'px')
         }
         if (Me.isSelected()) {
