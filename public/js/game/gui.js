@@ -202,7 +202,7 @@ var Gui = new function () {
                 return
             }
 
-            Message.split()
+            SplitWindow.show()
         })
 
         $('#armyStatus').click(function () {
