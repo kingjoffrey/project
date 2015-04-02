@@ -1,11 +1,11 @@
 var Gui = new function () {
     var lock = true,
         show = true,
-        commandsBox = {'close': 0},
-        chatBox = {'close': 0},
-        playerBox = {'close': 0},
-        limitBox = {'close': 0},
-        mapBox = {'close': 0},
+        commandsBox = {close: 0},
+        chatBox = {close: 0},
+        playerBox = {close: 0},
+        limitBox = {close: 0},
+        mapBox = {close: 0},
         speed = 200,
         documentTitle = 'WoF',
         minHeight = 700,
@@ -266,86 +266,72 @@ var Gui = new function () {
             var left = parseInt($('#mapBox').css('left')),
                 move = -$('#mapBox').width()
 
-            mapBox['el'] = this;
+            mapBox.el = this;
 
-            if (mapBox['close']) {
+            if (mapBox.close) {
                 move = -move;
             }
 
-            mapBox['move'] = move;
+            mapBox.move = move;
 
             $('#mapBox').animate({'left': left + move + 'px'}, speed, function () {
-                mapBox['close'] = !mapBox['close'];
-                changeCloseArrowLR(mapBox['move'], mapBox['el']);
+                mapBox.close = !mapBox.close;
+                changeCloseArrowLR(mapBox.move, mapBox.el);
             });
         });
         $('#limitBox .close').click(function () {
             var left = parseInt($('#limitBox').css('left')),
                 move = -$('#limitBox').width()
 
-            limitBox['el'] = this;
+            limitBox.el = this;
 
-            if (limitBox['close']) {
+            if (limitBox.close) {
                 move = -move;
             }
 
-            limitBox['move'] = move;
+            limitBox.move = move;
 
             $('#limitBox').animate({'left': left + move + 'px'}, speed, function () {
-                limitBox['close'] = !limitBox['close'];
-                changeCloseArrowLR(limitBox['move'], limitBox['el']);
+                limitBox.close = !limitBox.close;
+                changeCloseArrowLR(limitBox.move, limitBox.el);
             });
         });
         $('#playersBox .close').click(function () {
             var left = parseInt($('#playersBox').css('left')),
                 move = $('#playersBox').width()
 
-            playerBox['el'] = this;
+            playerBox.el = this;
 
-            if (playerBox['close']) {
+            if (playerBox.close) {
                 move = -move;
             }
 
-            playerBox['move'] = move;
+            playerBox.move = move;
 
             $('#playersBox').animate({'left': left + move + 'px'}, speed, function () {
-                playerBox['close'] = !playerBox['close'];
-                changeCloseArrowLR(playerBox['move'], playerBox['el']);
-            });
-        });
-        $('#chatBox .close').click(function () {
-            var left = parseInt($('#chatBox').css('left')),
-                move = $('#chatBox').width()
-
-            chatBox['el'] = this;
-
-            if (chatBox['close']) {
-                move = -move;
-            }
-
-            chatBox['move'] = move;
-
-            $('#chatBox').animate({'left': left + move + 'px'}, speed, function () {
-                chatBox['close'] = !chatBox['close'];
-                changeCloseArrowLR(chatBox['move'], chatBox['el']);
+                playerBox.close = !playerBox.close;
+                changeCloseArrowLR(playerBox.move, playerBox.el);
             });
         });
         $('#commandsBox .close').click(function () {
             var left = parseInt($('#commandsBox').css('left')),
                 move = $('#commandsBox').width()
 
-            commandsBox['el'] = this;
+            commandsBox.el = this;
 
-            if (commandsBox['close']) {
+            if (commandsBox.close) {
                 move = -move;
             }
 
-            commandsBox['move'] = move;
+            commandsBox.move = move;
 
-            $('#commandsBox').animate({'left': left + commandsBox['move'] + 'px'}, speed, function () {
-                commandsBox['close'] = !commandsBox['close'];
-                changeCloseArrowLR(commandsBox['move'], commandsBox['el']);
+            $('#commandsBox').animate({'left': left + commandsBox.move + 'px'}, speed, function () {
+                commandsBox.close = !commandsBox.close;
+                changeCloseArrowLR(commandsBox.move, commandsBox.el);
             });
+        })
+        $('#chatBox .close').click(function () {
+            Gui.moveChatBox()
         });
     }
     this.adjust = function () {
@@ -450,5 +436,28 @@ var Gui = new function () {
     }
     this.getShow = function () {
         return show
+    }
+    this.isChatBoxClosed = function () {
+        return chatBox.close
+    }
+    this.moveChatBox = function (func) {
+        var left = parseInt($('#chatBox').css('left')),
+            move = $('#chatBox').width()
+
+        chatBox.el = $('#chatBox .close')
+
+        if (chatBox.close) {
+            move = -move;
+        }
+
+        chatBox.move = move;
+
+        $('#chatBox').animate({'left': left + move + 'px'}, speed, function () {
+            chatBox.close = !chatBox.close
+            changeCloseArrowLR(chatBox.move, chatBox.el)
+            if (isSet(func)) {
+                func()
+            }
+        });
     }
 }

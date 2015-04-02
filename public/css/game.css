@@ -191,27 +191,27 @@
 }
 
 /*#exit.iconButton {*/
-    /*top: 4px;*/
+/*top: 4px;*/
 /*}*/
 
 /*#show.iconButton {*/
-    /*top: 41px;*/
+/*top: 41px;*/
 /*}*/
 
 /*#show img {*/
-    /*margin-top: 5px;*/
+/*margin-top: 5px;*/
 /*}*/
 
 /*#sound.iconButton {*/
-    /*top: 78px;*/
+/*top: 78px;*/
 /*}*/
 
 /*#surrender.iconButton {*/
-    /*top: 115px;*/
+/*top: 115px;*/
 /*}*/
 
 /*#statistics.iconButton {*/
-    /*top: 152px;*/
+/*top: 152px;*/
 /*}*/
 
 #turn {
@@ -266,9 +266,9 @@
 }
 
 .message div.overflow {
-    overflow: hidden;
-    overflow-y: auto;
-    padding: 0 17px 0 17px;
+    overflow: auto;
+    /*overflow-y: auto;*/
+    padding: 0 17px;
 }
 
 .message div.simple {
@@ -574,7 +574,7 @@
 }
 
 #chatBox {
-    width: 496px;
+    width: 360px;
     border-top-left-radius: 10px;
     text-transform: none;
 }
@@ -624,7 +624,7 @@
 }
 
 #chatBox input {
-    width: 382px;
+    width: 288px;
     border: 1px solid #000;
     border-radius: 5px;
     padding: 6px;
@@ -639,12 +639,7 @@
 
 #chatBox #send {
     margin-left: 2px;
-}
-
-#chatBox .button {
-    margin: 0;
-    padding: 0;
-    width: 92px;
+    padding: 0 5px;
     line-height: 27px;
 }
 

@@ -20,6 +20,10 @@ var Chat = new function () {
                 div = $('<img>').attr('src', Hero.getImage(color)).add(div)
             }
             chatContent.append($('<div>').css({'text-align': align}).append(div).addClass('chatCloudContainer'))
+        },
+        showMsg = function () {
+            $('#chatWindow').animate({scrollTop: $('#chatWindow #chatContent')[0].scrollHeight}, 'fast')
+            $('#msg').focus()
         }
 
     this.init = function (chatHistory) {
@@ -30,11 +34,14 @@ var Chat = new function () {
         $('#chatWindow').animate({scrollTop: $('#chatWindow div')[0].scrollHeight}, 1000)
     }
     this.message = function (color, msg, time) {
+        renderChatCloud(time, msg, color)
+        if (Gui.isChatBoxClosed()) {
+            Gui.moveChatBox(showMsg)
+        } else {
+            showMsg()
+        }
         if (!Me.colorEquals(color)) {
             titleBlink('Incoming chat!')
         }
-        renderChatCloud(time, msg, color)
-        $('#chatWindow').animate({scrollTop: $('#chatWindow #chatContent')[0].scrollHeight}, 'fast')
-        $('#msg').focus()
     }
 }
