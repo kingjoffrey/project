@@ -179,9 +179,10 @@
 }
 
 #playersBox .iconButton {
-    width: 32px;
+    width: 30px;
     line-height: 32px;
     height: 32px;
+    display: inline-flex;
 }
 
 #playersLabel {
@@ -189,29 +190,29 @@
     font-size: 20px;
 }
 
-#exit.iconButton {
-    top: 4px;
-}
+/*#exit.iconButton {*/
+    /*top: 4px;*/
+/*}*/
 
-#show.iconButton {
-    top: 41px;
-}
+/*#show.iconButton {*/
+    /*top: 41px;*/
+/*}*/
 
-#show img {
-    margin-top: 5px;
-}
+/*#show img {*/
+    /*margin-top: 5px;*/
+/*}*/
 
-#sound.iconButton {
-    top: 78px;
-}
+/*#sound.iconButton {*/
+    /*top: 78px;*/
+/*}*/
 
-#surrender.iconButton {
-    top: 115px;
-}
+/*#surrender.iconButton {*/
+    /*top: 115px;*/
+/*}*/
 
-#statistics.iconButton {
-    top: 152px;
-}
+/*#statistics.iconButton {*/
+    /*top: 152px;*/
+/*}*/
 
 #turn {
     width: 80px;
@@ -279,6 +280,7 @@
 }
 
 .message div.showCastle .button {
+    line-height: 28px;
     margin: 2px
 }
 
@@ -898,6 +900,7 @@ html {
 .iconButton img {
     display: inline-block;
     vertical-align: middle;
+    margin: 0 auto;
 }
 
 .iconButton .Centerer {
@@ -1032,7 +1035,6 @@ table.statistics td.shortName {
 }
 
 table.treasury {
-    width: 250px;
     margin: 0 auto;
     text-shadow: none;
 }
@@ -1040,8 +1042,10 @@ table.treasury {
 table.treasury td {
     border: 1px solid gray;
     background: #000;
+    color: #D7DAA4;
     border-radius: 0;
-    padding: 0 5px;
+    padding: 5px;
+    height: 23px;
 }
 
 table.treasury tr:first-of-type td:first-of-type {

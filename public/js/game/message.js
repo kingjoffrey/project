@@ -717,7 +717,12 @@ var Message = {
                 numberOfCastlesHeld = player.getCastles().count(),
                 backgroundColor = player.getBackgroundColor()
 
-            tr.append($('<td>').addClass('shortName').html($('<img>').attr('src', Hero.getImage(color))))
+            if (color == 'neutral') {
+                var scr = Unit.getImage(Game.getFirstUnitId(), color)
+            } else {
+                var scr = Hero.getImage(color)
+            }
+            tr.append($('<td>').addClass('shortName').html($('<img>').attr('src', scr)))
 
             var td = $('<td>').addClass('shortName');
             tr.append(td.html(player.getLongName()))
@@ -844,42 +849,31 @@ var Message = {
 
         var div = $('<div>')
             .addClass('overflow')
-            .append(
-            $('<table>')
+            .append($('<h3>').html(translations.income + ':'))
+            .append($('<table>')
                 .addClass('treasury')
-                .append(
-                $('<tr>')
+                .append($('<tr>')
                     .append($('<td>').html(myTowers).addClass('r'))
                     .append($('<td>').html(translations.towers).addClass('c'))
-                    .append($('<td>').html(myTowers * 5 + ' ' + translations.gold).addClass('r'))
-            )
-                .append(
-                $('<tr>')
+                    .append($('<td>').html(myTowers * 5 + ' ' + translations.gold).addClass('r')))
+                .append($('<tr>')
                     .append($('<td>').html(myCastles).addClass('r'))
                     .append($('<td>').html(translations.castles).addClass('c'))
-                    .append($('<td>').html(myCastlesIncome + ' ' + translations.gold).addClass('r'))
-            )
-                .append(
-                $('<tr>')
+                    .append($('<td>').html(myCastlesIncome + ' ' + translations.gold).addClass('r')))
+                .append($('<tr>')
                     .append($('<td>'))
                     .append($('<td>'))
-                    .append($('<td>').html(myTowers * 5 + myCastlesIncome + ' ' + translations.gold).addClass('r'))
-            )
-        )
-            .append($('<h3>').html(translations.upkeep))
-            .append(
-            $('<table>')
+                    .append($('<td>').html(myTowers * 5 + myCastlesIncome + ' ' + translations.gold).addClass('r'))))
+            .append($('<h3>').html('<br>' + translations.upkeep + ':'))
+            .append($('<table>')
                 .addClass('treasury')
-                .append(
-                $('<tr>')
+                .append($('<tr>')
                     .append($('<td>').html(myUnits).addClass('r'))
                     .append($('<td>').html(translations.units).addClass('c'))
-                    .append($('<td>').html(myUnitsOutcome + ' ' + translations.gold).addClass('r'))
-            )
-        )
-            .append($('<h3>').html(translations.summation))
+                    .append($('<td>').html(myUnitsOutcome + ' ' + translations.gold).addClass('r'))))
+            .append($('<h3>').html('<br>' + translations.profit + ':'))
             .append($('<div>').html(myTowers * 5 + myCastlesIncome - myUnitsOutcome + ' ' + translations.goldPerTurn))
-        var id = this.show(translations.income, div);
+        var id = this.show(translations.treasury, div);
         this.ok(id)
     },
     income: function () {
