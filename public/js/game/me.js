@@ -344,9 +344,20 @@ var Me = new function () {
         Sound.play('slash')
         this.selectArmy(armyId, 0)
     }
+    this.findFirst = function () {
+        if (Me.getArmies().count()) {
+            Me.findNext()
+        }
+    }
     this.turnOn = function () {
         this.resetSkippedArmies()
-        Message.turn()
+        if (Turn.isMy() && Turn.getNumber() == 1 && !this.getCastle(this.getFirsCastleId()).getProductionId()) {
+            CastleWindow.show(this.getCastle(this.getFirsCastleId()))
+        } else {
+            Players.showFirst(color)
+            var id = Message.show(translations.yourTurn, translations.thisIsYourTurnNow)
+            Message.ok(id, Me.findFirst)
+        }
         Gui.unlock()
         titleBlink('Your turn!')
         if (!Hero.findMy()) {
@@ -354,11 +365,6 @@ var Me = new function () {
         }
         if (gold > 1000) {
             $('#heroHire').removeClass('buttonOff')
-        }
-
-        Players.showFirst(color)
-        if (Me.getArmies().count()) {
-            this.findNext()
         }
     }
     this.turnOff = function () {

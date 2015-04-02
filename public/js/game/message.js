@@ -137,13 +137,6 @@ var Message = {
         this.ok(id, Websocket.surrender);
         this.cancel(id)
     },
-    turn: function () {
-        if (Turn.isMy() && Turn.getNumber() == 1 && !Me.getCastle(Me.getFirsCastleId()).getProductionId()) {
-            CastleWindow.show(Me.getCastle(Me.getFirsCastleId()))
-        } else {
-            var id = this.simple(translations.yourTurn, translations.thisIsYourTurnNow)
-        }
-    },
     nextTurn: function () {
         var id = this.show(translations.nextTurn, $('<div>').html(translations.areYouSure))
         this.ok(id, Websocket.nextTurn);
