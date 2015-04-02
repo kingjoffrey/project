@@ -8,7 +8,6 @@ var Gui = new function () {
         mapBox = {'close': 0},
         speed = 200,
         documentTitle = 'WoF',
-        leftMenuWidth = 220,
         minHeight = 700,
         minWidth = 960,
         changeCloseArrowLR = function (move, el) {
@@ -24,19 +23,82 @@ var Gui = new function () {
             } else {
                 $(el).html('&#x25B7');
             }
+        },
+        doKey = function (event) {
+            if ($(event.target).attr('id') == 'msg') {
+                return;
+            }
+            var key = event.keyCode || event.charCode;
+            switch (key) {
+                case 27: //ESC
+                    Message.remove();
+                    Me.deselectArmy()
+                    break;
+                case 37://left
+                    Three.getCamera().position.x += -0.5
+                    Three.getCamera().position.z += -0.5
+                    break;
+                case 38://up
+                    Three.getCamera().position.x += 0.5
+                    Three.getCamera().position.z += -0.5
+                    break;
+                case 39://right
+                    Three.getCamera().position.x += 0.5
+                    Three.getCamera().position.z += 0.5
+                    break;
+                case 40://down
+                    Three.getCamera().position.x += -0.5
+                    Three.getCamera().position.z += 0.5
+                    break;
+                case 66: //b
+                    Message.build()
+                    break;
+                case 67: //c
+                    Castle.show();
+                    break;
+                case 68: //d
+                    Message.disband();
+                    break;
+                case 69: //e
+                    Message.nextTurn();
+                    break;
+                case 70: //f
+                    Websocket.fortify()
+                    break;
+                case 78: //n
+                    Me.findNext()
+                    break;
+                case 79: //o
+                    $('.message .go').click()
+                    break;
+                case 81: //q
+                    Me.skip()
+                    break;
+                case 82: //r
+                    Websocket.ruin()
+                    break;
+                case 83: //s
+                    Message.armyStatus()
+                    break;
+//            default:
+//                console.log(key)
+            }
         }
-
 
     this.init = function () {
         $(window).resize(function () {
             Gui.adjust()
         })
         $('body')
-            .keydown(Gui.doKey(arguments[0] || window.event))
+            .keydown(function (event) {
+                doKey(event)
+            })
             .on('contextmenu', function () {
+                console.log('ccc')
                 return false
             })
             .on('dragstart', function () {
+                console.log('ddd')
                 return false
             })
         $('#game canvas').mousewheel(function (event) {
@@ -59,66 +121,6 @@ var Gui = new function () {
         this.prepareButtons()
         this.prepareBoxes()
         this.adjust()
-    }
-    this.doKey = function (event) {
-        if ($(event.target).attr('id') == 'msg') {
-            return;
-        }
-        var key = event.keyCode || event.charCode;
-        switch (key) {
-            case 27: //ESC
-                Message.remove();
-                Me.deselectArmy()
-                break;
-            case 37://left
-                Three.getCamera().position.x += -0.5
-                Three.getCamera().position.z += -0.5
-                break;
-            case 38://up
-                Three.getCamera().position.x += 0.5
-                Three.getCamera().position.z += -0.5
-                break;
-            case 39://right
-                Three.getCamera().position.x += 0.5
-                Three.getCamera().position.z += 0.5
-                break;
-            case 40://down
-                Three.getCamera().position.x += -0.5
-                Three.getCamera().position.z += 0.5
-                break;
-            case 66: //b
-                Message.build()
-                break;
-            case 67: //c
-                Castle.show();
-                break;
-            case 68: //d
-                Message.disband();
-                break;
-            case 69: //e
-                Message.nextTurn();
-                break;
-            case 70: //f
-                Websocket.fortify()
-                break;
-            case 78: //n
-                Me.findNext()
-                break;
-            case 79: //o
-                $('.message .go').click()
-                break;
-            case 81: //q
-                Me.skip()
-                break;
-            case 82: //r
-                Websocket.ruin()
-                break;
-            case 83: //s
-                Message.armyStatus()
-                break;
-//            default:
-//                console.log(key)
-        }
     }
     this.prepareButtons = function () {
         $('#gold').click(function () {

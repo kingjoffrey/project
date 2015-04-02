@@ -40,7 +40,7 @@ var Three = new function () {
     renderer.setSize(window.innerWidth, window.innerHeight)
     if (showShadows) {
         renderer.shadowMapEnabled = true
-        renderer.shadowMapSoft = true
+        renderer.shadowMapSoft = false
     }
 
     pointLight.position.set(-100000, 100000, 100000);
