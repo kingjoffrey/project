@@ -76,7 +76,7 @@ var Move = new function () {
         } else {
             if (isTruthful(r.battle) && (!player.isComputer() || Gui.getShow())) {
                 Sound.play('fight');
-                Message.battle(r, ii)
+                BattleWindow.battle(r, ii)
             } else {
                 Move.end(r, ii)
             }

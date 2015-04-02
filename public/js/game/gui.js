@@ -76,7 +76,7 @@ var Gui = new function () {
                     Websocket.ruin()
                     break;
                 case 83: //s
-                    Message.armyStatus()
+                    StatusWindow.show()
                     break;
 //            default:
 //                console.log(key)
@@ -120,15 +120,15 @@ var Gui = new function () {
     }
     this.prepareButtons = function () {
         $('#gold').click(function () {
-            Message.treasury()
+            TreasuryWindow.treasury()
         })
 
         $('#income').click(function () {
-            Message.income()
+            TreasuryWindow.income()
         })
 
         $('#costs').click(function () {
-            Message.upkeep()
+            TreasuryWindow.upkeep()
         })
 
         $('#battleAttack').click(function () {
@@ -210,7 +210,7 @@ var Gui = new function () {
                 return
             }
 
-            Message.armyStatus()
+            StatusWindow.show()
         });
 
         $('#disbandArmy').click(function () {

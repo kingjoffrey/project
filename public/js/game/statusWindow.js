@@ -1,4 +1,64 @@
 var StatusWindow = new function () {
+    var statusContent = function (numberOfUnits, soldier, color, attackFlyBonus, attackHeroBonus, defenseFlyBonus, defenseHeroBonus, defenseTowerBonus, defenseCastleBonus) {
+        return $('<div>')
+            .addClass('row')
+            .append($('<div>')
+                .addClass('rowContent')
+                .append($('<div>').addClass('nr').html(numberOfUnits))
+                .append($('<div>').addClass('img').html(
+                    $('<img>').attr({
+                        'src': Unit.getImage(soldier.unitId, color),
+                        'id': 'unit' + soldier.soldierId
+                    })
+                ))
+                .append($('<table>')
+                    .addClass('leftTable')
+                    .append($('<tr>')
+                        .append($('<td>').html(translations.currentMoves + ': '))
+                        .append($('<td>').html(soldier.movesLeft).addClass('value'))
+                )
+                    .append($('<tr>')
+                        .append($('<td>').html(translations.defaultMoves + ': '))
+                        .append($('<td>').html(Units.get(soldier.unitId).moves).addClass('value'))
+                )
+                    .append($('<tr>')
+                        .append($('<td>').html(translations.attackPoints + ': '))
+                        .append($('<td>')
+                            .append($('<div>').html(Units.get(soldier.unitId).a))
+                            .append(attackFlyBonus.clone())
+                            .append(attackHeroBonus.clone())
+                            .addClass('value')
+                    )
+                )
+                    .append($('<tr>')
+                        .append($('<td>').html(translations.defencePoints + ': '))
+                        .append($('<td>')
+                            .append($('<div>').html(Units.get(soldier.unitId).d))
+                            .append(defenseFlyBonus.clone())
+                            .append(defenseHeroBonus.clone())
+                            .append(defenseTowerBonus.clone())
+                            .append(defenseCastleBonus.clone())
+                            .addClass('value')
+                    )
+                )
+            )
+                .append($('<table>')
+                    .addClass('rightTable')
+                    .append($('<tr>')
+                        .append($('<td>').html(translations.movementCostThroughTheForest + ': '))
+                        .append($('<td>').html(Units.get(soldier.unitId).f).addClass('value'))
+                )
+                    .append($('<tr>')
+                        .append($('<td>').html(translations.movementCostThroughTheSwamp + ': '))
+                        .append($('<p>').html(Units.get(soldier.unitId).s).addClass('value')))
+                    .append($('<tr>')
+                        .append($('<td>').html(translations.movementCostThroughTheHills + ': '))
+                        .append($('<p>').html(Units.get(soldier.unitId).h).addClass('value'))
+                )
+            )
+        )
+    }
+
     this.show = function () {
         var div = $('<div>').addClass('status'),
             numberOfUnits = 0,
@@ -42,15 +102,15 @@ var StatusWindow = new function () {
 
         for (var i in army.getWalkingSoldiers()) {
             numberOfUnits++
-            div.append(this.statusContent(numberOfUnits, army.getWalkingSoldier(i), color, attackFlyBonus, attackHeroBonus, defenseFlyBonus, defenseHeroBonus, defenseTowerBonus, defenseCastleBonus));
+            div.append(statusContent(numberOfUnits, army.getWalkingSoldier(i), color, attackFlyBonus, attackHeroBonus, defenseFlyBonus, defenseHeroBonus, defenseTowerBonus, defenseCastleBonus));
         }
         for (var i in army.getSwimmingSoldiers()) {
             numberOfUnits++
-            div.append(this.statusContent(numberOfUnits, army.getSwimmingSoldier(i), color, attackFlyBonus, attackHeroBonus, defenseFlyBonus, defenseHeroBonus, defenseTowerBonus, defenseCastleBonus));
+            div.append(statusContent(numberOfUnits, army.getSwimmingSoldier(i), color, attackFlyBonus, attackHeroBonus, defenseFlyBonus, defenseHeroBonus, defenseTowerBonus, defenseCastleBonus));
         }
         for (var i in army.getFlyingSoldiers()) {
             numberOfUnits++
-            div.append(this.statusContent(numberOfUnits, army.getFlyingSoldier(i), color, attackFlyBonus, attackHeroBonus, defenseFlyBonus, defenseHeroBonus, defenseTowerBonus, defenseCastleBonus));
+            div.append(statusContent(numberOfUnits, army.getFlyingSoldier(i), color, attackFlyBonus, attackHeroBonus, defenseFlyBonus, defenseHeroBonus, defenseTowerBonus, defenseCastleBonus));
         }
         for (var i in army.getHeroes()) {
             numberOfUnits++
@@ -112,7 +172,6 @@ var StatusWindow = new function () {
             );
         }
 
-        var id = this.show(translations.armyStatus, div);
-        this.ok(id)
+        Message.simple(translations.armyStatus, div);
     }
 }
