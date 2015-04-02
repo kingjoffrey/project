@@ -55,6 +55,7 @@ class GameController extends Game_Controller_Game
         $this->view->headScript()->appendFile('/js/game/statusWindow.js?v=' . Zend_Registry::get('config')->version);
         $this->view->headScript()->appendFile('/js/game/battleWindow.js?v=' . Zend_Registry::get('config')->version);
         $this->view->headScript()->appendFile('/js/game/treasuryWindow.js?v=' . Zend_Registry::get('config')->version);
+        $this->view->headScript()->appendFile('/js/game/statisticsWindow.js?v=' . Zend_Registry::get('config')->version);
 
         $this->view->sound();
         $this->view->models();

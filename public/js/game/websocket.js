@@ -343,7 +343,7 @@ var Websocket = {
                         break
 
                     case 'statistics':
-                        Message.statistics(r);
+                        StatisticsWindow.show(r)
                         break;
 
                     case 'bSequence':
