@@ -29,7 +29,6 @@ var Gui = new function () {
 
     this.init = function () {
         $(window).resize(function () {
-            console.log('aaa')
             Gui.adjust()
         })
         $('body')
@@ -40,10 +39,6 @@ var Gui = new function () {
             .on('dragstart', function () {
                 return false
             })
-
-        this.prepareButtons()
-        this.prepareBoxes()
-        this.adjust()
         $('#game canvas').mousewheel(function (event) {
             if (event.deltaY > 0) {
                 if (Three.getCamera().position.y < 230) {
@@ -61,6 +56,9 @@ var Gui = new function () {
                 }
             }
         })
+        this.prepareButtons()
+        this.prepareBoxes()
+        this.adjust()
     }
     this.doKey = function (event) {
         if ($(event.target).attr('id') == 'msg') {
@@ -149,8 +147,8 @@ var Gui = new function () {
 
         $('#show').click(function () {
             Sound.play('click');
-            Gui.show = !Gui.show;
-            if (Gui.show) {
+            show = !show;
+            if (show) {
                 $(this).children().attr('src', '/img/game/show.png')
             } else {
                 $(this).children().attr('src', '/img/game/show_off.png')
@@ -264,7 +262,7 @@ var Gui = new function () {
     this.prepareBoxes = function () {
         $('#mapBox .close').click(function () {
             var left = parseInt($('#mapBox').css('left')),
-                move = -leftMenuWidth
+                move = -$('#mapBox').width()
 
             mapBox['el'] = this;
 
@@ -281,7 +279,7 @@ var Gui = new function () {
         });
         $('#limitBox .close').click(function () {
             var left = parseInt($('#limitBox').css('left')),
-                move = -leftMenuWidth
+                move = -$('#limitBox').width()
 
             limitBox['el'] = this;
 
@@ -298,7 +296,7 @@ var Gui = new function () {
         });
         $('#playersBox .close').click(function () {
             var left = parseInt($('#playersBox').css('left')),
-                move = leftMenuWidth
+                move = $('#playersBox').width()
 
             playerBox['el'] = this;
 
@@ -315,7 +313,7 @@ var Gui = new function () {
         });
         $('#chatBox .close').click(function () {
             var left = parseInt($('#chatBox').css('left')),
-                move = 490
+                move = $('#chatBox').width()
 
             chatBox['el'] = this;
 
@@ -332,7 +330,7 @@ var Gui = new function () {
         });
         $('#commandsBox .close').click(function () {
             var left = parseInt($('#commandsBox').css('left')),
-                move = leftMenuWidth
+                move = $('#commandsBox').width()
 
             commandsBox['el'] = this;
 
@@ -380,8 +378,8 @@ var Gui = new function () {
         });
 
         if (Players.countHumans() > 1) {
-            var chatLeft = Zoom.gameWidth - 507;
-            var chatTop = Zoom.gameHeight - 169;
+            var chatLeft = Zoom.gameWidth - $('#chatBox').width(),
+                chatTop = Zoom.gameHeight - $('#chatBox').height() - 5
 
             $('#chatBox').css({
                 'left': chatLeft + 'px',
@@ -444,5 +442,11 @@ var Gui = new function () {
         $('#nextTurn').addClass('buttonOff');
         $('#nextArmy').addClass('buttonOff');
         //makeMyCursorLock();
+    }
+    this.getDocumentTitle = function () {
+        return documentTitle
+    }
+    this.getShow = function () {
+        return show
     }
 }

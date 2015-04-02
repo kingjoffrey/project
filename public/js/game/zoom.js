@@ -99,7 +99,7 @@ var Zoom = {
             $obj.node.left = (Zoom.smallimage.ow - $obj.node.w - 2) / 2;
         };
         $obj.setcenter = function (x, y) {
-            if (Players.get(Turn.getColor()).isComputer() && !Gui.show) {
+            if (Players.get(Turn.getColor()).isComputer() && !Gui.getShow()) {
                 return
             }
             $obj.node.top = (y * 40 - Zoom.gameHeight / 2) / Zoom.scale.y

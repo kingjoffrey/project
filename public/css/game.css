@@ -175,7 +175,6 @@
     border-top: none;
     border-bottom-left-radius: 10px;
     width: 188px;
-    height: 343px;
     clear: both;
 }
 
@@ -183,13 +182,6 @@
     width: 32px;
     line-height: 32px;
     height: 32px;
-    position: absolute;
-    /*left: 198px;*/
-}
-
-#playersBox #buttons {
-    position: absolute;
-    top: 222px;
 }
 
 #playersLabel {
@@ -581,7 +573,7 @@
 }
 
 #chatBox {
-    width: 502px;
+    width: 496px;
     border-top-left-radius: 10px;
     text-transform: none;
 }
@@ -632,10 +624,9 @@
 
 #chatBox input {
     width: 382px;
-    line-height: 25px;
     border: 1px solid #000;
     border-radius: 5px;
-    margin: 2px;
+    padding: 6px;
 
     -webkit-touch-callout: text;
     -webkit-user-select: text;
@@ -645,14 +636,15 @@
     user-select: text;
 }
 
-#chatBox .send .right {
-    padding: 3px;
+#chatBox #send {
+    margin-left: 2px;
 }
 
 #chatBox .button {
     margin: 0;
     padding: 0;
     width: 92px;
+    line-height: 27px;
 }
 
 #limitBox {
@@ -785,7 +777,7 @@
 #commandsBox {
     border-top-left-radius: 10px;
     border-bottom-left-radius: 10px;
-    width: 230px;
+    width: 188px;
 }
 
 #commandsBox #nameBox {
@@ -828,8 +820,6 @@
 }
 
 #playersCanvas {
-    position: absolute;
-    top: 40px;
     width: 180px;
     height: 180px;
 }
@@ -891,8 +881,7 @@ html {
 }
 
 .button, #submit {
-    line-height: 27px;
-    height: 27px;
+    line-height: 20px;
     margin: 1px;
 }
 
@@ -1129,6 +1118,7 @@ table.treasury td.c {
     left: -23px;
     border-top-left-radius: 5px;
     border-bottom-left-radius: 5px;
+    top: 12px;
 }
 
 #commandsBox .close {

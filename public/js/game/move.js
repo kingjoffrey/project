@@ -27,7 +27,7 @@ var Move = new function () {
                 break;
         }
 
-        if (Turn.isMy() || (!player.isComputer() || Gui.show)) {
+        if (Turn.isMy() || (!player.isComputer() || Gui.getShow())) {
             Message.remove()
         }
 
@@ -52,7 +52,7 @@ var Move = new function () {
         if (isSet(r.path[step].c)) {
             //console.log(step)
             //console.log(r.path[step])
-            if (!player.isComputer() || Gui.show) {
+            if (!player.isComputer() || Gui.getShow()) {
                 //zoomer.setCenterIfOutOfScreen(r.path[step].x * 40, r.path[step].y * 40);
 
                 $('#' + army.getArmyId() + '.a')
@@ -74,7 +74,7 @@ var Move = new function () {
                 stepLoop(r, ii);
             }
         } else {
-            if (isTruthful(r.battle) && (!player.isComputer() || Gui.show)) {
+            if (isTruthful(r.battle) && (!player.isComputer() || Gui.getShow())) {
                 Sound.play('fight');
                 Message.battle(r, ii)
             } else {
@@ -84,7 +84,7 @@ var Move = new function () {
     }
     this.end = function (r, ii) {
         army.update(r.army)
-        if (player.isComputer() && !Gui.show) {
+        if (player.isComputer() && !Gui.getShow()) {
             army.setPosition(army.getX(), army.getY())
         }
         //Zoom.lens.setcenter(army.getX(), army.getY())
