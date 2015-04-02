@@ -234,11 +234,10 @@
     min-height: 70px;
     top: 70px;
     padding-top: 30px !important;
-    display: none;
     border-radius: 10px;
     text-align: center;
     /*cursor: url(/img/game/cursor_hand.png) 15 15, default;*/
-    z-index: 26999 !important;
+    z-index: 28000 !important;
 }
 
 .message h3.msgTitle {
