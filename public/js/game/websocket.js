@@ -207,7 +207,9 @@ var Websocket = {
 
             case 'end':
                 Turn.off()
-                Message.end()
+                var div = $('<div>').append($('<div>').html(translations.thisIsTheEnd))
+                var id = Message.show(translations.gameOver, div)
+                Message.ok(id, Gui.end)
                 this.executing = 0
                 break;
 

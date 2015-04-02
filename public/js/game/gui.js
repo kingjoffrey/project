@@ -33,32 +33,32 @@ var Gui = new function () {
                     Me.deselectArmy()
                     break;
                 case 37://left
-                    Three.getCamera().position.x += -0.5
-                    Three.getCamera().position.z += -0.5
+                    Three.getCamera().position.x += -2
+                    Three.getCamera().position.z += -2
                     break;
                 case 38://up
-                    Three.getCamera().position.x += 0.5
-                    Three.getCamera().position.z += -0.5
+                    Three.getCamera().position.x += 2
+                    Three.getCamera().position.z += -2
                     break;
                 case 39://right
-                    Three.getCamera().position.x += 0.5
-                    Three.getCamera().position.z += 0.5
+                    Three.getCamera().position.x += 2
+                    Three.getCamera().position.z += 2
                     break;
                 case 40://down
-                    Three.getCamera().position.x += -0.5
-                    Three.getCamera().position.z += 0.5
+                    Three.getCamera().position.x += -2
+                    Three.getCamera().position.z += 2
                     break;
                 case 66: //b
-                    Message.build()
+                    CastleWindow.build()
                     break;
                 case 67: //c
                     Castle.show();
                     break;
                 case 68: //d
-                    Message.disband();
+                    Me.disband()
                     break;
                 case 69: //e
-                    Message.nextTurn();
+                    Turn.next()
                     break;
                 case 70: //f
                     Websocket.fortify()
@@ -132,11 +132,11 @@ var Gui = new function () {
         })
 
         $('#battleAttack').click(function () {
-            Message.battleAttack()
+            BattleWindow.attack()
         })
 
         $('#battleDefence').click(function () {
-            Message.battleDefence()
+            BattleWindow.defence()
         })
 
         $('#exit').click(function () {
@@ -164,7 +164,9 @@ var Gui = new function () {
         });
 
         $('#surrender').click(function () {
-            Message.surrender()
+            var id = Message.show(translations.surrender, $('<div>').html(translations.areYouSure))
+            Message.ok(id, Websocket.surrender)
+            Message.cancel(id)
         });
 
         $('#statistics').click(function () {
@@ -182,7 +184,7 @@ var Gui = new function () {
         });
 
         $('#nextTurn').click(function () {
-            Message.nextTurn();
+            Turn.next()
         });
 
         $('#nextArmy').click(function () {
@@ -214,7 +216,7 @@ var Gui = new function () {
         });
 
         $('#disbandArmy').click(function () {
-            Message.disband();
+            Me.disband()
         });
 
         $('#deselectArmy').click(function () {
@@ -230,19 +232,23 @@ var Gui = new function () {
         });
 
         $('#heroResurrection').click(function () {
-            Message.resurrection()
+            var id = Message.show(translations.resurrectHero, $('<div>').append(translations.doYouWantToResurrectHeroFor100Gold))
+            Message.ok(id, Websocket.resurrection)
+            Message.cancel(id)
         })
 
         $('#heroHire').click(function () {
-            Message.hire()
+            var id = Message.show(translations.hireHero, $('<div>').html(translations.doYouWantToHireNewHeroFor1000Gold))
+            Message.ok(id, Websocket.hire)
+            Message.cancel(id)
         });
 
         $('#razeCastle').click(function () {
-            Message.raze();
+            CastleWindow.raze()
         });
 
         $('#buildCastleDefense').click(function () {
-            Message.build();
+            CastleWindow.build()
         });
 
         $('#showCastle').click(function () {
@@ -252,10 +258,6 @@ var Gui = new function () {
                 CastleWindow.show(castle)
             }
         })
-
-        $('#showArtifacts').click(function () {
-            Message.showArtifacts();
-        });
     }
     this.prepareBoxes = function () {
         $('#mapBox .close').click(function () {

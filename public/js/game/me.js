@@ -426,4 +426,9 @@ var Me = new function () {
     this.setDefenseBattleSequence = function (bSequence) {
         battleSequence['defense'] = bSequence
     }
+    this.disband = function () {
+        var id = Message.show(translations.disbandArmy, $('<div>').html(translations.areYouSure))
+        Message.ok(id, Websocket.disband)
+        Message.cancel(id)
+    }
 }

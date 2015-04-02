@@ -280,4 +280,42 @@ var CastleWindow = new function () {
         //    width: parseInt($('.production').css('width')) + 'px'
         //})
     }
+    this.raze = function () {
+        if (!Me.getSelectedArmyId()) {
+            return;
+        }
+        var id = Message.show(translations.destroyCastle, $('<div>').html(translations.areYouSure))
+        Message.ok(id, Websocket.raze);
+        Message.cancel(id)
+    }
+    this.build = function () {
+        if (!Me.getSelectedArmyId()) {
+            return;
+        }
+
+        var army = Me.getArmy(Me.getSelectedArmyId())
+        var castle = Me.getCastle(Fields.get(army.getX(), army.getY()).getCastleId())
+
+        if (castle.getDefense() == 4) {
+            var div = $('<div>')
+                .append($('<h3>').html(translations.maximumCastleDefenceReached))
+                .append($('<div>').html(translations.currentDefense + ': ' + castle.getDefense()))
+            var id = Message.show(translations.buildCastleDefense, div);
+        } else {
+            var costBuildDefense = 0;
+            for (i = 1; i <= castle.getDefense(); i++) {
+                costBuildDefense += i * 100;
+            }
+            var newDefense = castle.getDefense() + 1;
+
+            var div = $('<div>')
+                .append($('<h3>').html(translations.doYouWantToBuildCastleDefense))
+                .append($('<div>').html(translations.currentDefense + ': ' + castle.getDefense()))
+                .append($('<div>').html(translations.newDefense + ': ' + newDefense))
+                .append($('<div>').html(translations.cost + ': ' + costBuildDefense + ' ' + translations.gold))
+            var id = Message.show(translations.buildCastleDefense, div);
+            Message.ok(id, Websocket.defense);
+        }
+        Message.cancel(id)
+    }
 }

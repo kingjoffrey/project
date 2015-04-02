@@ -73,4 +73,9 @@ var Turn = new function () {
             return true
         }
     }
+    this.next = function () {
+        var id = Message.show(translations.nextTurn, $('<div>').html(translations.areYouSure))
+        Message.ok(id, Websocket.nextTurn);
+        Message.cancel(id)
+    }
 }

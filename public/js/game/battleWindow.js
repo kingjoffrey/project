@@ -261,4 +261,69 @@ var BattleWindow = new function () {
             }
         }
     }
+
+    var configuration = function (type) {
+        var sequenceNumber = $('<div>'),
+            sequenceImage = $('<div>').attr('id', 'sortable'),
+            i = 0
+
+        for (k in Me.getBattleSequence(type)) {
+            var unitId = Me.getBattleSequence(type)[k],
+                unit = Units.get(unitId)
+            if (unit.canFly) {
+                continue
+            }
+            if (unit.canSwim) {
+                continue
+            }
+            i++
+            if (isSet(unit.name_lang)) {
+                var name = unit.name_lang
+            } else {
+                var name = unit.name
+            }
+            sequenceNumber
+                .append($('<div>').html(i).addClass('battleNumber'))
+            sequenceImage
+                .append(
+                $('<div>')
+                    .append($('<img>').attr({
+                        src: Unit.getImage(unitId, Me.getColor()),
+                        id: unitId,
+                        alt: name
+                    }))
+                    .addClass('battleUnit')
+            )
+        }
+
+        return sequenceNumber.add(sequenceImage)
+    }
+    this.attack = function () {
+        var div = $('<div>')
+            .append($('<div>').html(translations.changeBattleAttackSequenceByMovingUnits))
+            .append($('<br>'))
+            .append(configuration('attack'))
+
+        var id = Message.show(translations.battleConfiguration, div)
+        Message.ok(id, Websocket.battleAttack)
+        Message.cancel(id)
+
+        $("#sortable").sortable()
+        $("#sortable").disableSelection()
+
+    }
+    this.defence = function () {
+        var div = $('<div>')
+            .append($('<div>').html(translations.changeBattleDefenceSequenceByMovingUnits))
+            .append($('<br>'))
+            .append(configuration('defense'))
+
+        var id = Message.show(translations.battleConfiguration, div)
+        Message.ok(id, Websocket.battleDefence)
+        Message.cancel(id)
+
+        $("#sortable").sortable()
+        $("#sortable").disableSelection()
+
+    }
 }
