@@ -238,9 +238,9 @@ var CastleWindow = new function () {
             color: 'yellow'
         })
 
-        if (castle.getProductionId()) {
-            $('.showCastle #go').removeClass('buttonOff')
-        }
+        //if (castle.getProductionId()) {
+        //    $('.showCastle #go').removeClass('buttonOff')
+        //}
 
         // unit click
 
