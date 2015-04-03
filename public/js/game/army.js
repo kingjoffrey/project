@@ -87,6 +87,14 @@ var Army = function (army, bgColor, miniMapColor, textColor, color) {
                 moves = army.swim[i].movesLeft
             }
         }
+        for (var i in  army.fly) {
+            if (notSet(moves)) {
+                moves = army.fly[i].movesLeft
+            }
+            if (moves > army.fly[i].movesLeft) {
+                moves = army.fly[i].movesLeft
+            }
+        }
         for (var i in army.heroes) {
             if (notSet(moves)) {
                 moves = army.heroes[i].movesLeft

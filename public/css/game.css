@@ -766,6 +766,11 @@
     height: 30px;
 }
 
+#armyBox #unitsBox div {
+    width: 25px;
+    display: inline-block;
+}
+
 #commandsBox {
     border-top-left-radius: 10px;
     border-bottom-left-radius: 10px;

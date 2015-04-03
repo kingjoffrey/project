@@ -133,18 +133,25 @@ var Me = new function () {
 
         unitsBox.html('')
         for (var heroId in army.getHeroes()) {
-            unitsBox.append($('<img>').attr('src', Hero.getImage(Me.getColor())))
+            unitsBox.append($('<div>').html($('<img>').attr('src', Hero.getImage(Me.getColor()))))
         }
         for (var soldierId in army.getWalkingSoldiers()) {
-            unitsBox.append($('<img>').attr('src', Unit.getImage(army.getWalkingSoldier(soldierId).unitId, Me.getColor())))
+            unitsBox.append($('<div>').html($('<img>').attr('src', Unit.getImage(army.getWalkingSoldier(soldierId).unitId, Me.getColor()))))
         }
         for (var soldierId in army.getFlyingSoldiers()) {
-            unitsBox.append($('<img>').attr('src', Unit.getImage(army.getFlyingSoldier(soldierId).unitId, Me.getColor())))
+            unitsBox.append($('<div>').html($('<img>').attr('src', Unit.getImage(army.getFlyingSoldier(soldierId).unitId, Me.getColor()))))
         }
         for (var soldierId in army.getSwimmingSoldiers()) {
-            unitsBox.append($('<img>').attr('src', Unit.getImage(army.getSwimmingSoldier(soldierId).unitId, Me.getColor())))
+            unitsBox.append($('<div>').html($('<img>').attr('src', Unit.getImage(army.getSwimmingSoldier(soldierId).unitId, Me.getColor()))))
         }
-        $('#armyBox').css({left: Three.getWidth() / 2 - $('#armyBox').width() / 2 + 'px'})
+        //$('#armyBox img').each(function(){
+        //    console.log($(this).width())
+        //})
+        //console.log(unitsBox.width())
+        var left = Three.getWidth() / 2 - $('#armyBox').width() / 2
+        //console.log($('#armyBox').width())
+        //console.log(left)
+        $('#armyBox').css({left: left + 'px'})
 
         selectedArmyId = armyId
         Three.addArmyCircle(army.getX(), army.getY())
@@ -433,8 +440,8 @@ var Me = new function () {
         Message.cancel(id)
     }
     this.findHero = function () {
-        for (var armyId in me.getArmies().toArray()) {
-            var heroId = me.getArmy(armyId).getHeroKey()
+        for (var armyId in this.getArmies().toArray()) {
+            var heroId = this.getArmy(armyId).getHeroKey()
             if (heroId) {
                 return heroId
             }
