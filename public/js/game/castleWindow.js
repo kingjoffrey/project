@@ -159,6 +159,13 @@ var CastleWindow = new function () {
                 .click(function () {
                     Message.remove(id)
                 }))
+            .append($('<div>')
+                .addClass('button buttonColors next')
+                .html('>>')
+                .click(function () {
+
+                    Message.remove(id)
+                }))
 
         // relocation to
 
