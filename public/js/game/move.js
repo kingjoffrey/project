@@ -1,5 +1,5 @@
 var Move = new function () {
-    var stepTime,
+    var stepTime = 200,
         player,
         army
 
@@ -31,14 +31,15 @@ var Move = new function () {
             Message.remove()
         }
 
-        Zoom.lens.setcenter(r.path[0].x, r.path[0].y)
-
-        //if (player.isComputer()) {
-        //    stepTime = 100
-        //} else {
-        stepTime = 200
-        //}
-
+        if (!player.isComputer() || Gui.getShow()) {
+            Zoom.lens.setcenter(r.path[0].x, r.path[0].y, function () {
+                Move.startStepLoop(r, ii)
+            })
+        } else {
+            stepLoop(r, ii)
+        }
+    }
+    this.startStepLoop = function (r, ii) {
         stepLoop(r, ii)
     }
     var stepLoop = function (r, ii) {

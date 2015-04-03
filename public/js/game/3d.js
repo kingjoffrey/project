@@ -25,6 +25,7 @@ var Three = new function () {
         armyCircles = [],
         showShadows = 0,
         cameraY = 76,
+        timeOut = 100,
         createTextMesh = function (text, color) {
             var mesh = new THREE.Mesh(new THREE.TextGeometry(text, {
                 size: 1,
@@ -34,12 +35,16 @@ var Three = new function () {
             mesh.rotation.y = -Math.PI / 4
             return mesh
         },
-        render = function () {
-            setTimeout(function () {
-                requestAnimationFrame(render)
-            }, 100);
-            renderer.render(scene, camera)
-            TWEEN.update()
+        animate = function () {
+            if (TWEEN.update()) {
+                requestAnimationFrame(animate)
+                renderer.render(scene, camera)
+            } else {
+                renderer.render(scene, camera)
+                setTimeout(function () {
+                    requestAnimationFrame(animate)
+                }, timeOut)
+            }
         }
 
     if (showShadows) {
@@ -460,7 +465,7 @@ var Three = new function () {
         initArmy()
         initFields()
         loadGround()
-        render()
+        animate()
     }
     this.resize = function () {
         gameWidth = window.innerWidth
@@ -485,5 +490,8 @@ var Three = new function () {
     }
     this.getHeight = function () {
         return gameHeight
+    }
+    this.setFP = function (fps) {
+        timeOut = parseInt(1000 / fps)
     }
 }

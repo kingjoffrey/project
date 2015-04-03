@@ -131,6 +131,7 @@ var Me = new function () {
         var army = this.getArmy(armyId),
             unitsBox = $('#unitsBox')
 
+        unitsBox.html('')
         for (var heroId in army.getHeroes()) {
             unitsBox.append($('<img>').attr('src', Hero.getImage(Me.getColor())))
         }

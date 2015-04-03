@@ -93,7 +93,7 @@ var Zoom = {
             $obj.node.top = (Zoom.smallimage.oh - $obj.node.h - 2) / 2;
             $obj.node.left = (Zoom.smallimage.ow - $obj.node.w - 2) / 2;
         };
-        $obj.setcenter = function (x, y) {
+        $obj.setcenter = function (x, y, func) {
             if (Players.get(Turn.getColor()).isComputer() && !Gui.getShow()) {
                 return
             }
@@ -117,13 +117,18 @@ var Zoom = {
                     z: y * 4 - (307 - Three.getCameraY()) + yOffset
                 },
                 tween = new TWEEN.Tween(position)
-                    .to(target, 600)
+                    .to(target, Zoom.getH(position, target))
                     .onUpdate(function () {
                         Three.getCamera().position.x = position.x
                         Three.getCamera().position.z = position.z
                     })
-                    //.easing(TWEEN.Easing.Sinusoidal.EaseInOut)
                     .start()
+
+            if (isSet(func)) {
+                tween.onComplete(function () {
+                    func()
+                })
+            }
         }
         $obj.setposition = function (e) {
             $obj.mousepos.x = e.pageX;
@@ -182,5 +187,8 @@ var Zoom = {
             return o;
         };
         return $obj;
+    },
+    getH: function (position, target) {
+        return Math.sqrt(Math.pow(target.x - position.x, 2) + Math.pow(position.z - target.z, 2)) * 5
     }
-};
+}
