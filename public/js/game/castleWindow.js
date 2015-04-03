@@ -7,9 +7,10 @@ var CastleWindow = new function () {
                 Zoom.lens.setcenter(Me.getCastle(i).getX(), Me.getCastle(i).getY())
             }
         },
-        click = function (i) {
+        click = function (i, id) {
             return function () {
                 CastleWindow.show(Me.getCastle(i))
+                Message.remove(id)
             }
         }
 
@@ -112,6 +113,13 @@ var CastleWindow = new function () {
         window
             .append(info)
             .append($('<div>').addClass('production').append($('<div>').html(translations.availableUnits).addClass('title')).append(table).attr('id', castle.getCastleId()))
+
+        if (castle.getCapital()) {
+            var id = Message.show(translations.capitalCity + '&nbsp;' + castle.getName(), window)
+        } else {
+            var id = Message.show(translations.castle + '&nbsp;' + castle.getName(), window)
+        }
+        window
             .append($('<div>')
                 .html(translations.stopProduction)
                 .addClass('button buttonColors' + stopButtonOff)
@@ -119,6 +127,7 @@ var CastleWindow = new function () {
                 .click(function () {
                     if ($('input:radio[name=production]:checked').val()) {
                         castle.handle(1, 0)
+                        Message.remove(id)
                     }
                 }))
             .append($('<div>')
@@ -128,6 +137,7 @@ var CastleWindow = new function () {
                 .click(function () {
                     if ($('input:radio[name=production]:checked').val()) {
                         castle.handle(0, 1)
+                        Message.remove(id)
                     }
                 }))
             .append($('<div>')
@@ -141,13 +151,13 @@ var CastleWindow = new function () {
                 .html(translations.startProduction)
                 .click(function () {
                     castle.handle()
-                    Message.remove()
+                    Message.remove(id)
                 }))
             .append($('<div>')
                 .addClass('button buttonColors cancel')
                 .html(translations.close)
                 .click(function () {
-                    Message.remove()
+                    Message.remove(id)
                 }))
 
         // relocation to
@@ -156,30 +166,21 @@ var CastleWindow = new function () {
             window
                 .append($('<div>').addClass('relocatedProduction').append($('<div>').html(translations.relocatingTo).addClass('title')).append(
                     $('<table>').append(
-                        $('<tr>')
-                            .append(
-                            $('<td>').append($('<img>').attr('src', Unit.getImage(castle.getProductionId(), Me.getColor())))
-                        )
-                            .append(
-                            $('<td>')
-                                .html(castle.getProductionTurn() + ' / ' + castle.getProduction()[castle.getProductionId()].time)
-                        )
-                            .append(
-                            $('<td>')
+                        $('<tr>').append(
+                            $('<td>').append($('<img>').attr('src', Unit.getImage(castle.getProductionId(), Me.getColor()))))
+                            .append($('<td>')
+                                .html(castle.getProductionTurn() + ' / ' + castle.getProduction()[castle.getProductionId()].time))
+                            .append($('<td>')
                                 .html(Me.getCastle(castle.getRelocationCastleId()).getName())
                                 .addClass('button buttonColors')
                                 .click(function () {
                                     CastleWindow.show(Me.getCastle(castle.getRelocationCastleId()))
-                                })
-                        )
-                            .append(
-                            $('<td>')
+                                    Message.remove(id)
+                                }))
+                            .append($('<td>')
                                 .html($('<img>').attr('src', '/img/game/center.png'))
                                 .addClass('iconButton buttonColors')
-                                .click(center(castle.getRelocationCastleId()))
-                        )
-                    )
-                ))
+                                .click(center(castle.getRelocationCastleId()))))))
         }
 
         // relocation from
@@ -194,38 +195,23 @@ var CastleWindow = new function () {
                     productionId = castleFrom.getProductionId()
 
                 relocatingFrom.append(
-                    $('<tr>')
-                        .append(
+                    $('<tr>').append(
                         $('<td>').append(
-                            $('<img>').attr('src', Unit.getImage(productionId, Me.getColor()))
-                        )
-                    )
-                        .append(
-                        $('<td>')
-                            .html(castleFrom.getProductionTurn() + ' / ' + castleFrom.getProduction()[productionId].time)
-                    )
-                        .append(
-                        $('<td>')
+                            $('<img>').attr('src', Unit.getImage(productionId, Me.getColor()))))
+                        .append($('<td>')
+                            .html(castleFrom.getProductionTurn() + ' / ' + castleFrom.getProduction()[productionId].time))
+                        .append($('<td>')
                             .html(castleFrom.getName())
                             .addClass('button buttonColors')
-                            .click(click(castleIdFrom))
-                    )
-                        .append(
-                        $('<td>')
+                            .click(click(castleIdFrom, id)))
+                        .append($('<td>')
                             .html($('<img>').attr('src', '/img/game/center.png'))
                             .addClass('iconButton buttonColors')
-                            .click(center(castleIdFrom))
-                    )
+                            .click(center(castleIdFrom)))
                 )
             }
             window
                 .append($('<div>').addClass('relocatedProduction').append($('<div>').html(translations.relocatingFrom).addClass('title')).append(relocatingFrom))
-        }
-
-        if (castle.getCapital()) {
-            var id = Message.show(translations.capitalCity + '&nbsp;' + castle.getName(), window)
-        } else {
-            var id = Message.show(translations.castle + '&nbsp;' + castle.getName(), window)
         }
 
         Message.setOverflowHeight(id)
@@ -238,11 +224,6 @@ var CastleWindow = new function () {
             color: 'yellow'
         })
 
-        //if (castle.getProductionId()) {
-        //    $('.showCastle #go').removeClass('buttonOff')
-        //}
-
-        // unit click
 
         $('.production .unit').click(function (e) {
             $('.production .unit :radio').each(function () {
@@ -275,10 +256,6 @@ var CastleWindow = new function () {
                 $('.showCastle #go').removeClass('buttonOff')
             }
         })
-
-        //$('.relocatedProduction').css({
-        //    width: parseInt($('.production').css('width')) + 'px'
-        //})
     }
     this.raze = function () {
         if (!Me.getSelectedArmyId()) {

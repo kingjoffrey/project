@@ -9,7 +9,11 @@ var Message = new function () {
                 $('#' + id).remove()
             })
         } else {
-            $('.message').remove()
+            if (!Turn.isMy() && $('.message .showCastle').length) {
+                $('.message:not(:has(.showCastle))').remove()
+            } else {
+                $('.message').remove()
+            }
         }
     }
     this.show = function (title, txt) {
@@ -38,16 +42,23 @@ var Message = new function () {
             maxWidth = parseInt($('#' + id).css('min-width'))
         }
 
-        $('#' + id).css({
-            'max-width': maxWidth + 'px',
-            'max-height': maxHeight + 'px'
-        })
-
         var left = Three.getWidth() / 2 - $('#' + id).outerWidth() / 2
 
-        $('#' + id).css({
-            left: left + 'px'
-        })
+
+        if ($('#' + id + ' .showCastle').length) {
+            $('#' + id).css({
+                'z-index': $('#' + id).css('z-index') + 1,
+                left: left + 'px',
+                'max-width': maxWidth + 'px',
+                'max-height': maxHeight + 'px'
+            })
+        } else {
+            $('#' + id).css({
+                left: left + 'px',
+                'max-width': maxWidth + 'px',
+                'max-height': maxHeight + 'px'
+            })
+        }
     }
     this.setOverflowHeight = function (id) {
         if ($('#' + id + ' .showCastle').length) {
@@ -88,9 +99,9 @@ var Message = new function () {
                 .html(translations.cancel)
                 .click(function () {
                     if (isSet(func)) {
-                        func();
+                        func()
                     }
-                    Message.remove(id);
+                    Message.remove(id)
                 })
         )
     }
@@ -100,8 +111,7 @@ var Message = new function () {
         return id
     }
     this.error = function (message) {
-        Sound.play('error');
-        var div = $('<div>').html(message).addClass('error')
-        this.simple(translations.error, div);
+        Sound.play('error')
+        this.simple(translations.error, $('<div>').html(message).addClass('error'));
     }
 }
