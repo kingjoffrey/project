@@ -44,7 +44,6 @@ var Message = new function () {
 
         var left = Three.getWidth() / 2 - $('#' + id).outerWidth() / 2
 
-
         if ($('#' + id + ' .showCastle').length) {
             $('#' + id).css({
                 'z-index': $('#' + id).css('z-index') + 1,
@@ -53,7 +52,7 @@ var Message = new function () {
                 'max-height': maxHeight + 'px'
             })
         } else {
-            $('#' + id).css({
+            $('.message').css({
                 left: left + 'px',
                 'max-width': maxWidth + 'px',
                 'max-height': maxHeight + 'px'

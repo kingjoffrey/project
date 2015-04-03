@@ -114,6 +114,7 @@ var Gui = new function () {
                 }
             }
         })
+        Zoom.init()
         this.prepareButtons()
         this.prepareBoxes()
         this.adjust()
@@ -333,7 +334,7 @@ var Gui = new function () {
         });
     }
     this.adjust = function () {
-        Zoom.init()
+        Zoom.lens.setdimensions()
 
         commandsBox.close = 0
         chatBox.close = 0

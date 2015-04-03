@@ -482,8 +482,9 @@ var Three = new function () {
                 height: gameHeight + 'px'
             }
         )
-        camera.aspect = gameWidth / gameHeight
         renderer.setSize(gameWidth, gameHeight)
+        camera.aspect = gameWidth / gameHeight
+        camera.updateProjectionMatrix()
     }
     this.getWidth = function () {
         return gameWidth

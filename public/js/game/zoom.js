@@ -12,7 +12,7 @@ var Zoom = {
         this.smallimage = this.Smallimage()
         this.smallimage.fetchdata()
         this.lens = this.Lens()
-        this.lens.setdimensions(0, 0);
+        this.lens.setdimensions();
         this.lens.show()
     },
     /*========================================================,
@@ -104,11 +104,8 @@ var Zoom = {
                 left: $obj.node.left
             });
 
-            var yOffset = Three.getCamera().position.y - Three.getCameraY()
-            //Three.getCamera().position.x = x * 4 - (221 + Three.getCameraY()) - yOffset
-            //Three.getCamera().position.z = y * 4 - (307 - Three.getCameraY()) + yOffset
-
-            var position = {
+            var yOffset = Three.getCamera().position.y - Three.getCameraY(),
+                position = {
                     x: Three.getCamera().position.x,
                     z: Three.getCamera().position.z
                 },
@@ -142,7 +139,6 @@ var Zoom = {
 
             function overright(lens) {
                 return $obj.mousepos.x > Zoom.smallimage.pos.r;
-
             }
 
             function overtop(lens) {
