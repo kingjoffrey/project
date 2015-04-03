@@ -68,13 +68,18 @@ var Websocket = {
                         case 'gold':
                             Sound.play('gold1');
                             Me.goldIncrement(r.find[1])
+                            Players.get(r.color).getArmies().get(r.army.id).update(r.army)
                             Message.simple(translations.ruins, translations.youHaveFound + ' ' + r.find[1] + ' ' + translations.gold);
                             break;
                         case 'death':
                             Sound.play('death');
-                            Message.simple(translations.ruins, translations.youHaveFound + ' ' + translations.death);
-                            Players.get(r.color).getArmies().delete(r.army.id)
-                            if (!Hero.findMy()) {
+                            Message.simple(translations.ruins, translations.youHaveFound + ' ' + translations.death)
+                            if (Players.get(r.color).getArmies().get(r.army.id).getNumberOfUnits() > 1) {
+                                Players.get(r.color).getArmies().get(r.army.id).update(r.army)
+                            } else {
+                                Players.get(r.color).getArmies().delete(r.army.id)
+                            }
+                            if (!Me.findHero() && Me.getGold() >= 100) {
                                 $('#heroResurrection').removeClass('buttonOff')
                             }
                             break
@@ -85,6 +90,7 @@ var Websocket = {
                             break
                         case 'null':
                             Sound.play('click');
+                            Players.get(r.color).getArmies().get(r.army.id).update(r.army)
                             Message.simple(translations.ruins, translations.youHaveFoundNothing);
                             break
                         case 'artifact':
@@ -135,6 +141,7 @@ var Websocket = {
                 break;
 
             case 'disband':
+                Players.get(r.color).getArmies().delete(r.id)
                 if (Turn.isMy()) {
                     Message.remove()
                     var upkeep = 0,
@@ -144,11 +151,10 @@ var Websocket = {
                     }
                     Me.costIncrement(-upkeep)
 
-                    if (!Hero.findMy()) {
+                    if (!Me.findHero() && Me.getGold() >= 100) {
                         $('#heroResurrection').removeClass('buttonOff')
                     }
                 }
-                Players.get(r.color).getArmies().delete(r.id)
 
                 this.executing = 0
                 break;
@@ -160,7 +166,7 @@ var Websocket = {
                 if (Turn.isMy()) {
                     Message.remove()
                     Me.goldIncrement(-r.gold)
-                    if (Hero.findMy()) {
+                    if (Me.findHero()) {
                         $('#heroResurrection').addClass('buttonOff')
                     }
                 }
@@ -660,7 +666,7 @@ var Websocket = {
             return;
         }
 
-        if (Hero.findMy()) {
+        if (Me.findHero()) {
             return;
         }
 

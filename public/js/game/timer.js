@@ -118,7 +118,7 @@ var Timer = new function () {
         $('#limitBox #' + Turn.getColor() + Turn.getNumber() + ' #hour').html(elHour1.html())
         $('#limitBox #' + Turn.getColor() + Turn.getNumber() + ' #minute').html(elMinute1.html())
         $('#limitBox #' + Turn.getColor() + Turn.getNumber() + ' #second').html(elSecond1.html())
-        this.scroll()
+        //this.scroll()
     }
     this.append = function (color, number, start, end) {
         var difference = 0,
@@ -154,7 +154,7 @@ var Timer = new function () {
         }
 
         $('#timerRows')
-            .append($('<div class="row">')
+            .prepend($('<div class="row">')
                 .append($('<div class="left color">').html($('<img>').attr('src', Hero.getImage(color))))
                 .append($('<div class="left nr">').html(number))
                 .append(
@@ -167,7 +167,7 @@ var Timer = new function () {
             )
         );
     }
-    this.scroll = function () {
-        $('#timerScroll').animate({scrollTop: $('#timerRows .row').length * this.height}, 1000)
-    }
+    //this.scroll = function () {
+    //    $('#timerScroll').animate({scrollTop: $('#timerRows .row').length * this.height}, 1000)
+    //}
 }

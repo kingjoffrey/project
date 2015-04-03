@@ -249,13 +249,5 @@ var Army = function (army, bgColor, miniMapColor, textColor, color) {
 var Hero = {
     getImage: function (color) {
         return '/img/game/heroes/' + color + '.png';
-    },
-    findMy: function () {
-        for (var armyId in Players.get(Me.getColor()).getArmies().toArray()) {
-            var heroId = Me.getArmy(armyId).getHeroKey()
-            if (heroId) {
-                return heroId
-            }
-        }
     }
 }

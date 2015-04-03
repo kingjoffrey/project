@@ -179,7 +179,7 @@ var Move = new function () {
                     }
                 }
                 if (Me.colorEquals(r.color)) {
-                    if (!Hero.findMy()) {
+                    if (!Me.findHero() && Me.getGold() >= 100) {
                         $('#heroResurrection').removeClass('buttonOff')
                     }
                     Gui.unlock()

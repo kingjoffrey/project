@@ -361,7 +361,7 @@ var Me = new function () {
         }
         Gui.unlock()
         titleBlink('Your turn!')
-        if (!Hero.findMy()) {
+        if (!this.findHero() && this.getGold() >= 100) {
             $('#heroResurrection').removeClass('buttonOff')
         }
         if (gold > 1000) {
@@ -431,5 +431,13 @@ var Me = new function () {
         var id = Message.show(translations.disbandArmy, $('<div>').html(translations.areYouSure))
         Message.ok(id, Websocket.disband)
         Message.cancel(id)
+    }
+    this.findHero = function () {
+        for (var armyId in me.getArmies().toArray()) {
+            var heroId = me.getArmy(armyId).getHeroKey()
+            if (heroId) {
+                return heroId
+            }
+        }
     }
 }
