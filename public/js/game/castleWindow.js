@@ -103,13 +103,42 @@ var CastleWindow = new function () {
             var stopButtonOff = ''
         }
 
+        var next = $('<td>').attr('id','next'),
+            previous = $('<td>').attr('id','previous'),
+            nextCastle = Me.findNextCastle(castle.getCastleId()),
+            previousCastle = Me.findPreviousCastle(castle.getCastleId())
+        if (nextCastle) {
+            next.
+                append($('<div>')
+                    .addClass('button buttonColors next')
+                    .html('>>')
+                    .click(function () {
+                        CastleWindow.show(nextCastle)
+                        Message.remove(id)
+                    }))
+        }
+        if (previousCastle) {
+            previous.
+                append($('<div>')
+                    .addClass('button buttonColors next')
+                    .html('<<')
+                    .click(function () {
+                        CastleWindow.show(previousCastle)
+                        Message.remove(id)
+                    }))
+        }
+
         info
             .append($('<tr>')
+                .append(previous)
                 .append($('<td>').append(translations.castleDefense + ': '))
-                .append($('<td>').append(castle.getDefense())))
+                .append($('<td>').append(castle.getDefense()))
+                .append(next))
             .append($('<tr>')
+                .append($('<td>'))
                 .append($('<td>').append(translations.incomeFromCastle + ': '))
-                .append($('<td>').append(castle.getIncome() + ' ' + translations.gold_turn)))
+                .append($('<td>').append(castle.getIncome() + ' ' + translations.gold_turn))
+                .append($('<td>')))
         window
             .append(info)
             .append($('<div>').addClass('production').append($('<div>').html(translations.availableUnits).addClass('title')).append(table).attr('id', castle.getCastleId()))
@@ -157,13 +186,6 @@ var CastleWindow = new function () {
                 .addClass('button buttonColors cancel')
                 .html(translations.close)
                 .click(function () {
-                    Message.remove(id)
-                }))
-            .append($('<div>')
-                .addClass('button buttonColors next')
-                .html('>>')
-                .click(function () {
-
                     Message.remove(id)
                 }))
 

@@ -447,4 +447,31 @@ var Me = new function () {
             }
         }
     }
+    this.findNextCastle = function (castleId) {
+        var start = false
+        for (var id in Me.getCastles().toArray()) {
+            if (start) {
+                return Me.getCastle(id)
+            }
+            if (id == castleId) {
+                start = true
+            }
+        }
+    }
+    this.findPreviousCastle = function (castleId) {
+        var start = false,
+            arr = []
+
+        for (var key in Me.getCastles().toArray()) {
+            arr.push(key)
+        }
+        for (var i = arr.length - 1; i >= 0; i--) {
+            if (start) {
+                return Me.getCastle(arr[i])
+            }
+            if (arr[i] == castleId) {
+                start = true
+            }
+        }
+    }
 }

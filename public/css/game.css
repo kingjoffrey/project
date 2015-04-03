@@ -25,6 +25,10 @@
     border: none !important;
 }
 
+#game tr:hover {
+
+}
+
 #game td {
     height: auto;
 }
@@ -278,6 +282,14 @@
 .message div.showCastle .button {
     line-height: 28px;
     margin: 2px
+}
+
+.message div.showCastle #next {
+    width: 90px;
+}
+
+.message div.showCastle #previous {
+    width: 90px;
 }
 
 .message div.showCastle td {
