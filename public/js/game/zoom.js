@@ -105,9 +105,26 @@ var Zoom = {
             });
 
             var yOffset = Three.getCamera().position.y - Three.getCameraY()
-            Three.getCamera().position.x = x * 4 - (221 + Three.getCameraY()) - yOffset
-            Three.getCamera().position.z = y * 4 - (307 - Three.getCameraY()) + yOffset
-        };
+            //Three.getCamera().position.x = x * 4 - (221 + Three.getCameraY()) - yOffset
+            //Three.getCamera().position.z = y * 4 - (307 - Three.getCameraY()) + yOffset
+
+            var position = {
+                    x: Three.getCamera().position.x,
+                    z: Three.getCamera().position.z
+                },
+                target = {
+                    x: x * 4 - (221 + Three.getCameraY()) - yOffset,
+                    z: y * 4 - (307 - Three.getCameraY()) + yOffset
+                },
+                tween = new TWEEN.Tween(position)
+                    .to(target, 600)
+                    .onUpdate(function () {
+                        Three.getCamera().position.x = position.x
+                        Three.getCamera().position.z = position.z
+                    })
+                    //.easing(TWEEN.Easing.Sinusoidal.EaseInOut)
+                    .start()
+        }
         $obj.setposition = function (e) {
             $obj.mousepos.x = e.pageX;
             $obj.mousepos.y = e.pageY;

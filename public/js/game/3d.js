@@ -39,6 +39,7 @@ var Three = new function () {
                 requestAnimationFrame(render)
             }, 100);
             renderer.render(scene, camera)
+            TWEEN.update()
         }
 
     if (showShadows) {

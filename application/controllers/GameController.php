@@ -11,6 +11,7 @@ class GameController extends Game_Controller_Game
 
         $this->view->headScript()->appendFile('/js/jquery-ui-1.10.3.custom.js');
         $this->view->headScript()->appendFile('/js/jquery.mousewheel.min.js');
+        $this->view->headScript()->appendFile('/js/Tween.js');
 //        $this->view->headScript()->appendFile('/js/three.js');
         $this->view->headScript()->appendFile('http://threejs.org/build/three.min.js');
         $this->view->headScript()->appendFile('/fonts/helvetiker_regular.typeface.js');
