@@ -413,7 +413,7 @@ var Three = new function () {
         hillModel.material = new THREE.MeshLambertMaterial({color: '#415824'})
         hillModel.material.side = THREE.DoubleSide
 
-        treeModel.material = new THREE.MeshLambertMaterial({color: '#008000'})
+        treeModel.material = new THREE.MeshLambertMaterial({color: '#003300'})
         treeModel.material.side = THREE.DoubleSide
         //treeModel.scale = 0.4
 
