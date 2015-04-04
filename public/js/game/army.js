@@ -255,40 +255,65 @@ var Army = function (army, bgColor, miniMapColor, textColor, color) {
             case 'swim':
                 for (var i in  army.swim) {
                     var soldier = army.swim[i]
-                    if (soldier.pathMoves - Terrain.get(t).swim <= 0) {
+                    if (soldier.pathMoves - Terrain.get(t)[movementType] <= 0) {
                         return true
                     } else {
-                        soldier.pathMoves -= Terrain.get(t).swim
+                        soldier.pathMoves -= Terrain.get(t)[movementType]
                     }
                 }
                 break;
             case 'fly':
                 for (var i in  army.fly) {
-                    var soldier = army.fly[i],
-                        unit = Units.get(soldier.unitId)
+                    var soldier = army.fly[i]
 
-                    if (soldier.pathMoves - Terrain.get(t).fly <= 0) {
+                    if (soldier.pathMoves - Terrain.get(t)[movementType] <= 0) {
                         return true
                     } else {
-                        soldier.pathMoves -= Terrain.get(t).fly
+                        soldier.pathMoves -= Terrain.get(t)[movementType]
+                    }
+                }
+                for (var i in  army.heroes) {
+                    var hero = army.heroes[i]
+
+                    if (hero.pathMoves - Terrain.get(t)[movementType] <= 0) {
+                        return true
+                    } else {
+                        hero.pathMoves -= Terrain.get(t)[movementType]
                     }
                 }
                 break;
             case 'walk':
                 for (var i in  army.walk) {
-                    var soldier = army.walk[i],
-                        unit = Units.get(soldier.unitId)
+                    var soldier = army.walk[i]
 
                     if (isSet(unit[t])) {
-                        var moveCost = unit[t]
+                        var moveCost = Units.get(soldier.unitId)[t]
                     } else {
-                        var moveCost = Terrain.get(t).walk
+                        var moveCost = Terrain.get(t)[movementType]
                     }
 
                     if (soldier.pathMoves - moveCost <= 0) {
                         return true
                     } else {
                         soldier.pathMoves -= moveCost
+                    }
+                }
+                for (var i in  army.fly) {
+                    var soldier = army.fly[i]
+
+                    if (soldier.pathMoves - Terrain.get(t)[movementType] <= 0) {
+                        return true
+                    } else {
+                        soldier.pathMoves -= Terrain.get(t)[movementType]
+                    }
+                }
+                for (var i in  army.heroes) {
+                    var hero = army.heroes[i]
+                    console.log(hero)
+                    if (hero.pathMoves - Terrain.get(t)[movementType] <= 0) {
+                        return true
+                    } else {
+                        hero.pathMoves -= Terrain.get(t)[movementType]
                     }
                 }
                 break;
