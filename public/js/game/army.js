@@ -255,7 +255,7 @@ var Army = function (army, bgColor, miniMapColor, textColor, color) {
             case 'swim':
                 for (var i in  army.swim) {
                     var soldier = army.swim[i]
-                    if (soldier.pathMoves - Terrain.get(t)[movementType] <= 0) {
+                    if (soldier.pathMoves - Terrain.get(t)[movementType] < 0) {
                         return true
                     } else {
                         soldier.pathMoves -= Terrain.get(t)[movementType]
@@ -266,7 +266,7 @@ var Army = function (army, bgColor, miniMapColor, textColor, color) {
                 for (var i in  army.fly) {
                     var soldier = army.fly[i]
 
-                    if (soldier.pathMoves - Terrain.get(t)[movementType] <= 0) {
+                    if (soldier.pathMoves - Terrain.get(t)[movementType] < 0) {
                         return true
                     } else {
                         soldier.pathMoves -= Terrain.get(t)[movementType]
@@ -275,7 +275,7 @@ var Army = function (army, bgColor, miniMapColor, textColor, color) {
                 for (var i in  army.heroes) {
                     var hero = army.heroes[i]
 
-                    if (hero.pathMoves - Terrain.get(t)[movementType] <= 0) {
+                    if (hero.pathMoves - Terrain.get(t)[movementType] < 0) {
                         return true
                     } else {
                         hero.pathMoves -= Terrain.get(t)[movementType]
@@ -292,7 +292,7 @@ var Army = function (army, bgColor, miniMapColor, textColor, color) {
                         var moveCost = Terrain.get(t)[movementType]
                     }
 
-                    if (soldier.pathMoves - moveCost <= 0) {
+                    if (soldier.pathMoves - moveCost < 0) {
                         return true
                     } else {
                         soldier.pathMoves -= moveCost
@@ -301,7 +301,7 @@ var Army = function (army, bgColor, miniMapColor, textColor, color) {
                 for (var i in  army.fly) {
                     var soldier = army.fly[i]
 
-                    if (soldier.pathMoves - Terrain.get(t)[movementType] <= 0) {
+                    if (soldier.pathMoves - Terrain.get(t)[movementType] < 0) {
                         return true
                     } else {
                         soldier.pathMoves -= Terrain.get(t)[movementType]
@@ -309,8 +309,7 @@ var Army = function (army, bgColor, miniMapColor, textColor, color) {
                 }
                 for (var i in  army.heroes) {
                     var hero = army.heroes[i]
-                    console.log(hero)
-                    if (hero.pathMoves - Terrain.get(t)[movementType] <= 0) {
+                    if (hero.pathMoves - Terrain.get(t)[movementType] < 0) {
                         return true
                     } else {
                         hero.pathMoves -= Terrain.get(t)[movementType]

@@ -103,8 +103,8 @@ var CastleWindow = new function () {
             var stopButtonOff = ''
         }
 
-        var next = $('<td>').attr('id','next'),
-            previous = $('<td>').attr('id','previous'),
+        var next = $('<td>').attr('id', 'next'),
+            previous = $('<td>').attr('id', 'previous'),
             nextCastle = Me.findNextCastle(castle.getCastleId()),
             previousCastle = Me.findPreviousCastle(castle.getCastleId())
         if (nextCastle) {
@@ -114,6 +114,7 @@ var CastleWindow = new function () {
                     .html('>>')
                     .click(function () {
                         CastleWindow.show(nextCastle)
+                        Zoom.lens.setcenter(nextCastle.getX(), nextCastle.getY())
                         Message.remove(id)
                     }))
         }
@@ -124,6 +125,7 @@ var CastleWindow = new function () {
                     .html('<<')
                     .click(function () {
                         CastleWindow.show(previousCastle)
+                        Zoom.lens.setcenter(previousCastle.getX(), previousCastle.getY())
                         Message.remove(id)
                     }))
         }

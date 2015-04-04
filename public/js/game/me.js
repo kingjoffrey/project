@@ -97,6 +97,11 @@ var Me = new function () {
     this.countCastles = function () {
         return me.getCastles().count()
     }
+    /**
+     *
+     * @param castleId
+     * @returns {Castle}
+     */
     this.getCastle = function (castleId) {
         return me.getCastles().get(castleId)
     }
@@ -476,6 +481,11 @@ var Me = new function () {
             }
         }
     }
+    /**
+     *
+     * @param castleId
+     * @returns {Castle}
+     */
     this.findNextCastle = function (castleId) {
         var start = false
         for (var id in Me.getCastles().toArray()) {
