@@ -134,37 +134,45 @@ var Me = new function () {
     }
     this.selectArmy = function (armyId, center) {
         var army = this.getArmy(armyId),
-            unitsBox = $('#unitsBox')
+            unitsBox = $('#unitsBox'),
+            number,
+            unitTypes = {}
 
         unitsBox.html('')
-        for (var heroId in army.getHeroes()) {
-            unitsBox.append($('<div>').html($('<img>').attr('src', Hero.getImage(Me.getColor()))))
+        if (number = countProperties(army.getHeroes())) {
+            unitsBox.append($('<div>').html(number).css({'background-image': 'url(' + Hero.getImage(color) + ')'}))
         }
+
         for (var soldierId in army.getWalkingSoldiers()) {
-            unitsBox.append($('<div>').html($('<img>').attr('src', Unit.getImage(army.getWalkingSoldier(soldierId).unitId, Me.getColor()))))
+            if (isSet(unitTypes[army.getWalkingSoldier(soldierId).unitId])) {
+                unitTypes[army.getWalkingSoldier(soldierId).unitId]++
+            } else {
+                unitTypes[army.getWalkingSoldier(soldierId).unitId] = 1
+            }
         }
         for (var soldierId in army.getFlyingSoldiers()) {
-            unitsBox.append($('<div>').html($('<img>').attr('src', Unit.getImage(army.getFlyingSoldier(soldierId).unitId, Me.getColor()))))
+            if (isSet(unitTypes[army.getFlyingSoldier(soldierId).unitId])) {
+                unitTypes[army.getFlyingSoldier(soldierId).unitId]++
+            } else {
+                unitTypes[army.getFlyingSoldier(soldierId).unitId] = 1
+            }
         }
         for (var soldierId in army.getSwimmingSoldiers()) {
-            unitsBox.append($('<div>').html($('<img>').attr('src', Unit.getImage(army.getSwimmingSoldier(soldierId).unitId, Me.getColor()))))
+            if (isSet(unitTypes[army.getSwimmingSoldier(soldierId).unitId])) {
+                unitTypes[army.getSwimmingSoldier(soldierId).unitId]++
+            } else {
+                unitTypes[army.getSwimmingSoldier(soldierId).unitId] = 1
+            }
         }
-        //$('#armyBox img').each(function(){
-        //    console.log($(this).width())
-        //})
-        //console.log(unitsBox.width())
-        var left = Three.getWidth() / 2 - $('#armyBox').width() / 2
-        //console.log($('#armyBox').width())
-        //console.log(left)
-        $('#armyBox').css({left: left + 'px'})
+        for (var unitId in unitTypes) {
+            unitsBox.append($('<div>').html(unitTypes[unitId]).css({'background-image': 'url(' + Unit.getImage(unitId, color) + ')'}))
+        }
+
+        $('#armyBox').css({left: Three.getWidth() / 2 - $('#armyBox').width() / 2 + 'px'})
 
         selectedArmyId = armyId
         Three.addArmyCircle(army.getX(), army.getY(), army.getBackgroundColor())
         Message.remove()
-
-        //Castle.selectedArmyCursor();
-        //this.enemyCursorWhenSelected();
-        //Castle.myRemoveCursor();
 
         this.removeFromSkipped(armyId)
         this.deleteQuited(armyId)
@@ -409,12 +417,24 @@ var Me = new function () {
     this.getSelectedSoldierSplitKey = function () {
         return this.getArmy(this.getSelectedArmyId()).getSoldierSplitKey()
     }
+    /**
+     *
+     * @returns {*|Armies}
+     */
     this.getArmies = function () {
         return me.getArmies()
     }
+    /**
+     *
+     * @returns {*|Castles}
+     */
     this.getCastles = function () {
         return me.getCastles()
     }
+    /**
+     *
+     * @returns {*|Towers}
+     */
     this.getTowers = function () {
         return me.getTowers()
     }

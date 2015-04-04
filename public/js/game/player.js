@@ -13,12 +13,24 @@ var Player = function (player, color) {
     this.getBackgroundColor = function () {
         return player.backgroundColor
     }
+    /**
+     *
+     * @returns {Armies}
+     */
     this.getArmies = function () {
         return armies
     }
+    /**
+     *
+     * @returns {Castles}
+     */
     this.getCastles = function () {
         return castles
     }
+    /**
+     *
+     * @returns {Towers}
+     */
     this.getTowers = function () {
         return towers
     }

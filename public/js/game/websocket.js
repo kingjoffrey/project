@@ -141,21 +141,28 @@ var Websocket = {
                 break;
 
             case 'disband':
-                Players.get(r.color).getArmies().delete(r.id)
                 if (Turn.isMy()) {
                     Message.remove()
                     var upkeep = 0,
-                        soldiers = Players.get(r.color).getArmies().get(r.id).getWalkingSoldiers()
-                    for (var i in soldiers) {
-                        upkeep += Units.get(soldiers[i].unitId).cost
+                        army = Me.getArmies().get(r.id)
+
+                    for (var i in army.getWalkingSoldiers()) {
+                        upkeep += Units.get(army.getWalkingSoldier(i).unitId).cost
+                    }
+                    for (var i in army.getSwimmingSoldiers()) {
+                        upkeep += Units.get(army.getSwimmingSoldier(i).unitId).cost
+                    }
+                    for (var i in army.getFlyingSoldiers()) {
+                        upkeep += Units.get(army.getFlyingSoldier(i).unitId).cost
                     }
                     Me.costIncrement(-upkeep)
-
+                }
+                Players.get(r.color).getArmies().delete(r.id)
+                if (Turn.isMy()) {
                     if (!Me.findHero() && Me.getGold() >= 100) {
                         $('#heroResurrection').removeClass('buttonOff')
                     }
                 }
-
                 this.executing = 0
                 break;
 

@@ -775,12 +775,15 @@
     border-top-left-radius: 10px;
     border-top-right-radius: 10px;
     min-width: 230px;
-    height: 30px;
+    height: 35px;
 }
 
 #armyBox #unitsBox div {
-    width: 25px;
+    min-width: 35px;
+    height: 30px;
     display: inline-block;
+    background-repeat: no-repeat;
+    background-position: 10px 0;
 }
 
 #commandsBox {
