@@ -69,9 +69,9 @@ var AStar = new function () {
             }
 
             if (movesEnd) {
-                Three.addPathCircle(path[i].x, path[i].y, 'gray')
+                Three.addPathCircle(path[i].x, path[i].y, 'gray', path[i].tt)
             } else {
-                Three.addPathCircle(path[i].x, path[i].y, 'green')
+                Three.addPathCircle(path[i].x, path[i].y, 'green', path[i].tt)
             }
         }
     }

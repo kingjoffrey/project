@@ -159,7 +159,7 @@ var Me = new function () {
         $('#armyBox').css({left: left + 'px'})
 
         selectedArmyId = armyId
-        Three.addArmyCircle(army.getX(), army.getY())
+        Three.addArmyCircle(army.getX(), army.getY(), army.getBackgroundColor())
         Message.remove()
 
         //Castle.selectedArmyCursor();

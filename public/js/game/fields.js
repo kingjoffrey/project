@@ -27,6 +27,12 @@ var Fields = new function () {
         }
         fields[y][x] = new Field(field)
     }
+    /**
+     *
+     * @param x
+     * @param y
+     * @returns {Field}
+     */
     this.get = function (x, y) {
         if (isSet(fields[y]) && isSet(fields[y][x])) {
             return fields[y][x]

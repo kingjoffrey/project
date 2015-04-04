@@ -28,7 +28,7 @@ var Three = new function () {
         timeOut = 100,
         createTextMesh = function (text, color) {
             var mesh = new THREE.Mesh(new THREE.TextGeometry(text, {
-                size: 1,
+                size: 0.5,
                 height: 0.1
             }), new THREE.MeshPhongMaterial({color: color}))
             mesh.position.set(0, 7, 0)
@@ -81,30 +81,65 @@ var Three = new function () {
     this.getRenderer = function () {
         return renderer
     }
-    this.addPathCircle = function (x, y, color) {
+    this.addPathCircle = function (x, y, color, t) {
         var radius = 2,
             segments = 64,
-            material = new THREE.MeshBasicMaterial({color: color, side: THREE.DoubleSide}),
+            material = new THREE.MeshBasicMaterial({
+                color: color,
+                transparent: true,
+                opacity: 0.5,
+                side: THREE.DoubleSide
+            }),
             geometry = new THREE.CircleGeometry(radius, segments)
 
         var circle = new THREE.Mesh(geometry, material)
-        circle.position.set(x * 4 - 216, 0.1, y * 4 - 311)
+
+        switch (t) {
+            case 'm':
+                var height = 3
+                break
+            case 'h':
+                var height = 1
+                break
+            default :
+                var height = 0.1
+                break
+        }
+        circle.position.set(x * 4 - 216, height, y * 4 - 311)
         circle.rotation.x = Math.PI / 2
 
         scene.add(circle)
         circles.push(circle)
     }
-    this.addArmyCircle = function (x, y) {
+    this.addArmyCircle = function (x, y, color) {
         var radius = 2,
-            segments = 128,
-            material = new THREE.LineBasicMaterial({color: 0xffffff}),
-            geometry = new THREE.CircleGeometry(radius, segments)
+            segments = 64,
+            material1 = new THREE.MeshBasicMaterial({
+                color: 0x003300,
+                transparent: true,
+                opacity: 0.7,
+                side: THREE.DoubleSide
+            }),
+            material2 = new THREE.MeshBasicMaterial({
+                color: 0xffffff,
+                transparent: true,
+                opacity: 0.7,
+                side: THREE.DoubleSide
+            }),
+            geometry1 = new THREE.CylinderGeometry(1, 0, 4, segments, segments, 1),
+            geometry2 = new THREE.CircleGeometry(radius, segments)
+        //geometry = new THREE.TorusGeometry(radius, 0.3, segments, segments)
 
-        geometry.vertices.shift()
-        var circle = new THREE.Line(geometry, material)
-        circle.position.set(x * 4 - 216, 1, y * 4 - 311)
+        var cylinder = new THREE.Mesh(geometry1, material1)
+        cylinder.position.set(x * 4 - 216, 10, y * 4 - 311)
+        //cylinder.rotation.x = Math.PI / 2
+        scene.add(cylinder)
+        armyCircles.push(cylinder)
+
+
+        var circle = new THREE.Mesh(geometry2, material2)
+        circle.position.set(x * 4 - 216, 0.1, y * 4 - 311)
         circle.rotation.x = Math.PI / 2
-
         scene.add(circle)
         armyCircles.push(circle)
     }
@@ -235,7 +270,7 @@ var Three = new function () {
         }
         mesh.add(flagMesh)
 
-        //mesh.add(createTextMesh(castle.name, '#ffffff'))
+        mesh.add(createTextMesh(castle.name, '#ffffff'))
 
         updateCastleModel(mesh, castle.defense)
         return mesh
@@ -300,7 +335,19 @@ var Three = new function () {
             var mesh = new THREE.Mesh(untitledModel.geometry, armyMaterial)
         }
 
-        mesh.position.set(x * 4 - 216, 0, y * 4 - 311)
+        switch (Fields.get(x, y).getType()) {
+            case 'm':
+                var height = 3
+                break
+            case 'h':
+                var height = 1
+                break
+            default :
+                var height = 0
+                break
+        }
+
+        mesh.position.set(x * 4 - 216, height, y * 4 - 311)
         mesh.rotation.y = Math.PI / 2 + Math.PI / 4
 
         if (showShadows) {
@@ -318,24 +365,6 @@ var Three = new function () {
 
         return mesh
     }
-    //this.armyChangeFlag = function (mesh, color, number, modelName) {
-    //    mesh.children.splice(0, 1)
-    //
-    //    var armyMaterial = new THREE.MeshLambertMaterial({color: color})
-    //    armyMaterial.side = THREE.DoubleSide
-    //
-    //    if (modelName + 'Model' in window) {
-    //        mesh.geometry = window[modelName + 'Model'].geometry
-    //    } else {
-    //        mesh.geometry = untitledModel.geometry
-    //    }
-    //
-    //    var material = new THREE.MeshLambertMaterial({color: color})
-    //    material.side = THREE.DoubleSide
-    //    var flagMesh = new THREE.Mesh(getFlag(number).geometry, material)
-    //    flagMesh.position.set(-2, 0, 0)
-    //    mesh.add(flagMesh)
-    //}
     var getFlag = function (number) {
         switch (number) {
             case 1:

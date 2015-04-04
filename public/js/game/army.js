@@ -284,10 +284,10 @@ var Army = function (army, bgColor, miniMapColor, textColor, color) {
                 break;
             case 'walk':
                 for (var i in  army.walk) {
-                    var soldier = army.walk[i]
-
+                    var soldier = army.walk[i],
+                        unit = Units.get(soldier.unitId)
                     if (isSet(unit[t])) {
-                        var moveCost = Units.get(soldier.unitId)[t]
+                        var moveCost = unit[t]
                     } else {
                         var moveCost = Terrain.get(t)[movementType]
                     }
@@ -320,6 +320,9 @@ var Army = function (army, bgColor, miniMapColor, textColor, color) {
             default :
                 throw 1
         }
+    }
+    this.getBackgroundColor = function () {
+        return bgColor
     }
 
     army.mesh = Three.addArmy(army.x, army.y, bgColor, this.getNumberOfUnits(), this.getModelName())
