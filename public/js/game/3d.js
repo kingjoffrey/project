@@ -81,14 +81,13 @@ var Three = new function () {
     this.getRenderer = function () {
         return renderer
     }
-    this.addPathCircle = function (x, y) {
+    this.addPathCircle = function (x, y, color) {
         var radius = 2,
             segments = 64,
-            material = new THREE.LineBasicMaterial({color: 0x0000ff}),
+            material = new THREE.MeshBasicMaterial({color: color, side: THREE.DoubleSide}),
             geometry = new THREE.CircleGeometry(radius, segments)
 
-        geometry.vertices.shift()
-        var circle = new THREE.Line(geometry, material)
+        var circle = new THREE.Mesh(geometry, material)
         circle.position.set(x * 4 - 216, 0.1, y * 4 - 311)
         circle.rotation.x = Math.PI / 2
 
@@ -379,10 +378,10 @@ var Three = new function () {
         treeModel = loader.parse(tree)
         waterModel = loader.parse(water)
 
-        mountainModel.material = new THREE.MeshLambertMaterial({color: '#808080'})
+        mountainModel.material = new THREE.MeshLambertMaterial({color: '#4e5a61'})
         mountainModel.material.side = THREE.DoubleSide
 
-        hillModel.material = new THREE.MeshLambertMaterial({color: '#00a000'})
+        hillModel.material = new THREE.MeshLambertMaterial({color: '#415824'})
         hillModel.material.side = THREE.DoubleSide
 
         treeModel.material = new THREE.MeshLambertMaterial({color: '#008000'})

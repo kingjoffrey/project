@@ -100,6 +100,11 @@ var Me = new function () {
     this.getCastle = function (castleId) {
         return me.getCastles().get(castleId)
     }
+    /**
+     *
+     * @param armyId
+     * @returns Army
+     */
     this.getArmy = function (armyId) {
         return me.getArmies().get(armyId)
     }
@@ -413,6 +418,10 @@ var Me = new function () {
     this.getTowers = function () {
         return me.getTowers()
     }
+    /**
+     *
+     * @returns {Army}
+     */
     this.getSelectedArmy = function () {
         return this.getArmy(selectedArmyId)
     }

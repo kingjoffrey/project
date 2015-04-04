@@ -8,8 +8,6 @@ var AStar = new function () {
         nr,
         field,
         army,
-        soldierSplitKey,
-        heroSplitKey,
         myCastleId = {},
         movementType
 
@@ -60,13 +58,21 @@ var AStar = new function () {
             return
         }
 
-        soldierSplitKey = army.getSoldierSplitKey()
-        heroSplitKey = army.getHeroSplitKey()
+        army.resetPathMoves()
 
-        var path = getPath(key)
+        var path = getPath(key),
+            movesEnd = false
 
         for (var i in path) {
-            Three.addPathCircle(path[i].x, path[i].y)
+            if (army.pathStep(path[i].tt, movementType)) {
+                movesEnd = true
+            }
+
+            if (movesEnd) {
+                Three.addPathCircle(path[i].x, path[i].y, 'gray')
+            } else {
+                Three.addPathCircle(path[i].x, path[i].y, 'green')
+            }
         }
     }
 

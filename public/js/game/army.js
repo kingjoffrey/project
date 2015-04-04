@@ -1,6 +1,7 @@
 var Army = function (army, bgColor, miniMapColor, textColor, color) {
     var heroSplitKey = null,
-        soldierSplitKey = null
+        soldierSplitKey = null,
+        pathMoves = 0
 
     this.update = function (a) {
         Fields.get(army.x, army.y).removeArmyId(army.id)
@@ -233,6 +234,66 @@ var Army = function (army, bgColor, miniMapColor, textColor, color) {
         }
         if (name) {
             return name.replace(' ', '_').toLowerCase()
+        }
+    }
+    this.resetPathMoves = function () {
+        for (var i in  army.walk) {
+            army.walk[i].pathMoves = army.walk[i].movesLeft
+        }
+        for (var i in  army.swim) {
+            army.swim[i].pathMoves = army.swim[i].movesLeft
+        }
+        for (var i in  army.fly) {
+            army.fly[i].pathMoves = army.fly[i].movesLeft
+        }
+        for (var i in army.heroes) {
+            army.heroes[i].pathMoves = army.heroes[i].movesLeft
+        }
+    }
+    this.pathStep = function (t, movementType) {
+        switch (movementType) {
+            case 'swim':
+                for (var i in  army.swim) {
+                    var soldier = army.swim[i]
+                    if (soldier.pathMoves - Terrain.get(t).swim <= 0) {
+                        return true
+                    } else {
+                        soldier.pathMoves -= Terrain.get(t).swim
+                    }
+                }
+                break;
+            case 'fly':
+                for (var i in  army.fly) {
+                    var soldier = army.fly[i],
+                        unit = Units.get(soldier.unitId)
+
+                    if (soldier.pathMoves - Terrain.get(t).fly <= 0) {
+                        return true
+                    } else {
+                        soldier.pathMoves -= Terrain.get(t).fly
+                    }
+                }
+                break;
+            case 'walk':
+                for (var i in  army.walk) {
+                    var soldier = army.walk[i],
+                        unit = Units.get(soldier.unitId)
+
+                    if (isSet(unit[t])) {
+                        var moveCost = unit[t]
+                    } else {
+                        var moveCost = Terrain.get(t).walk
+                    }
+
+                    if (soldier.pathMoves - moveCost <= 0) {
+                        return true
+                    } else {
+                        soldier.pathMoves -= moveCost
+                    }
+                }
+                break;
+            default :
+                throw 1
         }
     }
 
