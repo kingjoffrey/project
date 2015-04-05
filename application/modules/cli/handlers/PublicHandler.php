@@ -1,5 +1,6 @@
 <?php
-
+use Devristo\Phpws\Messaging\WebSocketMessageInterface;
+use Devristo\Phpws\Protocol\WebSocketTransportInterface;
 /**
  * This resource handler will respond to all messages sent to /public on the socketserver below
  *
@@ -10,7 +11,7 @@
 class Cli_PublicHandler extends Cli_WofHandler
 {
 
-    public function onMessage(IWebSocketConnection $user, IWebSocketMessage $msg)
+    public function onMessage(WebSocketTransportInterface $user, WebSocketMessageInterface $msg)
     {
         $dataIn = Zend_Json::decode($msg->getData());
         if (Zend_Registry::get('config')->debug) {
@@ -203,7 +204,7 @@ class Cli_PublicHandler extends Cli_WofHandler
         }
     }
 
-    public function onDisconnect(IWebSocketConnection $user)
+    public function onDisconnect(WebSocketTransportInterface $user)
     {
         if (!isset($user->parameters['gameId']) || !isset($user->parameters['playerId'])) {
             return;

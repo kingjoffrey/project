@@ -2,7 +2,7 @@
 
 class Cli_Model_Production
 {
-    public function __construct($dataIn, IWebSocketConnection $user, Zend_Db_Adapter_Pdo_Pgsql $db, Cli_GameHandler $gameHandler)
+    public function __construct($dataIn, Devristo\Phpws\Protocol\WebSocketTransportInterface $user, Zend_Db_Adapter_Pdo_Pgsql $db, Cli_GameHandler $gameHandler)
     {
         $castleId = $dataIn['castleId'];
         $unitId = $dataIn['unitId'];
@@ -74,6 +74,6 @@ class Cli_Model_Production
             'relocationToCastleId' => $relocationToCastleId
         );
 
-        $gameHandler->sendToUser($user, $db, $token, $gameId);
+        $gameHandler->sendToUser($user, $token);
     }
 }

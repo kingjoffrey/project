@@ -1,4 +1,7 @@
 <?php
+use Devristo\Phpws\Messaging\WebSocketMessageInterface;
+use Devristo\Phpws\Protocol\WebSocketTransportInterface;
+use Devristo\Phpws\Server\UriHandler\WebSocketUriHandler;
 
 /**
  * This resource handler will respond to all messages sent to WebSockets channel "/game"
@@ -8,9 +11,23 @@
  * @author Bartosz Krzeszewski
  *
  */
-class Cli_GameHandler extends Cli_WofHandler
+class Cli_GameHandler extends WebSocketUriHandler
 {
-    public function onMessage(IWebSocketConnection $user, IWebSocketMessage $msg)
+    protected $game = array();
+
+    public function getGame($gameId)
+    {
+        if (isset($this->game[$gameId])) {
+            return $this->game[$gameId];
+        }
+    }
+
+    public function addGame($gameId, $game)
+    {
+        $this->game[$gameId] = $game;
+    }
+
+    public function onMessage(WebSocketTransportInterface $user, WebSocketMessageInterface $msg)
     {
         $config = Zend_Registry::get('config');
         $dataIn = Zend_Json::decode($msg->getData());
@@ -160,70 +177,68 @@ class Cli_GameHandler extends Cli_WofHandler
         }
     }
 
-    public function onDisconnect(IWebSocketConnection $user)
+    public function onDisconnect(WebSocketTransportInterface $user)
     {
         $game = Cli_Model_Game::getGame($user);
         if ($game) {
-            $db = Cli_Model_Database::getDb();
-            $gameId = $game->getId();
             $playerId = $user->parameters['me']->getId();
             $color = $game->getPlayerColor($playerId);
 
-            $game->updateOnline($color, 0);
-
-            $mPlayersInGame = new Application_Model_PlayersInGame($gameId, $db);
-            $mPlayersInGame->updateWSSUId($playerId, null);
+            $game->removeUser($playerId, Cli_Model_Database::getDb());
 
             $token = array(
                 'type' => 'close',
                 'color' => $color
             );
 
-            $this->sendToChannel($db, $token, $gameId);
-
-//            Game_Cli_Database::disconnectFromGame($gameId, $playerId, $db);
-//            $this->update($gameId, $db);
+            $this->sendToChannel($game, $token);
         }
-
-//        $this->say("[DEMO] {$user->getId()} disconnected");
     }
 
-    public function sendToChannel($db, $token, $gameId, $debug = null)
+    /**
+     * @param Cli_Model_Game $game
+     * @param $token
+     * @param null $debug
+     * @throws Zend_Exception
+     */
+    public function sendToChannel(Cli_Model_Game $game, $token, $debug = null)
     {
         if ($debug || Zend_Registry::get('config')->debug) {
-            print_r('ODPOWIEDŹ');
+            print_r('ODPOWIEDŹ ');
             print_r($token);
         }
 
-        parent::sendToChannel($db, $token, $gameId, $debug);
-
-        if ($token['type'] == 'chat') {
-            return;
-        }
-
-        if (!Zend_Registry::get('config')->turnOffDatabaseLogging) {
-            Cli_Model_Database::addTokensOut($db, $gameId, $token);
+        foreach ($game->getUsers() as $user) {
+            $this->sendToUser($user, $token);
         }
     }
 
     /**
      * @param $user
-     * @param $db
+     * @param $msg
+     */
+    public function sendError($user, $msg)
+    {
+        $token = array(
+            'type' => 'error',
+            'msg' => $msg
+        );
+
+        $this->sendToUser($user, $token);
+    }
+
+    /**
+     * @param $user
      * @param $token
-     * @param $gameId
      * @param null $debug
      */
-    public function sendToUser($user, $db, $token, $gameId, $debug = null)
+    public function sendToUser(Devristo\Phpws\Protocol\WebSocketTransportInterface $user, $token, $debug = null)
     {
         if ($debug || Zend_Registry::get('config')->debug) {
             print_r('ODPOWIEDŹ');
             print_r($token);
         }
 
-        if (!Zend_Registry::get('config')->turnOffDatabaseLogging) {
-            Cli_Model_Database::addTokensOut($db, $gameId, $token);
-        }
-
-        $this->send($user, Zend_Json::encode($token));
+        $user->sendString(Zend_Json::encode($token));
     }
 }

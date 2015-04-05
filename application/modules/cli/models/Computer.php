@@ -2,7 +2,7 @@
 
 class Cli_Model_Computer
 {
-    public function __construct(IWebSocketConnection $user, Zend_Db_Adapter_Pdo_Pgsql $db, Cli_GameHandler $gameHandler)
+    public function __construct(Devristo\Phpws\Protocol\WebSocketTransportInterface $user, Zend_Db_Adapter_Pdo_Pgsql $db, Cli_GameHandler $gameHandler)
     {
         $l = new Coret_Model_Logger();
         $game = Cli_Model_Game::getGame($user);

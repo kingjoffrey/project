@@ -3,7 +3,7 @@
 class Cli_Model_CastleRaze
 {
 
-    public function __construct($armyId, IWebSocketConnection $user, Zend_Db_Adapter_Pdo_Pgsql $db, Cli_GameHandler $gameHandler)
+    public function __construct($armyId, Devristo\Phpws\Protocol\WebSocketTransportInterface $user, Zend_Db_Adapter_Pdo_Pgsql $db, Cli_GameHandler $gameHandler)
     {
         if ($armyId == null) {
             $gameHandler->sendError($user, 'No "armyId"!');
@@ -39,7 +39,7 @@ class Cli_Model_CastleRaze
             'castleId' => $castleId
         );
 
-        $gameHandler->sendToChannel($db, $token, $game->getId());
+        $gameHandler->sendToChannel($game, $token);
     }
 
 }

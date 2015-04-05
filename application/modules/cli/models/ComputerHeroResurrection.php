@@ -2,7 +2,7 @@
 
 class Cli_Model_ComputerHeroResurrection
 {
-    public function __construct($playerId, IWebSocketConnection $user, Zend_Db_Adapter_Pdo_Pgsql $db, Cli_GameHandler $gameHandler)
+    public function __construct($playerId, Devristo\Phpws\Protocol\WebSocketTransportInterface $user, Zend_Db_Adapter_Pdo_Pgsql $db, Cli_GameHandler $gameHandler)
     {
         $game = Cli_Model_Game::getGame($user);
         $gameId = $game->getId();
@@ -46,6 +46,6 @@ class Cli_Model_ComputerHeroResurrection
             'color' => $color
         );
 
-        $gameHandler->sendToChannel($db, $token, $gameId);
+        $gameHandler->sendToChannel($game, $token);
     }
 }

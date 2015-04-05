@@ -4,7 +4,7 @@ class Cli_Model_ComputerMove extends Cli_Model_ComputerMethods
 {
     private $_searchRuin = false;
 
-    public function __construct(Cli_Model_Army $army, IWebSocketConnection $user, Zend_Db_Adapter_Pdo_Pgsql $db, Cli_GameHandler $gameHandler)
+    public function __construct(Cli_Model_Army $army, Devristo\Phpws\Protocol\WebSocketTransportInterface $user, Zend_Db_Adapter_Pdo_Pgsql $db, Cli_GameHandler $gameHandler)
     {
         parent::__construct($army, $user, $db, $gameHandler);
         $this->_l = new Coret_Model_Logger();

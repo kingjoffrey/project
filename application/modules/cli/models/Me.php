@@ -29,10 +29,10 @@ class Cli_Model_Me
     }
 
     /**
-     * @param IWebSocketConnection $user
+     * @param Devristo\Phpws\Protocol\WebSocketTransportInterface $user
      * @return Cli_Model_Me
      */
-    static public function getMe(IWebSocketConnection $user)
+    static public function getMe(Devristo\Phpws\Protocol\WebSocketTransportInterface $user)
     {
         return $user->parameters['me'];
     }

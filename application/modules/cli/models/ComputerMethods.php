@@ -44,7 +44,7 @@ abstract class Cli_Model_ComputerMethods
      */
     protected $_l;
 
-    public function __construct(Cli_Model_Army $army, IWebSocketConnection $user, Zend_Db_Adapter_Pdo_Pgsql $db, Cli_GameHandler $gameHandler)
+    public function __construct(Cli_Model_Army $army, Devristo\Phpws\Protocol\WebSocketTransportInterface $user, Zend_Db_Adapter_Pdo_Pgsql $db, Cli_GameHandler $gameHandler)
     {
         $this->_army = $army;
         $this->_user = $user;

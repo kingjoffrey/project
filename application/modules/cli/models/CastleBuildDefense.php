@@ -2,7 +2,7 @@
 
 class Cli_Model_CastleBuildDefense
 {
-    public function __construct($castleId, IWebSocketConnection $user, Zend_Db_Adapter_Pdo_Pgsql $db, Cli_GameHandler $gameHandler)
+    public function __construct($castleId, Devristo\Phpws\Protocol\WebSocketTransportInterface $user, Zend_Db_Adapter_Pdo_Pgsql $db, Cli_GameHandler $gameHandler)
     {
         if ($castleId == null) {
             $gameHandler->sendError($user, 'Brak "castleId"!');
@@ -42,6 +42,6 @@ class Cli_Model_CastleBuildDefense
             'castleId' => $castleId
         );
 
-        $gameHandler->sendToChannel($db, $token, $gameId);
+        $gameHandler->sendToChannel($game, $token);
     }
 }

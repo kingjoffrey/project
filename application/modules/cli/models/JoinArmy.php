@@ -3,7 +3,7 @@
 class Cli_Model_JoinArmy
 {
 
-    public function __construct($armyId, IWebSocketConnection $user, Zend_Db_Adapter_Pdo_Pgsql $db, Cli_GameHandler $gameHandler)
+    public function __construct($armyId, Devristo\Phpws\Protocol\WebSocketTransportInterface $user, Zend_Db_Adapter_Pdo_Pgsql $db, Cli_GameHandler $gameHandler)
     {
         if (empty($armyId)) {
             $gameHandler->sendError($user, 'Brak "armyId"!');
@@ -22,6 +22,6 @@ class Cli_Model_JoinArmy
             'color' => $color
         );
 
-        $gameHandler->sendToChannel($db, $token, $game->getId());
+        $gameHandler->sendToChannel($game, $token);
     }
 }

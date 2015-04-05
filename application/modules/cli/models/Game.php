@@ -7,7 +7,10 @@ class Cli_Model_Game
 
     private $_capitals = array();
     private $_playersInGameColors;
+
+    private $_users = array();
     private $_online = array();
+
     private $_numberOfGarrisonUnits;
 
     private $_begin;
@@ -25,8 +28,6 @@ class Cli_Model_Game
     private $_firstUnitId;
     private $_Players;
     private $_Ruins;
-
-    private $_loaded = false;
 
     public function __construct($gameId, Zend_Db_Adapter_Pdo_Pgsql $db)
     {
@@ -239,11 +240,6 @@ class Cli_Model_Game
         return $this->_turnsLimit;
     }
 
-    public function getMe()
-    {
-        return $this->_me;
-    }
-
     public function getId()
     {
         return $this->_id;
@@ -282,21 +278,36 @@ class Cli_Model_Game
         $this->_chatHistory[] = array('date' => date('Y-m-d H:i:s', mktime()), 'message' => $message, 'color' => $color);
     }
 
-    public function updateOnline($color, $value)
+    public function addUser($playerId, Devristo\Phpws\Protocol\WebSocketTransportInterface $user, Application_Model_PlayersInGame $mPlayersInGame)
     {
-        $this->_online[$color] = $value;
+        $mPlayersInGame->updateWSSUId($playerId, $user->getId());
+        $this->_users[$playerId] = $user;
+        $this->updateOnline($this->getPlayerColor($playerId), 1);
     }
 
-    public function isLoaded()
+    public function removeUser($playerId, Zend_Db_Adapter_Pdo_Pgsql $db)
     {
-        return $this->_loaded;
+        $mPlayersInGame = new Application_Model_PlayersInGame($this->_id, $db);
+        $mPlayersInGame->updateWSSUId($playerId, null);
+        unset($this->_users[$playerId]);
+        $this->updateOnline($this->getPlayerColor($playerId), 0);
+    }
+
+    public function getUsers()
+    {
+        return $this->_users;
+    }
+
+    private function updateOnline($color, $online)
+    {
+        $this->_online[$color] = $online;
     }
 
     /**
-     * @param IWebSocketConnection $user
+     * @param Devristo\Phpws\Protocol\WebSocketTransportInterface $user
      * @return Cli_Model_Game
      */
-    static public function getGame(IWebSocketConnection $user)
+    static public function getGame(Devristo\Phpws\Protocol\WebSocketTransportInterface $user)
     {
         return $user->parameters['game'];
     }

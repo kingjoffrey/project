@@ -1,5 +1,8 @@
 <?php
-
+use Devristo\Phpws\Framing\WebSocketFrame;
+use Devristo\Phpws\Framing\WebSocketOpcode;
+use Devristo\Phpws\Messaging\WebSocketMessageInterface;
+use Devristo\Phpws\Protocol\WebSocketTransportInterface;
 /**
  * This resource handler will respond to all messages sent to /public on the socketserver below
  *
@@ -10,7 +13,7 @@
 class Cli_EditorHandler extends Cli_WofHandler
 {
 
-    public function onMessage(IWebSocketConnection $user, IWebSocketMessage $msg)
+    public function onMessage(WebSocketTransportInterface $user, WebSocketMessageInterface $msg)
     {
         $dataIn = Zend_Json::decode($msg->getData());
         if (Zend_Registry::get('config')->debug) {
@@ -70,7 +73,7 @@ class Cli_EditorHandler extends Cli_WofHandler
         }
     }
 
-    public function onDisconnect(IWebSocketConnection $user)
+    public function onDisconnect(WebSocketTransportInterface $user)
     {
         if ($user->parameters['playerId'] && $user->parameters['websocketId']) {
             $db = Cli_Model_Database::getDb();

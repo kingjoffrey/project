@@ -2,7 +2,7 @@
 
 class Cli_Model_Statistics
 {
-    public function __construct(IWebSocketConnection $user, Zend_Db_Adapter_Pdo_Pgsql $db, Cli_GameHandler $gameHandler)
+    public function __construct(Devristo\Phpws\Protocol\WebSocketTransportInterface $user, Zend_Db_Adapter_Pdo_Pgsql $db, Cli_GameHandler $gameHandler)
     {
         $game = Cli_Model_Game::getGame($user);
         $playersInGameColors = $game->getPlayersInGameColors();
@@ -37,6 +37,6 @@ class Cli_Model_Statistics
             'castlesDestroyed' => $castlesDestroyed
         );
 
-        $gameHandler->sendToUser($user, $db, $token, $game->getId());
+        $gameHandler->sendToUser($user, $token);
     }
 }

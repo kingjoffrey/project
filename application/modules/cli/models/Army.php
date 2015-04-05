@@ -109,7 +109,7 @@ class Cli_Model_Army
                 'color' => $this->_color
             );
 
-            $gameHandler->sendToChannel($db, $token, $gameId);
+            $gameHandler->sendToChannel( $token);
             return;
         }
 
@@ -145,7 +145,7 @@ class Cli_Model_Army
             'type' => 'move'
         );
 
-        $gameHandler->sendToChannel($db, $token, $gameId);
+        $gameHandler->sendToChannel($game, $token);
     }
 
     public function getMovementType()

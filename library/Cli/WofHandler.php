@@ -1,11 +1,12 @@
 <?php
 
+use Devristo\Phpws\Server\UriHandler\WebSocketUriHandler;
 /**
  * All this handler does is receiving data from browsers and sending the responds back
  * @author Bartosz Krzeszewski
  *
  */
-class Cli_WofHandler extends WebSocket_UriHandler
+class Cli_WofHandler extends WebSocketUriHandler
 {
 
     /**

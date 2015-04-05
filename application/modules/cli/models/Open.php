@@ -4,12 +4,12 @@ class Cli_Model_Open
 {
     /**
      * @param $dataIn
-     * @param IWebSocketConnection $user
+     * @param Devristo\Phpws\Protocol\WebSocketTransportInterface $user
      * @param Zend_Db_Adapter_Pdo_Pgsql $db
      * @param Cli_GameHandler $gameHandler
      * @throws Exception
      */
-    public function __construct($dataIn, IWebSocketConnection $user, Zend_Db_Adapter_Pdo_Pgsql $db, Cli_GameHandler $gameHandler)
+    public function __construct($dataIn, Devristo\Phpws\Protocol\WebSocketTransportInterface $user, Zend_Db_Adapter_Pdo_Pgsql $db, Cli_GameHandler $gameHandler)
     {
         if (!isset($dataIn['gameId']) || !isset($dataIn['playerId']) || !isset($dataIn['langId'])) {
             $gameHandler->sendError($user, 'Brak "gameId" lub "playerId" lub "langId');
@@ -23,8 +23,6 @@ class Cli_Model_Open
             return;
         }
 
-        $mPlayersInGame->updateWSSUId($dataIn['playerId'], $user->getId());
-
         Zend_Registry::set('id_lang', $dataIn['langId']);
         Zend_Registry::set('playersInGameColors', $mPlayersInGame->getAllColors());
 
@@ -35,8 +33,9 @@ class Cli_Model_Open
         }
 
         $game = Cli_Model_Game::getGame($user);
+        $game->addUser($dataIn['playerId'], $user, $mPlayersInGame);
+
         $myColor = $game->getPlayerColor($dataIn['playerId']);
-        $game->updateOnline($myColor, 1);
         $user->parameters['me'] = new Cli_Model_Me($myColor, $dataIn['playerId']);
         $player = $game->getPlayers()->getPlayer($myColor);
 
@@ -46,12 +45,12 @@ class Cli_Model_Open
         $token['bSequence'] = array('attack' => $player->getAttackSequence(), 'defense' => $player->getDefenceSequence());
         $token['type'] = 'open';
 
-        $gameHandler->sendToUser($user, $db, $token, $game->getId());
+        $gameHandler->sendToUser($user, $token);
 
         $token = array(
             'type' => 'online',
             'color' => $myColor
         );
-        $gameHandler->sendToChannel($db, $token, $game->getId());
+        $gameHandler->sendToChannel($game, $token);
     }
 }

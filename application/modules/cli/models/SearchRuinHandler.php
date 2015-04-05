@@ -3,7 +3,7 @@
 class Cli_Model_SearchRuinHandler
 {
 
-    public function __construct($armyId, IWebSocketConnection $user, Zend_Db_Adapter_Pdo_Pgsql $db, Cli_GameHandler $gameHandler)
+    public function __construct($armyId, Devristo\Phpws\Protocol\WebSocketTransportInterface $user, Zend_Db_Adapter_Pdo_Pgsql $db, Cli_GameHandler $gameHandler)
     {
         if (!Zend_Validate::is($armyId, 'Digits')) {
             $gameHandler->sendError($user, 'Brak armii!');

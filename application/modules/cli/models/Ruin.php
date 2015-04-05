@@ -198,6 +198,6 @@ class Cli_Model_Ruin extends Cli_Model_Entity
             'color' => $color
         );
 
-        $gameHandler->sendToChannel($db, $token, $gameId);
+        $gameHandler->sendToChannel($game, $token);
     }
 }

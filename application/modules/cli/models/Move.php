@@ -3,7 +3,7 @@
 class Cli_Model_Move
 {
 
-    public function __construct($dataIn, IWebSocketConnection $user, Zend_Db_Adapter_Pdo_Pgsql $db, Cli_GameHandler $gameHandler)
+    public function __construct($dataIn, Devristo\Phpws\Protocol\WebSocketTransportInterface $user, Zend_Db_Adapter_Pdo_Pgsql $db, Cli_GameHandler $gameHandler)
     {
         if (!isset($dataIn['armyId'])) {
             $gameHandler->sendError($user, 'No "armyId"!');

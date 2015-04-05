@@ -148,7 +148,7 @@ class Cli_Model_SaveResults
         $token = array(
             'type' => 'end'
         );
-        $gameHandler->sendToChannel($db, $token, $gameId);
+        $gameHandler->sendToChannel($game, $token);
     }
 }
 

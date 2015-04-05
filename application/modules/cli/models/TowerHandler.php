@@ -45,7 +45,7 @@ class Cli_Model_TowerHandler
                             'y' => $y,
                             'color' => $playerColor
                         );
-                        $gameHandler->sendToChannel($db, $token, $gameId);
+                        $gameHandler->sendToChannel($game, $token);
                     }
                 }
             }

@@ -3,7 +3,7 @@
 class Cli_Model_StartTurn
 {
 
-    public function __construct($playerId, IWebSocketConnection $user, Zend_Db_Adapter_Pdo_Pgsql $db, Cli_GameHandler $gameHandler)
+    public function __construct($playerId, Devristo\Phpws\Protocol\WebSocketTransportInterface $user, Zend_Db_Adapter_Pdo_Pgsql $db, Cli_GameHandler $gameHandler)
     {
         $game = Cli_Model_Game::getGame($user);
         $players = $game->getPlayers();
@@ -100,7 +100,7 @@ class Cli_Model_StartTurn
             'castles' => $castles->toArray(),
             'color' => $color
         );
-        $gameHandler->sendToChannel($db, $token, $gameId);
+        $gameHandler->sendToChannel($game, $token);
 
         if ($player->getComputer()) {
             new Cli_Model_Computer($user, $db, $gameHandler);

@@ -2,7 +2,7 @@
 
 class Cli_Model_BattleSequenceHandler
 {
-    public function __construct($data, IWebSocketConnection $user, Zend_Db_Adapter_Pdo_Pgsql $db, Cli_GameHandler $gameHandler)
+    public function __construct($data, Devristo\Phpws\Protocol\WebSocketTransportInterface $user, Zend_Db_Adapter_Pdo_Pgsql $db, Cli_GameHandler $gameHandler)
     {
         $game = Cli_Model_Game::getGame($user);
         $me = Cli_Model_Me::getMe($user);
@@ -33,6 +33,6 @@ class Cli_Model_BattleSequenceHandler
             'attack' => $attack
         );
 
-        $gameHandler->sendToUser($user, $db, $token, $game->getId());
+        $gameHandler->sendToUser($user, $token);
     }
 }

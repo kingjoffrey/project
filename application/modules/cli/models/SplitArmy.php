@@ -4,7 +4,7 @@ class Cli_Model_SplitArmy
 {
     private $_childArmyId = null;
 
-    function  __construct($parentArmyId, $s, $h, $playerId, IWebSocketConnection $user, Zend_Db_Adapter_Pdo_Pgsql $db, Cli_GameHandler $gameHandler)
+    function  __construct($parentArmyId, $s, $h, $playerId, Devristo\Phpws\Protocol\WebSocketTransportInterface $user, Zend_Db_Adapter_Pdo_Pgsql $db, Cli_GameHandler $gameHandler)
     {
         if (empty($parentArmyId) || (empty($h) && empty($s))) {
             $gameHandler->sendError($user, 'Brak "armyId", "s" lub "h"!');
@@ -77,7 +77,7 @@ class Cli_Model_SplitArmy
             'color' => $color
         );
 
-        $gameHandler->sendToChannel($db, $token, $gameId);
+        $gameHandler->sendToChannel($game, $token);
     }
 
     public function getChildArmyId()
