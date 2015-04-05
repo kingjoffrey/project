@@ -109,7 +109,7 @@ class Cli_Model_Army
                 'color' => $this->_color
             );
 
-            $gameHandler->sendToChannel( $token);
+            $gameHandler->sendToChannel($game, $token);
             return;
         }
 

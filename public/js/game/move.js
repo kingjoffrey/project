@@ -136,6 +136,9 @@ var Move = new function () {
                     } else if (Me.getArmy(army.getArmyId()).getMoves()) {
                         Me.selectArmy(army.getArmyId())
                     }
+                    if (!Me.findHero() && Me.getGold() >= 100) {
+                        $('#heroResurrection').removeClass('buttonOff')
+                    }
                     Gui.unlock()
                 }
             } else {

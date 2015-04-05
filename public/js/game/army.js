@@ -174,7 +174,18 @@ var Army = function (army, bgColor, miniMapColor, textColor, color) {
         return army.fly[soldierId]
     }
     this.setPosition = function (x, y) {
-        army.mesh.position.set(x * 4 - 216, 0, y * 4 - 311)
+        switch (Fields.get(x, y).getType()) {
+            case 'm':
+                var height = 3
+                break
+            case 'h':
+                var height = 1
+                break
+            default :
+                var height = 0
+                break
+        }
+        army.mesh.position.set(x * 4 - 216, height, y * 4 - 311)
     }
     this.getNumberOfUnits = function () {
         var numberOfUnits = countProperties(army.heroes) + countProperties(army.walk) + countProperties(army.swim) + countProperties(army.fly)
