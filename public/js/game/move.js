@@ -182,10 +182,44 @@ var Move = new function () {
                     }
                 }
                 if (Me.colorEquals(r.color)) {
-                    if (!Me.findHero() && Me.getGold() >= 100) {
+                    if (Turn.isMy() && !Me.findHero() && Me.getGold() >= 100) {
                         $('#heroResurrection').removeClass('buttonOff')
                     }
                     Gui.unlock()
+                }
+            }
+            if (player.isComputer() && !Gui.getShow()) {
+                for (var color in r.battle.defenders) {
+                    if (color == 'neutral') {
+                        break
+                    }
+                    if (Me.colorEquals(color)) {
+                        var defenderArmies = Me.getArmies(),
+                            upkeep = 0
+
+                        for (var armyId in r.battle.defenders[color]) {
+                            var battleArmy = r.battle.defenders[color][armyId],
+                                defenderArmy = defenderArmies.get(armyId)
+
+                            for (var soldierId in battleArmy.walk) {
+                                if (battleArmy.walk[soldierId]) {
+                                    upkeep -= Units.get(defenderArmy.getWalkingSoldier(soldierId).unitId).cost
+                                }
+                            }
+                            for (var soldierId in battleArmy.swim) {
+                                if (battleArmy.swim[soldierId]) {
+                                    upkeep -= Units.get(defenderArmy.getSwimmingSoldier(soldierId).unitId).cost
+                                }
+                            }
+                            for (var soldierId in battleArmy.fly) {
+                                if (battleArmy.fly[soldierId]) {
+                                    upkeep -= Units.get(defenderArmy.getFlyingSoldier(soldierId).unitId).cost
+                                }
+                            }
+                        }
+                        Me.costIncrement(upkeep)
+                        break
+                    }
                 }
             }
         } else if (Me.colorEquals(r.color)) {
