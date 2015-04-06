@@ -172,7 +172,7 @@ var Websocket = {
                 Players.get(r.color).getArmies().handle(r.army)
                 if (Turn.isMy()) {
                     Message.remove()
-                    Me.goldIncrement(-r.gold)
+                    Me.setGold(r.gold)
                     if (Me.findHero()) {
                         $('#heroResurrection').addClass('buttonOff')
                     }
@@ -669,13 +669,13 @@ var Websocket = {
             return;
         }
 
-        if (!Turn.isMy()) {
-            return;
-        }
+        //if (!Turn.isMy()) {
+        //    return;
+        //}
 
-        if (Me.findHero()) {
-            return;
-        }
+        //if (Me.findHero()) {
+        //    return;
+        //}
 
         Me.deselectArmy()
 

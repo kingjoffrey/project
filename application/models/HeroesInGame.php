@@ -102,9 +102,11 @@ class Application_Model_HeroesInGame extends Coret_Db_Table_Abstract
         $select = $this->_db->select()
             ->from(array('a' => $this->_name), 'armyId')
             ->join(array('b' => 'hero'), 'a."heroId" = b."heroId"', null)
-            ->where($this->_db->quoteIdentifier('armyId') . ' IS NOT NULL')
-            ->where($this->_db->quoteIdentifier('gameId') . ' = ?', $this->_gameId)
-            ->where($this->_db->quoteIdentifier('playerId') . ' = ?', $playerId);
+            ->join(array('c' => 'army'), 'a."armyId" = c."armyId"', null)
+            ->where('a.' . $this->_db->quoteIdentifier('armyId') . ' IS NOT NULL')
+            ->where('destroyed = false')
+            ->where('a.' . $this->_db->quoteIdentifier('gameId') . ' = ?', $this->_gameId)
+            ->where('b.' . $this->_db->quoteIdentifier('playerId') . ' = ?', $playerId);
 
         if ($this->selectOne($select)) {
             return;

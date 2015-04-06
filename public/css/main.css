@@ -93,7 +93,6 @@ input[type="radio"], input[type="checkbox"] {
     text-decoration: none;
     cursor: pointer;
     line-height: 27px;
-    font-family: fantasy;
     font-size: 16px;
     color: #fff;
     text-shadow: none;
@@ -166,7 +165,7 @@ h1 {
 
 #title p {
     font-size: 20px;
-    font-family: "Alpine", Verdana, Tahoma;
+    /*font-family: "Alpine", Verdana, Tahoma;*/
     position: absolute;
     top: 113px;
     left: 277px;
@@ -175,16 +174,10 @@ h1 {
 
 h2 {
     padding: 15px;
-    /*margin-top: 15px;*/
-    /*background: url(/img/h2_bg.png);*/
-    /*border: 1px solid grey;*/
-    /*border: 1px solid #000;*/
-    /*border-bottom: none;*/
     color: #fff;
     letter-spacing: 5px;
     text-align: center;
     text-shadow: 2px 1px 1px #000;
-    font-family: fantasy;
 }
 
 h3 {
@@ -249,7 +242,6 @@ th {
     padding: 4px;
     color: #A0B4B0;
     background: url("/img/game/message_bg.png");
-    font-family: fantasy;
 }
 
 td {
@@ -323,7 +315,6 @@ td:first-of-type {
 #content form label {
     color: #fff;
     text-shadow: 1px 1px 0 #000;
-    font-family: fantasy;
 }
 
 dt {
@@ -358,6 +349,5 @@ p#info {
     padding: 10px;
     background: url(/img/bg_1.jpg);
     box-shadow: 2px 2px 5px #000;
-    font-family: fantasy;
 }
 
