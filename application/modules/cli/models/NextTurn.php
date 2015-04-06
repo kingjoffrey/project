@@ -10,7 +10,7 @@ class Cli_Model_NextTurn
         $players = $game->getPlayers();
 
         while (true) {
-            $nextPlayerId = $this->getExpectedNextTurnPlayer($game, $db);
+            $nextPlayerId = $this->getExpectedNextTurnPlayer($game, $db, $gameHandler);
             $nextPlayerColor = $game->getPlayerColor($nextPlayerId);
 
             $player = $players->getPlayer($nextPlayerColor);
@@ -50,7 +50,7 @@ class Cli_Model_NextTurn
         }
     }
 
-    private function getExpectedNextTurnPlayer(Cli_Model_Game $game, Zend_Db_Adapter_Pdo_Pgsql $db)
+    private function getExpectedNextTurnPlayer(Cli_Model_Game $game, Zend_Db_Adapter_Pdo_Pgsql $db, Cli_GameHandler $gameHandler)
     {
         $playerColor = $game->getPlayerColor($game->getTurnPlayerId());
         $find = false;
@@ -83,6 +83,11 @@ class Cli_Model_NextTurn
         /* jeżeli następny gracz to pierwszy gracz to wtedy nowa tura */
         if ($nextPlayerColor == $firstColor) {
             $game->turnNumberIncrement();
+            $token = array(
+                'type' => 'neutral',
+                'armies' => $game->getPlayers()->getPlayer('neutral')->getArmies()->toArray()
+            );
+            $gameHandler->sendToChannel($game, $token);
         }
         $turnPlayerId = $game->getPlayers()->getPlayer($nextPlayerColor)->getId();
         $game->setTurnPlayerId($turnPlayerId);

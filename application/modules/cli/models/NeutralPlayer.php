@@ -22,9 +22,8 @@ class Cli_Model_NeutralPlayer extends Cli_Model_DefaultPlayer
 
     private function initCastles(Cli_Model_Game $game, $mapCastles, Zend_Db_Adapter_Pdo_Pgsql $db)
     {
-        $turnNumber = $game->getTurnNumber();
         $firstUnitId = $game->getFirstUnitId();
-        $numberOfSoldiers = ceil($turnNumber / 10);
+        $numberOfSoldiers = $game->getNumberOfGarrisonUnits();
         $units = $game->getUnits();
 
         $mCastlesInGame = new Application_Model_CastlesInGame($game->getId(), $db);
@@ -54,6 +53,20 @@ class Cli_Model_NeutralPlayer extends Cli_Model_DefaultPlayer
             }
 
             $this->_armies->addArmy($armyId, $army);
+        }
+    }
+
+    public function increaseCastlesGarrison($numberOfGarrisonUnits, $firstUnitId, $units)
+    {
+        foreach ($this->_castles->getKeys() as $castleId) {
+            $castle = $this->_castles->getCastle($castleId);
+            $armyId = 'a' . $castle->getId();
+            $soldierId = 's' . $numberOfGarrisonUnits;
+
+            $this->_armies->getArmy($armyId)->getWalkingSoldiers()->add($soldierId, new Cli_Model_Soldier(array(
+                'soldierId' => $soldierId,
+                'unitId' => $firstUnitId
+            ), $units->getUnit($firstUnitId)));
         }
     }
 

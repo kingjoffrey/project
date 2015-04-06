@@ -29,16 +29,25 @@ abstract class Cli_Model_DefaultPlayer
         return count($this->_castles);
     }
 
+    /**
+     * @return Cli_Model_Castles
+     */
     public function getCastles()
     {
         return $this->_castles;
     }
 
+    /**
+     * @return Cli_Model_Towers
+     */
     public function getTowers()
     {
         return $this->_towers;
     }
 
+    /**
+     * @return Cli_Model_Armies
+     */
     public function getArmies()
     {
         return $this->_armies;
