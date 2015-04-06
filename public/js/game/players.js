@@ -52,10 +52,7 @@ var Players = new function () {
                     rotationDeg: rotation
                 })
                 kineticLayer.add(wedges[shortName].kinetic)
-                drawImage(shortName)
-                if (Players.get(shortName).getLost()) {
-                    Players.drawSkull(shortName)
-                }
+                drawImage(shortName, Players.get(shortName).getLost())
                 i++;
             }
 
@@ -73,7 +70,7 @@ var Players = new function () {
             Players.drawTurn()
             drawPlayerCircle()
         },
-        drawImage = function (shortName) {
+        drawImage = function (shortName, skull) {
             var imageObj = new Image();
             imageObj.onload = function () {
                 wedges[shortName].img = new Kinetic.Image({
@@ -85,7 +82,10 @@ var Players = new function () {
                 });
                 kineticLayer.add(wedges[shortName].img);
                 kineticLayer.draw()
-            };
+                if (isTruthful(skull)) {
+                    Players.drawSkull(shortName)
+                }
+            }
             imageObj.src = Hero.getImage(shortName)
         },
         drawPlayerCircle = function () {
