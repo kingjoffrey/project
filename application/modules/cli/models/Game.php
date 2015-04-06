@@ -106,7 +106,7 @@ class Cli_Model_Game
                 $this->updateOnline($color, 0);
             }
         }
-        $this->_Players->addPlayer('neutral', new Cli_Model_NeutralPlayer($this->_id, $mapCastles, $mapTowers, $playersTowers, $db));
+        $this->_Players->addPlayer('neutral', new Cli_Model_NeutralPlayer($this, $mapCastles, $mapTowers, $playersTowers, $db));
         $this->_Players->initFields($this->_Fields);
     }
 

@@ -2,8 +2,6 @@
 
 class Cli_Model_Player extends Cli_Model_DefaultPlayer
 {
-    private $_id;
-
     private $_turnActive;
     private $_computer;
     private $_lost;
@@ -11,11 +9,7 @@ class Cli_Model_Player extends Cli_Model_DefaultPlayer
     private $_gold;
 
     private $_miniMapColor;
-    private $_backgroundColor;
     private $_textColor;
-    private $_longName;
-
-    private $_team;
 
     private $_attackSequence;
     private $_defenceSequence;
@@ -125,36 +119,11 @@ class Cli_Model_Player extends Cli_Model_DefaultPlayer
         );
     }
 
-    public function getArmies()
-    {
-        return $this->_armies;
-    }
-
-    public function getCastles()
-    {
-        return $this->_castles;
-    }
-
-    public function getTowers()
-    {
-        return $this->_towers;
-    }
-
-    public function getTeam()
-    {
-        return $this->_team;
-    }
-
     public function setLost($gameId, $db)
     {
         $mPlayersInGame = new Application_Model_PlayersInGame($gameId, $db);
         $mPlayersInGame->setPlayerLostGame($this->_id);
         $this->_lost = true;
-    }
-
-    public function getId()
-    {
-        return $this->_id;
     }
 
     public function getGold()

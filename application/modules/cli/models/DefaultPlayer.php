@@ -2,11 +2,17 @@
 
 abstract class Cli_Model_DefaultPlayer
 {
+    protected $_id;
+
+    protected $_color;
+    protected $_team;
+
+    protected $_longName;
+    protected $_backgroundColor;
+
     protected $_armies;
     protected $_castles;
     protected $_towers;
-
-    protected $_color;
 
     public function hasTower($towerId)
     {
@@ -31,5 +37,20 @@ abstract class Cli_Model_DefaultPlayer
     public function getTowers()
     {
         return $this->_towers;
+    }
+
+    public function getArmies()
+    {
+        return $this->_armies;
+    }
+
+    public function getTeam()
+    {
+        return $this->_team;
+    }
+
+    public function getId()
+    {
+        return $this->_id;
     }
 }

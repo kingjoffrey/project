@@ -31,7 +31,7 @@ var Three = new function () {
                 size: 0.5,
                 height: 0.1
             }), new THREE.MeshPhongMaterial({color: color}))
-            mesh.position.set(0, 7, 0)
+            mesh.position.set(0, 7, 0.2)
             mesh.rotation.y = -Math.PI / 4
             return mesh
         },
