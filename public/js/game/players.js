@@ -260,7 +260,7 @@ var Players = new function () {
     this.toArray = function () {
         return players
     }
-    this.showFirst = function (color) {
+    this.showFirst = function (color, func) {
         var castleId = Game.getCapitalId(color),
             firstCastleId,
             player = this.get(color),
@@ -268,15 +268,15 @@ var Players = new function () {
 
         if (castles.has(castleId)) {
             var castle = castles.get(castleId)
-            Zoom.lens.setcenter(castle.getX(), castle.getY())
+            Zoom.lens.setcenter(castle.getX(), castle.getY(), func)
         } else if (firstCastleId = castles.getFirsCastleId()) {
             var castle = castles.get(firstCastleId)
-            Zoom.lens.setcenter(castle.getX(), castle.getY())
+            Zoom.lens.setcenter(castle.getX(), castle.getY(), func)
         } else {
             var armies = player.getArmies()
             for (var armyId in armies.toArray()) {
                 var army = armies.get(armyId)
-                Zoom.lens.setcenter(army.getX(), army.getY())
+                Zoom.lens.setcenter(army.getX(), army.getY(), func)
                 break
             }
         }

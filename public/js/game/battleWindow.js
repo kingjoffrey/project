@@ -28,15 +28,15 @@ var BattleWindow = new function () {
                 if (Me.colorEquals(r.color)) {
                     var soldier = Me.getArmy(r.army.id).getWalkingSoldier(b[i].soldierId)
                     if (isTruthful(soldier)) {
-                        Me.costIncrement(-Units.get(soldier.unitId).cost)
+                        Me.upkeepIncrement(-Units.get(soldier.unitId).cost)
                     }
                     soldier = Me.getArmy(r.army.id).getFlyingSoldier(b[i].soldierId)
                     if (isTruthful(soldier)) {
-                        Me.costIncrement(-Units.get(soldier.unitId).cost)
+                        Me.upkeepIncrement(-Units.get(soldier.unitId).cost)
                     }
                     soldier = Me.getArmy(r.army.id).getSwimmingSoldier(b[i].soldierId)
                     if (isTruthful(soldier)) {
-                        Me.costIncrement(-Units.get(soldier.unitId).cost)
+                        Me.upkeepIncrement(-Units.get(soldier.unitId).cost)
                     }
                 }
 
@@ -45,15 +45,15 @@ var BattleWindow = new function () {
                         for (var armyId in r.defenders[color]) {
                             var soldier = Me.getArmy(armyId).getWalkingSoldier(b[i].soldierId)
                             if (isTruthful(soldier)) {
-                                Me.costIncrement(-Units.get(soldier.unitId).cost)
+                                Me.upkeepIncrement(-Units.get(soldier.unitId).cost)
                             }
                             soldier = Me.getArmy(r.army.id).getFlyingSoldier(b[i].soldierId)
                             if (isTruthful(soldier)) {
-                                Me.costIncrement(-Units.get(soldier.unitId).cost)
+                                Me.upkeepIncrement(-Units.get(soldier.unitId).cost)
                             }
                             soldier = Me.getArmy(r.army.id).getSwimmingSoldier(b[i].soldierId)
                             if (isTruthful(soldier)) {
-                                Me.costIncrement(-Units.get(soldier.unitId).cost)
+                                Me.upkeepIncrement(-Units.get(soldier.unitId).cost)
                             }
                         }
                         break;

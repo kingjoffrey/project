@@ -28,16 +28,21 @@ class Cli_Model_StartTurn
             $armies->unfortify();
         }
 
+        $upkeep = 0;
         foreach ($armies->getKeys() as $armyId) {
-            $army = $armies->getArmy($armyId);
-            $player->addGold(-$army->getCosts());
+            $upkeep += $armies->getArmy($armyId)->getCosts();
         }
 
-        $player->addGold($towers->count() * 5);
+        $income = $towers->count() * 5;
+        foreach ($castles->getKeys() as $castleId) {
+            $income += $castles->getCastle($castleId)->getIncome();
+        }
+
+        $player->addGold(-$upkeep);
+        $player->addGold($income);
 
         foreach ($castles->getKeys() as $castleId) {
             $castle = $castles->getCastle($castleId);
-            $player->addGold($castle->getIncome());
             $production = $castle->getProduction();
 
             if ($isComputer) {
@@ -94,10 +99,17 @@ class Cli_Model_StartTurn
         $player->saveGold($gameId, $db);
 
         $token = array(
-            'type' => 'startTurn',
+            'type' => 'update',
+            'upkeep' => $upkeep,
             'gold' => $player->getGold(),
+            'income' => $income,
+            'castles' => $castles->toArray()
+        );
+        $gameHandler->sendToUser($user, $token);
+
+        $token = array(
+            'type' => 'startTurn',
             'armies' => $armies->toArray(),
-            'castles' => $castles->toArray(),
             'color' => $color
         );
         $gameHandler->sendToChannel($game, $token);

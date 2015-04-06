@@ -215,7 +215,7 @@ var Move = new function () {
                                 }
                             }
                         }
-                        Me.costIncrement(upkeep)
+                        Me.upkeepIncrement(upkeep)
                         break
                     }
                 }

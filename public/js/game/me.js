@@ -1,6 +1,6 @@
 var Me = new function () {
     var gold = 0,
-        costs = 0,
+        upkeep = 0,
         income = 0,
         color,
         selectedArmyId = null,
@@ -33,7 +33,13 @@ var Me = new function () {
         for (var armyId in armies.toArray()) {
             var army = armies.get(armyId)
             for (var soldierId in army.getWalkingSoldiers()) {
-                this.costIncrement(Units.get(army.getWalkingSoldiers()[soldierId].unitId).cost)
+                this.upkeepIncrement(Units.get(army.getWalkingSoldier(soldierId).unitId).cost)
+            }
+            for (var soldierId in army.getFlyingSoldiers()) {
+                this.upkeepIncrement(Units.get(army.getFlyingSoldier(soldierId).unitId).cost)
+            }
+            for (var soldierId in army.getSwimmingSoldiers()) {
+                this.upkeepIncrement(Units.get(army.getSwimmingSoldier(soldierId).unitId).cost)
             }
         }
         var castles = this.getCastles()
@@ -42,7 +48,7 @@ var Me = new function () {
         }
         this.incomeIncrement(this.getTowers().count() * 5)
         updateGold()
-        updateCosts()
+        updateUpkeep()
         updateIncome()
     }
     this.getColor = function () {
@@ -63,9 +69,9 @@ var Me = new function () {
         })
 
     }
-    var updateCosts = function () {
+    var updateUpkeep = function () {
         $('#costs #value').fadeOut(300, function () {
-            $('#costs #value').html(costs)
+            $('#costs #value').html(upkeep)
             $('#costs #value').fadeIn(300)
         })
     }
@@ -79,13 +85,21 @@ var Me = new function () {
         gold = value
         updateGold()
     }
+    this.setIncome = function (value) {
+        income = value
+        updateIncome()
+    }
+    this.setUpkeep = function (value) {
+        upkeep = value
+        updateUpkeep()
+    }
     this.goldIncrement = function (value) {
         gold += value
         updateGold()
     }
-    this.costIncrement = function (value) {
-        costs += value
-        updateCosts()
+    this.upkeepIncrement = function (value) {
+        upkeep += value
+        updateUpkeep()
     }
     this.incomeIncrement = function (value) {
         income += value
@@ -175,7 +189,6 @@ var Me = new function () {
 
         $('#armyBox').css({left: Three.getWidth() / 2 - $('#armyBox').width() / 2 + 'px'})
 
-        selectedArmyId = armyId
         Three.addArmyCircle(army.getX(), army.getY(), army.getBackgroundColor())
         Message.remove()
 
@@ -206,7 +219,11 @@ var Me = new function () {
 
         if (notSet(center)) {
             //zoomer.setCenterIfOutOfScreen(a.x * 40, a.y * 40);
-            Zoom.lens.setcenter(army.getX(), army.getY())
+            Zoom.lens.setcenter(army.getX(), army.getY(), function () {
+                selectedArmyId = armyId
+            })
+        } else {
+            selectedArmyId = armyId
         }
     }
     this.deselectArmy = function (skipJoin) {

@@ -29,25 +29,13 @@ var Websocket = {
                 break
 
             case 'startTurn':
-                if (Me.colorEquals(r.color)) {
-                    Me.setSelectedCastleId(0)
-                    var castles = Players.get(r.color).getCastles()
-                    for (var castleId in r.castles) {
-                        castles.get(castleId).setProductionTurn(r.castles[castleId].productionTurn)
+                Players.showFirst(r.color, function () {
+                    var armies = Players.get(r.color).getArmies()
+                    for (var armyId in r.armies) {
+                        armies.handle(r.armies[armyId])
                     }
-                    Me.resetSkippedArmies()
-                    Sound.play('startturn')
-                    Me.setGold(r.gold)
-                    Gui.unlock()
-                } else {
-                    Players.showFirst(r.color)
-                }
-
-                var armies = Players.get(r.color).getArmies()
-                for (var armyId in r.armies) {
-                    armies.handle(r.armies[armyId])
-                }
-                this.executing = 0
+                    Websocket.executing = 0
+                })
                 break;
 
             case 'nextTurn':
@@ -61,51 +49,52 @@ var Websocket = {
 
             case 'ruin':
                 //board.append($('<div>').addClass('ruinSearch').css({'top': Y + 'px', 'left': X + 'px'}));
-                Zoom.lens.setcenter(r.army.x, r.army.y);
-                Ruins.get(r.ruin.ruinId).update(r.ruin.empty)
-                if (Me.colorEquals(r.color)) {
-                    switch (r.find[0]) {
-                        case 'gold':
-                            Sound.play('gold1');
-                            Me.goldIncrement(r.find[1])
-                            Players.get(r.color).getArmies().get(r.army.id).update(r.army)
-                            Message.simple(translations.ruins, translations.youHaveFound + ' ' + r.find[1] + ' ' + translations.gold);
-                            break;
-                        case 'death':
-                            Sound.play('death');
-                            Message.simple(translations.ruins, translations.youHaveFound + ' ' + translations.death)
-                            if (Players.get(r.color).getArmies().get(r.army.id).getNumberOfUnits() > 1) {
+                Zoom.lens.setcenter(r.army.x, r.army.y, function () {
+                    Ruins.get(r.ruin.ruinId).update(r.ruin.empty)
+                    if (Me.colorEquals(r.color)) {
+                        switch (r.find[0]) {
+                            case 'gold':
+                                Sound.play('gold1');
+                                Me.goldIncrement(r.find[1])
                                 Players.get(r.color).getArmies().get(r.army.id).update(r.army)
-                            } else {
-                                Players.get(r.color).getArmies().delete(r.army.id)
-                            }
-                            Me.handleHeroButtons()
-                            break
-                        case 'allies':
-                            Sound.play('allies');
-                            Players.get(r.color).getArmies().get(r.army.id).update(r.army)
-                            Message.simple(translations.ruins, r.find[1] + ' ' + translations.alliesJoinedYourArmy);
-                            break
-                        case 'null':
-                            Sound.play('click');
-                            Players.get(r.color).getArmies().get(r.army.id).update(r.army)
-                            Message.simple(translations.ruins, translations.youHaveFoundNothing);
-                            break
-                        case 'artifact':
-                            Message.simple(translations.ruins, translations.youHaveFound + ' ' + translations.anAncientArtifact + ' - "' + artifacts[r.find[1]].name + '".');
-                            Chest.update(r.color, r.find[1]);
-                            break
-                        case 'empty':
-                            Sound.play('error');
-                            Message.simple(translations.ruins, translations.ruinsAreEmpty);
-                            break;
+                                Message.simple(translations.ruins, translations.youHaveFound + ' ' + r.find[1] + ' ' + translations.gold);
+                                break;
+                            case 'death':
+                                Sound.play('death');
+                                Message.simple(translations.ruins, translations.youHaveFound + ' ' + translations.death)
+                                if (Players.get(r.color).getArmies().get(r.army.id).getNumberOfUnits() > 1) {
+                                    Players.get(r.color).getArmies().get(r.army.id).update(r.army)
+                                } else {
+                                    Players.get(r.color).getArmies().delete(r.army.id)
+                                }
+                                Me.handleHeroButtons()
+                                break
+                            case 'allies':
+                                Sound.play('allies');
+                                Players.get(r.color).getArmies().get(r.army.id).update(r.army)
+                                Message.simple(translations.ruins, r.find[1] + ' ' + translations.alliesJoinedYourArmy);
+                                break
+                            case 'null':
+                                Sound.play('click');
+                                Players.get(r.color).getArmies().get(r.army.id).update(r.army)
+                                Message.simple(translations.ruins, translations.youHaveFoundNothing);
+                                break
+                            case 'artifact':
+                                Message.simple(translations.ruins, translations.youHaveFound + ' ' + translations.anAncientArtifact + ' - "' + artifacts[r.find[1]].name + '".');
+                                Chest.update(r.color, r.find[1]);
+                                break
+                            case 'empty':
+                                Sound.play('error');
+                                Message.simple(translations.ruins, translations.ruinsAreEmpty);
+                                break;
 
+                        }
                     }
-                }
-                //$('.ruinSearch').animate({'display': 'none'}, 1000, function () {
-                //    $('.ruinSearch').remove()
-                //})
-                Websocket.executing = 0
+                    //$('.ruinSearch').animate({'display': 'none'}, 1000, function () {
+                    //    $('.ruinSearch').remove()
+                    //})
+                    Websocket.executing = 0
+                });
                 break;
 
             case 'split':
@@ -117,11 +106,13 @@ var Websocket = {
                     Message.remove()
                     Me.setParentArmyId(r.parentArmy.id)
                     Me.selectArmy(r.childArmy.id)
+                    Websocket.executing = 0
                 } else {
                     //zoomer.setCenterIfOutOfScreen(r.parentArmy.x * 40, r.parentArmy.y * 40);
-                    Zoom.lens.setcenter(r.parentArmy.x, r.parentArmy.y);
+                    Zoom.lens.setcenter(r.parentArmy.x, r.parentArmy.y, function () {
+                        Websocket.executing = 0
+                    });
                 }
-                this.executing = 0
                 break;
 
             case 'join':
@@ -129,13 +120,14 @@ var Websocket = {
                     Message.remove()
                 }
                 //zoomer.setCenterIfOutOfScreen(r.army.x * 40, r.army.y * 40);
-                Zoom.lens.setcenter(r.army.x, r.army.y)
-                var armies = Players.get(r.color).getArmies()
-                for (var i in r.deletedIds) {
-                    armies.delete(r.deletedIds[i])
-                }
-                armies.handle(r.army)
-                this.executing = 0
+                Zoom.lens.setcenter(r.army.x, r.army.y, function () {
+                    var armies = Players.get(r.color).getArmies()
+                    for (var i in r.deletedIds) {
+                        armies.delete(r.deletedIds[i])
+                    }
+                    armies.handle(r.army)
+                    Websocket.executing = 0
+                })
                 break;
 
             case 'disband':
@@ -153,7 +145,7 @@ var Websocket = {
                     for (var i in army.getFlyingSoldiers()) {
                         upkeep += Units.get(army.getFlyingSoldier(i).unitId).cost
                     }
-                    Me.costIncrement(-upkeep)
+                    Me.upkeepIncrement(-upkeep)
                 }
                 Players.get(r.color).getArmies().delete(r.id)
                 if (Turn.isMy()) {
@@ -164,15 +156,16 @@ var Websocket = {
 
             case 'resurrection':
                 Sound.play('resurrection');
-                Zoom.lens.setcenter(r.army.x, r.army.y)
-                Players.get(r.color).getArmies().handle(r.army)
-                if (Turn.isMy()) {
-                    Message.remove()
-                    Me.setGold(r.gold)
-                    Me.handleHeroButtons()
-                }
-                this.executing = 0
-                break;
+                Zoom.lens.setcenter(r.army.x, r.army.y, function () {
+                    Players.get(r.color).getArmies().handle(r.army)
+                    if (Turn.isMy()) {
+                        Message.remove()
+                        Me.setGold(r.gold)
+                        Me.handleHeroButtons()
+                    }
+                    Websocket.executing = 0
+                })
+                break
 
             case 'raze':
                 $('#razeCastle').addClass('buttonOff');
@@ -262,6 +255,22 @@ var Websocket = {
                         if (Me.colorEquals(r.color)) {
                             Me.incomeIncrement(5)
                         }
+                        break
+
+                    case 'update':
+                        Me.setSelectedCastleId(0)
+                        Me.resetSkippedArmies()
+
+                        var castles = Me.getCastles()
+                        for (var castleId in r.castles) {
+                            castles.get(castleId).setProductionTurn(r.castles[castleId].productionTurn)
+                        }
+                        Sound.play('startturn')
+
+                        Me.setUpkeep(r.upkeep)
+                        Me.setGold(r.gold)
+                        Me.setIncome(r.income)
+                        Gui.unlock()
                         break
 
                     case 'nextTurn':

@@ -322,7 +322,7 @@ class Cli_Model_Army
 
     public function getCosts()
     {
-        return $this->_WalkingSoldiers->getCosts() + $this->_SwimmingSoldiers->getCosts();
+        return $this->_WalkingSoldiers->getCosts() + $this->_SwimmingSoldiers->getCosts() + $this->_FlyingSoldiers->getCosts();
     }
 
     public function createSoldier($gameId, $playerId, $unitId, Zend_Db_Adapter_Pdo_Pgsql $db)
