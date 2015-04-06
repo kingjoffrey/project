@@ -26,7 +26,6 @@ var Turn = new function () {
             Timer.append(history[i].shortName, history[i].number, history[i].start, history[i].end)
         }
 
-        //Timer.scroll()
         number = turnHistory[i].number
         color = turnHistory[i].shortName
         beginDate = Date.parse(turnHistory[i].date.substr(0, 19)).getTime()

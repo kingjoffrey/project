@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: WOF\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-03-31 06:31+0100\n"
-"PO-Revision-Date: 2015-03-31 06:33+0100\n"
+"POT-Creation-Date: 2015-04-06 10:37+0100\n"
+"PO-Revision-Date: 2015-04-06 10:37+0100\n"
 "Last-Translator: Bartosz Krzeszewski <bartek@core-t.pl>\n"
 "Language-Team: \n"
 "Language: pl\n"
@@ -76,7 +76,7 @@ msgid "Heroes lost"
 msgstr "Utraconych herosów"
 
 #: application/views/helpers/Translations.php:18
-#: application/layouts/scripts/game.phtml:93
+#: application/layouts/scripts/game.phtml:88
 msgid "Statistics"
 msgstr "Statystyki"
 
@@ -106,7 +106,7 @@ msgid "castles"
 msgstr "zamki"
 
 #: application/views/helpers/Translations.php:25
-#: application/layouts/scripts/game.phtml:57
+#: application/layouts/scripts/game.phtml:58
 msgid "Upkeep"
 msgstr "Utrzymanie"
 
@@ -119,12 +119,12 @@ msgid "Summation"
 msgstr "Podsumowanie"
 
 #: application/views/helpers/Translations.php:28
-#: application/layouts/scripts/game.phtml:53
+#: application/layouts/scripts/game.phtml:54
 msgid "Income"
 msgstr "Przychód"
 
 #: application/views/helpers/Translations.php:29
-#: application/layouts/scripts/game.phtml:101
+#: application/layouts/scripts/game.phtml:96
 msgid "Hire hero"
 msgstr "Wynajmij herosa"
 
@@ -133,7 +133,7 @@ msgid "Do you want to hire new hero for 1000 gold?"
 msgstr "Czy chcesz wynająć nowego herosa za 1000 złota?"
 
 #: application/views/helpers/Translations.php:31
-#: application/layouts/scripts/game.phtml:99
+#: application/layouts/scripts/game.phtml:94
 msgid "Resurrect hero"
 msgstr "Wskrześ herosa"
 
@@ -166,7 +166,7 @@ msgid "Error"
 msgstr "Błąd"
 
 #: application/views/helpers/Translations.php:39
-#: application/layouts/scripts/game.phtml:90
+#: application/layouts/scripts/game.phtml:85
 msgid "Surrender"
 msgstr "Poddaj się"
 
@@ -252,12 +252,12 @@ msgid "Relocating from"
 msgstr "Relokacja z"
 
 #: application/views/helpers/Translations.php:60
-#: application/layouts/scripts/game.phtml:97
+#: application/layouts/scripts/game.phtml:92
 msgid "Next turn"
 msgstr "Następna tura"
 
 #: application/views/helpers/Translations.php:61
-#: application/layouts/scripts/game.phtml:112
+#: application/layouts/scripts/game.phtml:107
 msgid "Disband army"
 msgstr "Rozwiąż armię"
 
@@ -278,12 +278,12 @@ msgid "Status"
 msgstr "Status"
 
 #: application/views/helpers/Translations.php:66
-#: application/layouts/scripts/game.phtml:127
+#: application/layouts/scripts/game.phtml:122
 msgid "Army status"
 msgstr "Status armii"
 
 #: application/views/helpers/Translations.php:67
-#: application/layouts/scripts/game.phtml:125
+#: application/layouts/scripts/game.phtml:120
 msgid "Split army"
 msgstr "Podziel amię"
 
@@ -445,7 +445,7 @@ msgid "There is no free army with spare move points. Change turn!"
 msgstr "Brak wolnej armii, która posiada jeszcze punkty ruchu. Zmień turę!"
 
 #: application/views/helpers/Translations.php:105
-#: application/layouts/scripts/game.phtml:103
+#: application/layouts/scripts/game.phtml:98
 msgid "Next army"
 msgstr "Następna armia"
 
@@ -497,6 +497,20 @@ msgstr "Przychód z zamku"
 #: application/views/helpers/Translations.php:119
 msgid "Maximum castle defence reached"
 msgstr "Osiągnięto maksymalną obronę zamku"
+
+#: application/views/helpers/Translations.php:120
+#: application/layouts/scripts/game.phtml:62
+msgid "Treasury"
+msgstr "Skarbiec"
+
+#: application/views/helpers/Translations.php:121
+msgid "Profit"
+msgstr "Zysk"
+
+#: application/views/helpers/Translations.php:122
+#: application/views/scripts/help/index.phtml:3
+msgid "Units"
+msgstr "Jednostki"
 
 #: application/views/helpers/Logout.php:8
 msgid "Logout"
@@ -883,10 +897,6 @@ msgstr "Lista graczy"
 msgid "Score"
 msgstr "Punkty"
 
-#: application/views/scripts/help/index.phtml:3
-msgid "Units"
-msgstr "Jednostki"
-
 #: application/views/scripts/help/index.phtml:21
 msgid "Special unit"
 msgstr "Jednostka specjalna"
@@ -928,61 +938,57 @@ msgstr "Tura"
 msgid "Game"
 msgstr "Gra"
 
-#: application/layouts/scripts/game.phtml:61
-msgid "Treasure"
-msgstr "Skarbiec"
-
-#: application/layouts/scripts/game.phtml:69
-#: application/layouts/scripts/game.phtml:70
+#: application/layouts/scripts/game.phtml:48
+#: application/layouts/scripts/game.phtml:49
 msgid "Battle attack sequence"
 msgstr "Sekwencja walki podczas ataku"
 
-#: application/layouts/scripts/game.phtml:73
-#: application/layouts/scripts/game.phtml:74
+#: application/layouts/scripts/game.phtml:68
+#: application/layouts/scripts/game.phtml:69
 msgid "Battle defence sequence"
 msgstr "Sekwencja walki podczas obrony"
 
-#: application/layouts/scripts/game.phtml:81
+#: application/layouts/scripts/game.phtml:76
 msgid "Exit game"
 msgstr "Opuść grę"
 
-#: application/layouts/scripts/game.phtml:84
+#: application/layouts/scripts/game.phtml:79
 msgid "Show others"
 msgstr "Pokaż innych"
 
-#: application/layouts/scripts/game.phtml:87
+#: application/layouts/scripts/game.phtml:82
 msgid "Sound"
 msgstr "Dźwięk"
 
-#: application/layouts/scripts/game.phtml:114
+#: application/layouts/scripts/game.phtml:109
 msgid "Deselect army"
 msgstr "Odznacz armię"
 
-#: application/layouts/scripts/game.phtml:116
+#: application/layouts/scripts/game.phtml:111
 msgid "Search ruins"
 msgstr "Przeszukaj ruiny"
 
-#: application/layouts/scripts/game.phtml:118
+#: application/layouts/scripts/game.phtml:113
 msgid "Show castle"
 msgstr "Pokaż zamek"
 
-#: application/layouts/scripts/game.phtml:120
+#: application/layouts/scripts/game.phtml:115
 msgid "Build defense"
 msgstr "Podnieś obronę"
 
-#: application/layouts/scripts/game.phtml:122
+#: application/layouts/scripts/game.phtml:117
 msgid "Raze castle"
 msgstr "Zburz zamek"
 
-#: application/layouts/scripts/game.phtml:129
+#: application/layouts/scripts/game.phtml:124
 msgid "Fortify army"
 msgstr "Fortyfikuj armię"
 
-#: application/layouts/scripts/game.phtml:131
+#: application/layouts/scripts/game.phtml:126
 msgid "Skip in this turn"
 msgstr "Pomiń w tej turze"
 
-#: application/layouts/scripts/game.phtml:146
+#: application/layouts/scripts/game.phtml:140
 msgid "Send"
 msgstr "Wyślij"
 
