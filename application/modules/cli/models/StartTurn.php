@@ -98,14 +98,17 @@ class Cli_Model_StartTurn
 
         $player->saveGold($gameId, $db);
 
-        $token = array(
-            'type' => 'update',
-            'upkeep' => $upkeep,
-            'gold' => $player->getGold(),
-            'income' => $income,
-            'castles' => $castles->toArray()
-        );
-        $gameHandler->sendToUser($user, $token);
+        $me = Cli_Model_Me::getMe($user);
+        if ($me->getId() == $playerId) {
+            $token = array(
+                'type' => 'update',
+                'upkeep' => $upkeep,
+                'gold' => $player->getGold(),
+                'income' => $income,
+                'castles' => $castles->toArray()
+            );
+            $gameHandler->sendToUser($user, $token);
+        }
 
         $token = array(
             'type' => 'startTurn',

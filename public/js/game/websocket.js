@@ -28,21 +28,20 @@ var Websocket = {
                 Move.start(r, Websocket.i)
                 break
 
-            case 'startTurn':
-                Players.showFirst(r.color, function () {
-                    var armies = Players.get(r.color).getArmies()
-                    for (var armyId in r.armies) {
-                        armies.handle(r.armies[armyId])
-                    }
-                    Websocket.executing = 0
-                })
-                break;
-
             case 'nextTurn':
+                Players.showFirst(r.color)
                 Me.deselectArmy()
                 Turn.change(r.color, r.nr)
                 if (Players.get(r.color).isComputer()) {
                     this.computer()
+                }
+                this.executing = 0
+                break;
+
+            case 'startTurn':
+                var armies = Players.get(r.color).getArmies()
+                for (var armyId in r.armies) {
+                    armies.handle(r.armies[armyId])
                 }
                 this.executing = 0
                 break;
