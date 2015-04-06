@@ -386,12 +386,7 @@ var Me = new function () {
         }
         Gui.unlock()
         titleBlink('Your turn!')
-        if (!this.findHero() && this.getGold() >= 100) {
-            $('#heroResurrection').removeClass('buttonOff')
-        }
-        if (gold > 1000) {
-            $('#heroHire').removeClass('buttonOff')
-        }
+        this.handleHeroButtons()
     }
     this.turnOff = function () {
         this.deselectArmy()
@@ -511,6 +506,18 @@ var Me = new function () {
             if (arr[i] == castleId) {
                 start = true
             }
+        }
+    }
+    this.handleHeroButtons = function () {
+        if (!this.findHero() && this.getGold() >= 100) {
+            $('#heroResurrection').removeClass('buttonOff')
+            $('#heroHire').addClass('buttonOff')
+        } else if (this.getGold() >= 1000) {
+            $('#heroResurrection').addClass('buttonOff')
+            $('#heroHire').removeClass('buttonOff')
+        } else {
+            $('#heroResurrection').addClass('buttonOff')
+            $('#heroHire').addClass('buttonOff')
         }
     }
 }

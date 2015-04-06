@@ -136,9 +136,7 @@ var Move = new function () {
                     } else if (Me.getArmy(army.getArmyId()).getMoves()) {
                         Me.selectArmy(army.getArmyId())
                     }
-                    if (!Me.findHero() && Me.getGold() >= 100) {
-                        $('#heroResurrection').removeClass('buttonOff')
-                    }
+                    Me.handleHeroButtons()
                     Gui.unlock()
                 }
             } else {
@@ -182,8 +180,8 @@ var Move = new function () {
                     }
                 }
                 if (Me.colorEquals(r.color)) {
-                    if (Turn.isMy() && !Me.findHero() && Me.getGold() >= 100) {
-                        $('#heroResurrection').removeClass('buttonOff')
+                    if (Turn.isMy()) {
+                        Me.handleHeroButtons()
                     }
                     Gui.unlock()
                 }
