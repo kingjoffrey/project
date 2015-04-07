@@ -93,9 +93,6 @@ var Move = new function () {
         if (r.battle) {
             if (r.battle.victory) {
                 for (var color in r.battle.defenders) {
-                    if (color == 'neutral') {
-                        continue
-                    }
                     for (var armyId in r.battle.defenders[color]) {
                         Players.get(color).getArmies().delete(armyId, 1)
                     }
@@ -174,7 +171,7 @@ var Move = new function () {
                         if (defenderArmy.getNumberOfUnits()) {
                             defenderArmy.update(defenderArmy)
                         } else {
-                            defenderArmies.delete(armyId)
+                            defenderArmies.delete(armyId, 1)
 
                         }
                     }

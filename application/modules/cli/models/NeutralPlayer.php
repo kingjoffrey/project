@@ -44,7 +44,7 @@ class Cli_Model_NeutralPlayer extends Cli_Model_DefaultPlayer
                 'x' => $castle->getX(),
                 'y' => $castle->getY()
             ), $this->_color);
-            for ($i = 1; $i <= $numberOfSoldiers; $i++) {
+            for ($i = 0; $i <= $numberOfSoldiers; $i++) {
                 $soldierId = 's' . $i;
                 $army->getWalkingSoldiers()->add($soldierId, new Cli_Model_Soldier(array(
                     'soldierId' => $soldierId,

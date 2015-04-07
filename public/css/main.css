@@ -165,7 +165,7 @@ h1 {
 
 #title p {
     font-size: 20px;
-    /*font-family: "Alpine", Verdana, Tahoma;*/
+    font-family: "Alpine", Verdana, Tahoma;
     position: absolute;
     top: 113px;
     left: 277px;
@@ -268,17 +268,13 @@ td:first-of-type {
 #menuTop {
     height: 21px;
     border-bottom: 1px solid #f00;
-    /*text-shadow: 1px 1px 0 #000;*/
     text-shadow: none;
-    color: #f00;
-    font-weight: bold;
 }
 
-#menuTop p {
-    color: white;
-    float: left;
-    line-height: 20px;
-    padding-left: 10px;
+#menuTop span {
+    color: #f00;
+    font-weight: bold;
+    font-family: "Alpine", Verdana, Tahoma;
 }
 
 #logout {

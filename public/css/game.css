@@ -183,6 +183,7 @@
     width: 30px;
     line-height: 32px;
     height: 32px;
+    position: absolute;
     display: inline-flex;
 }
 
@@ -191,13 +192,23 @@
     font-size: 20px;
 }
 
-/*#exit.iconButton {*/
-/*top: 4px;*/
-/*}*/
+#exit.iconButton {
+    top: 2px;
+}
 
-/*#show.iconButton {*/
-/*top: 41px;*/
-/*}*/
+#surrender.iconButton {
+    top: 2px;
+    left: 152px;
+}
+
+#statistics.iconButton {
+    top: 148px;
+}
+
+#show.iconButton {
+    top: 148px;
+    left: 152px;
+}
 
 /*#show img {*/
 /*margin-top: 5px;*/
@@ -205,14 +216,6 @@
 
 /*#sound.iconButton {*/
 /*top: 78px;*/
-/*}*/
-
-/*#surrender.iconButton {*/
-/*top: 115px;*/
-/*}*/
-
-/*#statistics.iconButton {*/
-/*top: 152px;*/
 /*}*/
 
 #turn {
