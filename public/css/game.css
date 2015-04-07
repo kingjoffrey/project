@@ -780,12 +780,32 @@
     height: 35px;
 }
 
+#armyBox #unitsBox {
+    float: left;
+    min-width: 100px;
+    height: 30px;
+}
+
 #armyBox #unitsBox div {
     min-width: 35px;
     height: 30px;
     display: inline-block;
     background-repeat: no-repeat;
     background-position: 10px 0;
+}
+
+#armyBox #armyButtons {
+    float: right;
+    width: 124px;
+    height: 30px;
+}
+
+#armyBox .iconButton {
+    width: 25px;
+    line-height: 25px;
+    height: 25px;
+    display: inline-block;
+    text-shadow: none;
 }
 
 #commandsBox {
