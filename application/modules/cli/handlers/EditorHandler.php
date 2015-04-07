@@ -1,8 +1,7 @@
 <?php
-use Devristo\Phpws\Framing\WebSocketFrame;
-use Devristo\Phpws\Framing\WebSocketOpcode;
 use Devristo\Phpws\Messaging\WebSocketMessageInterface;
 use Devristo\Phpws\Protocol\WebSocketTransportInterface;
+use Devristo\Phpws\Server\UriHandler\WebSocketUriHandler;
 /**
  * This resource handler will respond to all messages sent to /public on the socketserver below
  *
@@ -10,7 +9,7 @@ use Devristo\Phpws\Protocol\WebSocketTransportInterface;
  * @author Bartosz Krzeszewski
  *
  */
-class Cli_EditorHandler extends Cli_WofHandler
+class Cli_EditorHandler extends WebSocketUriHandler
 {
 
     public function onMessage(WebSocketTransportInterface $user, WebSocketMessageInterface $msg)

@@ -1,6 +1,8 @@
 <?php
 use Devristo\Phpws\Messaging\WebSocketMessageInterface;
 use Devristo\Phpws\Protocol\WebSocketTransportInterface;
+use Devristo\Phpws\Server\UriHandler\WebSocketUriHandler;
+
 /**
  * This resource handler will respond to all messages sent to /public on the socketserver below
  *
@@ -8,7 +10,7 @@ use Devristo\Phpws\Protocol\WebSocketTransportInterface;
  * @author Bartosz Krzeszewski
  *
  */
-class Cli_PublicHandler extends Cli_WofHandler
+class Cli_NewHandler extends WebSocketUriHandler
 {
 
     public function onMessage(WebSocketTransportInterface $user, WebSocketMessageInterface $msg)
@@ -241,4 +243,58 @@ class Cli_PublicHandler extends Cli_WofHandler
         $this->sendToChannel($db, $token, $gameId);
     }
 
+    /**
+     * @param $user
+     * @param $msg
+     */
+    public function sendError($user, $msg)
+    {
+        $token = array(
+            'type' => 'error',
+            'msg' => $msg
+        );
+
+        $this->sendToUser($user, $token);
+    }
+
+    /**
+     * @param $user
+     * @param $token
+     * @param null $debug
+     */
+    public function sendToUser(Devristo\Phpws\Protocol\WebSocketTransportInterface $user, $token, $debug = null)
+    {
+        if ($debug || Zend_Registry::get('config')->debug) {
+            print_r('ODPOWIEDŹ');
+            print_r($token);
+        }
+
+        $user->sendString(Zend_Json::encode($token));
+    }
+
+    /**
+     * @param $db
+     * @param $token
+     * @param $gameId
+     * @param null $debug
+     */
+    public function sendToChannel($db, $token, $gameId, $debug = null)
+    {
+        echo Zend_Registry::get('config')->debug;
+        if ($debug || Zend_Registry::get('config')->debug) {
+            print_r('ODPOWIEDŹ ');
+            print_r($token);
+        }
+
+        $mPlayersInGame = new Application_Model_PlayersInGame($gameId, $db);
+        $users = $mPlayersInGame->getInGameWSSUIds();
+
+        foreach ($users AS $row) {
+            foreach ($this->users AS $u) {
+                if ($u->getId() == $row['webSocketServerUserId']) {
+                    $this->sendToUser($u, $token);
+                }
+            }
+        }
+    }
 }
