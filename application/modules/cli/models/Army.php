@@ -100,8 +100,6 @@ class Cli_Model_Army
 
     public function move(Cli_Model_Game $game, Cli_Model_Path $path, Zend_Db_Adapter_Pdo_Pgsql $db, Cli_GameHandler $gameHandler)
     {
-        $gameId = $game->getId();
-
         if (!$path->exists()) {
             echo 'PATH NOT EXISTS' . "\n";
             $token = array(
@@ -126,6 +124,9 @@ class Cli_Model_Army
             $battleResult = $battle->getResult();
             if ($battleResult->getVictory()) {
                 $this->updateArmyPosition($game, $path, $db);
+                if ($battleResult->getCastleId() && $game->playerHasMoreThanFiftyPercentOfCastles($this->_color)) {
+                    new Cli_Model_SaveResults($game->getId(), $db, $gameHandler);
+                }
             } else {
                 $game->getFields()->getField($this->_x, $this->_y)->removeArmy($this->_id);
             }

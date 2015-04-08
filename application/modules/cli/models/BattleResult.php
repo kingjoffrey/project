@@ -66,4 +66,9 @@ class Cli_Model_BattleResult
     {
         return $this->_victory;
     }
+
+    public function getCastleId()
+    {
+        return $this->_castleId;
+    }
 }

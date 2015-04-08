@@ -38,6 +38,14 @@ var Websocket = {
                 this.executing = 0
                 break;
 
+            case 'neutral':
+                var armies = Players.get('neutral').getArmies()
+                for (var armyId in r.armies) {
+                    armies.handle(r.armies[armyId])
+                }
+                this.executing = 0
+                break;
+
             case 'startTurn':
                 var armies = Players.get(r.color).getArmies()
                 for (var armyId in r.armies) {
@@ -273,6 +281,10 @@ var Websocket = {
                         break
 
                     case 'nextTurn':
+                        Websocket.addQueue(r)
+                        break;
+
+                    case 'neutral':
                         Websocket.addQueue(r)
                         break;
 

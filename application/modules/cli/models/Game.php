@@ -12,6 +12,7 @@ class Cli_Model_Game
     private $_online = array();
 
     private $_numberOfGarrisonUnits;
+    private $_numberOfAllCastles = 0;
 
     private $_begin;
     private $_turnsLimit;
@@ -102,9 +103,12 @@ class Cli_Model_Game
             if (!$player->getComputer()) {
                 $this->updateOnline($color, 0);
             }
+            $this->_numberOfAllCastles += $player->getCastles()->count();
         }
         $this->_Players->addPlayer('neutral', new Cli_Model_NeutralPlayer($this, $mapCastles, $mapTowers, $playersTowers, $db));
         $this->_Players->initFields($this->_Fields);
+
+
     }
 
     private function initRuins(Zend_Db_Adapter_Pdo_Pgsql $db)
@@ -302,6 +306,13 @@ class Cli_Model_Game
     private function updateOnline($color, $online)
     {
         $this->_online[$color] = $online;
+    }
+
+    public function playerHasMoreThanFiftyPercentOfCastles($color)
+    {
+        if ($this->_Players->getPlayer($color)->getCastles()->count() > $this->_numberOfAllCastles / 2) {
+            return true;
+        }
     }
 
     /**

@@ -58,6 +58,11 @@ class Cli_Model_Castles
         return isset($this->_castles[$castleId]);
     }
 
+    public function count()
+    {
+        return count($this->_castles);
+    }
+
     public function initFields($fields, $color)
     {
         foreach ($this->_castles as $castleId => $castle) {
