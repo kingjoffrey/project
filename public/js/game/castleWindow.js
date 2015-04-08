@@ -193,7 +193,7 @@ var CastleWindow = new function () {
 
         // relocation to
 
-        if (castle.getRelocationCastleId() && Me.getCastles().has(castle.getRelocationCastleId())) {
+        if (castle.getProductionId() && castle.getRelocationCastleId() && Me.getCastles().has(castle.getRelocationCastleId())) {
             window
                 .append($('<div>').addClass('relocatedProduction').append($('<div>').html(translations.relocatingTo).addClass('title')).append(
                     $('<table>').append(

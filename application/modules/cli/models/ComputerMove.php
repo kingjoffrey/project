@@ -114,21 +114,23 @@ class Cli_Model_ComputerMove extends Cli_Model_ComputerMethods
     private function noEnemyCastlesToAttack()
     {
         $this->_l->logMethodName();
-        foreach ($this->_players->getEnemies($this->_color) as $enemy) {
-            if ($this->_fields->getField($enemy->getX(), $enemy->getY())->getCastleId()) {
+        foreach ($this->_players->getEnemies($this->_color) as $e) {
+            if ($this->_fields->getField($e->getX(), $e->getY())->getCastleId()) {
                 // pomijam wrogów w zamku
                 continue;
             }
-            $heuristics = new Cli_Model_Heuristics($enemy->getX(), $enemy->getY());
+            $heuristics = new Cli_Model_Heuristics($e->getX(), $e->getY());
             if ($heuristics->calculateH($this->_army->getX(), $this->_army->getY()) > $this->_army->getMovesLeft()) {
                 // pomijam tych za daleko
                 continue;
             }
-            $es = new Cli_Model_EnemyStronger($this->_army, $this->_game, $enemy->getX(), $enemy->getY(), $this->_color);
+            $es = new Cli_Model_EnemyStronger($this->_army, $this->_game, $e->getX(), $e->getY(), $this->_color);
             if ($es->stronger()) {
                 // pomijam silniejszych wrogów
                 continue;
             }
+
+            $enemy = $e;
             break;
         }
 
@@ -141,6 +143,10 @@ class Cli_Model_ComputerMove extends Cli_Model_ComputerMethods
                 $this->move($path);
                 return;
             }
+
+            $this->_l->log('heu=' . $heuristics->calculateH($this->_army->getX(), $this->_army->getY()));
+            $this->_l->log('ML=' . $this->_army->getMovesLeft());
+
             $this->_l->log('SŁABSZY WRÓG POZA ZASIĘGIEM - IDŹ DO WROGA');
             $this->savePath($path);
             return;
