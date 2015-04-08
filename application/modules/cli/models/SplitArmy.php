@@ -2,7 +2,6 @@
 
 class Cli_Model_SplitArmy
 {
-    private $_childArmyId = null;
 
     function  __construct($parentArmyId, $s, $h, $playerId, Devristo\Phpws\Protocol\WebSocketTransportInterface $user, Zend_Db_Adapter_Pdo_Pgsql $db, Cli_GameHandler $gameHandler)
     {
@@ -18,6 +17,7 @@ class Cli_Model_SplitArmy
         $color = $game->getPlayerColor($playerId);
         $armies = $game->getPlayers()->getPlayer($color)->getArmies();
         $army = $armies->getArmy($parentArmyId);
+        $childArmyId = 0;
 
         if (isset($heroesIds[0]) && $heroesIds[0]) {
 
@@ -29,11 +29,10 @@ class Cli_Model_SplitArmy
                     continue;
                 }
 
-                if (empty($this->_childArmyId)) {
-                    $this->_childArmyId = $armies->create($army->getX(), $army->getY(), $color, $game, $db);
-                    $childArmy = $armies->getArmy($this->_childArmyId);
+                if (empty($childArmyId)) {
+                    $childArmyId = $armies->create($army->getX(), $army->getY(), $color, $game, $db);
                 }
-                $armies->changeHeroAffiliation($parentArmyId, $this->_childArmyId, $heroId, $gameId, $db);
+                $armies->changeHeroAffiliation($parentArmyId, $childArmyId, $heroId, $gameId, $db);
             }
         }
 
@@ -44,28 +43,25 @@ class Cli_Model_SplitArmy
                 }
 
                 if ($army->getWalkingSoldiers()->hasSoldier($soldierId)) {
-                    if (empty($this->_childArmyId)) {
-                        $this->_childArmyId = $armies->create($army->getX(), $army->getY(), $color, $game, $db);
-                        $childArmy = $armies->getArmy($this->_childArmyId);
+                    if (empty($childArmyId)) {
+                        $childArmyId = $armies->create($army->getX(), $army->getY(), $color, $game, $db);
                     }
-                    $armies->changeWalkingSoldierAffiliation($parentArmyId, $this->_childArmyId, $soldierId, $gameId, $db);
+                    $armies->changeWalkingSoldierAffiliation($parentArmyId, $childArmyId, $soldierId, $gameId, $db);
                 } elseif ($army->getSwimmingSoldiers()->hasSoldier($soldierId)) {
-                    if (empty($this->_childArmyId)) {
-                        $this->_childArmyId = $armies->create($army->getX(), $army->getY(), $color, $game, $db);
-                        $childArmy = $armies->getArmy($this->_childArmyId);
+                    if (empty($childArmyId)) {
+                        $childArmyId = $armies->create($army->getX(), $army->getY(), $color, $game, $db);
                     }
-                    $armies->changeSwimmingSoldierAffiliation($parentArmyId, $this->_childArmyId, $soldierId, $gameId, $db);
+                    $armies->changeSwimmingSoldierAffiliation($parentArmyId, $childArmyId, $soldierId, $gameId, $db);
                 } elseif ($army->getFlyingSoldiers()->hasSoldier($soldierId)) {
-                    if (empty($this->_childArmyId)) {
-                        $this->_childArmyId = $armies->create($army->getX(), $army->getY(), $color, $game, $db);
-                        $childArmy = $armies->getArmy($this->_childArmyId);
+                    if (empty($childArmyId)) {
+                        $childArmyId = $armies->create($army->getX(), $army->getY(), $color, $game, $db);
                     }
-                    $armies->changeFlyingSoldierAffiliation($parentArmyId, $this->_childArmyId, $soldierId, $gameId, $db);
+                    $armies->changeFlyingSoldierAffiliation($parentArmyId, $childArmyId, $soldierId, $gameId, $db);
                 }
             }
         }
 
-        if (empty($this->_childArmyId)) {
+        if (empty($childArmyId)) {
             $gameHandler->sendError($user, 'Brak "childArmyId"');
             return;
         }
@@ -73,15 +69,10 @@ class Cli_Model_SplitArmy
         $token = array(
             'type' => 'split',
             'parentArmy' => $army->toArray(),
-            'childArmy' => $childArmy->toArray(),
+            'childArmy' => $armies->getArmy($childArmyId)->toArray(),
             'color' => $color
         );
 
         $gameHandler->sendToChannel($game, $token);
-    }
-
-    public function getChildArmyId()
-    {
-        return $this->_childArmyId;
     }
 }

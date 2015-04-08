@@ -192,4 +192,9 @@ class Cli_Model_Castle extends Cli_Model_Entity
     {
         return $this->_relocationCastleId;
     }
+
+    public function getEnclaveNumber()
+    {
+        return $this->_enclaveNumber;
+    }
 }

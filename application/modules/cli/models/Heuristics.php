@@ -1,6 +1,7 @@
 <?php
 
-class Cli_Model_Heuristics {
+class Cli_Model_Heuristics
+{
 
     /**
      * Destination x value
@@ -16,7 +17,8 @@ class Cli_Model_Heuristics {
      */
     protected $destY;
 
-    public function __construct($destX, $destY) {
+    public function __construct($destX, $destY)
+    {
         $this->destX = $destX;
         $this->destY = $destY;
     }
@@ -28,31 +30,13 @@ class Cli_Model_Heuristics {
      * @param int $y
      * @return int
      */
-    public function calculateH($x, $y) {
-//        $h = 0;
-//        $xLengthPoints = abs($x - $this->destX);
-//        $yLengthPoints = abs($y - $this->destY);
-//        if ($xLengthPoints < $yLengthPoints) {
-//            for ($i = 1; $i <= $xLengthPoints; $i++)
-//            {
-//                $h++;
-//            }
-//            for ($i = 1; $i <= ($yLengthPoints - $xLengthPoints); $i++)
-//            {
-//                $h++;
-//            }
-//        } else {
-//            for ($i = 1; $i <= $yLengthPoints; $i++)
-//            {
-//                $h++;
-//            }
-//            for ($i = 1; $i <= ($xLengthPoints - $yLengthPoints); $i++)
-//            {
-//                $h++;
-//            }
-//        }
-//        return $h;
+    public function calculateH($x, $y)
+    {
         return sqrt(pow($this->destX - $x, 2) + pow($y - $this->destY, 2));
     }
 
+    public function calculateWithFieldsCosts($x, $y, $fields)
+    {
+
+    }
 }

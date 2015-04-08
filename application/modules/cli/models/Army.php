@@ -550,6 +550,7 @@ class Cli_Model_Army
         $start = false;
         $this->resetOldPath();
         if (!is_array($path->getFull())) {
+            Coret_Model_Logger::debug(debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 2));
             throw new Exception('brak full path');
         }
         foreach ($path->getFull() as $step) {

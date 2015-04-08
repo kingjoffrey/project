@@ -607,8 +607,6 @@ var Websocket = {
             return;
         }
 
-        var s = Me.getSelectedSoldierSplitKey()
-        var h = Me.getSelectedHeroSplitKey()
         var armyId = Me.getSelectedArmyId()
 
         Gui.setLock()
@@ -618,12 +616,10 @@ var Websocket = {
             type: 'move',
             x: AStar.getX(),
             y: AStar.getY(),
-            armyId: armyId,
-            s: s,
-            h: h
-        };
+            armyId: armyId
+        }
 
-        ws.send(JSON.stringify(token));
+        ws.send(JSON.stringify(token))
     },
     split: function () {
         if (Websocket.closed) {

@@ -44,96 +44,19 @@ class Cli_Model_ComputerMove extends Cli_Model_ComputerMethods
                 $this->_armyY = $this->_army->getY();
                 $this->_movesLeft = $this->_army->getMovesLeft();
             } else {
-                $this->move();
+                $this->_army->setFortified(true);
+                $this->next();
                 return;
             }
         }
 
-        $enemiesHaveRange = $this->getEnemiesHaveRangeAtThisCastle($myCastle);
-        $enemiesInRange = $this->getEnemiesInRange();
-        if (!$enemiesHaveRange) {
-            $this->_l->log('BRAK WROGA Z ZASIĘGIEM');
-
-            if (!$enemiesInRange) {
-                $this->_l->log('BRAK WROGA W ZASIĘGU');
-
-                return $this->ruinBlock();
-            } else {
-                $this->_l->log('JEST WRÓG W ZASIĘGU');
-
-                foreach ($enemiesInRange as $e) {
-                    if ($this->isEnemyStronger(array($e))) {
-                        continue;
-                    } else {
-                        $enemy = $e;
-                        break;
-                    }
-                }
-                if (isset($enemy)) {
-                    $this->_l->log('WRÓG JEST SŁABSZY - ATAKUJ!');
-                    $path = $this->getPathToEnemyInRange($enemy);
-                    $this->move($path);
-                    return;
-                }
-
-                $this->_l->log('WRÓG JEST SILNIEJSZY - ZOSTAŃ!');
-                $this->move();
-                return;
-            }
-        } else {
-            $this->_l->log('JEST WRÓG Z ZASIĘGIEM');
-
-            if ($this->_game->getTurnNumber() <= 7 && !$enemiesInRange) {
-                $this->_l->log('BRAK WROGA W ZASIĘGU I TURA < 8 - ZOSTAŃ!');
-                $this->move();
-                return;
-            } else {
-                $this->_l->log('JEST WRÓG W ZASIĘGU');
-
-                if ($this->_game->getTurnNumber() <= 7 && count($enemiesHaveRange) > 1) {
-                    $this->_l->log('WRÓGÓW Z ZASIĘGIEM > WRÓGÓW W ZASIĘGU - ZOSTAŃ!');
-                    $this->move();
-                    return;
-                } else {
-                    $this->_l->log('TYLKO JEDEN Z WRÓGÓW Z ZASIĘGIEM LUB TURA > 7');
-
-                    $enemy = $this->canAttackAllEnemyHaveRange($enemiesHaveRange); // todo zoptymalizować
-                    if (!$enemy) {
-                        $this->_l->log('NIE MOGĘ ZAATAKOWAĆ WRÓGÓW Z ZASIĘGIEM - ZOSTAŃ!');
-                        $this->move();
-                        return;
-                    } else {
-                        $path = $this->isEnemyArmyInRange($enemy);
-                        if ($path && !$path->enemyInRange()) {
-                            $this->_l->log('WRÓG Z ZASIĘGIEM POZA ZASIĘGIEM - IDŹ DO WROGA!');
-                            return $this->savePath($path);
-                        }
-                        $this->_l->log('ATAKUJĘ WRÓGA Z ZASIĘGIEM - ATAKUJ!');
-                        $this->move($path);
-                        return;
-                    }
-                }
-            }
-        }
+        $this->firstBlock();
     }
 
     private function outside()
     {
         $this->_l->logMethodName();
         $this->_l->log('POZA ZAMKIEM');
-        $path = $this->getComputerEmptyCastleInComputerRange();
-        if ($path && $path->targetWithin()) {
-            $this->_l->log('JEST MÓJ PUSTY ZAMEK W ZASIĘGU');
-            if ($this->isMyCastleInRangeOfEnemy($path)) {
-                $this->_l->log('WRÓG MA ZASIĘG NA MÓJ PUSTY ZAMEK - IDŹ DO ZAMKU!');
-                $this->move($path);
-                return;
-            }
-
-            $this->_l->log('WRÓG NIE MA ZASIĘGU NA MÓJ PUSTY ZAMEK');
-            return $this->firstBlock();
-        }
-        $this->_l->log('NIE MA MOJEGO PUSTEGO ZAMKU W ZASIĘGU');
         return $this->ruinBlock();
     }
 
@@ -196,6 +119,11 @@ class Cli_Model_ComputerMove extends Cli_Model_ComputerMethods
                 // pomijam wrogów w zamku
                 continue;
             }
+            $heuristics = new Cli_Model_Heuristics($enemy->getX(), $enemy->getY());
+            if ($heuristics->calculateH($this->_army->getX(), $this->_army->getY()) > $this->_army->getMovesLeft()) {
+                // pomijam tych za daleko
+                continue;
+            }
             $es = new Cli_Model_EnemyStronger($this->_army, $this->_game, $enemy->getX(), $enemy->getY(), $this->_color);
             if ($es->stronger()) {
                 // pomijam silniejszych wrogów
@@ -234,7 +162,8 @@ class Cli_Model_ComputerMove extends Cli_Model_ComputerMethods
                     return $this->savePath($path);
                 } else {
                     $this->_l->log('NIE MA MOJEGO ZAMKU W POBLIŻU WROGA - ZOSTAŃ');
-                    $this->move();
+                    $this->_army->setFortified(true);
+                    $this->next();
                     return;
                 }
             }
@@ -256,7 +185,7 @@ class Cli_Model_ComputerMove extends Cli_Model_ComputerMethods
                 $this->_l->log('PRZESZUKUJĘ RUINY');
                 $this->_game->getRuins()->getRuin($ruinId)->search($this->_game, $this->_army, $heroId, $this->_playerId, $this->_db, $this->_gameHandler);
                 $this->_searchRuin = false;
-                $this->move();
+                $this->next();
                 return;
             }
         }

@@ -85,6 +85,9 @@ class Cli_Model_Players
         $playerTeam = $this->getPlayer($playerColor)->getTeam();
         $enemies = array();
         foreach ($this->getKeys() as $color) {
+            if ($color == 'neutral') {
+                continue;
+            }
             $player = $this->getPlayer($color);
             if ($color == $playerColor || $playerTeam == $player->getTeam()) {
                 continue;

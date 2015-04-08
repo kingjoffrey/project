@@ -43,8 +43,13 @@ class Cli_Model_NearestWeakerHostileCastle
             if ($players->sameTeam($playerColor, $color)) {
                 continue;
             }
-            foreach ($players->getPlayer($color)->getCastles()->getKeys() as $castleId) {
-                $castle = $players->getPlayer($color)->getCastles()->getCastle($castleId);
+
+            $castles = $players->getPlayer($color)->getCastles();
+            foreach ($castles->getKeys() as $castleId) {
+                $castle = $castles->getCastle($castleId);
+                if ($castle->getEnclaveNumber()) {
+                    continue;
+                }
                 $mHeuristics = new Cli_Model_Heuristics($castle->getX(), $castle->getY());
                 $this->_heuristics[$castleId] = $mHeuristics->calculateH($armyX, $armyY);
                 $this->_castles[$castleId] = $castle;

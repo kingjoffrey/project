@@ -80,7 +80,7 @@ class Cli_Model_Garrison
 
 //        echo '$countGarrisonUnits=' . $countGarrisonUnits . ' > $numberOfUnits=' . $numberOfUnits . "\n";
         // znajduję nadmiarowe jednostki
-        if ($countGarrisonUnits > $numberOfUnits) {
+        if ($countGarrisonUnits > $numberOfUnits * 2) {
 //            echo 'kkk ';
             $count = 0;
             if (empty($this->_newArmyId)) {
@@ -102,7 +102,7 @@ class Cli_Model_Garrison
 //            echo 'ooo ';
             $token = array(
                 'type' => 'split',
-                'parentArmy' => $army->toArray(),
+                'parentArmy' => $armies->getArmy($armyId)->toArray(),
                 'childArmy' => $armies->getArmy($this->_newArmyId)->toArray(),
                 'color' => $army->getColor()
             );
