@@ -364,14 +364,17 @@ class Cli_Model_Battle
         }
         foreach ($this->_defenders as $defender) {
             $color = $defender->getColor();
-            if ($color == 'neutral') {
-                continue;
-            }
-
             if ($this->defenderVictory($defender, $color)) {
+                if ($color == 'neutral') {
+                    continue;
+                }
                 $defender->resetAttributes();
             } else {
-                $this->_players->getPlayer($color)->getArmies()->removeArmy($defender->getId(), $this->_game, $this->_db);
+                if ($color == 'neutral') {
+                    $this->_players->getPlayer($color)->getArmies()->removeArmy($defender->getId());
+                } else {
+                    $this->_players->getPlayer($color)->getArmies()->removeArmy($defender->getId(), $this->_game, $this->_db);
+                }
             }
         }
         $this->_result->setCastleId($this->_castleId);

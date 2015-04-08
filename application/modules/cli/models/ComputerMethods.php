@@ -185,7 +185,7 @@ abstract class Cli_Model_ComputerMethods
         $this->_l->logMethodName();
         $castlesHeuristics = array();
 
-        $castles = $this->_player->getCasles();
+        $castles = $this->_player->getCastles();
         foreach ($castles->getKeys() as $castleId) {
             $castle = $castles->getCastle($castleId);
             $mHeuristics = new Cli_Model_Heuristics($castle->getX(), $castle->getY());
@@ -217,17 +217,43 @@ abstract class Cli_Model_ComputerMethods
     protected function getPathToMyArmyInRange()
     {
         $this->_l->logMethodName();
-        $turnNumber = $this->_game->getTurnNumber();
-        if ($turnNumber < 5) {
-            return;
-        }
         $myArmies = new Cli_Model_Armies();
 
-        $numberOfUnits = floor($turnNumber / 7);
-        if ($numberOfUnits > 4) {
-            $numberOfUnits = 4;
+        foreach ($this->_player->getArmies()->getKeys() as $armyId) {
+            if ($armyId == $this->_armyId) {
+                continue;
+            }
+            $army = $this->_player->getArmies()->getArmy($armyId);
+            if ($army->getX() == $this->_armyX && $army->getY() == $this->_armyY) {
+                continue;
+            }
+            $myArmies->addArmy($armyId, $army);
         }
-        $numberOfSoldiersAndHeroes = $this->_army->count();
+
+        foreach ($myArmies->getKeys() as $armyId) {
+            $army = $myArmies->getArmy($armyId);
+            $armyX = $army->getX();
+            $armyY = $army->getY();
+
+            $mHeuristics = new Cli_Model_Heuristics($armyX, $armyY);
+            if ($mHeuristics->calculateH($this->_armyX, $this->_armyY) <= $this->_movesLeft) {
+                try {
+                    $aStar = new Cli_Model_Astar($this->_army, $armyX, $armyY, $this->_game);
+                    return $aStar->path();
+                } catch (Exception $e) {
+                    echo($e);
+                    return;
+                }
+            }
+        }
+    }
+
+    protected function getPathToMyClosestArmy()
+    {
+        $this->_l->logMethodName();
+        $myArmies = new Cli_Model_Armies();
+        $armyHeuristics = array();
+
         foreach ($this->_player->getArmies()->getKeys() as $armyId) {
             if ($armyId == $this->_armyId) {
                 continue;
@@ -237,35 +263,56 @@ abstract class Cli_Model_ComputerMethods
 
         foreach ($myArmies->getKeys() as $armyId) {
             $army = $myArmies->getArmy($armyId);
-            $numberOfSoldiers = $army->getWalkingSoldiers()->count();
-            $armyX = $army->getX();
-            $armyY = $army->getY();
-
-            if ($this->_fields->isPlayerCastle($this->_color, $armyX, $armyY)) {
-                if ($numberOfUnits == $numberOfSoldiers) {
-                    continue;
-                }
-            }
-
-            if ($numberOfSoldiersAndHeroes > 3 * $numberOfSoldiers) {
+            if ($army->getX() == $this->_armyX && $army->getY() == $this->_armyY) {
                 continue;
             }
+            $mHeuristics = new Cli_Model_Heuristics($army->getX(), $army->getY());
+            $armyHeuristics[$armyId] = $mHeuristics->calculateH($this->_armyX, $this->_armyY);
+        }
 
-            if ($numberOfSoldiers > 3 * $numberOfSoldiersAndHeroes) {
-                continue;
-            }
+        asort($armyHeuristics, SORT_NUMERIC);
+        reset($armyHeuristics);
+        $army = $myArmies->getArmy(key($armyHeuristics));
 
-            $mHeuristics = new Cli_Model_Heuristics($armyX, $armyY);
-            $h = $mHeuristics->calculateH($this->_armyX, $this->_armyY);
-            if ($h < $this->_movesLeft) {
-                try {
-                    $aStar = new Cli_Model_Astar($this->_army, $armyX, $armyY, $this->_game);
-                    return $aStar->path();
-                } catch (Exception $e) {
-                    echo($e);
-                    return;
-                }
-            }
+        if (!$army) {
+            return;
+        }
+
+        try {
+            $aStar = new Cli_Model_Astar($this->_army, $army->getX(), $army->getY(), $this->_game);
+            return $aStar->path();
+        } catch (Exception $e) {
+            echo($e);
+            return;
+        }
+    }
+
+    protected function getPathToMyClosestCastle()
+    {
+        $this->_l->logMethodName();
+        $castlesHeuristics = array();
+        $castles = $this->_player->getCastles();
+
+        foreach ($castles->getKeys() as $castleId) {
+            $castle = $castles->getCastle($castleId);
+            $mHeuristics = new Cli_Model_Heuristics($castle->getX(), $castle->getY());
+            $castlesHeuristics[$castleId] = $mHeuristics->calculateH($this->_armyX, $this->_armyY);
+        }
+
+        asort($castlesHeuristics, SORT_NUMERIC);
+        reset($castlesHeuristics);
+        $castle = $castles->getCastle(key($castlesHeuristics));
+
+        if (!$castle) {
+            return;
+        }
+
+        try {
+            $aStar = new Cli_Model_Astar($this->_army, $castle->getX(), $castle->getY(), $this->_game);
+            return $aStar->path();
+        } catch (Exception $e) {
+            echo($e);
+            return;
         }
     }
 

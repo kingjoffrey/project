@@ -144,9 +144,6 @@ class Cli_Model_ComputerMove extends Cli_Model_ComputerMethods
                 return;
             }
 
-            $this->_l->log('heu=' . $heuristics->calculateH($this->_army->getX(), $this->_army->getY()));
-            $this->_l->log('ML=' . $this->_army->getMovesLeft());
-
             $this->_l->log('SŁABSZY WRÓG POZA ZASIĘGIEM - IDŹ DO WROGA');
             $this->savePath($path);
             return;
@@ -154,23 +151,21 @@ class Cli_Model_ComputerMove extends Cli_Model_ComputerMethods
             $this->_l->log('WRÓG JEST SILNIEJSZY');
             $path = $this->getPathToMyArmyInRange();
             if ($path) {
-                $this->_l->log('JEST MOJA ARMIA W ZASIĘGU - DOŁĄCZ!');
-                $this->move($path);
-                return;
-            } else {
-                $this->_l->log('BRAK MOJEJ ARMII W ZASIĘGU');
-                $castle = $this->getMyCastleNearEnemy();
-                if ($castle) {
-                    $path = $this->getPathToMyCastle($castle);
-                }
-                if ($path->exists()) {
-                    $this->_l->log('JEST MÓJ ZAMEK W POBLIŻU WROGA - IDŹ DO ZAMKU');
-                    return $this->savePath($path);
+                if ($path->targetWithin()) {
+                    $this->_l->log('JEST MOJA ARMIA W ZASIĘGU - DOŁĄCZ!');
                 } else {
-                    $this->_l->log('NIE MA MOJEGO ZAMKU W POBLIŻU WROGA - ZOSTAŃ');
-                    $this->_army->setFortified(true);
-                    $this->next();
-                    return;
+                    $this->_l->log('JEST MOJA ARMIA PRAWIE W ZASIĘGU - IDŹ DO MOJEJ ARMII!');
+                }
+                $this->move($path);
+            } else {
+                $path = $this->getPathToMyClosestArmy();
+                if ($path) {
+                    $this->_l->log('JEST MOJA ARMIA POZA ZASIĘGIEM - IDŹ DO MOJEJ ARMII!');
+                    $this->move($path);
+                } else {
+                    $this->_l->log('JEST MÓJ ZAMEK - IDŹ DO MOJEGO ZAMKU!');
+                    $path = $this->getPathToMyClosestCastle();
+                    $this->move($path);
                 }
             }
         }
