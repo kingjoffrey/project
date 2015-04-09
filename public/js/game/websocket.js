@@ -220,7 +220,7 @@ var Websocket = {
                     var id = Message.show(translations.gameOver, $('<div>').append($('<div>').html(translations.thisIsTheEnd)))
                     Message.ok(id, Gui.end)
                 }
-                this.executing = 0
+                //this.executing = 0
                 break;
 
             case 'dead':
