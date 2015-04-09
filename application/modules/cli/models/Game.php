@@ -6,7 +6,7 @@ class Cli_Model_Game
     private $_mapId;
 
     private $_capitals = array();
-    private $_playersInGameColors;
+    private $_playersColors;
 
     private $_users = array();
     private $_online = array();
@@ -31,12 +31,12 @@ class Cli_Model_Game
     private $_Players;
     private $_Ruins;
 
-    public function __construct($gameId, $playersInGameColors, Zend_Db_Adapter_Pdo_Pgsql $db)
+    public function __construct($gameId, $playersColors, Zend_Db_Adapter_Pdo_Pgsql $db)
     {
         $this->_l = new Coret_Model_Logger();
 
         $this->_id = $gameId;
-        $this->_playersInGameColors = $playersInGameColors;
+        $this->_playersColors = $playersColors;
 
         $mGame = new Application_Model_Game($this->_id, $db);
         $game = $mGame->getGame();
@@ -64,7 +64,7 @@ class Cli_Model_Game
         $mChat = new Application_Model_Chat($this->_id, $db);
         $this->_chatHistory = $mChat->getChatHistory();
         foreach ($this->_chatHistory as $k => $v) {
-            $this->_chatHistory[$k]['color'] = $this->_playersInGameColors[$v['playerId']];
+            $this->_chatHistory[$k]['color'] = $this->_playersColors[$v['playerId']];
             unset($this->_chatHistory[$k]['playerId']);
         }
 
@@ -102,7 +102,7 @@ class Cli_Model_Game
         $mTowersInGame = new Application_Model_TowersInGame($this->_id, $db);
         $playersTowers = $mTowersInGame->getTowers();
 
-        foreach ($this->_playersInGameColors as $playerId => $color) {
+        foreach ($this->_playersColors as $playerId => $color) {
             $player = new Cli_Model_Player($players[$playerId], $this->_id, $mapCastles, $mapTowers, $playersTowers, $mMapPlayers, $db);
             $this->_Players->addPlayer($color, $player);
             if (!$player->getComputer()) {
@@ -110,10 +110,11 @@ class Cli_Model_Game
             }
             $this->_numberOfAllCastles += $player->getCastles()->count();
         }
-        $this->_Players->addPlayer('neutral', new Cli_Model_NeutralPlayer($this, $mapCastles, $mapTowers, $playersTowers, $db));
+        $player = new Cli_Model_NeutralPlayer($this, $mapCastles, $mapTowers, $playersTowers, $db);
+        $this->_Players->addPlayer('neutral', $player);
+        $this->_numberOfAllCastles += $player->getCastles()->count();
+
         $this->_Players->initFields($this->_Fields);
-
-
     }
 
     private function initRuins(Zend_Db_Adapter_Pdo_Pgsql $db)
@@ -209,7 +210,7 @@ class Cli_Model_Game
     public function getPlayerColor($playerId)
     {
         if ($playerId) {
-            return $this->_playersInGameColors[$playerId];
+            return $this->_playersColors[$playerId];
         } else {
             return 'neutral';
         }
@@ -260,9 +261,9 @@ class Cli_Model_Game
         return $this->_firstUnitId;
     }
 
-    public function getPlayersInGameColors()
+    public function getPlayersColors()
     {
-        return $this->_playersInGameColors;
+        return $this->_playersColors;
     }
 
     public function getBegin()

@@ -48,7 +48,7 @@ class Cli_Model_NextTurn
     {
         $playerColor = $game->getPlayerColor($game->getTurnPlayerId());
         $find = false;
-        $playersInGameColors = $game->getPlayersInGameColors();
+        $playersInGameColors = $game->getPlayersColors();
 
 
         reset($playersInGameColors);

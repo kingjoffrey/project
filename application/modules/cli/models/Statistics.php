@@ -5,7 +5,7 @@ class Cli_Model_Statistics
     public function __construct(Devristo\Phpws\Protocol\WebSocketTransportInterface $user, Zend_Db_Adapter_Pdo_Pgsql $db, Cli_GameHandler $gameHandler)
     {
         $game = Cli_Model_Game::getGame($user);
-        $playersInGameColors = $game->getPlayersInGameColors();
+        $playersInGameColors = $game->getPlayersColors();
 
         $mCastlesConquered = new Application_Model_CastlesConquered($game->getId(), $db);
         $mCastlesDestroyed = new Application_Model_CastlesDestroyed($game->getId(), $db);

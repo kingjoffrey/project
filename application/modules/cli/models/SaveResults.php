@@ -30,7 +30,7 @@ class Cli_Model_SaveResults
 //        $mHeroesInGame = new Application_Model_HeroesInGame($game->getId(), $db);
 //        $mCastlesInGame = new Application_Model_CastlesInGame($game->getId(), $db);
 
-        $playersInGameColors = $game->getPlayersInGameColors();
+        $playersInGameColors = $game->getPlayersColors();
         $units = Zend_Registry::get('units');
 
         $castlesConquered = $mCastlesConquered->countConquered($playersInGameColors);
