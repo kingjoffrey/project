@@ -56,7 +56,9 @@ class Cli_Model_Garrison
             }
         } elseif ($swim->exists()) {
             if ($walk->exists() && $swim->getMovesLeft() > 2 && $countGarrisonUnits > $numberOfUnits * 2) {
-                $this->_newArmyId = $armies->create($army->getX(), $army->getY(), $army->getColor(), $game, $db);
+                if (empty($this->_newArmyId)) {
+                    $this->_newArmyId = $armies->create($army->getX(), $army->getY(), $army->getColor(), $game, $db);
+                }
                 foreach ($swim->getKeys() as $soldierId) {
                     $armies->changeSwimmingSoldierAffiliation($armyId, $this->_newArmyId, $soldierId, $gameId, $db);
                 }
@@ -67,7 +69,9 @@ class Cli_Model_Garrison
             }
         } elseif ($fly->exists()) {
             if ($walk->exists() && $fly->getMovesLeft() > 2 && $countGarrisonUnits > $numberOfUnits * 2) {
-                $this->_newArmyId = $armies->create($army->getX(), $army->getY(), $army->getColor(), $game, $db);
+                if (empty($this->_newArmyId)) {
+                    $this->_newArmyId = $armies->create($army->getX(), $army->getY(), $army->getColor(), $game, $db);
+                }
                 foreach ($fly->getKeys() as $soldierId) {
                     $armies->changeFlyingSoldierAffiliation($armyId, $this->_newArmyId, $soldierId, $gameId, $db);
                 }
