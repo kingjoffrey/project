@@ -371,7 +371,7 @@ class Cli_Model_Battle
                 $defender->resetAttributes();
             } else {
                 if ($color == 'neutral') {
-                    $this->_players->getPlayer($color)->getArmies()->removeArmy($defender->getId());
+                    $this->_players->getPlayer($color)->getArmies()->removeArmy($defender->getId(), $this->_game);
                 } else {
                     $this->_players->getPlayer($color)->getArmies()->removeArmy($defender->getId(), $this->_game, $this->_db);
                 }

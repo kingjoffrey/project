@@ -272,9 +272,9 @@ abstract class Cli_Model_ComputerMethods
 
         asort($armyHeuristics, SORT_NUMERIC);
         reset($armyHeuristics);
-        $army = $myArmies->getArmy(key($armyHeuristics));
-
-        if (!$army) {
+        if ($armyId = key($armyHeuristics)) {
+            $army = $myArmies->getArmy($armyId);
+        } else {
             return;
         }
 

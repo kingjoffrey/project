@@ -95,14 +95,14 @@ class Cli_Model_Armies
         return $ids;
     }
 
-    public function removeArmy($armyId, Cli_Model_Game $game = null, Zend_Db_Adapter_Pdo_Pgsql $db = null)
+    public function removeArmy($armyId, Cli_Model_Game $game, Zend_Db_Adapter_Pdo_Pgsql $db = null)
     {
         $army = $this->getArmy($armyId);
         $army->setDestroyed(true);
+        $game->getFields()->getField($army->getX(), $army->getY())->removeArmy($army->getId());
         if ($db) {
             $mArmy = new Application_Model_Army($game->getId(), $db);
             $mArmy->destroyArmy($armyId);
-            $game->getFields()->getField($army->getX(), $army->getY())->removeArmy($army->getId());
         }
         unset($this->_armies[$armyId]);
     }
