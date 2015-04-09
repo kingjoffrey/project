@@ -9,7 +9,7 @@ class zend_View_Helper_MainMenu extends Zend_View_Helper_Abstract
         $controllerName = Zend_Controller_Front::getInstance()->getRequest()->getControllerName();
 
         $this->view->placeholder('mainMenu')
-            ->setPrefix('<div>')
+            ->setPrefix('<div id="menu">')
             ->setPostfix('</div>');
 
         $menu = array(

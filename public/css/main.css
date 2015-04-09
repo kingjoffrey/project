@@ -128,11 +128,9 @@ input[type="radio"], input[type="checkbox"] {
 }
 
 h1 {
-    /*padding-top: 20px;*/
-    line-height: 70px;
-    color: red;
+    line-height: 44px;
+    color: grey;
     text-align: right;
-    /*background: url(/img/h1_bg.png);*/
 }
 
 #content #title {
@@ -206,9 +204,10 @@ h3 {
 
 div.table {
     padding: 5px;
-    border: 1px solid #000;
+    border: 1px solid #A8A45A;
     border-radius: 5px;
-    background: url("/img/game/message_bg.png")
+    background: url("/img/game/message_bg.png");
+    box-shadow: 0 0 5px #000;
 }
 
 table {
@@ -258,7 +257,7 @@ td:first-of-type {
 
 #versionNumber {
     padding-left: 5px;
-    padding-top: 15px;
+    padding-top: 22px;
     color: grey;
     float: left;
     text-shadow: none;
@@ -267,8 +266,12 @@ td:first-of-type {
 
 #menuTop {
     height: 21px;
-    border-bottom: 1px solid #f00;
-    text-shadow: none;
+    padding: 5px;
+    border: 1px solid gold;
+    border-bottom-right-radius: 5px;
+    border-bottom-left-radius: 5px;
+    background: url("/img/game/message_bg.png");
+    box-shadow: 0 0 5px #000;
 }
 
 #menuTop span {
@@ -277,18 +280,21 @@ td:first-of-type {
     font-family: "Alpine", Verdana, Tahoma;
 }
 
+#menu {
+    width: 900px;
+    text-align: center;
+}
+
 #logout {
-    text-decoration: none;
-    text-transform: none;
     display: inline-block;
     float: right;
-    color: blue;
-    text-shadow: none;
+    color: #A8A45A;
     font-weight: normal;
+    font-size: 14px;
+    padding-top: 3px;
 }
 
 #logout:hover {
-    /*text-shadow: 0 0 1px #000;*/
     color: gray;
 }
 
@@ -303,7 +309,6 @@ td:first-of-type {
     border-radius: 5px;
     border: 2px solid grey;
     padding: 10px;
-    /*margin-bottom: 20px;*/
     text-align: center;
     box-shadow: 1px 1px 5px #000;
 }
@@ -343,7 +348,10 @@ p#info {
     border: 2px solid grey;
     border-radius: 5px;
     padding: 10px;
-    background: url(/img/bg_1.jpg);
+    background: url(/img/bg_0.jpg);
     box-shadow: 2px 2px 5px #000;
 }
 
+.padding {
+    padding: 0 0 5px 0;
+}
