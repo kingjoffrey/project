@@ -21,7 +21,7 @@ class Cli_Model_Garrison
                                 'x' => $x,
                                 'y' => $y,
                                 't' => 'c')
-                            ), $army, Zend_Registry::get('terrain'));
+                            ), $army, $game->getTerrain());
                             $army->move($game, $path, $db, $gameHandler);
                         }
                     }

@@ -163,9 +163,9 @@ class Cli_Model_Army
     private function updateArmyPosition(Cli_Model_Game $game, Cli_Model_Path $path, Zend_Db_Adapter_Pdo_Pgsql $db)
     {
         $gameId = $game->getId();
-        $terrain = Zend_Registry::get('terrain');
+        $terrain = $game->getTerrain();
         $type = $this->getMovementType();
-        $this->setMovesLeft($this->_Heroes->saveMove($this->_x, $this->_y, $this->_movesLeft, $type, $path, $gameId, $db));
+        $this->setMovesLeft($this->_Heroes->saveMove($this->_x, $this->_y, $this->_movesLeft, $type, $path, $terrain, $gameId, $db));
         $this->setMovesLeft($this->_SwimmingSoldiers->saveMove($this->_x, $this->_y, $this->_movesLeft, $type, $path, $terrain, $gameId, $db));
         $this->setMovesLeft($this->_WalkingSoldiers->saveMove($this->_x, $this->_y, $this->_movesLeft, $type, $path, $terrain, $gameId, $db));
         $this->setMovesLeft($this->_FlyingSoldiers->saveMove($this->_x, $this->_y, $this->_movesLeft, $type, $path, $terrain, $gameId, $db));

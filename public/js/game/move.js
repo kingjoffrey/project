@@ -172,7 +172,6 @@ var Move = new function () {
                             defenderArmy.update(defenderArmy)
                         } else {
                             defenderArmies.delete(armyId, 1)
-
                         }
                     }
                 }
@@ -185,9 +184,6 @@ var Move = new function () {
             }
             if (player.isComputer() && !Gui.getShow()) {
                 for (var color in r.battle.defenders) {
-                    if (color == 'neutral') {
-                        break
-                    }
                     if (Me.colorEquals(color)) {
                         var defenderArmies = Me.getArmies(),
                             upkeep = 0

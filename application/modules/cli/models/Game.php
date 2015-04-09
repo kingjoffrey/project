@@ -76,7 +76,6 @@ class Cli_Model_Game
 
         $mMapTerrain = new Application_Model_MapTerrain($this->_mapId, $db);
         $this->_Terrain = new Cli_Model_TerrainTypes($mMapTerrain->getTerrain());
-        Zend_Registry::set('terrain', $this->_Terrain);
 
         $mMapUnits = new Application_Model_MapUnits($this->_mapId, $db);
         $this->_Units = new Cli_Model_Units();
@@ -324,6 +323,11 @@ class Cli_Model_Game
     public function isActive()
     {
         return $this->_isActive;
+    }
+
+    public function getTerrain()
+    {
+        return $this->_Terrain;
     }
 
     /**

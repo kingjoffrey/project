@@ -99,6 +99,9 @@ var Me = new function () {
     }
     this.upkeepIncrement = function (value) {
         upkeep += value
+        if (upkeep < 0) {
+            upkeep = 0
+        }
         updateUpkeep()
     }
     this.incomeIncrement = function (value) {

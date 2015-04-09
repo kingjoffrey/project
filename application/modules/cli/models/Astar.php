@@ -34,7 +34,7 @@ class Cli_Model_Astar extends Cli_Model_Heuristics
     /**
      * @var Cli_Model_TerrainTypes
      */
-    private $terrain;
+    private $_terrain;
     private $limit;
     private $myCastleId = array();
     private $movementType;
@@ -68,7 +68,7 @@ class Cli_Model_Astar extends Cli_Model_Heuristics
             $this->limit = $params['limit'];
         }
         $this->_fields = $game->getFields();
-        $this->terrain = Zend_Registry::get('terrain');
+        $this->_terrain = $game->getTerrain();
         $this->_movesLeft = $army->getMovesLeft();
         $this->_color = $army->getColor();
         $this->_army = $army;
@@ -109,7 +109,7 @@ class Cli_Model_Astar extends Cli_Model_Heuristics
         $x = $this->_open[$key]['x'];
         $y = $this->_open[$key]['y'];
         $this->_close[$key] = $this->_open[$key];
-        if ($x == $this->destX && $y == $this->destY) {
+        if ($x == $this->_destX && $y == $this->_destY) {
             return;
         }
         unset($this->_open[$key]);
@@ -176,7 +176,7 @@ class Cli_Model_Astar extends Cli_Model_Heuristics
                     continue;
                 }
 
-                $terrainType = $this->_fields->getAStarType($i, $j, $this->_color, $this->destX, $this->destY, $this->_players);
+                $terrainType = $this->_fields->getAStarType($i, $j, $this->_color, $this->_destX, $this->_destY, $this->_players);
                 if (!$terrainType) {
                     continue;
                 }
@@ -186,7 +186,7 @@ class Cli_Model_Astar extends Cli_Model_Heuristics
                     continue;
                 }
 
-                $g = $this->terrain->getTerrainType($terrainType)->getCost($this->movementType);
+                $g = $this->_terrain->getTerrainType($terrainType)->getCost($this->movementType);
 
                 // jeżeli koszt ruchu większy od 6 to pomiń to pole
                 if ($g > 6) {
@@ -259,7 +259,7 @@ class Cli_Model_Astar extends Cli_Model_Heuristics
     public function path()
     {
         $i = 0;
-        $key = $this->destX . '_' . $this->destY;
+        $key = $this->_destX . '_' . $this->_destY;
         $path = $this->returnPath($key);
 
         if (is_array($path)) {
@@ -279,7 +279,7 @@ class Cli_Model_Astar extends Cli_Model_Heuristics
                 $path[$k]['G'] -= $i;
             }
         }
-        return new Cli_Model_Path($path, $this->_army, Zend_Registry::get('terrain'));
+        return new Cli_Model_Path($path, $this->_army, $this->_terrain);
     }
 
     /**

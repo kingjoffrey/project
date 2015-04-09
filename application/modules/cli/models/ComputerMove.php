@@ -215,7 +215,7 @@ class Cli_Model_ComputerMove extends Cli_Model_ComputerMethods
         $this->_l->log('IDĘ ŚCIEŻKĄ');
         $this->_l->log($this->_armyId, 'armyId: ');
 
-        $path = new Cli_Model_Path($this->_army->getOldPath(), $this->_army, Zend_Registry::get('terrain'));
+        $path = new Cli_Model_Path($this->_army->getOldPath(), $this->_army, $this->_game->getTerrain());
         $current = array();
 
         foreach ($path->getCurrent() as $step) {

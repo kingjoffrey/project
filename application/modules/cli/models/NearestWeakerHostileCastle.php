@@ -12,7 +12,7 @@ class Cli_Model_NearestWeakerHostileCastle
         $this->_l = new Coret_Model_Logger();
 
         $players = $game->getPlayers();
-        $this->initHeuristics($players, $playerColor, $army->getX(), $army->getY());
+        $this->initHeuristics($players, $playerColor, $army->getX(), $army->getY(), $game);
 
         $castleId = $this->getCastleId($game, $playerColor, $army);
 
@@ -36,7 +36,7 @@ class Cli_Model_NearestWeakerHostileCastle
         }
     }
 
-    private function initHeuristics(Cli_Model_Players $players, $playerColor, $armyX, $armyY)
+    private function initHeuristics(Cli_Model_Players $players, $playerColor, $armyX, $armyY, Cli_Model_Game $game)
     {
         $this->_l->logMethodName();
         foreach ($players->getKeys() as $color) {
@@ -51,7 +51,7 @@ class Cli_Model_NearestWeakerHostileCastle
                     continue;
                 }
                 $mHeuristics = new Cli_Model_Heuristics($castle->getX(), $castle->getY());
-                $this->_heuristics[$castleId] = $mHeuristics->calculateH($armyX, $armyY);
+                $this->_heuristics[$castleId] = $mHeuristics->calculateWithFieldsCosts($armyX, $armyY, $game->getFields(), $game->getTerrain());
                 $this->_castles[$castleId] = $castle;
             }
         }

@@ -62,13 +62,12 @@ class Cli_Model_Heroes
         return array_keys($this->_heroes);
     }
 
-    public function saveMove($x, $y, $movesLeft, $type, Cli_Model_Path $path, $gameId, $db)
+    public function saveMove($x, $y, $movesLeft, $type, Cli_Model_Path $path, Cli_Model_TerrainTypes $terrain, $gameId, $db)
     {
         if (empty($this->_heroes)) {
             return $movesLeft;
         }
 
-        $terrain = Zend_Registry::get('terrain');
         $current = $path->getCurrent();
         $mHeroesInGame = new Application_Model_HeroesInGame($gameId, $db);
 
