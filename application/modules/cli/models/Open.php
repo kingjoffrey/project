@@ -24,19 +24,26 @@ class Cli_Model_Open
         }
 
         Zend_Registry::set('id_lang', $dataIn['langId']);
-        Zend_Registry::set('playersInGameColors', $mPlayersInGame->getAllColors());
 
         if (!($user->parameters['game'] = $gameHandler->getGame($dataIn['gameId']))) {
             echo 'not set' . "\n";
-            $gameHandler->addGame($dataIn['gameId'], new Cli_Model_Game($dataIn['gameId'], $db));
+            $gameHandler->addGame($dataIn['gameId'], new Cli_Model_Game($dataIn['gameId'], $mPlayersInGame->getAllColors(), $db));
             $user->parameters['game'] = $gameHandler->getGame($dataIn['gameId']);
         }
 
         $game = Cli_Model_Game::getGame($user);
-        $game->addUser($dataIn['playerId'], $user, $mPlayersInGame);
-
+        $game->addUser($dataIn['playerId'], $user, $mPlayersInGame, $gameHandler);
         $myColor = $game->getPlayerColor($dataIn['playerId']);
         $user->parameters['me'] = new Cli_Model_Me($myColor, $dataIn['playerId']);
+
+        if (!$game->isActive()) {
+            $token = array(
+                'type' => 'end'
+            );
+            $gameHandler->sendToChannel($game, $token);
+            return;
+        }
+
         $player = $game->getPlayers()->getPlayer($myColor);
 
         $token = $game->toArray();

@@ -14,6 +14,7 @@ class Cli_Model_Game
     private $_numberOfGarrisonUnits;
     private $_numberOfAllCastles = 0;
 
+    private $_isActive;
     private $_begin;
     private $_turnsLimit;
     private $_turnTimeLimit;
@@ -30,16 +31,23 @@ class Cli_Model_Game
     private $_Players;
     private $_Ruins;
 
-    public function __construct($gameId, Zend_Db_Adapter_Pdo_Pgsql $db)
+    public function __construct($gameId, $playersInGameColors, Zend_Db_Adapter_Pdo_Pgsql $db)
     {
         $this->_l = new Coret_Model_Logger();
 
-        $this->_Players = new Cli_Model_Players();
-        $this->_Ruins = new Cli_Model_Ruins();
         $this->_id = $gameId;
+        $this->_playersInGameColors = $playersInGameColors;
 
         $mGame = new Application_Model_Game($this->_id, $db);
         $game = $mGame->getGame();
+
+        $this->_isActive = $game['isActive'];
+        if (!$this->_isActive) {
+            return;
+        }
+
+        $this->_Players = new Cli_Model_Players();
+        $this->_Ruins = new Cli_Model_Ruins();
 
         $this->_mapId = $game['mapId'];
         $this->_begin = $game['begin'];
@@ -52,8 +60,6 @@ class Cli_Model_Game
 
         $mTurnHistory = new Application_Model_TurnHistory($this->_id, $db);
         $this->_turnHistory = $mTurnHistory->getTurnHistory();
-
-        $this->_playersInGameColors = Zend_Registry::get('playersInGameColors');
 
         $mChat = new Application_Model_Chat($this->_id, $db);
         $this->_chatHistory = $mChat->getChatHistory();
@@ -313,6 +319,11 @@ class Cli_Model_Game
         if ($this->_Players->getPlayer($color)->getCastles()->count() > $this->_numberOfAllCastles / 2) {
             return true;
         }
+    }
+
+    public function isActive()
+    {
+        return $this->_isActive;
     }
 
     /**

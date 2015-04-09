@@ -58,6 +58,9 @@ var Game = new function () {
     this.getFirstUnitId = function () {
         return game.firstUnitId
     }
+    this.getLoading = function () {
+        return loading
+    }
 }
 
 $(document).ready(function () {

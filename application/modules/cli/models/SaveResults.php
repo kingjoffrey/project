@@ -2,30 +2,35 @@
 
 class Cli_Model_SaveResults
 {
-    public function __construct($gameId, Zend_Db_Adapter_Pdo_Pgsql $db, Cli_GameHandler $gameHandler)
+    public function __construct(Cli_Model_Game $game, Zend_Db_Adapter_Pdo_Pgsql $db, Cli_GameHandler $gameHandler)
     {
-        $mGame = new Application_Model_Game($gameId, $db);
+        $mGame = new Application_Model_Game($game->getId(), $db);
         $mGame->endGame(); // koniec gry
 
-        $mGameScore = new Application_Model_GameScore($gameId, $db);
+        $mGameScore = new Application_Model_GameScore($game->getId(), $db);
         if ($mGameScore->gameScoreExists()) {
+            $token = array(
+                'type' => 'end'
+            );
+            $gameHandler->sendToChannel($game, $token);
+            $gameHandler->removeGame($game->getId());
             return;
         }
 
-        $mGameResults = new Application_Model_GameResults($gameId, $db);
+        $mGameResults = new Application_Model_GameResults($game->getId(), $db);
         $mPlayer = new Application_Model_Player($db);
 
-        $mCastlesConquered = new Application_Model_CastlesConquered($gameId, $db);
-        $mCastlesDestroyed = new Application_Model_CastlesDestroyed($gameId, $db);
-        $mHeroesKilled = new Application_Model_HeroesKilled($gameId, $db);
-        $mSoldiersKilled = new Application_Model_SoldiersKilled($gameId, $db);
-        $mSoldiersCreated = new Application_Model_SoldiersCreated($gameId, $db);
-        $mPlayersInGame = new Application_Model_PlayersInGame($gameId, $db);
-//        $mUnitsInGame = new Application_Model_UnitsInGame($gameId, $db);
-//        $mHeroesInGame = new Application_Model_HeroesInGame($gameId, $db);
-//        $mCastlesInGame = new Application_Model_CastlesInGame($gameId, $db);
+        $mCastlesConquered = new Application_Model_CastlesConquered($game->getId(), $db);
+        $mCastlesDestroyed = new Application_Model_CastlesDestroyed($game->getId(), $db);
+        $mHeroesKilled = new Application_Model_HeroesKilled($game->getId(), $db);
+        $mSoldiersKilled = new Application_Model_SoldiersKilled($game->getId(), $db);
+        $mSoldiersCreated = new Application_Model_SoldiersCreated($game->getId(), $db);
+        $mPlayersInGame = new Application_Model_PlayersInGame($game->getId(), $db);
+//        $mUnitsInGame = new Application_Model_UnitsInGame($game->getId(), $db);
+//        $mHeroesInGame = new Application_Model_HeroesInGame($game->getId(), $db);
+//        $mCastlesInGame = new Application_Model_CastlesInGame($game->getId(), $db);
 
-        $playersInGameColors = Zend_Registry::get('playersInGameColors');
+        $playersInGameColors = $game->getPlayersInGameColors();
         $units = Zend_Registry::get('units');
 
         $castlesConquered = $mCastlesConquered->countConquered($playersInGameColors);
@@ -149,6 +154,7 @@ class Cli_Model_SaveResults
             'type' => 'end'
         );
         $gameHandler->sendToChannel($game, $token);
+        $gameHandler->removeGame($game->getId());
     }
 }
 

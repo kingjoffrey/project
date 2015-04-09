@@ -6,7 +6,6 @@ class Cli_Model_NextTurn
     public function __construct(Devristo\Phpws\Protocol\WebSocketTransportInterface $user, Zend_Db_Adapter_Pdo_Pgsql $db, Cli_GameHandler $gameHandler)
     {
         $game = Cli_Model_Game::getGame($user);
-        $gameId = $game->getId();
         $players = $game->getPlayers();
 
         while (true) {
@@ -20,11 +19,11 @@ class Cli_Model_NextTurn
                 $turnsLimit = $game->getTurnsLimit();
 
                 if ($turnsLimit && $turnNumber > $turnsLimit) {
-                    new Cli_Model_SaveResults($gameId, $db, $gameHandler);
+                    new Cli_Model_SaveResults($game, $db, $gameHandler);
                     return;
                 }
 
-                $mTurnHistory = new Application_Model_TurnHistory($gameId, $db);
+                $mTurnHistory = new Application_Model_TurnHistory($game->getId(), $db);
                 $mTurnHistory->add($nextPlayerId, $turnNumber);
 
                 $token = array(
@@ -35,7 +34,7 @@ class Cli_Model_NextTurn
                 $gameHandler->sendToChannel($game, $token);
                 return;
             } else {
-                $players->getPlayer($nextPlayerColor)->setLost($gameId, $db);
+                $players->getPlayer($nextPlayerColor)->setLost($game->getId(), $db);
                 $token = array(
                     'type' => 'dead',
                     'color' => $nextPlayerColor

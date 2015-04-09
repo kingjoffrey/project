@@ -13,18 +13,24 @@ use Devristo\Phpws\Server\UriHandler\WebSocketUriHandler;
  */
 class Cli_GameHandler extends WebSocketUriHandler
 {
-    protected $game = array();
+    protected $_game = array();
 
     public function getGame($gameId)
     {
-        if (isset($this->game[$gameId])) {
-            return $this->game[$gameId];
+        if (isset($this->_game[$gameId])) {
+            return $this->_game[$gameId];
         }
     }
 
     public function addGame($gameId, $game)
     {
-        $this->game[$gameId] = $game;
+        $this->_game[$gameId] = $game;
+    }
+
+    public function removeGame($gameId)
+    {
+        $this->_game[$gameId] = null;
+        unset($this->_game[$gameId]);
     }
 
     public function onMessage(WebSocketTransportInterface $user, WebSocketMessageInterface $msg)
@@ -45,7 +51,7 @@ class Cli_GameHandler extends WebSocketUriHandler
         if ($dataIn['type'] == 'open') {
             new Cli_Model_Open($dataIn, $user, $db, $this);
             $game = Cli_Model_Game::getGame($user);
-            if ($game->getPlayers()->getPlayer($game->getPlayerColor($game->getTurnPlayerId()))->getComputer()) {
+            if ($game->isActive() && $game->getPlayers()->getPlayer($game->getPlayerColor($game->getTurnPlayerId()))->getComputer()) {
                 new Cli_Model_Computer($user, $db, $this);
             }
             return;
@@ -69,7 +75,7 @@ class Cli_GameHandler extends WebSocketUriHandler
 
         if ($timeLimit = $game->getTimeLimit()) {
             if (time() - $game->getBegin() > $timeLimit * 600) {
-                new Cli_Model_SaveResults($gameId, $db, $this);
+                new Cli_Model_SaveResults($game, $db, $this);
                 return;
             }
         }
@@ -192,6 +198,10 @@ class Cli_GameHandler extends WebSocketUriHandler
             );
 
             $this->sendToChannel($game, $token);
+
+            if (!$game->getUsers()) {
+                $this->removeGame($game->getId());
+            }
         }
     }
 

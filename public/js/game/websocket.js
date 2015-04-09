@@ -213,10 +213,13 @@ var Websocket = {
                 break;
 
             case 'end':
-                Turn.off()
-                var div = $('<div>').append($('<div>').html(translations.thisIsTheEnd))
-                var id = Message.show(translations.gameOver, div)
-                Message.ok(id, Gui.end)
+                if (Game.getLoading()) {
+                    Gui.end()
+                } else {
+                    Me.turnOff()
+                    var id = Message.show(translations.gameOver, $('<div>').append($('<div>').html(translations.thisIsTheEnd)))
+                    Message.ok(id, Gui.end)
+                }
                 this.executing = 0
                 break;
 
