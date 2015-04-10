@@ -35,8 +35,8 @@ var Game = new function () {
             }
         } else {
             Me.turnOff()
-            Players.showFirst(Turn.getColor())
         }
+        Players.showFirst(Turn.getColor())
 
         Sound.play('gamestart')
     }

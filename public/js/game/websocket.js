@@ -35,11 +35,11 @@ var Websocket = {
                     this.computer()
                 }
                 if (Players.get(Turn.getColor()).isComputer() && !Gui.getShow()) {
+                    this.executing = 0
+                } else {
                     Players.showFirst(r.color, function () {
                         Websocket.executing = 0
                     })
-                } else {
-                    this.executing = 0
                 }
                 break;
 
@@ -72,20 +72,27 @@ var Websocket = {
                 break;
 
             case 'split':
-                var armies = Players.get(r.color).getArmies()
-                armies.handle(r.parentArmy)
-                armies.handle(r.childArmy)
-
                 if (Turn.isMy()) {
+                    var armies = Players.get(r.color).getArmies()
+                    armies.handle(r.parentArmy)
+                    armies.handle(r.childArmy)
                     Message.remove()
                     Me.setParentArmyId(r.parentArmy.id)
                     Me.selectArmy(r.childArmy.id)
                     Websocket.executing = 0
-                } else {
+                } else if (Players.get(Turn.getColor()).isComputer() && !Gui.getShow()) {
                     //zoomer.setCenterIfOutOfScreen(r.parentArmy.x * 40, r.parentArmy.y * 40);
                     Zoom.lens.setcenter(r.parentArmy.x, r.parentArmy.y, function () {
+                        var armies = Players.get(r.color).getArmies()
+                        armies.handle(r.parentArmy)
+                        armies.handle(r.childArmy)
                         Websocket.executing = 0
                     });
+                } else {
+                    var armies = Players.get(r.color).getArmies()
+                    armies.handle(r.parentArmy)
+                    armies.handle(r.childArmy)
+                    Websocket.executing = 0
                 }
                 break;
 
@@ -94,14 +101,23 @@ var Websocket = {
                     Message.remove()
                 }
                 //zoomer.setCenterIfOutOfScreen(r.army.x * 40, r.army.y * 40);
-                Zoom.lens.setcenter(r.army.x, r.army.y, function () {
+                if (Players.get(Turn.getColor()).isComputer() && !Gui.getShow()) {
+                    Zoom.lens.setcenter(r.army.x, r.army.y, function () {
+                        var armies = Players.get(r.color).getArmies()
+                        for (var i in r.deletedIds) {
+                            armies.delete(r.deletedIds[i])
+                        }
+                        armies.handle(r.army)
+                        Websocket.executing = 0
+                    })
+                } else {
                     var armies = Players.get(r.color).getArmies()
                     for (var i in r.deletedIds) {
                         armies.delete(r.deletedIds[i])
                     }
                     armies.handle(r.army)
                     Websocket.executing = 0
-                })
+                }
                 break;
 
             case 'disband':
@@ -130,15 +146,20 @@ var Websocket = {
 
             case 'resurrection':
                 Sound.play('resurrection');
-                Zoom.lens.setcenter(r.army.x, r.army.y, function () {
+                if (Players.get(Turn.getColor()).isComputer() && !Gui.getShow()) {
+                    Zoom.lens.setcenter(r.army.x, r.army.y, function () {
+                        Players.get(r.color).getArmies().handle(r.army)
+                        if (Turn.isMy()) {
+                            Message.remove()
+                            Me.setGold(r.gold)
+                            Me.handleHeroButtons()
+                        }
+                        Websocket.executing = 0
+                    })
+                } else {
                     Players.get(r.color).getArmies().handle(r.army)
-                    if (Turn.isMy()) {
-                        Message.remove()
-                        Me.setGold(r.gold)
-                        Me.handleHeroButtons()
-                    }
                     Websocket.executing = 0
-                })
+                }
                 break
 
             case 'raze':

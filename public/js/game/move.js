@@ -31,12 +31,12 @@ var Move = new function () {
             Message.remove()
         }
 
-        if (!player.isComputer() || Gui.getShow()) {
+        if (player.isComputer() && !Gui.getShow()) {
+            stepLoop(r, ii)
+        } else {
             Zoom.lens.setcenter(r.path[0].x, r.path[0].y, function () {
                 Move.startStepLoop(r, ii)
             })
-        } else {
-            stepLoop(r, ii)
         }
     }
     this.startStepLoop = function (r, ii) {
