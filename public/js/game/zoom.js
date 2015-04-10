@@ -94,10 +94,6 @@ var Zoom = {
             $obj.node.left = (Zoom.smallimage.ow - $obj.node.w - 2) / 2;
         };
         $obj.setcenter = function (x, y, func) {
-            console.log(Turn.getColor())
-            if (Players.get(Turn.getColor()).isComputer() && !Gui.getShow()) {
-                return
-            }
             $obj.node.top = (y * 40 - Three.getHeight() / 2) / Zoom.scale.y
             $obj.node.left = (x * 40 - Three.getWidth() / 2) / Zoom.scale.x
             $obj.node.css({

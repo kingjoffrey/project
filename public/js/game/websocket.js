@@ -34,8 +34,13 @@ var Websocket = {
                 if (Players.get(r.color).isComputer()) {
                     this.computer()
                 }
-                Players.showFirst(r.color)
-                this.executing = 0
+                if (Players.get(Turn.getColor()).isComputer() && !Gui.getShow()) {
+                    Players.showFirst(r.color, function () {
+                        Websocket.executing = 0
+                    })
+                } else {
+                    this.executing = 0
+                }
                 break;
 
             case 'neutral':
@@ -55,53 +60,15 @@ var Websocket = {
                 break;
 
             case 'ruin':
-                //board.append($('<div>').addClass('ruinSearch').css({'top': Y + 'px', 'left': X + 'px'}));
-                Zoom.lens.setcenter(r.army.x, r.army.y, function () {
-                    Ruins.get(r.ruin.ruinId).update(r.ruin.empty)
-                    if (Me.colorEquals(r.color)) {
-                        switch (r.find[0]) {
-                            case 'gold':
-                                Sound.play('gold1');
-                                Me.goldIncrement(r.find[1])
-                                Players.get(r.color).getArmies().get(r.army.id).update(r.army)
-                                Message.simple(translations.ruins, translations.youHaveFound + ' ' + r.find[1] + ' ' + translations.gold);
-                                break;
-                            case 'death':
-                                Sound.play('death');
-                                Message.simple(translations.ruins, translations.youHaveFound + ' ' + translations.death)
-                                if (Players.get(r.color).getArmies().get(r.army.id).getNumberOfUnits() > 1) {
-                                    Players.get(r.color).getArmies().get(r.army.id).update(r.army)
-                                } else {
-                                    Players.get(r.color).getArmies().delete(r.army.id)
-                                }
-                                Me.handleHeroButtons()
-                                break
-                            case 'allies':
-                                Sound.play('allies');
-                                Players.get(r.color).getArmies().get(r.army.id).update(r.army)
-                                Message.simple(translations.ruins, r.find[1] + ' ' + translations.alliesJoinedYourArmy);
-                                break
-                            case 'null':
-                                Sound.play('click');
-                                Players.get(r.color).getArmies().get(r.army.id).update(r.army)
-                                Message.simple(translations.ruins, translations.youHaveFoundNothing);
-                                break
-                            case 'artifact':
-                                Message.simple(translations.ruins, translations.youHaveFound + ' ' + translations.anAncientArtifact + ' - "' + artifacts[r.find[1]].name + '".');
-                                Chest.update(r.color, r.find[1]);
-                                break
-                            case 'empty':
-                                Sound.play('error');
-                                Message.simple(translations.ruins, translations.ruinsAreEmpty);
-                                break;
-
-                        }
-                    }
-                    //$('.ruinSearch').animate({'display': 'none'}, 1000, function () {
-                    //    $('.ruinSearch').remove()
-                    //})
-                    Websocket.executing = 0
-                });
+                if (Players.get(Turn.getColor()).isComputer() && !Gui.getShow()) {
+                    Ruins.handle(r)
+                    this.executing = 0
+                } else {
+                    Zoom.lens.setcenter(r.army.x, r.army.y, function () {
+                        Ruins.handle(r)
+                        Websocket.executing = 0
+                    })
+                }
                 break;
 
             case 'split':
