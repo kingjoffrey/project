@@ -214,7 +214,7 @@ table {
     border-spacing: 0px;
     width: 100%;
     font-size: 14px;
-    border: 2px solid gray;
+    border: 2px solid #A8A45A;
     border-radius: 5px;
 }
 
@@ -270,7 +270,7 @@ td:first-of-type {
     border: 1px solid gold;
     border-bottom-right-radius: 5px;
     border-bottom-left-radius: 5px;
-    background: url("/img/game/message_bg.png");
+    background: #000;
     box-shadow: 0 0 5px #000;
 }
 

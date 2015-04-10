@@ -94,6 +94,7 @@ var Zoom = {
             $obj.node.left = (Zoom.smallimage.ow - $obj.node.w - 2) / 2;
         };
         $obj.setcenter = function (x, y, func) {
+            console.log(Turn.getColor())
             if (Players.get(Turn.getColor()).isComputer() && !Gui.getShow()) {
                 return
             }

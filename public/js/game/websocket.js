@@ -29,12 +29,12 @@ var Websocket = {
                 break
 
             case 'nextTurn':
-                Players.showFirst(r.color)
-                Me.deselectArmy()
                 Turn.change(r.color, r.nr)
+                Me.deselectArmy()
                 if (Players.get(r.color).isComputer()) {
                     this.computer()
                 }
+                Players.showFirst(r.color)
                 this.executing = 0
                 break;
 

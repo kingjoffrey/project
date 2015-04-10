@@ -246,10 +246,10 @@
 
 .message h3.msgTitle {
     text-align: left;
-    color: orange;
+    color: gold;
     margin: 0 20px;
     position: absolute;
-    border: 2px solid orange;
+    border: 2px solid orangered;
     top: -16px;
     background: #000;
     padding: 5px 20px;
@@ -501,7 +501,7 @@
 }
 
 .message .status .value {
-    color: yellow;
+    color: gold;
 }
 
 .message .status .value div {
@@ -847,7 +847,7 @@
     position: absolute;
     z-index: 27000;
     background: transparent url('/img/game/message_bg.png');
-    border: 2px solid orange;
+    border: 2px solid orangered;
     box-shadow: 5px 5px 20px #000;
     padding: 2px;
     color: #fff;
@@ -891,15 +891,15 @@ html {
 }
 
 .buttonColors {
-    border: 1px solid lime !important;
+    border: 1px solid #A8A45A !important;
     background: #000 !important;
-    color: lime !important;
+    color: #A8A45A !important;
     cursor: url(/img/game/cursor_pointer.png), pointer;
 }
 
 .buttonColors:hover {
     color: #000 !important;
-    background: lime !important;
+    background: #A8A45A !important;
 }
 
 #buttons .button, .armyButtons .button {
@@ -1088,8 +1088,8 @@ table.treasury td.c {
     line-height: 18px;
     text-align: center;
     text-shadow: none;
-    color: orange;
-    border: 2px solid orange;
+    color: gold;
+    border: 2px solid orangered;
     cursor: pointer;
     background: url("/img/game/message_bg.png");
 }
