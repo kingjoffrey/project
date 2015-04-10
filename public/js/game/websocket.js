@@ -30,7 +30,6 @@ var Websocket = {
 
             case 'nextTurn':
                 Turn.change(r.color, r.nr)
-                Me.deselectArmy()
                 if (Players.get(r.color).isComputer()) {
                     this.computer()
                 }
