@@ -349,7 +349,11 @@ var Me = new function () {
 
         if ($.isEmptyObject(nextArmies)) {
             Sound.play('error');
-            Message.simple(translations.nextArmy, translations.thereIsNoFreeArmyToWithSpareMovePoints)
+            var id = Message.show(translations.nextArmy, $('<div>').html(translations.thereIsNoFreeArmyWithSpareMovePoints))
+            Message.cancel(id)
+            Message.ok(id, function () {
+                Websocket.nextTurn()
+            })
         } else {
             this.deselectArmy()
             nextArmies = {}

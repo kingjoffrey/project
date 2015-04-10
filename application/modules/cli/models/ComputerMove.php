@@ -34,8 +34,8 @@ class Cli_Model_ComputerMove extends Cli_Model_ComputerMethods
         $this->_l->logMethodName();
         $this->_l->log('W ZAMKU');
         $myCastle = $this->_player->getCastles()->getCastle($castleId);
-        if ($numberOfUnits = $this->_game->getNumberOfGarrisonUnits()) {
-            $garrison = new Cli_Model_Garrison($numberOfUnits, $myCastle->getX(), $myCastle->getY(), $this->_color, $this->_player->getArmies(), $this->_game, $this->_db, $this->_gameHandler);
+        if ($this->_game->getNumberOfGarrisonUnits()) {
+            $garrison = new Cli_Model_Garrison($myCastle->getX(), $myCastle->getY(), $this->_color, $this->_player->getArmies(), $this->_game, $this->_db, $this->_gameHandler);
             if ($armyId = $garrison->getNewArmyId()) {
                 $this->_l->log('NOWA ARMIA');
                 $this->_army = $this->_player->getArmies()->getArmy($armyId);
@@ -104,11 +104,11 @@ class Cli_Model_ComputerMove extends Cli_Model_ComputerMethods
                 return;
             }
             $this->_l->log('BRAK MOJEJ ARMII W ZASIĘGU - IDŹ W KIERUNKU ZAMKU WROGA!');
-            return $this->savePath($nwhc->getPath());
+            return $this->savePathAndMove($nwhc->getPath());
         }
 
         $this->_l->log('BRAK SILNIEJSZEJ ARMII WROGA W ZASIĘGU - IDŹ W KIERUNKU ZAMKU WROGA!');
-        return $this->savePath($nwhc->getPath());
+        return $this->savePathAndMove($nwhc->getPath());
     }
 
     private function noEnemyCastlesToAttack()
@@ -145,7 +145,7 @@ class Cli_Model_ComputerMove extends Cli_Model_ComputerMethods
             }
 
             $this->_l->log('SŁABSZY WRÓG POZA ZASIĘGIEM - IDŹ DO WROGA');
-            $this->savePath($path);
+            $this->savePathAndMove($path);
             return;
         } else {
             $this->_l->log('WRÓG JEST SILNIEJSZY');
@@ -202,7 +202,7 @@ class Cli_Model_ComputerMove extends Cli_Model_ComputerMethods
         }
     }
 
-    private function savePath(Cli_Model_Path $path)
+    private function savePathAndMove(Cli_Model_Path $path)
     {
         $this->_l->log('ZAPISUJĘ ŚCIEŻKĘ');
         $this->_army->saveOldPath($path);
@@ -220,21 +220,29 @@ class Cli_Model_ComputerMove extends Cli_Model_ComputerMethods
 
         foreach ($path->getCurrent() as $step) {
             $current[] = $step;
+            if ($fieldArmies = $this->_fields->getField($step['x'], $step['y'])->getArmies()) {
+                foreach ($fieldArmies as $armyId => $color) {
+                    if ($color == $this->_color) {
+                        $path->setCurrent($current);
+                        $this->savePathAndMove($path);
+                        return;
+                    }
+                }
+            }
             $enemies = new Cli_Model_Enemies($this->_game, $step['x'], $step['y'], $this->_color);
             if ($enemies->hasEnemies()) {
                 $path->setCurrent($current);
-                break;
+                $this->savePathAndMove($path);
+                return;
             }
         }
 
-        if (!$path->enemyInRange()) {
-            $this->savePath($path);
-        } else {
-            $this->_army->resetOldPath();
-            $this->move($path);
-        }
+        $this->_army->resetOldPath();
+        $this->move($path);
+
         return;
     }
+
 
     private function move(Cli_Model_Path $path = null)
     {

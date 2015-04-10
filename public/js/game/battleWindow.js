@@ -249,7 +249,7 @@ var BattleWindow = new function () {
 
         Message.simple(translations.battle, div);
 
-        $('.go').css('display', 'none')
+        $('.close').css('display', 'none')
 
         if (killed) {
             if (Players.get(r.color).isComputer()) {

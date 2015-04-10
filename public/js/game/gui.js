@@ -254,9 +254,11 @@ var Gui = new function () {
 
         $('#showCastle').click(function () {
             var army = Me.getArmy(Me.getSelectedArmyId())
-            var castle = Me.getCastle(Fields.get(army.getX(), army.getY()).getCastleId())
-            if (isSet(castle)) {
-                CastleWindow.show(castle)
+            if (army) {
+                var castle = Me.getCastle(Fields.get(army.getX(), army.getY()).getCastleId())
+                if (isSet(castle)) {
+                    CastleWindow.show(castle)
+                }
             }
         })
     }

@@ -111,7 +111,7 @@ var SplitWindow = new function () {
         }
 
         var id = Message.show(translations.splitArmy, div);
-        Message.ok(id, Websocket.split);
         Message.cancel(id)
+        Message.ok(id, Websocket.split)
     }
 }

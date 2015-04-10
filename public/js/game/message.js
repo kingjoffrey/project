@@ -77,7 +77,10 @@ var Message = new function () {
         }
     }
     this.ok = function (id, func) {
-        $('#' + id).append(
+        if (!$('#' + id + ' #buttons').length) {
+            $('#' + id).append($('<div>').attr('id', 'buttons'))
+        }
+        $('#' + id + ' #buttons').append(
             $('<div>')
                 .addClass('button buttonColors go')
                 .html(translations.ok)
@@ -92,7 +95,10 @@ var Message = new function () {
         this.setOverflowHeight(id)
     }
     this.cancel = function (id, func) {
-        $('#' + id).append(
+        if (!$('#' + id + ' #buttons').length) {
+            $('#' + id).append($('<div>').attr('id', 'buttons'))
+        }
+        $('#' + id + ' #buttons').append(
             $('<div>')
                 .addClass('button buttonColors cancel')
                 .html(translations.cancel)
@@ -104,9 +110,25 @@ var Message = new function () {
                 })
         )
     }
+    this.close = function (id, func) {
+        if (!$('#' + id + ' #buttons').length) {
+            $('#' + id).append($('<div>').attr('id', 'buttons'))
+        }
+        $('#' + id + ' #buttons').append(
+            $('<div>')
+                .addClass('button buttonColors close')
+                .html(translations.close)
+                .click(function () {
+                    if (isSet(func)) {
+                        func()
+                    }
+                    Message.remove(id)
+                })
+        )
+    }
     this.simple = function (title, message) {
         var id = this.show(title, $('<div>').html(message).addClass('simple'));
-        this.ok(id)
+        this.close(id)
         return id
     }
     this.error = function (message) {

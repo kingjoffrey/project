@@ -240,8 +240,19 @@
     padding-top: 30px !important;
     border-radius: 10px;
     text-align: center;
-    /*cursor: url(/img/game/cursor_hand.png) 15 15, default;*/
     z-index: 28000 !important;
+}
+
+.message #buttons {
+    width: auto;
+    height: 50px;
+    margin: 0 auto;
+}
+
+.message #buttons .button {
+    width: auto;
+    margin: 10px;
+    padding: 5px;
 }
 
 .message h3.msgTitle {
@@ -916,7 +927,7 @@ html {
 
 .button, #submit {
     line-height: 20px;
-    margin: 1px;
+    margin: 2px;
 }
 
 .iconButton, .button, #submit {
@@ -1139,4 +1150,14 @@ table.treasury td.c {
 #battleDefence {
     width: 27px;
     height: 27px;
+}
+
+#nextTurn {
+    line-height: 20px;
+    position: absolute;
+    top: 101px;
+    left: 75px;
+    display: inline-flex;
+    padding: 2px 3px;
+    box-shadow: none;
 }

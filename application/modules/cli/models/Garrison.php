@@ -4,7 +4,7 @@ class Cli_Model_Garrison
 {
     private $_newArmyId = 0;
 
-    public function __construct($numberOfUnits, $x, $y, $color, Cli_Model_Armies $armies, Cli_Model_Game $game, Zend_Db_Adapter_Pdo_Pgsql $db, Cli_GameHandler $gameHandler)
+    public function __construct($x, $y, $color, Cli_Model_Armies $armies, Cli_Model_Game $game, Zend_Db_Adapter_Pdo_Pgsql $db, Cli_GameHandler $gameHandler)
     {
         $gameId = $game->getId();
         $fields = $game->getFields();
@@ -33,6 +33,7 @@ class Cli_Model_Garrison
             if ($fieldArmyColor == $color) {
 //                echo 'GGG ';
                 $army = $armies->getArmy($fieldArmyId);
+                $army->resetOldPath();
                 $armyId = $army->getId();
             }
         }
@@ -42,6 +43,7 @@ class Cli_Model_Garrison
         $walk = $army->getWalkingSoldiers();
         $swim = $army->getSwimmingSoldiers();
         $fly = $army->getFlyingSoldiers();
+        $numberOfUnits = $game->getNumberOfGarrisonUnits();
 
         if ($heroes->exists()) {
             if ($walk->exists() && $heroes->getMovesLeft() > 2 && $countGarrisonUnits > $numberOfUnits * 2) {

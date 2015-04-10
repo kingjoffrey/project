@@ -145,6 +145,9 @@ abstract class Cli_Model_ComputerMethods
 
         foreach ($castles->getKeys() as $castleId) {
             $castle = $castles->getCastle($castleId);
+            if ($this->_armyX == $castle->getX() && $this->_armyY == $castle->getY()) {
+                continue;
+            }
             $mHeuristics = new Cli_Model_Heuristics($castle->getX(), $castle->getY());
             $castlesHeuristics[$castleId] = $mHeuristics->calculateWithFieldsCosts($this->_armyX, $this->_armyY, $this->_fields, $this->_game->getTerrain());
         }
