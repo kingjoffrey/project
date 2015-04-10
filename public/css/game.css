@@ -1091,7 +1091,7 @@ table.treasury td.c {
     color: gold;
     border: 2px solid orangered;
     cursor: pointer;
-    background: url("/img/game/message_bg.png");
+    background: none;
 }
 
 .close:hover {
