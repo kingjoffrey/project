@@ -171,9 +171,7 @@ var Three = new function () {
         ruinModel = loader.parse(ruin)
     }
     this.addRuin = function (x, y, color) {
-        var ruinMaterial = new THREE.MeshPhongMaterial({color: color})
-        ruinMaterial.side = THREE.DoubleSide
-
+        var ruinMaterial = new THREE.MeshPhongMaterial({color: color, side: THREE.DoubleSide})
         var mesh = new THREE.Mesh(ruinModel.geometry, ruinMaterial)
         mesh.position.set(x * 4 - 216, 0, y * 4 - 311)
 
@@ -192,8 +190,7 @@ var Three = new function () {
         flagModel = loader.parse(flag)
     }
     this.addTower = function (x, y, color) {
-        var towerMaterial = new THREE.MeshLambertMaterial({color: '#6B6B6B'})
-        towerMaterial.side = THREE.DoubleSide
+        var towerMaterial = new THREE.MeshLambertMaterial({color: '#6B6B6B', side: THREE.DoubleSide})
 
         var mesh = new THREE.Mesh(towerModel.geometry, towerMaterial)
         mesh.position.set(x * 4 - 216, 0, y * 4 - 311)
@@ -204,8 +201,7 @@ var Three = new function () {
         }
         scene.add(mesh)
 
-        var material = new THREE.MeshLambertMaterial({color: color})
-        material.side = THREE.DoubleSide
+        var material = new THREE.MeshLambertMaterial({color: color, side: THREE.DoubleSide})
         var flagMesh = new THREE.Mesh(flagModel.geometry, material)
         if (showShadows) {
             flagMesh.castShadow = true
@@ -231,16 +227,13 @@ var Three = new function () {
         getCastleModel = function (defense) {
             switch (defense) {
                 case 2:
-                    var material = new THREE.MeshLambertMaterial({color: '#65402C'})
-                    material.side = THREE.DoubleSide
+                    var material = new THREE.MeshLambertMaterial({color: '#65402C', side: THREE.DoubleSide})
                     return new THREE.Mesh(castleModel_2.geometry, material)
                 case 3:
-                    var material = new THREE.MeshPhongMaterial({color: '#0054C4'})
-                    material.side = THREE.DoubleSide
+                    var material = new THREE.MeshPhongMaterial({color: '#0054C4', side: THREE.DoubleSide})
                     return new THREE.Mesh(castleModel_3.geometry, material)
                 case 4:
-                    var material = new THREE.MeshLambertMaterial({color: '#6B6B6B'})
-                    material.side = THREE.DoubleSide
+                    var material = new THREE.MeshLambertMaterial({color: '#6B6B6B', side: THREE.DoubleSide})
                     return new THREE.Mesh(castleModel_4.geometry, material)
             }
         },
@@ -259,8 +252,7 @@ var Three = new function () {
 
     this.addCastle = function (castle, color) {
         //castle.x, castle.y, bgC, castle.defense
-        var castleMaterial = new THREE.MeshLambertMaterial({color: '#3B3028'})
-        castleMaterial.side = THREE.DoubleSide
+        var castleMaterial = new THREE.MeshLambertMaterial({color: '#3B3028', side: THREE.DoubleSide})
 
         var mesh = new THREE.Mesh(castleModel_1.geometry, castleMaterial)
         mesh.position.set(castle.x * 4 - 214, 0, castle.y * 4 - 308)
@@ -271,8 +263,7 @@ var Three = new function () {
         }
         scene.add(mesh)
 
-        var material = new THREE.MeshLambertMaterial({color: color})
-        material.side = THREE.DoubleSide
+        var material = new THREE.MeshLambertMaterial({color: color, side: THREE.DoubleSide})
         var flagMesh = new THREE.Mesh(flagModel.geometry, material)
         if (showShadows) {
             flagMesh.castShadow = true
@@ -286,7 +277,7 @@ var Three = new function () {
         return mesh
     }
     this.castleChangeDefense = function (mesh, defense) {
-        mesh.children.splice(1, 3)
+        mesh.children.splice(2, 3)
         updateCastleModel(mesh, defense)
     }
 
@@ -333,11 +324,9 @@ var Three = new function () {
         flag_8Model = loader.parse(flag_8)
     }
     this.addArmy = function (x, y, color, number, modelName) {
-        var material = new THREE.MeshLambertMaterial({color: color})
-        material.side = THREE.DoubleSide
+        var material = new THREE.MeshLambertMaterial({color: color, side: THREE.DoubleSide})
 
-        var armyMaterial = new THREE.MeshLambertMaterial({color: color})
-        armyMaterial.side = THREE.DoubleSide
+        var armyMaterial = new THREE.MeshLambertMaterial({color: color, side: THREE.DoubleSide})
 
         if (modelName + 'Model' in window) {
             var mesh = new THREE.Mesh(window[modelName + 'Model'].geometry, armyMaterial)
@@ -417,24 +406,16 @@ var Three = new function () {
         treeModel = loader.parse(tree)
         waterModel = loader.parse(water)
 
-        mountainModel.material = new THREE.MeshLambertMaterial({color: '#4e5a61'})
-        mountainModel.material.side = THREE.DoubleSide
-
-        hillModel.material = new THREE.MeshLambertMaterial({color: '#415824'})
-        hillModel.material.side = THREE.DoubleSide
-
-        treeModel.material = new THREE.MeshLambertMaterial({color: '#003300'})
-        treeModel.material.side = THREE.DoubleSide
-        //treeModel.scale = 0.4
-
-        waterModel.material = new THREE.MeshPhongMaterial({color: 0x0000ff})
-        waterModel.material.side = THREE.DoubleSide
+        mountainModel.material = new THREE.MeshLambertMaterial({color: '#4e5a61', side: THREE.DoubleSide})
+        hillModel.material = new THREE.MeshLambertMaterial({color: '#415824', side: THREE.DoubleSide})
+        treeModel.material = new THREE.MeshLambertMaterial({color: '#003300', side: THREE.DoubleSide})
+        waterModel.material = new THREE.MeshPhongMaterial({color: 0x0000ff, side: THREE.DoubleSide})
     }
 
     this.addMountain = function (x, y) {
         var mesh = new THREE.Mesh(mountainModel.geometry, mountainModel.material)
         mesh.position.set(x * 4 - 216, 0, y * 4 - 311)
-        mesh.rotation.y = Math.PI * Math.random()
+        mesh.rotation.y = 2 * Math.PI * Math.random()
 
         if (showShadows) {
             mesh.castShadow = true
@@ -446,7 +427,7 @@ var Three = new function () {
     this.addHill = function (x, y) {
         var mesh = new THREE.Mesh(hillModel.geometry, hillModel.material)
         mesh.position.set(x * 4 - 216, 0, y * 4 - 311)
-        mesh.rotation.y = Math.PI * Math.random()
+        mesh.rotation.y = 2 * Math.PI * Math.random()
 
         if (showShadows) {
             mesh.castShadow = true
@@ -457,7 +438,7 @@ var Three = new function () {
     this.addTree = function (x, y) {
         var mesh = new THREE.Mesh(treeModel.geometry, treeModel.material)
         mesh.position.set(x * 4 - 216, 0, y * 4 - 311)
-        mesh.rotation.y = Math.PI * Math.random()
+        mesh.rotation.y = 2 * Math.PI * Math.random()
 
         if (showShadows) {
             mesh.castShadow = true
@@ -468,7 +449,7 @@ var Three = new function () {
     this.addWater = function (x, y) {
         var mesh = new THREE.Mesh(waterModel.geometry, waterModel.material)
         mesh.position.set(x * 4 - 216, 0.1, y * 4 - 311)
-        mesh.rotation.y = Math.PI * Math.random()
+        mesh.rotation.y = 2 * Math.PI * Math.random()
 
         scene.add(mesh)
     }
@@ -530,7 +511,7 @@ var Three = new function () {
     this.getHeight = function () {
         return gameHeight
     }
-    this.setFP = function (fps) {
+    this.setFPS = function (fps) {
         timeOut = parseInt(1000 / fps)
     }
 }
