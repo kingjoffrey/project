@@ -34,7 +34,7 @@ var Websocket = {
                 if (Players.get(r.color).isComputer()) {
                     this.computer()
                 }
-                if (Players.get(Turn.getColor()).isComputer() && !Gui.getShow()) {
+                if (Players.get(r.color).isComputer() && !Gui.getShow()) {
                     this.executing = 0
                 } else {
                     Players.showFirst(r.color, function () {
@@ -60,7 +60,7 @@ var Websocket = {
                 break;
 
             case 'ruin':
-                if (Players.get(Turn.getColor()).isComputer() && !Gui.getShow()) {
+                if (Players.get(r.color).isComputer() && !Gui.getShow()) {
                     Ruins.handle(r)
                     this.executing = 0
                 } else {
@@ -80,19 +80,20 @@ var Websocket = {
                     Me.setParentArmyId(r.parentArmy.id)
                     Me.selectArmy(r.childArmy.id)
                     Websocket.executing = 0
-                } else if (Players.get(Turn.getColor()).isComputer() && !Gui.getShow()) {
+                } else if (Players.get(r.color).isComputer() && !Gui.getShow()) {
                     //zoomer.setCenterIfOutOfScreen(r.parentArmy.x * 40, r.parentArmy.y * 40);
+                    var armies = Players.get(r.color).getArmies()
+                    armies.handle(r.parentArmy)
+                    armies.handle(r.childArmy)
+                    Websocket.executing = 0
+
+                } else {
                     Zoom.lens.setcenter(r.parentArmy.x, r.parentArmy.y, function () {
                         var armies = Players.get(r.color).getArmies()
                         armies.handle(r.parentArmy)
                         armies.handle(r.childArmy)
                         Websocket.executing = 0
-                    });
-                } else {
-                    var armies = Players.get(r.color).getArmies()
-                    armies.handle(r.parentArmy)
-                    armies.handle(r.childArmy)
-                    Websocket.executing = 0
+                    })
                 }
                 break;
 
@@ -101,7 +102,14 @@ var Websocket = {
                     Message.remove()
                 }
                 //zoomer.setCenterIfOutOfScreen(r.army.x * 40, r.army.y * 40);
-                if (Players.get(Turn.getColor()).isComputer() && !Gui.getShow()) {
+                if (Players.get(r.color).isComputer() && !Gui.getShow()) {
+                    var armies = Players.get(r.color).getArmies()
+                    for (var i in r.deletedIds) {
+                        armies.delete(r.deletedIds[i])
+                    }
+                    armies.handle(r.army)
+                    Websocket.executing = 0
+                } else {
                     Zoom.lens.setcenter(r.army.x, r.army.y, function () {
                         var armies = Players.get(r.color).getArmies()
                         for (var i in r.deletedIds) {
@@ -110,13 +118,6 @@ var Websocket = {
                         armies.handle(r.army)
                         Websocket.executing = 0
                     })
-                } else {
-                    var armies = Players.get(r.color).getArmies()
-                    for (var i in r.deletedIds) {
-                        armies.delete(r.deletedIds[i])
-                    }
-                    armies.handle(r.army)
-                    Websocket.executing = 0
                 }
                 break;
 
@@ -147,6 +148,9 @@ var Websocket = {
             case 'resurrection':
                 Sound.play('resurrection');
                 if (Players.get(Turn.getColor()).isComputer() && !Gui.getShow()) {
+                    Players.get(r.color).getArmies().handle(r.army)
+                    Websocket.executing = 0
+                } else {
                     Zoom.lens.setcenter(r.army.x, r.army.y, function () {
                         Players.get(r.color).getArmies().handle(r.army)
                         if (Turn.isMy()) {
@@ -156,9 +160,6 @@ var Websocket = {
                         }
                         Websocket.executing = 0
                     })
-                } else {
-                    Players.get(r.color).getArmies().handle(r.army)
-                    Websocket.executing = 0
                 }
                 break
 

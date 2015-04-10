@@ -38,6 +38,7 @@ var Armies = function () {
         Fields.get(army.getX(), army.getY()).removeArmyId(armyId)
 
         if (isTruthful(show)) {
+            console.log('aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa')
             Zoom.lens.setcenter(army.getX(), army.getY())
         }
 

@@ -76,8 +76,12 @@ var Move = new function () {
             }
         } else {
             if (isTruthful(r.battle) && (!player.isComputer() || Gui.getShow())) {
-                Sound.play('fight');
-                BattleWindow.battle(r, ii)
+                Sound.play('fight')
+                if (player.isComputer() && !Gui.getShow()) {
+                    Zoom.lens.setcenter(r.path[step].x, r.path[step].y, function () {
+                        BattleWindow.battle(r, ii)
+                    })
+                }
             } else {
                 Move.end(r, ii)
             }
@@ -94,7 +98,7 @@ var Move = new function () {
             if (r.battle.victory) {
                 for (var color in r.battle.defenders) {
                     for (var armyId in r.battle.defenders[color]) {
-                        Players.get(color).getArmies().delete(armyId, 1)
+                        Players.get(color).getArmies().delete(armyId)
                     }
                 }
                 if (r.battle.towerId) {
@@ -137,7 +141,7 @@ var Move = new function () {
                     Gui.unlock()
                 }
             } else {
-                Players.get(r.color).getArmies().delete(army.getArmyId(), 1)
+                Players.get(r.color).getArmies().delete(army.getArmyId())
                 for (var color in r.battle.defenders) {
                     if (color == 'neutral') {
                         break
@@ -171,7 +175,7 @@ var Move = new function () {
                         if (defenderArmy.getNumberOfUnits()) {
                             defenderArmy.update(defenderArmy)
                         } else {
-                            defenderArmies.delete(armyId, 1)
+                            defenderArmies.delete(armyId)
                         }
                     }
                 }
@@ -223,7 +227,7 @@ var Move = new function () {
         }
 
         for (var i in r.deletedIds) {
-            Players.get(r.color).getArmies().delete(r.deletedIds[i], 1)
+            Players.get(r.color).getArmies().delete(r.deletedIds[i])
         }
 
         Websocket.executing = 0
