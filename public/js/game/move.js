@@ -77,11 +77,9 @@ var Move = new function () {
         } else {
             if (isTruthful(r.battle) && (!player.isComputer() || Gui.getShow())) {
                 Sound.play('fight')
-                if (player.isComputer() && !Gui.getShow()) {
-                    Zoom.lens.setcenter(r.path[step].x, r.path[step].y, function () {
-                        BattleWindow.battle(r, ii)
-                    })
-                }
+                Zoom.lens.setcenter(r.path[step].x, r.path[step].y, function () {
+                    BattleWindow.battle(r, ii)
+                })
             } else {
                 Move.end(r, ii)
             }

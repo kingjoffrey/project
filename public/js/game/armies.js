@@ -29,18 +29,13 @@ var Armies = function () {
     this.toArray = function () {
         return armies
     }
-    this.delete = function (armyId, show) {
+    this.delete = function (armyId) {
         if (!this.hasArmy(armyId)) {
             throw ('Brak armi o armyId = ' + armyId );
             return
         }
         var army = this.get(armyId)
         Fields.get(army.getX(), army.getY()).removeArmyId(armyId)
-
-        if (isTruthful(show)) {
-            console.log('aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa')
-            Zoom.lens.setcenter(army.getX(), army.getY())
-        }
 
         Three.getScene().remove(army.getMesh())
         $('#' + armyId).remove()
