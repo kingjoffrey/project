@@ -115,7 +115,7 @@ var Three = new function () {
         var radius = 2,
             segments = 64,
             material1 = new THREE.MeshBasicMaterial({
-                color: 0x003300,
+                color: 'gold',
                 transparent: true,
                 opacity: 0.7,
                 side: THREE.DoubleSide
@@ -130,15 +130,25 @@ var Three = new function () {
             geometry2 = new THREE.CircleGeometry(radius, segments)
         //geometry = new THREE.TorusGeometry(radius, 0.3, segments, segments)
 
+        switch (Fields.get(x, y).getType()) {
+            case 'm':
+                var height = 3
+                break
+            case 'h':
+                var height = 1
+                break
+            default :
+                var height = 0.1
+                break
+        }
         var cylinder = new THREE.Mesh(geometry1, material1)
-        cylinder.position.set(x * 4 - 216, 10, y * 4 - 311)
+        cylinder.position.set(x * 4 - 216, 7 + height, y * 4 - 311)
         //cylinder.rotation.x = Math.PI / 2
         scene.add(cylinder)
         armyCircles.push(cylinder)
 
-
         var circle = new THREE.Mesh(geometry2, material2)
-        circle.position.set(x * 4 - 216, 0.1, y * 4 - 311)
+        circle.position.set(x * 4 - 216, height, y * 4 - 311)
         circle.rotation.x = Math.PI / 2
         scene.add(circle)
         armyCircles.push(circle)
