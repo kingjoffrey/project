@@ -96,6 +96,22 @@ class Application_Model_Player extends Coret_Db_Table_Abstract
         return $this->selectOne($select);
     }
 
+    public function search($search)
+    {
+        $select = $this->_db->select()
+            ->from($this->_name, array('firstName', 'lastName'))
+            ->where('computer = false')
+            ->where($this->_db->quoteIdentifier('playerId') . ' > 0')
+            ->where($this->_db->quoteInto($this->_db->quoteIdentifier('firstName') . ' ~* ?', $search) . ' OR ' . $this->_db->quoteInto($this->_db->quoteIdentifier('firstName') . ' || \' \' || ' . $this->_db->quoteIdentifier('lastName') . ' ~* ?', $search))
+            ->order('firstName desc');
 
+        echo $select->__toString();
+
+        $paginator = new Zend_Paginator(new Zend_Paginator_Adapter_DbSelect($select));
+        $paginator->setCurrentPageNumber(1);
+        $paginator->setItemCountPerPage(20);
+
+        return $paginator;
+    }
 }
 

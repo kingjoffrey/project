@@ -1,6 +1,21 @@
 <h1><?php echo $this->translate('Friends') ?></h1>
 <div>
-    <?php echo $this->search ?>
+    <?php echo $this->searchForm ?>
+</div>
+<div class="table">
+    <h2><?php echo $this->translate('Search results') ?></h2>
+    <table>
+        <tr>
+            <th><?php echo $this->translate('Player name') ?></th>
+        </tr>
+        <?php if (count($this->searchResults)): ?>
+            <?php foreach ($this->searchResults as $row): ?>
+                <tr class="trlink">
+                    <td><?php echo $row['firstName'] . ' ' . $row['lastName'] ?></td>
+                </tr>
+            <?php endforeach ?>
+        <?php endif ?>
+    </table>
 </div>
 <div class="table">
     <h2><?php echo $this->translate('Friends list') ?></h2>
