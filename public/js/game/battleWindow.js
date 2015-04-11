@@ -6,7 +6,7 @@ var BattleWindow = new function () {
 
         if (notSet(b[i])) {
             if (!Players.get(r.color).isComputer()) {
-                $('.go').fadeIn(100)
+                $('.close').fadeIn(100)
             }
             Move.end(r, ii)
             return
@@ -249,7 +249,7 @@ var BattleWindow = new function () {
 
         Message.simple(translations.battle, div);
 
-        $('.close').css('display', 'none')
+        $('.message .close').css('display', 'none')
 
         if (killed) {
             if (Players.get(r.color).isComputer()) {

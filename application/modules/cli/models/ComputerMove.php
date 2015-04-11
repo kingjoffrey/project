@@ -217,12 +217,25 @@ class Cli_Model_ComputerMove extends Cli_Model_ComputerMethods
 
         $path = new Cli_Model_Path($this->_army->getOldPath(), $this->_army, $this->_game->getTerrain());
         $current = array();
+        $field = $this->_fields->getField($path->getX(), $path->getY());
+
+
+        if (!$field->getArmies() || !$field->getCastleId()) {
+            $this->_army->resetOldPath();
+            $this->next();
+        }
 
         foreach ($path->getCurrent() as $step) {
             $current[] = $step;
+            if ($step['x'] == $this->_armyX && $step['y'] == $this->_armyY) {
+                continue;
+            }
             if ($fieldArmies = $this->_fields->getField($step['x'], $step['y'])->getArmies()) {
                 foreach ($fieldArmies as $armyId => $color) {
                     if ($color == $this->_color) {
+                        $this->_l->log('NA ŚCIEŻCE JEST MOJA ARMIA - DOŁĄCZAM');
+                        $this->_l->log($armyId, '$armyId: ');
+
                         $path->setCurrent($current);
                         $this->savePathAndMove($path);
                         return;
@@ -231,6 +244,8 @@ class Cli_Model_ComputerMove extends Cli_Model_ComputerMethods
             }
             $enemies = new Cli_Model_Enemies($this->_game, $step['x'], $step['y'], $this->_color);
             if ($enemies->hasEnemies()) {
+                $this->_l->log('NA ŚCIEŻCE JEST WRÓG - ATAKUJĘ');
+
                 $path->setCurrent($current);
                 $this->savePathAndMove($path);
                 return;
