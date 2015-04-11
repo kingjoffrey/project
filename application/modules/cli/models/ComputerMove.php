@@ -223,6 +223,7 @@ class Cli_Model_ComputerMove extends Cli_Model_ComputerMethods
         if (!$field->getArmies() || !$field->getCastleId()) {
             $this->_army->resetOldPath();
             $this->next();
+            return;
         }
 
         foreach ($path->getCurrent() as $step) {
