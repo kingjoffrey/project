@@ -99,13 +99,11 @@ class Application_Model_Player extends Coret_Db_Table_Abstract
     public function search($search)
     {
         $select = $this->_db->select()
-            ->from($this->_name, array('firstName', 'lastName'))
+            ->from($this->_name, array('firstName', 'lastName', 'playerId'))
             ->where('computer = false')
             ->where($this->_db->quoteIdentifier('playerId') . ' > 0')
             ->where($this->_db->quoteInto($this->_db->quoteIdentifier('firstName') . ' ~* ?', $search) . ' OR ' . $this->_db->quoteInto($this->_db->quoteIdentifier('firstName') . ' || \' \' || ' . $this->_db->quoteIdentifier('lastName') . ' ~* ?', $search))
             ->order('firstName desc');
-
-        echo $select->__toString();
 
         $paginator = new Zend_Paginator(new Zend_Paginator_Adapter_DbSelect($select));
         $paginator->setCurrentPageNumber(1);

@@ -12,6 +12,9 @@
             <?php foreach ($this->searchResults as $row): ?>
                 <tr class="trlink">
                     <td><?php echo $row['firstName'] . ' ' . $row['lastName'] ?></td>
+                    <td>
+                        <a href="/ <?php echo Zend_Registry::get('lang') ?>/friends/add/friendId/<?php echo $row['playerId'] ?>"><?php echo $this->translate('Add to friends') ?></a>
+                    </td>
                 </tr>
             <?php endforeach ?>
         <?php endif ?>
