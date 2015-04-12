@@ -105,7 +105,7 @@ class Cli_Model_StartTurn
                 'upkeep' => $upkeep,
                 'gold' => $player->getGold(),
                 'income' => $income,
-                'castles' => $castles->toArray()
+                'productionTurns' => $castles->productionTurnsToArray()
             );
             $gameHandler->sendToUser($user, $token);
         }

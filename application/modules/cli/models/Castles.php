@@ -53,6 +53,16 @@ class Cli_Model_Castles
         return $castles;
     }
 
+    public function productionTurnsToArray()
+    {
+        $productionTurns = array();
+        foreach ($this->getKeys() as $castleId) {
+            $castle = $this->getCastle($castleId);
+            $productionTurns[$castleId] = $castle->getProductionTurn();
+        }
+        return $productionTurns;
+    }
+
     public function hasCastle($castleId)
     {
         return isset($this->_castles[$castleId]);

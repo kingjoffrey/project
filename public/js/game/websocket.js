@@ -260,8 +260,8 @@ var Websocket = {
                         Me.resetSkippedArmies()
 
                         var castles = Me.getCastles()
-                        for (var castleId in r.castles) {
-                            castles.get(castleId).setProductionTurn(r.castles[castleId].productionTurn)
+                        for (var castleId in r.productionTurns) {
+                            castles.get(castleId).setProductionTurn(r.productionTurns[castleId])
                         }
                         Sound.play('startturn')
 
