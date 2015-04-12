@@ -12,6 +12,7 @@ class Cli_Model_Game
     private $_online = array();
 
     private $_numberOfGarrisonUnits;
+    private $_numberOfComputerArmyUnits;
     private $_numberOfAllCastles = 0;
 
     private $_isActive;
@@ -87,6 +88,7 @@ class Cli_Model_Game
         $this->_firstUnitId = $this->_Units->getFirstUnitId();
 
         $this->updateNumberOfGarrisonUnits();
+        $this->updateNumberOfComputerArmyUnits();
         $this->initPlayers($mMapPlayers, $db);
         $this->initRuins($db);
     }
@@ -225,6 +227,7 @@ class Cli_Model_Game
         if ($numberOfGarrisonUnits < $this->_numberOfGarrisonUnits) {
             $this->_Players->getPlayer('neutral')->increaseCastlesGarrison($this->_numberOfGarrisonUnits, $this->_firstUnitId, $this->_Units);
         }
+        $this->updateNumberOfComputerArmyUnits();
     }
 
     public function setTurnPlayerId($playerId)
@@ -280,9 +283,22 @@ class Cli_Model_Game
         }
     }
 
+    private function updateNumberOfComputerArmyUnits()
+    {
+        $this->_numberOfComputerArmyUnits = floor($this->_turnNumber / 7 + 0.5);
+//        if ($this->_numberOfComputerArmyUnits > 4) {
+//            $this->_numberOfComputerArmyUnits = 4;
+//        }
+    }
+
     public function getNumberOfGarrisonUnits()
     {
         return $this->_numberOfGarrisonUnits;
+    }
+
+    public function getNumberOfComputerArmyUnits()
+    {
+        return $this->_numberOfComputerArmyUnits;
     }
 
     public function updateChatHistory($message, $color)

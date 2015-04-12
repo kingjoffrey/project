@@ -346,11 +346,17 @@ var Gui = new function () {
 
         Three.resize()
 
-        var mapBoxHeight = parseInt($('#mapImage').css('height'))
+        var mapHeight = $('#mapImage').height(),
+            mapWidth = $('#mapImage').width()
+
+        $('#map').css({
+            width: mapWidth + 'px',
+            height: mapHeight + 'px'
+        })
 
         $('#mapBox').css({
-            width: parseInt($('#mapImage').css('width')) + 7 + 'px',
-            height: mapBoxHeight + 24 + 'px'
+            width: mapWidth + 7 + 'px',
+            height: mapHeight + 24 + 'px'
         });
 
         if (Players.countHumans() > 1) {
@@ -385,7 +391,7 @@ var Gui = new function () {
             'left': Three.getWidth() / 2 - 115 + 'px'
         })
 
-        $('#terrain').css('top', mapBoxHeight + 12 + 'px');
+        $('#terrain').css('top', mapHeight + 12 + 'px');
 
         $('#mapBox .close').css({
             left: $('#mapBox').width() + 4 + 'px'
@@ -395,7 +401,7 @@ var Gui = new function () {
         })
 
         $('#limitBox').css({
-            top: mapBoxHeight + 30 + 'px'
+            top: mapHeight + 30 + 'px'
         })
 
         Message.adjust()

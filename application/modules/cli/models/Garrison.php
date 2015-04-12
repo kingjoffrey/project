@@ -43,10 +43,11 @@ class Cli_Model_Garrison
         $walk = $army->getWalkingSoldiers();
         $swim = $army->getSwimmingSoldiers();
         $fly = $army->getFlyingSoldiers();
-        $numberOfUnits = $game->getNumberOfGarrisonUnits();
+        $numberOfGarrisonUnits = $game->getNumberOfGarrisonUnits();
+        $numberOfComputerArmyUnits = $game->getNumberOfComputerArmyUnits();
 
         if ($heroes->exists()) {
-            if ($walk->exists() && $heroes->getMovesLeft() > 2 && $countGarrisonUnits > $numberOfUnits * 2) {
+            if ($walk->exists() && $heroes->getMovesLeft() > 2 && $countGarrisonUnits > $numberOfGarrisonUnits + $numberOfComputerArmyUnits) {
                 $this->_newArmyId = $armies->create($army->getX(), $army->getY(), $army->getColor(), $game, $db);
                 foreach ($heroes->getKeys() as $heroId) {
                     $armies->changeHeroAffiliation($armyId, $this->_newArmyId, $heroId, $gameId, $db);
@@ -57,7 +58,7 @@ class Cli_Model_Garrison
                 }
             }
         } elseif ($swim->exists()) {
-            if ($walk->exists() && $swim->getMovesLeft() > 2 && $countGarrisonUnits > $numberOfUnits * 2) {
+            if ($walk->exists() && $swim->getMovesLeft() > 2 && $countGarrisonUnits > $numberOfGarrisonUnits + $numberOfComputerArmyUnits) {
                 if (empty($this->_newArmyId)) {
                     $this->_newArmyId = $armies->create($army->getX(), $army->getY(), $army->getColor(), $game, $db);
                 }
@@ -70,7 +71,7 @@ class Cli_Model_Garrison
                 }
             }
         } elseif ($fly->exists()) {
-            if ($walk->exists() && $fly->getMovesLeft() > 2 && $countGarrisonUnits > $numberOfUnits * 2) {
+            if ($walk->exists() && $fly->getMovesLeft() > 2 && $countGarrisonUnits > $numberOfGarrisonUnits + $numberOfComputerArmyUnits) {
                 if (empty($this->_newArmyId)) {
                     $this->_newArmyId = $armies->create($army->getX(), $army->getY(), $army->getColor(), $game, $db);
                 }
@@ -86,7 +87,7 @@ class Cli_Model_Garrison
 
 //        echo '$countGarrisonUnits=' . $countGarrisonUnits . ' > $numberOfUnits=' . $numberOfUnits . "\n";
         // znajduję nadmiarowe jednostki
-        if ($countGarrisonUnits > $numberOfUnits * 2) {
+        if ($countGarrisonUnits > $numberOfGarrisonUnits + $numberOfComputerArmyUnits) {
 //            echo 'kkk ';
             $count = 0;
             if (empty($this->_newArmyId)) {
@@ -97,7 +98,7 @@ class Cli_Model_Garrison
             foreach ($walk->getKeys() as $soldierId) {
 //                echo 'mmm ';
                 $count++;
-                if ($count > $numberOfUnits) {
+                if ($count > $numberOfGarrisonUnits) {
 //                    echo 'nnn ';
                     $armies->changeWalkingSoldierAffiliation($armyId, $this->_newArmyId, $soldierId, $gameId, $db);
                 }
