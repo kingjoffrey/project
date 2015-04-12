@@ -93,6 +93,37 @@ var Move = new function () {
         //Zoom.lens.setcenter(army.getX(), army.getY())
 
         if (r.battle) {
+            if (player.isComputer() && !Gui.getShow()) {
+                for (var color in r.battle.defenders) {
+                    if (Me.colorEquals(color)) {
+                        var defenderArmies = Me.getArmies(),
+                            upkeep = 0
+
+                        for (var armyId in r.battle.defenders[color]) {
+                            var battleArmy = r.battle.defenders[color][armyId],
+                                defenderArmy = defenderArmies.get(armyId)
+
+                            for (var soldierId in battleArmy.walk) {
+                                if (battleArmy.walk[soldierId]) {
+                                    upkeep -= Units.get(defenderArmy.getWalkingSoldier(soldierId).unitId).cost
+                                }
+                            }
+                            for (var soldierId in battleArmy.swim) {
+                                if (battleArmy.swim[soldierId]) {
+                                    upkeep -= Units.get(defenderArmy.getSwimmingSoldier(soldierId).unitId).cost
+                                }
+                            }
+                            for (var soldierId in battleArmy.fly) {
+                                if (battleArmy.fly[soldierId]) {
+                                    upkeep -= Units.get(defenderArmy.getFlyingSoldier(soldierId).unitId).cost
+                                }
+                            }
+                        }
+                        Me.upkeepIncrement(upkeep)
+                        break
+                    }
+                }
+            }
             if (r.battle.victory) {
                 for (var color in r.battle.defenders) {
                     for (var armyId in r.battle.defenders[color]) {
@@ -182,37 +213,6 @@ var Move = new function () {
                         Me.handleHeroButtons()
                     }
                     Gui.unlock()
-                }
-            }
-            if (player.isComputer() && !Gui.getShow()) {
-                for (var color in r.battle.defenders) {
-                    if (Me.colorEquals(color)) {
-                        var defenderArmies = Me.getArmies(),
-                            upkeep = 0
-
-                        for (var armyId in r.battle.defenders[color]) {
-                            var battleArmy = r.battle.defenders[color][armyId],
-                                defenderArmy = defenderArmies.get(armyId)
-
-                            for (var soldierId in battleArmy.walk) {
-                                if (battleArmy.walk[soldierId]) {
-                                    upkeep -= Units.get(defenderArmy.getWalkingSoldier(soldierId).unitId).cost
-                                }
-                            }
-                            for (var soldierId in battleArmy.swim) {
-                                if (battleArmy.swim[soldierId]) {
-                                    upkeep -= Units.get(defenderArmy.getSwimmingSoldier(soldierId).unitId).cost
-                                }
-                            }
-                            for (var soldierId in battleArmy.fly) {
-                                if (battleArmy.fly[soldierId]) {
-                                    upkeep -= Units.get(defenderArmy.getFlyingSoldier(soldierId).unitId).cost
-                                }
-                            }
-                        }
-                        Me.upkeepIncrement(upkeep)
-                        break
-                    }
                 }
             }
         } else if (Me.colorEquals(r.color)) {
