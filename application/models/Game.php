@@ -101,7 +101,8 @@ class Application_Model_Game extends Coret_Db_Table_Abstract
     {
         $data = array(
             'turnPlayerId' => $turnPlayerId,
-            'isOpen' => 'false'
+            'isOpen' => 'false',
+            'begin'=> new Zend_Db_Expr('now()')
         );
 
         $this->updateGame($data);

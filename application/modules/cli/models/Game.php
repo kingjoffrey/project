@@ -153,6 +153,7 @@ class Cli_Model_Game
     public function toArray()
     {
         return array(
+            'version' => Zend_Registry::get('config')->version,
             'begin' => $this->_begin,
             'timeLimit' => $this->_timeLimit,
             'turnsLimit' => $this->_turnsLimit,
