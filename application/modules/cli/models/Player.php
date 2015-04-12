@@ -52,17 +52,18 @@ class Cli_Model_Player extends Cli_Model_DefaultPlayer
             $mBattleSequence->initiate($this->_id, Zend_Registry::get('units'));
             $battleSequence = $mBattleSequence->get($this->_id);
         }
-        $this->setBattleSequence($battleSequence);
+        $this->setAttackBattleSequence($battleSequence['attack']);
+        $this->setDefenceBattleSequence($battleSequence['defence']);
     }
 
-    public function setBattleSequence($battleSequence)
+    public function setAttackBattleSequence($sequence)
     {
-        if (isset($battleSequence['attack'])) {
-            $this->_attackSequence = $battleSequence['attack'];
-        }
-        if (isset($battleSequence['defence'])) {
-            $this->_defenceSequence = $battleSequence['defence'];
-        }
+        $this->_attackSequence = $sequence;
+    }
+
+    public function setDefenceBattleSequence($sequence)
+    {
+        $this->_defenceSequence = $sequence;
     }
 
     private function initArmies($gameId, Zend_Db_Adapter_Pdo_Pgsql $db)

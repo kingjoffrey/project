@@ -25,7 +25,11 @@ class Cli_Model_BattleSequenceHandler
             return;
         }
 
-        $player->setBattleSequence($data['sequence']);
+        if ($attack) {
+            $player->setAttackBattleSequence($data['sequence']);
+        } else {
+            $player->setDefenceBattleSequence($data['sequence']);
+        }
 
         $token = array(
             'type' => 'bSequence',
