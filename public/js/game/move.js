@@ -228,6 +228,6 @@ var Move = new function () {
             Players.get(r.color).getArmies().delete(r.deletedIds[i])
         }
 
-        WebSocketGame.setExecuting(0)
+        Websocket.setExecuting(0)
     }
 }
