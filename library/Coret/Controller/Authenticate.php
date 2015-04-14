@@ -43,6 +43,7 @@ abstract class Coret_Controller_Authenticate extends Zend_Controller_Action
             Zend_Session::forgetMe();
         }
 
+        $this->afterAuthentication();
         $this->redirectAuthenticated();
     }
 
@@ -61,5 +62,9 @@ abstract class Coret_Controller_Authenticate extends Zend_Controller_Action
         $this->redirect($this->view->url(array('action' => null)));
     }
 
+    protected function afterAuthentication()
+    {
+
+    }
 }
 

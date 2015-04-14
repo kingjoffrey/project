@@ -82,5 +82,12 @@ class LoginController extends Coret_Controller_AuthenticateFrontend
             $this->view->form->setDescription($this->view->translate('Incorrect login details'));
         }
     }
+
+
+    protected function afterAuthentication()
+    {
+        $mWebSocket = new Application_Model_Websocket($this->_auth->getIdentity()->playerId);
+        $mWebSocket->init('chat', $mWebSocket->generateKey());
+    }
 }
 

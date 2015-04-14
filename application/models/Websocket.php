@@ -30,7 +30,7 @@ class Application_Model_Websocket extends Coret_Db_Table_Abstract
         return $this->selectOne($select);
     }
 
-    private function generateKey()
+    public function generateKey()
     {
         return md5(rand(0, time()));
     }
@@ -48,10 +48,8 @@ class Application_Model_Websocket extends Coret_Db_Table_Abstract
         $this->update($data, $where);
     }
 
-    public function connect($handler)
+    public function init($handler, $accessKey)
     {
-        $accessKey = $this->generateKey();
-
         $data = array(
             'playerId' => $this->_playerId,
             'handler' => $handler,
@@ -59,11 +57,6 @@ class Application_Model_Websocket extends Coret_Db_Table_Abstract
         );
 
         $this->insert($data);
-
-        return array(
-            'accessKey' => $accessKey,
-            'websocketId' => $this->_db->lastSequenceId($this->_db->quoteIdentifier($this->_sequence))
-        );
     }
 
     public function disconnect($websocketId)
