@@ -9,6 +9,7 @@ class Cli_Model_Computer
         $playerId = $game->getTurnPlayerId();
         $player = $game->getPlayers()->getPlayer($game->getPlayerColor($playerId));
 
+        $db = $handler->getDb();
         if (!$player->getTurnActive()) {
             $l->log('START TURY');
             new Cli_Model_StartTurn($playerId, $user, $db, $handler);

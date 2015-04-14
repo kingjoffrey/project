@@ -12,6 +12,7 @@ class Cli_Model_StartTurn
         if ($player->getTurnActive()) {
             return;
         }
+        $db = $handler->getDb();
         $gameId = $game->getId();
         $fields = $game->getFields();
         $armies = $player->getArmies();
@@ -118,7 +119,7 @@ class Cli_Model_StartTurn
         $handler->sendToChannel($game, $token);
 
         if ($player->getComputer()) {
-            new Cli_Model_Computer($user, $db, $handler);
+            new Cli_Model_Computer($user, $handler);
         }
     }
 }

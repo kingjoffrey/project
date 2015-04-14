@@ -16,6 +16,7 @@ class Cli_Model_TowerHandler
         $playerColor = $game->getPlayerColor($playerId);
         $player = $players->getPlayer($playerColor);
         $playerTeam = $player->getTeam();
+        $db = $handler->getDb();
 
         foreach ($current as $step) {
             for ($y = $step['y'] - 1; $y <= $step['y'] + 1; $y++) {

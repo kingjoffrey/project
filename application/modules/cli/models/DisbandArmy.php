@@ -12,17 +12,19 @@ class Cli_Model_DisbandArmy
 
         $color = $user->parameters['me']->getColor();
         $game = Cli_Model_Game::getGame($user);
-        if ($armies = $game->getPlayers()->getPlayer($color)->getArmies()) {
-            $armies->removeArmy($armyId, $game, $db);
-            $token = array(
-                'type' => 'disband',
-                'id' => $armyId,
-                'color' => $color
-            );
-            $handler->sendToChannel($game, $token);
-        } else {
+        if (!$armies = $game->getPlayers()->getPlayer($color)->getArmies()) {
             $handler->sendError($user, 'Nie mogę usunąć armii!');
         }
+
+        $db = $handler->getDb();
+        $armies->removeArmy($armyId, $game, $db);
+        $token = array(
+            'type' => 'disband',
+            'id' => $armyId,
+            'color' => $color
+        );
+        $handler->sendToChannel($game, $token);
+
     }
 
 }

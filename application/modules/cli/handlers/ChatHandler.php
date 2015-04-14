@@ -34,8 +34,12 @@ class Cli_ChatHandler extends WebSocketUriHandler
 
     public function onDisconnect(WebSocketTransportInterface $user)
     {
-        $db = Cli_Model_Database::getDb();
+        if (!isset($user->parameters['playerId'])) {
+            return;
+        }
 
+        $mWebSocket = new Application_Model_Websocket($user->parameters['playerId'], $this->_db);
+        $mWebSocket->disconnect($user->parameters['accessKey']);
     }
 
     /**

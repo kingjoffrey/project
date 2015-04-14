@@ -21,6 +21,7 @@ class Cli_Model_HeroResurrection
             return;
         }
 
+        $db = $handler->getDb();
         $mHeroesInGame = new Application_Model_HeroesInGame($gameId, $db);
         $hero = $mHeroesInGame->getDeadHero($playerId);
 

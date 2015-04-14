@@ -29,6 +29,7 @@ class Cli_Model_CastleRaze
         $castles = $player->getCastles();
         $defense = $castles->getCastle($castleId)->getDefenseModifier();
 
+        $db = $handler->getDb();
         $castles->razeCastle($castleId, $playerId, $game, $db);
         $player->addGold($defense * 200);
 

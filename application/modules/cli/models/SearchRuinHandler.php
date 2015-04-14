@@ -39,6 +39,6 @@ class Cli_Model_SearchRuinHandler
             return;
         }
 
-        $ruin->search($game, $army, $heroId, $playerId, $db, $handler);
+        $ruin->search($game, $army, $heroId, $playerId, $handler);
     }
 }

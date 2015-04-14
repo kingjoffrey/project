@@ -4,6 +4,7 @@ class Cli_Model_SaveResults
 {
     public function __construct(Cli_Model_Game $game, Cli_GameHandler $handler)
     {
+        $db = $handler->getDb();
         $mGame = new Application_Model_Game($game->getId(), $db);
         $mGame->endGame(); // koniec gry
 

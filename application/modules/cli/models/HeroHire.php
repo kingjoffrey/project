@@ -20,6 +20,7 @@ class Cli_Model_HeroHire
             return;
         }
 
+        $db = $handler->getDb();
         $mHero = new Application_Model_Hero($playerId, $db);
         $heroId = $mHero->createHero();
 

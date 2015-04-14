@@ -3,7 +3,7 @@
 class Cli_Model_InventoryAdd
 {
 
-    public function __construct($heroId, $artifactId, $user, $db, $handler)
+    public function __construct($heroId, $artifactId, $user, $handler)
     {
         if ($heroId == null) {
             $handler->sendError($user, 'Brak "heroId"!');

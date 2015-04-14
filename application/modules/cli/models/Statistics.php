@@ -6,6 +6,7 @@ class Cli_Model_Statistics
     {
         $game = Cli_Model_Game::getGame($user);
         $playersInGameColors = $game->getPlayersColors();
+        $db = $handler->getDb();
 
         $mCastlesConquered = new Application_Model_CastlesConquered($game->getId(), $db);
         $mCastlesDestroyed = new Application_Model_CastlesDestroyed($game->getId(), $db);

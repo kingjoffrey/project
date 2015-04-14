@@ -13,6 +13,7 @@ class Cli_Model_JoinArmy
         $color = $user->parameters['me']->getColor();
         $game = Cli_Model_Game::getGame($user);
         $armies = $game->getPlayers()->getPlayer($color)->getArmies();
+        $db = $handler->getDb();
         $joinIds = $armies->joinAtPosition($armyId, $game, $db);
 
         $token = array(

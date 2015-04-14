@@ -18,6 +18,7 @@ class Cli_Model_SplitArmy
         $armies = $game->getPlayers()->getPlayer($color)->getArmies();
         $army = $armies->getArmy($parentArmyId);
         $childArmyId = 0;
+        $db = $handler->getDb();
 
         if (isset($heroesIds[0]) && $heroesIds[0]) {
 

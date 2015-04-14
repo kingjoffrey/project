@@ -31,6 +31,7 @@ class Cli_Model_CastleBuildDefense
         }
 
         $gameId = $game->getId();
+        $db = $handler->getDb();
         $castle->increaseDefenceMod($playerId, $gameId, $db);
         $player->addGold(-$costs);
 

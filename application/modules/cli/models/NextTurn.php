@@ -7,9 +7,10 @@ class Cli_Model_NextTurn
     {
         $game = Cli_Model_Game::getGame($user);
         $players = $game->getPlayers();
+        $db = $handler->getDb();
 
         while (true) {
-            $nextPlayerId = $this->getExpectedNextTurnPlayer($game, $db, $handler);
+            $nextPlayerId = $this->getExpectedNextTurnPlayer($game, $handler);
             $nextPlayerColor = $game->getPlayerColor($nextPlayerId);
 
             $player = $players->getPlayer($nextPlayerColor);
@@ -19,7 +20,7 @@ class Cli_Model_NextTurn
                 $turnsLimit = $game->getTurnsLimit();
 
                 if ($turnsLimit && $turnNumber > $turnsLimit) {
-                    new Cli_Model_SaveResults($game, $db, $handler);
+                    new Cli_Model_SaveResults($game, $handler);
                     return;
                 }
 

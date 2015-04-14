@@ -111,6 +111,8 @@ class Cli_Model_Army
             return;
         }
 
+        $db = $handler->getDb();
+
         $players = $game->getPlayers();
         $player = $players->getPlayer($this->_color);
 

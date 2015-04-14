@@ -6,7 +6,7 @@ class Cli_Model_ComputerMove extends Cli_Model_ComputerMethods
 
     public function __construct(Cli_Model_Army $army, Devristo\Phpws\Protocol\WebSocketTransportInterface $user, Cli_GameHandler $handler)
     {
-        parent::__construct($army, $user, $db, $handler);
+        parent::__construct($army, $user, $handler);
         $this->_l = new Coret_Model_Logger();
         $this->_l->log('');
         $this->_l->log($this->_playerId, 'playerId: ');

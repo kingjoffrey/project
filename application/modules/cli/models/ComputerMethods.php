@@ -49,7 +49,7 @@ abstract class Cli_Model_ComputerMethods
         $this->_army = $army;
         $this->_user = $user;
         $this->_game = Cli_Model_Game::getGame($user);
-        $this->_db = $db;
+        $this->_db = $handler->getDb();
         $this->_gameHandler = $handler;
         $this->_playerId = $this->_game->getTurnPlayerId();
         $this->_players = $this->_game->getPlayers();

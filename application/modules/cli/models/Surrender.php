@@ -11,6 +11,7 @@ class Cli_Model_Surrender
         $player = $game->getPlayers()->getPlayer($color);
         $armies = $player->getArmies();
         $castles = $player->getCastles();
+        $db = $handler->getDb();
 
         foreach ($armies->getKeys() as $armyId) {
             $armies->removeArmy($armyId, $game, $db);

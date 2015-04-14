@@ -7,6 +7,7 @@ class Cli_Model_BattleSequenceHandler
         $game = Cli_Model_Game::getGame($user);
         $me = Cli_Model_Me::getMe($user);
         $player = $game->getPlayers()->getPlayer($me->getColor());
+        $db = $handler->getDb();
         $mBattleSequence = new Application_Model_BattleSequence($game->getId(), $db);
         $result = 0;
 

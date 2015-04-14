@@ -8,6 +8,7 @@ class Cli_Model_Garrison
     {
         $gameId = $game->getId();
         $fields = $game->getFields();
+        $db = $handler->getDb();
 
         for ($i = $x; $i <= $x + 1; $i++) {
             for ($j = $y; $j <= $y + 1; $j++) {

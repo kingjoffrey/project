@@ -38,6 +38,7 @@ class Cli_Model_Ruin extends Cli_Model_Entity
         $random = rand(0, 100);
         $gameId = $game->getId();
         $color = $game->getPlayerColor($playerId);
+        $db = $handler->getDb();
 
         if ($random < 10) { //10%
 //śmierć

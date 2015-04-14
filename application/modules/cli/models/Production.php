@@ -60,6 +60,7 @@ class Cli_Model_Production
         }
 
         try {
+            $db = $handler->getDb();
             $castle->setProductionId($unitId, $relocationToCastleId, $playerId, $gameId, $db);
         } catch (Exception $e) {
             $handler->sendError($user, 'Set castle production error!');
