@@ -38,10 +38,9 @@ var Websocket = new function () {
 
             var token = {
                 type: 'open',
-                playerId: my.id,
+                playerId: id,
                 langId: langId,
-                accessKey: websocket.accessKey,
-                websocketId: websocket.websocketId
+                accessKey: accessKey
             }
 
             ws.send(JSON.stringify(token));
@@ -49,7 +48,7 @@ var Websocket = new function () {
 
     this.init = function (handler) {
         handler = handler
-        var ws = new WebSocket(wsURL + '/' + handler)
+        ws = new WebSocket(wsURL + '/' + handler)
 
         ws.onopen = function () {
             closed = false

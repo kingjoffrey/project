@@ -2,14 +2,8 @@
 
 var debug = '<?php echo Zend_Registry::get('config')->debug ?>'
 
-var lang = '<?php echo Zend_Registry::get('lang') ?>'
-var langId = <?php echo Zend_Registry::get('id_lang') ?>
-
 var gameId = <?php echo $this->gameId ?>;
-var accessKey = '<?php echo $this->accessKey ?>';
-
-var id = <?php echo $this->playerId ?>;
-
+var lang = '<?php echo Zend_Registry::get('lang') ?>'
 var translations = <?php echo $this->translations() ?>;
 
 var timeLimits = <?php echo Zend_Json::encode(Application_Model_Limit::timeLimits()); ?>;
