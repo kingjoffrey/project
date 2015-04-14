@@ -84,10 +84,15 @@ class LoginController extends Coret_Controller_AuthenticateFrontend
     }
 
 
-    protected function afterAuthentication()
+    protected function writeAuthentication()
     {
-        $mWebSocket = new Application_Model_Websocket($this->_auth->getIdentity()->playerId);
-        $mWebSocket->init('chat', $mWebSocket->generateKey());
+        $identity = $this->_authAdapter->getResultRowObject($this->_identityArray);
+
+        $mWebSocket = new Application_Model_Websocket($identity->playerId);
+        $identity->accessKey = $mWebSocket->generateKey();
+        $mWebSocket->init('chat', $identity->accessKey);
+
+        $this->_auth->getStorage()->write($identity);
     }
 }
 

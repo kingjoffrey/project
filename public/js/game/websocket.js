@@ -1,11 +1,11 @@
-var WebSocketGame = new function () {
+var WebSocketGameGame = new function () {
     this.init = function () {
-        Websocket.execute = function (r) {
+        WebSocketGame.execute = function (r) {
             //console.log(r)
 
             switch (r.type) {
                 case 'move':
-                    Move.start(r, Websocket.getI())
+                    Move.start(r, WebSocketGame.getI())
                     break
 
                 case 'nextTurn':
@@ -14,10 +14,10 @@ var WebSocketGame = new function () {
                         this.computer()
                     }
                     if (Players.get(r.color).isComputer() && !Gui.getShow()) {
-                        Websocket.setExecuting(0)
+                        WebSocketGame.setExecuting(0)
                     } else {
                         Players.showFirst(r.color, function () {
-                            Websocket.setExecuting(0)
+                            WebSocketGame.setExecuting(0)
                         })
                     }
                     break;
@@ -27,7 +27,7 @@ var WebSocketGame = new function () {
                     for (var armyId in r.armies) {
                         armies.handle(r.armies[armyId])
                     }
-                    Websocket.setExecuting(0)
+                    WebSocketGame.setExecuting(0)
                     break;
 
                 case 'startTurn':
@@ -35,17 +35,17 @@ var WebSocketGame = new function () {
                     for (var armyId in r.armies) {
                         armies.handle(r.armies[armyId])
                     }
-                    Websocket.setExecuting(0)
+                    WebSocketGame.setExecuting(0)
                     break;
 
                 case 'ruin':
                     if (Players.get(r.color).isComputer() && !Gui.getShow()) {
                         Ruins.handle(r)
-                        Websocket.setExecuting(0)
+                        WebSocketGame.setExecuting(0)
                     } else {
                         Zoom.lens.setcenter(r.army.x, r.army.y, function () {
                             Ruins.handle(r)
-                            Websocket.setExecuting(0)
+                            WebSocketGame.setExecuting(0)
                         })
                     }
                     break;
@@ -58,20 +58,20 @@ var WebSocketGame = new function () {
                         Message.remove()
                         Me.setParentArmyId(r.parentArmy.id)
                         Me.selectArmy(r.childArmy.id)
-                        Websocket.setExecuting(0)
+                        WebSocketGame.setExecuting(0)
                     } else if (Players.get(r.color).isComputer() && !Gui.getShow()) {
                         //zoomer.setCenterIfOutOfScreen(r.parentArmy.x * 40, r.parentArmy.y * 40);
                         var armies = Players.get(r.color).getArmies()
                         armies.handle(r.parentArmy)
                         armies.handle(r.childArmy)
-                        Websocket.setExecuting(0)
+                        WebSocketGame.setExecuting(0)
 
                     } else {
                         Zoom.lens.setcenter(r.parentArmy.x, r.parentArmy.y, function () {
                             var armies = Players.get(r.color).getArmies()
                             armies.handle(r.parentArmy)
                             armies.handle(r.childArmy)
-                            Websocket.setExecuting(0)
+                            WebSocketGame.setExecuting(0)
                         })
                     }
                     break;
@@ -87,7 +87,7 @@ var WebSocketGame = new function () {
                             armies.delete(r.deletedIds[i])
                         }
                         armies.handle(r.army)
-                        Websocket.setExecuting(0)
+                        WebSocketGame.setExecuting(0)
                     } else {
                         Zoom.lens.setcenter(r.army.x, r.army.y, function () {
                             var armies = Players.get(r.color).getArmies()
@@ -95,7 +95,7 @@ var WebSocketGame = new function () {
                                 armies.delete(r.deletedIds[i])
                             }
                             armies.handle(r.army)
-                            Websocket.setExecuting(0)
+                            WebSocketGame.setExecuting(0)
                         })
                     }
                     break;
@@ -121,14 +121,14 @@ var WebSocketGame = new function () {
                     if (Turn.isMy()) {
                         Me.handleHeroButtons()
                     }
-                    Websocket.setExecuting(0)
+                    WebSocketGame.setExecuting(0)
                     break;
 
                 case 'resurrection':
                     Sound.play('resurrection');
                     if (Players.get(Turn.getColor()).isComputer() && !Gui.getShow()) {
                         Players.get(r.color).getArmies().handle(r.army)
-                        Websocket.setExecuting(0)
+                        WebSocketGame.setExecuting(0)
                     } else {
                         Zoom.lens.setcenter(r.army.x, r.army.y, function () {
                             Players.get(r.color).getArmies().handle(r.army)
@@ -137,7 +137,7 @@ var WebSocketGame = new function () {
                                 Me.setGold(r.gold)
                                 Me.handleHeroButtons()
                             }
-                            Websocket.setExecuting(0)
+                            WebSocketGame.setExecuting(0)
                         })
                     }
                     break
@@ -152,7 +152,7 @@ var WebSocketGame = new function () {
                     } else {
                         Sound.play('raze');
                     }
-                    Websocket.setExecuting(0)
+                    WebSocketGame.setExecuting(0)
                     break;
 
                 case 'defense':
@@ -161,7 +161,7 @@ var WebSocketGame = new function () {
                         Message.remove()
                         Me.setGold(r.gold)
                     }
-                    Websocket.setExecuting(0)
+                    WebSocketGame.setExecuting(0)
                     break;
 
                 case 'surrender':
@@ -177,7 +177,7 @@ var WebSocketGame = new function () {
                     if (Turn.getColor() == r.color) {
                         this.nextTurn()
                     }
-                    Websocket.setExecuting(0)
+                    WebSocketGame.setExecuting(0)
                     break;
 
                 case 'end':
@@ -194,13 +194,13 @@ var WebSocketGame = new function () {
                     if (!Players.hasSkull(r.color)) {
                         Players.drawSkull(r.color)
                     }
-                    Websocket.setExecuting(0)
+                    WebSocketGame.setExecuting(0)
                     break;
             }
         }
 
-        Websocket.open = function () {
-            if (Websocket.isClosed()) {
+        WebSocketGame.open = function () {
+            if (WebSocketGame.isClosed()) {
                 Message.error(translations.sorryServerIsDisconnected)
                 return;
             }
@@ -216,12 +216,12 @@ var WebSocketGame = new function () {
             ws.send(JSON.stringify(token))
         }
 
-        Websocket.message = function (r) {
+        WebSocketGame.message = function (r) {
             console.log(r)
 
             switch (r.type) {
                 case 'move':
-                    Websocket.addQueue(r)
+                    WebSocketGame.addQueue(r)
                     break;
 
                 case 'tower':
@@ -257,55 +257,55 @@ var WebSocketGame = new function () {
                     break
 
                 case 'nextTurn':
-                    Websocket.addQueue(r)
+                    WebSocketGame.addQueue(r)
                     break;
 
                 case 'neutral':
-                    Websocket.addQueue(r)
+                    WebSocketGame.addQueue(r)
                     break;
 
                 case 'startTurn':
-                    Websocket.addQueue(r)
+                    WebSocketGame.addQueue(r)
                     break;
 
                 case 'ruin':
-                    Websocket.addQueue(r)
+                    WebSocketGame.addQueue(r)
                     break;
 
                 case 'split':
-                    Websocket.addQueue(r)
+                    WebSocketGame.addQueue(r)
                     break;
 
                 case 'join':
-                    Websocket.addQueue(r)
+                    WebSocketGame.addQueue(r)
                     break;
 
                 case 'disband':
-                    Websocket.addQueue(r)
+                    WebSocketGame.addQueue(r)
                     break;
 
                 case 'resurrection':
-                    Websocket.addQueue(r)
+                    WebSocketGame.addQueue(r)
                     break;
 
                 case 'raze':
-                    Websocket.addQueue(r)
+                    WebSocketGame.addQueue(r)
                     break;
 
                 case 'defense':
-                    Websocket.addQueue(r)
+                    WebSocketGame.addQueue(r)
                     break;
 
                 case 'surrender':
-                    Websocket.addQueue(r)
+                    WebSocketGame.addQueue(r)
                     break;
 
                 case 'end':
-                    Websocket.addQueue(r)
+                    WebSocketGame.addQueue(r)
                     break;
 
                 case 'dead':
-                    Websocket.addQueue(r)
+                    WebSocketGame.addQueue(r)
                     break;
 
                 case 'error':
@@ -367,12 +367,12 @@ var WebSocketGame = new function () {
             }
         }
 
-        Websocket.close = function () {
-            setTimeout('WebSocketGame.init()', 1000)
+        WebSocketGame.close = function () {
+            setTimeout('WebSocketGameGame.init()', 1000)
         }
 
-        Websocket.chat = function () {
-            if (Websocket.isClosed()) {
+        WebSocketGame.chat = function () {
+            if (WebSocketGame.isClosed()) {
                 Message.error(translations.sorryServerIsDisconnected)
                 return;
             }
@@ -391,12 +391,12 @@ var WebSocketGame = new function () {
             }
         }
 
-        Websocket.init('game')
+        WebSocketGame.init('game')
     }
 
 
     this.ruin = function () {
-        if (Websocket.isClosed()) {
+        if (WebSocketGame.isClosed()) {
             Message.error(translations.sorryServerIsDisconnected)
             return;
         }
@@ -419,7 +419,7 @@ var WebSocketGame = new function () {
     }
 
     this.fortify = function () {
-        if (Websocket.isClosed()) {
+        if (WebSocketGame.isClosed()) {
             Message.error(translations.sorryServerIsDisconnected)
             return;
         }
@@ -451,7 +451,7 @@ var WebSocketGame = new function () {
     }
 
     this.unfortify = function (armyId) {
-        if (Websocket.isClosed()) {
+        if (WebSocketGame.isClosed()) {
             Message.error(translations.sorryServerIsDisconnected)
             return;
         }
@@ -473,7 +473,7 @@ var WebSocketGame = new function () {
     }
 
     this.join = function (armyId) {
-        if (Websocket.isClosed()) {
+        if (WebSocketGame.isClosed()) {
             Message.error(translations.sorryServerIsDisconnected)
             return;
         }
@@ -492,7 +492,7 @@ var WebSocketGame = new function () {
     }
 
     this.disband = function () {
-        if (Websocket.isClosed()) {
+        if (WebSocketGame.isClosed()) {
             Message.error(translations.sorryServerIsDisconnected)
             return;
         }
@@ -514,7 +514,7 @@ var WebSocketGame = new function () {
     }
 
     this.move = function () {
-        if (Websocket.isClosed()) {
+        if (WebSocketGame.isClosed()) {
             Message.error(translations.sorryServerIsDisconnected)
             return;
         }
@@ -540,7 +540,7 @@ var WebSocketGame = new function () {
     }
 
     this.split = function () {
-        if (Websocket.isClosed()) {
+        if (WebSocketGame.isClosed()) {
             Message.error(translations.sorryServerIsDisconnected)
             return;
         }
@@ -581,7 +581,7 @@ var WebSocketGame = new function () {
     }
 
     this.resurrection = function () {
-        if (Websocket.isClosed()) {
+        if (WebSocketGame.isClosed()) {
             Message.error(translations.sorryServerIsDisconnected)
             return;
         }
@@ -604,7 +604,7 @@ var WebSocketGame = new function () {
     }
 
     this.hire = function () {
-        if (Websocket.isClosed()) {
+        if (WebSocketGame.isClosed()) {
             Message.error(translations.sorryServerIsDisconnected)
             return;
         }
@@ -623,7 +623,7 @@ var WebSocketGame = new function () {
     }
 
     this.raze = function () {
-        if (Websocket.isClosed()) {
+        if (WebSocketGame.isClosed()) {
             Message.error(translations.sorryServerIsDisconnected)
             return;
         }
@@ -645,7 +645,7 @@ var WebSocketGame = new function () {
     }
 
     this.defense = function () {
-        if (Websocket.isClosed()) {
+        if (WebSocketGame.isClosed()) {
             Message.error(translations.sorryServerIsDisconnected)
             return;
         }
@@ -667,7 +667,7 @@ var WebSocketGame = new function () {
     }
 
     this.startMyTurn = function () {
-        if (Websocket.isClosed()) {
+        if (WebSocketGame.isClosed()) {
             Message.error(translations.sorryServerIsDisconnected)
             return;
         }
@@ -680,7 +680,7 @@ var WebSocketGame = new function () {
     }
 
     this.nextTurn = function () {
-        if (Websocket.isClosed()) {
+        if (WebSocketGame.isClosed()) {
             Message.error(translations.sorryServerIsDisconnected)
             return;
         }
@@ -693,7 +693,7 @@ var WebSocketGame = new function () {
     }
 
     this.statistics = function () {
-        if (Websocket.isClosed()) {
+        if (WebSocketGame.isClosed()) {
             Message.error(translations.sorryServerIsDisconnected)
             return;
         }
@@ -706,15 +706,15 @@ var WebSocketGame = new function () {
     }
 
     this.battleAttack = function () {
-        Websocket.battleConfiguration(1)
+        WebSocketGame.battleConfiguration(1)
     }
 
     this.battleDefence = function () {
-        Websocket.battleConfiguration(0)
+        WebSocketGame.battleConfiguration(0)
     }
 
     this.battleConfiguration = function (attack) {
-        if (Websocket.isClosed()) {
+        if (WebSocketGame.isClosed()) {
             Message.error(translations.sorryServerIsDisconnected)
             return;
         }
@@ -737,7 +737,7 @@ var WebSocketGame = new function () {
     }
 
     this.computer = function () {
-        if (Websocket.isClosed()) {
+        if (WebSocketGame.isClosed()) {
             Message.error(translations.sorryServerIsDisconnected)
             return;
         }
@@ -750,7 +750,7 @@ var WebSocketGame = new function () {
     }
 
     this.production = function (castleId, unitId, relocationToCastleId) {
-        if (Websocket.isClosed()) {
+        if (WebSocketGame.isClosed()) {
             Message.error(translations.sorryServerIsDisconnected)
             return;
         }
@@ -771,7 +771,7 @@ var WebSocketGame = new function () {
     }
 
     this.surrender = function () {
-        if (Websocket.isClosed()) {
+        if (WebSocketGame.isClosed()) {
             Message.error(translations.sorryServerIsDisconnected)
             return;
         }

@@ -31,7 +31,7 @@ var Game = new function () {
         if (Turn.isMy()) {
             Me.turnOn()
             if (!Me.getTurnActive()) {
-                WebSocketGame.startMyTurn()
+                WebSocketGameGame.startMyTurn()
             }
         } else {
             Me.turnOff()
@@ -64,5 +64,5 @@ var Game = new function () {
 }
 
 $(document).ready(function () {
-    WebSocketGame.init()
+WebSocketGamecketGame.init()
 })

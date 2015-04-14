@@ -34,16 +34,13 @@ abstract class Coret_Controller_Authenticate extends Zend_Controller_Action
 
     protected function handleAuthenticated()
     {
-        $identity = $this->_authAdapter->getResultRowObject($this->_identityArray);
-        $this->_auth->getStorage()->write($identity);
-
         if ($this->_request->getParam('rememberMe')) {
             Zend_Session::rememberMe(Zend_Registry::get('config')->rememberMeTime);
         } else {
             Zend_Session::forgetMe();
         }
 
-        $this->afterAuthentication();
+        $this->writeAuthentication();
         $this->redirectAuthenticated();
     }
 
@@ -62,9 +59,9 @@ abstract class Coret_Controller_Authenticate extends Zend_Controller_Action
         $this->redirect($this->view->url(array('action' => null)));
     }
 
-    protected function afterAuthentication()
+    protected function writeAuthentication()
     {
-
+        $this->_auth->getStorage()->write($this->_authAdapter->getResultRowObject($this->_identityArray));
     }
 }
 

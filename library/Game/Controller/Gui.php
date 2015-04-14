@@ -9,7 +9,8 @@ abstract class Game_Controller_Gui extends Coret_Controller_Authorized
     {
         parent::init();
 
-        $this->_playerId = $this->_auth->getIdentity()->playerId;
+        $identity=$this->_auth->getIdentity();
+        $this->_playerId = $identity->playerId;
 
         $this->view->headLink()->prependStylesheet($this->view->baseUrl() . '/css/main.css?v=' . Zend_Registry::get('config')->version);
 
@@ -19,7 +20,8 @@ abstract class Game_Controller_Gui extends Coret_Controller_Authorized
         $this->view->MainMenu();
         $this->view->googleAnalytics();
         $this->view->Version();
-        $this->view->Websocket($this->_playerId, 'xxx');
+
+        $this->view->Websocket($this->_playerId, $identity->accessKey);
     }
 
 }
