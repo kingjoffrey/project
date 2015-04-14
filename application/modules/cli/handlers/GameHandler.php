@@ -84,7 +84,7 @@ class Cli_GameHandler extends WebSocketUriHandler
 
         if ($timeLimit = $game->getTimeLimit()) {
             if (time() - $game->getBegin() > $timeLimit * 600) {
-                new Cli_Model_SaveResults($game, $db, $this);
+                new Cli_Model_SaveResults($game, $this);
                 return;
             }
         }
@@ -94,7 +94,7 @@ class Cli_GameHandler extends WebSocketUriHandler
             $turn = $mTurn->getCurrentStatus();
             if (time() - strtotime($turn['date']) > $turnTimeLimit * 60) {
                 $mGame = new Application_Model_Game($gameId, $db);
-                $mTurn = new Cli_Model_Turn($user, $db, $this);
+                $mTurn = new Cli_Model_Turn($user, $this);
                 $mTurn->next($mGame->getTurnPlayerId());
                 return;
             }
@@ -105,22 +105,22 @@ class Cli_GameHandler extends WebSocketUriHandler
         }
 
         if ($dataIn['type'] == 'computer') {
-            new Cli_Model_Computer($user, $db, $this);
+            new Cli_Model_Computer($user, $this);
             return;
         }
 
         if ($dataIn['type'] == 'bSequence') {
-            new Cli_Model_BattleSequenceHandler($dataIn, $user, $db, $this);
+            new Cli_Model_BattleSequenceHandler($dataIn, $user, $this);
             return;
         }
 
         if ($dataIn['type'] == 'production') {
-            new Cli_Model_Production($dataIn, $user, $db, $this);
+            new Cli_Model_Production($dataIn, $user, $this);
             return;
         }
 
         if ($dataIn['type'] == 'statistics') {
-            new Cli_Model_Statistics($user, $db, $this);
+            new Cli_Model_Statistics($user, $this);
             return;
         }
 
@@ -135,51 +135,51 @@ class Cli_GameHandler extends WebSocketUriHandler
 
         switch ($dataIn['type']) {
             case 'move':
-                new Cli_Model_Move($dataIn, $user, $db, $this);
+                new Cli_Model_Move($dataIn, $user, $this);
                 break;
 
             case 'split':
-                new Cli_Model_SplitArmy($dataIn['armyId'], $dataIn['s'], $dataIn['h'], $playerId, $user, $db, $this);
+                new Cli_Model_SplitArmy($dataIn['armyId'], $dataIn['s'], $dataIn['h'], $playerId, $user, $this);
                 break;
 
             case 'join':
-                new Cli_Model_JoinArmy($dataIn['armyId'], $user, $db, $this);
+                new Cli_Model_JoinArmy($dataIn['armyId'], $user, $this);
                 break;
 
             case 'fortify':
-                new Cli_Model_Fortify($dataIn['armyId'], $dataIn['fortify'], $user, $db, $this);
+                new Cli_Model_Fortify($dataIn['armyId'], $dataIn['fortify'], $user, $this);
                 break;
 
             case 'disband':
-                new Cli_Model_DisbandArmy($dataIn['armyId'], $user, $db, $this);
+                new Cli_Model_DisbandArmy($dataIn['armyId'], $user, $this);
                 break;
 
             case 'resurrection':
-                new Cli_Model_HeroResurrection($user, $db, $this);
+                new Cli_Model_HeroResurrection($user, $this);
                 break;
 
             case 'hire':
-                new Cli_Model_HeroHire($user, $db, $this);
+                new Cli_Model_HeroHire($user, $this);
                 break;
 
             case 'ruin':
-                new Cli_Model_SearchRuinHandler($dataIn['armyId'], $user, $db, $this);
+                new Cli_Model_SearchRuinHandler($dataIn['armyId'], $user, $this);
                 break;
 
             case 'nextTurn':
-                new Cli_Model_NextTurn($user, $db, $this);
+                new Cli_Model_NextTurn($user, $this);
                 break;
 
             case 'startTurn':
-                new Cli_Model_StartTurn($playerId, $user, $db, $this);
+                new Cli_Model_StartTurn($playerId, $user, $this);
                 break;
 
             case 'raze':
-                new Cli_Model_CastleRaze($dataIn['armyId'], $user, $db, $this);
+                new Cli_Model_CastleRaze($dataIn['armyId'], $user, $this);
                 break;
 
             case 'defense':
-                new Cli_Model_CastleBuildDefense($dataIn['castleId'], $user, $db, $this);
+                new Cli_Model_CastleBuildDefense($dataIn['castleId'], $user, $this);
                 break;
 
             case 'inventoryDel':
@@ -187,7 +187,7 @@ class Cli_GameHandler extends WebSocketUriHandler
                 break;
 
             case 'surrender':
-                new Cli_Model_Surrender($user, $db, $this);
+                new Cli_Model_Surrender($user, $this);
                 break;
         }
     }

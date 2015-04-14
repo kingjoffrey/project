@@ -127,7 +127,7 @@ class Cli_Model_Army
             if ($battleResult->getVictory()) {
                 $this->updateArmyPosition($game, $path, $db);
                 if ($battleResult->getCastleId() && $game->playerHasMoreThanFiftyPercentOfCastles($this->_color)) {
-                    new Cli_Model_SaveResults($game, $db, $handler);
+                    new Cli_Model_SaveResults($game, $handler);
                 }
             } else {
                 $game->getFields()->getField($this->_x, $this->_y)->removeArmy($this->_id);
@@ -137,7 +137,7 @@ class Cli_Model_Army
             $joinIds = $player->getArmies()->joinAtPosition($this->_id, $game, $db);
         }
 
-        new Cli_Model_TowerHandler($player->getId(), $path, $game, $db, $handler);
+        new Cli_Model_TowerHandler($player->getId(), $path, $game, $handler);
 
         $token = array(
             'color' => $this->_color,
