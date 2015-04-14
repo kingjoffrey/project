@@ -127,7 +127,7 @@ var Message = new function () {
         )
     }
     this.simple = function (title, message) {
-        var id = this.show(title, $('<div>').html(message).addClass('simple'));
+        var id = this.show(title, $('<div>').html(message).addClass('simple'))
         this.close(id)
         return id
     }

@@ -417,6 +417,22 @@
     margin: 5px 6px;
 }
 
+.message div.row {
+    padding: 3px;
+    border: 1px solid #222;
+    border-radius: 3px;
+}
+
+.message div.row div.nr {
+    position: relative;
+    top: 2px;
+    left: 2px;
+    width: 20px;
+    height: 15px;
+    float: left;
+    display: inline-block;
+}
+
 .message .split {
     overflow: hidden;
     overflow-y: auto;
@@ -430,9 +446,6 @@
 .message .split div.row {
     clear: both;
     height: 31px;
-    padding: 3px;
-    border: 1px solid #222;
-    border-radius: 3px;
 }
 
 .message .split div.row:hover {
@@ -452,20 +465,7 @@
     top: 9px;
 }
 
-.message .split div.row div.nr {
-    position: relative;
-    top: 2px;
-    left: 2px;
-    width: 20px;
-    height: 15px;
-    float: left;
-    display: block;
-}
-
 .message .split div.row span {
-    /*position: relative;*/
-    /*top: 17px;*/
-    /*left: 0px;*/
     line-height: 30px;
 }
 
@@ -482,19 +482,9 @@
     left: 0px;
 }
 
-.message .status {
-    overflow: hidden;
-    overflow-y: scroll;
-}
-
 .message .status div.row {
     clear: both;
-    height: 75px;
     width: 530px;
-    margin: 1px;
-    padding: 3px;
-    border: 1px solid grey;
-    border-radius: 3px;
 }
 
 .message .status div.rowContent {
@@ -534,24 +524,10 @@
 
 .message .status .value div {
     float: left;
-    /*width: 20px;*/
 }
 
 .message .status .plus {
     color: lime;
-}
-
-.message .status div.row div.nr {
-    position: absolute;
-    top: 4px;
-    left: 4px;
-    width: 20px;
-    height: 20px;
-    border-radius: 10px;
-    line-height: 22px;
-    background: #fff;
-    color: #000;
-    text-shadow: none;
 }
 
 .message .status div.row div.img {

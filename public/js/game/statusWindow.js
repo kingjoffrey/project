@@ -172,6 +172,7 @@ var StatusWindow = new function () {
             );
         }
 
-        Message.simple(translations.armyStatus, div);
+        var id = Message.simple(translations.armyStatus, div)
+        Message.setOverflowHeight(id)
     }
 }
