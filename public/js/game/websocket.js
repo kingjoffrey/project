@@ -1,7 +1,7 @@
 var WebSocketGame = new function () {
     this.init = function () {
         Websocket.execute = function (r) {
-            console.log(r)
+            //console.log(r)
 
             switch (r.type) {
                 case 'move':
@@ -188,7 +188,6 @@ var WebSocketGame = new function () {
                         var id = Message.show(translations.gameOver, $('<div>').append($('<div>').html(translations.thisIsTheEnd)))
                         Message.ok(id, Gui.end)
                     }
-                    //Websocket.setExecuting(0)
                     break;
 
                 case 'dead':

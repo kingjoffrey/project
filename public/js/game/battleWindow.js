@@ -305,7 +305,7 @@ var BattleWindow = new function () {
             .append(configuration('attack'))
 
         var id = Message.show(translations.battleConfiguration, div)
-        Message.ok(id, Websocket.battleAttack)
+        Message.ok(id, WebSocketGame.battleAttack)
         Message.cancel(id)
 
         $("#sortable").sortable()
@@ -319,7 +319,7 @@ var BattleWindow = new function () {
             .append(configuration('defense'))
 
         var id = Message.show(translations.battleConfiguration, div)
-        Message.ok(id, Websocket.battleDefence)
+        Message.ok(id, WebSocketGame.battleDefence)
         Message.cancel(id)
 
         $("#sortable").sortable()

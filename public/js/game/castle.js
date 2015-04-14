@@ -92,7 +92,7 @@ var Castle = function (castle, bgC, miniMapColor, textColor) {
         }
 
         if (unitId) {
-            Websocket.production(castle.id, unitId)
+            WebSocketGame.production(castle.id, unitId)
             return
         }
     }

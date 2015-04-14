@@ -5,7 +5,7 @@ var Move = new function () {
 
     this.start = function (r, ii) {
         if (notSet(r.path)) {
-            Websocket.setExecuting(0)
+            WebSocket.setExecuting(0)
             if (Me.colorEquals(r.color)) {
                 Gui.unlock()
                 Message.simple(translations.army, translations.noMoreMoves)

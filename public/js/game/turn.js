@@ -60,7 +60,7 @@ var Turn = new function () {
 
         if (Turn.isMy()) {
             Me.turnOn()
-            Websocket.startMyTurn();
+            WebSocketGame.startMyTurn();
             return
         } else {
             Me.turnOff()
@@ -74,7 +74,7 @@ var Turn = new function () {
     }
     this.next = function () {
         var id = Message.show(translations.nextTurn, $('<div>').html(translations.areYouSure))
-        Message.ok(id, Websocket.nextTurn);
+        Message.ok(id, WebSocketGame.nextTurn);
         Message.cancel(id)
     }
 }

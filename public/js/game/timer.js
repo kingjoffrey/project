@@ -46,7 +46,7 @@ var Timer = new function () {
                 seconds = date.getSeconds()
 
             if (turnTimeL && hours * 60 + minutes >= turnTimeL) {
-                Websocket.nextTurn()
+                WebSocketGame.nextTurn()
             }
 
             if (seconds < 10) {

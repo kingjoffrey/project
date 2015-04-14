@@ -60,7 +60,7 @@ var Picker = new function () {
         switch (button) {
             case 0:
                 if (Me.getSelectedArmyId()) {
-                    Websocket.move()
+                    WebSocketGame.move()
                 } else {
                     var field = getField()
                     if (field.hasArmies()) {
@@ -74,7 +74,7 @@ var Picker = new function () {
                         var castleId = field.getCastleId()
                         if (Me.getSelectedCastleId()) {
                             if (Me.getSelectedCastleId() != castleId) {
-                                Websocket.production(Me.getSelectedCastleId(), Me.getSelectedUnitId(), castleId)
+                                WebSocketGame.production(Me.getSelectedCastleId(), Me.getSelectedUnitId(), castleId)
                             }
                             Me.setSelectedCastleId(null)
                             Me.setSelectedUnitId(null)

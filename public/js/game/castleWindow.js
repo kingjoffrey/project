@@ -293,7 +293,7 @@ var CastleWindow = new function () {
             return;
         }
         var id = Message.show(translations.destroyCastle, $('<div>').html(translations.areYouSure))
-        Message.ok(id, Websocket.raze);
+        Message.ok(id, WebSocketGame.raze);
         Message.cancel(id)
     }
     this.build = function () {
@@ -322,7 +322,7 @@ var CastleWindow = new function () {
                 .append($('<div>').html(translations.newDefense + ': ' + newDefense))
                 .append($('<div>').html(translations.cost + ': ' + costBuildDefense + ' ' + translations.gold))
             var id = Message.show(translations.buildCastleDefense, div);
-            Message.ok(id, Websocket.defense);
+            Message.ok(id, WebSocketGame.defense);
         }
         Message.cancel(id)
     }
