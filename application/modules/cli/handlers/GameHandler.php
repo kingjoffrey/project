@@ -49,7 +49,7 @@ class Cli_GameHandler extends WebSocketUriHandler
         $db = Cli_Model_Database::getDb();
 
         if ($dataIn['type'] == 'open') {
-            new Cli_Model_Open($dataIn, $user, $db, $this);
+            new Cli_Model_GameOpen($dataIn, $user, $db, $this);
             $game = Cli_Model_Game::getGame($user);
             if ($game->isActive() && $game->getPlayers()->getPlayer($game->getPlayerColor($game->getTurnPlayerId()))->getComputer()) {
                 new Cli_Model_Computer($user, $db, $this);

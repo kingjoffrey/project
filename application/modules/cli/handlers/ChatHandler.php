@@ -9,30 +9,13 @@ class Cli_ChatHandler extends WebSocketUriHandler
         $db = Cli_Model_Database::getDb();
 
         if ($dataIn['type'] == 'open') {
+            new Cli_Model_ChatOpen($dataIn, $user, $db, $this);
             return;
         }
     }
 
     public function onDisconnect(WebSocketTransportInterface $user)
     {
-    }
-
-    /**
-     * @param Cli_Model_Game $game
-     * @param $token
-     * @param null $debug
-     * @throws Zend_Exception
-     */
-    public function sendToChannel(Cli_Model_Game $game, $token, $debug = null)
-    {
-        if ($debug || Zend_Registry::get('config')->debug) {
-            print_r('ODPOWIEDŹ ');
-            print_r($token);
-        }
-
-        foreach ($game->getUsers() as $user) {
-            $this->sendToUser($user, $token);
-        }
     }
 
     /**

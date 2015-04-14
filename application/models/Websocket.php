@@ -59,6 +59,16 @@ class Application_Model_Websocket extends Coret_Db_Table_Abstract
         $this->insert($data);
     }
 
+    public function checkAccessKey($accessKey)
+    {
+        $select = $this->_db->select()
+            ->from($this->_name, 'playerId')
+            ->where($this->_db->quoteIdentifier('playerId') . ' = ?', $this->_playerId)
+            ->where($this->_db->quoteIdentifier('accessKey') . ' = ?', $accessKey);
+
+        return $this->selectOne($select);
+    }
+
     public function disconnect($websocketId)
     {
         $data = array(

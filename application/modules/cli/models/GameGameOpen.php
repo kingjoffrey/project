@@ -1,6 +1,6 @@
 <?php
 
-class Cli_Model_Open
+class Cli_Model_GameOpen
 {
     /**
      * @param $dataIn
