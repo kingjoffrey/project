@@ -2,10 +2,10 @@
 
 class Cli_Model_CastleBuildDefense
 {
-    public function __construct($castleId, Devristo\Phpws\Protocol\WebSocketTransportInterface $user, Zend_Db_Adapter_Pdo_Pgsql $db, Cli_GameHandler $gameHandler)
+    public function __construct($castleId, Devristo\Phpws\Protocol\WebSocketTransportInterface $user, Cli_GameHandler $handler)
     {
         if ($castleId == null) {
-            $gameHandler->sendError($user, 'Brak "castleId"!');
+            $handler->sendError($user, 'Brak "castleId"!');
             return;
         }
 
@@ -17,7 +17,7 @@ class Cli_Model_CastleBuildDefense
         $castle = $player->getCastles()->getCastle($castleId);
 
         if (!$castle) {
-            $gameHandler->sendError($user, 'To nie jest Twój zamek.');
+            $handler->sendError($user, 'To nie jest Twój zamek.');
             return;
         }
 
@@ -26,7 +26,7 @@ class Cli_Model_CastleBuildDefense
             $costs += $i * 100;
         }
         if ($player->getGold() < $costs) {
-            $gameHandler->sendError($user, 'Za mało złota!');
+            $handler->sendError($user, 'Za mało złota!');
             return;
         }
 
@@ -42,6 +42,6 @@ class Cli_Model_CastleBuildDefense
             'castleId' => $castleId
         );
 
-        $gameHandler->sendToChannel($game, $token);
+        $handler->sendToChannel($game, $token);
     }
 }

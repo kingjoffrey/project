@@ -3,10 +3,10 @@
 class Cli_Model_DisbandArmy
 {
 
-    public function __construct($armyId, Devristo\Phpws\Protocol\WebSocketTransportInterface $user, Zend_Db_Adapter_Pdo_Pgsql $db, Cli_GameHandler $gameHandler)
+    public function __construct($armyId, Devristo\Phpws\Protocol\WebSocketTransportInterface $user, Cli_GameHandler $handler)
     {
         if (empty($armyId)) {
-            $gameHandler->sendError($user, 'Brak "armyId"!');
+            $handler->sendError($user, 'Brak "armyId"!');
             return;
         }
 
@@ -19,9 +19,9 @@ class Cli_Model_DisbandArmy
                 'id' => $armyId,
                 'color' => $color
             );
-            $gameHandler->sendToChannel($game, $token);
+            $handler->sendToChannel($game, $token);
         } else {
-            $gameHandler->sendError($user, 'Nie mogę usunąć armii!');
+            $handler->sendError($user, 'Nie mogę usunąć armii!');
         }
     }
 

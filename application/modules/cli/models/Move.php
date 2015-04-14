@@ -3,20 +3,20 @@
 class Cli_Model_Move
 {
 
-    public function __construct($dataIn, Devristo\Phpws\Protocol\WebSocketTransportInterface $user, Zend_Db_Adapter_Pdo_Pgsql $db, Cli_GameHandler $gameHandler)
+    public function __construct($dataIn, Devristo\Phpws\Protocol\WebSocketTransportInterface $user, Cli_GameHandler $handler)
     {
         if (!isset($dataIn['armyId'])) {
-            $gameHandler->sendError($user, 'No "armyId"!');
+            $handler->sendError($user, 'No "armyId"!');
             return;
         }
 
         if (!isset($dataIn['x'])) {
-            $gameHandler->sendError($user, 'No "x"!');
+            $handler->sendError($user, 'No "x"!');
             return;
         }
 
         if (!isset($dataIn['y'])) {
-            $gameHandler->sendError($user, 'No "y"!');
+            $handler->sendError($user, 'No "y"!');
             return;
         }
 
@@ -28,7 +28,7 @@ class Cli_Model_Move
         $game = Cli_Model_Game::getGame($user);
 
         if (!Zend_Validate::is($attackerArmyId, 'Digits') || !Zend_Validate::is($x, 'Digits') || !Zend_Validate::is($y, 'Digits')) {
-            $gameHandler->sendError($user, 'Niepoprawny format danych!');
+            $handler->sendError($user, 'Niepoprawny format danych!');
             return;
         }
 
@@ -38,7 +38,7 @@ class Cli_Model_Move
         $army = $player->getArmies()->getArmy($attackerArmyId);
 
         if (empty($army)) {
-            $gameHandler->sendError($user, 'Brak armii o podanym ID! Odświerz przeglądarkę.');
+            $handler->sendError($user, 'Brak armii o podanym ID! Odświerz przeglądarkę.');
             return;
         }
 
@@ -53,8 +53,8 @@ class Cli_Model_Move
                 if ($otherArmyId) {
                     $otherArmy = $player->getArmies()->getArmy($otherArmyId);
                     if (!$otherArmy->canSwim() && !$otherArmy->canFly()) {
-                        new Cli_Model_JoinArmy($otherArmyId, $user, $db, $gameHandler);
-                        $gameHandler->sendError($user, 'Nie możesz zostawić armii na wodzie.');
+                        new Cli_Model_JoinArmy($otherArmyId, $user, $db, $handler);
+                        $handler->sendError($user, 'Nie możesz zostawić armii na wodzie.');
                         return;
                     }
                 }
@@ -64,8 +64,8 @@ class Cli_Model_Move
                 if ($otherArmyId) {
                     $otherArmy = $player->getArmies()->getArmy($otherArmyId);
                     if (!$otherArmy->canFly()) {
-                        new Cli_Model_JoinArmy($otherArmyId, $user, $db, $gameHandler);
-                        $gameHandler->sendError($user, 'Nie możesz zostawić armii w górach.');
+                        new Cli_Model_JoinArmy($otherArmyId, $user, $db, $handler);
+                        $handler->sendError($user, 'Nie możesz zostawić armii w górach.');
                         return;
                     }
                 }
@@ -78,10 +78,10 @@ class Cli_Model_Move
         } catch (Exception $e) {
             $l = new Coret_Model_Logger();
             $l->log($e);
-            $gameHandler->sendError($user, 'Wystąpił błąd podczas obliczania ścieżki');
+            $handler->sendError($user, 'Wystąpił błąd podczas obliczania ścieżki');
             return;
         }
 
-        $army->move($game, $path, $db, $gameHandler);
+        $army->move($game, $path, $db, $handler);
     }
 }

@@ -33,7 +33,7 @@ class Cli_Model_Ruin extends Cli_Model_Entity
         $this->_empty = true;
     }
 
-    public function search(Cli_Model_Game $game, Cli_Model_Army $army, $heroId, $playerId, Zend_Db_Adapter_Pdo_Pgsql $db, Cli_GameHandler $gameHandler)
+    public function search(Cli_Model_Game $game, Cli_Model_Army $army, $heroId, $playerId, Cli_GameHandler $handler)
     {
         $random = rand(0, 100);
         $gameId = $game->getId();
@@ -198,6 +198,6 @@ class Cli_Model_Ruin extends Cli_Model_Entity
             'color' => $color
         );
 
-        $gameHandler->sendToChannel($game, $token);
+        $handler->sendToChannel($game, $token);
     }
 }

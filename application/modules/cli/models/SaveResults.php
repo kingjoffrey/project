@@ -2,7 +2,7 @@
 
 class Cli_Model_SaveResults
 {
-    public function __construct(Cli_Model_Game $game, Zend_Db_Adapter_Pdo_Pgsql $db, Cli_GameHandler $gameHandler)
+    public function __construct(Cli_Model_Game $game, Cli_GameHandler $handler)
     {
         $mGame = new Application_Model_Game($game->getId(), $db);
         $mGame->endGame(); // koniec gry
@@ -12,8 +12,8 @@ class Cli_Model_SaveResults
             $token = array(
                 'type' => 'end'
             );
-            $gameHandler->sendToChannel($game, $token);
-            $gameHandler->removeGame($game->getId());
+            $handler->sendToChannel($game, $token);
+            $handler->removeGame($game->getId());
             return;
         }
 
@@ -153,8 +153,8 @@ class Cli_Model_SaveResults
         $token = array(
             'type' => 'end'
         );
-        $gameHandler->sendToChannel($game, $token);
-        $gameHandler->removeGame($game->getId());
+        $handler->sendToChannel($game, $token);
+        $handler->removeGame($game->getId());
     }
 }
 

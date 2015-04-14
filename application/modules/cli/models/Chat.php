@@ -3,11 +3,12 @@
 class Cli_Model_Chat
 {
 
-    public function __construct($msg, $user, $db, $gameHandler)
+    public function __construct($msg, $user, $handler)
     {
         $game = Cli_Model_Game::getGame($user);
         $me = Cli_Model_Me::getMe($user);
 
+        $db = $handler->getDb();
         $mChat = new Application_Model_Chat($game->getId(), $db);
         $mChat->insertChatMessage($me->getId(), $msg);
 
@@ -19,7 +20,7 @@ class Cli_Model_Chat
             'color' => $me->getColor()
         );
 
-        $gameHandler->sendToChannel($game, $token);
+        $handler->sendToChannel($game, $token);
     }
 
 }

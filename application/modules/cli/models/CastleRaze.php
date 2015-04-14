@@ -3,10 +3,10 @@
 class Cli_Model_CastleRaze
 {
 
-    public function __construct($armyId, Devristo\Phpws\Protocol\WebSocketTransportInterface $user, Zend_Db_Adapter_Pdo_Pgsql $db, Cli_GameHandler $gameHandler)
+    public function __construct($armyId, Devristo\Phpws\Protocol\WebSocketTransportInterface $user, Cli_GameHandler $handler)
     {
         if ($armyId == null) {
-            $gameHandler->sendError($user, 'No "armyId"!');
+            $handler->sendError($user, 'No "armyId"!');
             return;
         }
 
@@ -18,11 +18,11 @@ class Cli_Model_CastleRaze
         $field = $game->getFields()->getField($army->getX(), $army->getY());
         $castleId = $field->getCastleId();
         if (!$castleId) {
-            $gameHandler->sendError($user, 'Brak zamku!');
+            $handler->sendError($user, 'Brak zamku!');
             return;
         }
         if ($field->getCastleColor() != $color) {
-            $gameHandler->sendError($user, 'To nie jest twój zamek!');
+            $handler->sendError($user, 'To nie jest twój zamek!');
             return;
         }
 
@@ -39,7 +39,7 @@ class Cli_Model_CastleRaze
             'castleId' => $castleId
         );
 
-        $gameHandler->sendToChannel($game, $token);
+        $handler->sendToChannel($game, $token);
     }
 
 }

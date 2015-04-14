@@ -2,7 +2,7 @@
 
 class Cli_Model_BattleSequenceHandler
 {
-    public function __construct($data, Devristo\Phpws\Protocol\WebSocketTransportInterface $user, Zend_Db_Adapter_Pdo_Pgsql $db, Cli_GameHandler $gameHandler)
+    public function __construct($data, Devristo\Phpws\Protocol\WebSocketTransportInterface $user, Cli_GameHandler $handler)
     {
         $game = Cli_Model_Game::getGame($user);
         $me = Cli_Model_Me::getMe($user);
@@ -21,7 +21,7 @@ class Cli_Model_BattleSequenceHandler
         }
 
         if ($result != count($data['sequence'])) {
-            $gameHandler->sendError($user, 'Error 1001');
+            $handler->sendError($user, 'Error 1001');
             return;
         }
 
@@ -37,6 +37,6 @@ class Cli_Model_BattleSequenceHandler
             'attack' => $attack
         );
 
-        $gameHandler->sendToUser($user, $token);
+        $handler->sendToUser($user, $token);
     }
 }

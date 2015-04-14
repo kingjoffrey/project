@@ -3,13 +3,13 @@
 class Cli_Model_NextTurn
 {
 
-    public function __construct(Devristo\Phpws\Protocol\WebSocketTransportInterface $user, Zend_Db_Adapter_Pdo_Pgsql $db, Cli_GameHandler $gameHandler)
+    public function __construct(Devristo\Phpws\Protocol\WebSocketTransportInterface $user, Cli_GameHandler $handler)
     {
         $game = Cli_Model_Game::getGame($user);
         $players = $game->getPlayers();
 
         while (true) {
-            $nextPlayerId = $this->getExpectedNextTurnPlayer($game, $db, $gameHandler);
+            $nextPlayerId = $this->getExpectedNextTurnPlayer($game, $db, $handler);
             $nextPlayerColor = $game->getPlayerColor($nextPlayerId);
 
             $player = $players->getPlayer($nextPlayerColor);
@@ -19,7 +19,7 @@ class Cli_Model_NextTurn
                 $turnsLimit = $game->getTurnsLimit();
 
                 if ($turnsLimit && $turnNumber > $turnsLimit) {
-                    new Cli_Model_SaveResults($game, $db, $gameHandler);
+                    new Cli_Model_SaveResults($game, $db, $handler);
                     return;
                 }
 
@@ -31,7 +31,7 @@ class Cli_Model_NextTurn
                     'nr' => $turnNumber,
                     'color' => $nextPlayerColor
                 );
-                $gameHandler->sendToChannel($game, $token);
+                $handler->sendToChannel($game, $token);
                 return;
             } else {
                 $players->getPlayer($nextPlayerColor)->setLost($game->getId(), $db);
@@ -39,12 +39,12 @@ class Cli_Model_NextTurn
                     'type' => 'dead',
                     'color' => $nextPlayerColor
                 );
-                $gameHandler->sendToChannel($game, $token);
+                $handler->sendToChannel($game, $token);
             }
         }
     }
 
-    private function getExpectedNextTurnPlayer(Cli_Model_Game $game, Zend_Db_Adapter_Pdo_Pgsql $db, Cli_GameHandler $gameHandler)
+    private function getExpectedNextTurnPlayer(Cli_Model_Game $game, Cli_GameHandler $handler)
     {
         $playerColor = $game->getPlayerColor($game->getTurnPlayerId());
         $find = false;
@@ -81,7 +81,7 @@ class Cli_Model_NextTurn
                 'type' => 'neutral',
                 'armies' => $game->getPlayers()->getPlayer('neutral')->getArmies()->toArray()
             );
-            $gameHandler->sendToChannel($game, $token);
+            $handler->sendToChannel($game, $token);
         }
         $turnPlayerId = $game->getPlayers()->getPlayer($nextPlayerColor)->getId();
         $game->setTurnPlayerId($turnPlayerId);

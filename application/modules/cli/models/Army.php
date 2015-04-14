@@ -98,7 +98,7 @@ class Cli_Model_Army
         }
     }
 
-    public function move(Cli_Model_Game $game, Cli_Model_Path $path, Zend_Db_Adapter_Pdo_Pgsql $db, Cli_GameHandler $gameHandler)
+    public function move(Cli_Model_Game $game, Cli_Model_Path $path, Cli_GameHandler $handler)
     {
         if (!$path->exists()) {
             echo 'PATH NOT EXISTS' . "\n";
@@ -107,7 +107,7 @@ class Cli_Model_Army
                 'color' => $this->_color
             );
 
-            $gameHandler->sendToChannel($game, $token);
+            $handler->sendToChannel($game, $token);
             return;
         }
 
@@ -125,7 +125,7 @@ class Cli_Model_Army
             if ($battleResult->getVictory()) {
                 $this->updateArmyPosition($game, $path, $db);
                 if ($battleResult->getCastleId() && $game->playerHasMoreThanFiftyPercentOfCastles($this->_color)) {
-                    new Cli_Model_SaveResults($game, $db, $gameHandler);
+                    new Cli_Model_SaveResults($game, $db, $handler);
                 }
             } else {
                 $game->getFields()->getField($this->_x, $this->_y)->removeArmy($this->_id);
@@ -135,7 +135,7 @@ class Cli_Model_Army
             $joinIds = $player->getArmies()->joinAtPosition($this->_id, $game, $db);
         }
 
-        new Cli_Model_TowerHandler($player->getId(), $path, $game, $db, $gameHandler);
+        new Cli_Model_TowerHandler($player->getId(), $path, $game, $db, $handler);
 
         $token = array(
             'color' => $this->_color,
@@ -146,7 +146,7 @@ class Cli_Model_Army
             'type' => 'move'
         );
 
-        $gameHandler->sendToChannel($game, $token);
+        $handler->sendToChannel($game, $token);
     }
 
     public function getMovementType()

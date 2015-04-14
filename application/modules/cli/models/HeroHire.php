@@ -2,7 +2,7 @@
 
 class Cli_Model_HeroHire
 {
-    public function __construct(Devristo\Phpws\Protocol\WebSocketTransportInterface $user, Zend_Db_Adapter_Pdo_Pgsql $db, Cli_GameHandler $gameHandler)
+    public function __construct(Devristo\Phpws\Protocol\WebSocketTransportInterface $user, Cli_GameHandler $handler)
     {
         $game = Cli_Model_Game::getGame($user);
         $gameId = $game->getId();
@@ -11,12 +11,12 @@ class Cli_Model_HeroHire
         $player = $game->getPlayers()->getPlayer($color);
 
         if ($player->getGold() < 1000) {
-            $gameHandler->sendError($user, 'Za mało złota!');
+            $handler->sendError($user, 'Za mało złota!');
             return;
         }
 
         if (!$capital = $player->getCastles()->getCastle($game->getPlayerCapitalId($color))) {
-            $gameHandler->sendError($user, 'Aby wynająć herosa musisz posiadać stolicę!');
+            $handler->sendError($user, 'Aby wynająć herosa musisz posiadać stolicę!');
             return;
         }
 
@@ -44,6 +44,6 @@ class Cli_Model_HeroHire
             'color' => $color
         );
 
-        $gameHandler->sendToChannel($game, $token);
+        $handler->sendToChannel($game, $token);
     }
 }

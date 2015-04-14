@@ -13,7 +13,19 @@ use Devristo\Phpws\Server\UriHandler\WebSocketUriHandler;
  */
 class Cli_GameHandler extends WebSocketUriHandler
 {
-    protected $_game = array();
+    private $_game = array();
+    private $_db;
+
+    public function __construct($logger)
+    {
+        $this->_db = Cli_Model_Database::getDb();
+        parent::__construct($logger);
+    }
+
+    public function getDb()
+    {
+        return $this->_db;
+    }
 
     public function getGame($gameId)
     {
@@ -46,13 +58,11 @@ class Cli_GameHandler extends WebSocketUriHandler
         $l = new Coret_Model_Logger();
         $l->log($dataIn);
 
-        $db = Cli_Model_Database::getDb();
-
         if ($dataIn['type'] == 'open') {
-            new Cli_Model_GameOpen($dataIn, $user, $db, $this);
+            new Cli_Model_GameOpen($dataIn, $user, $this);
             $game = Cli_Model_Game::getGame($user);
             if ($game->isActive() && $game->getPlayers()->getPlayer($game->getPlayerColor($game->getTurnPlayerId()))->getComputer()) {
-                new Cli_Model_Computer($user, $db, $this);
+                new Cli_Model_Computer($user, $this);
             }
             return;
         }
@@ -60,7 +70,6 @@ class Cli_GameHandler extends WebSocketUriHandler
         $game = Cli_Model_Game::getGame($user);
         $gameId = $game->getId();
         $playerId = $user->parameters['me']->getId();
-//        echo $playerId . '- Handler player ID' . "\n";
 
         // AUTHORIZATION
         if (!Zend_Validate::is($gameId, 'Digits') || !Zend_Validate::is($playerId, 'Digits')) {
@@ -69,7 +78,7 @@ class Cli_GameHandler extends WebSocketUriHandler
         }
 
         if ($dataIn['type'] == 'chat') {
-            new Cli_Model_Chat($dataIn['msg'], $user, $db, $this);
+            new Cli_Model_Chat($dataIn['msg'], $user, $this);
             return;
         }
 

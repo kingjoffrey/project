@@ -4,7 +4,7 @@ class Cli_Model_Garrison
 {
     private $_newArmyId = 0;
 
-    public function __construct($x, $y, $color, Cli_Model_Armies $armies, Cli_Model_Game $game, Zend_Db_Adapter_Pdo_Pgsql $db, Cli_GameHandler $gameHandler)
+    public function __construct($x, $y, $color, Cli_Model_Armies $armies, Cli_Model_Game $game, Cli_GameHandler $handler)
     {
         $gameId = $game->getId();
         $fields = $game->getFields();
@@ -22,7 +22,7 @@ class Cli_Model_Garrison
                                 'y' => $y,
                                 't' => 'c')
                             ), $army, $game->getTerrain());
-                            $army->move($game, $path, $db, $gameHandler);
+                            $army->move($game, $path, $db, $handler);
                         }
                     }
                 }
@@ -113,7 +113,7 @@ class Cli_Model_Garrison
                 'childArmy' => $armies->getArmy($this->_newArmyId)->toArray(),
                 'color' => $army->getColor()
             );
-            $gameHandler->sendToChannel($game, $token);
+            $handler->sendToChannel($game, $token);
         }
     }
 

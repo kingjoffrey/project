@@ -2,20 +2,40 @@
 use Devristo\Phpws\Messaging\WebSocketMessageInterface;
 use Devristo\Phpws\Protocol\WebSocketTransportInterface;
 use Devristo\Phpws\Server\UriHandler\WebSocketUriHandler;
+
 class Cli_ChatHandler extends WebSocketUriHandler
-{   public function onMessage(WebSocketTransportInterface $user, WebSocketMessageInterface $msg)
+{
+    private $_db;
+
+    public function __construct($logger)
+    {
+        $this->_db = Cli_Model_Database::getDb();
+        parent::__construct($logger);
+    }
+
+    public function getDb()
+    {
+        return $this->_db;
+    }
+
+    public function onMessage(WebSocketTransportInterface $user, WebSocketMessageInterface $msg)
     {
         $dataIn = Zend_Json::decode($msg->getData());
-        $db = Cli_Model_Database::getDb();
 
-        if ($dataIn['type'] == 'open') {
-            new Cli_Model_ChatOpen($dataIn, $user, $db, $this);
-            return;
+        switch ($dataIn['type']) {
+            case 'open':
+                new Cli_Model_ChatOpen($dataIn, $user, $this);
+                break;
+            case 'chat':
+                new Cli_Model_Chat($dataIn['msg'], $user, $this);
+                break;
         }
     }
 
     public function onDisconnect(WebSocketTransportInterface $user)
     {
+        $db = Cli_Model_Database::getDb();
+
     }
 
     /**

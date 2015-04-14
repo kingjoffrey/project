@@ -3,7 +3,7 @@
 class Cli_Model_Surrender
 {
 
-    public function __construct(Devristo\Phpws\Protocol\WebSocketTransportInterface $user, Zend_Db_Adapter_Pdo_Pgsql $db, Cli_GameHandler $gameHandler)
+    public function __construct(Devristo\Phpws\Protocol\WebSocketTransportInterface $user, Cli_GameHandler $handler)
     {
         $playerId = $user->parameters['me']->getId();
         $game = Cli_Model_Game::getGame($user);
@@ -25,7 +25,7 @@ class Cli_Model_Surrender
             'color' => $color
         );
 
-        $gameHandler->sendToChannel($game, $token);
+        $handler->sendToChannel($game, $token);
     }
 
 }

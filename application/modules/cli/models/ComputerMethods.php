@@ -44,13 +44,13 @@ abstract class Cli_Model_ComputerMethods
      */
     protected $_l;
 
-    public function __construct(Cli_Model_Army $army, Devristo\Phpws\Protocol\WebSocketTransportInterface $user, Zend_Db_Adapter_Pdo_Pgsql $db, Cli_GameHandler $gameHandler)
+    public function __construct(Cli_Model_Army $army, Devristo\Phpws\Protocol\WebSocketTransportInterface $user, Cli_GameHandler $handler)
     {
         $this->_army = $army;
         $this->_user = $user;
         $this->_game = Cli_Model_Game::getGame($user);
         $this->_db = $db;
-        $this->_gameHandler = $gameHandler;
+        $this->_gameHandler = $handler;
         $this->_playerId = $this->_game->getTurnPlayerId();
         $this->_players = $this->_game->getPlayers();
         $this->_color = $this->_game->getPlayerColor($this->_playerId);
