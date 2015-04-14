@@ -4,30 +4,15 @@ var Websocket = new function () {
         executing = 0,
         i = 0,
         handler = '',
-        addQueue = function (r) {
-            i++
-            queue[i] = r
-            wait()
-        },
         wait = function () {
             if (executing) {
                 setTimeout('wait()', 500);
             } else {
                 for (var ii in queue) {
-                    execute(queue[ii])
+                    Websocket.execute(queue[ii])
                     delete queue[ii]
                     return
                 }
-            }
-        },
-        execute = function (r) {
-            executing = 1
-
-            switch (r.type) {
-                case 'dead':
-
-                    executing = 0
-                    break;
             }
         },
         open = function () {
@@ -59,14 +44,7 @@ var Websocket = new function () {
             var r = $.parseJSON(e.data);
 
             if (isSet(r['type'])) {
-                switch (r.type) {
-                    case 'move':
-                        addQueue(r)
-                        break;
-
-                    default:
-                        console.log(r);
-                }
+                Websocket.onMessage(r)
             }
         }
 
@@ -75,5 +53,22 @@ var Websocket = new function () {
             setTimeout('Websocket.init(handler)', 1000)
         }
 
+    }
+    this.addQueue = function (r) {
+        i++
+        queue[i] = r
+        wait()
+    }
+    this.execute = function (r) {
+
+    }
+    this.onMessage = function (r) {
+
+    }
+    this.setExecuting = function (value) {
+        executing = value
+    }
+    this.getI = function () {
+        return i
     }
 }

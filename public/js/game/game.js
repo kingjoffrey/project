@@ -24,6 +24,7 @@ var Game = new function () {
             Ruins.init(game.ruins)
             Me.init(game.color, game.gold, game.bSequence)
             Chat.init(game.chatHistory)
+            WebSocketGame.init()
         }
 
         Players.initOnline(game.online)
@@ -31,7 +32,7 @@ var Game = new function () {
         if (Turn.isMy()) {
             Me.turnOn()
             if (!Me.getTurnActive()) {
-                Websocket.startMyTurn()
+                WebSocketGame.startMyTurn()
             }
         } else {
             Me.turnOff()
@@ -64,5 +65,5 @@ var Game = new function () {
 }
 
 $(document).ready(function () {
-    Websocket.init();
+    WebSocketGame.init()
 })
