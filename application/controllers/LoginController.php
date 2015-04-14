@@ -84,7 +84,7 @@ class LoginController extends Coret_Controller_AuthenticateFrontend
     }
 
 
-    protected function writeAuthentication()
+    protected function writeIdentity()
     {
         $identity = $this->_authAdapter->getResultRowObject($this->_identityArray);
 

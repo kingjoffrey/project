@@ -40,7 +40,7 @@ abstract class Coret_Controller_Authenticate extends Zend_Controller_Action
             Zend_Session::forgetMe();
         }
 
-        $this->writeAuthentication();
+        $this->writeIdentity();
         $this->redirectAuthenticated();
     }
 
@@ -59,7 +59,7 @@ abstract class Coret_Controller_Authenticate extends Zend_Controller_Action
         $this->redirect($this->view->url(array('action' => null)));
     }
 
-    protected function writeAuthentication()
+    protected function writeIdentity()
     {
         $this->_auth->getStorage()->write($this->_authAdapter->getResultRowObject($this->_identityArray));
     }
