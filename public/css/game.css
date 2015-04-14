@@ -435,6 +435,16 @@
     border-radius: 3px;
 }
 
+.message .split div.row:hover {
+    background: lime;
+}
+
+.message .split div.row.selected {
+    background: #fff;
+    color: #000;
+    text-shadow: none;
+}
+
 .message .split div.row div {
     width: 30px;
     height: 30px;

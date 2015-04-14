@@ -214,7 +214,7 @@ table {
     border-spacing: 0px;
     width: 100%;
     font-size: 14px;
-    border: 2px solid #A8A45A;
+    border: 2px solid grey;
     border-radius: 5px;
 }
 
@@ -267,7 +267,7 @@ td:first-of-type {
 #menuTop {
     height: 21px;
     padding: 5px;
-    border: 1px solid gold;
+    /*border: 1px solid gold;*/
     border-bottom-right-radius: 5px;
     border-bottom-left-radius: 5px;
     background: #000;
@@ -291,6 +291,7 @@ td:first-of-type {
     color: #A8A45A;
     font-weight: normal;
     font-size: 14px;
+    text-decoration: none;
     padding-top: 3px;
 }
 
@@ -356,6 +357,15 @@ p#info {
     padding: 0 0 5px 0;
 }
 
-#search {
-
+#search .zend_form{
+    text-align: left;
 }
+
+#search #search-label, #search #submit-label {
+    display: none;
+}
+
+#search #search-element, #search #submit-element {
+    display: inline-block;
+}
+

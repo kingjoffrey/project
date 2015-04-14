@@ -270,7 +270,7 @@ var CastleWindow = new function () {
             })
 
             $('td#' + $(this).attr('id') + '.unit .attributes span').css({
-                color: 'yellow'
+                color: 'gold'
             })
 
             $('td:not(#' + $(this).attr('id') + ').unit .attributes span').css({

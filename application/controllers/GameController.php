@@ -16,6 +16,9 @@ class GameController extends Game_Controller_Game
         $this->view->headScript()->appendFile('http://threejs.org/build/three.min.js');
         $this->view->headScript()->appendFile('/fonts/helvetiker_regular.typeface.js');
 
+        $this->view->headScript()->appendFile('/js/chat.js?v=' . Zend_Registry::get('config')->version);
+
+
         $this->view->headScript()->appendFile('/js/game/picker.js?v=' . Zend_Registry::get('config')->version);
         $this->view->headScript()->appendFile('/js/game/3d.js?v=' . Zend_Registry::get('config')->version);
         $this->view->headScript()->appendFile('/js/game/game.js?v=' . Zend_Registry::get('config')->version);
@@ -40,9 +43,6 @@ class GameController extends Game_Controller_Game
         $this->view->headScript()->appendFile('/js/game/astar.js?v=' . Zend_Registry::get('config')->version);
         $this->view->headScript()->appendFile('/js/game/gui.js?v=' . Zend_Registry::get('config')->version);
         $this->view->headScript()->appendFile('/js/game/move.js?v=' . Zend_Registry::get('config')->version);
-//        $this->view->headScript()->appendFile('/js/game/test.js?v=' . Zend_Registry::get('config')->version);
-        $this->view->headScript()->appendFile('/js/game/chat.js?v=' . Zend_Registry::get('config')->version);
-        $this->view->headScript()->appendFile('/js/game/chest.js?v=' . Zend_Registry::get('config')->version);
         $this->view->headScript()->appendFile('/js/game/libs.js?v=' . Zend_Registry::get('config')->version);
         $this->view->headScript()->appendFile('/js/game/zoom.js?v=' . Zend_Registry::get('config')->version);
         $this->view->headScript()->appendFile('/js/game/websocket.js?v=' . Zend_Registry::get('config')->version);

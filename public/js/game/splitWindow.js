@@ -2,23 +2,23 @@ var SplitWindow = new function () {
     this.show = function () {
         var div = $('<div>')
                 .addClass('split')
-                .append(
-                $('<div>')
-                    .html(
-                    $('<input>')
+                .append($('<div>')
+                    .html($('<input>')
                         .attr({
                             type: 'checkbox'
                         })
                         .change(function () {
-                            $('.message .row input').each(function () {
-                                if ($(this).is(':checked')) {
-                                    $(this).prop('checked', false)
+                            $('.message .row').each(function () {
+                                var input = $(this).find('input')
+                                if (input.prop('checked')) {
+                                    input.prop('checked', false)
+                                    $(this).removeClass('selected')
                                 } else {
-                                    $(this).prop('checked', true)
+                                    input.prop('checked', true)
+                                    $(this).addClass('selected')
                                 }
                             })
-                        })
-                )
+                        }))
                     .attr('id', 'selectAll')
             ),
             numberOfUnits = 0,
@@ -45,6 +45,16 @@ var SplitWindow = new function () {
                         name: 'soldierId',
                         value: soldierId
                     })))
+                    .click(function () {
+                        var input = $(this).find('input')
+                        if (input.prop('checked')) {
+                            input.prop('checked', false)
+                            $(this).removeClass('selected')
+                        } else {
+                            input.prop('checked', true)
+                            $(this).addClass('selected')
+                        }
+                    })
             );
         }
         for (var soldierId in swim) {
