@@ -37,7 +37,6 @@ var Websocket = new function () {
     this.close = function () {
         setTimeout('Websocket.init(handler)', 1000)
     }
-
     this.addQueue = function (r) {
         i++
         queue[i] = r
@@ -55,8 +54,8 @@ var Websocket = new function () {
     this.isClosed = function () {
         return closed
     }
-    this.init = function (handler) {
-        handler = handler
+    this.init = function (h) {
+        handler = h
         ws = new WebSocket(wsURL + '/' + handler)
 
         ws.onopen = function () {
@@ -76,6 +75,5 @@ var Websocket = new function () {
             closed = true
             Websocket.close()
         }
-
     }
 }
