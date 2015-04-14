@@ -48,7 +48,7 @@ class Application_Model_Websocket extends Coret_Db_Table_Abstract
         $this->update($data, $where);
     }
 
-    public function init($handler, $accessKey)
+    public function create($handler, $accessKey)
     {
         $data = array(
             'playerId' => $this->_playerId,

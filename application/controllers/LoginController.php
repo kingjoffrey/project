@@ -90,7 +90,7 @@ class LoginController extends Coret_Controller_AuthenticateFrontend
 
         $mWebSocket = new Application_Model_Websocket($identity->playerId);
         $identity->accessKey = $mWebSocket->generateKey();
-        $mWebSocket->init('chat', $identity->accessKey);
+        $mWebSocket->create('chat', $identity->accessKey);
 
         $this->_auth->getStorage()->write($identity);
     }

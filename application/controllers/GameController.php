@@ -36,9 +36,6 @@ class GameController extends Coret_Controller_Authorized
         $this->view->headScript()->appendFile('http://threejs.org/build/three.min.js');
         $this->view->headScript()->appendFile('/fonts/helvetiker_regular.typeface.js');
 
-        $this->view->headScript()->appendFile('/js/chat.js?v=' . $version);
-
-
         $this->view->headScript()->appendFile('/js/game/picker.js?v=' . $version);
         $this->view->headScript()->appendFile('/js/game/3d.js?v=' . $version);
         $this->view->headScript()->appendFile('/js/game/game.js?v=' . $version);
@@ -63,10 +60,8 @@ class GameController extends Coret_Controller_Authorized
         $this->view->headScript()->appendFile('/js/game/astar.js?v=' . $version);
         $this->view->headScript()->appendFile('/js/game/gui.js?v=' . $version);
         $this->view->headScript()->appendFile('/js/game/move.js?v=' . $version);
-        $this->view->headScript()->appendFile('/js/game/libs.js?v=' . $version);
         $this->view->headScript()->appendFile('/js/game/zoom.js?v=' . $version);
         $this->view->headScript()->appendFile('/js/game/websocket.js?v=' . $version);
-        $this->view->headScript()->appendFile('/js/game/message.js?v=' . $version);
         $this->view->headScript()->appendFile('/js/game/timer.js?v=' . $version);
         $this->view->headScript()->appendFile('/js/game/turn.js?v=' . $version);
         $this->view->headScript()->appendFile('/js/game/sound.js?v=' . $version);
