@@ -24,7 +24,6 @@ var Game = new function () {
             Ruins.init(game.ruins)
             Me.init(game.color, game.gold, game.bSequence)
             Chat.init(game.chatHistory)
-            WebSocketGame.init()
         }
 
         Players.initOnline(game.online)
