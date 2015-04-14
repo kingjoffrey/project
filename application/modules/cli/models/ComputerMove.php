@@ -35,7 +35,7 @@ class Cli_Model_ComputerMove extends Cli_Model_ComputerMethods
         $this->_l->log('W ZAMKU');
         $myCastle = $this->_player->getCastles()->getCastle($castleId);
         if ($this->_game->getNumberOfGarrisonUnits()) {
-            $garrison = new Cli_Model_Garrison($myCastle->getX(), $myCastle->getY(), $this->_color, $this->_player->getArmies(), $this->_game, $this->_db, $this->_gameHandler);
+            $garrison = new Cli_Model_Garrison($myCastle->getX(), $myCastle->getY(), $this->_color, $this->_player->getArmies(), $this->_game, $this->_gameHandler);
             if ($armyId = $garrison->getNewArmyId()) {
                 $this->_l->log('NOWA ARMIA');
                 $this->_army = $this->_player->getArmies()->getArmy($armyId);
@@ -184,7 +184,7 @@ class Cli_Model_ComputerMove extends Cli_Model_ComputerMethods
         if ($ruinId = $this->_fields->getField($this->_armyX, $this->_armyY)->getRuinId()) {
             if (!$this->_game->getRuins()->getRuin($ruinId)->getEmpty()) {
                 $this->_l->log('PRZESZUKUJĘ RUINY');
-                $this->_game->getRuins()->getRuin($ruinId)->search($this->_game, $this->_army, $heroId, $this->_playerId, $this->_db, $this->_gameHandler);
+                $this->_game->getRuins()->getRuin($ruinId)->search($this->_game, $this->_army, $heroId, $this->_playerId, $this->_gameHandler);
                 $this->_searchRuin = false;
                 $this->next();
                 return;
@@ -264,7 +264,7 @@ class Cli_Model_ComputerMove extends Cli_Model_ComputerMethods
     {
         if ($path && $path->exists()) {
             $this->_l->log('(armyId=' . $this->_army->getId() . ')IDĘ/WALCZĘ');
-            $this->_army->move($this->_game, $path, $this->_db, $this->_gameHandler);
+            $this->_army->move($this->_game, $path, $this->_gameHandler);
             $this->next();
         } else {
             $this->_l->log('(armyId=' . $this->_army->getId() . ')BRAK ŚCIEŻKI');
@@ -290,7 +290,7 @@ class Cli_Model_ComputerMove extends Cli_Model_ComputerMethods
             }
         } else {
             $this->_l->log('NASTĘPNA TURA');
-            new Cli_Model_NextTurn($this->_user, $this->_db, $this->_gameHandler);
+            new Cli_Model_NextTurn($this->_user, $this->_gameHandler);
         }
     }
 }

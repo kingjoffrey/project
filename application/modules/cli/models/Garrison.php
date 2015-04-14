@@ -23,7 +23,7 @@ class Cli_Model_Garrison
                                 'y' => $y,
                                 't' => 'c')
                             ), $army, $game->getTerrain());
-                            $army->move($game, $path, $db, $handler);
+                            $army->move($game, $path, $handler);
                         }
                     }
                 }

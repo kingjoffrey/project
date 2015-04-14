@@ -12,7 +12,7 @@ class Cli_Model_Computer
         $db = $handler->getDb();
         if (!$player->getTurnActive()) {
             $l->log('START TURY');
-            new Cli_Model_StartTurn($playerId, $user, $db, $handler);
+            new Cli_Model_StartTurn($playerId, $user, $handler);
             return;
         }
 
@@ -22,13 +22,13 @@ class Cli_Model_Computer
             return;
         }
 
-        new Cli_Model_ComputerHeroResurrection($playerId, $user, $db, $handler);
+        new Cli_Model_ComputerHeroResurrection($playerId, $user, $handler);
 
         if ($army = $player->getArmies()->getComputerArmyToMove()) {
-            new Cli_Model_ComputerMove($army, $user, $db, $handler);
+            new Cli_Model_ComputerMove($army, $user, $handler);
         } else {
             $l->log('NASTĘPNA TURA');
-            new Cli_Model_NextTurn($user, $db, $handler);
+            new Cli_Model_NextTurn($user, $handler);
         }
     }
 }

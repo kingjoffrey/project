@@ -87,7 +87,7 @@ class Cli_Model_NextTurn
         $turnPlayerId = $game->getPlayers()->getPlayer($nextPlayerColor)->getId();
         $game->setTurnPlayerId($turnPlayerId);
 
-        $mGame = new Application_Model_Game($game->getId(), $db);
+        $mGame = new Application_Model_Game($game->getId(), $handler->getDb());
         $mGame->updateTurn($turnPlayerId, $game->getTurnNumber());
 
         return $turnPlayerId;
