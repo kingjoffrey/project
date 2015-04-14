@@ -31,6 +31,30 @@ var Websocket = new function () {
 
         ws.send(JSON.stringify(token));
     }
+    this.message = function (r) {
+        console.log(r)
+    }
+    this.close = function () {
+        setTimeout('Websocket.init(handler)', 1000)
+    }
+
+    this.addQueue = function (r) {
+        i++
+        queue[i] = r
+        wait()
+    }
+    this.execute = function (r) {
+        console.log(r)
+    }
+    this.setExecuting = function (value) {
+        executing = value
+    }
+    this.getI = function () {
+        return i
+    }
+    this.isClosed = function () {
+        return closed
+    }
     this.init = function (handler) {
         handler = handler
         ws = new WebSocket(wsURL + '/' + handler)
@@ -43,38 +67,15 @@ var Websocket = new function () {
         ws.onmessage = function (e) {
             var r = $.parseJSON(e.data);
 
-            if (isSet(r['type'])) {
-                Websocket.onMessage(r)
+            if (isSet(r.type)) {
+                Websocket.message(r)
             }
         }
 
         ws.onclose = function () {
             closed = true
-            Websocket.onClose()
+            Websocket.close()
         }
 
-    }
-    this.addQueue = function (r) {
-        i++
-        queue[i] = r
-        wait()
-    }
-    this.execute = function (r) {
-
-    }
-    this.onMessage = function (r) {
-
-    }
-    this.onClose = function () {
-        setTimeout('Websocket.init(handler)', 1000)
-    }
-    this.setExecuting = function (value) {
-        executing = value
-    }
-    this.getI = function () {
-        return i
-    }
-    this.isClosed = function () {
-        return closed
     }
 }
