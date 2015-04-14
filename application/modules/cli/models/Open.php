@@ -12,14 +12,14 @@ class Cli_Model_Open
     public function __construct($dataIn, Devristo\Phpws\Protocol\WebSocketTransportInterface $user, Zend_Db_Adapter_Pdo_Pgsql $db, Cli_GameHandler $gameHandler)
     {
         if (!isset($dataIn['gameId']) || !isset($dataIn['playerId']) || !isset($dataIn['langId'])) {
-            $gameHandler->sendError($user, 'Brak "gameId" lub "playerId" lub "langId');
+            throw new Exception('Brak "gameId" lub "playerId" lub "langId');
             return;
         }
 
         $mPlayersInGame = new Application_Model_PlayersInGame($dataIn['gameId'], $db);
 
         if (!$mPlayersInGame->checkAccessKey($dataIn['playerId'], $dataIn['accessKey'], $db)) {
-            $gameHandler->sendError($user, 'Brak uprawnień!');
+            throw new Exception($user, 'Brak uprawnień!');
             return;
         }
 

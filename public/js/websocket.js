@@ -14,30 +14,30 @@ var Websocket = new function () {
                     return
                 }
             }
-        },
-        open = function () {
-            if (closed) {
-                Message.error(translations.sorryServerIsDisconnected)
-                return;
-            }
-
-            var token = {
-                type: 'open',
-                playerId: id,
-                langId: langId,
-                accessKey: accessKey
-            }
-
-            ws.send(JSON.stringify(token));
         }
 
+    this.open = function () {
+        if (closed) {
+            Message.error(translations.sorryServerIsDisconnected)
+            return;
+        }
+
+        var token = {
+            type: 'open',
+            playerId: id,
+            langId: langId,
+            accessKey: accessKey
+        }
+
+        ws.send(JSON.stringify(token));
+    }
     this.init = function (handler) {
         handler = handler
         ws = new WebSocket(wsURL + '/' + handler)
 
         ws.onopen = function () {
             closed = false
-            open()
+            Websocket.open()
         }
 
         ws.onmessage = function (e) {
@@ -50,7 +50,7 @@ var Websocket = new function () {
 
         ws.onclose = function () {
             closed = true
-            setTimeout('Websocket.init(handler)', 1000)
+            Websocket.onClose()
         }
 
     }
@@ -65,10 +65,16 @@ var Websocket = new function () {
     this.onMessage = function (r) {
 
     }
+    this.onClose = function () {
+        setTimeout('Websocket.init(handler)', 1000)
+    }
     this.setExecuting = function (value) {
         executing = value
     }
     this.getI = function () {
         return i
+    }
+    this.isClosed = function () {
+        return closed
     }
 }

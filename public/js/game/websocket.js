@@ -1,7 +1,5 @@
 var WebSocketGame = new function () {
     this.init = function () {
-        Websocket.init('game')
-
         Websocket.execute = function (r) {
             switch (r.type) {
                 case 'move':
@@ -351,16 +349,12 @@ var WebSocketGame = new function () {
             }
         }
 
-        //ws.onclose = function () {
-        //    if (!Websocket.closed) {
-        //        Message.error('Connection error. Can\'t connect to WebSocket server')
-        //        Websocket.closed = true
-        //    }
-        //    setTimeout('Websocket.init()', 1000)
-        //}
+        Websocket.onClose = function () {
+            setTimeout('WebSocketGame.init()', 1000)
+        }
 
         Websocket.open = function () {
-            if (Websocket.closed) {
+            if (Websocket.isClosed()) {
                 Message.error(translations.sorryServerIsDisconnected)
                 return;
             }
@@ -377,7 +371,7 @@ var WebSocketGame = new function () {
         }
 
         Websocket.production = function (castleId, unitId, relocationToCastleId) {
-            if (Websocket.closed) {
+            if (Websocket.isClosed()) {
                 Message.error(translations.sorryServerIsDisconnected)
                 return;
             }
@@ -397,7 +391,7 @@ var WebSocketGame = new function () {
             ws.send(JSON.stringify(token));
         }
         Websocket.surrender = function () {
-            if (Websocket.closed) {
+            if (Websocket.isClosed()) {
                 Message.error(translations.sorryServerIsDisconnected)
                 return;
             }
@@ -410,7 +404,7 @@ var WebSocketGame = new function () {
         }
 
         Websocket.chat = function () {
-            if (Websocket.closed) {
+            if (Websocket.isClosed()) {
                 Message.error(translations.sorryServerIsDisconnected)
                 return;
             }
@@ -430,7 +424,7 @@ var WebSocketGame = new function () {
         }
 
         Websocket.ruin = function () {
-            if (Websocket.closed) {
+            if (Websocket.isClosed()) {
                 Message.error(translations.sorryServerIsDisconnected)
                 return;
             }
@@ -453,7 +447,7 @@ var WebSocketGame = new function () {
         }
 
         Websocket.fortify = function () {
-            if (Websocket.closed) {
+            if (Websocket.isClosed()) {
                 Message.error(translations.sorryServerIsDisconnected)
                 return;
             }
@@ -485,7 +479,7 @@ var WebSocketGame = new function () {
         }
 
         Websocket.unfortify = function (armyId) {
-            if (Websocket.closed) {
+            if (Websocket.isClosed()) {
                 Message.error(translations.sorryServerIsDisconnected)
                 return;
             }
@@ -507,7 +501,7 @@ var WebSocketGame = new function () {
         }
 
         Websocket.join = function (armyId) {
-            if (Websocket.closed) {
+            if (Websocket.isClosed()) {
                 Message.error(translations.sorryServerIsDisconnected)
                 return;
             }
@@ -526,7 +520,7 @@ var WebSocketGame = new function () {
         }
 
         Websocket.disband = function () {
-            if (Websocket.closed) {
+            if (Websocket.isClosed()) {
                 Message.error(translations.sorryServerIsDisconnected)
                 return;
             }
@@ -548,7 +542,7 @@ var WebSocketGame = new function () {
         }
 
         Websocket.move = function () {
-            if (Websocket.closed) {
+            if (Websocket.isClosed()) {
                 Message.error(translations.sorryServerIsDisconnected)
                 return;
             }
@@ -574,7 +568,7 @@ var WebSocketGame = new function () {
         }
 
         Websocket.split = function () {
-            if (Websocket.closed) {
+            if (Websocket.isClosed()) {
                 Message.error(translations.sorryServerIsDisconnected)
                 return;
             }
@@ -615,7 +609,7 @@ var WebSocketGame = new function () {
         }
 
         Websocket.resurrection = function () {
-            if (Websocket.closed) {
+            if (Websocket.isClosed()) {
                 Message.error(translations.sorryServerIsDisconnected)
                 return;
             }
@@ -638,7 +632,7 @@ var WebSocketGame = new function () {
         }
 
         Websocket.hire = function () {
-            if (Websocket.closed) {
+            if (Websocket.isClosed()) {
                 Message.error(translations.sorryServerIsDisconnected)
                 return;
             }
@@ -657,7 +651,7 @@ var WebSocketGame = new function () {
         }
 
         Websocket.raze = function () {
-            if (Websocket.closed) {
+            if (Websocket.isClosed()) {
                 Message.error(translations.sorryServerIsDisconnected)
                 return;
             }
@@ -679,7 +673,7 @@ var WebSocketGame = new function () {
         }
 
         Websocket.defense = function () {
-            if (Websocket.closed) {
+            if (Websocket.isClosed()) {
                 Message.error(translations.sorryServerIsDisconnected)
                 return;
             }
@@ -701,7 +695,7 @@ var WebSocketGame = new function () {
         }
 
         Websocket.startMyTurn = function () {
-            if (Websocket.closed) {
+            if (Websocket.isClosed()) {
                 Message.error(translations.sorryServerIsDisconnected)
                 return;
             }
@@ -714,7 +708,7 @@ var WebSocketGame = new function () {
         }
 
         Websocket.nextTurn = function () {
-            if (Websocket.closed) {
+            if (Websocket.isClosed()) {
                 Message.error(translations.sorryServerIsDisconnected)
                 return;
             }
@@ -727,7 +721,7 @@ var WebSocketGame = new function () {
         }
 
         Websocket.statistics = function () {
-            if (Websocket.closed) {
+            if (Websocket.isClosed()) {
                 Message.error(translations.sorryServerIsDisconnected)
                 return;
             }
@@ -748,7 +742,7 @@ var WebSocketGame = new function () {
         }
 
         Websocket.battleConfiguration = function (attack) {
-            if (Websocket.closed) {
+            if (Websocket.isClosed()) {
                 Message.error(translations.sorryServerIsDisconnected)
                 return;
             }
@@ -771,16 +765,10 @@ var WebSocketGame = new function () {
         }
 
         Websocket.computer = function () {
-            if (Websocket.closed) {
+            if (Websocket.isClosed()) {
                 Message.error(translations.sorryServerIsDisconnected)
                 return;
             }
-
-
-            //if (Game.getStop()) {
-            //    return
-            //}
-
 
             var token = {
                 type: 'computer'
@@ -788,5 +776,7 @@ var WebSocketGame = new function () {
 
             ws.send(JSON.stringify(token));
         }
+
+        Websocket.init('game')
     }
 }
