@@ -998,7 +998,6 @@ table.statistics tr {
 
 table.statistics td {
     border: none;
-    text-shadow: none;
     padding: 1px;
     height: 36px;
 }
@@ -1007,6 +1006,7 @@ table.statistics th {
     background: none;
     border: none;
     padding: 5px;
+    color: goldenrod;
 }
 
 table.statistics td.shortName {
