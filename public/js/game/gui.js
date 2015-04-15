@@ -175,12 +175,12 @@ var Gui = new function () {
         });
 
         $('#send').click(function () {
-            WebSocketGame.chat();
+            Websocket.chat();
         });
 
         $('#msg').keypress(function (e) {
             if (e.which == 13) {
-                WebSocketGame.chat();
+                Websocket.chat();
             }
         });
 

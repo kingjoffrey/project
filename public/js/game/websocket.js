@@ -372,26 +372,6 @@ var WebSocketGame = new function () {
             setTimeout('WebSocketGame.init()', 1000)
         }
 
-        Websocket.chat = function () {
-            if (Websocket.isClosed()) {
-                Message.error(translations.sorryServerIsDisconnected)
-                return;
-            }
-
-            var msg = $('#msg').val();
-
-            if (msg) {
-                $('#msg').val('');
-
-                var token = {
-                    type: 'chat',
-                    msg: msg
-                };
-
-                ws.send(JSON.stringify(token));
-            }
-        }
-
         Websocket.init('game')
     }
 

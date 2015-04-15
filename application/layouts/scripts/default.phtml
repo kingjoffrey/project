@@ -9,6 +9,16 @@
     ?>
 </head>
 <body>
+<div id="chatBox" class="box">
+    <div class="close">&#x25B6</div>
+    <div id="chatWindow">
+        <div id="chatContent"></div>
+    </div>
+    <div id="chatInput">
+        <input type="text" name="msg" id="msg"/>
+        <div id="send" class="button buttonColors"><?php echo $this->translate('Send') ?></div>
+    </div>
+</div>
 <div id="bg">
     <div id="page">
         <div id="menuTop">
@@ -22,5 +32,6 @@
         </div>
     </div>
 </div>
+
 </body>
 </html>

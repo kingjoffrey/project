@@ -578,75 +578,6 @@
     /*    width:90px;*/
 }
 
-#chatBox {
-    width: 360px;
-    border-top-left-radius: 10px;
-    text-transform: none;
-}
-
-#chatBox #chatWindow {
-    height: 124px;
-    border: none;
-    overflow: hidden;
-    overflow-y: scroll;
-    color: #fff;
-    text-shadow: none;
-    margin: 2px;
-}
-
-#chatBox #chatWindow #chatContent {
-    position: relative;
-    left: 0;
-    width: 100%;
-    border: none;
-    line-height: 12px;
-    font-size: 10px;
-}
-
-#chatBox #chatContent div.chatCloud {
-    margin: 5px 5px 5px 0;
-    border-radius: 4px;
-    padding: 4px;
-    display: inline-block;
-    box-shadow: 0 1px 0 0 rgba(255, 255, 255, .5);
-    color: white;
-    background: grey;
-    border: 1px solid darkgray;
-    max-width: 299px;
-}
-
-#chatBox #chatContent div.chatCloud span {
-    font-weight: bold;
-    color: #000;
-}
-
-#chatBox #chatContent div.chatCloudContainer {
-}
-
-#chatBox #chatContent div.chatCloudContainer img {
-    margin-right: 5px;
-}
-
-#chatBox input {
-    width: 278px;
-    border: 1px solid #000;
-    border-radius: 5px;
-    padding: 6px;
-
-    -webkit-touch-callout: text;
-    -webkit-user-select: text;
-    -khtml-user-select: text;
-    -moz-user-select: text;
-    -ms-user-select: text;
-    user-select: text;
-}
-
-#chatBox #send {
-    margin-left: 2px;
-    padding: 0 5px;
-    line-height: 27px;
-}
-
 #limitBox {
     left: -10px;
     border-top-right-radius: 10px;
@@ -1118,14 +1049,6 @@ table.treasury td.c {
 }
 
 #commandsBox .close {
-    left: -23px;
-    top: 8px;
-    border-radius: 5px;
-    border-top-left-radius: 5px;
-    border-bottom-left-radius: 5px;
-}
-
-#chatBox .close {
     left: -23px;
     top: 8px;
     border-radius: 5px;

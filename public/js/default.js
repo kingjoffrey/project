@@ -11,7 +11,26 @@ $(document).ready(function () {
         $(this).css('background-position', '0% ' + parseInt(-x / 10) + 'px');
     })
 
+    $('body').css({overflow: 'hidden'})
+
+    $('#chatInput').css({
+        width: $('#chatBox input').width() + $('#chatBox #send').width() + 60 + 'px'
+    })
+
+    var chatLeft = $(window).width() - $('#chatBox').width() - 12,
+        chatTop = $(window).height() - $('#chatBox').height() - 20
+
+    $('#chatBox').css({
+        'left': chatLeft + 'px',
+        'top': chatTop + 'px'
+    })
+
+
     Websocket.init('chat')
+
+    $('#send').click(function () {
+        Websocket.chat()
+    })
 })
 
 var Page = {

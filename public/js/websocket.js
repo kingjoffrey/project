@@ -80,4 +80,23 @@ var Websocket = new function () {
             Websocket.close()
         }
     }
+    this.chat = function () {
+        if (Websocket.isClosed()) {
+            Message.error(translations.sorryServerIsDisconnected)
+            return
+        }
+
+        var msg = $('#msg').val()
+
+        if (msg) {
+            $('#msg').val('')
+
+            var token = {
+                type: 'chat',
+                msg: msg
+            }
+
+            ws.send(JSON.stringify(token))
+        }
+    }
 }
