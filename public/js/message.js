@@ -51,12 +51,14 @@ var Message = new function () {
                 'max-width': maxWidth + 'px',
                 'max-height': maxHeight + 'px'
             })
+            $('#' + id + ' h3.msgTitle').css({'min-width': $('#' + id).width() - 50})
         } else {
             $('.message').css({
                 left: left + 'px',
                 'max-width': maxWidth + 'px',
                 'max-height': maxHeight + 'px'
             })
+            $('.message h3.msgTitle').css({'min-width': $('.message').width() -50})
         }
     }
     this.setOverflowHeight = function (id) {
@@ -116,7 +118,8 @@ var Message = new function () {
         }
         $('#' + id + ' #buttons').append(
             $('<div>')
-                .addClass('button buttonColors close')
+                .addClass('button buttonColors')
+                .attr('id', 'close')
                 .html(translations.close)
                 .click(function () {
                     if (isSet(func)) {
