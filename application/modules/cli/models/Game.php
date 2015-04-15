@@ -62,7 +62,7 @@ class Cli_Model_Game
         $mTurnHistory = new Application_Model_TurnHistory($this->_id, $db);
         $this->_turnHistory = $mTurnHistory->getTurnHistory();
 
-        $mChat = new Application_Model_Chat($this->_id, $db);
+        $mChat = new Application_Model_GameChat($this->_id, $db);
         $this->_chatHistory = $mChat->getChatHistory();
         foreach ($this->_chatHistory as $k => $v) {
             $this->_chatHistory[$k]['color'] = $this->_playersColors[$v['playerId']];
