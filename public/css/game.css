@@ -268,7 +268,7 @@
     position: absolute;
     color: goldenrod;
     border: 0px solid #fff;
-    background: url(/img/deska.png) 132px 33px;
+    background: url(/img/deska_0.png) 132px 33px;
     box-shadow: 0 0 20px #000;
 }
 
@@ -326,7 +326,7 @@
 
 .message div.production, .message div.relocatedProduction {
     text-shadow: none;
-    border: 2px solid grey;
+    border: 1px solid grey;
     border-radius: 5px;
     padding: 0;
     font-size: 20px;
@@ -731,7 +731,7 @@
     border: none;
     border-radius: 0px;
     text-shadow: none;
-    background: url(/img/deska.png) 132px 33px;
+    background: url(/img/deska_0.png) 132px 33px;
 }
 
 #goldBox table {
@@ -769,7 +769,7 @@
 #armyBox {
     border: none;
     border-radius: 0px;
-    background: url(/img/deska.png) 132px 33px;
+    background: url(/img/deska_0.png) 132px 33px;
     min-width: 230px;
     height: 35px;
 }
@@ -841,7 +841,7 @@
     position: absolute;
     z-index: 27000;
     /*background: transparent url('/img/game/message_bg.png');*/
-    background: url(/img/deska.png);
+    background: url(/img/deska_1.png);
     border: 0px solid green;
     border-radius: 0px !important;
     box-shadow: 0 0 20px #000;

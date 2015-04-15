@@ -1,6 +1,7 @@
 var WebSocketGame = new function () {
     this.init = function () {
         Websocket.execute = function (r) {
+            Websocket.setExecuting(1)
             //console.log(r)
 
             switch (r.type) {

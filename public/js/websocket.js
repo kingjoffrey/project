@@ -3,19 +3,19 @@ var Websocket = new function () {
         queue = {},
         executing = 0,
         i = 0,
-        handler = '',
-        wait = function () {
-            if (executing) {
-                setTimeout('wait()', 500);
-            } else {
-                for (var ii in queue) {
-                    Websocket.execute(queue[ii])
-                    delete queue[ii]
-                    return
-                }
+        handler = ''
+
+    this.wait = function () {
+        if (executing) {
+            setTimeout('Websocket.wait()', 500);
+        } else {
+            for (var ii in queue) {
+                Websocket.execute(queue[ii])
+                delete queue[ii]
+                return
             }
         }
-
+    }
     this.open = function () {
         if (closed) {
             Message.error(translations.sorryServerIsDisconnected)
@@ -40,10 +40,14 @@ var Websocket = new function () {
     this.addQueue = function (r) {
         i++
         queue[i] = r
-        wait()
+        Websocket.wait()
     }
     this.execute = function (r) {
+        executing = 1
         console.log(r)
+        switch (r.type) {
+
+        }
     }
     this.setExecuting = function (value) {
         executing = value
