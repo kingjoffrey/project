@@ -76,6 +76,16 @@ var SplitWindow = new function () {
                         name: 'soldierId',
                         value: soldierId
                     })))
+                    .click(function () {
+                        var input = $(this).find('input')
+                        if (input.prop('checked')) {
+                            input.prop('checked', false)
+                            $(this).removeClass('selected')
+                        } else {
+                            input.prop('checked', true)
+                            $(this).addClass('selected')
+                        }
+                    })
             );
         }
         for (var soldierId in fly) {
@@ -97,6 +107,16 @@ var SplitWindow = new function () {
                         name: 'soldierId',
                         value: soldierId
                     })))
+                    .click(function () {
+                        var input = $(this).find('input')
+                        if (input.prop('checked')) {
+                            input.prop('checked', false)
+                            $(this).removeClass('selected')
+                        } else {
+                            input.prop('checked', true)
+                            $(this).addClass('selected')
+                        }
+                    })
             );
         }
         for (var heroId in heroes) {
@@ -117,6 +137,16 @@ var SplitWindow = new function () {
                         name: 'heroId',
                         value: heroId
                     })))
+                    .click(function () {
+                        var input = $(this).find('input')
+                        if (input.prop('checked')) {
+                            input.prop('checked', false)
+                            $(this).removeClass('selected')
+                        } else {
+                            input.prop('checked', true)
+                            $(this).addClass('selected')
+                        }
+                    })
             );
         }
 
