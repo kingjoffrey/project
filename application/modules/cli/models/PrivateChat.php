@@ -6,7 +6,7 @@ class Cli_Model_PrivateChat
     {
         $db = $handler->getDb();
 
-        $mChat = new Application_Model_GameChat($user->parameters['playerId'], $db);
+        $mChat = new Application_Model_PrivateChat($user->parameters['playerId'], $db);
         $mChat->insertChatMessage(1111, $msg);
     }
 }

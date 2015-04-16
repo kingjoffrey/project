@@ -21,4 +21,3 @@ class Cli_Model_GameChat
         $handler->sendToChannel($game, $token);
     }
 }
-}
