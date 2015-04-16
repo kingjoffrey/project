@@ -27,12 +27,13 @@ class Application_Model_PrivateChat extends Coret_Db_Table_Abstract
         return $this->selectAll($select);
     }
 
-    public function insertChatMessage($recipientId, $message)
+    public function insertChatMessage($recipientId, $message, $read)
     {
         $data = array(
             'message' => $message,
             'recipientId' => $recipientId,
-            'playerId' => $this->_playerId
+            'playerId' => $this->_playerId,
+            'read' => $read
         );
         $this->insert($data);
     }

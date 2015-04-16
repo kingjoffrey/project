@@ -33,6 +33,14 @@ var Websocket = new function () {
     }
     this.message = function (r) {
         console.log(r)
+        switch (r.type) {
+            case 'chat':
+                $('#chatBox').css({display: 'block'})
+                $('#chatWindow').append(makeTime() + ' ' + r.msg)
+                break;
+            default:
+                console.log(r);
+        }
     }
     this.close = function () {
         setTimeout('Websocket.init(handler)', 1000)
@@ -89,6 +97,7 @@ var Websocket = new function () {
         var msg = $('#msg').val()
 
         if (msg) {
+            $('#chatWindow').append(makeTime() + ' ' + r.msg)
             $('#msg').val('')
 
             var token = {

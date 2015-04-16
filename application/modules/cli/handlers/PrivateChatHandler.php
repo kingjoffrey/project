@@ -6,6 +6,7 @@ use Devristo\Phpws\Server\UriHandler\WebSocketUriHandler;
 class Cli_PrivateChatHandler extends WebSocketUriHandler
 {
     private $_db;
+    private $_users = array();
 
     public function __construct($logger)
     {
@@ -16,6 +17,27 @@ class Cli_PrivateChatHandler extends WebSocketUriHandler
     public function getDb()
     {
         return $this->_db;
+    }
+
+    public function getUsers()
+    {
+        return $this->_users;
+    }
+
+    public function addUser($playerId, WebSocketTransportInterface $user)
+    {
+        $this->_users[$playerId] = $user;
+    }
+
+    /**
+     * @param $playerId
+     * @return Devristo\Phpws\Protocol\WebSocketTransportInterface $user
+     */
+    public function getUser($playerId)
+    {
+        if (isset($this->_users[$playerId])) {
+            return $this->_users[$playerId];
+        }
     }
 
     public function onMessage(WebSocketTransportInterface $user, WebSocketMessageInterface $msg)
@@ -40,6 +62,8 @@ class Cli_PrivateChatHandler extends WebSocketUriHandler
 
         $mWebSocket = new Application_Model_Websocket($user->parameters['playerId'], $this->_db);
         $mWebSocket->disconnect($user->parameters['accessKey']);
+
+        unset($this->_users[$user->parameters['playerId']]);
     }
 
     /**

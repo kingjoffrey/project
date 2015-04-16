@@ -24,14 +24,14 @@ class Cli_Model_ChatOpen
             return;
         }
 
-//        Zend_Registry::set('id_lang', $dataIn['langId']);
-
         $user->parameters['playerId'] = $dataIn['playerId'];
         $user->parameters['accessKey'] = $dataIn['accessKey'];
 
-        $token = array(
-            'type' => 'open'
-        );
-        $handler->sendToUser($user, $token);
+        $handler->addUser($dataIn['playerId'], $user);
+
+//        $token = array(
+//            'type' => 'open'
+//        );
+//        $handler->sendToUser($user, $token);
     }
 }
