@@ -383,6 +383,15 @@ p#info {
     min-width: 360px;
     border-top-left-radius: 10px;
     text-transform: none;
+    display: none;
+}
+
+#chatBox #friendId {
+    display: none;
+}
+
+#chatBox #chatTitle {
+    display: none;
 }
 
 #chatBox #chatWindow {
@@ -458,4 +467,8 @@ p#info {
     z-index: 27000;
     min-width: 360px;
     text-transform: none;
+}
+
+#friendsBox #friends div:hover {
+    background: #fff;
 }

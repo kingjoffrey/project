@@ -11,13 +11,16 @@
 <body>
 <div id="chatBox" class="box">
     <div class="close">&#x25B6</div>
+    <input id="friendId" value=""/>
+
+    <div id="chatTitle"></div>
     <div id="chatWindow">
         <div id="chatContent"></div>
     </div>
     <div id="chatInput">
         <input type="text" name="msg" id="msg"/>
 
-        <div id="send" class="button buttonColors"><?php echo $this->translate('Send') ?></div>
+        <div id="send" class="button buttonColors"> ></div>
     </div>
 </div>
 <div id="friendsBox" class="box">

@@ -93,6 +93,7 @@ var Websocket = new function () {
 
             var token = {
                 type: 'chat',
+                friendId: $('#chatBox #friendId').val(),
                 msg: msg
             }
 

@@ -21,8 +21,8 @@ $(document).ready(function () {
         chatTop = $(window).height() - $('#chatBox').height() - 20
 
     $('#chatBox').css({
-        'left': chatLeft + 'px',
-        'top': chatTop + 'px'
+        left: chatLeft + 'px',
+        top: chatTop + 'px'
     })
 
 
@@ -30,6 +30,16 @@ $(document).ready(function () {
 
     $('#send').click(function () {
         Websocket.chat()
+    })
+
+    $('#friendsBox #friends div').click(function () {
+        $('#chatBox').css({
+            display: 'block'
+        })
+        $('#chatBox #chatTitle').css({
+            display: 'block'
+        }).html($(this).html())
+        $('#chatBox #friendId').val($(this).attr('id'))
     })
 })
 
