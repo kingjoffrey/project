@@ -18,6 +18,7 @@ abstract class Game_Controller_Gui extends Coret_Controller_Authorized
         $this->view->headScript()->appendFile('/js/default.js?v=' . Zend_Registry::get('config')->version);
 
         $this->view->MainMenu();
+        $this->view->Friends();
         $this->view->googleAnalytics();
         $this->view->Version();
 

@@ -453,3 +453,9 @@ p#info {
     line-height: 27px;
 }
 
+#friendsBox {
+    position: absolute;
+    z-index: 27000;
+    min-width: 360px;
+    text-transform: none;
+}
