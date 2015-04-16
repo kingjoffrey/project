@@ -9,7 +9,7 @@ class Cli_Model_ChatOpen
      * @param Cli_GameHandler $handler
      * @throws Exception
      */
-    public function __construct($dataIn, Devristo\Phpws\Protocol\WebSocketTransportInterface $user, Cli_ChatHandler $handler)
+    public function __construct($dataIn, Devristo\Phpws\Protocol\WebSocketTransportInterface $user, Cli_PrivateChatHandler $handler)
     {
         if (!isset($dataIn['playerId']) || !isset($dataIn['langId'])) {
             throw new Exception('Brak "playerId" lub "langId');

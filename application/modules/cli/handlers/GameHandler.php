@@ -78,7 +78,7 @@ class Cli_GameHandler extends WebSocketUriHandler
         }
 
         if ($dataIn['type'] == 'chat') {
-            new Cli_Model_Chat($dataIn['msg'], $user, $this);
+            new Cli_Model_GameChat($dataIn['msg'], $user, $this);
             return;
         }
 

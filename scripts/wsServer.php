@@ -44,7 +44,7 @@ $router = new \Devristo\Phpws\Server\UriHandler\ClientRouter($server, $logger);
 // route /chat url
 //$router->addRoute('#^/chat$#i', new ChatHandler($logger));
 
-$router->addRoute('#^/chat$#i', new Cli_ChatHandler($logger));
+$router->addRoute('#^/chat$#i', new Cli_PrivateChatHandler($logger));
 $router->addRoute('#^/game$#i', new Cli_GameHandler($logger));
 $router->addRoute('#^/public$#i', new Cli_NewHandler($logger));
 
