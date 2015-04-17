@@ -35,8 +35,8 @@ var Websocket = new function () {
         console.log(r)
         switch (r.type) {
             case 'chat':
-                $('#chatBox').css({display: 'block'})
-                $('#chatWindow').append(makeTime() + ' ' + r.msg)
+                $('#chatBox').removeClass('mini')
+                $('#chatContent').append(makeTime() + ' ' + r.msg)
                 break;
             default:
                 console.log(r);
@@ -94,15 +94,24 @@ var Websocket = new function () {
             return
         }
 
-        var msg = $('#msg').val()
+        var msg = $('#msg').val(),
+            friendId = $('#chatBox #friendId').val(),
+            chatTitle = $('#chatBox #chatTitle').html()
+
+        if (!msg) {
+            return
+        }
+        if (!friendId) {
+            return
+        }
 
         if (msg) {
-            $('#chatWindow').append(makeTime() + ' ' + r.msg)
+            $('#chatContent').append(translations.to + ' ' + chatTitle + ': ' + msg)
             $('#msg').val('')
 
             var token = {
                 type: 'chat',
-                friendId: $('#chatBox #friendId').val(),
+                friendId: friendId,
                 msg: msg
             }
 

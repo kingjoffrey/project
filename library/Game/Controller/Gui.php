@@ -19,7 +19,8 @@ abstract class Game_Controller_Gui extends Coret_Controller_Authorized
 
         $this->view->MainMenu();
         $this->view->Friends();
-        $this->view->googleAnalytics();
+        $this->view->translations();
+//        $this->view->googleAnalytics();
         $this->view->Version();
 
         $this->view->Websocket($this->_playerId, $identity->accessKey);

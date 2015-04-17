@@ -3,7 +3,6 @@
 var debug = '<?php echo Zend_Registry::get('config')->debug ?>'
 
 var gameId = <?php echo $this->gameId ?>;
-var translations = <?php echo $this->translations() ?>;
 
 var timeLimits = <?php echo Zend_Json::encode(Application_Model_Limit::timeLimits()); ?>;
 var turnTimeLimit = <?php echo Zend_Json::encode(Application_Model_Limit::turnTimeLimit()); ?>;

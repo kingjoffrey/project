@@ -19,12 +19,26 @@ class GameController extends Coret_Controller_Authorized
         $this->view->headScript()->appendFile('/js/kinetic-v4.7.4.min.js');
         $this->view->headScript()->appendFile('/js/date.js');
 
-        $this->view->googleAnalytics();
+//        $this->view->googleAnalytics();
     }
 
     public function indexAction()
     {
         $this->_helper->layout->setLayout('game');
+
+        $this->view->sound();
+        $this->view->models();
+        $this->view->translations();
+
+        $this->view->gameId = $this->_gameId;
+
+        $mPlayersInGame = new Application_Model_PlayersInGame($this->_gameId);
+        $playerId = $this->_auth->getIdentity()->playerId;
+        $this->view->Websocket($playerId, $mPlayersInGame->getAccessKey($playerId));
+
+        $mGame = new Application_Model_Game($this->_gameId);
+        $this->view->map($mapId = $mGame->getMapId());
+
         $version = Zend_Registry::get('config')->version;
 
         $this->view->headLink()->appendStylesheet('/css/game.css?v=' . $version);
@@ -73,19 +87,6 @@ class GameController extends Coret_Controller_Authorized
         $this->view->headScript()->appendFile('/js/game/battleWindow.js?v=' . $version);
         $this->view->headScript()->appendFile('/js/game/treasuryWindow.js?v=' . $version);
         $this->view->headScript()->appendFile('/js/game/statisticsWindow.js?v=' . $version);
-
-        $this->view->sound();
-        $this->view->models();
-
-        $this->view->gameId = $this->_gameId;
-
-        $playerId = $this->_auth->getIdentity()->playerId;
-
-        $mPlayersInGame = new Application_Model_PlayersInGame($this->_gameId);
-        $this->view->Websocket($playerId, $mPlayersInGame->getAccessKey($playerId));
-
-        $mGame = new Application_Model_Game($this->_gameId);
-        $this->view->map($mapId = $mGame->getMapId());
     }
 }
 

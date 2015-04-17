@@ -39,8 +39,10 @@ var Chat = new function () {
         })
 
         $('#friendsBox #friends div').click(function () {
-            chatTop -= diff
-            $('#chatBox').css({top: chatTop + 'px'})
+            if ($('#chatBox').hasClass('mini')) {
+                chatTop -= diff
+                $('#chatBox').css({top: chatTop + 'px'})
+            }
             $('#chatBox').removeClass('mini')
             $('#chatBox #chatTitle').html($(this).html())
             $('#chatBox #friendId').val($(this).attr('id'))
