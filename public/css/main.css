@@ -369,28 +369,40 @@ p#info {
     display: inline-block;
 }
 
+.close {
+    position: absolute;
+    text-align: center;
+    background: none;
+}
+
 #chatBox .close {
     left: -23px;
     top: 8px;
-    border-radius: 5px;
-    border-top-left-radius: 5px;
-    border-bottom-left-radius: 5px;
+    cursor: pointer;
+}
+
+#chatBox.mini .close {
+    cursor: default;
 }
 
 #chatBox {
     position: absolute;
     z-index: 27000;
-    min-width: 360px;
+    width: 360px;
+    height: 236px;
     border-top-left-radius: 10px;
     text-transform: none;
-    display: none;
+}
+
+#chatBox.mini {
+    height: 36px;
 }
 
 #chatBox #friendId {
     display: none;
 }
 
-#chatBox #chatTitle {
+#chatBox.mini #chatTitle {
     display: none;
 }
 
@@ -399,9 +411,11 @@ p#info {
     border: none;
     overflow: hidden;
     overflow-y: scroll;
-    color: #fff;
-    text-shadow: none;
     margin: 2px;
+}
+
+#chatBox.mini #chatWindow {
+    display: none;
 }
 
 #chatBox #chatWindow #chatContent {
@@ -440,10 +454,11 @@ p#info {
 #chatBox #chatInput {
     height: 36px;
     overflow: hidden;
+    border-top: 1px solid #000;
 }
 
 #chatBox input {
-    width: 278px;
+    width: 302px;
     border: 1px solid #000;
     border-radius: 5px;
     padding: 6px;
@@ -454,6 +469,10 @@ p#info {
     -moz-user-select: text;
     -ms-user-select: text;
     user-select: text;
+}
+
+#chatBox.mini input {
+
 }
 
 #chatBox #send {

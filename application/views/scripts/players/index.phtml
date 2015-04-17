@@ -1,4 +1,4 @@
-<h1><?php echo $this->translate('Friends') ?></h1>
+<h1><?php echo $this->translate('Players') ?></h1>
 <div>
     <?php echo $this->searchForm ?>
 </div>
@@ -20,20 +20,4 @@
         <?php endif ?>
     </table>
 </div>
-<div class="table">
-    <h2><?php echo $this->translate('Friends list') ?></h2>
-    <table>
-        <tr>
-            <th><?php echo $this->translate('Player name') ?></th>
-        </tr>
-        <?php if (count($this->friends)): ?>
-            <?php foreach ($this->friends as $row): ?>
-                <tr class="trlink">
-                    <td><?php echo $row['firstName'] . ' ' . $row['lastName'] ?></td>
-                </tr>
-            <?php endforeach ?>
-        <?php endif ?>
-    </table>
-</div>
-<?php echo $this->paginationControl($this->friends, 'Sliding', 'pagination_control.phtml'); ?>
 <a class="button" href="/">&laquo; <?php echo $this->translate('Back') ?></a>

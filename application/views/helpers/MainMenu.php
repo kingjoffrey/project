@@ -17,7 +17,7 @@ class zend_View_Helper_MainMenu extends Zend_View_Helper_Abstract
             'load' => $this->view->translate('Load game'),
             'halloffame' => $this->view->translate('Hall of Fame'),
 //            'hero' => $this->view->translate('Hero'),
-            'friends' => $this->view->translate('Friends'),
+            'players' => $this->view->translate('Players'),
             'profile' => $this->view->translate('Profile'),
             'help' => $this->view->translate('Help'),
 //            'stats' => $this->view->translate('Stats'),

@@ -1010,16 +1010,13 @@ table.treasury td.c {
 }
 
 .close {
-    position: absolute;
     width: 19px;
     height: 19px;
     line-height: 18px;
-    text-align: center;
     text-shadow: none;
     color: #fff;
     border: 2px solid orangered;
     cursor: pointer;
-    background: none;
 }
 
 .close:hover {

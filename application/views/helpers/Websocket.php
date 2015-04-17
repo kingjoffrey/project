@@ -11,7 +11,6 @@ class Zend_View_Helper_Websocket extends Zend_View_Helper_Abstract
         $this->view->headScript()->appendFile('/js/websocket.js?v=' . Zend_Registry::get('config')->version);
 
         $this->view->headScript()->appendFile('/js/libs.js?v=' . $version);
-        $this->view->headScript()->appendFile('/js/chat.js?v=' . $version);
         $this->view->headScript()->appendFile('/js/message.js?v=' . $version);
 
         $script = '
