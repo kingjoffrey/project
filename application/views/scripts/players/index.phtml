@@ -4,7 +4,7 @@
 </div>
 <div class="table">
     <h2><?php echo $this->translate('Search results') ?></h2>
-    <table>
+    <table id="searchResults">
         <tr>
             <th><?php echo $this->translate('Player name') ?></th>
         </tr>
@@ -13,7 +13,7 @@
                 <tr class="trlink">
                     <td><?php echo $row['firstName'] . ' ' . $row['lastName'] ?></td>
                     <td>
-                        <a href="/ <?php echo Zend_Registry::get('lang') ?>/players/add/friendId/<?php echo $row['playerId'] ?>"><?php echo $this->translate('Add to friends') ?></a>
+                        <a href="/<?php echo Zend_Registry::get('lang') ?>/players/add/friendId/<?php echo $row['playerId'] ?>"><?php echo $this->translate('Add to friends') ?></a>
                     </td>
                 </tr>
             <?php endforeach ?>

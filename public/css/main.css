@@ -532,3 +532,7 @@ p#info {
     left: 390px;
     display: none;
 }
+
+#searchResults a {
+    color: #fff;
+}
