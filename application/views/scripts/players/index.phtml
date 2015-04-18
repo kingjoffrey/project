@@ -13,7 +13,7 @@
                 <tr class="trlink">
                     <td><?php echo $row['firstName'] . ' ' . $row['lastName'] ?></td>
                     <td>
-                        <a href="/ <?php echo Zend_Registry::get('lang') ?>/friends/add/friendId/<?php echo $row['playerId'] ?>"><?php echo $this->translate('Add to friends') ?></a>
+                        <a href="/ <?php echo Zend_Registry::get('lang') ?>/players/add/friendId/<?php echo $row['playerId'] ?>"><?php echo $this->translate('Add to friends') ?></a>
                     </td>
                 </tr>
             <?php endforeach ?>
