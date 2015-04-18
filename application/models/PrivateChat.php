@@ -22,8 +22,8 @@ class Application_Model_PrivateChat extends Coret_Db_Table_Abstract
     {
         $select = $this->_db->select()
             ->from(array('a' => $this->_name), array('date', 'message', 'recipientId'))
-            ->join(array('b' => 'player'), 'a.' . $this->_db->quoteIdentifier('recipientId') . ' = b.' . $this->_db->quoteIdentifier('playerId'), array('firstName', 'lastName'))
-            ->where('a.' . $this->_db->quoteIdentifier('playerId') . ' = ?', $this->_playerId)
+            ->join(array('b' => 'player'), 'a.' . $this->_db->quoteIdentifier('playerId') . ' = b.' . $this->_db->quoteIdentifier('playerId'), array('firstName', 'lastName'))
+            ->where('a.' . $this->_db->quoteIdentifier('recipientId') . ' = ?', $this->_playerId)
             ->where('read = false')
             ->order($this->_primary);
         return $this->selectAll($select);

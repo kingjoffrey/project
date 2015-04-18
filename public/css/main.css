@@ -419,8 +419,8 @@ p#info {
 }
 
 #chatBox #chatWindow {
-    height: 191px;
-    width: 360px;
+    height: 188px;
+    width: 356px;
     border: none;
     overflow: hidden;
     overflow-y: scroll;

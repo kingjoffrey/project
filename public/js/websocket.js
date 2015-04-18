@@ -36,6 +36,9 @@ var Websocket = new function () {
         console.log(r)
         switch (r.type) {
             case 'history':
+                if (!countProperties(r.history)) {
+                    return
+                }
                 Chat.prepare()
                 for (var i in r.history) {
                     var row = r.history[i]
