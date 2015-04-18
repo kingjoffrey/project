@@ -1,6 +1,6 @@
 <?php
 
-class Cli_Model_ChatOpen
+class Cli_Model_PrivateChatOpen
 {
     /**
      * @param $dataIn
@@ -26,6 +26,7 @@ class Cli_Model_ChatOpen
 
         $user->parameters['playerId'] = $dataIn['playerId'];
         $user->parameters['accessKey'] = $dataIn['accessKey'];
+        $user->parameters['name'] = $dataIn['name'];
 
         $handler->addUser($dataIn['playerId'], $user);
 

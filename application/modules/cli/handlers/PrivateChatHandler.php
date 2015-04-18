@@ -46,7 +46,7 @@ class Cli_PrivateChatHandler extends WebSocketUriHandler
 
         switch ($dataIn['type']) {
             case 'open':
-                new Cli_Model_ChatOpen($dataIn, $user, $this);
+                new Cli_Model_PrivateChatOpen($dataIn, $user, $this);
                 break;
             case 'chat':
                 new Cli_Model_PrivateChat($dataIn, $user, $this);

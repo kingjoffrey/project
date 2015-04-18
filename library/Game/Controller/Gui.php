@@ -9,13 +9,14 @@ abstract class Game_Controller_Gui extends Coret_Controller_Authorized
     {
         parent::init();
 
-        $identity=$this->_auth->getIdentity();
+        $identity = $this->_auth->getIdentity();
         $this->_playerId = $identity->playerId;
 
         $this->view->headLink()->prependStylesheet($this->view->baseUrl() . '/css/main.css?v=' . Zend_Registry::get('config')->version);
 
         $this->view->jquery();
         $this->view->headScript()->appendFile('/js/default.js?v=' . Zend_Registry::get('config')->version);
+        $this->view->headScript()->appendScript('var playerName = "' . $identity->firstName . ' ' . $identity->lastName . '";');
 
         $this->view->MainMenu();
         $this->view->Friends();

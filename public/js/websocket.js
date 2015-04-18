@@ -26,6 +26,7 @@ var Websocket = new function () {
             type: 'open',
             playerId: id,
             langId: langId,
+            name: playerName,
             accessKey: accessKey
         }
 

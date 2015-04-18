@@ -10,7 +10,8 @@ class Cli_Model_PrivateChat
         if ($friend = $handler->getUser($dataIn['friendId'])) {
             $token = array(
                 'type' => 'chat',
-                'msg' => $dataIn['msg']
+                'msg' => $dataIn['msg'],
+                'name' => $friend->parameters['name']
             );
 
             $handler->sendToUser($friend, $token);

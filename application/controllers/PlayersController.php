@@ -19,7 +19,7 @@ class PlayersController extends Game_Controller_Gui
             $mFriend = new Application_Model_Friends();
             $mFriend->create(Zend_Auth::getInstance()->getIdentity()->playerId, $this->_request->getParam('friendId'));
         }
-        $this->redirect('/' . Zend_Registry::get('lang') . '/friends');
+        $this->redirect('/' . Zend_Registry::get('lang') . '/players');
     }
 }
 
