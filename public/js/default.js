@@ -18,8 +18,7 @@ $(document).ready(function () {
 })
 
 var Chat = new function () {
-    var diff = 149,
-        inputWidth
+    var inputWidth
 
     this.init = function () {
         inputWidth = $('#chatBox input').width()
@@ -44,10 +43,6 @@ var Chat = new function () {
         $('#chatContent').append(prepend + ' ' + chatTitle + ': ' + msg + '<br/>')
     }
     this.prepare = function (name, friendId) {
-        //if ($('#chatBox').hasClass('mini')) {
-        //    chatTop -= diff
-        //    $('#chatBox').css({top: chatTop + 'px'})
-        //}
         $('#chatBox').removeClass('mini')
         if (isSet(name)) {
             $('#chatBox #chatTitle').html(name)
@@ -66,8 +61,6 @@ var Chat = new function () {
     }
     this.addCloseClick = function () {
         $('#chatBox .close').click(function () {
-            //chatTop += diff
-            //$('#chatBox').css({top: chatTop + 'px'})
             $('#chatBox').addClass('mini')
             Chat.removeCloseClick()
         })

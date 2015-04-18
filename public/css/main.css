@@ -407,8 +407,8 @@ p#info {
 
 #chatBox #chatTitle {
     position: absolute;
-    top: 2px;
-    left: 3px;
+    top: 10px;
+    left: 10px;
     font-size: 13px;
     letter-spacing: 0;
 }
@@ -418,7 +418,7 @@ p#info {
 }
 
 #chatBox #chatWindow {
-    height: 142px;
+    height: 195px;
     width: 360px;
     border: none;
     overflow: hidden;
@@ -466,7 +466,7 @@ p#info {
 }
 
 #chatBox.mini #chatInput {
-    top: 0;
+    top: 2px;
     border: none;
 }
 
@@ -476,22 +476,26 @@ p#info {
     overflow: hidden;
     border-top: 1px solid #000;
     position: absolute;
-    top: 190px;
+    top: 196px;
     padding-left: 5px;
 }
 
 #chatBox.mini input {
-
+    background: #373737;
 }
 
 #chatBox input {
-    width: 300px;
+    width: 308px;
     border: 1px solid #000;
     border-radius: 5px;
     padding: 5px;
     text-align: left;
     font-size: 13px;
     letter-spacing: 0;
+    position: absolute;
+    top: 5px;
+    background: #fff;
+    color: #000;
 
     -webkit-touch-callout: text;
     -webkit-user-select: text;
@@ -502,9 +506,11 @@ p#info {
 }
 
 #chatBox #send {
-    /*margin-left: 2px;*/
+    position: absolute;
+    right: 5px;
+    top: 2px;
     padding: 0 5px;
-    line-height: 27px;
+    line-height: 21px;
 }
 
 #friendsBox {
