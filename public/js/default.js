@@ -18,20 +18,11 @@ $(document).ready(function () {
 })
 
 var Chat = new function () {
-    var chatLeft,
-        chatTop,
-        diff = 149,
+    var diff = 149,
         inputWidth
 
     this.init = function () {
-        chatLeft = $(window).width() - $('#chatBox').width()
-        chatTop = $(window).height() - $('#chatBox').height()
         inputWidth = $('#chatBox input').width()
-
-        $('#chatBox').css({
-            left: chatLeft + 'px',
-            top: chatTop + 'px'
-        })
 
         $('#chatBox input').prop('disabled', true)
 
@@ -53,10 +44,10 @@ var Chat = new function () {
         $('#chatContent').append(prepend + ' ' + chatTitle + ': ' + msg + '<br/>')
     }
     this.prepare = function (name, friendId) {
-        if ($('#chatBox').hasClass('mini')) {
-            chatTop -= diff
-            $('#chatBox').css({top: chatTop + 'px'})
-        }
+        //if ($('#chatBox').hasClass('mini')) {
+        //    chatTop -= diff
+        //    $('#chatBox').css({top: chatTop + 'px'})
+        //}
         $('#chatBox').removeClass('mini')
         if (isSet(name)) {
             $('#chatBox #chatTitle').html(name)
@@ -75,8 +66,8 @@ var Chat = new function () {
     }
     this.addCloseClick = function () {
         $('#chatBox .close').click(function () {
-            chatTop += diff
-            $('#chatBox').css({top: chatTop + 'px'})
+            //chatTop += diff
+            //$('#chatBox').css({top: chatTop + 'px'})
             $('#chatBox').addClass('mini')
             Chat.removeCloseClick()
         })
