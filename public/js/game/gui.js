@@ -8,6 +8,7 @@ var Gui = new function () {
         mapBox = {close: 0},
         speed = 200,
         documentTitle = 'WoF',
+        mapHeight,
         changeCloseArrowLR = function (move, el) {
             if (move > 0) {
                 $(el).html('&#x25C0');
@@ -115,11 +116,21 @@ var Gui = new function () {
             }
         })
         Zoom.init()
+        mapHeight = $('#mapImage').height()
+        var mapWidth = $('#mapImage').width()
+        $('#map').css({
+            width: mapWidth + 'px',
+            height: mapHeight + 'px'
+        })
+        $('#mapBox').css({
+            width: mapWidth + 7 + 'px',
+            height: mapHeight + 24 + 'px'
+        });
+        $('#terrain').css('top', mapHeight + 12 + 'px')
+        $('#commandsBox').css({top: $('#playersBox').height() + 14 + 'px'})
         this.prepareButtons()
         this.prepareBoxes()
         this.adjust()
-        $('#terrain').css('top', mapHeight + 12 + 'px')
-        $('#commandsBox').css({top: $('#playersBox').height() + 14 + 'px'})
     }
     this.prepareButtons = function () {
         $('#gold').click(function () {
@@ -177,12 +188,12 @@ var Gui = new function () {
         });
 
         $('#send').click(function () {
-            Websocket.chat();
+            WebSocketGame.chat()
         });
 
         $('#msg').keypress(function (e) {
             if (e.which == 13) {
-                Websocket.chat();
+                WebSocketGame.chat()
             }
         });
 
@@ -347,19 +358,6 @@ var Gui = new function () {
         mapBox.close = 0
 
         Three.resize()
-
-        var mapHeight = $('#mapImage').height(),
-            mapWidth = $('#mapImage').width()
-
-        $('#map').css({
-            width: mapWidth + 'px',
-            height: mapHeight + 'px'
-        })
-
-        $('#mapBox').css({
-            width: mapWidth + 7 + 'px',
-            height: mapHeight + 24 + 'px'
-        });
 
         if (!Players.countHumans() > 1) {
 
