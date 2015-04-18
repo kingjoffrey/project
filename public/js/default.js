@@ -40,14 +40,29 @@ var Chat = new function () {
         })
 
         $('#friendsBox #friends div').click(function () {
-            if ($('#chatBox').hasClass('mini')) {
-                chatTop -= diff
-                $('#chatBox').css({top: chatTop + 'px'})
+            Chat.prepare($(this).html(), $(this).attr('id'))
+        })
+
+    }
+    this.message = function (to, chatTitle, msg) {
+        if (to) {
+            var prepend = translations.to
+        } else {
+            var prepend = translations.from
+        }
+        $('#chatContent').append(prepend + ' ' + chatTitle + ': ' + msg + '<br/>')
+    }
+    this.prepare = function (name, friendId) {
+        if ($('#chatBox').hasClass('mini')) {
+            chatTop -= diff
+            $('#chatBox').css({top: chatTop + 'px'})
+        }
+        $('#chatBox').removeClass('mini')
+        if (isSet(name)) {
+            $('#chatBox #chatTitle').html(name)
+            if (isSet(friendId)) {
+                $('#chatBox #friendId').val(friendId)
             }
-            $('#chatBox').removeClass('mini')
-            $('#chatBox #chatTitle').html($(this).html())
-            $('#chatBox #friendId').val($(this).attr('id'))
-            Chat.addCloseClick()
             var padding = $('#chatBox #chatTitle').width() + 10
             $('#chatBox input')
                 .prop('disabled', false)
@@ -55,8 +70,8 @@ var Chat = new function () {
                     'padding-left': padding,
                     width: inputWidth - padding
                 })
-        })
-
+        }
+        Chat.addCloseClick()
     }
     this.addCloseClick = function () {
         $('#chatBox .close').click(function () {

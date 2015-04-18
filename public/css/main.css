@@ -483,7 +483,7 @@ p#info {
 }
 
 #chatBox input {
-    width: 306px;
+    width: 300px;
     border: 1px solid #000;
     border-radius: 5px;
     padding: 5px;
@@ -500,7 +500,7 @@ p#info {
 }
 
 #chatBox #send {
-    margin-left: 2px;
+    /*margin-left: 2px;*/
     padding: 0 5px;
     line-height: 27px;
 }
@@ -510,8 +510,16 @@ p#info {
     z-index: 27000;
     min-width: 360px;
     text-transform: none;
+    position: absolute;
+    top: -5px;
+    left: -5px;
 }
 
 #friendsBox #friends div:hover {
     background: #fff;
+}
+
+#friendsBox .close {
+    left: 390px;
+    display: none;
 }
