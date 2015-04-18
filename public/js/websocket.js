@@ -35,9 +35,18 @@ var Websocket = new function () {
     this.message = function (r) {
         console.log(r)
         switch (r.type) {
+            case 'history':
+                Chat.prepare()
+                for (var i in r.history) {
+                    var row = r.history[i]
+                    Chat.message(0, row.name, row.msg)
+                }
+                $('#chatWindow').animate({scrollTop: $('#chatWindow #chatContent')[0].scrollHeight}, 'fast')
+                break;
             case 'chat':
                 Chat.prepare()
                 Chat.message(0, r.name, r.msg)
+                $('#chatWindow').animate({scrollTop: $('#chatWindow div')[0].scrollHeight}, 1000)
                 break;
             default:
                 console.log(r);
@@ -108,6 +117,7 @@ var Websocket = new function () {
 
         if (msg) {
             Chat.message(1, chatTitle, msg)
+            $('#chatWindow').animate({scrollTop: $('#chatWindow div')[0].scrollHeight}, 1000)
             $('#msg').val('')
 
             var token = {

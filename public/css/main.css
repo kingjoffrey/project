@@ -407,10 +407,11 @@ p#info {
 
 #chatBox #chatTitle {
     position: absolute;
-    top: 10px;
-    left: 10px;
+    top: 11px;
+    left: 11px;
     font-size: 13px;
     letter-spacing: 0;
+    text-shadow: none;
 }
 
 #chatBox.mini #chatTitle {
@@ -418,7 +419,7 @@ p#info {
 }
 
 #chatBox #chatWindow {
-    height: 195px;
+    height: 191px;
     width: 360px;
     border: none;
     overflow: hidden;

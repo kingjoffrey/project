@@ -30,9 +30,21 @@ class Cli_Model_PrivateChatOpen
 
         $handler->addUser($dataIn['playerId'], $user);
 
-//        $token = array(
-//            'type' => 'open'
-//        );
-//        $handler->sendToUser($user, $token);
+        $mChat = new Application_Model_PrivateChat($user->parameters['playerId'], $db);
+        $chatHistory = $mChat->getChatHistory();
+        $history = array();
+
+        foreach ($chatHistory as $row) {
+            $history[] = array(
+                'name' => $row['firstName'] . ' ' . $row['lastName'],
+                'msg' => $row['message']
+            );
+        }
+
+        $token = array(
+            'type' => 'history',
+            'history' => $history
+        );
+        $handler->sendToUser($user, $token);
     }
 }
