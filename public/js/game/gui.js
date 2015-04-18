@@ -118,6 +118,8 @@ var Gui = new function () {
         this.prepareButtons()
         this.prepareBoxes()
         this.adjust()
+        $('#terrain').css('top', mapHeight + 12 + 'px')
+        $('#commandsBox').css({top: $('#playersBox').height() + 14 + 'px'})
     }
     this.prepareButtons = function () {
         $('#gold').click(function () {
@@ -359,15 +361,8 @@ var Gui = new function () {
             height: mapHeight + 24 + 'px'
         });
 
-        if (Players.countHumans() > 1) {
-            var chatLeft = Three.getWidth() - $('#chatBox').width(),
-                chatTop = Three.getHeight() - $('#chatBox').height() - 5
+        if (!Players.countHumans() > 1) {
 
-            $('#chatBox').css({
-                'left': chatLeft + 'px',
-                'top': chatTop + 'px'
-            });
-        } else {
             $('#chatBox').css({display: 'none'});
         }
 
@@ -379,19 +374,11 @@ var Gui = new function () {
 
         var left = Three.getWidth() - $('#playersBox').width();
 
-        $('#playersBox').css({
-            'left': left + 'px'
-        });
-        $('#commandsBox').css({
-            top: parseInt($('#playersBox').css('height')) + 14 + 'px',
-            'left': left + 'px'
-        })
+
         $('#armyBox').css({
             top: Three.getHeight() - 34 + 'px',
             'left': Three.getWidth() / 2 - 115 + 'px'
         })
-
-        $('#terrain').css('top', mapHeight + 12 + 'px');
 
         $('#mapBox .close').css({
             left: $('#mapBox').width() + 4 + 'px'

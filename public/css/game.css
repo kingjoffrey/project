@@ -178,6 +178,7 @@
     border-top-left-radius: 0;
     width: 188px;
     top: -2px;
+    right: -2px;
 }
 
 #playersBox .iconButton {
@@ -738,6 +739,7 @@
     border-top-left-radius: 10px;
     border-bottom-left-radius: 10px;
     width: 188px;
+    right: -2px;
 }
 
 #commandsBox #nameBox {
