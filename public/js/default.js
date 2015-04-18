@@ -20,12 +20,13 @@ $(document).ready(function () {
 var Chat = new function () {
     var chatLeft,
         chatTop,
-        diff = 149
+        diff = 149,
+        inputWidth
 
     this.init = function () {
-        chatLeft = $(window).width() - $('#chatBox').width() - 12
-        chatTop = $(window).height() - $('#chatBox').height() - 20
-
+        chatLeft = $(window).width() - $('#chatBox').width()
+        chatTop = $(window).height() - $('#chatBox').height()
+        inputWidth = $('#chatBox input').width()
 
         $('#chatBox').css({
             left: chatLeft + 'px',
@@ -46,9 +47,14 @@ var Chat = new function () {
             $('#chatBox').removeClass('mini')
             $('#chatBox #chatTitle').html($(this).html())
             $('#chatBox #friendId').val($(this).attr('id'))
-            $('#chatBox input').prop('disabled', true)
             Chat.addCloseClick()
-            $('#chatBox input').prop('disabled', false)
+            var padding = $('#chatBox #chatTitle').width() + 10
+            $('#chatBox input')
+                .prop('disabled', false)
+                .css({
+                    'padding-left': padding,
+                    width: inputWidth - padding
+                })
         })
 
     }

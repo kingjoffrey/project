@@ -36,7 +36,7 @@ var Websocket = new function () {
         switch (r.type) {
             case 'chat':
                 $('#chatBox').removeClass('mini')
-                $('#chatContent').append(makeTime() + ' ' + r.msg)
+                $('#chatContent').append(translations.from + ' ' + r.name + ': ' + r.msg + '<br/>')
                 break;
             default:
                 console.log(r);
@@ -106,7 +106,7 @@ var Websocket = new function () {
         }
 
         if (msg) {
-            $('#chatContent').append(translations.to + ' ' + chatTitle + ': ' + msg)
+            $('#chatContent').append(translations.to + ' ' + chatTitle + ': ' + msg + '<br/>')
             $('#msg').val('')
 
             var token = {
