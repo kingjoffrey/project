@@ -9,7 +9,7 @@
         </tr>
         <?php if (count($this->hallOfFame)): ?>
             <?php foreach ($this->hallOfFame as $row): ?>
-                <tr class="trlink">
+                <tr class="trlink" id="<?php echo $row['playerId'] ?>">
                     <td><?php echo $row['firstName'] . ' ' . $row['lastName'] ?></td>
                     <td><?php echo $row['score'] ?></td>
                 </tr>

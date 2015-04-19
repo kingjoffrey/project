@@ -74,7 +74,7 @@ class Application_Model_Player extends Coret_Db_Table_Abstract
     public function hallOfFame($pageNumber)
     {
         $select = $this->_db->select()
-            ->from($this->_name, array('firstName', 'lastName', 'score'))
+            ->from($this->_name, array('playerId', 'firstName', 'lastName', 'score'))
             ->where('computer = false')
             ->where('score > 0')
             ->where('"playerId" > 0')
