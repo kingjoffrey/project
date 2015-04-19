@@ -8,8 +8,8 @@ class Cli_Model_SaveResults
         $mGame = new Application_Model_Game($game->getId(), $db);
         $mGame->endGame(); // koniec gry
 
-        $mGameScore = new Application_Model_GameScore($game->getId(), $db);
-        if ($mGameScore->gameScoreExists()) {
+        $mGameScore = new Application_Model_GameScore($db);
+        if ($mGameScore->gameScoreExists($game->getId())) {
             $token = array(
                 'type' => 'end'
             );
@@ -146,7 +146,7 @@ class Cli_Model_SaveResults
                 0, 0, 0
             );
 
-            $mGameScore->add($playerId, $points);
+            $mGameScore->add($game->getId(), $playerId, $points);
 
             $mPlayer->addScore($playerId, $sumPoints);
         }

@@ -44,10 +44,12 @@ class ProfileController extends Game_Controller_Gui
         if (!$playerId = $this->_request->getParam('playerId')) {
             return;
         }
+        $this->view->headScript()->appendFile('/js/profile.js?v=' . Zend_Registry::get('config')->version);
         $mPlayer = new Application_Model_Player();
-        $player = $mPlayer->getPlayer($playerId);
+        $this->view->player = $mPlayer->getPlayer($playerId);
 
-
+        $mGameScore = new Application_Model_GameScore();
+        $this->view->playerScores = $mGameScore->getPlayerScores($playerId);
     }
 }
 

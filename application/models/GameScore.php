@@ -5,11 +5,9 @@ class Application_Model_GameScore extends Coret_Db_Table_Abstract
     protected $_name = 'gamescore';
     protected $_primary = 'gamescoreId';
     protected $_sequence = 'gamescore_gamescoreId_seq';
-    protected $_gameId;
 
-    public function __construct($gameId, Zend_Db_Adapter_Pdo_Pgsql $db = null)
+    public function __construct(Zend_Db_Adapter_Pdo_Pgsql $db = null)
     {
-        $this->_gameId = $gameId;
         if ($db) {
             $this->_db = $db;
         } else {
@@ -17,10 +15,10 @@ class Application_Model_GameScore extends Coret_Db_Table_Abstract
         }
     }
 
-    public function add($playerId, $playerScore)
+    public function add($gameId,$playerId, $playerScore)
     {
         $data = array(
-            'gameId' => $this->_gameId,
+            'gameId' => $gameId,
             'playerId' => $playerId,
             'castlesConquered' => $playerScore['castlesConquered'],
             'castlesLost' => $playerScore['castlesLost'],
@@ -37,30 +35,29 @@ class Application_Model_GameScore extends Coret_Db_Table_Abstract
         $this->insert($data);
     }
 
-    public function gameScoreExists()
+    public function gameScoreExists($gameId)
     {
         $select = $this->_db->select()
             ->from($this->_name, $this->_primary)
-            ->where('"gameId" = ?', $this->_gameId);
+            ->where('"gameId" = ?', $gameId);
 
         return $this->selectOne($select);
     }
 
-    public function getPlayer($playerId)
+    public function getPlayerScores($playerId)
     {
         $select = $this->_db->select()
             ->from($this->_name)
-            ->where('"playerId" = ?', $playerId)
-            ->where('"gameId" = ?', $this->_gameId);
+            ->where('"playerId" = ?', $playerId);
 
         return $this->selectAll($select);
     }
 
-    public function get()
+    public function get($gameId)
     {
         $select = $this->_db->select()
             ->from($this->_name)
-            ->where('"gameId" = ?', $this->_gameId)
+            ->where('"gameId" = ?', $gameId)
             ->order('score desc');
 
         return $this->selectAll($select);
