@@ -34,10 +34,20 @@ class ProfileController extends Game_Controller_Gui
 
             if ($valid) {
                 $mPlayer->updatePlayer($data, Zend_Auth::getInstance()->getIdentity()->playerId);
-                $this->_redirect('/profile');
+                $this->redirect('/profile');
             }
         }
     }
 
+    public function showAction()
+    {
+        if (!$playerId = $this->_request->getParam('playerId')) {
+            return;
+        }
+        $mPlayer = new Application_Model_Player();
+        $player = $mPlayer->getPlayer($playerId);
+
+
+    }
 }
 
