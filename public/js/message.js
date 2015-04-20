@@ -23,7 +23,7 @@ var Message = new function () {
             $('<div>')
                 .addClass('message box')
                 .attr('id', id)
-                .append($('<h3>').html(title).addClass('msgTitle'))
+                .append($('<div>').append($('<h3>').html(title)).addClass('msgTitle'))
                 .append($(txt).addClass('overflow'))
                 .fadeIn(200)
         )
@@ -51,14 +51,14 @@ var Message = new function () {
                 'max-width': maxWidth + 'px',
                 'max-height': maxHeight + 'px'
             })
-            $('#' + id + ' h3.msgTitle').css({'min-width': $('#' + id).width() - 50})
+            $('#' + id + ' .msgTitle').css({width: $('#' + id).width() - 50})
         } else {
             $('.message').css({
                 left: left + 'px',
                 'max-width': maxWidth + 'px',
                 'max-height': maxHeight + 'px'
             })
-            $('.message h3.msgTitle').css({'min-width': $('.message').width() -50})
+            $('.message .msgTitle').css({width: $('.message').width() -50})
         }
     }
     this.setOverflowHeight = function (id) {

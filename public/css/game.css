@@ -34,9 +34,6 @@
 }
 
 #map {
-    position: absolute;
-    top: 10px;
-    left: 10px;
     overflow: hidden;
 }
 
@@ -45,9 +42,6 @@
 }
 
 #mapBox {
-    border-bottom-right-radius: 10px;
-    top: -10px;
-    left: -10px;
     background: #000;
 }
 
@@ -261,17 +255,22 @@
     padding: 2px 12px;
 }
 
-.message h3.msgTitle {
+.message .msgTitle {
     text-align: center;
     top: -16px;
-    left: 20px;
+    position: absolute;
+    border: none;
+}
+
+.message .msgTitle h3 {
+    text-align: center;
     margin: 0 auto;
     padding: 8px;
-    position: absolute;
     color: #fff;
     border: none;
     background: url(/img/deska_0.png) 132px 33px;
     box-shadow: 3px 3px 5px #000;
+    width: 300px;
 }
 
 .message h4 {
@@ -581,7 +580,6 @@
 }
 
 #limitBox {
-    left: -10px;
     border-top-right-radius: 10px;
     border-bottom-right-radius: 10px;
     width: 229px;
@@ -706,6 +704,7 @@
     background: url(/img/deska_0.png) 132px 33px;
     min-width: 230px;
     height: 35px;
+    bottom: -5px;
 }
 
 #armyBox #unitsBox {
@@ -769,7 +768,7 @@
     position: absolute;
     color: white;
     z-index: 27000;
-    left: 13px;
+    left: 2px;
 }
 
 .box {
@@ -1020,6 +1019,7 @@ table.treasury td.c {
     color: #fff;
     border: 2px solid orangered;
     cursor: pointer;
+    border-radius: 5px;
 }
 
 .close:hover {
@@ -1028,32 +1028,20 @@ table.treasury td.c {
 
 #mapBox .close {
     top: 12px;
-    border-radius: 5px;
-    border-top-right-radius: 5px;
-    border-bottom-right-radius: 5px;
 }
 
 #limitBox .close {
     top: 8px;
-    border-radius: 5px;
-    border-top-right-radius: 5px;
-    border-bottom-right-radius: 5px;
 }
 
 #playersBox .close {
     left: -23px;
-    border-radius: 5px;
-    border-top-left-radius: 5px;
-    border-bottom-left-radius: 5px;
     top: 12px;
 }
 
 #commandsBox .close {
     left: -23px;
     top: 8px;
-    border-radius: 5px;
-    border-top-left-radius: 5px;
-    border-bottom-left-radius: 5px;
 }
 
 #battleAttack {
@@ -1085,4 +1073,8 @@ table.treasury td.c {
 
 .font-gold {
     color: gold;
+}
+
+#chatBox {
+    right: -2px;
 }

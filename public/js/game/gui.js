@@ -123,10 +123,10 @@ var Gui = new function () {
             height: mapHeight + 'px'
         })
         $('#mapBox').css({
-            width: mapWidth + 7 + 'px',
-            height: mapHeight + 24 + 'px'
+            width: mapWidth + 'px',
+            height: mapHeight + 18 + 'px'
         });
-        $('#terrain').css('top', mapHeight + 12 + 'px')
+        $('#terrain').css('top', mapHeight + 4 + 'px')
         $('#commandsBox').css({top: $('#playersBox').height() + 14 + 'px'})
         this.prepareButtons()
         this.prepareBoxes()
@@ -297,21 +297,21 @@ var Gui = new function () {
             var left = parseInt($('#limitBox').css('left')),
                 move = -$('#limitBox').width()
 
-            limitBox.el = this;
+            limitBox.el = this
 
             if (limitBox.close) {
-                move = -move;
+                move = -move
             }
 
-            limitBox.move = move;
+            limitBox.move = move
 
             $('#limitBox').animate({'left': left + move + 'px'}, speed, function () {
                 limitBox.close = !limitBox.close;
                 changeCloseArrowLR(limitBox.move, limitBox.el);
-            });
-        });
+            })
+        })
         $('#playersBox .close').click(function () {
-            var left = parseInt($('#playersBox').css('left')),
+            var right = parseInt($('#playersBox').css('right')),
                 move = $('#playersBox').width()
 
             playerBox.el = this;
@@ -322,13 +322,13 @@ var Gui = new function () {
 
             playerBox.move = move;
 
-            $('#playersBox').animate({'left': left + move + 'px'}, speed, function () {
+            $('#playersBox').animate({'right': right - move + 'px'}, speed, function () {
                 playerBox.close = !playerBox.close;
                 changeCloseArrowLR(playerBox.move, playerBox.el);
-            });
-        });
+            })
+        })
         $('#commandsBox .close').click(function () {
-            var left = parseInt($('#commandsBox').css('left')),
+            var right = parseInt($('#commandsBox').css('right')),
                 move = $('#commandsBox').width()
 
             commandsBox.el = this;
@@ -339,14 +339,14 @@ var Gui = new function () {
 
             commandsBox.move = move;
 
-            $('#commandsBox').animate({'left': left + commandsBox.move + 'px'}, speed, function () {
+            $('#commandsBox').animate({'right': right - move + 'px'}, speed, function () {
                 commandsBox.close = !commandsBox.close;
                 changeCloseArrowLR(commandsBox.move, commandsBox.el);
-            });
+            })
         })
         $('#chatBox .close').click(function () {
             Gui.moveChatBox()
-        });
+        })
     }
     this.adjust = function () {
         Zoom.lens.setdimensions()
@@ -360,7 +360,6 @@ var Gui = new function () {
         Three.resize()
 
         if (!Players.countHumans() > 1) {
-
             $('#chatBox').css({display: 'none'});
         }
 
@@ -369,22 +368,15 @@ var Gui = new function () {
         $('#goldBox').css({
             'left': goldBoxLeft + 'px'
         })
-
-        var left = Three.getWidth() - $('#playersBox').width();
-
-
         $('#armyBox').css({
-            top: Three.getHeight() - 34 + 'px',
-            'left': Three.getWidth() / 2 - 115 + 'px'
+            left: Three.getWidth() / 2 - 115 + 'px'
         })
-
         $('#mapBox .close').css({
             left: $('#mapBox').width() + 4 + 'px'
         })
         $('#limitBox .close').css({
             left: $('#limitBox').width() + 4 + 'px'
         })
-
         $('#limitBox').css({
             top: mapHeight + 30 + 'px'
         })
@@ -420,7 +412,7 @@ var Gui = new function () {
         return chatBox.close
     }
     this.moveChatBox = function (func) {
-        var left = parseInt($('#chatBox').css('left')),
+        var right = parseInt($('#chatBox').css('right')),
             move = $('#chatBox').width()
 
         chatBox.el = $('#chatBox .close')
@@ -431,7 +423,7 @@ var Gui = new function () {
 
         chatBox.move = move;
 
-        $('#chatBox').animate({'left': left + move + 'px'}, speed, function () {
+        $('#chatBox').animate({right: right - move + 'px'}, speed, function () {
             chatBox.close = !chatBox.close
             changeCloseArrowLR(chatBox.move, chatBox.el)
             if (isSet(func)) {
