@@ -296,8 +296,7 @@ var Gui = new function () {
         $('#limitBox .close').click(function () {
             var left = parseInt($('#limitBox').css('left')),
                 move = -$('#limitBox').width()
-console.log(left)
-            console.log(move)
+
             limitBox.el = this
 
             if (limitBox.close) {
