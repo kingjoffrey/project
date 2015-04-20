@@ -43,6 +43,7 @@
 
 #mapBox {
     background: #000;
+    left: 0px;
 }
 
 .zoomPup {
@@ -583,6 +584,7 @@
     border-top-right-radius: 10px;
     border-bottom-right-radius: 10px;
     width: 229px;
+    left: 0px;
 }
 
 #limitBox .row {

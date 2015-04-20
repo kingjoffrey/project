@@ -296,7 +296,8 @@ var Gui = new function () {
         $('#limitBox .close').click(function () {
             var left = parseInt($('#limitBox').css('left')),
                 move = -$('#limitBox').width()
-
+console.log(left)
+            console.log(move)
             limitBox.el = this
 
             if (limitBox.close) {
@@ -305,7 +306,7 @@ var Gui = new function () {
 
             limitBox.move = move
 
-            $('#limitBox').animate({'left': left + move + 'px'}, speed, function () {
+            $('#limitBox').animate({left: left + move + 'px'}, speed, function () {
                 limitBox.close = !limitBox.close;
                 changeCloseArrowLR(limitBox.move, limitBox.el);
             })
@@ -322,7 +323,7 @@ var Gui = new function () {
 
             playerBox.move = move;
 
-            $('#playersBox').animate({'right': right - move + 'px'}, speed, function () {
+            $('#playersBox').animate({right: right - move + 'px'}, speed, function () {
                 playerBox.close = !playerBox.close;
                 changeCloseArrowLR(playerBox.move, playerBox.el);
             })
