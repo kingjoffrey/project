@@ -9,7 +9,7 @@ class Application_Form_Password extends Zend_Form
 
         $f = new Coret_Form_Password(
             array(
-                'label' => $this->getView()->translate('Password'),
+                'label' => $this->_view->translate('Password'),
                 'required' => true,
             )
         );
@@ -17,7 +17,7 @@ class Application_Form_Password extends Zend_Form
 
         $f = new Coret_Form_Password(
             array(
-                'label' => $this->getView()->translate('Repeat password'),
+                'label' => $this->_view->translate('Repeat password'),
                 'name' => 'repeatPassword',
                 'required' => true,
                 'validators' => array(

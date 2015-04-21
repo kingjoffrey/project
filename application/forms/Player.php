@@ -1,25 +1,28 @@
 <?php
 
-    class Application_Form_Player extends Zend_Form
+class Application_Form_Player extends Zend_Form
+{
+    public function init()
     {
-
-        public function init()
-        {
-            $this->addElement('text', 'firstName', array(
-                    'label' => $this->getView()->translate('First name') . ' (' . $this->getView()->translate('imaginary') . ')',
-                    'required' => true,
-                    'filters' => array('StringTrim'),
-                    'validators' => array(array('StringLength', false, array(1, 256)))
-                )
-            );
-            $this->addElement('text', 'lastName', array(
-                    'label' => $this->getView()->translate('Last name') . ' (' . $this->getView()->translate('imaginary') . ')',
-                    'required' => true,
-                    'filters' => array('StringTrim'),
-                    'validators' => array(array('StringLength', false, array(1, 256)))
-                )
-            );
-        }
-
+        $this->getView();
+        $f = new Coret_Form_Varchar(
+            array(
+                'label' => $this->_view->translate('First name') . ' (' . $this->_view->translate('imaginary') . ')',
+                'name' => 'firstName',
+                'required' => true,
+            )
+        );
+        $this->addElements($f->getElements());
+        $f = new Coret_Form_Varchar(
+            array(
+                'label' => $this->_view->translate('Last name') . ' (' . $this->_view->translate('imaginary') . ')',
+                'name' => 'lastName',
+                'required' => true,
+            )
+        );
+        $this->addElements($f->getElements());
+        $f = new Coret_Form_Submit(array('label' => $this->_view->translate('Submit')));
+        $this->addElements($f->getElements());
     }
+}
 
