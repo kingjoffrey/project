@@ -80,19 +80,4 @@ class Cli_EditorHandler extends WebSocketUriHandler
             $mWebSocket->disconnect($user->parameters['websocketId']);
         }
     }
-
-    private function update($gameId, $db)
-    {
-        $mPlayersInGame = new Application_Model_PlayersInGame($gameId, $db);
-        $mGame = new Application_Model_Game($gameId, $db);
-
-        $token = array(
-            'players' => $mPlayersInGame->getPlayersWaitingForGame(),
-            'gameMasterId' => $mGame->getGameMasterId(),
-            'type' => 'update'
-        );
-
-        $this->sendToChannel($db, $token, $gameId);
-    }
-
 }

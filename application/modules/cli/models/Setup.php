@@ -21,7 +21,9 @@ class Cli_Model_Setup
         foreach ($mPlayersInGame->getPlayersWaitingForGame() as $row) {
             $this->_players[$row['playerId']] = $row;
         }
+        print_r($this->_players);
         $this->_gameMasterId = $mGame->getGameMasterId();
+        echo  $this->_gameMasterId;
     }
 
     public function update(Cli_SetupHandler $handler)

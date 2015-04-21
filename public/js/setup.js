@@ -44,7 +44,7 @@ var Setup = {
 
         this.ws.onmessage = function (e) {
             var r = $.parseJSON(e.data);
-
+console.log(r)
             if (typeof r.type == 'undefined') {
                 return;
             }
