@@ -1,8 +1,8 @@
 <?php
 
-class Application_Model_GameResults extends Coret_Db_Table_Abstract
+class Application_Model_GameAchievements extends Coret_Db_Table_Abstract
 {
-    protected $_name = 'gameresults';
+    protected $_name = 'gameachievements';
     protected $_primary = 'gameresultsId';
     protected $_sequence = 'gameresults_gameresultsId_seq';
     protected $_gameId;
@@ -17,7 +17,7 @@ class Application_Model_GameResults extends Coret_Db_Table_Abstract
         }
     }
 
-    public function add($playerId, $castlesConquered, $castlesLost, $castlesDestroyed, $soldiersCreated, $soldiersKilled, $soldiersLost, $heroesKilled, $heroesLost, $gold, $soldiers, $heroes, $castles)
+    public function add($playerId, $castlesConquered, $castlesLost, $castlesDestroyed, $soldiersCreated, $soldiersKilled, $soldiersLost, $heroesKilled, $heroesLost)
     {
         $data = array(
             'gameId' => $this->_gameId,
@@ -29,11 +29,7 @@ class Application_Model_GameResults extends Coret_Db_Table_Abstract
             'soldiersKilled' => $soldiersKilled,
             'soldiersLost' => $soldiersLost,
             'heroesKilled' => $heroesKilled,
-            'heroesLost' => $heroesLost,
-            'gold' => $gold,
-            'soldiers' => $soldiers,
-            'heroes' => $heroes,
-            'castles' => $castles,
+            'heroesLost' => $heroesLost
         );
 
         $this->insert($data);

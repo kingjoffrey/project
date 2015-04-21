@@ -15,7 +15,7 @@ class Application_Model_GameScore extends Coret_Db_Table_Abstract
         }
     }
 
-    public function add($gameId,$playerId, $playerScore)
+    public function add($gameId, $playerId, $playerScore)
     {
         $data = array(
             'gameId' => $gameId,
@@ -29,6 +29,8 @@ class Application_Model_GameScore extends Coret_Db_Table_Abstract
             'heroesKilled' => $playerScore['heroesKilled'],
             'heroesLost' => $playerScore['heroesLost'],
             'gold' => $playerScore['gold'],
+            'heroes' => $playerScore['heroes'],
+            'soldiers' => $playerScore['soldiers'],
             'score' => $playerScore['score']
         );
 
@@ -47,7 +49,8 @@ class Application_Model_GameScore extends Coret_Db_Table_Abstract
     public function getPlayerScores($playerId)
     {
         $select = $this->_db->select()
-            ->from($this->_name)
+            ->from(array('a' => $this->_name), 'score')
+            ->join(array('b' => 'game'), 'a."gameId" = b."gameId"', array('gameId', 'begin', 'end', 'turnNumber'))
             ->where('"playerId" = ?', $playerId);
 
         return $this->selectAll($select);

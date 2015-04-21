@@ -18,7 +18,7 @@ class Cli_Model_SaveResults
             return;
         }
 
-        $mGameResults = new Application_Model_GameResults($game->getId(), $db);
+        $mGameResults = new Application_Model_GameAchievements($game->getId(), $db);
         $mPlayer = new Application_Model_Player($db);
 
         $mCastlesConquered = new Application_Model_CastlesConquered($game->getId(), $db);
@@ -141,13 +141,21 @@ class Cli_Model_SaveResults
                 $playerSoldiersKilled,
                 $playerSoldiersLost,
                 $playerHeroesKilled,
-                $playerHeroesLost,
-                $playersGold[$playerId],
-                0, 0, 0
+                $playerHeroesLost
             );
 
-            $mGameScore->add($game->getId(), $playerId, $points);
+            $armies = $game->getPlayers()->getPlayer($shortName)->getArmies();
+            $points['heroes'] = 0;
+            $points['soldiers'] = 0;
+            foreach ($armies->getKeys() as $armyId) {
+                $army = $armies->getArmy($armyId);
+                $points['heroes'] += $army->getHeroes()->count() * 100;
+                $points['soldiers'] += $army->getSwimmingSoldiers()->getCosts();
+                $points['soldiers'] += $army->getFlyingSoldiers()->getCosts();
+                $points['soldiers'] += $army->getWalkingSoldiers()->getCosts();
+            }
 
+            $mGameScore->add($game->getId(), $playerId, $points);
             $mPlayer->addScore($playerId, $sumPoints);
         }
 
