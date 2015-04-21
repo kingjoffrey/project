@@ -27,13 +27,6 @@ class Cli_GameHandler extends WebSocketUriHandler
         return $this->_db;
     }
 
-    public function getGame($gameId)
-    {
-        if (isset($this->_game[$gameId])) {
-            return $this->_game[$gameId];
-        }
-    }
-
     public function addGame($gameId, $game)
     {
         $this->_game[$gameId] = $game;
@@ -43,6 +36,17 @@ class Cli_GameHandler extends WebSocketUriHandler
     {
         $this->_game[$gameId] = null;
         unset($this->_game[$gameId]);
+    }
+
+    /**
+     * @param $gameId
+     * @return Cli_Model_Game
+     */
+    public function getGame($gameId)
+    {
+        if (isset($this->_game[$gameId])) {
+            return $this->_game[$gameId];
+        }
     }
 
     public function onMessage(WebSocketTransportInterface $user, WebSocketMessageInterface $msg)

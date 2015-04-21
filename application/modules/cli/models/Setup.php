@@ -35,6 +35,11 @@ class Cli_Model_Setup
         $handler->sendToChannel($handler->getGame($this->_id), $token);
     }
 
+    public function isGameMaster($playerId)
+    {
+        return $playerId == $this->_gameMasterId;
+    }
+
     public function setNewGameMaster($db)
     {
         $this->_gameMasterId = $this->findNewGameMaster();

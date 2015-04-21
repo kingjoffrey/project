@@ -190,7 +190,7 @@ function prepareTeams() {
 }
 
 function prepareStartButton(gameMasterId, playersReady) {
-    if (gameMasterId == myId) {
+    if (gameMasterId == id) {
         $('#start')
             .html(translations.startGame)
             .addClass('button')
@@ -204,7 +204,7 @@ function prepareStartButton(gameMasterId, playersReady) {
 }
 
 function wsStart() {
-    if (Setup.gameMasterId != myId) {
+    if (Setup.gameMasterId != id) {
         return
     }
 

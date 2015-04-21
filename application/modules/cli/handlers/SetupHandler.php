@@ -19,14 +19,15 @@ class Cli_SetupHandler extends WebSocketUriHandler
         return $this->_db;
     }
 
-    public function getGames()
-    {
-        return $this->_games;
-    }
-
     public function addGame($gameId, Cli_Model_Setup $game)
     {
         $this->_games[$gameId] = $game;
+    }
+
+    public function removeGame($gameId)
+    {
+        $this->_game[$gameId] = null;
+        unset($this->_game[$gameId]);
     }
 
     /**
@@ -59,72 +60,7 @@ class Cli_SetupHandler extends WebSocketUriHandler
                 break;
 
             case 'start':
-                $mGame = new Application_Model_Game($user->parameters['gameId'], $this->_db);
 
-                if (!$mGame->isGameMaster($user->parameters['playerId'])) {
-                    echo('Not game master!');
-                    return;
-                }
-
-                $mPlayersInGame = new Application_Model_PlayersInGame($user->parameters['gameId'], $this->_db);
-                $mPlayersInGame->disconnectNotActive();
-
-                $players = $mPlayersInGame->getAll();
-
-                $mapId = $mGame->getMapId();
-
-                $mMapCastles = new Application_Model_MapCastles($mapId, $this->_db);
-                $startPositions = $mMapCastles->getDefaultStartPositions();
-
-                $mMapPlayers = new Application_Model_MapPlayers($mapId, $this->_db);
-                $mapPlayers = $mMapPlayers->getAll();
-
-                $first = true;
-
-                foreach ($mapPlayers as $mapPlayerId => $mapPlayer) {
-                    if (isset($players[$mapPlayerId])) {
-                        $playerId = $players[$mapPlayerId]['playerId'];
-                    } else {
-                        $playerId = $mPlayersInGame->getComputerPlayerId();
-                        if (!$playerId) {
-                            $modelPlayer = new Application_Model_Player($this->_db);
-                            $playerId = $modelPlayer->createComputerPlayer();
-                            $modelHero = new Application_Model_Hero($playerId, $this->_db);
-                            $modelHero->createHero();
-                        }
-                        $mPlayersInGame->joinGame($playerId);
-                        $mPlayersInGame->updatePlayerReady($playerId, $mapPlayerId);
-                    }
-
-                    if ($first) {
-                        $mTurn = new Application_Model_TurnHistory($user->parameters['gameId'], $this->_db);
-                        $mTurn->add($playerId, 1);
-                        $mGame->startGame($playerId);
-                        $first = false;
-                    }
-
-                    $mPlayersInGame->setTeam($playerId, $dataIn['team'][$mapPlayerId]);
-
-                    $mHero = new Application_Model_Hero($playerId, $this->_db);
-                    $playerHeroes = $mHero->getHeroes();
-                    if (empty($playerHeroes)) {
-                        $mHero->createHero();
-                        $playerHeroes = $mHero->getHeroes($playerId, $this->_db);
-                    }
-                    $mArmy = new Application_Model_Army($user->parameters['gameId'], $this->_db);
-
-                    $armyId = $mArmy->createArmy($startPositions[$mapPlayer['castleId']], $playerId);
-
-                    $mHeroesInGame = new Application_Model_HeroesInGame($user->parameters['gameId'], $this->_db);
-                    $mHeroesInGame->add($armyId, $playerHeroes[0]['heroId']);
-
-                    $mCastlesInGame = new Application_Model_CastlesInGame($user->parameters['gameId'], $this->_db);
-                    $mCastlesInGame->addCastle($mapPlayer['castleId'], $playerId);
-                }
-
-                $token = array('type' => 'start');
-
-                $this->sendToChannel(Cli_Model_Setup::getSetup($user), $token);
                 break;
 
             case 'change':
@@ -209,8 +145,8 @@ class Cli_SetupHandler extends WebSocketUriHandler
             $setup->removeUser($user, $this->_db);
 
             if ($setup->getGameMasterId() == $user->parameters['playerId']) {
-                $setup->setNewGameMaster($user->parameters['gameId'], $this->_db);
-                $setup->update($user->parameters['gameId'], $this->_db);
+                $setup->setNewGameMaster($this->_db);
+                $setup->update($this);
             }
 
             $token = array(
@@ -220,8 +156,8 @@ class Cli_SetupHandler extends WebSocketUriHandler
 
             $this->sendToChannel($setup, $token);
 
-            if (!$game->getUsers()) {
-                $this->removeGame($game->getId());
+            if (!$setup->getUsers()) {
+                $this->removeGame($setup->getId());
             }
         }
     }
