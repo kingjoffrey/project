@@ -24,19 +24,19 @@ class Cli_SetupHandler extends WebSocketUriHandler
         return $this->_games;
     }
 
-    public function addGame($gameId, WebSocketTransportInterface $game)
+    public function addGame($gameId, Cli_Model_Setup $game)
     {
         $this->_games[$gameId] = $game;
     }
 
     /**
-     * @param $playerId
-     * @return Devristo\Phpws\Protocol\WebSocketTransportInterface $user
+     * @param $gameId
+     * @return Cli_Model_Setup
      */
-    public function getUser($playerId)
+    public function getGame($gameId)
     {
-        if (isset($this->_games[$playerId])) {
-            return $this->_games[$playerId];
+        if (isset($this->_games[$gameId])) {
+            return $this->_games[$gameId];
         }
     }
 
@@ -203,37 +203,32 @@ class Cli_SetupHandler extends WebSocketUriHandler
 
     public function onDisconnect(WebSocketTransportInterface $user)
     {
-        if (!isset($user->parameters['gameId']) || !isset($user->parameters['playerId'])) {
-            return;
+        $setup = Cli_Model_Setup::getSetup($user);
+        if ($setup) {
+
+//        $mGame = new Application_Model_Game($user->parameters['gameId'], $this->_db);
+//        if ($mGame->isGameStarted()) {
+//            return;
+//        }
+
+            $setup->removeUser($user, $this->_db);
+
+            if ($setup->getGameMasterId() == $user->parameters['playerId']) {
+                $setup->setNewGameMaster($user->parameters['gameId'], $this->_db);
+                $setup->update($user->parameters['gameId'], $this->_db);
+            }
+
+            $token = array(
+                'type' => 'close',
+                'playerId' => $user->parameters['playerId']
+            );
+
+            $this->sendToChannel($setup, $token);
+
+            if (!$game->getUsers()) {
+                $this->removeGame($game->getId());
+            }
         }
-        if (!Zend_Validate::is($user->parameters['gameId'], 'Digits') || !Zend_Validate::is($user->parameters['playerId'], 'Digits')) {
-            return;
-        }
-
-        $mGame = new Application_Model_Game($user->parameters['gameId'], $this->_db);
-        if ($mGame->isGameStarted()) {
-            return;
-        }
-
-        $mPlayersInGame = new Application_Model_PlayersInGame($user->parameters['gameId'], $this->_db);
-        $mPlayersInGame->updateWSSUId($user->parameters['playerId'], null);
-
-        $mGame->setNewGameMaster($mPlayersInGame->findNewGameMaster());
-        $this->update($user->parameters['gameId'], $this->_db);
-    }
-
-    private function update($gameId)
-    {
-        $mPlayersInGame = new Application_Model_PlayersInGame($gameId, $this->_db);
-        $mGame = new Application_Model_Game($gameId, $this->_db);
-
-        $token = array(
-            'players' => $mPlayersInGame->getPlayersWaitingForGame(),
-            'gameMasterId' => $mGame->getGameMasterId(),
-            'type' => 'update'
-        );
-
-        $this->sendToChannel($token, $gameId);
     }
 
     /**
@@ -270,14 +265,14 @@ class Cli_SetupHandler extends WebSocketUriHandler
      * @param $gameId
      * @param null $debug
      */
-    public function sendToChannel($token, $debug = null)
+    public function sendToChannel(Cli_Model_Setup $setup, $token, $debug = null)
     {
         if ($debug || Zend_Registry::get('config')->debug) {
             print_r('ODPOWIEDŹ ');
             print_r($token);
         }
 
-        foreach ($this->_games AS $user) {
+        foreach ($setup->getUsers() AS $user) {
             $this->sendToUser($user, $token);
         }
     }

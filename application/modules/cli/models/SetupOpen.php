@@ -38,14 +38,10 @@ class Cli_Model_SetupOpen
             $user->parameters['game'] = $handler->getGame($dataIn['gameId']);
         }
 
-        $game = Cli_Model_Game::getGame($user);
-        $game->addUser($dataIn['playerId'], $user, $mPlayersInGame, $handler);
+        $setup = Cli_Model_Setup::getSetup($user);
+        $setup->addUser($dataIn['playerId'], $user, new Application_Model_PlayersInGame($dataIn['gameId'], $db), $handler);
 
-//        $user->parameters = array(
-//            'gameId' => $dataIn['gameId'],
-//            'playerId' => $dataIn['playerId'],
-//            'accessKey' => $dataIn['accessKey'],
-//            'name' => $dataIn['name']
-//        );
+        $user->parameters['playerId'] = $dataIn['playerId'];
+        $user->parameters['accessKey'] = $dataIn['accessKey'];
     }
 }

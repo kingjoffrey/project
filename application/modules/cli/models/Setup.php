@@ -5,7 +5,8 @@ class Cli_Model_Setup
     private $_id;
 
     private $_users = array();
-    private $_online = array();
+
+    private $_gameMasterId;
 
     public function __construct($gameId, Zend_Db_Adapter_Pdo_Pgsql $db)
     {
@@ -16,6 +17,39 @@ class Cli_Model_Setup
         $mGame = new Application_Model_Game($this->_id, $db);
         $mMapPlayers = new Application_Model_MapPlayers($mGame->getMapId(), $this->_db);
         Zend_Registry::set('mapPlayerIdToShortNameRelations', $mMapPlayers->getShortNameToMapPlayerIdRelations());
+
+        $this->_gameMasterId = $mGame->getGameMasterId();
+
+    }
+
+    public function update($db, $handler)
+    {
+        $mPlayersInGame = new Application_Model_PlayersInGame($this->_id, $db);
+
+        $token = array(
+            'players' => $mPlayersInGame->getPlayersWaitingForGame(),
+            'gameMasterId' => $this->_gameMasterId,
+            'type' => 'update'
+        );
+
+        $handler->sendToChannel($token, $this->_id);
+    }
+
+    public function setNewGameMaster($db)
+    {
+        $this->_gameMasterId = $this->findNewGameMaster();
+        $mGame = new Application_Model_Game($this->_id, $db);
+        $mGame->setNewGameMaster($this->_gameMasterId);
+    }
+
+    public function findNewGameMaster()
+    {
+        return key($this->_users);
+    }
+
+    public function getGameMasterId()
+    {
+        return $this->_gameMasterId;
     }
 
     public function getId()
@@ -23,19 +57,16 @@ class Cli_Model_Setup
         return $this->_id;
     }
 
-    public function addUser($playerId, Devristo\Phpws\Protocol\WebSocketTransportInterface $user, Application_Model_PlayersInGame $mPlayersInGame)
+    public function addUser($playerId, Devristo\Phpws\Protocol\WebSocketTransportInterface $user)
     {
-        $mPlayersInGame->updateWSSUId($playerId, $user->getId());
         $this->_users[$playerId] = $user;
-        $this->updateOnline($this->getPlayerColor($playerId), 1);
     }
 
-    public function removeUser($playerId, Zend_Db_Adapter_Pdo_Pgsql $db)
+    public function removeUser(Devristo\Phpws\Protocol\WebSocketTransportInterface $user, Zend_Db_Adapter_Pdo_Pgsql $db)
     {
-        $mPlayersInGame = new Application_Model_PlayersInGame($this->_id, $db);
-        $mPlayersInGame->updateWSSUId($playerId, null);
-        unset($this->_users[$playerId]);
-        $this->updateOnline($this->getPlayerColor($playerId), 0);
+        $mWebSocket = new Application_Model_Websocket($user->parameters['playerId'], $db);
+        $mWebSocket->disconnect($user->parameters['accessKey']);
+        unset($this->_users[$user->parameters['playerId']]);
     }
 
     public function getUsers()
@@ -43,16 +74,11 @@ class Cli_Model_Setup
         return $this->_users;
     }
 
-    private function updateOnline($color, $online)
-    {
-        $this->_online[$color] = $online;
-    }
-
     /**
      * @param Devristo\Phpws\Protocol\WebSocketTransportInterface $user
-     * @return Cli_Model_Game
+     * @return Cli_Model_Setup
      */
-    static public function getGame(Devristo\Phpws\Protocol\WebSocketTransportInterface $user)
+    static public function getSetup(Devristo\Phpws\Protocol\WebSocketTransportInterface $user)
     {
         return $user->parameters['game'];
     }
