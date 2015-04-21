@@ -50,84 +50,23 @@ class Cli_SetupHandler extends WebSocketUriHandler
                 new Cli_Model_SetupOpen($dataIn, $user, $this);
                 break;
             case 'team':
-                $token = array(
+                $this->sendToChannel(Cli_Model_Setup::getSetup($user), array(
                     'type' => 'team',
                     'mapPlayerId' => $dataIn['mapPlayerId'],
                     'teamId' => $dataIn['teamId']
-                );
-
-                $this->sendToChannel(Cli_Model_Setup::getSetup($user), $token);
+                ));
                 break;
 
             case 'start':
-
+                new Cli_Model_SetupStart($dataIn, $user, $this);
                 break;
 
             case 'change':
-                $mapPlayerId = $dataIn['mapPlayerId'];
-
-                if (empty($mapPlayerId)) {
-                    echo('Brak mapPlayerId!');
-                    return;
-                }
-
-                $mPlayersInGame = new Application_Model_PlayersInGame($user->parameters['gameId'], $this->_db);
-                $mGame = new Application_Model_Game($user->parameters['gameId'], $this->_db);
-
-                if ($mPlayersInGame->getMapPlayerIdByPlayerId($user->parameters['gameId'], $user->parameters['playerId'], $this->_db) == $mapPlayerId) { // unselect
-                    $mPlayersInGame->updatePlayerReady($user->parameters['playerId'], $mapPlayerId);
-                } elseif (!$mPlayersInGame->isNoComputerColorInGame($mapPlayerId)) { // select
-                    if ($mPlayersInGame->isColorInGame($mapPlayerId)) {
-                        $mPlayersInGame->updatePlayerReady($mPlayersInGame->getPlayerIdByMapPlayerId($mapPlayerId), $mapPlayerId);
-                    }
-                    $mPlayersInGame->updatePlayerReady($user->parameters['playerId'], $mapPlayerId);
-                } elseif ($mGame->isGameMaster($user->parameters['playerId'])) { // kick
-                    $mPlayersInGame->updatePlayerReady($mPlayersInGame->getPlayerIdByMapPlayerId($mapPlayerId), $mapPlayerId);
-                } else {
-                    echo('Błąd!');
-                    return;
-                }
-
-                $this->update($user->parameters['gameId'], $this->_db);
+                new Cli_Model_SetupChange($dataIn, $user, $this);
                 break;
 
             case 'computer':
-                $mapPlayerId = $dataIn['mapPlayerId'];
-
-                if (empty($mapPlayerId)) {
-                    echo('Brak mapPlayerId!');
-                    return;
-                }
-
-                $mGame = new Application_Model_Game($user->parameters['gameId'], $this->_db);
-                if (!$mGame->isGameMaster($user->parameters['playerId'])) {
-                    echo('Brak uprawnień!');
-                    return;
-                }
-
-                $mPlayersInGame = new Application_Model_PlayersInGame($user->parameters['gameId'], $this->_db);
-
-                if ($mPlayersInGame->isColorInGame($mapPlayerId)) {
-                    echo('Ten kolor jest już w grze!');
-                    return;
-                }
-
-                $playerId = $mPlayersInGame->getComputerPlayerId();
-
-                if (!$playerId) {
-                    $mPlayer = new Application_Model_Player($this->_db);
-                    $playerId = $mPlayer->createComputerPlayer();
-
-                    $mHero = new Application_Model_Hero($playerId, $this->_db);
-                    $mHero->createHero();
-                }
-
-                if (!$mPlayersInGame->isPlayerInGame($playerId)) {
-                    $mPlayersInGame->joinGame($playerId);
-                }
-                $mPlayersInGame->updatePlayerReady($playerId, $mapPlayerId);
-
-                $this->update($user->parameters['gameId'], $this->_db);
+                new Cli_Model_SetupComputer($dataIn, $user, $this);
                 break;
         }
     }

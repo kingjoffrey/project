@@ -4,9 +4,8 @@ class Cli_Model_SetupStart
 {
     /**
      * @param $dataIn
-     * @param Devristo\Phpws\Protocol\WebSocketTransportInterface $user
-     * @param Zend_Db_Adapter_Pdo_Pgsql $db
-     * @param Cli_GameHandler $handler
+     * @param \Devristo\Phpws\Protocol\WebSocketTransportInterface $user
+     * @param Cli_SetupHandler $handler
      * @throws Exception
      */
     public function __construct($dataIn, Devristo\Phpws\Protocol\WebSocketTransportInterface $user, Cli_SetupHandler $handler)

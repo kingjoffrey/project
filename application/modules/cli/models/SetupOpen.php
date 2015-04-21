@@ -13,15 +13,12 @@ class Cli_Model_SetupOpen
     {
         if (!isset($dataIn['gameId'])) {
             throw new Exception('Brak "gameId"');
-            return;
         }
         if (!isset($dataIn['playerId'])) {
             throw new Exception('Brak "playerId"');
-            return;
         }
         if (!isset($dataIn['langId'])) {
             throw new Exception('Brak langId');
-            return;
         }
 
         $db = $handler->getDb();
@@ -29,7 +26,6 @@ class Cli_Model_SetupOpen
 
         if (!$mWebSocket->checkAccessKey($dataIn['accessKey'], $db)) {
             throw new Exception('Brak uprawnień!');
-            return;
         }
 
         if (!($user->parameters['game'] = $handler->getGame($dataIn['gameId']))) {
