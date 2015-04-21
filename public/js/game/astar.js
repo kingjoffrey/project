@@ -39,13 +39,13 @@ var AStar = new function () {
     }
     this.showPath = function () {
         army = Me.getSelectedArmy()
+        movementType = army.getMovementType()
         if (getG(field.getType()) > 6 && !field.hasArmies()) {
             return
         }
         open = {}
         close = {}
         nr = 0
-        movementType = army.getMovementType()
         Three.clearPathCircles()
         var startX = army.getX(),
             startY = army.getY(),
