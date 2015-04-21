@@ -6,6 +6,7 @@ use Devristo\Phpws\Server\UriHandler\WebSocketUriHandler;
 class Cli_SetupHandler extends WebSocketUriHandler
 {
     private $_db;
+    private $_games = array();
 
     public function __construct($logger)
     {
@@ -18,14 +19,14 @@ class Cli_SetupHandler extends WebSocketUriHandler
         return $this->_db;
     }
 
-    public function getUsers()
+    public function getGames()
     {
-        return $this->_users;
+        return $this->_games;
     }
 
-    public function addUser($playerId, WebSocketTransportInterface $user)
+    public function addGame($gameId, WebSocketTransportInterface $game)
     {
-        $this->_users[$playerId] = $user;
+        $this->_games[$gameId] = $game;
     }
 
     /**
@@ -34,8 +35,8 @@ class Cli_SetupHandler extends WebSocketUriHandler
      */
     public function getUser($playerId)
     {
-        if (isset($this->_users[$playerId])) {
-            return $this->_users[$playerId];
+        if (isset($this->_games[$playerId])) {
+            return $this->_games[$playerId];
         }
     }
 
@@ -232,7 +233,7 @@ class Cli_SetupHandler extends WebSocketUriHandler
             'type' => 'update'
         );
 
-        $this->sendToChannel($this->_db, $token, $gameId);
+        $this->sendToChannel($token, $gameId);
     }
 
     /**
@@ -269,23 +270,15 @@ class Cli_SetupHandler extends WebSocketUriHandler
      * @param $gameId
      * @param null $debug
      */
-    public function sendToChannel($token, $gameId, $debug = null)
+    public function sendToChannel($token, $debug = null)
     {
-        echo Zend_Registry::get('config')->debug;
         if ($debug || Zend_Registry::get('config')->debug) {
             print_r('ODPOWIEDŹ ');
             print_r($token);
         }
 
-        $mPlayersInGame = new Application_Model_PlayersInGame($gameId, $this->_db);
-        $users = $mPlayersInGame->getInGameWSSUIds();
-
-        foreach ($users AS $row) {
-            foreach ($this->users AS $u) {
-                if ($u->getId() == $row['webSocketServerUserId']) {
-                    $this->sendToUser($u, $token);
-                }
-            }
+        foreach ($this->_games AS $user) {
+            $this->sendToUser($user, $token);
         }
     }
 }

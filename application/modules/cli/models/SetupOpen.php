@@ -32,17 +32,20 @@ class Cli_Model_SetupOpen
             return;
         }
 
-        $handler->addUser($dataIn['playerId'], $user);
+        if (!($user->parameters['game'] = $handler->getGame($dataIn['gameId']))) {
+            echo 'not set' . "\n";
+            $handler->addGame($dataIn['gameId'], new Cli_Model_Setup($dataIn['gameId'], $db));
+            $user->parameters['game'] = $handler->getGame($dataIn['gameId']);
+        }
 
-        $user->parameters = array(
-            'gameId' => $dataIn['gameId'],
-            'playerId' => $dataIn['playerId'],
-            'accessKey' => $dataIn['accessKey'],
-            'name' => $dataIn['name']
-        );
+        $game = Cli_Model_Game::getGame($user);
+        $game->addUser($dataIn['playerId'], $user, $mPlayersInGame, $handler);
 
-        $mGame = new Application_Model_Game($dataIn['gameId'], $this->_db);
-        $mMapPlayers = new Application_Model_MapPlayers($mGame->getMapId(), $this->_db);
-        Zend_Registry::set('mapPlayerIdToShortNameRelations', $mMapPlayers->getShortNameToMapPlayerIdRelations());
+//        $user->parameters = array(
+//            'gameId' => $dataIn['gameId'],
+//            'playerId' => $dataIn['playerId'],
+//            'accessKey' => $dataIn['accessKey'],
+//            'name' => $dataIn['name']
+//        );
     }
 }
