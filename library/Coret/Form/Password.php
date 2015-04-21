@@ -11,6 +11,10 @@ class Coret_Form_Password extends Zend_Form
             $label = '';
         }
 
+        if (!isset($this->_attribs['name'])) {
+            $this->_attribs['name'] = 'password';
+        }
+
         if (isset($this->_attribs['value'])) {
             $value = $this->_attribs['value'];
         } else {
@@ -40,7 +44,7 @@ class Coret_Form_Password extends Zend_Form
         if (isset($this->_attribs['validators']) && $this->_attribs['validators']) {
             $validators = $this->_attribs['validators'];
         } else {
-            $validators = array(array('StringLength', false, array(1, 256)));
+            $validators = array(array('StringLength', false, array(6, 256)));
         }
 
         $this->addElement('password', $this->_attribs['name'], array(

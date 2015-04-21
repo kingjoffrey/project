@@ -11,6 +11,10 @@ class Coret_Form_Submit extends Zend_Form
             $label = '';
         }
 
+        if (!isset($this->_attribs['name'])) {
+            $this->_attribs['name'] = 'submit';
+        }
+
         if (isset($this->_attribs['value'])) {
             $value = $this->_attribs['value'];
         } else {

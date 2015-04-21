@@ -5,23 +5,30 @@ class Application_Form_Password extends Zend_Form
 
     public function init()
     {
-        $this->addElement('password', 'password', array(
-            'label' => $this->getView()->translate('Password'),
-            'required' => true,
-            'validators' => array(array('StringLength', false, array(6, 32)))
-        ));
+        $this->getView();
 
-        $this->addElement('password', 'repeatPassword',
+        $f = new Coret_Form_Password(
+            array(
+                'label' => $this->getView()->translate('Password'),
+                'required' => true,
+            )
+        );
+        $this->addElements($f->getElements());
+
+        $f = new Coret_Form_Password(
             array(
                 'label' => $this->getView()->translate('Repeat password'),
+                'name' => 'repeatPassword',
                 'required' => true,
-                'filters' => array('StringTrim'),
                 'validators' => array(
                     array('identical', false, array('token' => 'password'))
                 )
             )
         );
-    }
+        $this->addElements($f->getElements());
 
+        $f = new Coret_Form_Submit(array('label' => $this->_view->translate('Submit')));
+        $this->addElements($f->getElements());
+    }
 }
 

@@ -12,6 +12,8 @@ class ProfileController extends Game_Controller_Gui
         $this->view->formPlayer->populate($player);
         $this->view->formPlayer->addElement('submit', 'submit', array('label' => $this->view->translate('Submit')));
 
+        $this->view->formEmail = new Application_Form_Email();
+
         $this->view->formPassword = new Application_Form_Password();
         $this->view->formPassword->addElement('submit', 'submit', array('label' => $this->view->translate('Submit')));
 
