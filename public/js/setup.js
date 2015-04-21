@@ -34,7 +34,7 @@ var Setup = {
     },
     init: function () {
         prepareTeams()
-        this.ws = new WebSocket(wsURL + '/public')
+        this.ws = new WebSocket(wsURL + '/setup')
         this.playersOutElement = $('#playersout')
 
         this.ws.onopen = function () {

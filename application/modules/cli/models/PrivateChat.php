@@ -4,6 +4,11 @@ class Cli_Model_PrivateChat
 {
     public function __construct($dataIn, Devristo\Phpws\Protocol\WebSocketTransportInterface $user, Cli_PrivateChatHandler $handler)
     {
+        if (!isset($user->parameters['playerId'])) {
+            throw new Exception('No playerId');
+            return;
+        }
+
         $db = $handler->getDb();
         $read = 'false';
 

@@ -3,61 +3,55 @@ use Devristo\Phpws\Messaging\WebSocketMessageInterface;
 use Devristo\Phpws\Protocol\WebSocketTransportInterface;
 use Devristo\Phpws\Server\UriHandler\WebSocketUriHandler;
 
-/**
- * This resource handler will respond to all messages sent to /public on the socketserver below
- *
- * All this handler does is receiving data from browsers and sending the responds back
- * @author Bartosz Krzeszewski
- *
- */
-class Cli_NewHandler extends WebSocketUriHandler
+class Cli_SetupHandler extends WebSocketUriHandler
 {
+    private $_db;
+
+    public function __construct($logger)
+    {
+        $this->_db = Cli_Model_Database::getDb();
+        parent::__construct($logger);
+    }
+
+    public function getDb()
+    {
+        return $this->_db;
+    }
+
+    public function getUsers()
+    {
+        return $this->_users;
+    }
+
+    public function addUser($playerId, WebSocketTransportInterface $user)
+    {
+        $this->_users[$playerId] = $user;
+    }
+
+    /**
+     * @param $playerId
+     * @return Devristo\Phpws\Protocol\WebSocketTransportInterface $user
+     */
+    public function getUser($playerId)
+    {
+        if (isset($this->_users[$playerId])) {
+            return $this->_users[$playerId];
+        }
+    }
 
     public function onMessage(WebSocketTransportInterface $user, WebSocketMessageInterface $msg)
     {
         $dataIn = Zend_Json::decode($msg->getData());
-        if (Zend_Registry::get('config')->debug) {
-            print_r('ZAPYTANIE ');
-            print_r($dataIn);
-        }
 
-        $db = Cli_Model_Database::getDb();
-
-        if ($dataIn['type'] == 'open') {
-            if (!isset($dataIn['gameId']) || !isset($dataIn['playerId'])) {
-                $this->sendError($user, 'Brak "gameId" lub "playerId"');
-                return;
-            }
-
-            $mPlayersInGame = new Application_Model_PlayersInGame($dataIn['gameId'], $db);
-
-            if (!$mPlayersInGame->checkAccessKey($dataIn['playerId'], $dataIn['accessKey'])) {
-                $this->sendError($user, 'Brak uprawnień!');
-                return;
-            }
-
-            $user->parameters = array(
-                'gameId' => $dataIn['gameId'],
-                'playerId' => $dataIn['playerId']
-            );
-
-            $mPlayersInGame->updateWSSUId($dataIn['playerId'], $user->getId());
-            $this->update($dataIn['gameId'], $db);
-
-            $mGame = new Application_Model_Game($user->parameters['gameId'], $db);
-
-            $mMapPlayers = new Application_Model_MapPlayers($mGame->getMapId(), $db);
-            Zend_Registry::set('mapPlayerIdToShortNameRelations', $mMapPlayers->getShortNameToMapPlayerIdRelations());
-
-            return;
-        }
-
-        if (!Zend_Validate::is($user->parameters['gameId'], 'Digits') || !Zend_Validate::is($user->parameters['playerId'], 'Digits')) {
-            $this->sendError($user, 'Brak "gameId" lub "playerId". Brak autoryzacji.');
-            return;
-        }
+//        if (!Zend_Validate::is($user->parameters['gameId'], 'Digits') || !Zend_Validate::is($user->parameters['playerId'], 'Digits')) {
+//            $this->sendError($user, 'Brak "gameId" lub "playerId". Brak autoryzacji.');
+//            return;
+//        }
 
         switch ($dataIn['type']) {
+            case 'open':
+                new Cli_Model_SetupOpen($dataIn, $user, $this);
+                break;
             case 'team':
                 $token = array(
                     'type' => 'team',
@@ -65,28 +59,28 @@ class Cli_NewHandler extends WebSocketUriHandler
                     'teamId' => $dataIn['teamId']
                 );
 
-                $this->sendToChannel($db, $token, $user->parameters['gameId']);
+                $this->sendToChannel($token, $user->parameters['gameId']);
                 break;
 
             case 'start':
-                $mGame = new Application_Model_Game($user->parameters['gameId'], $db);
+                $mGame = new Application_Model_Game($user->parameters['gameId'], $this->_db);
 
                 if (!$mGame->isGameMaster($user->parameters['playerId'])) {
                     echo('Not game master!');
                     return;
                 }
 
-                $mPlayersInGame = new Application_Model_PlayersInGame($user->parameters['gameId'], $db);
+                $mPlayersInGame = new Application_Model_PlayersInGame($user->parameters['gameId'], $this->_db);
                 $mPlayersInGame->disconnectNotActive();
 
                 $players = $mPlayersInGame->getAll();
 
                 $mapId = $mGame->getMapId();
 
-                $mMapCastles = new Application_Model_MapCastles($mapId, $db);
+                $mMapCastles = new Application_Model_MapCastles($mapId, $this->_db);
                 $startPositions = $mMapCastles->getDefaultStartPositions();
 
-                $mMapPlayers = new Application_Model_MapPlayers($mapId, $db);
+                $mMapPlayers = new Application_Model_MapPlayers($mapId, $this->_db);
                 $mapPlayers = $mMapPlayers->getAll();
 
                 $first = true;
@@ -97,9 +91,9 @@ class Cli_NewHandler extends WebSocketUriHandler
                     } else {
                         $playerId = $mPlayersInGame->getComputerPlayerId();
                         if (!$playerId) {
-                            $modelPlayer = new Application_Model_Player($db);
+                            $modelPlayer = new Application_Model_Player($this->_db);
                             $playerId = $modelPlayer->createComputerPlayer();
-                            $modelHero = new Application_Model_Hero($playerId, $db);
+                            $modelHero = new Application_Model_Hero($playerId, $this->_db);
                             $modelHero->createHero();
                         }
                         $mPlayersInGame->joinGame($playerId);
@@ -107,7 +101,7 @@ class Cli_NewHandler extends WebSocketUriHandler
                     }
 
                     if ($first) {
-                        $mTurn = new Application_Model_TurnHistory($user->parameters['gameId'], $db);
+                        $mTurn = new Application_Model_TurnHistory($user->parameters['gameId'], $this->_db);
                         $mTurn->add($playerId, 1);
                         $mGame->startGame($playerId);
                         $first = false;
@@ -115,26 +109,26 @@ class Cli_NewHandler extends WebSocketUriHandler
 
                     $mPlayersInGame->setTeam($playerId, $dataIn['team'][$mapPlayerId]);
 
-                    $mHero = new Application_Model_Hero($playerId, $db);
+                    $mHero = new Application_Model_Hero($playerId, $this->_db);
                     $playerHeroes = $mHero->getHeroes();
                     if (empty($playerHeroes)) {
                         $mHero->createHero();
-                        $playerHeroes = $mHero->getHeroes($playerId, $db);
+                        $playerHeroes = $mHero->getHeroes($playerId, $this->_db);
                     }
-                    $mArmy = new Application_Model_Army($user->parameters['gameId'], $db);
+                    $mArmy = new Application_Model_Army($user->parameters['gameId'], $this->_db);
 
                     $armyId = $mArmy->createArmy($startPositions[$mapPlayer['castleId']], $playerId);
 
-                    $mHeroesInGame = new Application_Model_HeroesInGame($user->parameters['gameId'], $db);
+                    $mHeroesInGame = new Application_Model_HeroesInGame($user->parameters['gameId'], $this->_db);
                     $mHeroesInGame->add($armyId, $playerHeroes[0]['heroId']);
 
-                    $mCastlesInGame = new Application_Model_CastlesInGame($user->parameters['gameId'], $db);
+                    $mCastlesInGame = new Application_Model_CastlesInGame($user->parameters['gameId'], $this->_db);
                     $mCastlesInGame->addCastle($mapPlayer['castleId'], $playerId);
                 }
 
                 $token = array('type' => 'start');
 
-                $this->sendToChannel($db, $token, $user->parameters['gameId']);
+                $this->sendToChannel($token, $user->parameters['gameId']);
                 break;
 
             case 'change':
@@ -145,10 +139,10 @@ class Cli_NewHandler extends WebSocketUriHandler
                     return;
                 }
 
-                $mPlayersInGame = new Application_Model_PlayersInGame($user->parameters['gameId'], $db);
-                $mGame = new Application_Model_Game($user->parameters['gameId'], $db);
+                $mPlayersInGame = new Application_Model_PlayersInGame($user->parameters['gameId'], $this->_db);
+                $mGame = new Application_Model_Game($user->parameters['gameId'], $this->_db);
 
-                if ($mPlayersInGame->getMapPlayerIdByPlayerId($user->parameters['gameId'], $user->parameters['playerId'], $db) == $mapPlayerId) { // unselect
+                if ($mPlayersInGame->getMapPlayerIdByPlayerId($user->parameters['gameId'], $user->parameters['playerId'], $this->_db) == $mapPlayerId) { // unselect
                     $mPlayersInGame->updatePlayerReady($user->parameters['playerId'], $mapPlayerId);
                 } elseif (!$mPlayersInGame->isNoComputerColorInGame($mapPlayerId)) { // select
                     if ($mPlayersInGame->isColorInGame($mapPlayerId)) {
@@ -162,7 +156,7 @@ class Cli_NewHandler extends WebSocketUriHandler
                     return;
                 }
 
-                $this->update($user->parameters['gameId'], $db);
+                $this->update($user->parameters['gameId'], $this->_db);
                 break;
 
             case 'computer':
@@ -173,13 +167,13 @@ class Cli_NewHandler extends WebSocketUriHandler
                     return;
                 }
 
-                $mGame = new Application_Model_Game($user->parameters['gameId'], $db);
+                $mGame = new Application_Model_Game($user->parameters['gameId'], $this->_db);
                 if (!$mGame->isGameMaster($user->parameters['playerId'])) {
                     echo('Brak uprawnień!');
                     return;
                 }
 
-                $mPlayersInGame = new Application_Model_PlayersInGame($user->parameters['gameId'], $db);
+                $mPlayersInGame = new Application_Model_PlayersInGame($user->parameters['gameId'], $this->_db);
 
                 if ($mPlayersInGame->isColorInGame($mapPlayerId)) {
                     echo('Ten kolor jest już w grze!');
@@ -189,10 +183,10 @@ class Cli_NewHandler extends WebSocketUriHandler
                 $playerId = $mPlayersInGame->getComputerPlayerId();
 
                 if (!$playerId) {
-                    $mPlayer = new Application_Model_Player($db);
+                    $mPlayer = new Application_Model_Player($this->_db);
                     $playerId = $mPlayer->createComputerPlayer();
 
-                    $mHero = new Application_Model_Hero($playerId, $db);
+                    $mHero = new Application_Model_Hero($playerId, $this->_db);
                     $mHero->createHero();
                 }
 
@@ -201,7 +195,7 @@ class Cli_NewHandler extends WebSocketUriHandler
                 }
                 $mPlayersInGame->updatePlayerReady($playerId, $mapPlayerId);
 
-                $this->update($user->parameters['gameId'], $db);
+                $this->update($user->parameters['gameId'], $this->_db);
                 break;
         }
     }
@@ -215,24 +209,22 @@ class Cli_NewHandler extends WebSocketUriHandler
             return;
         }
 
-        $db = Cli_Model_Database::getDb();
-
-        $mGame = new Application_Model_Game($user->parameters['gameId'], $db);
+        $mGame = new Application_Model_Game($user->parameters['gameId'], $this->_db);
         if ($mGame->isGameStarted()) {
             return;
         }
 
-        $mPlayersInGame = new Application_Model_PlayersInGame($user->parameters['gameId'], $db);
+        $mPlayersInGame = new Application_Model_PlayersInGame($user->parameters['gameId'], $this->_db);
         $mPlayersInGame->updateWSSUId($user->parameters['playerId'], null);
 
         $mGame->setNewGameMaster($mPlayersInGame->findNewGameMaster());
-        $this->update($user->parameters['gameId'], $db);
+        $this->update($user->parameters['gameId'], $this->_db);
     }
 
-    private function update($gameId, $db)
+    private function update($gameId)
     {
-        $mPlayersInGame = new Application_Model_PlayersInGame($gameId, $db);
-        $mGame = new Application_Model_Game($gameId, $db);
+        $mPlayersInGame = new Application_Model_PlayersInGame($gameId, $this->_db);
+        $mGame = new Application_Model_Game($gameId, $this->_db);
 
         $token = array(
             'players' => $mPlayersInGame->getPlayersWaitingForGame(),
@@ -240,7 +232,7 @@ class Cli_NewHandler extends WebSocketUriHandler
             'type' => 'update'
         );
 
-        $this->sendToChannel($db, $token, $gameId);
+        $this->sendToChannel($this->_db, $token, $gameId);
     }
 
     /**
@@ -273,12 +265,11 @@ class Cli_NewHandler extends WebSocketUriHandler
     }
 
     /**
-     * @param $db
      * @param $token
      * @param $gameId
      * @param null $debug
      */
-    public function sendToChannel($db, $token, $gameId, $debug = null)
+    public function sendToChannel($token, $gameId, $debug = null)
     {
         echo Zend_Registry::get('config')->debug;
         if ($debug || Zend_Registry::get('config')->debug) {
@@ -286,7 +277,7 @@ class Cli_NewHandler extends WebSocketUriHandler
             print_r($token);
         }
 
-        $mPlayersInGame = new Application_Model_PlayersInGame($gameId, $db);
+        $mPlayersInGame = new Application_Model_PlayersInGame($gameId, $this->_db);
         $users = $mPlayersInGame->getInGameWSSUIds();
 
         foreach ($users AS $row) {

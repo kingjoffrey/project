@@ -12,7 +12,7 @@ class Application_Form_Email extends Zend_Form
         $f = new Coret_Form_Email(
             array(
                 'label' => $this->_view->translate('E-mail'),
-                'name' => 'email'
+                'name' => 'login'
             )
         );
         $this->addElements($f->getElements());
