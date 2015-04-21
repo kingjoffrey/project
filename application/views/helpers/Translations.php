@@ -5,9 +5,7 @@ class Zend_View_Helper_Translations extends Zend_View_Helper_Abstract
 
     public function translations()
     {
-        $this->view->headScript()->captureStart();
-
-        echo 'var translations = ' . Zend_Json::encode(array(
+        $this->view->headScript()->appendScript('var translations = ' . Zend_Json::encode(array(
                 'castlesHeld' => $this->view->translate('Castles held'),
                 'castlesConquered' => $this->view->translate('Castles conquered'),
                 'castlesLost' => $this->view->translate('Castles lost'),
@@ -133,7 +131,6 @@ class Zend_View_Helper_Translations extends Zend_View_Helper_Abstract
                 '' => $this->view->translate(''),
                 '' => $this->view->translate(''),
                 '' => $this->view->translate(''),
-            ));
-        $this->view->headScript()->captureEnd();
+            )));
     }
 }

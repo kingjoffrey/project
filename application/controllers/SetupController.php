@@ -10,7 +10,6 @@ class SetupController extends Game_Controller_Gui
         }
 
         $this->view->headLink()->appendStylesheet($this->view->baseUrl() . '/css/playerslist.css?v=' . Zend_Registry::get('config')->version);
-        $this->view->Websocket();
         $this->view->headScript()->appendFile('/js/setup.js?v=' . Zend_Registry::get('config')->version);
 
         $mGame = new Application_Model_Game($gameId);
@@ -31,9 +30,7 @@ class SetupController extends Game_Controller_Gui
 
         $this->view->mapPlayers = $mMapPlayers->getAll();
         $this->view->game = $game;
-        $this->view->accessKey = $mPlayersInGame->getAccessKey($this->_playerId);
         $this->view->gameId = $gameId;
-        $this->view->playerId = $this->_playerId;
 
         $mMap = new Application_Model_Map($game['mapId']);
         $map = $mMap->getMap();

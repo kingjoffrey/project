@@ -171,9 +171,9 @@ h1 {
 }
 
 h2 {
-    padding: 15px;
+    padding: 0;
     color: #fff;
-    letter-spacing: 5px;
+    letter-spacing: 3px;
     text-align: center;
     text-shadow: 2px 1px 1px #000;
 }
@@ -535,4 +535,8 @@ p#info {
 
 #searchResults a {
     color: #fff;
+}
+
+#playersingame .td1 {
+    text-align: left;
 }

@@ -5,6 +5,7 @@ class Cli_Model_Setup
     private $_id;
 
     private $_users = array();
+    private $_players = array();
 
     private $_gameMasterId;
 
@@ -15,24 +16,23 @@ class Cli_Model_Setup
         $this->_id = $gameId;
 
         $mGame = new Application_Model_Game($this->_id, $db);
-        $mMapPlayers = new Application_Model_MapPlayers($mGame->getMapId(), $this->_db);
-        Zend_Registry::set('mapPlayerIdToShortNameRelations', $mMapPlayers->getShortNameToMapPlayerIdRelations());
-
-        $this->_gameMasterId = $mGame->getGameMasterId();
-
-    }
-
-    public function update($db, $handler)
-    {
         $mPlayersInGame = new Application_Model_PlayersInGame($this->_id, $db);
 
+        foreach ($mPlayersInGame->getPlayersWaitingForGame() as $row) {
+            $this->_players[$row['playerId']] = $row;
+        }
+        $this->_gameMasterId = $mGame->getGameMasterId();
+    }
+
+    public function update(Cli_SetupHandler $handler)
+    {
         $token = array(
-            'players' => $mPlayersInGame->getPlayersWaitingForGame(),
+            'players' => $this->_players,
             'gameMasterId' => $this->_gameMasterId,
             'type' => 'update'
         );
 
-        $handler->sendToChannel($token, $this->_id);
+        $handler->sendToChannel($handler->getGame($this->_id), $token);
     }
 
     public function setNewGameMaster($db)

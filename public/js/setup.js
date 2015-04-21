@@ -25,7 +25,7 @@ var Setup = {
         var token = {
             type: 'open',
             gameId: gameId,
-            playerId: myId,
+            playerId: id,
             langId: langId,
             accessKey: accessKey
         }

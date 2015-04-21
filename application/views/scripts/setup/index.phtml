@@ -11,11 +11,11 @@
                 <td class="td1">
                     <div class="longName"></div>
                     <div>
+                        <img src="/img/game/heroes/<?php echo $mapPlayer['shortName'] ?>.png"/>
                         <span
                             style="color:<?php echo $mapPlayer['backgroundColor'] ?>;text-shadow: 2px 2px 0 <?php echo $mapPlayer['textColor'] ?>">
                             <?php echo $mapPlayer['longName'] ?>
                         </span>
-                        <img src="/img/game/heroes/<?php echo $mapPlayer['shortName'] ?>.png"/>
                     </div>
                 </td>
                 <td class="td2"></td>
@@ -57,13 +57,6 @@ var numberOfPlayers = <?php echo (int)$this->game['numberOfPlayers'] ?>;
 var mapPlayers = <?php echo Zend_Json::encode($this->mapPlayers) ?>;
 
 var gameId = <?php echo (int)$this->gameId ?>;
-var myId = <?php echo (int)$this->playerId ?>;
-var accessKey = '<?php echo $this->accessKey ?>';
-
-var lang = '<?php echo Zend_Registry::get('lang') ?>'
-var langId = <?php echo Zend_Registry::get('id_lang') ?>
-
-var translations = <?php echo $this->translations() ?>;
 
 var form = '<?php echo str_replace("\n", '', $this->form) ?>';
 <?php $this->headScript()->captureEnd() ?>

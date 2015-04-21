@@ -44,11 +44,6 @@ class Cli_SetupHandler extends WebSocketUriHandler
     {
         $dataIn = Zend_Json::decode($msg->getData());
 
-//        if (!Zend_Validate::is($user->parameters['gameId'], 'Digits') || !Zend_Validate::is($user->parameters['playerId'], 'Digits')) {
-//            $this->sendError($user, 'Brak "gameId" lub "playerId". Brak autoryzacji.');
-//            return;
-//        }
-
         switch ($dataIn['type']) {
             case 'open':
                 new Cli_Model_SetupOpen($dataIn, $user, $this);
@@ -60,7 +55,7 @@ class Cli_SetupHandler extends WebSocketUriHandler
                     'teamId' => $dataIn['teamId']
                 );
 
-                $this->sendToChannel($token, $user->parameters['gameId']);
+                $this->sendToChannel(Cli_Model_Setup::getSetup($user), $token);
                 break;
 
             case 'start':
@@ -129,7 +124,7 @@ class Cli_SetupHandler extends WebSocketUriHandler
 
                 $token = array('type' => 'start');
 
-                $this->sendToChannel($token, $user->parameters['gameId']);
+                $this->sendToChannel(Cli_Model_Setup::getSetup($user), $token);
                 break;
 
             case 'change':
@@ -261,9 +256,10 @@ class Cli_SetupHandler extends WebSocketUriHandler
     }
 
     /**
+     * @param Cli_Model_Setup $setup
      * @param $token
-     * @param $gameId
      * @param null $debug
+     * @throws Zend_Exception
      */
     public function sendToChannel(Cli_Model_Setup $setup, $token, $debug = null)
     {
