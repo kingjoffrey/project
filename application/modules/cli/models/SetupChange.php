@@ -35,6 +35,6 @@ class Cli_Model_SetupChange
             throw new Exception('Błąd!');
         }
 
-        $setup->update($handler);
+        $setup->update($user->parameters['playerId'], $handler);
     }
 }

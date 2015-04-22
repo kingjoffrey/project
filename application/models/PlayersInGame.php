@@ -53,15 +53,15 @@ class Application_Model_PlayersInGame extends Coret_Db_Table_Abstract
         return $colors;
     }
 
-    public function getPlayersWaitingForGame()
+    public function getPlayerWaitingForGame($playerId)
     {
         $select = $this->_db->select()
             ->from(array('a' => $this->_name), array('mapPlayerId', 'playerId'))
             ->join(array('b' => 'player'), 'a . "playerId" = b . "playerId"', array('firstName', 'lastName', 'computer'))
             ->where('a . ' . $this->_db->quoteIdentifier('gameId') . ' = ?', $this->_gameId)
-            ->where($this->_db->quoteIdentifier('webSocketServerUserId') . ' IS NOT NULL OR computer = true');
+            ->where('a . ' . $this->_db->quoteIdentifier('playerId') . ' = ?', $playerId);
 
-        return $this->selectAll($select);
+        return $this->selectRow($select);
     }
 
     public function getPlayerIdByMapPlayerId($mapPlayerId)

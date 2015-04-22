@@ -16,20 +16,13 @@ class Cli_Model_Setup
         $this->_id = $gameId;
 
         $mGame = new Application_Model_Game($this->_id, $db);
-        $mPlayersInGame = new Application_Model_PlayersInGame($this->_id, $db);
-
-        foreach ($mPlayersInGame->getPlayersWaitingForGame() as $row) {
-            $this->_players[$row['playerId']] = $row;
-        }
-        print_r($this->_players);
         $this->_gameMasterId = $mGame->getGameMasterId();
-        echo  $this->_gameMasterId;
     }
 
-    public function update(Cli_SetupHandler $handler)
+    public function update($playerId, Cli_SetupHandler $handler)
     {
         $token = array(
-            'players' => $this->_players,
+            'player' => $this->_players[$playerId],
             'gameMasterId' => $this->_gameMasterId,
             'type' => 'update'
         );
@@ -64,8 +57,10 @@ class Cli_Model_Setup
         return $this->_id;
     }
 
-    public function addUser($playerId, Devristo\Phpws\Protocol\WebSocketTransportInterface $user)
+    public function addUser($playerId, Devristo\Phpws\Protocol\WebSocketTransportInterface $user, $db)
     {
+        $mPlayersInGame = new Application_Model_PlayersInGame($this->_id, $db);
+        $this->_players[$playerId] = $mPlayersInGame->getPlayerWaitingForGame($playerId);
         $this->_users[$playerId] = $user;
     }
 

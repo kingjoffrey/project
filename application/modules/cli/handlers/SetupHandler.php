@@ -85,7 +85,6 @@ class Cli_SetupHandler extends WebSocketUriHandler
 
             if ($setup->getGameMasterId() == $user->parameters['playerId']) {
                 $setup->setNewGameMaster($this->_db);
-                $setup->update($this);
             }
 
             $token = array(

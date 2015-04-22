@@ -2,21 +2,22 @@ $(document).ready(function () {
     Setup.init()
 })
 
-var Setup = {
-    closed: true,
-    ws: false,
-    playersOutElement: null,
-    gameMasterId: null,
-    team: function (mapPlayerId) {
+var Setup = new function () {
+    var closed = true,
+        ws = false,
+        playersOutElement = null,
+        gameMasterId = null
+
+    this.team = function (mapPlayerId) {
         var token = {
             type: 'team',
             mapPlayerId: mapPlayerId,
             teamId: $('tr#' + mapPlayerId + ' select').val()
         }
 
-        this.ws.send(JSON.stringify(token));
-    },
-    open: function () {
+        ws.send(JSON.stringify(token));
+    }
+    this.open = function () {
         if (Setup.closed) {
             console.log(translations.sorryServerIsDisconnected)
             return;
@@ -30,199 +31,151 @@ var Setup = {
             accessKey: accessKey
         }
 
-        this.ws.send(JSON.stringify(token));
-    },
-    init: function () {
-        prepareTeams()
-        this.ws = new WebSocket(wsURL + '/setup')
-        this.playersOutElement = $('#playersout')
+        ws.send(JSON.stringify(token));
+    }
+    this.init = function () {
+        Setup.initButtons()
+        Setup.prepareTeams()
+        ws = new WebSocket(wsURL + '/setup')
+        playersOutElement = $('#playersout')
 
-        this.ws.onopen = function () {
-            Setup.closed = false
+        ws.onopen = function () {
+            closed = false
             Setup.open()
-        };
-
-        this.ws.onmessage = function (e) {
+        }
+        ws.onmessage = function (e) {
             var r = $.parseJSON(e.data);
-console.log(r)
-            if (typeof r.type == 'undefined') {
-                return;
+            if (notSet(r.type)) {
+                return
             }
-
-            switch (r.type) {
-                case 'team':
-                    $('tr#' + r.mapPlayerId + ' select').val(r.teamId)
-                    $('tr#' + r.mapPlayerId + ' .td4 img').attr('src', '/img/game/heroes/' + mapPlayers[r.teamId].shortName + '.png')
-                    break
-
-                case 'start':
-                    top.location.replace('/' + lang + '/game/index/id/' + gameId)
-                    break;
-
-                case 'update':
-                    if (typeof r.gameMasterId == 'undefined') {
-                        return;
-                    }
-
-                    Setup.gameMasterId = r.gameMasterId
-                    Setup.playersOutElement.html('')
-                    prepareButtons(r.gameMasterId)
-
-                    var playersReady = 0,
-                        i = null,
-                        j = null
-
-                    for (i in r.players) { // undecided
-                        if (r.players[i].computer || r.players[i].mapPlayerId) {
-                            continue
-                        }
-
-                        var firstName = r.players[i].firstName,
-                            lastName = r.players[i].lastName
-
-                        Setup.playersOutElement.append('<tr><td>' + firstName + ' ' + lastName + '</td></tr>');
-                    }
-
-                    var mapPlayerId
-
-                    for (mapPlayerId in mapPlayers) {
-
-                        $('#' + mapPlayerId).removeClass('selected')
-                        $('#' + mapPlayerId + ' .td3').html(translations.computer)
-
-                        for (i in r.players) {
-                            if (r.players[i].mapPlayerId != mapPlayerId) {
-                                continue
-                            }
-
-                            var firstName = r.players[i].firstName,
-                                lastName = r.players[i].lastName,
-                                computer = r.players[i].computer,
-                                playerId = r.players[i].playerId
-
-                            if (r.players[i].mapPlayerId) {
-                                playersReady++;
-                                if (!computer) {
-                                    $('#' + mapPlayerId + ' .td1 div.longName').html(firstName + ' ' + lastName);
-                                    $('#' + mapPlayerId + ' .td3').html(translations.human);
-                                }
-
-                                if (playerId == myId) {
-                                    $('#' + mapPlayerId + ' .td2 a').html(translations.deselect);
-                                    $('#' + mapPlayerId).addClass('selected')
-                                } else {
-                                    if (r.gameMasterId == myId) {
-                                        $('#' + mapPlayerId + ' .td2 a').html(translations.select);
-                                    } else {
-                                        if (computer) {
-                                            $('#' + mapPlayerId + ' .td2 a').html(translations.select);
-                                        } else {
-                                            $('#' + mapPlayerId + ' .td2 a').remove();
-                                        }
-                                    }
-                                }
-                            }
-                            delete r.players[i]
-                        }
-                    }
-
-                    prepareStartButton(r.gameMasterId, playersReady);
-                    break;
-
-                default:
-                    console.log(r)
-            }
-        };
-
-        this.ws.onclose = function () {
-            Setup.closed = true;
+            Setup.message(r)
+        }
+        ws.onclose = function () {
+            closed = true;
             setTimeout('Setup.init()', 1000);
+        }
+    }
+    this.message = function (r) {
+        console.log(r)
+        switch (r.type) {
+            case 'team':
+                $('tr#' + r.mapPlayerId + ' select').val(r.teamId)
+                $('tr#' + r.mapPlayerId + ' .td4 img').attr('src', '/img/game/heroes/' + mapPlayers[r.teamId].shortName + '.png')
+                break
+
+            case 'start':
+                top.location.replace('/' + lang + '/game/index/id/' + gameId)
+                break;
+
+            case 'update':
+                if (notSet(r.gameMasterId)) {
+                    return;
+                }
+
+                gameMasterId = r.gameMasterId
+                playersOutElement.html('')
+
+// undecided
+                if (!(r.player.computer || r.player.mapPlayerId)) {
+                    playersOutElement.append($('<tr>')
+                        .html($('<td>').html(r.players[i].firstName + ' ' + r.players[i].lastName)))
+                        .attr('id', r.player.playerId)
+                }
+
+                if (r.player.mapPlayerId) {
+                    $('#' + r.player.mapPlayerId + ' .td3 div.longName').html(r.player.firstName + ' ' + r.player.lastName)
+                    if (r.player.playerId == id) {
+                        $('#' + r.player.mapPlayerId + ' .td2 a').html(translations.deselect)
+                        $('#' + r.player.mapPlayerId).addClass('selected')
+                    } else {
+                        if (r.gameMasterId == id) {
+                            $('#' + r.player.mapPlayerId + ' .td2 a').html(translations.select);
+                        } else {
+                            $('#' + mapPlayerId + ' .td2 a').remove();
+                        }
+                    }
+                }
+
+                Setup.prepareStartButton()
+                break;
+
+            default:
+                console.log(r)
+        }
+    }
+    this.wsChange = function (mapPlayerId) {
+        var token = {
+            type: 'change',
+            mapPlayerId: mapPlayerId
         };
 
+        ws.send(JSON.stringify(token));
     }
-}
 
-function wsChange(mapPlayerId) {
-    var token = {
-        type: 'change',
-        mapPlayerId: mapPlayerId
-    };
-
-    Setup.ws.send(JSON.stringify(token));
-}
-
-function prepareButtons(gameMasterId) {
-    var mapPlayerId = 0
-
-    for (mapPlayerId in mapPlayers) {
-        $('#' + mapPlayerId + ' .td1 div.longName').html('');
-        $('#' + mapPlayerId + ' .td2')
-            .html(
-                $('<a>')
-                    .addClass('button')
-                    .html(translations.select)
-                    .attr('id', mapPlayerId)
-                    .click(function () {
-                        wsChange(this.id)
-                    })
-            )
-    }
-}
-
-function prepareTeams() {
-    var click = function (i) {
-        return function () {
-            Setup.team(i)
+    this.initButtons = function () {
+        for (var mapPlayerId in mapPlayers) {
+            $('#' + mapPlayerId + ' .td1 div.longName').html('');
+            $('#' + mapPlayerId + ' .td2').html($('<a>')
+                .addClass('button')
+                .html(translations.select)
+                .attr('id', mapPlayerId)
+                .click(function () {
+                    Setup.wsChange(this.id)
+                }))
         }
     }
 
-    var mapPlayerId = 0
-
-    for (mapPlayerId in mapPlayers) {
-        $('#' + mapPlayerId + ' .td4')
-            .html($(form).children('dl').children('dd').children('select'))
-            .append($('<img>').attr('src', '/img/game/heroes/' + mapPlayers[mapPlayerId].shortName + '.png'))
-        $('#' + mapPlayerId + ' .td4 select')
-            .val(mapPlayerId)
-            .attr('id', mapPlayerId)
-            .change(click(mapPlayerId))
-    }
-}
-
-function prepareStartButton(gameMasterId, playersReady) {
-    if (gameMasterId == id) {
-        $('#start')
-            .html(translations.startGame)
-            .addClass('button')
-            .unbind()
-            .click(function () {
-                wsStart()
-            })
-    } else {
-        $('#start').css('display', 'none')
-    }
-}
-
-function wsStart() {
-    if (Setup.gameMasterId != id) {
-        return
-    }
-
-    var team = {}
-
-    $('#playersingame tr').each(function () {
-        var id = $(this).attr('id')
-        if (typeof id != 'undefined') {
-            team[id] = $(this).find('select').val()
+    this.prepareTeams = function () {
+        var click = function (i) {
+            return function () {
+                Setup.team(i)
+            }
         }
-    })
 
-    var token = {
-        type: 'start',
-        team: team
+        for (var mapPlayerId in mapPlayers) {
+            $('#' + mapPlayerId + ' .td4')
+                .html($(form).children('dl').children('dd').children('select'))
+                .append($('<img>').attr('src', '/img/game/heroes/' + mapPlayers[mapPlayerId].shortName + '.png'))
+            $('#' + mapPlayerId + ' .td4 select')
+                .val(mapPlayerId)
+                .attr('id', mapPlayerId)
+                .change(click(mapPlayerId))
+        }
     }
 
-    console.log(token)
+    this.prepareStartButton = function () {
+        if (gameMasterId == id) {
+            $('#start')
+                .html(translations.startGame)
+                .addClass('button')
+                .unbind()
+                .click(function () {
+                    Setup.wsStart()
+                })
+        } else {
+            $('#start').css('display', 'none')
+        }
+    }
 
-    Setup.ws.send(JSON.stringify(token));
+    this.wsStart = function () {
+        if (Setup.gameMasterId != id) {
+            return
+        }
+
+        var team = {}
+
+        $('#playersingame tr').each(function () {
+            var id = $(this).attr('id')
+            if (isSet(id)) {
+                team[id] = $(this).find('select').val()
+            }
+        })
+
+        var token = {
+            type: 'start',
+            team: team
+        }
+
+        ws.send(JSON.stringify(token));
+    }
 }

@@ -47,6 +47,6 @@ class Cli_Model_SetupComputer
         }
         $mPlayersInGame->updatePlayerReady($playerId, $mapPlayerId);
 
-        $setup->update($handler);
+        $setup->update($user->parameters['playerId'], $handler);
     }
 }

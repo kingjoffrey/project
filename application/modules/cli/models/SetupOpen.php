@@ -35,11 +35,11 @@ class Cli_Model_SetupOpen
         }
 
         $setup = Cli_Model_Setup::getSetup($user);
-        $setup->addUser($dataIn['playerId'], $user);
+        $setup->addUser($dataIn['playerId'], $user, $db, $handler);
 
         $user->parameters['playerId'] = $dataIn['playerId'];
         $user->parameters['accessKey'] = $dataIn['accessKey'];
 
-        $setup->update($handler);
+        $setup->update($user->parameters['playerId'], $handler);
     }
 }
