@@ -64,10 +64,6 @@ class Cli_SetupHandler extends WebSocketUriHandler
             case 'change':
                 new Cli_Model_SetupChange($dataIn, $user, $this);
                 break;
-
-            case 'computer':
-                new Cli_Model_SetupComputer($dataIn, $user, $this);
-                break;
         }
     }
 

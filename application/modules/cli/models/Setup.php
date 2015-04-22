@@ -17,6 +17,10 @@ class Cli_Model_Setup
 
         $mGame = new Application_Model_Game($this->_id, $db);
         $this->_gameMasterId = $mGame->getGameMasterId();
+        if (empty($this->_gameMasterId)) {
+            $this->setNewGameMaster($db);
+            $this->_gameMasterId = $mGame->getGameMasterId();
+        }
     }
 
     public function update($playerId, Cli_SetupHandler $handler)
@@ -28,6 +32,39 @@ class Cli_Model_Setup
         );
 
         $handler->sendToChannel($handler->getGame($this->_id), $token);
+    }
+
+    public function getPlayerIdByMapPlayerId($mapPlayerId)
+    {
+        foreach ($this->_players as $playerId => $player) {
+            if ($player['mapPlayerId'] == $mapPlayerId) {
+                return $playerId;
+            }
+        }
+    }
+
+    public function updatePlayerReady($playerId, $mapPlayerId, $mPlayersInGame)
+    {
+        $this->_players[$playerId]['mapPlayerId'] = $mapPlayerId;
+        $mPlayersInGame->updatePlayerReady($playerId, $mapPlayerId);
+    }
+
+    public function isNoComputerColorInGame($mapPlayerId)
+    {
+        foreach ($this->_players as $playerId => $player) {
+            if ($player['mapPlayerId'] == $mapPlayerId && $player['computer'] == false) {
+                return true;
+            }
+        }
+    }
+
+    public function isPlayer($mapPlayerId)
+    {
+        foreach ($this->_players as $playerId => $player) {
+            if ($player['mapPlayerId'] == $mapPlayerId) {
+                return true;
+            }
+        }
     }
 
     public function isGameMaster($playerId)

@@ -5,8 +5,8 @@ $(document).ready(function () {
 var Setup = new function () {
     var closed = true,
         ws = false,
-        playersOutElement = null,
-        gameMasterId = null
+        playersOutElement,
+        gameMasterId
 
     this.team = function (mapPlayerId) {
         var token = {
@@ -35,7 +35,7 @@ var Setup = new function () {
     }
     this.init = function () {
         Setup.initButtons()
-        Setup.prepareTeams()
+        Setup.initTeams()
         ws = new WebSocket(wsURL + '/setup')
         playersOutElement = $('#playersout')
 
@@ -69,21 +69,29 @@ var Setup = new function () {
 
             case 'update':
                 if (notSet(r.gameMasterId)) {
+                    console.log('error')
                     return;
                 }
 
                 gameMasterId = r.gameMasterId
-                playersOutElement.html('')
+                playersOutElement.find('#' + r.player.playerId).remove()
+                $('#' + r.player.playerId + '.td1').parent().removeClass('selected')
+                $('#' + r.player.playerId + '.td1').parent().find('.td3').html('')
+                if (r.player.playerId == id) {
+                    $('#' + r.player.playerId + '.td1').parent().find('.td2 a').html(translations.select)
+                } else {
+                    if (r.gameMasterId == id) {
+                        $('#' + r.player.playerId + '.td1').parent().find('.td2 a').html(translations.deselect)
+                    } else {
+                        $('#' + r.player.playerId + '.td2').parent().find('.td2 a').remove()
+                    }
+                }
+                $('#' + r.player.playerId + '.td1').attr('id', '')
 
 // undecided
-                if (!(r.player.computer || r.player.mapPlayerId)) {
-                    playersOutElement.append($('<tr>')
-                        .html($('<td>').html(r.players[i].firstName + ' ' + r.players[i].lastName)))
-                        .attr('id', r.player.playerId)
-                }
-
                 if (r.player.mapPlayerId) {
-                    $('#' + r.player.mapPlayerId + ' .td3 div.longName').html(r.player.firstName + ' ' + r.player.lastName)
+                    $('#' + r.player.mapPlayerId + ' .td3').html(r.player.firstName + ' ' + r.player.lastName)
+
                     if (r.player.playerId == id) {
                         $('#' + r.player.mapPlayerId + ' .td2 a').html(translations.deselect)
                         $('#' + r.player.mapPlayerId).addClass('selected')
@@ -94,6 +102,13 @@ var Setup = new function () {
                             $('#' + mapPlayerId + ' .td2 a').remove();
                         }
                     }
+                    $('#' + r.player.mapPlayerId + ' .td1').attr('id', r.player.playerId)
+                } else {
+                    playersOutElement.append(
+                        $('<tr>')
+                            .html($('<td>').html(r.player.firstName + ' ' + r.player.lastName))
+                            .attr('id', r.player.playerId)
+                    )
                 }
 
                 Setup.prepareStartButton()
@@ -103,15 +118,6 @@ var Setup = new function () {
                 console.log(r)
         }
     }
-    this.wsChange = function (mapPlayerId) {
-        var token = {
-            type: 'change',
-            mapPlayerId: mapPlayerId
-        };
-
-        ws.send(JSON.stringify(token));
-    }
-
     this.initButtons = function () {
         for (var mapPlayerId in mapPlayers) {
             $('#' + mapPlayerId + ' .td1 div.longName').html('');
@@ -120,12 +126,16 @@ var Setup = new function () {
                 .html(translations.select)
                 .attr('id', mapPlayerId)
                 .click(function () {
-                    Setup.wsChange(this.id)
+                    var token = {
+                        type: 'change',
+                        mapPlayerId: this.id
+                    }
+                    ws.send(JSON.stringify(token))
                 }))
         }
     }
 
-    this.prepareTeams = function () {
+    this.initTeams = function () {
         var click = function (i) {
             return function () {
                 Setup.team(i)

@@ -138,37 +138,9 @@ class Application_Model_PlayersInGame extends Coret_Db_Table_Abstract
         return md5(rand(0, time()));
     }
 
-    public function isNoComputerColorInGame($mapPlayerId)
-    {
-        $select = $this->_db->select()
-            ->from(array('a' => $this->_name), 'min(b."playerId")')
-            ->join(array('b' => 'player'), 'a."playerId" = b."playerId"', null)
-            ->where($this->_db->quoteIdentifier('gameId') . ' = ?', $this->_gameId)
-            ->where($this->_db->quoteIdentifier('mapPlayerId') . ' = ?', $mapPlayerId)
-            ->where('"webSocketServerUserId" IS NOT NULL'); // human player
-
-        return $this->selectOne($select);
-    }
-
-    public function isColorInGame($mapPlayerId)
-    {
-        $select = $this->_db->select()
-            ->from(array('a' => $this->_name), 'min(b."playerId")')
-            ->join(array('b' => 'player'), 'a."playerId" = b."playerId"', null)
-            ->where($this->_db->quoteIdentifier('gameId') . ' = ?', $this->_gameId)
-            ->where($this->_db->quoteIdentifier('mapPlayerId') . ' = ?', $mapPlayerId)
-            ->where('"webSocketServerUserId" IS NOT NULL OR computer = true');
-
-        return $this->selectOne($select);
-    }
-
     public function updatePlayerReady($playerId, $mapPlayerId)
     {
-        if ($mapPlayerId && $this->getMapPlayerIdByPlayerId($playerId) == $mapPlayerId) {
-            $data['mapPlayerId'] = null;
-        } else {
-            $data['mapPlayerId'] = $mapPlayerId;
-        }
+        $data['mapPlayerId'] = $mapPlayerId;
 
         $where = array(
             $this->_db->quoteInto($this->_db->quoteIdentifier('gameId') . ' = ?', $this->_gameId),
@@ -176,16 +148,6 @@ class Application_Model_PlayersInGame extends Coret_Db_Table_Abstract
         );
 
         $this->update($data, $where);
-    }
-
-    public function findNewGameMaster()
-    {
-        $select = $this->_db->select()
-            ->from($this->_name, 'playerId')
-            ->where($this->_db->quoteIdentifier('gameId') . ' = ?', $this->_gameId)
-            ->where($this->_db->quoteIdentifier('webSocketServerUserId') . ' IS NOT NULL');
-
-        return $this->selectOne($select);
     }
 
     public function isPlayerInGame($playerId)
@@ -196,26 +158,6 @@ class Application_Model_PlayersInGame extends Coret_Db_Table_Abstract
             ->where($this->_db->quoteIdentifier('playerId') . ' = ?', $playerId);
 
         return $this->selectOne($select);
-    }
-
-    public function getInGameWSSUIds()
-    {
-        $select = $this->_db->select()
-            ->from($this->_name, 'webSocketServerUserId')
-            ->where($this->_db->quoteIdentifier('gameId') . ' = ?', $this->_gameId)
-            ->where($this->_db->quoteIdentifier('webSocketServerUserId') . ' IS NOT NULL');
-
-        return $this->selectAll($select);
-    }
-
-    public function getInGamePlayerIds()
-    {
-        $select = $this->_db->select()
-            ->from($this->_name, 'playerId')
-            ->where($this->_db->quoteIdentifier('gameId') . ' = ?', $this->_gameId)
-            ->where($this->_db->quoteIdentifier('webSocketServerUserId') . ' IS NOT NULL');
-
-        return $this->selectAll($select);
     }
 
     public function getComputerPlayerId()

@@ -10,8 +10,6 @@ class Cli_Model_SetupChange
      */
     public function __construct($dataIn, Devristo\Phpws\Protocol\WebSocketTransportInterface $user, Cli_SetupHandler $handler)
     {
-        $db = $handler->getDb();
-        $setup = Cli_Model_Setup::getSetup($user);
         $mapPlayerId = $dataIn['mapPlayerId'];
 
         if (empty($mapPlayerId)) {
@@ -19,22 +17,23 @@ class Cli_Model_SetupChange
             return;
         }
 
+        $db = $handler->getDb();
+        $setup = Cli_Model_Setup::getSetup($user);
         $mPlayersInGame = new Application_Model_PlayersInGame($setup->getId(), $db);
-        $mGame = new Application_Model_Game($setup->getId(), $db);
+        $playerId = $setup->getPlayerIdByMapPlayerId($mapPlayerId);
 
-        if ($mPlayersInGame->getMapPlayerIdByPlayerId($setup->getId(), $user->parameters['playerId'], $db) == $mapPlayerId) { // unselect
-            $mPlayersInGame->updatePlayerReady($user->parameters['playerId'], $mapPlayerId);
-        } elseif (!$mPlayersInGame->isNoComputerColorInGame($mapPlayerId)) { // select
-            if ($mPlayersInGame->isColorInGame($mapPlayerId)) {
-                $mPlayersInGame->updatePlayerReady($mPlayersInGame->getPlayerIdByMapPlayerId($mapPlayerId), $mapPlayerId);
-            }
-            $mPlayersInGame->updatePlayerReady($user->parameters['playerId'], $mapPlayerId);
-        } elseif ($mGame->isGameMaster($user->parameters['playerId'])) { // kick
-            $mPlayersInGame->updatePlayerReady($mPlayersInGame->getPlayerIdByMapPlayerId($mapPlayerId), $mapPlayerId);
+        if ($user->parameters['playerId'] == $playerId) { // unselect
+            $setup->updatePlayerReady($user->parameters['playerId'], null, $mPlayersInGame);
+            $setup->update($user->parameters['playerId'], $handler);
+        } elseif (!$setup->isPlayer($mapPlayerId)) { // select
+//            $setup->updatePlayerReady($setup->getPlayerIdByMapPlayerId($mapPlayerId), null, $mPlayersInGame);
+            $setup->updatePlayerReady($user->parameters['playerId'], $mapPlayerId, $mPlayersInGame);
+            $setup->update($user->parameters['playerId'], $handler);
+        } elseif ($setup->isGameMaster($user->parameters['playerId'])) { // kick
+            $setup->updatePlayerReady($playerId, null, $mPlayersInGame);
+            $setup->update($playerId, $handler);
         } else {
             throw new Exception('Błąd!');
         }
-
-        $setup->update($user->parameters['playerId'], $handler);
     }
 }
