@@ -19,7 +19,7 @@ function changeMap() {
 }
 
 function refresh() {
-    $.getJSON("/' + lang + '/newajax/refresh", function (result) {
+    $.getJSON('/' + lang + '/newajax/refresh', function (result) {
 
         myGames.html('');
         myGames.append(th);

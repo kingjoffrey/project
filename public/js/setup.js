@@ -67,6 +67,10 @@ var Setup = new function () {
                 top.location.replace('/' + lang + '/game/index/id/' + gameId)
                 break;
 
+            case 'close':
+                Setup.removePlayer(r.playerId)
+                break;
+
             case 'update':
                 if (notSet(r.gameMasterId)) {
                     console.log('error')
@@ -74,19 +78,7 @@ var Setup = new function () {
                 }
 
                 gameMasterId = r.gameMasterId
-                playersOutElement.find('#' + r.player.playerId).remove()
-                $('#' + r.player.playerId + '.td1').parent().removeClass('selected')
-                $('#' + r.player.playerId + '.td1').parent().find('.td3').html('')
-                if (r.player.playerId == id) {
-                    $('#' + r.player.playerId + '.td1').parent().find('.td2 a').html(translations.select)
-                } else {
-                    if (r.gameMasterId == id) {
-                        $('#' + r.player.playerId + '.td1').parent().find('.td2 a').html(translations.deselect)
-                    } else {
-                        $('#' + r.player.playerId + '.td2').parent().find('.td2 a').remove()
-                    }
-                }
-                $('#' + r.player.playerId + '.td1').attr('id', '')
+                Setup.removePlayer(r.player.playerId)
 
 // undecided
                 if (r.player.mapPlayerId) {
@@ -111,12 +103,27 @@ var Setup = new function () {
                     )
                 }
 
-                Setup.prepareStartButton()
+                Setup.updateStartButton()
                 break;
 
             default:
                 console.log(r)
         }
+    }
+    this.removePlayer = function (playerId) {
+        playersOutElement.find('#' + playerId).remove()
+        $('#' + playerId + '.td1').parent().removeClass('selected')
+        $('#' + playerId + '.td1').parent().find('.td3').html('')
+        if (playerId == id) {
+            $('#' + playerId + '.td1').parent().find('.td2 a').html(translations.select)
+        } else {
+            if (r.gameMasterId == id) {
+                $('#' + playerId + '.td1').parent().find('.td2 a').html(translations.deselect)
+            } else {
+                $('#' + playerId + '.td2').parent().find('.td2 a').remove()
+            }
+        }
+        $('#' + playerId + '.td1').attr('id', '')
     }
     this.initButtons = function () {
         for (var mapPlayerId in mapPlayers) {
@@ -153,39 +160,35 @@ var Setup = new function () {
         }
     }
 
-    this.prepareStartButton = function () {
+    this.updateStartButton = function () {
         if (gameMasterId == id) {
             $('#start')
                 .html(translations.startGame)
                 .addClass('button')
                 .unbind()
                 .click(function () {
-                    Setup.wsStart()
+                    if (Setup.gameMasterId != id) {
+                        return
+                    }
+
+                    var team = {}
+
+                    $('#playersingame tr').each(function () {
+                        var id = $(this).attr('id')
+                        if (isSet(id)) {
+                            team[id] = $(this).find('select').val()
+                        }
+                    })
+
+                    var token = {
+                        type: 'start',
+                        team: team
+                    }
+
+                    ws.send(JSON.stringify(token))
                 })
         } else {
             $('#start').css('display', 'none')
         }
-    }
-
-    this.wsStart = function () {
-        if (Setup.gameMasterId != id) {
-            return
-        }
-
-        var team = {}
-
-        $('#playersingame tr').each(function () {
-            var id = $(this).attr('id')
-            if (isSet(id)) {
-                team[id] = $(this).find('select').val()
-            }
-        })
-
-        var token = {
-            type: 'start',
-            team: team
-        }
-
-        ws.send(JSON.stringify(token));
     }
 }

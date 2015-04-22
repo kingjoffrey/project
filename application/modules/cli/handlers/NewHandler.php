@@ -3,7 +3,7 @@ use Devristo\Phpws\Messaging\WebSocketMessageInterface;
 use Devristo\Phpws\Protocol\WebSocketTransportInterface;
 use Devristo\Phpws\Server\UriHandler\WebSocketUriHandler;
 
-class Cli_SetupHandler extends WebSocketUriHandler
+class Cli_NewHandler extends WebSocketUriHandler
 {
     private $_db;
     private $_games = array();
@@ -47,22 +47,7 @@ class Cli_SetupHandler extends WebSocketUriHandler
 
         switch ($dataIn['type']) {
             case 'open':
-                new Cli_Model_SetupOpen($dataIn, $user, $this);
-                break;
-            case 'team':
-                $this->sendToChannel(Cli_Model_Setup::getSetup($user), array(
-                    'type' => 'team',
-                    'mapPlayerId' => $dataIn['mapPlayerId'],
-                    'teamId' => $dataIn['teamId']
-                ));
-                break;
-
-            case 'start':
-                new Cli_Model_SetupStart($dataIn, $user, $this);
-                break;
-
-            case 'change':
-                new Cli_Model_SetupChange($dataIn, $user, $this);
+                new Cli_Model_NewOpen($dataIn, $user, $this);
                 break;
         }
     }
@@ -71,17 +56,7 @@ class Cli_SetupHandler extends WebSocketUriHandler
     {
         $setup = Cli_Model_Setup::getSetup($user);
         if ($setup) {
-
-//        $mGame = new Application_Model_Game($user->parameters['gameId'], $this->_db);
-//        if ($mGame->isGameStarted()) {
-//            return;
-//        }
-
             $setup->removeUser($user, $this->_db);
-
-            if ($setup->getGameMasterId() == $user->parameters['playerId']) {
-                $setup->setNewGameMaster($this->_db);
-            }
 
             $token = array(
                 'type' => 'close',

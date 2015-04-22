@@ -13,7 +13,7 @@ use Devristo\Phpws\Server\UriHandler\WebSocketUriHandler;
  */
 class Cli_GameHandler extends WebSocketUriHandler
 {
-    private $_game = array();
+    private $_games = array();
     private $_db;
 
     public function __construct($logger)
@@ -29,13 +29,13 @@ class Cli_GameHandler extends WebSocketUriHandler
 
     public function addGame($gameId, $game)
     {
-        $this->_game[$gameId] = $game;
+        $this->_games[$gameId] = $game;
     }
 
     public function removeGame($gameId)
     {
-        $this->_game[$gameId] = null;
-        unset($this->_game[$gameId]);
+        $this->_games[$gameId] = null;
+        unset($this->_games[$gameId]);
     }
 
     /**
@@ -44,8 +44,8 @@ class Cli_GameHandler extends WebSocketUriHandler
      */
     public function getGame($gameId)
     {
-        if (isset($this->_game[$gameId])) {
-            return $this->_game[$gameId];
+        if (isset($this->_games[$gameId])) {
+            return $this->_games[$gameId];
         }
     }
 
