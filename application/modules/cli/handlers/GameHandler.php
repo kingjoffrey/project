@@ -94,10 +94,10 @@ class Cli_GameHandler extends WebSocketUriHandler
         }
 
         if ($turnTimeLimit = $game->getTurnTimeLimit()) {
-            $mTurn = new Application_Model_TurnHistory($gameId, $db);
+            $mTurn = new Application_Model_TurnHistory($gameId, $this->_db);
             $turn = $mTurn->getCurrentStatus();
             if (time() - strtotime($turn['date']) > $turnTimeLimit * 60) {
-                $mGame = new Application_Model_Game($gameId, $db);
+                $mGame = new Application_Model_Game($gameId, $this->_db);
                 $mTurn = new Cli_Model_Turn($user, $this);
                 $mTurn->next($mGame->getTurnPlayerId());
                 return;
@@ -105,7 +105,7 @@ class Cli_GameHandler extends WebSocketUriHandler
         }
 
         if (!$config->turnOffDatabaseLogging) {
-            Cli_Model_Database::addTokensIn($db, $gameId, $playerId, $dataIn);
+            Cli_Model_Database::addTokensIn($this->_db, $gameId, $playerId, $dataIn);
         }
 
         if ($dataIn['type'] == 'computer') {
@@ -201,18 +201,17 @@ class Cli_GameHandler extends WebSocketUriHandler
         $game = Cli_Model_Game::getGame($user);
         if ($game) {
             $playerId = $user->parameters['me']->getId();
-            $color = $game->getPlayerColor($playerId);
+            $game->removeUser($playerId, $this->_db);
 
-            $game->removeUser($playerId, Cli_Model_Database::getDb());
+            if ($game->getUsers()) {
+                $color = $game->getPlayerColor($playerId);
+                $token = array(
+                    'type' => 'close',
+                    'color' => $color
+                );
 
-            $token = array(
-                'type' => 'close',
-                'color' => $color
-            );
-
-            $this->sendToChannel($game, $token);
-
-            if (!$game->getUsers()) {
+                $this->sendToChannel($game, $token);
+            } else {
                 $this->removeGame($game->getId());
             }
         }

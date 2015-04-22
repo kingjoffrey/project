@@ -16,6 +16,7 @@ class Cli_Model_SetupStart
             return;
         }
 
+        $setup->setIsOpen(false);
         $db = $handler->getDb();
 
         $mPlayersInGame = new Application_Model_PlayersInGame($setup->getId(), $db);
@@ -76,6 +77,6 @@ class Cli_Model_SetupStart
         }
 
         $token = array('type' => 'start');
-        $handler->sendToChannel(Cli_Model_Setup::getSetup($user), $token);
+        $handler->sendToChannel($setup, $token);
     }
 }

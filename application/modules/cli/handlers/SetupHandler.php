@@ -71,26 +71,21 @@ class Cli_SetupHandler extends WebSocketUriHandler
     {
         $setup = Cli_Model_Setup::getSetup($user);
         if ($setup) {
-
-//        $mGame = new Application_Model_Game($user->parameters['gameId'], $this->_db);
-//        if ($mGame->isGameStarted()) {
-//            return;
-//        }
-
             $setup->removeUser($user, $this->_db);
 
-            if ($setup->getGameMasterId() == $user->parameters['playerId']) {
-                $setup->setNewGameMaster($this->_db);
-            }
-
-            $token = array(
-                'type' => 'close',
-                'playerId' => $user->parameters['playerId']
-            );
-
-            $this->sendToChannel($setup, $token);
-
-            if (!$setup->getUsers()) {
+            if ($setup->getUsers()) {
+                if (!$setup->getIsOpen()) {
+                    return;
+                }
+                if ($setup->getGameMasterId() == $user->parameters['playerId']) {
+                    $setup->setNewGameMaster($this->_db);
+                }
+                $token = array(
+                    'type' => 'close',
+                    'playerId' => $user->parameters['playerId']
+                );
+                $this->sendToChannel($setup, $token);
+            } else {
                 $this->removeGame($setup->getId());
             }
         }

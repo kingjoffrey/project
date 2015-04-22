@@ -3,6 +3,7 @@
 class Cli_Model_Setup
 {
     private $_id;
+    private $_isOpen = true;
 
     private $_users = array();
     private $_players = array();
@@ -111,6 +112,16 @@ class Cli_Model_Setup
     public function getUsers()
     {
         return $this->_users;
+    }
+
+    public function getIsOpen()
+    {
+        return $this->_isOpen;
+    }
+
+    public function setIsOpen($isOpen)
+    {
+        $this->_isOpen = $isOpen;
     }
 
     /**
