@@ -25,14 +25,14 @@ class Cli_Model_NewOpen
             throw new Exception('Brak uprawnień!');
         }
 
-        if (!($user->parameters['game'] = $handler->getGame($dataIn['gameId']))) {
-            echo 'not set' . "\n";
-            $handler->addGame($dataIn['gameId'], new Cli_Model_Setup($dataIn['gameId'], $db));
-            $user->parameters['game'] = $handler->getGame($dataIn['gameId']);
-        }
+//        if (!($user->parameters['game'] = $handler->getGame())) {
+//            echo 'not set' . "\n";
+//            $handler->addGame($dataIn['gameId'], new Cli_Model_New());
+//            $user->parameters['game'] = $handler->getGame($dataIn['gameId']);
+//        }
 
-        $setup = Cli_Model_Setup::getSetup($user);
-        $setup->addUser($dataIn['playerId'], $user, $db, $handler);
+//        $setup = Cli_Model_Setup::getSetup($user);
+//        $setup->addUser($dataIn['playerId'], $user, $db, $handler);
 
         $user->parameters['playerId'] = $dataIn['playerId'];
         $user->parameters['accessKey'] = $dataIn['accessKey'];
