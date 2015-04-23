@@ -1,21 +1,35 @@
-var myGames;
-
 $().ready(function () {
-    myGames = $('#join.table table');
+    New.init()
+})
 
-    refresh();
-    setInterval('refresh()', 5000);
+var New = new function () {
+    var myGames,
+        ws,
+        changeMap = function () {
+            $('#map').attr('src', '/img/maps/' + $('#mapId').children(':selected').attr('value') + '.png');
+        },
+        getNumberOfPlayersForm = function () {
+            var mapId = $('#mapId').val()
+            $.getJSON('/' + lang + '/newajax/nop/mapId/' + mapId, function (result) {
+                var html = $.parseHTML(result);
+                console.log($($(html)[0][0]).val())
+                $('#x').val($($(html)[0][0]).val())
+                $('#numberOfPlayers').val($($(html)[0][1]).val())
+            })
+        }
 
-    changeMap()
+    this.init = function () {
+        myGames = $('#join.table table');
 
-    $('#mapId').change(function () {
-        changeMap();
-        getNumberOfPlayersForm();
-    });
-});
+        changeMap()
 
-function changeMap() {
-    $('#map').attr('src', '/img/maps/' + $('#mapId').children(':selected').attr('value') + '.png');
+        $('#mapId').change(function () {
+            changeMap()
+            getNumberOfPlayersForm()
+        })
+        ws = new WebSocket(wsURL + '/new')
+    }
+
 }
 
 function refresh() {
@@ -36,7 +50,7 @@ function refresh() {
 //                    .append($('<td>').append($('<a>').html(result[i].playersingame)).css('cursor', 'pointer'))
                     .append($('<td>').append($('<a>').html(result[i].playersingame + '/' + result[i].numberOfPlayers)).css('cursor', 'pointer'))
                     .append($('<td>').append($('<a>').html(result[i].begin.split('.')[0])).css('cursor', 'pointer'))
-                    .bind('click', { gameId: result[i].gameId }, makeUrl)
+                    .bind('click', {gameId: result[i].gameId}, makeUrl)
                     .mouseover(function () {
                         $(this).css('background', 'transparent url(/img/nav_bg.png) repeat')
                     })
@@ -60,12 +74,3 @@ function makeUrl(event) {
     top.location.replace('/' + lang + '/setup/index/gameId/' + event.data.gameId);
 }
 
-function getNumberOfPlayersForm() {
-    var mapId = $('#mapId').val();
-    $.getJSON('/' + lang + '/newajax/nop/mapId/' + mapId, function (result) {
-        var html = $.parseHTML(result);
-        console.log($($(html)[0][0]).val())
-        $('#x').val($($(html)[0][0]).val())
-        $('#numberOfPlayers').val($($(html)[0][1]).val())
-    });
-}
