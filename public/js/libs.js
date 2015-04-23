@@ -74,7 +74,7 @@ function isTruthful(val) {
 }
 
 function isSet(val) {
-    if (typeof val == 'undefined') {
+    if (typeof val === 'undefined') {
         return false;
     } else {
         return true;

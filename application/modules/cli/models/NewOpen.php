@@ -5,11 +5,10 @@ class Cli_Model_NewOpen
     /**
      * @param $dataIn
      * @param Devristo\Phpws\Protocol\WebSocketTransportInterface $user
-     * @param Zend_Db_Adapter_Pdo_Pgsql $db
      * @param Cli_GameHandler $handler
      * @throws Exception
      */
-    public function __construct($dataIn, Devristo\Phpws\Protocol\WebSocketTransportInterface $user, Cli_SetupHandler $handler)
+    public function __construct($dataIn, Devristo\Phpws\Protocol\WebSocketTransportInterface $user, Cli_NewHandler $handler)
     {
         if (!isset($dataIn['playerId'])) {
             throw new Exception('Brak "playerId"');
@@ -25,14 +24,45 @@ class Cli_Model_NewOpen
             throw new Exception('Brak uprawnień!');
         }
 
-//        if (!($user->parameters['game'] = $handler->getGame())) {
-//            echo 'not set' . "\n";
-//            $handler->addGame($dataIn['gameId'], new Cli_Model_New());
-//            $user->parameters['game'] = $handler->getGame($dataIn['gameId']);
-//        }
+        if (!($user->parameters['new'] = $handler->getNew())) {
+            echo 'not set' . "\n";
+            $handler->addNew(new Cli_Model_New());
+            $user->parameters['new'] = $handler->getNew();
+        }
 
-//        $setup = Cli_Model_Setup::getSetup($user);
-//        $setup->addUser($dataIn['playerId'], $user, $db, $handler);
+        $new = Cli_Model_New::getNew($user);
+        $new->addUser($dataIn['playerId'], $user);
+
+        if (isset($dataIn['gameMasterId']) && isset($dataIn['gameId'])) { //setup
+            echo 'a';
+            if ($dataIn['gameMasterId'] == $dataIn['playerId']) {
+                echo 'b';
+                $mGame = new Application_Model_Game($dataIn['gameId'], $db);
+                $game = $mGame->getOpen($dataIn['gameMasterId']);
+                $new->addGame($dataIn['gameId'], $game);
+
+                $token = array(
+                    'type' => 'add',
+                    'game' => $game
+                );
+
+                $handler->sendToChannelExceptUser($user, $new, $token);
+            }
+        } else { //new
+            $token = array(
+                'type' => 'games',
+                'games' => $new->getGames()
+            );
+
+            $handler->sendToUser($user, $token);
+
+            $token = array(
+                'type' => 'open',
+                'playerId' => $dataIn['playerId']
+            );
+
+            $handler->sendToChannel($new, $token);
+        }
 
         $user->parameters['playerId'] = $dataIn['playerId'];
         $user->parameters['accessKey'] = $dataIn['accessKey'];

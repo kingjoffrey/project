@@ -1,10 +1,13 @@
 $().ready(function () {
-    New.init()
+    if (typeof gameId === 'undefined') {
+        New.init()
+    }
 })
 
 var New = new function () {
     var myGames,
         ws,
+        closed = true,
         changeMap = function () {
             $('#map').attr('src', '/img/maps/' + $('#mapId').children(':selected').attr('value') + '.png');
         },
@@ -16,10 +19,41 @@ var New = new function () {
                 $('#x').val($($(html)[0][0]).val())
                 $('#numberOfPlayers').val($($(html)[0][1]).val())
             })
+        },
+        addGames = function (games) {
+            myGames.append(th)
+            var j = 0;
+            for (var i in games) {
+                addGame(games[i])
+                j++
+            }
+            if (j == 0) {
+                myGames.append(
+                    $('<tr>')
+                        .append($('<td colspan="3">').html(info).css('padding', '15px'))
+                )
+            }
+
+        },
+        addGame = function (game) {
+            myGames.append(
+                $('<tr>')
+                    .addClass('trlink')
+                    .attr('id', game.gameId)
+                    .append($('<td>').append($('<a>').html(game.name)))
+                    .append($('<td>').append($('<a>').html(game.playersingame + '/' + game.numberOfPlayers)))
+                    .append($('<td>').append($('<a>').html(game.begin.split('.')[0])))
+                    .click(function () {
+                        top.location.replace('/' + lang + '/setup/index/gameId/' + $(this).attr('id'))
+                    })
+            )
+        },
+        removeGame = function (gameId) {
+            $('tr#' + gameId).remove()
         }
 
     this.init = function () {
-        myGames = $('#join.table table');
+        myGames = $('#join.table table')
 
         changeMap()
 
@@ -27,50 +61,87 @@ var New = new function () {
             changeMap()
             getNumberOfPlayersForm()
         })
-        ws = new WebSocket(wsURL + '/new')
+        New.webSocketInit()
     }
+    this.webSocketInit = function () {
+        ws = new WebSocket(wsURL + '/new')
 
-}
-
-function refresh() {
-    $.getJSON('/' + lang + '/newajax/refresh', function (result) {
-
-        myGames.html('');
-        myGames.append(th);
-
-        var j = 0;
-
-        for (i in result) {
-            j++;
-            myGames.append(
-                $('<tr>')
-                    .addClass('gid' + result[i].gameId)
-                    .append($('<td>').append($('<a>').html(result[i].name)).css('cursor', 'pointer'))
-//                    .append($('<td>').append($('<a>').html(result[i].gameMaster)).css('cursor', 'pointer'))
-//                    .append($('<td>').append($('<a>').html(result[i].playersingame)).css('cursor', 'pointer'))
-                    .append($('<td>').append($('<a>').html(result[i].playersingame + '/' + result[i].numberOfPlayers)).css('cursor', 'pointer'))
-                    .append($('<td>').append($('<a>').html(result[i].begin.split('.')[0])).css('cursor', 'pointer'))
-                    .bind('click', {gameId: result[i].gameId}, makeUrl)
-                    .mouseover(function () {
-                        $(this).css('background', 'transparent url(/img/nav_bg.png) repeat')
-                    })
-                    .mouseleave(function () {
-                        $(this).css('background', 'transparent')
-                    })
-            );
-            $('#mygames td').mouseover(function () {
-                $('#mygames td').css('cursor', 'pointer')
-            });
+        ws.onopen = function () {
+            closed = false
+            New.open()
         }
-        if (j == 0) {
-            myGames.append(
-                $('<tr>')
-                    .append($('<td colspan="3">').html(info).css('padding', '15px'))
-            )
+        ws.onmessage = function (e) {
+            var r = $.parseJSON(e.data);
+            if (typeof gameId === 'undefined') {
+                New.messageNew(r)
+            }
         }
-    });
-}
-function makeUrl(event) {
-    top.location.replace('/' + lang + '/setup/index/gameId/' + event.data.gameId);
-}
+        ws.onclose = function () {
+            closed = true
+            setTimeout('New.init()', 1000);
+        }
+    }
+    this.messageNew = function (r) {
+        console.log(r)
+        switch (r.type) {
+            case 'games':
+                //add all games
+                addGames(r.games)
+                break
+            case 'add':
+                //add new game
+                addGame(r.game)
+                break
+            case 'remove':
+                //remove game
+                removeGame(r.gameId)
+                break;
+            case 'open':
+                //add player
+                break
+            case 'close':
+                //remove player
+                break
+            case 'chat':
+                //incoming chat
+                break
+            default:
+                console.log(r)
+        }
+    }
+    this.open = function () {
+        if (New.closed) {
+            console.log(translations.sorryServerIsDisconnected)
+            return;
+        }
 
+        var token = {
+            type: 'open',
+            playerId: id,
+            langId: langId,
+            accessKey: accessKey
+        }
+
+        if (typeof gameId !== 'undefined') {
+            if (Setup.getGameMasterId() == id) {
+                token.gameMasterId = id
+                token.gameId = gameId
+            }
+        }
+        console.log(token)
+        ws.send(JSON.stringify(token))
+    }
+    this.removeGame = function (gameId) {
+        if (New.closed) {
+            console.log(translations.sorryServerIsDisconnected)
+            return;
+        }
+
+        var token = {
+            type: 'remove',
+            gameId: gameId
+        }
+
+        ws.send(JSON.stringify(token))
+    }
+}

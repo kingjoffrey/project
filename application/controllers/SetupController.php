@@ -9,8 +9,11 @@ class SetupController extends Game_Controller_Gui
             throw new Exception('Brak gameId!');
         }
 
-        $this->view->headLink()->appendStylesheet($this->view->baseUrl() . '/css/playerslist.css?v=' . Zend_Registry::get('config')->version);
-        $this->view->headScript()->appendFile('/js/setup.js?v=' . Zend_Registry::get('config')->version);
+        $version = Zend_Registry::get('config')->version;
+
+        $this->view->headLink()->appendStylesheet($this->view->baseUrl() . '/css/playerslist.css?v=' . $version);
+        $this->view->headScript()->appendFile('/js/setup.js?v=' . $version);
+        $this->view->headScript()->appendFile('/js/new.js?v=' . $version);
 
         $mGame = new Application_Model_Game($gameId);
         $mPlayersInGame = new Application_Model_PlayersInGame($gameId);

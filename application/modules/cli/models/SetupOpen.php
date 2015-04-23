@@ -41,5 +41,14 @@ class Cli_Model_SetupOpen
         $user->parameters['accessKey'] = $dataIn['accessKey'];
 
         $setup->update($user->parameters['playerId'], $handler);
+
+        if ($setup->getGameMasterId() == $dataIn['playerId']) {
+            $token = array(
+                'type' => 'open',
+                'gameMasterId' => $dataIn['playerId']
+            );
+
+            $handler->sendToUser($user, $token);
+        }
     }
 }

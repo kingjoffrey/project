@@ -6,7 +6,7 @@ use Devristo\Phpws\Server\UriHandler\WebSocketUriHandler;
 class Cli_NewHandler extends WebSocketUriHandler
 {
     private $_db;
-    private $_games = array();
+    private $_new;
 
     public function __construct($logger)
     {
@@ -19,26 +19,22 @@ class Cli_NewHandler extends WebSocketUriHandler
         return $this->_db;
     }
 
-    public function addGame($gameId, Cli_Model_Setup $game)
+    public function addNew(Cli_Model_New $new)
     {
-        $this->_games[$gameId] = $game;
+        $this->_new = $new;
     }
 
-    public function removeGame($gameId)
+    public function removeNew()
     {
-        $this->_games[$gameId] = null;
-        unset($this->_games[$gameId]);
+        $this->_new = null;
     }
 
     /**
-     * @param $gameId
-     * @return Cli_Model_Setup
+     * @return Cli_Model_New
      */
-    public function getGame($gameId)
+    public function getNew()
     {
-        if (isset($this->_games[$gameId])) {
-            return $this->_games[$gameId];
-        }
+        return $this->_new;
     }
 
     public function onMessage(WebSocketTransportInterface $user, WebSocketMessageInterface $msg)
@@ -49,24 +45,31 @@ class Cli_NewHandler extends WebSocketUriHandler
             case 'open':
                 new Cli_Model_NewOpen($dataIn, $user, $this);
                 break;
+            case 'remove':
+                $token = array(
+                    'type' => 'remove',
+                    'gameId' => $dataIn['gameId']
+                );
+                $this->sendToChannelExceptUser($user, $this->getNew(), $token);
+                break;
         }
     }
 
     public function onDisconnect(WebSocketTransportInterface $user)
     {
-        $setup = Cli_Model_Setup::getSetup($user);
-        if ($setup) {
-            $setup->removeUser($user, $this->_db);
+        $new = Cli_Model_New::getNew($user);
+        if ($new) {
+            $new->removeUser($user, $this->_db);
 
             $token = array(
                 'type' => 'close',
                 'playerId' => $user->parameters['playerId']
             );
 
-            $this->sendToChannel($setup, $token);
+            $this->sendToChannel($new, $token);
 
-            if (!$setup->getUsers()) {
-                $this->removeGame($setup->getId());
+            if (!$new->getUsers()) {
+                $this->removeNew();
             }
         }
     }
@@ -101,19 +104,41 @@ class Cli_NewHandler extends WebSocketUriHandler
     }
 
     /**
-     * @param Cli_Model_Setup $setup
+     * @param Cli_Model_New $new
      * @param $token
      * @param null $debug
      * @throws Zend_Exception
      */
-    public function sendToChannel(Cli_Model_Setup $setup, $token, $debug = null)
+    public function sendToChannel(Cli_Model_New $new, $token, $debug = null)
     {
         if ($debug || Zend_Registry::get('config')->debug) {
             print_r('ODPOWIEDŹ ');
             print_r($token);
         }
 
-        foreach ($setup->getUsers() AS $user) {
+        foreach ($new->getUsers() AS $user) {
+            $this->sendToUser($user, $token);
+        }
+    }
+
+    /**
+     * @param WebSocketTransportInterface $u
+     * @param Cli_Model_New $new
+     * @param $token
+     * @param null $debug
+     * @throws Zend_Exception
+     */
+    public function sendToChannelExceptUser(Devristo\Phpws\Protocol\WebSocketTransportInterface $u, Cli_Model_New $new, $token, $debug = null)
+    {
+        if ($debug || Zend_Registry::get('config')->debug) {
+            print_r('ODPOWIEDŹ ');
+            print_r($token);
+        }
+
+        foreach ($new->getUsers() AS $user) {
+            if ($user == $u) {
+                continue;
+            }
             $this->sendToUser($user, $token);
         }
     }

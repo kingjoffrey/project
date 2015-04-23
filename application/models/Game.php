@@ -33,33 +33,16 @@ class Application_Model_Game extends Coret_Db_Table_Abstract
         return $this->_db->lastSequenceId($this->_db->quoteIdentifier($this->_sequence));
     }
 
-    public function getOpen()
+    public function getOpen($gameMasterId)
     {
         $select = $this->_db->select()
-            ->from($this->_name)
-            ->join('map', $this->_name . '.' . $this->_db->quoteIdentifier('mapId') . '=map.' . $this->_db->quoteIdentifier('mapId'), 'name')
+            ->from(array('a' => $this->_name))
+            ->join(array('b' => 'map'), 'a.' . $this->_db->quoteIdentifier('mapId') . '=b.' . $this->_db->quoteIdentifier('mapId'), 'name')
             ->where('"isOpen" = true')
+            ->where($this->_db->quoteIdentifier($this->_primary) . ' = ?', $this->_gameId)
+            ->where($this->_db->quoteIdentifier('gameMasterId') . ' = ?', $gameMasterId)
             ->order('begin DESC');
-        $result = $this->_db->query($select)->fetchAll();
-
-        foreach ($result as $k => $game) {
-            $select = $this->_db->select()
-                ->from('playersingame', 'count(*)')
-                ->where($this->_db->quoteIdentifier($this->_primary) . ' = ?', $game['gameId'])
-                ->where('"webSocketServerUserId" IS NOT NULL');
-            $playersInGame = $this->_db->query($select)->fetchAll();
-            if ($playersInGame[0]['count'] > 0) {
-                $result[$k]['playersingame'] = $playersInGame[0]['count'];
-                $select = $this->_db->select()
-                    ->from('player', array('firstName', 'lastName'))
-                    ->where($this->_db->quoteIdentifier('playerId') . ' = ?', $result[$k]['gameMasterId']);
-                $gameMaster = $this->_db->query($select)->fetchAll();
-                $result[$k]['gameMaster'] = $gameMaster[0]['firstName'] . ' ' . $gameMaster[0]['lastName'];
-            } else {
-                unset($result[$k]);
-            }
-        }
-        return $result;
+        return $this->selectRow($select);
     }
 
     public function getMyGames($playerId, $pageNumber)
@@ -102,7 +85,7 @@ class Application_Model_Game extends Coret_Db_Table_Abstract
         $data = array(
             'turnPlayerId' => $turnPlayerId,
             'isOpen' => 'false',
-            'begin'=> new Zend_Db_Expr('now()')
+            'begin' => new Zend_Db_Expr('now()')
         );
 
         $this->updateGame($data);

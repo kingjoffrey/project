@@ -1,4 +1,4 @@
-$(document).ready(function () {
+$().ready(function () {
     Setup.init()
 })
 
@@ -45,9 +45,6 @@ var Setup = new function () {
         }
         ws.onmessage = function (e) {
             var r = $.parseJSON(e.data);
-            if (notSet(r.type)) {
-                return
-            }
             Setup.message(r)
         }
         ws.onclose = function () {
@@ -58,12 +55,18 @@ var Setup = new function () {
     this.message = function (r) {
         console.log(r)
         switch (r.type) {
+            case 'open':
+                gameMasterId = r.gameMasterId
+                New.webSocketInit()
+                break
+
             case 'team':
                 $('tr#' + r.mapPlayerId + ' select').val(r.teamId)
                 $('tr#' + r.mapPlayerId + ' .td4 img').attr('src', '/img/game/heroes/' + mapPlayers[r.teamId].shortName + '.png')
                 break
 
             case 'start':
+                New.removeGame(gameId)
                 top.location.replace('/' + lang + '/game/index/id/' + gameId)
                 break;
 
@@ -72,15 +75,9 @@ var Setup = new function () {
                 break;
 
             case 'update':
-                if (notSet(r.gameMasterId)) {
-                    console.log('error')
-                    return;
-                }
-
                 gameMasterId = r.gameMasterId
                 Setup.removePlayer(r.player.playerId)
 
-// undecided
                 if (r.player.mapPlayerId) {
                     $('#' + r.player.mapPlayerId + ' .td3').html(r.player.firstName + ' ' + r.player.lastName)
 
@@ -190,5 +187,8 @@ var Setup = new function () {
         } else {
             $('#start').css('display', 'none')
         }
+    }
+    this.getGameMasterId = function () {
+        return gameMasterId
     }
 }
