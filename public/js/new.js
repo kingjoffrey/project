@@ -29,13 +29,13 @@ var New = new function () {
             }
             if (j == 0) {
                 myGames.append(
-                    $('<tr>')
-                        .append($('<td colspan="3">').html(info).css('padding', '15px'))
+                    $('<tr>').append($('<td colspan="3">').html(info).css('padding', '15px')).attr('id', 0)
                 )
             }
 
         },
         addGame = function (game) {
+            $('tr#0').remove()
             myGames.append(
                 $('<tr>')
                     .addClass('trlink')

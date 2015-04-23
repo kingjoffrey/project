@@ -61,14 +61,14 @@ class Cli_NewHandler extends WebSocketUriHandler
         if ($new) {
             $new->removeUser($user, $this->_db);
 
-            $token = array(
-                'type' => 'close',
-                'playerId' => $user->parameters['playerId']
-            );
+            if ($new->getUsers()) {
+                $token = array(
+                    'type' => 'close',
+                    'playerId' => $user->parameters['playerId']
+                );
 
-            $this->sendToChannel($new, $token);
-
-            if (!$new->getUsers()) {
+                $this->sendToChannel($new, $token);
+            } else {
                 $this->removeNew();
             }
         }

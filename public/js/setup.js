@@ -88,7 +88,7 @@ var Setup = new function () {
                         if (r.gameMasterId == id) {
                             $('#' + r.player.mapPlayerId + ' .td2 a').html(translations.select);
                         } else {
-                            $('#' + mapPlayerId + ' .td2 a').remove();
+                            $('#' + r.player.mapPlayerId + ' .td2 a').remove();
                         }
                     }
                     $('#' + r.player.mapPlayerId + ' .td1').attr('id', r.player.playerId)
@@ -114,7 +114,7 @@ var Setup = new function () {
         if (playerId == id) {
             $('#' + playerId + '.td1').parent().find('.td2 a').html(translations.select)
         } else {
-            if (r.gameMasterId == id) {
+            if (gameMasterId == id) {
                 $('#' + playerId + '.td1').parent().find('.td2 a').html(translations.deselect)
             } else {
                 $('#' + playerId + '.td2').parent().find('.td2 a').remove()
