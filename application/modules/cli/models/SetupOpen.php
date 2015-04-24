@@ -40,7 +40,9 @@ class Cli_Model_SetupOpen
         $user->parameters['playerId'] = $dataIn['playerId'];
         $user->parameters['accessKey'] = $dataIn['accessKey'];
 
-        $setup->update($user->parameters['playerId'], $handler);
+        foreach ($setup->getUsers() as $u) {
+            $setup->update($u->parameters['playerId'], $handler);
+        }
 
         if ($setup->getGameMasterId() == $dataIn['playerId']) {
             $token = array(
