@@ -35,18 +35,19 @@ var New = new function () {
             }
 
         },
-        addGame = function (game) {
+        addGame = function (game, players) {
             if ($('tr#' + game.gameId).length) {
                 return
             }
-            games[game.gameId].numberOfPlayersInGame = game.numberOfPlayersInGame
+            games[game.gameId] = players
+            var numberOfPlayersInGame = countProperties(players)
             $('tr#0').remove()
             table.append(
                 $('<tr>')
                     .addClass('trlink')
                     .attr('id', game.gameId)
                     .append($('<td>').append($('<a>').html(game.name)))
-                    .append($('<td>').append($('<a>').append($('<span>').html(games[game.gameId].numberOfPlayersInGame)).append('/' + game.numberOfPlayers)))
+                    .append($('<td>').append($('<a>').append($('<span>').html(numberOfPlayersInGame)).append('/' + game.numberOfPlayers)))
                     .append($('<td>').append($('<a>').html(game.begin.split('.')[0])))
                     .click(function () {
                         top.location.replace('/' + lang + '/setup/index/gameId/' + $(this).attr('id'))

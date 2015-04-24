@@ -60,6 +60,7 @@ class Cli_NewHandler extends WebSocketUriHandler
         $new = Cli_Model_New::getNew($user);
         if ($new) {
             $new->removeUser($user, $this->_db);
+            $new->removePlayer($user->parameters['playerId']);
 
             if ($new->getUsers()) {
                 $token = array(

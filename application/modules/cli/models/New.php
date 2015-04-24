@@ -4,8 +4,9 @@ class Cli_Model_New
 {
     private $_users = array();
     private $_games = array();
+    private $_players = array();
 
-    public function addGame($gameId, $game)
+    public function addGame($gameId, $game) // klasa game zawierająca players
     {
         $this->_games[$gameId] = $game;
     }
@@ -24,14 +25,31 @@ class Cli_Model_New
         }
     }
 
-    public function addUser($playerId, Devristo\Phpws\Protocol\WebSocketTransportInterface $user)
-    {
-        $this->_users[$playerId] = $user;
-    }
-
     public function getGames()
     {
         return $this->_games;
+    }
+
+//    public function addPlayer($playerId)
+//    {
+//        $this->_players[$playerId] = 1;
+//    }
+//
+//    public function removePlayer($playerId)
+//    {
+//        if (isset($this->_players[$playerId])) {
+//            unset($this->_players[$playerId]);
+//        }
+//    }
+//
+//    public function getPlayers()
+//    {
+//        return $this->_players;
+//    }
+
+    public function addUser($playerId, Devristo\Phpws\Protocol\WebSocketTransportInterface $user)
+    {
+        $this->_users[$playerId] = $user;
     }
 
     public function removeUser(Devristo\Phpws\Protocol\WebSocketTransportInterface $user, Zend_Db_Adapter_Pdo_Pgsql $db)
