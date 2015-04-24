@@ -5,7 +5,8 @@ $().ready(function () {
 })
 
 var New = new function () {
-    var myGames,
+    var table,
+        games = {},
         ws,
         closed = true,
         changeMap = function () {
@@ -21,27 +22,28 @@ var New = new function () {
             })
         },
         addGames = function (games) {
-            myGames.append(th)
+            table.append(th)
             var j = 0;
             for (var i in games) {
                 addGame(games[i])
                 j++
             }
             if (j == 0) {
-                myGames.append(
+                table.append(
                     $('<tr>').append($('<td colspan="3">').html(info).css('padding', '15px')).attr('id', 0)
                 )
             }
 
         },
         addGame = function (game) {
+            games[game.gameId] = game.numberOfPlayersInGame
             $('tr#0').remove()
-            myGames.append(
+            table.append(
                 $('<tr>')
                     .addClass('trlink')
                     .attr('id', game.gameId)
                     .append($('<td>').append($('<a>').html(game.name)))
-                    .append($('<td>').append($('<a>').html(game.playersingame + '/' + game.numberOfPlayers)))
+                    .append($('<td>').append($('<a>').html(games[game.gameId] + '/' + game.numberOfPlayers)))
                     .append($('<td>').append($('<a>').html(game.begin.split('.')[0])))
                     .click(function () {
                         top.location.replace('/' + lang + '/setup/index/gameId/' + $(this).attr('id'))
@@ -53,10 +55,8 @@ var New = new function () {
         }
 
     this.init = function () {
-        myGames = $('#join.table table')
-
+        table = $('#join.table table')
         changeMap()
-
         $('#mapId').change(function () {
             changeMap()
             getNumberOfPlayersForm()

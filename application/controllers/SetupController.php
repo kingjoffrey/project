@@ -16,20 +16,8 @@ class SetupController extends Game_Controller_Gui
         $this->view->headScript()->appendFile('/js/new.js?v=' . $version);
 
         $mGame = new Application_Model_Game($gameId);
-        $mPlayersInGame = new Application_Model_PlayersInGame($gameId);
         $game = $mGame->getGame();
         $mMapPlayers = new Application_Model_MapPlayers($game['mapId']);
-
-        $mGame->updateGameMaster($this->_playerId);
-
-        if ($game['gameMasterId'] != $this->_playerId) {
-            if ($mPlayersInGame->isPlayerInGame($this->_playerId)) {
-                $mPlayersInGame->disconnectFromGame($this->_playerId);
-            }
-            $mPlayersInGame->joinGame($this->_playerId);
-        } elseif (!$mPlayersInGame->isPlayerInGame($this->_playerId)) {
-            $mPlayersInGame->joinGame($this->_playerId);
-        }
 
         $this->view->mapPlayers = $mMapPlayers->getAll();
         $this->view->game = $game;

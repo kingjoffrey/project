@@ -35,12 +35,16 @@ class Application_Model_Game extends Coret_Db_Table_Abstract
 
     public function getOpen($gameMasterId)
     {
+        $mapId = $this->_db->quoteIdentifier('mapId');
         $select = $this->_db->select()
             ->from(array('a' => $this->_name))
-            ->join(array('b' => 'map'), 'a.' . $this->_db->quoteIdentifier('mapId') . '=b.' . $this->_db->quoteIdentifier('mapId'), 'name')
+            ->join(array('b' => 'map'), 'a.' . $mapId . ' = b.' . $mapId, 'name')
+            ->join(array('c' => 'playersingame'), 'a.' . $this->_db->quoteIdentifier($this->_primary) . ' = c.' . $this->_db->quoteIdentifier($this->_primary), 'count(c.*) as numberOfPlayersInGame')
             ->where('"isOpen" = true')
-            ->where($this->_db->quoteIdentifier($this->_primary) . ' = ?', $this->_gameId)
+            ->where('a.' . $this->_db->quoteIdentifier($this->_primary) . ' = ?', $this->_gameId)
             ->where($this->_db->quoteIdentifier('gameMasterId') . ' = ?', $gameMasterId)
+            ->group('a.' . $this->_primary)
+            ->group('b.name')
             ->order('begin DESC');
         return $this->selectRow($select);
     }
@@ -115,42 +119,6 @@ class Application_Model_Game extends Coret_Db_Table_Abstract
         $select = $this->_db->select()
             ->from($this->_name, 'gameMasterId')
             ->where($this->_db->quoteIdentifier($this->_primary) . ' = ?', $this->_gameId);
-        return $this->selectOne($select);
-    }
-
-    public function updateGameMaster($playerId)
-    {
-        $select = $this->_db->select()
-            ->from('playersingame', 'gameId')
-            ->where($this->_db->quoteIdentifier($this->_primary) . ' = ?', $this->_gameId)
-            ->where($this->_db->quoteIdentifier('playerId') . ' = ?', $this->getGameMasterId())
-            ->where('"webSocketServerUserId" IS NOT NULL');
-
-        if (!$this->selectOne($select)) {
-            $data = array(
-                'gameMasterId' => $playerId
-            );
-            $this->updateGame($data);
-        }
-    }
-
-    public function isGameMaster($playerId)
-    {
-        $select = $this->_db->select()
-            ->from($this->_name, array('gameMasterId'))
-            ->where($this->_db->quoteIdentifier($this->_primary) . ' = ?', $this->_gameId)
-            ->where('"gameMasterId" = ?', $playerId);
-
-        return $this->selectOne($select);
-    }
-
-    public function isGameStarted()
-    {
-        $select = $this->_db->select()
-            ->from($this->_name, $this->_primary)
-            ->where('"isOpen" = false')
-            ->where($this->_db->quoteIdentifier($this->_primary) . ' = ?', $this->_gameId);
-
         return $this->selectOne($select);
     }
 
