@@ -34,12 +34,12 @@ class Cli_Model_NewOpen
         $new->addUser($dataIn['playerId'], $user);
 
         if (isset($dataIn['gameMasterId']) && isset($dataIn['gameId'])) { //setup
-            echo 'a';
             if ($dataIn['gameMasterId'] == $dataIn['playerId']) {
-                echo 'b';
-                $mGame = new Application_Model_Game($dataIn['gameId'], $db);
-                $game = $mGame->getOpen($dataIn['gameMasterId']);
-                $new->addGame($dataIn['gameId'], $game);
+                if (!$game = $new->getGame($dataIn['gameId'])) {
+                    $mGame = new Application_Model_Game($dataIn['gameId'], $db);
+                    $game = $mGame->getOpen($dataIn['gameMasterId']);
+                    $new->addGame($dataIn['gameId'], $game);
+                }
 
                 $token = array(
                     'type' => 'add',

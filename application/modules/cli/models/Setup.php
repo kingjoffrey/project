@@ -38,16 +38,15 @@ class Cli_Model_Setup
     public function getPlayerIdByMapPlayerId($mapPlayerId)
     {
         foreach ($this->_players as $playerId => $player) {
-            if ($player['mapPlayerId'] == $mapPlayerId) {
+            if (isset($player['mapPlayerId']) && $player['mapPlayerId'] == $mapPlayerId) {
                 return $playerId;
             }
         }
     }
 
-    public function updatePlayerReady($playerId, $mapPlayerId, $mPlayersInGame)
+    public function updatePlayerReady($playerId, $mapPlayerId)
     {
         $this->_players[$playerId]['mapPlayerId'] = $mapPlayerId;
-        $mPlayersInGame->updatePlayerReady($playerId, $mapPlayerId);
     }
 
     public function isNoComputerColorInGame($mapPlayerId)
@@ -62,7 +61,7 @@ class Cli_Model_Setup
     public function isPlayer($mapPlayerId)
     {
         foreach ($this->_players as $playerId => $player) {
-            if ($player['mapPlayerId'] == $mapPlayerId) {
+            if (isset($player['mapPlayerId']) && $player['mapPlayerId'] == $mapPlayerId) {
                 return true;
             }
         }
@@ -97,8 +96,8 @@ class Cli_Model_Setup
 
     public function addUser($playerId, Devristo\Phpws\Protocol\WebSocketTransportInterface $user, $db)
     {
-        $mPlayersInGame = new Application_Model_PlayersInGame($this->_id, $db);
-        $this->_players[$playerId] = $mPlayersInGame->getPlayerWaitingForGame($playerId);
+        $mPlayer = new Application_Model_Player($db);
+        $this->_players[$playerId] = $mPlayer->getPlayer($playerId);
         $this->_users[$playerId] = $user;
     }
 

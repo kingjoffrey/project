@@ -10,6 +10,13 @@ class Cli_Model_New
         $this->_games[$gameId] = $game;
     }
 
+    public function getGame($gameId)
+    {
+        if (isset($this->_games[$gameId])) {
+            $this->_games[$gameId];
+        }
+    }
+
     public function removeGame($gameId)
     {
         if (isset($this->_games[$gameId])) {

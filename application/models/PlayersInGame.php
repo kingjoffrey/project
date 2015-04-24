@@ -53,17 +53,6 @@ class Application_Model_PlayersInGame extends Coret_Db_Table_Abstract
         return $colors;
     }
 
-    public function getPlayerWaitingForGame($playerId)
-    {
-        $select = $this->_db->select()
-            ->from(array('a' => $this->_name), array('mapPlayerId', 'playerId'))
-            ->join(array('b' => 'player'), 'a . "playerId" = b . "playerId"', array('firstName', 'lastName', 'computer'))
-            ->where('a . ' . $this->_db->quoteIdentifier('gameId') . ' = ?', $this->_gameId)
-            ->where('a . ' . $this->_db->quoteIdentifier('playerId') . ' = ?', $playerId);
-
-        return $this->selectRow($select);
-    }
-
     public function getPlayerIdByMapPlayerId($mapPlayerId)
     {
         $select = $this->_db->select()
@@ -112,42 +101,15 @@ class Application_Model_PlayersInGame extends Coret_Db_Table_Abstract
         $this->delete($where);
     }
 
-    public function disconnectFromGame($playerId)
-    {
-        $where = array(
-            $this->_db->quoteInto('"playerId" = ?', $playerId),
-            $this->_db->quoteInto('"gameId" = ?', $this->_gameId)
-        );
-
-        $this->delete($where);
-    }
-
-    public function joinGame($playerId)
+    public function joinGame($playerId, $mapPlayerId)
     {
         $data = array(
             'gameId' => $this->_gameId,
             'playerId' => $playerId,
-            'accessKey' => $this->generateKey()
+            'mapPlayerId'=>$mapPlayerId
         );
 
         $this->insert($data);
-    }
-
-    private function generateKey()
-    {
-        return md5(rand(0, time()));
-    }
-
-    public function updatePlayerReady($playerId, $mapPlayerId)
-    {
-        $data['mapPlayerId'] = $mapPlayerId;
-
-        $where = array(
-            $this->_db->quoteInto($this->_db->quoteIdentifier('gameId') . ' = ?', $this->_gameId),
-            $this->_db->quoteInto($this->_db->quoteIdentifier('playerId') . ' = ?', $playerId)
-        );
-
-        $this->update($data, $where);
     }
 
     public function isPlayerInGame($playerId)

@@ -39,12 +39,9 @@ class Application_Model_Game extends Coret_Db_Table_Abstract
         $select = $this->_db->select()
             ->from(array('a' => $this->_name))
             ->join(array('b' => 'map'), 'a.' . $mapId . ' = b.' . $mapId, 'name')
-            ->join(array('c' => 'playersingame'), 'a.' . $this->_db->quoteIdentifier($this->_primary) . ' = c.' . $this->_db->quoteIdentifier($this->_primary), 'count(c.*) as numberOfPlayersInGame')
             ->where('"isOpen" = true')
             ->where('a.' . $this->_db->quoteIdentifier($this->_primary) . ' = ?', $this->_gameId)
             ->where($this->_db->quoteIdentifier('gameMasterId') . ' = ?', $gameMasterId)
-            ->group('a.' . $this->_primary)
-            ->group('b.name')
             ->order('begin DESC');
         return $this->selectRow($select);
     }

@@ -46,9 +46,9 @@ class Cli_Model_SetupStart
                     $modelHero = new Application_Model_Hero($playerId, $db);
                     $modelHero->createHero();
                 }
-                $mPlayersInGame->joinGame($playerId);
-                $mPlayersInGame->updatePlayerReady($playerId, $mapPlayerId);
             }
+
+            $mPlayersInGame->joinGame($playerId, $mapPlayerId);
 
             if ($first) {
                 $mTurn = new Application_Model_TurnHistory($setup->getId(), $db);

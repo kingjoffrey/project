@@ -7,23 +7,17 @@ class NewController extends Game_Controller_Gui
     {
         $this->view->form = new Application_Form_Creategame(array('mapId' => $this->_request->getParam('mapId')));
         if (!$this->_request->isPost()) {
-            $this->view->headLink()->appendStylesheet($this->view->baseUrl() . '/css/playerslist.css?v=' . Zend_Registry::get('config')->version);
-            $this->view->headLink()->appendStylesheet($this->view->baseUrl() . '/css/new.css?v=' . Zend_Registry::get('config')->version);
-
-            $this->view->headScript()->appendFile($this->view->baseUrl() . '/js/new.js?v=' . Zend_Registry::get('config')->version);
+            $version = Zend_Registry::get('config')->version;
+            $this->view->headLink()->appendStylesheet($this->view->baseUrl() . '/css/playerslist.css?v=' . $version);
+            $this->view->headLink()->appendStylesheet($this->view->baseUrl() . '/css/new.css?v=' . $version);
+            $this->view->headScript()->appendFile($this->view->baseUrl() . '/js/new.js?v=' . $version);
             return;
         }
 
         if ($this->view->form->isValid($this->_request->getPost())) {
             $modelGame = new Application_Model_Game ();
             $gameId = $modelGame->createGame($this->_request->getParams(), $this->_playerId);
-            if ($gameId) {
-                $mMapPlayers = new Application_Model_MapPlayers($this->_request->getParam('mapId'));
-                $mPlayersInGame = new Application_Model_PlayersInGame($gameId);
-                $mPlayersInGame->joinGame($this->_playerId);
-                $mPlayersInGame->updatePlayerReady($this->_playerId, $mMapPlayers->getFirstMapPlayerId());
-                $this->redirect('/' . $this->_request->getParam('lang') . '/setup/index/gameId/' . $gameId);
-            }
+            $this->redirect('/' . $this->_request->getParam('lang') . '/setup/index/gameId/' . $gameId);
         }
     }
 }
