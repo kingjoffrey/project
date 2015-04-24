@@ -52,6 +52,8 @@ class Cli_NewHandler extends WebSocketUriHandler
                 );
                 $this->sendToChannelExceptUser($user, $this->getNew(), $token);
                 break;
+            default:
+                print_r($dataIn);
         }
     }
 
@@ -60,9 +62,15 @@ class Cli_NewHandler extends WebSocketUriHandler
         $new = Cli_Model_New::getNew($user);
         if ($new) {
             $new->removeUser($user, $this->_db);
-            $new->removePlayer($user->parameters['playerId']);
 
             if ($new->getUsers()) {
+                if (isset($user->parameters['gameId'])) {
+                    $new->getGame($user->parameters['gameId'])->removePlayer($user->parameters['playerId']);
+                    if (!$new->getGame($user->parameters['gameId'])->getPlayers()) {
+                        $new->removeGame($user->parameters['gameId']);
+                    }
+                }
+
                 $token = array(
                     'type' => 'close',
                     'playerId' => $user->parameters['playerId']

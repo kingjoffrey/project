@@ -34,12 +34,10 @@ class Cli_Model_NewOpen
         $new->addUser($dataIn['playerId'], $user);
 
         if (isset($dataIn['gameMasterId']) && isset($dataIn['gameId'])) { //setup
-            $new->addPlayer($dataIn['playerId']);
             if ($dataIn['gameMasterId'] == $dataIn['playerId']) {
                 if (!$game = $new->getGame($dataIn['gameId'])) {
                     $mGame = new Application_Model_Game($dataIn['gameId'], $db);
                     $game = $mGame->getOpen($dataIn['gameMasterId']);
-                    $game['players'] = $new->getPlayers();
                     $new->addGame($dataIn['gameId'], $game);
                 }
 
@@ -57,10 +55,12 @@ class Cli_Model_NewOpen
 
                 $handler->sendToChannel($new, $token);
             }
+            $new->getGame($dataIn['gameId'])->addPlayer($dataIn['playerId']);
+            $user->parameters['gameId'] = $dataIn['gameId'];
         } else { //new
             $token = array(
                 'type' => 'games',
-                'games' => $new->getGames()
+                'games' => $new->gamesToArray()
             );
 
             $handler->sendToUser($user, $token);
