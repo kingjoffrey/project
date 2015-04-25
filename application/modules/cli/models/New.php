@@ -92,6 +92,13 @@ class Cli_Model_NewGame
         $this->_players[$playerId] = 1;
     }
 
+    public function getPlayer($playerId)
+    {
+        if (isset($this->_players[$playerId])) {
+            return $this->_players[$playerId];
+        }
+    }
+
     public function removePlayer($playerId)
     {
         if (isset($this->_players[$playerId])) {

@@ -64,19 +64,30 @@ class Cli_NewHandler extends WebSocketUriHandler
             $new->removeUser($user, $this->_db);
 
             if ($new->getUsers()) {
-                if (isset($user->parameters['gameId'])) {
+                if (isset($user->parameters['gameId'])) { //setup
                     $new->getGame($user->parameters['gameId'])->removePlayer($user->parameters['playerId']);
                     if (!$new->getGame($user->parameters['gameId'])->getPlayers()) {
                         $new->removeGame($user->parameters['gameId']);
+                        $token = array(
+                            'type' => 'removeGame',
+                            'gameId' => $user->parameters['gameId']
+                        );
+
+                        $this->sendToChannelExceptPlayers($new, $token);
                     }
+                    $token = array(
+                        'type' => 'removePlayer',
+                        'playerId' => $user->parameters['playerId']
+                    );
+
+                    $this->sendToChannelExceptPlayers($new, $token);
+                } else { //new
+                    $token = array(
+                        'type' => 'removePlayer',
+                        'playerId' => $user->parameters['playerId']
+                    );
+                    $this->sendToChannelOnlyPlayers($new, $token);
                 }
-
-                $token = array(
-                    'type' => 'close',
-                    'playerId' => $user->parameters['playerId']
-                );
-
-                $this->sendToChannel($new, $token);
             } else {
                 $this->removeNew();
             }
@@ -149,6 +160,35 @@ class Cli_NewHandler extends WebSocketUriHandler
                 continue;
             }
             $this->sendToUser($user, $token);
+        }
+    }
+
+    public function sendToChannelExceptPlayers(Cli_Model_New $new, $token, $debug = null)
+    {
+        if ($debug || Zend_Registry::get('config')->debug) {
+            print_r('ODPOWIEDŹ ');
+            print_r($token);
+        }
+
+        foreach ($new->getUsers() AS $playerId => $user) {
+            if (isset($user->parameters['gameId']) && $new->getGame($user->parameters['gameId'])->getPlayer($playerId)) {
+                continue;
+            }
+            $this->sendToUser($user, $token);
+        }
+    }
+
+    public function sendToChannelOnlyPlayers(Cli_Model_New $new, $token, $debug = null)
+    {
+        if ($debug || Zend_Registry::get('config')->debug) {
+            print_r('ODPOWIEDŹ ');
+            print_r($token);
+        }
+
+        foreach ($new->getUsers() AS $playerId => $user) {
+            if (isset($user->parameters['gameId']) && $new->getGame($user->parameters['gameId'])->getPlayer($playerId)) {
+                $this->sendToUser($user, $token);
+            }
         }
     }
 }

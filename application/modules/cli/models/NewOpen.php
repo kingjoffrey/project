@@ -45,18 +45,15 @@ class Cli_Model_NewOpen
                     'type' => 'add',
                     'game' => $game
                 );
-
-                $handler->sendToChannelExceptUser($user, $new, $token);
             } else {
                 $token = array(
                     'type' => 'open',
                     'playerId' => $dataIn['playerId']
                 );
-
-                $handler->sendToChannel($new, $token);
             }
             $new->getGame($dataIn['gameId'])->addPlayer($dataIn['playerId']);
             $user->parameters['gameId'] = $dataIn['gameId'];
+            $handler->sendToChannelExceptPlayers($new, $token);
         } else { //new
             $token = array(
                 'type' => 'games',
