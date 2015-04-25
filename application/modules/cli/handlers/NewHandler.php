@@ -77,13 +77,14 @@ class Cli_NewHandler extends WebSocketUriHandler
                     }
                     $token = array(
                         'type' => 'removePlayer',
-                        'playerId' => $user->parameters['playerId']
+                        'playerId' => $user->parameters['playerId'],
+                        'gameId' => $user->parameters['gameId']
                     );
 
                     $this->sendToChannelExceptPlayers($new, $token);
                 } else { //new
                     $token = array(
-                        'type' => 'removePlayer',
+                        'type' => 'close',
                         'playerId' => $user->parameters['playerId']
                     );
                     $this->sendToChannelOnlyPlayers($new, $token);

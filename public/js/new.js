@@ -35,17 +35,16 @@ var New = new function () {
             }
 
         },
-        addGame = function (game, players) {
-            if ($('tr#' + game.gameId).length) {
+        addGame = function (game) {
+            if ($('tr#' + game.id).length) {
                 return
             }
-            games[game.gameId] = players
-            var numberOfPlayersInGame = countProperties(players)
+            var numberOfPlayersInGame = countProperties(game.players)
             $('tr#0').remove()
             table.append(
                 $('<tr>')
                     .addClass('trlink')
-                    .attr('id', game.gameId)
+                    .attr('id', game.id)
                     .append($('<td>').append($('<a>').html(game.name)))
                     .append($('<td>').append($('<a>').append($('<span>').html(numberOfPlayersInGame)).append('/' + game.numberOfPlayers)))
                     .append($('<td>').append($('<a>').html(game.begin.split('.')[0])))
@@ -53,9 +52,6 @@ var New = new function () {
                         top.location.replace('/' + lang + '/setup/index/gameId/' + $(this).attr('id'))
                     })
             )
-        },
-        removeGame = function (gameId) {
-            $('tr#' + gameId).remove()
         }
 
     this.init = function () {
@@ -92,14 +88,20 @@ var New = new function () {
                 //add all games
                 addGames(r.games)
                 break
-            case 'add':
-                //add new game
+            case 'addGame':
                 addGame(r.game)
                 break
-            case 'remove':
-                //remove game
-                removeGame(r.gameId)
+            case 'addPlayer':
+                var numberOfPlayersInGame = $('tr#' + r.gameId + ' span').html()
+                $('tr#' + gameId + ' span').html(numberOfPlayersInGame++)
+                break
+            case 'removeGame':
+                $('tr#' + r.gameId).remove()
                 break;
+            case 'removePlayer':
+                var numberOfPlayersInGame = $('tr#' + r.gameId + ' span').html()
+                $('tr#' + gameId + ' span').html(numberOfPlayersInGame--)
+                break
             case 'open':
                 //add player
                 break

@@ -114,6 +114,7 @@ class Cli_Model_NewGame
     public function toArray()
     {
         return array(
+            'id' => $this->_id,
             'name' => $this->_name,
             'begin' => $this->_begin,
             'numberOfPlayers' => $this->_numberOfPlayers,

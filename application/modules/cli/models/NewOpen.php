@@ -42,13 +42,14 @@ class Cli_Model_NewOpen
                 }
 
                 $token = array(
-                    'type' => 'add',
-                    'game' => $game
+                    'type' => 'addGame',
+                    'game' => $new->getGame($dataIn['gameId'])->toArray()
                 );
             } else {
                 $token = array(
-                    'type' => 'open',
-                    'playerId' => $dataIn['playerId']
+                    'type' => 'addPlayer',
+                    'playerId' => $dataIn['playerId'],
+                    'gameId' => $dataIn['gameId']
                 );
             }
             $new->getGame($dataIn['gameId'])->addPlayer($dataIn['playerId']);
@@ -59,8 +60,13 @@ class Cli_Model_NewOpen
                 'type' => 'games',
                 'games' => $new->gamesToArray()
             );
-
             $handler->sendToUser($user, $token);
+
+            $token = array(
+                'type' => 'open',
+                'playerId' => $dataIn['playerId']
+            );
+            $handler->sendToChannelExceptUser($user, $new, $token);
         }
 
         $user->parameters['playerId'] = $dataIn['playerId'];
