@@ -198,7 +198,8 @@ class Application_Model_PlayersInGame extends Coret_Db_Table_Abstract
             ->join(array('a' => 'player'), 'a."playerId" = b."playerId"', array('firstName', 'lastName', 'computer'))
             ->join(array('c' => 'mapplayers'), 'b . "mapPlayerId" = c . "mapPlayerId"', array('color' => 'shortName', 'longName', 'backgroundColor', 'textColor', 'minimapColor'))
             ->where($this->_db->quoteIdentifier('gameId') . ' = ?', $this->_gameId)
-            ->where('b . ' . $this->_db->quoteIdentifier('mapPlayerId') . ' is not null');
+            ->where('b . ' . $this->_db->quoteIdentifier('mapPlayerId') . ' is not null')
+            ->order('startOrder');
 
         $players = array();
 
