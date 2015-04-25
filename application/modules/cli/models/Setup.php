@@ -113,6 +113,11 @@ class Cli_Model_Setup
         return $this->_users;
     }
 
+    public function getPlayers()
+    {
+        return $this->_players;
+    }
+
     public function getIsOpen()
     {
         return $this->_isOpen;

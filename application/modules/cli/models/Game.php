@@ -12,6 +12,7 @@ class Cli_Model_Game
     private $_online = array();
 
     private $_numberOfGarrisonUnits;
+    private $_numberOfNeutralGarrisonUnits = 1;
     private $_numberOfComputerArmyUnits;
     private $_numberOfAllCastles = 0;
 
@@ -32,12 +33,17 @@ class Cli_Model_Game
     private $_Players;
     private $_Ruins;
 
-    public function __construct($gameId, $playersColors, Zend_Db_Adapter_Pdo_Pgsql $db)
+    public function __construct($gameId, Zend_Db_Adapter_Pdo_Pgsql $db)
     {
         $this->_l = new Coret_Model_Logger();
 
         $this->_id = $gameId;
-        $this->_playersColors = $playersColors;
+
+        $mPlayersInGame = new Application_Model_PlayersInGame($this->_id, $db);
+        $players = $mPlayersInGame->getGamePlayers();
+        foreach ($players as $playerId => $player) {
+            $this->_playersColors[$playerId] = $player['color'];
+        }
 
         $mGame = new Application_Model_Game($this->_id, $db);
         $game = $mGame->getGame();
@@ -89,14 +95,12 @@ class Cli_Model_Game
 
         $this->updateNumberOfGarrisonUnits();
         $this->updateNumberOfComputerArmyUnits();
-        $this->initPlayers($mMapPlayers, $db);
+        $this->initPlayers($mMapPlayers, $players, $db);
         $this->initRuins($db);
     }
 
-    private function initPlayers(Application_Model_MapPlayers $mMapPlayers, Zend_Db_Adapter_Pdo_Pgsql $db)
+    private function initPlayers(Application_Model_MapPlayers $mMapPlayers, $players, Zend_Db_Adapter_Pdo_Pgsql $db)
     {
-        $mPlayersInGame = new Application_Model_PlayersInGame($this->_id, $db);
-        $players = $mPlayersInGame->getGamePlayers();
         $mMapCastles = new Application_Model_MapCastles($this->_mapId, $db);
         $mapCastles = $mMapCastles->getMapCastles();
         $mMapTowers = new Application_Model_MapTowers($this->_mapId, $db);
@@ -221,11 +225,12 @@ class Cli_Model_Game
 
     public function turnNumberIncrement()
     {
-        $numberOfGarrisonUnits = $this->_numberOfGarrisonUnits;
+        $numberOfNeutralGarrisonUnits = $this->_numberOfNeutralGarrisonUnits;
         $this->_turnNumber++;
         $this->updateNumberOfGarrisonUnits();
-        if ($numberOfGarrisonUnits < $this->_numberOfGarrisonUnits) {
-            $this->_Players->getPlayer('neutral')->increaseCastlesGarrison($this->_numberOfGarrisonUnits, $this->_firstUnitId, $this->_Units);
+        $this->updateNumberOfNeutralGarrisonUnits();
+        if ($numberOfNeutralGarrisonUnits < $this->_numberOfNeutralGarrisonUnits) {
+            $this->_Players->getPlayer('neutral')->increaseCastlesGarrison($this->_numberOfNeutralGarrisonUnits, $this->_firstUnitId, $this->_Units);
         }
         $this->updateNumberOfComputerArmyUnits();
     }
@@ -277,23 +282,33 @@ class Cli_Model_Game
 
     private function updateNumberOfGarrisonUnits()
     {
-        $this->_numberOfGarrisonUnits = floor($this->_turnNumber / 7 + 0.5);
+        $this->_numberOfGarrisonUnits = floor($this->_turnNumber / 4);
         if ($this->_numberOfGarrisonUnits > 4) {
             $this->_numberOfGarrisonUnits = 4;
         }
     }
 
+    private function updateNumberOfNeutralGarrisonUnits()
+    {
+        $this->_numberOfNeutralGarrisonUnits = floor($this->_turnNumber / 10) + 1;
+        if ($this->_numberOfNeutralGarrisonUnits > 4) {
+            $this->_numberOfNeutralGarrisonUnits = 4;
+        }
+    }
+
     private function updateNumberOfComputerArmyUnits()
     {
-        $this->_numberOfComputerArmyUnits = floor($this->_turnNumber / 7 + 0.5);
-//        if ($this->_numberOfComputerArmyUnits > 4) {
-//            $this->_numberOfComputerArmyUnits = 4;
-//        }
+        $this->_numberOfComputerArmyUnits = floor($this->_turnNumber / 7);
     }
 
     public function getNumberOfGarrisonUnits()
     {
         return $this->_numberOfGarrisonUnits;
+    }
+
+    public function getNumberOfNeutralGarrisonUnits()
+    {
+        return $this->_numberOfNeutralGarrisonUnits;
     }
 
     public function getNumberOfComputerArmyUnits()
@@ -306,17 +321,14 @@ class Cli_Model_Game
         $this->_chatHistory[] = array('date' => date('Y-m-d H:i:s', mktime()), 'message' => $message, 'color' => $color);
     }
 
-    public function addUser($playerId, Devristo\Phpws\Protocol\WebSocketTransportInterface $user, Application_Model_PlayersInGame $mPlayersInGame)
+    public function addUser($playerId, Devristo\Phpws\Protocol\WebSocketTransportInterface $user)
     {
-        $mPlayersInGame->updateWSSUId($playerId, $user->getId());
         $this->_users[$playerId] = $user;
         $this->updateOnline($this->getPlayerColor($playerId), 1);
     }
 
     public function removeUser($playerId, Zend_Db_Adapter_Pdo_Pgsql $db)
     {
-        $mPlayersInGame = new Application_Model_PlayersInGame($this->_id, $db);
-        $mPlayersInGame->updateWSSUId($playerId, null);
         unset($this->_users[$playerId]);
         $this->updateOnline($this->getPlayerColor($playerId), 0);
     }

@@ -16,23 +16,21 @@ class Cli_Model_GameOpen
             return;
         }
         $db = $handler->getDb();
-        $mPlayersInGame = new Application_Model_PlayersInGame($dataIn['gameId'], $db);
-
-        if (!$mPlayersInGame->checkAccessKey($dataIn['playerId'], $dataIn['accessKey'], $db)) {
-            throw new Exception($user, 'Brak uprawnień!');
-            return;
+        $mWebSocket = new Application_Model_Websocket($dataIn['playerId'], $db);
+        if (!$mWebSocket->checkAccessKey($dataIn['accessKey'], $db)) {
+            throw new Exception('Brak uprawnień!');
         }
 
         Zend_Registry::set('id_lang', $dataIn['langId']);
 
         if (!($user->parameters['game'] = $handler->getGame($dataIn['gameId']))) {
             echo 'not set' . "\n";
-            $handler->addGame($dataIn['gameId'], new Cli_Model_Game($dataIn['gameId'], $mPlayersInGame->getAllColors(), $db));
+            $handler->addGame($dataIn['gameId'], new Cli_Model_Game($dataIn['gameId'], $db));
             $user->parameters['game'] = $handler->getGame($dataIn['gameId']);
         }
 
         $game = Cli_Model_Game::getGame($user);
-        $game->addUser($dataIn['playerId'], $user, $mPlayersInGame, $handler);
+        $game->addUser($dataIn['playerId'], $user);
         $myColor = $game->getPlayerColor($dataIn['playerId']);
         $user->parameters['me'] = new Cli_Model_Me($myColor, $dataIn['playerId']);
 

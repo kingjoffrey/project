@@ -23,7 +23,7 @@ class Cli_Model_NeutralPlayer extends Cli_Model_DefaultPlayer
     private function initCastles(Cli_Model_Game $game, $mapCastles, Zend_Db_Adapter_Pdo_Pgsql $db)
     {
         $firstUnitId = $game->getFirstUnitId();
-        $numberOfSoldiers = $game->getNumberOfGarrisonUnits();
+        $numberOfSoldiers = $game->getNumberOfNeutralGarrisonUnits();
         $units = $game->getUnits();
 
         $mCastlesInGame = new Application_Model_CastlesInGame($game->getId(), $db);

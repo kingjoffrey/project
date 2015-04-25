@@ -164,12 +164,10 @@ var Setup = new function () {
                 .addClass('button')
                 .unbind()
                 .click(function () {
-                    if (Setup.gameMasterId != id) {
+                    if (Setup.getGameMasterId() != id) {
                         return
                     }
-
                     var team = {}
-
                     $('#playersingame tr').each(function () {
                         var id = $(this).attr('id')
                         if (isSet(id)) {

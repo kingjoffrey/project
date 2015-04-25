@@ -23,7 +23,6 @@ class Cli_Model_SetupOpen
 
         $db = $handler->getDb();
         $mWebSocket = new Application_Model_Websocket($dataIn['playerId'], $db);
-
         if (!$mWebSocket->checkAccessKey($dataIn['accessKey'], $db)) {
             throw new Exception('Brak uprawnień!');
         }

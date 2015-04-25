@@ -24,9 +24,8 @@ var New = new function () {
         addGames = function (games) {
             for (var i in games) {
                 addGame(games[i])
-                j++
             }
-            if (!$('.trlink').length) {
+            if (!$('.trlink').length && !$('tr#0').length) {
                 table.append(empty)
             }
         },
@@ -51,7 +50,7 @@ var New = new function () {
 
     this.init = function () {
         table = $('#join.table table')
-        empty = $('<tr>').append($('<td colspan="3">').html(info).css('padding', '15px')).attr('id', 0)
+        empty = $('<tr id="0">').append($('<td colspan="3">').html(info).css('padding', '15px'))
         changeMap()
         $('#mapId').change(function () {
             changeMap()

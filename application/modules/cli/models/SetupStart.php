@@ -18,11 +18,7 @@ class Cli_Model_SetupStart
 
         $setup->setIsOpen(false);
         $db = $handler->getDb();
-
         $mPlayersInGame = new Application_Model_PlayersInGame($setup->getId(), $db);
-        $mPlayersInGame->disconnectNotActive();
-
-        $players = $mPlayersInGame->getAll();
 
         $mGame = new Application_Model_Game($setup->getId(), $db);
         $mapId = $mGame->getMapId();
@@ -36,9 +32,7 @@ class Cli_Model_SetupStart
         $first = true;
 
         foreach ($mapPlayers as $mapPlayerId => $mapPlayer) {
-            if (isset($players[$mapPlayerId])) {
-                $playerId = $players[$mapPlayerId]['playerId'];
-            } else {
+            if (!$playerId = $setup->getPlayerIdByMapPlayerId($mapPlayerId)) {
                 $playerId = $mPlayersInGame->getComputerPlayerId();
                 if (!$playerId) {
                     $modelPlayer = new Application_Model_Player($db);
@@ -47,7 +41,6 @@ class Cli_Model_SetupStart
                     $modelHero->createHero();
                 }
             }
-
             $mPlayersInGame->joinGame($playerId, $mapPlayerId);
 
             if ($first) {
