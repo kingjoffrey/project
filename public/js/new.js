@@ -6,7 +6,7 @@ $().ready(function () {
 
 var New = new function () {
     var table,
-        games = {},
+        empty,
         ws,
         closed = true,
         changeMap = function () {
@@ -22,18 +22,13 @@ var New = new function () {
             })
         },
         addGames = function (games) {
-            table.append(th)
-            var j = 0;
             for (var i in games) {
                 addGame(games[i])
                 j++
             }
-            if (j == 0) {
-                table.append(
-                    $('<tr>').append($('<td colspan="3">').html(info).css('padding', '15px')).attr('id', 0)
-                )
+            if (!$('.trlink').length) {
+                table.append(empty)
             }
-
         },
         addGame = function (game) {
             if ($('tr#' + game.id).length) {
@@ -56,6 +51,7 @@ var New = new function () {
 
     this.init = function () {
         table = $('#join.table table')
+        empty = $('<tr>').append($('<td colspan="3">').html(info).css('padding', '15px')).attr('id', 0)
         changeMap()
         $('#mapId').change(function () {
             changeMap()
@@ -93,14 +89,17 @@ var New = new function () {
                 break
             case 'addPlayer':
                 var numberOfPlayersInGame = $('tr#' + r.gameId + ' span').html()
-                $('tr#' + gameId + ' span').html(numberOfPlayersInGame++)
+                $('tr#' + r.gameId + ' span').html(numberOfPlayersInGame++)
                 break
             case 'removeGame':
                 $('tr#' + r.gameId).remove()
+                if (!$('.trlink').length) {
+                    table.append(empty)
+                }
                 break;
             case 'removePlayer':
                 var numberOfPlayersInGame = $('tr#' + r.gameId + ' span').html()
-                $('tr#' + gameId + ' span').html(numberOfPlayersInGame--)
+                $('tr#' + r.gameId + ' span').html(numberOfPlayersInGame--)
                 break
             case 'open':
                 //add player

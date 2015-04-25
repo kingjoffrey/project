@@ -47,10 +47,10 @@ class Cli_NewHandler extends WebSocketUriHandler
                 break;
             case 'remove':
                 $token = array(
-                    'type' => 'remove',
+                    'type' => 'removeGame',
                     'gameId' => $dataIn['gameId']
                 );
-                $this->sendToChannelExceptUser($user, $this->getNew(), $token);
+                $this->sendToChannelExceptPlayers($this->getNew(), $token);
                 break;
             default:
                 print_r($dataIn);
