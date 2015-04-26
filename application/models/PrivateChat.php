@@ -18,15 +18,28 @@ class Application_Model_PrivateChat extends Coret_Db_Table_Abstract
         }
     }
 
-    public function getChatHistory()
+    public function getChatHistory($pageNumber)
     {
         $select = $this->_db->select()
-            ->from(array('a' => $this->_name), array('date', 'message', 'recipientId'))
+            ->from(array('a' => $this->_name), array('date', 'message', 'recipientId', 'read'))
             ->join(array('b' => 'player'), 'a.' . $this->_db->quoteIdentifier('playerId') . ' = b.' . $this->_db->quoteIdentifier('playerId'), array('firstName', 'lastName'))
             ->where('a.' . $this->_db->quoteIdentifier('recipientId') . ' = ?', $this->_playerId)
-            ->where('read = false')
-            ->order($this->_primary);
-        return $this->selectAll($select);
+            ->order($this->_primary . ' DESC');
+
+        $paginator = new Zend_Paginator(new Zend_Paginator_Adapter_DbSelect($select));
+        $paginator->setCurrentPageNumber($pageNumber);
+        $paginator->setItemCountPerPage(20);
+
+        return $paginator;
+    }
+
+    public function getChatHistoryCount()
+    {
+        $select = $this->_db->select()
+            ->from(array('a' => $this->_name), 'count(*)')
+            ->where('a.' . $this->_db->quoteIdentifier('recipientId') . ' = ?', $this->_playerId)
+            ->where('read = false');
+        return $this->selectOne($select);
     }
 
     public function insertChatMessage($recipientId, $message, $read)

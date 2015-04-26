@@ -5,7 +5,7 @@ var Move = new function () {
 
     this.start = function (r, ii) {
         if (notSet(r.path)) {
-            Websocket.setExecuting(0)
+            WebSocketGame.setExecuting(0)
             if (Me.colorEquals(r.color)) {
                 Gui.unlock()
                 Message.simple(translations.army, translations.noMoreMoves)
@@ -228,6 +228,6 @@ var Move = new function () {
             Players.get(r.color).getArmies().delete(r.deletedIds[i])
         }
 
-        Websocket.setExecuting(0)
+        WebSocketGame.setExecuting(0)
     }
 }

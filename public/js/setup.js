@@ -4,7 +4,7 @@ $().ready(function () {
 
 var Setup = new function () {
     var closed = true,
-        ws = false,
+        ws,
         playersOutElement,
         gameMasterId
 

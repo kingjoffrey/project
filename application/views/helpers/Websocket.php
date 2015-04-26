@@ -9,7 +9,7 @@ class Zend_View_Helper_Websocket extends Zend_View_Helper_Abstract
         $this->view->headScript()->appendFile($this->view->baseUrl() . '/js/flash-bridge/swfobject.js');
         $this->view->headScript()->appendFile($this->view->baseUrl() . '/js/flash-bridge/web_socket.js');
 
-        $this->view->headScript()->appendFile('/js/websocket.js?v=' . $version);
+        $this->view->headScript()->appendFile('/js/privatechat.js?v=' . $version);
         $this->view->headScript()->appendFile('/js/libs.js?v=' . $version);
         $this->view->headScript()->appendFile('/js/message.js?v=' . $version);
 

@@ -1,9 +1,11 @@
 html {
     background: #000 url('/img/login_bg.jpg') 0px -214px no-repeat !important;
 }
-body{
+
+body {
     background: none !important;
 }
+
 #page {
     height: 500px !important;
     min-height: 500px !important;
@@ -32,3 +34,41 @@ body{
     float: right !important;
     color: #fff !important;
 }
+
+#title {
+    margin-top: 30px;
+}
+
+#title {
+    margin: 0 auto;
+    width: 760px;
+    height: 192px;
+    background: url('/img/logo_bg.png') 0px 15px no-repeat !important;
+}
+
+#title div {
+    position: relative;
+    width: 760px;
+    height: 192px;
+    text-shadow: 2px 1px 1px #000;
+    background: url("/img/sword.png") no-repeat;
+}
+
+#title h1 {
+    font-size: 60px;
+    font-family: "Alpine", Verdana, Tahoma;
+    color: red;
+    position: absolute;
+    top: 5px;
+    left: 20px;
+}
+
+#title p {
+    font-size: 20px;
+    font-family: "Alpine", Verdana, Tahoma;
+    position: absolute;
+    top: 113px;
+    left: 277px;
+    color: #fff;
+}
+
