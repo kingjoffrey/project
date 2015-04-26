@@ -17,37 +17,6 @@ class Application_Model_PlayersInGame extends Coret_Db_Table_Abstract
         }
     }
 
-    public function getPlayerIdByMapPlayerId($mapPlayerId)
-    {
-        $select = $this->_db->select()
-            ->from(array('a' => $this->_name), 'playerId')
-            ->where($this->_db->quoteIdentifier('gameId') . ' = ?', $this->_gameId)
-            ->where($this->_db->quoteIdentifier('mapPlayerId') . ' = ?', $mapPlayerId);
-
-        return $this->selectOne($select);
-    }
-
-    public function getColorByPlayerId($playerId)
-    {
-        $select = $this->_db->select()
-            ->from(array('a' => $this->_name), null)
-            ->join(array('b' => 'mapplayers'), 'a . "mapPlayerId" = b . "mapPlayerId"', array('color' => 'shortName'))
-            ->where($this->_db->quoteIdentifier('gameId') . ' = ?', $this->_gameId)
-            ->where($this->_db->quoteIdentifier('playerId') . ' = ?', $playerId);
-
-        return $this->selectOne($select);
-    }
-
-    public function getMapPlayerIdByPlayerId($playerId)
-    {
-        $select = $this->_db->select()
-            ->from(array('a' => $this->_name), 'mapPlayerId')
-            ->where($this->_db->quoteIdentifier('gameId') . ' = ?', $this->_gameId)
-            ->where($this->_db->quoteIdentifier('playerId') . ' = ?', $playerId);
-
-        return $this->selectOne($select);
-    }
-
     public function joinGame($playerId, $mapPlayerId)
     {
         $data = array(
@@ -57,16 +26,6 @@ class Application_Model_PlayersInGame extends Coret_Db_Table_Abstract
         );
 
         $this->insert($data);
-    }
-
-    public function isPlayerInGame($playerId)
-    {
-        $select = $this->_db->select()
-            ->from($this->_name, 'gameId')
-            ->where($this->_db->quoteIdentifier('gameId') . ' = ?', $this->_gameId)
-            ->where($this->_db->quoteIdentifier('playerId') . ' = ?', $playerId);
-
-        return $this->selectOne($select);
     }
 
     public function getComputerPlayerId()

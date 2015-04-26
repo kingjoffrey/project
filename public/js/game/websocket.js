@@ -687,11 +687,11 @@ var WebSocketGame = new function () {
     }
 
     this.battleAttack = function () {
-        Websocket.battleConfiguration(1)
+        WebSocketGame.battleConfiguration(1)
     }
 
     this.battleDefence = function () {
-        Websocket.battleConfiguration(0)
+        WebSocketGame.battleConfiguration(0)
     }
 
     this.battleConfiguration = function (attack) {
