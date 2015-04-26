@@ -94,7 +94,9 @@ class Cli_Model_Game
         $this->_firstUnitId = $this->_Units->getFirstUnitId();
 
         $this->updateNumberOfGarrisonUnits();
+        $this->updateNumberOfNeutralGarrisonUnits();
         $this->updateNumberOfComputerArmyUnits();
+
         $this->initPlayers($mMapPlayers, $players, $db);
         $this->initRuins($db);
     }
