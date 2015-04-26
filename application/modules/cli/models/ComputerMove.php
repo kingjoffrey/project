@@ -220,7 +220,8 @@ class Cli_Model_ComputerMove extends Cli_Model_ComputerMethods
         $field = $this->_fields->getField($path->getX(), $path->getY());
 
 
-        if (!$field->getArmies() || !$field->getCastleId()) {
+        if (!$field->getArmies() && !$field->getCastleId()) {
+            $this->_l->log('BRAK ARMI I BRAK ZAMKU');
             $this->_army->resetOldPath();
             $this->next();
             return;
