@@ -21,7 +21,7 @@ class Application_Model_PrivateChat extends Coret_Db_Table_Abstract
     public function getChatHistory($pageNumber)
     {
         $select = $this->_db->select()
-            ->from(array('a' => $this->_name), array('date', 'message', 'recipientId', 'read'))
+            ->from(array('a' => $this->_name), array('date', 'message', 'playerId', 'read', 'chatId'))
             ->join(array('b' => 'player'), 'a.' . $this->_db->quoteIdentifier('playerId') . ' = b.' . $this->_db->quoteIdentifier('playerId'), array('firstName', 'lastName'))
             ->where('a.' . $this->_db->quoteIdentifier('recipientId') . ' = ?', $this->_playerId)
             ->order($this->_primary . ' DESC');
@@ -36,8 +36,8 @@ class Application_Model_PrivateChat extends Coret_Db_Table_Abstract
     public function getChatHistoryCount()
     {
         $select = $this->_db->select()
-            ->from(array('a' => $this->_name), 'count(*)')
-            ->where('a.' . $this->_db->quoteIdentifier('recipientId') . ' = ?', $this->_playerId)
+            ->from($this->_name, 'count(*)')
+            ->where($this->_db->quoteIdentifier('recipientId') . ' = ?', $this->_playerId)
             ->where('read = false');
         return $this->selectOne($select);
     }
@@ -51,5 +51,24 @@ class Application_Model_PrivateChat extends Coret_Db_Table_Abstract
             'read' => $read
         );
         $this->insert($data);
+    }
+
+    public function readChatMessage($chatId, $read)
+    {
+        if ($read) {
+            $data = array(
+                'read' => true
+            );
+            $where = array(
+                $this->_db->quoteInto($this->_db->quoteIdentifier($this->_primary) . ' = ?', $chatId)
+            );
+            $this->update($data, $where);
+        }
+
+        $select = $this->_db->select()
+            ->from($this->_name, 'message')
+            ->where($this->_db->quoteIdentifier($this->_primary) . ' = ?', $chatId);
+
+        return $this->selectOne($select);
     }
 }

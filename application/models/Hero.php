@@ -41,7 +41,7 @@ class Application_Model_Hero extends Coret_Db_Table_Abstract
     {
         $data['name'] = $name;
         $where = $this->_db->quoteInto('"' . $this->_primary . '" = ?', $heroId);
-        return $this->_db->update($this->_name, $data, $where);
+        return $this->update($data, $where);
     }
 
     public function isMyHero($heroId)
