@@ -223,6 +223,11 @@ class Cli_Model_ComputerMove extends Cli_Model_ComputerMethods
             $this->_army->resetOldPath();
             $this->next();
             return;
+        } else {
+            $this->_l->log('ARMIES:');
+            $this->_l->log($field->getArmies());
+            $this->_l->log('CastleId:');
+            $this->_l->log($field->getCastleId());
         }
 
         $current = array();
@@ -235,11 +240,11 @@ class Cli_Model_ComputerMove extends Cli_Model_ComputerMethods
             if ($fieldArmies = $this->_fields->getField($step['x'], $step['y'])->getArmies()) {
                 foreach ($fieldArmies as $armyId => $color) {
                     if ($color == $this->_color) {
-                        $this->_l->log('NA ŚCIEŻCE JEST MOJA ARMIA - DOŁĄCZAM');
-                        $this->_l->log($armyId, '$armyId: ');
+                        $this->_l->log('armyId=' . $armyId . 'NA ŚCIEŻCE JEST MOJA ARMIA - DOŁĄCZAM');
 
                         $path->setCurrent($current);
-                        $this->savePathAndMove($path);
+                        $this->_army->resetOldPath();
+                        $this->move($path);
                         return;
                     }
                 }
@@ -249,17 +254,19 @@ class Cli_Model_ComputerMove extends Cli_Model_ComputerMethods
                 $this->_l->log('NA ŚCIEŻCE JEST WRÓG - ATAKUJĘ');
 
                 $path->setCurrent($current);
-                $this->savePathAndMove($path);
+                $this->_army->resetOldPath();
+                $this->move($path);
                 return;
             }
         }
 
-        $this->_army->resetOldPath();
-        $this->move($path);
-
-        return;
+        if ($path->getDestinationX() == $path->getX() && $path->getDestinationY() == $path->getY()) {
+            $this->_army->saveOldPath($path);
+            $this->move($path);
+        } else {
+            $this->savePathAndMove($path);
+        }
     }
-
 
     private function move(Cli_Model_Path $path = null)
     {
