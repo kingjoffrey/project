@@ -8,6 +8,9 @@ class Cli_Model_Path
     private $_x;
     private $_y;
 
+    private $_destinationX;
+    private $_destinationY;
+
     public function __construct($fullPath, Cli_Model_Army $army, Cli_Model_TerrainTypes $terrain)
     {
 //        echo "\n";
@@ -18,6 +21,11 @@ class Cli_Model_Path
         }
 
         $this->_full = $fullPath;
+
+        $destination = end($fullPath);
+        $this->_destinationX = $destination['x'];
+        $this->_destinationY = $destination['y'];
+
         $skip = null;
         $stop = null;
 
@@ -294,5 +302,15 @@ class Cli_Model_Path
         $this->_end = end($this->_current);
         $this->_x = $this->_end['x'];
         $this->_y = $this->_end['y'];
+    }
+
+    public function getDestinationX()
+    {
+        return $this->_destinationX;
+    }
+
+    public function getDestinationY()
+    {
+        return $this->_destinationY;
     }
 }

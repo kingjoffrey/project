@@ -216,9 +216,7 @@ class Cli_Model_ComputerMove extends Cli_Model_ComputerMethods
         $this->_l->log($this->_armyId, 'armyId: ');
 
         $path = new Cli_Model_Path($this->_army->getOldPath(), $this->_army, $this->_game->getTerrain());
-        $current = array();
-        $field = $this->_fields->getField($path->getX(), $path->getY());
-
+        $field = $this->_fields->getField($path->getDestinationX(), $path->getDestinationY());
 
         if (!$field->getArmies() && !$field->getCastleId()) {
             $this->_l->log('BRAK ARMI I BRAK ZAMKU');
@@ -226,6 +224,8 @@ class Cli_Model_ComputerMove extends Cli_Model_ComputerMethods
             $this->next();
             return;
         }
+
+        $current = array();
 
         foreach ($path->getCurrent() as $step) {
             $current[] = $step;
