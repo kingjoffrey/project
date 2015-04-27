@@ -23,7 +23,7 @@ var Page = new function () {
         })
 
         $('#envelope').css({
-            left: $('#menuTop #title').offset().left + $('#menuTop #title').width() + 'px'
+            left: $('#logout').offset().left - $('#envelope').width() + 'px'
         }).click(function () {
             window.location = '/' + lang + '/messages'
         })
