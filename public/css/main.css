@@ -575,3 +575,19 @@ p#info {
 #messages .trlink.read {
     background: lightslategrey;
 }
+
+#messages .trlink .header {
+    float: left;
+    width: 270px;
+    height: 400px;
+    border: 1px solid red;
+}
+
+#messages .trlink .name {
+    text-align: left;
+    font-weight: bold;
+}
+
+#messages .trlink .date {
+    float: right;
+}

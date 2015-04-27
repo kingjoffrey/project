@@ -12,6 +12,9 @@ var Chat = new function () {
         $('#friendsBox #friends div').click(function () {
             Chat.prepare($(this).html(), $(this).attr('id'))
         })
+        $('#threads .trlink').click(function () {
+            window.location = '/' + lang + '/messages/thread/id/' + $(this).attr('id')
+        })
         $('#messages .trlink').click(function () {
             var playerId = $(this).attr('id'),
                 chatId = $(this).find('.id').attr('id'),
