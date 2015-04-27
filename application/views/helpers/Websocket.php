@@ -17,9 +17,7 @@ class Zend_View_Helper_Websocket extends Zend_View_Helper_Abstract
         WEB_SOCKET_SWF_LOCATION = "/js/flash-bridge/WebSocketMain.swf";
         WEB_SOCKET_DEBUG = true;
         var wsURL = "' . Zend_Registry::get('config')->websockets->aSchema . '://' . Zend_Registry::get('config')->websockets->aHost . ':' . Zend_Registry::get('config')->websockets->aPort . '",
-id = ' . $playerId . ',
-accessKey = "' . $accessKey . '",
-langId =  ' . Zend_Registry::get('id_lang');
+ id = ' . $playerId . ', type = "default", accessKey = "' . $accessKey . '", langId =  ' . Zend_Registry::get('id_lang');
 
         $this->view->headScript()->appendScript($script);
     }

@@ -31,12 +31,17 @@ var Chat = new function () {
         })
     }
     this.message = function (to, chatTitle, msg) {
-        if (to) {
-            var prepend = translations.to
-        } else {
-            var prepend = translations.from
+        switch (to) {
+            case 2:
+                var prepend = ''
+                break
+            case 1:
+                var prepend = translations.to + ' '
+                break
+            default:
+                var prepend = translations.from + ' '
         }
-        $('#chatContent').append(prepend + ' ' + chatTitle + ': ' + msg + '<br/>')
+        $('#chatContent').append(prepend + chatTitle + ': ' + msg + '<br/>')
     }
     this.prepare = function (name, friendId) {
         $('#chatBox').removeClass('mini')
@@ -52,6 +57,9 @@ var Chat = new function () {
                     'padding-left': padding,
                     width: inputWidth - padding
                 })
+        } else if (typeof New != 'undefined') {
+            $('#chatBox input')
+                .prop('disabled', false)
         }
         Chat.addCloseClick()
     }
@@ -134,29 +142,40 @@ var Websocket = new function () {
             return
         }
 
-        var msg = $('#msg').val(),
-            friendId = $('#chatBox #friendId').val(),
-            chatTitle = $('#chatBox #chatTitle').html()
+        var msg = $('#msg').val()
 
         if (!msg) {
             return
         }
-        if (!friendId) {
-            return
-        }
 
-        if (msg) {
-            Chat.message(1, chatTitle, msg)
-            $('#chatWindow').animate({scrollTop: $('#chatWindow div')[0].scrollHeight}, 1000)
-            $('#msg').val('')
+        switch (type) {
+            case 'new':
+                Chat.message(2, playerName, msg)
+                $('#chatWindow').animate({scrollTop: $('#chatWindow div')[0].scrollHeight}, 1000)
+                $('#msg').val('')
+                New.chat(msg)
+                break
+            case 'setup':
+                break
+            default :
+                var friendId = $('#chatBox #friendId').val(),
+                    chatTitle = $('#chatBox #chatTitle').html()
 
-            var token = {
-                type: 'chat',
-                friendId: friendId,
-                msg: msg
-            }
+                if (!friendId) {
+                    return
+                }
 
-            ws.send(JSON.stringify(token))
+                Chat.message(1, chatTitle, msg)
+                $('#chatWindow').animate({scrollTop: $('#chatWindow div')[0].scrollHeight}, 1000)
+                $('#msg').val('')
+
+                var token = {
+                    type: 'chat',
+                    friendId: friendId,
+                    msg: msg
+                }
+
+                ws.send(JSON.stringify(token))
         }
     }
     this.read = function (id, name, read) {

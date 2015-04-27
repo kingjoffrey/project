@@ -64,6 +64,16 @@ class Cli_SetupHandler extends WebSocketUriHandler
             case 'change':
                 new Cli_Model_SetupChange($dataIn, $user, $this);
                 break;
+
+            case 'chat':
+                $token = array(
+                    'type' => 'chat',
+                    'playerId' => $user->parameters['playerId'],
+                    'name' => $dataIn['name'],
+                    'msg' => $dataIn['msg']
+                );
+                $this->sendToChannelExceptUser($user, $token);
+                break;
         }
     }
 
@@ -134,6 +144,23 @@ class Cli_SetupHandler extends WebSocketUriHandler
         }
 
         foreach ($setup->getUsers() AS $user) {
+            $this->sendToUser($user, $token);
+        }
+    }
+
+    public function sendToChannelExceptUser(Devristo\Phpws\Protocol\WebSocketTransportInterface $u, $token, $debug = null)
+    {
+        if ($debug || Zend_Registry::get('config')->debug) {
+            print_r('ODPOWIEDŹ ');
+            print_r($token);
+        }
+
+        $setup = Cli_Model_Setup::getSetup($u);
+
+        foreach ($setup->getUsers() AS $user) {
+            if ($u == $user) {
+                continue;
+            }
             $this->sendToUser($user, $token);
         }
     }

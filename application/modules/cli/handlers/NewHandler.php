@@ -52,6 +52,15 @@ class Cli_NewHandler extends WebSocketUriHandler
                 );
                 $this->sendToChannelExceptPlayers($this->getNew(), $token);
                 break;
+            case 'chat':
+                $token = array(
+                    'type' => 'chat',
+                    'playerId' => $user->parameters['playerId'],
+                    'name' => $dataIn['name'],
+                    'msg' => $dataIn['msg']
+                );
+                $this->sendToChannelExceptPlayersAndMe($user->parameters['playerId'], $this->getNew(), $token);
+                break;
             default:
                 print_r($dataIn);
         }
@@ -172,6 +181,24 @@ class Cli_NewHandler extends WebSocketUriHandler
         }
 
         foreach ($new->getUsers() AS $playerId => $user) {
+            if (isset($user->parameters['gameId']) && $new->getGame($user->parameters['gameId'])->getPlayer($playerId)) {
+                continue;
+            }
+            $this->sendToUser($user, $token);
+        }
+    }
+
+    public function sendToChannelExceptPlayersAndMe($myId, Cli_Model_New $new, $token, $debug = null)
+    {
+        if ($debug || Zend_Registry::get('config')->debug) {
+            print_r('ODPOWIEDŹ ');
+            print_r($token);
+        }
+
+        foreach ($new->getUsers() AS $playerId => $user) {
+            if ($playerId == $myId) {
+                continue;
+            }
             if (isset($user->parameters['gameId']) && $new->getGame($user->parameters['gameId'])->getPlayer($playerId)) {
                 continue;
             }

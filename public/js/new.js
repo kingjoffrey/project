@@ -49,6 +49,7 @@ var New = new function () {
         }
 
     this.init = function () {
+        type = 'new'
         table = $('#join.table table')
         empty = $('<tr id="0">').append($('<td colspan="3">').html(info).css('padding', '15px'))
         changeMap()
@@ -57,6 +58,7 @@ var New = new function () {
             getNumberOfPlayersForm()
         })
         New.webSocketInit()
+        Chat.prepare()
     }
     this.webSocketInit = function () {
         ws = new WebSocket(wsURL + '/new')
@@ -107,7 +109,8 @@ var New = new function () {
                 //remove player
                 break
             case 'chat':
-                //incoming chat
+                Chat.message(2, r.name, r.msg)
+                $('#chatWindow').animate({scrollTop: $('#chatWindow div')[0].scrollHeight}, 1000)
                 break
             default:
                 console.log(r)
@@ -144,6 +147,20 @@ var New = new function () {
         var token = {
             type: 'remove',
             gameId: gameId
+        }
+
+        ws.send(JSON.stringify(token))
+    }
+    this.chat = function (msg) {
+        if (New.closed) {
+            console.log(translations.sorryServerIsDisconnected)
+            return;
+        }
+
+        var token = {
+            type: 'chat',
+            msg: msg,
+            name: playerName
         }
 
         ws.send(JSON.stringify(token))
