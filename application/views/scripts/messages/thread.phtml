@@ -5,7 +5,7 @@
     <table id="messages">
         <?php if (count($this->messages)): ?>
             <?php foreach ($this->messages as $row): ?>
-                <tr class="trlink" id="<?php echo $row['playerId'] ?>">
+                <tr id="<?php echo $row['playerId'] ?>">
                     <td>
                         <div class="date"><?php echo Coret_View_Helper_Formatuj::date($row['date']) ?></div>
                         <div class="name"><?php echo $row['firstName'] . ' ' . $row['lastName'] ?></div>

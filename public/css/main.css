@@ -218,10 +218,6 @@ table {
     border-radius: 5px;
 }
 
-tr:hover td {
-    color: #fff;
-}
-
 tr:nth-child(odd) {
     /*background: url(/img/bg_1.jpg);*/
     color: #D7DAA4;
@@ -333,10 +329,6 @@ p#info {
     width: 530px;
     margin: 0 auto;
     text-align: center;
-}
-
-.trlink {
-    cursor: pointer;
 }
 
 .box {
@@ -572,22 +564,24 @@ p#info {
     text-align: center;
 }
 
-#messages .trlink.read {
+tr.trlink {
+    cursor: pointer;
+
+}
+
+tr.trlink:hover td {
+    color: #fff;
+}
+
+#threads .trlink.read {
     background: lightslategrey;
 }
 
-#messages .trlink .header {
-    float: left;
-    width: 270px;
-    height: 400px;
-    border: 1px solid red;
-}
-
-#messages .trlink .name {
+#messages .name {
     text-align: left;
     font-weight: bold;
 }
 
-#messages .trlink .date {
+#messages .date {
     float: right;
 }

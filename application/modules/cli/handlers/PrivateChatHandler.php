@@ -51,9 +51,6 @@ class Cli_PrivateChatHandler extends WebSocketUriHandler
             case 'chat':
                 new Cli_Model_PrivateChat($dataIn, $user, $this);
                 break;
-            case 'read':
-                new Cli_Model_PrivateChatRead($dataIn, $user, $this);
-                break;
         }
     }
 

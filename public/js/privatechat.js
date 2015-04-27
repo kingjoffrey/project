@@ -15,27 +15,27 @@ var Chat = new function () {
         $('#threads .trlink').click(function () {
             window.location = '/' + lang + '/messages/thread/id/' + $(this).attr('id')
         })
-        $('#messages .trlink').click(function () {
-            var playerId = $(this).attr('id'),
-                chatId = $(this).find('.id').attr('id'),
-                name = $(this).find('#name').html(),
-                read = $(this).hasClass('read'),
-                notifications = 0
-
-            Websocket.read(chatId, name, read)
-            Chat.prepare(name, playerId)
-            $(this).removeClass('read')
-
-            if ($('#envelope').find('span').length) {
-                notifications = $('#envelope').find('span').html()
-                notifications--
-            }
-            if (notifications) {
-                $('#envelope').find('span').html(notifications)
-            } else {
-                $('#envelope').html('')
-            }
-        })
+        //$('#messages .trlink').click(function () {
+        //    var playerId = $(this).attr('id'),
+        //        chatId = $(this).find('.id').attr('id'),
+        //        name = $(this).find('#name').html(),
+        //        read = $(this).hasClass('read'),
+        //        notifications = 0
+        //
+        //    Websocket.read(chatId, name, read)
+        //    Chat.prepare(name, playerId)
+        //    $(this).removeClass('read')
+        //
+        //    if ($('#envelope').find('span').length) {
+        //        notifications = $('#envelope').find('span').html()
+        //        notifications--
+        //    }
+        //    if (notifications) {
+        //        $('#envelope').find('span').html(notifications)
+        //    } else {
+        //        $('#envelope').html('')
+        //    }
+        //})
     }
     this.message = function (to, chatTitle, msg) {
         switch (to) {
@@ -188,20 +188,5 @@ var Websocket = new function () {
 
                 ws.send(JSON.stringify(token))
         }
-    }
-    this.read = function (id, name, read) {
-        if (closed) {
-            Message.error(translations.sorryServerIsDisconnected)
-            return
-        }
-
-        var token = {
-            type: 'read',
-            read: read,
-            name: name,
-            chatId: id
-        }
-
-        ws.send(JSON.stringify(token))
     }
 }

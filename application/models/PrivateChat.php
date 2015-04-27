@@ -38,6 +38,16 @@ class Application_Model_PrivateChat extends Coret_Db_Table_Abstract
 
     public function getChatHistoryMessages($playerId, $pageNumber)
     {
+        $data = array(
+            'read' => true
+        );
+        $where = array(
+            'read = false',
+            $this->_db->quoteInto($this->_db->quoteIdentifier('playerId') . ' = ?', $playerId),
+            $this->_db->quoteInto($this->_db->quoteIdentifier('recipientId') . ' = ?', $this->_playerId)
+        );
+        $this->update($data, $where);
+
         $select1 = $this->_db->select()
             ->from($this->_name, 'chatId')
             ->where($this->_db->quoteIdentifier('recipientId') . ' = ?', $this->_playerId)
@@ -51,8 +61,8 @@ class Application_Model_PrivateChat extends Coret_Db_Table_Abstract
         $select = $this->_db->select()
             ->from(array('a' => $this->_name), array('date', 'message', 'playerId', 'read', 'chatId'))
             ->join(array('b' => 'player'), 'a.' . $this->_db->quoteIdentifier('playerId') . ' = b.' . $this->_db->quoteIdentifier('playerId'), array('firstName', 'lastName'))
-            ->where($this->_db->quoteIdentifier($this->_primary) . ' IN (?)',  new Zend_Db_Expr($select1))
-            ->orWhere($this->_db->quoteIdentifier($this->_primary) . ' IN (?)',  new Zend_Db_Expr($select2))
+            ->where($this->_db->quoteIdentifier($this->_primary) . ' IN (?)', new Zend_Db_Expr($select1))
+            ->orWhere($this->_db->quoteIdentifier($this->_primary) . ' IN (?)', new Zend_Db_Expr($select2))
             ->order($this->_primary . ' DESC');
 
         $paginator = new Zend_Paginator(new Zend_Paginator_Adapter_DbSelect($select));
@@ -80,24 +90,5 @@ class Application_Model_PrivateChat extends Coret_Db_Table_Abstract
             'read' => $read
         );
         $this->insert($data);
-    }
-
-    public function readChatMessage($chatId, $read)
-    {
-        if ($read) {
-            $data = array(
-                'read' => true
-            );
-            $where = array(
-                $this->_db->quoteInto($this->_db->quoteIdentifier($this->_primary) . ' = ?', $chatId)
-            );
-            $this->update($data, $where);
-        }
-
-        $select = $this->_db->select()
-            ->from($this->_name, 'message')
-            ->where($this->_db->quoteIdentifier($this->_primary) . ' = ?', $chatId);
-
-        return $this->selectOne($select);
     }
 }
