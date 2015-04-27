@@ -156,6 +156,10 @@ var Websocket = new function () {
                 New.chat(msg)
                 break
             case 'setup':
+                Chat.message(2, playerName, msg)
+                $('#chatWindow').animate({scrollTop: $('#chatWindow div')[0].scrollHeight}, 1000)
+                $('#msg').val('')
+                Setup.chat(msg)
                 break
             default :
                 var friendId = $('#chatBox #friendId').val(),

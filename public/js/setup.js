@@ -18,7 +18,7 @@ var Setup = new function () {
         ws.send(JSON.stringify(token));
     }
     this.open = function () {
-        if (Setup.closed) {
+        if (closed) {
             console.log(translations.sorryServerIsDisconnected)
             return;
         }
@@ -34,6 +34,8 @@ var Setup = new function () {
         ws.send(JSON.stringify(token));
     }
     this.init = function () {
+        type = 'setup'
+        Chat.prepare()
         Setup.initButtons()
         Setup.initTeams()
         ws = new WebSocket(wsURL + '/setup')
@@ -55,6 +57,11 @@ var Setup = new function () {
     this.message = function (r) {
         console.log(r)
         switch (r.type) {
+            case 'chat':
+                Chat.message(2, r.name, r.msg)
+                $('#chatWindow').animate({scrollTop: $('#chatWindow div')[0].scrollHeight}, 1000)
+                break
+
             case 'open':
                 gameMasterId = r.gameMasterId
                 New.webSocketInit()
@@ -188,5 +195,19 @@ var Setup = new function () {
     }
     this.getGameMasterId = function () {
         return gameMasterId
+    }
+    this.chat = function (msg) {
+        if (closed) {
+            console.log(translations.sorryServerIsDisconnected)
+            return;
+        }
+
+        var token = {
+            type: 'chat',
+            msg: msg,
+            name: playerName
+        }
+
+        ws.send(JSON.stringify(token))
     }
 }
