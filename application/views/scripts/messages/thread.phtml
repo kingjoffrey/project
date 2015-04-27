@@ -1,0 +1,21 @@
+<h1><?php echo $this->translate('Messages') ?></h1>
+
+<div class="table">
+    <h2><?php echo $this->translate('Messages list') ?></h2>
+    <table id="messages">
+        <tr>
+            <th><?php echo $this->translate('Player name') ?></th>
+            <th><?php echo $this->translate('Date') ?></th>
+        </tr>
+        <?php if (count($this->messages)): ?>
+            <?php foreach ($this->messages as $row): ?>
+                <tr class="trlink<?php if (!$row['read']): echo ' read'; endif?>" id="<?php echo $row['playerId'] ?>">
+                    <td id="name"><?php echo $row['firstName'] . ' ' . $row['lastName'] ?></td>
+                    <td class="id" id="<?php echo $row['chatId'] ?>"><?php echo Coret_View_Helper_Formatuj::date($row['date']) ?></td>
+                    </tr>
+                <?php endforeach ?>
+        <?php endif ?>
+    </table>
+</div>
+<?php echo $this->paginationControl($this->messages, 'Sliding', 'pagination_control.phtml'); ?>
+<a href="/" class="button">&laquo; <?php echo $this->translate('Back') ?></a>
