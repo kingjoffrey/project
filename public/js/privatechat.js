@@ -17,12 +17,16 @@ var Chat = new function () {
                 chatId = $(this).find('.id').attr('id'),
                 name = $(this).find('#name').html(),
                 read = $(this).hasClass('read'),
-                notifications = $('#envelope').find('span').html()
+                notifications = 0
 
             Websocket.read(chatId, name, read)
             Chat.prepare(name, playerId)
             $(this).removeClass('read')
-            notifications--
+
+            if ($('#envelope').find('span').length) {
+                notifications = $('#envelope').find('span').html()
+                notifications--
+            }
             if (notifications) {
                 $('#envelope').find('span').html(notifications)
             } else {
@@ -112,7 +116,7 @@ var Websocket = new function () {
             console.log(r)
             switch (r.type) {
                 case 'notification':
-                    if (!r.count) {
+                    if (!parseInt(r.count)) {
                         return
                     }
                     $('#envelope').html($('<span>').html(r.count))
