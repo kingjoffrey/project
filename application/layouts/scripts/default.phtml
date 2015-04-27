@@ -27,15 +27,17 @@
     <div class="close">&#x25B6</div>
     <div id="friends"><?php echo $this->placeholder('friends') ?></div>
 </div>
-<div id="envelope"></div>
 <div id="bg">
     <div id="page">
-        <div id="menuTop">
-            <div id="title">Wars of Fate</div>
-            <?php echo $this->placeholder('logout') ?>
+        <div id="menuBox">
+            <div id="menuTop">
+                <div id="title">Wars of Fate</div>
+                <?php echo $this->placeholder('logout') ?>
+            </div>
+            <?php echo $this->placeholder('mainMenu') ?>
+            <div id="envelope"></div>
         </div>
         <div id="content">
-            <?php echo $this->placeholder('mainMenu') ?>
             <?php echo $this->placeholder('version') ?>
             <?php echo $this->layout()->content ?>
         </div>

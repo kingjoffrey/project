@@ -45,6 +45,7 @@ html, body {
 #page {
     margin: 0 auto;
     width: 900px;
+    padding-top: 67px;
 }
 
 #content {
@@ -584,4 +585,9 @@ tr.trlink:hover td {
 
 #messages .date {
     float: right;
+}
+
+#menuBox {
+    position: absolute;
+    top: 0px;
 }

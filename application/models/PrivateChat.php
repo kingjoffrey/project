@@ -21,7 +21,12 @@ class Application_Model_PrivateChat extends Coret_Db_Table_Abstract
     public function getChatHistoryThreads($pageNumber)
     {
         $select = $this->_db->select()
-            ->from(array('a' => $this->_name), array('max(a.date)', 'playerId', new Zend_Db_Expr('count(nullif(read = true, true)) as read'), new Zend_Db_Expr('count(message) as messages')))
+            ->from(array('a' => $this->_name), array(
+                'max(a.date)',
+                'playerId',
+                new Zend_Db_Expr('count(nullif(read, true)) as read'),
+                new Zend_Db_Expr('count(message) as messages'
+                )))
             ->join(array('b' => 'player'), 'a.' . $this->_db->quoteIdentifier('playerId') . ' = b.' . $this->_db->quoteIdentifier('playerId'), array('firstName', 'lastName'))
             ->where('a.' . $this->_db->quoteIdentifier('recipientId') . ' = ?', $this->_playerId)
             ->group('a.playerId')
