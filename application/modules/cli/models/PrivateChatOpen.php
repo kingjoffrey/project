@@ -39,10 +39,29 @@ class Cli_Model_PrivateChatOpen
         );
         $handler->sendToUser($user, $token);
 
+        $handler->addFriends($user->parameters['playerId']);
+
+        $friendsOnline = array();
         $token = array(
             'type' => 'open',
             'id' => $user->parameters['playerId']
         );
-        $handler->sendToFriends($user, $token);
+
+        foreach ($handler->getFriends($user->parameters['playerId']) AS $friend) {
+            foreach ($handler->getUsers() as $u) {
+                if ($friend['friendId'] == $u->parameters['playerId']) {
+                    $handler->sendToUser($u, $token);
+                    $friendsOnline[] = $u->parameters['playerId'];
+                }
+            }
+        }
+
+        if ($friendsOnline) {
+            $token = array(
+                'type' => 'friends',
+                'friends' => $friendsOnline
+            );
+            $handler->sendToUser($user, $token);
+        }
     }
 }

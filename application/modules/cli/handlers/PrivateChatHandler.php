@@ -7,7 +7,7 @@ class Cli_PrivateChatHandler extends WebSocketUriHandler
 {
     private $_db;
     private $_users = array();
-    private $_friends = array();
+    private $_players = array();
 
     public function __construct($logger)
     {
@@ -41,6 +41,27 @@ class Cli_PrivateChatHandler extends WebSocketUriHandler
         }
     }
 
+
+    public function addFriends($playerId)
+    {
+        $mFriends = new Application_Model_Friends($this->_db);
+        $this->_players[$playerId] = $mFriends->getFriendsIds($playerId);
+    }
+
+    public function getFriends($playerId)
+    {
+        if (isset($this->_players[$playerId])) {
+            return $this->_players[$playerId];
+        }
+    }
+
+    public function removeFriends($playerId)
+    {
+        if (isset($this->_players[$playerId])) {
+            unset($this->_players[$playerId]);
+        }
+    }
+
     public function onMessage(WebSocketTransportInterface $user, WebSocketMessageInterface $msg)
     {
         $dataIn = Zend_Json::decode($msg->getData());
@@ -64,6 +85,20 @@ class Cli_PrivateChatHandler extends WebSocketUriHandler
         $mWebSocket = new Application_Model_Websocket($user->parameters['playerId'], $this->_db);
         $mWebSocket->disconnect($user->parameters['accessKey']);
 
+        $token = array(
+            'type' => 'close',
+            'id' => $user->parameters['playerId']
+        );
+
+        foreach ($this->getFriends($user->parameters['playerId']) AS $friend) {
+            foreach ($this->getUsers() as $u) {
+                if ($friend['friendId'] == $u->parameters['playerId']) {
+                    $this->sendToUser($u, $token);
+                }
+            }
+        }
+
+        $this->removeFriends($user->parameters['playerId']);
         unset($this->_users[$user->parameters['playerId']]);
     }
 
@@ -94,17 +129,5 @@ class Cli_PrivateChatHandler extends WebSocketUriHandler
         }
 
         $user->sendString(Zend_Json::encode($token));
-    }
-
-    public function sendToFriends(Devristo\Phpws\Protocol\WebSocketTransportInterface $user, $token, $debug = null)
-    {
-        if ($debug || Zend_Registry::get('config')->debug) {
-            print_r('ODPOWIEDŹ ');
-            print_r($token);
-        }
-
-        foreach ($this->_friends AS $user) {
-            $this->sendToUser($user, $token);
-        }
     }
 }

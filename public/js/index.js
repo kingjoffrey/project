@@ -17,9 +17,10 @@ var Title = {
             top = 0
         }
 
-        title.
-            css({
-                'margin-top': top + 'px'
-            })
+        title.css({
+            'padding-top': top + 'px',
+            'background-position': ' 15px ' + top + 'px'
+        })
+
     }
 }

@@ -40,5 +40,14 @@ class Application_Model_Friends extends Coret_Db_Table_Abstract
 
         return $paginator;
     }
+
+    public function getFriendsIds($playerId)
+    {
+        $select = $this->_db->select()
+            ->from(array('a' => $this->_name), 'friendId')
+            ->where('a.' . $this->_db->quoteIdentifier('playerId') . ' = ?', $playerId);
+
+        return $this->selectAll($select);
+    }
 }
 

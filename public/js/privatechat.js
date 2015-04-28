@@ -129,10 +129,21 @@ var Websocket = new function () {
                     Chat.message(0, r.name, r.msg)
                     $('#chatWindow').animate({scrollTop: $('#chatWindow div')[0].scrollHeight}, 1000)
                     break
-                case 'read':
-                    Chat.message(0, r.name, r.msg)
-                    $('#chatWindow').animate({scrollTop: $('#chatWindow div')[0].scrollHeight}, 1000)
+                case 'open':
+                    $('#friends #' + r.id + ' #online').css({display: 'block'})
                     break
+                case 'close':
+                    $('#friends #' + r.id + ' #online').css({display: 'none'})
+                    break
+                case 'friends':
+                    for (var i in r.friends) {
+                        $('#friends #' + r.friends[i] + ' #online').css({display: 'block'})
+                    }
+                    break
+                //case 'read':
+                //    Chat.message(0, r.name, r.msg)
+                //    $('#chatWindow').animate({scrollTop: $('#chatWindow div')[0].scrollHeight}, 1000)
+                //    break
                 default:
                     console.log(r);
             }

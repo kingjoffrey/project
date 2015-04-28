@@ -135,14 +135,10 @@ h1 {
 }
 
 #content #title {
-    margin-top: 30px;
-}
-
-#content #title {
     margin: 0 auto;
     width: 760px;
     height: 192px;
-    background: url('/img/logo_bg.png') 0px 15px no-repeat !important;
+    background: url('/img/logo_bg.png') no-repeat;
 }
 
 #content #title div {
@@ -590,4 +586,15 @@ tr.trlink:hover td {
 #menuBox {
     position: absolute;
     top: 0px;
+}
+
+#friends #online {
+    display: none;
+    width: 10px;
+    height: 10px;
+    border-radius: 5px;
+    box-shadow: 1px 1px 2px #000;
+    background: green;
+    float: right;
+    margin: 5px;
 }
