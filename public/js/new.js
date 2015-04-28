@@ -58,7 +58,7 @@ var New = new function () {
             getNumberOfPlayersForm()
         })
         New.webSocketInit()
-        Chat.prepare()
+        PrivateChat.prepare()
     }
     this.webSocketInit = function () {
         ws = new WebSocket(wsURL + '/new')
@@ -109,7 +109,7 @@ var New = new function () {
                 //remove player
                 break
             case 'chat':
-                Chat.message(2, r.name, r.msg)
+                PrivateChat.message(2, r.name, r.msg)
                 $('#chatWindow').animate({scrollTop: $('#chatWindow div')[0].scrollHeight}, 1000)
                 break
             default:

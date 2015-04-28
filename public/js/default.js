@@ -1,7 +1,7 @@
 $(document).ready(function () {
     Page.init()
     Page.adjust()
-    Chat.init()
+    PrivateChat.init()
 })
 
 var Page = new function () {

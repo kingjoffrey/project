@@ -16,7 +16,6 @@ abstract class Game_Controller_Gui extends Coret_Controller_Authorized
 
         $this->view->jquery();
         $this->view->headScript()->appendFile('/js/default.js?v=' . Zend_Registry::get('config')->version);
-        $this->view->headScript()->appendScript('var playerName = "' . $identity->firstName . ' ' . $identity->lastName . '";');
 
         $this->view->MainMenu();
         $this->view->Friends();
@@ -24,7 +23,7 @@ abstract class Game_Controller_Gui extends Coret_Controller_Authorized
 //        $this->view->googleAnalytics();
         $this->view->Version();
 
-        $this->view->Websocket($this->_playerId, $identity->accessKey);
+        $this->view->Websocket($identity);
     }
 
 }

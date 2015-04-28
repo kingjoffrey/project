@@ -35,7 +35,7 @@ var Setup = new function () {
     }
     this.init = function () {
         type = 'setup'
-        Chat.prepare()
+        PrivateChat.prepare()
         Setup.initButtons()
         Setup.initTeams()
         ws = new WebSocket(wsURL + '/setup')
@@ -58,7 +58,7 @@ var Setup = new function () {
         console.log(r)
         switch (r.type) {
             case 'chat':
-                Chat.message(2, r.name, r.msg)
+                PrivateChat.message(2, r.name, r.msg)
                 $('#chatWindow').animate({scrollTop: $('#chatWindow div')[0].scrollHeight}, 1000)
                 break
 

@@ -1,4 +1,4 @@
-var Chat = new function () {
+var PrivateChat = new function () {
     var inputWidth
 
     this.init = function () {
@@ -10,32 +10,11 @@ var Chat = new function () {
             Websocket.chat()
         })
         $('#friendsBox #friends div').click(function () {
-            Chat.prepare($(this).html(), $(this).attr('id'))
+            PrivateChat.prepare($(this).html(), $(this).attr('id'))
         })
         $('#threads .trlink').click(function () {
             window.location = '/' + lang + '/messages/thread/id/' + $(this).attr('id')
         })
-        //$('#messages .trlink').click(function () {
-        //    var playerId = $(this).attr('id'),
-        //        chatId = $(this).find('.id').attr('id'),
-        //        name = $(this).find('#name').html(),
-        //        read = $(this).hasClass('read'),
-        //        notifications = 0
-        //
-        //    Websocket.read(chatId, name, read)
-        //    Chat.prepare(name, playerId)
-        //    $(this).removeClass('read')
-        //
-        //    if ($('#envelope').find('span').length) {
-        //        notifications = $('#envelope').find('span').html()
-        //        notifications--
-        //    }
-        //    if (notifications) {
-        //        $('#envelope').find('span').html(notifications)
-        //    } else {
-        //        $('#envelope').html('')
-        //    }
-        //})
     }
     this.message = function (to, chatTitle, msg) {
         switch (to) {
@@ -68,12 +47,12 @@ var Chat = new function () {
             $('#chatBox input')
                 .prop('disabled', false)
         }
-        Chat.addCloseClick()
+        PrivateChat.addCloseClick()
     }
     this.addCloseClick = function () {
         $('#chatBox .close').click(function () {
             $('#chatBox').addClass('mini')
-            Chat.removeCloseClick()
+            PrivateChat.removeCloseClick()
         })
     }
     this.removeCloseClick = function () {
@@ -125,9 +104,13 @@ var Websocket = new function () {
                     $('#envelope').html($('<span>').html(r.count))
                     break
                 case 'chat':
-                    Chat.prepare()
-                    Chat.message(0, r.name, r.msg)
-                    $('#chatWindow').animate({scrollTop: $('#chatWindow div')[0].scrollHeight}, 1000)
+                    if (type == 'game') {
+                        PrivateChat.message(0, r.name, r.msg)
+                    } else {
+                        PrivateChat.prepare()
+                        PrivateChat.message(0, r.name, r.msg)
+                        $('#chatWindow').animate({scrollTop: $('#chatWindow div')[0].scrollHeight}, 1000)
+                    }
                     break
                 case 'open':
                     $('#friends #' + r.id + ' #online').css({display: 'block'})
@@ -140,10 +123,6 @@ var Websocket = new function () {
                         $('#friends #' + r.friends[i] + ' #online').css({display: 'block'})
                     }
                     break
-                //case 'read':
-                //    Chat.message(0, r.name, r.msg)
-                //    $('#chatWindow').animate({scrollTop: $('#chatWindow div')[0].scrollHeight}, 1000)
-                //    break
                 default:
                     console.log(r);
             }
@@ -168,13 +147,13 @@ var Websocket = new function () {
 
         switch (type) {
             case 'new':
-                Chat.message(2, playerName, msg)
+                PrivateChat.message(2, playerName, msg)
                 $('#chatWindow').animate({scrollTop: $('#chatWindow div')[0].scrollHeight}, 1000)
                 $('#msg').val('')
                 New.chat(msg)
                 break
             case 'setup':
-                Chat.message(2, playerName, msg)
+                PrivateChat.message(2, playerName, msg)
                 $('#chatWindow').animate({scrollTop: $('#chatWindow div')[0].scrollHeight}, 1000)
                 $('#msg').val('')
                 Setup.chat(msg)
@@ -187,7 +166,7 @@ var Websocket = new function () {
                     return
                 }
 
-                Chat.message(1, chatTitle, msg)
+                PrivateChat.message(1, chatTitle, msg)
                 $('#chatWindow').animate({scrollTop: $('#chatWindow div')[0].scrollHeight}, 1000)
                 $('#msg').val('')
 

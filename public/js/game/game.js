@@ -25,9 +25,7 @@ var Game = new function () {
             Me.init(game.color, game.gold, game.bSequence)
             Chat.init(game.chatHistory)
         }
-
         Players.initOnline(game.online)
-
         if (Turn.isMy()) {
             Me.turnOn()
             if (!Me.getTurnActive()) {
@@ -37,7 +35,6 @@ var Game = new function () {
             Me.turnOff()
         }
         Players.showFirst(Turn.getColor())
-
         Sound.play('gamestart')
     }
     this.getTimeoutId = function () {
@@ -65,4 +62,6 @@ var Game = new function () {
 
 $(document).ready(function () {
     WebSocketGame.init()
+    type = 'game'
+    PrivateChat.init()
 })
