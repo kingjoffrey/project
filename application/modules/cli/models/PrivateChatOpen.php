@@ -33,18 +33,16 @@ class Cli_Model_PrivateChatOpen
         $mChat = new Application_Model_PrivateChat($user->parameters['playerId'], $db);
         $count = $mChat->getChatHistoryCount();
 
-//        $history = array();
-//        foreach ($chatHistory as $row) {
-//            $history[] = array(
-//                'name' => $row['firstName'] . ' ' . $row['lastName'],
-//                'msg' => $row['message']
-//            );
-//        }
-
         $token = array(
             'type' => 'notification',
             'count' => $count
         );
         $handler->sendToUser($user, $token);
+
+        $token = array(
+            'type' => 'open',
+            'id' => $user->parameters['playerId']
+        );
+        $handler->sendToFriends($user, $token);
     }
 }

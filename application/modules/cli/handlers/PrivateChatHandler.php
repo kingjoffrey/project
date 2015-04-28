@@ -7,6 +7,7 @@ class Cli_PrivateChatHandler extends WebSocketUriHandler
 {
     private $_db;
     private $_users = array();
+    private $_friends = array();
 
     public function __construct($logger)
     {
@@ -93,5 +94,17 @@ class Cli_PrivateChatHandler extends WebSocketUriHandler
         }
 
         $user->sendString(Zend_Json::encode($token));
+    }
+
+    public function sendToFriends(Devristo\Phpws\Protocol\WebSocketTransportInterface $user, $token, $debug = null)
+    {
+        if ($debug || Zend_Registry::get('config')->debug) {
+            print_r('ODPOWIEDŹ ');
+            print_r($token);
+        }
+
+        foreach ($this->_friends AS $user) {
+            $this->sendToUser($user, $token);
+        }
     }
 }
