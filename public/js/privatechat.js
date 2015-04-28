@@ -5,12 +5,15 @@ var PrivateChat = new function () {
         Websocket.init()
 
         inputWidth = $('#chatBox input').width()
-        $('#chatBox input').prop('disabled', true)
+        if (type == 'default') {
+            $('#chatBox input').prop('disabled', true)
+        }
         $('#send').click(function () {
             Websocket.chat()
         })
-        $('#friendsBox #friends div').click(function () {
-            PrivateChat.prepare($(this).html(), $(this).attr('id'))
+        $('#friends div').click(function () {
+            console.log('aaa')
+            PrivateChat.prepare($(this).find('span').html(), $(this).attr('id'))
         })
         $('#threads .trlink').click(function () {
             window.location = '/' + lang + '/messages/thread/id/' + $(this).attr('id')
@@ -31,23 +34,22 @@ var PrivateChat = new function () {
     }
     this.prepare = function (name, friendId) {
         $('#chatBox').removeClass('mini')
-        if (isSet(name)) {
-            $('#chatBox #chatTitle').html(name)
-            if (isSet(friendId)) {
-                $('#chatBox #friendId').val(friendId)
-            }
-            var padding = $('#chatBox #chatTitle').width() + 10
-            $('#chatBox input')
-                .prop('disabled', false)
-                .css({
-                    'padding-left': padding,
-                    width: inputWidth - padding
-                })
-        } else if (typeof New != 'undefined') {
-            $('#chatBox input')
-                .prop('disabled', false)
-        }
         PrivateChat.addCloseClick()
+        if (notSet(name)) {
+            return
+        }
+
+        $('#chatBox #chatTitle').html(name)
+        if (isSet(friendId)) {
+            $('#chatBox #friendId').val(friendId)
+        }
+        var padding = $('#chatBox #chatTitle').width() + 10
+        $('#chatBox #msg')
+            .prop('disabled', false)
+            .css({
+                'padding-left': padding,
+                width: inputWidth - padding
+            })
     }
     this.addCloseClick = function () {
         $('#chatBox .close').click(function () {

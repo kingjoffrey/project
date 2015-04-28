@@ -89,6 +89,7 @@
             <img src="/img/game/statistics.png" alt="<?php echo $this->translate('Statistics') ?>"/>
         </div>
         <a id="nextTurn" class="button buttonColors">>></a>
+
         <div id="buttons">
 
             <a id="heroResurrection"
@@ -135,12 +136,16 @@
     </div>
     <div id="chatBox" class="box">
         <div class="close">&#x25B6</div>
+        <div id="friends"><?php echo $this->placeholder('friends') ?></div>
         <div id="chatWindow">
             <div id="chatContent"></div>
         </div>
         <div id="chatInput">
+            <div id="showFriends" class="iconButton buttonColors"><img src="/img/friends.png"/></div>
+            <input id="friendId" value=""/>
             <input type="text" name="msg" id="msg">
             <a id="send" class="button buttonColors"> > </a>
+            <div id="chatTitle"></div>
         </div>
     </div>
 </div>

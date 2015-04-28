@@ -32,6 +32,7 @@ class GameController extends Coret_Controller_Authorized
         $this->view->gameId = $this->_gameId;
 
         $this->view->Websocket($this->_auth->getIdentity());
+        $this->view->Friends();
 
         $mGame = new Application_Model_Game($this->_gameId);
         $this->view->map($mapId = $mGame->getMapId());

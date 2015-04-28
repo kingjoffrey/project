@@ -375,7 +375,7 @@ p#info {
     z-index: 27000;
     width: 365px;
     height: 236px;
-    border-top-left-radius: 10px;
+    border-top-left-radius: 5px;
     text-transform: none;
     padding: 0;
 }
@@ -395,6 +395,7 @@ p#info {
     font-size: 13px;
     letter-spacing: 0;
     text-shadow: none;
+    color: darkblue;
 }
 
 #chatBox.mini #chatTitle {
@@ -427,19 +428,18 @@ p#info {
 
 #chatBox #chatContent div.chatCloud {
     margin: 5px 5px 5px 0;
-    border-radius: 4px;
-    padding: 4px;
+    border-radius: 2px;
+    padding: 2px;
     display: inline-block;
-    box-shadow: 0 1px 0 0 rgba(255, 255, 255, .5);
+    /*box-shadow: 0 1px 0 0 rgba(0, 0, 0, .5);*/
     color: white;
-    background: grey;
-    border: 1px solid darkgray;
+    /*background: grey;*/
+    /*border: 1px solid darkgray;*/
     max-width: 299px;
 }
 
 #chatBox #chatContent div.chatCloud span {
     font-weight: bold;
-    color: #000;
 }
 
 #chatBox #chatContent div.chatCloudContainer {
@@ -461,7 +461,6 @@ p#info {
     border-top: 1px solid #000;
     position: absolute;
     top: 196px;
-    padding-left: 5px;
 }
 
 #chatBox.mini input {
@@ -480,6 +479,7 @@ p#info {
     top: 5px;
     background: #fff;
     color: #000;
+    margin-left: 5px;
 
     -webkit-touch-callout: text;
     -webkit-user-select: text;
@@ -491,7 +491,7 @@ p#info {
 
 #chatBox #send {
     position: absolute;
-    right: 5px;
+    right: 0px;
     top: 2px;
     padding: 0 5px;
     line-height: 21px;
@@ -507,7 +507,7 @@ p#info {
     left: -5px;
 }
 
-#friendsBox #friends div:hover {
+#friends div:hover {
     background: #fff;
 }
 

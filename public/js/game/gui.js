@@ -9,6 +9,7 @@ var Gui = new function () {
         speed = 200,
         documentTitle = 'WoF',
         mapHeight,
+        friendsShow = false,
         changeCloseArrowLR = function (move, el) {
             if (move > 0) {
                 $(el).html('&#x25C0');
@@ -272,6 +273,26 @@ var Gui = new function () {
                 if (isSet(castle)) {
                     CastleWindow.show(castle)
                 }
+            }
+        })
+        $('#showFriends').click(function () {
+            if (friendsShow) {
+                $('#friends').css({
+                    display: 'none',
+                    top: 0
+                })
+                friendsShow = false
+            } else {
+                var height = $('#friends').height()
+                $('#friends').css({
+                    display: 'block',
+                    height: 0
+                })
+                $('#friends').animate({
+                    top: -height - 10 + 'px',
+                    height: height + 'px'
+                }, 200)
+                friendsShow = true
             }
         })
     }

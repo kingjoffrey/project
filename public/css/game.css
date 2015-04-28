@@ -1080,3 +1080,39 @@ table.treasury td.c {
 #chatBox {
     right: -2px;
 }
+
+#chatBox input {
+    border: 1px solid goldenrod;
+    margin-left: 3px;
+    width: 281px;
+}
+
+#chatBox #send {
+    height: 26px;
+    line-height: 26px;
+    width: 13px;
+}
+
+#chatBox #chatTitle {
+    left: 38px;
+}
+
+#friends {
+    display: none;
+    position: absolute;
+    width: 200px;
+    background: url(/img/deska_0.png);
+    padding: 5px;
+    border-top-left-radius: 2px;
+    border-top-right-radius: 2px;
+}
+
+#friends #online {
+    margin: 2px;
+}
+
+#showFriends {
+    top: 3px;
+    position: relative;
+    padding: 3px;
+}

@@ -14,7 +14,7 @@ class zend_View_Helper_Friends extends Zend_View_Helper_Abstract
 //            ->setPostfix('</div>');
 
         foreach ($friends as $row) {
-            $this->view->placeholder('friends')->append('<div id="' . $row['friendId'] . '">' . $row['firstName'] . ' ' . $row['lastName'] . '<div id="online"></div></div>');
+            $this->view->placeholder('friends')->append('<div id="' . $row['friendId'] . '"><span>' . $row['firstName'] . ' ' . $row['lastName'] . '</span><div id="online"></div></div>');
         }
     }
 
