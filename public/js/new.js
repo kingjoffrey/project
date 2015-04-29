@@ -50,6 +50,7 @@ var New = new function () {
 
     this.init = function () {
         type = 'new'
+        $('#chatBox input').prop('disabled', false)
         table = $('#join.table table')
         empty = $('<tr id="0">').append($('<td colspan="3">').html(info).css('padding', '15px'))
         changeMap()

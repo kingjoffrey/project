@@ -6,13 +6,12 @@ var PrivateChat = new function () {
 
         inputWidth = $('#chatBox input').width()
         if (type == 'default') {
-            $('#chatBox input').prop('disabled', true)
+            $('#chatBox.mini #msg').prop('disabled', true).val(translations.selectFriendFromFriendsList)
         }
         $('#send').click(function () {
             Websocket.chat()
         })
         $('#friends div').click(function () {
-            console.log('aaa')
             PrivateChat.prepare($(this).find('span').html(), $(this).attr('id'))
         })
         $('#threads .trlink').click(function () {

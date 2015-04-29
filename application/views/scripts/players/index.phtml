@@ -10,7 +10,7 @@
         </tr>
         <?php if (count($this->searchResults)): ?>
             <?php foreach ($this->searchResults as $row): ?>
-                <tr class="trlink">
+                <tr>
                     <td><?php echo $row['firstName'] . ' ' . $row['lastName'] ?></td>
                     <td>
                         <a href="/<?php echo Zend_Registry::get('lang') ?>/players/add/friendId/<?php echo $row['playerId'] ?>"><?php echo $this->translate('Add to friends') ?></a>

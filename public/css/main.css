@@ -463,7 +463,7 @@ p#info {
     top: 196px;
 }
 
-#chatBox.mini input {
+#chatBox.mini #msg {
     background: #373737;
 }
 

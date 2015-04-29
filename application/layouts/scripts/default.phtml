@@ -10,6 +10,7 @@
 </head>
 <body>
 <div id="chatBox" class="box mini">
+    <div id="title"><?php echo $this->placeholder('chatTitle') ?></div>
     <div class="close">&#x25B6</div>
     <input id="friendId" value=""/>
 
@@ -24,6 +25,7 @@
     </div>
 </div>
 <div id="friendsBox" class="box">
+    <div id="title"><?php echo $this->placeholder('friendsTitle') ?></div>
     <div class="close">&#x25B6</div>
     <div id="friends"><?php echo $this->placeholder('friends') ?></div>
 </div>

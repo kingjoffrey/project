@@ -35,6 +35,7 @@ var Setup = new function () {
     }
     this.init = function () {
         type = 'setup'
+        $('#chatBox input').prop('disabled', false)
         PrivateChat.prepare()
         Setup.initButtons()
         Setup.initTeams()

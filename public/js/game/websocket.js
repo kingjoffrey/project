@@ -3,21 +3,10 @@ var WebSocketGame = new function () {
         queue = {},
         executing = 0,
         i = 0,
-        wait = function () {
-            if (executing) {
-                setTimeout('wait()', 500);
-            } else {
-                for (var ii in queue) {
-                    execute(queue[ii])
-                    delete queue[ii]
-                    return
-                }
-            }
-        },
         addQueue = function (r) {
             i++
             queue[i] = r
-            wait()
+            WebSocketGame.wait()
         },
         execute = function (r) {
             executing = 1
@@ -217,6 +206,17 @@ var WebSocketGame = new function () {
                     break;
             }
         }
+    this.wait = function () {
+        if (executing) {
+            setTimeout('WebSocketGame.wait()', 500);
+        } else {
+            for (var ii in queue) {
+                execute(queue[ii])
+                delete queue[ii]
+                return
+            }
+        }
+    }
     this.setExecuting = function (value) {
         executing = value
     }

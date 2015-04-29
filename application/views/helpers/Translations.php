@@ -124,7 +124,7 @@ class Zend_View_Helper_Translations extends Zend_View_Helper_Abstract
                 'to' => $this->view->translate('to'),
                 'from' => $this->view->translate('from'),
                 'Players' => $this->view->translate('players'),
-                '' => $this->view->translate(''),
+                'selectFriendFromFriendsList' => $this->view->translate('Select friend from friends list'),
                 '' => $this->view->translate(''),
                 '' => $this->view->translate(''),
                 '' => $this->view->translate(''),
