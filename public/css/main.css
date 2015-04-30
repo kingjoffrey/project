@@ -497,6 +497,11 @@ p#info {
     line-height: 21px;
 }
 
+#chatBox #title {
+    position: absolute;
+    top: -21px;
+}
+
 #friendsBox {
     position: absolute;
     z-index: 27000;
@@ -505,6 +510,15 @@ p#info {
     position: absolute;
     bottom: -5px;
     left: -5px;
+}
+
+#friendsBox #title {
+    position: absolute;
+    top: -21px;
+}
+
+#friendsBox span {
+    font-size: 14px;
 }
 
 #friends div:hover {
