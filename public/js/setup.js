@@ -36,7 +36,6 @@ var Setup = new function () {
     this.init = function () {
         type = 'setup'
         PrivateChat.prepare()
-        PrivateChat.enable()
         Setup.initButtons()
         Setup.initTeams()
         ws = new WebSocket(wsURL + '/setup')

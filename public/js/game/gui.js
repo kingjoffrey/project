@@ -365,9 +365,9 @@ var Gui = new function () {
                 changeCloseArrowLR(commandsBox.move, commandsBox.el);
             })
         })
-        $('#chatBox .close').click(function () {
-            Gui.moveChatBox()
-        })
+        //$('#chatBox .close').click(function () {
+        //    Gui.moveChatBox()
+        //})
     }
     this.adjust = function () {
         Zoom.lens.setdimensions()
@@ -429,27 +429,26 @@ var Gui = new function () {
     this.getShow = function () {
         return show
     }
-    this.isChatBoxClosed = function () {
-        return chatBox.close
-    }
     this.moveChatBox = function (func) {
-        var right = parseInt($('#chatBox').css('right')),
-            move = $('#chatBox').width()
+        //var right = parseInt($('#chatBox').css('right')),
+        //    move = $('#chatBox').width()
+        //
+        //chatBox.el = $('#chatBox .close')
+        //
+        //if (chatBox.close) {
+        //    move = -move;
+        //}
+        //
+        //chatBox.move = move;
 
-        chatBox.el = $('#chatBox .close')
+        $('#chatBox').removeClass('mini')
 
-        if (chatBox.close) {
-            move = -move;
-        }
-
-        chatBox.move = move;
-
-        $('#chatBox').animate({right: right - move + 'px'}, speed, function () {
-            chatBox.close = !chatBox.close
-            changeCloseArrowLR(chatBox.move, chatBox.el)
-            if (isSet(func)) {
-                func()
-            }
-        });
+        //$('#chatBox').animate({right: right - move + 'px'}, speed, function () {
+        //    chatBox.close = !chatBox.close
+        //    changeCloseArrowLR(chatBox.move, chatBox.el)
+        //    if (isSet(func)) {
+        //        func()
+        //    }
+        //});
     }
 }

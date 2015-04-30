@@ -3,7 +3,7 @@ var PrivateChat = new function () {
 
     this.init = function () {
         Websocket.init()
-        inputWidth = $('#chatBox input').width()
+        inputWidth = $('#chatBox #msg').width()
         $('#send').click(function () {
             Websocket.chat()
         })
@@ -11,6 +11,9 @@ var PrivateChat = new function () {
             if (e.which == 13) {
                 Websocket.chat()
             }
+        })
+        $('#chatBox .close').click(function () {
+            PrivateChat.disable()
         })
         $('#friends span').click(function () {
             if ($('#chatBox.mini #msg').val() == translations.selectFriendFromFriendsList) {
@@ -41,31 +44,16 @@ var PrivateChat = new function () {
         $('#chatContent').append(prepend + chatTitle + ': ' + msg + '<br/>')
     }
     this.enable = function () {
-        $('#chatBox input').prop('disabled', false)
+        $('#chatBox #msg').prop('disabled', false)
         $('#chatBox.mini #msg').val('')
+        $('#chatBox').removeClass('mini')
     }
     this.disable = function () {
-        $('#chatBox.mini #msg').prop('disabled', true).val(translations.selectFriendFromFriendsList)
+        $('#chatBox').addClass('mini')
+        $('#chatBox.mini #msg').prop('disabled', true).val(translations.selectFriendFromFriendsList).css({'padding-left': '5px'})
     }
     this.prepare = function (name, friendId) {
-        switch (type) {
-            case 'game':
-                if (Players.countHumans() > 1) {
-                    this.enable()
-                }
-                break
-            case 'default':
-
-                break
-            case 'new':
-                this.enable()
-                break
-            case 'setup':
-                this.enable()
-                break
-        }
-        $('#chatBox').removeClass('mini')
-        PrivateChat.addCloseClick()
+        this.enable()
         if (isSet(name)) {
             $('#chatBox #chatTitle').html(name)
             if (isSet(friendId)) {
@@ -79,16 +67,6 @@ var PrivateChat = new function () {
                     width: inputWidth - padding
                 })
         }
-    }
-    this.addCloseClick = function () {
-        $('#chatBox .close').click(function () {
-            $('#chatBox').addClass('mini')
-            PrivateChat.removeCloseClick()
-        })
-    }
-    this.removeCloseClick = function () {
-        $('#chatBox input').prop('disabled', true)
-        $('#chatBox .close').unbind()
     }
 }
 
@@ -135,13 +113,9 @@ var Websocket = new function () {
                     $('#envelope').html($('<span>').html(r.count))
                     break
                 case 'chat':
-                    if (type == 'game') {
-                        PrivateChat.message(0, r.name, r.msg)
-                    } else {
-                        PrivateChat.prepare()
-                        PrivateChat.message(0, r.name, r.msg)
-                        $('#chatWindow').animate({scrollTop: $('#chatWindow div')[0].scrollHeight}, 1000)
-                    }
+                    PrivateChat.prepare()
+                    PrivateChat.message(0, r.name, r.msg)
+                    $('#chatWindow').animate({scrollTop: $('#chatWindow div')[0].scrollHeight}, 1000)
                     break
                 case 'open':
                     $('#friends #' + r.id + ' #online').css({display: 'block'})

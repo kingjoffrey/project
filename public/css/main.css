@@ -365,7 +365,8 @@ p#info {
 }
 
 #chatBox.mini .close {
-    cursor: default;
+    display: none;
+    /*cursor: default;*/
 }
 
 #chatBox {

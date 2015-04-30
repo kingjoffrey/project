@@ -35,11 +35,12 @@ var Chat = new function () {
     }
     this.message = function (color, msg, time) {
         renderChatCloud(time, msg, color)
-        if (Gui.isChatBoxClosed()) {
+        if ($('#chatBox.mini').length) {
             Gui.moveChatBox(showMsg)
-        } else {
-            showMsg()
         }
+        //else {
+        showMsg()
+        //}
         if (!Me.colorEquals(color)) {
             titleBlink('Incoming chat!')
         }

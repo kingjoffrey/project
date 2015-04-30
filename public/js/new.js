@@ -59,7 +59,6 @@ var New = new function () {
         })
         New.webSocketInit()
         PrivateChat.prepare()
-        PrivateChat.enable()
     }
     this.webSocketInit = function () {
         ws = new WebSocket(wsURL + '/new')
