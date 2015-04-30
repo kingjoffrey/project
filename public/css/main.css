@@ -517,14 +517,6 @@ p#info {
     top: -21px;
 }
 
-#friendsBox span {
-    font-size: 14px;
-}
-
-#friends div:hover {
-    background: #fff;
-}
-
 #friendsBox .close {
     left: 390px;
     display: none;
@@ -609,6 +601,27 @@ tr.trlink:hover td {
     border-radius: 5px;
     box-shadow: 1px 1px 2px #000;
     background: green;
+    float: left;
+    margin: 7px;
+}
+
+#friends #trash {
+    width: 15px;
+    height: 20px;
     float: right;
-    margin: 5px;
+    background-image: url('/img/trash.png');
+    margin: 2px;
+    cursor: pointer;
+}
+
+#friends span {
+    font-size: 14px;
+    line-height: 25px;
+    padding: 0 5px;
+    border-radius: 2px;
+    cursor: pointer;
+}
+
+#friends span:hover {
+    background: #fff;
 }

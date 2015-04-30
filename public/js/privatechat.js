@@ -12,14 +12,18 @@ var PrivateChat = new function () {
                 Websocket.chat()
             }
         })
-        $('#friends div').click(function () {
+        $('#friends span').click(function () {
             if ($('#chatBox.mini #msg').val() == translations.selectFriendFromFriendsList) {
                 $('#chatBox.mini #msg').val('')
             }
-            PrivateChat.prepare($(this).find('span').html(), $(this).attr('id'))
+            PrivateChat.prepare($(this).html(), $(this).parent().attr('id'))
+        })
+        $('#friends #trash').click(function () {
+            Websocket.delete($(this).parent().attr('id'))
+            $(this).parent().remove()
         })
         $('#threads .trlink').click(function () {
-            window.location = '/' + lang + '/messages/thread/id/' + $(this).attr('id')
+            window.location = '/' + lang + '/messages/thread/id/' + $(this).parent().attr('id')
         })
         this.disable()
     }
@@ -40,7 +44,7 @@ var PrivateChat = new function () {
         $('#chatBox input').prop('disabled', false)
         $('#chatBox.mini #msg').val('')
     }
-    this.disable=function(){
+    this.disable = function () {
         $('#chatBox.mini #msg').prop('disabled', true).val(translations.selectFriendFromFriendsList)
     }
     this.prepare = function (name, friendId) {
@@ -205,5 +209,13 @@ var Websocket = new function () {
 
                 ws.send(JSON.stringify(token))
         }
+    }
+    this.delete = function (playerId) {
+        var token = {
+            type: 'delete',
+            playerId: playerId
+        }
+
+        ws.send(JSON.stringify(token))
     }
 }

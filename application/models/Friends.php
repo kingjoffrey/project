@@ -43,11 +43,15 @@ class Application_Model_Friends extends Coret_Db_Table_Abstract
 
     public function getFriendsIds($playerId)
     {
-        $select = $this->_db->select()
+        $select1 = $this->_db->select()
             ->from(array('a' => $this->_name), 'friendId')
             ->where('a.' . $this->_db->quoteIdentifier('playerId') . ' = ?', $playerId);
 
-        return $this->selectAll($select);
+        $select2 = $this->_db->select()
+            ->from(array('a' => $this->_name), array('friendId' => 'playerId'))
+            ->where('a.' . $this->_db->quoteIdentifier('friendId') . ' = ?', $playerId);
+
+        return array_merge($this->selectAll($select1), $this->selectAll($select2));
     }
 }
 
