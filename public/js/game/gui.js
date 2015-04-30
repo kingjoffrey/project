@@ -190,13 +190,13 @@ var Gui = new function () {
 
         $('#send').click(function () {
             WebSocketGame.chat()
-        });
+        })
 
-        $('#msg').keypress(function (e) {
+        $('#msg').unbind().keypress(function (e) {
             if (e.which == 13) {
                 WebSocketGame.chat()
             }
-        });
+        })
 
         $('#nextTurn').click(function () {
             Turn.next()

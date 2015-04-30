@@ -50,7 +50,6 @@ var New = new function () {
 
     this.init = function () {
         type = 'new'
-        $('#chatBox input').prop('disabled', false)
         table = $('#join.table table')
         empty = $('<tr id="0">').append($('<td colspan="3">').html(info).css('padding', '15px'))
         changeMap()
@@ -60,6 +59,7 @@ var New = new function () {
         })
         New.webSocketInit()
         PrivateChat.prepare()
+        PrivateChat.enable()
     }
     this.webSocketInit = function () {
         ws = new WebSocket(wsURL + '/new')

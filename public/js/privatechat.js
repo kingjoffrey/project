@@ -3,20 +3,25 @@ var PrivateChat = new function () {
 
     this.init = function () {
         Websocket.init()
-
         inputWidth = $('#chatBox input').width()
-        if (type == 'default') {
-            $('#chatBox.mini #msg').prop('disabled', true).val(translations.selectFriendFromFriendsList)
-        }
         $('#send').click(function () {
             Websocket.chat()
         })
+        $('#msg').keypress(function (e) {
+            if (e.which == 13) {
+                Websocket.chat()
+            }
+        })
         $('#friends div').click(function () {
+            if ($('#chatBox.mini #msg').val() == translations.selectFriendFromFriendsList) {
+                $('#chatBox.mini #msg').val('')
+            }
             PrivateChat.prepare($(this).find('span').html(), $(this).attr('id'))
         })
         $('#threads .trlink').click(function () {
             window.location = '/' + lang + '/messages/thread/id/' + $(this).attr('id')
         })
+        this.disable()
     }
     this.message = function (to, chatTitle, msg) {
         switch (to) {
@@ -31,24 +36,45 @@ var PrivateChat = new function () {
         }
         $('#chatContent').append(prepend + chatTitle + ': ' + msg + '<br/>')
     }
+    this.enable = function () {
+        $('#chatBox input').prop('disabled', false)
+        $('#chatBox.mini #msg').val('')
+    }
+    this.disable=function(){
+        $('#chatBox.mini #msg').prop('disabled', true).val(translations.selectFriendFromFriendsList)
+    }
     this.prepare = function (name, friendId) {
+        switch (type) {
+            case 'game':
+                if (Players.countHumans() > 1) {
+                    this.enable()
+                }
+                break
+            case 'default':
+
+                break
+            case 'new':
+                this.enable()
+                break
+            case 'setup':
+                this.enable()
+                break
+        }
         $('#chatBox').removeClass('mini')
         PrivateChat.addCloseClick()
-        if (notSet(name)) {
-            return
+        if (isSet(name)) {
+            $('#chatBox #chatTitle').html(name)
+            if (isSet(friendId)) {
+                $('#chatBox #friendId').val(friendId)
+            }
+            var padding = $('#chatBox #chatTitle').width() + 10
+            $('#chatBox #msg')
+                .prop('disabled', false)
+                .css({
+                    'padding-left': padding,
+                    width: inputWidth - padding
+                })
         }
-
-        $('#chatBox #chatTitle').html(name)
-        if (isSet(friendId)) {
-            $('#chatBox #friendId').val(friendId)
-        }
-        var padding = $('#chatBox #chatTitle').width() + 10
-        $('#chatBox #msg')
-            .prop('disabled', false)
-            .css({
-                'padding-left': padding,
-                width: inputWidth - padding
-            })
     }
     this.addCloseClick = function () {
         $('#chatBox .close').click(function () {

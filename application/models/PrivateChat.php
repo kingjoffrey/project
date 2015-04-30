@@ -21,22 +21,58 @@ class Application_Model_PrivateChat extends Coret_Db_Table_Abstract
     public function getChatHistoryThreads($pageNumber)
     {
         $select = $this->_db->select()
-            ->from(array('a' => $this->_name), array(
-                'max(a.date)',
+            ->from($this->_name, array(
+                'max(date)',
                 'playerId',
+                'recipientId',
                 new Zend_Db_Expr('count(nullif(read, true)) as read'),
                 new Zend_Db_Expr('count(message) as messages'
                 )))
-            ->join(array('b' => 'player'), 'a.' . $this->_db->quoteIdentifier('playerId') . ' = b.' . $this->_db->quoteIdentifier('playerId'), array('firstName', 'lastName'))
-            ->where('a.' . $this->_db->quoteIdentifier('recipientId') . ' = ?', $this->_playerId)
-            ->group('a.playerId')
-            ->group('firstName')
-            ->group('lastName')
+            ->where($this->_db->quoteIdentifier('recipientId') . '  = ? OR ' . $this->_db->quoteIdentifier('playerId') . ' = ?', $this->_playerId)
+            ->group('playerId')
+            ->group('recipientId')
             ->order('max DESC');
 
         $paginator = new Zend_Paginator(new Zend_Paginator_Adapter_DbSelect($select));
         $paginator->setCurrentPageNumber($pageNumber);
         $paginator->setItemCountPerPage(20);
+
+        $ids = '';
+        $recipients = array();
+        foreach ($paginator as $row) {
+            if ($ids) {
+                $ids .= ',';
+            }
+            if ($row['playerId'] == $this->_playerId) {
+                $ids .= $row['recipientId'];
+            } else {
+                $recipients[$row['playerId']] = $row;
+                $ids .= $row['playerId'];
+            }
+        }
+
+        if ($ids) {
+            $mPlayer = new Application_Model_Player();
+            $players = $mPlayer->getPlayersNames($ids);
+            foreach ($paginator as &$row) {
+                if ($row['playerId'] == $this->_playerId) {
+                    $row['name'] = $players[$row['recipientId']];
+                    $row['id'] = $row['recipientId'];
+                    if (isset($recipients[$row['recipientId']])) {
+                        $row['messages'] += $recipients[$row['recipientId']]['messages'];
+                        $row['read'] = $recipients[$row['recipientId']]['read'];
+                    }else{
+                        $row['read'] = 0;
+                    }
+                } else {
+                    if (isset($recipients[$row['playerId']])) {
+                        continue;
+                    }
+                    $row['name'] = $players[$row['playerId']];
+                    $row['id'] = $row['playerId'];
+                }
+            }
+        }
 
         return $paginator;
     }

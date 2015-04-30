@@ -35,8 +35,8 @@ var Setup = new function () {
     }
     this.init = function () {
         type = 'setup'
-        $('#chatBox input').prop('disabled', false)
         PrivateChat.prepare()
+        PrivateChat.enable()
         Setup.initButtons()
         Setup.initTeams()
         ws = new WebSocket(wsURL + '/setup')
