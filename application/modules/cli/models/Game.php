@@ -320,7 +320,7 @@ class Cli_Model_Game
 
     public function updateChatHistory($message, $color)
     {
-        $this->_chatHistory[] = array('date' => date('Y-m-d H:i:s', mktime()), 'message' => $message, 'color' => $color);
+        $this->_chatHistory[] = array('date' => date('Y-m-d H:i:s', time()), 'message' => $message, 'color' => $color);
     }
 
     public function addUser($playerId, Devristo\Phpws\Protocol\WebSocketTransportInterface $user)
