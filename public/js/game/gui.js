@@ -188,16 +188,6 @@ var Gui = new function () {
             WebSocketGame.statistics();
         });
 
-        $('#send').click(function () {
-            WebSocketGame.chat()
-        })
-
-        $('#msg').unbind().keypress(function (e) {
-            if (e.which == 13) {
-                WebSocketGame.chat()
-            }
-        })
-
         $('#nextTurn').click(function () {
             Turn.next()
         });

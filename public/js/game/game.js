@@ -37,6 +37,7 @@ var Game = new function () {
         Players.showFirst(Turn.getColor())
 
         if (Players.countHumans() > 1) {
+            type = 'game'
             PrivateChat.enable()
         } else {
             PrivateChat.disable()
@@ -69,6 +70,5 @@ var Game = new function () {
 
 $(document).ready(function () {
     WebSocketGame.init()
-    type = 'game'
     PrivateChat.init()
 })

@@ -205,6 +205,9 @@ var Websocket = new function () {
                     PrivateChat.message(2, playerName, msg)
                     Setup.chat(msg)
                     break
+                case 'game':
+                    WebSocketGame.chat()
+                    break
                 default:
                     console.log(msg)
             }
