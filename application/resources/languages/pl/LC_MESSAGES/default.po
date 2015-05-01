@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: WOF\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-04-28 00:22+0100\n"
-"PO-Revision-Date: 2015-04-28 00:24+0100\n"
+"POT-Creation-Date: 2015-05-01 05:32+0100\n"
+"PO-Revision-Date: 2015-05-01 05:33+0100\n"
 "Last-Translator: Bartosz Krzeszewski <bartek@core-t.pl>\n"
 "Language-Team: \n"
 "Language: pl\n"
@@ -30,6 +30,10 @@ msgstr ""
 #: application/views/scripts/help/index.phtml:42
 msgid "Yes"
 msgstr "Tak"
+
+#: application/views/helpers/FriendsTitle.php:7
+msgid "Friends"
+msgstr "Znajomi"
 
 #: application/views/helpers/Translations.php:9
 msgid "Castles held"
@@ -124,7 +128,7 @@ msgid "Income"
 msgstr "Przychód"
 
 #: application/views/helpers/Translations.php:29
-#: application/layouts/scripts/game.phtml:97
+#: application/layouts/scripts/game.phtml:98
 msgid "Hire hero"
 msgstr "Wynajmij herosa"
 
@@ -133,7 +137,7 @@ msgid "Do you want to hire new hero for 1000 gold?"
 msgstr "Czy chcesz wynająć nowego herosa za 1000 złota?"
 
 #: application/views/helpers/Translations.php:31
-#: application/layouts/scripts/game.phtml:95
+#: application/layouts/scripts/game.phtml:96
 msgid "Resurrect hero"
 msgstr "Wskrześ herosa"
 
@@ -276,12 +280,12 @@ msgid "Status"
 msgstr "Status"
 
 #: application/views/helpers/Translations.php:66
-#: application/layouts/scripts/game.phtml:118
+#: application/layouts/scripts/game.phtml:119
 msgid "Army status"
 msgstr "Status armii"
 
 #: application/views/helpers/Translations.php:67
-#: application/layouts/scripts/game.phtml:116
+#: application/layouts/scripts/game.phtml:117
 msgid "Split army"
 msgstr "Podziel amię"
 
@@ -511,20 +515,28 @@ msgid "Units"
 msgstr "Jednostki"
 
 #: application/views/helpers/Translations.php:124
-msgid "to"
-msgstr "do"
+msgid "To"
+msgstr "Do"
 
 #: application/views/helpers/Translations.php:125
-msgid "from"
-msgstr "od"
+msgid "From"
+msgstr "Od"
 
 #: application/views/helpers/Translations.php:126
 msgid "players"
 msgstr "gracze"
 
+#: application/views/helpers/Translations.php:127
+msgid "Select friend from friends list"
+msgstr "Wybierz znajomego z listy znajomych"
+
 #: application/views/helpers/Logout.php:9
 msgid "Logout"
 msgstr "Wyloguj"
+
+#: application/views/helpers/ChatTitle.php:7
+msgid "Chat"
+msgstr "Czat"
 
 #: application/views/helpers/MainMenu.php:16
 #: application/views/scripts/new/index.phtml:1
@@ -737,7 +749,7 @@ msgstr "Pierwszy"
 #: application/views/scripts/editor/create.phtml:7
 #: application/views/scripts/editor/index.phtml:21
 #: application/views/scripts/messages/thread.phtml:20
-#: application/views/scripts/messages/index.phtml:23
+#: application/views/scripts/messages/index.phtml:24
 #: application/views/scripts/load/index.phtml:71
 #: application/views/scripts/halloffame/index.phtml:23
 #: application/views/scripts/help/index.phtml:62
@@ -1033,23 +1045,23 @@ msgstr "Opuść grę"
 msgid "Show others"
 msgstr "Pokaż innych"
 
-#: application/layouts/scripts/game.phtml:106
+#: application/layouts/scripts/game.phtml:107
 msgid "Deselect army"
 msgstr "Odznacz armię"
 
-#: application/layouts/scripts/game.phtml:108
+#: application/layouts/scripts/game.phtml:109
 msgid "Search ruins"
 msgstr "Przeszukaj ruiny"
 
-#: application/layouts/scripts/game.phtml:110
+#: application/layouts/scripts/game.phtml:111
 msgid "Show castle"
 msgstr "Pokaż zamek"
 
-#: application/layouts/scripts/game.phtml:112
+#: application/layouts/scripts/game.phtml:113
 msgid "Build defense"
 msgstr "Podnieś obronę"
 
-#: application/layouts/scripts/game.phtml:114
+#: application/layouts/scripts/game.phtml:115
 msgid "Raze castle"
 msgstr "Zburz zamek"
 
@@ -1080,6 +1092,12 @@ msgstr "Bagno"
 #: application/layouts/scripts/editor.phtml:25
 msgid "Eraser"
 msgstr "Gumka"
+
+#~ msgid "to"
+#~ msgstr "do"
+
+#~ msgid "from"
+#~ msgstr "od"
 
 #~ msgid "Send"
 #~ msgstr "Wyślij"
@@ -1152,9 +1170,6 @@ msgstr "Gumka"
 
 #~ msgid "Show artifacts"
 #~ msgstr "Pokaż artefakty"
-
-#~ msgid "Chat"
-#~ msgstr "Czat"
 
 #~ msgid "Login"
 #~ msgstr "Login"

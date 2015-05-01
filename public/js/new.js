@@ -46,6 +46,64 @@ var New = new function () {
                         top.location.replace('/' + lang + '/setup/index/gameId/' + $(this).attr('id'))
                     })
             )
+        },
+        open = function () {
+            if (New.closed) {
+                console.log(translations.sorryServerIsDisconnected)
+                return;
+            }
+
+            var token = {
+                type: 'open',
+                playerId: id,
+                langId: langId,
+                accessKey: accessKey
+            }
+
+            if (typeof gameId !== 'undefined') {
+                if (Setup.getGameMasterId() == id) {
+                    token.gameMasterId = id
+                    token.gameId = gameId
+                }
+            }
+            ws.send(JSON.stringify(token))
+        },
+        onMessage = function (r) {
+            console.log(r)
+            switch (r.type) {
+                case 'games':
+                    //add all games
+                    addGames(r.games)
+                    break
+                case 'addGame':
+                    addGame(r.game)
+                    break
+                case 'addPlayer':
+                    var numberOfPlayersInGame = $('tr#' + r.gameId + ' span').html()
+                    $('tr#' + r.gameId + ' span').html(numberOfPlayersInGame++)
+                    break
+                case 'removeGame':
+                    $('tr#' + r.gameId).remove()
+                    if (!$('.trlink').length) {
+                        table.append(empty)
+                    }
+                    break;
+                case 'removePlayer':
+                    var numberOfPlayersInGame = $('tr#' + r.gameId + ' span').html()
+                    $('tr#' + r.gameId + ' span').html(numberOfPlayersInGame--)
+                    break
+                case 'open':
+                    //add player
+                    break
+                case 'close':
+                    //remove player
+                    break
+                case 'chat':
+                    PrivateChat.message(2, r.name, r.msg)
+                    break
+                default:
+                    console.log(r)
+            }
         }
 
     this.init = function () {
@@ -65,78 +123,17 @@ var New = new function () {
 
         ws.onopen = function () {
             closed = false
-            New.open()
+            open()
         }
         ws.onmessage = function (e) {
-            var r = $.parseJSON(e.data);
             if (typeof gameId === 'undefined') {
-                New.messageNew(r)
+                onMessage($.parseJSON(e.data))
             }
         }
         ws.onclose = function () {
             closed = true
             setTimeout('New.init()', 1000);
         }
-    }
-    this.messageNew = function (r) {
-        console.log(r)
-        switch (r.type) {
-            case 'games':
-                //add all games
-                addGames(r.games)
-                break
-            case 'addGame':
-                addGame(r.game)
-                break
-            case 'addPlayer':
-                var numberOfPlayersInGame = $('tr#' + r.gameId + ' span').html()
-                $('tr#' + r.gameId + ' span').html(numberOfPlayersInGame++)
-                break
-            case 'removeGame':
-                $('tr#' + r.gameId).remove()
-                if (!$('.trlink').length) {
-                    table.append(empty)
-                }
-                break;
-            case 'removePlayer':
-                var numberOfPlayersInGame = $('tr#' + r.gameId + ' span').html()
-                $('tr#' + r.gameId + ' span').html(numberOfPlayersInGame--)
-                break
-            case 'open':
-                //add player
-                break
-            case 'close':
-                //remove player
-                break
-            case 'chat':
-                PrivateChat.message(2, r.name, r.msg)
-                $('#chatWindow').animate({scrollTop: $('#chatWindow div')[0].scrollHeight}, 1000)
-                break
-            default:
-                console.log(r)
-        }
-    }
-    this.open = function () {
-        if (New.closed) {
-            console.log(translations.sorryServerIsDisconnected)
-            return;
-        }
-
-        var token = {
-            type: 'open',
-            playerId: id,
-            langId: langId,
-            accessKey: accessKey
-        }
-
-        if (typeof gameId !== 'undefined') {
-            if (Setup.getGameMasterId() == id) {
-                token.gameMasterId = id
-                token.gameId = gameId
-            }
-        }
-        console.log(token)
-        ws.send(JSON.stringify(token))
     }
     this.removeGame = function (gameId) {
         if (New.closed) {

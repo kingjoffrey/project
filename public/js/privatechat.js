@@ -5,9 +5,6 @@ var PrivateChat = new function () {
         Websocket.init()
         inputWidth = $('#chatBox #msg').width()
         $('#send').click(function () {
-            if ($('#chatBox.disabled').length) {
-                return
-            }
             Websocket.chat()
         })
         $('#msg').keypress(function (e) {
@@ -57,13 +54,13 @@ var PrivateChat = new function () {
                 break
             case 1:
                 var prepend = translations.to + ' '
+                $('#msg').val('')
                 break
             default:
                 var prepend = translations.from + ' '
         }
         $('#chatContent').append(prepend + chatTitle + ': ' + msg + '<br/>')
         $('#chatWindow').animate({scrollTop: $('#chatWindow div')[0].scrollHeight}, 100)
-        $('#msg').val('')
     }
     this.enable = function () {
         $('#chatBox #msg').prop('disabled', false)
@@ -94,6 +91,7 @@ var PrivateChat = new function () {
             var padding = $('#chatBox #chatTitle').width() + 10
             $('#chatBox #msg')
                 .prop('disabled', false)
+                .focus()
                 .css({
                     'padding-left': padding,
                     width: inputWidth - padding
@@ -147,7 +145,6 @@ var Websocket = new function () {
                 case 'chat':
                     PrivateChat.prepare()
                     PrivateChat.message(0, r.name, r.msg)
-                    $('#chatWindow').animate({scrollTop: $('#chatWindow div')[0].scrollHeight}, 100)
                     break
                 case 'open':
                     $('#friends #' + r.id + ' #online').css({display: 'block'})
@@ -176,6 +173,10 @@ var Websocket = new function () {
             return
         }
 
+        if ($('#chatBox.disabled').length) {
+            return
+        }
+
         var msg = $('#msg').val()
 
         if (!msg) {
@@ -199,10 +200,12 @@ var Websocket = new function () {
             switch (type) {
                 case 'new':
                     PrivateChat.message(2, playerName, msg)
+                    $('#msg').val('')
                     New.chat(msg)
                     break
                 case 'setup':
                     PrivateChat.message(2, playerName, msg)
+                    $('#msg').val('')
                     Setup.chat(msg)
                     break
                 case 'game':
