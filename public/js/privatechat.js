@@ -5,6 +5,9 @@ var PrivateChat = new function () {
         Websocket.init()
         inputWidth = $('#chatBox #msg').width()
         $('#send').click(function () {
+            if ($('#chatBox.disabled').length) {
+                return
+            }
             Websocket.chat()
         })
         $('#msg').keypress(function (e) {
@@ -13,11 +16,28 @@ var PrivateChat = new function () {
             }
         })
         $('#chatBox .close').click(function () {
-            PrivateChat.disable()
+            if ($('#chatBox.mini').length) {
+                PrivateChat.enable()
+            } else {
+                PrivateChat.disable()
+            }
+        })
+        $('#chatBox #chatTitle').click(function () {
+            if (type == 'default') {
+                PrivateChat.disable()
+            } else {
+                $('#chatBox #friendId').val('')
+                $(this).html('')
+                $('#chatBox #msg')
+                    .css({
+                        'padding-left': '5px',
+                        width: inputWidth
+                    })
+            }
         })
         $('#friends span').click(function () {
-            if ($('#chatBox.mini #msg').val() == translations.selectFriendFromFriendsList) {
-                $('#chatBox.mini #msg').val('')
+            if ($('#chatBox.disabled #msg').val() == translations.selectFriendFromFriendsList) {
+                $('#chatBox.disabled #msg').val('')
             }
             PrivateChat.prepare($(this).html(), $(this).parent().attr('id'))
         })
@@ -42,15 +62,27 @@ var PrivateChat = new function () {
                 var prepend = translations.from + ' '
         }
         $('#chatContent').append(prepend + chatTitle + ': ' + msg + '<br/>')
+        $('#chatWindow').animate({scrollTop: $('#chatWindow div')[0].scrollHeight}, 100)
+        $('#msg').val('')
     }
     this.enable = function () {
         $('#chatBox #msg').prop('disabled', false)
-        $('#chatBox.mini #msg').val('')
-        $('#chatBox').removeClass('mini')
+        $('#chatBox.disabled #msg').val('')
+        $('#chatBox').removeClass('mini disabled')
     }
     this.disable = function () {
-        $('#chatBox').addClass('mini')
-        $('#chatBox.mini #msg').prop('disabled', true).val(translations.selectFriendFromFriendsList).css({'padding-left': '5px'})
+        if (type == 'default') {
+            $('#chatBox').addClass('disabled')
+            $('#chatBox #msg')
+                .prop('disabled', true)
+                .val(translations.selectFriendFromFriendsList)
+                .css({
+                    'padding-left': '5px',
+                    width: inputWidth
+                })
+        } else {
+            $('#chatBox').addClass('mini')
+        }
     }
     this.prepare = function (name, friendId) {
         this.enable()
@@ -115,7 +147,7 @@ var Websocket = new function () {
                 case 'chat':
                     PrivateChat.prepare()
                     PrivateChat.message(0, r.name, r.msg)
-                    $('#chatWindow').animate({scrollTop: $('#chatWindow div')[0].scrollHeight}, 1000)
+                    $('#chatWindow').animate({scrollTop: $('#chatWindow div')[0].scrollHeight}, 100)
                     break
                 case 'open':
                     $('#friends #' + r.id + ' #online').css({display: 'block'})
@@ -150,38 +182,32 @@ var Websocket = new function () {
             return
         }
 
-        switch (type) {
-            case 'new':
-                PrivateChat.message(2, playerName, msg)
-                $('#chatWindow').animate({scrollTop: $('#chatWindow div')[0].scrollHeight}, 1000)
-                $('#msg').val('')
-                New.chat(msg)
-                break
-            case 'setup':
-                PrivateChat.message(2, playerName, msg)
-                $('#chatWindow').animate({scrollTop: $('#chatWindow div')[0].scrollHeight}, 1000)
-                $('#msg').val('')
-                Setup.chat(msg)
-                break
-            default :
-                var friendId = $('#chatBox #friendId').val(),
-                    chatTitle = $('#chatBox #chatTitle').html()
+        var friendId = $('#chatBox #friendId').val(),
+            chatTitle = $('#chatBox #chatTitle').html()
 
-                if (!friendId) {
-                    return
-                }
+        if (friendId) {
+            PrivateChat.message(1, chatTitle, msg)
 
-                PrivateChat.message(1, chatTitle, msg)
-                $('#chatWindow').animate({scrollTop: $('#chatWindow div')[0].scrollHeight}, 1000)
-                $('#msg').val('')
+            var token = {
+                type: 'chat',
+                friendId: friendId,
+                msg: msg
+            }
 
-                var token = {
-                    type: 'chat',
-                    friendId: friendId,
-                    msg: msg
-                }
-
-                ws.send(JSON.stringify(token))
+            ws.send(JSON.stringify(token))
+        } else {
+            switch (type) {
+                case 'new':
+                    PrivateChat.message(2, playerName, msg)
+                    New.chat(msg)
+                    break
+                case 'setup':
+                    PrivateChat.message(2, playerName, msg)
+                    Setup.chat(msg)
+                    break
+                default:
+                    console.log(msg)
+            }
         }
     }
     this.delete = function (playerId) {

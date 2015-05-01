@@ -364,11 +364,6 @@ p#info {
     cursor: pointer;
 }
 
-#chatBox.mini .close {
-    display: none;
-    /*cursor: default;*/
-}
-
 #chatBox {
     position: absolute;
     bottom: -5px;
@@ -379,10 +374,6 @@ p#info {
     border-top-left-radius: 5px;
     text-transform: none;
     padding: 0;
-}
-
-#chatBox.mini {
-    height: 41px;
 }
 
 #chatBox #friendId {
@@ -397,10 +388,11 @@ p#info {
     letter-spacing: 0;
     text-shadow: none;
     color: darkblue;
+    cursor: pointer;
 }
 
-#chatBox.mini #chatTitle {
-    display: none;
+#chatBox #chatTitle:hover {
+    text-decoration: line-through;
 }
 
 #chatBox #chatWindow {
@@ -412,10 +404,6 @@ p#info {
     position: absolute;
     top: 5px;
     left: 5px;
-}
-
-#chatBox.mini #chatWindow {
-    display: none;
 }
 
 #chatBox #chatWindow #chatContent {
@@ -450,11 +438,6 @@ p#info {
     margin-right: 5px;
 }
 
-#chatBox.mini #chatInput {
-    top: 2px;
-    border: none;
-}
-
 #chatBox #chatInput {
     height: 36px;
     width: 360px;
@@ -462,10 +445,6 @@ p#info {
     border-top: 1px solid #000;
     position: absolute;
     top: 196px;
-}
-
-#chatBox.mini #msg {
-    background: #373737;
 }
 
 #chatBox input {
@@ -625,4 +604,29 @@ tr.trlink:hover td {
 
 #friends span:hover {
     background: #fff;
+}
+
+#chatBox.mini, #chatBox.disabled {
+    height: 41px;
+}
+
+#chatBox.disabled .close {
+    display: none;
+}
+
+#chatBox.disabled #chatTitle {
+    display: none;
+}
+
+#chatBox.mini #chatWindow, #chatBox.disabled #chatWindow {
+    display: none;
+}
+
+#chatBox.mini #chatInput, #chatBox.disabled #chatInput {
+    top: 2px;
+    border: none;
+}
+
+#chatBox.disabled #msg {
+    background: #373737;
 }

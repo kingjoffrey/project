@@ -1019,9 +1019,9 @@ table.treasury td.c {
     line-height: 18px;
     text-shadow: none;
     color: #fff;
-    border: 2px solid orangered;
+    /*border: 2px solid orangered;*/
     cursor: pointer;
-    border-radius: 5px;
+    /*border-radius: 5px;*/
 }
 
 .close:hover {

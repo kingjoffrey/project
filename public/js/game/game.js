@@ -35,7 +35,7 @@ var Game = new function () {
             Me.turnOff()
         }
         Players.showFirst(Turn.getColor())
-        console.log(Players.countHumans())
+
         if (Players.countHumans() > 1) {
             PrivateChat.enable()
         } else {
