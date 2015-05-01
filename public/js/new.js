@@ -136,7 +136,7 @@ var New = new function () {
         }
     }
     this.removeGame = function (gameId) {
-        if (New.closed) {
+        if (closed) {
             console.log(translations.sorryServerIsDisconnected)
             return;
         }
@@ -149,7 +149,7 @@ var New = new function () {
         ws.send(JSON.stringify(token))
     }
     this.chat = function (msg) {
-        if (New.closed) {
+        if (closed) {
             console.log(translations.sorryServerIsDisconnected)
             return;
         }
