@@ -42,9 +42,6 @@ var PrivateChat = new function () {
             Websocket.delete($(this).parent().attr('id'))
             $(this).parent().remove()
         })
-        $('#threads .trlink').click(function () {
-            window.location = '/' + lang + '/messages/thread/id/' + $(this).parent().attr('id')
-        })
         this.disable()
     }
     this.message = function (to, chatTitle, msg) {

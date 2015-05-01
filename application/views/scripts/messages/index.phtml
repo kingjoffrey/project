@@ -22,3 +22,10 @@
 </div>
 <?php echo $this->paginationControl($this->threads, 'Sliding', 'pagination_control.phtml'); ?>
 <a href="/" class="button">&laquo; <?php echo $this->translate('Back') ?></a>
+<?php $this->headScript()->captureStart() ?>
+$(document).ready(function () {
+    $('#threads .trlink').click(function () {
+        window.location = '/' + lang + '/messages/thread/id/' + $(this).attr('id')
+    })
+})
+<?php $this->headScript()->captureEnd() ?>
