@@ -5,9 +5,9 @@ class Cli_Model_New
     private $_users = array();
     private $_games = array();
 
-    public function addGame($gameId, $game)
+    public function addGame($gameId, $game, $gameMasterName)
     {
-        $this->_games[$gameId] = new Cli_Model_NewGame($gameId, $game);
+        $this->_games[$gameId] = new Cli_Model_NewGame($gameId, $game, $gameMasterName);
     }
 
     /**
@@ -72,19 +72,21 @@ class Cli_Model_NewGame
     private $_begin;
     private $_numberOfPlayers;
     private $_gameMasterId;
+    private $_gameMasterName;
     private $_turnsLimit;
     private $_turnTimeLimit;
     private $_timeLimit;
 
     private $_players = array();
 
-    public function __construct($gameId, $game)
+    public function __construct($gameId, $game, $gameMasterName)
     {
         $this->_id = $gameId;
         $this->_name = $game['name'];
         $this->_begin = $game['begin'];
         $this->_numberOfPlayers = $game['numberOfPlayers'];
         $this->_gameMasterId = $game['gameMasterId'];
+        $this->_gameMasterName = $gameMasterName;
     }
 
     public function addPlayer($playerId)
@@ -119,6 +121,7 @@ class Cli_Model_NewGame
             'begin' => $this->_begin,
             'numberOfPlayers' => $this->_numberOfPlayers,
             'gameMasterId' => $this->_gameMasterId,
+            'gameMasterName' => $this->_gameMasterName,
             'players' => $this->_players
         );
     }

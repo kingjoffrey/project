@@ -201,8 +201,7 @@ var Setup = new function () {
 
         var token = {
             type: 'chat',
-            msg: msg,
-            name: playerName
+            msg: msg
         }
 
         ws.send(JSON.stringify(token))

@@ -38,7 +38,7 @@ class Cli_Model_NewOpen
                 if (!$game = $new->getGame($dataIn['gameId'])) {
                     $mGame = new Application_Model_Game($dataIn['gameId'], $db);
                     $game = $mGame->getOpen($dataIn['gameMasterId']);
-                    $new->addGame($dataIn['gameId'], $game);
+                    $new->addGame($dataIn['gameId'], $game, $dataIn['name']);
                 }
 
                 $new->getGame($dataIn['gameId'])->addPlayer($dataIn['playerId']);
@@ -69,10 +69,9 @@ class Cli_Model_NewOpen
                 'name' => $dataIn['name']
             );
             $handler->sendToChannelExceptUser($user, $new, $token);
-
-            $user->parameters['name'] = $dataIn['name'];
         }
 
+        $user->parameters['name'] = $dataIn['name'];
         $user->parameters['playerId'] = $dataIn['playerId'];
         $user->parameters['accessKey'] = $dataIn['accessKey'];
     }
