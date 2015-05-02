@@ -593,7 +593,7 @@ tr.trlink:hover td {
     margin: 2px;
     cursor: pointer;
     position: absolute;
-    right: 0px;
+    right: 5px;
 }
 
 #friends span {
@@ -631,4 +631,9 @@ tr.trlink:hover td {
 
 #chatBox.disabled #msg {
     background: #373737;
+}
+
+#chatContent span {
+    color: #0398CA;
+    cursor: pointer;
 }

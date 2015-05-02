@@ -44,7 +44,7 @@ var PrivateChat = new function () {
         })
         //this.disable()
     }
-    this.message = function (to, chatTitle, msg) {
+    this.message = function (to, name, id, msg) {
         switch (to) {
             case 2:
                 var prepend = ''
@@ -56,7 +56,10 @@ var PrivateChat = new function () {
             default:
                 var prepend = translations.from + ' '
         }
-        $('#chatContent').append(prepend + chatTitle + ': ' + msg + '<br/>')
+        if (id) {
+            name = '<span id="' + id + '">' + name + '</span>'
+        }
+        $('#chatContent').append(prepend + name + ': ' + msg + '<br/>')
         $('#chatWindow').animate({scrollTop: $('#chatWindow div')[0].scrollHeight}, 100)
     }
     this.enable = function () {
@@ -141,7 +144,7 @@ var Websocket = new function () {
                     break
                 case 'chat':
                     PrivateChat.prepare()
-                    PrivateChat.message(0, r.name, r.msg)
+                    PrivateChat.message(0, r.name, r.id, r.msg)
                     break
                 case 'open':
                     $('#friends #' + r.id + ' #online').css({display: 'block'})
@@ -184,7 +187,7 @@ var Websocket = new function () {
             chatTitle = $('#chatBox #chatTitle').html()
 
         if (friendId) {
-            PrivateChat.message(1, chatTitle, msg)
+            PrivateChat.message(1, chatTitle, friendId, msg)
 
             var token = {
                 type: 'chat',
@@ -196,12 +199,12 @@ var Websocket = new function () {
         } else {
             switch (type) {
                 case 'new':
-                    PrivateChat.message(2, playerName, msg)
+                    PrivateChat.message(2, playerName, 0, msg)
                     $('#msg').val('')
                     New.chat(msg)
                     break
                 case 'setup':
-                    PrivateChat.message(2, playerName, msg)
+                    PrivateChat.message(2, playerName, 0, msg)
                     $('#msg').val('')
                     Setup.chat(msg)
                     break

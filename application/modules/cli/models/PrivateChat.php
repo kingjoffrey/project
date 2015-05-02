@@ -16,6 +16,7 @@ class Cli_Model_PrivateChat
             $token = array(
                 'type' => 'chat',
                 'msg' => $dataIn['msg'],
+                'id' => $user->parameters['playerId'],
                 'name' => $user->parameters['name']
             );
 

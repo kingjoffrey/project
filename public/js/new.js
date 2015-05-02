@@ -56,6 +56,7 @@ var New = new function () {
             var token = {
                 type: 'open',
                 playerId: id,
+                name: playerName,
                 langId: langId,
                 accessKey: accessKey
             }
@@ -93,13 +94,13 @@ var New = new function () {
                     $('tr#' + r.gameId + ' span').html(numberOfPlayersInGame--)
                     break
                 case 'open':
-                    //add player
+                    PrivateChat.message(2, r.name, r.id, translations.connected)
                     break
                 case 'close':
-                    //remove player
+                    PrivateChat.message(2, r.name, r.id, translations.disconnected)
                     break
                 case 'chat':
-                    PrivateChat.message(2, r.name, r.msg)
+                    PrivateChat.message(2, r.name, r.id, r.msg)
                     break
                 default:
                     console.log(r)

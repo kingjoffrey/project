@@ -11,7 +11,7 @@ var Setup = new function () {
             console.log(r)
             switch (r.type) {
                 case 'chat':
-                    PrivateChat.message(2, r.name, r.msg)
+                    PrivateChat.message(2, r.name, r.id, r.msg)
                     break
 
                 case 'open':

@@ -55,8 +55,8 @@ class Cli_NewHandler extends WebSocketUriHandler
             case 'chat':
                 $token = array(
                     'type' => 'chat',
-                    'playerId' => $user->parameters['playerId'],
-                    'name' => $dataIn['name'],
+                    'id' => $user->parameters['playerId'],
+                    'name' => $user->parameters['name'],
                     'msg' => $dataIn['msg']
                 );
                 $this->sendToChannelExceptPlayersAndMe($user->parameters['playerId'], $this->getNew(), $token);
@@ -94,7 +94,8 @@ class Cli_NewHandler extends WebSocketUriHandler
                 } else { //new
                     $token = array(
                         'type' => 'close',
-                        'playerId' => $user->parameters['playerId']
+                        'id' => $user->parameters['playerId'],
+                        'name' => $user->parameters['name']
                     );
                     $this->sendToChannelOnlyPlayers($new, $token);
                 }

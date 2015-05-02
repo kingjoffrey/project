@@ -65,9 +65,12 @@ class Cli_Model_NewOpen
 
             $token = array(
                 'type' => 'open',
-                'playerId' => $dataIn['playerId']
+                'id' => $dataIn['playerId'],
+                'name' => $dataIn['name']
             );
             $handler->sendToChannelExceptUser($user, $new, $token);
+
+            $user->parameters['name'] = $dataIn['name'];
         }
 
         $user->parameters['playerId'] = $dataIn['playerId'];

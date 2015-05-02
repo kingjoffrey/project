@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: WOF\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-05-01 05:32+0100\n"
-"PO-Revision-Date: 2015-05-01 05:33+0100\n"
+"POT-Creation-Date: 2015-05-02 04:54+0100\n"
+"PO-Revision-Date: 2015-05-02 05:17+0100\n"
 "Last-Translator: Bartosz Krzeszewski <bartek@core-t.pl>\n"
 "Language-Team: \n"
 "Language: pl\n"
@@ -30,6 +30,14 @@ msgstr ""
 #: application/views/scripts/help/index.phtml:42
 msgid "Yes"
 msgstr "Tak"
+
+#: application/views/helpers/Friends.php:20
+msgid "You don't have friends"
+msgstr "Nie masz znajomych"
+
+#: application/views/helpers/Friends.php:20
+msgid "find some friends"
+msgstr "wyszukaj znajomych"
 
 #: application/views/helpers/FriendsTitle.php:7
 msgid "Friends"
@@ -527,6 +535,7 @@ msgid "players"
 msgstr "gracze"
 
 #: application/views/helpers/Translations.php:127
+#: application/views/helpers/ChatInput.php:7
 msgid "Select friend from friends list"
 msgstr "Wybierz znajomego z listy znajomych"
 
@@ -917,11 +926,11 @@ msgstr "Wiadomości"
 
 #: application/views/scripts/messages/thread.phtml:4
 msgid "Conversation history"
-msgstr "Historia konwersacji"
+msgstr "Historia rozmowy"
 
 #: application/views/scripts/messages/index.phtml:4
 msgid "Conversations"
-msgstr "Konwersacja"
+msgstr "Konwersacje"
 
 #: application/views/scripts/messages/index.phtml:7
 #: application/views/scripts/load/index.phtml:18

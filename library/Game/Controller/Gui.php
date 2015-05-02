@@ -21,6 +21,7 @@ abstract class Game_Controller_Gui extends Coret_Controller_Authorized
 
         $this->view->MainMenu();
         $this->view->Friends();
+        $this->view->ChatInput();
         $this->view->ChatTitle();
         $this->view->FriendsTitle();
         $this->view->translations();
