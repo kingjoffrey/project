@@ -2,6 +2,7 @@ var PrivateChat = new function () {
     var inputWidth
 
     this.init = function () {
+        console.log('init')
         inputWidth = $('#chatBox #msg').width()
         Websocket.init()
         $('#send').click(function () {
@@ -51,20 +52,25 @@ var PrivateChat = new function () {
                 break
             case 1:
                 var prepend = translations.to + ' '
+                msg = $('<span>').addClass('i').html(msg)
                 $('#msg').val('')
                 break
-            default:
+            case 0:
                 var prepend = translations.from + ' '
+                msg = $('<span>').addClass('i').html(msg)
+            default:
+                console.log('error ' + to)
         }
         if (id) {
             name = $('<span>')
                 .attr('id', id)
+                .addClass('name')
                 .html(name)
                 .click(function () {
                     PrivateChat.prepare($(this).html(), $(this).attr('id'))
                 })
         }
-        $('#chatContent').append(prepend).append(name).append(': ' + msg + '<br/>')
+        $('#chatContent').append(prepend).append(name).append(': ').append(msg).append('<br/>')
         $('#chatWindow').animate({scrollTop: $('#chatWindow div')[0].scrollHeight}, 100)
     }
     this.enable = function () {

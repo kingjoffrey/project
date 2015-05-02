@@ -15,7 +15,7 @@ class Cli_Model_PrivateChat
         if ($friend = $handler->getUser($dataIn['friendId'])) {
             $token = array(
                 'type' => 'chat',
-                'msg' => $dataIn['msg'],
+                'msg' => strip_tags($dataIn['msg']),
                 'id' => $user->parameters['playerId'],
                 'name' => $user->parameters['name']
             );

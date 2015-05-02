@@ -68,9 +68,9 @@ class Cli_SetupHandler extends WebSocketUriHandler
             case 'chat':
                 $token = array(
                     'type' => 'chat',
-                    'playerId' => $user->parameters['playerId'],
+                    'id' => $user->parameters['playerId'],
                     'name' => $user->parameters['name'],
-                    'msg' => $dataIn['msg']
+                    'msg' => strip_tags($dataIn['msg'])
                 );
                 $this->sendToChannelExceptUser($user, $token);
                 break;

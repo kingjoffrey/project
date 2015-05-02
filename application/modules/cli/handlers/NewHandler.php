@@ -57,7 +57,7 @@ class Cli_NewHandler extends WebSocketUriHandler
                     'type' => 'chat',
                     'id' => $user->parameters['playerId'],
                     'name' => $user->parameters['name'],
-                    'msg' => $dataIn['msg']
+                    'msg' => strip_tags($dataIn['msg'])
                 );
                 $this->sendToChannelExceptPlayersAndMe($user->parameters['playerId'], $this->getNew(), $token);
                 break;

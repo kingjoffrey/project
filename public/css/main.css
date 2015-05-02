@@ -633,7 +633,11 @@ tr.trlink:hover td {
     background: #373737;
 }
 
-#chatContent span {
+#chatContent .name {
     color: #0398CA;
     cursor: pointer;
+}
+
+.i {
+    font-style: italic;
 }
