@@ -37,6 +37,7 @@ class Cli_Model_SetupOpen
         $setup->addUser($dataIn['playerId'], $user, $db, $handler);
 
         $user->parameters['playerId'] = $dataIn['playerId'];
+        $user->parameters['name'] = $dataIn['name'];
         $user->parameters['accessKey'] = $dataIn['accessKey'];
 
         foreach ($setup->getUsers() as $u) {

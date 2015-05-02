@@ -57,9 +57,14 @@ var PrivateChat = new function () {
                 var prepend = translations.from + ' '
         }
         if (id) {
-            name = '<span id="' + id + '">' + name + '</span>'
+            name = $('<span>')
+                .attr('id', id)
+                .html(name)
+                .click(function () {
+                    PrivateChat.prepare($(this).html(), $(this).attr('id'))
+                })
         }
-        $('#chatContent').append(prepend + name + ': ' + msg + '<br/>')
+        $('#chatContent').append(prepend).append(name).append(': ' + msg + '<br/>')
         $('#chatWindow').animate({scrollTop: $('#chatWindow div')[0].scrollHeight}, 100)
     }
     this.enable = function () {

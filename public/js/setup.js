@@ -76,6 +76,7 @@ var Setup = new function () {
                 type: 'open',
                 gameId: gameId,
                 playerId: id,
+                name: playerName,
                 langId: langId,
                 accessKey: accessKey
             }

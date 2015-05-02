@@ -39,9 +39,10 @@ var New = new function () {
                 $('<tr>')
                     .addClass('trlink')
                     .attr('id', game.id)
-                    .append($('<td>').append($('<a>').html(game.name)))
-                    .append($('<td>').append($('<a>').append($('<span>').html(numberOfPlayersInGame)).append('/' + game.numberOfPlayers)))
-                    .append($('<td>').append($('<a>').html(game.begin.split('.')[0])))
+                    .append($('<td>').html(game.name))
+                    .append($('<td>').html(game.gameMasterName))
+                    .append($('<td>').append($('<span>').html(numberOfPlayersInGame)).append('/' + game.numberOfPlayers))
+                    .append($('<td>').html(game.begin.split('.')[0]))
                     .click(function () {
                         top.location.replace('/' + lang + '/setup/index/gameId/' + $(this).attr('id'))
                     })
@@ -73,7 +74,6 @@ var New = new function () {
             console.log(r)
             switch (r.type) {
                 case 'games':
-                    //add all games
                     addGames(r.games)
                     break
                 case 'addGame':
