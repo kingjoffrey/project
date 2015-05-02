@@ -60,8 +60,13 @@ hr {
     color: yellow;
 }
 
+a {
+    color: #fff;
+}
+
 a:hover {
     text-decoration: none;
+    color: gray;
 }
 
 input {
@@ -477,9 +482,10 @@ p#info {
     line-height: 21px;
 }
 
-#chatBox #title {
+.box #title {
     position: absolute;
     top: -21px;
+    color: gold;
 }
 
 #friendsBox {
@@ -490,11 +496,6 @@ p#info {
     position: absolute;
     bottom: -5px;
     left: -5px;
-}
-
-#friendsBox #title {
-    position: absolute;
-    top: -21px;
 }
 
 #friendsBox .close {
@@ -581,23 +582,24 @@ tr.trlink:hover td {
     border-radius: 5px;
     box-shadow: 1px 1px 2px #000;
     background: green;
-    float: left;
     margin: 7px;
+    position: absolute;
 }
 
 #friends #trash {
     width: 15px;
     height: 20px;
-    float: right;
     background-image: url('/img/trash.png');
     margin: 2px;
     cursor: pointer;
+    position: absolute;
+    right: 0px;
 }
 
 #friends span {
     font-size: 14px;
     line-height: 25px;
-    padding: 0 5px;
+    padding: 0 5px 0 35px;
     border-radius: 2px;
     cursor: pointer;
 }

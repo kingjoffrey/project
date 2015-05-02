@@ -27,18 +27,14 @@ class Application_Model_Friends extends Coret_Db_Table_Abstract
         $this->delete($where);
     }
 
-    public function getFriends($pageNumber, $playerId)
+    public function getFriends($playerId)
     {
         $select = $this->_db->select()
             ->from(array('a' => $this->_name), 'friendId')
             ->join(array('b' => 'player'), 'a."friendId" = b."playerId"', array('firstName', 'lastName'))
             ->where('a.' . $this->_db->quoteIdentifier('playerId') . ' = ?', $playerId);
 
-        $paginator = new Zend_Paginator(new Zend_Paginator_Adapter_DbSelect($select));
-        $paginator->setCurrentPageNumber($pageNumber);
-        $paginator->setItemCountPerPage(20);
-
-        return $paginator;
+        return $this->selectAll($select);
     }
 
     public function getFriendsIds($playerId)

@@ -6,10 +6,8 @@ $(document).ready(function () {
 
 var Page = new function () {
     this.adjust = function () {
-        var height = $(window).height()
-
         $('#page').css({
-            'min-height': height - 67 + 'px'
+            'min-height': $(window).height() - 67 + 'px'
         })
     }
     this.init = function () {
@@ -23,7 +21,7 @@ var Page = new function () {
         })
 
         $('#envelope').css({
-            left: $('#logout').position().left - 37 + 'px'
+            right: $('#logout').width() + 37 + 'px'
         }).click(function () {
             window.location = '/' + lang + '/messages'
         })

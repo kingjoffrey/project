@@ -2,8 +2,8 @@ var PrivateChat = new function () {
     var inputWidth
 
     this.init = function () {
-        Websocket.init()
         inputWidth = $('#chatBox #msg').width()
+        Websocket.init()
         $('#send').click(function () {
             Websocket.chat()
         })
@@ -42,7 +42,7 @@ var PrivateChat = new function () {
             Websocket.delete($(this).parent().attr('id'))
             $(this).parent().remove()
         })
-        this.disable()
+        //this.disable()
     }
     this.message = function (to, chatTitle, msg) {
         switch (to) {
