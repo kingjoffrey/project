@@ -12,6 +12,7 @@ body {
     vertical-align: middle;
     position: relative;
     background: none !important;
+    padding-top: 0px !important;
 }
 
 #login form {

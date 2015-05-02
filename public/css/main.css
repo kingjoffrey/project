@@ -23,11 +23,9 @@
     src: url('/_aeiou2U.ttf') format("truetype");
 }
 
-html, body {
+body {
     height: 100%;
-    min-height: 100%;
-    margin: 0;
-    padding: 0;
+    min-height: 665px;
     font-size: 18px;
     font-family: Impact, Charcoal, sans-serif; /*fantasy*/
     letter-spacing: 2px;
@@ -361,12 +359,16 @@ p#info {
     position: absolute;
     text-align: center;
     background: none;
+    cursor: pointer;
+}
+
+.close:hover {
+    color: #fff;
 }
 
 #chatBox .close {
     left: -23px;
     top: 8px;
-    cursor: pointer;
 }
 
 #chatBox {
@@ -500,7 +502,6 @@ p#info {
 
 #friendsBox .close {
     left: 390px;
-    display: none;
 }
 
 #searchResults a {
@@ -636,6 +637,10 @@ tr.trlink:hover td {
 #chatContent .name {
     color: #0398CA;
     cursor: pointer;
+}
+
+#chatContent .name:hover {
+    color: #fff;
 }
 
 .i {

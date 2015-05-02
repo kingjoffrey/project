@@ -420,25 +420,6 @@ var Gui = new function () {
         return show
     }
     this.moveChatBox = function (func) {
-        //var right = parseInt($('#chatBox').css('right')),
-        //    move = $('#chatBox').width()
-        //
-        //chatBox.el = $('#chatBox .close')
-        //
-        //if (chatBox.close) {
-        //    move = -move;
-        //}
-        //
-        //chatBox.move = move;
-
         $('#chatBox').removeClass('mini')
-
-        //$('#chatBox').animate({right: right - move + 'px'}, speed, function () {
-        //    chatBox.close = !chatBox.close
-        //    changeCloseArrowLR(chatBox.move, chatBox.el)
-        //    if (isSet(func)) {
-        //        func()
-        //    }
-        //});
     }
 }

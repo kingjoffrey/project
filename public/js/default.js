@@ -5,6 +5,15 @@ $(document).ready(function () {
 })
 
 var Page = new function () {
+    var close = 0,
+        changeCloseArrowLR = function (move, el) {
+            if (move > 0) {
+                $(el).html('&#x25C0');
+            } else {
+                $(el).html('&#x25B6');
+            }
+        }
+
     this.adjust = function () {
         $('#page').css({
             'min-height': $(window).height() - 67 + 'px'
@@ -27,6 +36,21 @@ var Page = new function () {
         })
 
         $('body').css({overflow: 'hidden'})
+
+
+        $('#friendsBox .close').click(function () {
+            var left = $(this).parent().position().left,
+                move = $(this).parent().width()
+
+            if (close) {
+                close = 0
+            } else {
+                move = -move
+                close = 1
+            }
+            changeCloseArrowLR(move, this)
+            $(this).parent().animate({left: left + move + 'px'}, 200)
+        })
     }
 }
 

@@ -11,7 +11,7 @@ var Three = new function () {
         hillModel,
         treeModel,
         waterModel,
-        minHeight = 700,
+        minHeight = 665,
         minWidth = 960,
         gameWidth = window.innerWidth,
         gameHeight = window.innerHeight,
