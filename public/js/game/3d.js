@@ -12,9 +12,9 @@ var Three = new function () {
         treeModel,
         waterModel,
         minHeight = 665,
-        minWidth = 960,
-        gameWidth = window.innerWidth,
-        gameHeight = window.innerHeight,
+        minWidth = 950,
+        gameWidth,
+        gameHeight,
         scene = new THREE.Scene(),
         camera,
         renderer = new THREE.WebGLRenderer({antialias: true}),
@@ -455,6 +455,8 @@ var Three = new function () {
     }
 
     this.init = function (fields) {
+        gameWidth = $('body').innerWidth()
+        gameHeight = $('body').innerHeight()
         if (gameWidth < minWidth) {
             gameWidth = minWidth
         }
@@ -487,8 +489,8 @@ var Three = new function () {
         animate()
     }
     this.resize = function () {
-        gameWidth = window.innerWidth
-        gameHeight = window.innerHeight
+        gameWidth = $(window).innerWidth()
+        gameHeight = $(window).innerHeight()
         if (gameWidth < minWidth) {
             gameWidth = minWidth
         }

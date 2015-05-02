@@ -379,9 +379,6 @@ var Gui = new function () {
         $('#goldBox').css({
             'left': goldBoxLeft + 'px'
         })
-        $('#armyBox').css({
-            left: Three.getWidth() / 2 - 115 + 'px'
-        })
         $('#mapBox .close').css({
             left: $('#mapBox').width() + 4 + 'px'
         })
@@ -391,9 +388,14 @@ var Gui = new function () {
         $('#limitBox').css({
             top: mapHeight + 30 + 'px'
         })
-
+        Gui.armyBoxAdjust()
         Message.adjust()
         Message.setOverflowHeight()
+    }
+    this.armyBoxAdjust = function () {
+        $('#armyBox').css({
+            left: Three.getWidth() / 2 - ($('#chatBox').width() + $('#armyBox').width()) / 2 + 'px'
+        })
     }
     this.exit = function () {
         window.location = '/' + lang + '/index'

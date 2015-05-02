@@ -24,8 +24,6 @@
 }
 
 body {
-    height: 100%;
-    min-height: 665px;
     font-size: 18px;
     font-family: Impact, Charcoal, sans-serif; /*fantasy*/
     letter-spacing: 2px;

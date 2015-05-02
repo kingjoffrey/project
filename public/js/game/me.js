@@ -190,8 +190,7 @@ var Me = new function () {
             unitsBox.append($('<div>').html(unitTypes[unitId]).css({'background-image': 'url(' + Unit.getImage(unitId, color) + ')'}))
         }
 
-        $('#armyBox').css({left: Three.getWidth() / 2 - $('#armyBox').width() / 2 + 'px'})
-
+        Gui.armyBoxAdjust()
         Three.addArmyCircle(army.getX(), army.getY(), army.getBackgroundColor())
         Message.remove()
 

@@ -42,23 +42,21 @@ var Message = new function () {
             maxWidth = parseInt($('#' + id).css('min-width'))
         }
 
-        var left = Three.getWidth() / 2 - $('#' + id).outerWidth() / 2
-
         if ($('#' + id + ' .showCastle').length) {
             $('#' + id).css({
                 'z-index': $('#' + id).css('z-index') + 1,
-                left: left + 'px',
+                left: Three.getWidth() / 2 - $('#' + id).outerWidth() / 2 + 'px',
                 'max-width': maxWidth + 'px',
                 'max-height': maxHeight + 'px'
             })
             $('#' + id + ' .msgTitle').css({width: $('#' + id).width() - 50})
         } else {
             $('.message').css({
-                left: left + 'px',
+                left: Three.getWidth() / 2 - $('.message').outerWidth() / 2 + 'px',
                 'max-width': maxWidth + 'px',
                 'max-height': maxHeight + 'px'
             })
-            $('.message .msgTitle').css({width: $('.message').width() -50})
+            $('.message .msgTitle').css({width: $('.message').width() - 50})
         }
     }
     this.setOverflowHeight = function (id) {
