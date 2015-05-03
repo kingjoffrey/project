@@ -24,13 +24,22 @@ class Cli_Model_Setup
         }
     }
 
-    public function update($playerId, Cli_SetupHandler $handler)
+    public function update($playerId, Cli_SetupHandler $handler, $close = false)
     {
-        $token = array(
-            'player' => $this->_players[$playerId],
-            'gameMasterId' => $this->_gameMasterId,
-            'type' => 'update'
-        );
+        if ($close) {
+            $token = array(
+                'player' => array('playerId' => $playerId),
+                'gameMasterId' => $this->_gameMasterId,
+                'close' => 1,
+                'type' => 'update'
+            );
+        } else {
+            $token = array(
+                'player' => $this->_players[$playerId],
+                'gameMasterId' => $this->_gameMasterId,
+                'type' => 'update'
+            );
+        }
 
         $handler->sendToChannel($handler->getGame($this->_id), $token);
     }
@@ -81,6 +90,7 @@ class Cli_Model_Setup
 
     public function findNewGameMaster()
     {
+        reset($this->_users);
         return key($this->_users);
     }
 
@@ -97,7 +107,13 @@ class Cli_Model_Setup
     public function addUser($playerId, Devristo\Phpws\Protocol\WebSocketTransportInterface $user, $db)
     {
         $mPlayer = new Application_Model_Player($db);
-        $this->_players[$playerId] = $mPlayer->getPlayer($playerId);
+        $player = $mPlayer->getPlayer($playerId);
+        $this->_players[$playerId] = array(
+            'playerId' => $player['playerId'],
+            'mapPlayerId' => $player['mapPlayerId'],
+            'firstName' => $player['firstName'],
+            'lastName' => $player['lastName']
+        );
         $this->_users[$playerId] = $user;
     }
 

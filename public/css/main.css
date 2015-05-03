@@ -331,8 +331,6 @@ p#info {
 
 .box {
     border: 2px solid grey;
-    border-radius: 5px;
-    padding: 10px;
     background: url(/img/bg_0.jpg);
     box-shadow: 2px 2px 5px #000;
 }
@@ -370,15 +368,17 @@ p#info {
 }
 
 #chatBox {
-    position: absolute;
-    bottom: -5px;
-    right: -5px;
+    position: fixed;
+    bottom: 0px;
+    right: 0px;
     z-index: 27000;
     width: 365px;
     height: 236px;
     border-top-left-radius: 5px;
     text-transform: none;
     padding: 0;
+    border-bottom: none;
+    border-right: none;
 }
 
 #chatBox #friendId {
@@ -449,7 +449,7 @@ p#info {
     overflow: hidden;
     border-top: 1px solid #000;
     position: absolute;
-    top: 196px;
+    top: 198px;
 }
 
 #chatBox input {
@@ -489,17 +489,16 @@ p#info {
 }
 
 #friendsBox {
-    position: absolute;
     z-index: 27000;
     min-width: 360px;
     text-transform: none;
-    position: absolute;
-    bottom: -5px;
-    left: -5px;
-}
-
-#friendsBox .close {
-    left: 390px;
+    border-bottom: none;
+    border-left: none;
+    border-top-right-radius: 5px;
+    padding: 5px 0;
+    position: fixed;
+    bottom: 0px;
+    left: 0px;
 }
 
 #searchResults a {

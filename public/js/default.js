@@ -35,9 +35,6 @@ var Page = new function () {
             window.location = '/' + lang + '/messages'
         })
 
-        //$('body').css({overflow: 'hidden'})
-
-
         $('#friendsBox .close').click(function () {
             var left = $(this).parent().position().left,
                 move = $(this).parent().width()
@@ -50,6 +47,8 @@ var Page = new function () {
             }
             changeCloseArrowLR(move, this)
             $(this).parent().animate({left: left + move + 'px'}, 200)
+        }).css({
+            left: $('#friendsBox').width() + 10 + 'px'
         })
     }
 }

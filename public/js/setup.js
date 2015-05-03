@@ -7,6 +7,51 @@ var Setup = new function () {
         ws,
         playersOutElement,
         gameMasterId,
+        updateStartButton = function () {
+            if (gameMasterId == id) {
+                $('#start')
+                    .html(translations.startGame)
+                    .addClass('button')
+                    .css('display', 'inline-block')
+                    .unbind()
+                    .click(function () {
+                        if (Setup.getGameMasterId() != id) {
+                            return
+                        }
+                        var team = {}
+                        $('#playersingame tr').each(function () {
+                            var id = $(this).attr('id')
+                            if (isSet(id)) {
+                                team[id] = $(this).find('select').val()
+                            }
+                        })
+
+                        var token = {
+                            type: 'start',
+                            team: team
+                        }
+
+                        ws.send(JSON.stringify(token))
+                    })
+            } else {
+                $('#start').css('display', 'none')
+            }
+        },
+        removePlayer = function (playerId) {
+            playersOutElement.find('#' + playerId).remove()
+            $('#' + playerId + '.td1').parent().removeClass('selected')
+            $('#' + playerId + '.td1').parent().find('.td3').html('')
+            if (playerId == id) {
+                $('#' + playerId + '.td1').parent().find('.td2 a').html(translations.select)
+            } else {
+                if (gameMasterId == id) {
+                    $('#' + playerId + '.td1').parent().find('.td2 a').html(translations.deselect)
+                } else {
+                    $('#' + playerId + '.td2').parent().find('.td2 a').remove()
+                }
+            }
+            $('#' + playerId + '.td1').attr('id', '')
+        },
         onMessage = function (r) {
             console.log(r)
             switch (r.type) {
@@ -29,13 +74,14 @@ var Setup = new function () {
                     top.location.replace('/' + lang + '/game/index/id/' + gameId)
                     break;
 
-                case 'close':
-                    Setup.removePlayer(r.playerId)
-                    break;
-
                 case 'update':
                     gameMasterId = r.gameMasterId
-                    Setup.removePlayer(r.player.playerId)
+                    removePlayer(r.player.playerId)
+                    updateStartButton()
+
+                    if (isSet(r.close)) {
+                        return
+                    }
 
                     if (r.player.mapPlayerId) {
                         $('#' + r.player.mapPlayerId + ' .td3').html(r.player.firstName + ' ' + r.player.lastName)
@@ -59,7 +105,6 @@ var Setup = new function () {
                         )
                     }
 
-                    Setup.updateStartButton()
                     break;
 
                 default:
@@ -144,50 +189,6 @@ var Setup = new function () {
         ws.onclose = function () {
             closed = true;
             setTimeout('Setup.init()', 1000);
-        }
-    }
-    this.removePlayer = function (playerId) {
-        playersOutElement.find('#' + playerId).remove()
-        $('#' + playerId + '.td1').parent().removeClass('selected')
-        $('#' + playerId + '.td1').parent().find('.td3').html('')
-        if (playerId == id) {
-            $('#' + playerId + '.td1').parent().find('.td2 a').html(translations.select)
-        } else {
-            if (gameMasterId == id) {
-                $('#' + playerId + '.td1').parent().find('.td2 a').html(translations.deselect)
-            } else {
-                $('#' + playerId + '.td2').parent().find('.td2 a').remove()
-            }
-        }
-        $('#' + playerId + '.td1').attr('id', '')
-    }
-    this.updateStartButton = function () {
-        if (gameMasterId == id) {
-            $('#start')
-                .html(translations.startGame)
-                .addClass('button')
-                .unbind()
-                .click(function () {
-                    if (Setup.getGameMasterId() != id) {
-                        return
-                    }
-                    var team = {}
-                    $('#playersingame tr').each(function () {
-                        var id = $(this).attr('id')
-                        if (isSet(id)) {
-                            team[id] = $(this).find('select').val()
-                        }
-                    })
-
-                    var token = {
-                        type: 'start',
-                        team: team
-                    }
-
-                    ws.send(JSON.stringify(token))
-                })
-        } else {
-            $('#start').css('display', 'none')
         }
     }
     this.getGameMasterId = function () {

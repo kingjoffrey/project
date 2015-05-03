@@ -16,6 +16,18 @@ class Cli_Model_SetupStart
             return;
         }
 
+        $players = $setup->getPlayers();
+        $inGame = false;
+        foreach ($players as $player) {
+            if ($player['mapPlayerId']) {
+                $inGame = true;
+            }
+        }
+        if (empty($inGame)) {
+            echo('Not players in game!');
+            return;
+        }
+
         $setup->setIsOpen(false);
         $db = $handler->getDb();
         $mPlayersInGame = new Application_Model_PlayersInGame($setup->getId(), $db);
