@@ -35,7 +35,7 @@ var Page = new function () {
             window.location = '/' + lang + '/messages'
         })
 
-        $('body').css({overflow: 'hidden'})
+        //$('body').css({overflow: 'hidden'})
 
 
         $('#friendsBox .close').click(function () {

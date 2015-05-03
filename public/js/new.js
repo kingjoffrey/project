@@ -110,7 +110,7 @@ var New = new function () {
     this.init = function () {
         type = 'new'
         table = $('#join.table table')
-        empty = $('<tr id="0">').append($('<td colspan="3">').html(info).css('padding', '15px'))
+        empty = $('<tr id="0">').append($('<td colspan="4">').html(info).css('padding', '15px'))
         changeMap()
         $('#mapId').change(function () {
             changeMap()
