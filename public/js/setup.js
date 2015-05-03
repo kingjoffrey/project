@@ -83,7 +83,6 @@ var Setup = new function () {
                     break
 
                 case 'open':
-                    gameMasterId = r.gameMasterId
                     New.webSocketInit()
                     break
 

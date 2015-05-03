@@ -44,13 +44,10 @@ class Cli_Model_SetupOpen
             $setup->update($u->parameters['playerId'], $handler);
         }
 
-        if ($setup->getGameMasterId() == $dataIn['playerId']) {
-            $token = array(
-                'type' => 'open',
-                'gameMasterId' => $dataIn['playerId']
-            );
+        $token = array(
+            'type' => 'open'
+        );
 
-            $handler->sendToUser($user, $token);
-        }
+        $handler->sendToUser($user, $token);
     }
 }
