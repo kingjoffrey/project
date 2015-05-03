@@ -7,35 +7,50 @@ var Setup = new function () {
         ws,
         playersOutElement,
         gameMasterId,
+        numberOfSelectedPlayers = 0,
         updateStartButton = function () {
+            $('.td3').each(function () {
+                if ($(this).html()) {
+                    numberOfSelectedPlayers++
+                }
+            })
             if (gameMasterId == id) {
-                $('#start')
-                    .html(translations.startGame)
-                    .addClass('button')
-                    .css('display', 'inline-block')
-                    .unbind()
-                    .click(function () {
-                        if (Setup.getGameMasterId() != id) {
-                            return
-                        }
-                        var team = {}
-                        $('#playersingame tr').each(function () {
-                            var id = $(this).attr('id')
-                            if (isSet(id)) {
-                                team[id] = $(this).find('select').val()
+                if (numberOfSelectedPlayers > 0) {
+                    $('#start')
+                        .html(translations.startGame)
+                        .removeClass('buttonOff')
+                        .css('display', 'inline-block')
+                        .unbind()
+                        .click(function () {
+                            if (gameMasterId != id) {
+                                return
                             }
+                            var team = {}
+                            $('#playersingame tr').each(function () {
+                                var id = $(this).attr('id')
+                                if (isSet(id)) {
+                                    team[id] = $(this).find('select').val()
+                                }
+                            })
+
+                            var token = {
+                                type: 'start',
+                                team: team
+                            }
+
+                            ws.send(JSON.stringify(token))
                         })
-
-                        var token = {
-                            type: 'start',
-                            team: team
-                        }
-
-                        ws.send(JSON.stringify(token))
-                    })
+                } else {
+                    $('#start')
+                        .html(translations.startGame)
+                        .addClass('buttonOff')
+                        .css('display', 'inline-block')
+                        .unbind()
+                }
             } else {
                 $('#start').css('display', 'none')
             }
+            numberOfSelectedPlayers = 0
         },
         removePlayer = function (playerId) {
             playersOutElement.find('#' + playerId).remove()
@@ -77,34 +92,31 @@ var Setup = new function () {
                 case 'update':
                     gameMasterId = r.gameMasterId
                     removePlayer(r.player.playerId)
-                    updateStartButton()
 
-                    if (isSet(r.close)) {
-                        return
-                    }
+                    if (notSet(r.close)) {
+                        if (r.player.mapPlayerId) {
+                            $('#' + r.player.mapPlayerId + ' .td3').html(r.player.firstName + ' ' + r.player.lastName)
 
-                    if (r.player.mapPlayerId) {
-                        $('#' + r.player.mapPlayerId + ' .td3').html(r.player.firstName + ' ' + r.player.lastName)
-
-                        if (r.player.playerId == id) {
-                            $('#' + r.player.mapPlayerId + ' .td2 a').html(translations.deselect)
-                            $('#' + r.player.mapPlayerId).addClass('selected')
-                        } else {
-                            if (r.gameMasterId == id) {
-                                $('#' + r.player.mapPlayerId + ' .td2 a').html(translations.select);
+                            if (r.player.playerId == id) {
+                                $('#' + r.player.mapPlayerId + ' .td2 a').html(translations.deselect)
+                                $('#' + r.player.mapPlayerId).addClass('selected')
                             } else {
-                                $('#' + r.player.mapPlayerId + ' .td2 a').remove();
+                                if (r.gameMasterId == id) {
+                                    $('#' + r.player.mapPlayerId + ' .td2 a').html(translations.select);
+                                } else {
+                                    $('#' + r.player.mapPlayerId + ' .td2 a').remove();
+                                }
                             }
+                            $('#' + r.player.mapPlayerId + ' .td1').attr('id', r.player.playerId)
+                        } else {
+                            playersOutElement.append(
+                                $('<tr>')
+                                    .html($('<td>').html(r.player.firstName + ' ' + r.player.lastName))
+                                    .attr('id', r.player.playerId)
+                            )
                         }
-                        $('#' + r.player.mapPlayerId + ' .td1').attr('id', r.player.playerId)
-                    } else {
-                        playersOutElement.append(
-                            $('<tr>')
-                                .html($('<td>').html(r.player.firstName + ' ' + r.player.lastName))
-                                .attr('id', r.player.playerId)
-                        )
                     }
-
+                    updateStartButton()
                     break;
 
                 default:

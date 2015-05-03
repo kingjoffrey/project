@@ -573,6 +573,11 @@ tr.trlink:hover td {
     top: 0px;
 }
 
+#friends {
+    font-size: 14px;
+
+}
+
 #friends #online {
     display: none;
     width: 10px;
@@ -595,7 +600,6 @@ tr.trlink:hover td {
 }
 
 #friends span {
-    font-size: 14px;
     line-height: 25px;
     padding: 0 5px 0 35px;
     border-radius: 2px;
