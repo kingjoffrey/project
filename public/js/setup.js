@@ -52,20 +52,28 @@ var Setup = new function () {
             }
             numberOfSelectedPlayers = 0
         },
+        initButton = function (mapPlayerId) {
+            $('#' + mapPlayerId + ' .td2').html($('<a>')
+                .addClass('button')
+                .html(translations.select)
+                .attr('id', mapPlayerId)
+                .click(function () {
+                    var token = {
+                        type: 'change',
+                        mapPlayerId: this.id
+                    }
+                    ws.send(JSON.stringify(token))
+                }))
+        },
         removePlayer = function (playerId) {
-            playersOutElement.find('#' + playerId).remove()
-            $('#' + playerId + '.td1').parent().removeClass('selected')
-            $('#' + playerId + '.td1').parent().find('.td3').html('')
-            if (playerId == id) {
-                $('#' + playerId + '.td1').parent().find('.td2 a').html(translations.select)
-            } else {
-                if (gameMasterId == id) {
-                    $('#' + playerId + '.td1').parent().find('.td2 a').html(translations.deselect)
-                } else {
-                    $('#' + playerId + '.td2').parent().find('.td2 a').remove()
-                }
+            var tr = $('#' + playerId + '.td1').parent()
+            if (tr.length) {
+                tr.removeClass('selected')
+                initButton(tr.attr('id'))
+                tr.find('.td3').html('')
+                $('#' + playerId + '.td1').attr('id', '')
             }
-            $('#' + playerId + '.td1').attr('id', '')
+            playersOutElement.find('#' + playerId).remove()
         },
         onMessage = function (r) {
             console.log(r)
@@ -102,7 +110,7 @@ var Setup = new function () {
                                 $('#' + r.player.mapPlayerId).addClass('selected')
                             } else {
                                 if (r.gameMasterId == id) {
-                                    $('#' + r.player.mapPlayerId + ' .td2 a').html(translations.select);
+                                    $('#' + r.player.mapPlayerId + ' .td2 a').html(translations.deselect);
                                 } else {
                                     $('#' + r.player.mapPlayerId + ' .td2 a').remove();
                                 }
@@ -142,18 +150,7 @@ var Setup = new function () {
         },
         initButtons = function () {
             for (var mapPlayerId in mapPlayers) {
-                $('#' + mapPlayerId + ' .td1 div.longName').html('');
-                $('#' + mapPlayerId + ' .td2').html($('<a>')
-                    .addClass('button')
-                    .html(translations.select)
-                    .attr('id', mapPlayerId)
-                    .click(function () {
-                        var token = {
-                            type: 'change',
-                            mapPlayerId: this.id
-                        }
-                        ws.send(JSON.stringify(token))
-                    }))
+                initButton(mapPlayerId)
             }
         },
         initTeams = function () {
