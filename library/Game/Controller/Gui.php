@@ -31,4 +31,8 @@ abstract class Game_Controller_Gui extends Coret_Controller_Authorized
         $this->view->Websocket($identity);
     }
 
+    protected function authorized()
+    {
+        $this->view->Logout();
+    }
 }

@@ -10,7 +10,12 @@ abstract class Coret_Controller_Authorized extends Coret_Controller_Frontend
         if (!$this->_auth->hasIdentity()) {
             $this->redirect('/' . Zend_Registry::get('lang') . '/' . $this->_redirectNotAuthorized);
         } else {
-            $this->view->Logout();
+            $this->authorized();
         }
+    }
+
+    protected function authorized()
+    {
+
     }
 }

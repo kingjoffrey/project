@@ -40,7 +40,7 @@ var SplitWindow = new function () {
                         })
                     ))
                     .append($('<span>').html(translations.movesLeft + ': ' + walk[soldierId].movesLeft + ' '))
-                    .append($('<div>').addClass('right').html($('<input>').attr({
+                    .append($('<div>').addClass('right').html($('<input>').css('display','none').attr({
                         type: 'checkbox',
                         name: 'soldierId',
                         value: soldierId
@@ -71,7 +71,7 @@ var SplitWindow = new function () {
                         })
                     ))
                     .append($('<span>').html(translations.movesLeft + ': ' + soldier.movesLeft + ' '))
-                    .append($('<div>').addClass('right').html($('<input>').attr({
+                    .append($('<div>').addClass('right').html($('<input>').css('display','none').attr({
                         type: 'checkbox',
                         name: 'soldierId',
                         value: soldierId
@@ -102,7 +102,7 @@ var SplitWindow = new function () {
                         })
                     ))
                     .append($('<span>').html(translations.movesLeft + ': ' + soldier.movesLeft + ' '))
-                    .append($('<div>').addClass('right').html($('<input>').attr({
+                    .append($('<div>').addClass('right').html($('<input>').css('display','none').attr({
                         type: 'checkbox',
                         name: 'soldierId',
                         value: soldierId
@@ -132,7 +132,7 @@ var SplitWindow = new function () {
                         })
                     ))
                     .append($('<span>').html(translations.movesLeft + ': ' + heroes[heroId].movesLeft + ' '))
-                    .append($('<div>').addClass('right').html($('<input>').attr({
+                    .append($('<div>').addClass('right').html($('<input>').css('display','none').attr({
                         type: 'checkbox',
                         name: 'heroId',
                         value: heroId
