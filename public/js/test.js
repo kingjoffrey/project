@@ -25,10 +25,11 @@ var Three = new function () {
     }
 
     var xy = [],
-        max = 7
+        maxX = 7,
+        maxY = 10
 
-    for (i = 0; i < max; i++) {
-        for (j = 0; j < max; j++) {
+    for (i = 0; i < maxX; i++) {
+        for (j = 0; j < maxY; j++) {
             xy.push([i, j])
         }
     }
@@ -72,12 +73,12 @@ var Three = new function () {
     console.log(grassVertexPositions)
 
     waterVertexPositions.push([0, 0, -0.2])
-    waterVertexPositions.push([max, 0, -0.2])
-    waterVertexPositions.push([0, max, -0.2])
+    waterVertexPositions.push([maxX, 0, -0.2])
+    waterVertexPositions.push([0, maxY, -0.2])
 
-    waterVertexPositions.push([max, max, -0.2])
-    waterVertexPositions.push([0, max, -0.2])
-    waterVertexPositions.push([max, 0, -0.2])
+    waterVertexPositions.push([maxX, maxY, -0.2])
+    waterVertexPositions.push([0, maxY, -0.2])
+    waterVertexPositions.push([maxX, 0, -0.2])
 
     var grassVertices = new Float32Array(grassVertexPositions.length * 3),
         waterVertices = new Float32Array(waterVertexPositions.length * 3)

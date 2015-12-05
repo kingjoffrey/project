@@ -46,6 +46,8 @@ class GameController extends Coret_Controller_Authorized
         $this->view->headScript()->appendFile('/js/Tween.js');
         $this->view->headScript()->appendFile('/js/three.js');
 //        $this->view->headScript()->appendFile('http://threejs.org/build/three.min.js');
+        $this->view->headScript()->appendFile('/js/geometries/TextGeometry.js');
+        $this->view->headScript()->appendFile('/js/utils/FontUtils.js');
         $this->view->headScript()->appendFile('/fonts/helvetiker_regular.typeface.js');
 
         $this->view->headScript()->appendFile('/js/game/picker.js?v=' . $version);

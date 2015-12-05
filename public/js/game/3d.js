@@ -386,6 +386,18 @@ var Three = new function () {
     }
 
     var loadGround = function () {
+        var xy = [],
+            maxX = 436,
+            maxY = 624
+
+        for (i = 0; i < maxX; i++) {
+            for (j = 0; j < maxY; j++) {
+                xy.push([i, j])
+            }
+        }
+
+        console.log(Fields)
+
         var ground = new THREE.Mesh(new THREE.PlaneBufferGeometry(436, 624), new THREE.MeshLambertMaterial({map: THREE.ImageUtils.loadTexture('/img/maps/1.png')}));
         //var ground = new THREE.Mesh(new THREE.PlaneBufferGeometry(436, 624), new THREE.MeshLambertMaterial({color: 0x00dd00}));
         ground.rotation.x = -Math.PI / 2
@@ -398,18 +410,16 @@ var Three = new function () {
 
     var initFields = function () {
         tree.scale = 3
-        water.scale = 1.7
         hill.scale = 1.3
 
         mountainModel = loader.parse(mountain)
         hillModel = loader.parse(hill)
         treeModel = loader.parse(tree)
-        waterModel = loader.parse(water)
 
         mountainModel.material = new THREE.MeshLambertMaterial({color: '#4e5a61', side: THREE.DoubleSide})
         hillModel.material = new THREE.MeshLambertMaterial({color: '#415824', side: THREE.DoubleSide})
         treeModel.material = new THREE.MeshLambertMaterial({color: '#003300', side: THREE.DoubleSide})
-        waterModel.material = new THREE.MeshPhongMaterial({color: 0x0000ff, side: THREE.DoubleSide})
+        //waterModel.material = new THREE.MeshPhongMaterial({color: 0x0000ff, side: THREE.DoubleSide})
     }
 
     this.addMountain = function (x, y) {
@@ -454,7 +464,7 @@ var Three = new function () {
         scene.add(mesh)
     }
 
-    this.init = function (fields) {
+    this.init = function () {
         gameWidth = $('body').innerWidth()
         gameHeight = $('body').innerHeight()
         if (gameWidth < minWidth) {
@@ -467,10 +477,10 @@ var Three = new function () {
         $('#game')
             .append(renderer.domElement)
             .css({
-                width: gameWidth + 'px',
-                height: gameHeight + 'px'
-            }
-        )
+                    width: gameWidth + 'px',
+                    height: gameHeight + 'px'
+                }
+            )
 
         camera = new THREE.PerspectiveCamera(22, gameWidth / gameHeight, 1, 1000)
         camera.rotation.order = 'YXZ'
@@ -499,10 +509,10 @@ var Three = new function () {
         }
         $('#game')
             .css({
-                width: gameWidth + 'px',
-                height: gameHeight + 'px'
-            }
-        )
+                    width: gameWidth + 'px',
+                    height: gameHeight + 'px'
+                }
+            )
         renderer.setSize(gameWidth, gameHeight)
         camera.aspect = gameWidth / gameHeight
         camera.updateProjectionMatrix()
