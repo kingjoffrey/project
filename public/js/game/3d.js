@@ -385,29 +385,6 @@ var Three = new function () {
         }
     }
 
-    var loadGround = function () {
-        var xy = [],
-            maxX = 436,
-            maxY = 624
-
-        for (i = 0; i < maxX; i++) {
-            for (j = 0; j < maxY; j++) {
-                xy.push([i, j])
-            }
-        }
-
-        console.log(Fields)
-
-        var ground = new THREE.Mesh(new THREE.PlaneBufferGeometry(436, 624), new THREE.MeshLambertMaterial({map: THREE.ImageUtils.loadTexture('/img/maps/1.png')}));
-        //var ground = new THREE.Mesh(new THREE.PlaneBufferGeometry(436, 624), new THREE.MeshLambertMaterial({color: 0x00dd00}));
-        ground.rotation.x = -Math.PI / 2
-        if (showShadows) {
-            ground.receiveShadow = true
-        }
-        scene.add(ground)
-        Picker.attach(ground)
-    }
-
     var initFields = function () {
         tree.scale = 3
         hill.scale = 1.3
@@ -495,7 +472,6 @@ var Three = new function () {
         initCastle()
         initArmy()
         initFields()
-        loadGround()
         animate()
     }
     this.resize = function () {
@@ -525,5 +501,88 @@ var Three = new function () {
     }
     this.setFPS = function (fps) {
         timeOut = parseInt(1000 / fps)
+    }
+
+    this.loadGround = function () {
+        var xy = [],
+            maxX = Fields.getMaxX(),
+            maxY = Fields.getMaxY(),
+            grassGeometry = new THREE.BufferGeometry(),
+            waterGeometry = new THREE.BufferGeometry(),
+            grassVertexPositions = [],
+            waterVertexPositions = []
+
+        for (i = 0; i < maxX; i++) {
+            for (j = 0; j < maxY; j++) {
+                xy.push([i, j])
+            }
+        }
+
+        for (var i = 0; i < xy.length; i++) {
+            grassVertexPositions.push([xy[i][0], xy[i][1], 0])
+            grassVertexPositions.push([xy[i][0] + 1, xy[i][1], 0])
+            grassVertexPositions.push([xy[i][0], xy[i][1] + 1, 0])
+
+            grassVertexPositions.push([xy[i][0] + 1, xy[i][1] + 1, 0])
+            grassVertexPositions.push([xy[i][0], xy[i][1] + 1, 0])
+            grassVertexPositions.push([xy[i][0] + 1, xy[i][1], 0])
+        }
+
+        for (var i = 0; i < grassVertexPositions.length; i++) {
+            if (Fields.get(grassVertexPositions[i][0], grassVertexPositions[i][1]).getType() == 'w') {
+                grassVertexPositions[i][2] = 0.5
+            }
+        }
+        //console.log(grassVertexPositions)
+
+        waterVertexPositions.push([0, 0, -0.2])
+        waterVertexPositions.push([maxX, 0, -0.2])
+        waterVertexPositions.push([0, maxY, -0.2])
+
+        waterVertexPositions.push([maxX, maxY, -0.2])
+        waterVertexPositions.push([0, maxY, -0.2])
+        waterVertexPositions.push([maxX, 0, -0.2])
+
+        var grassVertices = new Float32Array(grassVertexPositions.length * 3),
+            waterVertices = new Float32Array(waterVertexPositions.length * 3)
+
+        for (var i = 0; i < grassVertexPositions.length; i++) {
+            grassVertices[i * 3 + 0] = grassVertexPositions[i][0] * 4 - 215;
+            grassVertices[i * 3 + 1] = grassVertexPositions[i][1] * 4 - 312;
+            grassVertices[i * 3 + 2] = grassVertexPositions[i][2];
+        }
+
+        for (var i = 0; i < waterVertexPositions.length; i++) {
+            waterVertices[i * 3 + 0] = waterVertexPositions[i][0] * 4 - 215;
+            waterVertices[i * 3 + 1] = waterVertexPositions[i][1] * 4 - 308;
+            waterVertices[i * 3 + 2] = waterVertexPositions[i][2];
+        }
+
+        grassGeometry.addAttribute('position', new THREE.BufferAttribute(grassVertices, 3))
+        waterGeometry.addAttribute('position', new THREE.BufferAttribute(waterVertices, 3))
+
+        var grassMaterial = new THREE.MeshBasicMaterial({map: THREE.ImageUtils.loadTexture('/img/maps/1.png'), side: THREE.DoubleSide}),
+            waterMaterial = new THREE.MeshBasicMaterial({color: 0x0000ff}),
+            grassMesh = new THREE.Mesh(grassGeometry, grassMaterial),
+            waterMesh = new THREE.Mesh(waterGeometry, waterMaterial)
+
+        grassMesh.rotation.x = Math.PI / 2;
+        //grassMesh.rotation.z = Math.PI;
+
+        waterMesh.rotation.x = -Math.PI / 2;
+
+        scene.add(grassMesh);
+        scene.add(waterMesh);
+
+        Picker.attach(grassMesh)
+
+        //var ground = new THREE.Mesh(new THREE.PlaneBufferGeometry(Fields.getMaxX() * 4, Fields.getMaxY() * 4), new THREE.MeshLambertMaterial({map: THREE.ImageUtils.loadTexture('/img/maps/1.png')}));
+        //var ground = new THREE.Mesh(new THREE.PlaneBufferGeometry(436, 624), new THREE.MeshLambertMaterial({color: 0x00dd00}));
+        //ground.rotation.x = -Math.PI / 2
+        //if (showShadows) {
+        //    ground.receiveShadow = true
+        //}
+        //scene.add(ground)
+        //Picker.attach(ground)
     }
 }

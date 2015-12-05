@@ -1,25 +1,34 @@
 var Fields = new function () {
-    var fields = {}
+    var fields = {},
+        maxX,
+        maxY
     this.init = function (fields) {
-        for (var y in fields) {
-            for (var x in fields[y]) {
-                switch (fields[y][x].type) {
+        for (maxY in fields) {
+            for (maxX in fields[maxY]) {
+                switch (fields[maxY][maxX].type) {
                     case 'm':
-                        Three.addMountain(x, y)
+                        Three.addMountain(maxX, maxY)
                         break
                     case 'h':
-                        Three.addHill(x, y)
+                        Three.addHill(maxX, maxY)
                         break
                     case 'f':
-                        Three.addTree(x, y)
+                        Three.addTree(maxX, maxY)
                         break
                         //case 'w':
-                        //    Three.addWater(x, y)
+                        //    Three.addWater(maxX, maxY)
                         break
                 }
-                this.add(x, y, fields[y][x])
+                this.add(maxX, maxY, fields[maxY][maxX])
             }
         }
+        Three.loadGround()
+    }
+    this.getMaxX = function () {
+        return maxX
+    }
+    this.getMaxY = function () {
+        return maxY
     }
     this.add = function (x, y, field) {
         if (typeof fields[y] == 'undefined') {
