@@ -248,7 +248,7 @@ var CastleWindow = new function () {
         Message.setOverflowHeight(id)
 
         $('.production .unit input[type=radio]:checked').parent().parent().css({
-            background: 'url(/img/bg_1.jpg)',
+            background: '#222',
             color: '#fff'
         })
         $('.production .unit input[type=radio]:checked').parent().parent().find('.attributes span').css({
@@ -265,7 +265,7 @@ var CastleWindow = new function () {
             })
 
             $('td#' + $(this).attr('id') + '.unit input').prop('checked', true).parent().parent().css({
-                background: 'url(/img/bg_1.jpg)',
+                background: '#222',
                 color: '#fff'
             })
 

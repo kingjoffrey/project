@@ -323,7 +323,7 @@
 
 .message div.showCastle tr {
     background: none;
-    color: #D7DAA4;
+    /*color: #D7DAA4;*/
 }
 
 .message div.production, .message div.relocatedProduction {
@@ -782,7 +782,8 @@
     border-radius: 0px !important;
     box-shadow: 0 0 20px #000;
     padding: 2px;
-    color: #D7DAA4;
+    color: #FFA774;
+    /*D7DAA4;*/
 }
 
 #playersCanvas {
@@ -928,7 +929,7 @@ html {
 
 table.statistics tr {
     background: none;
-    color: #D7DAA4;
+    /*color: #D7DAA4;*/
 }
 
 table.statistics td {
@@ -967,7 +968,7 @@ table.treasury {
 table.treasury td {
     border: 1px solid gray;
     background: #000;
-    color: #D7DAA4;
+    /*color: #D7DAA4;*/
     border-radius: 0;
     padding: 5px;
     height: 23px;

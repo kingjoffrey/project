@@ -216,12 +216,12 @@ table {
     border-radius: 5px;
 }
 
-tr:nth-child(odd) {
+#content tr:nth-child(odd) {
     /*background: url(/img/bg_1.jpg);*/
     color: #D7DAA4;
 }
 
-tr:nth-child(even) {
+#content tr:nth-child(even) {
     background: url(/img/bg_0.jpg);
     /*color: #D7DAA4;*/
 }
