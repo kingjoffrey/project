@@ -1,3 +1,4 @@
+"use strict"
 var Zoom = {
     lens: null,
     scale: {x: 20, y: 20},
@@ -27,14 +28,14 @@ var Zoom = {
         $obj.node = image[0];
 
         $obj.findborder = function () {
-            var bordertop = 0;
+            var bordertop = 0,
+                btop = ''
             bordertop = image.css('border-top-width');
-            btop = '';
-            var borderleft = 0;
+            var borderleft = 0,
+                bleft = '';
             borderleft = image.css('border-left-width');
-            bleft = '';
             if (bordertop) {
-                for (i = 0; i < 3; i++) {
+                for (var i = 0; i < 3; i++) {
                     var x = [];
                     x = bordertop.substr(i, 1);
                     if (isNaN(x) == false) {
@@ -45,7 +46,7 @@ var Zoom = {
                 }
             }
             if (borderleft) {
-                for (i = 0; i < 3; i++) {
+                for (var i = 0; i < 3; i++) {
                     if (!isNaN(borderleft.substr(i, 1))) {
                         bleft = bleft + borderleft.substr(i, 1)
                     } else {

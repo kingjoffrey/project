@@ -101,16 +101,22 @@ var Three = new function () {
     grassGeometry.addAttribute('position', new THREE.BufferAttribute(grassVertices, 3))
     waterGeometry.addAttribute('position', new THREE.BufferAttribute(waterVertices, 3))
 
-    var grassMaterial = new THREE.MeshBasicMaterial({color: 0x00ff00}),
-        waterMaterial = new THREE.MeshBasicMaterial({color: 0x0000ff}),
-        grassMesh = new THREE.Mesh(grassGeometry, grassMaterial),
-        waterMesh = new THREE.Mesh(waterGeometry, waterMaterial)
 
-    grassMesh.rotation.x = -Math.PI / 2;
-    waterMesh.rotation.x = -Math.PI / 2;
+    var textureLoader = new THREE.TextureLoader();
+    textureLoader.load('/img/deska_0.png', function (texture) {
 
-    scene.add(grassMesh);
-    scene.add(waterMesh);
+        var grassMaterial = new THREE.MeshBasicMaterial({map: texture}),
+            waterMaterial = new THREE.MeshBasicMaterial({color: 0x0000ff}),
+            grassMesh = new THREE.Mesh(grassGeometry, grassMaterial),
+            waterMesh = new THREE.Mesh(waterGeometry, waterMaterial)
+
+        grassMesh.rotation.x = -Math.PI / 2;
+        waterMesh.rotation.x = -Math.PI / 2;
+
+        scene.add(grassMesh);
+        scene.add(waterMesh);
+    });
+
 };
 
 $(document).ready(function () {
