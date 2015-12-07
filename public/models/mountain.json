@@ -28,14 +28,4 @@
 			"animations" : [],
 			
 			"colors"    : [],
-			"materials" : [
-				{
-					"DbgColor": 15658734,
-					"DbgIndex": 0,
-					"DbgName": "default",
-					"vertexColors": false
-				}
-			]
-
-
 	}

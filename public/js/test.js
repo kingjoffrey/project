@@ -11,7 +11,7 @@ var Three = new function () {
     renderer.setSize(window.innerWidth, window.innerHeight);
     renderer.shadowMap.enabled = true
 
-    var light = new THREE.DirectionalLight(0xffffff, 1)
+    var light = new THREE.AmbientLight(0xffffff) //new THREE.DirectionalLight(0xffffff, 1)
     light.position.set(150, 100, 100)
     scene.add(light);
 
@@ -105,7 +105,7 @@ var Three = new function () {
     var textureLoader = new THREE.TextureLoader();
     textureLoader.load('/img/deska_0.png', function (texture) {
 
-        var grassMaterial = new THREE.MeshBasicMaterial({map: texture}),
+        var grassMaterial = new THREE.MeshLambertMaterial({map: texture}),
             waterMaterial = new THREE.MeshBasicMaterial({color: 0x0000ff}),
             grassMesh = new THREE.Mesh(grassGeometry, grassMaterial),
             waterMesh = new THREE.Mesh(waterGeometry, waterMaterial)

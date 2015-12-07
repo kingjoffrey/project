@@ -824,15 +824,16 @@ html {
 }
 
 .buttonColors {
-    border: 1px solid #A8A45A !important;
-    background: #000 !important;
-    color: #A8A45A !important;
+    border: 1px solid #fff !important;
+    background: url('/img/steel-plate.jpg') !important;
+    color: #000 !important;
     cursor: pointer;
+    font-weight: bold;
 }
 
 .buttonColors:hover {
     color: #000 !important;
-    background: #A8A45A !important;
+    background: #fff !important;
 }
 
 #buttons .button, .armyButtons .button {
@@ -1071,11 +1072,15 @@ table.treasury td.c {
 
 #nextTurn:hover {
     color: #fff !important;
-    background: #A8A45A !important;
+    background: red !important;
 }
 
 .font-gold {
     color: gold;
+}
+
+.font-red {
+    color: red;
 }
 
 #chatBox {

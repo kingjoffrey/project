@@ -20,6 +20,7 @@ var Three = new function () {
         renderer = new THREE.WebGLRenderer({antialias: true}),
         pointLight = new THREE.PointLight(0xdddddd),
         theLight = new THREE.DirectionalLight(0xffffff, 1),
+        ambientLight = new THREE.AmbientLight(0xffffff),
         loader = new THREE.JSONLoader(),
         circles = [],
         armyCircles = [],
@@ -52,22 +53,26 @@ var Three = new function () {
         renderer.shadowMapSoft = false
     }
 
-    pointLight.position.set(-100000, 100000, 100000);
-    scene.add(pointLight)
+    //pointLight.position.set(-100000, 100000, 100000);
+    //scene.add(pointLight)
 
-    theLight.position.set(1500, 1000, 1000)
-    if (showShadows) {
-        theLight.castShadow = true
-        theLight.shadowDarkness = 0.5
-        theLight.shadowMapWidth = 8192
-        theLight.shadowMapHeight = 8192
-        //theLight.shadowCameraVisible = true
-        //theLight.shadowCameraRight = 150;
-        //theLight.shadowCameraLeft = -150;
-        //theLight.shadowCameraTop = 150;
-        //theLight.shadowCameraBottom = -150;
-    }
+    //theLight.position.set(1500, 1000, 1000)
+    //if (showShadows) {
+    //    theLight.castShadow = true
+    //    theLight.shadowDarkness = 0.5
+    //    theLight.shadowMapWidth = 8192
+    //    theLight.shadowMapHeight = 8192
+
+    //theLight.shadowCameraVisible = true
+    //theLight.shadowCameraRight = 150;
+    //theLight.shadowCameraLeft = -150;
+    //theLight.shadowCameraTop = 150;
+    //theLight.shadowCameraBottom = -150;
+    //}
     scene.add(theLight);
+
+    ambientLight.position.set(-1500, 1000, 1000);
+    scene.add(ambientLight);
 
     this.getCameraY = function () {
         return cameraY
@@ -399,6 +404,19 @@ var Three = new function () {
         //waterModel.material = new THREE.MeshPhongMaterial({color: 0x0000ff, side: THREE.DoubleSide})
     }
 
+    var initCamera = function (gameWidth, gameHeight) {
+
+        var viewAngle = 22,
+            near = 1,
+            far = 1000
+        camera = new THREE.PerspectiveCamera(viewAngle, gameWidth / gameHeight, 1, 1000)
+        camera.rotation.order = 'YXZ'
+        camera.rotation.y = -Math.PI / 4
+        camera.rotation.x = Math.atan(-1 / Math.sqrt(2))
+        camera.position.set(0, cameraY, 0)
+        camera.scale.addScalar(1)
+    }
+
     this.addMountain = function (x, y) {
         var mesh = new THREE.Mesh(mountainModel.geometry, mountainModel.material)
         mesh.position.set(x * 4 - 216, 0, y * 4 - 311)
@@ -459,12 +477,8 @@ var Three = new function () {
                 }
             )
 
-        camera = new THREE.PerspectiveCamera(22, gameWidth / gameHeight, 1, 1000)
-        camera.rotation.order = 'YXZ'
-        camera.rotation.y = -Math.PI / 4
-        camera.rotation.x = Math.atan(-1 / Math.sqrt(2))
-        camera.position.set(0, cameraY, 0)
-        camera.scale.addScalar(1)
+        initCamera(gameWidth, gameHeight)
+
         renderer.setSize(gameWidth, gameHeight)
 
         initRuin()
@@ -573,7 +587,7 @@ var Three = new function () {
         var textureLoader = new THREE.TextureLoader();
         textureLoader.load('/img/deska_0.png', function (texture) {
 
-            var grassMaterial = new THREE.MeshBasicMaterial({map: texture, side: THREE.DoubleSide}),
+            var grassMaterial = new THREE.MeshLambertMaterial({map: texture, side: THREE.DoubleSide}),
                 waterMaterial = new THREE.MeshBasicMaterial({color: 0x0000ff}),
                 grassMesh = new THREE.Mesh(grassGeometry, grassMaterial),
                 waterMesh = new THREE.Mesh(waterGeometry, waterMaterial)
