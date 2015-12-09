@@ -1,3 +1,5 @@
+if (!Detector.webgl) Detector.addGetWebGLMessage();
+
 var Three = new function () {
     var ruinModel,
         towerModel,
@@ -52,27 +54,6 @@ var Three = new function () {
         renderer.shadowMapEnabled = true
         renderer.shadowMapSoft = false
     }
-
-    //pointLight.position.set(-100000, 100000, 100000);
-    //scene.add(pointLight)
-
-    //theLight.position.set(1500, 1000, 1000)
-    //if (showShadows) {
-    //    theLight.castShadow = true
-    //    theLight.shadowDarkness = 0.5
-    //    theLight.shadowMapWidth = 8192
-    //    theLight.shadowMapHeight = 8192
-
-    //theLight.shadowCameraVisible = true
-    //theLight.shadowCameraRight = 150;
-    //theLight.shadowCameraLeft = -150;
-    //theLight.shadowCameraTop = 150;
-    //theLight.shadowCameraBottom = -150;
-    //}
-    scene.add(theLight);
-
-    ambientLight.position.set(-1500, 1000, 1000);
-    scene.add(ambientLight);
 
     this.getCameraY = function () {
         return cameraY
@@ -405,16 +386,19 @@ var Three = new function () {
     }
 
     var initCamera = function (gameWidth, gameHeight) {
-
         var viewAngle = 22,
             near = 1,
             far = 1000
+
         camera = new THREE.PerspectiveCamera(viewAngle, gameWidth / gameHeight, 1, 1000)
         camera.rotation.order = 'YXZ'
         camera.rotation.y = -Math.PI / 4
         camera.rotation.x = Math.atan(-1 / Math.sqrt(2))
         camera.position.set(0, cameraY, 0)
         camera.scale.addScalar(1)
+        scene.add(camera)
+        scene.add(new THREE.AmbientLight(0x222222))
+        camera.add(new THREE.PointLight(0xffffff, 0.7))
     }
 
     this.addMountain = function (x, y) {
@@ -567,6 +551,9 @@ var Three = new function () {
         waterVertexPositions.push([maxX, 0, -0.2])
 
         var grassVertices = new Float32Array(grassVertexPositions.length * 3),
+            normals = new Float32Array(grassVertexPositions.length * 3),
+            colors = new Float32Array(grassVertexPositions.length * 3),
+            uvs = new Float32Array(grassVertexPositions.length * 2),
             waterVertices = new Float32Array(waterVertexPositions.length * 3)
 
         for (var i = 0; i < grassVertexPositions.length; i++) {
@@ -582,24 +569,30 @@ var Three = new function () {
         }
 
         grassGeometry.addAttribute('position', new THREE.BufferAttribute(grassVertices, 3))
+        grassGeometry.addAttribute('normal', new THREE.BufferAttribute(normals, 3))
+        grassGeometry.addAttribute('color', new THREE.BufferAttribute(colors, 3))
+        grassGeometry.addAttribute('uv', new THREE.BufferAttribute(uvs, 2))
         waterGeometry.addAttribute('position', new THREE.BufferAttribute(waterVertices, 3))
 
-        var textureLoader = new THREE.TextureLoader();
-        textureLoader.load('/img/deska_0.png', function (texture) {
+        grassGeometry.computeVertexNormals()
 
-            var grassMaterial = new THREE.MeshLambertMaterial({map: texture, side: THREE.DoubleSide}),
-                waterMaterial = new THREE.MeshBasicMaterial({color: 0x0000ff}),
-                grassMesh = new THREE.Mesh(grassGeometry, grassMaterial),
-                waterMesh = new THREE.Mesh(waterGeometry, waterMaterial)
+        //var textureLoader = new THREE.TextureLoader();
+        //textureLoader.load('/img/deska_0.png', function (texture) {
+        //
+        //var grassMaterial = new THREE.MeshLambertMaterial({map: texture, side: THREE.DoubleSide}),
+        var grassMaterial = new THREE.MeshLambertMaterial({color: 0x567630, side: THREE.DoubleSide}),
+            waterMaterial = new THREE.MeshBasicMaterial({color: 0x0000ff}),
+            grassMesh = new THREE.Mesh(grassGeometry, grassMaterial),
+            waterMesh = new THREE.Mesh(waterGeometry, waterMaterial)
 
-            grassMesh.rotation.x = Math.PI / 2;
-            waterMesh.rotation.x = -Math.PI / 2;
+        grassMesh.rotation.x = Math.PI / 2;
+        waterMesh.rotation.x = -Math.PI / 2;
 
-            scene.add(grassMesh);
-            scene.add(waterMesh);
+        scene.add(grassMesh);
+        scene.add(waterMesh);
 
-            Picker.attach(grassMesh)
-        });
+        Picker.attach(grassMesh)
+        //});
 
 
         //var ground = new THREE.Mesh(new THREE.PlaneBufferGeometry(Fields.getMaxX() * 4, Fields.getMaxY() * 4), new THREE.MeshLambertMaterial({map: THREE.ImageUtils.loadTexture('/img/maps/1.png')}));
