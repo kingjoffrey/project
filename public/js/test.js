@@ -31,38 +31,25 @@ var Test = new function () {
 }
 
 var CreateSimpleMesh = new function () {
-    var xy = [],
-        maxX = 10,
-        maxY = 10,
-        river = [[0, 5], [0, 4], [1, 3], [2, 2], [3, 2], [4, 1], [5, 1], [6, 0]],
-        grassGeometry = new THREE.BufferGeometry(),
+    var grassGeometry = new THREE.BufferGeometry(),
         grassVertexPositions = [],
-        color = new THREE.Color()
+        imageArray = [
+            [0, 0],
+            [1, 0],
+            [1, 1],
+            [0, 1]
+        ]
 
     this.init = function () {
-        for (i = 0; i < maxX; i++) {
-            for (j = 0; j < maxY; j++) {
-                xy.push([i, j])
-            }
-        }
+        // first triangle
+        grassVertexPositions.push([0, 0, 0])
+        grassVertexPositions.push([1, 0, 0])
+        grassVertexPositions.push([0, 1, 0])
 
-        for (var i = 0; i < xy.length; i++) {
-            grassVertexPositions.push([xy[i][0], xy[i][1], 0])
-            grassVertexPositions.push([xy[i][0] + 1, xy[i][1], 0])
-            grassVertexPositions.push([xy[i][0], xy[i][1] + 1, 0])
-
-            grassVertexPositions.push([xy[i][0] + 1, xy[i][1] + 1, 0])
-            grassVertexPositions.push([xy[i][0], xy[i][1] + 1, 0])
-            grassVertexPositions.push([xy[i][0] + 1, xy[i][1], 0])
-        }
-
-        for (var i = 0; i < grassVertexPositions.length; i++) {
-            for (var j = 0; j < river.length; j++) {
-                if (river[j][0] == grassVertexPositions[i][0] && river[j][1] == grassVertexPositions[i][1]) {
-                    grassVertexPositions[i][2] = -0.5
-                }
-            }
-        }
+        // second triangle
+        grassVertexPositions.push([1, 1, 0])
+        grassVertexPositions.push([0, 1, 0])
+        grassVertexPositions.push([1, 0, 0])
 
         var grassVertices = new Float32Array(grassVertexPositions.length * 3),
             normals = new Float32Array(grassVertexPositions.length * 3),
@@ -71,25 +58,35 @@ var CreateSimpleMesh = new function () {
 
         for (var i = 0; i < grassVertexPositions.length; i++) {
             var index = 3 * i
-            grassVertices[index + 0] = grassVertexPositions[i][0];
-            grassVertices[index + 1] = grassVertexPositions[i][1];
-            grassVertices[index + 2] = grassVertexPositions[i][2];
-
-            //color.setHSL(i / grassVertexPositions.length, 1.0, 0.5)
-            //colors[index] = color.r;
-            //colors[index + 1] = color.g;
-            //colors[index + 2] = color.b;
-            //
-            uvs[index] = 0
-            uvs[index + 1] = 1
+            grassVertices[index + 0] = grassVertexPositions[i][0]
+            grassVertices[index + 1] = grassVertexPositions[i][1]
+            grassVertices[index + 2] = grassVertexPositions[i][2]
         }
+
+        uvs[0] = imageArray[0][0]
+        uvs[1] = imageArray[0][1]
+
+        uvs[2] = imageArray[1][0]
+        uvs[3] = imageArray[1][1]
+
+        uvs[4] = imageArray[3][0]
+        uvs[5] = imageArray[3][1]
+
+        uvs[6] = imageArray[1][0]
+        uvs[7] = imageArray[1][1]
+
+        uvs[8] = imageArray[2][0]
+        uvs[9] = imageArray[2][1]
+
+        uvs[10] = imageArray[3][0]
+        uvs[11] = imageArray[3][1]
 
         grassGeometry.addAttribute('position', new THREE.BufferAttribute(grassVertices, 3))
         grassGeometry.addAttribute('normal', new THREE.BufferAttribute(normals, 3))
         grassGeometry.addAttribute('color', new THREE.BufferAttribute(colors, 3))
         grassGeometry.addAttribute('uv', new THREE.BufferAttribute(uvs, 2))
 
-        grassGeometry.computeVertexNormals();
+        grassGeometry.computeVertexNormals()
 
         var textureLoader = new THREE.TextureLoader();
         textureLoader.load('/img/maps/12.png', function (texture) {
@@ -100,28 +97,13 @@ var CreateSimpleMesh = new function () {
             grassMesh.rotation.x = -Math.PI / 2;
             Test.getScene().add(grassMesh)
 
+            var helper = new THREE.WireframeHelper(grassMesh, 0xff00ff); // alternate
+            helper.material.linewidth = 1;
+            Test.getScene().add(helper);
+
             console.log(grassMesh.geometry.attributes)
         });
-
-        //var grassMaterial = new THREE.MeshLambertMaterial({color: 0x00ff00}),
-        //    grassMesh = new THREE.Mesh(grassGeometry, grassMaterial)
-
-        //var material = new THREE.MeshPhongMaterial({
-        //    color: 0xffffff,
-        //    shading: THREE.FlatShading,
-        //    vertexColors: THREE.VertexColors,
-        //    side: THREE.DoubleSide
-        //});
-        //grassMesh = new THREE.Mesh(grassGeometry, material)
-
-        //grassMesh.rotation.x = -Math.PI / 2
-        //Test.getScene().add(grassMesh);
-
-        //console.log(grassMesh.geometry.attributes)
     }
-
-    //var ground = new THREE.Mesh(new THREE.PlaneBufferGeometry(1, 1), new THREE.MeshLambertMaterial({color: 0xffffff}));
-    //console.log(ground.geometry.attributes)
 }
 
 $(document).ready(function () {
