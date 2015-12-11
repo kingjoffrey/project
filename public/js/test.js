@@ -1,6 +1,6 @@
 var Test = new function () {
     var scene = new THREE.Scene(),
-        camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 1, 1000),
+        camera = new THREE.PerspectiveCamera(10, window.innerWidth / window.innerHeight, 1, 1000),
         renderer = new THREE.WebGLRenderer()
 
     renderer.setSize(window.innerWidth, window.innerHeight);
@@ -38,9 +38,16 @@ var CreateSimpleMesh = new function () {
             [1, 0],
             [1, 1],
             [0, 1]
-        ]
+        ],
+        image = new Image()
 
     this.init = function () {
+        image.src = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAGQAAABkCAYAAABw4pVUAAAABmJLR0QA/wD/AP+gvaeTAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAB3RJTUUH3wwLAi03pl5F1AAAAB1pVFh0Q29tbWVudAAAAAAAQ3JlYXRlZCB3aXRoIEdJTVBkLmUHAAAEkklEQVR42u3dTWzTdRzH8XfXdW03t3XPbmyMlLkNZA9kcwuKBBVBEjXEGDExEAwH44GDJpp4QYnCQcIZoiZGUaKeCFHjIBB5UnnSKW5zj7AVWvfvxsbWre22Dg+1SmHA/iwbHD7v2+/fZYfvK/+n9vCzrDmx7hrqvilBIxCIuk2JGsHsNth0hcvf9dB/1iBkBLFnOkgrc+HeWEr6oow7gwy1DuJt8NB/zs+oJ4DFmoAjx4GrMoviF92klqRryiY69dqxuHXICBIyghgnfFS/X0feyoLbg/y8+ccbjkwy0hNgpCfA5e+7qdxaS/6qQk16mrmWZFL4fDGZNTnYM+wEuodp2fUHg39eof2j5juDpJW7mLd2PlmP5ODMT2FyPMJIT4AL+9rpPeKlbXeTQExUv2dF/HwfclGxtYbjLx0i+PfonS9Zyz5ZGX/XtyWQXp7B4jer6D3iZWJkQlOe6Y3bGR178rwU8zf1ieAEwcsjXNjXDkD+ap0dM+3iVx0APDjFleaWIA3L98etnQXJlL6+mOL1JZroDPIe9HDhy3aSC1NY8HLJ3b+HjA2ECfeHQe/1M8I4/8E5rA4r1dvrsNqt0z9D1pxYF4UYGmPor0HadjfR/U0nWKB8S4WmazLPgYs072wEC1S+W0vqwvS7e1NPSksiuy6XpTvqAPAduqTpmr1nfN1B84eNcA0efnspuY/nz/xNfXI8eq2KjOopy0ydn7XS8XELAIvfqqbw2WJzX52cfeMk819wk74kE1uqjYnhcQabB2jf0xR90anM0pRNFMMAaN7ZGL1sXdcT364lyWW/NUj/GT/9Z/xT/nNbmo3yLUs05VnMcuPvIQPn+7l0oJsrv/oJ94VIsCXgLEghuz6XBetLsGc7NLXZfGm88UBGRRYZFbos3av0e4hAlEAEogQiECUQgSiBCEQJRAlEIEogAlECEYgSiECUQJRABKIEIhAlEIEogQhECUQJRCBKIAJRAhGIEohAlECUQASiBCIQJRCBKIEIRAlECUQgSiACUQIRiBKIQJRAlEAEogQiECUQgSiBCETdu6bcFGxyLELX3ja8P3gI+YM4cpwUPFOEe2MZCTYZmi3QPYxxzIdx3MfV5gHg/20JpwXy+7azGEd9/62DvlE6P20l0DVM9fY6TdhkJ185fPeXLP8vvRhHfViTE6nZtYxVh5+jZtcyrMmJ9B710nfa0IRNlrIglYWvlvHY50+aB/Ed9ADg3lBKdn0eVruV7Po83BtKAfA2eDRhky3/4ilKNi/iAXeaeZCrLYMA5DyaF3c8th5qGdCE5/IpK9wXBMBZEL/Xd2wd8oc0tbkEiYQiADftZBxbR8LaenVOQayO2OAj8VDhGFSipjaXIPZsZ/RR1zsSdzy2duRop885BUlf5Io+/v7UG/84/O86rdylqc0lSP7TRQB07W2j77TB5FiEvtMGXXvbop+vLtLUZrGbNicG+O2dUxjHfTf9ce6KfJbuqNfUTNawfP9tP7/+a5Qpv5iq2laLe1MZjjwnFqsFR54T96Yyqt6r1XTvxRmi7qN7iBKIEohA1DT7B5cwUaoY0hehAAAAAElFTkSuQmCC'
+        var texture = new THREE.Texture();
+        texture.image = image;
+        image.onload = function () {
+            texture.needsUpdate = true;
+        };
         // first triangle
         grassVertexPositions.push([0, 0, 0])
         grassVertexPositions.push([1, 0, 0])
@@ -88,8 +95,8 @@ var CreateSimpleMesh = new function () {
 
         grassGeometry.computeVertexNormals()
 
-        var textureLoader = new THREE.TextureLoader();
-        textureLoader.load('/img/maps/12.png', function (texture) {
+        //var textureLoader = new THREE.TextureLoader();
+        //textureLoader.load('/img/testface.png', function (texture) {
 
             var grassMaterial = new THREE.MeshLambertMaterial({map: texture}),
                 grassMesh = new THREE.Mesh(grassGeometry, grassMaterial)
@@ -102,7 +109,7 @@ var CreateSimpleMesh = new function () {
             Test.getScene().add(helper);
 
             console.log(grassMesh.geometry.attributes)
-        });
+        //});
     }
 }
 
