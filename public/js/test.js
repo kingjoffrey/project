@@ -79,14 +79,14 @@ var CreateSimpleMesh = new function () {
         uvs[4] = imageArray[3][0]
         uvs[5] = imageArray[3][1]
 
-        uvs[6] = imageArray[1][0]
-        uvs[7] = imageArray[1][1]
+        uvs[6] = imageArray[2][0]
+        uvs[7] = imageArray[2][1]
 
-        uvs[8] = imageArray[2][0]
-        uvs[9] = imageArray[2][1]
+        uvs[8] = imageArray[3][0]
+        uvs[9] = imageArray[3][1]
 
-        uvs[10] = imageArray[3][0]
-        uvs[11] = imageArray[3][1]
+        uvs[10] = imageArray[1][0]
+        uvs[11] = imageArray[1][1]
 
         grassGeometry.addAttribute('position', new THREE.BufferAttribute(grassVertices, 3))
         grassGeometry.addAttribute('normal', new THREE.BufferAttribute(normals, 3))
