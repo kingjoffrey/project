@@ -23,7 +23,8 @@ var Fields = new function () {
                 this.add(maxX, maxY, fields[maxY][maxX])
             }
         }
-        Three.loadGround()
+        //console.log(mapId)
+        Ground.init(maxX, maxY, '/img/maps/1.png')
     }
     this.getMaxX = function () {
         return maxX

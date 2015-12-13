@@ -471,6 +471,7 @@ var Three = new function () {
         initArmy()
         initFields()
         animate()
+        Picker.init(camera, renderer.domElement)
     }
     this.resize = function () {
         gameWidth = $(window).innerWidth()
