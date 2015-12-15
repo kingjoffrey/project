@@ -69,10 +69,11 @@ var Ground = new function () {
                 grassVertexPositions[i][2] = 0.3
             }
             if (Fields.get(grassVertexPositions[i][0], grassVertexPositions[i][1]).getType() == 'm') {
-                grassVertexPositions[i][2] = -0.5
+                console.log('a')
+                grassVertexPositions[i][2] = -4
             }
             if (Fields.get(grassVertexPositions[i][0], grassVertexPositions[i][1]).getType() == 'h') {
-                grassVertexPositions[i][2] = -0.3
+                grassVertexPositions[i][2] = -1.5
             }
         }
         var grassVertices = new Float32Array(grassVertexPositions.length * 3),

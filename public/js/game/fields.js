@@ -7,18 +7,18 @@ var Fields = new function () {
         for (maxY in fields) {
             for (maxX in fields[maxY]) {
                 switch (fields[maxY][maxX].type) {
-                    case 'm':
-                        Three.addMountain(maxX, maxY)
-                        break
-                    case 'h':
-                        Three.addHill(maxX, maxY)
-                        break
+                    //case 'm':
+                    //    Three.addMountain(maxX, maxY)
+                    //    break
+                    //case 'h':
+                    //    Three.addHill(maxX, maxY)
+                    //    break
                     case 'f':
                         Three.addTree(maxX, maxY)
                         break
-                        //case 'w':
-                        //    Three.addWater(maxX, maxY)
-                        break
+                    //case 'w':
+                    //    Three.addWater(maxX, maxY)
+                    //break
                 }
                 this.add(maxX, maxY, fields[maxY][maxX])
             }
