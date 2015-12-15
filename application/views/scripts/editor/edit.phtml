@@ -4,8 +4,6 @@ mapHeight = <?php echo $this->map['mapHeight'] ?>,
 maxPlayers = <?php echo $this->map['maxPlayers'] ?>,
 name = '<?php echo $this->map['name'] ?>',
 mapId = <?php echo $this->map['mapId'] ?>,
-websocket = <?php echo Zend_Json::encode($this->websocket) ?>,
 langId = <?php echo Zend_Registry::get('id_lang') ?>,
-my = {id:<?php echo $this->playerId ?>},
 mapCastles = <?php echo Zend_Json::encode($this->mapCastles) ?>
 <?php $this->headScript()->captureEnd() ?>
