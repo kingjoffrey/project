@@ -3,6 +3,6 @@ $(document).ready(function () {
 //        mapHeight = mapWidth = 2049
 //        mapHeight = mapWidth = 8193
     Editor.init()
-    Websocket.init('editor')
+    WebSocketEditor.init()
     Gui.init()
 })

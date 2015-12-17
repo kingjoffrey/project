@@ -1,5 +1,5 @@
-var Castle = {
-    create: function (X, Y, x, y) {
+var Castle = new function () {
+    this.create = function (X, Y, x, y) {
         var img = new Image()
         img.src = '/img/game/castles/neutral.png'
         img.onload = function () {
@@ -13,7 +13,7 @@ var Castle = {
                 if (e.which == 1) {
                     var x = castle.getPosition().x / 40
                     var y = castle.getPosition().y / 40
-                    EditorWS.castleRemove(x, y)
+                    WebSocketEditor.castleRemove(x, y)
                     castle.remove()
                     Editor.group.draw()
                 }
@@ -23,7 +23,7 @@ var Castle = {
             Editor.group.draw()
 
             if (typeof x != 'undefined' && typeof y != 'undefined') {
-                EditorWS.castleAdd(x, y)
+                WebSocketEditor.castleAdd(x, y)
             }
         }
     }

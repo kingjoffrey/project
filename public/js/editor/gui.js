@@ -4,7 +4,7 @@ var Gui = {
             Editor.generate()
         })
         $('#save').click(function () {
-            EditorWS.save()
+            WebSocketEditor.save()
         })
         $('#castle').click(function (e) {
             Editor.brush = 'castle'

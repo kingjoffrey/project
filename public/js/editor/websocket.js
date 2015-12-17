@@ -1,5 +1,26 @@
-var EditorWS = {
-    save: function () {
+var WebSocketEditor = new function () {
+    var closed = true,
+        ws,
+        onMessage = function (r) {
+            console.log(r)
+        },
+        open = function () {
+            if (closed) {
+                console.log(translations.sorryServerIsDisconnected)
+                return;
+            }
+
+            var token = {
+                type: 'open',
+                playerId: id,
+                name: playerName,
+                langId: langId,
+                accessKey: accessKey
+            }
+
+            ws.send(JSON.stringify(token));
+        }
+    this.save = function () {
         /*
          * since the stage toDataURL() method is asynchronous, we need
          * to provide a callback
@@ -22,8 +43,8 @@ var EditorWS = {
         }
 
         ws.send(JSON.stringify(token))
-    },
-    castleAdd: function (x, y) {
+    }
+    this.castleAdd = function (x, y) {
         var token = {
             type: 'castleAdd',
             mapId: mapId,
@@ -32,8 +53,8 @@ var EditorWS = {
         }
 
         ws.send(JSON.stringify(token))
-    },
-    castleRemove: function (x, y) {
+    }
+    this.castleRemove = function (x, y) {
         var token = {
             type: 'castleRemove',
             mapId: mapId,
@@ -42,5 +63,20 @@ var EditorWS = {
         }
 
         ws.send(JSON.stringify(token))
+    }
+    this.init = function () {
+        ws = new WebSocket(wsURL + '/editor')
+
+        ws.onopen = function () {
+            closed = false
+            open()
+        }
+        ws.onmessage = function (e) {
+            onMessage($.parseJSON(e.data))
+        }
+        ws.onclose = function () {
+            closed = true;
+            setTimeout('WebSocketEditor.init()', 1000)
+        }
     }
 }

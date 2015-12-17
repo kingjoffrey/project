@@ -28,6 +28,7 @@ include_once(APPLICATION_PATH . '/modules/cli/handlers/PrivateChatHandler.php');
 include_once(APPLICATION_PATH . '/modules/cli/handlers/GameHandler.php');
 include_once(APPLICATION_PATH . '/modules/cli/handlers/SetupHandler.php');
 include_once(APPLICATION_PATH . '/modules/cli/handlers/NewHandler.php');
+include_once(APPLICATION_PATH . '/modules/cli/handlers/EditorHandler.php');
 
 $loop = \React\EventLoop\Factory::create();
 
@@ -49,6 +50,7 @@ $router->addRoute('#^/chat$#i', new Cli_PrivateChatHandler($logger));
 $router->addRoute('#^/game$#i', new Cli_GameHandler($logger));
 $router->addRoute('#^/setup$#i', new Cli_SetupHandler($logger));
 $router->addRoute('#^/new$#i', new Cli_NewHandler($logger));
+$router->addRoute('#^/editor$#i', new Cli_EditorHandler($logger));
 
 // Bind the server
 $server->bind();
