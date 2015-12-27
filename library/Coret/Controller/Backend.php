@@ -18,12 +18,12 @@ abstract class Coret_Controller_Backend extends Zend_Controller_Action
         $this->_helper->layout->setLayout('admin');
 
         $this->view->headLink()->prependStylesheet($this->view->baseUrl('/css/core-t_admin.css'));
-        $this->view->headLink()->prependStylesheet($this->view->baseUrl('/css/sceditor/themes/default.min.css'));
+//        $this->view->headLink()->prependStylesheet($this->view->baseUrl('/css/sceditor/themes/default.min.css'));
 
         $this->view->jquery();
 
         $this->view->headScript()->appendFile($this->view->baseUrl('/js/core-t_admin.js'));
-        $this->view->headScript()->appendFile($this->view->baseUrl('/js/jquery.sceditor.min.js'));
+//        $this->view->headScript()->appendFile($this->view->baseUrl('/js/jquery.sceditor.min.js'));
 
         $this->view->headMeta()->appendHttpEquiv('Content-Language', 'pl');
 

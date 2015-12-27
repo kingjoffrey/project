@@ -15,7 +15,7 @@ abstract class Coret_Controller_AuthenticateBackend extends Coret_Controller_Aut
 
     public function logoutAction()
     {
-        parent::logout();
+        parent::logoutAction();
         $this->redirect('/admin/login');
     }
 

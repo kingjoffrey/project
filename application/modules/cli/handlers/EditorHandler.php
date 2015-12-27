@@ -12,6 +12,13 @@ use Devristo\Phpws\Server\UriHandler\WebSocketUriHandler;
  */
 class Cli_EditorHandler extends WebSocketUriHandler
 {
+    private $_db;
+
+    public function __construct($logger)
+    {
+        $this->_db = Cli_Model_Database::getDb();
+        parent::__construct($logger);
+    }
 
     public function onMessage(WebSocketTransportInterface $user, WebSocketMessageInterface $msg)
     {
@@ -21,17 +28,15 @@ class Cli_EditorHandler extends WebSocketUriHandler
             print_r($dataIn);
         }
 
-        $db = Cli_Model_Database::getDb();
-
         if ($dataIn['type'] == 'open') {
             if (!isset($dataIn['playerId'])) {
                 $this->sendError($user, 'Brak "playerId"');
                 return;
             }
 
-            $mWebSocket = new Application_Model_Websocket($dataIn['playerId'], $db);
+            $mWebSocket = new Application_Model_Websocket($dataIn['playerId'], $this->_db);
 
-            if (!$mWebSocket->checkAccessKey($dataIn['accessKey'], $db)) {
+            if (!$mWebSocket->checkAccessKey($dataIn['accessKey'], $this->_db)) {
                 throw new Exception('Brak uprawnień!');
             }
 
@@ -56,15 +61,15 @@ class Cli_EditorHandler extends WebSocketUriHandler
                 break;
 
             case 'castleAdd':
-                $mCastle = new Application_Model_Castle($db);
-                $mMapCastles = new Application_Model_MapCastles($dataIn['mapId'], $db);
+                $mCastle = new Application_Model_Castle($this->_db);
+                $mMapCastles = new Application_Model_MapCastles($dataIn['mapId'], $this->_db);
                 $mapCastlesIds = $mMapCastles->getMapCastlesIds();
                 $castleId = $mCastle->getNextFreeCastleId($mapCastlesIds);
                 $mMapCastles->add($dataIn['x'], $dataIn['y'], $castleId);
                 break;
 
             case 'castleRemove':
-                $mMapCastles = new Application_Model_MapCastles($dataIn['mapId'], $db);
+                $mMapCastles = new Application_Model_MapCastles($dataIn['mapId'], $this->_db);
                 $mMapCastles->remove($dataIn['x'], $dataIn['y']);
                 break;
         }
@@ -78,21 +83,5 @@ class Cli_EditorHandler extends WebSocketUriHandler
 
         $mWebSocket = new Application_Model_Websocket($user->parameters['playerId'], $this->_db);
         $mWebSocket->disconnect($user->parameters['accessKey']);
-
-        $token = array(
-            'type' => 'close',
-            'id' => $user->parameters['playerId']
-        );
-
-        foreach ($this->getFriends($user->parameters['playerId']) AS $friend) {
-            foreach ($this->getUsers() as $u) {
-                if ($friend['friendId'] == $u->parameters['playerId']) {
-                    $this->sendToUser($u, $token);
-                }
-            }
-        }
-
-        $this->removeFriends($user->parameters['playerId']);
-        unset($this->_users[$user->parameters['playerId']]);
     }
 }

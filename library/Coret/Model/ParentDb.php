@@ -17,6 +17,8 @@ abstract class Coret_Model_ParentDb extends Coret_Db_Table_Abstract
     protected $_adminId = 'adminId';
     protected $_sequence = '';
 
+    protected $_select;
+
     /**
      * @param array $params
      * @param int $id
@@ -130,8 +132,8 @@ abstract class Coret_Model_ParentDb extends Coret_Db_Table_Abstract
 
             $mThumb->createThumbnail($this->_columns[$k]['resize']['width'], $this->_columns[$k]['resize']['height'], $k);
 
-            if (isset($this->_params['width']) && isset($this->_params['height'])) {
-                $mThumb->createThumbnail($this->_params['width'], $this->_params['height'], 'big_' . $k);
+            if (isset($this->_columns[$k]['big']['width']) && isset($this->_columns[$k]['big']['height'])) {
+                $mThumb->createThumbnail($this->_columns[$k]['big']['width'], $this->_columns[$k]['big']['height'], 'big_' . $k);
             }
 
             $dane['data'][$k] = $mThumb->getType();
@@ -201,25 +203,30 @@ abstract class Coret_Model_ParentDb extends Coret_Db_Table_Abstract
 
     /**
      * @param array $columns
-     * @return mixed
      */
-    protected function getSelect(array $columns = array(), array $columns_lang = array())
+    protected function prepareSelect(array $columns = array(), array $columns_lang = array())
     {
-        $select = $this->_db->select();
+        $this->_select = $this->_db->select();
 
         if ($columns) {
-            $select->from($this->_name, $columns);
+            $this->_select->from($this->_name, $columns);
         } else {
-            $select->from($this->_name);
+            $this->_select->from($this->_name);
         }
 
-        $select = $this->addSelectJoin($select, $columns_lang);
-        $select = $this->addSelectWhereLang($select);
-        $select = $this->addSelectWhere($select);
-        $select = $this->addSelectGroup($select);
-        $select = $this->addSelectOrder($select);
+        $this->addSelectJoin($columns_lang);
+        $this->addSelectWhereLang();
+        $this->addSelectWhere();
+        $this->addSelectGroup();
+        $this->addSelectOrder();
+    }
 
-        return $select;
+    /**
+     * @return mixed
+     */
+    protected function getSelect()
+    {
+        return $this->_select;
     }
 
     /**
@@ -229,8 +236,8 @@ abstract class Coret_Model_ParentDb extends Coret_Db_Table_Abstract
      */
     public function getList(array $columns = array(), array $columns_lang = array())
     {
-        $select = $this->getSelect($columns, $columns_lang);
-        return $this->_db->fetchAll($select);
+        $this->prepareSelect($columns, $columns_lang);
+        return $this->_db->fetchAll($this->_select);
     }
 
     /**
@@ -267,8 +274,8 @@ abstract class Coret_Model_ParentDb extends Coret_Db_Table_Abstract
      */
     public function getPagination(array $columns = array(), array $columns_lang = array())
     {
-        $select = $this->getSelect($columns, $columns_lang);
-        return new Zend_Paginator_Adapter_DbSelect($select);
+        $this->prepareSelect($columns, $columns_lang);
+        return new Zend_Paginator_Adapter_DbSelect($this->_select);
     }
 
     /**
@@ -286,15 +293,21 @@ abstract class Coret_Model_ParentDb extends Coret_Db_Table_Abstract
             throw new Zend_Exception('No element ID');
         }
 
-        $select = $this->_db->select()
-            ->from($this->_name)
-            ->where($this->_name . ' . ' . $this->_db->quoteIdentifier($this->_primary) . ' = ?', $id);
+        if ($id == -1) {
+            $this->_select = $this->_db->select()
+                ->from($this->_name)
+                ->limit(1);
+        } else {
+            $this->_select = $this->_db->select()
+                ->from($this->_name)
+                ->where($this->_name . ' . ' . $this->_db->quoteIdentifier($this->_primary) . ' = ?', $id);
+        }
 
-        $select = $this->addSelectWhereLang($select);
-        $select = $this->addSelectWhere($select);
-        $select = $this->addSelectJoin($select);
+        $this->addSelectWhereLang();
+        $this->addSelectWhere();
+        $this->addSelectJoin();
 
-        $result = $this->_db->fetchRow($select);
+        $result = $this->_db->fetchRow($this->_select);
         if ($result) {
             if (isset($result['adminId'])) {
                 $adminClassName = Zend_Registry::get('config')->adminClassName;
@@ -315,32 +328,31 @@ abstract class Coret_Model_ParentDb extends Coret_Db_Table_Abstract
      * @param array $columns_lang
      * @return mixed
      */
-    protected function addSelectJoin($select, $columns_lang = array())
+    protected function addSelectJoin($columns_lang = array())
     {
         if ($columns_lang) {
-            return $select->join($this->_name . '_Lang', $this->_name . ' . ' . $this->_db->quoteIdentifier($this->_primary) . ' = ' . $this->_db->quoteIdentifier($this->_name . '_Lang') . ' . ' . $this->_db->quoteIdentifier($this->_primary), $columns_lang);
+            return $this->_select->join($this->_name . '_Lang', $this->_name . ' . ' . $this->_db->quoteIdentifier($this->_primary) . ' = ' . $this->_db->quoteIdentifier($this->_name . '_Lang') . ' . ' . $this->_db->quoteIdentifier($this->_primary), $columns_lang);
         } elseif (isset($this->_columns_lang) && $this->_columns_lang) {
             $columns_lang = array();
             foreach (array_keys($this->_columns_lang) as $column) {
                 $columns_lang[] = $column;
             }
-            return $select->join($this->_name . '_Lang', $this->_name . ' . ' . $this->_db->quoteIdentifier($this->_primary) . ' = ' . $this->_db->quoteIdentifier($this->_name . '_Lang') . ' . ' . $this->_db->quoteIdentifier($this->_primary), $columns_lang);
+            return $this->_select->join($this->_name . '_Lang', $this->_name . ' . ' . $this->_db->quoteIdentifier($this->_primary) . ' = ' . $this->_db->quoteIdentifier($this->_name . '_Lang') . ' . ' . $this->_db->quoteIdentifier($this->_primary), $columns_lang);
         }
-        return $select;
     }
 
     /**
      * @param $select
      * @return mixed
      */
-    protected function addSelectWhere($select)
+    protected function addSelectWhere()
     {
         if (isset($this->_params['controller']) && $this->_params['controller']) {
-            $select->where($this->_name . ' . controller = ?', $this->_params['controller']);
+            $this->_select->where($this->_name . ' . controller = ?', $this->_params['controller']);
         }
 
         if (isset($this->_params['action']) && $this->_params['action']) {
-            $select->where($this->_name . ' . action = ?', $this->_params['action']);
+            $this->_select->where($this->_name . ' . action = ?', $this->_params['action']);
         }
 
         $search = Zend_Controller_Front::getInstance()->getRequest()->getParam('search');
@@ -355,24 +367,20 @@ abstract class Coret_Model_ParentDb extends Coret_Db_Table_Abstract
                 }
             }
             if ($whereString) {
-                $select->where($whereString);
+                $this->_select->where($whereString);
             }
         }
-
-        return $select;
     }
 
     /**
      * @param $select
      * @return mixed
      */
-    protected function addSelectWhereLang($select)
+    protected function addSelectWhereLang()
     {
         if (isset($this->_columns_lang) && $this->_columns_lang && isset($this->_params['id_lang']) && $this->_params['id_lang']) {
-            $select->where($this->_db->quoteIdentifier($this->_name . '_Lang') . ' . id_lang = ?', $this->_params['id_lang']);
+            $this->_select->where($this->_db->quoteIdentifier($this->_name . '_Lang') . ' . id_lang = ?', $this->_params['id_lang']);
         }
-
-        return $select;
     }
 
     /**
@@ -405,35 +413,34 @@ abstract class Coret_Model_ParentDb extends Coret_Db_Table_Abstract
      * @param $select
      * @return mixed
      */
-    protected function addSelectGroup($select)
+    protected function addSelectGroup()
     {
-        return $select;
     }
 
     /**
      * @param $select
      * @return mixed
      */
-    protected function addSelectOrder($select)
+    protected function addSelectOrder()
     {
         $sort = Zend_Controller_Front::getInstance()->getRequest()->getParam('sort');
         $order = Zend_Controller_Front::getInstance()->getRequest()->getParam('order');
 
         if ($sort) {
             if ($order) {
-                $select->order($sort . ' ' . $order);
+                $this->_select->order($sort . ' ' . $order);
             } else {
-                $select->order($sort);
+                $this->_select->order($sort);
             }
         } elseif (isset($this->_sort) && $this->_sort) {
             if (isset($this->_order) && $this->_order) {
-                $select->order($this->_sort . ' ' . $this->_order);
+                $this->_select->order($this->_sort . ' ' . $this->_order);
             } else {
-                $select->order($this->_sort);
+                $this->_select->order($this->_sort);
             }
+        } else {
+            $this->_select->order($this->_primary);
         }
-
-        return $select;
     }
 
     /**

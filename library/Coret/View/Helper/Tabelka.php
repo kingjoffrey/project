@@ -109,6 +109,13 @@ class Coret_View_Helper_Tabelka extends Zend_View_Helper_Abstract
                 case 'date':
                     $content .= '<td class="center' . $cssClass . '">' . Coret_View_Helper_Formatuj::date($row[$key]) . '</td>';
                     break;
+                case 'image':
+                    if ($row[$key]) {
+                        $content .= '<td class="image' . $cssClass . '"><img src="../upload/image_' . $id . '.' . $row[$key] . '"></td>';
+                    }else{
+                        $content .= '<td class="' . $cssClass . '"></td>';
+                    }
+                    break;
                 case 'select':
                     $name = $controller . ucfirst($key);
                     $content .= '<td class="center' . $cssClass . '">' . Admin_View_Helper_Data::$name($row[$key]) . '</td>';

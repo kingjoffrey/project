@@ -18,8 +18,10 @@ class Application_Model_Castle extends Coret_Db_Table_Abstract
     public function getNextFreeCastleId($ids)
     {
         $select = $this->_db->select()
-            ->from($this->_name, 'min("castleId")')
-            ->where($this->_db->quoteIdentifier('castleId') . ' NOT IN (?)', new Zend_Db_Expr($ids));
+            ->from($this->_name, 'min("castleId")');
+        if ($ids) {
+            $select->where($this->_db->quoteIdentifier('castleId') . ' NOT IN (?)', new Zend_Db_Expr($ids));
+        }
 
         return $this->selectOne($select);
     }
