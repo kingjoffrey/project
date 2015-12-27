@@ -2,6 +2,7 @@
 use Devristo\Phpws\Messaging\WebSocketMessageInterface;
 use Devristo\Phpws\Protocol\WebSocketTransportInterface;
 use Devristo\Phpws\Server\UriHandler\WebSocketUriHandler;
+
 /**
  * This resource handler will respond to all messages sent to /public on the socketserver below
  *
@@ -30,15 +31,12 @@ class Cli_EditorHandler extends WebSocketUriHandler
 
             $mWebSocket = new Application_Model_Websocket($dataIn['playerId'], $db);
 
-            if (!$mWebSocket->auth($dataIn['accessKey'], $dataIn['websocketId'])) {
-                $this->sendError($user, 'Brak uprawnień!');
-                return;
+            if (!$mWebSocket->checkAccessKey($dataIn['accessKey'], $db)) {
+                throw new Exception('Brak uprawnień!');
             }
 
-            $user->parameters = array(
-                'websocketId' => $dataIn['websocketId'],
-                'playerId' => $dataIn['playerId']
-            );
+            $user->parameters['playerId'] = $dataIn['playerId'];
+            $user->parameters['accessKey'] = $dataIn['accessKey'];
 
             return;
         }
@@ -74,10 +72,27 @@ class Cli_EditorHandler extends WebSocketUriHandler
 
     public function onDisconnect(WebSocketTransportInterface $user)
     {
-        if ($user->parameters['playerId'] && $user->parameters['websocketId']) {
-            $db = Cli_Model_Database::getDb();
-            $mWebSocket = new Application_Model_Websocket($user->parameters['playerId'], $db);
-            $mWebSocket->disconnect($user->parameters['websocketId']);
+        if (!isset($user->parameters['playerId'])) {
+            return;
         }
+
+        $mWebSocket = new Application_Model_Websocket($user->parameters['playerId'], $this->_db);
+        $mWebSocket->disconnect($user->parameters['accessKey']);
+
+        $token = array(
+            'type' => 'close',
+            'id' => $user->parameters['playerId']
+        );
+
+        foreach ($this->getFriends($user->parameters['playerId']) AS $friend) {
+            foreach ($this->getUsers() as $u) {
+                if ($friend['friendId'] == $u->parameters['playerId']) {
+                    $this->sendToUser($u, $token);
+                }
+            }
+        }
+
+        $this->removeFriends($user->parameters['playerId']);
+        unset($this->_users[$user->parameters['playerId']]);
     }
 }
