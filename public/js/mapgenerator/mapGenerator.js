@@ -1,4 +1,4 @@
-var mapGenerator = new function () {
+var MapGenerator = new function () {
     var DATA_SIZE = 1025,
         group = null,
         map = null,
@@ -8,105 +8,124 @@ var mapGenerator = new function () {
         hills = 25,
         mountains = 4,
         snow = 1,
-        pixelCanvas = null,
-        brush = null
+        pixelCanvas = document.createElement("canvas"),
+        brush = null,
+        init = 0
 
+    this.getImage = function () {
+        return pixelCanvas.toDataURL('image/png')
+    }
+    this.getInit = function () {
+        return init
+    }
     this.init = function () {
-        var stage = new Kinetic.Stage({
-            container: 'board',
-            width: $(window).width(),
-            height: $(window).height()
-        })
+        init = 1
+        //var stage = new Kinetic.Stage({
+        //    container: 'board',
+        //    width: $(window).width(),
+        //    height: $(window).height()
+        //})
 
-        var layer = new Kinetic.Layer()
+        var layer = new Kinetic.Layer(),
+            ctx = pixelCanvas.getContext("2d")
 
-        this.pixelCanvas = document.createElement("canvas");
-        var ctx = this.pixelCanvas.getContext("2d");
-        this.pixelCanvas.width = mapWidth
-        this.pixelCanvas.height = mapHeight
-        this.pixelCanvas.pixels = []
-        this.pixelCanvas.setPixel = function (x, y, color) {
+        this.resetPixelCanvas()
+        pixelCanvas.setPixel = function (x, y, color) {
             ctx.fillStyle = color;
             ctx.fillRect(x, y, 1, 1);
         }
+        this.generate()
 
-        var imgURL = '/img/maps/' + mapId + '.png'
+        //var imgURL = '/img/maps/' + mapId + '.png'
 
-        $.get(imgURL)
-            .done(function () {
-                var img = new Image()
-                img.src = imgURL
-                img.onload = function () {
-                    ctx.drawImage(img, 0, 0, this.width, this.height, 0, 0, mapWidth, mapHeight)
-                    Editor.group.draw()
-                }
-            }).fail(function () {
-            console.log('Image doesn\'t exist - do something else.')
-        })
+        //$.get(imgURL)
+        //    .done(function () {
+        //        console.log('aaa')
+        //        var img = new Image()
+        //        img.src = imgURL
+        //        img.onload = function () {
+        //            console.log('bbb')
+        //            ctx.drawImage(img, 0, 0, this.width, this.height, 0, 0, DATA_SIZE, DATA_SIZE)
+        //            //Editor.group.draw()
+        //        }
+        //    }).fail(function () {
+        //    console.log('Image doesn\'t exist - do something else.')
+        //})
 
-        this.group = new Kinetic.Group({
-            x: 0,
-            y: 0,
-            width: mapWidth,
-            height: mapHeight,
-            draggable: true
-        })
+        //group = new Kinetic.Group({
+        //    x: 0,
+        //    y: 0,
+        //    width: DATA_SIZE,
+        //    height: DATA_SIZE,
+        //    draggable: true
+        //})
 
-        this.group.on('mouseup touchend', function (e) {
-            Editor.click(e)
-        })
+        //map = new Kinetic.Image({
+        //   x: 0,
+        //   y: 0,
+        //   image: pixelCanvas
+        //})
 
-        this.map = new Kinetic.Image({
-            x: 0,
-            y: 0,
-            image: this.pixelCanvas
-        })
+        //group.add(map)
 
-        this.group.add(this.map)
-
-        for (var castleId in mapCastles) {
-            Castle.create(mapCastles[castleId].x * 40, mapCastles[castleId].y * 40)
-        }
-
-        layer.add(this.group)
-        stage.add(layer)
+        //layer.add(group)
+        //stage.add(layer)
     }
     this.resetPixelCanvas = function () {
-        this.pixelCanvas.width = this.DATA_SIZE
-        this.pixelCanvas.height = this.DATA_SIZE
-        this.pixelCanvas.pixels = []
-    }
-    this.click = function (e) {
-        if (!this.brush) {
-            return
-        }
-
-        if (e.which == 3) {
-            this.brush = null
-            return
-        }
-
-        switch (this.brush) {
-            case 'castle':
-                var x = parseInt((e.x - this.group.getPosition().x) / 40)
-                var X = x * 40
-                var y = parseInt((e.y - this.group.getPosition().y) / 40)
-                var Y = y * 40
-
-                Castle.create(X, Y, x, y)
-                break;
-        }
+        pixelCanvas.width = DATA_SIZE
+        pixelCanvas.height = DATA_SIZE
+        pixelCanvas.pixels = []
     }
     this.generate = function () {
-        var pixels = DiamondSquare.make(this.DATA_SIZE)
+        var pixels = DiamondSquare.make(DATA_SIZE)
         var keys = this.splitTerrain(pixels)
         if (keys['max'] < 0) {
             console.log('max < 0')
             return
         }
 
-        data = this.clearBorders(pixels, keys)
-        Gui.render(pixels, data, keys)
+        this.render(pixels, keys)
+    }
+    this.render = function (pixels, keys) {
+        var data = this.clearBorders(pixels, keys),
+            minus = {
+                water: 139 - parseInt(keys.water),
+                grass: 220 - parseInt(keys.grass),
+                hills: 240 - parseInt(keys.hills),
+                mountains: 45 - parseInt(keys.mountains),
+                snow: 190 - parseInt(keys.snow)
+            }
+        //var shadow = 0
+
+        for (var i in data) {
+            for (var j in data[i]) {
+                switch (data[i][j]) {
+                    case 1:
+                        var color = '#0000' + (parseInt(pixels[i][j]) + minus.water).toString(16)
+                        break
+                    case 3:
+                        var rgb = (256 - parseInt(pixels[i][j]) - minus.grass).toString(16)
+                        var color = '#00' + rgb + '00'
+                        break
+                    case 4:
+                        var rgb = (256 - parseInt(pixels[i][j]) - minus.hills).toString(16)
+                        var color = '#' + rgb + rgb + '00'
+                        break
+                    case 5:
+                        var rgb = (parseInt(pixels[i][j]) + minus.mountains).toString(16)
+                        var color = '#' + rgb + rgb + rgb
+                        break
+                    case 6:
+                        var rgb = (parseInt(pixels[i][j]) + minus.snow).toString(16)
+                        var color = '#' + rgb + rgb + rgb
+                        break
+                }
+
+                pixelCanvas.setPixel(i, j, color)
+            }
+        }
+
+        WebSocketEditor.save()
     }
     this.grid = function (size) {
         var grid = []
@@ -215,17 +234,17 @@ var mapGenerator = new function () {
             for (var j = -1; j <= 1; j++) {
 
                 var checkedX = x + i
-                if (checkedX > this.DATA_SIZE - 1) {
+                if (checkedX > DATA_SIZE - 1) {
                     checkedX = 0
                 } else if (checkedX < 0) {
-                    checkedX = this.DATA_SIZE - 1
+                    checkedX = DATA_SIZE - 1
                 }
 
                 var checkedY = y + j
-                if (checkedY > this.DATA_SIZE - 1) {
+                if (checkedY > DATA_SIZE - 1) {
                     checkedY = 0
                 } else if (checkedY < 0) {
-                    checkedY = this.DATA_SIZE - 1
+                    checkedY = DATA_SIZE - 1
                 }
 
                 if (data[checkedX][checkedY] == terrainType) {
@@ -253,16 +272,16 @@ var mapGenerator = new function () {
             yPlusOne = y + 1
 
         if (xMinusOne < 0) {
-            xMinusOne = this.DATA_SIZE - 1
+            xMinusOne = DATA_SIZE - 1
         }
-        if (xPlusOne > this.DATA_SIZE - 1) {
+        if (xPlusOne > DATA_SIZE - 1) {
             xPlusOne = 0
         }
 
         if (yMinusOne < 0) {
-            yMinusOne = this.DATA_SIZE - 1
+            yMinusOne = DATA_SIZE - 1
         }
-        if (yPlusOne > this.DATA_SIZE - 1) {
+        if (yPlusOne > DATA_SIZE - 1) {
             yPlusOne = 0
         }
 

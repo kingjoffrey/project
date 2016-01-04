@@ -31,7 +31,7 @@ var Gui = {
 
     },
     render: function (pixels, data, keys) {
-        Editor.resetPixelCanvas()
+        //Editor.resetPixelCanvas()
 
         var minus = {
             water: 139 - parseInt(keys.water),
@@ -40,7 +40,7 @@ var Gui = {
             mountains: 45 - parseInt(keys.mountains),
             snow: 190 - parseInt(keys.snow)
         }
-        var shadow = 0
+        //var shadow = 0
 
         for (var i in data) {
             for (var j in data[i]) {
@@ -69,7 +69,7 @@ var Gui = {
                 Editor.pixelCanvas.setPixel(i, j, color)
             }
         }
-        Editor.map.setSize({width: mapWidth, height: mapHeight})
-        Editor.map.draw()
+        //Editor.map.setSize({width: mapWidth, height: mapHeight})
+        //Editor.map.draw()
     }
 }

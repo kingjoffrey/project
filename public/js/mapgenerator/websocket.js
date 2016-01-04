@@ -39,37 +39,22 @@ var WebSocketEditor = new function () {
         var token = {
             type: 'save',
             mapId: mapId,
-            map: Editor.pixelCanvas.toDataURL('image/png')
+            map: MapGenerator.getImage()
         }
 
         ws.send(JSON.stringify(token))
     }
-    this.castleAdd = function (x, y) {
-        var token = {
-            type: 'castleAdd',
-            mapId: mapId,
-            x: x,
-            y: y
-        }
 
-        ws.send(JSON.stringify(token))
-    }
-    this.castleRemove = function (x, y) {
-        var token = {
-            type: 'castleRemove',
-            mapId: mapId,
-            x: x,
-            y: y
-        }
-
-        ws.send(JSON.stringify(token))
-    }
     this.init = function () {
         ws = new WebSocket(wsURL + '/editor')
 
         ws.onopen = function () {
             closed = false
             open()
+
+            if (!MapGenerator.getInit()) {
+                MapGenerator.init()
+            }
         }
         ws.onmessage = function (e) {
             onMessage($.parseJSON(e.data))

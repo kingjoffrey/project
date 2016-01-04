@@ -5,3 +5,7 @@
 </div>
 <a class="button"
    href="<?php echo $this->url(array('controller' => 'editor', 'action' => 'index', 'mapId' => null)) ?>">&laquo; <?php echo $this->translate('Back') ?></a>
+<?php $this->headScript()->captureStart() ?>
+var mapId = <?php echo $this->mapId ?>
+<?php $this->headScript()->captureEnd() ?>
+
