@@ -21,21 +21,6 @@ var WebSocketEditor = new function () {
             ws.send(JSON.stringify(token));
         }
     this.save = function () {
-        /*
-         * since the stage toDataURL() method is asynchronous, we need
-         * to provide a callback
-         */
-//        stage.toDataURL({
-//          callback: function(dataUrl) {
-        /*
-         * here you can do anything you like with the data url.
-         * In this tutorial we'll just open the url with the browser
-         * so that you can see the result as an image
-         */
-//            window.open(dataUrl);
-//          }
-//        })
-
         var token = {
             type: 'save',
             mapId: mapId,

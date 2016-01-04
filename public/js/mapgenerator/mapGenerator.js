@@ -1,10 +1,6 @@
 var MapGenerator = new function () {
     var DATA_SIZE = 1025,
-        group = null,
-        map = null,
-        pixels = [],
         pixelCanvas = document.createElement("canvas"),
-        brush = null,
         init = 0
 
     this.getImage = function () {
@@ -15,55 +11,14 @@ var MapGenerator = new function () {
     }
     this.init = function () {
         init = 1
-        //var stage = new Kinetic.Stage({
-        //    container: 'board',
-        //    width: $(window).width(),
-        //    height: $(window).height()
-        //})
 
-        var layer = new Kinetic.Layer(),
-            ctx = pixelCanvas.getContext("2d")
+        var ctx = pixelCanvas.getContext("2d")
 
         resetPixelCanvas()
         pixelCanvas.setPixel = function (x, y, color) {
             ctx.fillStyle = color;
             ctx.fillRect(x, y, 1, 1);
         }
-
-        //var imgURL = '/img/maps/' + mapId + '.png'
-        //
-        //$.get(imgURL)
-        //    .done(function () {
-        //        console.log('aaa')
-        //        var img = new Image()
-        //        img.src = imgURL
-        //        img.onload = function () {
-        //            console.log('bbb')
-        //            ctx.drawImage(img, 0, 0, this.width, this.height, 0, 0, DATA_SIZE, DATA_SIZE)
-        //            //Editor.group.draw()
-        //        }
-        //    }).fail(function () {
-        //    console.log('Image doesn\'t exist - do something else.')
-        //})
-
-        //group = new Kinetic.Group({
-        //    x: 0,
-        //    y: 0,
-        //    width: DATA_SIZE,
-        //    height: DATA_SIZE,
-        //    draggable: true
-        //})
-        //
-        //map = new Kinetic.Image({
-        //    x: 0,
-        //    y: 0,
-        //    image: pixelCanvas
-        //})
-        //
-        //group.add(map)
-        //layer.add(group)
-        //stage.add(layer)
-
         generate()
     }
     var resetPixelCanvas = function () {
