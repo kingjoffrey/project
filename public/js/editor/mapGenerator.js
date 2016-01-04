@@ -1,16 +1,17 @@
-var Editor = {
-    DATA_SIZE: 1025,
-    group: null,
-    map: null,
-    pixels: [],
-    water: 10,
-    grass: 60,
-    hills: 25,
-    mountains: 4,
-    snow: 1,
-    pixelCanvas: null,
-    brush: null,
-    init: function () {
+var mapGenerator = new function () {
+    var DATA_SIZE = 1025,
+        group = null,
+        map = null,
+        pixels = [],
+        water = 10,
+        grass = 60,
+        hills = 25,
+        mountains = 4,
+        snow = 1,
+        pixelCanvas = null,
+        brush = null
+
+    this.init = function () {
         var stage = new Kinetic.Stage({
             container: 'board',
             width: $(window).width(),
@@ -40,8 +41,8 @@ var Editor = {
                     Editor.group.draw()
                 }
             }).fail(function () {
-                console.log('Image doesn\'t exist - do something else.')
-            })
+            console.log('Image doesn\'t exist - do something else.')
+        })
 
         this.group = new Kinetic.Group({
             x: 0,
@@ -69,13 +70,13 @@ var Editor = {
 
         layer.add(this.group)
         stage.add(layer)
-    },
-    resetPixelCanvas: function () {
+    }
+    this.resetPixelCanvas = function () {
         this.pixelCanvas.width = this.DATA_SIZE
         this.pixelCanvas.height = this.DATA_SIZE
         this.pixelCanvas.pixels = []
-    },
-    click: function (e) {
+    }
+    this.click = function (e) {
         if (!this.brush) {
             return
         }
@@ -95,8 +96,8 @@ var Editor = {
                 Castle.create(X, Y, x, y)
                 break;
         }
-    },
-    generate: function () {
+    }
+    this.generate = function () {
         var pixels = DiamondSquare.make(this.DATA_SIZE)
         var keys = this.splitTerrain(pixels)
         if (keys['max'] < 0) {
@@ -106,8 +107,8 @@ var Editor = {
 
         data = this.clearBorders(pixels, keys)
         Gui.render(pixels, data, keys)
-    },
-    grid: function (size) {
+    }
+    this.grid = function (size) {
         var grid = []
         for (var y = 0; y < size; y++) {
             data[y] = []
@@ -116,8 +117,8 @@ var Editor = {
                     data[y][x]
             }
         }
-    },
-    splitTerrain: function (data) {
+    }
+    this.splitTerrain = function (data) {
         var valueCountMappings = [],
             keys = {},
             counter = 0
@@ -164,8 +165,8 @@ var Editor = {
         }
 
         return keys
-    },
-    clearBorders: function (pixels, keys) {
+    }
+    this.clearBorders = function (pixels, keys) {
         var data = {}
 
         for (var i in pixels) {
@@ -202,8 +203,8 @@ var Editor = {
         }
 
         return data
-    },
-    removeDots: function (x, y, data) {
+    }
+    this.removeDots = function (x, y, data) {
         var terrainType = data[x][y],
             matchCount = 0,
             otherTerrainType = 0,
@@ -240,8 +241,8 @@ var Editor = {
         }
 
         return data
-    },
-    replacePixelsBetween: function (x, y, data) {
+    }
+    this.replacePixelsBetween = function (x, y, data) {
         var terrainType = data[x][y],
             x = parseInt(x),
             y = parseInt(y)

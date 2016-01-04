@@ -15,7 +15,13 @@ class EditorController extends Game_Controller_Gui
             if ($this->view->form->isValid($this->_request->getPost())) {
                 $mMap = new Application_Model_Map ();
                 $mapId = $mMap->createMap($this->view->form->getValues(), Zend_Auth::getInstance()->getIdentity()->playerId);
-                $this->redirect($this->view->url(array('action' => 'edit', 'mapId' => $mapId)));
+//                $this->redirect($this->view->url(array('action' => 'edit', 'mapId' => $mapId)));
+
+                $this->_helper->layout->setLayout('generatemap');
+
+                $this->view->headScript()->appendFile('/js/kinetic-v5.1.0.min.js');
+                $this->view->headScript()->appendFile('/js/editor/diamondsquare.js?v=' . Zend_Registry::get('config')->version);
+                $this->view->headScript()->appendFile('/js/editor/mapGenerator.js?v=' . Zend_Registry::get('config')->version);
             }
         }
     }
@@ -25,10 +31,7 @@ class EditorController extends Game_Controller_Gui
         $this->_helper->layout->setLayout('editor');
         $this->view->headLink()->appendStylesheet($this->view->baseUrl() . '/css/editor.css?v=' . Zend_Registry::get('config')->version);
 
-        $this->view->headScript()->appendFile('/js/kinetic-v5.1.0.min.js');
         $this->view->headScript()->appendFile('/js/editor/castle.js?v=' . Zend_Registry::get('config')->version);
-        $this->view->headScript()->appendFile('/js/editor/diamondsquare.js?v=' . Zend_Registry::get('config')->version);
-        $this->view->headScript()->appendFile('/js/editor/editor.js?v=' . Zend_Registry::get('config')->version);
         $this->view->headScript()->appendFile('/js/editor/gui.js?v=' . Zend_Registry::get('config')->version);
         $this->view->headScript()->appendFile('/js/editor/init.js?v=' . Zend_Registry::get('config')->version);
         $this->view->headScript()->appendFile('/js/editor/websocket.js?v=' . Zend_Registry::get('config')->version);
