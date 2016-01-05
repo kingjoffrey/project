@@ -8,6 +8,7 @@ var Editor = new function () {
     this.init = function () {
         init = 1
         initButtons()
+        Scene.init()
     }
     var initButtons = function () {
         $('#castle').click(function (e) {
