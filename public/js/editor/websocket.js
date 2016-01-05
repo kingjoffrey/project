@@ -20,15 +20,6 @@ var WebSocketEditor = new function () {
 
             ws.send(JSON.stringify(token));
         }
-    this.save = function () {
-        var token = {
-            type: 'save',
-            mapId: mapId,
-            map: MapGenerator.getImage()
-        }
-
-        ws.send(JSON.stringify(token))
-    }
 
     this.init = function () {
         ws = new WebSocket(wsURL + '/editor')
@@ -37,8 +28,8 @@ var WebSocketEditor = new function () {
             closed = false
             open()
 
-            if (!MapGenerator.getInit()) {
-                MapGenerator.init()
+            if (!Editor.getInit()) {
+                Editor.init()
             }
         }
         ws.onmessage = function (e) {
