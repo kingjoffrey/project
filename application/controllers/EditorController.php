@@ -30,13 +30,26 @@ class EditorController extends Game_Controller_Gui
 
     public function editAction()
     {
+        $version = Zend_Registry::get('config')->version;
+
         $this->_helper->layout->setLayout('editor');
         $this->view->headLink()->appendStylesheet($this->view->baseUrl() . '/css/editor.css?v=' . Zend_Registry::get('config')->version);
 
-        $this->view->headScript()->appendFile('/js/editor/castle.js?v=' . Zend_Registry::get('config')->version);
-        $this->view->headScript()->appendFile('/js/editor/gui.js?v=' . Zend_Registry::get('config')->version);
-        $this->view->headScript()->appendFile('/js/editor/init.js?v=' . Zend_Registry::get('config')->version);
-        $this->view->headScript()->appendFile('/js/editor/websocket.js?v=' . Zend_Registry::get('config')->version);
+        $this->view->headScript()->appendFile('/js/Tween.js');
+        $this->view->headScript()->appendFile('/js/three.js');
+        $this->view->headScript()->appendFile('/js/Detector.js');
+        $this->view->headScript()->appendFile('/js/geometries/TextGeometry.js');
+        $this->view->headScript()->appendFile('/js/utils/FontUtils.js');
+        $this->view->headScript()->appendFile('/fonts/helvetiker_regular.typeface.js');
+
+        $this->view->headScript()->appendFile('/js/editor/castle.js?v=' . $version);
+        $this->view->headScript()->appendFile('/js/editor/editor.js?v=' . $version);
+        $this->view->headScript()->appendFile('/js/editor/scene.js?v=' . $version);
+        $this->view->headScript()->appendFile('/js/editor/init.js?v=' . $version);
+        $this->view->headScript()->appendFile('/js/editor/websocket.js?v=' . $version);
+
+        $this->view->headScript()->appendFile('/js/game/picker.js?v=' . $version);
+        $this->view->headScript()->appendFile('/js/game/ground.js?v=' . $version);
 
         $mapId = $this->_request->getParam('mapId');
 
