@@ -9,6 +9,7 @@ var Editor = new function () {
         init = 1
         initButtons()
         Scene.init()
+        Ground.init(mapWidth, mapHeight, '/' + mapId)
     }
     var initButtons = function () {
         $('#castle').click(function (e) {

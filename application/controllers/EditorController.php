@@ -47,11 +47,11 @@ class EditorController extends Game_Controller_Gui
         $this->view->headScript()->appendFile('/js/editor/castle.js?v=' . $version);
         $this->view->headScript()->appendFile('/js/editor/editor.js?v=' . $version);
         $this->view->headScript()->appendFile('/js/editor/scene.js?v=' . $version);
+        $this->view->headScript()->appendFile('/js/editor/ground.js?v=' . $version);
         $this->view->headScript()->appendFile('/js/editor/init.js?v=' . $version);
         $this->view->headScript()->appendFile('/js/editor/websocket.js?v=' . $version);
 
         $this->view->headScript()->appendFile('/js/game/picker.js?v=' . $version);
-        $this->view->headScript()->appendFile('/js/game/ground.js?v=' . $version);
 
         $mapId = $this->_request->getParam('mapId');
 

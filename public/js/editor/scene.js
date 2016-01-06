@@ -46,7 +46,7 @@ var Scene = new function () {
     this.getCameraY = function () {
         return cameraY
     }
-    this.getScene = function () {
+    this.get = function () {
         return scene
     }
     this.getCamera = function () {
