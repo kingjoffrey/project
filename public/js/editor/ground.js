@@ -1,7 +1,7 @@
 var Ground = new function () {
     this.init = function (maxX, maxY, textureName) {
-        console.log(maxX)
-        console.log(maxY)
+        //console.log(maxX)
+        //console.log(maxY)
         createWater(maxX, maxY)
         //createGround(maxX, maxY, textureName)
     }
@@ -9,7 +9,7 @@ var Ground = new function () {
         var waterVertexPositions = [],
             waterVertices = new Float32Array(18),
             waterGeometry = new THREE.BufferGeometry(),
-            waterMaterial = new THREE.MeshBasicMaterial({color: 0x0000ff})
+            waterMaterial = new THREE.MeshBasicMaterial({color: 0x0000ff, side: THREE.DoubleSide})
 
         waterVertexPositions.push([0, 0, -0.2])
         waterVertexPositions.push([maxX, 0, -0.2])
@@ -21,8 +21,8 @@ var Ground = new function () {
 
         for (var i = 0; i < 6; i++) {
             var index = i * 3
-            waterVertices[index + 0] = waterVertexPositions[i][0] * 4 - 215;
-            waterVertices[index + 1] = waterVertexPositions[i][1] * 4 - 308;
+            waterVertices[index + 0] = waterVertexPositions[i][0] * 4 - maxX / 2;
+            waterVertices[index + 1] = waterVertexPositions[i][1] * 4 - maxY / 2;
             waterVertices[index + 2] = waterVertexPositions[i][2];
         }
 
@@ -85,8 +85,8 @@ var Ground = new function () {
 
         for (var i = 0; i < grassVertexPositions.length; i++) {
             var index = 3 * i
-            grassVertices[index + 0] = grassVertexPositions[i][0] * 4 - 215.6
-            grassVertices[index + 1] = grassVertexPositions[i][1] * 4 - 311.5
+            grassVertices[index + 0] = grassVertexPositions[i][0] * 4 - maxX / 2
+            grassVertices[index + 1] = grassVertexPositions[i][1] * 4 - maxY / 2
             grassVertices[index + 2] = grassVertexPositions[i][2]
         }
 
@@ -128,9 +128,9 @@ var Ground = new function () {
             Scene.get().add(grassMesh)
             Picker.attach(grassMesh)
 
-            //var helper = new THREE.WireframeHelper(grassMesh, 0xff00ff);
-            //helper.material.linewidth = 1;
-            //Test.getScene().add(helper);
+            var helper = new THREE.WireframeHelper(grassMesh, 0xff00ff);
+            helper.material.linewidth = 1;
+            Scene.get().add(helper);
             //
             //console.log(grassMesh.geometry.attributes)
         })
