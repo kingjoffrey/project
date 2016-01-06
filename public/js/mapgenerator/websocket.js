@@ -24,7 +24,8 @@ var WebSocketEditor = new function () {
         var token = {
             type: 'save',
             mapId: mapId,
-            map: MapGenerator.getImage()
+            map: MapGenerator.getImage(),
+            fields: MapGenerator.getFields()
         }
 
         ws.send(JSON.stringify(token))

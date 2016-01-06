@@ -1,8 +1,14 @@
 var MapGenerator = new function () {
     var DATA_SIZE = 1025,
         pixelCanvas = document.createElement("canvas"),
-        init = 0
+        init = 0,
+        fields = [],
+        xFieldsNumber = 41,
+        yFieldsNumber = 41
 
+    this.getFields = function () {
+        return fields
+    }
     this.getImage = function () {
         return pixelCanvas.toDataURL('image/png')
     }
@@ -34,9 +40,9 @@ var MapGenerator = new function () {
                 return
             }
 
-            render(pixels, keys)
+            createImage(pixels, keys)
         },
-        render = function (pixels, keys) {
+        createImage = function (pixels, keys) {
             var data = clearBorders(pixels, keys),
                 minus = {
                     water: 139 - parseInt(keys.water),
@@ -44,37 +50,51 @@ var MapGenerator = new function () {
                     hills: 240 - parseInt(keys.hills),
                     mountains: 45 - parseInt(keys.mountains),
                     snow: 190 - parseInt(keys.snow)
-                }
-            //var shadow = 0
+                },
+                x = 0,
+                y = 0
 
             for (var i in data) {
                 for (var j in data[i]) {
                     switch (data[i][j]) {
                         case 1:
-                            var color = '#0000' + (parseInt(pixels[i][j]) + minus.water).toString(16)
+                            var color = '#0000' + (parseInt(pixels[i][j]) + minus.water).toString(16),
+                                type = 'w'
                             break
                         case 3:
-                            var rgb = (256 - parseInt(pixels[i][j]) - minus.grass).toString(16)
-                            var color = '#00' + rgb + '00'
+                            var rgb = (256 - parseInt(pixels[i][j]) - minus.grass).toString(16),
+                                color = '#00' + rgb + '00',
+                                type = 'g'
                             break
                         case 4:
-                            var rgb = (256 - parseInt(pixels[i][j]) - minus.hills).toString(16)
-                            var color = '#' + rgb + rgb + '00'
+                            var rgb = (256 - parseInt(pixels[i][j]) - minus.hills).toString(16),
+                                color = '#' + rgb + rgb + '00',
+                                type = 'h'
                             break
                         case 5:
-                            var rgb = (parseInt(pixels[i][j]) + minus.mountains).toString(16)
-                            var color = '#' + rgb + rgb + rgb
+                            var rgb = (parseInt(pixels[i][j]) + minus.mountains).toString(16),
+                                color = '#' + rgb + rgb + rgb,
+                                type = 'm'
                             break
                         case 6:
-                            var rgb = (parseInt(pixels[i][j]) + minus.snow).toString(16)
-                            var color = '#' + rgb + rgb + rgb
+                            var rgb = (parseInt(pixels[i][j]) + minus.snow).toString(16),
+                                color = '#' + rgb + rgb + rgb,
+                                type = 'm'
                             break
+                    }
+                    if (i % yFieldsNumber == 0 && j % xFieldsNumber == 0) {
+                        if (notSet(fields[y])) {
+                            fields[y] = []
+                        }
+                        fields[y][x] = type
+                        x++
                     }
                     pixelCanvas.setPixel(i, j, color)
                 }
+                if (i % yFieldsNumber == 0) {
+                    y++
+                }
             }
-            //map.setSize({width: DATA_SIZE, height: DATA_SIZE})
-            //map.draw()
             WebSocketEditor.save()
         },
         grid = function (size) {

@@ -11,8 +11,10 @@ class EditorController extends Game_Controller_Gui
     public function createAction()
     {
         $this->view->form = new Application_Form_Createmap ();
+        $this->view->formIsValid = false;
         if ($this->_request->isPost()) {
             if ($this->view->form->isValid($this->_request->getPost())) {
+                $this->viev->formIsValid = true;
                 $mMap = new Application_Model_Map ();
                 $this->view->mapId = $mMap->createMap($this->view->form->getValues(), Zend_Auth::getInstance()->getIdentity()->playerId);
 //                $this->redirect($this->view->url(array('action' => 'edit', 'mapId' => $mapId)));
