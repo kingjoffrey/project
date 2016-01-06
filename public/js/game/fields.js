@@ -3,7 +3,7 @@ var Fields = new function () {
     var fields = {},
         maxX,
         maxY
-    this.init = function (fields) {
+    this.init = function (fields, mapId) {
         for (maxY in fields) {
             for (maxX in fields[maxY]) {
                 switch (fields[maxY][maxX].type) {
@@ -13,9 +13,9 @@ var Fields = new function () {
                     //case 'h':
                     //    Three.addHill(maxX, maxY)
                     //    break
-                    case 'f':
-                        Three.addTree(maxX, maxY)
-                        break
+                    //case 'f':
+                    //    Three.addTree(maxX, maxY)
+                    //    break
                     //case 'w':
                     //    Three.addWater(maxX, maxY)
                     //break
@@ -24,7 +24,7 @@ var Fields = new function () {
             }
         }
         //console.log(mapId)
-        Ground.init(maxX, maxY, '/img/maps/1.png')
+        Ground.init(maxX, maxY, '/img/maps/' + mapId + '.png')
     }
     this.getMaxX = function () {
         return maxX

@@ -92,6 +92,7 @@ var MapGenerator = new function () {
                     pixelCanvas.setPixel(i, j, color)
                 }
                 if (i % yFieldsNumber == 0) {
+                    x = 0
                     y++
                 }
             }

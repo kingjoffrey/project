@@ -35,7 +35,7 @@ class GameController extends Coret_Controller_Authorized
         $this->view->Friends();
 
         $mGame = new Application_Model_Game($this->_gameId);
-        $this->view->map($mapId = $mGame->getMapId());
+        $this->view->map($mGame->getMapId());
 
         $version = Zend_Registry::get('config')->version;
 

@@ -43,6 +43,14 @@ class Cli_EditorHandler extends WebSocketUriHandler
             $user->parameters['playerId'] = $dataIn['playerId'];
             $user->parameters['accessKey'] = $dataIn['accessKey'];
 
+            $mMapFields = new Application_Model_MapFields($dataIn['mapId'], $this->_db);
+            $fields = new Cli_Model_Fields($mMapFields->getMapFields());
+
+            $token = array(
+                'fields' => $fields->toArray()
+            );
+
+            $this->sendToUser($user, $token);
             return;
         }
 
@@ -88,5 +96,20 @@ class Cli_EditorHandler extends WebSocketUriHandler
 
         $mWebSocket = new Application_Model_Websocket($user->parameters['playerId'], $this->_db);
         $mWebSocket->disconnect($user->parameters['accessKey']);
+    }
+
+    /**
+     * @param $user
+     * @param $token
+     * @param null $debug
+     */
+    public function sendToUser(Devristo\Phpws\Protocol\WebSocketTransportInterface $user, $token, $debug = null)
+    {
+        if ($debug || Zend_Registry::get('config')->debug) {
+            print_r('ODPOWIEDŹ');
+            print_r($token);
+        }
+
+        $user->sendString(Zend_Json::encode($token));
     }
 }

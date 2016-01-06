@@ -3,6 +3,9 @@ var WebSocketEditor = new function () {
         ws,
         onMessage = function (r) {
             console.log(r)
+            if (!Editor.getInit()) {
+                Editor.init(r['fields'])
+            }
         },
         open = function () {
             if (closed) {
@@ -15,6 +18,7 @@ var WebSocketEditor = new function () {
                 playerId: id,
                 name: playerName,
                 langId: langId,
+                mapId: mapId,
                 accessKey: accessKey
             }
 
@@ -27,10 +31,6 @@ var WebSocketEditor = new function () {
         ws.onopen = function () {
             closed = false
             open()
-
-            if (!Editor.getInit()) {
-                Editor.init()
-            }
         }
         ws.onmessage = function (e) {
             onMessage($.parseJSON(e.data))
