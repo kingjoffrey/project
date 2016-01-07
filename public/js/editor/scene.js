@@ -22,6 +22,22 @@ var Scene = new function () {
     this.getCamera = function () {
         return camera
     }
+    this.moveCameraLeft = function () {
+        camera.position.x += -2
+        camera.position.z += -2
+    }
+    this.moveCameraRight = function () {
+        camera.position.x += 2
+        camera.position.z += 2
+    }
+    this.moveCameraUp = function () {
+        camera.position.x += 2
+        camera.position.z += -2
+    }
+    this.moveCameraDown = function () {
+        camera.position.x += -2
+        camera.position.z += 2
+    }
     this.getRenderer = function () {
         return renderer
     }
@@ -41,6 +57,7 @@ var Scene = new function () {
         camera.add(new THREE.PointLight(0xffffff, 0.7))
 
         Scene.render()
+        Gui.init()
     }
 
     this.init = function () {

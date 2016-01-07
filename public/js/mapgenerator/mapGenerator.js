@@ -57,8 +57,8 @@ var MapGenerator = new function () {
                 for (var j in data[i]) {
                     switch (data[i][j]) {
                         case 1:
-                            var color = '#ffff' + (parseInt(pixels[i][j]) + minus.water).toString(16),
-                            //var color = '#ffff00',
+                            //var color = '#ffff' + (parseInt(pixels[i][j]) + minus.water).toString(16),
+                            var color = '#ffff00',
                                 type = 'w'
                             break
                         case 3:
@@ -96,7 +96,7 @@ var MapGenerator = new function () {
                     y++
                 }
             }
-            ctx.rotate(-90 * Math.PI / 180)
+            //ctx.rotate(-90 * Math.PI / 180)
             WebSocketEditor.save()
         },
         grid = function (size) {

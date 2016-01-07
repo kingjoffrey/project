@@ -29,6 +29,8 @@ var WebSocketEditor = new function () {
         }
 
         ws.send(JSON.stringify(token))
+
+        window.location = '/' + lang + '/editor/edit/mapId/' + mapId
     }
 
     this.init = function () {

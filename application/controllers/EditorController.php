@@ -50,6 +50,7 @@ class EditorController extends Game_Controller_Gui
         $this->view->headScript()->appendFile('/js/editor/ground.js?v=' . $version);
         $this->view->headScript()->appendFile('/js/editor/init.js?v=' . $version);
         $this->view->headScript()->appendFile('/js/editor/websocket.js?v=' . $version);
+        $this->view->headScript()->appendFile('/js/editor/gui.js?v=' . $version);
 
         $this->view->headScript()->appendFile('/js/game/picker.js?v=' . $version);
         $this->view->headScript()->appendFile('/js/game/field.js?v=' . $version);
