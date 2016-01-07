@@ -23,19 +23,9 @@ class Application_Form_Createmap extends Zend_Form
         );
         $this->addElements($f->getElements());
 
-        $f = new Coret_Form_Select(
-            array(
-                'name' => 'mapWidth',
-                'label' => $this->getView()->translate('Map width'),
-                'required' => true,
-                'opt' => $dimensions,
-            )
-        );
-        $this->addElements($f->getElements());
-
         $f = new Coret_Form_Select(array(
-            'name' => 'mapHeight',
-            'label' => $this->getView()->translate('Map height'),
+            'name' => 'mapSize',
+            'label' => $this->getView()->translate('Map size'),
             'required' => true,
             'opt' => $dimensions,
         ));

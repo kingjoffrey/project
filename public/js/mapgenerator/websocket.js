@@ -41,7 +41,7 @@ var WebSocketEditor = new function () {
             open()
 
             if (!MapGenerator.getInit()) {
-                MapGenerator.init()
+                MapGenerator.init(mapSize)
             }
         }
         ws.onmessage = function (e) {

@@ -6,5 +6,6 @@
 <a class="button"
    href="<?php echo $this->url(array('controller' => 'editor', 'action' => 'index', 'mapId' => null)) ?>">&laquo; <?php echo $this->translate('Back') ?></a>
 <?php $this->headScript()->captureStart() ?>
-var mapId = <?php echo $this->mapId;
+var mapId = <?php echo $this->mapId; ?>,
+mapSize = <?php echo $this->mapSize;
 $this->headScript()->captureEnd();

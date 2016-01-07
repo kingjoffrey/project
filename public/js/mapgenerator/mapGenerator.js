@@ -4,8 +4,7 @@ var MapGenerator = new function () {
         ctx = pixelCanvas.getContext('2d'),
         init = 0,
         fields = [],
-        xFieldsNumber = 41,
-        yFieldsNumber = 41
+        fieldsNumber
 
     this.getFields = function () {
         return fields
@@ -16,8 +15,9 @@ var MapGenerator = new function () {
     this.getInit = function () {
         return init
     }
-    this.init = function () {
+    this.init = function (mapSize) {
         init = 1
+        fieldsNumber = mapSize
 
         resetPixelCanvas()
         pixelCanvas.setPixel = function (x, y, color) {
@@ -51,7 +51,8 @@ var MapGenerator = new function () {
                     snow: 190 - parseInt(keys.snow)
                 },
                 x = 0,
-                y = 0
+                y = 0,
+                fieldSize = (DATA_SIZE - 1) / (fieldsNumber - 1)
 
             for (var i in data) {
                 for (var j in data[i]) {
@@ -82,7 +83,7 @@ var MapGenerator = new function () {
                                 type = 'm'
                             break
                     }
-                    if (i % yFieldsNumber == 0 && j % xFieldsNumber == 0) {
+                    if (i % fieldSize == 0 && j % fieldSize == 0) {
                         if (notSet(fields[y])) {
                             fields[y] = []
                         }
@@ -91,7 +92,7 @@ var MapGenerator = new function () {
                     }
                     pixelCanvas.setPixel(i, j, color)
                 }
-                if (i % yFieldsNumber == 0) {
+                if (i % fieldSize == 0) {
                     x = 0
                     y++
                 }

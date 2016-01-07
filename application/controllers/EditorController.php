@@ -17,6 +17,7 @@ class EditorController extends Game_Controller_Gui
                 $this->viev->formIsValid = true;
                 $mMap = new Application_Model_Map ();
                 $this->view->mapId = $mMap->createMap($this->view->form->getValues(), Zend_Auth::getInstance()->getIdentity()->playerId);
+                $this->view->mapSize = $this->_request->getParam('mapSize');
 //                $this->redirect($this->view->url(array('action' => 'edit', 'mapId' => $mapId)));
 
                 $this->_helper->layout->setLayout('generatemap');
