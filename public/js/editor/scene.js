@@ -8,46 +8,16 @@ var Scene = new function () {
         scene = new THREE.Scene(),
         camera,
         renderer = new THREE.WebGLRenderer({antialias: true}),
-        pointLight = new THREE.PointLight(0xdddddd),
-        theLight = new THREE.DirectionalLight(0xffffff, 1),
-        ambientLight = new THREE.AmbientLight(0xffffff),
-        loader = new THREE.JSONLoader(),
-        circles = [],
-        armyCircles = [],
-        showShadows = 0,
-        cameraY = 76,
-        timeOut = 100,
-        createTextMesh = function (text, color) {
-            var mesh = new THREE.Mesh(new THREE.TextGeometry(text, {
-                size: 0.5,
-                height: 0.1
-            }), new THREE.MeshPhongMaterial({color: color}))
-            mesh.position.set(0, 7, 0.2)
-            mesh.rotation.y = -Math.PI / 4
-            return mesh
-        },
-        animate = function () {
-            if (TWEEN.update()) {
-                requestAnimationFrame(animate)
-                renderer.render(scene, camera)
-            } else {
-                renderer.render(scene, camera)
-                setTimeout(function () {
-                    requestAnimationFrame(animate)
-                }, timeOut)
-            }
-        }
-
-    if (showShadows) {
-        renderer.shadowMapEnabled = true
-        renderer.shadowMapSoft = false
-    }
+        cameraY = 76
 
     this.getCameraY = function () {
         return cameraY
     }
     this.get = function () {
         return scene
+    }
+    this.add = function (object) {
+        scene.add(object)
     }
     this.getCamera = function () {
         return camera
@@ -69,11 +39,13 @@ var Scene = new function () {
         scene.add(camera)
         scene.add(new THREE.AmbientLight(0x222222))
         camera.add(new THREE.PointLight(0xffffff, 0.7))
+
+        Scene.render()
     }
 
     this.init = function () {
-        gameWidth = $('body').innerWidth()
-        gameHeight = $('body').innerHeight()
+        gameWidth = window.innerWidth
+        gameHeight = window.innerHeight
         if (gameWidth < minWidth) {
             gameWidth = minWidth
         }
@@ -94,8 +66,8 @@ var Scene = new function () {
         Picker.init(camera, renderer.domElement)
     }
     this.resize = function () {
-        gameWidth = $(window).innerWidth()
-        gameHeight = $(window).innerHeight()
+        gameWidth = window.innerWidth
+        gameHeight = window.innerHeight
         if (gameWidth < minWidth) {
             gameWidth = minWidth
         }
@@ -120,5 +92,9 @@ var Scene = new function () {
     }
     this.setFPS = function (fps) {
         timeOut = parseInt(1000 / fps)
+    }
+    this.render = function () {
+        requestAnimationFrame(Scene.render);
+        renderer.render(scene, camera);
     }
 }

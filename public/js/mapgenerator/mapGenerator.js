@@ -1,6 +1,7 @@
 var MapGenerator = new function () {
     var DATA_SIZE = 1025,
-        pixelCanvas = document.createElement("canvas"),
+        pixelCanvas = document.createElement('canvas'),
+        ctx = pixelCanvas.getContext('2d'),
         init = 0,
         fields = [],
         xFieldsNumber = 41,
@@ -17,8 +18,6 @@ var MapGenerator = new function () {
     }
     this.init = function () {
         init = 1
-
-        var ctx = pixelCanvas.getContext("2d")
 
         resetPixelCanvas()
         pixelCanvas.setPixel = function (x, y, color) {
@@ -58,7 +57,8 @@ var MapGenerator = new function () {
                 for (var j in data[i]) {
                     switch (data[i][j]) {
                         case 1:
-                            var color = '#0000' + (parseInt(pixels[i][j]) + minus.water).toString(16),
+                            var color = '#ffff' + (parseInt(pixels[i][j]) + minus.water).toString(16),
+                            //var color = '#ffff00',
                                 type = 'w'
                             break
                         case 3:
@@ -96,6 +96,7 @@ var MapGenerator = new function () {
                     y++
                 }
             }
+            ctx.rotate(-90 * Math.PI / 180)
             WebSocketEditor.save()
         },
         grid = function (size) {

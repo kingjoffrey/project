@@ -3,6 +3,7 @@ var Fields = new function () {
     var fields = {},
         maxX,
         maxY
+
     this.init = function (fields, mapId) {
         for (maxY in fields) {
             for (maxX in fields[maxY]) {

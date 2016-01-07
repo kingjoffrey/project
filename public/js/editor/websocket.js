@@ -2,7 +2,7 @@ var WebSocketEditor = new function () {
     var closed = true,
         ws,
         onMessage = function (r) {
-            console.log(r)
+            //console.log(r)
             if (!Editor.getInit()) {
                 Editor.init(r['fields'])
             }

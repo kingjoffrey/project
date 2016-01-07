@@ -3,13 +3,13 @@ var Ground = new function () {
         //console.log(maxX)
         //console.log(maxY)
         createWater(maxX, maxY)
-        //createGround(maxX, maxY, textureName)
+        createGround(maxX, maxY, textureName)
     }
     var createWater = function (maxX, maxY) {
         var waterVertexPositions = [],
             waterVertices = new Float32Array(18),
             waterGeometry = new THREE.BufferGeometry(),
-            waterMaterial = new THREE.MeshBasicMaterial({color: 0x0000ff, side: THREE.DoubleSide})
+            waterMaterial = new THREE.MeshBasicMaterial({color: 0x0000ff})
 
         waterVertexPositions.push([0, 0, -0.2])
         waterVertexPositions.push([maxX, 0, -0.2])
@@ -29,7 +29,7 @@ var Ground = new function () {
         waterGeometry.addAttribute('position', new THREE.BufferAttribute(waterVertices, 3))
         var waterMesh = new THREE.Mesh(waterGeometry, waterMaterial)
         waterMesh.rotation.x = -Math.PI / 2
-        Scene.get().add(waterMesh)
+        Scene.add(waterMesh)
     }
     var createGround = function (maxX, maxY, textureName) {
         var xy = [],
@@ -71,7 +71,6 @@ var Ground = new function () {
                 grassVertexPositions[i][2] = 0.3
             }
             if (Fields.get(grassVertexPositions[i][0], grassVertexPositions[i][1]).getType() == 'm') {
-                console.log('a')
                 grassVertexPositions[i][2] = -4
             }
             if (Fields.get(grassVertexPositions[i][0], grassVertexPositions[i][1]).getType() == 'h') {
@@ -125,12 +124,12 @@ var Ground = new function () {
                 grassMesh = new THREE.Mesh(grassGeometry, grassMaterial)
 
             grassMesh.rotation.x = Math.PI / 2
-            Scene.get().add(grassMesh)
-            Picker.attach(grassMesh)
+            Scene.add(grassMesh)
+            //Picker.attach(grassMesh)
 
             var helper = new THREE.WireframeHelper(grassMesh, 0xff00ff);
             helper.material.linewidth = 1;
-            Scene.get().add(helper);
+            Scene.add(helper)
             //
             //console.log(grassMesh.geometry.attributes)
         })
