@@ -43,14 +43,16 @@ class Cli_EditorHandler extends WebSocketUriHandler
             $user->parameters['playerId'] = $dataIn['playerId'];
             $user->parameters['accessKey'] = $dataIn['accessKey'];
 
-            $mMapFields = new Application_Model_MapFields($dataIn['mapId'], $this->_db);
-            $fields = new Cli_Model_Fields($mMapFields->getMapFields());
+            if (isset($dataIn['mapId'])) {
+                $mMapFields = new Application_Model_MapFields($dataIn['mapId'], $this->_db);
+                $fields = new Cli_Model_Fields($mMapFields->getMapFields());
 
-            $token = array(
-                'fields' => $fields->toArray()
-            );
+                $token = array(
+                    'fields' => $fields->toArray()
+                );
 
-            $this->sendToUser($user, $token);
+                $this->sendToUser($user, $token);
+            }
             return;
         }
 

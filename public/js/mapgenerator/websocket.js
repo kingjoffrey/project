@@ -14,7 +14,6 @@ var WebSocketEditor = new function () {
                 type: 'open',
                 playerId: id,
                 name: playerName,
-                langId: langId,
                 accessKey: accessKey
             }
 

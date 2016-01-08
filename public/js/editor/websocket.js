@@ -16,8 +16,6 @@ var WebSocketEditor = new function () {
             var token = {
                 type: 'open',
                 playerId: id,
-                name: playerName,
-                langId: langId,
                 mapId: mapId,
                 accessKey: accessKey
             }
