@@ -58,6 +58,7 @@ var Scene = new function () {
 
         Scene.render()
         Gui.init()
+        Models.init()
     }
 
     this.init = function () {

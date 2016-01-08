@@ -36,22 +36,22 @@ var Gui = new function () {
             .on('dragstart', function () {
                 return false
             })
-        //$('#game canvas').mousewheel(function (event) {
-        //    if (event.deltaY > 0) {
-        //        if (Scene.getCamera().position.y < 230) {
-        //            Scene.getCamera().position.y += 2
-        //
-        //            Scene.getCamera().position.x -= 2
-        //            Scene.getCamera().position.z += 2
-        //        }
-        //    } else {
-        //        if (Scene.getCamera().position.y > 22) {
-        //            Scene.getCamera().position.y -= 2
-        //
-        //            Scene.getCamera().position.x += 2
-        //            Scene.getCamera().position.z -= 2
-        //        }
-        //    }
-        //})
+        $('#game canvas').mousewheel(function (event) {
+            if (event.deltaY > 0) {
+                if (Scene.getCamera().position.y < 230) {
+                    Scene.getCamera().position.y += 2
+
+                    Scene.getCamera().position.x -= 2
+                    Scene.getCamera().position.z += 2
+                }
+            } else {
+                if (Scene.getCamera().position.y > 22) {
+                    Scene.getCamera().position.y -= 2
+
+                    Scene.getCamera().position.x += 2
+                    Scene.getCamera().position.z -= 2
+                }
+            }
+        })
     }
 }

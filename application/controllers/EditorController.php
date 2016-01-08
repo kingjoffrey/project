@@ -33,11 +33,14 @@ class EditorController extends Game_Controller_Gui
 
     public function editAction()
     {
+        $this->view->models();
+
         $version = Zend_Registry::get('config')->version;
 
         $this->_helper->layout->setLayout('editor');
         $this->view->headLink()->appendStylesheet($this->view->baseUrl() . '/css/editor.css?v=' . Zend_Registry::get('config')->version);
 
+        $this->view->headScript()->appendFile('/js/jquery.mousewheel.min.js');
         $this->view->headScript()->appendFile('/js/Tween.js');
         $this->view->headScript()->appendFile('/js/three.js');
         $this->view->headScript()->appendFile('/js/Detector.js');
@@ -52,6 +55,7 @@ class EditorController extends Game_Controller_Gui
         $this->view->headScript()->appendFile('/js/editor/init.js?v=' . $version);
         $this->view->headScript()->appendFile('/js/editor/websocket.js?v=' . $version);
         $this->view->headScript()->appendFile('/js/editor/gui.js?v=' . $version);
+        $this->view->headScript()->appendFile('/js/editor/models.js?v=' . $version);
 
         $this->view->headScript()->appendFile('/js/game/picker.js?v=' . $version);
         $this->view->headScript()->appendFile('/js/game/field.js?v=' . $version);

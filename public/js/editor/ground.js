@@ -1,7 +1,5 @@
 var Ground = new function () {
     this.init = function (maxX, maxY, textureName) {
-        console.log(maxX)
-        console.log(maxY)
         createWater(maxX, maxY)
         createGround(maxX, maxY, textureName)
     }
