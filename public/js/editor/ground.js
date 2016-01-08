@@ -65,10 +65,10 @@ var Ground = new function () {
             }
             for (var i = 0; i < grassVertexPositions.length; i++) {
                 if (Fields.get(grassVertexPositions[i][0], grassVertexPositions[i][1]).getType() == 'w') {
-                    grassVertexPositions[i][2] = 0.3
+                    grassVertexPositions[i][2] = 0.9
                 }
                 if (Fields.get(grassVertexPositions[i][0], grassVertexPositions[i][1]).getType() == 'b') {
-                    grassVertexPositions[i][2] = 0.3
+                    grassVertexPositions[i][2] = 0.9
                 }
                 if (Fields.get(grassVertexPositions[i][0], grassVertexPositions[i][1]).getType() == 'm') {
                     grassVertexPositions[i][2] = -4
@@ -85,7 +85,7 @@ var Ground = new function () {
             for (var i = 0; i < grassVertexPositions.length; i++) {
                 var index = 3 * i
                 grassVertices[index + 0] = grassVertexPositions[i][0] * 4 - maxX / 2
-                grassVertices[index + 1] = grassVertexPositions[i][1] * 4 - 4 * maxY
+                grassVertices[index + 1] = grassVertexPositions[i][1] * 4 - 3.5 * maxY
                 grassVertices[index + 2] = grassVertexPositions[i][2]
             }
 

@@ -1,7 +1,7 @@
 var MapGenerator = new function () {
     var DATA_SIZE = 1025,
-        pixelCanvas = document.createElement('canvas'),
-        ctx = pixelCanvas.getContext('2d'),
+        canvas = document.createElement('canvas'),
+        ctx = canvas.getContext('2d'),
         init = 0,
         fields = [],
         fieldsNumber
@@ -10,7 +10,7 @@ var MapGenerator = new function () {
         return fields
     }
     this.getImage = function () {
-        return pixelCanvas.toDataURL('image/png')
+        return canvas.toDataURL('image/png')
     }
     this.getInit = function () {
         return init
@@ -19,17 +19,17 @@ var MapGenerator = new function () {
         init = 1
         fieldsNumber = mapSize
 
-        resetPixelCanvas()
-        pixelCanvas.setPixel = function (x, y, color) {
+        resetCanvas()
+        canvas.setPixel = function (x, y, color) {
             ctx.fillStyle = color;
             ctx.fillRect(x, y, 1, 1);
         }
         generate()
     }
-    var resetPixelCanvas = function () {
-            pixelCanvas.width = DATA_SIZE
-            pixelCanvas.height = DATA_SIZE
-            pixelCanvas.pixels = []
+    var resetCanvas = function () {
+            canvas.width = DATA_SIZE
+            canvas.height = DATA_SIZE
+            canvas.pixels = []
         },
         generate = function () {
             var pixels = DiamondSquare.make(DATA_SIZE)
@@ -90,14 +90,15 @@ var MapGenerator = new function () {
                         fields[y][x] = type
                         x++
                     }
-                    pixelCanvas.setPixel(i, j, color)
+                    canvas.setPixel(i, j, color)
                 }
                 if (i % fieldSize == 0) {
                     x = 0
                     y++
                 }
             }
-            //ctx.rotate(-90 * Math.PI / 180)
+            ctx.translate(canvas.width / 2, canvas.height / 2)
+            ctx.rotate(90 * Math.PI / 180)
             WebSocketEditor.save()
         },
         grid = function (size) {
