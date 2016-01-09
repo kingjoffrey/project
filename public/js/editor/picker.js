@@ -51,7 +51,6 @@ var Picker = new function () {
         onContainerMouseMove = function (event) {
             intersect(event)
             if (isSet(intersects[0])) {
-                console.log(event.offsetX)
                 mouseMove()
             }
         },
@@ -88,12 +87,21 @@ var Picker = new function () {
                     z = convertZ(),
                     newX = parseInt(x / 4),
                     newZ = parseInt(z / 4)
-                console.log(x)
-                if (newX != oldX || newZ != oldZ) {
+                if (newX != oldX) {
                     oldX = newX
+                    if (x % 4 == 0) {
+                        draggedMesh.position.x = x
+                    } else {
+                        draggedMesh.position.x = x - 3
+                    }
+                }
+                if (newZ != oldZ) {
                     oldZ = newZ
-                    draggedMesh.position.x = x
-                    draggedMesh.position.z = z
+                    if (z % 4 == 0) {
+                        draggedMesh.position.z = z
+                    } else {
+                        draggedMesh.position.z = z + 3
+                    }
                 }
             }
         }
