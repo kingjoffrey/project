@@ -168,7 +168,12 @@ var Models = new function () {
 
         return mesh
     }
-
+    this.createCastle = function () {
+        console.log('aaa')
+        var castleMaterial = new THREE.MeshLambertMaterial({color: '#3B3028', side: THREE.DoubleSide}),
+            mesh = new THREE.Mesh(castleModel_1.geometry, castleMaterial)
+        Scene.add(mesh)
+    }
     this.addCastle = function (castle, color) {
         //castle.x, castle.y, bgC, castle.defense
         var castleMaterial = new THREE.MeshLambertMaterial({color: '#3B3028', side: THREE.DoubleSide})

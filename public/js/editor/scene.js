@@ -38,6 +38,16 @@ var Scene = new function () {
         camera.position.x += -2
         camera.position.z += 2
     }
+    this.moveCameraAway = function () {
+        camera.position.y += 2
+        camera.position.x -= 2
+        camera.position.z += 2
+    }
+    this.moveCameraClose = function () {
+        camera.position.y -= 2
+        camera.position.x += 2
+        camera.position.z -= 2
+    }
     this.getRenderer = function () {
         return renderer
     }

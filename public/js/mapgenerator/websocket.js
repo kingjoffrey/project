@@ -13,7 +13,6 @@ var WebSocketEditor = new function () {
             var token = {
                 type: 'open',
                 playerId: id,
-                name: playerName,
                 accessKey: accessKey
             }
 
