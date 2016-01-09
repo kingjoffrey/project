@@ -173,6 +173,7 @@ var Models = new function () {
         var castleMaterial = new THREE.MeshLambertMaterial({color: '#3B3028', side: THREE.DoubleSide}),
             mesh = new THREE.Mesh(castleModel_1.geometry, castleMaterial)
         Scene.add(mesh)
+        Picker.addDraggedMesh(mesh)
     }
     this.addCastle = function (castle, color) {
         //castle.x, castle.y, bgC, castle.defense

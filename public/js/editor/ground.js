@@ -1,7 +1,13 @@
 var Ground = new function () {
+    var xOffset,
+        zOffset
+
     this.init = function (maxX, maxY, textureName) {
+        xOffset = maxX / 2
+        zOffset = 3.5 * maxY
         createWater(maxX, maxY)
         createGround(maxX, maxY, textureName)
+        Picker.init(xOffset, zOffset)
     }
     var createWater = function (maxX, maxY) {
             var waterVertexPositions = [],
@@ -19,7 +25,7 @@ var Ground = new function () {
 
             for (var i = 0; i < 6; i++) {
                 var index = i * 3
-                waterVertices[index + 0] = waterVertexPositions[i][0] * 4 - maxX / 2;
+                waterVertices[index + 0] = waterVertexPositions[i][0] * 4 - xOffset;
                 waterVertices[index + 1] = waterVertexPositions[i][1] * 4 - maxY / 2;
                 waterVertices[index + 2] = waterVertexPositions[i][2];
             }
@@ -82,8 +88,8 @@ var Ground = new function () {
 
             for (var i = 0; i < grassVertexPositions.length; i++) {
                 var index = 3 * i
-                grassVertices[index + 0] = grassVertexPositions[i][0] * 4 - maxX / 2
-                grassVertices[index + 1] = grassVertexPositions[i][1] * 4 - 3.5 * maxY
+                grassVertices[index + 0] = grassVertexPositions[i][0] * 4 - xOffset
+                grassVertices[index + 1] = grassVertexPositions[i][1] * 4 - zOffset
                 grassVertices[index + 2] = grassVertexPositions[i][2]
             }
 
@@ -123,7 +129,7 @@ var Ground = new function () {
 
                 grassMesh.rotation.x = Math.PI / 2
                 Scene.add(grassMesh)
-                //Picker.attach(grassMesh)
+                Picker.attach(grassMesh)
 
                 //var helper = new THREE.WireframeHelper(grassMesh, 0xff00ff);
                 //helper.material.linewidth = 1;

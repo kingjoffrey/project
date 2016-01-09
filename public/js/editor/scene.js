@@ -8,7 +8,26 @@ var Scene = new function () {
         scene = new THREE.Scene(),
         camera,
         renderer = new THREE.WebGLRenderer({antialias: true}),
-        cameraY = 76
+        cameraY = 76,
+        initCamera = function (gameWidth, gameHeight) {
+            var viewAngle = 22,
+                near = 1,
+                far = 1000
+
+            camera = new THREE.PerspectiveCamera(viewAngle, gameWidth / gameHeight, 1, 1000)
+            camera.rotation.order = 'YXZ'
+            camera.rotation.y = -Math.PI / 4
+            camera.rotation.x = Math.atan(-1 / Math.sqrt(2))
+            camera.position.set(0, cameraY, 0)
+            camera.scale.addScalar(1)
+            scene.add(camera)
+            scene.add(new THREE.AmbientLight(0x222222))
+            camera.add(new THREE.PointLight(0xffffff, 0.7))
+
+            Scene.render()
+            Gui.init()
+            Models.init()
+        }
 
     this.getCameraY = function () {
         return cameraY
@@ -51,25 +70,7 @@ var Scene = new function () {
     this.getRenderer = function () {
         return renderer
     }
-    var initCamera = function (gameWidth, gameHeight) {
-        var viewAngle = 22,
-            near = 1,
-            far = 1000
 
-        camera = new THREE.PerspectiveCamera(viewAngle, gameWidth / gameHeight, 1, 1000)
-        camera.rotation.order = 'YXZ'
-        camera.rotation.y = -Math.PI / 4
-        camera.rotation.x = Math.atan(-1 / Math.sqrt(2))
-        camera.position.set(0, cameraY, 0)
-        camera.scale.addScalar(1)
-        scene.add(camera)
-        scene.add(new THREE.AmbientLight(0x222222))
-        camera.add(new THREE.PointLight(0xffffff, 0.7))
-
-        Scene.render()
-        Gui.init()
-        Models.init()
-    }
 
     this.init = function () {
         gameWidth = window.innerWidth
@@ -91,7 +92,6 @@ var Scene = new function () {
 
         initCamera(gameWidth, gameHeight)
         renderer.setSize(gameWidth, gameHeight)
-        Picker.init(camera, renderer.domElement)
     }
     this.resize = function () {
         gameWidth = window.innerWidth
