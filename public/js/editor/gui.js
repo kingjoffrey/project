@@ -23,7 +23,25 @@ var Gui = new function () {
         },
         activateButtons = function () {
             $('#castle').click(function () {
-                Models.createCastle()
+                Models.create('castle')
+            })
+            $('#ruin').click(function () {
+                Models.create('ruin')
+            })
+            $('#tower').click(function () {
+                Models.create('tower')
+            })
+            $('#road').click(function () {
+                Models.create('road')
+            })
+            $('#bridge').click(function () {
+                Models.create('bridge')
+            })
+            $('#forest').click(function () {
+                Models.create('forest')
+            })
+            $('#swamp').click(function () {
+                Models.create('swamp')
             })
         }
 

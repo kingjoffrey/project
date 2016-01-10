@@ -132,9 +132,26 @@ var Models = new function () {
             treeModel.material = new THREE.MeshLambertMaterial({color: '#003300', side: THREE.DoubleSide})
             //waterModel.material = new THREE.MeshPhongMaterial({color: 0x0000ff, side: THREE.DoubleSide})
         }
+    this.createMesh = function ($type) {
+        switch ($type) {
+            case 'castle':
+                var castleMaterial = new THREE.MeshLambertMaterial({color: '#3B3028', side: THREE.DoubleSide}),
+                    mesh = new THREE.Mesh(castleModel_1.geometry, castleMaterial)
+                break
+            case 'ruin':
+                var ruinMaterial = new THREE.MeshPhongMaterial({color: color, side: THREE.DoubleSide}),
+                    mesh = new THREE.Mesh(ruinModel.geometry, ruinMaterial)
+                break
+            default:
+                console.log('Brak typu (' + $type + ')')
+                return
+        }
+        Scene.add(mesh)
+        Picker.addDraggedMesh(mesh)
+    }
     this.addRuin = function (x, y, color) {
-        var ruinMaterial = new THREE.MeshPhongMaterial({color: color, side: THREE.DoubleSide})
-        var mesh = new THREE.Mesh(ruinModel.geometry, ruinMaterial)
+        var ruinMaterial = new THREE.MeshPhongMaterial({color: color, side: THREE.DoubleSide}),
+            mesh = new THREE.Mesh(ruinModel.geometry, ruinMaterial)
         mesh.position.set(x * 4 - 216, 0, y * 4 - 311)
 
         if (showShadows) {
@@ -167,12 +184,6 @@ var Models = new function () {
         mesh.add(flagMesh)
 
         return mesh
-    }
-    this.createCastle = function () {
-        var castleMaterial = new THREE.MeshLambertMaterial({color: '#3B3028', side: THREE.DoubleSide}),
-            mesh = new THREE.Mesh(castleModel_1.geometry, castleMaterial)
-        Scene.add(mesh)
-        Picker.addDraggedMesh(mesh)
     }
     this.addCastle = function (castle, color) {
         //castle.x, castle.y, bgC, castle.defense

@@ -20,16 +20,16 @@ var MapGenerator = new function () {
         fieldsNumber = mapSize
 
         resetCanvas()
-        canvas.setPixel = function (x, y, color) {
-            ctx.fillStyle = color;
-            ctx.fillRect(x, y, 1, 1);
-        }
         generate()
     }
     var resetCanvas = function () {
             canvas.width = DATA_SIZE
             canvas.height = DATA_SIZE
             canvas.pixels = []
+        },
+        setPixel = function (x, y, color) {
+            ctx.fillStyle = color;
+            ctx.fillRect(x, y, 1, 1);
         },
         generate = function () {
             var pixels = DiamondSquare.make(DATA_SIZE)
@@ -53,6 +53,9 @@ var MapGenerator = new function () {
                 x = 0,
                 y = 0,
                 fieldSize = (DATA_SIZE - 1) / (fieldsNumber - 1)
+
+            ctx.translate(canvas.width / 2, canvas.height / 2)
+            ctx.rotate(90 * Math.PI / 180)
 
             for (var i in data) {
                 for (var j in data[i]) {
@@ -90,15 +93,13 @@ var MapGenerator = new function () {
                         fields[y][x] = type
                         x++
                     }
-                    canvas.setPixel(i, j, color)
+                    setPixel(i, j, color)
                 }
                 if (i % fieldSize == 0) {
                     x = 0
                     y++
                 }
             }
-            ctx.translate(canvas.width / 2, canvas.height / 2)
-            ctx.rotate(90 * Math.PI / 180)
             WebSocketEditor.save()
         },
         grid = function (size) {
