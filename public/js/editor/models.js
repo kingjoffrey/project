@@ -139,8 +139,24 @@ var Models = new function () {
                     mesh = new THREE.Mesh(castleModel_1.geometry, castleMaterial)
                 break
             case 'ruin':
-                var ruinMaterial = new THREE.MeshPhongMaterial({color: color, side: THREE.DoubleSide}),
+                var ruinMaterial = new THREE.MeshPhongMaterial({color: '#FFD700', side: THREE.DoubleSide}),
                     mesh = new THREE.Mesh(ruinModel.geometry, ruinMaterial)
+                break
+            case 'tower':
+                var towerMaterial = new THREE.MeshLambertMaterial({color: '#6B6B6B', side: THREE.DoubleSide}),
+                    mesh = new THREE.Mesh(towerModel.geometry, towerMaterial)
+                break
+            case 'road':
+
+                break
+            case 'bridge':
+
+                break
+            case 'forest':
+                var mesh = new THREE.Mesh(treeModel.geometry, treeModel.material)
+                break
+            case 'swamp':
+
                 break
             default:
                 console.log('Brak typu (' + $type + ')')
@@ -164,9 +180,8 @@ var Models = new function () {
     }
 
     this.addTower = function (x, y, color) {
-        var towerMaterial = new THREE.MeshLambertMaterial({color: '#6B6B6B', side: THREE.DoubleSide})
-
-        var mesh = new THREE.Mesh(towerModel.geometry, towerMaterial)
+        var towerMaterial = new THREE.MeshLambertMaterial({color: '#6B6B6B', side: THREE.DoubleSide}),
+            mesh = new THREE.Mesh(towerModel.geometry, towerMaterial)
         mesh.position.set(x * 4 - 216, 0, y * 4 - 311)
 
         if (showShadows) {

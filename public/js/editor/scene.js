@@ -38,6 +38,9 @@ var Scene = new function () {
     this.add = function (object) {
         scene.add(object)
     }
+    this.remove = function (object) {
+        scene.remove(object)
+    }
     this.getCamera = function () {
         return camera
     }

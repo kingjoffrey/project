@@ -23,25 +23,25 @@ var Gui = new function () {
         },
         activateButtons = function () {
             $('#castle').click(function () {
-                Models.create('castle')
+                Models.createMesh('castle')
             })
             $('#ruin').click(function () {
-                Models.create('ruin')
+                Models.createMesh('ruin')
             })
             $('#tower').click(function () {
-                Models.create('tower')
+                Models.createMesh('tower')
             })
             $('#road').click(function () {
-                Models.create('road')
+                Models.createMesh('road')
             })
             $('#bridge').click(function () {
-                Models.create('bridge')
+                Models.createMesh('bridge')
             })
             $('#forest').click(function () {
-                Models.create('forest')
+                Models.createMesh('forest')
             })
             $('#swamp').click(function () {
-                Models.create('swamp')
+                Models.createMesh('swamp')
             })
         }
 

@@ -69,7 +69,11 @@ var Picker = new function () {
         onclick = function (button) {
             switch (button) {
                 case 0:
-
+                    // add item
+                    if (draggedMesh) {
+                        Scene.add(draggedMesh)
+                        draggedMesh = 0
+                    }
                     break
 
                 case 1:
@@ -77,7 +81,11 @@ var Picker = new function () {
                     break
 
                 case 2:
-
+                    // remove mesh
+                    if (draggedMesh) {
+                        Scene.remove(draggedMesh)
+                        draggedMesh = 0
+                    }
                     break
             }
         },
