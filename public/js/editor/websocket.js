@@ -3,8 +3,13 @@ var WebSocketEditor = new function () {
         ws,
         onMessage = function (r) {
             //console.log(r)
+            //switch (r.type){
+            //    case 'init':
+            //
+            //        break;
+            //}
             if (!Editor.getInit()) {
-                Editor.init(r['fields'])
+                Editor.init(r.fields)
             }
         },
         open = function () {
@@ -37,5 +42,21 @@ var WebSocketEditor = new function () {
             closed = true;
             setTimeout('WebSocketEditor.init()', 1000)
         }
+    }
+
+    this.add = function (itemName, x, y) {
+        if (closed) {
+            console.log(translations.sorryServerIsDisconnected)
+            return;
+        }
+
+        var token = {
+            type: 'add',
+            itemName: itemName,
+            x: x,
+            y: y
+        }
+
+        ws.send(JSON.stringify(token));
     }
 }

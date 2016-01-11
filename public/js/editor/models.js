@@ -132,8 +132,8 @@ var Models = new function () {
             treeModel.material = new THREE.MeshLambertMaterial({color: '#003300', side: THREE.DoubleSide})
             //waterModel.material = new THREE.MeshPhongMaterial({color: 0x0000ff, side: THREE.DoubleSide})
         }
-    this.createMesh = function ($type) {
-        switch ($type) {
+    this.createMesh = function (type) {
+        switch (type) {
             case 'castle':
                 var castleMaterial = new THREE.MeshLambertMaterial({color: '#3B3028', side: THREE.DoubleSide}),
                     mesh = new THREE.Mesh(castleModel_1.geometry, castleMaterial)
@@ -159,9 +159,10 @@ var Models = new function () {
 
                 break
             default:
-                console.log('Brak typu (' + $type + ')')
+                console.log('Brak typu (' + type + ')')
                 return
         }
+        mesh.itemName = type
         Scene.add(mesh)
         Picker.addDraggedMesh(mesh)
     }

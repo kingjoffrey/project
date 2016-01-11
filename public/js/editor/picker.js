@@ -71,6 +71,7 @@ var Picker = new function () {
                 case 0:
                     // add item
                     if (draggedMesh) {
+                        WebSocketEditor.add(draggedMesh.itemName, convertX(), convertZ())
                         Scene.add(draggedMesh)
                         draggedMesh = 0
                     }
