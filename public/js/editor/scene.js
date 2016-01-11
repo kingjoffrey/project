@@ -95,6 +95,7 @@ var Scene = new function () {
 
         initCamera(gameWidth, gameHeight)
         renderer.setSize(gameWidth, gameHeight)
+        Picker.init()
     }
     this.resize = function () {
         gameWidth = window.innerWidth

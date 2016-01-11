@@ -1,13 +1,7 @@
 var Ground = new function () {
-    var xOffset,
-        zOffset
-
     this.init = function (maxX, maxY, textureName) {
-        xOffset = maxX / 2
-        zOffset = 3.5 * maxY
         createGround(maxX, maxY, textureName)
         createWater(maxX, maxY)
-        Picker.init(xOffset, zOffset)
     }
     var createWater = function (maxX, maxY) {
             var waterVertexPositions = [],
