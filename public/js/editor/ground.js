@@ -5,34 +5,34 @@ var Ground = new function () {
     this.init = function (maxX, maxY, textureName) {
         xOffset = maxX / 2
         zOffset = 3.5 * maxY
-        createWater(maxX, maxY)
         createGround(maxX, maxY, textureName)
+        createWater(maxX, maxY)
         Picker.init(xOffset, zOffset)
     }
     var createWater = function (maxX, maxY) {
             var waterVertexPositions = [],
                 waterVertices = new Float32Array(18),
                 waterGeometry = new THREE.BufferGeometry(),
-                waterMaterial = new THREE.MeshBasicMaterial({color: 0x0000ff})
+                waterMaterial = new THREE.MeshBasicMaterial({color: 0x0000ff, side: THREE.DoubleSide})
 
-            waterVertexPositions.push([0, 0, -0.2])
-            waterVertexPositions.push([maxX, 0, -0.2])
-            waterVertexPositions.push([0, maxY, -0.2])
+            waterVertexPositions.push([0, 0, 0.2])
+            waterVertexPositions.push([maxX, 0, 0.2])
+            waterVertexPositions.push([0, maxY, 0.2])
 
-            waterVertexPositions.push([maxX, maxY, -0.2])
-            waterVertexPositions.push([0, maxY, -0.2])
-            waterVertexPositions.push([maxX, 0, -0.2])
+            waterVertexPositions.push([maxX, maxY, 0.2])
+            waterVertexPositions.push([0, maxY, 0.2])
+            waterVertexPositions.push([maxX, 0, 0.2])
 
             for (var i = 0; i < 6; i++) {
                 var index = i * 3
-                waterVertices[index + 0] = waterVertexPositions[i][0] * 4 - xOffset;
-                waterVertices[index + 1] = waterVertexPositions[i][1] * 4 - maxY / 2;
-                waterVertices[index + 2] = waterVertexPositions[i][2];
+                waterVertices[index + 0] = waterVertexPositions[i][0]
+                waterVertices[index + 1] = waterVertexPositions[i][1]
+                waterVertices[index + 2] = waterVertexPositions[i][2]
             }
 
             waterGeometry.addAttribute('position', new THREE.BufferAttribute(waterVertices, 3))
             var waterMesh = new THREE.Mesh(waterGeometry, waterMaterial)
-            waterMesh.rotation.x = -Math.PI / 2
+            waterMesh.rotation.x = Math.PI / 2
             Scene.add(waterMesh)
         },
         createGround = function (maxX, maxY, textureName) {
@@ -88,8 +88,8 @@ var Ground = new function () {
 
             for (var i = 0; i < grassVertexPositions.length; i++) {
                 var index = 3 * i
-                grassVertices[index + 0] = grassVertexPositions[i][0] * 4 - xOffset
-                grassVertices[index + 1] = grassVertexPositions[i][1] * 4 - zOffset
+                grassVertices[index + 0] = grassVertexPositions[i][0]
+                grassVertices[index + 1] = grassVertexPositions[i][1]
                 grassVertices[index + 2] = grassVertexPositions[i][2]
             }
 
@@ -131,9 +131,9 @@ var Ground = new function () {
                 Scene.add(grassMesh)
                 Picker.attach(grassMesh)
 
-                //var helper = new THREE.WireframeHelper(grassMesh, 0xff00ff);
-                //helper.material.linewidth = 1;
-                //Scene.add(helper)
+                var helper = new THREE.WireframeHelper(grassMesh, 0xff00ff);
+                helper.material.linewidth = 1;
+                Scene.add(helper)
                 //console.log(grassMesh.geometry.attributes)
             })
         }

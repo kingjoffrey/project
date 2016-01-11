@@ -71,7 +71,7 @@ var Picker = new function () {
                 case 0:
                     // add item
                     if (draggedMesh) {
-                        WebSocketEditor.add(draggedMesh.itemName, convertX(), convertZ())
+                        WebSocketEditor.add(draggedMesh.itemName, draggedMesh.position.x / 4, draggedMesh.position.z / 4)
                         Scene.add(draggedMesh)
                         draggedMesh = 0
                     }
@@ -96,6 +96,7 @@ var Picker = new function () {
                     z = convertZ(),
                     newX = parseInt(x / 4),
                     newZ = parseInt(z / 4)
+                console.log(newX + ' - ' + newZ)
                 if (newX != oldX) {
                     oldX = newX
                     if (x % 4 == 0) {

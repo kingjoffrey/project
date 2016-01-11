@@ -321,5 +321,9 @@ var Models = new function () {
         initCastle()
         initArmy()
         initFields()
+        Models.createMesh('tower')
+        Models.createMesh('castle')
+        Models.createMesh('ruin')
+        Models.createMesh('ruin')
     }
 }
