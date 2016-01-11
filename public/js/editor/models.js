@@ -13,24 +13,24 @@ var Models = new function () {
         waterModel,
         loader = new THREE.JSONLoader(),
         initRuin = function () {
-            ruin.scale = 3
+            ruin.scale = 12
             ruinModel = loader.parse(ruin)
         },
         initTower = function () {
-            tower.scale = 1.2
+            tower.scale = 4.8
             towerModel = loader.parse(tower)
             flagModel = loader.parse(flag)
         },
         initCastle = function () {
-            castle_1.scale = 1.9
-            castle_2.scale = 1.9
-            castle_3.scale = 1.9
-            castle_4.scale = 1.9
+            castle_1.scale = 7.6
+            castle_2.scale = 7.6
+            castle_3.scale = 7.6
+            castle_4.scale = 7.6
             castleModel_1 = loader.parse(castle_1)
             castleModel_2 = loader.parse(castle_2)
             castleModel_3 = loader.parse(castle_3)
             castleModel_4 = loader.parse(castle_4)
-            flag.scale = 0.3
+            flag.scale = 1.2
             flagModel = loader.parse(flag)
         },
         getCastleModel = function (defense) {
@@ -120,8 +120,8 @@ var Models = new function () {
             }
         },
         initFields = function () {
-            tree.scale = 3
-            hill.scale = 1.3
+            tree.scale = 12
+            hill.scale = 5.2
 
             mountainModel = loader.parse(mountain)
             hillModel = loader.parse(hill)

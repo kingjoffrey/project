@@ -92,26 +92,16 @@ var Picker = new function () {
         },
         mouseMove = function () {
             if (draggedMesh) {
-                var x = convertX(),
-                    z = convertZ(),
-                    newX = parseInt(x / 4),
-                    newZ = parseInt(z / 4)
-                console.log(newX + ' - ' + newZ)
+                var newX = convertX(),
+                    newZ = convertZ()
+                //console.log(newX + ' - ' + newZ)
                 if (newX != oldX) {
                     oldX = newX
-                    if (x % 4 == 0) {
-                        draggedMesh.position.x = x
-                    } else {
-                        draggedMesh.position.x = x - 3
-                    }
+                    draggedMesh.position.x = newX
                 }
                 if (newZ != oldZ) {
                     oldZ = newZ
-                    if (z % 4 == 0) {
-                        draggedMesh.position.z = z
-                    } else {
-                        draggedMesh.position.z = z + 3
-                    }
+                    draggedMesh.position.z = newZ
                 }
             }
         }
