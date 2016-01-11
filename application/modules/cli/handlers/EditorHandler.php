@@ -78,7 +78,11 @@ class Cli_EditorHandler extends WebSocketUriHandler
             case 'add':
                 switch($dataIn['itemName']){
                     case 'castle':
-
+//                $mCastle = new Application_Model_Castle($this->_db);
+//                $mMapCastles = new Application_Model_MapCastles($dataIn['mapId'], $this->_db);
+//                $mapCastlesIds = $mMapCastles->getMapCastlesIds();
+//                $castleId = $mCastle->getNextFreeCastleId($mapCastlesIds);
+//                $mMapCastles->add($dataIn['x'], $dataIn['y'], $castleId);
                         break;
                     case 'tower':
 
@@ -90,14 +94,6 @@ class Cli_EditorHandler extends WebSocketUriHandler
 
                         break;
                 }
-                echo $dataIn['x'];
-                echo $dataIn['y'];
-
-//                $mCastle = new Application_Model_Castle($this->_db);
-//                $mMapCastles = new Application_Model_MapCastles($dataIn['mapId'], $this->_db);
-//                $mapCastlesIds = $mMapCastles->getMapCastlesIds();
-//                $castleId = $mCastle->getNextFreeCastleId($mapCastlesIds);
-//                $mMapCastles->add($dataIn['x'], $dataIn['y'], $castleId);
                 break;
 
             case 'castleRemove':

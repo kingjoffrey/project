@@ -6,16 +6,12 @@ var Picker = new function () {
         camera,
         container,
         draggedMesh = 0,
-        xOffset,
-        zOffset,
         oldX = 0,
         oldZ = 0
 
-    this.init = function (xO, zO) {
+    this.init = function () {
         camera = Scene.getCamera()
         container = Scene.getRenderer().domElement
-        xOffset = xO
-        zOffset = zO
 
         container.addEventListener('mousedown', onContainerMouseDown, false);
         container.addEventListener('mousemove', onContainerMouseMove, false);
@@ -23,6 +19,12 @@ var Picker = new function () {
     }
     this.addDraggedMesh = function (mesh) {
         draggedMesh = mesh
+        if (draggedMesh.itemName == 'castle') {
+            draggedMesh.plus = 1
+        } else {
+            draggedMesh.plus = 0.5
+        }
+
     }
     this.attach = function (object) {
         if (object instanceof THREE.Mesh) {
@@ -71,7 +73,7 @@ var Picker = new function () {
                 case 0:
                     // add item
                     if (draggedMesh) {
-                        WebSocketEditor.add(draggedMesh.itemName, draggedMesh.position.x / 4, draggedMesh.position.z / 4)
+                        WebSocketEditor.add(draggedMesh.itemName, convertX(), convertZ())
                         Scene.add(draggedMesh)
                         draggedMesh = 0
                     }
@@ -94,14 +96,14 @@ var Picker = new function () {
             if (draggedMesh) {
                 var newX = convertX(),
                     newZ = convertZ()
-                //console.log(newX + ' - ' + newZ)
+
                 if (newX != oldX) {
                     oldX = newX
-                    draggedMesh.position.x = newX
+                    draggedMesh.position.x = newX + draggedMesh.plus
                 }
                 if (newZ != oldZ) {
                     oldZ = newZ
-                    draggedMesh.position.z = newZ
+                    draggedMesh.position.z = newZ + draggedMesh.plus
                 }
             }
         }
