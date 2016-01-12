@@ -23,24 +23,15 @@ class Cli_Model_EditorOpen
 
         if (!($user->parameters['editor'] = $handler->getEditor($dataIn['mapId']))) {
             echo 'not set' . "\n";
-            $handler->addEditor(new Cli_Model_Editor());
-            $user->parameters['editor'] = $handler->getEditor();
+            $handler->addEditor($dataIn['mapId'], new Cli_Model_Editor($dataIn['mapId'], $db));
+            $user->parameters['editor'] = $handler->getEditor($dataIn['mapId']);
         }
 
-//        $game = Cli_Model_Game::getGame($user);
-//        $game->addUser($dataIn['playerId'], $user);
+        $editor = Cli_Model_Editor::getEditor($user);
+//
+//        $user->parameters['playerId'] = $dataIn['playerId'];
+//        $user->parameters['accessKey'] = $dataIn['accessKey'];
 
-
-        $user->parameters['playerId'] = $dataIn['playerId'];
-        $user->parameters['accessKey'] = $dataIn['accessKey'];
-
-        $mMapFields = new Application_Model_MapFields($dataIn['mapId'], $db);
-        $fields = new Cli_Model_Fields($mMapFields->getMapFields());
-
-        $token = array(
-            'fields' => $fields->toArray()
-        );
-
-        $handler->sendToUser($user, $token);
+        $handler->sendToUser($user, $editor->toArray());
     }
 }
