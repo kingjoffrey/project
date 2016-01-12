@@ -5,6 +5,7 @@ class Cli_Model_Editor
     private $_id;
     private $_fields;
 
+
     public function __construct($mapId, Zend_Db_Adapter_Pdo_Pgsql $db)
     {
         $this->_id = $mapId;
