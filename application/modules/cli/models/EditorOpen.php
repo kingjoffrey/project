@@ -1,16 +1,16 @@
 <?php
 
-class Cli_EditorOpen
+class Cli_Model_EditorOpen
 {
 
     public function __construct($dataIn, Devristo\Phpws\Protocol\WebSocketTransportInterface $user, Cli_EditorHandler $handler)
     {
         if (!isset($dataIn['playerId'])) {
-            $this->sendError($user, 'Brak "playerId"');
+            $handler->sendError($user, 'Brak "playerId"');
             return;
         }
         if (!isset($dataIn['mapId'])) {
-            $this->sendError($user, 'Brak "mapId"');
+            $handler->sendError($user, 'Brak "mapId"');
             return;
         }
 
@@ -23,7 +23,7 @@ class Cli_EditorOpen
 
         if (!($user->parameters['editor'] = $handler->getEditor($dataIn['mapId']))) {
             echo 'not set' . "\n";
-            $handler->addEditor($dataIn['mapId'], new Cli_Model_Editor());
+            $handler->addEditor(new Cli_Model_Editor());
             $user->parameters['editor'] = $handler->getEditor();
         }
 
@@ -41,6 +41,6 @@ class Cli_EditorOpen
             'fields' => $fields->toArray()
         );
 
-        $this->sendToUser($user, $token);
+        $handler->sendToUser($user, $token);
     }
 }

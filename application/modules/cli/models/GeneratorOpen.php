@@ -1,16 +1,12 @@
 <?php
 
-class Cli_GeneratorOpen
+class Cli_Model_GeneratorOpen
 {
 
-    public function __construct($dataIn, Devristo\Phpws\Protocol\WebSocketTransportInterface $user, Cli_EditorHandler $handler)
+    public function __construct($dataIn, Devristo\Phpws\Protocol\WebSocketTransportInterface $user, Cli_GeneratorHandler $handler)
     {
         if (!isset($dataIn['playerId'])) {
-            $this->sendError($user, 'Brak "playerId"');
-            return;
-        }
-        if (!isset($dataIn['mapId'])) {
-            $this->sendError($user, 'Brak "mapId"');
+            $handler->sendError($user, 'Brak "playerId"');
             return;
         }
 

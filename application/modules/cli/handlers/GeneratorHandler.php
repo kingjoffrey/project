@@ -34,7 +34,7 @@ class Cli_GeneratorHandler extends WebSocketUriHandler
         }
 
         if ($dataIn['type'] == 'open') {
-            new Cli_GeneratorOpen($dataIn, $user, $this);
+            new Cli_Model_GeneratorOpen($dataIn, $user, $this);
             return;
         }
 

@@ -32,7 +32,7 @@ var WebSocketEditor = new function () {
     }
 
     this.init = function () {
-        ws = new WebSocket(wsURL + '/editor')
+        ws = new WebSocket(wsURL + '/generator')
 
         ws.onopen = function () {
             closed = false

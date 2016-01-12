@@ -53,7 +53,7 @@ class Cli_EditorHandler extends WebSocketUriHandler
         }
 
         if ($dataIn['type'] == 'open') {
-            new Cli_EditorOpen($dataIn, $user, $this);
+            new Cli_Model_EditorOpen($dataIn, $user, $this);
             return;
         }
 
