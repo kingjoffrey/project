@@ -63,19 +63,6 @@ class Cli_EditorHandler extends WebSocketUriHandler
         }
 
         switch ($dataIn['type']) {
-            case 'save':
-                $map = str_replace('data:image/png;base64,', '', $dataIn['map']);
-                $map = str_replace(' ', '+', $map);
-                $file = APPLICATION_PATH . '/../public/img/maps/' . $dataIn['mapId'] . '.png';
-                $success = file_put_contents($file, base64_decode($map));
-                $mapFields = new Application_Model_MapFields($dataIn['mapId'], $this->_db);
-                foreach ($dataIn['fields'] as $y => $row) {
-                    foreach ($row as $x => $type) {
-                        $mapFields->add($x, $y, $type);
-                    }
-                }
-                break;
-
             case 'add':
                 switch ($dataIn['itemName']) {
                     case 'castle':
@@ -97,7 +84,7 @@ class Cli_EditorHandler extends WebSocketUriHandler
                 }
                 break;
 
-            case 'castleRemove':
+            case 'remove':
                 $mMapCastles = new Application_Model_MapCastles($dataIn['mapId'], $this->_db);
                 $mMapCastles->remove($dataIn['x'], $dataIn['y']);
                 break;

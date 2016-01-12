@@ -13,7 +13,6 @@ use Devristo\Phpws\Server\UriHandler\WebSocketUriHandler;
 class Cli_GeneratorHandler extends WebSocketUriHandler
 {
     private $_db;
-    private $_editor;
 
     public function __construct($logger)
     {
@@ -24,24 +23,6 @@ class Cli_GeneratorHandler extends WebSocketUriHandler
     public function getDb()
     {
         return $this->_db;
-    }
-
-    public function addEditor(Cli_Model_Editor $editor)
-    {
-        $this->_editor = $editor;
-    }
-
-    public function removeEditor()
-    {
-        $this->_editor = null;
-    }
-
-    /**
-     * @return Cli_Model_Editor
-     */
-    public function getEditor()
-    {
-        return $this->_editor;
     }
 
     public function onMessage(WebSocketTransportInterface $user, WebSocketMessageInterface $msg)
