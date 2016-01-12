@@ -10,7 +10,7 @@ use Devristo\Phpws\Server\UriHandler\WebSocketUriHandler;
  * @author Bartosz Krzeszewski
  *
  */
-class Cli_EditorHandler extends WebSocketUriHandler
+class Cli_GeneratorHandler extends WebSocketUriHandler
 {
     private $_db;
     private $_editor;
@@ -53,7 +53,7 @@ class Cli_EditorHandler extends WebSocketUriHandler
         }
 
         if ($dataIn['type'] == 'open') {
-            new Cli_EditorOpen($dataIn, $user, $this);
+            new Cli_GeneratorOpen($dataIn, $user, $this);
             return;
         }
 
@@ -74,32 +74,6 @@ class Cli_EditorHandler extends WebSocketUriHandler
                         $mapFields->add($x, $y, $type);
                     }
                 }
-                break;
-
-            case 'add':
-                switch ($dataIn['itemName']) {
-                    case 'castle':
-//                $mCastle = new Application_Model_Castle($this->_db);
-//                $mMapCastles = new Application_Model_MapCastles($dataIn['mapId'], $this->_db);
-//                $mapCastlesIds = $mMapCastles->getMapCastlesIds();
-//                $castleId = $mCastle->getNextFreeCastleId($mapCastlesIds);
-//                $mMapCastles->add($dataIn['x'], $dataIn['y'], $castleId);
-                        break;
-                    case 'tower':
-
-                        break;
-                    case 'ruin':
-
-                        break;
-                    case 'forest':
-
-                        break;
-                }
-                break;
-
-            case 'castleRemove':
-                $mMapCastles = new Application_Model_MapCastles($dataIn['mapId'], $this->_db);
-                $mMapCastles->remove($dataIn['x'], $dataIn['y']);
                 break;
         }
     }
