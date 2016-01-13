@@ -19,7 +19,7 @@ class Cli_Model_Editor
         $this->_Players = new Cli_Model_Players();
         $this->_Ruins = new Cli_Model_Ruins();
 
-        $players = array();
+        $players = array(); //create new db table to store players info
         $this->initPlayers($mMapPlayers, $players, $db);
     }
 
@@ -29,20 +29,14 @@ class Cli_Model_Editor
         $mapCastles = $mMapCastles->getMapCastles();
         $mMapTowers = new Application_Model_MapTowers($this->_mapId, $db);
         $mapTowers = $mMapTowers->getMapTowers();
-//        $mTowersInGame = new Application_Model_TowersInGame($this->_id, $db);
-//        $playersTowers = $mTowersInGame->getTowers();
 
-        $playersTowers = array();
+        $mTowersInGame = new Application_Model_TowersInGame($this->_id, $db); // create new db table to store players towers info
+        $playersTowers = $mTowersInGame->getTowers();
 
         foreach ($this->_playersColors as $playerId => $color) {
-            $player = new Cli_Model_Player($players[$playerId], $this->_id, $mapCastles, $mapTowers, $playersTowers, $mMapPlayers, $db);
-            $this->_Players->addPlayer($color, $player);
-            if (!$player->getComputer()) {
-                $this->updateOnline($color, 0);
-            }
+            $this->_Players->addPlayer($color, new Cli_Model_EditorPlayer($players[$playerId], $this->_mapId, $mapCastles, $mapTowers, $playersTowers, $mMapPlayers, $db));
         }
-        $player = new Cli_Model_NeutralPlayer($this, $mapCastles, $mapTowers, $playersTowers, $db);
-        $this->_Players->addPlayer('neutral', $player);
+        $this->_Players->addPlayer('neutral', new Cli_Model_NeutralPlayer($this, $mapCastles, $mapTowers, $playersTowers, $db));
 
         $this->_Players->initFields($this->_Fields);
     }
