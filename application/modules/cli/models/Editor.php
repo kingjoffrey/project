@@ -70,10 +70,10 @@ class Cli_Model_Editor
 //                $mMapCastles->add($dataIn['x'], $dataIn['y'], $castleId);
                 break;
             case 'tower':
-
+                $this->_Players->getPlayer($dataIn['shortName'])->addTower();
                 break;
             case 'ruin':
-
+                $this->_Ruins->add($dataIn['x'], $dataIn['y']);
                 break;
             case 'forest':
 
@@ -85,6 +85,8 @@ class Cli_Model_Editor
     {
         switch ($dataIn['itemName']) {
             case 'castle':
+                $mMapCastles = new Application_Model_MapCastles($dataIn['mapId'], $this->_db);
+                $mMapCastles->remove($dataIn['x'], $dataIn['y']);
                 break;
             case 'tower':
 

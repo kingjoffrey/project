@@ -68,8 +68,7 @@ class Cli_EditorHandler extends WebSocketUriHandler
                 break;
 
             case 'remove':
-                $mMapCastles = new Application_Model_MapCastles($dataIn['mapId'], $this->_db);
-                $mMapCastles->remove($dataIn['x'], $dataIn['y']);
+                $this->getEditor($dataIn['mapId'])->remove($dataIn);
                 break;
         }
     }
