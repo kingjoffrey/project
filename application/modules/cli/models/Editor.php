@@ -59,6 +59,45 @@ class Cli_Model_Editor
         );
     }
 
+    public function add($dataIn)
+    {
+        switch ($dataIn['itemName']) {
+            case 'castle':
+//                $mCastle = new Application_Model_Castle($this->_db);
+//                $mMapCastles = new Application_Model_MapCastles($dataIn['mapId'], $this->_db);
+//                $mapCastlesIds = $mMapCastles->getMapCastlesIds();
+//                $castleId = $mCastle->getNextFreeCastleId($mapCastlesIds);
+//                $mMapCastles->add($dataIn['x'], $dataIn['y'], $castleId);
+                break;
+            case 'tower':
+
+                break;
+            case 'ruin':
+
+                break;
+            case 'forest':
+
+                break;
+        }
+    }
+
+    public function remove($dataIn)
+    {
+        switch ($dataIn['itemName']) {
+            case 'castle':
+                break;
+            case 'tower':
+
+                break;
+            case 'ruin':
+
+                break;
+            case 'forest':
+
+                break;
+        }
+    }
+
     /**
      * @param Devristo\Phpws\Protocol\WebSocketTransportInterface $user
      * @return Cli_Model_Editor

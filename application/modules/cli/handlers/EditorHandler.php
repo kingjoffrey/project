@@ -64,24 +64,7 @@ class Cli_EditorHandler extends WebSocketUriHandler
 
         switch ($dataIn['type']) {
             case 'add':
-                switch ($dataIn['itemName']) {
-                    case 'castle':
-//                $mCastle = new Application_Model_Castle($this->_db);
-//                $mMapCastles = new Application_Model_MapCastles($dataIn['mapId'], $this->_db);
-//                $mapCastlesIds = $mMapCastles->getMapCastlesIds();
-//                $castleId = $mCastle->getNextFreeCastleId($mapCastlesIds);
-//                $mMapCastles->add($dataIn['x'], $dataIn['y'], $castleId);
-                        break;
-                    case 'tower':
-
-                        break;
-                    case 'ruin':
-
-                        break;
-                    case 'forest':
-
-                        break;
-                }
+                $this->getEditor($dataIn['mapId'])->add($dataIn);
                 break;
 
             case 'remove':

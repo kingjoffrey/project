@@ -8,7 +8,7 @@ var Scene = new function () {
         scene = new THREE.Scene(),
         camera,
         renderer = new THREE.WebGLRenderer({antialias: true}),
-        cameraY = 76,
+        cameraY = 24,
         initCamera = function (gameWidth, gameHeight) {
             var viewAngle = 22,
                 near = 1,
@@ -18,7 +18,6 @@ var Scene = new function () {
             camera.rotation.order = 'YXZ'
             camera.rotation.y = -Math.PI / 4
             camera.rotation.x = Math.atan(-1 / Math.sqrt(2))
-            camera.position.set(0, cameraY, 0)
             camera.scale.addScalar(1)
             scene.add(camera)
             scene.add(new THREE.AmbientLight(0x222222))
@@ -31,6 +30,9 @@ var Scene = new function () {
 
     this.getCameraY = function () {
         return cameraY
+    }
+    this.setCameraPosition = function (x, z) {
+        camera.position.set(x, cameraY, parseInt(z))
     }
     this.get = function () {
         return scene
