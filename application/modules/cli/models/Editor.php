@@ -36,7 +36,7 @@ class Cli_Model_Editor
         foreach ($mapPlayers as $id => $player) {
             $this->_Players->addPlayer($player['shortName'], new Cli_Model_EditorPlayer($player, $this->_mapId, $mapCastles, $mapTowers, $mMapPlayers, $db));
         }
-        $this->_Players->addPlayer('neutral', new Cli_Model_NeutralPlayer($this, $mapCastles, $mapTowers, array(), $db));
+        $this->_Players->addPlayer('neutral', new Cli_Model_EditorNeutralPlayer($mapCastles, $mapTowers));
         $this->_Players->initFields($this->_Fields);
     }
 
@@ -53,7 +53,6 @@ class Cli_Model_Editor
     public function toArray()
     {
         return array(
-            'id' => $this->_id,
             'fields' => $this->_Fields->toArray(),
             'players' => $this->_Players->toArray(),
             'ruins' => $this->_Ruins->toArray()

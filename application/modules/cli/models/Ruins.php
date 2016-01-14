@@ -2,7 +2,7 @@
 
 class Cli_Model_Ruins
 {
-    private $_ruins;
+    private $_ruins = array();
 
     public function toArray()
     {
