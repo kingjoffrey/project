@@ -23,10 +23,17 @@ class Cli_Model_EditorRuins
         return array_keys($this->_ruins);
     }
 
-    public function add($x, $y, $mapId, Zend_Db_Adapter_Pdo_Pgsql $db)
+    public function createRuin($x, $y, $mapId, Zend_Db_Adapter_Pdo_Pgsql $db)
     {
-        $ruin = new Cli_Model_EditorRuin($x, $y, $mapId, $db);
+        $ruin = new Cli_Model_EditorRuin($x, $y);
+        $ruin->create($mapId, $db);
         $this->_ruins[$ruin->getId()] = $ruin;
+    }
+
+    public function add($id, Cli_Model_EditorRuin $ruin)
+    {
+        $ruin->add($id);
+        $this->_ruins[$id] = $ruin;
     }
 
     /**
