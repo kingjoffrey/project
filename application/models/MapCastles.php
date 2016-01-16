@@ -80,7 +80,7 @@ class Application_Model_MapCastles extends Coret_Db_Table_Abstract
             'y' => $y
         );
 
-        $this->insert($data);
+        return $this->insert($data);
     }
 
     public function remove($x, $y)

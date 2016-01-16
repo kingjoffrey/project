@@ -2,18 +2,18 @@
 
 class Cli_Model_Castle extends Cli_Model_Entity
 {
-    private $_defense;
-    private $_name;
-    private $_income;
-    private $_capital;
-    private $_enclaveNumber;
+    protected $_defense;
+    protected $_name;
+    protected $_income;
+    protected $_capital;
+    protected $_enclaveNumber;
 
     private $_productionId;
     private $_productionTurn;
     private $_defenseMod = 0;
     private $_relocationCastleId;
 
-    private $_production = array();
+    protected $_production = array();
 
     public function __construct($playerCastle, $mapCastle)
     {
