@@ -4,8 +4,7 @@ class Application_Model_MapRuins extends Coret_Db_Table_Abstract
 {
     protected $_name = 'mapruins';
     protected $_primary = 'mapRuinId';
-//    protected $_sequence = "map_mapId_seq";
-    protected $_db;
+    protected $_sequence = "mapruins_mapRuinId_seq";
     protected $mapId;
 
     public function __construct($mapId, $db = null)
@@ -43,7 +42,7 @@ class Application_Model_MapRuins extends Coret_Db_Table_Abstract
             'x' => $x,
             'y' => $y
         );
-        $this->insert($data);
+        return $this->insert($data);
     }
 }
 

@@ -16,7 +16,7 @@ class Cli_Model_Editor
 
 
         $this->_Players = new Cli_Model_Players();
-        $this->_Ruins = new Cli_Model_Ruins();
+        $this->_Ruins = new Cli_Model_EditorRuins();
 
         $this->initPlayers($db);
         $this->initRuins($db);
@@ -59,7 +59,7 @@ class Cli_Model_Editor
         );
     }
 
-    public function add($dataIn)
+    public function add($dataIn, Zend_Db_Adapter_Pdo_Pgsql $db)
     {
         switch ($dataIn['itemName']) {
             case 'castle':
@@ -73,7 +73,7 @@ class Cli_Model_Editor
                 $this->_Players->getPlayer($dataIn['shortName'])->addTower();
                 break;
             case 'ruin':
-                $this->_Ruins->add($dataIn['x'], $dataIn['y']);
+                $this->_Ruins->add($dataIn['x'], $dataIn['y'], $dataIn['mapId'], $db);
                 break;
             case 'forest':
 
@@ -81,11 +81,11 @@ class Cli_Model_Editor
         }
     }
 
-    public function remove($dataIn)
+    public function remove($dataIn, Zend_Db_Adapter_Pdo_Pgsql $db)
     {
         switch ($dataIn['itemName']) {
             case 'castle':
-                $mMapCastles = new Application_Model_MapCastles($dataIn['mapId'], $this->_db);
+                $mMapCastles = new Application_Model_MapCastles($dataIn['mapId'], $db);
                 $mMapCastles->remove($dataIn['x'], $dataIn['y']);
                 break;
             case 'tower':

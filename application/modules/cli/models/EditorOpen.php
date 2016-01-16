@@ -29,8 +29,8 @@ class Cli_Model_EditorOpen
 
         $editor = Cli_Model_Editor::getEditor($user);
 //
-//        $user->parameters['playerId'] = $dataIn['playerId'];
-//        $user->parameters['accessKey'] = $dataIn['accessKey'];
+        $user->parameters['playerId'] = $dataIn['playerId'];
+        $user->parameters['accessKey'] = $dataIn['accessKey'];
 
         $handler->sendToUser($user, $editor->toArray());
     }

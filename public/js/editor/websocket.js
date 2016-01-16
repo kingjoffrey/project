@@ -52,6 +52,7 @@ var WebSocketEditor = new function () {
 
         var token = {
             type: 'add',
+            mapId: mapId,
             itemName: itemName,
             x: x,
             y: y

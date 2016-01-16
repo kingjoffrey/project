@@ -106,7 +106,8 @@ Został zaktualizowany więcej niż jeden rekord (' . $updateResult . ').
             $name = $this->_name;
         }
         try {
-            return $this->_db->insert($name, $data);
+            $this->_db->insert($name, $data);
+            return $this->_db->lastSequenceId($this->_sequence);
         } catch (Exception $e) {
             if ($this->_cli) {
                 $l = new Coret_Model_Logger('cli');

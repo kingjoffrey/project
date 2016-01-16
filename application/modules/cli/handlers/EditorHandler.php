@@ -37,6 +37,7 @@ class Cli_EditorHandler extends WebSocketUriHandler
     }
 
     /**
+     * @param $mapId
      * @return Cli_Model_Editor
      */
     public function getEditor($mapId)
@@ -64,11 +65,11 @@ class Cli_EditorHandler extends WebSocketUriHandler
 
         switch ($dataIn['type']) {
             case 'add':
-                $this->getEditor($dataIn['mapId'])->add($dataIn);
+                $this->getEditor($dataIn['mapId'])->add($dataIn, $this->_db);
                 break;
 
             case 'remove':
-                $this->getEditor($dataIn['mapId'])->remove($dataIn);
+                $this->getEditor($dataIn['mapId'])->remove($dataIn, $this->_db);
                 break;
         }
     }
