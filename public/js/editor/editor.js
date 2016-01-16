@@ -11,6 +11,8 @@ var Editor = new function () {
         Scene.init()
         Fields.init(r.fields, mapId)
         Ruins.init(r.ruins)
+        Players.init(r.players)
+        //console.log(r)
     }
     var initButtons = function () {
         $('#castle').click(function (e) {

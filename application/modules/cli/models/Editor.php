@@ -16,7 +16,7 @@ class Cli_Model_Editor
 
 
         $this->_Players = new Cli_Model_Players();
-        $this->_Ruins = new Cli_Model_Ruins();
+        $this->_Ruins = new Cli_Model_EditorRuins();
 
         $this->initPlayers($db);
         $this->initRuins($db);
@@ -44,7 +44,7 @@ class Cli_Model_Editor
     {
         $mMapRuins = new Application_Model_MapRuins($this->_mapId, $db);
         foreach ($mMapRuins->getMapRuins() as $ruinId => $position) {
-            $this->_Ruins->add($ruinId, new Cli_Model_EditorRuin($position['x'], $position['y']));
+            $this->_Ruins->editorAdd($ruinId, new Cli_Model_EditorRuin($position['x'], $position['y']));
             $this->_Fields->getField($position['x'], $position['y'])->setRuin($ruinId);
         }
     }
