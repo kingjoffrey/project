@@ -5,11 +5,12 @@ var Editor = new function () {
     this.getInit = function () {
         return init
     }
-    this.init = function (fields) {
+    this.init = function (r) {
         init = 1
         initButtons()
         Scene.init()
-        Fields.init(fields, mapId)
+        Fields.init(r.fields, mapId)
+        Ruins.init(r.ruins)
     }
     var initButtons = function () {
         $('#castle').click(function (e) {

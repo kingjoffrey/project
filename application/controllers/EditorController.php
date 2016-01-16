@@ -59,6 +59,8 @@ class EditorController extends Game_Controller_Gui
 
         $this->view->headScript()->appendFile('/js/game/field.js?v=' . $version);
         $this->view->headScript()->appendFile('/js/game/fields.js?v=' . $version);
+        $this->view->headScript()->appendFile('/js/game/ruin.js?v=' . $version);
+        $this->view->headScript()->appendFile('/js/game/ruins.js?v=' . $version);
 
         $mapId = $this->_request->getParam('mapId');
 

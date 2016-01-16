@@ -4,6 +4,7 @@ class Application_Model_MapTowers extends Coret_Db_Table_Abstract
 {
     protected $_name = 'maptowers';
     protected $_primary = 'mapTowerId';
+    protected $_sequence = 'maptowers_mapTowerId_seq';
     protected $mapId;
 
     public function __construct($mapId, $db = null)
@@ -34,6 +35,12 @@ class Application_Model_MapTowers extends Coret_Db_Table_Abstract
         return $mapTowers;
     }
 
+    /**
+     * @param $x
+     * @param $y
+     * @return mixed|string
+     * @throws Exception
+     */
     public function add($x, $y)
     {
         $data = array(
@@ -41,7 +48,7 @@ class Application_Model_MapTowers extends Coret_Db_Table_Abstract
             'x' => $x,
             'y' => $y
         );
-        $this->insert($data);
+        return $this->insert($data);
     }
 }
 

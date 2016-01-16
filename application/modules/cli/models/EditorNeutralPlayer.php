@@ -63,4 +63,4 @@ class Cli_Model_EditorNeutralPlayer extends Cli_Model_DefaultPlayer
             'towers' => $this->_towers->toArray()
         );
     }
- }
+}

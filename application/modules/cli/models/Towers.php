@@ -2,7 +2,7 @@
 
 class Cli_Model_Towers
 {
-    private $_towers = array();
+    protected $_towers = array();
 
     public function toArray()
     {

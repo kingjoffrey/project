@@ -9,7 +9,7 @@ var WebSocketEditor = new function () {
             //        break;
             //}
             if (!Editor.getInit()) {
-                Editor.init(r.fields)
+                Editor.init(r)
             }
         },
         open = function () {

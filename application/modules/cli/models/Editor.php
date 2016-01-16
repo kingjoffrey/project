@@ -16,7 +16,7 @@ class Cli_Model_Editor
 
 
         $this->_Players = new Cli_Model_Players();
-        $this->_Ruins = new Cli_Model_EditorRuins();
+        $this->_Ruins = new Cli_Model_Ruins();
 
         $this->initPlayers($db);
         $this->initRuins($db);
@@ -69,10 +69,14 @@ class Cli_Model_Editor
 //                $mMapCastles->add($dataIn['x'], $dataIn['y'], $castleId);
                 break;
             case 'tower':
-                $this->_Players->getPlayer($dataIn['shortName'])->addTower();
+                $tower = new Cli_Model_EditorTower($dataIn['x'], $dataIn['y']);
+                $tower->create($dataIn['mapId'], $db);
+                $this->_Players->getPlayer('neutral')->getTowers()->add($tower->getId(), $tower);
                 break;
             case 'ruin':
-                $this->_Ruins->add($dataIn['x'], $dataIn['y'], $dataIn['mapId'], $db);
+                $ruin = new Cli_Model_EditorRuin($dataIn['x'], $dataIn['y']);
+                $ruin->create($dataIn['mapId'], $db);
+                $this->_Ruins->add($ruin->getId(), $ruin);
                 break;
             case 'forest':
 

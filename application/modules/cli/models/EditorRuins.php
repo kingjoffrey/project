@@ -1,47 +1,18 @@
 <?php
 
-class Cli_Model_EditorRuins
+class Cli_Model_EditorRuins extends Cli_Model_Ruins
 {
-    private $_ruins = array();
-
-    public function toArray()
+    public function add($ruinId, Cli_Model_Ruin $ruin)
     {
-        $ruins = array();
-        foreach ($this->_ruins as $ruinId => $ruin) {
-            $ruins[$ruinId] = $ruin->toArray();
-        }
-        return $ruins;
-    }
-
-    public function get()
-    {
-        return $this->_ruins;
-    }
-
-    public function getKeys()
-    {
-        return array_keys($this->_ruins);
-    }
-
-    public function createRuin($x, $y, $mapId, Zend_Db_Adapter_Pdo_Pgsql $db)
-    {
-        $ruin = new Cli_Model_EditorRuin($x, $y);
-        $ruin->create($mapId, $db);
-        $this->_ruins[$ruin->getId()] = $ruin;
-    }
-
-    public function add($id, Cli_Model_EditorRuin $ruin)
-    {
-        $ruin->add($id);
-        $this->_ruins[$id] = $ruin;
+        $this->_ruins[$ruinId] = $ruin;
     }
 
     /**
      * @param $ruinId
-     * @return Cli_Model_Ruin
+     * @return Cli_Model_EditorRuin
      */
     public function getRuin($ruinId)
     {
-        return $this->_ruins[$ruinId];
+        self::getRuin($ruinId);
     }
 }

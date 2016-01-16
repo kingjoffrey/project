@@ -11,6 +11,7 @@ var Models = new function () {
         hillModel,
         treeModel,
         waterModel,
+        showShadows = 0,
         loader = new THREE.JSONLoader(),
         initRuin = function () {
             ruin.scale = 12
@@ -169,13 +170,13 @@ var Models = new function () {
     this.addRuin = function (x, y, color) {
         var ruinMaterial = new THREE.MeshPhongMaterial({color: color, side: THREE.DoubleSide}),
             mesh = new THREE.Mesh(ruinModel.geometry, ruinMaterial)
-        mesh.position.set(x * 4 - 216, 0, y * 4 - 311)
+        mesh.position.set(x + 0.5, 0, y + 0.5)
 
         if (showShadows) {
             mesh.castShadow = true
             mesh.receiveShadow = true
         }
-        scene.add(mesh)
+        Scene.add(mesh)
 
         return mesh.id
     }
@@ -183,13 +184,13 @@ var Models = new function () {
     this.addTower = function (x, y, color) {
         var towerMaterial = new THREE.MeshLambertMaterial({color: '#6B6B6B', side: THREE.DoubleSide}),
             mesh = new THREE.Mesh(towerModel.geometry, towerMaterial)
-        mesh.position.set(x * 4 - 216, 0, y * 4 - 311)
+        mesh.position.set(x + 0.5, 0, y + 0.5)
 
         if (showShadows) {
             mesh.castShadow = true
             mesh.receiveShadow = true
         }
-        scene.add(mesh)
+        Scene.add(mesh)
 
         var material = new THREE.MeshLambertMaterial({color: color, side: THREE.DoubleSide})
         var flagMesh = new THREE.Mesh(flagModel.geometry, material)
@@ -212,7 +213,7 @@ var Models = new function () {
             mesh.castShadow = true
             mesh.receiveShadow = true
         }
-        scene.add(mesh)
+        Scene.add(mesh)
 
         var material = new THREE.MeshLambertMaterial({color: color, side: THREE.DoubleSide})
         var flagMesh = new THREE.Mesh(flagModel.geometry, material)
@@ -269,50 +270,50 @@ var Models = new function () {
         flagMesh.position.set(-2, 0, 0)
         mesh.add(flagMesh)
 
-        scene.add(mesh)
+        Scene.add(mesh)
 
         return mesh
     }
     this.addMountain = function (x, y) {
         var mesh = new THREE.Mesh(mountainModel.geometry, mountainModel.material)
-        mesh.position.set(x * 4 - 216, 0, y * 4 - 311)
+        mesh.position.set(x + 0.5, 0, y + 0.5)
         mesh.rotation.y = 2 * Math.PI * Math.random()
 
         if (showShadows) {
             mesh.castShadow = true
             mesh.receiveShadow = true
         }
-        scene.add(mesh)
+        Scene.add(mesh)
 
     }
     this.addHill = function (x, y) {
         var mesh = new THREE.Mesh(hillModel.geometry, hillModel.material)
-        mesh.position.set(x * 4 - 216, 0, y * 4 - 311)
+        mesh.position.set(x + 0.5, 0, y + 0.5)
         mesh.rotation.y = 2 * Math.PI * Math.random()
 
         if (showShadows) {
             mesh.castShadow = true
             mesh.receiveShadow = true
         }
-        scene.add(mesh)
+        Scene.add(mesh)
     }
     this.addTree = function (x, y) {
         var mesh = new THREE.Mesh(treeModel.geometry, treeModel.material)
-        mesh.position.set(x * 4 - 216, 0, y * 4 - 311)
+        mesh.position.set(x + 0.5, 0, y + 0.5)
         mesh.rotation.y = 2 * Math.PI * Math.random()
 
         if (showShadows) {
             mesh.castShadow = true
             mesh.receiveShadow = true
         }
-        scene.add(mesh)
+        Scene.add(mesh)
     }
     this.addWater = function (x, y) {
         var mesh = new THREE.Mesh(waterModel.geometry, waterModel.material)
         mesh.position.set(x * 4 - 216, 0.1, y * 4 - 311)
         mesh.rotation.y = 2 * Math.PI * Math.random()
 
-        scene.add(mesh)
+        Scene.add(mesh)
     }
 
     this.init = function () {

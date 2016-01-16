@@ -1,7 +1,7 @@
 var Ruin = function (ruin) {
     this.update = function (empty) {
         ruin.empty = empty
-        Three.getScene().getObjectById(meshId).material.color.set(this.getColor())
+        Scene.getScene().getObjectById(meshId).material.color.set(this.getColor())
     }
     this.getColor = function () {
         if (ruin.empty) {
@@ -16,5 +16,5 @@ var Ruin = function (ruin) {
     this.getY = function () {
         return ruin.y
     }
-    var meshId = Three.addRuin(ruin.x, ruin.y, this.getColor())
+    var meshId = Models.addRuin(ruin.x, ruin.y, this.getColor())
 }
