@@ -79,6 +79,8 @@ class Cli_Model_Editor
             case 'forest':
 
                 break;
+            case 'road':
+                break;
         }
     }
 

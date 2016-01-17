@@ -12,13 +12,13 @@ class Cli_Model_EditorCastle extends Cli_Model_Castle
     {
         $mMapCastles = new Application_Model_MapCastles($mapId, $db);
         $this->_id = $mMapCastles->add($this->_x, $this->_y);
-        $mapCastle = $mMapCastles->get();
 
-        $this->_defense = $mapCastle['defense'];
-        $this->_name = $mapCastle['name'];
-        $this->_income = $mapCastle['income'];
-        $this->_capital = $mapCastle['capital'];
-        $this->_enclaveNumber = $mapCastle['enclaveNumber'];
+//        $mapCastle = $mMapCastles->get();
+//        $this->_defense = $mapCastle['defense'];
+//        $this->_name = $mapCastle['name'];
+//        $this->_income = $mapCastle['income'];
+//        $this->_capital = $mapCastle['capital'];
+//        $this->_enclaveNumber = $mapCastle['enclaveNumber'];
     }
 
     public function toArray()
