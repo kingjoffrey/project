@@ -50,5 +50,13 @@ class Application_Model_Castle extends Coret_Db_Table_Abstract
 
         return $array;
     }
+
+    public function get()
+    {
+        $select = $this->_db->select()
+            ->from($this->_name, '*');
+
+        return $this->selectAll($select);
+    }
 }
 

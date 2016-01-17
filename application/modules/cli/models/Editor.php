@@ -62,11 +62,9 @@ class Cli_Model_Editor
     {
         switch ($dataIn['itemName']) {
             case 'castle':
-//                $mCastle = new Application_Model_Castle($this->_db);
-//                $mMapCastles = new Application_Model_MapCastles($dataIn['mapId'], $this->_db);
-//                $mapCastlesIds = $mMapCastles->getMapCastlesIds();
-//                $castleId = $mCastle->getNextFreeCastleId($mapCastlesIds);
-//                $mMapCastles->add($dataIn['x'], $dataIn['y'], $castleId);
+                $castle = new Cli_Model_EditorCastle($dataIn['x'], $dataIn['y']);
+                $castle->create($dataIn['mapId'], $db);
+                $this->_Players->getPlayer('neutral')->getCastles()->addCastle($castle->getId(), $castle);
                 break;
             case 'tower':
                 $tower = new Cli_Model_EditorTower($dataIn['x'], $dataIn['y']);
@@ -76,7 +74,7 @@ class Cli_Model_Editor
             case 'ruin':
                 $ruin = new Cli_Model_EditorRuin($dataIn['x'], $dataIn['y']);
                 $ruin->create($dataIn['mapId'], $db);
-                $this->_Ruins->add($ruin->getId(), $ruin);
+                $this->_Ruins->editorAdd($ruin->getId(), $ruin);
                 break;
             case 'forest':
 
