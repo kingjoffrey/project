@@ -27,7 +27,7 @@ class Application_Model_MapCastles extends Coret_Db_Table_Abstract
         $mapCastles = array();
 
         foreach ($castles as $val) {
-            $mapCastles[$val['castleId']] = $val;
+            $mapCastles[$val['mapCastleId']] = $val;
         }
 
         return $mapCastles;

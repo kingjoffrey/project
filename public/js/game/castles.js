@@ -7,6 +7,7 @@ var Castles = function () {
         }
     }
     this.add = function (castleId, castle) {
+        console.log(castle)
         if (castle instanceof Castle) {
             if (Me.sameTeam(color)) {
                 var type = null

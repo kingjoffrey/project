@@ -26,7 +26,7 @@ class Cli_Model_Castle extends Cli_Model_Entity
         $this->_enclaveNumber = $mapCastle['enclaveNumber'];
 
         if (empty($playerCastle)) {
-            $this->_id = $mapCastle['castleId'];
+            $this->_id = $mapCastle['mapCastleId'];
         } else {
             $this->_id = $playerCastle['castleId'];
             $this->_productionId = $playerCastle['productionId'];
