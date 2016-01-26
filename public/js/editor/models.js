@@ -13,6 +13,15 @@ var Models = new function () {
         waterModel,
         showShadows = 0,
         loader = new THREE.JSONLoader(),
+        createTextMesh = function (text, color) {
+            var mesh = new THREE.Mesh(new THREE.TextGeometry(text, {
+                size: 0.5,
+                height: 0.1
+            }), new THREE.MeshPhongMaterial({color: color}))
+            mesh.position.set(0, 7, 0.2)
+            mesh.rotation.y = -Math.PI / 4
+            return mesh
+        },
         initRuin = function () {
             ruin.scale = 12
             ruinModel = loader.parse(ruin)
