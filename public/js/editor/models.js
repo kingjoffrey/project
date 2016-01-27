@@ -216,7 +216,7 @@ var Models = new function () {
         var castleMaterial = new THREE.MeshLambertMaterial({color: '#3B3028', side: THREE.DoubleSide})
 
         var mesh = new THREE.Mesh(castleModel_1.geometry, castleMaterial)
-        mesh.position.set(castle.x * 4 - 214, 0, castle.y * 4 - 308)
+        mesh.position.set(castle.x + 1, 0, castle.y + 1)
 
         if (showShadows) {
             mesh.castShadow = true
