@@ -1,4 +1,4 @@
-var Castle = new function () {
+var CastleWindow = new function () {
     this.create = function (X, Y, x, y) {
         var img = new Image()
         img.src = '/img/game/castles/neutral.png'
@@ -26,5 +26,16 @@ var Castle = new function () {
                 WebSocketEditor.castleAdd(x, y)
             }
         }
+    }
+    this.form = function (id) {
+        var html = $('<div>')
+            .append($('<input>').attr(name, 'name'))
+            .append($('<input>').attr(name, 'name'))
+            .append($('<select>').attr(name, 'color'))
+            .append($('<select>').attr(name, 'defence'))
+            .append($('<submit>').attr('value', 'ok'))
+            .append($('<hidden>').attr({name: 'id', value: id}))
+
+        return html.html()
     }
 }

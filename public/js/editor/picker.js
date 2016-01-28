@@ -79,7 +79,7 @@ var Picker = new function () {
                     } else {
                         var field = getField()
                         if (castleId = field.getCastleId()) {
-                            Message.show('Castle', castleId)
+                            Message.show('Castle', CastleWindow.form(castleId))
                         } else if (towerId = field.getTowerId()) {
                             Message.show('Tower', towerId)
                         } else if (ruinId = field.getRuinId()) {

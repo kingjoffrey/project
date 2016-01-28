@@ -48,7 +48,7 @@ class EditorController extends Game_Controller_Gui
         $this->view->headScript()->appendFile('/fonts/helvetiker_regular.typeface.js');
 
         $this->view->headScript()->appendFile('/js/editor/message.js?v=' . $version);
-        $this->view->headScript()->appendFile('/js/editor/castle.js?v=' . $version);
+        $this->view->headScript()->appendFile('/js/editor/castleWindow.js?v=' . $version);
         $this->view->headScript()->appendFile('/js/editor/editor.js?v=' . $version);
         $this->view->headScript()->appendFile('/js/editor/scene.js?v=' . $version);
         $this->view->headScript()->appendFile('/js/editor/ground.js?v=' . $version);
