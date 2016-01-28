@@ -76,6 +76,16 @@ var Picker = new function () {
                         WebSocketEditor.add(draggedMesh.itemName, convertX(), convertZ())
                         Scene.add(draggedMesh)
                         draggedMesh = 0
+                    } else {
+                        var field = getField()
+                        if (castleId = field.getCastleId()) {
+                            Message.show('Castle', castleId)
+                        } else if (towerId = field.getTowerId()) {
+                            Message.show('Tower', towerId)
+                        } else if (ruinId = field.getRuinId()) {
+                            Message.show('Ruin', ruinId)
+                        }
+
                     }
                     break
 
@@ -89,6 +99,7 @@ var Picker = new function () {
                         Scene.remove(draggedMesh)
                         draggedMesh = 0
                     }
+                    Message.remove()
                     break
             }
         },
