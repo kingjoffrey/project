@@ -74,9 +74,6 @@ class EditorController extends Game_Controller_Gui
 
         $mMap = new Application_Model_Map($mapId);
         $this->view->map = $mMap->getMap(Zend_Auth::getInstance()->getIdentity()->playerId);
-
-        $mMapCastles = new Application_Model_MapCastles($mapId);
-        $this->view->mapCastles = $mMapCastles->getMapCastles();
     }
 
     public function testAction()
