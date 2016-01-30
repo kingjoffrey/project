@@ -17,6 +17,13 @@ class Application_Model_MapPlayers extends Coret_Db_Table_Abstract
         }
     }
 
+    public function create($maxPlayers)
+    {
+        for ($i = 1; $i <= $maxPlayers; $i++) {
+
+        }
+    }
+
     public function getNumberOfPlayersForNewGame()
     {
         $select = $this->_db->select()

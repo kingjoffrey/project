@@ -16,7 +16,12 @@ class EditorController extends Game_Controller_Gui
             if ($this->view->form->isValid($this->_request->getPost())) {
                 $this->viev->formIsValid = true;
                 $mMap = new Application_Model_Map ();
+
                 $this->view->mapId = $mMap->createMap($this->view->form->getValues(), Zend_Auth::getInstance()->getIdentity()->playerId);
+
+                $mMapPlayers = new Application_Model_MapPlayers($this->view->mapId);
+                $mMapPlayers->create($this->_request->getParam('maxPlayers'));
+
                 $this->view->mapSize = $this->_request->getParam('mapSize');
 
                 $this->_helper->layout->setLayout('generatemap');

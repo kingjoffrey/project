@@ -21,8 +21,8 @@ class Application_Model_Map extends Coret_Db_Table_Abstract
     {
         $data = array(
             'name' => $params['name'],
-            'mapWidth' => $params['mapSize'] * 40,
-            'mapHeight' => $params['mapSize'] * 40,
+            'mapWidth' => $params['mapSize'],
+            'mapHeight' => $params['mapSize'],
             'maxPlayers' => $params['maxPlayers'],
             'playerId' => $playerId
         );
