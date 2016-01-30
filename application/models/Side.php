@@ -18,5 +18,13 @@ class Application_Model_Side extends Coret_Db_Table_Abstract
         }
     }
 
+    public function getWithLimit($limit)
+    {
+        $select = $this->_db->select()
+            ->from($this->_name)
+            ->limit($limit);
+
+        return $this->selectAll($select);
+    }
 }
 

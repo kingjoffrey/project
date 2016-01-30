@@ -19,14 +19,15 @@ class EditorController extends Game_Controller_Gui
 
                 $this->view->mapId = $mMap->createMap($this->view->form->getValues(), Zend_Auth::getInstance()->getIdentity()->playerId);
 
+                $mSide = new Application_Model_Side();
+
                 $mMapPlayers = new Application_Model_MapPlayers($this->view->mapId);
-                $mMapPlayers->create($this->_request->getParam('maxPlayers'));
+                $mMapPlayers->create($mSide->getWithLimit($this->_request->getParam('maxPlayers')), $this->view->mapId);
 
                 $this->view->mapSize = $this->_request->getParam('mapSize');
 
                 $this->_helper->layout->setLayout('generatemap');
 
-                $this->view->headScript()->appendFile('/js/kinetic-v5.1.0.min.js');
                 $this->view->headScript()->appendFile('/js/mapgenerator/init.js?v=' . Zend_Registry::get('config')->version);
                 $this->view->headScript()->appendFile('/js/mapgenerator/diamondsquare.js?v=' . Zend_Registry::get('config')->version);
                 $this->view->headScript()->appendFile('/js/mapgenerator/mapGenerator.js?v=' . Zend_Registry::get('config')->version);

@@ -4,7 +4,7 @@ class Application_Model_MapPlayers extends Coret_Db_Table_Abstract
 {
     protected $_name = 'mapplayers';
     protected $_primary = 'mapPlayerId';
-    protected $_sequence = '';
+    protected $_sequence = 'mapplayers_mapPlayerId_seq';
     protected $_mapId;
 
     public function __construct($mapId, Zend_Db_Adapter_Pdo_Pgsql $db = null)
@@ -17,10 +17,12 @@ class Application_Model_MapPlayers extends Coret_Db_Table_Abstract
         }
     }
 
-    public function create($maxPlayers)
+    public function create($sides, $mapId)
     {
-        for ($i = 1; $i <= $maxPlayers; $i++) {
-
+        $i = 0;
+        foreach ($sides as $side) {
+            $i++;
+            $this->insert(array('sideId' => $side['sideId'], 'startOrder' => $i, 'mapId' => $mapId));
         }
     }
 
