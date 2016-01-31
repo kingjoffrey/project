@@ -42,7 +42,9 @@ class Cli_EditorHandler extends WebSocketUriHandler
      */
     public function getEditor($mapId)
     {
-        return $this->_editors[$mapId];
+        if (isset($this->_editors[$mapId])) {
+            return $this->_editors[$mapId];
+        }
     }
 
     public function onMessage(WebSocketTransportInterface $user, WebSocketMessageInterface $msg)
