@@ -36,6 +36,7 @@ var MapGenerator = new function () {
             var keys = splitTerrain(pixels)
             if (keys['max'] < 0) {
                 console.log('max < 0')
+                generate()
                 return
             }
 
@@ -54,8 +55,8 @@ var MapGenerator = new function () {
                 y = 0,
                 fieldSize = (DATA_SIZE - 1) / (fieldsNumber - 1)
 
-            ctx.translate(canvas.width / 2, canvas.height / 2)
-            ctx.rotate(90 * Math.PI / 180)
+            ctx.translate(0, canvas.height)
+            ctx.rotate(270 * Math.PI / 180)
 
             for (var i in data) {
                 for (var j in data[i]) {
@@ -100,6 +101,7 @@ var MapGenerator = new function () {
                     y++
                 }
             }
+
             WebSocketEditor.save()
         },
         grid = function (size) {
