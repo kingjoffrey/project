@@ -126,10 +126,9 @@ var Ground = new function () {
                 Picker.attach(grassMesh)
                 Scene.setCameraPosition(0, maxY)
 
-                var helper = new THREE.WireframeHelper(grassMesh, 0xff00ff);
-                helper.material.linewidth = 1;
-                Scene.add(helper)
-                //console.log(grassMesh.geometry.attributes)
+                //var helper = new THREE.WireframeHelper(grassMesh, 0xff00ff);
+                //helper.material.linewidth = 1;
+                //Scene.add(helper)
             })
         }
 }
