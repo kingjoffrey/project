@@ -50,11 +50,11 @@ class Cli_GeneratorHandler extends WebSocketUriHandler
                 $file = APPLICATION_PATH . '/../public/img/maps/' . $dataIn['mapId'] . '.png';
                 $success = file_put_contents($file, base64_decode($map));
                 $mapFields = new Application_Model_MapFields($dataIn['mapId'], $this->_db);
-//                foreach ($dataIn['fields'] as $y => $row) {
-//                    foreach ($row as $x => $type) {
-//                        $mapFields->add($x, $y, $type);
-//                    }
-//                }
+                foreach ($dataIn['fields'] as $y => $row) {
+                    foreach ($row as $x => $type) {
+                        $mapFields->add($x, $y, $type);
+                    }
+                }
                 break;
         }
     }

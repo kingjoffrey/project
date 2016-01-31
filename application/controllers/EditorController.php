@@ -16,7 +16,6 @@ class EditorController extends Game_Controller_Gui
             if ($this->view->form->isValid($this->_request->getPost())) {
                 $this->viev->formIsValid = true;
                 $mMap = new Application_Model_Map ();
-
                 $this->view->mapId = $mMap->createMap($this->view->form->getValues(), Zend_Auth::getInstance()->getIdentity()->playerId);
 
                 $mSide = new Application_Model_Side();

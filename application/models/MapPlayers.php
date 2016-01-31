@@ -101,8 +101,9 @@ class Application_Model_MapPlayers extends Coret_Db_Table_Abstract
     public function getAll()
     {
         $select = $this->_db->select()
-            ->from($this->_name, array('backgroundColor', 'capitalId', 'longName', 'mapPlayerId', 'minimapColor', 'shortName', 'textColor'))
+            ->from(array('a'=>$this->_name), 'mapPlayerId')
             ->where($this->_db->quoteIdentifier('mapId') . ' = ?', $this->_mapId)
+            ->join(array('b'=>'side'),'a."sideId" = b."sideId"',array('backgroundColor', 'longName', 'minimapColor', 'shortName', 'textColor'))
             ->order('startOrder');
 
         $array = array();

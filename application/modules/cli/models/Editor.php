@@ -34,7 +34,7 @@ class Cli_Model_Editor
         $mapTowers = $mMapTowers->getMapTowers();
 
         foreach ($mapPlayers as $id => $player) {
-            $this->_Players->addPlayer($player['shortName'], new Cli_Model_EditorPlayer($player, $this->_mapId, $mapCastles, $mapTowers, $mMapPlayers, $db));
+            $this->_Players->addPlayer($player['shortName'], new Cli_Model_EditorPlayer($player, $mapCastles, $mapTowers, $db));
         }
         $this->_Players->addPlayer('neutral', new Cli_Model_EditorNeutralPlayer($mapCastles, $mapTowers));
         $this->_Players->initFields($this->_Fields);

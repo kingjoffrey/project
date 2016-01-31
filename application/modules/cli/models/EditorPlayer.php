@@ -5,7 +5,7 @@ class Cli_Model_EditorPlayer extends Cli_Model_DefaultPlayer
     private $_miniMapColor;
     private $_textColor;
 
-    public function __construct($player, $mapCastles, $mapTowers, $playersTowers, Application_Model_MapPlayers $mMapPlayers, Zend_Db_Adapter_Pdo_Pgsql $db)
+    public function __construct($player, $mapCastles, $mapTowers, Zend_Db_Adapter_Pdo_Pgsql $db)
     {
         $this->_id = $player['mapPlayerId'];
 

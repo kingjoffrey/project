@@ -4,12 +4,12 @@ class Application_Model_MapFields extends Coret_Db_Table_Abstract
 {
     protected $_name = 'mapfields';
     protected $_primary = 'mapId';
-//    protected $_sequence = "map_mapId_seq";
-    protected $mapId;
+    protected $_sequence = "mapfields_mapFieldId_seq";
+    protected $_mapId;
 
     public function __construct($mapId, Zend_Db_Adapter_Pdo_Pgsql $db = null)
     {
-        $this->mapId = $mapId;
+        $this->_mapId = $mapId;
         if ($db) {
             $this->_db = $db;
         } else {
@@ -21,7 +21,7 @@ class Application_Model_MapFields extends Coret_Db_Table_Abstract
     {
         $select = $this->_db->select()
             ->from($this->_name, array('x', 'y', 'type'))
-            ->where($this->_db->quoteIdentifier('mapId') . ' = ?', $this->mapId)
+            ->where($this->_db->quoteIdentifier('mapId') . ' = ?', $this->_mapId)
             ->order(array('y', 'x'));
 
         $mapFields = array();
@@ -36,7 +36,7 @@ class Application_Model_MapFields extends Coret_Db_Table_Abstract
     public function add($x, $y, $type)
     {
         $data = array(
-            'mapId' => $this->mapId,
+            'mapId' => $this->_mapId,
             'x' => $x,
             'y' => $y,
             'type' => $type
