@@ -11,6 +11,7 @@ var Editor = new function () {
         Scene.init()
         Fields.init(r.fields, mapId)
         Ruins.init(r.ruins)
+        console.log(r.players)
         Players.init(r.players)
         //console.log(r)
     }
