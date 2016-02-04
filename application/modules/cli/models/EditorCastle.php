@@ -2,15 +2,19 @@
 
 class Cli_Model_EditorCastle extends Cli_Model_Castle
 {
-    public function __construct($x, $y)
+    private $_mapId;
+
+    public function __construct($mapId)
+    {
+        $this->_mapId = $mapId;
+    }
+
+    public function create($x, $y, Zend_Db_Adapter_Pdo_Pgsql $db)
     {
         $this->_x = $x;
         $this->_y = $y;
-    }
 
-    public function create($mapId, Zend_Db_Adapter_Pdo_Pgsql $db)
-    {
-        $mMapCastles = new Application_Model_MapCastles($mapId, $db);
+        $mMapCastles = new Application_Model_MapCastles($this->_mapId, $db);
         $this->_id = $mMapCastles->add($this->_x, $this->_y);
 
 //        $mapCastle = $mMapCastles->get();
@@ -19,6 +23,15 @@ class Cli_Model_EditorCastle extends Cli_Model_Castle
 //        $this->_income = $mapCastle['income'];
 //        $this->_capital = $mapCastle['capital'];
 //        $this->_enclaveNumber = $mapCastle['enclaveNumber'];
+    }
+
+    public function edit($data, Zend_Db_Adapter_Pdo_Pgsql $db)
+    {
+        $this->_defense = $data['defence'];
+        $this->_name = $data['name'];
+
+        $mMapCastles = new Application_Model_MapCastles($this->_mapId, $db);
+        $mMapCastles->edit($data, $this->_id);
     }
 
     public function toArray()

@@ -80,6 +80,13 @@ class Application_Model_MapCastles extends Coret_Db_Table_Abstract
         return $this->insert($data);
     }
 
+    public function edit($data, $mapCastleId)
+    {
+        $where = $this->_db->quoteInto($this->_db->quoteIdentifier('mapCastleId') . ' = ?', $mapCastleId);
+
+        return $this->update($data, $where);
+    }
+
     public function remove($x, $y)
     {
         $where = array(

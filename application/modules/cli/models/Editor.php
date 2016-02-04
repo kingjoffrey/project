@@ -62,18 +62,18 @@ class Cli_Model_Editor
     {
         switch ($dataIn['itemName']) {
             case 'castle':
-                $castle = new Cli_Model_EditorCastle($dataIn['x'], $dataIn['y']);
-                $castle->create($dataIn['mapId'], $db);
+                $castle = new Cli_Model_EditorCastle($this->_mapId);
+                $castle->create($dataIn['x'], $dataIn['y'], $db);
                 $this->_Players->getPlayer('neutral')->getCastles()->addCastle($castle->getId(), $castle);
                 break;
             case 'tower':
                 $tower = new Cli_Model_EditorTower($dataIn['x'], $dataIn['y']);
-                $tower->create($dataIn['mapId'], $db);
+                $tower->create($this->_mapId, $db);
                 $this->_Players->getPlayer('neutral')->getTowers()->add($tower->getId(), $tower);
                 break;
             case 'ruin':
                 $ruin = new Cli_Model_EditorRuin($dataIn['x'], $dataIn['y']);
-                $ruin->create($dataIn['mapId'], $db);
+                $ruin->create($this->_mapId, $db);
                 $this->_Ruins->editorAdd($ruin->getId(), $ruin);
                 break;
             case 'forest':
@@ -81,6 +81,23 @@ class Cli_Model_Editor
                 break;
             case 'road':
                 break;
+        }
+    }
+
+    public function edit($dataIn, Zend_Db_Adapter_Pdo_Pgsql $db)
+    {
+        foreach ($this->_Players->getKeys() as $color) {
+            foreach ($this->_Players->getPlayer($color)->getCastles()->getKeys() as $castleId) {
+                if ($dataIn['castleId'] == $castleId) {
+                    $castle = $this->_Players->getPlayer($color)->getCastles()->getCastle($castleId);
+                    $castle->edit($dataIn, $db);
+
+                    if ($dataIn['color'] != $color) {
+                        $this->_Players->getPlayer($color)->getCastles()->removeCastle($castleId);
+                        $this->_Players->getPlayer($dataIn['color'])->getCastles()->addCastle($castleId, $castle);
+                    }
+                }
+            }
         }
     }
 

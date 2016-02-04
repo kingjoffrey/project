@@ -52,12 +52,27 @@ var WebSocketEditor = new function () {
 
         var token = {
             type: 'add',
-            mapId: mapId,
             itemName: itemName,
             x: x,
             y: y
         }
 
-        ws.send(JSON.stringify(token));
+        ws.send(JSON.stringify(token))
+    }
+    this.edit = function (castleId, name, color, defence) {
+        if (closed) {
+            console.log(translations.sorryServerIsDisconnected)
+            return;
+        }
+console.log('aaa')
+        var token = {
+            type: 'edit',
+            castleId: castleId,
+            name: name,
+            color: color,
+            defence: defence
+        }
+
+        ws.send(JSON.stringify(token))
     }
 }
