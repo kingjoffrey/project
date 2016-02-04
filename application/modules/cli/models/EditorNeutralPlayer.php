@@ -23,8 +23,10 @@ class Cli_Model_EditorNeutralPlayer extends Cli_Model_DefaultPlayer
     private function initCastles($mapCastles)
     {
         $numberOfSoldiers = 1;
-        foreach ($mapCastles as $castleId => $castle) {
-            $this->_castles->addCastle($castleId, new Cli_Model_Castle(array(), $castle));
+        foreach ($mapCastles as $castleId => $c) {
+            $castle = new Cli_Model_EditorCastle();
+            $castle->init($c);
+            $this->_castles->addCastle($castleId, $castle);
 
 //            $armyId = 'a' . $castle->getId();
 //            $army = new Cli_Model_Army(array(

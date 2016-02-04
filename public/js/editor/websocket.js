@@ -52,6 +52,7 @@ var WebSocketEditor = new function () {
 
         var token = {
             type: 'add',
+            mapId: mapId,
             itemName: itemName,
             x: x,
             y: y
@@ -59,18 +60,20 @@ var WebSocketEditor = new function () {
 
         ws.send(JSON.stringify(token))
     }
-    this.edit = function (castleId, name, color, defence) {
+    this.edit = function (castleId) {
         if (closed) {
             console.log(translations.sorryServerIsDisconnected)
             return;
         }
-console.log('aaa')
+
         var token = {
             type: 'edit',
+            mapId: mapId,
             castleId: castleId,
-            name: name,
-            color: color,
-            defence: defence
+            name: $('input[name=name]').val(),
+            income: $('input[name=income]').val(),
+            color: $('select[name=color]').val(),
+            defence: $('select[name=defence]').val()
         }
 
         ws.send(JSON.stringify(token))

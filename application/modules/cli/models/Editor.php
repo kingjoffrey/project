@@ -62,8 +62,8 @@ class Cli_Model_Editor
     {
         switch ($dataIn['itemName']) {
             case 'castle':
-                $castle = new Cli_Model_EditorCastle($this->_mapId);
-                $castle->create($dataIn['x'], $dataIn['y'], $db);
+                $castle = new Cli_Model_EditorCastle();
+                $castle->create($this->_mapId, $dataIn['x'], $dataIn['y'], $db);
                 $this->_Players->getPlayer('neutral')->getCastles()->addCastle($castle->getId(), $castle);
                 break;
             case 'tower':
@@ -90,12 +90,11 @@ class Cli_Model_Editor
             foreach ($this->_Players->getPlayer($color)->getCastles()->getKeys() as $castleId) {
                 if ($dataIn['castleId'] == $castleId) {
                     $castle = $this->_Players->getPlayer($color)->getCastles()->getCastle($castleId);
-                    $castle->edit($dataIn, $db);
-
                     if ($dataIn['color'] != $color) {
                         $this->_Players->getPlayer($color)->getCastles()->removeCastle($castleId);
                         $this->_Players->getPlayer($dataIn['color'])->getCastles()->addCastle($castleId, $castle);
                     }
+                    $castle->edit($this->_mapId, $dataIn, $db, $this->_Players->getPlayer($dataIn['color'])->getId());
                 }
             }
         }
