@@ -3,13 +3,26 @@ var WebSocketEditor = new function () {
         ws,
         onMessage = function (r) {
             //console.log(r)
-            //switch (r.type){
-            //    case 'init':
-            //
-            //        break;
-            //}
-            if (!Editor.getInit()) {
-                Editor.init(r)
+            switch (r.type) {
+                case 'init':
+                    if (!Editor.getInit()) {
+                        Editor.init(r)
+                    }
+                    break;
+                case 'castleId':
+                    Players.get('neutral').getCastles().add(r.value, {
+                        x: Picker.getX(),
+                        y: Picker.getZ(),
+                        name: 'Unknown',
+                        defense: 1
+                    })
+                    break
+                case 'towerId':
+                    Players.get('neutral').getTowers().add(r.value, {x: Picker.getX(), y: Picker.getZ()})
+                    break
+                case 'ruinId':
+                    Ruins.add(r.value, {x: Picker.getX(), y: Picker.getZ()})
+                    break
             }
         },
         open = function () {

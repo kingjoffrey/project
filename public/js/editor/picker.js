@@ -7,7 +7,9 @@ var Picker = new function () {
         container,
         draggedMesh = 0,
         oldX = 0,
-        oldZ = 0
+        oldZ = 0,
+        draggedMeshX,
+        draggedMeshZ
 
     this.init = function () {
         camera = Scene.getCamera()
@@ -33,6 +35,12 @@ var Picker = new function () {
     }
     this.detach = function (object) {
         objects.splice(objects.indexOf(object), 1);
+    }
+    this.getX = function () {
+        return draggedMeshX
+    }
+    this.getZ = function () {
+        return draggedMeshZ
     }
 
     var intersect = function (event) {
@@ -63,21 +71,22 @@ var Picker = new function () {
             return Fields.get(convertX(), convertZ())
         },
         convertX = function () {
-            return parseInt(intersects[0].point.x)
+            draggedMeshX = parseInt(intersects[0].point.x)
+            return draggedMeshX
         },
         convertZ = function () {
-            return parseInt(intersects[0].point.z)
+            draggedMeshZ = parseInt(intersects[0].point.z)
+            return draggedMeshZ
         },
         onclick = function (button) {
             switch (button) {
                 case 0:
                     // add item
+                    var field = getField()
                     if (draggedMesh) {
                         WebSocketEditor.add(draggedMesh.itemName, convertX(), convertZ())
-                        Scene.add(draggedMesh)
                         draggedMesh = 0
                     } else {
-                        var field = getField()
                         if (castleId = field.getCastleId()) {
                             Message.show('Castle', CastleWindow.form(castleId))
                         } else if (towerId = field.getTowerId()) {

@@ -32,6 +32,9 @@ class Cli_Model_EditorOpen
         $user->parameters['playerId'] = $dataIn['playerId'];
         $user->parameters['accessKey'] = $dataIn['accessKey'];
 
-        $handler->sendToUser($user, $editor->toArray());
+        $token = $editor->toArray();
+        $token['type'] = 'init';
+
+        $handler->sendToUser($user, $token);
     }
 }

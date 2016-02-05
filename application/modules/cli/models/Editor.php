@@ -65,16 +65,28 @@ class Cli_Model_Editor
                 $castle = new Cli_Model_EditorCastle();
                 $castle->create($this->_mapId, $dataIn['x'], $dataIn['y'], $db);
                 $this->_Players->getPlayer('neutral')->getCastles()->addCastle($castle->getId(), $castle);
+                return $token = array(
+                    'type' => 'castleId',
+                    'value' => $castle->getId()
+                );
                 break;
             case 'tower':
                 $tower = new Cli_Model_EditorTower($dataIn['x'], $dataIn['y']);
                 $tower->create($this->_mapId, $db);
                 $this->_Players->getPlayer('neutral')->getTowers()->add($tower->getId(), $tower);
+                return $token = array(
+                    'type' => 'towerId',
+                    'value' => $tower->getId()
+                );
                 break;
             case 'ruin':
                 $ruin = new Cli_Model_EditorRuin($dataIn['x'], $dataIn['y']);
                 $ruin->create($this->_mapId, $db);
                 $this->_Ruins->editorAdd($ruin->getId(), $ruin);
+                return $token = array(
+                    'type' => 'ruinId',
+                    'value' => $ruin->getId()
+                );
                 break;
             case 'forest':
 
