@@ -75,9 +75,6 @@ class Cli_Model_Game
             unset($this->_chatHistory[$k]['playerId']);
         }
 
-        $mMapPlayers = new Application_Model_MapPlayers($this->_mapId, $db);
-        $this->_capitals = $mMapPlayers->getCapitals();
-
         $mMapFields = new Application_Model_MapFields($this->_mapId, $db);
         $this->_Fields = new Cli_Model_Fields($mMapFields->getMapFields());
 
@@ -97,12 +94,14 @@ class Cli_Model_Game
         $this->updateNumberOfNeutralGarrisonUnits();
         $this->updateNumberOfComputerArmyUnits();
 
-        $this->initPlayers($mMapPlayers, $players, $db);
+        $this->initPlayers($players, $db);
         $this->initRuins($db);
     }
 
-    private function initPlayers(Application_Model_MapPlayers $mMapPlayers, $players, Zend_Db_Adapter_Pdo_Pgsql $db)
+    private function initPlayers($players, Zend_Db_Adapter_Pdo_Pgsql $db)
     {
+        $mMapPlayers = new Application_Model_MapPlayers($this->_mapId, $db);
+//        $this->_capitals = $mMapPlayers->getCapitals();
         $mMapCastles = new Application_Model_MapCastles($this->_mapId, $db);
         $mapCastles = $mMapCastles->getMapCastles();
         $mMapTowers = new Application_Model_MapTowers($this->_mapId, $db);
@@ -117,6 +116,7 @@ class Cli_Model_Game
                 $this->updateOnline($color, 0);
             }
             $this->_numberOfAllCastles += $player->getCastles()->count();
+            $this->_capitals[$color] = $player->getCapitalId();
         }
         $player = new Cli_Model_NeutralPlayer($this, $mapCastles, $mapTowers, $playersTowers, $db);
         $this->_Players->addPlayer('neutral', $player);
@@ -177,11 +177,6 @@ class Cli_Model_Game
             'players' => $this->_Players->toArray(),
             'ruins' => $this->_Ruins->toArray()
         );
-    }
-
-    public function getPlayerCapitalId($color)
-    {
-        return $this->_capitals[$color];
     }
 
     /**

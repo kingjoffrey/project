@@ -197,4 +197,9 @@ class Cli_Model_Castle extends Cli_Model_Entity
     {
         return $this->_enclaveNumber;
     }
+
+    public function isCapital()
+    {
+        return $this->_capital;
+    }
 }

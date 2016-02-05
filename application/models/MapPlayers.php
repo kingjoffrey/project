@@ -126,22 +126,6 @@ class Application_Model_MapPlayers extends Coret_Db_Table_Abstract
         return $this->selectOne($select);
     }
 
-    public function getCapitals()
-    {
-        $select = $this->_db->select()
-            ->from($this->_name, array('castleId', 'shortName'))
-            ->where($this->_db->quoteIdentifier('mapId') . ' = ?', $this->_mapId)
-            ->order('startOrder');
-
-        $array = array();
-
-        foreach ($this->selectAll($select) as $row) {
-            $array[$row['shortName']] = $row['castleId'];
-        }
-
-        return $array;
-    }
-
     public function getColorByMapPlayerId($mapPlayerId)
     {
         $select = $this->_db->select()

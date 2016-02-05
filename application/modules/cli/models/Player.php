@@ -14,6 +14,8 @@ class Cli_Model_Player extends Cli_Model_DefaultPlayer
     private $_attackSequence;
     private $_defenceSequence;
 
+    private $_capitalId;
+
     public function __construct($player, $gameId, $mapCastles, $mapTowers, $playersTowers, Application_Model_MapPlayers $mMapPlayers, Zend_Db_Adapter_Pdo_Pgsql $db)
     {
         $this->_id = $player['playerId'];
@@ -88,6 +90,9 @@ class Cli_Model_Player extends Cli_Model_DefaultPlayer
             $this->_castles->addCastle($castleId, new Cli_Model_Castle($c, $mapCastles[$castleId]));
             $castle = $this->_castles->getCastle($castleId);
             $castle->initProduction($mCastleProduction->getCastleProduction($castleId));
+            if ($castle->isCapital()) {
+                $this->_capitalId = $castleId;
+            }
         }
     }
 
@@ -187,5 +192,10 @@ class Cli_Model_Player extends Cli_Model_DefaultPlayer
     {
         $mPlayersInGame = new Application_Model_PlayersInGame($gameId, $db);
         $mPlayersInGame->updatePlayerGold($this->_id, $this->_gold);
+    }
+
+    public function getCapitalId()
+    {
+        return $this->_capitalId;
     }
 }

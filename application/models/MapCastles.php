@@ -97,6 +97,5 @@ class Application_Model_MapCastles extends Coret_Db_Table_Abstract
 
         $this->delete($where);
     }
-
 }
 

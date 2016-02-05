@@ -14,7 +14,7 @@ class Cli_Model_ComputerHeroResurrection
             return;
         }
 
-        if (!$capital = $player->getCastles()->getCastle($game->getPlayerCapitalId($color))) {
+        if (!$capital = $player->getCastles()->getCastle($player->getCapitalId())) {
             return;
         }
 

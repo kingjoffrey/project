@@ -15,7 +15,7 @@ class Cli_Model_HeroHire
             return;
         }
 
-        if (!$capital = $player->getCastles()->getCastle($game->getPlayerCapitalId($color))) {
+        if (!$capital = $player->getCastles()->getCastle($player->getCapitalId())) {
             $handler->sendError($user, 'Aby wynająć herosa musisz posiadać stolicę!');
             return;
         }

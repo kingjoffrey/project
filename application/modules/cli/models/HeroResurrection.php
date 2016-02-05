@@ -16,7 +16,7 @@ class Cli_Model_HeroResurrection
             return;
         }
 
-        if (!$capital = $player->getCastles()->getCastle($game->getPlayerCapitalId($color))) {
+        if (!$capital = $player->getCastles()->getCastle($player->getCapitalId())) {
             $handler->sendError($user, 'Aby wskrzesić herosa musisz posiadać stolicę!');
             return;
         }
