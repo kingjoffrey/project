@@ -110,7 +110,7 @@ class Cli_Model_Setup
         $player = $mPlayer->getPlayer($playerId);
         $this->_players[$playerId] = array(
             'playerId' => $player['playerId'],
-            'mapPlayerId' => $player['mapPlayerId'],
+//            'mapPlayerId' => $player['mapPlayerId'],
             'firstName' => $player['firstName'],
             'lastName' => $player['lastName']
         );

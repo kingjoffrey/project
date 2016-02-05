@@ -81,8 +81,8 @@ class Cli_Model_Game
         $mMapFields = new Application_Model_MapFields($this->_mapId, $db);
         $this->_Fields = new Cli_Model_Fields($mMapFields->getMapFields());
 
-        $mMapTerrain = new Application_Model_MapTerrain($this->_mapId, $db);
-        $this->_Terrain = new Cli_Model_TerrainTypes($mMapTerrain->getTerrain());
+        $mTerrain = new Application_Model_Terrain($db);
+        $this->_Terrain = new Cli_Model_TerrainTypes($mTerrain->getTerrain());
 
         $mMapUnits = new Application_Model_MapUnits($this->_mapId, $db);
         $this->_Units = new Cli_Model_Units();

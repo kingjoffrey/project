@@ -85,7 +85,8 @@ class Application_Model_MapPlayers extends Coret_Db_Table_Abstract
     public function getLongNames()
     {
         $select = $this->_db->select()
-            ->from($this->_name, array('mapPlayerId', 'longName'))
+            ->from(array('a'=>$this->_name), 'mapPlayerId')
+            ->join(array('b'=>'side'),'a."sideId" = b."sideId"','longName')
             ->where($this->_db->quoteIdentifier('mapId') . ' = ?', $this->_mapId)
             ->order('startOrder');
 
@@ -102,8 +103,8 @@ class Application_Model_MapPlayers extends Coret_Db_Table_Abstract
     {
         $select = $this->_db->select()
             ->from(array('a'=>$this->_name), 'mapPlayerId')
-            ->where($this->_db->quoteIdentifier('mapId') . ' = ?', $this->_mapId)
             ->join(array('b'=>'side'),'a."sideId" = b."sideId"',array('backgroundColor', 'longName', 'minimapColor', 'shortName', 'textColor'))
+            ->where($this->_db->quoteIdentifier('mapId') . ' = ?', $this->_mapId)
             ->order('startOrder');
 
         $array = array();
