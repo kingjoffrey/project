@@ -69,7 +69,8 @@ class Application_Model_MapPlayers extends Coret_Db_Table_Abstract
     public function getMapPlayerIdToBackgroundColorRelations()
     {
         $select = $this->_db->select()
-            ->from($this->_name, array('mapPlayerId', 'backgroundColor'))
+            ->from(array('a' => $this->_name), 'mapPlayerId')
+            ->join(array('b' => 'side'), 'a."sideId" = b."sideId"', 'backgroundColor')
             ->where($this->_db->quoteIdentifier('mapId') . ' = ?', $this->_mapId)
             ->order('startOrder');
 
@@ -85,8 +86,8 @@ class Application_Model_MapPlayers extends Coret_Db_Table_Abstract
     public function getLongNames()
     {
         $select = $this->_db->select()
-            ->from(array('a'=>$this->_name), 'mapPlayerId')
-            ->join(array('b'=>'side'),'a."sideId" = b."sideId"','longName')
+            ->from(array('a' => $this->_name), 'mapPlayerId')
+            ->join(array('b' => 'side'), 'a."sideId" = b."sideId"', 'longName')
             ->where($this->_db->quoteIdentifier('mapId') . ' = ?', $this->_mapId)
             ->order('startOrder');
 
@@ -102,8 +103,8 @@ class Application_Model_MapPlayers extends Coret_Db_Table_Abstract
     public function getAll()
     {
         $select = $this->_db->select()
-            ->from(array('a'=>$this->_name), 'mapPlayerId')
-            ->join(array('b'=>'side'),'a."sideId" = b."sideId"',array('backgroundColor', 'longName', 'minimapColor', 'shortName', 'textColor'))
+            ->from(array('a' => $this->_name), 'mapPlayerId')
+            ->join(array('b' => 'side'), 'a."sideId" = b."sideId"', array('backgroundColor', 'longName', 'minimapColor', 'shortName', 'textColor'))
             ->where($this->_db->quoteIdentifier('mapId') . ' = ?', $this->_mapId)
             ->order('startOrder');
 
@@ -122,16 +123,6 @@ class Application_Model_MapPlayers extends Coret_Db_Table_Abstract
             ->from($this->_name, 'mapPlayerId')
             ->where($this->_db->quoteIdentifier('mapId') . ' = ?', $this->_mapId)
             ->order('startOrder');
-
-        return $this->selectOne($select);
-    }
-
-    public function getColorByMapPlayerId($mapPlayerId)
-    {
-        $select = $this->_db->select()
-            ->from($this->_name, 'shortName')
-            ->where($this->_db->quoteIdentifier('mapId') . ' = ?', $this->_mapId)
-            ->where($this->_db->quoteIdentifier('mapPlayerId') . ' = ?', $mapPlayerId);
 
         return $this->selectOne($select);
     }

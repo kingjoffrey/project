@@ -15,15 +15,16 @@ class Application_Model_Unit extends Coret_Db_Table_Abstract
         }
     }
 
-    public function getAll()
+    public function getUnits()
     {
         $units = array();
+//        $units = array(null);
 
         $select = $this->_db->select()
-            ->from(array('a' => 'unit'))
-            ->join(array('b' => 'unit_Lang'), 'a."unitId"=b."unitId"', 'name')
+            ->from(array('a' => $this->_name), array('attackPoints', 'defensePoints', 'canFly', 'canSwim', 'cost', 'modMovesForest', 'modMovesHills', 'modMovesSwamp', 'numberOfMoves', 'unitId', 'special'))
+            ->join(array('b' => 'unit_Lang'), 'b.' . $this->_db->quoteIdentifier('unitId') . ' = a.' . $this->_db->quoteIdentifier('unitId'), 'name')
             ->where('id_lang = ?', Zend_Registry::get('config')->id_lang)
-            ->order(array('special', 'attackPoints', 'defensePoints', 'numberOfMoves'));
+            ->order(array('attackPoints', 'defensePoints', 'numberOfMoves'));
 
         foreach ($this->selectAll($select) as $unit) {
             $select = $this->_db->select()
@@ -37,6 +38,15 @@ class Application_Model_Unit extends Coret_Db_Table_Abstract
         }
 
         return $units;
+    }
+
+    public function getUnitIdByName($name)
+    {
+        $select = $this->_db->select()
+            ->from($this->_name, $this->_primary)
+            ->where('name = ?', $name);
+
+        return $this->selectOne($select);
     }
 }
 
