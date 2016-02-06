@@ -54,8 +54,8 @@ var Army = function (army, bgColor, miniMapColor, textColor, color) {
             army[key] = a[key]
         }
         Fields.get(army.x, army.y).addArmyId(army.id, color)
-        Three.getScene().remove(army.mesh)
-        army.mesh = Three.addArmy(army.x, army.y, bgColor, this.getNumberOfUnits(), this.getModelName())
+        Scene.remove(army.mesh)
+        army.mesh = Models.addArmy(army.x, army.y, bgColor, this.getNumberOfUnits(), this.getModelName())
         $('#' + this.getArmyId() + '.a').css({left: army.x * 2 + 'px', top: army.y * 2 + 'px'})
     }
     this.getMesh = function () {
@@ -335,7 +335,7 @@ var Army = function (army, bgColor, miniMapColor, textColor, color) {
         return bgColor
     }
 
-    army.mesh = Three.addArmy(army.x, army.y, bgColor, this.getNumberOfUnits(), this.getModelName())
+    army.mesh = Models.addArmy(army.x, army.y, bgColor, this.getNumberOfUnits(), this.getModelName())
 
     Fields.get(army.x, army.y).addArmyId(army.id, color)
     map.append(

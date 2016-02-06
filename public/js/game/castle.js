@@ -98,6 +98,6 @@ var Castle = function (castle, bgC, miniMapColor, textColor) {
     }
     this.setDefense = function (defense) {
         castle.defense = defense
-        Three.castleChangeDefense(mesh, defense)
+        Models.castleChangeDefense(mesh, defense)
     }
 }

@@ -191,7 +191,7 @@ var Me = new function () {
         }
 
         Gui.armyBoxAdjust()
-        Three.addArmyCircle(army.getX(), army.getY(), army.getBackgroundColor())
+        Models.addArmyCircle(army.getX(), army.getY(), army.getBackgroundColor())
         Message.remove()
 
         this.removeFromSkipped(armyId)
@@ -241,8 +241,8 @@ var Me = new function () {
         parentArmyId = null
 
         $('#unitsBox').html('')
-        Three.clearArmyCircles()
-        Three.clearPathCircles()
+        Models.clearArmyCircles()
+        Models.clearPathCircles()
         Me.setIsSelected(0)
         //Castle.deselectedArmyCursor()
         //this.enemyCursorWhenUnselected()

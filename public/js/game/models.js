@@ -1,6 +1,6 @@
 if (!Detector.webgl) Detector.addGetWebGLMessage();
 
-var Three = new function () {
+var Models = new function () {
     var ruinModel,
         towerModel,
         flagModel,
@@ -13,22 +13,9 @@ var Three = new function () {
         hillModel,
         treeModel,
         waterModel,
-        minHeight = 665,
-        minWidth = 950,
-        gameWidth,
-        gameHeight,
-        scene = new THREE.Scene(),
-        camera,
-        renderer = new THREE.WebGLRenderer({antialias: true}),
-        pointLight = new THREE.PointLight(0xdddddd),
-        theLight = new THREE.DirectionalLight(0xffffff, 1),
-        ambientLight = new THREE.AmbientLight(0xffffff),
-        loader = new THREE.JSONLoader(),
         circles = [],
         armyCircles = [],
-        showShadows = 0,
-        cameraY = 76,
-        timeOut = 100,
+        loader = new THREE.JSONLoader(),
         createTextMesh = function (text, color) {
             var mesh = new THREE.Mesh(new THREE.TextGeometry(text, {
                 size: 0.5,
@@ -37,36 +24,8 @@ var Three = new function () {
             mesh.position.set(0, 7, 0.2)
             mesh.rotation.y = -Math.PI / 4
             return mesh
-        },
-        animate = function () {
-            if (TWEEN.update()) {
-                requestAnimationFrame(animate)
-                renderer.render(scene, camera)
-            } else {
-                renderer.render(scene, camera)
-                setTimeout(function () {
-                    requestAnimationFrame(animate)
-                }, timeOut)
-            }
         }
 
-    if (showShadows) {
-        renderer.shadowMapEnabled = true
-        renderer.shadowMapSoft = false
-    }
-
-    this.getCameraY = function () {
-        return cameraY
-    }
-    this.getScene = function () {
-        return scene
-    }
-    this.getCamera = function () {
-        return camera
-    }
-    this.getRenderer = function () {
-        return renderer
-    }
     this.addPathCircle = function (x, y, color, t) {
         var radius = 2,
             segments = 64,
@@ -94,7 +53,7 @@ var Three = new function () {
         circle.position.set(x * 4 - 216, height, y * 4 - 311)
         circle.rotation.x = Math.PI / 2
 
-        scene.add(circle)
+        Scene.add(circle)
         circles.push(circle)
     }
     this.addArmyCircle = function (x, y, color) {
@@ -130,24 +89,24 @@ var Three = new function () {
         var cylinder = new THREE.Mesh(geometry1, material1)
         cylinder.position.set(x * 4 - 216, 7 + height, y * 4 - 311)
         //cylinder.rotation.x = Math.PI / 2
-        scene.add(cylinder)
+        Scene.add(cylinder)
         armyCircles.push(cylinder)
 
         var circle = new THREE.Mesh(geometry2, material2)
         circle.position.set(x * 4 - 216, height, y * 4 - 311)
         circle.rotation.x = Math.PI / 2
-        scene.add(circle)
+        Scene.add(circle)
         armyCircles.push(circle)
     }
     this.clearPathCircles = function () {
         for (var i in circles) {
-            scene.remove(circles[i])
+            Scene.remove(circles[i])
         }
         circles = []
     }
     this.clearArmyCircles = function () {
         for (var i in armyCircles) {
-            scene.remove(armyCircles[i])
+            Scene.remove(armyCircles[i])
         }
         armyCircles = []
     }
@@ -165,7 +124,7 @@ var Three = new function () {
             mesh.castShadow = true
             mesh.receiveShadow = true
         }
-        scene.add(mesh)
+        Scene.add(mesh)
 
         return mesh.id
     }
@@ -181,18 +140,18 @@ var Three = new function () {
         var mesh = new THREE.Mesh(towerModel.geometry, towerMaterial)
         mesh.position.set(x * 4 - 216, 0, y * 4 - 311)
 
-        if (showShadows) {
-            mesh.castShadow = true
-            mesh.receiveShadow = true
-        }
-        scene.add(mesh)
+        //if (showShadows) {
+        //    mesh.castShadow = true
+        //    mesh.receiveShadow = true
+        //}
+        Scene.add(mesh)
 
         var material = new THREE.MeshLambertMaterial({color: color, side: THREE.DoubleSide})
         var flagMesh = new THREE.Mesh(flagModel.geometry, material)
-        if (showShadows) {
-            flagMesh.castShadow = true
-            flagMesh.receiveShadow = true
-        }
+        //if (showShadows) {
+        //    flagMesh.castShadow = true
+        //    flagMesh.receiveShadow = true
+        //}
         mesh.add(flagMesh)
 
         return mesh
@@ -385,22 +344,6 @@ var Three = new function () {
         //waterModel.material = new THREE.MeshPhongMaterial({color: 0x0000ff, side: THREE.DoubleSide})
     }
 
-    var initCamera = function (gameWidth, gameHeight) {
-        var viewAngle = 22,
-            near = 1,
-            far = 1000
-
-        camera = new THREE.PerspectiveCamera(viewAngle, gameWidth / gameHeight, 1, 1000)
-        camera.rotation.order = 'YXZ'
-        camera.rotation.y = -Math.PI / 4
-        camera.rotation.x = Math.atan(-1 / Math.sqrt(2))
-        camera.position.set(0, cameraY, 0)
-        camera.scale.addScalar(1)
-        scene.add(camera)
-        scene.add(new THREE.AmbientLight(0x222222))
-        camera.add(new THREE.PointLight(0xffffff, 0.7))
-    }
-
     this.addMountain = function (x, y) {
         var mesh = new THREE.Mesh(mountainModel.geometry, mountainModel.material)
         mesh.position.set(x * 4 - 216, 0, y * 4 - 311)
@@ -442,63 +385,11 @@ var Three = new function () {
 
         scene.add(mesh)
     }
-
     this.init = function () {
-        gameWidth = $('body').innerWidth()
-        gameHeight = $('body').innerHeight()
-        if (gameWidth < minWidth) {
-            gameWidth = minWidth
-        }
-        if (gameHeight < minHeight) {
-            gameHeight = minHeight
-        }
-
-        $('#game')
-            .append(renderer.domElement)
-            .css({
-                    width: gameWidth + 'px',
-                    height: gameHeight + 'px'
-                }
-            )
-
-        initCamera(gameWidth, gameHeight)
-
-        renderer.setSize(gameWidth, gameHeight)
-
         initRuin()
         initTower()
         initCastle()
         initArmy()
         initFields()
-        animate()
-        Picker.init(camera, renderer.domElement)
-    }
-    this.resize = function () {
-        gameWidth = $(window).innerWidth()
-        gameHeight = $(window).innerHeight()
-        if (gameWidth < minWidth) {
-            gameWidth = minWidth
-        }
-        if (gameHeight < minHeight) {
-            gameHeight = minHeight
-        }
-        $('#game')
-            .css({
-                    width: gameWidth + 'px',
-                    height: gameHeight + 'px'
-                }
-            )
-        renderer.setSize(gameWidth, gameHeight)
-        camera.aspect = gameWidth / gameHeight
-        camera.updateProjectionMatrix()
-    }
-    this.getWidth = function () {
-        return gameWidth
-    }
-    this.getHeight = function () {
-        return gameHeight
-    }
-    this.setFPS = function (fps) {
-        timeOut = parseInt(1000 / fps)
     }
 }

@@ -85,8 +85,8 @@ var Zoom = {
         $obj.node = $('.zoomPup');
         $obj.mousepos = {}
         $obj.setdimensions = function () {
-            $obj.node.w = (parseInt(Three.getWidth() / Zoom.scale.x) > Zoom.smallimage.w ) ? Zoom.smallimage.w : (parseInt(Three.getWidth() / Zoom.scale.x));
-            $obj.node.h = (parseInt(Three.getHeight() / Zoom.scale.y) > Zoom.smallimage.h ) ? Zoom.smallimage.h : (parseInt(Three.getHeight() / Zoom.scale.y));
+            $obj.node.w = (parseInt(Scene.getWidth() / Zoom.scale.x) > Zoom.smallimage.w ) ? Zoom.smallimage.w : (parseInt(Scene.getWidth() / Zoom.scale.x));
+            $obj.node.h = (parseInt(Scene.getHeight() / Zoom.scale.y) > Zoom.smallimage.h ) ? Zoom.smallimage.h : (parseInt(Scene.getHeight() / Zoom.scale.y));
             $obj.node.css({
                 'width': $obj.node.w,
                 'height': $obj.node.h
@@ -95,27 +95,27 @@ var Zoom = {
             $obj.node.left = (Zoom.smallimage.ow - $obj.node.w - 2) / 2;
         };
         $obj.setcenter = function (x, y, func) {
-            $obj.node.top = (y * 40 - Three.getHeight() / 2) / Zoom.scale.y
-            $obj.node.left = (x * 40 - Three.getWidth() / 2) / Zoom.scale.x
+            $obj.node.top = (y * 40 - Scene.getHeight() / 2) / Zoom.scale.y
+            $obj.node.left = (x * 40 - Scene.getWidth() / 2) / Zoom.scale.x
             $obj.node.css({
                 top: $obj.node.top,
                 left: $obj.node.left
             });
 
-            var yOffset = Three.getCamera().position.y - Three.getCameraY(),
+            var yOffset = Scene.getCamera().position.y - Scene.getCameraY(),
                 position = {
-                    x: Three.getCamera().position.x,
-                    z: Three.getCamera().position.z
+                    x: Scene.getCamera().position.x,
+                    z: Scene.getCamera().position.z
                 },
                 target = {
-                    x: x * 4 - (221 + Three.getCameraY()) - yOffset,
-                    z: y * 4 - (307 - Three.getCameraY()) + yOffset
+                    x: x * 4 - (221 + Scene.getCameraY()) - yOffset,
+                    z: y * 4 - (307 - Scene.getCameraY()) + yOffset
                 },
                 tween = new TWEEN.Tween(position)
                     .to(target, Zoom.getH(position, target))
                     .onUpdate(function () {
-                        Three.getCamera().position.x = position.x
-                        Three.getCamera().position.z = position.z
+                        Scene.getCamera().position.x = position.x
+                        Scene.getCamera().position.z = position.z
                     })
                     .start()
 
@@ -167,9 +167,9 @@ var Zoom = {
                 'top': lenstop + 'px'
             });
 
-            var yOffset = Three.getCamera().position.y - Three.getCameraY()
-            Three.getCamera().position.x = ($obj.node.left * Zoom.scale.x + Three.getWidth() / 2) / 10 - (221 + Three.getCameraY()) - yOffset
-            Three.getCamera().position.z = ($obj.node.top * Zoom.scale.y + Three.getHeight() / 2) / 10 - (307 - Three.getCameraY()) + yOffset
+            var yOffset = Scene.getCamera().position.y - Scene.getCameraY()
+            Scene.getCamera().position.x = ($obj.node.left * Zoom.scale.x + Scene.getWidth() / 2) / 10 - (221 + Scene.getCameraY()) - yOffset
+            Scene.getCamera().position.z = ($obj.node.top * Zoom.scale.y + Scene.getHeight() / 2) / 10 - (307 - Scene.getCameraY()) + yOffset
         };
         $obj.show = function () {
             $obj.node.show();

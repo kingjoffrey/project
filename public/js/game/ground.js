@@ -27,7 +27,7 @@ var Ground = new function () {
         waterGeometry.addAttribute('position', new THREE.BufferAttribute(waterVertices, 3))
         var waterMesh = new THREE.Mesh(waterGeometry, waterMaterial)
         waterMesh.rotation.x = -Math.PI / 2
-        Three.getScene().add(waterMesh)
+        Scene.add(waterMesh)
     }
     var createGround = function (maxX, maxY, textureName) {
         var xy = [],
@@ -69,7 +69,6 @@ var Ground = new function () {
                 grassVertexPositions[i][2] = 0.3
             }
             if (Fields.get(grassVertexPositions[i][0], grassVertexPositions[i][1]).getType() == 'm') {
-                console.log('a')
                 grassVertexPositions[i][2] = -4
             }
             if (Fields.get(grassVertexPositions[i][0], grassVertexPositions[i][1]).getType() == 'h') {
@@ -123,7 +122,7 @@ var Ground = new function () {
                 grassMesh = new THREE.Mesh(grassGeometry, grassMaterial)
 
             grassMesh.rotation.x = Math.PI / 2
-            Three.getScene().add(grassMesh)
+            Scene.add(grassMesh)
             Picker.attach(grassMesh)
 
             //var helper = new THREE.WireframeHelper(grassMesh, 0xff00ff);

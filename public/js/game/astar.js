@@ -46,7 +46,7 @@ var AStar = new function () {
         open = {}
         close = {}
         nr = 0
-        Three.clearPathCircles()
+        Models.clearPathCircles()
         var startX = army.getX(),
             startY = army.getY(),
             key = destX + '_' + destY
@@ -69,9 +69,9 @@ var AStar = new function () {
             }
 
             if (movesEnd) {
-                Three.addPathCircle(path[i].x, path[i].y, 'gray', path[i].tt)
+                Models.addPathCircle(path[i].x, path[i].y, 'gray', path[i].tt)
             } else {
-                Three.addPathCircle(path[i].x, path[i].y, 'green', path[i].tt)
+                Models.addPathCircle(path[i].x, path[i].y, 'green', path[i].tt)
             }
         }
     }

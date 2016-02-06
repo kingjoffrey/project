@@ -42,7 +42,7 @@ var Castles = function () {
                 field.setCastleId(0)
             }
         }
-        Three.getScene().remove(castle.getMesh())
+        Scene.remove(castle.getMesh())
         $('#c' + castleId).remove()
         this.remove(castleId)
     }

@@ -37,7 +37,7 @@ var Armies = function () {
         var army = this.get(armyId)
         Fields.get(army.getX(), army.getY()).removeArmyId(armyId)
 
-        Three.getScene().remove(army.getMesh())
+        Scene.remove(army.getMesh())
         $('#' + armyId).remove()
         delete armies[armyId]
     }

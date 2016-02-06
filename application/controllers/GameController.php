@@ -53,7 +53,8 @@ class GameController extends Coret_Controller_Authorized
 
         $this->view->headScript()->appendFile('/js/game/picker.js?v=' . $version);
         $this->view->headScript()->appendFile('/js/game/ground.js?v=' . $version);
-        $this->view->headScript()->appendFile('/js/game/3d.js?v=' . $version);
+        $this->view->headScript()->appendFile('/js/game/scene.js?v=' . $version);
+        $this->view->headScript()->appendFile('/js/game/models.js?v=' . $version);
         $this->view->headScript()->appendFile('/js/game/game.js?v=' . $version);
         $this->view->headScript()->appendFile('/js/game/me.js?v=' . $version);
         $this->view->headScript()->appendFile('/js/game/units.js?v=' . $version);

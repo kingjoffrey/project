@@ -35,20 +35,16 @@ var Gui = new function () {
                     Me.deselectArmy()
                     break;
                 case 37://left
-                    Three.getCamera().position.x += -2
-                    Three.getCamera().position.z += -2
+                    Scene.moveCameraLeft()
                     break;
                 case 38://up
-                    Three.getCamera().position.x += 2
-                    Three.getCamera().position.z += -2
+                    Scene.moveCameraUp()
                     break;
                 case 39://right
-                    Three.getCamera().position.x += 2
-                    Three.getCamera().position.z += 2
+                    Scene.moveCameraRight()
                     break;
                 case 40://down
-                    Three.getCamera().position.x += -2
-                    Three.getCamera().position.z += 2
+                    Scene.moveCameraDown()
                     break;
                 case 66: //b
                     CastleWindow.build()
@@ -101,18 +97,12 @@ var Gui = new function () {
             })
         $('#game canvas').mousewheel(function (event) {
             if (event.deltaY > 0) {
-                if (Three.getCamera().position.y < 230) {
-                    Three.getCamera().position.y += 2
-
-                    Three.getCamera().position.x -= 2
-                    Three.getCamera().position.z += 2
+                if (Scene.getCameraY() < 230) {
+                    Scene.moveCameraAway()
                 }
             } else {
-                if (Three.getCamera().position.y > 22) {
-                    Three.getCamera().position.y -= 2
-
-                    Three.getCamera().position.x += 2
-                    Three.getCamera().position.z -= 2
+                if (Scene.getCameraY() > 22) {
+                    Scene.moveCameraClose()
                 }
             }
         })
@@ -368,13 +358,13 @@ var Gui = new function () {
         limitBox.close = 0
         mapBox.close = 0
 
-        Three.resize()
+        Scene.resize()
 
         if (!Players.countHumans() > 1) {
             $('#chatBox').css({display: 'none'});
         }
 
-        var goldBoxLeft = Three.getWidth() / 2 - $('#goldBox').outerWidth() / 2
+        var goldBoxLeft = Scene.getWidth() / 2 - $('#goldBox').outerWidth() / 2
 
         $('#goldBox').css({
             'left': goldBoxLeft + 'px'
@@ -394,7 +384,7 @@ var Gui = new function () {
     }
     this.armyBoxAdjust = function () {
         $('#armyBox').css({
-            left: Three.getWidth() / 2 - ($('#chatBox').width() + $('#armyBox').width()) / 2 + 'px'
+            left: Scene.getWidth() / 2 - ($('#chatBox').width() + $('#armyBox').width()) / 2 + 'px'
         })
     }
     this.exit = function () {

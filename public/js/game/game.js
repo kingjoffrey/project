@@ -14,7 +14,7 @@ var Game = new function () {
 
             Units.init(game.units)
             Terrain.init(game.terrain)
-            Three.init()
+            Scene.init()
             Fields.init(game.fields)
             Turn.init(game.turnHistory)
             Players.init(game.players)
