@@ -62,7 +62,7 @@ class Application_Model_MapCastles extends Coret_Db_Table_Abstract
         $startPositions = array();
 
         foreach ($this->selectAll($select) as $row) {
-            $startPositions[$row['mapPlayerId']] = array($row['x'], $row['y']);
+            $startPositions[$row['mapPlayerId']] = $row;
         }
         return $startPositions;
     }
