@@ -4,7 +4,6 @@ class Application_Model_PlayersInGame extends Coret_Db_Table_Abstract
 {
     protected $_name = 'playersingame';
 //    protected $_primary = 'mapPlayerId';
-    protected $_sequence = '';
     protected $_gameId;
 
     public function __construct($gameId, Zend_Db_Adapter_Pdo_Pgsql $db = null)

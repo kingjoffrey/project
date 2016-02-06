@@ -2,8 +2,6 @@
 
 class Cli_Model_EditorCastle extends Cli_Model_Castle
 {
-    private $_mapId;
-
     public function __construct()
     {
         $this->_capital = false;
@@ -16,6 +14,8 @@ class Cli_Model_EditorCastle extends Cli_Model_Castle
         $this->_id = $castle['mapCastleId'];
         $this->_defense = $castle['defense'];
         $this->_name = $castle['name'];
+        $this->_income = $castle['income'];
+        $this->_capital = $castle['capital'];
     }
 
     public function create($mapId, $x, $y, Zend_Db_Adapter_Pdo_Pgsql $db)
@@ -39,6 +39,7 @@ class Cli_Model_EditorCastle extends Cli_Model_Castle
         $this->_defense = $data['defence'];
         $this->_name = $data['name'];
         $this->_income = $data['income'];
+        $this->_capital = $data['capital'];
 
         $mMapCastles = new Application_Model_MapCastles($mapId, $db);
         $mMapCastles->edit($this->arrayForDb($mapPlayerId), $this->_id);
@@ -52,7 +53,7 @@ class Cli_Model_EditorCastle extends Cli_Model_Castle
             'defense' => $this->_defense,
             'name' => $this->_name,
             'income' => $this->_income,
-//            'capital' => $this->_capital,
+            'capital' => $this->_capital,
             'mapPlayerId' => $mapPlayerId,
 //            'enclaveNumber' => $this->_enclaveNumber,
         );

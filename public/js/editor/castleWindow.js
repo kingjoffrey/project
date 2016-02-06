@@ -30,6 +30,10 @@ var CastleWindow = new function () {
             })))
             .append($('<div>').append('Color:').append(selectColor))
             .append($('<div>').append('Defence:').append(selectDefence))
+            .append($('<div>').append('Capital:').append($('<input>').attr({
+                'name': 'capital',
+                'type': 'checkbox'
+            }).prop('checked', castle.getCapital())))
             .append($('<div>').append($('<input>').attr({'value': 'Ok', 'type': 'submit'}).click(function () {
                 WebSocketEditor.edit(id)
             })))

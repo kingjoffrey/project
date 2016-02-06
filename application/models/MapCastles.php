@@ -54,18 +54,16 @@ class Application_Model_MapCastles extends Coret_Db_Table_Abstract
     public function getDefaultStartPositions()
     {
         $select = $this->_db->select()
-            ->from(array('a' => $this->_name), array('x', 'y'))
-            ->join(array('b' => 'castle'), 'a."castleId"=b."castleId"', array('castleId'))
+            ->from(array('a' => $this->_name), array('x', 'y', 'mapPlayerId','mapCastleId'))
             ->where($this->_db->quoteIdentifier('mapId') . ' = ?', $this->_mapId)
             ->where('capital = true')
             ->order('mapCastleId');
 
         $startPositions = array();
 
-        foreach ($this->selectAll($select) as $position) {
-            $startPositions[$position['castleId']] = $position;
+        foreach ($this->selectAll($select) as $row) {
+            $startPositions[$row['mapPlayerId']] = array($row['x'], $row['y']);
         }
-
         return $startPositions;
     }
 
@@ -82,8 +80,8 @@ class Application_Model_MapCastles extends Coret_Db_Table_Abstract
 
     public function edit($data, $mapCastleId)
     {
+        $data['capital'] = $this->paraseBool($data['capital']);
         $where = $this->_db->quoteInto($this->_db->quoteIdentifier('mapCastleId') . ' = ?', $mapCastleId);
-
         return $this->update($data, $where);
     }
 

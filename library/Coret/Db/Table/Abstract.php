@@ -107,7 +107,7 @@ Został zaktualizowany więcej niż jeden rekord (' . $updateResult . ').
         }
         try {
             $this->_db->insert($name, $data);
-            if (isset($this->_sequence)) {
+            if ($this->_sequence !== true) {
                 return $this->_db->lastSequenceId($this->_sequence);
             }
         } catch (Exception $e) {
@@ -205,6 +205,15 @@ Został zaktualizowany więcej niż jeden rekord (' . $updateResult . ').
                 $l->log($e);
                 throw $e;
             }
+        }
+    }
+
+    public function paraseBool($value)
+    {
+        if ($value) {
+            return 't';
+        } else {
+            return 'f';
         }
     }
 }

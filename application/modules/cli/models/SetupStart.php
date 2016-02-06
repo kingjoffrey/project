@@ -39,11 +39,10 @@ class Cli_Model_SetupStart
         $startPositions = $mMapCastles->getDefaultStartPositions();
 
         $mMapPlayers = new Application_Model_MapPlayers($mapId, $db);
-        $mapPlayers = $mMapPlayers->getAll();
 
         $first = true;
 
-        foreach ($mapPlayers as $mapPlayerId => $mapPlayer) {
+        foreach ($mMapPlayers->getAll() as $mapPlayerId => $mapPlayer) {
             if (!$playerId = $setup->getPlayerIdByMapPlayerId($mapPlayerId)) {
                 $playerId = $mPlayersInGame->getComputerPlayerId();
                 if (!$playerId) {
@@ -72,13 +71,13 @@ class Cli_Model_SetupStart
             }
             $mArmy = new Application_Model_Army($setup->getId(), $db);
 
-            $armyId = $mArmy->createArmy($startPositions[$mapPlayer['castleId']], $playerId);
+            $armyId = $mArmy->createArmy($startPositions[$mapPlayer['mapPlayerId']], $playerId);
 
             $mHeroesInGame = new Application_Model_HeroesInGame($setup->getId(), $db);
             $mHeroesInGame->add($armyId, $playerHeroes[0]['heroId']);
 
             $mCastlesInGame = new Application_Model_CastlesInGame($setup->getId(), $db);
-            $mCastlesInGame->addCastle($mapPlayer['castleId'], $playerId);
+            $mCastlesInGame->addCastle($startPositions[$mapPlayer['mapPlayerId']]['mapCastleId'], $playerId);
         }
 
         $token = array('type' => 'start');
