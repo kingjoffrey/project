@@ -164,6 +164,7 @@ class Cli_Model_Game
     {
         return array(
             'version' => Zend_Registry::get('config')->version,
+            'mapId' => $this->_mapId,
             'begin' => $this->_begin,
             'timeLimit' => $this->_timeLimit,
             'turnsLimit' => $this->_turnsLimit,
