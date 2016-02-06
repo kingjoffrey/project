@@ -74,6 +74,8 @@ class GameController extends Coret_Controller_Authorized
         $this->view->headScript()->appendFile('/js/game/fields.js?v=' . $version);
         $this->view->headScript()->appendFile('/js/game/field.js?v=' . $version);
 
+
+        $this->view->headScript()->appendFile('/js/game/message.js?v=' . $version);
         $this->view->headScript()->appendFile('/js/game/astar.js?v=' . $version);
         $this->view->headScript()->appendFile('/js/game/chat.js?v=' . $version);
         $this->view->headScript()->appendFile('/js/game/gui.js?v=' . $version);

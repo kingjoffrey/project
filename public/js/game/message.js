@@ -31,8 +31,8 @@ var Message = new function () {
         return id
     }
     this.adjust = function (id) {
-        maxHeight = Three.getHeight() - 140
-        maxWidth = Three.getWidth() - 40
+        maxHeight = Scene.getHeight() - 140
+        maxWidth = Scene.getWidth() - 40
 
         if (maxHeight < parseInt($('#' + id).css('min-height'))) {
             maxHeight = parseInt($('#' + id).css('min-height'))
@@ -45,14 +45,14 @@ var Message = new function () {
         if ($('#' + id + ' .showCastle').length) {
             $('#' + id).css({
                 'z-index': $('#' + id).css('z-index') + 1,
-                left: Three.getWidth() / 2 - $('#' + id).outerWidth() / 2 + 'px',
+                left: Scene.getWidth() / 2 - $('#' + id).outerWidth() / 2 + 'px',
                 'max-width': maxWidth + 'px',
                 'max-height': maxHeight + 'px'
             })
             $('#' + id + ' .msgTitle').css({width: $('#' + id).width() - 50})
         } else {
             $('.message').css({
-                left: Three.getWidth() / 2 - $('.message').outerWidth() / 2 + 'px',
+                left: Scene.getWidth() / 2 - $('.message').outerWidth() / 2 + 'px',
                 'max-width': maxWidth + 'px',
                 'max-height': maxHeight + 'px'
             })

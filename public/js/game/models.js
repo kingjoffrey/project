@@ -120,10 +120,10 @@ var Models = new function () {
         var mesh = new THREE.Mesh(ruinModel.geometry, ruinMaterial)
         mesh.position.set(x * 4 - 216, 0, y * 4 - 311)
 
-        if (showShadows) {
-            mesh.castShadow = true
-            mesh.receiveShadow = true
-        }
+        //if (showShadows) {
+        //    mesh.castShadow = true
+        //    mesh.receiveShadow = true
+        //}
         Scene.add(mesh)
 
         return mesh.id
@@ -186,10 +186,10 @@ var Models = new function () {
             for (var i = 2; i <= defense; i++) {
                 var m = getCastleModel(i)
 
-                if (showShadows) {
-                    m.castShadow = true
-                    m.receiveShadow = true
-                }
+                //if (showShadows) {
+                //    m.castShadow = true
+                //    m.receiveShadow = true
+                //}
                 mesh.add(m)
             }
         }
@@ -202,18 +202,18 @@ var Models = new function () {
         var mesh = new THREE.Mesh(castleModel_1.geometry, castleMaterial)
         mesh.position.set(castle.x * 4 - 214, 0, castle.y * 4 - 308)
 
-        if (showShadows) {
-            mesh.castShadow = true
-            mesh.receiveShadow = true
-        }
-        scene.add(mesh)
+        //if (showShadows) {
+        //    mesh.castShadow = true
+        //    mesh.receiveShadow = true
+        //}
+        Scene.add(mesh)
 
         var material = new THREE.MeshLambertMaterial({color: color, side: THREE.DoubleSide})
         var flagMesh = new THREE.Mesh(flagModel.geometry, material)
-        if (showShadows) {
-            flagMesh.castShadow = true
-            flagMesh.receiveShadow = true
-        }
+        //if (showShadows) {
+        //    flagMesh.castShadow = true
+        //    flagMesh.receiveShadow = true
+        //}
         mesh.add(flagMesh)
 
         mesh.add(createTextMesh(castle.name, '#ffffff'))
@@ -294,18 +294,18 @@ var Models = new function () {
         mesh.position.set(x * 4 - 216, height, y * 4 - 311)
         mesh.rotation.y = Math.PI / 2 + Math.PI / 4
 
-        if (showShadows) {
-            mesh.castShadow = true
-            mesh.receiveShadow = true
-        }
+        //if (showShadows) {
+        //    mesh.castShadow = true
+        //    mesh.receiveShadow = true
+        //}
         var flagMesh = new THREE.Mesh(getFlag(number).geometry, material)
-        if (showShadows) {
-            flagMesh.castShadow = true
-        }
+        //if (showShadows) {
+        //    flagMesh.castShadow = true
+        //}
         flagMesh.position.set(-2, 0, 0)
         mesh.add(flagMesh)
 
-        scene.add(mesh)
+        Scene.add(mesh)
 
         return mesh
     }

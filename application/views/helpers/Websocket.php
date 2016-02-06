@@ -11,7 +11,6 @@ class Zend_View_Helper_Websocket extends Zend_View_Helper_Abstract
 
         $this->view->headScript()->appendFile('/js/privatechat.js?v=' . $version);
         $this->view->headScript()->appendFile('/js/libs.js?v=' . $version);
-        $this->view->headScript()->appendFile('/js/message.js?v=' . $version);
 
         $script = '
         WEB_SOCKET_SWF_LOCATION = "/js/flash-bridge/WebSocketMain.swf";
