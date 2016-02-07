@@ -157,7 +157,9 @@ var Models = new function () {
                     mesh = new THREE.Mesh(towerModel.geometry, towerMaterial)
                 break
             case 'road':
-
+                var roadMaterial = new THREE.MeshLambertMaterial({color: '#6B6B6B', side: THREE.DoubleSide}),
+                    mesh = new THREE.Mesh(new THREE.PlaneGeometry(1, 1), roadMaterial)
+                mesh.rotation.x = Math.PI / 2
                 break
             case 'bridge':
 
@@ -166,7 +168,9 @@ var Models = new function () {
                 var mesh = new THREE.Mesh(treeModel.geometry, treeModel.material)
                 break
             case 'swamp':
-
+                var swampMaterial = new THREE.MeshLambertMaterial({color: '#6B6B6B', side: THREE.DoubleSide}),
+                    mesh = new THREE.Mesh(new THREE.PlaneGeometry(1, 1), swampMaterial)
+                mesh.rotation.x = Math.PI / 2
                 break
             default:
                 console.log('Brak typu (' + type + ')')
@@ -252,7 +256,40 @@ var Models = new function () {
         }
         Scene.add(mesh)
     }
+    this.addRoad = function (x, y) {
+        var roadMaterial = new THREE.MeshLambertMaterial({
+                color: '#6B6B6B',
+                side: THREE.DoubleSide,
+                transparent: true,
+                opacity: 0.5
+            }),
+            mesh = new THREE.Mesh(new THREE.PlaneGeometry(1, 1), roadMaterial)
+        mesh.rotation.x = Math.PI / 2
+        mesh.position.set(x * 1 + 0.5, 0.01, y * 1 + 0.5)
 
+        if (showShadows) {
+            mesh.castShadow = true
+            mesh.receiveShadow = true
+        }
+        Scene.add(mesh)
+    }
+    this.addSwamp = function (x, y) {
+        var swampMaterial = new THREE.MeshLambertMaterial({
+                color: '#6B6B6B',
+                side: THREE.DoubleSide,
+                transparent: true,
+                opacity: 0.5
+            }),
+            mesh = new THREE.Mesh(new THREE.PlaneGeometry(1, 1), swampMaterial)
+        mesh.rotation.x = Math.PI / 2
+        mesh.position.set(x * 1 + 0.5, 0.01, y * 1 + 0.5)
+
+        if (showShadows) {
+            mesh.castShadow = true
+            mesh.receiveShadow = true
+        }
+        Scene.add(mesh)
+    }
     this.init = function () {
         initRuin()
         initTower()

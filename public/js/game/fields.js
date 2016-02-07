@@ -8,12 +8,12 @@ var Fields = new function () {
         for (maxY in fields) {
             for (maxX in fields[maxY]) {
                 switch (fields[maxY][maxX].type) {
-                    //case 'm':
-                    //    Models.addMountain(maxX, maxY)
-                    //    break
-                    //case 'h':
-                    //    Models.addHill(maxX, maxY)
-                    //    break
+                    case 's':
+                        Models.addSwamp(maxX, maxY)
+                        break
+                    case 'r':
+                        Models.addRoad(maxX, maxY)
+                        break
                     case 'f':
                         Models.addTree(maxX, maxY)
                         break
