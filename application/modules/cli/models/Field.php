@@ -75,6 +75,11 @@ class Cli_Model_Field
         $this->_ruinId = $ruinId;
     }
 
+    public function setType($type)
+    {
+        $this->_type = $type;
+    }
+
     public function getCastleId()
     {
         return $this->_castleId;

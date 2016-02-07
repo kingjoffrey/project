@@ -89,11 +89,25 @@ class Cli_Model_Editor
                 );
                 break;
             case 'forest':
-
+                $this->editTerrainType($dataIn['x'], $dataIn['y'], 'f', $db);
+                break;
+            case 'bridge':
+                $this->editTerrainType($dataIn['x'], $dataIn['y'], 'b', $db);
                 break;
             case 'road':
+                $this->editTerrainType($dataIn['x'], $dataIn['y'], 'r', $db);
+                break;
+            case 'swamp':
+                $this->editTerrainType($dataIn['x'], $dataIn['y'], 's', $db);
                 break;
         }
+    }
+
+    private function editTerrainType($x, $y, $type, $db)
+    {
+        $this->_Fields->getField($x, $y)->setType($type);
+        $mMapFields = new Application_Model_MapFields($this->_mapId, $db);
+        $mMapFields->edit($x, $y, $type);
     }
 
     public function edit($dataIn, Zend_Db_Adapter_Pdo_Pgsql $db)

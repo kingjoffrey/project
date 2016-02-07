@@ -44,5 +44,18 @@ class Application_Model_MapFields extends Coret_Db_Table_Abstract
 
         $this->insert($data);
     }
+
+    public function edit($x, $y, $type)
+    {
+        $data = array(
+            'type' => $type
+        );
+        $where = array(
+            $this->_db->quoteInto('mapId' . ' = ?', $this->_mapId),
+            $this->_db->quoteInto('x' . ' = ?', $x),
+            $this->_db->quoteInto('y' . ' = ?', $y)
+        );
+        $this->update($data, $where);
+    }
 }
 
