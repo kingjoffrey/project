@@ -14,9 +14,9 @@ var Fields = new function () {
                     //case 'h':
                     //    Models.addHill(maxX, maxY)
                     //    break
-                    //case 'f':
-                    //    Models.addTree(maxX, maxY)
-                    //    break
+                    case 'f':
+                        Models.addTree(maxX, maxY)
+                        break
                     //case 'w':
                     //    Models.addWater(maxX, maxY)
                     //break

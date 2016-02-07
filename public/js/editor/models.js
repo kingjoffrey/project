@@ -180,6 +180,7 @@ var Models = new function () {
         var ruinMaterial = new THREE.MeshPhongMaterial({color: color, side: THREE.DoubleSide}),
             mesh = new THREE.Mesh(ruinModel.geometry, ruinMaterial)
         mesh.position.set(x + 0.5, 0, y + 0.5)
+        mesh.rotation.y = 2 * Math.PI * Math.random()
 
         if (showShadows) {
             mesh.castShadow = true
@@ -212,7 +213,6 @@ var Models = new function () {
         return mesh
     }
     this.addCastle = function (castle, color) {
-        //castle.x, castle.y, bgC, castle.defense
         var castleMaterial = new THREE.MeshLambertMaterial({color: '#3B3028', side: THREE.DoubleSide})
 
         var mesh = new THREE.Mesh(castleModel_1.geometry, castleMaterial)
@@ -241,87 +241,15 @@ var Models = new function () {
         mesh.children.splice(2, 3)
         updateCastleModel(mesh, defense)
     }
-
-    this.addArmy = function (x, y, color, number, modelName) {
-        var material = new THREE.MeshLambertMaterial({color: color, side: THREE.DoubleSide})
-
-        var armyMaterial = new THREE.MeshLambertMaterial({color: color, side: THREE.DoubleSide})
-
-        if (modelName + 'Model' in window) {
-            var mesh = new THREE.Mesh(window[modelName + 'Model'].geometry, armyMaterial)
-        } else {
-            var mesh = new THREE.Mesh(untitledModel.geometry, armyMaterial)
-        }
-
-        switch (Fields.get(x, y).getType()) {
-            case 'm':
-                var height = 3
-                break
-            case 'h':
-                var height = 1
-                break
-            default :
-                var height = 0
-                break
-        }
-
-        mesh.position.set(x * 4 - 216, height, y * 4 - 311)
-        mesh.rotation.y = Math.PI / 2 + Math.PI / 4
-
-        if (showShadows) {
-            mesh.castShadow = true
-            mesh.receiveShadow = true
-        }
-        var flagMesh = new THREE.Mesh(getFlag(number).geometry, material)
-        if (showShadows) {
-            flagMesh.castShadow = true
-        }
-        flagMesh.position.set(-2, 0, 0)
-        mesh.add(flagMesh)
-
-        Scene.add(mesh)
-
-        return mesh
-    }
-    this.addMountain = function (x, y) {
-        var mesh = new THREE.Mesh(mountainModel.geometry, mountainModel.material)
-        mesh.position.set(x + 0.5, 0, y + 0.5)
-        mesh.rotation.y = 2 * Math.PI * Math.random()
-
-        if (showShadows) {
-            mesh.castShadow = true
-            mesh.receiveShadow = true
-        }
-        Scene.add(mesh)
-
-    }
-    this.addHill = function (x, y) {
-        var mesh = new THREE.Mesh(hillModel.geometry, hillModel.material)
-        mesh.position.set(x + 0.5, 0, y + 0.5)
-        mesh.rotation.y = 2 * Math.PI * Math.random()
-
-        if (showShadows) {
-            mesh.castShadow = true
-            mesh.receiveShadow = true
-        }
-        Scene.add(mesh)
-    }
     this.addTree = function (x, y) {
         var mesh = new THREE.Mesh(treeModel.geometry, treeModel.material)
-        mesh.position.set(x + 0.5, 0, y + 0.5)
+        mesh.position.set(x * 1 + 0.5, 0, y * 1 + 0.5)
         mesh.rotation.y = 2 * Math.PI * Math.random()
 
         if (showShadows) {
             mesh.castShadow = true
             mesh.receiveShadow = true
         }
-        Scene.add(mesh)
-    }
-    this.addWater = function (x, y) {
-        var mesh = new THREE.Mesh(waterModel.geometry, waterModel.material)
-        mesh.position.set(x * 4 - 216, 0.1, y * 4 - 311)
-        mesh.rotation.y = 2 * Math.PI * Math.random()
-
         Scene.add(mesh)
     }
 
