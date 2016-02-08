@@ -34,6 +34,7 @@ var Scene = new function () {
             camera.rotation.order = 'YXZ'
             camera.rotation.y = -Math.PI / 4
             camera.rotation.x = Math.atan(-1 / Math.sqrt(2))
+            camera.position.y = cameraY
             camera.scale.addScalar(1)
             scene.add(camera)
             scene.add(new THREE.AmbientLight(0x222222))

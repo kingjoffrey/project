@@ -1,9 +1,8 @@
 var Ground = new function () {
-    this.init = function (maxX, maxY, textureName) {
-        createGround(maxX, maxY, textureName)
-        createWater(maxX, maxY)
-    }
-    var createWater = function (maxX, maxY) {
+    var mountainLevel = 1.5,
+        hillLevel = 0.5,
+        bottomLevel = 0.9,
+        createWater = function (maxX, maxY) {
             var waterVertexPositions = [],
                 waterVertices = new Float32Array(18),
                 waterGeometry = new THREE.BufferGeometry(),
@@ -63,16 +62,16 @@ var Ground = new function () {
             }
             for (var i = 0; i < grassVertexPositions.length; i++) {
                 if (Fields.get(grassVertexPositions[i][0], grassVertexPositions[i][1]).getType() == 'w') {
-                    grassVertexPositions[i][2] = 0.9
+                    grassVertexPositions[i][2] = bottomLevel
                 }
                 if (Fields.get(grassVertexPositions[i][0], grassVertexPositions[i][1]).getType() == 'b') {
-                    grassVertexPositions[i][2] = 0.9
+                    grassVertexPositions[i][2] = bottomLevel
                 }
                 if (Fields.get(grassVertexPositions[i][0], grassVertexPositions[i][1]).getType() == 'm') {
-                    grassVertexPositions[i][2] = -1.5
+                    grassVertexPositions[i][2] = -mountainLevel
                 }
                 if (Fields.get(grassVertexPositions[i][0], grassVertexPositions[i][1]).getType() == 'h') {
-                    grassVertexPositions[i][2] = -0.5
+                    grassVertexPositions[i][2] = -hillLevel
                 }
             }
             var grassVertices = new Float32Array(grassVertexPositions.length * 3),
@@ -124,12 +123,21 @@ var Ground = new function () {
                 grassMesh.rotation.x = Math.PI / 2
                 Scene.add(grassMesh)
                 Picker.attach(grassMesh)
-                Scene.setCameraPosition(0, maxY)
+                //Scene.setCameraPosition(0, maxY)
 
                 //var helper = new THREE.WireframeHelper(grassMesh, 0xff00ff);
                 //helper.material.linewidth = 1;
                 //Scene.add(helper)
             })
         }
+    this.init = function (maxX, maxY, textureName) {
+        createGround(maxX, maxY, textureName)
+        createWater(maxX, maxY)
+    }
+    this.getMountainLevel = function () {
+        return mountainLevel
+    }
+    this.getHillLevel = function () {
+        return hillLevel
+    }
 }
-

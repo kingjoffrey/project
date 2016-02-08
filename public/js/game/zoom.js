@@ -95,8 +95,8 @@ var Zoom = {
             $obj.node.left = (Zoom.smallimage.ow - $obj.node.w - 2) / 2;
         };
         $obj.setcenter = function (x, y, func) {
-            $obj.node.top = (y * 1 - Scene.getHeight() / 2) / Zoom.scale.y
-            $obj.node.left = (x * 1 - Scene.getWidth() / 2) / Zoom.scale.x
+            $obj.node.top = y * 1 - Scene.getHeight() / 2
+            $obj.node.left = x * 1 - Scene.getWidth() / 2
             $obj.node.css({
                 top: $obj.node.top,
                 left: $obj.node.left
@@ -109,7 +109,7 @@ var Zoom = {
                 },
                 target = {
                     x: x * 1 - Scene.getCameraY() - yOffset,
-                    z: y * 1 - Scene.getCameraY() + yOffset
+                    z: y * 1 + Scene.getCameraY() + yOffset
                 },
                 tween = new TWEEN.Tween(position)
                     .to(target, Zoom.getH(position, target))

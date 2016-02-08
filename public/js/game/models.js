@@ -159,10 +159,10 @@ var Models = new function () {
 
         switch (t) {
             case 'm':
-                var height = 1.5
+                var height = Ground.getMountainLevel() + 0.01
                 break
             case 'h':
-                var height = 0.51
+                var height = Ground.getHillLevel() + 0.01
                 break
             default :
                 var height = 0.01
@@ -396,10 +396,10 @@ var Models = new function () {
 
         switch (Fields.get(x, y).getType()) {
             case 'm':
-                var height = 3
+                var height = Ground.getMountainLevel()
                 break
             case 'h':
-                var height = 1
+                var height = Ground.getHillLevel()
                 break
             default :
                 var height = 0
@@ -417,7 +417,7 @@ var Models = new function () {
         if (showShadows) {
             flagMesh.castShadow = true
         }
-        flagMesh.position.set(-2, 0, 0)
+        flagMesh.position.set(-0.2, 0, 0)
         mesh.add(flagMesh)
 
         Scene.add(mesh)
