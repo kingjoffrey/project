@@ -95,8 +95,8 @@ var Zoom = {
             $obj.node.left = (Zoom.smallimage.ow - $obj.node.w - 2) / 2;
         };
         $obj.setcenter = function (x, y, func) {
-            $obj.node.top = (y * 40 - Scene.getHeight() / 2) / Zoom.scale.y
-            $obj.node.left = (x * 40 - Scene.getWidth() / 2) / Zoom.scale.x
+            $obj.node.top = (y * 1 - Scene.getHeight() / 2) / Zoom.scale.y
+            $obj.node.left = (x * 1 - Scene.getWidth() / 2) / Zoom.scale.x
             $obj.node.css({
                 top: $obj.node.top,
                 left: $obj.node.left
@@ -108,8 +108,8 @@ var Zoom = {
                     z: Scene.getCamera().position.z
                 },
                 target = {
-                    x: x * 4 - (221 + Scene.getCameraY()) - yOffset,
-                    z: y * 4 - (307 - Scene.getCameraY()) + yOffset
+                    x: x * 1 - Scene.getCameraY() - yOffset,
+                    z: y * 1 - Scene.getCameraY() + yOffset
                 },
                 tween = new TWEEN.Tween(position)
                     .to(target, Zoom.getH(position, target))
@@ -166,10 +166,13 @@ var Zoom = {
                 'left': lensleft + 'px',
                 'top': lenstop + 'px'
             });
-
+console.log('aaa')
             var yOffset = Scene.getCamera().position.y - Scene.getCameraY()
-            Scene.getCamera().position.x = ($obj.node.left * Zoom.scale.x + Scene.getWidth() / 2) / 10 - (221 + Scene.getCameraY()) - yOffset
-            Scene.getCamera().position.z = ($obj.node.top * Zoom.scale.y + Scene.getHeight() / 2) / 10 - (307 - Scene.getCameraY()) + yOffset
+            console.log(yOffset)
+            //Scene.getCamera().position.x = ($obj.node.left * Zoom.scale.x + Scene.getWidth() / 2) / 10 - Scene.getCameraY() - yOffset
+            //Scene.getCamera().position.z = ($obj.node.top * Zoom.scale.y + Scene.getHeight() / 2) / 10 - Scene.getCameraY() + yOffset
+            Scene.getCamera().position.x = ($obj.node.left * Zoom.scale.x + Scene.getWidth() / 2) - Scene.getCameraY() - yOffset
+            Scene.getCamera().position.z = ($obj.node.top * Zoom.scale.y + Scene.getHeight() / 2) - Scene.getCameraY() + yOffset
         };
         $obj.show = function () {
             $obj.node.show();

@@ -7,9 +7,10 @@ var Picker = new function () {
         camera,
         container
 
-    this.init = function (c, domElement) {
-        camera = c
-        container = domElement
+    this.init = function () {
+        camera = Scene.getCamera()
+        container = Scene.getRenderer().domElement
+
         container.addEventListener('mousedown', onContainerMouseDown, false);
         container.addEventListener('mousemove', onContainerMouseMove, false);
         container.addEventListener('mouseup', onContainerMouseUp, false);
@@ -51,10 +52,10 @@ var Picker = new function () {
         return Fields.get(convertX(), convertY())
     }
     var convertX = function () {
-        return parseInt((intersects[0].point.x + 218) / 4)
+        return parseInt(intersects[0].point.x)
     }
     var convertY = function () {
-        return parseInt((intersects[0].point.z + 312) / 4)
+        return parseInt(intersects[0].point.z)
     }
     var onclick = function (button) {
         switch (button) {

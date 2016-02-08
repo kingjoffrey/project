@@ -8,23 +8,19 @@ var Fields = new function () {
         for (maxY in fields) {
             for (maxX in fields[maxY]) {
                 switch (fields[maxY][maxX].type) {
-                    case 's':
-                        Models.addSwamp(maxX, maxY)
-                        break
-                    case 'r':
-                        Models.addRoad(maxX, maxY)
-                        break
-                    case 'f':
-                        Models.addTree(maxX, maxY)
-                        break
-                    //case 'w':
-                    //    Models.addWater(maxX, maxY)
-                    //break
+                    //case 's':
+                    //    Models.addSwamp(maxX, maxY)
+                    //    break
+                    //case 'r':
+                    //    Models.addRoad(maxX, maxY)
+                    //    break
+                    //case 'f':
+                    //    Models.addTree(maxX, maxY)
+                    //    break
                 }
                 this.add(maxX, maxY, fields[maxY][maxX])
             }
         }
-        //console.log(mapId)
         Ground.init(maxX, maxY, '/img/maps/' + mapId + '.png')
     }
     this.getMaxX = function () {
