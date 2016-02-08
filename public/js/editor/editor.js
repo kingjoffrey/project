@@ -12,6 +12,8 @@ var Editor = new function () {
         Fields.init(r.fields, mapId)
         Ruins.init(r.ruins)
         Players.init(r.players)
+        Gui.init()
+        Scene.setCameraPosition(0, Fields.getMaxY())
         //console.log(r)
     }
     var initButtons = function () {

@@ -8,9 +8,6 @@ var Scene = new function () {
         scene = new THREE.Scene(),
         camera,
         renderer = new THREE.WebGLRenderer({antialias: true}),
-        pointLight = new THREE.PointLight(0xdddddd),
-        theLight = new THREE.DirectionalLight(0xffffff, 1),
-        ambientLight = new THREE.AmbientLight(0xffffff),
         showShadows = 0,
         cameraY = 24,
         timeOut = 100,
@@ -37,7 +34,7 @@ var Scene = new function () {
             camera.position.y = cameraY
             camera.scale.addScalar(1)
             scene.add(camera)
-            scene.add(new THREE.AmbientLight(0x222222))
+            scene.add(new THREE.AmbientLight(0xaaaaaa))
             camera.add(new THREE.PointLight(0xffffff, 0.7))
 
             animate()

@@ -55,13 +55,13 @@ class EditorController extends Game_Controller_Gui
         $this->view->headScript()->appendFile('/js/editor/message.js?v=' . $version);
         $this->view->headScript()->appendFile('/js/editor/castleWindow.js?v=' . $version);
         $this->view->headScript()->appendFile('/js/editor/editor.js?v=' . $version);
-        $this->view->headScript()->appendFile('/js/editor/scene.js?v=' . $version);
         $this->view->headScript()->appendFile('/js/editor/init.js?v=' . $version);
         $this->view->headScript()->appendFile('/js/editor/websocket.js?v=' . $version);
         $this->view->headScript()->appendFile('/js/editor/gui.js?v=' . $version);
         $this->view->headScript()->appendFile('/js/editor/picker.js?v=' . $version);
         $this->view->headScript()->appendFile('/js/editor/players.js?v=' . $version);
 
+        $this->view->headScript()->appendFile('/js/game/scene.js?v=' . $version);
         $this->view->headScript()->appendFile('/js/game/ground.js?v=' . $version);
         $this->view->headScript()->appendFile('/js/game/models.js?v=' . $version);
         $this->view->headScript()->appendFile('/js/game/field.js?v=' . $version);
