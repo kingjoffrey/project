@@ -123,7 +123,6 @@ var Ground = new function () {
                 grassMesh.rotation.x = Math.PI / 2
                 Scene.add(grassMesh)
                 Picker.attach(grassMesh)
-                //Scene.setCameraPosition(0, maxY)
 
                 //var helper = new THREE.WireframeHelper(grassMesh, 0xff00ff);
                 //helper.material.linewidth = 1;
