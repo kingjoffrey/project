@@ -30,26 +30,37 @@ class Application_Model_MapCastleProduction extends Coret_Db_Table_Abstract
         return $production;
     }
 
-    public function addCastleProduction($castleId, $unitId)
+    public function addCastleProduction($castleId, $slot)
     {
         $data = array(
             'castleId' => $castleId,
-            'unitId' => $unitId
+            'unitId' => $slot['unitId'],
+            'time' => $slot['time'],
         );
 
         return $this->insert($data);
     }
 
-    public function editCastleProduction($castleId, $oldUnitId, $newUnitId)
+    public function editCastleProduction($castleId, $oldUnitId, $slot)
     {
         $data = array(
-            'unitId' => $newUnitId
+            'unitId' => $slot['unitId'],
+            'time' => $slot['time'],
         );
         $where = $this->_db->quoteInto(
             $this->_db->quoteIdentifier('castleId') . ' = ?', $castleId,
-            $this->_db->quoteIdentifier('unitId') . ' = ?', $newUnitId
+            $this->_db->quoteIdentifier('unitId') . ' = ?', $oldUnitId
         );
         return $this->update($data, $where);
+    }
+
+    public function removeCastleProduction($castleId, $unitId)
+    {
+        $where = $this->_db->quoteInto(
+            $this->_db->quoteIdentifier('castleId') . ' = ?', $castleId,
+            $this->_db->quoteIdentifier('unitId') . ' = ?', $unitId
+        );
+        return $this->delete($where);
     }
 }
 

@@ -47,7 +47,7 @@ class Cli_Model_Editor
         foreach ($mapPlayers as $id => $player) {
             $this->_Players->addPlayer($player['shortName'], new Cli_Model_EditorPlayer($player, $mapCastles, $mapTowers, $db));
         }
-        $this->_Players->addPlayer('neutral', new Cli_Model_EditorNeutralPlayer($mapCastles, $mapTowers));
+        $this->_Players->addPlayer('neutral', new Cli_Model_EditorNeutralPlayer($mapCastles, $mapTowers, $db));
         $this->_Players->initFields($this->_Fields);
     }
 

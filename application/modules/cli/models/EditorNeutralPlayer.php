@@ -2,7 +2,7 @@
 
 class Cli_Model_EditorNeutralPlayer extends Cli_Model_DefaultPlayer
 {
-    public function __construct($mapCastles, $mapTowers)
+    public function __construct($mapCastles, $mapTowers, Zend_Db_Adapter_Pdo_Pgsql $db)
     {
         $this->_id = 0;
 
@@ -16,35 +16,20 @@ class Cli_Model_EditorNeutralPlayer extends Cli_Model_DefaultPlayer
         $this->_towers = new Cli_Model_Towers();
         $this->_armies = new Cli_Model_Armies();
 
-        $this->initCastles($mapCastles);
+        $this->initCastles($mapCastles, $db);
         $this->initTowers($mapTowers);
     }
 
-    private function initCastles($mapCastles)
+    private function initCastles($mapCastles, Zend_Db_Adapter_Pdo_Pgsql $db)
     {
-        $numberOfSoldiers = 1;
+        $mCastleProduction = new Application_Model_MapCastleProduction($db);
         foreach ($mapCastles as $castleId => $c) {
             if ($c['mapPlayerId'] == $this->_id) {
                 $castle = new Cli_Model_EditorCastle();
                 $castle->init($c);
+                $castle->initProduction($mCastleProduction->getCastleProduction($castleId));
                 $this->_castles->addCastle($castleId, $castle);
             }
-
-//            $armyId = 'a' . $castle->getId();
-//            $army = new Cli_Model_Army(array(
-//                'armyId' => $armyId,
-//                'x' => $castle->getX(),
-//                'y' => $castle->getY()
-//            ), $this->_color);
-//            for ($i = 0; $i < $numberOfSoldiers; $i++) {
-//                $soldierId = 's' . $i;
-//                $army->getWalkingSoldiers()->add($soldierId, new Cli_Model_Soldier(array(
-//                    'soldierId' => $soldierId,
-//                    'unitId' => $firstUnitId
-//                ), $units->getUnit($firstUnitId)));
-//            }
-//
-//            $this->_armies->addArmy($armyId, $army);
         }
     }
 

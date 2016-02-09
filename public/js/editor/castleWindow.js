@@ -2,10 +2,14 @@ var CastleWindow = new function () {
     this.form = function (id) {
         var selectColor = $('<select>').attr('name', 'color'),
             selectDefence = $('<select>').attr('name', 'defence'),
-            selectProductionSlot1 = $('<select>').attr('name', 'slot1').append($('<option>').attr('value', 0)),
-            selectProductionSlot2 = $('<select>').attr('name', 'slot2').append($('<option>').attr('value', 0)),
-            selectProductionSlot3 = $('<select>').attr('name', 'slot3').append($('<option>').attr('value', 0)),
-            selectProductionSlot4 = $('<select>').attr('name', 'slot4').append($('<option>').attr('value', 0))
+            selectProductionUnit1 = $('<select>').attr('name', 'unitId0').append($('<option>').attr('value', 0)),
+            selectProductionUnit2 = $('<select>').attr('name', 'unitId1').append($('<option>').attr('value', 0)),
+            selectProductionUnit3 = $('<select>').attr('name', 'unitId2').append($('<option>').attr('value', 0)),
+            selectProductionUnit4 = $('<select>').attr('name', 'unitId3').append($('<option>').attr('value', 0)),
+            selectProductionTime1 = $('<select>').attr('name', 'time0').append($('<option>').attr('value', 0)),
+            selectProductionTime2 = $('<select>').attr('name', 'time1').append($('<option>').attr('value', 0)),
+            selectProductionTime3 = $('<select>').attr('name', 'time2').append($('<option>').attr('value', 0)),
+            selectProductionTime4 = $('<select>').attr('name', 'time3').append($('<option>').attr('value', 0))
 
         for (var color in Players.toArray()) {
             if (Players.get(color).getCastles().has(id)) {
@@ -24,10 +28,17 @@ var CastleWindow = new function () {
                 for (var unitId in Units.toArray()) {
                     var unit = Units.get(unitId)
 
-                    selectProductionSlot1.append($('<option>').attr('value', unitId).html(unit.name_lang))
-                    selectProductionSlot2.append($('<option>').attr('value', unitId).html(unit.name_lang))
-                    selectProductionSlot3.append($('<option>').attr('value', unitId).html(unit.name_lang))
-                    selectProductionSlot4.append($('<option>').attr('value', unitId).html(unit.name_lang))
+                    selectProductionUnit1.append($('<option>').attr('value', unitId).html(unit.name_lang))
+                    selectProductionUnit2.append($('<option>').attr('value', unitId).html(unit.name_lang))
+                    selectProductionUnit3.append($('<option>').attr('value', unitId).html(unit.name_lang))
+                    selectProductionUnit4.append($('<option>').attr('value', unitId).html(unit.name_lang))
+                }
+
+                for (var i = 1; i <= 20; i++) {
+                    selectProductionTime1.append($('<option>').attr('value', i).html(i))
+                    selectProductionTime2.append($('<option>').attr('value', i).html(i))
+                    selectProductionTime3.append($('<option>').attr('value', i).html(i))
+                    selectProductionTime4.append($('<option>').attr('value', i).html(i))
                 }
             } else {
                 selectColor.append($('<option>').attr('value', color).html(color))
@@ -49,10 +60,10 @@ var CastleWindow = new function () {
                 'name': 'capital',
                 'type': 'checkbox'
             }).prop('checked', castle.getCapital())))
-            .append($('<div>').append('Production slot 1:').append(selectProductionSlot1))
-            .append($('<div>').append('Production slot 2:').append(selectProductionSlot2))
-            .append($('<div>').append('Production slot 3:').append(selectProductionSlot3))
-            .append($('<div>').append('Production slot 4:').append(selectProductionSlot4))
+            .append($('<div>').append('Production unit 1:').append(selectProductionUnit1).append('Production time 1:').append(selectProductionTime1))
+            .append($('<div>').append('Production unit 2:').append(selectProductionUnit2).append('Production time 2:').append(selectProductionTime2))
+            .append($('<div>').append('Production unit 3:').append(selectProductionUnit3).append('Production time 3:').append(selectProductionTime3))
+            .append($('<div>').append('Production unit 4:').append(selectProductionUnit4).append('Production time 4:').append(selectProductionTime4))
             .append($('<div>').append($('<input>').attr({'value': 'Ok', 'type': 'submit'}).click(function () {
                 WebSocketEditor.edit(id)
             })))

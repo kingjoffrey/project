@@ -18,6 +18,13 @@ class Cli_Model_EditorCastle extends Cli_Model_Castle
         $this->_capital = $castle['capital'];
     }
 
+    public function initProduction($production)
+    {
+        foreach ($production as $unitId => $time) {
+            $this->_production[] = array('unitId' => $unitId, 'time' => $time);
+        }
+    }
+
     public function create($mapId, $x, $y, Zend_Db_Adapter_Pdo_Pgsql $db)
     {
         $this->_x = $x;
@@ -46,17 +53,25 @@ class Cli_Model_EditorCastle extends Cli_Model_Castle
 
         $mMapCastleProduction = new Application_Model_MapCastleProduction($db);
         print_r($data['production']);
-        foreach ($data['production'] as $i => $unitId) {
-            if (!$unitId) {
-                continue;
-            }
+        foreach ($data['production'] as $i => $slot) {
             if (isset($this->_production[$i])) {
-                if ($this->_production[$i] == $unitId) {
+                if ($slot['unitId']) {
+                    if ($this->_production[$i]['unitId'] == $slot['unitId']) {
+                        continue;
+                    }
+                    $mMapCastleProduction->editCastleProduction($this->_id, $slot);
+                    $this->_production[$i] = $slot;
+                } else {
+                    $mMapCastleProduction->removeCastleProduction($this->_id, $this->_production[$i]['unitId'], $slot);
+                    unset($this->_production[$i]);
+                }
+
+            } else {
+                if (!$slot['unitId']) {
                     continue;
                 }
-                $mMapCastleProduction->editCastleProduction($this->_id, $unitId);
-            } else {
-                $mMapCastleProduction->addCastleProduction($this->_id, $unitId);
+                $mMapCastleProduction->addCastleProduction($this->_id, $slot);
+                $this->_production[$i] = $slot;
             }
         }
     }
