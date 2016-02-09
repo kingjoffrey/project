@@ -85,7 +85,7 @@ class Cli_Model_Player extends Cli_Model_DefaultPlayer
     private function initCastles($gameId, $mapCastles, Zend_Db_Adapter_Pdo_Pgsql $db)
     {
         $mCastlesInGame = new Application_Model_CastlesInGame($gameId, $db);
-        $mCastleProduction = new Application_Model_CastleProduction($db);
+        $mCastleProduction = new Application_Model_MapCastleProduction($db);
         foreach ($mCastlesInGame->getPlayerCastles($this->_id) as $castleId => $c) {
             $this->_castles->addCastle($castleId, new Cli_Model_Castle($c, $mapCastles[$castleId]));
             $castle = $this->_castles->getCastle($castleId);

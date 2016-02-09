@@ -43,6 +43,22 @@ class Cli_Model_EditorCastle extends Cli_Model_Castle
 
         $mMapCastles = new Application_Model_MapCastles($mapId, $db);
         $mMapCastles->edit($this->arrayForDb($mapPlayerId), $this->_id);
+
+        $mMapCastleProduction = new Application_Model_MapCastleProduction($db);
+        print_r($data['production']);
+        foreach ($data['production'] as $i => $unitId) {
+            if (!$unitId) {
+                continue;
+            }
+            if (isset($this->_production[$i])) {
+                if ($this->_production[$i] == $unitId) {
+                    continue;
+                }
+                $mMapCastleProduction->editCastleProduction($this->_id, $unitId);
+            } else {
+                $mMapCastleProduction->addCastleProduction($this->_id, $unitId);
+            }
+        }
     }
 
     private function arrayForDb($mapPlayerId)

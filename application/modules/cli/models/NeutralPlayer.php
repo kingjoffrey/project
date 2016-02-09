@@ -27,7 +27,7 @@ class Cli_Model_NeutralPlayer extends Cli_Model_DefaultPlayer
         $units = $game->getUnits();
 
         $mCastlesInGame = new Application_Model_CastlesInGame($game->getId(), $db);
-        $mCastleProduction = new Application_Model_CastleProduction($db);
+        $mCastleProduction = new Application_Model_MapCastleProduction($db);
         $playersCastles = $mCastlesInGame->getAllCastles();
 
         foreach ($mapCastles as $castleId => $castle) {

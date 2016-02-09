@@ -41,7 +41,7 @@ class Cli_Model_EditorPlayer extends Cli_Model_DefaultPlayer
 
     private function initCastles($mapCastles, Zend_Db_Adapter_Pdo_Pgsql $db)
     {
-        $mCastleProduction = new Application_Model_CastleProduction($db);
+        $mCastleProduction = new Application_Model_MapCastleProduction($db);
         foreach ($mapCastles as $castleId => $c) {
             if ($c['mapPlayerId'] == $this->_id) {
                 $castle = new Cli_Model_EditorCastle();
