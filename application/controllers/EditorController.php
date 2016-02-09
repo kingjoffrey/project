@@ -74,6 +74,8 @@ class EditorController extends Game_Controller_Gui
         $this->view->headScript()->appendFile('/js/game/armies.js?v=' . $version);
         $this->view->headScript()->appendFile('/js/game/castles.js?v=' . $version);
         $this->view->headScript()->appendFile('/js/game/castle.js?v=' . $version);
+        $this->view->headScript()->appendFile('/js/game/units.js?v=' . $version);
+        $this->view->headScript()->appendFile('/js/game/unit.js?v=' . $version);
 
         $mapId = $this->_request->getParam('mapId');
 

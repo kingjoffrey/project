@@ -21,6 +21,8 @@ class Cli_Model_EditorOpen
             throw new Exception('Brak uprawnień!');
         }
 
+        Zend_Registry::set('id_lang', $dataIn['langId']);
+
         if (!($user->parameters['editor'] = $handler->getEditor($dataIn['mapId']))) {
             echo 'not set' . "\n";
             $handler->addEditor($dataIn['mapId'], new Cli_Model_Editor($dataIn['mapId'], $db));

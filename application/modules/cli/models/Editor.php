@@ -6,6 +6,7 @@ class Cli_Model_Editor
     private $_Fields;
     private $_Players;
     private $_Ruins;
+    private $_Units;
 
     public function __construct($mapId, Zend_Db_Adapter_Pdo_Pgsql $db)
     {
@@ -17,9 +18,19 @@ class Cli_Model_Editor
 
         $this->_Players = new Cli_Model_Players();
         $this->_Ruins = new Cli_Model_EditorRuins();
+        $this->_Units = new Cli_Model_Units();
 
         $this->initPlayers($db);
         $this->initRuins($db);
+        $this->initUnits($db);
+    }
+
+    private function initUnits(Zend_Db_Adapter_Pdo_Pgsql $db)
+    {
+        $mUnit = new Application_Model_Unit($db);
+        foreach ($mUnit->getUnits() as $unitId => $unit) {
+            $this->_Units->add($unitId, new Cli_Model_Unit($unit));
+        }
     }
 
     private function initPlayers(Zend_Db_Adapter_Pdo_Pgsql $db)
@@ -54,7 +65,8 @@ class Cli_Model_Editor
         return array(
             'fields' => $this->_Fields->toArray(),
             'players' => $this->_Players->toArray(),
-            'ruins' => $this->_Ruins->toArray()
+            'ruins' => $this->_Ruins->toArray(),
+            'units' => $this->_Units->toArray()
         );
     }
 

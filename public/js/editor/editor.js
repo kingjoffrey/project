@@ -8,6 +8,7 @@ var Editor = new function () {
     this.init = function (r) {
         init = 1
         initButtons()
+        Units.init(r.units)
         Scene.init()
         Fields.init(r.fields, mapId)
         Ruins.init(r.ruins)
