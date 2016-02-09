@@ -20,8 +20,9 @@ class Cli_Model_EditorCastle extends Cli_Model_Castle
 
     public function initProduction($production)
     {
-        foreach ($production as $unitId => $time) {
-            $this->_production[] = array('unitId' => $unitId, 'time' => $time);
+        print_r($production);
+        foreach ($production as $unitId => $row) {
+            $this->_production[] = $row;
         }
     }
 
@@ -59,10 +60,10 @@ class Cli_Model_EditorCastle extends Cli_Model_Castle
                     if ($this->_production[$i]['unitId'] == $slot['unitId']) {
                         continue;
                     }
-                    $mMapCastleProduction->editCastleProduction($this->_id, $slot);
+                    $mMapCastleProduction->editCastleProduction($this->_id, $this->_production[$i]['unitId'], $slot);
                     $this->_production[$i] = $slot;
                 } else {
-                    $mMapCastleProduction->removeCastleProduction($this->_id, $this->_production[$i]['unitId'], $slot);
+                    $mMapCastleProduction->removeCastleProduction($this->_id, $this->_production[$i]['unitId']);
                     unset($this->_production[$i]);
                 }
 

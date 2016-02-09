@@ -2,14 +2,14 @@ var CastleWindow = new function () {
     this.form = function (id) {
         var selectColor = $('<select>').attr('name', 'color'),
             selectDefence = $('<select>').attr('name', 'defence'),
-            selectProductionUnit1 = $('<select>').attr('name', 'unitId0').append($('<option>').attr('value', 0)),
-            selectProductionUnit2 = $('<select>').attr('name', 'unitId1').append($('<option>').attr('value', 0)),
-            selectProductionUnit3 = $('<select>').attr('name', 'unitId2').append($('<option>').attr('value', 0)),
-            selectProductionUnit4 = $('<select>').attr('name', 'unitId3').append($('<option>').attr('value', 0)),
-            selectProductionTime1 = $('<select>').attr('name', 'time0').append($('<option>').attr('value', 0)),
-            selectProductionTime2 = $('<select>').attr('name', 'time1').append($('<option>').attr('value', 0)),
-            selectProductionTime3 = $('<select>').attr('name', 'time2').append($('<option>').attr('value', 0)),
-            selectProductionTime4 = $('<select>').attr('name', 'time3').append($('<option>').attr('value', 0))
+            selectProductionUnit0 = $('<select>').attr('name', 'unitId0').append($('<option>').attr('value', 0)),
+            selectProductionUnit1 = $('<select>').attr('name', 'unitId1').append($('<option>').attr('value', 0)),
+            selectProductionUnit2 = $('<select>').attr('name', 'unitId2').append($('<option>').attr('value', 0)),
+            selectProductionUnit3 = $('<select>').attr('name', 'unitId3').append($('<option>').attr('value', 0)),
+            selectProductionTime0 = $('<select>').attr('name', 'time0').append($('<option>').attr('value', 0)),
+            selectProductionTime1 = $('<select>').attr('name', 'time1').append($('<option>').attr('value', 0)),
+            selectProductionTime2 = $('<select>').attr('name', 'time2').append($('<option>').attr('value', 0)),
+            selectProductionTime3 = $('<select>').attr('name', 'time3').append($('<option>').attr('value', 0))
 
         for (var color in Players.toArray()) {
             if (Players.get(color).getCastles().has(id)) {
@@ -23,22 +23,77 @@ var CastleWindow = new function () {
                     }
                 }
 
-                console.log(castle.getProduction())
-
                 for (var unitId in Units.toArray()) {
                     var unit = Units.get(unitId)
 
-                    selectProductionUnit1.append($('<option>').attr('value', unitId).html(unit.name_lang))
-                    selectProductionUnit2.append($('<option>').attr('value', unitId).html(unit.name_lang))
-                    selectProductionUnit3.append($('<option>').attr('value', unitId).html(unit.name_lang))
-                    selectProductionUnit4.append($('<option>').attr('value', unitId).html(unit.name_lang))
+                    if (isSet(castle.getProduction()[0]) && castle.getProduction()[0]['unitId'] == unitId) {
+                        selectProductionUnit0.append($('<option>').attr({
+                            'value': unitId,
+                            'selected': 'selected'
+                        }).html(unit.name_lang))
+                    } else {
+                        selectProductionUnit0.append($('<option>').attr('value', unitId).html(unit.name_lang))
+                    }
+                    if (isSet(castle.getProduction()[1]) && castle.getProduction()[1]['unitId'] == unitId) {
+                        selectProductionUnit1.append($('<option>').attr({
+                            'value': unitId,
+                            'selected': 'selected'
+                        }).html(unit.name_lang))
+                    } else {
+                        selectProductionUnit1.append($('<option>').attr('value', unitId).html(unit.name_lang))
+
+                    }
+                    if (isSet(castle.getProduction()[2]) && castle.getProduction()[2]['unitId'] == unitId) {
+                        selectProductionUnit2.append($('<option>').attr({
+                            'value': unitId,
+                            'selected': 'selected'
+                        }).html(unit.name_lang))
+                    } else {
+                        selectProductionUnit2.append($('<option>').attr('value', unitId).html(unit.name_lang))
+                    }
+                    if (isSet(castle.getProduction()[3]) && castle.getProduction()[3]['unitId'] == unitId) {
+                        selectProductionUnit3.append($('<option>').attr({
+                            'value': unitId,
+                            'selected': 'selected'
+                        }).html(unit.name_lang))
+                    } else {
+                        selectProductionUnit3.append($('<option>').attr('value', unitId).html(unit.name_lang))
+                    }
                 }
 
-                for (var i = 1; i <= 20; i++) {
-                    selectProductionTime1.append($('<option>').attr('value', i).html(i))
-                    selectProductionTime2.append($('<option>').attr('value', i).html(i))
-                    selectProductionTime3.append($('<option>').attr('value', i).html(i))
-                    selectProductionTime4.append($('<option>').attr('value', i).html(i))
+                for (var time = 1; time <= 20; time++) {
+                    if (isSet(castle.getProduction()[0]) && castle.getProduction()[0]['time'] == time) {
+                        selectProductionTime0.append($('<option>').attr({
+                            'value': time,
+                            'selected': 'selected'
+                        }).html(time))
+                    } else {
+                        selectProductionTime0.append($('<option>').attr('value', time).html(time))
+                    }
+                    if (isSet(castle.getProduction()[1]) && castle.getProduction()[1]['time'] == time) {
+                        selectProductionTime1.append($('<option>').attr({
+                            'value': time,
+                            'selected': 'selected'
+                        }).html(time))
+                    } else {
+                        selectProductionTime1.append($('<option>').attr('value', time).html(time))
+                    }
+                    if (isSet(castle.getProduction()[2]) && castle.getProduction()[2]['time'] == time) {
+                        selectProductionTime2.append($('<option>').attr({
+                            'value': time,
+                            'selected': 'selected'
+                        }).html(time))
+                    } else {
+                        selectProductionTime2.append($('<option>').attr('value', time).html(time))
+                    }
+                    if (isSet(castle.getProduction()[3]) && castle.getProduction()[3]['time'] == time) {
+                        selectProductionTime3.append($('<option>').attr({
+                            'value': time,
+                            'selected': 'selected'
+                        }).html(time))
+                    } else {
+                        selectProductionTime3.append($('<option>').attr('value', time).html(time))
+                    }
                 }
             } else {
                 selectColor.append($('<option>').attr('value', color).html(color))
@@ -60,10 +115,10 @@ var CastleWindow = new function () {
                 'name': 'capital',
                 'type': 'checkbox'
             }).prop('checked', castle.getCapital())))
-            .append($('<div>').append('Production unit 1:').append(selectProductionUnit1).append('Production time 1:').append(selectProductionTime1))
-            .append($('<div>').append('Production unit 2:').append(selectProductionUnit2).append('Production time 2:').append(selectProductionTime2))
-            .append($('<div>').append('Production unit 3:').append(selectProductionUnit3).append('Production time 3:').append(selectProductionTime3))
-            .append($('<div>').append('Production unit 4:').append(selectProductionUnit4).append('Production time 4:').append(selectProductionTime4))
+            .append($('<div>').append('Production unit 1:').append(selectProductionUnit0).append('Production time 1:').append(selectProductionTime0))
+            .append($('<div>').append('Production unit 2:').append(selectProductionUnit1).append('Production time 2:').append(selectProductionTime1))
+            .append($('<div>').append('Production unit 3:').append(selectProductionUnit2).append('Production time 3:').append(selectProductionTime2))
+            .append($('<div>').append('Production unit 4:').append(selectProductionUnit3).append('Production time 4:').append(selectProductionTime3))
             .append($('<div>').append($('<input>').attr({'value': 'Ok', 'type': 'submit'}).click(function () {
                 WebSocketEditor.edit(id)
             })))
