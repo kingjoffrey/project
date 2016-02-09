@@ -88,7 +88,13 @@ var WebSocketEditor = new function () {
             income: $('input[name=income]').val(),
             color: $('select[name=color]').val(),
             defence: $('select[name=defence]').val(),
-            capital: Boolean($('input[name=capital]').is(':checked'))
+            capital: Boolean($('input[name=capital]').is(':checked')),
+            production: {
+                'slot1': $('select[name=slot1]').val(),
+                'slot2': $('select[name=slot2]').val(),
+                'slot3': $('select[name=slot3]').val(),
+                'slot4': $('select[name=slot4]').val()
+            }
         }
 
         ws.send(JSON.stringify(token))
