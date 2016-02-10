@@ -364,7 +364,7 @@ var Models = new function () {
                 map: roadTexture,
                 side: THREE.DoubleSide,
                 transparent: true,
-                opacity: 0.2
+                opacity: 0.3
             }),
             mesh = new THREE.Mesh(new THREE.PlaneGeometry(1, 1), roadMaterial)
         mesh.rotation.x = Math.PI / 2

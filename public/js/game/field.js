@@ -56,4 +56,7 @@ var Field = function (field) {
     this.getType = function () {
         return field.type
     }
+    this.setType = function (type) {
+        field.type = type
+    }
 }

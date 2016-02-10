@@ -103,25 +103,33 @@ class Cli_Model_Editor
             case 'forest':
                 $this->editTerrainType($dataIn['x'], $dataIn['y'], 'f', $db);
                 return array(
-                    'type' => 'f'
+                    'type' => 'f',
+                    'x' => $dataIn['x'],
+                    'y' => $dataIn['y']
                 );
                 break;
             case 'bridge':
                 $this->editTerrainType($dataIn['x'], $dataIn['y'], 'b', $db);
                 return array(
-                    'type' => 'b'
+                    'type' => 'b',
+                    'x' => $dataIn['x'],
+                    'y' => $dataIn['y']
                 );
                 break;
             case 'road':
                 $this->editTerrainType($dataIn['x'], $dataIn['y'], 'r', $db);
                 return array(
-                    'type' => 'r'
+                    'type' => 'r',
+                    'x' => $dataIn['x'],
+                    'y' => $dataIn['y']
                 );
                 break;
             case 'swamp':
                 $this->editTerrainType($dataIn['x'], $dataIn['y'], 's', $db);
                 return array(
-                    'type' => 's'
+                    'type' => 's',
+                    'x' => $dataIn['x'],
+                    'y' => $dataIn['y']
                 );
                 break;
         }

@@ -37,6 +37,32 @@ var WebSocketEditor = new function () {
                 case 'remove':
 
                     break
+                case 'grass':
+                    Fields.get(r.x, r.y).setType('g')
+                    var children = Scene.get().children
+                    for (var i in children) {
+                        if (children[i].position.x - 0.5 == r.x && children[i].position.z - 0.5 == r.y) {
+                            Scene.remove(children[i])
+                            break
+                        }
+                    }
+                    break
+                case 's':
+                    Fields.get(r.x, r.y).setType(r.type)
+                    Models.addSwamp(r.x, r.y)
+                    break
+                case 'f':
+                    Fields.get(r.x, r.y).setType(r.type)
+                    Models.addTree(r.x, r.y)
+                    break
+                case 'r':
+                    Fields.get(r.x, r.y).setType(r.type)
+                    Models.addRoad(r.x, r.y)
+                    break
+                case 'b':
+                    Fields.get(r.x, r.y).setType(r.type)
+                    //Models.addBridge(r.x, r.y)
+                    break
             }
         },
         open = function () {
