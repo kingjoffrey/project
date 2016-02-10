@@ -20,7 +20,6 @@ class Cli_Model_EditorCastle extends Cli_Model_Castle
 
     public function initProduction($production)
     {
-        print_r($production);
         foreach ($production as $unitId => $row) {
             $this->_production[] = $row;
         }
@@ -44,7 +43,7 @@ class Cli_Model_EditorCastle extends Cli_Model_Castle
 
     public function edit($mapId, $data, Zend_Db_Adapter_Pdo_Pgsql $db, $mapPlayerId = 0)
     {
-        $this->_defense = $data['defence'];
+        $this->_defense = $data['defense'];
         $this->_name = $data['name'];
         $this->_income = $data['income'];
         $this->_capital = $data['capital'];
@@ -53,7 +52,7 @@ class Cli_Model_EditorCastle extends Cli_Model_Castle
         $mMapCastles->edit($this->arrayForDb($mapPlayerId), $this->_id);
 
         $mMapCastleProduction = new Application_Model_MapCastleProduction($db);
-        print_r($data['production']);
+
         foreach ($data['production'] as $i => $slot) {
             if (isset($this->_production[$i])) {
                 if ($slot['unitId']) {

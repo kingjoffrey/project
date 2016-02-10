@@ -47,6 +47,7 @@ var Castles = function () {
         this.remove(castleId)
     }
     this.remove = function (castleId) {
+        Scene.remove(castles[castleId].getMesh())
         delete castles[castleId]
     }
     /**

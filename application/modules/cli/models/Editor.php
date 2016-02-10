@@ -77,7 +77,7 @@ class Cli_Model_Editor
                 $castle = new Cli_Model_EditorCastle();
                 $castle->create($this->_mapId, $dataIn['x'], $dataIn['y'], $db);
                 $this->_Players->getPlayer('neutral')->getCastles()->addCastle($castle->getId(), $castle);
-                return $token = array(
+                return array(
                     'type' => 'castleId',
                     'value' => $castle->getId()
                 );
@@ -86,7 +86,7 @@ class Cli_Model_Editor
                 $tower = new Cli_Model_EditorTower($dataIn['x'], $dataIn['y']);
                 $tower->create($this->_mapId, $db);
                 $this->_Players->getPlayer('neutral')->getTowers()->add($tower->getId(), $tower);
-                return $token = array(
+                return array(
                     'type' => 'towerId',
                     'value' => $tower->getId()
                 );
@@ -95,32 +95,32 @@ class Cli_Model_Editor
                 $ruin = new Cli_Model_EditorRuin($dataIn['x'], $dataIn['y']);
                 $ruin->create($this->_mapId, $db);
                 $this->_Ruins->editorAdd($ruin->getId(), $ruin);
-                return $token = array(
+                return array(
                     'type' => 'ruinId',
                     'value' => $ruin->getId()
                 );
                 break;
             case 'forest':
                 $this->editTerrainType($dataIn['x'], $dataIn['y'], 'f', $db);
-                return $token = array(
+                return array(
                     'type' => 'f'
                 );
                 break;
             case 'bridge':
                 $this->editTerrainType($dataIn['x'], $dataIn['y'], 'b', $db);
-                return $token = array(
+                return array(
                     'type' => 'b'
                 );
                 break;
             case 'road':
                 $this->editTerrainType($dataIn['x'], $dataIn['y'], 'r', $db);
-                return $token = array(
+                return array(
                     'type' => 'r'
                 );
                 break;
             case 'swamp':
                 $this->editTerrainType($dataIn['x'], $dataIn['y'], 's', $db);
-                return $token = array(
+                return array(
                     'type' => 's'
                 );
                 break;
@@ -145,6 +145,11 @@ class Cli_Model_Editor
                         $this->_Players->getPlayer($dataIn['color'])->getCastles()->addCastle($castleId, $castle);
                     }
                     $castle->edit($this->_mapId, $dataIn, $db, $this->_Players->getPlayer($dataIn['color'])->getId());
+                    return array(
+                        'type' => 'edit',
+                        'castleId' => $dataIn['castleId'],
+                        'color' => $dataIn['color']
+                    );
                 }
             }
         }

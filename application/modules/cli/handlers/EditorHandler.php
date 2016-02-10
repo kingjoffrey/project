@@ -71,7 +71,7 @@ class Cli_EditorHandler extends WebSocketUriHandler
                 break;
 
             case 'edit':
-                $this->getEditor($dataIn['mapId'])->edit($dataIn, $this->_db);
+                $this->sendToUser($user, $this->getEditor($dataIn['mapId'])->edit($dataIn, $this->_db));
                 break;
 
             case 'remove':

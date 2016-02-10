@@ -23,6 +23,18 @@ var WebSocketEditor = new function () {
                 case 'ruinId':
                     Ruins.add(r.value, {x: Picker.getX(), y: Picker.getZ()})
                     break
+                case 'edit':
+                    Message.remove()
+                    for (var color in Players.toArray()) {
+                        if (Players.get(color).getCastles().has(r.castleId)) {
+                            var castle = Players.get(color).getCastles().get(r.castleId)
+                            Players.get(color).getCastles().remove(r.castleId)
+                            break
+                        }
+                    }
+                    castle.token.x = castle.getX()
+                    castle.token.y = castle.getY()
+                    Players.get(r.color).getCastles().add(r.castleId, castle.token)
             }
         },
         open = function () {
@@ -80,6 +92,11 @@ var WebSocketEditor = new function () {
             return;
         }
 
+        for (var color in Players.toArray()) {
+            if (Players.get(color).getCastles().has(castleId)) {
+                var castle = Players.get(color).getCastles().get(castleId)
+            }
+        }
         var token = {
             type: 'edit',
             mapId: mapId,
@@ -87,7 +104,7 @@ var WebSocketEditor = new function () {
             name: $('input[name=name]').val(),
             income: $('input[name=income]').val(),
             color: $('select[name=color]').val(),
-            defence: $('select[name=defence]').val(),
+            defense: $('select[name=defence]').val(),
             capital: Boolean($('input[name=capital]').is(':checked')),
             production: {
                 0: {'unitId': $('select[name=unitId0]').val(), 'time': $('select[name=time0]').val()},
@@ -96,6 +113,8 @@ var WebSocketEditor = new function () {
                 3: {'unitId': $('select[name=unitId3]').val(), 'time': $('select[name=time3]').val()}
             }
         }
+
+        castle.token = token
 
         ws.send(JSON.stringify(token))
     }
