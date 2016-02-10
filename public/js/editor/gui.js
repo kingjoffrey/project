@@ -43,6 +43,9 @@ var Gui = new function () {
             $('#swamp').click(function () {
                 Models.createMesh('swamp')
             })
+            $('#eraser').click(function () {
+                Models.createMesh('eraser')
+            })
         }
 
     this.init = function () {

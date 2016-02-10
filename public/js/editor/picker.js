@@ -84,8 +84,9 @@ var Picker = new function () {
                     // add item
                     var field = getField()
                     if (draggedMesh) {
-                        WebSocketEditor.add(draggedMesh.itemName, convertX(), convertZ())
-                        draggedMesh = 0
+                        if (draggedMesh.itemName != 'eraser') {
+                            WebSocketEditor.add(draggedMesh.itemName, convertX(), convertZ())
+                        }
                     } else {
                         if (castleId = field.getCastleId()) {
                             Message.show('Castle', CastleWindow.form(castleId))

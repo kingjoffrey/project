@@ -259,8 +259,19 @@ var Models = new function () {
                 var mesh = new THREE.Mesh(treeModel.geometry, treeModel.material)
                 break
             case 'swamp':
-                var swampMaterial = new THREE.MeshLambertMaterial({color: '#6B6B6B', side: THREE.DoubleSide}),
+                var swampMaterial = new THREE.MeshLambertMaterial({
+                        map: swampTexture,
+                        side: THREE.DoubleSide,
+                        transparent: true,
+                        opacity: 0.5
+                    }),
                     mesh = new THREE.Mesh(new THREE.PlaneGeometry(1, 1), swampMaterial)
+                mesh.rotation.x = Math.PI / 2
+                mesh.position.y = 0.02
+                break
+            case 'eraser':
+                var eraserMaterial = new THREE.MeshLambertMaterial({color: '#ff0000', side: THREE.DoubleSide}),
+                    mesh = new THREE.Mesh(new THREE.PlaneGeometry(1, 1), eraserMaterial)
                 mesh.rotation.x = Math.PI / 2
                 break
             default:
