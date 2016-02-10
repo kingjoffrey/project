@@ -28,6 +28,9 @@ var Picker = new function () {
         }
 
     }
+    this.getDraggedMesh = function () {
+        return draggedMesh
+    }
     this.attach = function (object) {
         if (object instanceof THREE.Mesh) {
             objects.push(object);

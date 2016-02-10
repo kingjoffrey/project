@@ -51,7 +51,7 @@ class Application_Model_MapRuins extends Coret_Db_Table_Abstract
             $this->_db->quoteInto($this->_db->quoteIdentifier('mapId') . ' = ?', $this->_mapId),
             $this->_db->quoteInto($this->_db->quoteIdentifier($this->_primary) . ' = ?', $id)
         );
-print_r($where);
+
         $this->delete($where);
     }
 }

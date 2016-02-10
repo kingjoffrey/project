@@ -280,6 +280,7 @@ var Models = new function () {
         }
         mesh.itemName = type
         Scene.add(mesh)
+        Scene.remove(Picker.getDraggedMesh())
         Picker.addDraggedMesh(mesh)
     }
     this.addRuin = function (x, y, color) {
