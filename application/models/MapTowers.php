@@ -50,5 +50,15 @@ class Application_Model_MapTowers extends Coret_Db_Table_Abstract
         );
         return $this->insert($data);
     }
+
+    public function remove($id)
+    {
+        $where = array(
+            $this->_db->quoteInto($this->_db->quoteIdentifier('mapId') . ' = ?', $this->_mapId),
+            $this->_db->quoteInto($this->_db->quoteIdentifier($this->_primary) . ' = ?', $id)
+        );
+
+        $this->delete($where);
+    }
 }
 

@@ -84,7 +84,9 @@ var Picker = new function () {
                     // add item
                     var field = getField()
                     if (draggedMesh) {
-                        if (draggedMesh.itemName != 'eraser') {
+                        if (draggedMesh.itemName == 'eraser') {
+                            WebSocketEditor.remove(convertX(), convertZ())
+                        } else {
                             WebSocketEditor.add(draggedMesh.itemName, convertX(), convertZ())
                         }
                     } else {

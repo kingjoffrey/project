@@ -5,9 +5,7 @@ var WebSocketEditor = new function () {
             //console.log(r)
             switch (r.type) {
                 case 'init':
-                    if (!Editor.getInit()) {
-                        Editor.init(r)
-                    }
+                    Editor.init(r)
                     break;
                 case 'castleId':
                     Players.get('neutral').getCastles().add(r.value, {
@@ -35,6 +33,10 @@ var WebSocketEditor = new function () {
                     castle.token.x = castle.getX()
                     castle.token.y = castle.getY()
                     Players.get(r.color).getCastles().add(r.castleId, castle.token)
+                    break
+                case 'remove':
+
+                    break
             }
         },
         open = function () {
@@ -115,6 +117,20 @@ var WebSocketEditor = new function () {
         }
 
         castle.token = token
+
+        ws.send(JSON.stringify(token))
+    }
+    this.remove = function (x, y) {
+        if (closed) {
+            console.log(translations.sorryServerIsDisconnected)
+            return;
+        }
+        var token = {
+            type: 'remove',
+            mapId: mapId,
+            x: x,
+            y: y
+        }
 
         ws.send(JSON.stringify(token))
     }

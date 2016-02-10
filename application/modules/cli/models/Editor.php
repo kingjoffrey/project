@@ -157,21 +157,68 @@ class Cli_Model_Editor
 
     public function remove($dataIn, Zend_Db_Adapter_Pdo_Pgsql $db)
     {
-        switch ($dataIn['itemName']) {
-            case 'castle':
-                $mMapCastles = new Application_Model_MapCastles($dataIn['mapId'], $db);
-                $mMapCastles->remove($dataIn['x'], $dataIn['y']);
-                break;
-            case 'tower':
+        $field = $this->_Fields->getField($dataIn['x'], $dataIn['y']);
+        $type = $field->getType();
 
-                break;
-            case 'ruin':
-
-                break;
-            case 'forest':
-
-                break;
+        switch ($type) {
+            case 'f':
+                return $this->grass($dataIn['mapId'], $dataIn['x'], $dataIn['y'], $field, $db);
+            case 's':
+                return $this->grass($dataIn['mapId'], $dataIn['x'], $dataIn['y'], $field, $db);
+            case 'r':
+                return $this->grass($dataIn['mapId'], $dataIn['x'], $dataIn['y'], $field, $db);
+            case 'b':
+                return $this->grass($dataIn['mapId'], $dataIn['x'], $dataIn['y'], $field, $db);
+            case 'g':
+                if ($castleId = $field->getCastleId()) {
+                    $mMapCastles = new Application_Model_MapCastles($dataIn['mapId'], $db);
+                    $mMapCastles->remove($castleId);
+                    $this->_Players->getPlayer($field->getCastleColor())->getCastles()->removeCastle($castleId);
+                    $field->setCastle(null, null);
+                    return array(
+                        'type' => 'remove',
+                        'x' => $dataIn['x'],
+                        'y' => $dataIn['y']
+                    );
+                } elseif ($towerId = $field->getTowerId()) {
+                    $mMapTowers = new Application_Model_MapTowers($dataIn['mapId'], $db);
+                    $mMapTowers->remove($towerId);
+                    $this->_Players->getPlayer($field->getTowerColor())->getTowers()->removeTower($towerId);
+                    $field->setTower(null, null);
+                    return array(
+                        'type' => 'remove',
+                        'x' => $dataIn['x'],
+                        'y' => $dataIn['y']
+                    );
+                } elseif ($ruinId = $field->getRuinId()) {
+                    $mMapRuins = new Application_Model_MapRuins($dataIn['mapId'], $db);
+                    $mMapRuins->remove($ruinId);
+                    $field->setRuin(null);
+                    return array(
+                        'type' => 'remove',
+                        'x' => $dataIn['x'],
+                        'y' => $dataIn['y']
+                    );
+                }
         }
+
+        return array(
+            'type' => 0
+        );
+
+    }
+
+    private function grass($mapId, $x, $y, Cli_Model_Field $field, Zend_Db_Adapter_Pdo_Pgsql $db)
+    {
+        $mMapFields = new Application_Model_MapFields($mapId, $db);
+        $mMapFields->edit($x, $y, 'g');
+        $field->setType('g');
+        return array(
+            'type' => 'grass',
+            'x' => $x,
+            'y' => $y
+        );
+
     }
 
     /**
