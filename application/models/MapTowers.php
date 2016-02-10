@@ -5,11 +5,11 @@ class Application_Model_MapTowers extends Coret_Db_Table_Abstract
     protected $_name = 'maptowers';
     protected $_primary = 'mapTowerId';
     protected $_sequence = 'maptowers_mapTowerId_seq';
-    protected $mapId;
+    protected $_mapId;
 
     public function __construct($mapId, $db = null)
     {
-        $this->mapId = $mapId;
+        $this->_mapId = $mapId;
         if ($db) {
             $this->_db = $db;
         } else {
@@ -21,7 +21,7 @@ class Application_Model_MapTowers extends Coret_Db_Table_Abstract
     {
         $select = $this->_db->select()
             ->from($this->_name, array('mapTowerId', 'x', 'y'))
-            ->where($this->_db->quoteIdentifier('mapId') . ' = ?', $this->mapId);
+            ->where($this->_db->quoteIdentifier('mapId') . ' = ?', $this->_mapId);
 
         $mapTowers = array();
 
@@ -44,7 +44,7 @@ class Application_Model_MapTowers extends Coret_Db_Table_Abstract
     public function add($x, $y)
     {
         $data = array(
-            'mapId' => $this->mapId,
+            'mapId' => $this->_mapId,
             'x' => $x,
             'y' => $y
         );

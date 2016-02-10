@@ -77,6 +77,7 @@ class Cli_Model_Editor
                 $castle = new Cli_Model_EditorCastle();
                 $castle->create($this->_mapId, $dataIn['x'], $dataIn['y'], $db);
                 $this->_Players->getPlayer('neutral')->getCastles()->addCastle($castle->getId(), $castle);
+                $this->_Fields->initCastle($dataIn['x'], $dataIn['y'], $castle->getId(), 'neutral');
                 return array(
                     'type' => 'castleId',
                     'value' => $castle->getId()
@@ -86,6 +87,8 @@ class Cli_Model_Editor
                 $tower = new Cli_Model_EditorTower($dataIn['x'], $dataIn['y']);
                 $tower->create($this->_mapId, $db);
                 $this->_Players->getPlayer('neutral')->getTowers()->add($tower->getId(), $tower);
+                $field = $this->_Fields->getField($dataIn['x'], $dataIn['y']);
+                $field->setTower($tower->getId(), 'neutral');
                 return array(
                     'type' => 'towerId',
                     'value' => $tower->getId()
@@ -95,6 +98,7 @@ class Cli_Model_Editor
                 $ruin = new Cli_Model_EditorRuin($dataIn['x'], $dataIn['y']);
                 $ruin->create($this->_mapId, $db);
                 $this->_Ruins->editorAdd($ruin->getId(), $ruin);
+                $this->_Fields->getField($dataIn['x'], $dataIn['y'])->setRuin($ruin->getId());
                 return array(
                     'type' => 'ruinId',
                     'value' => $ruin->getId()
@@ -151,6 +155,7 @@ class Cli_Model_Editor
                     if ($dataIn['color'] != $color) {
                         $this->_Players->getPlayer($color)->getCastles()->removeCastle($castleId);
                         $this->_Players->getPlayer($dataIn['color'])->getCastles()->addCastle($castleId, $castle);
+                        $this->_Fields->initCastle($dataIn['x'], $dataIn['y'], $castleId, $dataIn['color']);
                     }
                     $castle->edit($this->_mapId, $dataIn, $db, $this->_Players->getPlayer($dataIn['color'])->getId());
                     return array(

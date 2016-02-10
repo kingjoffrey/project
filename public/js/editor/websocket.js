@@ -2,7 +2,7 @@ var WebSocketEditor = new function () {
     var closed = true,
         ws,
         onMessage = function (r) {
-            //console.log(r)
+            console.log(r)
             switch (r.type) {
                 case 'init':
                     Editor.init(r)
@@ -19,7 +19,7 @@ var WebSocketEditor = new function () {
                     Players.get('neutral').getTowers().add(r.value, {x: Picker.getX(), y: Picker.getZ()})
                     break
                 case 'ruinId':
-                    Ruins.add(r.value, Ruin({x: Picker.getX(), y: Picker.getZ(), empty: 0}))
+                    Ruins.add(r.value, new Ruin({x: Picker.getX(), y: Picker.getZ(), empty: 0}))
                     break
                 case 'edit':
                     Message.remove()

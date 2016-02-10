@@ -6,8 +6,13 @@ var Ruins = new function () {
         }
     }
     this.add = function (ruinId, ruin) {
-        ruins[ruinId] = ruin
-        Fields.get(ruin.getX(), ruin.getY()).setRuinId(ruinId)
+        if (ruin instanceof Ruin) {
+            ruins[ruinId] = ruin
+            Fields.get(ruin.getX(), ruin.getY()).setRuinId(ruinId)
+        } else {
+            ruins[ruinId] = new Ruin(ruin)
+            Fields.get(ruin.x, ruin.y).setRuinId(ruinId)
+        }
     }
     this.get = function (ruinId) {
         return ruins[ruinId]
@@ -61,5 +66,8 @@ var Ruins = new function () {
                 }
                 break;
         }
+    }
+    this.toArray = function () {
+        return ruins
     }
 }
