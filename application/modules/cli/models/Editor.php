@@ -167,7 +167,7 @@ class Cli_Model_Editor
     {
         $field = $this->_Fields->getField($dataIn['x'], $dataIn['y']);
         $type = $field->getType();
-
+print_r($type);
         switch ($type) {
             case 'f':
                 return $this->grass($dataIn['mapId'], $dataIn['x'], $dataIn['y'], $field, $db);

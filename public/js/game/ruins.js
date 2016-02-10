@@ -12,6 +12,10 @@ var Ruins = new function () {
     this.get = function (ruinId) {
         return ruins[ruinId]
     }
+    this.remove = function (ruinId) {
+        Scene.remove(ruins[ruinId].getMesh())
+        delete ruins[ruinId]
+    }
     this.handle = function (r) {
         this.get(r.ruin.ruinId).update(r.ruin.empty)
         switch (r.find[0]) {

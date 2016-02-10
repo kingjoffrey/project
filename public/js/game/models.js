@@ -294,7 +294,7 @@ var Models = new function () {
         }
         Scene.add(mesh)
 
-        return mesh.id
+        return mesh
     }
 
     this.addTower = function (x, y, color) {

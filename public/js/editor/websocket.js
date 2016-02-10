@@ -19,7 +19,7 @@ var WebSocketEditor = new function () {
                     Players.get('neutral').getTowers().add(r.value, {x: Picker.getX(), y: Picker.getZ()})
                     break
                 case 'ruinId':
-                    Ruins.add(r.value, {x: Picker.getX(), y: Picker.getZ()})
+                    Ruins.add(r.value, Ruin({x: Picker.getX(), y: Picker.getZ(), empty: 0}))
                     break
                 case 'edit':
                     Message.remove()
@@ -35,7 +35,14 @@ var WebSocketEditor = new function () {
                     Players.get(r.color).getCastles().add(r.castleId, castle.token)
                     break
                 case 'remove':
-
+                    var field = Fields.get(r.x, r.y)
+                    if (field.getCastleId()) {
+                        Players.get(field.getCastleColor()).getCastles().remove(field.getCastleId())
+                    } else if (field.getTowerId()) {
+                        Players.get(field.getTowerColor()).getTowers().remove(field.getTowerId())
+                    } else if (field.getRuinId()) {
+                        Ruins.remove(field.getRuinId())
+                    }
                     break
                 case 'grass':
                     Fields.get(r.x, r.y).setType('g')

@@ -5,11 +5,11 @@ class Application_Model_MapRuins extends Coret_Db_Table_Abstract
     protected $_name = 'mapruins';
     protected $_primary = 'mapRuinId';
     protected $_sequence = 'mapruins_mapRuinId_seq';
-    protected $mapId;
+    protected $_mapId;
 
     public function __construct($mapId, $db = null)
     {
-        $this->mapId = $mapId;
+        $this->_mapId = $mapId;
         if ($db) {
             $this->_db = $db;
         } else {
@@ -21,7 +21,7 @@ class Application_Model_MapRuins extends Coret_Db_Table_Abstract
     {
         $select = $this->_db->select()
             ->from($this->_name, array($this->_primary, 'x', 'y'))
-            ->where($this->_db->quoteIdentifier('mapId') . ' = ?', $this->mapId);
+            ->where($this->_db->quoteIdentifier('mapId') . ' = ?', $this->_mapId);
 
         $ret = array();
 
@@ -38,7 +38,7 @@ class Application_Model_MapRuins extends Coret_Db_Table_Abstract
     public function add($x, $y)
     {
         $data = array(
-            'mapId' => $this->mapId,
+            'mapId' => $this->_mapId,
             'x' => $x,
             'y' => $y
         );
@@ -51,7 +51,7 @@ class Application_Model_MapRuins extends Coret_Db_Table_Abstract
             $this->_db->quoteInto($this->_db->quoteIdentifier('mapId') . ' = ?', $this->_mapId),
             $this->_db->quoteInto($this->_db->quoteIdentifier($this->_primary) . ' = ?', $id)
         );
-
+print_r($where);
         $this->delete($where);
     }
 }

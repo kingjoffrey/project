@@ -1,7 +1,7 @@
 var Ruin = function (ruin) {
     this.update = function (empty) {
         ruin.empty = empty
-        Scene.getScene().getObjectById(meshId).material.color.set(this.getColor())
+        mesh.material.color.set(this.getColor())
     }
     this.getColor = function () {
         if (ruin.empty) {
@@ -16,5 +16,8 @@ var Ruin = function (ruin) {
     this.getY = function () {
         return ruin.y
     }
-    var meshId = Models.addRuin(ruin.x, ruin.y, this.getColor())
+    this.getMesh = function () {
+        return mesh
+    }
+    var mesh = Models.addRuin(ruin.x, ruin.y, this.getColor())
 }
