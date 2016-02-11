@@ -23,6 +23,7 @@ var Towers = function () {
         return towers[towerId]
     }
     this.remove = function (towerId) {
+        Scene.remove(towers[towerId].getMesh())
         delete towers[towerId]
     }
     this.count = function () {

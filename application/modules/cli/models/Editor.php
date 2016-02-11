@@ -72,71 +72,78 @@ class Cli_Model_Editor
 
     public function add($dataIn, Zend_Db_Adapter_Pdo_Pgsql $db)
     {
-        switch ($dataIn['itemName']) {
-            case 'castle':
-                $castle = new Cli_Model_EditorCastle();
-                $castle->create($this->_mapId, $dataIn['x'], $dataIn['y'], $db);
-                $this->_Players->getPlayer('neutral')->getCastles()->addCastle($castle->getId(), $castle);
-                $this->_Fields->initCastle($dataIn['x'], $dataIn['y'], $castle->getId(), 'neutral');
-                return array(
-                    'type' => 'castleId',
-                    'value' => $castle->getId()
-                );
+        $field = $this->_Fields->getField($dataIn['x'], $dataIn['y']);
+        $type = $field->getType();
+
+        switch ($type) {
+            case 'g':
+                switch ($dataIn['itemName']) {
+                    case 'castle':
+                        $castle = new Cli_Model_EditorCastle();
+                        $castle->create($this->_mapId, $dataIn['x'], $dataIn['y'], $db);
+                        $this->_Players->getPlayer('neutral')->getCastles()->addCastle($castle->getId(), $castle);
+                        $this->_Fields->initCastle($dataIn['x'], $dataIn['y'], $castle->getId(), 'neutral');
+                        return array(
+                            'type' => 'castleId',
+                            'value' => $castle->getId()
+                        );
+                    case 'tower':
+                        $tower = new Cli_Model_EditorTower($dataIn['x'], $dataIn['y']);
+                        $tower->create($this->_mapId, $db);
+                        $this->_Players->getPlayer('neutral')->getTowers()->add($tower->getId(), $tower);
+                        $field = $this->_Fields->getField($dataIn['x'], $dataIn['y']);
+                        $field->setTower($tower->getId(), 'neutral');
+                        return array(
+                            'type' => 'towerId',
+                            'value' => $tower->getId()
+                        );
+                    case 'ruin':
+                        $ruin = new Cli_Model_EditorRuin($dataIn['x'], $dataIn['y']);
+                        $ruin->create($this->_mapId, $db);
+                        $this->_Ruins->editorAdd($ruin->getId(), $ruin);
+                        $this->_Fields->getField($dataIn['x'], $dataIn['y'])->setRuin($ruin->getId());
+                        return array(
+                            'type' => 'ruinId',
+                            'value' => $ruin->getId()
+                        );
+                    case 'forest':
+                        $this->editTerrainType($dataIn['x'], $dataIn['y'], 'f', $db);
+                        return array(
+                            'type' => 'f',
+                            'x' => $dataIn['x'],
+                            'y' => $dataIn['y']
+                        );
+                    case 'road':
+                        $this->editTerrainType($dataIn['x'], $dataIn['y'], 'r', $db);
+                        return array(
+                            'type' => 'r',
+                            'x' => $dataIn['x'],
+                            'y' => $dataIn['y']
+                        );
+                    case 'swamp':
+                        $this->editTerrainType($dataIn['x'], $dataIn['y'], 's', $db);
+                        return array(
+                            'type' => 's',
+                            'x' => $dataIn['x'],
+                            'y' => $dataIn['y']
+                        );
+                }
                 break;
-            case 'tower':
-                $tower = new Cli_Model_EditorTower($dataIn['x'], $dataIn['y']);
-                $tower->create($this->_mapId, $db);
-                $this->_Players->getPlayer('neutral')->getTowers()->add($tower->getId(), $tower);
-                $field = $this->_Fields->getField($dataIn['x'], $dataIn['y']);
-                $field->setTower($tower->getId(), 'neutral');
-                return array(
-                    'type' => 'towerId',
-                    'value' => $tower->getId()
-                );
-                break;
-            case 'ruin':
-                $ruin = new Cli_Model_EditorRuin($dataIn['x'], $dataIn['y']);
-                $ruin->create($this->_mapId, $db);
-                $this->_Ruins->editorAdd($ruin->getId(), $ruin);
-                $this->_Fields->getField($dataIn['x'], $dataIn['y'])->setRuin($ruin->getId());
-                return array(
-                    'type' => 'ruinId',
-                    'value' => $ruin->getId()
-                );
-                break;
-            case 'forest':
-                $this->editTerrainType($dataIn['x'], $dataIn['y'], 'f', $db);
-                return array(
-                    'type' => 'f',
-                    'x' => $dataIn['x'],
-                    'y' => $dataIn['y']
-                );
-                break;
-            case 'bridge':
-                $this->editTerrainType($dataIn['x'], $dataIn['y'], 'b', $db);
-                return array(
-                    'type' => 'b',
-                    'x' => $dataIn['x'],
-                    'y' => $dataIn['y']
-                );
-                break;
-            case 'road':
-                $this->editTerrainType($dataIn['x'], $dataIn['y'], 'r', $db);
-                return array(
-                    'type' => 'r',
-                    'x' => $dataIn['x'],
-                    'y' => $dataIn['y']
-                );
-                break;
-            case 'swamp':
-                $this->editTerrainType($dataIn['x'], $dataIn['y'], 's', $db);
-                return array(
-                    'type' => 's',
-                    'x' => $dataIn['x'],
-                    'y' => $dataIn['y']
-                );
+            case 'w':
+                switch ($dataIn['itemName']) {
+                    case 'bridge':
+                        $this->editTerrainType($dataIn['x'], $dataIn['y'], 'b', $db);
+                        return array(
+                            'type' => 'b',
+                            'x' => $dataIn['x'],
+                            'y' => $dataIn['y']
+                        );
+                }
                 break;
         }
+        return array(
+            'type' => 0
+        );
     }
 
     private function editTerrainType($x, $y, $type, $db)
@@ -183,12 +190,11 @@ class Cli_Model_Editor
             case 'b':
                 return $this->grass($dataIn['mapId'], $dataIn['x'], $dataIn['y'], $field, $db);
             case 'g':
-                print_r($field->getRuinId());
                 if ($castleId = $field->getCastleId()) {
                     $mMapCastles = new Application_Model_MapCastles($dataIn['mapId'], $db);
                     $mMapCastles->remove($castleId);
                     $this->_Players->getPlayer($field->getCastleColor())->getCastles()->removeCastle($castleId);
-                    $field->setCastle(null, null);
+                    $this->_Fields->initCastle($dataIn['x'], $dataIn['y'], null, null);
                     return array(
                         'type' => 'remove',
                         'x' => $dataIn['x'],
@@ -207,6 +213,7 @@ class Cli_Model_Editor
                 } elseif ($ruinId = $field->getRuinId()) {
                     $mMapRuins = new Application_Model_MapRuins($dataIn['mapId'], $db);
                     $mMapRuins->remove($ruinId);
+                    $this->_Ruins->remove($ruinId);
                     $field->setRuin(null);
                     return array(
                         'type' => 'remove',

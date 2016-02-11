@@ -12,7 +12,8 @@ var WebSocketEditor = new function () {
                         x: Picker.getX(),
                         y: Picker.getZ(),
                         name: 'Unknown',
-                        defense: 1
+                        defense: 1,
+                        production: [null, null, null, null]
                     })
                     break
                 case 'towerId':

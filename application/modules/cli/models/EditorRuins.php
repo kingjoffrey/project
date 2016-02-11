@@ -15,4 +15,9 @@ class Cli_Model_EditorRuins extends Cli_Model_Ruins
     {
         self::getRuin($ruinId);
     }
+
+    public function remove($ruinId)
+    {
+        unset($this->_ruins[$ruinId]);
+    }
 }

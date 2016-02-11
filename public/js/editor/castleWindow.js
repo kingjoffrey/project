@@ -26,7 +26,7 @@ var CastleWindow = new function () {
                 for (var unitId in Units.toArray()) {
                     var unit = Units.get(unitId)
 
-                    if (isSet(castle.getProduction()[0]) && castle.getProduction()[0]['unitId'] == unitId) {
+                    if (castle.getProduction()[0] && castle.getProduction()[0]['unitId'] == unitId) {
                         selectProductionUnit0.append($('<option>').attr({
                             'value': unitId,
                             'selected': 'selected'
@@ -34,7 +34,7 @@ var CastleWindow = new function () {
                     } else {
                         selectProductionUnit0.append($('<option>').attr('value', unitId).html(unit.name_lang))
                     }
-                    if (isSet(castle.getProduction()[1]) && castle.getProduction()[1]['unitId'] == unitId) {
+                    if (castle.getProduction()[1] && castle.getProduction()[1]['unitId'] == unitId) {
                         selectProductionUnit1.append($('<option>').attr({
                             'value': unitId,
                             'selected': 'selected'
@@ -43,7 +43,7 @@ var CastleWindow = new function () {
                         selectProductionUnit1.append($('<option>').attr('value', unitId).html(unit.name_lang))
 
                     }
-                    if (isSet(castle.getProduction()[2]) && castle.getProduction()[2]['unitId'] == unitId) {
+                    if (castle.getProduction()[2] && castle.getProduction()[2]['unitId'] == unitId) {
                         selectProductionUnit2.append($('<option>').attr({
                             'value': unitId,
                             'selected': 'selected'
@@ -51,7 +51,7 @@ var CastleWindow = new function () {
                     } else {
                         selectProductionUnit2.append($('<option>').attr('value', unitId).html(unit.name_lang))
                     }
-                    if (isSet(castle.getProduction()[3]) && castle.getProduction()[3]['unitId'] == unitId) {
+                    if (castle.getProduction()[3] && castle.getProduction()[3]['unitId'] == unitId) {
                         selectProductionUnit3.append($('<option>').attr({
                             'value': unitId,
                             'selected': 'selected'
@@ -62,7 +62,7 @@ var CastleWindow = new function () {
                 }
 
                 for (var time = 1; time <= 20; time++) {
-                    if (isSet(castle.getProduction()[0]) && castle.getProduction()[0]['time'] == time) {
+                    if (castle.getProduction()[0] && castle.getProduction()[0]['time'] == time) {
                         selectProductionTime0.append($('<option>').attr({
                             'value': time,
                             'selected': 'selected'
@@ -70,7 +70,7 @@ var CastleWindow = new function () {
                     } else {
                         selectProductionTime0.append($('<option>').attr('value', time).html(time))
                     }
-                    if (isSet(castle.getProduction()[1]) && castle.getProduction()[1]['time'] == time) {
+                    if (castle.getProduction()[1] && castle.getProduction()[1]['time'] == time) {
                         selectProductionTime1.append($('<option>').attr({
                             'value': time,
                             'selected': 'selected'
@@ -78,7 +78,7 @@ var CastleWindow = new function () {
                     } else {
                         selectProductionTime1.append($('<option>').attr('value', time).html(time))
                     }
-                    if (isSet(castle.getProduction()[2]) && castle.getProduction()[2]['time'] == time) {
+                    if (castle.getProduction()[2] && castle.getProduction()[2]['time'] == time) {
                         selectProductionTime2.append($('<option>').attr({
                             'value': time,
                             'selected': 'selected'
@@ -86,7 +86,7 @@ var CastleWindow = new function () {
                     } else {
                         selectProductionTime2.append($('<option>').attr('value', time).html(time))
                     }
-                    if (isSet(castle.getProduction()[3]) && castle.getProduction()[3]['time'] == time) {
+                    if (castle.getProduction()[3] && castle.getProduction()[3]['time'] == time) {
                         selectProductionTime3.append($('<option>').attr({
                             'value': time,
                             'selected': 'selected'

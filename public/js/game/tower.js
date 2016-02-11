@@ -10,4 +10,7 @@ var Tower = function (tower, bgColor) {
     this.getY = function () {
         return tower.y
     }
+    this.getMesh = function () {
+        return mesh
+    }
 }
