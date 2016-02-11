@@ -23,6 +23,13 @@ var Fields = new function () {
         }
         Ground.init(maxX, maxY, '/img/maps/' + mapId + '.png')
     }
+    this.initCastle = function (x, y, castleId, color) {
+        for (var i = y; i <= y + 1; i++) {
+            for (var j = x; j <= x + 1; j++) {
+                fields[i][j].setCastle(castleId, color);
+            }
+        }
+    }
     this.getMaxX = function () {
         return maxX
     }

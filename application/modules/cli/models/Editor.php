@@ -183,6 +183,7 @@ class Cli_Model_Editor
             case 'b':
                 return $this->grass($dataIn['mapId'], $dataIn['x'], $dataIn['y'], $field, $db);
             case 'g':
+                print_r($field->getRuinId());
                 if ($castleId = $field->getCastleId()) {
                     $mMapCastles = new Application_Model_MapCastles($dataIn['mapId'], $db);
                     $mMapCastles->remove($castleId);

@@ -38,10 +38,13 @@ var WebSocketEditor = new function () {
                     var field = Fields.get(r.x, r.y)
                     if (field.getCastleId()) {
                         Players.get(field.getCastleColor()).getCastles().remove(field.getCastleId())
+                        Fields.initCastle(r.x, r.y, null, null)
                     } else if (field.getTowerId()) {
                         Players.get(field.getTowerColor()).getTowers().remove(field.getTowerId())
+                        field.setTower(null, null)
                     } else if (field.getRuinId()) {
                         Ruins.remove(field.getRuinId())
+                        field.setRuinId(null)
                     }
                     break
                 case 'grass':

@@ -3,8 +3,7 @@
     <h2><?php echo $this->translate('Map list') ?></h2>
     <table>
         <th>Map name</th>
-        <th>Width</th>
-        <th>Height</th>
+        <th>Size</th>
         <th>Map author</th>
         <th>Creation date</th>
         <?php if (is_array($this->mapList)): ?>
@@ -12,7 +11,6 @@
                 <tr id="<?php echo $map['mapId'] ?>" onclick="url(<?php echo $map['mapId'] ?>)" class="trlink">
                     <td><?php echo $map['name'] ?></td>
                     <td><?php echo $map['mapWidth'] ?></td>
-                    <td><?php echo $map['mapHeight'] ?></td>
                 </tr>
             <?php endforeach ?>
         <?php endif ?>

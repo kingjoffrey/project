@@ -44,8 +44,8 @@ var Field = function (field) {
     this.getTowerColor = function () {
         return field.towerColor
     }
-    this.setTowerColor = function (towerColor) {
-        field.towerColor = towerColor
+    this.setTowerColor = function (color) {
+        field.towerColor = color
     }
     this.getCastleColor = function () {
         return field.castleColor
@@ -58,5 +58,13 @@ var Field = function (field) {
     }
     this.setType = function (type) {
         field.type = type
+    }
+    this.setCastle = function (castleId, color) {
+        field.castleId = castleId
+        field.castleColor = color
+    }
+    this.setTower = function (towerId, color) {
+        field.towerId = towerId
+        field.towerColor = color
     }
 }
