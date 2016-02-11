@@ -146,14 +146,14 @@ var Ground = new function () {
                 Scene.add(grassMesh)
                 Picker.attach(grassMesh)
 
-                var helper = new THREE.WireframeHelper(grassMesh, 0xff00ff);
-                helper.material.linewidth = 1;
-                Scene.add(helper)
+                //var helper = new THREE.WireframeHelper(grassMesh, 0xff00ff)
+                //helper.material.linewidth = 1
+                //Scene.add(helper)
             })
         }
     this.init = function (maxX, maxY, textureName) {
         createGround(maxX * 2, maxY * 2, textureName)
-        createWater(maxX, maxY)
+        createWater(maxX * 2, maxY * 2)
     }
     this.getMountainLevel = function () {
         return mountainLevel

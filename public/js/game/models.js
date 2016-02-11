@@ -33,24 +33,24 @@ var Models = new function () {
             swampTexture = THREE.ImageUtils.loadTexture('/img/game/swamp.png')
         },
         initRuin = function () {
-            ruin.scale = 12
+            ruin.scale = 6
             ruinModel = loader.parse(ruin)
         },
         initTower = function () {
-            tower.scale = 4.8
+            tower.scale = 2.4
             towerModel = loader.parse(tower)
             flagModel = loader.parse(flag)
         },
         initCastle = function () {
-            castle_1.scale = 7.6
-            castle_2.scale = 7.6
-            castle_3.scale = 7.6
-            castle_4.scale = 7.6
+            castle_1.scale = 3.8
+            castle_2.scale = 3.8
+            castle_3.scale = 3.8
+            castle_4.scale = 3.8
             castleModel_1 = loader.parse(castle_1)
             castleModel_2 = loader.parse(castle_2)
             castleModel_3 = loader.parse(castle_3)
             castleModel_4 = loader.parse(castle_4)
-            flag.scale = 1.2
+            flag.scale = 0.6
             flagModel = loader.parse(flag)
         },
         getCastleModel = function (defense) {
@@ -102,21 +102,21 @@ var Models = new function () {
                 window[i + 'Model'] = loader.parse(armyModels[i])
             }
 
-            flag_1.scale = 15
+            flag_1.scale = 7.5
             flag_1Model = loader.parse(flag_1)
-            flag_2.scale = 15
+            flag_2.scale = 7.5
             flag_2Model = loader.parse(flag_2)
-            flag_3.scale = 15
+            flag_3.scale = 7.5
             flag_3Model = loader.parse(flag_3)
-            flag_4.scale = 15
+            flag_4.scale = 7.5
             flag_4Model = loader.parse(flag_4)
-            flag_5.scale = 15
+            flag_5.scale = 7.5
             flag_5Model = loader.parse(flag_5)
-            flag_6.scale = 15
+            flag_6.scale = 7.5
             flag_6Model = loader.parse(flag_6)
-            flag_7.scale = 15
+            flag_7.scale = 7.5
             flag_7Model = loader.parse(flag_7)
-            flag_8.scale = 15
+            flag_8.scale = 7.5
             flag_8Model = loader.parse(flag_8)
         },
         getFlag = function (number) {
@@ -140,12 +140,12 @@ var Models = new function () {
             }
         },
         initTree = function () {
-            tree.scale = 12
+            tree.scale = 6
             treeModel = loader.parse(tree)
             treeModel.material = new THREE.MeshLambertMaterial({color: '#003300', side: THREE.DoubleSide})
         }
     this.addPathCircle = function (x, y, color, t) {
-        var radius = 0.5,
+        var radius = 1,
             segments = 64,
             material = new THREE.MeshBasicMaterial({
                 color: color,
@@ -168,14 +168,14 @@ var Models = new function () {
                 var height = 0.01
                 break
         }
-        circle.position.set(x * 1 + 0.5, height, y * 1 + 0.5)
+        circle.position.set(x * 2 + 1, height, y * 2 + 1)
         circle.rotation.x = Math.PI / 2
 
         Scene.add(circle)
         circles.push(circle)
     }
     this.addArmyCircle = function (x, y, color) {
-        var radius = 0.5,
+        var radius = 1,
             segments = 64,
             material1 = new THREE.MeshBasicMaterial({
                 color: 'gold',
@@ -205,13 +205,13 @@ var Models = new function () {
                 break
         }
         var cylinder = new THREE.Mesh(geometry1, material1)
-        cylinder.position.set(x * 1 + 0.5, 2 + height, y * 1 + 0.5)
+        cylinder.position.set(x * 2 + 1, 2 + height, y * 2 + 1)
         //cylinder.rotation.x = Math.PI / 2
         Scene.add(cylinder)
         armyCircles.push(cylinder)
 
         var circle = new THREE.Mesh(geometry2, material2)
-        circle.position.set(x * 1 + 0.5, height, y * 1 + 0.5)
+        circle.position.set(x * 2 + 1, height, y * 2 + 1)
         circle.rotation.x = Math.PI / 2
         Scene.add(circle)
         armyCircles.push(circle)
@@ -286,7 +286,7 @@ var Models = new function () {
     this.addRuin = function (x, y, color) {
         var ruinMaterial = new THREE.MeshPhongMaterial({color: color, side: THREE.DoubleSide}),
             mesh = new THREE.Mesh(ruinModel.geometry, ruinMaterial)
-        mesh.position.set(x + 0.5, 0, y + 0.5)
+        mesh.position.set(x * 2 + 0.5, 0, y * 2 + 1)
         mesh.rotation.y = 2 * Math.PI * Math.random()
 
         if (showShadows) {
@@ -301,7 +301,7 @@ var Models = new function () {
     this.addTower = function (x, y, color) {
         var towerMaterial = new THREE.MeshLambertMaterial({color: '#6B6B6B', side: THREE.DoubleSide}),
             mesh = new THREE.Mesh(towerModel.geometry, towerMaterial)
-        mesh.position.set(x + 0.5, 0, y + 0.5)
+        mesh.position.set(x * 2 + 1.5, 0, y * 2 + 0.5)
 
         if (showShadows) {
             mesh.castShadow = true
@@ -323,7 +323,7 @@ var Models = new function () {
         var castleMaterial = new THREE.MeshLambertMaterial({color: '#3B3028', side: THREE.DoubleSide})
 
         var mesh = new THREE.Mesh(castleModel_1.geometry, castleMaterial)
-        mesh.position.set(castle.x + 1, 0, castle.y + 1)
+        mesh.position.set(castle.x * 2 + 2, 0, castle.y * 2 + 2)
 
         if (showShadows) {
             mesh.castShadow = true
@@ -350,7 +350,7 @@ var Models = new function () {
     }
     this.addTree = function (x, y) {
         var mesh = new THREE.Mesh(treeModel.geometry, treeModel.material)
-        mesh.position.set(x * 1 + 0.5, 0, y * 1 + 0.5)
+        mesh.position.set(x * 2 + 1, 0, y * 2 + 1)
         mesh.rotation.y = 2 * Math.PI * Math.random()
 
         if (showShadows) {
@@ -367,9 +367,9 @@ var Models = new function () {
                 transparent: true,
                 opacity: 0.3
             }),
-            mesh = new THREE.Mesh(new THREE.PlaneGeometry(1, 1), roadMaterial)
+            mesh = new THREE.Mesh(new THREE.PlaneGeometry(2, 2), roadMaterial)
         mesh.rotation.x = Math.PI / 2
-        mesh.position.set(x * 1 + 0.5, 0.01, y * 1 + 0.5)
+        mesh.position.set(x * 2 + 1, 0.01, y * 2 + 1)
 
         if (showShadows) {
             mesh.castShadow = true
@@ -380,14 +380,13 @@ var Models = new function () {
     this.addSwamp = function (x, y) {
         var swampMaterial = new THREE.MeshLambertMaterial({
                 map: swampTexture,
-                side: THREE.DoubleSide
-                ,
+                side: THREE.DoubleSide,
                 transparent: true,
                 opacity: 0.5
             }),
-            mesh = new THREE.Mesh(new THREE.PlaneGeometry(1, 1), swampMaterial)
+            mesh = new THREE.Mesh(new THREE.PlaneGeometry(2, 2), swampMaterial)
         mesh.rotation.x = Math.PI / 2
-        mesh.position.set(x * 1 + 0.5, 0.01, y * 1 + 0.5)
+        mesh.position.set(x * 2 + 1, 0.01, y * 2 + 1)
 
         if (showShadows) {
             mesh.castShadow = true
@@ -418,7 +417,7 @@ var Models = new function () {
                 break
         }
 
-        mesh.position.set(x * 1 + 0.5, height, y * 1 + 0.5)
+        mesh.position.set(x * 2 + 0.5, height, y * 2 + 0.5)
         mesh.rotation.y = Math.PI / 2 + Math.PI / 4
 
         if (showShadows) {
