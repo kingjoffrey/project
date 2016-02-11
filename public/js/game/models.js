@@ -249,7 +249,7 @@ var Models = new function () {
                         transparent: true,
                         opacity: 0.5
                     }),
-                    mesh = new THREE.Mesh(new THREE.PlaneGeometry(1, 1), roadMaterial)
+                    mesh = new THREE.Mesh(new THREE.PlaneGeometry(2, 2), roadMaterial)
                 mesh.rotation.x = Math.PI / 2
                 break
             case 'bridge':
@@ -265,13 +265,13 @@ var Models = new function () {
                         transparent: true,
                         opacity: 0.5
                     }),
-                    mesh = new THREE.Mesh(new THREE.PlaneGeometry(1, 1), swampMaterial)
+                    mesh = new THREE.Mesh(new THREE.PlaneGeometry(2, 2), swampMaterial)
                 mesh.rotation.x = Math.PI / 2
                 mesh.position.y = 0.02
                 break
             case 'eraser':
                 var eraserMaterial = new THREE.MeshLambertMaterial({color: '#ff0000', side: THREE.DoubleSide}),
-                    mesh = new THREE.Mesh(new THREE.PlaneGeometry(1, 1), eraserMaterial)
+                    mesh = new THREE.Mesh(new THREE.PlaneGeometry(2, 2), eraserMaterial)
                 mesh.rotation.x = Math.PI / 2
                 break
             default:

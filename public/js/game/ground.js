@@ -1,7 +1,7 @@
 var Ground = new function () {
     var mountainLevel = 1.5,
         hillLevel = 0.5,
-        bottomLevel = 0.9,
+        bottomLevel = 0.2,
         waterLevel = 0.11
     createWater = function (maxX, maxY) {
         var waterVertexPositions = [],
@@ -53,13 +53,13 @@ var Ground = new function () {
             }
 
             for (var i = 0; i < xy.length; i++) {
-                grassVertexPositions.push([xy[i][0], xy[i][1], 0])
-                grassVertexPositions.push([xy[i][0] + 1, xy[i][1], 0])
-                grassVertexPositions.push([xy[i][0], xy[i][1] + 1, 0])
+                grassVertexPositions.push([xy[i][0], xy[i][1], 0])           //
+                grassVertexPositions.push([xy[i][0] + 1, xy[i][1], 0])       //  FIRST TRIANGLE
+                grassVertexPositions.push([xy[i][0], xy[i][1] + 1, 0])       //
 
-                grassVertexPositions.push([xy[i][0] + 1, xy[i][1] + 1, 0])
-                grassVertexPositions.push([xy[i][0], xy[i][1] + 1, 0])
-                grassVertexPositions.push([xy[i][0] + 1, xy[i][1], 0])
+                grassVertexPositions.push([xy[i][0] + 1, xy[i][1] + 1, 0])   //
+                grassVertexPositions.push([xy[i][0], xy[i][1] + 1, 0])       //  SECOND TRIANGLE
+                grassVertexPositions.push([xy[i][0] + 1, xy[i][1], 0])       //
             }
             for (var i = 0; i < grassVertexPositions.length; i++) {
                 if (grassVertexPositions[i][0] == 0) {
@@ -83,12 +83,31 @@ var Ground = new function () {
                     switch (type) {
                         case 'w':
                             grassVertexPositions[i][2] = bottomLevel
+                            //grassVertexPositions[i+3][2] = bottomLevel
+                            console.log(grassVertexPositions[i])
+                            console.log(grassVertexPositions[i+1])
+                            console.log(grassVertexPositions[i+2])
+                            console.log(grassVertexPositions[i+3])
+                            console.log(grassVertexPositions[i+4])
+                            console.log(grassVertexPositions[i+5])
+                            //console.log(grassVertexPositions[i+12])
+                            return
+                            //if (grassVertexPositions[i][0] < maxX && grassVertexPositions[i][1] < maxY) {
+                            //    if (Fields.get(grassVertexPositions[i + 12][0] / 2, grassVertexPositions[i + 12][1] / 2).getType() == 'w') {
+                            //        grassVertexPositions[i + 3][2] = -bottomLevel*4
+                            //    }
+                            //}
                             break
                         case 'b':
                             grassVertexPositions[i][2] = bottomLevel
                             break
                         case 'm':
                             grassVertexPositions[i][2] = -mountainLevel
+                            //if (grassVertexPositions[i][0] < maxX && grassVertexPositions[i][1] < maxY) {
+                            //    if (Fields.get(grassVertexPositions[i + 11][0] / 2, grassVertexPositions[i + 11][1] / 2).getType() == 'm') {
+                            //        grassVertexPositions[i + 3][2] = -mountainLevel
+                            //    }
+                            //}
                             break
                         case 'h':
                             grassVertexPositions[i][2] = -hillLevel
@@ -146,14 +165,14 @@ var Ground = new function () {
                 Scene.add(grassMesh)
                 Picker.attach(grassMesh)
 
-                //var helper = new THREE.WireframeHelper(grassMesh, 0xff00ff)
-                //helper.material.linewidth = 1
-                //Scene.add(helper)
+                var helper = new THREE.WireframeHelper(grassMesh, 0xff00ff)
+                helper.material.linewidth = 1
+                Scene.add(helper)
             })
         }
     this.init = function (maxX, maxY, textureName) {
         createGround(maxX * 2, maxY * 2, textureName)
-        createWater(maxX * 2, maxY * 2)
+        //createWater(maxX * 2, maxY * 2)
     }
     this.getMountainLevel = function () {
         return mountainLevel
