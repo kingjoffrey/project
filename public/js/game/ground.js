@@ -2,32 +2,33 @@ var Ground = new function () {
     var mountainLevel = 1.5,
         hillLevel = 0.5,
         bottomLevel = 0.9,
-        createWater = function (maxX, maxY) {
-            var waterVertexPositions = [],
-                waterVertices = new Float32Array(18),
-                waterGeometry = new THREE.BufferGeometry(),
-                waterMaterial = new THREE.MeshBasicMaterial({color: 0x0000ff, side: THREE.DoubleSide})
+        waterLevel = 0.11
+    createWater = function (maxX, maxY) {
+        var waterVertexPositions = [],
+            waterVertices = new Float32Array(18),
+            waterGeometry = new THREE.BufferGeometry(),
+            waterMaterial = new THREE.MeshBasicMaterial({color: 0x0000ff, side: THREE.DoubleSide})
 
-            waterVertexPositions.push([0, 0, 0.11])
-            waterVertexPositions.push([maxX, 0, 0.11])
-            waterVertexPositions.push([0, maxY, 0.11])
+        waterVertexPositions.push([0, 0, waterLevel])
+        waterVertexPositions.push([maxX, 0, waterLevel])
+        waterVertexPositions.push([0, maxY, waterLevel])
 
-            waterVertexPositions.push([maxX, maxY, 0.11])
-            waterVertexPositions.push([0, maxY, 0.11])
-            waterVertexPositions.push([maxX, 0, 0.11])
+        waterVertexPositions.push([maxX, maxY, waterLevel])
+        waterVertexPositions.push([0, maxY, waterLevel])
+        waterVertexPositions.push([maxX, 0, waterLevel])
 
-            for (var i = 0; i < 6; i++) {
-                var index = i * 3
-                waterVertices[index + 0] = waterVertexPositions[i][0]
-                waterVertices[index + 1] = waterVertexPositions[i][1]
-                waterVertices[index + 2] = waterVertexPositions[i][2]
-            }
+        for (var i = 0; i < 6; i++) {
+            var index = i * 3
+            waterVertices[index + 0] = waterVertexPositions[i][0]
+            waterVertices[index + 1] = waterVertexPositions[i][1]
+            waterVertices[index + 2] = waterVertexPositions[i][2]
+        }
 
-            waterGeometry.addAttribute('position', new THREE.BufferAttribute(waterVertices, 3))
-            var waterMesh = new THREE.Mesh(waterGeometry, waterMaterial)
-            waterMesh.rotation.x = Math.PI / 2
-            Scene.add(waterMesh)
-        },
+        waterGeometry.addAttribute('position', new THREE.BufferAttribute(waterVertices, 3))
+        var waterMesh = new THREE.Mesh(waterGeometry, waterMaterial)
+        waterMesh.rotation.x = Math.PI / 2
+        Scene.add(waterMesh)
+    },
         createGround = function (maxX, maxY, textureName) {
             var xy = [],
                 uv = [],
@@ -77,20 +78,22 @@ var Ground = new function () {
                     grassVertexPositions[i][2] = 0.1
                     continue
                 }
-                var type = Fields.get(grassVertexPositions[i][0], grassVertexPositions[i][1]).getType()
-                switch (type) {
-                    case 'w':
-                        grassVertexPositions[i][2] = bottomLevel
-                        break
-                    case 'b':
-                        grassVertexPositions[i][2] = bottomLevel
-                        break
-                    case 'm':
-                        grassVertexPositions[i][2] = -mountainLevel
-                        break
-                    case 'h':
-                        grassVertexPositions[i][2] = -hillLevel
-                        break
+                if (grassVertexPositions[i][0] % 2 == 0 && grassVertexPositions[i][1] % 2 == 0) {
+                    var type = Fields.get(grassVertexPositions[i][0] / 2, grassVertexPositions[i][1] / 2).getType()
+                    switch (type) {
+                        case 'w':
+                            grassVertexPositions[i][2] = bottomLevel
+                            break
+                        case 'b':
+                            grassVertexPositions[i][2] = bottomLevel
+                            break
+                        case 'm':
+                            grassVertexPositions[i][2] = -mountainLevel
+                            break
+                        case 'h':
+                            grassVertexPositions[i][2] = -hillLevel
+                            break
+                    }
                 }
             }
             var grassVertices = new Float32Array(grassVertexPositions.length * 3),
@@ -128,7 +131,7 @@ var Ground = new function () {
 
             grassGeometry.addAttribute('position', new THREE.BufferAttribute(grassVertices, 3))
             grassGeometry.addAttribute('normal', new THREE.BufferAttribute(normals, 3))
-            grassGeometry.addAttribute('color', new THREE.BufferAttribute(colors, 3))
+            //grassGeometry.addAttribute('color', new THREE.BufferAttribute(colors, 3))
             grassGeometry.addAttribute('uv', new THREE.BufferAttribute(uvs, 2))
 
             grassGeometry.computeVertexNormals()
@@ -143,13 +146,13 @@ var Ground = new function () {
                 Scene.add(grassMesh)
                 Picker.attach(grassMesh)
 
-                //var helper = new THREE.WireframeHelper(grassMesh, 0xff00ff);
-                //helper.material.linewidth = 1;
-                //Scene.add(helper)
+                var helper = new THREE.WireframeHelper(grassMesh, 0xff00ff);
+                helper.material.linewidth = 1;
+                Scene.add(helper)
             })
         }
     this.init = function (maxX, maxY, textureName) {
-        createGround(maxX, maxY, textureName)
+        createGround(maxX * 2, maxY * 2, textureName)
         createWater(maxX, maxY)
     }
     this.getMountainLevel = function () {
