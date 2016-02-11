@@ -79,6 +79,9 @@ class Cli_Model_Editor
             case 'g':
                 switch ($dataIn['itemName']) {
                     case 'castle':
+                        if ($field->getCastleId()) {
+                            break;
+                        }
                         $castle = new Cli_Model_EditorCastle();
                         $castle->create($this->_mapId, $dataIn['x'], $dataIn['y'], $db);
                         $this->_Players->getPlayer('neutral')->getCastles()->addCastle($castle->getId(), $castle);
