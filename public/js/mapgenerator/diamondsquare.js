@@ -1,5 +1,4 @@
 var DiamondSquare = {
-    pixels: [],
     make: function (DATA_SIZE) {
         var SEED = 128.0;
         var data = [];
