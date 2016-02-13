@@ -61,6 +61,8 @@ var Ground = new function () {
                 grassVertexPositions.push([xy[i][0], xy[i][1] + 1, 0])       //  SECOND TRIANGLE
                 grassVertexPositions.push([xy[i][0] + 1, xy[i][1], 0])       //
             }
+            //console.log(grassVertexPositions);
+            //return
             for (var i = 0; i < grassVertexPositions.length; i++) {
                 if (grassVertexPositions[i][0] == 0) {
                     grassVertexPositions[i][2] = 0.1
@@ -83,20 +85,33 @@ var Ground = new function () {
                     switch (type) {
                         case 'w':
                             grassVertexPositions[i][2] = bottomLevel
-                            //grassVertexPositions[i+3][2] = bottomLevel
-                            console.log(grassVertexPositions[i])
-                            console.log(grassVertexPositions[i+1])
-                            console.log(grassVertexPositions[i+2])
-                            console.log(grassVertexPositions[i+3])
-                            console.log(grassVertexPositions[i+4])
-                            console.log(grassVertexPositions[i+5])
-                            //console.log(grassVertexPositions[i+12])
-                            return
-                            //if (grassVertexPositions[i][0] < maxX && grassVertexPositions[i][1] < maxY) {
-                            //    if (Fields.get(grassVertexPositions[i + 12][0] / 2, grassVertexPositions[i + 12][1] / 2).getType() == 'w') {
-                            //        grassVertexPositions[i + 3][2] = -bottomLevel*4
-                            //    }
-                            //}
+                            if (i % 12 == 0) {
+                                if (i > 0) {
+                                    grassVertexPositions[i - 2][2] = bottomLevel
+                                    grassVertexPositions[i - 4][2] = bottomLevel
+                                }
+                                //console.log(grassVertexPositions[i])
+                                //console.log(grassVertexPositions[i + 1])
+                                //console.log(grassVertexPositions[i + 2])
+                                //console.log(grassVertexPositions[i + 3])
+                                //console.log(grassVertexPositions[i + 4])
+                                //console.log(grassVertexPositions[i + 5])
+                                //console.log(grassVertexPositions[i + 6])
+                                //console.log(grassVertexPositions[i + 7])
+                                //console.log(grassVertexPositions[i + 8])
+                                //console.log(grassVertexPositions[i + 9])
+                                //console.log(grassVertexPositions[i + 10])
+                                //console.log(grassVertexPositions[i + 11])
+                                //console.log(grassVertexPositions[i + 12])
+                                //return
+                                if (grassVertexPositions[i][0] < maxX && grassVertexPositions[i][1] < maxY) {
+                                    if (Fields.get(grassVertexPositions[i + 12][0] / 2, grassVertexPositions[i + 12][1] / 2).getType() == 'w') {
+                                        grassVertexPositions[i + 2][2] = bottomLevel
+                                        grassVertexPositions[i + 4][2] = bottomLevel
+                                        grassVertexPositions[i + 6][2] = bottomLevel
+                                    }
+                                }
+                            }
                             break
                         case 'b':
                             grassVertexPositions[i][2] = bottomLevel
@@ -104,7 +119,7 @@ var Ground = new function () {
                         case 'm':
                             grassVertexPositions[i][2] = -mountainLevel
                             //if (grassVertexPositions[i][0] < maxX && grassVertexPositions[i][1] < maxY) {
-                            //    if (Fields.get(grassVertexPositions[i + 11][0] / 2, grassVertexPositions[i + 11][1] / 2).getType() == 'm') {
+                            //    if (Fields.get(grassVertexPositions[i + 12][0] / 2, grassVertexPositions[i + 12][1] / 2).getType() == 'm') {
                             //        grassVertexPositions[i + 3][2] = -mountainLevel
                             //    }
                             //}
@@ -115,6 +130,7 @@ var Ground = new function () {
                     }
                 }
             }
+
             var grassVertices = new Float32Array(grassVertexPositions.length * 3),
                 normals = new Float32Array(grassVertexPositions.length * 3),
                 colors = new Float32Array(grassVertexPositions.length * 3),
