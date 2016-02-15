@@ -52,10 +52,10 @@ var Picker = new function () {
         return Fields.get(convertX(), convertY())
     }
     var convertX = function () {
-        return parseInt(intersects[0].point.x)
+        return Math.floor(parseInt(intersects[0].point.x) / 2)
     }
     var convertY = function () {
-        return parseInt(intersects[0].point.z)
+        return Math.floor(parseInt(intersects[0].point.z) / 2)
     }
     var onclick = function (button) {
         switch (button) {

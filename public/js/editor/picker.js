@@ -71,18 +71,15 @@ var Picker = new function () {
             event.preventDefault();
         },
         getField = function () {
-            return Fields.get(convertCoordinate(convertX()), convertCoordinate(convertZ()))
+            return Fields.get(convertX(), convertZ())
         },
         convertX = function () {
-            draggedMeshX = parseInt(intersects[0].point.x)
+            draggedMeshX = Math.floor(parseInt(intersects[0].point.x) / 2)
             return draggedMeshX
         },
         convertZ = function () {
-            draggedMeshZ = parseInt(intersects[0].point.z)
+            draggedMeshZ = Math.floor(parseInt(intersects[0].point.z) / 2)
             return draggedMeshZ
-        },
-        convertCoordinate = function (coordinate) {
-            return Math.floor(coordinate / 2)
         },
         onclick = function (button) {
             switch (button) {
@@ -91,9 +88,9 @@ var Picker = new function () {
                     var field = getField()
                     if (draggedMesh) {
                         if (draggedMesh.itemName == 'eraser') {
-                            WebSocketEditor.remove(convertCoordinate(convertX()), convertCoordinate(convertZ()))
+                            WebSocketEditor.remove(convertX(), convertZ())
                         } else {
-                            WebSocketEditor.add(draggedMesh.itemName, convertCoordinate(convertX()), convertCoordinate(convertZ()))
+                            WebSocketEditor.add(draggedMesh.itemName, convertX(), convertZ())
                         }
                     } else {
                         if (castleId = field.getCastleId()) {
@@ -123,8 +120,8 @@ var Picker = new function () {
         },
         mouseMove = function () {
             if (draggedMesh) {
-                var newX = convertCoordinate(convertX()),
-                    newZ = convertCoordinate(convertZ())
+                var newX = convertX(),
+                    newZ = convertZ()
 
                 if (newX != oldX) {
                     oldX = newX
