@@ -126,17 +126,15 @@ var Picker = new function () {
                 var newX = convertCoordinate(convertX()),
                     newZ = convertCoordinate(convertZ())
 
-                //if (newX % 2 != 0 || newZ % 2 != 0) {
-                //    return
-                //}
-
                 if (newX != oldX) {
                     oldX = newX
                     draggedMesh.position.x = newX * 2 + draggedMesh.plus
+                    console.log('x=' + newX)
                 }
                 if (newZ != oldZ) {
                     oldZ = newZ
                     draggedMesh.position.z = newZ * 2 + draggedMesh.plus
+                    console.log('y=' + newZ)
                 }
             }
         }

@@ -3,6 +3,7 @@ var Ground = new function () {
         hillLevel = 0.5,
         bottomLevel = 0.2,
         waterLevel = 0.11,
+        grassVertexPositions = [],
         createWater = function (maxX, maxY) {
             var waterVertexPositions = [],
                 waterVertices = new Float32Array(18),
@@ -33,7 +34,8 @@ var Ground = new function () {
             var xy = [],
                 uv = [],
                 grassGeometry = new THREE.BufferGeometry(),
-                grassVertexPositions = []
+                grassVertexPositions = [],
+                maxI = maxX * maxY * 6
 
             for (var u = 0; u < maxX; u++) {
                 uv[u] = []
@@ -66,68 +68,35 @@ var Ground = new function () {
             for (var i = 0; i < grassVertexPositions.length; i++) {
                 if (grassVertexPositions[i][0] == 0) {
                     grassVertexPositions[i][2] = 0.1
-                    continue
+                    //continue
                 }
                 if (grassVertexPositions[i][0] == maxX) {
                     grassVertexPositions[i][2] = 0.1
-                    continue
+                    //continue
                 }
                 if (grassVertexPositions[i][1] == 0) {
                     grassVertexPositions[i][2] = 0.1
-                    continue
+                    //continue
                 }
                 if (grassVertexPositions[i][1] == maxY) {
                     grassVertexPositions[i][2] = 0.1
-                    continue
+                    //continue
                 }
+                // every field?
                 if (grassVertexPositions[i][0] % 2 == 0 && grassVertexPositions[i][1] % 2 == 0) {
                     var type = Fields.get(grassVertexPositions[i][0] / 2, grassVertexPositions[i][1] / 2).getType()
                     switch (type) {
                         case 'w':
-                            grassVertexPositions[i][2] = bottomLevel
-                            if (i % 12 == 0) {
-                                if (i > 0) {
-                                    grassVertexPositions[i - 2][2] = bottomLevel
-                                    grassVertexPositions[i - 4][2] = bottomLevel
-
-                                    if (i > 12 && Fields.get(grassVertexPositions[i - 12][0] / 2, grassVertexPositions[i - 12][1] / 2).getType() == 'w') {
-                                        grassVertexPositions[(i - 2) - (maxX * 6 - 1)][2] = bottomLevel
-                                        grassVertexPositions[(i - 4) - (maxX * 6 - 1)][2] = bottomLevel
-                                    }
-                                }
-                                if (grassVertexPositions[i][0] < maxX && grassVertexPositions[i][1] < maxY) {
-                                    if (Fields.get(grassVertexPositions[i + 12][0] / 2, grassVertexPositions[i + 12][1] / 2).getType() == 'w') {
-                                        grassVertexPositions[i + 2][2] = bottomLevel
-                                        grassVertexPositions[i + 4][2] = bottomLevel
-                                        grassVertexPositions[i + 6][2] = bottomLevel
-
-                                        grassVertexPositions[i - (maxX * 6 - 1)][2] = bottomLevel
-                                        grassVertexPositions[(i + 2) - (maxX * 6 - 1)][2] = bottomLevel
-                                        grassVertexPositions[(i + 4) - (maxX * 6 - 1)][2] = bottomLevel
-                                        grassVertexPositions[(i + 6) - (maxX * 6 - 1)][2] = bottomLevel
-                                    }
-                                }
-                            }
+                            grassVertexPositions = changeGroundLevel(grassVertexPositions, maxX, maxY, maxI, i, bottomLevel, type)
                             break
                         case 'b':
-                            grassVertexPositions[i][2] = bottomLevel
+                            grassVertexPositions = changeGroundLevel(grassVertexPositions, maxX, maxY, maxI, i, bottomLevel, type)
                             break
                         case 'm':
-                            grassVertexPositions[i][2] = -mountainLevel
-                            //if (i % 12 == 0) {
-                            //    if (i > 0) {
-                            //    }
-                            //    if (grassVertexPositions[i][0] < maxX && grassVertexPositions[i][1] < maxY) {
-                            //        if (Fields.get(grassVertexPositions[i + 12][0] / 2, grassVertexPositions[i + 12][1] / 2).getType() == 'm') {
-                            //            grassVertexPositions[i + 2][2] = -mountainLevel
-                            //            grassVertexPositions[i + 4][2] = -mountainLevel
-                            //            grassVertexPositions[i + 6][2] = -mountainLevel
-                            //        }
-                            //    }
-                            //}
+                            grassVertexPositions = changeGroundLevel(grassVertexPositions, maxX, maxY, maxI, i, -mountainLevel, type)
                             break
                         case 'h':
-                            grassVertexPositions[i][2] = -hillLevel
+                            grassVertexPositions = changeGroundLevel(grassVertexPositions, maxX, maxY, maxI, i, -hillLevel, type)
                             break
                     }
                 }
@@ -183,10 +152,58 @@ var Ground = new function () {
                 Scene.add(grassMesh)
                 Picker.attach(grassMesh)
 
-                var helper = new THREE.WireframeHelper(grassMesh, 0xff00ff)
-                helper.material.linewidth = 1
-                Scene.add(helper)
+                //var helper = new THREE.WireframeHelper(grassMesh, 0xff00ff)
+                //helper.material.linewidth = 1
+                //Scene.add(helper)
             })
+        },
+        changeGroundLevel = function (grassVertexPositions, maxX, maxY, maxI, i, level, type) {
+            if (i % 12 == 0) {
+                grassVertexPositions[i + 3][2] = level                //
+                grassVertexPositions[i + 7][2] = level                //
+                grassVertexPositions[i + 11][2] = level               //
+                var between = maxY * 6 + 6                            //
+                if (i + between < maxI) {                             // center vertex of the field
+                    grassVertexPositions[i + between][2] = level      //
+                    grassVertexPositions[i + between - 2][2] = level  //
+                    grassVertexPositions[i + between - 4][2] = level  //
+                }
+
+                if ((i + 12) % (maxY * 6) != 0 && Fields.get(grassVertexPositions[i + 12][0] / 2, grassVertexPositions[i + 12][1] / 2).getType() == type) {
+                    grassVertexPositions[i + 9][2] = level                //
+                    grassVertexPositions[i + 13][2] = level               //
+                    grassVertexPositions[i + 17][2] = level               //
+                    var between = maxY * 6 + 12                           //
+                    if (i + between < maxI) {                             // vertex between two centers od the field on Y axis
+                        grassVertexPositions[i + between][2] = level      //
+                        grassVertexPositions[i - 2 + between][2] = level  //
+                        grassVertexPositions[i - 4 + between][2] = level  //
+                    }                                                     //
+                }                                                         //
+
+                var nextRow = maxY * 2 * 6
+                if (i + nextRow < maxI && Fields.get(grassVertexPositions[i + nextRow][0] / 2, grassVertexPositions[i + nextRow][1] / 2).getType() == type) {
+                    grassVertexPositions[i + nextRow + 6][2] = level  //
+                    grassVertexPositions[i + nextRow + 4][2] = level  //
+                    grassVertexPositions[i + nextRow + 2][2] = level  //
+                    var between = maxY * 6                            //
+                    grassVertexPositions[i + between + 3][2] = level  // vertex between two centers od the field on X axis
+                    grassVertexPositions[i + between + 7][2] = level  //
+                    grassVertexPositions[i + between + 11][2] = level //
+                }                                                     //
+
+                var nextVertex = nextRow + 12
+                if (i + nextVertex < maxI && (i + nextVertex) % (maxY * 6) != 0 && Fields.get(grassVertexPositions[i + nextVertex][0] / 2, grassVertexPositions[i + nextVertex][1] / 2).getType() == type) {
+                    grassVertexPositions[i + nextVertex][2] = level       //
+                    grassVertexPositions[i + nextVertex - 2][2] = level   //
+                    grassVertexPositions[i + nextVertex - 4][2] = level   //
+                    var between = maxY * 6                                //
+                    grassVertexPositions[i + between + 9][2] = level      // vertex between two centers od the field on X and Y axis
+                    grassVertexPositions[i + between + 13][2] = level     //
+                    grassVertexPositions[i + between + 17][2] = level     //
+                }                                                         //
+            }
+            return grassVertexPositions
         }
     this.init = function (maxX, maxY, textureName) {
         createGround(maxX * 2, maxY * 2, textureName)
