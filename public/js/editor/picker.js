@@ -129,12 +129,12 @@ var Picker = new function () {
                 if (newX != oldX) {
                     oldX = newX
                     draggedMesh.position.x = newX * 2 + draggedMesh.plus
-                    console.log('x=' + newX)
+                    //console.log('x=' + newX)
                 }
                 if (newZ != oldZ) {
                     oldZ = newZ
                     draggedMesh.position.z = newZ * 2 + draggedMesh.plus
-                    console.log('y=' + newZ)
+                    //console.log('y=' + newZ)
                 }
             }
         }
