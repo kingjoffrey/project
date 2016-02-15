@@ -22,9 +22,9 @@ var Picker = new function () {
     this.addDraggedMesh = function (mesh) {
         draggedMesh = mesh
         if (draggedMesh.itemName == 'castle') {
-            draggedMesh.plus = 1
+            draggedMesh.plus = 2
         } else {
-            draggedMesh.plus = 0.5
+            draggedMesh.plus = 1
         }
 
     }
@@ -71,7 +71,7 @@ var Picker = new function () {
             event.preventDefault();
         },
         getField = function () {
-            return Fields.get(convertX(), convertZ())
+            return Fields.get(convertCoordinate(convertX()), convertCoordinate(convertZ()))
         },
         convertX = function () {
             draggedMeshX = parseInt(intersects[0].point.x)
@@ -81,6 +81,9 @@ var Picker = new function () {
             draggedMeshZ = parseInt(intersects[0].point.z)
             return draggedMeshZ
         },
+        convertCoordinate = function (coordinate) {
+            return Math.floor(coordinate / 2)
+        },
         onclick = function (button) {
             switch (button) {
                 case 0:
@@ -88,9 +91,9 @@ var Picker = new function () {
                     var field = getField()
                     if (draggedMesh) {
                         if (draggedMesh.itemName == 'eraser') {
-                            WebSocketEditor.remove(convertX(), convertZ())
+                            WebSocketEditor.remove(convertCoordinate(convertX()), convertCoordinate(convertZ()))
                         } else {
-                            WebSocketEditor.add(draggedMesh.itemName, convertX(), convertZ())
+                            WebSocketEditor.add(draggedMesh.itemName, convertCoordinate(convertX()), convertCoordinate(convertZ()))
                         }
                     } else {
                         if (castleId = field.getCastleId()) {
@@ -120,16 +123,20 @@ var Picker = new function () {
         },
         mouseMove = function () {
             if (draggedMesh) {
-                var newX = convertX(),
-                    newZ = convertZ()
+                var newX = convertCoordinate(convertX()),
+                    newZ = convertCoordinate(convertZ())
+
+                //if (newX % 2 != 0 || newZ % 2 != 0) {
+                //    return
+                //}
 
                 if (newX != oldX) {
                     oldX = newX
-                    draggedMesh.position.x = newX + draggedMesh.plus
+                    draggedMesh.position.x = newX * 2 + draggedMesh.plus
                 }
                 if (newZ != oldZ) {
                     oldZ = newZ
-                    draggedMesh.position.z = newZ + draggedMesh.plus
+                    draggedMesh.position.z = newZ * 2 + draggedMesh.plus
                 }
             }
         }
