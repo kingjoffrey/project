@@ -27,7 +27,24 @@ var Models = new function () {
             return mesh
         },
         initRoadTexture = function () {
-            roadTexture = THREE.ImageUtils.loadTexture('/img/game/stone_road.png')
+            roadTexture = {
+                'c': THREE.ImageUtils.loadTexture('/img/game/road/road_c.png'),
+                'd1': THREE.ImageUtils.loadTexture('/img/game/road/road_d1.png'),
+                'd3': THREE.ImageUtils.loadTexture('/img/game/road/road_d3.png'),
+                'h': THREE.ImageUtils.loadTexture('/img/game/road/road_h.png'),
+                'l1': THREE.ImageUtils.loadTexture('/img/game/road/road_l1.png'),
+                'l3': THREE.ImageUtils.loadTexture('/img/game/road/road_l3.png'),
+                'ld': THREE.ImageUtils.loadTexture('/img/game/road/road_ld.png'),
+                'lu': THREE.ImageUtils.loadTexture('/img/game/road/road_lu.png'),
+                'p': THREE.ImageUtils.loadTexture('/img/game/road/road_p.png'),
+                'r1': THREE.ImageUtils.loadTexture('/img/game/road/road_r1.png'),
+                'r3': THREE.ImageUtils.loadTexture('/img/game/road/road_r3.png'),
+                'rd': THREE.ImageUtils.loadTexture('/img/game/road/road_rd.png'),
+                'ru': THREE.ImageUtils.loadTexture('/img/game/road/road_ru.png'),
+                'u1': THREE.ImageUtils.loadTexture('/img/game/road/road_u1.png'),
+                'u3': THREE.ImageUtils.loadTexture('/img/game/road/road_u3.png'),
+                'v': THREE.ImageUtils.loadTexture('/img/game/road/road_v.png')
+            }
         },
         initSwampTexture = function () {
             swampTexture = THREE.ImageUtils.loadTexture('/img/game/swamp.png')
@@ -244,7 +261,7 @@ var Models = new function () {
                 break
             case 'road':
                 var roadMaterial = new THREE.MeshLambertMaterial({
-                        map: roadTexture,
+                        map: roadTexture.p,
                         side: THREE.DoubleSide,
                         transparent: true,
                         opacity: 0.5
@@ -360,9 +377,67 @@ var Models = new function () {
         Scene.add(mesh)
     }
     this.addRoad = function (x, y) {
+        var x = x * 1,
+            y = y * 1,
+            f1, f2, f3, f4
+
+        if (y - 1 >= 0) {
+            f1 = Fields.get(x, y - 1).getType()
+        }
+        if (x + 1 <= Fields.getMaxY()) {
+            f2 = Fields.get(x + 1, y).getType()
+        }
+        if (y + 1 <= Fields.getMaxX()) {
+            f3 = Fields.get(x, y + 1).getType()
+        }
+        if (x - 1 >= 0) {
+            f4 = Fields.get(x - 1, y).getType()
+        }
+
+        if (f1 != 'r' && f2 != 'r' && f3 != 'r' && f4 != 'r') { // point
+            var map = roadTexture.p
+        } else if (f1 == 'r' && f2 != 'r' && f3 != 'r' && f4 != 'r') { // 3
+            var map = roadTexture.u3
+        } else if (f1 != 'r' && f2 == 'r' && f3 != 'r' && f4 != 'r') { // 3
+            var map = roadTexture.l3
+        } else if (f1 != 'r' && f2 != 'r' && f3 == 'r' && f4 != 'r') { // 3
+            var map = roadTexture.d3
+        } else if (f1 != 'r' && f2 != 'r' && f3 != 'r' && f4 == 'r') { // 3
+            var map = roadTexture.r3
+        } else if (f1 == 'r' && f2 != 'r' && f3 == 'r' && f4 != 'r') { // vertical
+            var map = roadTexture.v
+        } else if (f1 != 'r' && f2 == 'r' && f3 != 'r' && f4 == 'r') { // horizontal
+            var map = roadTexture.h
+        } else if (f1 == 'r' && f2 == 'r' && f3 == 'r' && f4 == 'r') { // center
+            var map = roadTexture.c
+        } else if (f1 != 'r' && f2 == 'r' && f3 == 'r' && f4 != 'r') {
+            var map = roadTexture.ld
+        } else if (f1 != 'r' && f2 != 'r' && f3 == 'r' && f4 == 'r') {
+            var map = roadTexture.rd
+        } else if (f1 == 'r' && f2 == 'r' && f3 != 'r' && f4 != 'r') {
+            var map = roadTexture.lu
+        } else if (f1 == 'r' && f2 != 'r' && f3 != 'r' && f4 == 'r') {
+            var map = roadTexture.ru
+        } else if (f1 == 'r' && f2 == 'r' && f3 != 'r' && f4 == 'r') { // 1
+            var map = roadTexture.u1
+        } else if (f1 == 'r' && f2 == 'r' && f3 == 'r' && f4 != 'r') { // 1
+            var map = roadTexture.l1
+        } else if (f1 != 'r' && f2 == 'r' && f3 == 'r' && f4 == 'r') { // 1
+            var map = roadTexture.d1
+        } else if (f1 == 'r' && f2 != 'r' && f3 == 'r' && f4 == 'r') { // 1
+            var map = roadTexture.r1
+        }
+
+        if (notSet(map)) {
+            console.log(f1)
+            console.log(f2)
+            console.log(f3)
+            console.log(f4)
+            return
+        }
+
         var roadMaterial = new THREE.MeshLambertMaterial({
-                //color: '#6B6B6B',
-                map: roadTexture,
+                map: map,
                 side: THREE.DoubleSide,
                 transparent: true,
                 opacity: 0.3

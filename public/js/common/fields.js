@@ -11,9 +11,6 @@ var Fields = new function () {
                     case 's':
                         Models.addSwamp(maxX, maxY)
                         break
-                    case 'r':
-                        Models.addRoad(maxX, maxY)
-                        break
                     case 'f':
                         Models.addTree(maxX, maxY)
                         break
@@ -22,6 +19,16 @@ var Fields = new function () {
             }
         }
         Ground.init(maxX, maxY, '/img/maps/' + mapId + '.png')
+        Fields.initRoads()
+    }
+    this.initRoads = function () {
+        for (var y = 0; y <= maxY; y++) {
+            for (var x = 0; x <= maxX; x++) {
+                if (fields[y][x].getType() == 'r') {
+                    Models.addRoad(x, y)
+                }
+            }
+        }
     }
     this.initCastle = function (x, y, castleId, color) {
         for (var i = y; i <= y + 1; i++) {
