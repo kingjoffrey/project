@@ -37,7 +37,7 @@ var PickerCommon = new function () {
         objects.splice(objects.indexOf(object), 1);
     }
     this.getField = function () {
-        return Fields.get(PickerCommon.convertX(), PickerCommon.convertY())
+        return Fields.get(PickerCommon.convertX(), PickerCommon.convertZ())
     }
     this.intersects = function () {
         return isSet(intersects[0])

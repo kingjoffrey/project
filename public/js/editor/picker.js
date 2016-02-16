@@ -26,7 +26,7 @@ var Picker = new function () {
 
     this.onContainerMouseDown = function (event) {
         PickerCommon.intersect(event)
-        if (isSet(intersects[0])) {
+        if (PickerCommon.intersects()) {
             switch (event.button) {
                 case 0:
                     // add item
