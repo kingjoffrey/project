@@ -53,55 +53,78 @@ var MapGenerator = new function () {
                 },
                 x = 0,
                 y = 0,
-                fieldSize = (DATA_SIZE - 1) / (fieldsNumber - 1)
+                fieldSize = (DATA_SIZE - 1) / (fieldsNumber - 1),
+                imageData = [],
+                maxI = 0, maxJ = 0
 
             ctx.translate(0, canvas.height)
             ctx.rotate(270 * Math.PI / 180)
 
-            for (var i in data) {
-                for (var j in data[i]) {
-                    switch (data[i][j]) {
+            for (var maxI in data) {
+                imageData[maxI] = {}
+                for (var maxJ in data[maxI]) {
+                    switch (data[maxI][maxJ]) {
                         case 1:
-                            //var color = '#ffff' + (parseInt(pixels[i][j]) + minus.water).toString(16),
+                            //var color = '#ffff' + (parseInt(pixels[maxI][maxJ]) + minus.water).toString(16),
                             var color = '#ffff00',
                                 type = 'w'
                             break
                         case 3:
-                            var rgb = (256 - parseInt(pixels[i][j]) - minus.grass).toString(16),
+                            var rgb = (256 - parseInt(pixels[maxI][maxJ]) - minus.grass).toString(16),
                                 color = '#00' + rgb + '00',
                                 type = 'g'
                             break
                         case 4:
-                            var rgb = (256 - parseInt(pixels[i][j]) - minus.hills).toString(16),
+                            var rgb = (256 - parseInt(pixels[maxI][maxJ]) - minus.hills).toString(16),
                                 color = '#' + rgb + rgb + '00',
                                 type = 'h'
                             break
                         case 5:
-                            var rgb = (parseInt(pixels[i][j]) + minus.mountains).toString(16),
+                            var rgb = (parseInt(pixels[maxI][maxJ]) + minus.mountains).toString(16),
                                 color = '#' + rgb + rgb + rgb,
                                 type = 'm'
                             break
                         case 6:
-                            var rgb = (parseInt(pixels[i][j]) + minus.snow).toString(16),
+                            var rgb = (parseInt(pixels[maxI][maxJ]) + minus.snow).toString(16),
                                 color = '#' + rgb + rgb + rgb,
                                 type = 'm'
                             break
                     }
-                    if (i % fieldSize == 0 && j % fieldSize == 0) {
+                    if (maxI % fieldSize == 0 && maxJ % fieldSize == 0) {
                         if (notSet(fields[y])) {
                             fields[y] = []
                         }
                         fields[y][x] = type
                         x++
                     }
-                    setPixel(i, j, color)
+                    imageData[maxI][maxJ] = color
                 }
-                if (i % fieldSize == 0) {
+                if (maxI % fieldSize == 0) {
                     x = 0
                     y++
                 }
             }
-
+            var xx, yy = 0, ss = 10 * fieldSize
+            for (i = 0; i <= maxI - 1; i++) {
+                if (i < ss) {
+                    continue
+                }
+                xx = 0
+                for (j = 0; j <= maxJ - 1; j++) {
+                    setPixel(yy, xx, imageData[yy][xx])
+                    xx++
+                }
+                yy++
+            }
+            //for (i = 0; i < ss; i++) {
+            //    xx = 0
+            //    for (j = 0; j <= maxJ - 1; j++) {
+            //        setPixel(yy, xx, imageData[yy][xx])
+            //        xx++
+            //    }
+            //    yy++
+            //    console.log(yy)
+            //}
             WebSocketEditor.save()
         },
         grid = function (size) {

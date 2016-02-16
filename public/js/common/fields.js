@@ -2,8 +2,16 @@
 var Fields = new function () {
     var fields = {},
         maxX,
-        maxY
-
+        maxY,
+        initRoads = function () {
+            for (var y = 0; y <= maxY; y++) {
+                for (var x = 0; x <= maxX; x++) {
+                    if (fields[y][x].getType() == 'r') {
+                        Models.addRoad(x, y)
+                    }
+                }
+            }
+        }
     this.init = function (fields, mapId) {
         for (maxY in fields) {
             for (maxX in fields[maxY]) {
@@ -19,16 +27,7 @@ var Fields = new function () {
             }
         }
         Ground.init(maxX, maxY, '/img/maps/' + mapId + '.png')
-        Fields.initRoads()
-    }
-    this.initRoads = function () {
-        for (var y = 0; y <= maxY; y++) {
-            for (var x = 0; x <= maxX; x++) {
-                if (fields[y][x].getType() == 'r') {
-                    Models.addRoad(x, y)
-                }
-            }
-        }
+        initRoads()
     }
     this.initCastle = function (x, y, castleId, color) {
         for (var i = y; i <= y + 1; i++) {

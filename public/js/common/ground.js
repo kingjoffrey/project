@@ -3,12 +3,47 @@ var Ground = new function () {
         hillLevel = 0.5,
         bottomLevel = 0.2,
         waterLevel = 0.11,
+        cloudsLevel=100,
         grassVertexPositions = [],
+        createClouds = function (maxX, maxY) {
+            var cloudsVertexPositions = [],
+                cloudsVertices = new Float32Array(18),
+                cloudsGeometry = new THREE.BufferGeometry(),
+                cloudsMaterial = new THREE.MeshBasicMaterial({
+                    color: 0x0000ff,
+                    side: THREE.DoubleSide
+                })
+
+            cloudsVertexPositions.push([0, 0, cloudsLevel])
+            cloudsVertexPositions.push([maxX, 0, cloudsLevel])
+            cloudsVertexPositions.push([0, maxY, cloudsLevel])
+
+            cloudsVertexPositions.push([maxX, maxY, cloudsLevel])
+            cloudsVertexPositions.push([0, maxY, cloudsLevel])
+            cloudsVertexPositions.push([maxX, 0, cloudsLevel])
+
+            for (var i = 0; i < 6; i++) {
+                var index = i * 3
+                cloudsVertices[index + 0] = cloudsVertexPositions[i][0]
+                cloudsVertices[index + 1] = cloudsVertexPositions[i][1]
+                cloudsVertices[index + 2] = cloudsVertexPositions[i][2]
+            }
+
+            cloudsGeometry.addAttribute('position', new THREE.BufferAttribute(cloudsVertices, 3))
+            var waterMesh = new THREE.Mesh(cloudsGeometry, cloudsMaterial)
+            waterMesh.rotation.x = Math.PI / 2
+            Scene.add(waterMesh)
+        },
         createWater = function (maxX, maxY) {
             var waterVertexPositions = [],
                 waterVertices = new Float32Array(18),
                 waterGeometry = new THREE.BufferGeometry(),
-                waterMaterial = new THREE.MeshBasicMaterial({color: 0x0000ff, side: THREE.DoubleSide})
+                waterMaterial = new THREE.MeshBasicMaterial({
+                    color: 0x0000ff,
+                    side: THREE.DoubleSide,
+                    transparent: true,
+                    opacity: 0.3
+                })
 
             waterVertexPositions.push([0, 0, waterLevel])
             waterVertexPositions.push([maxX, 0, waterLevel])
