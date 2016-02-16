@@ -166,7 +166,7 @@ var Zoom = {
                 'left': lensleft + 'px',
                 'top': lenstop + 'px'
             });
-console.log('aaa')
+
             var yOffset = Scene.getCamera().position.y - Scene.getCameraY()
             console.log(yOffset)
             //Scene.getCamera().position.x = ($obj.node.left * Zoom.scale.x + Scene.getWidth() / 2) / 10 - Scene.getCameraY() - yOffset

@@ -112,7 +112,7 @@ var Scene = new function () {
 
         initCamera(gameWidth, gameHeight)
         renderer.setSize(gameWidth, gameHeight)
-        Picker.init()
+        PickerCommon.init()
     }
     this.resize = function () {
         gameWidth = $(window).innerWidth()

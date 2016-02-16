@@ -1,24 +1,10 @@
 var Picker = new function () {
-    var raycaster = new THREE.Raycaster(),
-        objects = [],
-        intersects = [],
-        detached = [],
-        camera,
-        container,
-        draggedMesh = 0,
+    var draggedMesh = 0,
         oldX = 0,
         oldZ = 0,
         draggedMeshX,
         draggedMeshZ
 
-    this.init = function () {
-        camera = Scene.getCamera()
-        container = Scene.getRenderer().domElement
-
-        container.addEventListener('mousedown', onContainerMouseDown, false);
-        container.addEventListener('mousemove', onContainerMouseMove, false);
-        container.addEventListener('mouseup', onContainerMouseUp, false);
-    }
     this.addDraggedMesh = function (mesh) {
         draggedMesh = mesh
         if (draggedMesh.itemName == 'castle') {
@@ -31,14 +17,6 @@ var Picker = new function () {
     this.getDraggedMesh = function () {
         return draggedMesh
     }
-    this.attach = function (object) {
-        if (object instanceof THREE.Mesh) {
-            objects.push(object);
-        }
-    }
-    this.detach = function (object) {
-        objects.splice(objects.indexOf(object), 1);
-    }
     this.getX = function () {
         return draggedMeshX
     }
@@ -46,51 +24,20 @@ var Picker = new function () {
         return draggedMeshZ
     }
 
-    var intersect = function (event) {
-            var x = event.offsetX == undefined ? event.layerX : event.offsetX,
-                y = event.offsetY == undefined ? event.layerY : event.offsetY,
-                vector = new THREE.Vector3(( x / container.width ) * 2 - 1, -( y / container.height ) * 2 + 1, 1)
-
-            vector.unproject(camera)
-            raycaster.set(camera.position, vector.sub(camera.position).normalize())
-            intersects = raycaster.intersectObjects(objects, true)
-        },
-        onContainerMouseDown = function (event) {
-            intersect(event)
-            if (isSet(intersects[0])) {
-                onclick(event.button)
-            }
-        },
-        onContainerMouseMove = function (event) {
-            intersect(event)
-            if (isSet(intersects[0])) {
-                mouseMove()
-            }
-        },
-        onContainerMouseUp = function (event) {
-            event.preventDefault();
-        },
-        getField = function () {
-            return Fields.get(convertX(), convertZ())
-        },
-        convertX = function () {
-            draggedMeshX = Math.floor(parseInt(intersects[0].point.x) / 2)
-            return draggedMeshX
-        },
-        convertZ = function () {
-            draggedMeshZ = Math.floor(parseInt(intersects[0].point.z) / 2)
-            return draggedMeshZ
-        },
-        onclick = function (button) {
-            switch (button) {
+    this.onContainerMouseDown = function (event) {
+        PickerCommon.intersect(event)
+        if (isSet(intersects[0])) {
+            switch (event.button) {
                 case 0:
                     // add item
-                    var field = getField()
+                    var field = PickerCommon.getField()
                     if (draggedMesh) {
                         if (draggedMesh.itemName == 'eraser') {
-                            WebSocketEditor.remove(convertX(), convertZ())
+                            WebSocketEditor.remove(PickerCommon.convertX(), PickerCommon.convertZ())
                         } else {
-                            WebSocketEditor.add(draggedMesh.itemName, convertX(), convertZ())
+                            draggedMeshX = PickerCommon.convertX()
+                            draggedMeshZ = PickerCommon.convertZ()
+                            WebSocketEditor.add(draggedMesh.itemName, draggedMeshX, draggedMeshZ)
                         }
                     } else {
                         if (castleId = field.getCastleId()) {
@@ -117,22 +64,27 @@ var Picker = new function () {
                     Message.remove()
                     break
             }
-        },
-        mouseMove = function () {
+        }
+    }
+    this.onContainerMouseMove = function (event) {
+        PickerCommon.intersect(event)
+        if (PickerCommon.intersects()) {
             if (draggedMesh) {
-                var newX = convertX(),
-                    newZ = convertZ()
+                var newX = PickerCommon.convertX(),
+                    newZ = PickerCommon.convertZ()
 
                 if (newX != oldX) {
                     oldX = newX
                     draggedMesh.position.x = newX * 2 + draggedMesh.plus
-                    //console.log('x=' + newX)
                 }
                 if (newZ != oldZ) {
                     oldZ = newZ
                     draggedMesh.position.z = newZ * 2 + draggedMesh.plus
-                    //console.log('y=' + newZ)
                 }
             }
         }
+    }
+    this.onContainerMouseUp = function (event) {
+        event.preventDefault();
+    }
 }

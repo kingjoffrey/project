@@ -61,21 +61,23 @@ class EditorController extends Game_Controller_Gui
         $this->view->headScript()->appendFile('/js/editor/picker.js?v=' . $version);
         $this->view->headScript()->appendFile('/js/editor/players.js?v=' . $version);
 
-        $this->view->headScript()->appendFile('/js/game/scene.js?v=' . $version);
-        $this->view->headScript()->appendFile('/js/game/ground.js?v=' . $version);
-        $this->view->headScript()->appendFile('/js/game/models.js?v=' . $version);
-        $this->view->headScript()->appendFile('/js/game/field.js?v=' . $version);
-        $this->view->headScript()->appendFile('/js/game/fields.js?v=' . $version);
-        $this->view->headScript()->appendFile('/js/game/ruin.js?v=' . $version);
-        $this->view->headScript()->appendFile('/js/game/ruins.js?v=' . $version);
-        $this->view->headScript()->appendFile('/js/game/tower.js?v=' . $version);
-        $this->view->headScript()->appendFile('/js/game/towers.js?v=' . $version);
         $this->view->headScript()->appendFile('/js/game/player.js?v=' . $version);
         $this->view->headScript()->appendFile('/js/game/armies.js?v=' . $version);
-        $this->view->headScript()->appendFile('/js/game/castles.js?v=' . $version);
-        $this->view->headScript()->appendFile('/js/game/castle.js?v=' . $version);
         $this->view->headScript()->appendFile('/js/game/units.js?v=' . $version);
         $this->view->headScript()->appendFile('/js/game/unit.js?v=' . $version);
+
+        $this->view->headScript()->appendFile('/js/common/castle.js?v=' . $version);
+        $this->view->headScript()->appendFile('/js/common/castles.js?v=' . $version);
+        $this->view->headScript()->appendFile('/js/common/scene.js?v=' . $version);
+        $this->view->headScript()->appendFile('/js/common/ground.js?v=' . $version);
+        $this->view->headScript()->appendFile('/js/common/models.js?v=' . $version);
+        $this->view->headScript()->appendFile('/js/common/field.js?v=' . $version);
+        $this->view->headScript()->appendFile('/js/common/fields.js?v=' . $version);
+        $this->view->headScript()->appendFile('/js/common/picker.js?v=' . $version);
+        $this->view->headScript()->appendFile('/js/common/ruin.js?v=' . $version);
+        $this->view->headScript()->appendFile('/js/common/ruins.js?v=' . $version);
+        $this->view->headScript()->appendFile('/js/common/tower.js?v=' . $version);
+        $this->view->headScript()->appendFile('/js/common/towers.js?v=' . $version);
 
         $mapId = $this->_request->getParam('mapId');
 
