@@ -23,8 +23,8 @@ var MapGenerator = new function () {
         generate()
     }
     var resetCanvas = function () {
-            canvas.width = DATA_SIZE
-            canvas.height = DATA_SIZE
+            canvas.width = DATA_SIZE - 1
+            canvas.height = DATA_SIZE - 1
             canvas.pixels = []
         },
         setPixel = function (x, y, color) {
@@ -65,8 +65,8 @@ var MapGenerator = new function () {
                 for (var maxJ in data[maxI]) {
                     switch (data[maxI][maxJ]) {
                         case 1:
-                            //var color = '#ffff' + (parseInt(pixels[maxI][maxJ]) + minus.water).toString(16),
-                            var color = '#ffff00',
+                            var color = '#0000' + (parseInt(pixels[maxI][maxJ]) + minus.water).toString(16),
+                            //var color = '#ffff00',
                                 type = 'w'
                             break
                         case 3:
@@ -104,27 +104,26 @@ var MapGenerator = new function () {
                     y++
                 }
             }
-            var xx, yy = 0, ss = 10 * fieldSize
-            for (i = 0; i <= maxI - 1; i++) {
-                if (i < ss) {
-                    continue
+            var cutLength = Math.floor(fieldSize / 2), offset = DATA_SIZE - cutLength
+            for (i = 0; i < maxI; i++) {
+                if (i < offset) {
+                    for (j = 0; j < maxJ; j++) {
+                        if (j < offset) {
+                            setPixel(i + cutLength, j + cutLength, imageData[i][j])
+                        } else {
+                            setPixel(i + cutLength, j - offset + 1, imageData[i][j])
+                        }
+                    }
+                } else {
+                    for (j = 0; j < maxJ; j++) {
+                        if (j < offset) {
+                            setPixel(i - offset + 1, j + cutLength, imageData[i][j])
+                        } else {
+                            setPixel(i - offset + 1, j - offset + 1, imageData[i][j])
+                        }
+                    }
                 }
-                xx = 0
-                for (j = 0; j <= maxJ - 1; j++) {
-                    setPixel(yy, xx, imageData[yy][xx])
-                    xx++
-                }
-                yy++
             }
-            //for (i = 0; i < ss; i++) {
-            //    xx = 0
-            //    for (j = 0; j <= maxJ - 1; j++) {
-            //        setPixel(yy, xx, imageData[yy][xx])
-            //        xx++
-            //    }
-            //    yy++
-            //    console.log(yy)
-            //}
             WebSocketEditor.save()
         },
         grid = function (size) {

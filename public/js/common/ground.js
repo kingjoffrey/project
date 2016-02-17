@@ -2,8 +2,8 @@ var Ground = new function () {
     var mountainLevel = 1.5,
         hillLevel = 0.5,
         bottomLevel = 0.2,
-        waterLevel = 0.11,
-        cloudsLevel=100,
+        waterLevel = 0.05,
+        cloudsLevel = 100,
         grassVertexPositions = [],
         createClouds = function (maxX, maxY) {
             var cloudsVertexPositions = [],
@@ -39,10 +39,10 @@ var Ground = new function () {
                 waterVertices = new Float32Array(18),
                 waterGeometry = new THREE.BufferGeometry(),
                 waterMaterial = new THREE.MeshBasicMaterial({
-                    color: 0x0000ff,
+                    color: 0xffffff,
                     side: THREE.DoubleSide,
                     transparent: true,
-                    opacity: 0.3
+                    opacity: 0.1
                 })
 
             waterVertexPositions.push([0, 0, waterLevel])
@@ -102,19 +102,19 @@ var Ground = new function () {
             //return
             for (var i = 0; i < grassVertexPositions.length; i++) {
                 if (grassVertexPositions[i][0] == 0) {
-                    grassVertexPositions[i][2] = 0.1
+                    grassVertexPositions[i][2] = waterLevel - 0.01
                     //continue
                 }
                 if (grassVertexPositions[i][0] == maxX) {
-                    grassVertexPositions[i][2] = 0.1
+                    grassVertexPositions[i][2] = waterLevel - 0.01
                     //continue
                 }
                 if (grassVertexPositions[i][1] == 0) {
-                    grassVertexPositions[i][2] = 0.1
+                    grassVertexPositions[i][2] = waterLevel - 0.01
                     //continue
                 }
                 if (grassVertexPositions[i][1] == maxY) {
-                    grassVertexPositions[i][2] = 0.1
+                    grassVertexPositions[i][2] = waterLevel - 0.01
                     //continue
                 }
                 // every field?
