@@ -11,7 +11,7 @@ var Models = new function () {
         hillModel,
         treeModel,
         waterModel,
-        showShadows = 0,
+        shadows,
         roadTexture,
         swampTexture,
         circles = [],
@@ -87,7 +87,7 @@ var Models = new function () {
             for (var i = 2; i <= defense; i++) {
                 var m = getCastleModel(i)
 
-                if (showShadows) {
+                if (shadows) {
                     m.castShadow = true
                     m.receiveShadow = true
                 }
@@ -306,7 +306,7 @@ var Models = new function () {
         mesh.position.set(x * 2 + 0.5, 0, y * 2 + 1)
         mesh.rotation.y = 2 * Math.PI * Math.random()
 
-        if (showShadows) {
+        if (shadows) {
             mesh.castShadow = true
             mesh.receiveShadow = true
         }
@@ -320,7 +320,7 @@ var Models = new function () {
             mesh = new THREE.Mesh(towerModel.geometry, towerMaterial)
         mesh.position.set(x * 2 + 1.5, 0, y * 2 + 0.5)
 
-        if (showShadows) {
+        if (shadows) {
             mesh.castShadow = true
             mesh.receiveShadow = true
         }
@@ -328,7 +328,7 @@ var Models = new function () {
 
         var material = new THREE.MeshLambertMaterial({color: color, side: THREE.DoubleSide})
         var flagMesh = new THREE.Mesh(flagModel.geometry, material)
-        if (showShadows) {
+        if (shadows) {
             flagMesh.castShadow = true
             flagMesh.receiveShadow = true
         }
@@ -342,7 +342,7 @@ var Models = new function () {
         var mesh = new THREE.Mesh(castleModel_1.geometry, castleMaterial)
         mesh.position.set(castle.x * 2 + 2, 0, castle.y * 2 + 2)
 
-        if (showShadows) {
+        if (shadows) {
             mesh.castShadow = true
             mesh.receiveShadow = true
         }
@@ -350,7 +350,7 @@ var Models = new function () {
 
         var material = new THREE.MeshLambertMaterial({color: color, side: THREE.DoubleSide})
         var flagMesh = new THREE.Mesh(flagModel.geometry, material)
-        if (showShadows) {
+        if (shadows) {
             flagMesh.castShadow = true
             flagMesh.receiveShadow = true
         }
@@ -370,7 +370,7 @@ var Models = new function () {
         mesh.position.set(x * 2 + 1, 0, y * 2 + 1)
         mesh.rotation.y = 2 * Math.PI * Math.random()
 
-        if (showShadows) {
+        if (shadows) {
             mesh.castShadow = true
             mesh.receiveShadow = true
         }
@@ -446,7 +446,7 @@ var Models = new function () {
         mesh.rotation.x = Math.PI / 2
         mesh.position.set(x * 2 + 1, 0.01, y * 2 + 1)
 
-        if (showShadows) {
+        if (shadows) {
             mesh.castShadow = true
             mesh.receiveShadow = true
         }
@@ -463,7 +463,7 @@ var Models = new function () {
         mesh.rotation.x = Math.PI / 2
         mesh.position.set(x * 2 + 1, 0.01, y * 2 + 1)
 
-        if (showShadows) {
+        if (shadows) {
             mesh.castShadow = true
             mesh.receiveShadow = true
         }
@@ -495,12 +495,12 @@ var Models = new function () {
         mesh.position.set(x * 2 + 0.5, height, y * 2 + 0.5)
         mesh.rotation.y = Math.PI / 2 + Math.PI / 4
 
-        if (showShadows) {
+        if (shadows) {
             mesh.castShadow = true
             mesh.receiveShadow = true
         }
         var flagMesh = new THREE.Mesh(getFlag(number).geometry, material)
-        if (showShadows) {
+        if (shadows) {
             flagMesh.castShadow = true
         }
         flagMesh.position.set(-0.2, 0, 0)
@@ -511,6 +511,7 @@ var Models = new function () {
         return mesh
     }
     this.init = function () {
+        shadows = Scene.getShadows()
         initRoadTexture()
         initSwampTexture()
         initRuin()

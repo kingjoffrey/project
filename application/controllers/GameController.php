@@ -44,9 +44,10 @@ class GameController extends Coret_Controller_Authorized
         $this->view->headScript()->appendFile('/js/jquery-ui-1.10.3.custom.js');
         $this->view->headScript()->appendFile('/js/jquery.mousewheel.min.js');
         $this->view->headScript()->appendFile('/js/Tween.js');
-        $this->view->headScript()->appendFile('/js/three.js');
-//        $this->view->headScript()->appendFile('http://threejs.org/build/three.min.js');
-        $this->view->headScript()->appendFile('/js/Detector.js');
+        $this->view->headScript()->appendFile('/js/three/three.js');
+        $this->view->headScript()->appendFile('/js/three/Detector.js');
+        $this->view->headScript()->appendFile('/js/three/Mirror.js');
+        $this->view->headScript()->appendFile('/js/three/WaterShader.js');
         $this->view->headScript()->appendFile('/js/geometries/TextGeometry.js');
         $this->view->headScript()->appendFile('/js/utils/FontUtils.js');
         $this->view->headScript()->appendFile('/fonts/helvetiker_regular.typeface.js');

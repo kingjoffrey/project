@@ -8,7 +8,7 @@ var Scene = new function () {
         scene = new THREE.Scene(),
         camera,
         renderer = new THREE.WebGLRenderer({antialias: true}),
-        showShadows = 0,
+        shadows = 1,
         cameraY = 24,
         timeOut = 100,
         animate = function () {
@@ -41,9 +41,12 @@ var Scene = new function () {
             Models.init()
         }
 
-    if (showShadows) {
-        renderer.shadowMapEnabled = true
+    if (shadows) {
+        renderer.shadowMap.enabled = true
         renderer.shadowMapSoft = false
+    }
+    this.getShadows = function () {
+        return shadows
     }
     this.setCameraPosition = function (x, z) {
         camera.position.set(x, cameraY, parseInt(z))
