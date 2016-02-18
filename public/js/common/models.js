@@ -97,7 +97,7 @@ var Models = new function () {
         },
         initSwampTexture = function () {
             swampTexture
-            tl.load('/img/game/road/road_v.png', function (tex) {
+            tl.load('/img/game/swamp.png', function (tex) {
                 swampTexture = tex
                 loading++
             })

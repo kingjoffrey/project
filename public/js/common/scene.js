@@ -7,6 +7,7 @@ var Scene = new function () {
         gameHeight,
         scene = new THREE.Scene(),
         camera,
+        directionalLight,
         renderer = new THREE.WebGLRenderer({antialias: true}),
         shadows = 1,
         cameraY = 24,
@@ -27,7 +28,7 @@ var Scene = new function () {
                 near = 1,
                 far = 1000
 
-            camera = new THREE.PerspectiveCamera(viewAngle, gameWidth / gameHeight, 1, 1000)
+            camera = new THREE.PerspectiveCamera(viewAngle, gameWidth / gameHeight, near, far)
             camera.rotation.order = 'YXZ'
             camera.rotation.y = -Math.PI / 4
             camera.rotation.x = Math.atan(-1 / Math.sqrt(2))
@@ -39,26 +40,37 @@ var Scene = new function () {
 
             animate()
             Models.init()
+        },
+        initLight = function () {
+            directionalLight = new THREE.DirectionalLight(0xdfebff, 0.75)
+            directionalLight.position.set(100, 100, 100)
+console.log(directionalLight.position)
+            if (shadows) {
+                renderer.shadowMap.enabled = true
+                renderer.shadowMapSoft = false
+
+                directionalLight.castShadow = true
+
+                directionalLight.shadow.mapSize.width = 2048
+                directionalLight.shadow.mapSize.height = 2048
+
+                var d = 100
+
+                directionalLight.shadow.camera.left = -d
+                directionalLight.shadow.camera.right = d
+                directionalLight.shadow.camera.top = d
+                directionalLight.shadow.camera.bottom = -d
+                directionalLight.shadow.camera.far = 1000
+
+                var helper = new THREE.CameraHelper(directionalLight.shadow.camera)
+                scene.add(helper)
+            }
+            console.log(directionalLight.position)
+            scene.add(directionalLight)
         }
 
-    if (shadows) {
-        renderer.shadowMap.enabled = true
-        renderer.shadowMapSoft = false
-
-        var theLight = new THREE.DirectionalLight(0xffffff, 1)
-        theLight.position.set(1500, 1000, 1000)
-        theLight.castShadow = true
-        theLight.shadow.darkness = 0.3
-        theLight.shadow.mapSize.width = 8192
-        theLight.shadow.mapSize.height = 8192
-        theLight.shadow.cameraVisible = true;
-        scene.add(theLight)
-        //var spotLight = new THREE.SpotLight(0xffffff);
-        //spotLight.position.set(1, 2, 2);
-        //spotLight.castShadow = true;
-        //spotLight.shadowCameraNear = true;
-        //spotLight.intensity = 1;
-        //scene.add(spotLight);
+    this.getLight = function () {
+        return directionalLight
     }
     this.getShadows = function () {
         return shadows
@@ -129,6 +141,7 @@ var Scene = new function () {
             )
 
         initCamera(gameWidth, gameHeight)
+        initLight()
         renderer.setSize(gameWidth, gameHeight)
         PickerCommon.init()
     }
