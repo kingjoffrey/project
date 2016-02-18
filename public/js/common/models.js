@@ -17,6 +17,8 @@ var Models = new function () {
         circles = [],
         armyCircles = [],
         loader = new THREE.JSONLoader(),
+        tl = new THREE.TextureLoader(),
+        loading = 0,
         createTextMesh = function (text, color) {
             var mesh = new THREE.Mesh(new THREE.TextGeometry(text, {
                 size: 0.25,
@@ -27,27 +29,78 @@ var Models = new function () {
             return mesh
         },
         initRoadTexture = function () {
-            roadTexture = {
-                'c': THREE.ImageUtils.loadTexture('/img/game/road/road_c.png'),
-                'd1': THREE.ImageUtils.loadTexture('/img/game/road/road_d1.png'),
-                'd3': THREE.ImageUtils.loadTexture('/img/game/road/road_d3.png'),
-                'h': THREE.ImageUtils.loadTexture('/img/game/road/road_h.png'),
-                'l1': THREE.ImageUtils.loadTexture('/img/game/road/road_l1.png'),
-                'l3': THREE.ImageUtils.loadTexture('/img/game/road/road_l3.png'),
-                'ld': THREE.ImageUtils.loadTexture('/img/game/road/road_ld.png'),
-                'lu': THREE.ImageUtils.loadTexture('/img/game/road/road_lu.png'),
-                'p': THREE.ImageUtils.loadTexture('/img/game/road/road_p.png'),
-                'r1': THREE.ImageUtils.loadTexture('/img/game/road/road_r1.png'),
-                'r3': THREE.ImageUtils.loadTexture('/img/game/road/road_r3.png'),
-                'rd': THREE.ImageUtils.loadTexture('/img/game/road/road_rd.png'),
-                'ru': THREE.ImageUtils.loadTexture('/img/game/road/road_ru.png'),
-                'u1': THREE.ImageUtils.loadTexture('/img/game/road/road_u1.png'),
-                'u3': THREE.ImageUtils.loadTexture('/img/game/road/road_u3.png'),
-                'v': THREE.ImageUtils.loadTexture('/img/game/road/road_v.png')
-            }
+            roadTexture = {}
+            tl.load('/img/game/road/road_c.png', function (tex) {
+                roadTexture.c = tex
+                loading++
+            })
+            tl.load('/img/game/road/road_d1.png', function (tex) {
+                roadTexture.d1 = tex
+                loading++
+            })
+            tl.load('/img/game/road/road_d3.png', function (tex) {
+                roadTexture.d3 = tex
+                loading++
+            })
+            tl.load('/img/game/road/road_h.png', function (tex) {
+                roadTexture.h = tex
+                loading++
+            })
+            tl.load('/img/game/road/road_l1.png', function (tex) {
+                roadTexture.l1 = tex
+                loading++
+            })
+            tl.load('/img/game/road/road_l3.png', function (tex) {
+                roadTexture.l3 = tex
+                loading++
+            })
+            tl.load('/img/game/road/road_ld.png', function (tex) {
+                roadTexture.ld = tex
+                loading++
+            })
+            tl.load('/img/game/road/road_lu.png', function (tex) {
+                roadTexture.lu = tex
+                loading++
+            })
+            tl.load('/img/game/road/road_p.png', function (tex) {
+                roadTexture.p = tex
+                loading++
+            })
+            tl.load('/img/game/road/road_r1.png', function (tex) {
+                roadTexture.r1 = tex
+                loading++
+            })
+            tl.load('/img/game/road/road_r3.png', function (tex) {
+                roadTexture.r3 = tex
+                loading++
+            })
+            tl.load('/img/game/road/road_rd.png', function (tex) {
+                roadTexture.rd = tex
+                loading++
+            })
+            tl.load('/img/game/road/road_ru.png', function (tex) {
+                roadTexture.ru = tex
+                loading++
+            })
+            tl.load('/img/game/road/road_u1.png', function (tex) {
+                roadTexture.u1 = tex
+                loading++
+            })
+            tl.load('/img/game/road/road_u3.png', function (tex) {
+                roadTexture.u3 = tex
+                loading++
+            })
+            tl.load('/img/game/road/road_v.png', function (tex) {
+                roadTexture.v = tex
+                loading++
+            })
         },
         initSwampTexture = function () {
-            swampTexture = THREE.ImageUtils.loadTexture('/img/game/swamp.png')
+            swampTexture
+            tl.load('/img/game/road/road_v.png', function (tex) {
+                swampTexture = tex
+                loading++
+            })
         },
         initRuin = function () {
             ruin.scale = 6
@@ -119,21 +172,21 @@ var Models = new function () {
                 window[i + 'Model'] = loader.parse(armyModels[i])
             }
 
-            flag_1.scale = 7.5
+            flag_1.scale = 15
             flag_1Model = loader.parse(flag_1)
-            flag_2.scale = 7.5
+            flag_2.scale = 15
             flag_2Model = loader.parse(flag_2)
-            flag_3.scale = 7.5
+            flag_3.scale = 15
             flag_3Model = loader.parse(flag_3)
-            flag_4.scale = 7.5
+            flag_4.scale = 15
             flag_4Model = loader.parse(flag_4)
-            flag_5.scale = 7.5
+            flag_5.scale = 15
             flag_5Model = loader.parse(flag_5)
-            flag_6.scale = 7.5
+            flag_6.scale = 15
             flag_6Model = loader.parse(flag_6)
-            flag_7.scale = 7.5
+            flag_7.scale = 15
             flag_7Model = loader.parse(flag_7)
-            flag_8.scale = 7.5
+            flag_8.scale = 15
             flag_8Model = loader.parse(flag_8)
         },
         getFlag = function (number) {
@@ -161,6 +214,7 @@ var Models = new function () {
             treeModel = loader.parse(tree)
             treeModel.material = new THREE.MeshLambertMaterial({color: '#003300', side: THREE.DoubleSide})
         }
+
     this.addPathCircle = function (x, y, color, t) {
         var radius = 1,
             segments = 64,
@@ -428,14 +482,6 @@ var Models = new function () {
             var map = roadTexture.r1
         }
 
-        if (notSet(map)) {
-            console.log(f1)
-            console.log(f2)
-            console.log(f3)
-            console.log(f4)
-            return
-        }
-
         var roadMaterial = new THREE.MeshLambertMaterial({
                 map: map,
                 side: THREE.DoubleSide,
@@ -447,7 +493,6 @@ var Models = new function () {
         mesh.position.set(x * 2 + 1, 0.01, y * 2 + 1)
 
         if (shadows) {
-            mesh.castShadow = true
             mesh.receiveShadow = true
         }
         Scene.add(mesh)
@@ -464,7 +509,6 @@ var Models = new function () {
         mesh.position.set(x * 2 + 1, 0.01, y * 2 + 1)
 
         if (shadows) {
-            mesh.castShadow = true
             mesh.receiveShadow = true
         }
         Scene.add(mesh)
@@ -519,5 +563,9 @@ var Models = new function () {
         initCastle()
         initArmy()
         initTree()
+        init = 1
+    }
+    this.getLoading = function () {
+        return loading
     }
 }

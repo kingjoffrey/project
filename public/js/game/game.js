@@ -5,6 +5,12 @@ var Game = new function () {
         game
 
     this.init = function (g) {
+        if (Models.getLoading() < 17) {
+            setTimeout(function () {
+                Game.init(g)
+            }, 500)
+            return
+        }
         if (loading) {
             game = g
             map = $('#map')
@@ -14,7 +20,6 @@ var Game = new function () {
 
             Units.init(game.units)
             Terrain.init(game.terrain)
-            Scene.init()
             Fields.init(game.fields, game.mapId)
             Turn.init(game.turnHistory)
             Players.init(game.players)
@@ -68,6 +73,7 @@ var Game = new function () {
 }
 
 $(document).ready(function () {
+    Scene.init()
     WebSocketGame.init()
     PrivateChat.init()
 })

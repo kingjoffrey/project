@@ -6,7 +6,7 @@ var WebSocketEditor = new function () {
             switch (r.type) {
                 case 'init':
                     Editor.init(r)
-                    break;
+                    break
                 case 'castleId':
                     Players.get('neutral').getCastles().add(r.value, {
                         x: Picker.getX(),

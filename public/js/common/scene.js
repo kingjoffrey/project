@@ -34,8 +34,8 @@ var Scene = new function () {
             camera.position.y = cameraY
             camera.scale.addScalar(1)
             scene.add(camera)
-            scene.add(new THREE.AmbientLight(0xaaaaaa))
-            camera.add(new THREE.PointLight(0xffffff, 0.7))
+            scene.add(new THREE.AmbientLight(0x777777))
+            //camera.add(new THREE.PointLight(0xffffff, 0.7))
 
             animate()
             Models.init()
@@ -44,6 +44,21 @@ var Scene = new function () {
     if (shadows) {
         renderer.shadowMap.enabled = true
         renderer.shadowMapSoft = false
+
+        var theLight = new THREE.DirectionalLight(0xffffff, 1)
+        theLight.position.set(1500, 1000, 1000)
+        theLight.castShadow = true
+        theLight.shadow.darkness = 0.3
+        theLight.shadow.mapSize.width = 8192
+        theLight.shadow.mapSize.height = 8192
+        theLight.shadow.cameraVisible = true;
+        scene.add(theLight)
+        //var spotLight = new THREE.SpotLight(0xffffff);
+        //spotLight.position.set(1, 2, 2);
+        //spotLight.castShadow = true;
+        //spotLight.shadowCameraNear = true;
+        //spotLight.intensity = 1;
+        //scene.add(spotLight);
     }
     this.getShadows = function () {
         return shadows

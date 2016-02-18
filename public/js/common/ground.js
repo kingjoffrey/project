@@ -61,7 +61,7 @@ var Ground = new function () {
             mirrorMesh.add(water);
             mirrorMesh.rotation.x = -Math.PI / 2
             mirrorMesh.position.x = maxX / 2
-            mirrorMesh.position.y = -0.01
+            mirrorMesh.position.y = -waterLevel
             mirrorMesh.position.z = maxY / 2
             Scene.add(mirrorMesh);
 
@@ -178,24 +178,18 @@ var Ground = new function () {
                 grassVertexPositions.push([xy[i][0], xy[i][1] + 1, 0])       //  SECOND TRIANGLE
                 grassVertexPositions.push([xy[i][0] + 1, xy[i][1], 0])       //
             }
-            //console.log(grassVertexPositions);
-            //return
             for (var i = 0; i < grassVertexPositions.length; i++) {
                 if (grassVertexPositions[i][0] == 0) {
                     grassVertexPositions[i][2] = waterLevel - 0.01
-                    //continue
                 }
                 if (grassVertexPositions[i][0] == maxX) {
                     grassVertexPositions[i][2] = waterLevel - 0.01
-                    //continue
                 }
                 if (grassVertexPositions[i][1] == 0) {
                     grassVertexPositions[i][2] = waterLevel - 0.01
-                    //continue
                 }
                 if (grassVertexPositions[i][1] == maxY) {
                     grassVertexPositions[i][2] = waterLevel - 0.01
-                    //continue
                 }
                 // every field?
                 if (grassVertexPositions[i][0] % 2 == 0 && grassVertexPositions[i][1] % 2 == 0) {
@@ -264,6 +258,9 @@ var Ground = new function () {
                     grassMesh = new THREE.Mesh(grassGeometry, grassMaterial)
 
                 grassMesh.rotation.x = Math.PI / 2
+                if (Scene.getShadows()) {
+                    grassMesh.receiveShadow = true
+                }
                 Scene.add(grassMesh)
                 PickerCommon.attach(grassMesh)
 
@@ -273,56 +270,65 @@ var Ground = new function () {
             })
         },
         changeGroundLevel = function (grassVertexPositions, maxX, maxY, maxI, i, level, type) {
+            if (type == 'w') {
+                var rand = 0
+                //var rand = -0.1
+            } else {
+                var rand = -Math.random() / 5
+            }
             if (i % 12 == 0) {
-                grassVertexPositions[i + 3][2] = level                //
-                grassVertexPositions[i + 7][2] = level                //
-                grassVertexPositions[i + 11][2] = level               //
-                var between = maxY * 6 + 6                            //
-                if (i + between < maxI) {                             // center vertex of the field
-                    grassVertexPositions[i + between][2] = level      //
-                    grassVertexPositions[i + between - 2][2] = level  //
-                    grassVertexPositions[i + between - 4][2] = level  //
+                grassVertexPositions[i + 3][2] = level + rand                //
+                grassVertexPositions[i + 7][2] = level + rand                //
+                grassVertexPositions[i + 11][2] = level + rand               //
+                var between = maxY * 6 + 6                                   //
+                if (i + between < maxI) {                                    // center vertex of the field
+                    grassVertexPositions[i + between][2] = level + rand      //
+                    grassVertexPositions[i + between - 2][2] = level + rand  //
+                    grassVertexPositions[i + between - 4][2] = level + rand  //
                 }
 
+                //rand = Math.random() / 2
                 if ((i + 12) % (maxY * 6) != 0 && Fields.get(grassVertexPositions[i + 12][0] / 2, grassVertexPositions[i + 12][1] / 2).getType() == type) {
-                    grassVertexPositions[i + 9][2] = level                //
-                    grassVertexPositions[i + 13][2] = level               //
-                    grassVertexPositions[i + 17][2] = level               //
-                    var between = maxY * 6 + 12                           //
-                    if (i + between < maxI) {                             // vertex between two centers od the field on Y axis
-                        grassVertexPositions[i + between][2] = level      //
-                        grassVertexPositions[i - 2 + between][2] = level  //
-                        grassVertexPositions[i - 4 + between][2] = level  //
-                    }                                                     //
-                }                                                         //
-
+                    grassVertexPositions[i + 9][2] = level - rand                //
+                    grassVertexPositions[i + 13][2] = level - rand               //
+                    grassVertexPositions[i + 17][2] = level - rand               //
+                    var between = maxY * 6 + 12                                  //
+                    if (i + between < maxI) {                                        // vertex between two centers od the field on Y axis
+                        grassVertexPositions[i + between][2] = level - rand      //
+                        grassVertexPositions[i - 2 + between][2] = level - rand  //
+                        grassVertexPositions[i - 4 + between][2] = level - rand  //
+                    }                                                            //
+                }
+                //
+                //rand = Math.random() / 2
                 var nextRow = maxY * 2 * 6
                 if (i + nextRow < maxI && Fields.get(grassVertexPositions[i + nextRow][0] / 2, grassVertexPositions[i + nextRow][1] / 2).getType() == type) {
-                    grassVertexPositions[i + nextRow + 6][2] = level  //
-                    grassVertexPositions[i + nextRow + 4][2] = level  //
-                    grassVertexPositions[i + nextRow + 2][2] = level  //
-                    var between = maxY * 6                            //
-                    grassVertexPositions[i + between + 3][2] = level  // vertex between two centers od the field on X axis
-                    grassVertexPositions[i + between + 7][2] = level  //
-                    grassVertexPositions[i + between + 11][2] = level //
-                }                                                     //
+                    grassVertexPositions[i + nextRow + 6][2] = level - rand  //
+                    grassVertexPositions[i + nextRow + 4][2] = level - rand  //
+                    grassVertexPositions[i + nextRow + 2][2] = level - rand  //
+                    var between = maxY * 6                                   //
+                    grassVertexPositions[i + between + 3][2] = level - rand  // vertex between two centers od the field on X axis
+                    grassVertexPositions[i + between + 7][2] = level - rand  //
+                    grassVertexPositions[i + between + 11][2] = level - rand //
+                }                                                            //
 
+                //rand = Math.random() / 2
                 var nextVertex = nextRow + 12
                 if (i + nextVertex < maxI && (i + nextVertex) % (maxY * 6) != 0 && Fields.get(grassVertexPositions[i + nextVertex][0] / 2, grassVertexPositions[i + nextVertex][1] / 2).getType() == type) {
-                    grassVertexPositions[i + nextVertex][2] = level       //
-                    grassVertexPositions[i + nextVertex - 2][2] = level   //
-                    grassVertexPositions[i + nextVertex - 4][2] = level   //
-                    var between = maxY * 6                                //
-                    grassVertexPositions[i + between + 9][2] = level      // vertex between two centers od the field on X and Y axis
-                    grassVertexPositions[i + between + 13][2] = level     //
-                    grassVertexPositions[i + between + 17][2] = level     //
-                }                                                         //
+                    grassVertexPositions[i + nextVertex][2] = level - rand       //
+                    grassVertexPositions[i + nextVertex - 2][2] = level - rand   //
+                    grassVertexPositions[i + nextVertex - 4][2] = level - rand   //
+                    var between = maxY * 6                                       //
+                    grassVertexPositions[i + between + 9][2] = level - rand      // vertex between two centers od the field on X and Y axis
+                    grassVertexPositions[i + between + 13][2] = level - rand     //
+                    grassVertexPositions[i + between + 17][2] = level - rand     //
+                }                                                                //
             }
             return grassVertexPositions
         }
     this.init = function (maxX, maxY, textureName) {
         createGround(maxX * 2, maxY * 2, textureName)
-        createWater(maxX * 2, maxY * 2)
+        //createWater(maxX * 2, maxY * 2)
         //createClouds(maxX * 2, maxY * 2)
     }
     this.getMountainLevel = function () {
