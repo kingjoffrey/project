@@ -39,12 +39,10 @@ var Scene = new function () {
             //camera.add(new THREE.PointLight(0xffffff, 0.7))
 
             animate()
-            Models.init()
         },
         initLight = function () {
             directionalLight = new THREE.DirectionalLight(0xdfebff, 0.75)
-            directionalLight.position.set(100, 100, 100)
-console.log(directionalLight.position)
+            directionalLight.position.set(100, 200, 150)
             if (shadows) {
                 renderer.shadowMap.enabled = true
                 renderer.shadowMapSoft = false
@@ -65,7 +63,6 @@ console.log(directionalLight.position)
                 var helper = new THREE.CameraHelper(directionalLight.shadow.camera)
                 scene.add(helper)
             }
-            console.log(directionalLight.position)
             scene.add(directionalLight)
         }
 
@@ -122,6 +119,34 @@ console.log(directionalLight.position)
     this.getRenderer = function () {
         return renderer
     }
+    this.getWidth = function () {
+        return gameWidth
+    }
+    this.getHeight = function () {
+        return gameHeight
+    }
+    this.setFPS = function (fps) {
+        timeOut = parseInt(1000 / fps)
+    }
+    this.resize = function () {
+        gameWidth = $(window).innerWidth()
+        gameHeight = $(window).innerHeight()
+        if (gameWidth < minWidth) {
+            gameWidth = minWidth
+        }
+        if (gameHeight < minHeight) {
+            gameHeight = minHeight
+        }
+        $('#game')
+            .css({
+                    width: gameWidth + 'px',
+                    height: gameHeight + 'px'
+                }
+            )
+        renderer.setSize(gameWidth, gameHeight)
+        camera.aspect = gameWidth / gameHeight
+        camera.updateProjectionMatrix()
+    }
     this.init = function () {
         gameWidth = $(window).innerWidth()
         gameHeight = $(window).innerHeight()
@@ -143,34 +168,7 @@ console.log(directionalLight.position)
         initCamera(gameWidth, gameHeight)
         initLight()
         renderer.setSize(gameWidth, gameHeight)
+        Models.init()
         PickerCommon.init()
-    }
-    this.resize = function () {
-        gameWidth = $(window).innerWidth()
-        gameHeight = $(window).innerHeight()
-        if (gameWidth < minWidth) {
-            gameWidth = minWidth
-        }
-        if (gameHeight < minHeight) {
-            gameHeight = minHeight
-        }
-        $('#game')
-            .css({
-                    width: gameWidth + 'px',
-                    height: gameHeight + 'px'
-                }
-            )
-        renderer.setSize(gameWidth, gameHeight)
-        camera.aspect = gameWidth / gameHeight
-        camera.updateProjectionMatrix()
-    }
-    this.getWidth = function () {
-        return gameWidth
-    }
-    this.getHeight = function () {
-        return gameHeight
-    }
-    this.setFPS = function (fps) {
-        timeOut = parseInt(1000 / fps)
     }
 }

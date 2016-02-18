@@ -554,6 +554,9 @@ var Models = new function () {
 
         return mesh
     }
+    this.getLoading = function () {
+        return loading
+    }
     this.init = function () {
         shadows = Scene.getShadows()
         initRoadTexture()
@@ -563,9 +566,5 @@ var Models = new function () {
         initCastle()
         initArmy()
         initTree()
-        init = 1
-    }
-    this.getLoading = function () {
-        return loading
     }
 }

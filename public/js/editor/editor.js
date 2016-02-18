@@ -4,7 +4,6 @@ var Editor = new function () {
     this.init = function (r) {
         if (Models.getLoading() < 17) {
             setTimeout(function () {
-                console.log(Models.getLoading())
                 Editor.init(r)
             }, 500)
             return
@@ -21,3 +20,8 @@ var Editor = new function () {
         //console.log(r)
     }
 }
+
+$(document).ready(function () {
+    Scene.init()
+    WebSocketEditor.init()
+})
