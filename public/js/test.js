@@ -1,140 +1,135 @@
-var Test = new function () {
-    var scene = new THREE.Scene(),
-        camera = new THREE.PerspectiveCamera(10, window.innerWidth / window.innerHeight, 1, 1000),
-        renderer = new THREE.WebGLRenderer()
+var container, stats;
+var camera, scene, renderer;
+var sphere;
 
-    renderer.setSize(window.innerWidth, window.innerHeight);
-    renderer.shadowMap.enabled = true
+var parameters = {
+    width: 2000,
+    height: 2000,
+    widthSegments: 250,
+    heightSegments: 250,
+    depth: 1500,
+    param: 4,
+    filterparam: 1
+};
 
-    camera.position.set(-150, 150, 150);
-    camera.rotation.order = 'YXZ';
-    camera.rotation.y = -Math.PI / 4;
-    camera.rotation.x = Math.atan(-1 / Math.sqrt(2));
-    scene.add(camera)
-
-    scene.add(new THREE.AmbientLight(0x222222));
-
-    var light = new THREE.PointLight(0xffffff, 0.7);
-    camera.add(light);
-
-    this.init = function () {
-        $('body').append(renderer.domElement);
-        Test.render();
-    }
-    this.render = function () {
-        requestAnimationFrame(Test.render);
-        renderer.render(scene, camera);
-    }
-    this.getScene = function getScene() {
-        return scene
-    }
-}
-
-var CreateSimpleMesh = new function () {
-    var xy = [],
-        uv = [],
-        maxX = 20,
-        maxY = 20,
-        river = [[0, 5], [0, 4], [1, 3], [2, 2], [3, 2], [4, 1], [5, 1], [6, 0]],
-        grassGeometry = new THREE.BufferGeometry(),
-        grassVertexPositions = [],
-        imageArray = [
-            [0, 0],
-            [1, 0],
-            [0, 1],
-            [1, 1]
-        ]
-
-    this.init = function () {
-        for (var u = 0; u < maxX; u++) {
-            uv[u] = []
-            for (var v = 0; v < maxY; v++) {
-                uv[u][v] = []
-                uv[u][v][0] = [u / maxX, v / maxY]
-                uv[u][v][1] = [(u + 1) / maxX, v / maxY]
-                uv[u][v][2] = [u / maxX, (v + 1) / maxY]
-                uv[u][v][3] = [(u + 1) / maxX, (v + 1) / maxY]
-            }
-        }
-        console.log(imageArray)
-        console.log(uv)
-
-        for (var i = 0; i < maxX; i++) {
-            for (var j = 0; j < maxY; j++) {
-                xy.push([i, j])
-            }
-        }
-
-        for (var i = 0; i < xy.length; i++) {
-            grassVertexPositions.push([xy[i][0], xy[i][1], 0])
-            grassVertexPositions.push([xy[i][0] + 1, xy[i][1], 0])
-            grassVertexPositions.push([xy[i][0], xy[i][1] + 1, 0])
-
-            grassVertexPositions.push([xy[i][0] + 1, xy[i][1] + 1, 0])
-            grassVertexPositions.push([xy[i][0], xy[i][1] + 1, 0])
-            grassVertexPositions.push([xy[i][0] + 1, xy[i][1], 0])
-        }
-
-        var grassVertices = new Float32Array(grassVertexPositions.length * 3),
-            normals = new Float32Array(grassVertexPositions.length * 3),
-            colors = new Float32Array(grassVertexPositions.length * 3),
-            uvs = new Float32Array(grassVertexPositions.length * 2)
-
-        for (var i = 0; i < grassVertexPositions.length; i++) {
-            var index = 3 * i
-            grassVertices[index + 0] = grassVertexPositions[i][0]
-            grassVertices[index + 1] = grassVertexPositions[i][1]
-            grassVertices[index + 2] = grassVertexPositions[i][2]
-        }
-
-        var k = 0
-        for (var u = 0; u < maxX; u++) {
-            for (var v = 0; v < maxY; v++) {
-                // first triangle
-                uvs[0 + k] = uv[u][v][0][0]
-                uvs[1 + k] = uv[u][v][0][1]
-                uvs[2 + k] = uv[u][v][1][0]
-                uvs[3 + k] = uv[u][v][1][1]
-                uvs[4 + k] = uv[u][v][2][0]
-                uvs[5 + k] = uv[u][v][2][1]
-                // second triangle
-                uvs[6 + k] = uv[u][v][3][0]
-                uvs[7 + k] = uv[u][v][3][1]
-                uvs[8 + k] = uv[u][v][2][0]
-                uvs[9 + k] = uv[u][v][2][1]
-                uvs[10 + k] = uv[u][v][1][0]
-                uvs[11 + k] = uv[u][v][1][1]
-                k += 12
-            }
-        }
-        console.log(uvs)
-
-        grassGeometry.addAttribute('position', new THREE.BufferAttribute(grassVertices, 3))
-        grassGeometry.addAttribute('normal', new THREE.BufferAttribute(normals, 3))
-        grassGeometry.addAttribute('color', new THREE.BufferAttribute(colors, 3))
-        grassGeometry.addAttribute('uv', new THREE.BufferAttribute(uvs, 2))
-
-        grassGeometry.computeVertexNormals()
-
-        var textureLoader = new THREE.TextureLoader();
-        textureLoader.load('/img/testface.png', function (texture) {
-
-            var grassMaterial = new THREE.MeshLambertMaterial({map: texture}),
-                grassMesh = new THREE.Mesh(grassGeometry, grassMaterial)
-
-            //grassMesh.rotation.x = -Math.PI / 2;
-            Test.getScene().add(grassMesh)
-
-            var helper = new THREE.WireframeHelper(grassMesh, 0xff00ff);
-            helper.material.linewidth = 1;
-            Test.getScene().add(helper);
-
-            console.log(grassMesh.geometry.attributes)
-        });
-    }
-}
+var waterNormals;
 
 $(document).ready(function () {
-    Test.init()
-    CreateSimpleMesh.init()
-});
+    init();
+    animate();
+})
+
+function init() {
+
+    container = document.createElement('div');
+    document.body.appendChild(container);
+
+    renderer = new THREE.WebGLRenderer();
+    renderer.setPixelRatio(window.devicePixelRatio);
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    container.appendChild(renderer.domElement);
+
+    scene = new THREE.Scene();
+
+    camera = new THREE.PerspectiveCamera(55, window.innerWidth / window.innerHeight, 0.5, 3000000);
+    camera.position.set(2000, 750, 2000);
+
+    scene.add(new THREE.AmbientLight(0x444444));
+
+    var light = new THREE.DirectionalLight(0xffffbb, 1);
+    light.position.set(-1, 1, -1);
+    scene.add(light);
+
+
+    waterNormals = new THREE.TextureLoader().load('/img/waternormals.jpg');
+    waterNormals.wrapS = waterNormals.wrapT = THREE.RepeatWrapping;
+
+    water = new THREE.Water(renderer, camera, scene, {
+        textureWidth: 512,
+        textureHeight: 512,
+        waterNormals: waterNormals,
+        alpha: 1.0,
+        sunDirection: light.position.clone().normalize(),
+        sunColor: 0xffffff,
+        waterColor: 0x001e0f,
+        distortionScale: 50.0,
+    });
+
+
+    mirrorMesh = new THREE.Mesh(
+        new THREE.PlaneBufferGeometry(parameters.width * 500, parameters.height * 500),
+        water.material
+    );
+
+    mirrorMesh.add(water);
+    mirrorMesh.rotation.x = -Math.PI * 0.5;
+    scene.add(mirrorMesh);
+
+
+    // load skybox
+
+    var cubeMap = new THREE.CubeTexture([]);
+    cubeMap.format = THREE.RGBFormat;
+
+    var loader = new THREE.ImageLoader();
+    loader.load('/img/skyboxsun25degtest.png', function (image) {
+
+        var getSide = function (x, y) {
+
+            var size = 1024;
+
+            var canvas = document.createElement('canvas');
+            canvas.width = size;
+            canvas.height = size;
+
+            var context = canvas.getContext('2d');
+            context.drawImage(image, -x * size, -y * size);
+
+            return canvas;
+
+        };
+
+        cubeMap.images[0] = getSide(2, 1); // px
+        cubeMap.images[1] = getSide(0, 1); // nx
+        cubeMap.images[2] = getSide(1, 0); // py
+        cubeMap.images[3] = getSide(1, 2); // ny
+        cubeMap.images[4] = getSide(1, 1); // pz
+        cubeMap.images[5] = getSide(3, 1); // nz
+        cubeMap.needsUpdate = true;
+
+    });
+
+    var cubeShader = THREE.ShaderLib['cube'];
+    cubeShader.uniforms['tCube'].value = cubeMap;
+
+    var skyBoxMaterial = new THREE.ShaderMaterial({
+        fragmentShader: cubeShader.fragmentShader,
+        vertexShader: cubeShader.vertexShader,
+        uniforms: cubeShader.uniforms,
+        depthWrite: false,
+        side: THREE.BackSide
+    });
+
+    var skyBox = new THREE.Mesh(
+        new THREE.BoxGeometry(1000000, 1000000, 1000000),
+        skyBoxMaterial
+    );
+
+    scene.add(skyBox);
+}
+
+//
+
+function animate() {
+
+    requestAnimationFrame(animate);
+    render();
+
+}
+
+function render() {
+    water.material.uniforms.time.value += 1.0 / 60.0;
+    water.render();
+    renderer.render(scene, camera);
+
+}

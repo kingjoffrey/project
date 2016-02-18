@@ -1,4 +1,7 @@
-if (!Detector.webgl) Detector.addGetWebGLMessage();
+if (!Detector.webgl) {
+    Detector.addGetWebGLMessage();
+    document.getElementById('container').innerHTML = "";
+}
 
 var Scene = new function () {
     var minHeight = 665,
@@ -12,19 +15,9 @@ var Scene = new function () {
         shadows = 1,
         cameraY = 24,
         timeOut = 100,
-        animate = function () {
-            if (TWEEN.update()) {
-                requestAnimationFrame(animate)
-                renderer.render(scene, camera)
-            } else {
-                renderer.render(scene, camera)
-                setTimeout(function () {
-                    requestAnimationFrame(animate)
-                }, timeOut)
-            }
-        },
+        water,
         initCamera = function (gameWidth, gameHeight) {
-            var viewAngle = 22,
+            var viewAngle = 45,
                 near = 1,
                 far = 1000
 
@@ -37,8 +30,6 @@ var Scene = new function () {
             scene.add(camera)
             scene.add(new THREE.AmbientLight(0x777777))
             //camera.add(new THREE.PointLight(0xffffff, 0.7))
-
-            animate()
         },
         initLight = function () {
             directionalLight = new THREE.DirectionalLight(0xdfebff, 0.75)
@@ -170,5 +161,21 @@ var Scene = new function () {
         renderer.setSize(gameWidth, gameHeight)
         Models.init()
         PickerCommon.init()
+    }
+    this.setWater = function (w) {
+        water = w
+    }
+    this.render = function () {
+        if (TWEEN.update()) {
+            requestAnimationFrame(Scene.render)
+            renderer.render(scene, camera)
+        } else {
+            renderer.render(scene, camera)
+            setTimeout(function () {
+                water.material.uniforms.time.value += 1.0 / 60.0
+                water.render()
+                requestAnimationFrame(Scene.render)
+            }, timeOut)
+        }
     }
 }
