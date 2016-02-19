@@ -32,12 +32,20 @@ var Picker = new function () {
                     // add item
                     var field = PickerCommon.getField()
                     if (draggedMesh) {
-                        if (draggedMesh.itemName == 'eraser') {
-                            WebSocketEditor.remove(PickerCommon.convertX(), PickerCommon.convertZ())
-                        } else {
-                            draggedMeshX = PickerCommon.convertX()
-                            draggedMeshZ = PickerCommon.convertZ()
-                            WebSocketEditor.add(draggedMesh.itemName, draggedMeshX, draggedMeshZ)
+                        switch (draggedMesh.itemName) {
+                            case 'eraser':
+                                WebSocketEditor.remove(PickerCommon.convertX(), PickerCommon.convertZ())
+                                break
+                            case 'up':
+                                WebSocketEditor.up(PickerCommon.convertX(), PickerCommon.convertZ())
+                                break
+                            case 'down':
+                                WebSocketEditor.down(PickerCommon.convertX(), PickerCommon.convertZ())
+                                break
+                            default:
+                                draggedMeshX = PickerCommon.convertX()
+                                draggedMeshZ = PickerCommon.convertZ()
+                                WebSocketEditor.add(draggedMesh.itemName, draggedMeshX, draggedMeshZ)
                         }
                     } else {
                         if (castleId = field.getCastleId()) {

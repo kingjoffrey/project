@@ -61,7 +61,6 @@ class EditorController extends Game_Controller_Gui
         $this->view->headScript()->appendFile('/js/editor/websocket.js?v=' . $version);
         $this->view->headScript()->appendFile('/js/editor/gui.js?v=' . $version);
         $this->view->headScript()->appendFile('/js/editor/picker.js?v=' . $version);
-        $this->view->headScript()->appendFile('/js/editor/players.js?v=' . $version);
 
         $this->view->headScript()->appendFile('/js/game/player.js?v=' . $version);
         $this->view->headScript()->appendFile('/js/game/armies.js?v=' . $version);
@@ -76,6 +75,7 @@ class EditorController extends Game_Controller_Gui
         $this->view->headScript()->appendFile('/js/common/field.js?v=' . $version);
         $this->view->headScript()->appendFile('/js/common/fields.js?v=' . $version);
         $this->view->headScript()->appendFile('/js/common/picker.js?v=' . $version);
+        $this->view->headScript()->appendFile('/js/common/players.js?v=' . $version);
         $this->view->headScript()->appendFile('/js/common/ruin.js?v=' . $version);
         $this->view->headScript()->appendFile('/js/common/ruins.js?v=' . $version);
         $this->view->headScript()->appendFile('/js/common/tower.js?v=' . $version);

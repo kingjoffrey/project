@@ -70,6 +70,62 @@ class Cli_Model_Editor
         );
     }
 
+    public function up($dataIn, Zend_Db_Adapter_Pdo_Pgsql $db)
+    {
+        $field = $this->_Fields->getField($dataIn['x'], $dataIn['y']);
+        $type = $field->getType();
+        switch ($type) {
+            case 'w':
+                $type = 'g';
+                break;
+            case 'g':
+                $type = 'h';
+                break;
+            case 'h':
+                $type = 'm';
+                break;
+            default:
+                return array(
+                    'type' => 0
+                );
+        }
+        $field->setType($type);
+        $this->editTerrainType($dataIn['x'], $dataIn['y'], $type, $db);
+        return array(
+            'type' => $type,
+            'x' => $dataIn['x'],
+            'y' => $dataIn['y']
+        );
+    }
+
+    public function down($dataIn, Zend_Db_Adapter_Pdo_Pgsql $db)
+    {
+        $field = $this->_Fields->getField($dataIn['x'], $dataIn['y']);
+        $type = $field->getType();
+        switch ($type) {
+            case 'g':
+                $type = 'w';
+                break;
+            case 'h':
+                $type = 'g';
+                break;
+            case 'm':
+                $type = 'h';
+                break;
+            default:
+                return array(
+                    'type' => 0
+                );
+        }
+        $field->setType($type);
+        $this->editTerrainType($dataIn['x'], $dataIn['y'], $type, $db);
+        return array(
+            'type' => $type,
+            'x' => $dataIn['x'],
+            'y' => $dataIn['y']
+        );
+    }
+
     public function add($dataIn, Zend_Db_Adapter_Pdo_Pgsql $db)
     {
         $field = $this->_Fields->getField($dataIn['x'], $dataIn['y']);

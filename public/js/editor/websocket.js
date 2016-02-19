@@ -74,6 +74,18 @@ var WebSocketEditor = new function () {
                     Fields.get(r.x, r.y).setType(r.type)
                     //Models.addBridge(r.x, r.y)
                     break
+                case 'g':
+                    Fields.get(r.x, r.y).setType(r.type)
+                    break
+                case 'h':
+                    Fields.get(r.x, r.y).setType(r.type)
+                    break
+                case 'm':
+                    Fields.get(r.x, r.y).setType(r.type)
+                    break
+                case 'w':
+                    Fields.get(r.x, r.y).setType(r.type)
+                    break
             }
         },
         open = function () {
@@ -119,6 +131,36 @@ var WebSocketEditor = new function () {
             type: 'add',
             mapId: mapId,
             itemName: itemName,
+            x: x,
+            y: y
+        }
+
+        ws.send(JSON.stringify(token))
+    }
+    this.up = function (x, y) {
+        if (closed) {
+            console.log(translations.sorryServerIsDisconnected)
+            return;
+        }
+
+        var token = {
+            type: 'up',
+            mapId: mapId,
+            x: x,
+            y: y
+        }
+
+        ws.send(JSON.stringify(token))
+    }
+    this.down = function (x, y) {
+        if (closed) {
+            console.log(translations.sorryServerIsDisconnected)
+            return;
+        }
+
+        var token = {
+            type: 'down',
+            mapId: mapId,
             x: x,
             y: y
         }

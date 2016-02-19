@@ -45,7 +45,7 @@ var Turn = new function () {
             return
         }
 
-        Players.rotate(c)
+        GamePlayers.rotate(c, Players.toArray())
         beginDate = (new Date()).getTime()
         Timer.update()
 
@@ -56,7 +56,7 @@ var Turn = new function () {
         }
 
         Timer.append(color, number)
-        Players.drawTurn()
+        GamePlayers.drawTurn()
 
         if (Turn.isMy()) {
             Me.turnOn()

@@ -199,8 +199,8 @@ var WebSocketGame = new function () {
                     break;
 
                 case 'dead':
-                    if (!Players.hasSkull(r.color)) {
-                        Players.drawSkull(r.color)
+                    if (!GamePlayers.hasSkull(r.color)) {
+                        GamePlayers.drawSkull(r.color)
                     }
                     WebSocketGame.setExecuting(0)
                     break;
@@ -223,7 +223,7 @@ var WebSocketGame = new function () {
             ws.send(JSON.stringify(token))
         },
         message = function (r) {
-            console.log(r)
+            //console.log(r)
             switch (r.type) {
                 case 'move':
                     addQueue(r)

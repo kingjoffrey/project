@@ -52,8 +52,18 @@ var EditorModels = new function () {
                 mesh.rotation.x = Math.PI / 2
                 break
             case 'up':
+                var mesh = new THREE.Mesh(new THREE.PlaneGeometry(2, 2), new THREE.MeshLambertMaterial({
+                    color: '#00ff00',
+                    side: THREE.DoubleSide
+                }))
+                mesh.rotation.x = Math.PI / 2
                 break
             case 'down':
+                var mesh = new THREE.Mesh(new THREE.PlaneGeometry(2, 2), new THREE.MeshLambertMaterial({
+                    color: '#0000ff',
+                    side: THREE.DoubleSide
+                }))
+                mesh.rotation.x = Math.PI / 2
                 break
             default:
                 console.log('Brak typu (' + type + ')')

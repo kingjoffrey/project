@@ -23,6 +23,7 @@ var Game = new function () {
             Fields.init(game.fields, game.mapId)
             Turn.init(game.turnHistory)
             Players.init(game.players)
+            GamePlayers.init(game.players)
             Gui.init()
             Timer.init(game.begin, game.turnTimeLimit, game.timeLimit)
             Ruins.init(game.ruins)
@@ -31,7 +32,7 @@ var Game = new function () {
             Scene.initSun(Fields.getMaxY())
             Scene.render()
         }
-        Players.initOnline(game.online)
+        GamePlayers.initOnline(game.online)
         if (Turn.isMy()) {
             Me.turnOn()
             if (!Me.getTurnActive()) {

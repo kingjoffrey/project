@@ -16,7 +16,7 @@ class GameController extends Coret_Controller_Authorized
 
         $this->view->headLink()->prependStylesheet($this->view->baseUrl() . '/css/main.css?v=' . Zend_Registry::get('config')->version);
         $this->view->jquery();
-        $this->view->headScript()->appendFile('/js/kinetic-v5.1.0.min.js');
+        $this->view->headScript()->appendFile('/js/kinetic-v4.7.4.min.js');
         $this->view->headScript()->appendFile('/js/date.js');
 
 //        $this->view->googleAnalytics();
@@ -60,6 +60,7 @@ class GameController extends Coret_Controller_Authorized
         $this->view->headScript()->appendFile('/js/common/field.js?v=' . $version);
         $this->view->headScript()->appendFile('/js/common/fields.js?v=' . $version);
         $this->view->headScript()->appendFile('/js/common/picker.js?v=' . $version);
+        $this->view->headScript()->appendFile('/js/common/players.js?v=' . $version);
         $this->view->headScript()->appendFile('/js/common/ruin.js?v=' . $version);
         $this->view->headScript()->appendFile('/js/common/ruins.js?v=' . $version);
         $this->view->headScript()->appendFile('/js/common/tower.js?v=' . $version);

@@ -1,77 +1,12 @@
-var Players = new function () {
-    var center = {x: 0, y: 0},
-        kineticStage = null,
-        kineticLayer = null,
+var GamePlayers = new function () {
+    var layer,
+        center = {x: 90, y: 90},
         length = 0,
         wedges = {},
         kineticTurnNumber = null,
         circle = null,
-        players = {},
-        draw = function () {
-            var angle = 360 / length;
-            var r_angle = Math.PI * 2 / length
-
-            var circle = new Kinetic.Circle({
-                x: center.x,
-                y: center.y,
-                radius: 51,
-                fill: 'grey',
-                strokeWidth: 0
-            })
-            kineticLayer.add(circle)
-            var circle = new Kinetic.Circle({
-                x: center.x,
-                y: center.y,
-                radius: 90,
-                fill: 'none',
-                stroke: 'grey',
-                strokeWidth: 1
-            })
-            kineticLayer.add(circle)
-
-            var i = 0;
-            for (var shortName in players) {
-                if (shortName == 'neutral') {
-                    continue
-                }
-                var player = Players.get(shortName)
-                var rotation = i * angle
-                var r_rotation = i * r_angle + r_angle / 2
-
-                wedges[shortName] = {}
-                wedges[shortName].x = center.x + Math.cos(r_rotation) * 70 - 11;
-                wedges[shortName].y = center.y + Math.sin(r_rotation) * 70 - 14;
-                wedges[shortName].rotation = r_rotation
-                wedges[shortName].kinetic = new Kinetic.Wedge({
-                    x: center.x,
-                    y: center.y,
-                    radius: 50,
-                    angleDeg: angle,
-                    fill: Players.get(player.getTeam()).getBackgroundColor(),
-                    strokeWidth: 0,
-                    rotationDeg: rotation
-                })
-                kineticLayer.add(wedges[shortName].kinetic)
-                drawImage(shortName, Players.get(shortName).getLost())
-                i++;
-            }
-
-            var kineticTurnCircle = new Kinetic.Circle({
-                x: center.x,
-                y: center.y,
-                radius: 40,
-                fill: 'lightgrey',
-                stroke: 'grey',
-                strokeWidth: 1
-            })
-            kineticLayer.add(kineticTurnCircle);
-
-            kineticStage.add(kineticLayer);
-            Players.drawTurn()
-            drawPlayerCircle()
-        },
         drawImage = function (shortName, skull) {
-            var imageObj = new Image();
+            var imageObj = new Image()
             imageObj.onload = function () {
                 wedges[shortName].img = new Kinetic.Image({
                     x: wedges[shortName].x,
@@ -80,27 +15,16 @@ var Players = new function () {
                     width: 22,
                     height: 28
                 });
-                kineticLayer.add(wedges[shortName].img);
-                kineticLayer.draw()
+                layer.add(wedges[shortName].img);
+                layer.draw()
                 if (isTruthful(skull)) {
-                    Players.drawSkull(shortName)
+                    GamePlayers.drawSkull(shortName)
                 }
             }
             imageObj.src = Hero.getImage(shortName)
-        },
-        drawPlayerCircle = function () {
-            circle = new Kinetic.Circle({
-                x: center.x,
-                y: center.y,
-                radius: 17,
-                fill: 'grey',
-                offset: [center.x - wedges[Turn.getColor()].x - 11, center.y - wedges[Turn.getColor()].y - 14],
-                strokeWidth: 0
-            });
-            kineticLayer.add(circle)
         }
 
-    this.rotate = function (color) {
+    this.rotate = function (color, players) {
         var i = 0,
             start = 0,
             end = 0
@@ -132,10 +56,9 @@ var Players = new function () {
             } else {
                 circle.rotate(angleDiff)
             }
-        }, kineticLayer)
+        }, layer)
         animation.start()
     }
-
     this.hasSkull = function (shortName) {
         return isSet(wedges[shortName].skull)
     }
@@ -149,20 +72,20 @@ var Players = new function () {
                 width: 16,
                 height: 16
             })
-            kineticLayer.add(wedges[shortName].skull);
-            kineticLayer.draw()
+            layer.add(wedges[shortName].skull);
+            layer.draw()
         };
         imageObj.src = '/img/game/skull_and_crossbones.png'
     }
-
     this.drawTurn = function () {
-        var turnNumber = Turn.getNumber()
         if (Game.getTurnsLimit()) {
-            turnNumber = Turn.getNumber() + '/' + Game.getTurnsLimit()
+            var turnNumber = Turn.getNumber() + '/' + Game.getTurnsLimit()
+        }else{
+            var turnNumber = Turn.getNumber()
         }
         if (kineticTurnNumber) {
             kineticTurnNumber.setText(turnNumber)
-            kineticLayer.draw()
+            layer.draw()
         } else {
             kineticTurnNumber = new Kinetic.Text({
                 x: center.x - 70,
@@ -173,10 +96,10 @@ var Players = new function () {
                 fill: 'graphite',
                 width: 140,
                 align: 'center'
-            });
+            })
 
-            kineticLayer.add(kineticTurnNumber);
-            kineticLayer.draw()
+            layer.add(kineticTurnNumber)
+            layer.draw()
         }
     }
     this.setOnline = function (shortName, value) {
@@ -192,7 +115,7 @@ var Players = new function () {
                 fill: 'green',
                 strokeWidth: 1
             });
-            kineticLayer.add(wedges[shortName].online);
+            layer.add(wedges[shortName].online);
         } else {
             wedges[shortName].online = new Kinetic.Circle({
                 x: wedges[shortName].x,
@@ -202,84 +125,92 @@ var Players = new function () {
                 fill: 'grey',
                 strokeWidth: 1
             });
-            kineticLayer.add(wedges[shortName].online);
+            layer.add(wedges[shortName].online);
         }
-        kineticLayer.draw()
+        layer.draw()
     }
     this.initOnline = function (online) {
         for (var shortName in online) {
             this.setOnline(shortName, online[shortName])
         }
-        kineticLayer.draw()
+        layer.draw()
     }
     this.init = function (players) {
-        kineticStage = new Kinetic.Stage({
-            container: 'playersCanvas',
-            width: 180,
-            height: 180
-        })
-        kineticLayer = new Kinetic.Layer()
-        center.x = kineticStage.getWidth() / 2
-        center.y = kineticStage.getHeight() / 2
-
         length = Object.size(players) - 1
 
-        for (var color in players) {
-            this.add(color, players[color])
-        }
+        var angle = 360 / length,
+            r_angle = Math.PI * 2 / length,
+            i = 0,
+            stage = new Kinetic.Stage({
+                container: 'playersCanvas',
+                width: center.x * 2,
+                height: center.y * 2
+            })
 
-        draw(players)
-    }
-    this.add = function (color, player) {
-        players[color] = new Player(player, color)
-    }
-    /**
-     *
-     * @param color
-     * @returns Player
-     */
-    this.get = function (color) {
-        return players[color]
-    }
-    this.count = function () {
-        return Object.size(players) - 1
-    }
-    this.countHumans = function () {
-        var numberOfHumans = 0
-        for (var color in players) {
-            if (color == 'neutral') {
+        layer = new Kinetic.Layer()
+        stage.add(layer)
+
+
+        layer.add(new Kinetic.Circle({
+            x: center.x,
+            y: center.y,
+            radius: 51,
+            fill: 'grey',
+            strokeWidth: 0
+        }))
+        layer.add(new Kinetic.Circle({
+            x: center.x,
+            y: center.y,
+            radius: 90,
+            fill: 'none',
+            stroke: 'grey',
+            strokeWidth: 1
+        }))
+
+        for (var shortName in players) {
+            if (shortName == 'neutral') {
                 continue
             }
-            var player = this.get(color)
-            if (!player.isComputer()) {
-                numberOfHumans++
-            }
-        }
-        return numberOfHumans;
-    }
-    this.toArray = function () {
-        return players
-    }
-    this.showFirst = function (color, func) {
-        var castleId = Game.getCapitalId(color),
-            firstCastleId,
-            player = this.get(color),
-            castles = player.getCastles()
+            var player = Players.get(shortName),
+                rotation = i * angle,
+                r_rotation = i * r_angle + r_angle / 2
 
-        if (castles.has(castleId)) {
-            var castle = castles.get(castleId)
-            Zoom.lens.setcenter(castle.getX(), castle.getY(), func)
-        } else if (firstCastleId = castles.getFirsCastleId()) {
-            var castle = castles.get(firstCastleId)
-            Zoom.lens.setcenter(castle.getX(), castle.getY(), func)
-        } else {
-            var armies = player.getArmies()
-            for (var armyId in armies.toArray()) {
-                var army = armies.get(armyId)
-                Zoom.lens.setcenter(army.getX(), army.getY(), func)
-                break
+            wedges[shortName] = {
+                x: center.x + Math.cos(r_rotation) * 70 - 11,
+                y: center.y + Math.sin(r_rotation) * 70 - 14,
+                rotation: r_rotation,
+                kinetic: new Kinetic.Wedge({
+                    x: center.x,
+                    y: center.y,
+                    radius: 50,
+                    angleDeg: angle,
+                    fill: Players.get(player.getTeam()).getBackgroundColor(),
+                    strokeWidth: 0,
+                    rotationDeg: rotation
+                })
             }
+            layer.add(wedges[shortName].kinetic)
+            drawImage(shortName, Players.get(shortName).getLost())
+            i++
         }
+        layer.add(new Kinetic.Circle({
+            x: center.x,
+            y: center.y,
+            radius: 40,
+            fill: 'lightgrey',
+            stroke: 'grey',
+            strokeWidth: 1
+        }))
+        circle = new Kinetic.Circle({
+            x: center.x,
+            y: center.y,
+            radius: 17,
+            fill: 'grey',
+            offset: [center.x - wedges[Turn.getColor()].x - 11, center.y - wedges[Turn.getColor()].y - 14],
+            strokeWidth: 0
+        })
+        layer.add(circle)
+        this.drawTurn()
     }
 }
 
