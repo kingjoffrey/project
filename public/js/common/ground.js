@@ -304,6 +304,9 @@ var Ground = new function () {
     this.getHillLevel = function () {
         return hillLevel
     }
+    this.getWaterLevel = function () {
+        return waterLevel
+    }
     this.init = function (maxX, maxY, textureName) {
         createGround(maxX * 2, maxY * 2, textureName)
         createWater(maxX * 2, maxY * 2)

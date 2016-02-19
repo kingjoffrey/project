@@ -86,15 +86,11 @@ var MapGenerator = new function () {
                         case 5:
                             var rgb = (parseInt(pixels[maxI][maxJ]) + minus.mountains).toString(16),
                                 color = '#' + rgb + rgb + rgb,
-                            //var rgb = (256 - parseInt(pixels[maxI][maxJ]) - minus.grass).toString(16),
-                            //    color = '#00' + rgb + '00',
                                 type = 'm'
                             break
                         case 6:
                             var rgb = (parseInt(pixels[maxI][maxJ]) + minus.snow).toString(16),
                                 color = '#' + rgb + rgb + rgb,
-                            //var rgb = (256 - parseInt(pixels[maxI][maxJ]) - minus.grass).toString(16),
-                            //    color = '#00' + rgb + '00',
                                 type = 'm'
                             break
                     }

@@ -2,11 +2,9 @@ var Models = new function () {
     var ruinModel,
         towerModel,
         flagModel,
-        castleModel_1,
-        castleModel_2,
-        castleModel_3,
-        castleModel_4,
-        armyModel,
+        armyModels = {},
+        castleModels = {},
+        flagModels = {},
         mountainModel,
         hillModel,
         treeModel,
@@ -109,31 +107,40 @@ var Models = new function () {
         initTower = function () {
             tower.scale = 2.4
             towerModel = loader.parse(tower)
-            flagModel = loader.parse(flag)
         },
         initCastle = function () {
             castle_1.scale = 3.8
             castle_2.scale = 3.8
             castle_3.scale = 3.8
             castle_4.scale = 3.8
-            castleModel_1 = loader.parse(castle_1)
-            castleModel_2 = loader.parse(castle_2)
-            castleModel_3 = loader.parse(castle_3)
-            castleModel_4 = loader.parse(castle_4)
+            castleModels = {
+                0: loader.parse(castle_1),
+                1: loader.parse(castle_2),
+                2: loader.parse(castle_3),
+                3: loader.parse(castle_4)
+            }
+        },
+        initFlag = function () {
             flag.scale = 0.6
             flagModel = loader.parse(flag)
         },
         getCastleModel = function (defense) {
             switch (defense) {
                 case 2:
-                    var material = new THREE.MeshLambertMaterial({color: '#65402C', side: THREE.DoubleSide})
-                    return new THREE.Mesh(castleModel_2.geometry, material)
+                    return new THREE.Mesh(castleModels[1].geometry, new THREE.MeshLambertMaterial({
+                        color: '#65402C',
+                        side: THREE.DoubleSide
+                    }))
                 case 3:
-                    var material = new THREE.MeshPhongMaterial({color: '#0054C4', side: THREE.DoubleSide})
-                    return new THREE.Mesh(castleModel_3.geometry, material)
+                    return new THREE.Mesh(castleModels[2].geometry, new THREE.MeshPhongMaterial({
+                        color: '#0054C4',
+                        side: THREE.DoubleSide
+                    }))
                 case 4:
-                    var material = new THREE.MeshLambertMaterial({color: '#6B6B6B', side: THREE.DoubleSide})
-                    return new THREE.Mesh(castleModel_4.geometry, material)
+                    return new THREE.Mesh(castleModels[3].geometry, new THREE.MeshLambertMaterial({
+                        color: '#6B6B6B',
+                        side: THREE.DoubleSide
+                    }))
             }
         },
         updateCastleModel = function (mesh, defense) {
@@ -148,7 +155,7 @@ var Models = new function () {
             }
         },
         initArmy = function () {
-            var armyModels = {
+            armyModels = {
                 'untitled': untitled,
                 'archers': archers,
                 'hero': hero,
@@ -173,41 +180,21 @@ var Models = new function () {
             }
 
             flag_1.scale = 15
-            flag_1Model = loader.parse(flag_1)
+            flagModels[0] = loader.parse(flag_1)
             flag_2.scale = 15
-            flag_2Model = loader.parse(flag_2)
+            flagModels[1] = loader.parse(flag_2)
             flag_3.scale = 15
-            flag_3Model = loader.parse(flag_3)
+            flagModels[2] = loader.parse(flag_3)
             flag_4.scale = 15
-            flag_4Model = loader.parse(flag_4)
+            flagModels[3] = loader.parse(flag_4)
             flag_5.scale = 15
-            flag_5Model = loader.parse(flag_5)
+            flagModels[4] = loader.parse(flag_5)
             flag_6.scale = 15
-            flag_6Model = loader.parse(flag_6)
+            flagModels[5] = loader.parse(flag_6)
             flag_7.scale = 15
-            flag_7Model = loader.parse(flag_7)
+            flagModels[6] = loader.parse(flag_7)
             flag_8.scale = 15
-            flag_8Model = loader.parse(flag_8)
-        },
-        getFlag = function (number) {
-            switch (number) {
-                case 1:
-                    return flag_1Model
-                case 2:
-                    return flag_2Model
-                case 3:
-                    return flag_3Model
-                case 4:
-                    return flag_4Model
-                case 5:
-                    return flag_5Model
-                case 6:
-                    return flag_6Model
-                case 7:
-                    return flag_7Model
-                default :
-                    return flag_8Model
-            }
+            flagModels[7] = loader.parse(flag_8)
         },
         initTree = function () {
             tree.scale = 6
@@ -299,120 +286,60 @@ var Models = new function () {
         }
         armyCircles = []
     }
-    this.createMesh = function (type) {
-        switch (type) {
-            case 'castle':
-                var castleMaterial = new THREE.MeshLambertMaterial({color: '#3B3028', side: THREE.DoubleSide}),
-                    mesh = new THREE.Mesh(castleModel_1.geometry, castleMaterial)
-                break
-            case 'ruin':
-                var ruinMaterial = new THREE.MeshPhongMaterial({color: '#FFD700', side: THREE.DoubleSide}),
-                    mesh = new THREE.Mesh(ruinModel.geometry, ruinMaterial)
-                break
-            case 'tower':
-                var towerMaterial = new THREE.MeshLambertMaterial({color: '#6B6B6B', side: THREE.DoubleSide}),
-                    mesh = new THREE.Mesh(towerModel.geometry, towerMaterial)
-                break
-            case 'road':
-                var roadMaterial = new THREE.MeshLambertMaterial({
-                        map: roadTexture.p,
-                        side: THREE.DoubleSide,
-                        transparent: true,
-                        opacity: 0.5
-                    }),
-                    mesh = new THREE.Mesh(new THREE.PlaneGeometry(2, 2), roadMaterial)
-                mesh.rotation.x = Math.PI / 2
-                break
-            case 'bridge':
-
-                break
-            case 'forest':
-                var mesh = new THREE.Mesh(treeModel.geometry, treeModel.material)
-                break
-            case 'swamp':
-                var swampMaterial = new THREE.MeshLambertMaterial({
-                        map: swampTexture,
-                        side: THREE.DoubleSide,
-                        transparent: true,
-                        opacity: 0.5
-                    }),
-                    mesh = new THREE.Mesh(new THREE.PlaneGeometry(2, 2), swampMaterial)
-                mesh.rotation.x = Math.PI / 2
-                mesh.position.y = 0.02
-                break
-            case 'eraser':
-                var eraserMaterial = new THREE.MeshLambertMaterial({color: '#ff0000', side: THREE.DoubleSide}),
-                    mesh = new THREE.Mesh(new THREE.PlaneGeometry(2, 2), eraserMaterial)
-                mesh.rotation.x = Math.PI / 2
-                break
-            default:
-                console.log('Brak typu (' + type + ')')
-                return
-        }
-        mesh.itemName = type
-        Scene.add(mesh)
-        Scene.remove(Picker.getDraggedMesh())
-        Picker.addDraggedMesh(mesh)
-    }
     this.addRuin = function (x, y, color) {
-        var ruinMaterial = new THREE.MeshPhongMaterial({color: color, side: THREE.DoubleSide}),
-            mesh = new THREE.Mesh(ruinModel.geometry, ruinMaterial)
+        var mesh = new THREE.Mesh(ruinModel.geometry, new THREE.MeshPhongMaterial({
+            color: color,
+            side: THREE.DoubleSide
+        }))
+        if (shadows) {
+            mesh.castShadow = true
+            mesh.receiveShadow = true
+        }
         mesh.position.set(x * 2 + 0.5, 0, y * 2 + 1)
         mesh.rotation.y = 2 * Math.PI * Math.random()
-
-        if (shadows) {
-            mesh.castShadow = true
-            mesh.receiveShadow = true
-        }
         Scene.add(mesh)
-
         return mesh
     }
-
     this.addTower = function (x, y, color) {
-        var towerMaterial = new THREE.MeshLambertMaterial({color: '#6B6B6B', side: THREE.DoubleSide}),
-            mesh = new THREE.Mesh(towerModel.geometry, towerMaterial)
-        mesh.position.set(x * 2 + 1.5, 0, y * 2 + 0.5)
-
+        var mesh = new THREE.Mesh(towerModel.geometry, new THREE.MeshLambertMaterial({
+                color: '#6B6B6B',
+                side: THREE.DoubleSide
+            })),
+            flagMesh = new THREE.Mesh(flagModel.geometry, new THREE.MeshLambertMaterial({
+                color: color,
+                side: THREE.DoubleSide
+            }))
         if (shadows) {
             mesh.castShadow = true
             mesh.receiveShadow = true
-        }
-        Scene.add(mesh)
-
-        var material = new THREE.MeshLambertMaterial({color: color, side: THREE.DoubleSide})
-        var flagMesh = new THREE.Mesh(flagModel.geometry, material)
-        if (shadows) {
             flagMesh.castShadow = true
             flagMesh.receiveShadow = true
         }
         mesh.add(flagMesh)
-
+        mesh.position.set(x * 2 + 1.5, 0, y * 2 + 0.5)
+        Scene.add(mesh)
         return mesh
     }
     this.addCastle = function (castle, color) {
-        var castleMaterial = new THREE.MeshLambertMaterial({color: '#3B3028', side: THREE.DoubleSide})
-
-        var mesh = new THREE.Mesh(castleModel_1.geometry, castleMaterial)
-        mesh.position.set(castle.x * 2 + 2, 0, castle.y * 2 + 2)
-
+        var mesh = new THREE.Mesh(castleModels[0].geometry, new THREE.MeshLambertMaterial({
+                color: '#3B3028',
+                side: THREE.DoubleSide
+            })),
+            flagMesh = new THREE.Mesh(flagModel.geometry, new THREE.MeshLambertMaterial({
+                color: color,
+                side: THREE.DoubleSide
+            }))
         if (shadows) {
             mesh.castShadow = true
             mesh.receiveShadow = true
-        }
-        Scene.add(mesh)
-
-        var material = new THREE.MeshLambertMaterial({color: color, side: THREE.DoubleSide})
-        var flagMesh = new THREE.Mesh(flagModel.geometry, material)
-        if (shadows) {
             flagMesh.castShadow = true
             flagMesh.receiveShadow = true
         }
+        mesh.position.set(castle.x * 2 + 2, 0, castle.y * 2 + 2)
         mesh.add(flagMesh)
-
         mesh.add(createTextMesh(castle.name, '#ffffff'))
-
         updateCastleModel(mesh, castle.defense)
+        Scene.add(mesh)
         return mesh
     }
     this.castleChangeDefense = function (mesh, defense) {
@@ -514,16 +441,16 @@ var Models = new function () {
         Scene.add(mesh)
     }
     this.addArmy = function (x, y, color, number, modelName) {
-        var material = new THREE.MeshLambertMaterial({color: color, side: THREE.DoubleSide})
-
-        var armyMaterial = new THREE.MeshLambertMaterial({color: color, side: THREE.DoubleSide})
-
+        var armyMaterial = new THREE.MeshLambertMaterial({color: color, side: THREE.DoubleSide}),
+            flagMesh = new THREE.Mesh(flagModels[number - 1].geometry, new THREE.MeshLambertMaterial({
+                color: color,
+                side: THREE.DoubleSide
+            }))
         if (modelName + 'Model' in window) {
             var mesh = new THREE.Mesh(window[modelName + 'Model'].geometry, armyMaterial)
         } else {
             var mesh = new THREE.Mesh(untitledModel.geometry, armyMaterial)
         }
-
         switch (Fields.get(x, y).getType()) {
             case 'm':
                 var height = Ground.getMountainLevel()
@@ -531,27 +458,23 @@ var Models = new function () {
             case 'h':
                 var height = Ground.getHillLevel()
                 break
+            case 'w':
+                var height = Ground.getWaterLevel()
+                break
             default :
                 var height = 0
                 break
         }
-
-        mesh.position.set(x * 2 + 0.5, height, y * 2 + 0.5)
-        mesh.rotation.y = Math.PI / 2 + Math.PI / 4
-
         if (shadows) {
             mesh.castShadow = true
             mesh.receiveShadow = true
-        }
-        var flagMesh = new THREE.Mesh(getFlag(number).geometry, material)
-        if (shadows) {
             flagMesh.castShadow = true
         }
         flagMesh.position.set(-0.2, 0, 0)
+        mesh.position.set(x * 2 + 0.5, height, y * 2 + 0.5)
+        mesh.rotation.y = Math.PI / 2 + Math.PI / 4
         mesh.add(flagMesh)
-
         Scene.add(mesh)
-
         return mesh
     }
     this.getLoading = function () {
@@ -563,8 +486,9 @@ var Models = new function () {
         initSwampTexture()
         initRuin()
         initTower()
-        initCastle()
         initArmy()
+        initCastle()
+        initFlag()
         initTree()
     }
 }

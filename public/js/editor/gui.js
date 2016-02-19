@@ -23,28 +23,34 @@ var Gui = new function () {
         },
         activateButtons = function () {
             $('#castle').click(function () {
-                Models.createMesh('castle')
+                EditorModels.createMesh('castle')
             })
             $('#ruin').click(function () {
-                Models.createMesh('ruin')
+                EditorModels.createMesh('ruin')
             })
             $('#tower').click(function () {
-                Models.createMesh('tower')
+                EditorModels.createMesh('tower')
             })
             $('#road').click(function () {
-                Models.createMesh('road')
+                EditorModels.createMesh('road')
             })
             $('#bridge').click(function () {
-                Models.createMesh('bridge')
+                EditorModels.createMesh('bridge')
             })
             $('#forest').click(function () {
-                Models.createMesh('forest')
+                EditorModels.createMesh('forest')
             })
             $('#swamp').click(function () {
-                Models.createMesh('swamp')
+                EditorModels.createMesh('swamp')
             })
             $('#eraser').click(function () {
-                Models.createMesh('eraser')
+                EditorModels.createMesh('eraser')
+            })
+            $('#up').click(function () {
+                EditorModels.createMesh('up')
+            })
+            $('#down').click(function () {
+                EditorModels.createMesh('down')
             })
         }
 
