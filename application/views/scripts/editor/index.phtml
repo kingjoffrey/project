@@ -4,13 +4,15 @@
     <table>
         <th>Map name</th>
         <th>Size</th>
-        <th>Map author</th>
+        <th>Max players</th>
         <th>Creation date</th>
         <?php if (is_array($this->mapList)): ?>
             <?php foreach ($this->mapList as $map): ?>
                 <tr id="<?php echo $map['mapId'] ?>" onclick="url(<?php echo $map['mapId'] ?>)" class="trlink">
                     <td><?php echo $map['name'] ?></td>
                     <td><?php echo $map['mapWidth'] ?></td>
+                    <td><?php echo $map['maxPlayers'] ?></td>
+                    <td><?php echo Coret_View_Helper_Formatuj::date($map['date']) ?></td>
                 </tr>
             <?php endforeach ?>
         <?php endif ?>
