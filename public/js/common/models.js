@@ -477,6 +477,24 @@ var Models = new function () {
         Scene.add(mesh)
         return mesh
     }
+    this.getCastleModels = function () {
+        return castleModels
+    }
+    this.getRuinModel = function () {
+        return ruinModel
+    }
+    this.getTowerModel = function () {
+        return towerModel
+    }
+    this.getTreeModel = function () {
+        return treeModel
+    }
+    this.getRoadTexture = function () {
+        return roadTexture
+    }
+    this.getSwampTexture = function () {
+        return swampTexture
+    }
     this.getLoading = function () {
         return loading
     }

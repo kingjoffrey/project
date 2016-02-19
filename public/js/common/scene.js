@@ -45,7 +45,6 @@ var Scene = new function () {
             sun.shadow.mapSize.height = 2048
 
             var d = 2.1 * size
-            console.log(d)
 
             sun.shadow.camera.left = -d / 1.93
             sun.shadow.camera.right = d / 1.29
