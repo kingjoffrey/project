@@ -231,6 +231,7 @@ var Ground = new function () {
                 grassMesh.rotation.x = Math.PI / 2
                 if (Scene.getShadows()) {
                     grassMesh.receiveShadow = true
+                    //grassMesh.castShadow = true
                 }
                 Scene.add(grassMesh)
                 PickerCommon.attach(grassMesh)

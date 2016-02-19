@@ -10,13 +10,13 @@ var Scene = new function () {
         gameHeight,
         scene = new THREE.Scene(),
         camera,
-        directionalLight,
+        sun,
         renderer = new THREE.WebGLRenderer({antialias: true}),
         shadows = 1,
         cameraY = 24,
         timeOut = 100,
         water,
-        initCamera = function (gameWidth, gameHeight) {
+        initCamera = function () {
             var viewAngle = 45,
                 near = 1,
                 far = 1000
@@ -30,35 +30,37 @@ var Scene = new function () {
             scene.add(camera)
             scene.add(new THREE.AmbientLight(0x777777))
             //camera.add(new THREE.PointLight(0xffffff, 0.7))
-        },
-        initLight = function () {
-            directionalLight = new THREE.DirectionalLight(0xdfebff, 0.75)
-            directionalLight.position.set(100, 200, 150)
-            if (shadows) {
-                renderer.shadowMap.enabled = true
-                renderer.shadowMapSoft = false
-
-                directionalLight.castShadow = true
-
-                directionalLight.shadow.mapSize.width = 2048
-                directionalLight.shadow.mapSize.height = 2048
-
-                var d = 100
-
-                directionalLight.shadow.camera.left = -d
-                directionalLight.shadow.camera.right = d
-                directionalLight.shadow.camera.top = d
-                directionalLight.shadow.camera.bottom = -d
-                directionalLight.shadow.camera.far = 1000
-
-                var helper = new THREE.CameraHelper(directionalLight.shadow.camera)
-                scene.add(helper)
-            }
-            scene.add(directionalLight)
         }
 
-    this.getLight = function () {
-        return directionalLight
+    this.initSun = function (size) {
+        sun = new THREE.DirectionalLight(0xdfebff, 0.75)
+        sun.position.set(100, 200, 150)
+        if (shadows) {
+            renderer.shadowMap.enabled = true
+            renderer.shadowMapSoft = false
+
+            sun.castShadow = true
+
+            sun.shadow.mapSize.width = 2048
+            sun.shadow.mapSize.height = 2048
+
+            var d = 2.1 * size
+            console.log(d)
+
+            sun.shadow.camera.left = -d / 1.93
+            sun.shadow.camera.right = d / 1.29
+            sun.shadow.camera.top = 0
+            sun.shadow.camera.bottom = -d
+            sun.shadow.camera.far = 300
+            //sun.shadow.camera.
+
+            var helper = new THREE.CameraHelper(sun.shadow.camera)
+            scene.add(helper)
+        }
+        scene.add(sun)
+    }
+    this.getSun = function () {
+        return sun
     }
     this.getShadows = function () {
         return shadows
@@ -156,8 +158,7 @@ var Scene = new function () {
                 }
             )
 
-        initCamera(gameWidth, gameHeight)
-        initLight()
+        initCamera()
         renderer.setSize(gameWidth, gameHeight)
         Models.init()
         PickerCommon.init()

@@ -28,6 +28,7 @@ var Game = new function () {
             Ruins.init(game.ruins)
             Me.init(game.color, game.gold, game.bSequence)
             Chat.init(game.chatHistory)
+            Scene.initSun(Fields.getMaxY())
             Scene.render()
         }
         Players.initOnline(game.online)

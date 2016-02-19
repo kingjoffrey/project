@@ -65,8 +65,10 @@ var MapGenerator = new function () {
                 for (var maxJ in data[maxI]) {
                     switch (data[maxI][maxJ]) {
                         case 1:
-                            var color = '#0000' + (parseInt(pixels[maxI][maxJ]) + minus.water).toString(16),
+                            //var color = '#0000' + (parseInt(pixels[maxI][maxJ]) + minus.water).toString(16),
                             //var color = '#ffff00',
+                            var rgb = (256 - parseInt(pixels[maxI][maxJ]) - minus.grass).toString(16),
+                                color = '#00' + rgb + '00',
                                 type = 'w'
                             break
                         case 3:
@@ -75,18 +77,24 @@ var MapGenerator = new function () {
                                 type = 'g'
                             break
                         case 4:
-                            var rgb = (256 - parseInt(pixels[maxI][maxJ]) - minus.hills).toString(16),
-                                color = '#' + rgb + rgb + '00',
+                            //var rgb = (256 - parseInt(pixels[maxI][maxJ]) - minus.hills).toString(16),
+                            //    color = '#' + rgb + rgb + '00',
+                            var rgb = (256 - parseInt(pixels[maxI][maxJ]) - minus.grass).toString(16),
+                                color = '#00' + rgb + '00',
                                 type = 'h'
                             break
                         case 5:
                             var rgb = (parseInt(pixels[maxI][maxJ]) + minus.mountains).toString(16),
                                 color = '#' + rgb + rgb + rgb,
+                            //var rgb = (256 - parseInt(pixels[maxI][maxJ]) - minus.grass).toString(16),
+                            //    color = '#00' + rgb + '00',
                                 type = 'm'
                             break
                         case 6:
                             var rgb = (parseInt(pixels[maxI][maxJ]) + minus.snow).toString(16),
                                 color = '#' + rgb + rgb + rgb,
+                            //var rgb = (256 - parseInt(pixels[maxI][maxJ]) - minus.grass).toString(16),
+                            //    color = '#00' + rgb + '00',
                                 type = 'm'
                             break
                     }

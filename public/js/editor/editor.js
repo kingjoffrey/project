@@ -16,6 +16,7 @@ var Editor = new function () {
             Players.init(r.players)
             Gui.init()
             Scene.setCameraPosition(0, Fields.getMaxY())
+            Scene.initSun(Fields.getMaxY())
             Scene.render()
         }
         //console.log(r)
