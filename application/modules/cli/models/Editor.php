@@ -72,9 +72,7 @@ class Cli_Model_Editor
 
     public function up($dataIn, Zend_Db_Adapter_Pdo_Pgsql $db)
     {
-        $field = $this->_Fields->getField($dataIn['x'], $dataIn['y']);
-        $type = $field->getType();
-        switch ($type) {
+        switch ($this->_Fields->getField($dataIn['x'], $dataIn['y'])->getType()) {
             case 'w':
                 $type = 'g';
                 break;
@@ -89,7 +87,6 @@ class Cli_Model_Editor
                     'type' => 0
                 );
         }
-        $field->setType($type);
         $this->editTerrainType($dataIn['x'], $dataIn['y'], $type, $db);
         return array(
             'type' => $type,
@@ -100,9 +97,7 @@ class Cli_Model_Editor
 
     public function down($dataIn, Zend_Db_Adapter_Pdo_Pgsql $db)
     {
-        $field = $this->_Fields->getField($dataIn['x'], $dataIn['y']);
-        $type = $field->getType();
-        switch ($type) {
+        switch ($this->_Fields->getField($dataIn['x'], $dataIn['y'])->getType()) {
             case 'g':
                 $type = 'w';
                 break;
@@ -117,7 +112,6 @@ class Cli_Model_Editor
                     'type' => 0
                 );
         }
-        $field->setType($type);
         $this->editTerrainType($dataIn['x'], $dataIn['y'], $type, $db);
         return array(
             'type' => $type,
