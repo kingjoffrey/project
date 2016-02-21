@@ -6,7 +6,8 @@ var Fields = new function () {
         initRoads = function () {
             for (var y = 0; y <= maxY; y++) {
                 for (var x = 0; x <= maxX; x++) {
-                    if (fields[y][x].getType() == 'r') {
+                    var type = fields[y][x].getType()
+                    if (type == 'r' || type == 'b') {
                         Models.addRoad(x, y)
                     }
                 }

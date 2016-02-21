@@ -5,6 +5,10 @@ var Ground = new function () {
         waterLevel = 0.05,
         cloudsLevel = -30,
         grassVertexPositions = [],
+        grassGeometry = new THREE.BufferGeometry(),
+        grassMesh,
+        grassMaterial,
+        tl = new THREE.TextureLoader(),
         createClouds = function (maxX, maxY) {
             var cloudsVertexPositions = [],
                 cloudsVertices = new Float32Array(18),
@@ -119,9 +123,9 @@ var Ground = new function () {
         createGround = function (maxX, maxY, textureName) {
             var xy = [],
                 uv = [],
-                grassGeometry = new THREE.BufferGeometry(),
-                grassVertexPositions = [],
                 maxI = maxX * maxY * 6
+
+            grassVertexPositions = []
 
             for (var u = 0; u < maxX; u++) {
                 uv[u] = []
@@ -170,7 +174,7 @@ var Ground = new function () {
                             grassVertexPositions = changeGroundLevel(grassVertexPositions, maxX, maxY, maxI, i, bottomLevel, type)
                             break
                         case 'b':
-                            grassVertexPositions = changeGroundLevel(grassVertexPositions, maxX, maxY, maxI, i, bottomLevel, type)
+                            grassVertexPositions = changeGroundLevel(grassVertexPositions, maxX, maxY, maxI, i, bottomLevel, 'w')
                             break
                         case 'm':
                             grassVertexPositions = changeGroundLevel(grassVertexPositions, maxX, maxY, maxI, i, -mountainLevel, type)
@@ -222,24 +226,33 @@ var Ground = new function () {
 
             grassGeometry.computeVertexNormals()
 
-            var textureLoader = new THREE.TextureLoader()
-            textureLoader.load(textureName, function (texture) {
-
-                var grassMaterial = new THREE.MeshLambertMaterial({map: texture, side: THREE.DoubleSide}),
+            if (isSet(textureName)) {
+                tl.load(textureName, function (texture) {
+                    grassMaterial = new THREE.MeshLambertMaterial({
+                        map: texture,
+                        side: THREE.DoubleSide
+                    })
                     grassMesh = new THREE.Mesh(grassGeometry, grassMaterial)
+                    grassMesh.rotation.x = Math.PI / 2
+                    if (Scene.getShadows()) {
+                        grassMesh.receiveShadow = true
+                    }
+                    Scene.add(grassMesh)
+                    PickerCommon.attach(grassMesh)
 
+                    //var helper = new THREE.WireframeHelper(grassMesh, 0xff00ff)
+                    //helper.material.linewidth = 1
+                    //Scene.add(helper)
+                })
+            } else {
+                grassMesh = new THREE.Mesh(grassGeometry, grassMaterial)
                 grassMesh.rotation.x = Math.PI / 2
                 if (Scene.getShadows()) {
                     grassMesh.receiveShadow = true
-                    //grassMesh.castShadow = true
                 }
                 Scene.add(grassMesh)
                 PickerCommon.attach(grassMesh)
-
-                //var helper = new THREE.WireframeHelper(grassMesh, 0xff00ff)
-                //helper.material.linewidth = 1
-                //Scene.add(helper)
-            })
+            }
         },
         changeGroundLevel = function (grassVertexPositions, maxX, maxY, maxI, i, level, type) {
             if (type == 'w') {
@@ -260,7 +273,7 @@ var Ground = new function () {
                 }
 
                 //rand = Math.random() / 2
-                if ((i + 12) % (maxY * 6) != 0 && Fields.get(grassVertexPositions[i + 12][0] / 2, grassVertexPositions[i + 12][1] / 2).getType() == type) {
+                if ((i + 12) % (maxY * 6) != 0 && Fields.get(grassVertexPositions[i + 12][0] / 2, grassVertexPositions[i + 12][1] / 2).getTypeWithoutBridge() == type) {
                     grassVertexPositions[i + 9][2] = level - rand                //
                     grassVertexPositions[i + 13][2] = level - rand               //
                     grassVertexPositions[i + 17][2] = level - rand               //
@@ -274,7 +287,7 @@ var Ground = new function () {
                 //
                 //rand = Math.random() / 2
                 var nextRow = maxY * 2 * 6
-                if (i + nextRow < maxI && Fields.get(grassVertexPositions[i + nextRow][0] / 2, grassVertexPositions[i + nextRow][1] / 2).getType() == type) {
+                if (i + nextRow < maxI && Fields.get(grassVertexPositions[i + nextRow][0] / 2, grassVertexPositions[i + nextRow][1] / 2).getTypeWithoutBridge() == type) {
                     grassVertexPositions[i + nextRow + 6][2] = level - rand  //
                     grassVertexPositions[i + nextRow + 4][2] = level - rand  //
                     grassVertexPositions[i + nextRow + 2][2] = level - rand  //
@@ -286,7 +299,7 @@ var Ground = new function () {
 
                 //rand = Math.random() / 2
                 var nextVertex = nextRow + 12
-                if (i + nextVertex < maxI && (i + nextVertex) % (maxY * 6) != 0 && Fields.get(grassVertexPositions[i + nextVertex][0] / 2, grassVertexPositions[i + nextVertex][1] / 2).getType() == type) {
+                if (i + nextVertex < maxI && (i + nextVertex) % (maxY * 6) != 0 && Fields.get(grassVertexPositions[i + nextVertex][0] / 2, grassVertexPositions[i + nextVertex][1] / 2).getTypeWithoutBridge() == type) {
                     grassVertexPositions[i + nextVertex][2] = level - rand       //
                     grassVertexPositions[i + nextVertex - 2][2] = level - rand   //
                     grassVertexPositions[i + nextVertex - 4][2] = level - rand   //
@@ -306,6 +319,41 @@ var Ground = new function () {
     }
     this.getWaterLevel = function () {
         return waterLevel
+    }
+    this.change = function (x, y, type) {
+        var maxX = Fields.getMaxX(),
+            maxY = Fields.getMaxY()
+        //grassVertices = new Float32Array(grassVertexPositions.length * 3),
+        //i = y * 12 + x * 24 * (maxY * 1 + 1),
+        //maxI = maxX * maxY * 6
+        //console.log(i)
+        //switch (type) {
+        //    case 'w':
+        //        grassVertexPositions = changeGroundLevel(grassVertexPositions, maxX, maxY, maxI, i, bottomLevel, type)
+        //        break
+        //    case 'b':
+        //        grassVertexPositions = changeGroundLevel(grassVertexPositions, maxX, maxY, maxI, i, bottomLevel, type)
+        //        break
+        //    case 'm':
+        //        grassVertexPositions = changeGroundLevel(grassVertexPositions, maxX, maxY, maxI, i, -mountainLevel, type)
+        //        break
+        //    case 'h':
+        //        grassVertexPositions = changeGroundLevel(grassVertexPositions, maxX, maxY, maxI, i, -hillLevel, type)
+        //        break
+        //}
+        //
+        //for (var i = 0; i < grassVertexPositions.length; i++) {
+        //    var index = 3 * i
+        //    grassVertices[index + 0] = grassVertexPositions[i][0]
+        //    grassVertices[index + 1] = grassVertexPositions[i][1]
+        //    grassVertices[index + 2] = grassVertexPositions[i][2]
+        //}
+        //grassGeometry.addAttribute('position', new THREE.BufferAttribute(grassVertices, 3))
+        Scene.remove(grassMesh)
+        //grassMesh = new THREE.Mesh(grassGeometry, grassMaterial)
+        //grassMesh.rotation.x = Math.PI / 2
+        //Scene.add(grassMesh)
+        createGround(maxX * 2, maxY * 2)
     }
     this.init = function (maxX, maxY, textureName) {
         createGround(maxX * 2, maxY * 2, textureName)

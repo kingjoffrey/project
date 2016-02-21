@@ -184,7 +184,7 @@ class Cli_Model_Editor
                 break;
             case 'w':
                 switch ($dataIn['itemName']) {
-                    case 'bridge':
+                    case 'road':
                         $this->editTerrainType($dataIn['x'], $dataIn['y'], 'b', $db);
                         return array(
                             'type' => 'b',
@@ -215,7 +215,7 @@ class Cli_Model_Editor
                     if ($dataIn['color'] != $color) {
                         $this->_Players->getPlayer($color)->getCastles()->removeCastle($castleId);
                         $this->_Players->getPlayer($dataIn['color'])->getCastles()->addCastle($castleId, $castle);
-                        $this->_Fields->initCastle($dataIn['x'], $dataIn['y'], $castleId, $dataIn['color']);
+                        $this->_Fields->initCastle($castle->getX(), $castle->getY(), $castleId, $dataIn['color']);
                     }
                     $castle->edit($this->_mapId, $dataIn, $db, $this->_Players->getPlayer($dataIn['color'])->getId());
                     return array(

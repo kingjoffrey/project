@@ -200,6 +200,13 @@ var Models = new function () {
             tree.scale = 6
             treeModel = loader.parse(tree)
             treeModel.material = new THREE.MeshLambertMaterial({color: '#003300', side: THREE.DoubleSide})
+        },
+        isRoad = function (type) {
+            if (type == 'r' || type == 'b') {
+                return 1
+            } else {
+                return 0
+            }
         }
 
     this.addPathCircle = function (x, y, color, t) {
@@ -375,37 +382,37 @@ var Models = new function () {
             f4 = Fields.get(x - 1, y).getType()
         }
 
-        if (f1 != 'r' && f2 != 'r' && f3 != 'r' && f4 != 'r') { // point
+        if ( !isRoad(f1) &&  !isRoad(f2) &&  !isRoad(f3) && !isRoad(f4)) { // point
             var map = roadTexture.p
-        } else if (f1 == 'r' && f2 != 'r' && f3 != 'r' && f4 != 'r') { // 3
+        } else if (isRoad(f1) && !isRoad(f2) && !isRoad(f3) && !isRoad(f4)) { // 3
             var map = roadTexture.u3
-        } else if (f1 != 'r' && f2 == 'r' && f3 != 'r' && f4 != 'r') { // 3
+        } else if (!isRoad(f1) && isRoad(f2) && !isRoad(f3) && !isRoad(f4)) { // 3
             var map = roadTexture.l3
-        } else if (f1 != 'r' && f2 != 'r' && f3 == 'r' && f4 != 'r') { // 3
+        } else if (!isRoad(f1) && !isRoad(f2) && isRoad(f3) && !isRoad(f4)) { // 3
             var map = roadTexture.d3
-        } else if (f1 != 'r' && f2 != 'r' && f3 != 'r' && f4 == 'r') { // 3
+        } else if (!isRoad(f1) && !isRoad(f2) && !isRoad(f3) && isRoad(f4)) { // 3
             var map = roadTexture.r3
-        } else if (f1 == 'r' && f2 != 'r' && f3 == 'r' && f4 != 'r') { // vertical
+        } else if (isRoad(f1) && !isRoad(f2) && isRoad(f3) && !isRoad(f4)) { // vertical
             var map = roadTexture.v
-        } else if (f1 != 'r' && f2 == 'r' && f3 != 'r' && f4 == 'r') { // horizontal
+        } else if (!isRoad(f1) && isRoad(f2) && !isRoad(f3) && isRoad(f4)) { // horizontal
             var map = roadTexture.h
-        } else if (f1 == 'r' && f2 == 'r' && f3 == 'r' && f4 == 'r') { // center
+        } else if (isRoad(f1) && isRoad(f2) && isRoad(f3) && isRoad(f4)) { // center
             var map = roadTexture.c
-        } else if (f1 != 'r' && f2 == 'r' && f3 == 'r' && f4 != 'r') {
+        } else if (!isRoad(f1) && isRoad(f2) && isRoad(f3) && !isRoad(f4)) {
             var map = roadTexture.ld
-        } else if (f1 != 'r' && f2 != 'r' && f3 == 'r' && f4 == 'r') {
+        } else if (!isRoad(f1) && !isRoad(f2) && isRoad(f3) && isRoad(f4)) {
             var map = roadTexture.rd
-        } else if (f1 == 'r' && f2 == 'r' && f3 != 'r' && f4 != 'r') {
+        } else if (isRoad(f1) && isRoad(f2) && !isRoad(f3) && !isRoad(f4)) {
             var map = roadTexture.lu
-        } else if (f1 == 'r' && f2 != 'r' && f3 != 'r' && f4 == 'r') {
+        } else if (isRoad(f1) && !isRoad(f2) && !isRoad(f3) && isRoad(f4)) {
             var map = roadTexture.ru
-        } else if (f1 == 'r' && f2 == 'r' && f3 != 'r' && f4 == 'r') { // 1
+        } else if (isRoad(f1) && isRoad(f2) && !isRoad(f3) && isRoad(f4)) { // 1
             var map = roadTexture.u1
-        } else if (f1 == 'r' && f2 == 'r' && f3 == 'r' && f4 != 'r') { // 1
+        } else if (isRoad(f1) && isRoad(f2) && isRoad(f3) && !isRoad(f4)) { // 1
             var map = roadTexture.l1
-        } else if (f1 != 'r' && f2 == 'r' && f3 == 'r' && f4 == 'r') { // 1
+        } else if (!isRoad(f1) && isRoad(f2) && isRoad(f3) && isRoad(f4)) { // 1
             var map = roadTexture.d1
-        } else if (f1 == 'r' && f2 != 'r' && f3 == 'r' && f4 == 'r') { // 1
+        } else if (isRoad(f1) && !isRoad(f2) && isRoad(f3) && isRoad(f4)) { // 1
             var map = roadTexture.r1
         }
 

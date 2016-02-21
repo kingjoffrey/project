@@ -53,6 +53,12 @@ var Field = function (field) {
     this.setCastleColor = function (color) {
         field.castleColor = color
     }
+    this.getTypeWithoutBridge = function () {
+        if (field.type == 'b') {
+            return 'w'
+        }
+        return field.type
+    }
     this.getType = function () {
         return field.type
     }

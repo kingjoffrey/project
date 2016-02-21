@@ -34,9 +34,6 @@ var Gui = new function () {
             $('#road').click(function () {
                 EditorModels.createMesh('road')
             })
-            $('#bridge').click(function () {
-                EditorModels.createMesh('bridge')
-            })
             $('#forest').click(function () {
                 EditorModels.createMesh('forest')
             })

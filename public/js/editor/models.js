@@ -28,9 +28,6 @@ var EditorModels = new function () {
                 }))
                 mesh.rotation.x = Math.PI / 2
                 break
-            case 'bridge':
-
-                break
             case 'forest':
                 var mesh = new THREE.Mesh(Models.getTreeModel().geometry, Models.getTreeModel().material)
                 break

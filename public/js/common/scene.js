@@ -51,10 +51,9 @@ var Scene = new function () {
             sun.shadow.camera.top = 0
             sun.shadow.camera.bottom = -d
             sun.shadow.camera.far = 300
-            //sun.shadow.camera.
 
-            var helper = new THREE.CameraHelper(sun.shadow.camera)
-            scene.add(helper)
+            //var helper = new THREE.CameraHelper(sun.shadow.camera)
+            //scene.add(helper)
         }
         scene.add(sun)
     }
