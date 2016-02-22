@@ -63,35 +63,60 @@ var MapGenerator = new function () {
             for (var maxI in data) {
                 imageData[maxI] = {}
                 for (var maxJ in data[maxI]) {
+                    //switch (data[maxI][maxJ]) { //OLD
+                    //    case 1:
+                    //        var color = '#0000' + (parseInt(pixels[maxI][maxJ]) + minus.water).toString(16),
+                    //var color = '#ffff00',
+                    //    type = 'w'
+                    //break
+                    //case 3:
+                    //    var rgb = (256 - parseInt(pixels[maxI][maxJ]) - minus.grass).toString(16),
+                    //        color = '#00' + rgb + '00',
+                    //        type = 'g'
+                    //    break
+                    //case 4:
+                    //var rgb = (256 - parseInt(pixels[maxI][maxJ]) - minus.hills).toString(16),
+                    //    color = '#' + rgb + rgb + '00',
+                    //    type = 'h'
+                    //break
+                    //case 5:
+                    //    var rgb = (parseInt(pixels[maxI][maxJ]) + minus.mountains).toString(16),
+                    //        color = '#' + rgb + rgb + rgb,
+                    //        type = 'm'
+                    //    break
+                    //case 6:
+                    //    var rgb = (parseInt(pixels[maxI][maxJ]) + minus.snow).toString(16),
+                    //        color = '#' + rgb + rgb + rgb,
+                    //        type = 'm'
+                    //    break
+                    //}
+                    //var type, rgb = (256 - parseInt(pixels[maxI][maxJ]) / 2 - 140).toString(16), color = '#' + rgb + rgb + '00'
+
                     switch (data[maxI][maxJ]) {
                         case 1:
-                            //var color = '#0000' + (parseInt(pixels[maxI][maxJ]) + minus.water).toString(16),
-                            //var color = '#ffff00',
                             var rgb = (256 - parseInt(pixels[maxI][maxJ]) - minus.grass).toString(16),
                                 color = '#00' + rgb + '00',
-                                type = 'w'
+                            type = 'w'
                             break
                         case 3:
                             var rgb = (256 - parseInt(pixels[maxI][maxJ]) - minus.grass).toString(16),
                                 color = '#00' + rgb + '00',
-                                type = 'g'
+                            type = 'g'
                             break
                         case 4:
-                            //var rgb = (256 - parseInt(pixels[maxI][maxJ]) - minus.hills).toString(16),
-                            //    color = '#' + rgb + rgb + '00',
                             var rgb = (256 - parseInt(pixels[maxI][maxJ]) - minus.grass).toString(16),
                                 color = '#00' + rgb + '00',
-                                type = 'h'
+                            type = 'h'
                             break
                         case 5:
                             var rgb = (parseInt(pixels[maxI][maxJ]) + minus.mountains).toString(16),
                                 color = '#' + rgb + rgb + rgb,
-                                type = 'm'
+                            type = 'm'
                             break
                         case 6:
                             var rgb = (parseInt(pixels[maxI][maxJ]) + minus.snow).toString(16),
                                 color = '#' + rgb + rgb + rgb,
-                                type = 'm'
+                            type = 'm'
                             break
                     }
                     if (maxI % fieldSize == 0 && maxJ % fieldSize == 0) {
