@@ -171,8 +171,8 @@ var Scene = new function () {
         } else {
             renderer.render(scene, camera)
             setTimeout(function () {
-                water.material.uniforms.time.value += 1.0 / 60.0
-                water.render()
+                //water.material.uniforms.time.value += 1.0 / 60.0
+                //water.render()
                 requestAnimationFrame(Scene.render)
             }, timeOut)
         }

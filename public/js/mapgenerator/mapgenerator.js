@@ -47,9 +47,9 @@ var MapGenerator = new function () {
                 minus = {
                     water: 139 - parseInt(keys.water),
                     grass: 220 - parseInt(keys.grass),
-                    hills: 240 - parseInt(keys.hills),
+                    hills: parseInt(keys.hills),
                     mountains: 45 - parseInt(keys.mountains),
-                    snow: 190 - parseInt(keys.snow)
+                    snow: 100 - parseInt(keys.snow)
                 },
                 x = 0,
                 y = 0,
@@ -94,29 +94,33 @@ var MapGenerator = new function () {
 
                     switch (data[maxI][maxJ]) {
                         case 1:
-                            var rgb = (256 - parseInt(pixels[maxI][maxJ]) - minus.grass).toString(16),
+                            var rgb = (parseInt(pixels[maxI][maxJ] / 2)).toString(16),
                                 color = '#00' + rgb + '00',
-                            type = 'w'
+                                type = 'w'
                             break
                         case 3:
-                            var rgb = (256 - parseInt(pixels[maxI][maxJ]) - minus.grass).toString(16),
+                            var rgb = (parseInt(pixels[maxI][maxJ] / 2)).toString(16),
                                 color = '#00' + rgb + '00',
-                            type = 'g'
+                                type = 'g'
                             break
                         case 4:
-                            var rgb = (256 - parseInt(pixels[maxI][maxJ]) - minus.grass).toString(16),
-                                color = '#00' + rgb + '00',
-                            type = 'h'
+                            var rgb = (parseInt(Math.abs(minus.hills - pixels[maxI][maxJ]) / 2)).toString(16),
+                                color = '#' + rgb + rgb + '00',
+                                type = 'h'
+                            //console.log(parseInt(pixels[maxI][maxJ]))
+                            //console.log(minus.hills)
+                            //console.log(rgb)
+                            //return
                             break
                         case 5:
                             var rgb = (parseInt(pixels[maxI][maxJ]) + minus.mountains).toString(16),
                                 color = '#' + rgb + rgb + rgb,
-                            type = 'm'
+                                type = 'm'
                             break
                         case 6:
                             var rgb = (parseInt(pixels[maxI][maxJ]) + minus.snow).toString(16),
                                 color = '#' + rgb + rgb + rgb,
-                            type = 'm'
+                                type = 'm'
                             break
                     }
                     if (maxI % fieldSize == 0 && maxJ % fieldSize == 0) {

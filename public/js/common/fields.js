@@ -23,6 +23,9 @@ var Fields = new function () {
                     case 'f':
                         Models.addTree(maxX, maxY)
                         break
+                    case 'h':
+                        //Models.addHill(maxX, maxY)
+                        break
                 }
                 this.add(maxX, maxY, fields[maxY][maxX])
             }

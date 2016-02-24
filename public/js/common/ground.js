@@ -1,7 +1,7 @@
 var Ground = new function () {
     var mountainLevel = 1.5,
         hillLevel = 0.5,
-        bottomLevel = 0.2,
+        bottomLevel = 2,
         waterLevel = 0.05,
         cloudsLevel = -30,
         grassVertexPositions = [],
@@ -39,16 +39,30 @@ var Ground = new function () {
             Scene.add(waterMesh)
         },
         createWater = function (maxX, maxY) {
+            tl.load('/img/editor/jasny_niebieski.png', function (texture) {
+                var mesh = new THREE.Mesh(new THREE.PlaneBufferGeometry(maxX, maxY), new THREE.MeshLambertMaterial({
+                    map: texture,
+                    //color: 0x0000ff,
+                    side: THREE.DoubleSide
+                    //transparent: true,
+                    //opacity: 0.1
+                }))
+                mesh.rotation.x = Math.PI / 2
+                mesh.position.set(maxX / 2, -waterLevel, maxY / 2)
+                Scene.add(mesh)
+            })
+        },
+        ccreateWater = function (maxX, maxY) {
             var light = new THREE.DirectionalLight(0xffffbb, 1);
             light.position.set(-1, 1, -1);
             Scene.add(light)
 
-            var waterNormals = new THREE.TextureLoader().load('/img/waternormals.jpg')
+            var waterNormals = new THREE.TextureLoader().load('/img/editor/jasny_niebieski.png')
             waterNormals.wrapS = waterNormals.wrapT = THREE.RepeatWrapping
 
             var water = new THREE.Water(Scene.getRenderer(), Scene.getCamera(), Scene.get(), {
-                textureWidth: 32,
-                textureHeight: 32,
+                textureWidth: 1024,
+                textureHeight: 1024,
                 waterNormals: waterNormals,
                 alpha: 1.0,
                 sunDirection: light.position.clone().normalize(),
@@ -62,7 +76,7 @@ var Ground = new function () {
             var mirrorMesh = new THREE.Mesh(
                 new THREE.PlaneBufferGeometry(maxX, maxY),
                 water.material
-            );
+            )
 
             mirrorMesh.add(water);
             mirrorMesh.rotation.x = -Math.PI / 2
@@ -255,12 +269,12 @@ var Ground = new function () {
             }
         },
         changeGroundLevel = function (grassVertexPositions, maxX, maxY, maxI, i, level, type) {
-            if (type == 'w') {
-                var rand = 0
-                //var rand = -0.1
-            } else {
-                var rand = -Math.random() / 5
-            }
+            //if (type == 'w') {
+            var rand = 0
+            //var rand = -0.1
+            //} else {
+            //    var rand = -Math.random() / 5
+            //}
             if (i % 12 == 0) {
                 grassVertexPositions[i + 3][2] = level + rand                //
                 grassVertexPositions[i + 7][2] = level + rand                //

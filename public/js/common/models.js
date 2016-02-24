@@ -201,6 +201,11 @@ var Models = new function () {
             treeModel = loader.parse(tree)
             treeModel.material = new THREE.MeshLambertMaterial({color: '#003300', side: THREE.DoubleSide})
         },
+        initHill = function () {
+            hill.scale = 3
+            hillModel = loader.parse(hill)
+            hillModel.material = new THREE.MeshLambertMaterial({color: '#001900', side: THREE.DoubleSide})
+        },
         isRoad = function (type) {
             if (type == 'r' || type == 'b') {
                 return 1
@@ -364,6 +369,17 @@ var Models = new function () {
         }
         Scene.add(mesh)
     }
+    this.addHill = function (x, y) {
+        var mesh = new THREE.Mesh(hillModel.geometry, hillModel.material)
+        mesh.position.set(x * 2 + 1, 0, y * 2 + 1)
+        mesh.rotation.y = 2 * Math.PI * Math.random()
+
+        if (shadows) {
+            mesh.castShadow = true
+            mesh.receiveShadow = true
+        }
+        Scene.add(mesh)
+    }
     this.addRoad = function (x, y) {
         var x = x * 1,
             y = y * 1,
@@ -515,5 +531,6 @@ var Models = new function () {
         initCastle()
         initFlag()
         initTree()
+        initHill()
     }
 }
