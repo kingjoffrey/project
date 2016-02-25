@@ -1,6 +1,6 @@
 var Ground = new function () {
-    var mountainLevel = 1.5,
-        hillLevel = 0.5,
+    var mountainLevel = 1.95,
+        hillLevel = 0.65,
         bottomLevel = 2,
         waterLevel = 0.05,
         cloudsLevel = -30,
@@ -199,6 +199,7 @@ var Ground = new function () {
                     }
                 }
             }
+            adjustMountainLevels(grassVertexPositions, maxX, maxY)
 
             var grassVertices = new Float32Array(grassVertexPositions.length * 3),
                 normals = new Float32Array(grassVertexPositions.length * 3),
@@ -268,6 +269,103 @@ var Ground = new function () {
                 PickerCommon.attach(grassMesh)
             }
         },
+        adjustMountainLevels = function (grassVertexPositions, maxX, maxY) {
+            for (var i = 0; i < grassVertexPositions.length; i++) {
+                if (grassVertexPositions[i][0] == 0) {
+                    continue
+                }
+                if (grassVertexPositions[i][0] == maxX) {
+                    continue
+                }
+                if (grassVertexPositions[i][1] == 0) {
+                    continue
+                }
+                if (grassVertexPositions[i][1] == maxY) {
+                    continue
+                }
+                if (grassVertexPositions[i][0] % 2 != 0 || grassVertexPositions[i][1] % 2 != 0) {
+                    continue
+                }
+                if (i % 12 != 0) {
+                    continue
+                }
+                if (Fields.get(grassVertexPositions[i][0] / 2, grassVertexPositions[i][1] / 2).getType() == 'm') {
+                    var between = maxY * 6
+                    if (grassVertexPositions[i][2] == 0) {
+                        grassVertexPositions[i][2] = -hillLevel
+                        grassVertexPositions[i - 2][2] = -hillLevel
+                        grassVertexPositions[i - 4][2] = -hillLevel
+                        grassVertexPositions[i - between - 3][2] = -hillLevel                //
+                        grassVertexPositions[i - between + 1][2] = -hillLevel                //
+                        grassVertexPositions[i - between + 5][2] = -hillLevel               //
+                    }
+
+                    if (grassVertexPositions[i + 2][2] == 0) {
+                        grassVertexPositions[i + 2][2] = -hillLevel
+                        grassVertexPositions[i + 4][2] = -hillLevel
+                        grassVertexPositions[i + 6][2] = -hillLevel
+                        grassVertexPositions[i - between + 3][2] = -hillLevel  //
+                        grassVertexPositions[i - between + 7][2] = -hillLevel  //
+                        grassVertexPositions[i - between + 11][2] = -hillLevel //
+                    }
+
+                    if (grassVertexPositions[i + 8][2] == 0) {
+                        grassVertexPositions[i + 8][2] = -hillLevel
+                        grassVertexPositions[i + 10][2] = -hillLevel
+                        grassVertexPositions[i + 12][2] = -hillLevel
+                        grassVertexPositions[i - between + 9][2] = -hillLevel  //
+                        grassVertexPositions[i - between + 13][2] = -hillLevel  //
+                        grassVertexPositions[i - between + 17][2] = -hillLevel //
+                    }
+
+                    if (grassVertexPositions[i + 1][2] == 0) {
+                        grassVertexPositions[i - 3][2] = -hillLevel  //
+                        grassVertexPositions[i + 1][2] = -hillLevel  //
+                        grassVertexPositions[i + 5][2] = -hillLevel  //
+                        grassVertexPositions[i + between][2] = -hillLevel  //
+                        grassVertexPositions[i + between - 2][2] = -hillLevel
+                        grassVertexPositions[i + between - 4][2] = -hillLevel
+                    }
+
+                    if (grassVertexPositions[i + 9][2] == 0) {
+                        grassVertexPositions[i + 9][2] = -hillLevel  //
+                        grassVertexPositions[i + 13][2] = -hillLevel  //
+                        grassVertexPositions[i + 17][2] = -hillLevel  //
+                        grassVertexPositions[i + between + 8][2] = -hillLevel  //
+                        grassVertexPositions[i + between + 10][2] = -hillLevel
+                        grassVertexPositions[i + between + 12][2] = -hillLevel
+                    }
+
+                    var between2 = 2 * between
+                    if (grassVertexPositions[i + between + 1][2] == 0) {
+                        grassVertexPositions[i + between - 3][2] = -hillLevel  //
+                        grassVertexPositions[i + between + 1][2] = -hillLevel  //
+                        grassVertexPositions[i + between + 5][2] = -hillLevel  //
+                        grassVertexPositions[i + between2][2] = -hillLevel  //
+                        grassVertexPositions[i + between2 - 2][2] = -hillLevel
+                        grassVertexPositions[i + between2 - 4][2] = -hillLevel
+                    }
+
+                    if (grassVertexPositions[i + between + 3][2] == 0) {
+                        grassVertexPositions[i + between + 3][2] = -hillLevel  //
+                        grassVertexPositions[i + between + 7][2] = -hillLevel  //
+                        grassVertexPositions[i + between + 11][2] = -hillLevel  //
+                        grassVertexPositions[i + between2 + 2][2] = -hillLevel  //
+                        grassVertexPositions[i + between2 + 4][2] = -hillLevel
+                        grassVertexPositions[i + between2 + 6][2] = -hillLevel
+                    }
+
+                    if (grassVertexPositions[i + between + 9][2] == 0) {
+                        grassVertexPositions[i + between + 9][2] = -hillLevel  //
+                        grassVertexPositions[i + between + 13][2] = -hillLevel  //
+                        grassVertexPositions[i + between + 17][2] = -hillLevel  //
+                        grassVertexPositions[i + between2 + 8][2] = -hillLevel  //
+                        grassVertexPositions[i + between2 + 10][2] = -hillLevel
+                        grassVertexPositions[i + between2 + 12][2] = -hillLevel
+                    }
+                }
+            }
+        },
         changeGroundLevel = function (grassVertexPositions, maxX, maxY, maxI, i, level, type) {
             //if (type == 'w') {
             var rand = 0
@@ -275,6 +373,7 @@ var Ground = new function () {
             //} else {
             //    var rand = -Math.random() / 5
             //}
+
             if (i % 12 == 0) {
                 grassVertexPositions[i + 3][2] = level + rand                //
                 grassVertexPositions[i + 7][2] = level + rand                //

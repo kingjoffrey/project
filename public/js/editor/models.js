@@ -27,6 +27,7 @@ var EditorModels = new function () {
                     opacity: 0.5
                 }))
                 mesh.rotation.x = Math.PI / 2
+                mesh.position.y = 0.02
                 break
             case 'forest':
                 var mesh = new THREE.Mesh(Models.getTreeModel().geometry, Models.getTreeModel().material)
@@ -47,6 +48,7 @@ var EditorModels = new function () {
                     side: THREE.DoubleSide
                 }))
                 mesh.rotation.x = Math.PI / 2
+                mesh.position.y = 0.502
                 break
             case 'up':
                 var mesh = new THREE.Mesh(new THREE.PlaneGeometry(2, 2), new THREE.MeshLambertMaterial({
@@ -54,6 +56,7 @@ var EditorModels = new function () {
                     side: THREE.DoubleSide
                 }))
                 mesh.rotation.x = Math.PI / 2
+                mesh.position.y = 0.02
                 break
             case 'down':
                 var mesh = new THREE.Mesh(new THREE.PlaneGeometry(2, 2), new THREE.MeshLambertMaterial({
@@ -61,6 +64,7 @@ var EditorModels = new function () {
                     side: THREE.DoubleSide
                 }))
                 mesh.rotation.x = Math.PI / 2
+                mesh.position.y = 0.02
                 break
             default:
                 console.log('Brak typu (' + type + ')')
