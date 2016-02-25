@@ -46,7 +46,7 @@ var MapGenerator = new function () {
             var data = clearBorders(pixels, keys),
                 minus = {
                     water: 139 - parseInt(keys.water),
-                    grass: 220 - parseInt(keys.grass),
+                    grass: 180 - parseInt(keys.grass),
                     hills: 240 - parseInt(keys.hills),
                     mountains: 45 - parseInt(keys.mountains),
                     snow: 190 - parseInt(keys.snow)
@@ -66,12 +66,12 @@ var MapGenerator = new function () {
                     switch (data[maxI][maxJ]) { //OLD
                         case 1:
                             //var color = '#0000' + (parseInt(pixels[maxI][maxJ]) + minus.water).toString(16),
-                            var rgb = (256 - parseInt(pixels[maxI][maxJ]) - minus.grass).toString(16),
+                            var rgb = (parseInt(pixels[maxI][maxJ] / 2 + minus.grass / 2)).toString(16),
                                 color = '#00' + rgb + '00',
                                 type = 'w'
                             break
                         case 3:
-                            var rgb = (256 - parseInt(pixels[maxI][maxJ]) - minus.grass).toString(16),
+                            var rgb = (parseInt(pixels[maxI][maxJ] / 2 + minus.grass / 2)).toString(16),
                                 color = '#00' + rgb + '00',
                                 type = 'g'
                             break
