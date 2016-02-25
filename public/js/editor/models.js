@@ -48,7 +48,7 @@ var EditorModels = new function () {
                     side: THREE.DoubleSide
                 }))
                 mesh.rotation.x = Math.PI / 2
-                mesh.position.y = 0.502
+                mesh.position.y = 0.02
                 break
             case 'up':
                 var mesh = new THREE.Mesh(new THREE.PlaneGeometry(2, 2), new THREE.MeshLambertMaterial({

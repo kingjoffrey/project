@@ -101,7 +101,7 @@ var Models = new function () {
             })
         },
         initRuin = function () {
-            ruin.scale = 6
+            ruin.scale = 9
             ruinModel = loader.parse(ruin)
         },
         initTower = function () {
@@ -307,7 +307,7 @@ var Models = new function () {
             mesh.castShadow = true
             mesh.receiveShadow = true
         }
-        mesh.position.set(x * 2 + 0.5, 0, y * 2 + 1)
+        mesh.position.set(x * 2 + 1, 0, y * 2 + 1)
         mesh.rotation.y = 2 * Math.PI * Math.random()
         Scene.add(mesh)
         return mesh
