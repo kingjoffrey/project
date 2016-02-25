@@ -25,6 +25,9 @@ var CastleWindow = new function () {
 
                 for (var unitId in Units.toArray()) {
                     var unit = Units.get(unitId)
+                    if (unit.special) {
+                        continue
+                    }
 
                     if (castle.getProduction()[0] && castle.getProduction()[0]['unitId'] == unitId) {
                         selectProductionUnit0.append($('<option>').attr({

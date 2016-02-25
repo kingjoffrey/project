@@ -64,7 +64,6 @@ class EditorController extends Game_Controller_Gui
 
         $this->view->headScript()->appendFile('/js/game/player.js?v=' . $version);
         $this->view->headScript()->appendFile('/js/game/armies.js?v=' . $version);
-        $this->view->headScript()->appendFile('/js/game/units.js?v=' . $version);
         $this->view->headScript()->appendFile('/js/game/unit.js?v=' . $version);
 
         $this->view->headScript()->appendFile('/js/common/castle.js?v=' . $version);
@@ -80,6 +79,7 @@ class EditorController extends Game_Controller_Gui
         $this->view->headScript()->appendFile('/js/common/ruins.js?v=' . $version);
         $this->view->headScript()->appendFile('/js/common/tower.js?v=' . $version);
         $this->view->headScript()->appendFile('/js/common/towers.js?v=' . $version);
+        $this->view->headScript()->appendFile('/js/common/units.js?v=' . $version);
 
         $mapId = $this->_request->getParam('mapId');
 
