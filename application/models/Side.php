@@ -26,5 +26,13 @@ class Application_Model_Side extends Coret_Db_Table_Abstract
 
         return $this->selectAll($select);
     }
+
+    public function getAll()
+    {
+        $select = $this->_db->select()
+            ->from($this->_name);
+
+        return $this->selectAll($select);
+    }
 }
 
