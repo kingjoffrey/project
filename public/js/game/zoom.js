@@ -103,19 +103,18 @@ var Zoom = {
             });
 
             var yOffset = Scene.getCamera().position.y - Scene.getCameraY(),
-                position = {
+                startPosition = {
                     x: Scene.getCamera().position.x,
                     z: Scene.getCamera().position.z
                 },
-                target = {
+                endPosition = {
                     x: x * 2 - Scene.getCameraY() - yOffset,
                     z: y * 2 + Scene.getCameraY() + yOffset
                 },
-                tween = new TWEEN.Tween(position)
-                    .to(target, Zoom.getH(position, target))
+                tween = new TWEEN.Tween(startPosition)
+                    .to(endPosition, Zoom.getH(startPosition, endPosition))
                     .onUpdate(function () {
-                        Scene.getCamera().position.x = position.x
-                        Scene.getCamera().position.z = position.z
+                        Scene.setCameraPosition(endPosition.x, endPosition.z)
                     })
                     .start()
 
@@ -185,7 +184,7 @@ var Zoom = {
         };
         return $obj;
     },
-    getH: function (position, target) {
-        return Math.sqrt(Math.pow(target.x - position.x, 2) + Math.pow(position.z - target.z, 2)) * 5
+    getH: function (startPosition, endPosition) {
+        return Math.sqrt(Math.pow(endPosition.x - startPosition.x, 2) + Math.pow(startPosition.z - endPosition.z, 2)) * 5
     }
 }
