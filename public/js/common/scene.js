@@ -166,7 +166,6 @@ var Scene = new function () {
     }
     this.render = function () {
         if (TWEEN.update()) {
-            console.log('a1')
             requestAnimationFrame(Scene.render)
             renderer.render(scene, camera)
         } else {
