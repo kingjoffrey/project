@@ -17,7 +17,7 @@ var Scene = new function () {
         timeOut = 100,
         water,
         initCamera = function () {
-            var viewAngle = 45,
+            var viewAngle = 22,
                 near = 1,
                 far = 1000
 

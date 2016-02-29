@@ -327,8 +327,8 @@ var Army = function (army, bgColor, miniMapColor, textColor, color) {
     map.append(
         $('<div>')
             .css({
-                'left': army.x * 2 + 'px',
-                'top': army.y * 2 + 'px',
+                'left': army.x * 10 + 'px',
+                'top': army.y * 10 + 'px',
                 'background': miniMapColor,
                 'border-color': textColor,
                 'z-index': 10

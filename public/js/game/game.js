@@ -12,6 +12,7 @@ var Game = new function () {
             return
         }
         if (loading) {
+            console.log(g)
             game = g
             map = $('#map')
             coord = $('#coord')
