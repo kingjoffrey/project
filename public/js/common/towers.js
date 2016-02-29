@@ -22,7 +22,7 @@ var Towers = function () {
     this.get = function (towerId) {
         return towers[towerId]
     }
-    this.remove = function (towerId) {
+    this.delete = function (towerId) {
         delete towers[towerId]
     }
     this.clear = function (towerId) {

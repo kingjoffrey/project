@@ -127,7 +127,7 @@ var Move = new function () {
             if (r.battle.victory) {
                 for (var color in r.battle.defenders) {
                     for (var armyId in r.battle.defenders[color]) {
-                        Players.get(color).getArmies().delete(armyId)
+                        Players.get(color).getArmies().clear(armyId)
                     }
                 }
                 if (r.battle.towerId) {
@@ -140,7 +140,7 @@ var Move = new function () {
                         console.log('błąd                           !!!')
                     }
                     Players.get(r.color).getTowers().add(towerId, tower)
-                    towers.remove(towerId)
+                    towers.delete(towerId)
                 }
                 if (r.battle.castleId) {
                     var castleColor = Fields.get(army.getX(), army.getY()).getCastleColor(),
@@ -148,7 +148,7 @@ var Move = new function () {
                         newCastles = Players.get(r.color).getCastles()
 
                     newCastles.add(r.battle.castleId, oldCastles.get(r.battle.castleId))
-                    oldCastles.remove(r.battle.castleId)
+                    oldCastles.delete(r.battle.castleId)
 
                     if (castleColor != 'neutral') {
                         var castle = newCastles.get(r.battle.castleId),
@@ -170,7 +170,7 @@ var Move = new function () {
                     Gui.unlock()
                 }
             } else {
-                Players.get(r.color).getArmies().delete(army.getArmyId())
+                Players.get(r.color).getArmies().clear(army.getArmyId())
                 for (var color in r.battle.defenders) {
                     if (color == 'neutral') {
                         break
@@ -204,7 +204,7 @@ var Move = new function () {
                         if (defenderArmy.getNumberOfUnits()) {
                             defenderArmy.update(defenderArmy)
                         } else {
-                            defenderArmies.delete(armyId)
+                            defenderArmies.clear(armyId)
                         }
                     }
                 }
@@ -225,7 +225,7 @@ var Move = new function () {
         }
 
         for (var i in r.deletedIds) {
-            Players.get(r.color).getArmies().delete(r.deletedIds[i])
+            Players.get(r.color).getArmies().clear(r.deletedIds[i])
         }
 
         WebSocketGame.setExecuting(0)

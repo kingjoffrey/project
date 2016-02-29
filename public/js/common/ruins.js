@@ -17,7 +17,7 @@ var Ruins = new function () {
     this.get = function (ruinId) {
         return ruins[ruinId]
     }
-    this.remove = function (ruinId) {
+    this.delete = function (ruinId) {
         delete ruins[ruinId]
     }
     this.clear = function (ruinId) {

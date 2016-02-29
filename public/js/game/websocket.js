@@ -92,7 +92,7 @@ var WebSocketGame = new function () {
                     if (Players.get(r.color).isComputer() && !Gui.getShow()) {
                         var armies = Players.get(r.color).getArmies()
                         for (var i in r.deletedIds) {
-                            armies.delete(r.deletedIds[i])
+                            armies.clear(r.deletedIds[i])
                         }
                         armies.handle(r.army)
                         WebSocketGame.setExecuting(0)
@@ -100,7 +100,7 @@ var WebSocketGame = new function () {
                         Zoom.lens.setcenter(r.army.x, r.army.y, function () {
                             var armies = Players.get(r.color).getArmies()
                             for (var i in r.deletedIds) {
-                                armies.delete(r.deletedIds[i])
+                                armies.clear(r.deletedIds[i])
                             }
                             armies.handle(r.army)
                             WebSocketGame.setExecuting(0)
@@ -125,7 +125,7 @@ var WebSocketGame = new function () {
                         }
                         Me.upkeepIncrement(-upkeep)
                     }
-                    Players.get(r.color).getArmies().delete(r.id)
+                    Players.get(r.color).getArmies().clear(r.id)
                     if (Turn.isMy()) {
                         Me.handleHeroButtons()
                     }
@@ -177,7 +177,7 @@ var WebSocketGame = new function () {
                     var armies = Players.get(r.color).getArmies(),
                         castles = Players.get(r.color).getCastles()
                     for (var armyId in armies.toArray()) {
-                        armies.delete(armyId)
+                        armies.clear(armyId)
                     }
                     for (var castleId in castles.toArray()) {
                         castles.raze(castleId)
@@ -236,7 +236,7 @@ var WebSocketGame = new function () {
                         towers = Players.get(towerColor).getTowers(),
                         tower = towers.get(towerId)
                     Players.get(r.color).getTowers().add(towerId, tower)
-                    towers.remove(towerId)
+                    towers.delete(towerId)
                     if (Me.colorEquals(towerColor)) {
                         Me.incomeIncrement(-5)
                     }

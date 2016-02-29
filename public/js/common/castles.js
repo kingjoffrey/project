@@ -46,7 +46,7 @@ var Castles = function () {
         $('#c' + castleId).remove()
         this.remove(castleId)
     }
-    this.remove = function (castleId) {
+    this.delete = function (castleId) {
         delete castles[castleId]
     }
     this.clear = function (castleId) {
