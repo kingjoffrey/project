@@ -59,6 +59,7 @@
     top: 0px;
     left: 0px;
     border-bottom-right-radius: 3px;
+    transform:scaleY(-1)
 }
 
 .castle {
