@@ -4,7 +4,7 @@
 var CastleWindow = new function () {
     var center = function (i) {
             return function () {
-                Zoom.lens.setcenter(Me.getCastle(i).getX(), Me.getCastle(i).getY())
+                Zoom.getLens().setcenter(Me.getCastle(i).getX(), Me.getCastle(i).getY())
             }
         },
         click = function (i, id) {
@@ -114,7 +114,7 @@ var CastleWindow = new function () {
                     .html('>>')
                     .click(function () {
                         CastleWindow.show(nextCastle)
-                        Zoom.lens.setcenter(nextCastle.getX(), nextCastle.getY())
+                        Zoom.getLens().setcenter(nextCastle.getX(), nextCastle.getY())
                         Message.remove(id)
                     }))
         }
@@ -125,7 +125,7 @@ var CastleWindow = new function () {
                     .html('<<')
                     .click(function () {
                         CastleWindow.show(previousCastle)
-                        Zoom.lens.setcenter(previousCastle.getX(), previousCastle.getY())
+                        Zoom.getLens().setcenter(previousCastle.getX(), previousCastle.getY())
                         Message.remove(id)
                     }))
         }

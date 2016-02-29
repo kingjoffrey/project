@@ -1,8 +1,9 @@
 "use strict"
 var Zoom = new function () {
-    var lens = null,
+    var lens,
+        smallImage,
         scale = 10,
-        Smallimage = function () {
+        smallImage = function () {
             var image = $('#mapImage'),
                 node = image[0],
                 $obj = {}
@@ -54,18 +55,18 @@ var Zoom = new function () {
             $obj.fetchdata()
             return $obj;
         },
-        Lens = function () {
+        lens = function () {
             var $obj = {};
             $obj.node = $('.zoomPup')
             $obj.setdimensions = function () {
-                $obj.node.w = (parseInt(Scene.getWidth() / scale) > Zoom.smallimage.w ) ? Zoom.smallimage.w : (parseInt(Scene.getWidth() / scale));
-                $obj.node.h = (parseInt(Scene.getHeight() / scale) > Zoom.smallimage.h ) ? Zoom.smallimage.h : (parseInt(Scene.getHeight() / scale));
+                $obj.node.w = (parseInt(Scene.getWidth() / scale) > smallImage.w ) ? smallImage.w : (parseInt(Scene.getWidth() / scale));
+                $obj.node.h = (parseInt(Scene.getHeight() / scale) > smallImage.h ) ? smallImage.h : (parseInt(Scene.getHeight() / scale));
                 $obj.node.css({
                     'width': $obj.node.w,
                     'height': $obj.node.h
                 });
-                $obj.node.top = (Zoom.smallimage.oh - $obj.node.h - 2) / 2;
-                $obj.node.left = (Zoom.smallimage.ow - $obj.node.w - 2) / 2;
+                $obj.node.top = (smallImage.oh - $obj.node.h - 2) / 2;
+                $obj.node.left = (smallImage.ow - $obj.node.w - 2) / 2;
             };
             $obj.setcenter = function (x, y, func) {
                 $obj.node.top = y * scale - $obj.node.h / 2
@@ -85,7 +86,7 @@ var Zoom = new function () {
                         z: y * 2 + Scene.getCameraY() + yOffset
                     },
                     tween = new TWEEN.Tween(startPosition)
-                        .to(endPosition, Zoom.getH(startPosition, endPosition))
+                        .to(endPosition, Math.sqrt(Math.pow(endPosition.x - startPosition.x, 2) + Math.pow(startPosition.z - endPosition.z, 2)) * 5)
                         .onUpdate(function () {
                             Scene.setCameraPosition(endPosition.x, endPosition.z)
                         })
@@ -104,32 +105,32 @@ var Zoom = new function () {
                     lenstop = 0
 
                 function overleft(lens) {
-                    return mouseX < Zoom.smallimage.pos.l;
+                    return mouseX < smallImage.pos.l;
                 }
 
                 function overright(lens) {
-                    return mouseX > Zoom.smallimage.pos.r;
+                    return mouseX > smallImage.pos.r;
                 }
 
                 function overtop(lens) {
-                    return mouseY < Zoom.smallimage.pos.t;
+                    return mouseY < smallImage.pos.t;
                 }
 
                 function overbottom(lens) {
-                    return mouseY > Zoom.smallimage.pos.b;
+                    return mouseY > smallImage.pos.b;
                 }
 
-                lensleft = mouseX + Zoom.smallimage.bleft - Zoom.smallimage.pos.l - ($obj.node.w + 2) / 2;
-                lenstop = mouseY + Zoom.smallimage.btop - Zoom.smallimage.pos.t - ($obj.node.h + 2) / 2;
+                lensleft = mouseX + smallImage.bleft - smallImage.pos.l - ($obj.node.w + 2) / 2;
+                lenstop = mouseY + smallImage.btop - smallImage.pos.t - ($obj.node.h + 2) / 2;
                 if (overleft($obj.node)) {
-                    lensleft = Zoom.smallimage.bleft - $obj.node.w / 2;
+                    lensleft = smallImage.bleft - $obj.node.w / 2;
                 } else if (overright($obj.node)) {
-                    lensleft = Zoom.smallimage.w + Zoom.smallimage.bleft - $obj.node.w / 2;
+                    lensleft = smallImage.w + smallImage.bleft - $obj.node.w / 2;
                 }
                 if (overtop($obj.node)) {
-                    lenstop = Zoom.smallimage.btop - $obj.node.h / 2;
+                    lenstop = smallImage.btop - $obj.node.h / 2;
                 } else if (overbottom($obj.node)) {
-                    lenstop = Zoom.smallimage.h + Zoom.smallimage.btop - $obj.node.h / 2;
+                    lenstop = smallImage.h + smallImage.btop - $obj.node.h / 2;
                 }
 
                 $obj.node.left = lensleft;
@@ -140,20 +141,9 @@ var Zoom = new function () {
                 });
 
                 var yOffset = Scene.getCamera().position.y - Scene.getCameraY()
-                console.log(yOffset)
-                //Scene.getCamera().position.x = ($obj.node.left * scale + Scene.getWidth() / 2) / 10 - Scene.getCameraY() - yOffset
-                //Scene.getCamera().position.z = ($obj.node.top * scale + Scene.getHeight() / 2) / 10 - Scene.getCameraY() + yOffset
 
-                console.log(lensleft)
-                console.log(lenstop)
-
-                Scene.getCamera().position.x = ($obj.node.left + $obj.node.w / 2) / scale - Scene.getCameraY() - yOffset
-
-
-                //y * scale - $obj.node.h / 2
-                //y * scale=$obj.node.h / 2
-                //y=($obj.node.h / 2)/scale
-                Scene.getCamera().position.z = ($obj.node.top + $obj.node.h / 2 ) / scale + Scene.getCameraY() + yOffset
+                Scene.getCamera().position.x = ($obj.node.left + $obj.node.w / 2) / scale * 2 - Scene.getCameraY() - yOffset
+                Scene.getCamera().position.z = ($obj.node.top + $obj.node.h / 2 ) / scale * 2 + Scene.getCameraY() + yOffset
             };
             $obj.show = function () {
                 $obj.node.show();
@@ -163,19 +153,22 @@ var Zoom = new function () {
             return $obj;
         }
 
-    this.getH = function (startPosition, endPosition) {
-        return Math.sqrt(Math.pow(endPosition.x - startPosition.x, 2) + Math.pow(startPosition.z - endPosition.z, 2)) * 5
+    this.getLens = function () {
+        return lens
+    }
+    this.getScale = function () {
+        return scale
     }
     this.init = function () {
         map.bind('mousedown', function (e) {
-            if (e.pageX > Zoom.smallimage.pos.r || e.pageX < Zoom.smallimage.pos.l || e.pageY < Zoom.smallimage.pos.t || e.pageY > Zoom.smallimage.pos.b) {
+            if (e.pageX > smallImage.pos.r || e.pageX < smallImage.pos.l || e.pageY < smallImage.pos.t || e.pageY > smallImage.pos.b) {
                 return false;
             }
-            Zoom.lens.setposition(e)
+            lens.setposition(e)
         })
 
-        this.smallimage = Smallimage()
-        this.lens = Lens()
-        this.lens.show()
+        smallImage = smallImage()
+        lens = lens()
+        lens.show()
     }
 }

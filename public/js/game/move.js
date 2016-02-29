@@ -34,7 +34,7 @@ var Move = new function () {
         if (player.isComputer() && !Gui.getShow()) {
             stepLoop(r, ii)
         } else {
-            Zoom.lens.setcenter(r.path[0].x, r.path[0].y, function () {
+            Zoom.getLens().setcenter(r.path[0].x, r.path[0].y, function () {
                 Move.startStepLoop(r, ii)
             })
         }
@@ -77,7 +77,7 @@ var Move = new function () {
         } else {
             if (isTruthful(r.battle) && (!player.isComputer() || Gui.getShow())) {
                 Sound.play('fight')
-                Zoom.lens.setcenter(r.path[step].x, r.path[step].y, function () {
+                Zoom.getLens().setcenter(r.path[step].x, r.path[step].y, function () {
                     BattleWindow.battle(r, ii)
                 })
             } else {
@@ -90,7 +90,7 @@ var Move = new function () {
         if (player.isComputer() && !Gui.getShow()) {
             army.setPosition(army.getX(), army.getY())
         }
-        //Zoom.lens.setcenter(army.getX(), army.getY())
+        //Zoom.getLens().setcenter(army.getX(), army.getY())
 
         if (r.battle) {
             if (player.isComputer() && !Gui.getShow()) {

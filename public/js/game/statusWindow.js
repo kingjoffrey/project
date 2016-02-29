@@ -77,7 +77,7 @@ var StatusWindow = new function () {
 
         var get = function (i) {
             return function () {
-                Zoom.lens.setcenter(castles[i].x, castles[i].y)
+                Zoom.getLens().setcenter(castles[i].x, castles[i].y)
             }
         }
 

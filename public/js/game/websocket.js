@@ -51,7 +51,7 @@ var WebSocketGame = new function () {
                         Ruins.handle(r)
                         WebSocketGame.setExecuting(0)
                     } else {
-                        Zoom.lens.setcenter(r.army.x, r.army.y, function () {
+                        Zoom.getLens().setcenter(r.army.x, r.army.y, function () {
                             Ruins.handle(r)
                             WebSocketGame.setExecuting(0)
                         })
@@ -75,7 +75,7 @@ var WebSocketGame = new function () {
                         WebSocketGame.setExecuting(0)
 
                     } else {
-                        Zoom.lens.setcenter(r.parentArmy.x, r.parentArmy.y, function () {
+                        Zoom.getLens().setcenter(r.parentArmy.x, r.parentArmy.y, function () {
                             var armies = Players.get(r.color).getArmies()
                             armies.handle(r.parentArmy)
                             armies.handle(r.childArmy)
@@ -97,7 +97,7 @@ var WebSocketGame = new function () {
                         armies.handle(r.army)
                         WebSocketGame.setExecuting(0)
                     } else {
-                        Zoom.lens.setcenter(r.army.x, r.army.y, function () {
+                        Zoom.getLens().setcenter(r.army.x, r.army.y, function () {
                             var armies = Players.get(r.color).getArmies()
                             for (var i in r.deletedIds) {
                                 armies.clear(r.deletedIds[i])
@@ -138,7 +138,7 @@ var WebSocketGame = new function () {
                         Players.get(r.color).getArmies().handle(r.army)
                         WebSocketGame.setExecuting(0)
                     } else {
-                        Zoom.lens.setcenter(r.army.x, r.army.y, function () {
+                        Zoom.getLens().setcenter(r.army.x, r.army.y, function () {
                             Players.get(r.color).getArmies().handle(r.army)
                             if (Turn.isMy()) {
                                 Message.remove()

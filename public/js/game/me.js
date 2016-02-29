@@ -221,7 +221,7 @@ var Me = new function () {
 
         if (notSet(center)) {
             //zoomer.setCenterIfOutOfScreen(a.x * 40, a.y * 40);
-            Zoom.lens.setcenter(army.getX(), army.getY(), function () {
+            Zoom.getLens().setcenter(army.getX(), army.getY(), function () {
                 selectedArmyId = armyId
             })
         } else {

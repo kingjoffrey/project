@@ -350,7 +350,7 @@ var Gui = new function () {
         //})
     }
     this.adjust = function () {
-        Zoom.lens.setdimensions()
+        Zoom.getLens().setdimensions()
 
         commandsBox.close = 0
         chatBox.close = 0
