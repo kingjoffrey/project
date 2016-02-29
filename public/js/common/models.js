@@ -398,7 +398,7 @@ var Models = new function () {
             f4 = Fields.get(x - 1, y).getType()
         }
 
-        if ( !isRoad(f1) &&  !isRoad(f2) &&  !isRoad(f3) && !isRoad(f4)) { // point
+        if (!isRoad(f1) && !isRoad(f2) && !isRoad(f3) && !isRoad(f4)) { // point
             var map = roadTexture.p
         } else if (isRoad(f1) && !isRoad(f2) && !isRoad(f3) && !isRoad(f4)) { // 3
             var map = roadTexture.u3
@@ -474,6 +474,19 @@ var Models = new function () {
         } else {
             var mesh = new THREE.Mesh(untitledModel.geometry, armyMaterial)
         }
+        if (shadows) {
+            mesh.castShadow = true
+            mesh.receiveShadow = true
+            flagMesh.castShadow = true
+        }
+        this.setArmyPosition(mesh, x, y)
+        flagMesh.position.set(-0.2, 0, 0)
+        mesh.rotation.y = Math.PI / 2 + Math.PI / 4
+        mesh.add(flagMesh)
+        Scene.add(mesh)
+        return mesh
+    }
+    this.setArmyPosition = function (mesh, x, y) {
         switch (Fields.get(x, y).getType()) {
             case 'm':
                 var height = Ground.getMountainLevel()
@@ -484,21 +497,14 @@ var Models = new function () {
             case 'w':
                 var height = Ground.getWaterLevel()
                 break
+            case 'b':
+                var height = Ground.getWaterLevel
+                break
             default :
                 var height = 0
                 break
         }
-        if (shadows) {
-            mesh.castShadow = true
-            mesh.receiveShadow = true
-            flagMesh.castShadow = true
-        }
-        flagMesh.position.set(-0.2, 0, 0)
         mesh.position.set(x * 2 + 0.5, height, y * 2 + 0.5)
-        mesh.rotation.y = Math.PI / 2 + Math.PI / 4
-        mesh.add(flagMesh)
-        Scene.add(mesh)
-        return mesh
     }
     this.getCastleModels = function () {
         return castleModels

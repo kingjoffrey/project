@@ -38,13 +38,13 @@ var WebSocketEditor = new function () {
                 case 'remove':
                     var field = Fields.get(r.x, r.y)
                     if (field.getCastleId()) {
-                        Players.get(field.getCastleColor()).getCastles().remove(field.getCastleId())
+                        Players.get(field.getCastleColor()).getCastles().clear(field.getCastleId())
                         Fields.initCastle(r.x, r.y, null, null)
                     } else if (field.getTowerId()) {
-                        Players.get(field.getTowerColor()).getTowers().remove(field.getTowerId())
+                        Players.get(field.getTowerColor()).getTowers().clear(field.getTowerId())
                         field.setTower(null, null)
                     } else if (field.getRuinId()) {
-                        Ruins.remove(field.getRuinId())
+                        Ruins.clear(field.getRuinId())
                         field.setRuinId(null)
                     }
                     break

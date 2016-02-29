@@ -66,7 +66,7 @@ var Move = new function () {
                             console.log('path: ' + r.path)
                             throw('error20150224')
                         }
-                        army.setPosition(r.path[step].x, r.path[step].y)
+                        Models.setArmyPosition(mesh, r.path[step].x, r.path[step].y)
                         delete r.path[step].c
                         stepLoop(r, ii);
                     })

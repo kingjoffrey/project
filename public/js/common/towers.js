@@ -23,6 +23,9 @@ var Towers = function () {
         return towers[towerId]
     }
     this.remove = function (towerId) {
+        delete towers[towerId]
+    }
+    this.clear = function (towerId) {
         Scene.remove(towers[towerId].getMesh())
         delete towers[towerId]
     }

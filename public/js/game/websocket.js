@@ -323,12 +323,12 @@ var WebSocketGame = new function () {
                     break;
 
                 case 'close':
-                    Players.setOnline(r.color, 0)
+                    GamePlayers.setOnline(r.color, 0)
                     break;
 
                 case 'online':
                     if (!Me.colorEquals(r.color)) {
-                        Players.setOnline(r.color, 1)
+                        GamePlayers.setOnline(r.color, 1)
                     }
                     break;
 

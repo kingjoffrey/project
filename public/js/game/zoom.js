@@ -8,7 +8,7 @@ var Zoom = {
                 return false;
             }
             Zoom.lens.setposition(e)
-        });
+        })
 
         this.smallimage = this.Smallimage()
         this.smallimage.fetchdata()
