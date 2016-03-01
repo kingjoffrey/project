@@ -324,14 +324,16 @@ var Army = function (army, bgColor, miniMapColor, textColor, color) {
     army.mesh = Models.addArmy(army.x, army.y, bgColor, this.getNumberOfUnits(), this.getModelName())
 
     Fields.get(army.x, army.y).addArmyId(army.id, color)
-    map.append(
+    Game.getMapElement().append(
         $('<div>')
             .css({
-                'left': army.x * 10 + 'px',
-                'top': army.y * 10 + 'px',
-                'background': miniMapColor,
+                left: army.x * Zoom.getScale() + 'px',
+                top: army.y * Zoom.getScale() + 'px',
+                background: miniMapColor,
                 'border-color': textColor,
-                'z-index': 10
+                'z-index': 10,
+                width: Zoom.getScale() + 'px',
+                height: Zoom.getScale() + 'px'
             })
             .attr('id', army.id)
             .addClass('a')

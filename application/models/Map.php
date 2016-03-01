@@ -47,7 +47,7 @@ class Application_Model_Map extends Coret_Db_Table_Abstract
     public function getMap()
     {
         $select = $this->_db->select()
-            ->from($this->_name)
+            ->from($this->_name, array('mapWidth', 'mapHeight', 'name', 'mapId'))
             ->where($this->_db->quoteIdentifier($this->_primary) . ' = ?', $this->mapId);
 
         return $this->selectRow($select);

@@ -2,7 +2,7 @@
 var Zoom = new function () {
     var lens,
         smallImage,
-        scale = 10,
+        scale,
         smallImage = function () {
             var image = $('#mapImage'),
                 node = image[0],
@@ -159,8 +159,9 @@ var Zoom = new function () {
     this.getScale = function () {
         return scale
     }
-    this.init = function () {
-        map.bind('mousedown', function (e) {
+    this.init = function (s) {
+        scale = s
+        Game.getMapElement().bind('mousedown', function (e) {
             if (e.pageX > smallImage.pos.r || e.pageX < smallImage.pos.l || e.pageY < smallImage.pos.t || e.pageY > smallImage.pos.b) {
                 return false;
             }

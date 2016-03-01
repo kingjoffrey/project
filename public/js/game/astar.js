@@ -9,8 +9,12 @@ var AStar = new function () {
         field,
         army,
         myCastleId = {},
-        movementType
+        movementType,
+        coord
 
+    this.init = function () {
+        coord = $('#coord')
+    }
     this.getX = function () {
         return destX
     }

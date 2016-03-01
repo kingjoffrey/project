@@ -1,9 +1,30 @@
+//"use strict"
 var Game = new function () {
-    var loading = true,
+    var loading = 1,
         timeoutId = null,
-        stop = false,
         game
 
+    this.getMapElement = function () {
+        return $('#map')
+    }
+    this.getTimeoutId = function () {
+        return timeoutId
+    }
+    this.setTimeoutId = function (value) {
+        timeoutId = value
+    }
+    this.getCapitalId = function (color) {
+        return game.capitals[color]
+    }
+    this.getTurnsLimit = function () {
+        return game.turnsLimit
+    }
+    this.getFirstUnitId = function () {
+        return game.firstUnitId
+    }
+    this.getLoading = function () {
+        return loading
+    }
     this.init = function (g) {
         if (Models.getLoading() < 17) {
             setTimeout(function () {
@@ -11,21 +32,17 @@ var Game = new function () {
             }, 500)
             return
         }
+        game = g
         if (loading) {
-            console.log(g)
-            game = g
-            map = $('#map')
-            coord = $('#coord')
-
-            loading = false
+            loading = 0
 
             Units.init(game.units)
             Terrain.init(game.terrain)
-            Fields.init(game.fields, game.mapId)
+            Fields.init(game.fields, game.map.mapId)
             Turn.init(game.turnHistory)
+            Gui.init(game.map)
             Players.init(game.players)
             GamePlayers.init(game.players)
-            Gui.init()
             Timer.init(game.begin, game.turnTimeLimit, game.timeLimit)
             Ruins.init(game.ruins)
             Me.init(game.color, game.gold, game.bSequence)
@@ -53,30 +70,10 @@ var Game = new function () {
 
         Sound.play('gamestart')
     }
-    this.getTimeoutId = function () {
-        return timeoutId
-    }
-    this.setTimeoutId = function (value) {
-        timeoutId = value
-    }
-    this.getCapitalId = function (color) {
-        return game.capitals[color]
-    }
-    this.getStop = function () {
-        return stop
-    }
-    this.getTurnsLimit = function () {
-        return game.turnsLimit
-    }
-    this.getFirstUnitId = function () {
-        return game.firstUnitId
-    }
-    this.getLoading = function () {
-        return loading
-    }
 }
 
 $(document).ready(function () {
+    AStar.init()
     Scene.init()
     WebSocketGame.init()
     PrivateChat.init()

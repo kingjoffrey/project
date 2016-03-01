@@ -81,10 +81,7 @@ class EditorController extends Game_Controller_Gui
         $this->view->headScript()->appendFile('/js/common/towers.js?v=' . $version);
         $this->view->headScript()->appendFile('/js/common/units.js?v=' . $version);
 
-        $mapId = $this->_request->getParam('mapId');
-
-        $mMap = new Application_Model_Map($mapId);
-        $this->view->map = $mMap->getMap(Zend_Auth::getInstance()->getIdentity()->playerId);
+        $this->view->mapId = $this->_request->getParam('mapId');
     }
 
     public function testAction()

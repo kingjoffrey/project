@@ -1,3 +1,4 @@
+"use strict"
 var Gui = new function () {
     var lock = true,
         show = true,
@@ -8,6 +9,7 @@ var Gui = new function () {
         mapBox = {close: 0},
         speed = 200,
         documentTitle = 'WoF',
+        mapWidth,
         mapHeight,
         friendsShow = false,
         changeCloseArrowLR = function (move, el) {
@@ -79,203 +81,160 @@ var Gui = new function () {
 //            default:
 //                console.log(key)
             }
+        },
+        prepareButtons = function () {
+            $('#gold').click(function () {
+                TreasuryWindow.treasury()
+            })
+
+            $('#income').click(function () {
+                TreasuryWindow.income()
+            })
+
+            $('#costs').click(function () {
+                TreasuryWindow.upkeep()
+            })
+
+            $('#battleAttack').click(function () {
+                BattleWindow.attack()
+            })
+
+            $('#battleDefence').click(function () {
+                BattleWindow.defence()
+            })
+
+            $('#exit').click(function () {
+                Gui.exit()
+            });
+
+            $('#show').click(function () {
+                Sound.play('click');
+                show = !show;
+                if (show) {
+                    $(this).children().attr('src', '/img/game/show.png')
+                } else {
+                    $(this).children().attr('src', '/img/game/show_off.png')
+                }
+            });
+
+            $('#sound').click(function () {
+                Sound.play('click');
+                Sound.mute = !Sound.mute;
+                if (Sound.mute) {
+                    $(this).children().attr('src', '/img/game/sound_off.png')
+                } else {
+                    $(this).children().attr('src', '/img/game/sound_on.png')
+                }
+            });
+
+            $('#surrender').click(function () {
+                var id = Message.show(translations.surrender, $('<div>').html(translations.areYouSure))
+                Message.ok(id, WebSocketGame.surrender)
+                Message.cancel(id)
+            });
+
+            $('#statistics').click(function () {
+                WebSocketGame.statistics();
+            });
+
+            $('#nextTurn').click(function () {
+                Turn.next()
+            });
+
+            $('#nextArmy').click(function () {
+                Me.findNext()
+            })
+            ;
+            $('#skipArmy').click(function () {
+                Me.skip()
+            });
+
+            $('#quitArmy').click(function () {
+                WebSocketGame.fortify()
+            });
+
+            $('#splitArmy').click(function () {
+                if (!Me.getSelectedArmyId()) {
+                    return
+                }
+
+                SplitWindow.show()
+            })
+
+            $('#armyStatus').click(function () {
+                if (!Me.getSelectedArmyId()) {
+                    return
+                }
+
+                StatusWindow.show()
+            });
+
+            $('#disbandArmy').click(function () {
+                Me.disband()
+            });
+
+            $('#deselectArmy').click(function () {
+                if (!Me.getSelectedArmyId()) {
+                    return;
+                }
+
+                Me.deselectArmy()
+            });
+
+            $('#searchRuins').click(function () {
+                WebSocketGame.ruin()
+            });
+
+            $('#heroResurrection').click(function () {
+                var id = Message.show(translations.resurrectHero, $('<div>').append(translations.doYouWantToResurrectHeroFor100Gold))
+                Message.ok(id, WebSocketGame.resurrection)
+                Message.cancel(id)
+            })
+
+            $('#heroHire').click(function () {
+                var id = Message.show(translations.hireHero, $('<div>').html(translations.doYouWantToHireNewHeroFor1000Gold))
+                Message.ok(id, WebSocketGame.hire)
+                Message.cancel(id)
+            });
+
+            $('#razeCastle').click(function () {
+                CastleWindow.raze()
+            });
+
+            $('#buildCastleDefense').click(function () {
+                CastleWindow.build()
+            });
+
+            $('#showCastle').click(function () {
+                var army = Me.getArmy(Me.getSelectedArmyId())
+                if (army) {
+                    var castle = Me.getCastle(Fields.get(army.getX(), army.getY()).getCastleId())
+                    if (isSet(castle)) {
+                        CastleWindow.show(castle)
+                    }
+                }
+            })
+            $('#showFriends').click(function () {
+                if (friendsShow) {
+                    $('#friends').css({
+                        display: 'none',
+                        top: 0
+                    })
+                    friendsShow = false
+                } else {
+                    var height = $('#friends').height()
+                    $('#friends').css({
+                        display: 'block',
+                        height: 0
+                    })
+                    $('#friends').animate({
+                        top: -height - 10 + 'px',
+                        height: height + 'px'
+                    }, 200)
+                    friendsShow = true
+                }
+            })
         }
-
-    this.init = function () {
-        $(window).resize(function () {
-            Gui.adjust()
-        })
-        $('body')
-            .keydown(function (event) {
-                doKey(event)
-            })
-            .on('contextmenu', function () {
-                return false
-            })
-            .on('dragstart', function () {
-                return false
-            })
-        $('#game canvas').mousewheel(function (event) {
-            if (event.deltaY > 0) {
-                if (Scene.getCameraY() < 230) {
-                    Scene.moveCameraAway()
-                }
-            } else {
-                if (Scene.getCameraY() > 22) {
-                    Scene.moveCameraClose()
-                }
-            }
-        })
-        Zoom.init()
-        mapHeight = $('#mapImage').height()
-        var mapWidth = $('#mapImage').width()
-        $('#map').css({
-            width: mapWidth + 'px',
-            height: mapHeight + 'px'
-        })
-        $('#mapBox').css({
-            width: mapWidth + 'px',
-            height: mapHeight + 18 + 'px'
-        });
-        $('#terrain').css('top', mapHeight + 4 + 'px')
-        $('#commandsBox').css({top: $('#playersBox').height() + 14 + 'px'})
-        this.prepareButtons()
-        this.prepareBoxes()
-        this.adjust()
-    }
-    this.prepareButtons = function () {
-        $('#gold').click(function () {
-            TreasuryWindow.treasury()
-        })
-
-        $('#income').click(function () {
-            TreasuryWindow.income()
-        })
-
-        $('#costs').click(function () {
-            TreasuryWindow.upkeep()
-        })
-
-        $('#battleAttack').click(function () {
-            BattleWindow.attack()
-        })
-
-        $('#battleDefence').click(function () {
-            BattleWindow.defence()
-        })
-
-        $('#exit').click(function () {
-            Gui.exit()
-        });
-
-        $('#show').click(function () {
-            Sound.play('click');
-            show = !show;
-            if (show) {
-                $(this).children().attr('src', '/img/game/show.png')
-            } else {
-                $(this).children().attr('src', '/img/game/show_off.png')
-            }
-        });
-
-        $('#sound').click(function () {
-            Sound.play('click');
-            Sound.mute = !Sound.mute;
-            if (Sound.mute) {
-                $(this).children().attr('src', '/img/game/sound_off.png')
-            } else {
-                $(this).children().attr('src', '/img/game/sound_on.png')
-            }
-        });
-
-        $('#surrender').click(function () {
-            var id = Message.show(translations.surrender, $('<div>').html(translations.areYouSure))
-            Message.ok(id, WebSocketGame.surrender)
-            Message.cancel(id)
-        });
-
-        $('#statistics').click(function () {
-            WebSocketGame.statistics();
-        });
-
-        $('#nextTurn').click(function () {
-            Turn.next()
-        });
-
-        $('#nextArmy').click(function () {
-            Me.findNext()
-        })
-        ;
-        $('#skipArmy').click(function () {
-            Me.skip()
-        });
-
-        $('#quitArmy').click(function () {
-            WebSocketGame.fortify()
-        });
-
-        $('#splitArmy').click(function () {
-            if (!Me.getSelectedArmyId()) {
-                return
-            }
-
-            SplitWindow.show()
-        })
-
-        $('#armyStatus').click(function () {
-            if (!Me.getSelectedArmyId()) {
-                return
-            }
-
-            StatusWindow.show()
-        });
-
-        $('#disbandArmy').click(function () {
-            Me.disband()
-        });
-
-        $('#deselectArmy').click(function () {
-            if (!Me.getSelectedArmyId()) {
-                return;
-            }
-
-            Me.deselectArmy()
-        });
-
-        $('#searchRuins').click(function () {
-            WebSocketGame.ruin()
-        });
-
-        $('#heroResurrection').click(function () {
-            var id = Message.show(translations.resurrectHero, $('<div>').append(translations.doYouWantToResurrectHeroFor100Gold))
-            Message.ok(id, WebSocketGame.resurrection)
-            Message.cancel(id)
-        })
-
-        $('#heroHire').click(function () {
-            var id = Message.show(translations.hireHero, $('<div>').html(translations.doYouWantToHireNewHeroFor1000Gold))
-            Message.ok(id, WebSocketGame.hire)
-            Message.cancel(id)
-        });
-
-        $('#razeCastle').click(function () {
-            CastleWindow.raze()
-        });
-
-        $('#buildCastleDefense').click(function () {
-            CastleWindow.build()
-        });
-
-        $('#showCastle').click(function () {
-            var army = Me.getArmy(Me.getSelectedArmyId())
-            if (army) {
-                var castle = Me.getCastle(Fields.get(army.getX(), army.getY()).getCastleId())
-                if (isSet(castle)) {
-                    CastleWindow.show(castle)
-                }
-            }
-        })
-        $('#showFriends').click(function () {
-            if (friendsShow) {
-                $('#friends').css({
-                    display: 'none',
-                    top: 0
-                })
-                friendsShow = false
-            } else {
-                var height = $('#friends').height()
-                $('#friends').css({
-                    display: 'block',
-                    height: 0
-                })
-                $('#friends').animate({
-                    top: -height - 10 + 'px',
-                    height: height + 'px'
-                }, 200)
-                friendsShow = true
-            }
-        })
-    }
     this.prepareBoxes = function () {
         $('#mapBox .close').click(function () {
             var left = parseInt($('#mapBox').css('left')),
@@ -413,5 +372,59 @@ var Gui = new function () {
     }
     this.moveChatBox = function (func) {
         $('#chatBox').removeClass('mini')
+    }
+    this.init = function (map) {
+        $(window).resize(function () {
+            Gui.adjust()
+        })
+
+        var scale = 233 / map.mapWidth
+
+        mapWidth = map.mapWidth * scale
+        mapHeight = map.mapHeight * scale
+
+        $('#mapImage').css({
+            width: mapWidth + 'px',
+            height: mapHeight + 'px'
+        })
+
+        Game.getMapElement().css({
+            width: mapWidth + 'px',
+            height: mapHeight + 'px'
+        })
+
+        $('body')
+            .keydown(function (event) {
+                doKey(event)
+            })
+            .on('contextmenu', function () {
+                return false
+            })
+            .on('dragstart', function () {
+                return false
+            })
+
+        $('#game canvas').mousewheel(function (event) {
+            if (event.deltaY > 0) {
+                if (Scene.getCameraY() < 230) {
+                    Scene.moveCameraAway()
+                }
+            } else {
+                if (Scene.getCameraY() > 22) {
+                    Scene.moveCameraClose()
+                }
+            }
+        })
+
+        Zoom.init(scale)
+        $('#mapBox').css({
+            width: mapWidth + 'px',
+            height: mapHeight + 18 + 'px'
+        });
+        $('#terrain').css('top', mapHeight + 4 + 'px')
+        $('#commandsBox').css({top: $('#playersBox').height() + 14 + 'px'})
+        prepareButtons()
+        this.prepareBoxes()
+        this.adjust()
     }
 }

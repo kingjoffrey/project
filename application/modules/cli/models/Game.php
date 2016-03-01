@@ -3,7 +3,8 @@
 class Cli_Model_Game
 {
     private $_id;
-    private $_mapId;
+
+    private $_map = array();
 
     private $_capitals = array();
     private $_playersColors;
@@ -59,7 +60,6 @@ class Cli_Model_Game
         $this->_Players = new Cli_Model_Players();
         $this->_Ruins = new Cli_Model_Ruins();
 
-        $this->_mapId = $game['mapId'];
         $this->_begin = $game['begin'];
         $this->_turnsLimit = $game['turnsLimit'];
         $this->_turnTimeLimit = $game['turnTimeLimit'];
@@ -67,6 +67,9 @@ class Cli_Model_Game
 
         $this->_turnNumber = $game['turnNumber'];
         $this->_turnPlayerId = $game['turnPlayerId'];
+
+        $mMap = new Application_Model_Map($game['mapId'], $db);
+        $this->_map = $mMap->getMap();
 
         $mTurnHistory = new Application_Model_TurnHistory($this->_id, $db);
         $this->_turnHistory = $mTurnHistory->getTurnHistory();
@@ -78,7 +81,7 @@ class Cli_Model_Game
             unset($this->_chatHistory[$k]['playerId']);
         }
 
-        $mMapFields = new Application_Model_MapFields($this->_mapId, $db);
+        $mMapFields = new Application_Model_MapFields($this->_map['mapId'], $db);
         $this->_Fields = new Cli_Model_Fields($mMapFields->getMapFields());
 
         $mTerrain = new Application_Model_Terrain($db);
@@ -103,10 +106,10 @@ class Cli_Model_Game
 
     private function initPlayers($players, $sides, Zend_Db_Adapter_Pdo_Pgsql $db)
     {
-        $mMapPlayers = new Application_Model_MapPlayers($this->_mapId, $db);
-        $mMapCastles = new Application_Model_MapCastles($this->_mapId, $db);
+        $mMapPlayers = new Application_Model_MapPlayers($this->_map['mapId'], $db);
+        $mMapCastles = new Application_Model_MapCastles($this->_map['mapId'], $db);
         $mapCastles = $mMapCastles->getMapCastles();
-        $mMapTowers = new Application_Model_MapTowers($this->_mapId, $db);
+        $mMapTowers = new Application_Model_MapTowers($this->_map['mapId'], $db);
         $mapTowers = $mMapTowers->getMapTowers();
         $mTowersInGame = new Application_Model_TowersInGame($this->_id, $db);
         $playersTowers = $mTowersInGame->getTowers();
@@ -132,7 +135,7 @@ class Cli_Model_Game
         $mRuinsInGame = new Application_Model_RuinsInGame($this->_id, $db);
         $emptyRuins = $mRuinsInGame->getVisited();
 
-        $mMapRuins = new Application_Model_MapRuins($this->_mapId, $db);
+        $mMapRuins = new Application_Model_MapRuins($this->_map['mapId'], $db);
         foreach ($mMapRuins->getMapRuins() as $ruinId => $position) {
             if (isset($emptyRuins[$ruinId])) {
                 $empty = true;
@@ -164,7 +167,7 @@ class Cli_Model_Game
     {
         return array(
             'version' => Zend_Registry::get('config')->version,
-            'mapId' => $this->_mapId,
+            'map' => $this->_map,
             'begin' => $this->_begin,
             'timeLimit' => $this->_timeLimit,
             'turnsLimit' => $this->_turnsLimit,

@@ -2,13 +2,15 @@ var Castle = function (castle, bgC, miniMapColor, textColor) {
     var mesh = Models.addCastle(castle, bgC),
         bgColor = bgC
 
-    map.append(
+    Game.getMapElement().append(
         $('<div>').css({
-            'left': castle.x * 10 + 'px',
-            'top': castle.y * 10 + 'px',
-            'background': miniMapColor,
-            'border-color': textColor
-        })
+                left: castle.x * Zoom.getScale() + 'px',
+                top: castle.y * Zoom.getScale() + 'px',
+                background: miniMapColor,
+                'border-color': textColor,
+                width: Zoom.getScale() * 2 + 'px',
+                height: Zoom.getScale() * 2 + 'px'
+            })
             .attr('id', 'c' + castle.id)
             .addClass('c')
     )
