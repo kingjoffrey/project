@@ -127,7 +127,7 @@ var Move = new function () {
             if (r.battle.victory) {
                 for (var color in r.battle.defenders) {
                     for (var armyId in r.battle.defenders[color]) {
-                        Players.get(color).getArmies().clear(armyId)
+                        Players.get(color).getArmies().destroy(armyId)
                     }
                 }
                 if (r.battle.towerId) {
@@ -170,7 +170,7 @@ var Move = new function () {
                     Gui.unlock()
                 }
             } else {
-                Players.get(r.color).getArmies().clear(army.getArmyId())
+                Players.get(r.color).getArmies().destroy(army.getArmyId())
                 for (var color in r.battle.defenders) {
                     if (color == 'neutral') {
                         break
@@ -204,7 +204,7 @@ var Move = new function () {
                         if (defenderArmy.getNumberOfUnits()) {
                             defenderArmy.update(defenderArmy)
                         } else {
-                            defenderArmies.clear(armyId)
+                            defenderArmies.destroy(armyId)
                         }
                     }
                 }
@@ -225,7 +225,7 @@ var Move = new function () {
         }
 
         for (var i in r.deletedIds) {
-            Players.get(r.color).getArmies().clear(r.deletedIds[i])
+            Players.get(r.color).getArmies().destroy(r.deletedIds[i])
         }
 
         WebSocketGame.setExecuting(0)

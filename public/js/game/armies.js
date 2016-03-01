@@ -29,7 +29,7 @@ var Armies = function () {
     this.toArray = function () {
         return armies
     }
-    this.clear = function (armyId) {
+    this.destroy = function (armyId) {
         if (!this.hasArmy(armyId)) {
             throw ('Brak armi o armyId = ' + armyId );
             return

@@ -4,7 +4,11 @@ var Army = function (army, bgColor, miniMapColor, textColor, color) {
         pathMoves = 0
 
     this.update = function (a) {
-        Fields.get(army.x, army.y).removeArmyId(army.id)
+        Fields.get(army.x, army.y).removeArmyId(army.id) // remove armyId from last visited field
+        var numberOfUnits = this.getNumberOfUnits()
+        if (!numberOfUnits) { // no sens to update if no units (army will be destroyed)
+            return
+        }
         for (var key in a) {
             if (key == 'walk') {
                 for (var soldierId in army.walk) {
@@ -55,7 +59,7 @@ var Army = function (army, bgColor, miniMapColor, textColor, color) {
         }
         Fields.get(army.x, army.y).addArmyId(army.id, color)
         Scene.remove(army.mesh)
-        army.mesh = Models.addArmy(army.x, army.y, bgColor, this.getNumberOfUnits(), this.getModelName())
+        army.mesh = Models.addArmy(army.x, army.y, bgColor, numberOfUnits, this.getModelName())
         $('#' + this.getArmyId() + '.a').css({left: army.x * 2 + 'px', top: army.y * 2 + 'px'})
     }
     this.getMesh = function () {
