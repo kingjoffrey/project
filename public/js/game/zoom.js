@@ -164,6 +164,12 @@ var Zoom = new function () {
     this.getScale = function () {
         return scale
     }
+    this.calculateMiniMapX = function (x) {
+        return parseInt(smallImage.w * x / Fields.getMaxX())
+    }
+    this.calculateMiniMapY = function (y) {
+        return parseInt(smallImage.h * y / Fields.getMaxY())
+    }
     this.init = function (s) {
         scale = s
         Game.getMapElement().bind('mousedown', function (e) {

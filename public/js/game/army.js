@@ -331,13 +331,13 @@ var Army = function (army, bgColor, miniMapColor, textColor, color) {
     Game.getMapElement().append(
         $('<div>')
             .css({
-                left: army.x * Zoom.getScale() + 'px',
-                top: army.y * Zoom.getScale() + 'px',
+                left: Zoom.calculateMiniMapX(army.x) + 'px',
+                top: Zoom.calculateMiniMapY(army.y) + 'px',
                 background: miniMapColor,
                 'border-color': textColor,
                 'z-index': 10,
-                width: Zoom.getScale() + 'px',
-                height: Zoom.getScale() + 'px'
+                width: Zoom.calculateMiniMapX(1) + 'px',
+                height: Zoom.calculateMiniMapY(1) + 'px'
             })
             .attr('id', army.id)
             .addClass('a')
