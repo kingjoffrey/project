@@ -59,8 +59,11 @@ var Zoom = new function () {
             var $obj = {};
             $obj.node = $('.zoomPup')
             $obj.setdimensions = function () {
-                $obj.node.w = (parseInt(Scene.getWidth() / scale) > smallImage.w ) ? smallImage.w : (parseInt(Scene.getWidth() / scale));
-                $obj.node.h = (parseInt(Scene.getHeight() / scale) > smallImage.h ) ? smallImage.h : (parseInt(Scene.getHeight() / scale));
+                var visibleMapWidth = Scene.getWidth() / 85,
+                    visibleMapHeight = Scene.getHeight() / 85
+
+                $obj.node.w = (smallImage.w * visibleMapWidth) / Fields.getMaxX()
+                $obj.node.h = (smallImage.h * visibleMapHeight) / Fields.getMaxY()
                 $obj.node.css({
                     'width': $obj.node.w,
                     'height': $obj.node.h
@@ -140,10 +143,12 @@ var Zoom = new function () {
                     'top': lenstop + 'px'
                 });
 
-                var yOffset = Scene.getCamera().position.y - Scene.getCameraY()
+                var yOffset = Scene.getCamera().position.y - Scene.getCameraY(),
+                    centerX = $obj.node.left + $obj.node.w / 2,
+                    centerY = $obj.node.top + $obj.node.h / 2
 
-                Scene.getCamera().position.x = ($obj.node.left + $obj.node.w / 2) / scale * 2 - Scene.getCameraY() - yOffset
-                Scene.getCamera().position.z = ($obj.node.top + $obj.node.h / 2 ) / scale * 2 + Scene.getCameraY() + yOffset
+                Scene.getCamera().position.x = (Fields.getMaxX() * centerX / smallImage.w) * 2 - Scene.getCameraY() - yOffset
+                Scene.getCamera().position.z = (Fields.getMaxY() * centerY / smallImage.h) * 2 + Scene.getCameraY() + yOffset
             };
             $obj.show = function () {
                 $obj.node.show();

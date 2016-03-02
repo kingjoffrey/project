@@ -4,7 +4,6 @@ class Application_Model_SoldiersCreated extends Coret_Db_Table_Abstract
 {
     protected $_name = 'soldierscreated';
     protected $_primary = 'soldierscreatedId';
-    protected $_sequence = '';
     protected $_gameId;
 
     public function __construct($gameId, Zend_Db_Adapter_Pdo_Pgsql $db = null)
