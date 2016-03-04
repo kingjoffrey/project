@@ -82,6 +82,24 @@ class Application_Model_Map extends Coret_Db_Table_Abstract
         return $maps;
     }
 
+    public function getAllMultiMapsList()
+    {
+        $select = $this->_db->select()
+            ->from($this->_name)
+            ->where('tutorial = false')
+            ->order('mapId');
+
+        $list = $this->selectAll($select);
+
+        $maps = array();
+
+        foreach ($list as $map) {
+            $maps[$map['mapId']] = $map['name'];
+        }
+
+        return $maps;
+    }
+
     public function getMinMapId()
     {
         $select = $this->_db->select()

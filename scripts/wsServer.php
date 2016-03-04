@@ -13,19 +13,20 @@ use Devristo\Phpws\Server\UriHandler\WebSocketUriHandler;
 use Devristo\Phpws\Server\WebSocketServer;
 
 defined('APPLICATION_PATH')
-        || define('APPLICATION_PATH', realpath(__DIR__ . '/../application'));
+|| define('APPLICATION_PATH', realpath(__DIR__ . '/../application'));
 defined('APPLICATION_ENV')
-        || define('APPLICATION_ENV', (getenv('APPLICATION_ENV') ? getenv('APPLICATION_ENV') : 'development'));
+|| define('APPLICATION_ENV', (getenv('APPLICATION_ENV') ? getenv('APPLICATION_ENV') : 'development'));
 require_once 'Zend/Application.php';
 $application = new Zend_Application(
-                APPLICATION_ENV,
-                APPLICATION_PATH . '/configs/application.ini'
+    APPLICATION_ENV,
+    APPLICATION_PATH . '/configs/application.ini'
 );
 
 $application->getBootstrap()->bootstrap(array('date', 'config', 'modules', 'frontController'));
 
 include_once(APPLICATION_PATH . '/modules/cli/handlers/PrivateChatHandler.php');
 include_once(APPLICATION_PATH . '/modules/cli/handlers/GameHandler.php');
+include_once(APPLICATION_PATH . '/modules/cli/handlers/TutorialHandler.php');
 include_once(APPLICATION_PATH . '/modules/cli/handlers/SetupHandler.php');
 include_once(APPLICATION_PATH . '/modules/cli/handlers/NewHandler.php');
 include_once(APPLICATION_PATH . '/modules/cli/handlers/EditorHandler.php');
@@ -49,6 +50,7 @@ $router = new \Devristo\Phpws\Server\UriHandler\ClientRouter($server, $logger);
 
 $router->addRoute('#^/chat$#i', new Cli_PrivateChatHandler($logger));
 $router->addRoute('#^/game$#i', new Cli_GameHandler($logger));
+$router->addRoute('#^/tutorial$#i', new Cli_TutorialHandler($logger));
 $router->addRoute('#^/setup$#i', new Cli_SetupHandler($logger));
 $router->addRoute('#^/new$#i', new Cli_NewHandler($logger));
 $router->addRoute('#^/editor$#i', new Cli_EditorHandler($logger));
