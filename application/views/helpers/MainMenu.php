@@ -13,7 +13,7 @@ class zend_View_Helper_MainMenu extends Zend_View_Helper_Abstract
             ->setPostfix('</div>');
 
         $menu = array(
-            'new' => $this->view->translate('Play'),
+            'play' => $this->view->translate('Play'),
             'load' => $this->view->translate('Load game'),
             'halloffame' => $this->view->translate('Hall of Fame'),
 //            'hero' => $this->view->translate('Hero'),

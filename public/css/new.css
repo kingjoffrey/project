@@ -35,10 +35,15 @@
     width: 20px;
 }
 
-#join{
+#join {
     /*margin-top: 1px;*/
 }
 
 #numberOfPlayers-label {
     display: none;
+}
+
+.bigLink {
+    text-align: center;
+    font-size: 30px;
 }
