@@ -12,7 +12,8 @@ class TutorialController extends Coret_Controller_Authorized
             throw new Exception('Brak "gameId"!');
         }
 
-        $this->view->headLink()->prependStylesheet($this->view->baseUrl() . '/css/main.css?v=' . Zend_Registry::get('config')->version);
+        $version = Zend_Registry::get('config')->version;
+
         $this->view->jquery();
         $this->view->headScript()->appendFile('/js/kinetic-v4.7.4.min.js');
         $this->view->headScript()->appendFile('/js/date.js');
@@ -30,9 +31,6 @@ class TutorialController extends Coret_Controller_Authorized
         $mGame = new Application_Model_Game($this->_gameId);
         $this->view->map($mGame->getMapId());
 
-        $version = Zend_Registry::get('config')->version;
-
-        $this->view->headLink()->appendStylesheet('/css/game.css?v=' . $version);
 
         $this->view->headScript()->appendFile('/js/jquery-ui-1.10.3.custom.js');
         $this->view->headScript()->appendFile('/js/jquery.mousewheel.min.js');
@@ -89,6 +87,9 @@ class TutorialController extends Coret_Controller_Authorized
         $this->view->headScript()->appendFile('/js/game/battleWindow.js?v=' . $version);
         $this->view->headScript()->appendFile('/js/game/treasuryWindow.js?v=' . $version);
         $this->view->headScript()->appendFile('/js/game/statisticsWindow.js?v=' . $version);
+
+        $this->view->headLink()->appendStylesheet('/css/game.css?v=' . $version);
+        $this->view->headLink()->prependStylesheet($this->view->baseUrl() . '/css/main.css?v=' . $version);
     }
 }
 

@@ -1,6 +1,6 @@
 <?php
 
-class NewajaxController extends Coret_Controller_Authorized
+class NewajaxxController extends Coret_Controller_Authorized //todo: usunąć ten plik?
 {
 
     public function init()
