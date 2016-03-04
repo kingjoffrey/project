@@ -60,7 +60,10 @@ var Army = function (army, bgColor, miniMapColor, textColor, color) {
         Fields.get(army.x, army.y).addArmyId(army.id, color)
         Scene.remove(army.mesh)
         army.mesh = Models.addArmy(army.x, army.y, bgColor, numberOfUnits, this.getModelName())
-        $('#' + this.getArmyId() + '.a').css({left: army.x * 2 + 'px', top: army.y * 2 + 'px'})
+        $('#' + army.id + '.a').css({
+            left: Zoom.calculateMiniMapX(army.x) + 'px',
+            top: Zoom.calculateMiniMapY(army.y) + 'px'
+        })
     }
     this.getMesh = function () {
         return army.mesh

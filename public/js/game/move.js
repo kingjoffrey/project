@@ -58,8 +58,8 @@ var Move = new function () {
 
                 $('#' + army.getArmyId() + '.a')
                     .animate({
-                        left: r.path[step].x * 2 + 'px',
-                        top: r.path[step].y * 2 + 'px'
+                        left: Zoom.calculateMiniMapX(r.path[step].x) + 'px',
+                        top: Zoom.calculateMiniMapY(r.path[step].y) + 'px'
                     }, stepTime, function () {
                         if (typeof r.path[step] == 'undefined') {
                             console.log('step: ' + step)
