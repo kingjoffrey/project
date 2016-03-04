@@ -50,11 +50,14 @@ var CommonCastle = function (castle, bgC, miniMapColor, textColor) {
     this.getCastleId = function () {
         return castle.id
     }
+    this.getEnclaveNumber = function () {
+        return castle.enclaveNumber
+    }
     this.update = function (bgC, miniMapColor, textColor) {
         bgColor = bgC
         this.setProductionId(null)
         $('#c' + castle.id).css({
-            'background': miniMapColor,
+            background: miniMapColor,
             'border-color': textColor
         })
         mesh.children[0].material.color.set(bgColor)

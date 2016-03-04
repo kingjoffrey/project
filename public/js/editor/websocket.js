@@ -27,7 +27,7 @@ var WebSocketEditor = new function () {
                     for (var color in Players.toArray()) {
                         if (Players.get(color).getCastles().has(r.castleId)) {
                             var castle = Players.get(color).getCastles().get(r.castleId)
-                            Players.get(color).getCastles().remove(r.castleId)
+                            Players.get(color).getCastles().clear(r.castleId)
                             break
                         }
                     }
@@ -188,6 +188,7 @@ var WebSocketEditor = new function () {
             castleId: castleId,
             name: $('input[name=name]').val(),
             income: $('input[name=income]').val(),
+            enclaveNumber: $('input[name=enclaveNumber]').val(),
             color: $('select[name=color]').val(),
             defense: $('select[name=defence]').val(),
             capital: Boolean($('input[name=capital]').is(':checked')),

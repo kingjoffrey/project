@@ -122,6 +122,10 @@ var CastleWindow = new function () {
             .append($('<div>').append('Production unit 2:').append(selectProductionUnit1).append('Production time 2:').append(selectProductionTime1))
             .append($('<div>').append('Production unit 3:').append(selectProductionUnit2).append('Production time 3:').append(selectProductionTime2))
             .append($('<div>').append('Production unit 4:').append(selectProductionUnit3).append('Production time 4:').append(selectProductionTime3))
+            .append($('<div>').append('Enclave number:').append($('<input>').attr({
+                'name': 'enclaveNumber',
+                'value': castle.getEnclaveNumber()
+            })))
             .append($('<div>').append($('<input>').attr({'value': 'Ok', 'type': 'submit'}).click(function () {
                 WebSocketEditor.edit(id)
             })))

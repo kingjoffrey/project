@@ -62,112 +62,19 @@
     transform:scaleY(-1)
 }
 
-.castle {
-    position: absolute;
-    width: 80px;
-    height: 80px;
-    background: url('/img/game/castles/neutral.png') center center no-repeat;
-    border: none;
-    cursor: crosshair;
-    z-index: 2202;
-}
 
 #map .c {
-    width: 4px;
-    height: 4px;
-    border-bottom: 1px solid #000;
-    border-right: 1px solid #000;
+    border: 1px solid #000;
+    /*border-bottom: 1px solid #000;*/
+    /*border-right: 1px solid #000;*/
     position: absolute;
-    background: #9F9F9F;
-}
-
-.ruin {
-    position: absolute;
-    width: 40px;
-    height: 40px;
-    background: url(/img/game/ruin.png) center center no-repeat;
-    border: none;
-    cursor: crosshair;
-    z-index: 2200;
-}
-
-.tower {
-    position: absolute;
-    width: 40px;
-    height: 40px;
-    background: url(/img/game/towers/neutral.png) center center no-repeat;
-    border: none;
-    cursor: crosshair;
-    z-index: 2200;
-}
-
-.army {
-    position: absolute;
-    width: 41px;
-    height: 41px;
-    border: none;
-    z-index: 10000;
-}
-
-.flag {
-    width: 37px;
-    height: 37px;
-    border: none;
-    margin: 3px 3px 3px 4px;
 }
 
 #map .a {
-    width: 1px;
-    height: 1px;
-    border-bottom: 1px solid #000;
-    border-right: 1px solid #000;
+    border: 1px solid #000;
+    /*border-bottom: 1px solid #000;*/
+    /*border-right: 1px solid #000;*/
     position: absolute;
-}
-
-.army .unit {
-    position: relative;
-    top: 6px;
-    left: 8px;
-    width: 31px;
-    height: 31px;
-    text-align: center;
-}
-
-.path {
-    position: inherit;
-    width: 34px;
-    height: 34px;
-    margin: 1px;
-    padding: 2px;
-    border: none;
-    border-radius: 20px;
-    z-index: 2200;
-    color: white;
-    text-align: center;
-    line-height: 36px;
-    text-shadow: none;
-    background: #000;
-    opacity: 0.66;
-}
-
-.path1 {
-    opacity: 0.66;
-}
-
-.path2 {
-    opacity: 0.33;
-}
-
-.field {
-    position: absolute;
-    width: 34px;
-    height: 34px;
-    margin: 1px;
-    padding: 2px;
-    border: none;
-    z-index: 1700;
-    color: #000;
-    text-shadow: none;
 }
 
 #playersBox {

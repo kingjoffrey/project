@@ -16,6 +16,7 @@ class Cli_Model_EditorCastle extends Cli_Model_Castle
         $this->_name = $castle['name'];
         $this->_income = $castle['income'];
         $this->_capital = $castle['capital'];
+        $this->_enclaveNumber = $castle['enclaveNumber'];
     }
 
     public function initProduction($production)
@@ -47,6 +48,7 @@ class Cli_Model_EditorCastle extends Cli_Model_Castle
         $this->_name = $data['name'];
         $this->_income = $data['income'];
         $this->_capital = $data['capital'];
+        $this->_enclaveNumber = $data['enclaveNumber'];
 
         $mMapCastles = new Application_Model_MapCastles($mapId, $db);
         $mMapCastles->edit($this->arrayForDb($mapPlayerId), $this->_id);
@@ -86,7 +88,7 @@ class Cli_Model_EditorCastle extends Cli_Model_Castle
             'income' => $this->_income,
             'capital' => $this->_capital,
             'mapPlayerId' => $mapPlayerId,
-//            'enclaveNumber' => $this->_enclaveNumber,
+            'enclaveNumber' => $this->_enclaveNumber,
         );
     }
 
@@ -100,7 +102,7 @@ class Cli_Model_EditorCastle extends Cli_Model_Castle
             'name' => $this->_name,
             'income' => $this->_income,
             'capital' => $this->_capital,
-//            'enclaveNumber' => $this->_enclaveNumber,
+            'enclaveNumber' => $this->_enclaveNumber,
             'production' => $this->_production
         );
     }
