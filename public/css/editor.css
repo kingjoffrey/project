@@ -14,7 +14,6 @@
     background: #000;
     font-size: 12px;
     display: block;
-    /*overflow: hidden;*/
     clear: both;
 }
 
@@ -25,152 +24,8 @@
     border: none !important;
 }
 
-#board {
-    position: absolute;
-    top: 0px;
-    left: 0px;
-}
-
-#map {
-    position: absolute;
-    top: 10px;
-    left: 10px;
-}
-
-#map * {
-    cursor: url(/img/game/lupa.png) 13 13, crosshair
-}
-
-#mapBox {
-    border-bottom-right-radius: 10px;
-    top: -10px;
-    left: -10px;
-}
-
-.zoomPup {
-    border: 1px solid #fff;
-    top: 0;
-    left: 0;
-    position: absolute;
-    z-index: 21001;
-}
-
-#mapImage {
-    position: absolute;
-    top: 0px;
-    left: 0px;
-    border-bottom-right-radius: 3px;
-}
-
-.castle {
-    position: absolute;
-    width: 80px;
-    height: 80px;
-    background: url('/img/game/castles/neutral.png') center center no-repeat;
-    border: none;
-    cursor: crosshair;
-    z-index: 2202;
-}
-
-#map .c {
-    width: 4px;
-    height: 4px;
-    border-bottom: 1px solid #000;
-    border-right: 1px solid #000;
-    position: absolute;
-    background: #9F9F9F;
-}
-
-.ruin {
-    position: absolute;
-    width: 40px;
-    height: 40px;
-    background: url(/img/game/ruin.png) center center no-repeat;
-    border: none;
-    cursor: crosshair;
-    z-index: 2200;
-}
-
-.tower {
-    position: absolute;
-    width: 40px;
-    height: 40px;
-    background: url(/img/game/towers/neutral.png) center center no-repeat;
-    border: none;
-    cursor: crosshair;
-    z-index: 2200;
-}
-
-.army {
-    position: absolute;
-    width: 41px;
-    height: 41px;
-    border: none;
-    z-index: 10000;
-}
-
-.flag {
-    width: 37px;
-    height: 37px;
-    border: none;
-    margin: 3px 3px 3px 4px;
-}
-
-#map .a {
-    width: 1px;
-    height: 1px;
-    border-bottom: 1px solid #000;
-    border-right: 1px solid #000;
-    position: absolute;
-}
-
-.army .unit {
-    position: relative;
-    top: 6px;
-    left: 8px;
-    width: 31px;
-    height: 31px;
-    text-align: center;
-}
-
-.path {
-    position: inherit;
-    width: 34px;
-    height: 34px;
-    margin: 1px;
-    padding: 2px;
-    border: none;
-    border-radius: 20px;
-    z-index: 2200;
-    color: white;
-    text-align: center;
-    line-height: 36px;
-    text-shadow: none;
-    background: #000;
-    opacity: 0.66;
-}
-
-.path1 {
-    opacity: 0.66;
-}
-
-.path2 {
-    opacity: 0.33;
-}
-
-.field {
-    position: absolute;
-    width: 34px;
-    height: 34px;
-    margin: 1px;
-    padding: 2px;
-    border: none;
-    z-index: 1700;
-    color: #000;
-    text-shadow: none;
-}
-
 #playersBox {
+    right: 0;
     border-top: none;
     border-bottom-left-radius: 10px;
     width: 230px;
@@ -212,29 +67,6 @@
     top: 78px;
 }
 
-#surrender.iconButton {
-    top: 115px;
-}
-
-#statistics.iconButton {
-    top: 152px;
-}
-
-#turn {
-    width: 80px;
-    position: absolute;
-    top: 75px;
-    left: 60px;
-    z-index: 28000;
-}
-
-#turnNumber {
-    font-size: 30px;
-    text-shadow: none;
-    text-align: center;
-    display: block;
-}
-
 .message {
     min-width: 321px;
     min-height: 70px;
@@ -242,7 +74,6 @@
     display: none;
     border-radius: 10px;
     text-align: center;
-    /*cursor: url(/img/game/cursor_hand.png) 15 15, default;*/
     z-index: 26999 !important;
 }
 

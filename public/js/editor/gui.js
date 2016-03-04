@@ -49,8 +49,15 @@ var Gui = new function () {
             $('#down').click(function () {
                 EditorModels.createMesh('down')
             })
+            $('#exit').click(function () {
+                Gui.exit()
+            });
         }
 
+
+    this.exit = function () {
+        window.location = '/' + lang + '/index'
+    }
     this.init = function () {
         //$(window).resize(function () {
         //    Gui.adjust()
