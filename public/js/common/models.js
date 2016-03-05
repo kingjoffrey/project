@@ -498,7 +498,7 @@ var Models = new function () {
                 var height = Ground.getWaterLevel()
                 break
             case 'b':
-                var height = Ground.getWaterLevel
+                var height = Ground.getWaterLevel()
                 break
             default :
                 var height = 0
