@@ -11,16 +11,15 @@ class TutorialController extends Coret_Controller_Authorized
         $mGame = new Application_Model_Game();
         $gameId = $mGame->getMyTutorial($playerId);
         if (!$gameId) {
-            $mapId = 739;
+            $mapId = 296;
             $gameId = $mGame->createGame(array(
                 'numberOfPlayers' => 2,
                 'gameMasterId' => $playerId,
-                'mapId' => 1,
+                'mapId' => $mapId,
                 'turnsLimit' => 0,
                 'turnTimeLimit' => 0,
                 'timeLimit' => 0,
             ), $playerId);
-
 
             $mPlayersInGame = new Application_Model_PlayersInGame($gameId);
             $mMapPlayers = new Application_Model_MapPlayers($mapId);
@@ -29,18 +28,19 @@ class TutorialController extends Coret_Controller_Authorized
             $mCastlesInGame = new Application_Model_CastlesInGame($gameId);
             $first = true;
             $startPositions = $mMapCastles->getDefaultStartPositions();
-
             foreach ($mMapPlayers->getAll() as $mapPlayerId => $mapPlayer) {
                 if (!$playerId) {
                     $playerId = $mPlayersInGame->getComputerPlayerId();
                     if (!$playerId) {
-                        $modelPlayer = new Application_Model_Player($db);
+                        $modelPlayer = new Application_Model_Player();
                         $playerId = $modelPlayer->createComputerPlayer();
-                        $modelHero = new Application_Model_Hero($playerId, $db);
+                        $modelHero = new Application_Model_Hero($playerId);
                         $modelHero->createHero();
                     }
                 }
+
                 $mPlayersInGame->joinGame($playerId, $mapPlayerId);
+                $mPlayersInGame->setTeam($playerId, $mapPlayerId);
 
                 if ($first) {
                     $mTurn = new Application_Model_TurnHistory($gameId);
