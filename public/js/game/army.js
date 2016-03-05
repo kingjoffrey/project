@@ -7,6 +7,7 @@ var Army = function (army, bgColor, miniMapColor, textColor, color) {
         Fields.get(army.x, army.y).removeArmyId(army.id) // remove armyId from last visited field
         var numberOfUnits = this.getNumberOfUnits()
         if (!numberOfUnits) { // no sens to update if no units (army will be destroyed)
+            console.log('NO UNITS !!!')
             return
         }
         for (var key in a) {
