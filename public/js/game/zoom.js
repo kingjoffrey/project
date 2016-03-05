@@ -62,18 +62,18 @@ var Zoom = new function () {
                 var visibleMapWidth = Scene.getWidth() / 85,
                     visibleMapHeight = Scene.getHeight() / 85
 
-                $obj.node.w = (smallImage.w * visibleMapWidth) / Fields.getMaxX()
-                $obj.node.h = (smallImage.h * visibleMapHeight) / Fields.getMaxY()
+                $obj.node.w = smallImage.w * visibleMapWidth / Fields.getMaxX()
+                $obj.node.h = smallImage.h * visibleMapHeight / Fields.getMaxY()
                 $obj.node.css({
                     'width': $obj.node.w,
                     'height': $obj.node.h
                 });
-                $obj.node.top = (smallImage.oh - $obj.node.h - 2) / 2;
-                $obj.node.left = (smallImage.ow - $obj.node.w - 2) / 2;
+                //$obj.node.top = (smallImage.oh - $obj.node.h - 2) / 2;
+                //$obj.node.left = (smallImage.ow - $obj.node.w - 2) / 2;
             };
             $obj.setcenter = function (x, y, func) {
-                $obj.node.top = y * scale - $obj.node.h / 2
-                $obj.node.left = x * scale - $obj.node.w / 2
+                $obj.node.top = smallImage.h * y / Fields.getMaxY() - $obj.node.h / 2
+                $obj.node.left = smallImage.w * x / Fields.getMaxX() - $obj.node.w / 2
                 $obj.node.css({
                     top: $obj.node.top,
                     left: $obj.node.left
