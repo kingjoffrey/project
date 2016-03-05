@@ -36,8 +36,10 @@ var Ruins = new function () {
                 }
                 break;
             case 'death':
-                if (Players.get(r.color).getArmies().get(r.army.id).getNumberOfUnits() > 1) {
-                    Players.get(r.color).getArmies().get(r.army.id).update(r.army)
+                var army = Players.get(r.color).getArmies().get(r.army.id)
+                army.setNumberOfUnits(r.army)
+                if (army.getNumberOfUnits() > 1) {
+                    army.update(r.army)
                 } else {
                     Players.get(r.color).getArmies().delete(r.army.id)
                 }

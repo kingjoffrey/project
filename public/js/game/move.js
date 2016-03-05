@@ -201,6 +201,7 @@ var Move = new function () {
                                 defenderArmy.deleteHero(heroId)
                             }
                         }
+                        defenderArmy.setNumberOfUnits(defenderArmy.toArray())
                         if (defenderArmy.getNumberOfUnits()) {
                             defenderArmy.update(defenderArmy)
                         } else {

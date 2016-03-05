@@ -1,11 +1,12 @@
 var Army = function (army, bgColor, miniMapColor, textColor, color) {
     var heroSplitKey = null,
         soldierSplitKey = null,
-        pathMoves = 0
+        pathMoves = 0,
+        numberOfUnits = 0
 
     this.update = function (a) {
         Fields.get(army.x, army.y).removeArmyId(army.id) // remove armyId from last visited field
-        var numberOfUnits = this.getNumberOfUnits()
+        this.setNumberOfUnits(a)
         if (!numberOfUnits) { // no sens to update if no units (army will be destroyed)
             console.log('NO UNITS !!!')
             return
@@ -65,6 +66,9 @@ var Army = function (army, bgColor, miniMapColor, textColor, color) {
             left: Zoom.calculateMiniMapX(army.x) + 'px',
             top: Zoom.calculateMiniMapY(army.y) + 'px'
         })
+    }
+    this.toArray = function () {
+        return army
     }
     this.getMesh = function () {
         return army.mesh
@@ -182,12 +186,14 @@ var Army = function (army, bgColor, miniMapColor, textColor, color) {
         return army.fly[soldierId]
     }
     this.getNumberOfUnits = function () {
-        var numberOfUnits = countProperties(army.heroes) + countProperties(army.walk) + countProperties(army.swim) + countProperties(army.fly)
+        return numberOfUnits
+    }
+    this.setNumberOfUnits = function (a) {
+        numberOfUnits = countProperties(a.heroes) + countProperties(a.walk) + countProperties(a.swim) + countProperties(a.fly)
 
         if (numberOfUnits > 8) {
             numberOfUnits = 8
         }
-        return numberOfUnits
     }
     this.getHeroBonus = function () {
         return countProperties(army.heroes)
@@ -329,7 +335,8 @@ var Army = function (army, bgColor, miniMapColor, textColor, color) {
         return bgColor
     }
 
-    army.mesh = Models.addArmy(army.x, army.y, bgColor, this.getNumberOfUnits(), this.getModelName())
+    this.setNumberOfUnits(army)
+    army.mesh = Models.addArmy(army.x, army.y, bgColor, numberOfUnits, this.getModelName())
 
     Fields.get(army.x, army.y).addArmyId(army.id, color)
     Game.getMapElement().append(
