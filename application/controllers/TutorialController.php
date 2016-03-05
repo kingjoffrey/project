@@ -7,8 +7,62 @@ class TutorialController extends Coret_Controller_Authorized
     public function initAction()
     {
         $this->_helper->layout->setLayout('empty');
-        $version = Zend_Registry::get('config')->version;
-        $this->view->headScript()->appendFile('/js/tutorial.js?v=' . $version);
+        $playerId = Zend_Auth::getInstance()->getIdentity()->playerId;
+        $mGame = new Application_Model_Game();
+        $gameId = $mGame->getMyTutorial($playerId);
+        if (!$gameId) {
+            $mapId = 739;
+            $gameId = $mGame->createGame(array(
+                'numberOfPlayers' => 2,
+                'gameMasterId' => $playerId,
+                'mapId' => 1,
+                'turnsLimit' => 0,
+                'turnTimeLimit' => 0,
+                'timeLimit' => 0,
+            ), $playerId);
+
+
+            $mPlayersInGame = new Application_Model_PlayersInGame($gameId);
+            $mMapPlayers = new Application_Model_MapPlayers($mapId);
+            $mMapCastles = new Application_Model_MapCastles($mapId);
+            $mHeroesInGame = new Application_Model_HeroesInGame($gameId);
+            $mCastlesInGame = new Application_Model_CastlesInGame($gameId);
+            $first = true;
+            $startPositions = $mMapCastles->getDefaultStartPositions();
+
+            foreach ($mMapPlayers->getAll() as $mapPlayerId => $mapPlayer) {
+                if (!$playerId) {
+                    $playerId = $mPlayersInGame->getComputerPlayerId();
+                    if (!$playerId) {
+                        $modelPlayer = new Application_Model_Player($db);
+                        $playerId = $modelPlayer->createComputerPlayer();
+                        $modelHero = new Application_Model_Hero($playerId, $db);
+                        $modelHero->createHero();
+                    }
+                }
+                $mPlayersInGame->joinGame($playerId, $mapPlayerId);
+
+                if ($first) {
+                    $mTurn = new Application_Model_TurnHistory($gameId);
+                    $mTurn->add($playerId, 1);
+                    $mGame->startGame($playerId);
+                    $first = false;
+                }
+
+                $mHero = new Application_Model_Hero($playerId);
+                $playerHeroes = $mHero->getHeroes();
+                if (empty($playerHeroes)) {
+                    $mHero->createHero();
+                    $playerHeroes = $mHero->getHeroes($playerId);
+                }
+                $mArmy = new Application_Model_Army($gameId);
+                $armyId = $mArmy->createArmy($startPositions[$mapPlayer['mapPlayerId']], $playerId);
+                $mHeroesInGame->add($armyId, $playerHeroes[0]['heroId']);
+                $mCastlesInGame->addCastle($startPositions[$mapPlayer['mapPlayerId']]['mapCastleId'], $playerId);
+                $playerId = 0;
+            }
+        }
+        $this->redirect($this->view->url(array('action' => null, 'id' => $gameId)));
     }
 
     public function indexAction()

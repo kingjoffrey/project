@@ -52,8 +52,10 @@ class Application_Model_Game extends Coret_Db_Table_Abstract
         $select = $this->_db->select()
             ->from(array('a' => $this->_name), array('gameMasterId', 'turnNumber', $this->_primary, 'numberOfPlayers', 'begin', 'end', 'turnsLimit', 'turnTimeLimit', 'timeLimit', 'turnPlayerId', 'mapId'))
             ->join(array('b' => 'playersingame'), 'a."gameId" = b."gameId"', null)
+            ->join(array('c' => 'map'), 'a."mapId" = c."mapId"', null)
             ->where('"isOpen" = false')
             ->where('"isActive" = true')
+            ->where('c."tutorial" = false')
             ->where('a."gameId" IN ?', $mPlayersInGame->getSelectForMyGames($playerId))
             ->where('b."playerId" = ?', $playerId)
             ->order('begin DESC');
@@ -79,6 +81,19 @@ class Application_Model_Game extends Coret_Db_Table_Abstract
         }
 
         return $paginator;
+    }
+
+    public function getMyTutorial($playerId)
+    {
+        $select = $this->_db->select()
+            ->from(array('a' => $this->_name), array('gameId'))
+            ->join(array('b' => 'playersingame'), 'a."gameId" = b."gameId"', null)
+            ->join(array('c' => 'map'), 'a."mapId" = c."mapId"', null)
+            ->where('"isOpen" = false')
+            ->where('"isActive" = true')
+            ->where('b."playerId" = ?', $playerId)
+            ->where('c."tutorial" = true');
+        return $this->selectOne($select);
     }
 
     public function startGame($turnPlayerId)
