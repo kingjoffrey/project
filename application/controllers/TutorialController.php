@@ -3,12 +3,18 @@
 class TutorialController extends Coret_Controller_Authorized
 {
     protected $_redirectNotAuthorized = 'login';
-    private $_gameId;
+
+    public function initAction()
+    {
+        $this->_helper->layout->setLayout('empty');
+        $version = Zend_Registry::get('config')->version;
+        $this->view->headScript()->appendFile('/js/tutorial.js?v=' . $version);
+    }
 
     public function indexAction()
     {
-        $this->_gameId = $this->_request->getParam('id');
-        if (empty($this->_gameId)) {
+        $this->view->gameId = $this->_request->getParam('id');
+        if (empty($this->view->gameId)) {
             throw new Exception('Brak "gameId"!');
         }
 
@@ -23,12 +29,10 @@ class TutorialController extends Coret_Controller_Authorized
         $this->view->sound();
         $this->view->models();
         $this->view->translations();
-        $this->view->gameId = $this->_gameId;
-
         $this->view->Websocket($this->_auth->getIdentity());
         $this->view->Friends();
 
-        $mGame = new Application_Model_Game($this->_gameId);
+        $mGame = new Application_Model_Game($this->view->gameId);
         $this->view->map($mGame->getMapId());
 
 

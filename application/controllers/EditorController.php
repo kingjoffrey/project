@@ -25,7 +25,7 @@ class EditorController extends Game_Controller_Gui
 
                 $this->view->mapSize = $this->_request->getParam('mapSize');
 
-                $this->_helper->layout->setLayout('generatemap');
+                $this->_helper->layout->setLayout('empty');
 
                 $this->view->headScript()->appendFile('/js/mapgenerator/init.js?v=' . Zend_Registry::get('config')->version);
                 $this->view->headScript()->appendFile('/js/mapgenerator/diamondsquare.js?v=' . Zend_Registry::get('config')->version);
