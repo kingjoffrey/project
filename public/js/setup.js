@@ -180,7 +180,7 @@ var Setup = new function () {
         ws.send(JSON.stringify(token));
     }
     this.init = function () {
-        type = 'setup'
+        PrivateChat.setType('setup')
         PrivateChat.enable()
         initButtons()
         initTeams()

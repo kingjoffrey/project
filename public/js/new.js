@@ -108,7 +108,7 @@ var New = new function () {
         }
 
     this.init = function () {
-        type = 'new'
+        PrivateChat.setType('new')
         table = $('#join.table table')
         empty = $('<tr id="0">').append($('<td colspan="4">').html(info).css('padding', '15px'))
         changeMap()

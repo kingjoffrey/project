@@ -22,6 +22,7 @@ class MessagesController extends Game_Controller_Gui
         foreach ($this->view->paginator as $row) {
             $messages[] = $row;
         }
-        $this->view->messages = array_reverse($messages);
+//        $this->view->messages = array_reverse($messages);
+        $this->view->messages = $messages;
     }
 }

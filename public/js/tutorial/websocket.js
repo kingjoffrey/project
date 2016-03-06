@@ -800,7 +800,7 @@ var WebSocketGame = new function () {
         }
     }
     this.init = function () {
-        ws = new WebSocket(wsURL + '/game')
+        ws = new WebSocket(wsURL + '/tutorial')
 
         ws.onopen = function () {
             closed = false

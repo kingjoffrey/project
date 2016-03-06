@@ -1,5 +1,6 @@
 var PrivateChat = new function () {
-    var inputWidth
+    var inputWidth,
+        type = 'default'
 
     this.init = function () {
         console.log('init')
@@ -44,6 +45,12 @@ var PrivateChat = new function () {
             $(this).parent().remove()
         })
         //this.disable()
+    }
+    this.setType = function (t) {
+        type = t
+    }
+    this.getType = function () {
+        return type
     }
     this.message = function (to, name, id, msg) {
         switch (to) {
@@ -208,7 +215,7 @@ var Websocket = new function () {
 
             ws.send(JSON.stringify(token))
         } else {
-            switch (type) {
+            switch (PrivateChat.getType()) {
                 case 'new':
                     PrivateChat.message(2, playerName, 0, msg)
                     $('#msg').val('')

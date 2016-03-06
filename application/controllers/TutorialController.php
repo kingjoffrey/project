@@ -116,8 +116,10 @@ class TutorialController extends Coret_Controller_Authorized
         $this->view->headScript()->appendFile('/js/common/towers.js?v=' . $version);
         $this->view->headScript()->appendFile('/js/common/units.js?v=' . $version);
 
+        $this->view->headScript()->appendFile('/js/tutorial/tutorial.js?v=' . $version);
+        $this->view->headScript()->appendFile('/js/tutorial/websocket.js?v=' . $version);
+
         $this->view->headScript()->appendFile('/js/game/picker.js?v=' . $version);
-        $this->view->headScript()->appendFile('/js/game/game.js?v=' . $version);
         $this->view->headScript()->appendFile('/js/game/me.js?v=' . $version);
         $this->view->headScript()->appendFile('/js/game/unit.js?v=' . $version);
         $this->view->headScript()->appendFile('/js/game/terrain.js?v=' . $version);
@@ -134,7 +136,6 @@ class TutorialController extends Coret_Controller_Authorized
         $this->view->headScript()->appendFile('/js/game/gui.js?v=' . $version);
         $this->view->headScript()->appendFile('/js/game/move.js?v=' . $version);
         $this->view->headScript()->appendFile('/js/game/zoom.js?v=' . $version);
-        $this->view->headScript()->appendFile('/js/game/websocket.js?v=' . $version);
         $this->view->headScript()->appendFile('/js/game/timer.js?v=' . $version);
         $this->view->headScript()->appendFile('/js/game/turn.js?v=' . $version);
         $this->view->headScript()->appendFile('/js/game/sound.js?v=' . $version);
