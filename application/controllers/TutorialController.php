@@ -117,6 +117,7 @@ class TutorialController extends Coret_Controller_Authorized
         $this->view->headScript()->appendFile('/js/common/units.js?v=' . $version);
         $this->view->headScript()->appendFile('/js/common/execute.js?v=' . $version);
         $this->view->headScript()->appendFile('/js/common/websocketSend.js?v=' . $version);
+        $this->view->headScript()->appendFile('/js/common/websocketMessage.js?v=' . $version);
 
         $this->view->headScript()->appendFile('/js/tutorial/tutorial.js?v=' . $version);
         $this->view->headScript()->appendFile('/js/tutorial/websocket.js?v=' . $version);
