@@ -2,7 +2,13 @@
 
 class Cli_Model_CastleBuildDefense
 {
-    public function __construct($castleId, Devristo\Phpws\Protocol\WebSocketTransportInterface $user, Cli_GameHandler $handler)
+    /**
+     * Cli_Model_CastleBuildDefense constructor.
+     * @param $castleId
+     * @param \Devristo\Phpws\Protocol\WebSocketTransportInterface $user
+     * @param $handler
+     */
+    public function __construct($castleId, Devristo\Phpws\Protocol\WebSocketTransportInterface $user, $handler)
     {
         if ($castleId == null) {
             $handler->sendError($user, 'Brak "castleId"!');

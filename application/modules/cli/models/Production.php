@@ -2,7 +2,7 @@
 
 class Cli_Model_Production
 {
-    public function __construct($dataIn, Devristo\Phpws\Protocol\WebSocketTransportInterface $user, Cli_GameHandler $handler)
+    public function __construct($dataIn, Devristo\Phpws\Protocol\WebSocketTransportInterface $user, $handler)
     {
         $castleId = $dataIn['castleId'];
         $unitId = $dataIn['unitId'];

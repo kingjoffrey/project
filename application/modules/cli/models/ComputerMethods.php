@@ -35,22 +35,22 @@ abstract class Cli_Model_ComputerMethods
     protected $_army;
 
     /**
-     * @var Cli_GameHandler
+     * @var Cli_CommonHandler
      */
-    protected $_gameHandler;
+    protected $_handler;
 
     /**
      * @var Coret_Model_Logger
      */
     protected $_l;
 
-    public function __construct(Cli_Model_Army $army, Devristo\Phpws\Protocol\WebSocketTransportInterface $user, Cli_GameHandler $handler)
+    public function __construct(Cli_Model_Army $army, Devristo\Phpws\Protocol\WebSocketTransportInterface $user, $handler)
     {
         $this->_army = $army;
         $this->_user = $user;
         $this->_game = Cli_Model_Game::getGame($user);
         $this->_db = $handler->getDb();
-        $this->_gameHandler = $handler;
+        $this->_handler = $handler;
         $this->_playerId = $this->_game->getTurnPlayerId();
         $this->_players = $this->_game->getPlayers();
         $this->_color = $this->_game->getPlayerColor($this->_playerId);

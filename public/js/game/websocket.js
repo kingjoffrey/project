@@ -816,5 +816,10 @@ var WebSocketGame = new function () {
             closed = true
             setTimeout('WebSocketGame.init()', 1000)
         }
+
+        ws.onerror = function (e) {
+            console.log('error')
+            console.log(e)
+        }
     }
 }

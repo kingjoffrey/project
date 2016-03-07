@@ -60,7 +60,7 @@ var Game = new function () {
             Me.turnOff()
         }
         Players.showFirst(Turn.getColor())
-
+console.log('ccc')
         if (Players.countHumans() > 1) {
             PrivateChat.setType('game')
             PrivateChat.enable()

@@ -71,7 +71,7 @@ var New = new function () {
             ws.send(JSON.stringify(token))
         },
         onMessage = function (r) {
-            console.log(r)
+            //console.log(r)
             switch (r.type) {
                 case 'games':
                     addGames(r.games)

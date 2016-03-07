@@ -3,11 +3,10 @@
 class Cli_Model_SetupOpen
 {
     /**
+     * Cli_Model_SetupOpen constructor.
      * @param $dataIn
-     * @param Devristo\Phpws\Protocol\WebSocketTransportInterface $user
-     * @param Zend_Db_Adapter_Pdo_Pgsql $db
-     * @param Cli_GameHandler $handler
-     * @throws Exception
+     * @param \Devristo\Phpws\Protocol\WebSocketTransportInterface $user
+     * @param Cli_SetupHandler $handler
      */
     public function __construct($dataIn, Devristo\Phpws\Protocol\WebSocketTransportInterface $user, Cli_SetupHandler $handler)
     {

@@ -3,10 +3,10 @@
 class Cli_Model_NewOpen
 {
     /**
+     * Cli_Model_NewOpen constructor.
      * @param $dataIn
-     * @param Devristo\Phpws\Protocol\WebSocketTransportInterface $user
-     * @param Cli_GameHandler $handler
-     * @throws Exception
+     * @param \Devristo\Phpws\Protocol\WebSocketTransportInterface $user
+     * @param Cli_NewHandler $handler
      */
     public function __construct($dataIn, Devristo\Phpws\Protocol\WebSocketTransportInterface $user, Cli_NewHandler $handler)
     {

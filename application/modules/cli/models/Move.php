@@ -3,7 +3,7 @@
 class Cli_Model_Move
 {
 
-    public function __construct($dataIn, Devristo\Phpws\Protocol\WebSocketTransportInterface $user, Cli_GameHandler $handler)
+    public function __construct($dataIn, Devristo\Phpws\Protocol\WebSocketTransportInterface $user, $handler)
     {
         if (!isset($dataIn['armyId'])) {
             $handler->sendError($user, 'No "armyId"!');

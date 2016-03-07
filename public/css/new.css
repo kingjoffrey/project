@@ -46,4 +46,19 @@
 .bigLink {
     text-align: center;
     font-size: 30px;
+    margin: 30px;
+}
+
+.bigLink a {
+    background: green;
+    text-decoration: none;
+    display: block;
+    border: 1px solid white;
+    border-radius: 5px;
+    padding: 15px;
+}
+
+.bigLink a:hover {
+    color: red;
+    background: white;
 }

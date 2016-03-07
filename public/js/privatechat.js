@@ -2,50 +2,6 @@ var PrivateChat = new function () {
     var inputWidth,
         type = 'default'
 
-    this.init = function () {
-        console.log('init')
-        inputWidth = $('#chatBox #msg').width()
-        Websocket.init()
-        $('#send').click(function () {
-            Websocket.chat()
-        })
-        $('#msg').keypress(function (e) {
-            if (e.which == 13) {
-                Websocket.chat()
-            }
-        })
-        $('#chatBox .close').click(function () {
-            if ($('#chatBox.mini').length) {
-                PrivateChat.enable()
-            } else {
-                PrivateChat.disable()
-            }
-        })
-        $('#chatBox #chatTitle').click(function () {
-            if (type == 'default') {
-                PrivateChat.disable()
-            } else {
-                $('#chatBox #friendId').val('')
-                $(this).html('')
-                $('#chatBox #msg')
-                    .css({
-                        'padding-left': '5px',
-                        width: inputWidth
-                    })
-            }
-        })
-        $('#friends span').click(function () {
-            if ($('#chatBox.disabled #msg').val() == translations.selectFriendFromFriendsList) {
-                $('#chatBox.disabled #msg').val('')
-            }
-            PrivateChat.prepare($(this).html(), $(this).parent().attr('id'))
-        })
-        $('#friends #trash').click(function () {
-            Websocket.delete($(this).parent().attr('id'))
-            $(this).parent().remove()
-        })
-        //this.disable()
-    }
     this.setType = function (t) {
         type = t
     }
@@ -116,6 +72,50 @@ var PrivateChat = new function () {
                 })
         }
     }
+    this.init = function () {
+        console.log('init')
+        inputWidth = $('#chatBox #msg').width()
+        Websocket.init()
+        $('#send').click(function () {
+            Websocket.chat()
+        })
+        $('#msg').keypress(function (e) {
+            if (e.which == 13) {
+                Websocket.chat()
+            }
+        })
+        $('#chatBox .close').click(function () {
+            if ($('#chatBox.mini').length) {
+                PrivateChat.enable()
+            } else {
+                PrivateChat.disable()
+            }
+        })
+        $('#chatBox #chatTitle').click(function () {
+            if (type == 'default') {
+                PrivateChat.disable()
+            } else {
+                $('#chatBox #friendId').val('')
+                $(this).html('')
+                $('#chatBox #msg')
+                    .css({
+                        'padding-left': '5px',
+                        width: inputWidth
+                    })
+            }
+        })
+        $('#friends span').click(function () {
+            if ($('#chatBox.disabled #msg').val() == translations.selectFriendFromFriendsList) {
+                $('#chatBox.disabled #msg').val('')
+            }
+            PrivateChat.prepare($(this).html(), $(this).parent().attr('id'))
+        })
+        $('#friends #trash').click(function () {
+            Websocket.delete($(this).parent().attr('id'))
+            $(this).parent().remove()
+        })
+        //this.disable()
+    }
 }
 
 var Websocket = new function () {
@@ -152,7 +152,7 @@ var Websocket = new function () {
         ws.onmessage = function (e) {
             var r = $.parseJSON(e.data);
 
-            console.log(r)
+            //console.log(r)
             switch (r.type) {
                 case 'notification':
                     if (!parseInt(r.count)) {

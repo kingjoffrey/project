@@ -25,6 +25,7 @@ $application = new Zend_Application(
 $application->getBootstrap()->bootstrap(array('date', 'config', 'modules', 'frontController'));
 
 include_once(APPLICATION_PATH . '/modules/cli/handlers/PrivateChatHandler.php');
+include_once(APPLICATION_PATH . '/modules/cli/handlers/CommonHandler.php');
 include_once(APPLICATION_PATH . '/modules/cli/handlers/GameHandler.php');
 include_once(APPLICATION_PATH . '/modules/cli/handlers/TutorialHandler.php');
 include_once(APPLICATION_PATH . '/modules/cli/handlers/SetupHandler.php');

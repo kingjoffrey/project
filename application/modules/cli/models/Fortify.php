@@ -3,7 +3,7 @@
 class Cli_Model_Fortify
 {
 
-    function  __construct($armyId, $fortify, Devristo\Phpws\Protocol\WebSocketTransportInterface $user, Cli_GameHandler $handler)
+    function  __construct($armyId, $fortify, Devristo\Phpws\Protocol\WebSocketTransportInterface $user, $handler)
     {
         if (empty($armyId)) {
             $handler->sendError($user, 'No "armyId"!');

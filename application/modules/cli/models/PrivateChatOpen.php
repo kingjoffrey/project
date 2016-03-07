@@ -3,11 +3,10 @@
 class Cli_Model_PrivateChatOpen
 {
     /**
+     * Cli_Model_PrivateChatOpen constructor.
      * @param $dataIn
-     * @param Devristo\Phpws\Protocol\WebSocketTransportInterface $user
-     * @param Zend_Db_Adapter_Pdo_Pgsql $db
-     * @param Cli_GameHandler $handler
-     * @throws Exception
+     * @param \Devristo\Phpws\Protocol\WebSocketTransportInterface $user
+     * @param Cli_PrivateChatHandler $handler
      */
     public function __construct($dataIn, Devristo\Phpws\Protocol\WebSocketTransportInterface $user, Cli_PrivateChatHandler $handler)
     {

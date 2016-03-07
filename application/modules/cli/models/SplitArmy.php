@@ -3,7 +3,7 @@
 class Cli_Model_SplitArmy
 {
 
-    function  __construct($parentArmyId, $s, $h, $playerId, Devristo\Phpws\Protocol\WebSocketTransportInterface $user, Cli_GameHandler $handler)
+    function  __construct($parentArmyId, $s, $h, $playerId, Devristo\Phpws\Protocol\WebSocketTransportInterface $user, $handler)
     {
         if (empty($parentArmyId) || (empty($h) && empty($s))) {
             $handler->sendError($user, 'Brak "armyId", "s" lub "h"!');

@@ -3,7 +3,7 @@
 class Cli_Model_HeroResurrection
 {
 
-    public function __construct(Devristo\Phpws\Protocol\WebSocketTransportInterface $user, Cli_GameHandler $handler)
+    public function __construct(Devristo\Phpws\Protocol\WebSocketTransportInterface $user, $handler)
     {
         $game = Cli_Model_Game::getGame($user);
         $gameId = $game->getId();

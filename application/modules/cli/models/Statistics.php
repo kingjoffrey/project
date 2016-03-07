@@ -2,7 +2,7 @@
 
 class Cli_Model_Statistics
 {
-    public function __construct(Devristo\Phpws\Protocol\WebSocketTransportInterface $user, Cli_GameHandler $handler)
+    public function __construct(Devristo\Phpws\Protocol\WebSocketTransportInterface $user, $handler)
     {
         $game = Cli_Model_Game::getGame($user);
         $playersInGameColors = $game->getPlayersColors();

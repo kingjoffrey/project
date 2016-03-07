@@ -3,7 +3,7 @@
 class Cli_Model_JoinArmy
 {
 
-    public function __construct($armyId, Devristo\Phpws\Protocol\WebSocketTransportInterface $user, Cli_GameHandler $handler)
+    public function __construct($armyId, Devristo\Phpws\Protocol\WebSocketTransportInterface $user, $handler)
     {
         if (empty($armyId)) {
             $handler->sendError($user, 'Brak "armyId"!');

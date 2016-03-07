@@ -2,8 +2,13 @@
 
 class Cli_Model_CastleRaze
 {
-
-    public function __construct($armyId, Devristo\Phpws\Protocol\WebSocketTransportInterface $user, Cli_GameHandler $handler)
+    /**
+     * Cli_Model_CastleRaze constructor.
+     * @param $armyId
+     * @param \Devristo\Phpws\Protocol\WebSocketTransportInterface $user
+     * @param $handler
+     */
+    public function __construct($armyId, Devristo\Phpws\Protocol\WebSocketTransportInterface $user, $handler)
     {
         if ($armyId == null) {
             $handler->sendError($user, 'No "armyId"!');

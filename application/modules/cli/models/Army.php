@@ -98,7 +98,7 @@ class Cli_Model_Army
         }
     }
 
-    public function move(Cli_Model_Game $game, Cli_Model_Path $path, Cli_GameHandler $handler)
+    public function move(Cli_Model_Game $game, Cli_Model_Path $path, $handler)
     {
         if (!$path->exists()) {
             echo 'PATH NOT EXISTS' . "\n";

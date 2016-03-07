@@ -2,7 +2,7 @@
 
 class Cli_Model_GameChat
 {
-    public function __construct($msg, Devristo\Phpws\Protocol\WebSocketTransportInterface $user, Cli_GameHandler $handler)
+    public function __construct($msg, Devristo\Phpws\Protocol\WebSocketTransportInterface $user, $handler)
     {
         $db = $handler->getDb();
 

@@ -2,7 +2,7 @@
 
 class Cli_Model_Computer
 {
-    public function __construct(Devristo\Phpws\Protocol\WebSocketTransportInterface $user, Cli_GameHandler $handler)
+    public function __construct(Devristo\Phpws\Protocol\WebSocketTransportInterface $user, $handler)
     {
         $l = new Coret_Model_Logger();
         $game = Cli_Model_Game::getGame($user);

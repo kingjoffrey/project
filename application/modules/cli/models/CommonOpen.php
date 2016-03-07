@@ -1,15 +1,14 @@
 <?php
 
-class Cli_Model_GameOpen
+class Cli_Model_CommonOpen
 {
     /**
      * @param $dataIn
-     * @param Devristo\Phpws\Protocol\WebSocketTransportInterface $user
-     * @param Zend_Db_Adapter_Pdo_Pgsql $db
-     * @param Cli_GameHandler $handler
+     * @param \Devristo\Phpws\Protocol\WebSocketTransportInterface $user
+     * @param Cli_CommonHandler $handler
      * @throws Exception
      */
-    public function __construct($dataIn, Devristo\Phpws\Protocol\WebSocketTransportInterface $user, Cli_GameHandler $handler)
+    public function __construct($dataIn, Devristo\Phpws\Protocol\WebSocketTransportInterface $user, Cli_CommonHandler $handler)
     {
         if (!isset($dataIn['gameId']) || !isset($dataIn['playerId']) || !isset($dataIn['langId'])) {
             throw new Exception('Brak "gameId" lub "playerId" lub "langId');
