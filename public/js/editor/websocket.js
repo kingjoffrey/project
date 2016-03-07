@@ -1,221 +1,23 @@
+"use strict"
 var WebSocketEditor = new function () {
-    var closed = true,
-        ws,
-        onMessage = function (r) {
-            console.log(r)
-            switch (r.type) {
-                case 'init':
-                    Editor.init(r)
-                    break
-                case 'castleId':
-                    Players.get('neutral').getCastles().add(r.value, {
-                        x: Picker.getX(),
-                        y: Picker.getZ(),
-                        name: 'Unknown',
-                        defense: 1,
-                        production: [null, null, null, null]
-                    })
-                    break
-                case 'towerId':
-                    Players.get('neutral').getTowers().add(r.value, {x: Picker.getX(), y: Picker.getZ()})
-                    break
-                case 'ruinId':
-                    Ruins.add(r.value, new Ruin({x: Picker.getX(), y: Picker.getZ(), empty: 0}))
-                    break
-                case 'edit':
-                    Message.remove()
-                    for (var color in Players.toArray()) {
-                        if (Players.get(color).getCastles().has(r.castleId)) {
-                            var castle = Players.get(color).getCastles().get(r.castleId)
-                            Players.get(color).getCastles().clear(r.castleId)
-                            break
-                        }
-                    }
-                    castle.token.x = castle.getX()
-                    castle.token.y = castle.getY()
-                    Players.get(r.color).getCastles().add(r.castleId, castle.token)
-                    break
-                case 'remove':
-                    var field = Fields.get(r.x, r.y)
-                    if (field.getCastleId()) {
-                        Players.get(field.getCastleColor()).getCastles().destroy(field.getCastleId())
-                        Fields.initCastle(r.x, r.y, null, null)
-                    } else if (field.getTowerId()) {
-                        Players.get(field.getTowerColor()).getTowers().destroy(field.getTowerId())
-                        field.setTower(null, null)
-                    } else if (field.getRuinId()) {
-                        Ruins.destroy(field.getRuinId())
-                        field.setRuinId(null)
-                    }
-                    break
-                case 'grass':
-                    Fields.get(r.x, r.y).setType('g')
-                    var children = Scene.get().children
-                    for (var i in children) {
-                        if (children[i].position.x - 0.5 == r.x && children[i].position.z - 0.5 == r.y) {
-                            Scene.remove(children[i])
-                            break
-                        }
-                    }
-                    break
-                case 's':
-                    Fields.get(r.x, r.y).setType(r.type)
-                    Models.addSwamp(r.x, r.y)
-                    break
-                case 'f':
-                    Fields.get(r.x, r.y).setType(r.type)
-                    Models.addTree(r.x, r.y)
-                    break
-                case 'r':
-                    Fields.get(r.x, r.y).setType(r.type)
-                    Models.addRoad(r.x, r.y)
-                    break
-                case 'b':
-                    Fields.get(r.x, r.y).setType(r.type)
-                    Models.addRoad(r.x, r.y)
-                    break
-                case 'g':
-                    Fields.get(r.x, r.y).setType(r.type)
-                    Ground.change(r.x, r.y, r.type)
-                    break
-                case 'h':
-                    Fields.get(r.x, r.y).setType(r.type)
-                    Ground.change(r.x, r.y, r.type)
-                    break
-                case 'm':
-                    Fields.get(r.x, r.y).setType(r.type)
-                    Ground.change(r.x, r.y, r.type)
-                    break
-                case 'w':
-                    Fields.get(r.x, r.y).setType(r.type)
-                    Ground.change(r.x, r.y, r.type)
-                    break
-            }
-        },
-        open = function () {
-            if (closed) {
-                console.log(translations.sorryServerIsDisconnected)
-                return;
-            }
-
-            var token = {
-                type: 'open',
-                mapId: mapId,
-                playerId: id,
-                langId: langId,
-                accessKey: accessKey
-            }
-
-            ws.send(JSON.stringify(token));
-        }
-
     this.init = function () {
-        ws = new WebSocket(wsURL + '/editor')
+        var ws = new WebSocket(wsURL + '/editor')
 
         ws.onopen = function () {
-            closed = false
-            open()
+            WebSocketSend.setClosed(0)
+            WebSocketSend.open()
         }
+
         ws.onmessage = function (e) {
-            onMessage($.parseJSON(e.data))
+            var r = $.parseJSON(e.data);
+            WebSocketMessage.switch(r)
         }
+
         ws.onclose = function () {
-            closed = true;
+            WebSocketSend.setClosed(1)
             setTimeout('WebSocketEditor.init()', 1000)
         }
-    }
 
-    this.add = function (itemName, x, y) {
-        if (closed) {
-            console.log(translations.sorryServerIsDisconnected)
-            return;
-        }
-
-        var token = {
-            type: 'add',
-            mapId: mapId,
-            itemName: itemName,
-            x: x,
-            y: y
-        }
-
-        ws.send(JSON.stringify(token))
-    }
-    this.up = function (x, y) {
-        if (closed) {
-            console.log(translations.sorryServerIsDisconnected)
-            return;
-        }
-
-        var token = {
-            type: 'up',
-            mapId: mapId,
-            x: x,
-            y: y
-        }
-
-        ws.send(JSON.stringify(token))
-    }
-    this.down = function (x, y) {
-        if (closed) {
-            console.log(translations.sorryServerIsDisconnected)
-            return;
-        }
-
-        var token = {
-            type: 'down',
-            mapId: mapId,
-            x: x,
-            y: y
-        }
-
-        ws.send(JSON.stringify(token))
-    }
-    this.edit = function (castleId) {
-        if (closed) {
-            console.log(translations.sorryServerIsDisconnected)
-            return;
-        }
-
-        for (var color in Players.toArray()) {
-            if (Players.get(color).getCastles().has(castleId)) {
-                var castle = Players.get(color).getCastles().get(castleId)
-            }
-        }
-        var token = {
-            type: 'edit',
-            mapId: mapId,
-            castleId: castleId,
-            name: $('input[name=name]').val(),
-            income: $('input[name=income]').val(),
-            enclaveNumber: $('input[name=enclaveNumber]').val(),
-            color: $('select[name=color]').val(),
-            defense: $('select[name=defence]').val(),
-            capital: Boolean($('input[name=capital]').is(':checked')),
-            production: {
-                0: {'unitId': $('select[name=unitId0]').val(), 'time': $('select[name=time0]').val()},
-                1: {'unitId': $('select[name=unitId1]').val(), 'time': $('select[name=time1]').val()},
-                2: {'unitId': $('select[name=unitId2]').val(), 'time': $('select[name=time2]').val()},
-                3: {'unitId': $('select[name=unitId3]').val(), 'time': $('select[name=time3]').val()}
-            }
-        }
-
-        castle.token = token
-
-        ws.send(JSON.stringify(token))
-    }
-    this.remove = function (x, y) {
-        if (closed) {
-            console.log(translations.sorryServerIsDisconnected)
-            return;
-        }
-        var token = {
-            type: 'remove',
-            mapId: mapId,
-            x: x,
-            y: y
-        }
-
-        ws.send(JSON.stringify(token))
+        WebSocketSend.init(ws)
     }
 }
