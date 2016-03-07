@@ -227,7 +227,7 @@ var Websocket = new function () {
                     Setup.chat(msg)
                     break
                 case 'game':
-                    WebSocketGame.chat()
+                    WebSocketSend.chat()
                     break
                 default:
                     console.log(msg)

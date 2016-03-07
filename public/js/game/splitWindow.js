@@ -152,7 +152,7 @@ var SplitWindow = new function () {
 
         var id = Message.show(translations.splitArmy, div);
         Message.cancel(id)
-        Message.ok(id, WebSocketGame.split)
+        Message.ok(id, WebSocketSend.split)
         Message.setOverflowHeight(id)
     }
 }

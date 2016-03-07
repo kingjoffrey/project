@@ -54,7 +54,7 @@ var Game = new function () {
         if (Turn.isMy()) {
             Me.turnOn()
             if (!Me.getTurnActive()) {
-                WebSocketGame.startMyTurn()
+                WebSocketSend.startMyTurn()
             }
         } else {
             Me.turnOff()

@@ -235,7 +235,7 @@ var Me = new function () {
                 parentArmy = this.getArmy(parentArmyId)
             parentArmy.getX()
             if (selectedArmy.getX() == parentArmy.getX() && selectedArmy.getY() == parentArmy.getY()) {
-                WebSocketGame.join(selectedArmyId)
+                WebSocketSend.join(selectedArmyId)
             }
         }
         parentArmyId = null
@@ -351,7 +351,7 @@ var Me = new function () {
             var id = Message.show(translations.nextArmy, $('<div>').html(translations.thereIsNoFreeArmyWithSpareMovePoints))
             Message.cancel(id)
             Message.ok(id, function () {
-                WebSocketGame.nextTurn()
+                WebSocketSend.nextTurn()
             })
         } else {
             this.deselectArmy()
@@ -371,7 +371,7 @@ var Me = new function () {
     }
     this.deleteQuited = function (armyId) {
         if (isTruthful(quitedArmies[armyId])) {
-            WebSocketGame.unfortify(armyId, 0)
+            WebSocketSend.unfortify(armyId, 0)
             delete quitedArmies[armyId]
         }
     }
@@ -488,7 +488,7 @@ var Me = new function () {
     }
     this.disband = function () {
         var id = Message.show(translations.disbandArmy, $('<div>').html(translations.areYouSure))
-        Message.ok(id, WebSocketGame.disband)
+        Message.ok(id, WebSocketSend.disband)
         Message.cancel(id)
     }
     this.findHero = function () {

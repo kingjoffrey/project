@@ -61,7 +61,7 @@ var Gui = new function () {
                     Turn.next()
                     break;
                 case 70: //f
-                    WebSocketGame.fortify()
+                    WebSocketSend.fortify()
                     break;
                 case 78: //n
                     Me.findNext()
@@ -73,7 +73,7 @@ var Gui = new function () {
                     Me.skip()
                     break;
                 case 82: //r
-                    WebSocketGame.ruin()
+                    WebSocketSend.ruin()
                     break;
                 case 83: //s
                     StatusWindow.show()
@@ -129,12 +129,12 @@ var Gui = new function () {
 
             $('#surrender').click(function () {
                 var id = Message.show(translations.surrender, $('<div>').html(translations.areYouSure))
-                Message.ok(id, WebSocketGame.surrender)
+                Message.ok(id, WebSocketSend.surrender)
                 Message.cancel(id)
             });
 
             $('#statistics').click(function () {
-                WebSocketGame.statistics();
+                WebSocketSend.statistics();
             });
 
             $('#nextTurn').click(function () {
@@ -150,7 +150,7 @@ var Gui = new function () {
             });
 
             $('#quitArmy').click(function () {
-                WebSocketGame.fortify()
+                WebSocketSend.fortify()
             });
 
             $('#splitArmy').click(function () {
@@ -182,18 +182,18 @@ var Gui = new function () {
             });
 
             $('#searchRuins').click(function () {
-                WebSocketGame.ruin()
+                WebSocketSend.ruin()
             });
 
             $('#heroResurrection').click(function () {
                 var id = Message.show(translations.resurrectHero, $('<div>').append(translations.doYouWantToResurrectHeroFor100Gold))
-                Message.ok(id, WebSocketGame.resurrection)
+                Message.ok(id, WebSocketSend.resurrection)
                 Message.cancel(id)
             })
 
             $('#heroHire').click(function () {
                 var id = Message.show(translations.hireHero, $('<div>').html(translations.doYouWantToHireNewHeroFor1000Gold))
-                Message.ok(id, WebSocketGame.hire)
+                Message.ok(id, WebSocketSend.hire)
                 Message.cancel(id)
             });
 

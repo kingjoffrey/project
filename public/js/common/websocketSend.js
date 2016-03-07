@@ -320,11 +320,11 @@ var WebSocketSend = new function () {
     }
 
     this.battleAttack = function () {
-        WebSocketGame.battleConfiguration(1)
+        WebSocketSend.battleConfiguration(1)
     }
 
     this.battleDefence = function () {
-        WebSocketGame.battleConfiguration(0)
+        WebSocketSend.battleConfiguration(0)
     }
 
     this.battleConfiguration = function (attack) {

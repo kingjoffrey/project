@@ -84,7 +84,7 @@ var CommonCastle = function (castle, bgC, miniMapColor, textColor) {
         }
 
         if (unitId) {
-            WebSocketGame.production(castle.id, unitId)
+            WebSocketSend.production(castle.id, unitId)
             return
         }
     }

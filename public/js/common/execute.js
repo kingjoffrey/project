@@ -14,7 +14,7 @@ var Execute = new function () {
                 case 'nextTurn':
                     Turn.change(r.color, r.nr)
                     if (Players.get(r.color).isComputer()) {
-                        WebSocketGame.computer()
+                        WebSocketSend.computer()
                     }
                     if (Players.get(r.color).isComputer() && !Gui.getShow()) {
                         Execute.setExecuting(0)
@@ -178,7 +178,7 @@ var Execute = new function () {
                         castles.raze(castleId)
                     }
                     if (Turn.getColor() == r.color) {
-                        WebSocketGame.nextTurn()
+                        WebSocketSend.nextTurn()
                     }
                     Execute.setExecuting(0)
                     break;
