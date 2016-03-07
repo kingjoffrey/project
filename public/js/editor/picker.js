@@ -34,18 +34,18 @@ var Picker = new function () {
                     if (draggedMesh) {
                         switch (draggedMesh.itemName) {
                             case 'eraser':
-                                WebSocketEditor.remove(PickerCommon.convertX(), PickerCommon.convertZ())
+                                WebSocketSend.remove(PickerCommon.convertX(), PickerCommon.convertZ())
                                 break
                             case 'up':
-                                WebSocketEditor.up(PickerCommon.convertX(), PickerCommon.convertZ())
+                                WebSocketSend.up(PickerCommon.convertX(), PickerCommon.convertZ())
                                 break
                             case 'down':
-                                WebSocketEditor.down(PickerCommon.convertX(), PickerCommon.convertZ())
+                                WebSocketSend.down(PickerCommon.convertX(), PickerCommon.convertZ())
                                 break
                             default:
                                 draggedMeshX = PickerCommon.convertX()
                                 draggedMeshZ = PickerCommon.convertZ()
-                                WebSocketEditor.add(draggedMesh.itemName, draggedMeshX, draggedMeshZ)
+                                WebSocketSend.add(draggedMesh.itemName, draggedMeshX, draggedMeshZ)
                         }
                     } else {
                         if (castleId = field.getCastleId()) {
