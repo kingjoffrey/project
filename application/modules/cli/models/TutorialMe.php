@@ -76,26 +76,29 @@ class Cli_Model_TutorialMe extends Cli_Model_Me
         ),
     );
     private $_steps;
+    private $_step;
 
-    public function __construct($color, $playerId)
+    public function initTutorial(Zend_Db_Adapter_Pdo_Pgsql $db)
     {
-        parent::__construct($color, $playerId);
-
-        $mTutorial = new Application_Model_Tutorial($this->_id);
+        $mTutorial = new Application_Model_Tutorial($this->_id, $db);
         $tutorial = $mTutorial->get();
 
         if (isset($tutorial['tutorialId'])) {
             $this->_tutorialNumber = $tutorial['tutorialNumber'];
-            $this->_steps = $this->_allSteps[$this->_tutorialNumber];
+            $this->_step = $tutorial['step'];
         } else {
-
+            $this->_tutorialNumber = 0;
+            $this->_step = 0;
+            $mTutorial->init();
         }
+        $this->_steps = $this->_allSteps[$this->_tutorialNumber];
     }
 
     public function toArray()
     {
         $array = parent::toArray();
         $array['steps'] = $this->_steps;
+        $array['step'] = $this->_step;
         return $array;
     }
 }
