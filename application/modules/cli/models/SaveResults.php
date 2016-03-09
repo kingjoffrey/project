@@ -2,7 +2,7 @@
 
 class Cli_Model_SaveResults
 {
-    public function __construct(Cli_Model_Game $game, $handler)
+    public function __construct($game, $handler)
     {
         $db = $handler->getDb();
         $mGame = new Application_Model_Game($game->getId(), $db);

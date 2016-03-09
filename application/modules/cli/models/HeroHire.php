@@ -4,7 +4,7 @@ class Cli_Model_HeroHire
 {
     public function __construct(Devristo\Phpws\Protocol\WebSocketTransportInterface $user, $handler)
     {
-        $game = Cli_Model_Game::getGame($user);
+        $game = Cli_CommonHandler::getGameFromUser($user);
         $gameId = $game->getId();
         $color = $user->parameters['me']->getColor();
         $playerId = $user->parameters['me']->getId();

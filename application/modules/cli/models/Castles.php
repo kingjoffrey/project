@@ -90,11 +90,10 @@ class Cli_Model_Castles
         return count($this->_castles);
     }
 
-    public function razeCastle($castleId, $playerId, Cli_Model_Game $game, $db)
+    public function razeCastle($castleId, $playerId, $game, $db)
     {
         $mCastlesInGame = new Application_Model_CastlesInGame($game->getId(), $db);
         $mCastlesInGame->razeCastle($castleId, $playerId);
-        $castle = $this->getCastle($castleId);
         $this->removeCastle($castleId);
     }
 

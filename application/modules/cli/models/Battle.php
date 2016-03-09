@@ -27,7 +27,7 @@ class Cli_Model_Battle
     private $_towerId;
     private $_towerColor;
 
-    public function __construct(Cli_Model_Army $attacker, Cli_Model_Enemies $defenders, Cli_Model_Game $game, Zend_Db_Adapter_Pdo_Pgsql $db = null, Cli_Model_BattleResult $result = null)
+    public function __construct(Cli_Model_Army $attacker, Cli_Model_Enemies $defenders, $game, Zend_Db_Adapter_Pdo_Pgsql $db = null, Cli_Model_BattleResult $result = null)
     {
         $this->_attacker = $attacker;
         $this->_defenders = $defenders->get();

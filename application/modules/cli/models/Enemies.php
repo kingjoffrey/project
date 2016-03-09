@@ -6,7 +6,7 @@ class Cli_Model_Enemies
     private $_castleId;
     private $_castleColor;
 
-    public function __construct(Cli_Model_Game $game, $x, $y, $playerColor)
+    public function __construct($game, $x, $y, $playerColor)
     {
         $fields = $game->getFields();
         $players = $game->getPlayers();

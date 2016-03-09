@@ -2,7 +2,7 @@
 
 class Cli_Model_NeutralPlayer extends Cli_Model_DefaultPlayer
 {
-    public function __construct(Cli_Model_Game $game, $mapCastles, $mapTowers, $playersTowers, Zend_Db_Adapter_Pdo_Pgsql $db)
+    public function __construct($game, $mapCastles, $mapTowers, $playersTowers, Zend_Db_Adapter_Pdo_Pgsql $db)
     {
         $this->_id = 0;
 
@@ -20,7 +20,7 @@ class Cli_Model_NeutralPlayer extends Cli_Model_DefaultPlayer
         $this->initTowers($mapTowers, $playersTowers);
     }
 
-    private function initCastles(Cli_Model_Game $game, $mapCastles, Zend_Db_Adapter_Pdo_Pgsql $db)
+    private function initCastles($game, $mapCastles, Zend_Db_Adapter_Pdo_Pgsql $db)
     {
         $firstUnitId = $game->getFirstUnitId();
         $numberOfSoldiers = $game->getNumberOfNeutralGarrisonUnits();

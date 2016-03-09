@@ -5,7 +5,7 @@ class Cli_Model_PathToNearestRuin
     private $_ruinId;
     private $_path;
 
-    public function __construct(Cli_Model_Game $game, Cli_Model_Army $army)
+    public function __construct($game, Cli_Model_Army $army)
     {
         $armyX = $army->getX();
         $armyY = $army->getY();

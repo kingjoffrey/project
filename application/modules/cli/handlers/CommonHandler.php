@@ -7,6 +7,7 @@ class Cli_CommonHandler extends WebSocketUriHandler
 {
     protected $_games = array();
     protected $_db;
+    protected $_baseClassName = 'Cli_Model_Common';
 
     public function __construct($logger)
     {
@@ -19,9 +20,9 @@ class Cli_CommonHandler extends WebSocketUriHandler
         return $this->_db;
     }
 
-    public function addGame($gameId, $game)
+    public function addGame($gameId)
     {
-        $this->_games[$gameId] = $game;
+        $this->_games[$gameId] = new $this->_baseClassName($gameId, $this->_db);
     }
 
     public function removeGame($gameId)
@@ -32,7 +33,7 @@ class Cli_CommonHandler extends WebSocketUriHandler
 
     /**
      * @param $gameId
-     * @return Cli_Model_Game
+     * @return Cli_Model_Common
      */
     public function getGame($gameId)
     {
@@ -56,14 +57,14 @@ class Cli_CommonHandler extends WebSocketUriHandler
 
         if ($dataIn['type'] == 'open') {
             new Cli_Model_CommonOpen($dataIn, $user, $this);
-            $game = Cli_Model_Game::getGame($user);
+            $game = Cli_CommonHandler::getGameFromUser($user);
             if ($game->isActive() && $game->getPlayers()->getPlayer($game->getPlayerColor($game->getTurnPlayerId()))->getComputer()) {
                 new Cli_Model_Computer($user, $this);
             }
             return;
         }
 
-        $game = Cli_Model_Game::getGame($user);
+        $game = Cli_CommonHandler::getGameFromUser($user);
         $gameId = $game->getId();
         $playerId = $user->parameters['me']->getId();
 
@@ -190,7 +191,7 @@ class Cli_CommonHandler extends WebSocketUriHandler
 
     public function onDisconnect(WebSocketTransportInterface $user)
     {
-        $game = Cli_Model_Game::getGame($user);
+        $game = Cli_CommonHandler::getGameFromUser($user);
         if ($game) {
             $playerId = $user->parameters['me']->getId();
             $game->removeUser($playerId, $this->_db);
@@ -215,7 +216,7 @@ class Cli_CommonHandler extends WebSocketUriHandler
      * @param null $debug
      * @throws Zend_Exception
      */
-    public function sendToChannel(Cli_Model_Game $game, $token, $debug = null)
+    public function sendToChannel($game, $token, $debug = null)
     {
         if ($debug || Zend_Registry::get('config')->debug) {
             print_r('ODPOWIEDŹ ');
@@ -254,5 +255,14 @@ class Cli_CommonHandler extends WebSocketUriHandler
         }
 
         $user->sendString(Zend_Json::encode($token));
+    }
+
+    /**
+     * @param Devristo\Phpws\Protocol\WebSocketTransportInterface $user
+     * @return Cli_Model_Game
+     */
+    static public function getGameFromUser(Devristo\Phpws\Protocol\WebSocketTransportInterface $user)
+    {
+        return $user->parameters['game'];
     }
 }

@@ -4,7 +4,7 @@ class Cli_Model_Garrison
 {
     private $_newArmyId = 0;
 
-    public function __construct($x, $y, $color, Cli_Model_Armies $armies, Cli_Model_Game $game, $handler)
+    public function __construct($x, $y, $color, Cli_Model_Armies $armies, $game, $handler)
     {
         $gameId = $game->getId();
         $fields = $game->getFields();

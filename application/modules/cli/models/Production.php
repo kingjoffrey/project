@@ -6,7 +6,7 @@ class Cli_Model_Production
     {
         $castleId = $dataIn['castleId'];
         $unitId = $dataIn['unitId'];
-        $game = Cli_Model_Game::getGame($user);
+        $game = Cli_CommonHandler::getGameFromUser($user);
         $gameId = $game->getId();
         $playerId = $user->parameters['me']->getId();
 

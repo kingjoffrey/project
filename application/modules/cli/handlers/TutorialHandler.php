@@ -74,4 +74,5 @@ class Cli_TutorialHandler extends Cli_CommonHandler
             ),
         ),
     );
+    protected $_baseClassName = 'Cli_Model_Tutorial';
 }

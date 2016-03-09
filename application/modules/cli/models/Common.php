@@ -362,13 +362,4 @@ class Cli_Model_Common
     {
         return $this->_Terrain;
     }
-
-    /**
-     * @param Devristo\Phpws\Protocol\WebSocketTransportInterface $user
-     * @return Cli_Model_Game
-     */
-    static public function getGame(Devristo\Phpws\Protocol\WebSocketTransportInterface $user)
-    {
-        return $user->parameters['game'];
-    }
 }

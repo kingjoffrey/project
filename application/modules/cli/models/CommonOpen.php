@@ -24,11 +24,11 @@ class Cli_Model_CommonOpen
 
         if (!($user->parameters['game'] = $handler->getGame($dataIn['gameId']))) {
             echo 'not set' . "\n";
-            $handler->addGame($dataIn['gameId'], new Cli_Model_Game($dataIn['gameId'], $db));
+            $handler->addGame($dataIn['gameId']);
             $user->parameters['game'] = $handler->getGame($dataIn['gameId']);
         }
 
-        $game = Cli_Model_Game::getGame($user);
+        $game = Cli_CommonHandler::getGameFromUser($user);
         $game->addUser($dataIn['playerId'], $user);
         $myColor = $game->getPlayerColor($dataIn['playerId']);
         $user->parameters['me'] = new Cli_Model_Me($myColor, $dataIn['playerId']);

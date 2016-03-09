@@ -12,7 +12,7 @@ class Cli_Model_SplitArmy
 
         $heroesIds = explode(',', $h);
         $soldiersIds = explode(',', $s);
-        $game = Cli_Model_Game::getGame($user);
+        $game = Cli_CommonHandler::getGameFromUser($user);
         $gameId = $game->getId();
         $color = $game->getPlayerColor($playerId);
         $armies = $game->getPlayers()->getPlayer($color)->getArmies();

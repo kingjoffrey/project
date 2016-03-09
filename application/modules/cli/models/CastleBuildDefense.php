@@ -17,7 +17,7 @@ class Cli_Model_CastleBuildDefense
 
 
         $playerId = $user->parameters['me']->getId();
-        $game = Cli_Model_Game::getGame($user);
+        $game = Cli_CommonHandler::getGameFromUser($user);
         $color = $game->getPlayerColor($playerId);
         $player = $game->getPlayers()->getPlayer($color);
         $castle = $player->getCastles()->getCastle($castleId);

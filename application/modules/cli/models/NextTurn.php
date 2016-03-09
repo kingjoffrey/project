@@ -5,7 +5,7 @@ class Cli_Model_NextTurn
 
     public function __construct(Devristo\Phpws\Protocol\WebSocketTransportInterface $user, $handler)
     {
-        $game = Cli_Model_Game::getGame($user);
+        $game = Cli_CommonHandler::getGameFromUser($user);
         $players = $game->getPlayers();
         $db = $handler->getDb();
 
@@ -45,7 +45,7 @@ class Cli_Model_NextTurn
         }
     }
 
-    private function getExpectedNextTurnPlayer(Cli_Model_Game $game, $handler)
+    private function getExpectedNextTurnPlayer($game, $handler)
     {
         $playerColor = $game->getPlayerColor($game->getTurnPlayerId());
         $find = false;

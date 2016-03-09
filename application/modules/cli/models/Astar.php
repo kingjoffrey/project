@@ -60,7 +60,7 @@ class Cli_Model_Astar extends Cli_Model_Heuristics
      * @param string $color
      * @param array $params
      */
-    public function __construct(Cli_Model_Army $army, $destX, $destY, Cli_Model_Game $game, $params = null)
+    public function __construct(Cli_Model_Army $army, $destX, $destY, $game, $params = null)
     {
         parent::__construct($destX, $destY);
 

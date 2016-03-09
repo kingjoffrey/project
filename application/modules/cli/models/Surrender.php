@@ -6,7 +6,7 @@ class Cli_Model_Surrender
     public function __construct(Devristo\Phpws\Protocol\WebSocketTransportInterface $user, $handler)
     {
         $playerId = $user->parameters['me']->getId();
-        $game = Cli_Model_Game::getGame($user);
+        $game = Cli_CommonHandler::getGameFromUser($user);
         $color = $game->getPlayerColor($playerId);
         $player = $game->getPlayers()->getPlayer($color);
         $armies = $player->getArmies();

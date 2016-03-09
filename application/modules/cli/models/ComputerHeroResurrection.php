@@ -4,7 +4,7 @@ class Cli_Model_ComputerHeroResurrection
 {
     public function __construct($playerId, Devristo\Phpws\Protocol\WebSocketTransportInterface $user, $handler)
     {
-        $game = Cli_Model_Game::getGame($user);
+        $game = Cli_CommonHandler::getGameFromUser($user);
         $gameId = $game->getId();
         $players = $game->getPlayers();
         $color = $game->getPlayerColor($playerId);

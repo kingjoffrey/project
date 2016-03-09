@@ -10,7 +10,7 @@ class Cli_Model_BattleSequenceHandler
      */
     public function __construct($data, Devristo\Phpws\Protocol\WebSocketTransportInterface $user, $handler)
     {
-        $game = Cli_Model_Game::getGame($user);
+        $game = Cli_CommonHandler::getGameFromUser($user);
         $me = Cli_Model_Me::getMe($user);
         $player = $game->getPlayers()->getPlayer($me->getColor());
         $db = $handler->getDb();

@@ -11,7 +11,7 @@ class Cli_Model_DisbandArmy
         }
 
         $color = $user->parameters['me']->getColor();
-        $game = Cli_Model_Game::getGame($user);
+        $game = Cli_CommonHandler::getGameFromUser($user);
         if (!$armies = $game->getPlayers()->getPlayer($color)->getArmies()) {
             $handler->sendError($user, 'Nie mogę usunąć armii!');
         }

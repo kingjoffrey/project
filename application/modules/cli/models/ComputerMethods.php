@@ -3,7 +3,7 @@
 abstract class Cli_Model_ComputerMethods
 {
     /**
-     * @var Cli_Model_Game
+     * @var Cli_Model_Common
      */
     protected $_game;
     protected $_gameId;
@@ -48,7 +48,7 @@ abstract class Cli_Model_ComputerMethods
     {
         $this->_army = $army;
         $this->_user = $user;
-        $this->_game = Cli_Model_Game::getGame($user);
+        $this->_game = Cli_CommonHandler::getGameFromUser($user);
         $this->_db = $handler->getDb();
         $this->_handler = $handler;
         $this->_playerId = $this->_game->getTurnPlayerId();

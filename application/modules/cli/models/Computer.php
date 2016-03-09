@@ -5,11 +5,10 @@ class Cli_Model_Computer
     public function __construct(Devristo\Phpws\Protocol\WebSocketTransportInterface $user, $handler)
     {
         $l = new Coret_Model_Logger();
-        $game = Cli_Model_Game::getGame($user);
+        $game = Cli_CommonHandler::getGameFromUser($user);
         $playerId = $game->getTurnPlayerId();
         $player = $game->getPlayers()->getPlayer($game->getPlayerColor($playerId));
 
-        $db = $handler->getDb();
         if (!$player->getTurnActive()) {
             $l->log('START TURY');
             new Cli_Model_StartTurn($playerId, $user, $handler);

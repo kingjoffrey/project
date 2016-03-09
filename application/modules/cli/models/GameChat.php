@@ -6,7 +6,7 @@ class Cli_Model_GameChat
     {
         $db = $handler->getDb();
 
-        $game = Cli_Model_Game::getGame($user);
+        $game = Cli_CommonHandler::getGameFromUser($user);
         $me = Cli_Model_Me::getMe($user);
         $mChat = new Application_Model_GameChat($game->getId(), $db);
         $mChat->insertChatMessage($me->getId(), $msg);

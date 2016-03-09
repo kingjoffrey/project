@@ -33,7 +33,7 @@ class Cli_Model_Ruin extends Cli_Model_Entity
         $this->_empty = true;
     }
 
-    public function search(Cli_Model_Game $game, Cli_Model_Army $army, $heroId, $playerId, $handler)
+    public function search($game, Cli_Model_Army $army, $heroId, $playerId, $handler)
     {
         $random = rand(0, 100);
         $gameId = $game->getId();

@@ -5,7 +5,7 @@ class Cli_Model_StartTurn
 
     public function __construct($playerId, Devristo\Phpws\Protocol\WebSocketTransportInterface $user, $handler)
     {
-        $game = Cli_Model_Game::getGame($user);
+        $game = Cli_CommonHandler::getGameFromUser($user);
         $players = $game->getPlayers();
         $color = $game->getPlayerColor($playerId);
         $player = $players->getPlayer($color);

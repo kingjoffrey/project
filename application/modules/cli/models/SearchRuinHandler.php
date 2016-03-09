@@ -11,7 +11,7 @@ class Cli_Model_SearchRuinHandler
         }
 
         $playerId = $user->parameters['me']->getId();
-        $game = Cli_Model_Game::getGame($user);
+        $game = Cli_CommonHandler::getGameFromUser($user);
         $color = $game->getPlayerColor($playerId);
         $army = $game->getPlayers()->getPlayer($color)->getArmies()->getArmy($armyId);
 

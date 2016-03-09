@@ -15,7 +15,7 @@ class Cli_Model_CastleRaze
             return;
         }
 
-        $game = Cli_Model_Game::getGame($user);
+        $game = Cli_CommonHandler::getGameFromUser($user);
         $playerId = $user->parameters['me']->getId();
         $color = $game->getPlayerColor($playerId);
         $player = $game->getPlayers()->getPlayer($color);

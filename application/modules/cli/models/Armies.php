@@ -147,7 +147,7 @@ class Cli_Model_Armies
         return count($this->_armies);
     }
 
-    public function create($x, $y, $color, Cli_Model_Game $game, Zend_Db_Adapter_Pdo_Pgsql $db)
+    public function create($x, $y, $color, $game, Zend_Db_Adapter_Pdo_Pgsql $db)
     {
         $mArmy = new Application_Model_Army($game->getId(), $db);
         $armyId = $mArmy->createArmy(array('x' => $x, 'y' => $y), $game->getPlayers()->getPlayer($color)->getId());
