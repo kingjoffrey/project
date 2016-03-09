@@ -42,6 +42,11 @@ class Cli_CommonHandler extends WebSocketUriHandler
         }
     }
 
+    public function open($dataIn, $user)
+    {
+        new Cli_Model_CommonOpen($dataIn, $user, $this);
+    }
+
     public function onMessage(WebSocketTransportInterface $user, WebSocketMessageInterface $msg)
     {
         $config = Zend_Registry::get('config');
@@ -56,7 +61,7 @@ class Cli_CommonHandler extends WebSocketUriHandler
         $l->log($dataIn);
 
         if ($dataIn['type'] == 'open') {
-            new Cli_Model_CommonOpen($dataIn, $user, $this);
+            $this->open($dataIn, $user);
             $game = Cli_CommonHandler::getGameFromUser($user);
             if ($game->isActive() && $game->getPlayers()->getPlayer($game->getPlayerColor($game->getTurnPlayerId()))->getComputer()) {
                 new Cli_Model_Computer($user, $this);

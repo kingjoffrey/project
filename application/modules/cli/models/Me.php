@@ -2,8 +2,8 @@
 
 class Cli_Model_Me
 {
-    private $_id;
-    private $_color;
+    protected $_id;
+    protected $_color;
 
     public function __construct($color, $playerId)
     {
