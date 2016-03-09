@@ -2,7 +2,7 @@
 
 class Cli_Model_TowerHandler
 {
-    public function __construct($playerId, Cli_Model_Path $path, $game, $handler)
+    public function __construct($playerId, Cli_Model_Path $path, Cli_Model_Game $game, $handler)
     {
         $current = $path->getCurrent();
 

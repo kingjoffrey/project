@@ -3,6 +3,7 @@
 class Cli_Model_CommonOpen
 {
     protected $_db;
+
     /**
      * @param $dataIn
      * @param \Devristo\Phpws\Protocol\WebSocketTransportInterface $user
@@ -45,7 +46,7 @@ class Cli_Model_CommonOpen
         $player = $game->getPlayers()->getPlayer($myColor);
 
         $token = $game->toArray();
-        $token['color'] = $myColor;
+        $token = array_merge($token, Cli_Model_Me::getMe($user)->toArray());
         $token['gold'] = $player->getGold();
         $token['bSequence'] = array('attack' => $player->getAttackSequence(), 'defense' => $player->getDefenceSequence());
         $token['type'] = 'open';

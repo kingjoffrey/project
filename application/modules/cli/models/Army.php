@@ -98,7 +98,7 @@ class Cli_Model_Army
         }
     }
 
-    public function move($game, Cli_Model_Path $path, $handler)
+    public function move(Cli_Model_Game $game, Cli_Model_Path $path, $handler)
     {
         if (!$path->exists()) {
             echo 'PATH NOT EXISTS' . "\n";
@@ -162,7 +162,7 @@ class Cli_Model_Army
         }
     }
 
-    private function updateArmyPosition($game, Cli_Model_Path $path, Zend_Db_Adapter_Pdo_Pgsql $db)
+    private function updateArmyPosition(Cli_Model_Game $game, Cli_Model_Path $path, Zend_Db_Adapter_Pdo_Pgsql $db)
     {
         $gameId = $game->getId();
         $terrain = $game->getTerrain();

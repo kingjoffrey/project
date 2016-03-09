@@ -7,7 +7,6 @@ class Cli_CommonHandler extends WebSocketUriHandler
 {
     protected $_games = array();
     protected $_db;
-    protected $_baseClassName = 'Cli_Model_Common';
 
     public function __construct($logger)
     {
@@ -22,7 +21,7 @@ class Cli_CommonHandler extends WebSocketUriHandler
 
     public function addGame($gameId)
     {
-        $this->_games[$gameId] = new $this->_baseClassName($gameId, $this->_db);
+        $this->_games[$gameId] = new Cli_Model_Game($gameId, $this->_db);
     }
 
     public function removeGame($gameId)
@@ -216,12 +215,12 @@ class Cli_CommonHandler extends WebSocketUriHandler
     }
 
     /**
-     * @param $game
+     * @param Cli_Model_Game $game
      * @param $token
      * @param null $debug
      * @throws Zend_Exception
      */
-    public function sendToChannel($game, $token, $debug = null)
+    public function sendToChannel(Cli_Model_Game $game, $token, $debug = null)
     {
         if ($debug || Zend_Registry::get('config')->debug) {
             print_r('ODPOWIEDŹ ');
@@ -264,7 +263,7 @@ class Cli_CommonHandler extends WebSocketUriHandler
 
     /**
      * @param WebSocketTransportInterface $user
-     * @return mixed
+     * @return Cli_Model_Game
      */
     static public function getGameFromUser(Devristo\Phpws\Protocol\WebSocketTransportInterface $user)
     {

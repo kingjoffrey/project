@@ -4,7 +4,7 @@ class Cli_Model_EnemyStronger
 {
     private $_stronger = false;
 
-    public function __construct($army, $game, $x, $y, $playerColor, $max = 30)
+    public function __construct($army, Cli_Model_Game $game, $x, $y, $playerColor, $max = 30)
     {
         $attackerWinsCount = 0;
         $attackerCourage = 0;

@@ -55,10 +55,10 @@ class Cli_Model_Astar extends Cli_Model_Heuristics
      * @param Cli_Model_Army $army
      * @param $destX
      * @param $destY
-     * @param $game
+     * @param Cli_Model_Game $game
      * @param null $params
      */
-    public function __construct(Cli_Model_Army $army, $destX, $destY, $game, $params = null)
+    public function __construct(Cli_Model_Army $army, $destX, $destY, Cli_Model_Game $game, $params = null)
     {
         parent::__construct($destX, $destY);
 

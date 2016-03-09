@@ -7,7 +7,7 @@ class Cli_Model_NearestWeakerHostileCastle
     private $_heuristics = array();
     private $_castles = array();
 
-    public function __construct($game, $playerColor, Cli_Model_Army $army)
+    public function __construct(Cli_Model_Game $game, $playerColor, Cli_Model_Army $army)
     {
         $this->_l = new Coret_Model_Logger();
 
@@ -61,7 +61,7 @@ class Cli_Model_NearestWeakerHostileCastle
         $this->_heuristics = array_keys($this->_heuristics);
     }
 
-    private function getCastleId($game, $playerColor, $army)
+    private function getCastleId(Cli_Model_Game $game, $playerColor, $army)
     {
         $this->_l->logMethodName();
         foreach ($this->_heuristics as $k => $castleId) {
@@ -75,7 +75,7 @@ class Cli_Model_NearestWeakerHostileCastle
         }
     }
 
-    private function path($game, $castleId, Cli_Model_Army $army)
+    private function path(Cli_Model_Game $game, $castleId, Cli_Model_Army $army)
     {
         $this->_l->logMethodName();
         $castle = $this->_castles[$castleId];

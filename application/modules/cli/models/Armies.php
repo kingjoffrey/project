@@ -63,7 +63,7 @@ class Cli_Model_Armies
         }
     }
 
-    public function joinAtPosition($excludedArmyId, $game, Zend_Db_Adapter_Pdo_Pgsql $db)
+    public function joinAtPosition($excludedArmyId, Cli_Model_Game $game, Zend_Db_Adapter_Pdo_Pgsql $db)
     {
         $excludedArmy = $this->getArmy($excludedArmyId);
         $x = $excludedArmy->getX();
@@ -95,7 +95,13 @@ class Cli_Model_Armies
         return $ids;
     }
 
-    public function removeArmy($armyId, $game, Zend_Db_Adapter_Pdo_Pgsql $db = null)
+    /**
+     * @param $armyId
+     * @param Cli_Model_Game $game
+     * @param Zend_Db_Adapter_Pdo_Pgsql|null $db
+     * @throws Exception
+     */
+    public function removeArmy($armyId, Cli_Model_Game $game, Zend_Db_Adapter_Pdo_Pgsql $db = null)
     {
         $army = $this->getArmy($armyId);
         $army->setDestroyed(true);
@@ -147,7 +153,7 @@ class Cli_Model_Armies
         return count($this->_armies);
     }
 
-    public function create($x, $y, $color, $game, Zend_Db_Adapter_Pdo_Pgsql $db)
+    public function create($x, $y, $color, Cli_Model_Game $game, Zend_Db_Adapter_Pdo_Pgsql $db)
     {
         $mArmy = new Application_Model_Army($game->getId(), $db);
         $armyId = $mArmy->createArmy(array('x' => $x, 'y' => $y), $game->getPlayers()->getPlayer($color)->getId());

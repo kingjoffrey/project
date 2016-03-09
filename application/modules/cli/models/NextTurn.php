@@ -45,7 +45,7 @@ class Cli_Model_NextTurn
         }
     }
 
-    private function getExpectedNextTurnPlayer($game, $handler)
+    private function getExpectedNextTurnPlayer(Cli_Model_Game $game, $handler)
     {
         $playerColor = $game->getPlayerColor($game->getTurnPlayerId());
         $find = false;

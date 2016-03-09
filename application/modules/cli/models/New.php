@@ -5,7 +5,7 @@ class Cli_Model_New
     private $_users = array();
     private $_games = array();
 
-    public function addGame($gameId, $game, $gameMasterName)
+    public function addGame($gameId, Cli_Model_Game $game, $gameMasterName)
     {
         $this->_games[$gameId] = new Cli_Model_NewGame($gameId, $game, $gameMasterName);
     }
@@ -79,7 +79,7 @@ class Cli_Model_NewGame
 
     private $_players = array();
 
-    public function __construct($gameId, $game, $gameMasterName)
+    public function __construct($gameId, Cli_Model_Game $game, $gameMasterName)
     {
         $this->_id = $gameId;
         $this->_name = $game['name'];

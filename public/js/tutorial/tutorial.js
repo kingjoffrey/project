@@ -33,6 +33,7 @@ var Game = new function () {
             return
         }
         game = g
+        console.log(g)
         if (loading) {
             loading = 0
 
