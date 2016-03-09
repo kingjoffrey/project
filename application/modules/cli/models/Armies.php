@@ -63,7 +63,7 @@ class Cli_Model_Armies
         }
     }
 
-    public function joinAtPosition($excludedArmyId, Cli_Model_Game $game, Zend_Db_Adapter_Pdo_Pgsql $db)
+    public function joinAtPosition($excludedArmyId, $game, Zend_Db_Adapter_Pdo_Pgsql $db)
     {
         $excludedArmy = $this->getArmy($excludedArmyId);
         $x = $excludedArmy->getX();
@@ -95,7 +95,7 @@ class Cli_Model_Armies
         return $ids;
     }
 
-    public function removeArmy($armyId, Cli_Model_Game $game, Zend_Db_Adapter_Pdo_Pgsql $db = null)
+    public function removeArmy($armyId, $game, Zend_Db_Adapter_Pdo_Pgsql $db = null)
     {
         $army = $this->getArmy($armyId);
         $army->setDestroyed(true);

@@ -51,14 +51,12 @@ class Cli_Model_Astar extends Cli_Model_Heuristics
     private $_players;
 
     /**
-     * Constructor
-     *
+     * Cli_Model_Astar constructor.
      * @param Cli_Model_Army $army
-     * @param int $destX
-     * @param int $destY
-     * @param Cli_Model_Game $game
-     * @param string $color
-     * @param array $params
+     * @param $destX
+     * @param $destY
+     * @param $game
+     * @param null $params
      */
     public function __construct(Cli_Model_Army $army, $destX, $destY, $game, $params = null)
     {

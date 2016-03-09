@@ -211,7 +211,7 @@ class Cli_CommonHandler extends WebSocketUriHandler
     }
 
     /**
-     * @param Cli_Model_Game $game
+     * @param $game
      * @param $token
      * @param null $debug
      * @throws Zend_Exception
@@ -258,8 +258,8 @@ class Cli_CommonHandler extends WebSocketUriHandler
     }
 
     /**
-     * @param Devristo\Phpws\Protocol\WebSocketTransportInterface $user
-     * @return Cli_Model_Game
+     * @param WebSocketTransportInterface $user
+     * @return mixed
      */
     static public function getGameFromUser(Devristo\Phpws\Protocol\WebSocketTransportInterface $user)
     {
