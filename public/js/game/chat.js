@@ -42,7 +42,7 @@ var Chat = new function () {
         showMsg()
         //}
         if (!CommonMe.colorEquals(color)) {
-            Gui.titleBlink(translate.incomingChat)
+            Gui.titleBlink(translations.incomingChat)
         }
     }
 }

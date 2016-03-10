@@ -400,10 +400,10 @@ var CommonMe = new function () {
     }
     this.turnOn = function () {
         this.resetSkippedArmies()
+        Me.turnOn()
         Gui.unlock()
-        //Gui.titleBlink(translations.yourTurn)
+        Gui.titleBlink(translations.yourTurn)
         this.handleHeroButtons()
-        this.turnOn()
     }
     this.turnOff = function () {
         this.deselectArmy()

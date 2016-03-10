@@ -5,6 +5,7 @@ var GamePlayers = new function () {
         wedges = {},
         kineticTurnNumber = null,
         circle = null,
+        init = 0,
         drawImage = function (shortName, skull) {
             var imageObj = new Image()
             imageObj.onload = function () {
@@ -80,7 +81,7 @@ var GamePlayers = new function () {
     this.drawTurn = function () {
         if (Game.getTurnsLimit()) {
             var turnNumber = Turn.getNumber() + '/' + Game.getTurnsLimit()
-        }else{
+        } else {
             var turnNumber = Turn.getNumber()
         }
         if (kineticTurnNumber) {
@@ -130,6 +131,12 @@ var GamePlayers = new function () {
         layer.draw()
     }
     this.initOnline = function (online) {
+        if (!init) {
+            setTimeout(function () {
+                Players.initOnline(online)
+            }, 500)
+            return
+        }
         for (var shortName in online) {
             this.setOnline(shortName, online[shortName])
         }
@@ -211,6 +218,7 @@ var GamePlayers = new function () {
         })
         layer.add(circle)
         this.drawTurn()
+        init = 1
     }
 }
 
