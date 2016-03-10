@@ -35,7 +35,7 @@ class Cli_Model_EditorOpen
         $user->parameters['accessKey'] = $dataIn['accessKey'];
 
         $token = $editor->toArray();
-        $token['type'] = 'init';
+        $token['type'] = 'open';
 
         $handler->sendToUser($user, $token);
     }

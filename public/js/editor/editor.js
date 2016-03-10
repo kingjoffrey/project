@@ -2,12 +2,6 @@ var Editor = new function () {
     var init = 0
 
     this.init = function (r) {
-        if (Models.getLoading() < 17) {
-            setTimeout(function () {
-                Editor.init(r)
-            }, 500)
-            return
-        }
         if (!init) {
             init = 1
             Units.init(r.units)

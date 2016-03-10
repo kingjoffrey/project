@@ -97,7 +97,7 @@ var WebSocketMessage = new function () {
                 break;
 
             case 'open':
-                Game.init(r)
+                CommonInit.init(r)
                 break;
 
             case 'close':

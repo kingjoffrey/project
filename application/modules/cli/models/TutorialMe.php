@@ -97,8 +97,11 @@ class Cli_Model_TutorialMe extends Cli_Model_Me
     public function toArray()
     {
         $array = parent::toArray();
-        $array['steps'] = $this->_steps;
-        $array['step'] = $this->_step;
+        $array['tutorial'] = array(
+            'tutorialNumber' => $this->_tutorialNumber,
+            'steps' => $this->_steps,
+            'step' => $this->_step
+        );
         return $array;
     }
 }

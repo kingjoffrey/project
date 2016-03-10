@@ -101,10 +101,12 @@ class TutorialController extends Coret_Controller_Authorized
         $this->view->headScript()->appendFile('/js/utils/FontUtils.js');
         $this->view->headScript()->appendFile('/fonts/helvetiker_regular.typeface.js');
 
+        $this->view->headScript()->appendFile('/js/common/init.js?v=' . $version);
         $this->view->headScript()->appendFile('/js/common/castle.js?v=' . $version);
         $this->view->headScript()->appendFile('/js/common/castles.js?v=' . $version);
         $this->view->headScript()->appendFile('/js/common/scene.js?v=' . $version);
         $this->view->headScript()->appendFile('/js/common/ground.js?v=' . $version);
+        $this->view->headScript()->appendFile('/js/common/game.js?v=' . $version);
         $this->view->headScript()->appendFile('/js/common/models.js?v=' . $version);
         $this->view->headScript()->appendFile('/js/common/field.js?v=' . $version);
         $this->view->headScript()->appendFile('/js/common/fields.js?v=' . $version);
@@ -119,9 +121,11 @@ class TutorialController extends Coret_Controller_Authorized
         $this->view->headScript()->appendFile('/js/common/websocketSend.js?v=' . $version);
         $this->view->headScript()->appendFile('/js/common/websocketMessage.js?v=' . $version);
 
+        $this->view->headScript()->appendFile('/js/tutorial/gui.js?v=' . $version);
         $this->view->headScript()->appendFile('/js/tutorial/tutorial.js?v=' . $version);
         $this->view->headScript()->appendFile('/js/tutorial/websocket.js?v=' . $version);
 
+        $this->view->headScript()->appendFile('/js/game/init.js?v=' . $version);
         $this->view->headScript()->appendFile('/js/game/picker.js?v=' . $version);
         $this->view->headScript()->appendFile('/js/game/me.js?v=' . $version);
         $this->view->headScript()->appendFile('/js/game/unit.js?v=' . $version);

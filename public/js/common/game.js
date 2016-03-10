@@ -22,16 +22,7 @@ var Game = new function () {
     this.getFirstUnitId = function () {
         return game.firstUnitId
     }
-    this.getLoading = function () {
-        return loading
-    }
     this.init = function (g) {
-        if (Models.getLoading() < 17) {
-            setTimeout(function () {
-                Game.init(g)
-            }, 500)
-            return
-        }
         game = g
         if (loading) {
             loading = 0
@@ -60,7 +51,7 @@ var Game = new function () {
             Me.turnOff()
         }
         Players.showFirst(Turn.getColor())
-console.log('ccc')
+
         if (Players.countHumans() > 1) {
             PrivateChat.setType('game')
             PrivateChat.enable()
