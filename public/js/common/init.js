@@ -3,7 +3,7 @@ var CommonInit = new function () {
     this.init = function (g) {
         if (Models.getLoading() < 17) {
             setTimeout(function () {
-                Init.init(g)
+                CommonInit.init(g)
             }, 500)
             return
         }
