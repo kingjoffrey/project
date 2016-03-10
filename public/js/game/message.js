@@ -72,8 +72,8 @@ var Message = new function () {
 
         $('#' + id + ' div.overflow').css('height', height + 'px')
 
-        if (Me.isSelected()) {
-            Me.setIsSelected(0)
+        if (CommonMe.isSelected()) {
+            CommonMe.setIsSelected(0)
         }
     }
     this.ok = function (id, func) {

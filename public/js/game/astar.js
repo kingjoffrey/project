@@ -42,7 +42,7 @@ var AStar = new function () {
         return 1
     }
     this.showPath = function () {
-        army = Me.getSelectedArmy()
+        army = CommonMe.getSelectedArmy()
         movementType = army.getMovementType()
         if (getG(field.getType()) > 6 && !field.hasArmies()) {
             return
@@ -93,7 +93,7 @@ var AStar = new function () {
             if (isSet(path[0])) {
                 if (path[0].tt == 'c') {
                     var castleId = Fields.get(path[0].x, path[0].y).getCastleId()
-                    if (Me.colorEquals(Fields.get(path[0].x, path[0].y).getCastleColor())) {
+                    if (CommonMe.colorEquals(Fields.get(path[0].x, path[0].y).getCastleColor())) {
                         myCastleId[castleId] = true
                     }
                 }
@@ -102,7 +102,7 @@ var AStar = new function () {
             for (var k in path) {
                 if (path[k].tt == 'c') {
                     var castleId = Fields.get(path[0].x, path[0].y).getCastleId()
-                    if (Me.colorEquals(Fields.get(path[0].x, path[0].y).getCastleColor())) {
+                    if (CommonMe.colorEquals(Fields.get(path[0].x, path[0].y).getCastleColor())) {
                         if (isSet(myCastleId[castleId])) {
                             i++
                         } else {

@@ -71,10 +71,10 @@ var CommonCastle = function (castle, bgC, miniMapColor, textColor) {
             } else {
                 var id = Message.simple(translations.relocation, translations.selectCastleToWhichYouWantToRelocateThisProduction)
                 Message.cancel(id, function () {
-                    Me.setSelectedCastleId(0)
+                    CommonMe.setSelectedCastleId(0)
                 })
-                Me.setSelectedCastleId(castle.id)
-                Me.setSelectedUnitId(unitId)
+                CommonMe.setSelectedCastleId(castle.id)
+                CommonMe.setSelectedUnitId(unitId)
             }
             return
         }

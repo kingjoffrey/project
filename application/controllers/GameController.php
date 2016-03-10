@@ -71,6 +71,7 @@ class GameController extends Coret_Controller_Authorized
         $this->view->headScript()->appendFile('/js/common/execute.js?v=' . $version);
         $this->view->headScript()->appendFile('/js/common/websocketSend.js?v=' . $version);
         $this->view->headScript()->appendFile('/js/common/websocketMessage.js?v=' . $version);
+        $this->view->headScript()->appendFile('/js/common/me.js?v=' . $version);
 
         $this->view->headScript()->appendFile('/js/game/picker.js?v=' . $version);
         $this->view->headScript()->appendFile('/js/game/init.js?v=' . $version);

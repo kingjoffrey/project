@@ -4,12 +4,12 @@
 var CastleWindow = new function () {
     var center = function (i) {
             return function () {
-                Zoom.getLens().setcenter(Me.getCastle(i).getX(), Me.getCastle(i).getY())
+                Zoom.getLens().setcenter(CommonMe.getCastle(i).getX(), CommonMe.getCastle(i).getY())
             }
         },
         click = function (i, id) {
             return function () {
-                CastleWindow.show(Me.getCastle(i))
+                CastleWindow.show(CommonMe.getCastle(i))
                 Message.remove(id)
             }
         }
@@ -70,7 +70,7 @@ var CastleWindow = new function () {
                         .addClass('name'))
                     .addClass('top'))
                 .append($('<div>')
-                    .append($('<img>').attr('src', Unit.getImage(unitId, Me.getColor())))
+                    .append($('<img>').attr('src', Unit.getImage(unitId, CommonMe.getColor())))
                     .addClass('img'))
                 .append($('<div>')
                     .addClass('attributes')
@@ -97,7 +97,7 @@ var CastleWindow = new function () {
         var stopButtonOff = ' buttonOff'
         var relocationButtonOff = ' buttonOff'
         if (castle.getProductionId()) {
-            if (Me.countCastles() > 1) {
+            if (CommonMe.countCastles() > 1) {
                 var relocationButtonOff = ''
             }
             var stopButtonOff = ''
@@ -105,8 +105,8 @@ var CastleWindow = new function () {
 
         var next = $('<td>').attr('id', 'next'),
             previous = $('<td>').attr('id', 'previous'),
-            nextCastle = Me.findNextCastle(castle.getCastleId()),
-            previousCastle = Me.findPreviousCastle(castle.getCastleId())
+            nextCastle = CommonMe.findNextCastle(castle.getCastleId()),
+            previousCastle = CommonMe.findPreviousCastle(castle.getCastleId())
         if (nextCastle) {
             next.
                 append($('<div>')
@@ -193,19 +193,19 @@ var CastleWindow = new function () {
 
         // relocation to
 
-        if (castle.getProductionId() && castle.getRelocationCastleId() && Me.getCastles().has(castle.getRelocationCastleId())) {
+        if (castle.getProductionId() && castle.getRelocationCastleId() && CommonMe.getCastles().has(castle.getRelocationCastleId())) {
             window
                 .append($('<div>').addClass('relocatedProduction').append($('<div>').html(translations.relocatingTo).addClass('title')).append(
                     $('<table>').append(
                         $('<tr>').append(
-                            $('<td>').append($('<img>').attr('src', Unit.getImage(castle.getProductionId(), Me.getColor()))))
+                            $('<td>').append($('<img>').attr('src', Unit.getImage(castle.getProductionId(), CommonMe.getColor()))))
                             .append($('<td>')
                                 .html(castle.getProductionTurn() + ' / ' + castle.getProduction()[castle.getProductionId()].time))
                             .append($('<td>')
-                                .html(Me.getCastle(castle.getRelocationCastleId()).getName())
+                                .html(CommonMe.getCastle(castle.getRelocationCastleId()).getName())
                                 .addClass('button buttonColors')
                                 .click(function () {
-                                    CastleWindow.show(Me.getCastle(castle.getRelocationCastleId()))
+                                    CastleWindow.show(CommonMe.getCastle(castle.getRelocationCastleId()))
                                     Message.remove(id)
                                 }))
                             .append($('<td>')
@@ -216,19 +216,19 @@ var CastleWindow = new function () {
 
         // relocation from
 
-        var relocatedProduction = Me.getCastles().getRelocatedProduction(castle.getCastleId())
+        var relocatedProduction = CommonMe.getCastles().getRelocatedProduction(castle.getCastleId())
         if (relocatedProduction.length) {
             var relocatingFrom = $('<table>')
 
             for (var i in relocatedProduction) {
                 var castleIdFrom = relocatedProduction[i],
-                    castleFrom = Me.getCastle(castleIdFrom),
+                    castleFrom = CommonMe.getCastle(castleIdFrom),
                     productionId = castleFrom.getProductionId()
 
                 relocatingFrom.append(
                     $('<tr>').append(
                         $('<td>').append(
-                            $('<img>').attr('src', Unit.getImage(productionId, Me.getColor()))))
+                            $('<img>').attr('src', Unit.getImage(productionId, CommonMe.getColor()))))
                         .append($('<td>')
                             .html(castleFrom.getProductionTurn() + ' / ' + castleFrom.getProduction()[productionId].time))
                         .append($('<td>')
@@ -277,7 +277,7 @@ var CastleWindow = new function () {
                 color: '#000'
             })
 
-            if (Me.getCastles().count() > 1) {
+            if (CommonMe.getCastles().count() > 1) {
                 $('.showCastle #relocation').removeClass('buttonOff')
             }
 
@@ -289,7 +289,7 @@ var CastleWindow = new function () {
         })
     }
     this.raze = function () {
-        if (!Me.getSelectedArmyId()) {
+        if (!CommonMe.getSelectedArmyId()) {
             return;
         }
         var id = Message.show(translations.destroyCastle, $('<div>').html(translations.areYouSure))
@@ -297,12 +297,12 @@ var CastleWindow = new function () {
         Message.cancel(id)
     }
     this.build = function () {
-        if (!Me.getSelectedArmyId()) {
+        if (!CommonMe.getSelectedArmyId()) {
             return;
         }
 
-        var army = Me.getArmy(Me.getSelectedArmyId())
-        var castle = Me.getCastle(Fields.get(army.getX(), army.getY()).getCastleId())
+        var army = CommonMe.getArmy(CommonMe.getSelectedArmyId())
+        var castle = CommonMe.getCastle(Fields.get(army.getX(), army.getY()).getCastleId())
 
         if (castle.getDefense() == 4) {
             var div = $('<div>')

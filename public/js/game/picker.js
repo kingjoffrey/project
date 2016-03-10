@@ -4,27 +4,27 @@ var Picker = new function () {
         if (PickerCommon.intersects()) {
             switch (event.button) {
                 case 0:
-                    if (Me.getSelectedArmyId()) {
+                    if (CommonMe.getSelectedArmyId()) {
                         WebSocketSend.move()
                     } else {
                         var field = PickerCommon.getField()
                         if (field.hasArmies()) {
                             var armies = field.getArmies()
                             for (var armyId in armies) {
-                                if (Me.colorEquals(armies[armyId])) {
-                                    Me.armyClick(armyId)
+                                if (CommonMe.colorEquals(armies[armyId])) {
+                                    CommonMe.armyClick(armyId)
                                 }
                             }
-                        } else if (Me.colorEquals(field.getCastleColor())) {
+                        } else if (CommonMe.colorEquals(field.getCastleColor())) {
                             var castleId = field.getCastleId()
-                            if (Me.getSelectedCastleId()) {
-                                if (Me.getSelectedCastleId() != castleId) {
-                                    WebSocketSend.production(Me.getSelectedCastleId(), Me.getSelectedUnitId(), castleId)
+                            if (CommonMe.getSelectedCastleId()) {
+                                if (CommonMe.getSelectedCastleId() != castleId) {
+                                    WebSocketSend.production(CommonMe.getSelectedCastleId(), CommonMe.getSelectedUnitId(), castleId)
                                 }
-                                Me.setSelectedCastleId(null)
-                                Me.setSelectedUnitId(null)
+                                CommonMe.setSelectedCastleId(null)
+                                CommonMe.setSelectedUnitId(null)
                             } else {
-                                CastleWindow.show(Me.getCastle(castleId))
+                                CastleWindow.show(CommonMe.getCastle(castleId))
                             }
                         }
                     }
@@ -35,7 +35,7 @@ var Picker = new function () {
                     break
 
                 case 2:
-                    Me.deselectArmy()
+                    CommonMe.deselectArmy()
                     break
             }
         }
@@ -43,7 +43,7 @@ var Picker = new function () {
     this.onContainerMouseMove = function (event) {
         PickerCommon.intersect(event)
         if (PickerCommon.intersects()) {
-            if (AStar.cursorPosition(PickerCommon.convertX(), PickerCommon.convertZ()) && Me.getSelectedArmyId()) {
+            if (AStar.cursorPosition(PickerCommon.convertX(), PickerCommon.convertZ()) && CommonMe.getSelectedArmyId()) {
                 AStar.showPath()
             }
         }

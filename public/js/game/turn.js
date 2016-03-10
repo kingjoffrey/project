@@ -59,16 +59,16 @@ var Turn = new function () {
         GamePlayers.drawTurn()
 
         if (Turn.isMy()) {
-            Me.turnOn()
+            CommonMe.turnOn()
             WebSocketSend.startMyTurn();
             return
         } else {
-            Me.turnOff()
+            CommonMe.turnOff()
             return
         }
     }
     this.isMy = function () {
-        if (Me.colorEquals(color)) {
+        if (CommonMe.colorEquals(color)) {
             return true
         }
     }

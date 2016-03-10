@@ -36,19 +36,19 @@ var Game = new function () {
             GamePlayers.init(game.players)
             Timer.init(game.begin, game.turnTimeLimit, game.timeLimit)
             Ruins.init(game.ruins)
-            Me.init(game.color, game.gold, game.bSequence)
+            CommonMe.init(game.color, game.gold, game.bSequence)
             Chat.init(game.chatHistory)
             Scene.initSun(Fields.getMaxY())
             Scene.render()
         }
         GamePlayers.initOnline(game.online)
         if (Turn.isMy()) {
-            Me.turnOn()
-            if (!Me.getTurnActive()) {
+            CommonMe.turnOn()
+            if (!CommonMe.getTurnActive()) {
                 WebSocketSend.startMyTurn()
             }
         } else {
-            Me.turnOff()
+            CommonMe.turnOff()
         }
         Players.showFirst(Turn.getColor())
 

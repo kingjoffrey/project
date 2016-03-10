@@ -22,10 +22,10 @@ var SplitWindow = new function () {
                     .attr('id', 'selectAll')
             ),
             numberOfUnits = 0,
-            walk = Me.getSelectedArmy().getWalkingSoldiers(),
-            swim = Me.getSelectedArmy().getSwimmingSoldiers(),
-            fly = Me.getSelectedArmy().getFlyingSoldiers(),
-            heroes = Me.getSelectedArmy().getHeroes()
+            walk = CommonMe.getSelectedArmy().getWalkingSoldiers(),
+            swim = CommonMe.getSelectedArmy().getSwimmingSoldiers(),
+            fly = CommonMe.getSelectedArmy().getFlyingSoldiers(),
+            heroes = CommonMe.getSelectedArmy().getHeroes()
 
         for (var soldierId in walk) {
             numberOfUnits++;
@@ -35,7 +35,7 @@ var SplitWindow = new function () {
                     .append($('<div>').addClass('nr').html(numberOfUnits))
                     .append($('<div>').addClass('img').html(
                         $('<img>').attr({
-                            'src': Unit.getImage(walk[soldierId].unitId, Me.getColor()),
+                            'src': Unit.getImage(walk[soldierId].unitId, CommonMe.getColor()),
                             'id': 'unit' + soldierId
                         })
                     ))
@@ -66,7 +66,7 @@ var SplitWindow = new function () {
                     .append($('<div>').addClass('nr').html(numberOfUnits))
                     .append($('<div>').addClass('img').html(
                         $('<img>').attr({
-                            'src': Unit.getImage(soldier.unitId, Me.getColor()),
+                            'src': Unit.getImage(soldier.unitId, CommonMe.getColor()),
                             'id': 'unit' + soldierId
                         })
                     ))
@@ -97,7 +97,7 @@ var SplitWindow = new function () {
                     .append($('<div>').addClass('nr').html(numberOfUnits))
                     .append($('<div>').addClass('img').html(
                         $('<img>').attr({
-                            'src': Unit.getImage(soldier.unitId, Me.getColor()),
+                            'src': Unit.getImage(soldier.unitId, CommonMe.getColor()),
                             'id': 'unit' + soldierId
                         })
                     ))
@@ -127,7 +127,7 @@ var SplitWindow = new function () {
                     .append($('<div>').addClass('nr').html(numberOfUnits))
                     .append($('<div>').addClass('img').html(
                         $('<img>').attr({
-                            'src': Hero.getImage(Me.getColor()),
+                            'src': Hero.getImage(CommonMe.getColor()),
                             'id': 'hero' + heroId
                         })
                     ))

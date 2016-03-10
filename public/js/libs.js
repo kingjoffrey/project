@@ -1,23 +1,3 @@
-function titleBlink(msg) {
-    var timeoutId = Game.getTimeoutId()
-    if (timeoutId) {
-        clearInterval(timeoutId);
-    }
-    Game.setTimeoutId(setInterval(function () {
-        if (document.title == msg) {
-            document.title = '...'
-        } else {
-            document.title = msg
-        }
-    }))
-
-    $(document).bind("mousemove keypress", function () {
-        clearInterval(Game.getTimeoutId())
-        document.title = Gui.getDocumentTitle()
-        window.onmousemove = null
-    });
-}
-
 function makeTime() {
     var d = new Date();
     var minutes = d.getMinutes();

@@ -7,7 +7,7 @@ var Chat = new function () {
                 .append(message)
                 .addClass('chatCloud')
 
-            if (Me.colorEquals(color)) {
+            if (CommonMe.colorEquals(color)) {
                 var align = 'right'
                 div.css({
                     'text-align': align
@@ -41,8 +41,8 @@ var Chat = new function () {
         //else {
         showMsg()
         //}
-        if (!Me.colorEquals(color)) {
-            titleBlink('Incoming chat!')
+        if (!CommonMe.colorEquals(color)) {
+            Gui.titleBlink(translate.incomingChat)
         }
     }
 }

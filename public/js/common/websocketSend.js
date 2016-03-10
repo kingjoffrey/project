@@ -18,15 +18,15 @@ var WebSocketSend = new function () {
         if (!Turn.isMy()) {
             return;
         }
-        if (!Me.getSelectedArmyId()) {
+        if (!CommonMe.getSelectedArmyId()) {
             return;
         }
 
-        Me.deselectArmy()
+        CommonMe.deselectArmy()
 
         var token = {
             type: 'ruin',
-            armyId: Me.getDeselectedArmyId()
+            armyId: CommonMe.getDeselectedArmyId()
         };
 
         ws.send(JSON.stringify(token));
@@ -47,13 +47,13 @@ var WebSocketSend = new function () {
 
         var armyId
 
-        if (!(armyId = Me.getSelectedArmyId())) {
+        if (!(armyId = CommonMe.getSelectedArmyId())) {
             return
         }
 
-        Me.addQuited(armyId)
-        Me.deselectArmy()
-        Me.findNext()
+        CommonMe.addQuited(armyId)
+        CommonMe.deselectArmy()
+        CommonMe.findNext()
 
         var token = {
             type: 'fortify',
@@ -96,7 +96,7 @@ var WebSocketSend = new function () {
             return;
         }
 
-        Me.setParentArmyId(null)
+        CommonMe.setParentArmyId(null)
         var token = {
             type: 'join',
             armyId: armyId
@@ -114,14 +114,14 @@ var WebSocketSend = new function () {
         if (!Turn.isMy()) {
             return;
         }
-        if (!Me.getSelectedArmyId()) {
+        if (!CommonMe.getSelectedArmyId()) {
             return
         }
-        Me.deselectArmy(1)
+        CommonMe.deselectArmy(1)
 
         var token = {
             type: 'disband',
-            armyId: Me.getDeselectedArmyId()
+            armyId: CommonMe.getDeselectedArmyId()
         };
 
         ws.send(JSON.stringify(token));
@@ -138,10 +138,10 @@ var WebSocketSend = new function () {
             return;
         }
 
-        var armyId = Me.getSelectedArmyId()
+        var armyId = CommonMe.getSelectedArmyId()
 
         Gui.setLock()
-        Me.deselectArmy(1)
+        CommonMe.deselectArmy(1)
 
         var token = {
             type: 'move',
@@ -186,7 +186,7 @@ var WebSocketSend = new function () {
 
         var token = {
             type: 'split',
-            armyId: Me.getSelectedArmyId(),
+            armyId: CommonMe.getSelectedArmyId(),
             s: s,
             h: h
         };
@@ -204,11 +204,11 @@ var WebSocketSend = new function () {
         //    return;
         //}
 
-        //if (Me.findHero()) {
+        //if (CommonMe.findHero()) {
         //    return;
         //}
 
-        Me.deselectArmy()
+        CommonMe.deselectArmy()
 
         var token = {
             type: 'resurrection'
@@ -227,7 +227,7 @@ var WebSocketSend = new function () {
             return;
         }
 
-        Me.deselectArmy()
+        CommonMe.deselectArmy()
 
         var token = {
             type: 'hire'
@@ -242,7 +242,7 @@ var WebSocketSend = new function () {
             return;
         }
 
-        var army = Me.getArmy(Me.getSelectedArmyId())
+        var army = CommonMe.getArmy(CommonMe.getSelectedArmyId())
         var castleId = Fields.get(army.getX(), army.getY()).getCastleId()
 
         if (!castleId) {
@@ -252,7 +252,7 @@ var WebSocketSend = new function () {
 
         var token = {
             type: 'raze',
-            armyId: Me.getSelectedArmyId()
+            armyId: CommonMe.getSelectedArmyId()
         };
 
         ws.send(JSON.stringify(token));
@@ -264,7 +264,7 @@ var WebSocketSend = new function () {
             return;
         }
 
-        var army = Me.getArmy(Me.getSelectedArmyId())
+        var army = CommonMe.getArmy(CommonMe.getSelectedArmyId())
         var castleId = Fields.get(army.getX(), army.getY()).getCastleId()
 
         if (!castleId) {

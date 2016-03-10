@@ -127,8 +127,8 @@ class Zend_View_Helper_Translations extends Zend_View_Helper_Abstract
                 'selectFriendFromFriendsList' => $this->view->translate('Select friend from friends list'),
                 'connected' => $this->view->translate('connected'),
                 'disconnected' => $this->view->translate('disconnected'),
-                '' => $this->view->translate(''),
-                '' => $this->view->translate(''),
+                'yourTurn' => $this->view->translate('Your turn!'),
+                'incomingChat' => $this->view->translate('Incoming chat!'),
                 '' => $this->view->translate(''),
                 '' => $this->view->translate(''),
             )));

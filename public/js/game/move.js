@@ -6,7 +6,7 @@ var Move = new function () {
     this.start = function (r, ii) {
         if (notSet(r.path)) {
             WebSocketSend.setExecuting(0)
-            if (Me.colorEquals(r.color)) {
+            if (CommonMe.colorEquals(r.color)) {
                 Gui.unlock()
                 Message.simple(translations.army, translations.noMoreMoves)
             }
@@ -95,8 +95,8 @@ var Move = new function () {
         if (r.battle) {
             if (player.isComputer() && !Gui.getShow()) {
                 for (var color in r.battle.defenders) {
-                    if (Me.colorEquals(color)) {
-                        var defenderArmies = Me.getArmies(),
+                    if (CommonMe.colorEquals(color)) {
+                        var defenderArmies = CommonMe.getArmies(),
                             upkeep = 0
 
                         for (var armyId in r.battle.defenders[color]) {
@@ -119,7 +119,7 @@ var Move = new function () {
                                 }
                             }
                         }
-                        Me.upkeepIncrement(upkeep)
+                        CommonMe.upkeepIncrement(upkeep)
                         break
                     }
                 }
@@ -159,14 +159,14 @@ var Move = new function () {
                         }
                     }
                 }
-                if (Me.colorEquals(r.color)) {
+                if (CommonMe.colorEquals(r.color)) {
                     if (r.battle.castleId) {
-                        CastleWindow.show(Me.getCastle(r.battle.castleId))
-                        Me.incomeIncrement(Me.getCastle(r.battle.castleId).getIncome())
-                    } else if (Me.getArmy(army.getArmyId()).getMoves()) {
-                        Me.selectArmy(army.getArmyId())
+                        CastleWindow.show(CommonMe.getCastle(r.battle.castleId))
+                        CommonMe.incomeIncrement(CommonMe.getCastle(r.battle.castleId).getIncome())
+                    } else if (CommonMe.getArmy(army.getArmyId()).getMoves()) {
+                        CommonMe.selectArmy(army.getArmyId())
                     }
-                    Me.handleHeroButtons()
+                    CommonMe.handleHeroButtons()
                     Gui.unlock()
                 }
             } else {
@@ -209,17 +209,17 @@ var Move = new function () {
                         }
                     }
                 }
-                if (Me.colorEquals(r.color)) {
+                if (CommonMe.colorEquals(r.color)) {
                     if (Turn.isMy()) {
-                        Me.handleHeroButtons()
+                        CommonMe.handleHeroButtons()
                     }
                     Gui.unlock()
                 }
             }
-        } else if (Me.colorEquals(r.color)) {
+        } else if (CommonMe.colorEquals(r.color)) {
             if (army.getNumberOfUnits()) {
                 if (army.getMoves() > 0) {
-                    Me.selectArmy(r.army.id)
+                    CommonMe.selectArmy(r.army.id)
                 }
             }
             Gui.unlock()

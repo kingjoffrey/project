@@ -59,8 +59,8 @@ var Execute = new function () {
                         armies.handle(r.parentArmy)
                         armies.handle(r.childArmy)
                         Message.remove()
-                        Me.setParentArmyId(r.parentArmy.id)
-                        Me.selectArmy(r.childArmy.id)
+                        CommonMe.setParentArmyId(r.parentArmy.id)
+                        CommonMe.selectArmy(r.childArmy.id)
                         Execute.setExecuting(0)
                     } else if (Players.get(r.color).isComputer() && !Gui.getShow()) {
                         //zoomer.setCenterIfOutOfScreen(r.parentArmy.x * 40, r.parentArmy.y * 40);
@@ -107,7 +107,7 @@ var Execute = new function () {
                     if (Turn.isMy()) {
                         Message.remove()
                         var upkeep = 0,
-                            army = Me.getArmies().get(r.id)
+                            army = CommonMe.getArmies().get(r.id)
 
                         for (var i in army.getWalkingSoldiers()) {
                             upkeep += Units.get(army.getWalkingSoldier(i).unitId).cost
@@ -118,11 +118,11 @@ var Execute = new function () {
                         for (var i in army.getFlyingSoldiers()) {
                             upkeep += Units.get(army.getFlyingSoldier(i).unitId).cost
                         }
-                        Me.upkeepIncrement(-upkeep)
+                        CommonMe.upkeepIncrement(-upkeep)
                     }
                     Players.get(r.color).getArmies().destroy(r.id)
                     if (Turn.isMy()) {
-                        Me.handleHeroButtons()
+                        CommonMe.handleHeroButtons()
                     }
                     Execute.setExecuting(0)
                     break;
@@ -137,8 +137,8 @@ var Execute = new function () {
                             Players.get(r.color).getArmies().handle(r.army)
                             if (Turn.isMy()) {
                                 Message.remove()
-                                Me.setGold(r.gold)
-                                Me.handleHeroButtons()
+                                CommonMe.setGold(r.gold)
+                                CommonMe.handleHeroButtons()
                             }
                             Execute.setExecuting(0)
                         })
@@ -151,7 +151,7 @@ var Execute = new function () {
                     if (Turn.isMy()) {
                         Sound.play('gold1');
                         Message.remove()
-                        Me.setGold(r.gold)
+                        CommonMe.setGold(r.gold)
                     } else {
                         Sound.play('raze');
                     }
@@ -162,13 +162,13 @@ var Execute = new function () {
                     Players.get(r.color).getCastles().get(r.castleId).setDefense(r.defense)
                     if (Turn.isMy()) {
                         Message.remove()
-                        Me.setGold(r.gold)
+                        CommonMe.setGold(r.gold)
                     }
                     Execute.setExecuting(0)
                     break;
 
                 case 'surrender':
-                    Me.deselectArmy()
+                    CommonMe.deselectArmy()
                     var armies = Players.get(r.color).getArmies(),
                         castles = Players.get(r.color).getCastles()
                     for (var armyId in armies.toArray()) {
@@ -187,7 +187,7 @@ var Execute = new function () {
                     if (Game.getLoading()) {
                         Gui.end()
                     } else {
-                        Me.turnOff()
+                        CommonMe.turnOff()
                         var id = Message.show(translations.gameOver, $('<div>').append($('<div>').html(translations.thisIsTheEnd)))
                         Message.ok(id, Gui.end)
                     }

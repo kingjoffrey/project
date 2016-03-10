@@ -120,14 +120,15 @@ class TutorialController extends Coret_Controller_Authorized
         $this->view->headScript()->appendFile('/js/common/execute.js?v=' . $version);
         $this->view->headScript()->appendFile('/js/common/websocketSend.js?v=' . $version);
         $this->view->headScript()->appendFile('/js/common/websocketMessage.js?v=' . $version);
+        $this->view->headScript()->appendFile('/js/common/me.js?v=' . $version);
 
         $this->view->headScript()->appendFile('/js/tutorial/init.js?v=' . $version);
         $this->view->headScript()->appendFile('/js/tutorial/gui.js?v=' . $version);
         $this->view->headScript()->appendFile('/js/tutorial/tutorial.js?v=' . $version);
         $this->view->headScript()->appendFile('/js/tutorial/websocket.js?v=' . $version);
+        $this->view->headScript()->appendFile('/js/tutorial/me.js?v=' . $version);
 
         $this->view->headScript()->appendFile('/js/game/picker.js?v=' . $version);
-        $this->view->headScript()->appendFile('/js/game/me.js?v=' . $version);
         $this->view->headScript()->appendFile('/js/game/unit.js?v=' . $version);
         $this->view->headScript()->appendFile('/js/game/terrain.js?v=' . $version);
 

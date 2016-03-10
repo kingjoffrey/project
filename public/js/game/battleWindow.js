@@ -25,35 +25,35 @@ var BattleWindow = new function () {
                 }, 500)
             }
             $('#unit' + b[i].soldierId + ' .killed').fadeIn(1000, function () {
-                if (Me.colorEquals(r.color)) {
-                    var soldier = Me.getArmy(r.army.id).getWalkingSoldier(b[i].soldierId)
+                if (CommonMe.colorEquals(r.color)) {
+                    var soldier = CommonMe.getArmy(r.army.id).getWalkingSoldier(b[i].soldierId)
                     if (isTruthful(soldier)) {
-                        Me.upkeepIncrement(-Units.get(soldier.unitId).cost)
+                        CommonMe.upkeepIncrement(-Units.get(soldier.unitId).cost)
                     }
-                    soldier = Me.getArmy(r.army.id).getFlyingSoldier(b[i].soldierId)
+                    soldier = CommonMe.getArmy(r.army.id).getFlyingSoldier(b[i].soldierId)
                     if (isTruthful(soldier)) {
-                        Me.upkeepIncrement(-Units.get(soldier.unitId).cost)
+                        CommonMe.upkeepIncrement(-Units.get(soldier.unitId).cost)
                     }
-                    soldier = Me.getArmy(r.army.id).getSwimmingSoldier(b[i].soldierId)
+                    soldier = CommonMe.getArmy(r.army.id).getSwimmingSoldier(b[i].soldierId)
                     if (isTruthful(soldier)) {
-                        Me.upkeepIncrement(-Units.get(soldier.unitId).cost)
+                        CommonMe.upkeepIncrement(-Units.get(soldier.unitId).cost)
                     }
                 }
 
                 for (var color in r.defenders) {
-                    if (Me.colorEquals(color)) {
+                    if (CommonMe.colorEquals(color)) {
                         for (var armyId in r.defenders[color]) {
-                            var soldier = Me.getArmy(armyId).getWalkingSoldier(b[i].soldierId)
+                            var soldier = CommonMe.getArmy(armyId).getWalkingSoldier(b[i].soldierId)
                             if (isTruthful(soldier)) {
-                                Me.upkeepIncrement(-Units.get(soldier.unitId).cost)
+                                CommonMe.upkeepIncrement(-Units.get(soldier.unitId).cost)
                             }
-                            soldier = Me.getArmy(r.army.id).getFlyingSoldier(b[i].soldierId)
+                            soldier = CommonMe.getArmy(r.army.id).getFlyingSoldier(b[i].soldierId)
                             if (isTruthful(soldier)) {
-                                Me.upkeepIncrement(-Units.get(soldier.unitId).cost)
+                                CommonMe.upkeepIncrement(-Units.get(soldier.unitId).cost)
                             }
-                            soldier = Me.getArmy(r.army.id).getSwimmingSoldier(b[i].soldierId)
+                            soldier = CommonMe.getArmy(r.army.id).getSwimmingSoldier(b[i].soldierId)
                             if (isTruthful(soldier)) {
-                                Me.upkeepIncrement(-Units.get(soldier.unitId).cost)
+                                CommonMe.upkeepIncrement(-Units.get(soldier.unitId).cost)
                             }
                         }
                         break;
@@ -267,8 +267,8 @@ var BattleWindow = new function () {
             sequenceImage = $('<div>').attr('id', 'sortable'),
             i = 0
 
-        for (k in Me.getBattleSequence(type)) {
-            var unitId = Me.getBattleSequence(type)[k],
+        for (k in CommonMe.getBattleSequence(type)) {
+            var unitId = CommonMe.getBattleSequence(type)[k],
                 unit = Units.get(unitId)
             if (unit.canFly) {
                 continue
@@ -288,7 +288,7 @@ var BattleWindow = new function () {
                 .append(
                 $('<div>')
                     .append($('<img>').attr({
-                        src: Unit.getImage(unitId, Me.getColor()),
+                        src: Unit.getImage(unitId, CommonMe.getColor()),
                         id: unitId,
                         alt: name
                     }))

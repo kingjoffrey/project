@@ -15,27 +15,27 @@ var WebSocketMessage = new function () {
                     tower = towers.get(towerId)
                 Players.get(r.color).getTowers().add(towerId, tower)
                 towers.delete(towerId)
-                if (Me.colorEquals(towerColor)) {
-                    Me.incomeIncrement(-5)
+                if (CommonMe.colorEquals(towerColor)) {
+                    CommonMe.incomeIncrement(-5)
                 }
-                if (Me.colorEquals(r.color)) {
-                    Me.incomeIncrement(5)
+                if (CommonMe.colorEquals(r.color)) {
+                    CommonMe.incomeIncrement(5)
                 }
                 break
 
             case 'update':
-                Me.setSelectedCastleId(0)
-                Me.resetSkippedArmies()
+                CommonMe.setSelectedCastleId(0)
+                CommonMe.resetSkippedArmies()
 
-                var castles = Me.getCastles()
+                var castles = CommonMe.getCastles()
                 for (var castleId in r.productionTurns) {
                     castles.get(castleId).setProductionTurn(r.productionTurns[castleId])
                 }
                 Sound.play('startturn')
 
-                Me.setUpkeep(r.upkeep)
-                Me.setGold(r.gold)
-                Me.setIncome(r.income)
+                CommonMe.setUpkeep(r.upkeep)
+                CommonMe.setGold(r.gold)
+                CommonMe.setIncome(r.income)
                 Gui.unlock()
                 break
 
@@ -105,7 +105,7 @@ var WebSocketMessage = new function () {
                 break;
 
             case 'online':
-                if (!Me.colorEquals(r.color)) {
+                if (!CommonMe.colorEquals(r.color)) {
                     GamePlayers.setOnline(r.color, 1)
                 }
                 break;
@@ -115,7 +115,7 @@ var WebSocketMessage = new function () {
                 break;
 
             case 'production':
-                var castle = Me.getCastle(r.castleId)
+                var castle = CommonMe.getCastle(r.castleId)
                 castle.setProductionId(r.unitId)
                 castle.setProductionTurn(0)
                 castle.setRelocationCastleId(r.relocationToCastleId)
@@ -137,10 +137,10 @@ var WebSocketMessage = new function () {
             case 'bSequence':
                 if (r.attack == 'true') {
                     Message.simple(translations.battleSequence, translations.attackSequenceSuccessfullyUpdated)
-                    Me.setAttackBattleSequence(r.sequence)
+                    CommonMe.setAttackBattleSequence(r.sequence)
                 } else {
                     Message.simple(translations.battleSequence, translations.defenceSequenceSuccessfullyUpdated)
-                    Me.setDefenseBattleSequence(r.sequence)
+                    CommonMe.setDefenseBattleSequence(r.sequence)
                 }
                 break
 

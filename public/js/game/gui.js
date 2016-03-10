@@ -34,7 +34,7 @@ var Gui = new function () {
             switch (key) {
                 case 27: //ESC
                     Message.remove();
-                    Me.deselectArmy()
+                    CommonMe.deselectArmy()
                     break;
                 case 37://left
                     Scene.moveCameraLeft()
@@ -55,7 +55,7 @@ var Gui = new function () {
                     Castle.show();
                     break;
                 case 68: //d
-                    Me.disband()
+                    CommonMe.disband()
                     break;
                 case 69: //e
                     Turn.next()
@@ -64,13 +64,13 @@ var Gui = new function () {
                     WebSocketSend.fortify()
                     break;
                 case 78: //n
-                    Me.findNext()
+                    CommonMe.findNext()
                     break;
                 case 79: //o
                     $('.message .go').click()
                     break;
                 case 81: //q
-                    Me.skip()
+                    CommonMe.skip()
                     break;
                 case 82: //r
                     WebSocketSend.ruin()
@@ -142,19 +142,19 @@ var Gui = new function () {
             });
 
             $('#nextArmy').click(function () {
-                Me.findNext()
+                CommonMe.findNext()
             })
-            ;
+
             $('#skipArmy').click(function () {
-                Me.skip()
-            });
+                CommonMe.skip()
+            })
 
             $('#quitArmy').click(function () {
                 WebSocketSend.fortify()
-            });
+            })
 
             $('#splitArmy').click(function () {
-                if (!Me.getSelectedArmyId()) {
+                if (!CommonMe.getSelectedArmyId()) {
                     return
                 }
 
@@ -162,7 +162,7 @@ var Gui = new function () {
             })
 
             $('#armyStatus').click(function () {
-                if (!Me.getSelectedArmyId()) {
+                if (!CommonMe.getSelectedArmyId()) {
                     return
                 }
 
@@ -170,15 +170,15 @@ var Gui = new function () {
             });
 
             $('#disbandArmy').click(function () {
-                Me.disband()
+                CommonMe.disband()
             });
 
             $('#deselectArmy').click(function () {
-                if (!Me.getSelectedArmyId()) {
+                if (!CommonMe.getSelectedArmyId()) {
                     return;
                 }
 
-                Me.deselectArmy()
+                CommonMe.deselectArmy()
             });
 
             $('#searchRuins').click(function () {
@@ -206,9 +206,9 @@ var Gui = new function () {
             });
 
             $('#showCastle').click(function () {
-                var army = Me.getArmy(Me.getSelectedArmyId())
+                var army = CommonMe.getArmy(CommonMe.getSelectedArmyId())
                 if (army) {
-                    var castle = Me.getCastle(Fields.get(army.getX(), army.getY()).getCastleId())
+                    var castle = CommonMe.getCastle(Fields.get(army.getX(), army.getY()).getCastleId())
                     if (isSet(castle)) {
                         CastleWindow.show(castle)
                     }
@@ -338,8 +338,8 @@ var Gui = new function () {
             top: mapHeight + 30 + 'px'
         })
         Gui.armyBoxAdjust()
-        Message.adjust()
-        Message.setOverflowHeight()
+        //Message.adjust()
+        //Message.setOverflowHeight()
     }
     this.armyBoxAdjust = function () {
         $('#armyBox').css({
@@ -372,6 +372,25 @@ var Gui = new function () {
     }
     this.moveChatBox = function (func) {
         $('#chatBox').removeClass('mini')
+    }
+    this.titleBlink = function (msg) {
+        var timeoutId = Game.getTimeoutId()
+        if (timeoutId) {
+            clearInterval(timeoutId);
+        }
+        Game.setTimeoutId(setInterval(function () {
+            if (document.title == msg) {
+                document.title = '...'
+            } else {
+                document.title = msg
+            }
+        }))
+
+        $(document).bind("mousemove keypress", function () {
+            clearInterval(Game.getTimeoutId())
+            document.title = Gui.getDocumentTitle()
+            window.onmousemove = null
+        })
     }
     this.init = function (map) {
         $(window).resize(function () {
