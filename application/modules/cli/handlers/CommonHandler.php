@@ -46,7 +46,7 @@ class Cli_CommonHandler extends WebSocketUriHandler
         new Cli_Model_CommonOpen($dataIn, $user, $this);
     }
 
-    public function childMessageHandler($dataIn, $user, $this)
+    public function childMessageHandler($dataIn, $user)
     {
 
     }

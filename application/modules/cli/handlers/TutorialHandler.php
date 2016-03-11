@@ -7,7 +7,7 @@ class Cli_TutorialHandler extends Cli_CommonHandler
         new Cli_Model_TutorialOpen($dataIn, $user, $this);
     }
 
-    public function childMessageHandler($dataIn, $user, $this)
+    public function childMessageHandler($dataIn, $user)
     {
         $me = Cli_TutorialHandler::getMeFromUser($user);
         switch ($me->getTutorialNumber()) {
