@@ -10,27 +10,45 @@ class Cli_TutorialHandler extends Cli_CommonHandler
     public function childMessageHandler($dataIn, $user)
     {
         $me = Cli_TutorialHandler::getMeFromUser($user);
-        switch ($me->getTutorialNumber()) {
+        switch ($me->getNumber()) {
             case 0:
-                switch ($me->getStep()) {
+                $step = $me->getStep();
+                switch ($step) {
                     case 0:
                         if ($dataIn['type'] == 'production') {
-                            $me->setStep(1, $me->getTutorialNumber(), $me->getId(), $this->_db);
+                            $me->setStep($step + 1, $me->getNumber(), $me->getId(), $this->_db);
                             $this->sendToUser($user, array(
                                 'type' => 'step',
-                                'step' => 1
+                                'step' => $step + 1
                             ));
                         }
                         break;
                     case 1:
+                        if ($dataIn['type'] == 'nextTurn') {
+                            $me->setStep($step + 1, $me->getNumber(), $me->getId(), $this->_db);
+                            $this->sendToUser($user, array(
+                                'type' => 'step',
+                                'step' => $step + 1
+                            ));
+                        }
                         break;
                     case 2:
+                        if ($dataIn['type'] == 'move') {
+                            $me->setStep($step + 1, $me->getNumber(), $me->getId(), $this->_db);
+                            $this->sendToUser($user, array(
+                                'type' => 'step',
+                                'step' => $step + 1
+                            ));
+                        }
                         break;
                     case 3:
+
                         break;
                     case 4:
+
                         break;
                     case 5:
+
                         break;
                 }
                 break;
