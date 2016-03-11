@@ -78,6 +78,30 @@ class Cli_Model_TutorialMe extends Cli_Model_Me
     private $_steps;
     private $_step;
 
+    public function getTutorialNumber()
+    {
+        return $this->_tutorialNumber;
+    }
+
+    public function setTutorialNumber($oldTutorialNumber, $newTutorialNumber, $playerId, $db)
+    {
+        $mTutorial = new Application_Model_Tutorial($playerId, $db);
+        $mTutorial->updateTutorialNumber($oldTutorialNumber, $newTutorialNumber);
+        $this->_tutorialNumber = $newTutorialNumber;
+    }
+
+    public function getStep()
+    {
+        return $this->_step;
+    }
+
+    public function setStep($step, $tutorialNumber, $playerId, $db)
+    {
+        $mTutorial = new Application_Model_Tutorial($playerId, $db);
+        $mTutorial->updateStep($step, $tutorialNumber);
+        $this->_step = $step;
+    }
+
     public function initTutorial(Zend_Db_Adapter_Pdo_Pgsql $db)
     {
         $mTutorial = new Application_Model_Tutorial($this->_id, $db);

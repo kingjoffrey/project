@@ -1,5 +1,9 @@
 "use strict"
 var Tutorial = new function () {
+    var description = ''
+    this.showDescription = function () {
+        Message.simple('Tutorial', description)
+    }
     this.init = function (tutorial) {
         console.log(tutorial)
 
@@ -10,6 +14,7 @@ var Tutorial = new function () {
                 add = '+'
             } else if (i == tutorial.step) {
                 add = '>'
+                description = tutorial.steps[i].description
             } else {
                 add = '-'
             }
