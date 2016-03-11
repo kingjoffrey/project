@@ -10,7 +10,7 @@ var WebSocketGame = new function () {
 
         ws.onmessage = function (e) {
             var r = $.parseJSON(e.data);
-            WebSocketMessage.switch(r)
+            WebSocketTutorialMessage.switch(r)
         }
 
         ws.onclose = function () {

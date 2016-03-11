@@ -11,11 +11,11 @@ class Cli_Model_TutorialMe extends Cli_Model_Me
             ),
             array(
                 'goal' => 'Change turn',
-                'description' => ''
+                'description' => 'When you have done everything (eg.: your armies have no moves left) you are ready to end your turn. Click on wheel in the right-top corner to change turn.'
             ),
             array(
-                'goal' => 'Select army',
-                'description' => ''
+                'goal' => 'Move army',
+                'description' => 'This is your new turn. You should have new unit in your castle. Click on the army to select it. Now when you move your mouse you should see green wheels on the ground. They show the path that will be followed by the army. Move your army by clicking on the ground.'
             ),
             array(
                 'goal' => 'Conquer "Shadow" castle',

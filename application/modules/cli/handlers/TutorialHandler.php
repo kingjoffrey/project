@@ -16,6 +16,10 @@ class Cli_TutorialHandler extends Cli_CommonHandler
                     case 0:
                         if ($dataIn['type'] == 'production') {
                             $me->setStep(1, $me->getTutorialNumber(), $me->getId(), $this->_db);
+                            $this->sendToUser($user, array(
+                                'type' => 'step',
+                                'step' => 1
+                            ));
                         }
                         break;
                     case 1:
