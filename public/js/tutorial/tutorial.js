@@ -18,15 +18,15 @@ var Tutorial = new function () {
                 },
                 3: {
                     'goal': 'Conquer "Shadow" castle',
-                    'description': ''
+                    'description': 'Now when you have army it is time to conquer some castles. Move your army into castle with grey flag.'
                 },
                 4: {
                     'goal': 'Set unit relocation',
-                    'description': ''
+                    'description': 'You can relocate unit production from one castle to another. Go to your first castle, click on relocate production button and after that click on you second castle.'
                 },
                 5: {
                     'goal': 'Conquer enemy castle',
-                    'description': ''
+                    'description': 'There should be only one castle left which doesn\'t belong to you. This is yellow enemy castle. Conquer it!'
                 }
             },
             1: {

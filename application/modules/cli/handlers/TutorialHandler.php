@@ -2,12 +2,12 @@
 
 class Cli_TutorialHandler extends Cli_CommonHandler
 {
-    public function open($dataIn, $user)
+    public function open($dataIn, Devristo\Phpws\Protocol\WebSocketTransportInterface $user)
     {
         new Cli_Model_TutorialOpen($dataIn, $user, $this);
     }
 
-    public function childMessageHandler($dataIn, $user)
+    public function handleTutorial($token, Devristo\Phpws\Protocol\WebSocketTransportInterface $user)
     {
         $me = Cli_TutorialHandler::getMeFromUser($user);
         switch ($me->getNumber()) {
@@ -15,7 +15,7 @@ class Cli_TutorialHandler extends Cli_CommonHandler
                 $step = $me->getStep();
                 switch ($step) {
                     case 0:
-                        if ($dataIn['type'] == 'production') {
+                        if ($token['type'] == 'production') {
                             $me->setStep($step + 1, $me->getNumber(), $me->getId(), $this->_db);
                             $this->sendToUser($user, array(
                                 'type' => 'step',
@@ -24,7 +24,7 @@ class Cli_TutorialHandler extends Cli_CommonHandler
                         }
                         break;
                     case 1:
-                        if ($dataIn['type'] == 'nextTurn') {
+                        if ($token['type'] == 'nextTurn') {
                             $me->setStep($step + 1, $me->getNumber(), $me->getId(), $this->_db);
                             $this->sendToUser($user, array(
                                 'type' => 'step',
@@ -33,7 +33,7 @@ class Cli_TutorialHandler extends Cli_CommonHandler
                         }
                         break;
                     case 2:
-                        if ($dataIn['type'] == 'move') {
+                        if ($token['type'] == 'move') {
                             $me->setStep($step + 1, $me->getNumber(), $me->getId(), $this->_db);
                             $this->sendToUser($user, array(
                                 'type' => 'step',
@@ -42,7 +42,13 @@ class Cli_TutorialHandler extends Cli_CommonHandler
                         }
                         break;
                     case 3:
-
+                        if ($token['type'] == 'move' && isset($token['battle']['victory']) && $token['battle']['victory']) {
+                            $me->setStep($step + 1, $me->getNumber(), $me->getId(), $this->_db);
+                            $this->sendToUser($user, array(
+                                'type' => 'step',
+                                'step' => $step + 1
+                            ));
+                        }
                         break;
                     case 4:
 
@@ -85,6 +91,23 @@ class Cli_TutorialHandler extends Cli_CommonHandler
                 }
                 break;
         }
+    }
+
+    public function sendToChannel(Cli_Model_Game $game, $token, $debug = null)
+    {
+        foreach ($game->getUsers() as $user) {
+            echo 'a';
+        }
+//        if ($user) {
+            $this->handleTutorial($token, $user);
+//        }
+        parent::sendToChannel($game, $token, $debug);
+    }
+
+    public function sendToUser(Devristo\Phpws\Protocol\WebSocketTransportInterface $user, $token, $debug = null)
+    {
+        $this->handleTutorial($token, $user);
+        parent::sendToUser($user, $token, $debug);
     }
 
     /**

@@ -41,14 +41,9 @@ class Cli_CommonHandler extends WebSocketUriHandler
         }
     }
 
-    public function open($dataIn, $user)
+    public function open($dataIn, WebSocketTransportInterface $user)
     {
         new Cli_Model_CommonOpen($dataIn, $user, $this);
-    }
-
-    public function childMessageHandler($dataIn, $user)
-    {
-
     }
 
     public function onMessage(WebSocketTransportInterface $user, WebSocketMessageInterface $msg)
@@ -109,8 +104,6 @@ class Cli_CommonHandler extends WebSocketUriHandler
         if (!$config->turnOffDatabaseLogging) {
             Cli_Model_Database::addTokensIn($this->_db, $gameId, $playerId, $dataIn);
         }
-
-        $this->childMessageHandler($dataIn, $user, $this);
 
         if ($dataIn['type'] == 'computer') {
             new Cli_Model_Computer($user, $this);
