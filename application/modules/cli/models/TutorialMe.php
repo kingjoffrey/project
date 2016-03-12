@@ -10,11 +10,11 @@ class Cli_Model_TutorialMe extends Cli_Model_Me
         return $this->_number;
     }
 
-    public function setNumber($oldTutorialNumber, $newTutorialNumber, $playerId, $db)
+    public function increaseNumber($db)
     {
-        $mTutorial = new Application_Model_Tutorial($playerId, $db);
-        $mTutorial->updateTutorialNumber($oldTutorialNumber, $newTutorialNumber);
-        $this->_number = $newTutorialNumber;
+        $mTutorial = new Application_Model_Tutorial($this->_id, $db);
+        $mTutorial->updateNumber($this->_number, $this->_number + 1);
+        $this->_number++;
     }
 
     public function getStep()
@@ -22,10 +22,16 @@ class Cli_Model_TutorialMe extends Cli_Model_Me
         return $this->_step;
     }
 
-    public function setStep($step, $tutorialNumber, $playerId, $db)
+    public function increaseStep($db)
     {
-        $mTutorial = new Application_Model_Tutorial($playerId, $db);
-        $mTutorial->updateStep($step, $tutorialNumber);
+        $mTutorial = new Application_Model_Tutorial($this->_id, $db);
+        $mTutorial->updateStep($this->_step++, $this->_number);
+    }
+
+    public function setStep($step, $db)
+    {
+        $mTutorial = new Application_Model_Tutorial($this->_id, $db);
+        $mTutorial->updateStep($step, $this->_number);
         $this->_step = $step;
     }
 
@@ -40,7 +46,7 @@ class Cli_Model_TutorialMe extends Cli_Model_Me
         } else {
             $this->_number = 0;
             $this->_step = 0;
-            $mTutorial->init();
+            $mTutorial->add();
         }
     }
 

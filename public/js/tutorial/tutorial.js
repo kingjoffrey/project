@@ -25,8 +25,8 @@ var Tutorial = new function () {
                     'description': 'You can relocate unit production from one castle to another. Go to your first castle, click on relocate production button and after that click on you second castle.'
                 },
                 5: {
-                    'goal': 'Conquer enemy castle',
-                    'description': 'There should be only one castle left which doesn\'t belong to you. This is yellow enemy castle. Conquer it!'
+                    'goal': 'Win',
+                    'description': 'There should be only two castle left which doesn\'t belong to you. To win you have to conquer one of them.'
                 }
             },
             1: {
@@ -96,6 +96,7 @@ var Tutorial = new function () {
         $('#limitBox').html(html)
     }
     this.init = function (t) {
+        console.log(t)
         number = t.number
         this.changeStep(t.step)
     }

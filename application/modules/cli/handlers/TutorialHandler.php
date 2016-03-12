@@ -16,7 +16,7 @@ class Cli_TutorialHandler extends Cli_CommonHandler
                 switch ($step) {
                     case 0:
                         if ($token['type'] == 'production') {
-                            $me->setStep($step + 1, $me->getNumber(), $me->getId(), $this->_db);
+                            $me->increaseStep($this->_db);
                             $this->sendToUser($user, array(
                                 'type' => 'step',
                                 'step' => $step + 1
@@ -25,7 +25,7 @@ class Cli_TutorialHandler extends Cli_CommonHandler
                         break;
                     case 1:
                         if ($token['type'] == 'nextTurn') {
-                            $me->setStep($step + 1, $me->getNumber(), $me->getId(), $this->_db);
+                            $me->increaseStep($this->_db);
                             $this->sendToUser($user, array(
                                 'type' => 'step',
                                 'step' => $step + 1
@@ -34,7 +34,7 @@ class Cli_TutorialHandler extends Cli_CommonHandler
                         break;
                     case 2:
                         if ($token['type'] == 'move') {
-                            $me->setStep($step + 1, $me->getNumber(), $me->getId(), $this->_db);
+                            $me->increaseStep($this->_db);
                             $this->sendToUser($user, array(
                                 'type' => 'step',
                                 'step' => $step + 1
@@ -43,7 +43,7 @@ class Cli_TutorialHandler extends Cli_CommonHandler
                         break;
                     case 3:
                         if ($token['type'] == 'move' && isset($token['battle']['victory']) && $token['battle']['victory']) {
-                            $me->setStep($step + 1, $me->getNumber(), $me->getId(), $this->_db);
+                            $me->increaseStep($this->_db);
                             $this->sendToUser($user, array(
                                 'type' => 'step',
                                 'step' => $step + 1
@@ -51,16 +51,41 @@ class Cli_TutorialHandler extends Cli_CommonHandler
                         }
                         break;
                     case 4:
-
+                        if ($token['type'] == 'production' && $token['relocationToCastleId']) {
+                            $me->increaseStep($this->_db);
+                            $this->sendToUser($user, array(
+                                'type' => 'step',
+                                'step' => $step + 1
+                            ));
+                        }
                         break;
                     case 5:
-
+                        if ($token['type'] == 'end') {
+                            $me->setStep(0, $this->_db);
+                            $this->sendToUser($user, array(
+                                'type' => 'step',
+                                'step' => $step + 1
+                            ));
+                            $me->increaseNumber($this->_db);
+                        }
                         break;
                 }
                 break;
             case 1:
-                switch ($me->getStep()) {
+                $step = $me->getStep();
+                switch ($step) {
                     case 0:
+                        if ($token['type'] == 'startTurn') {
+                            foreach ($token['armies'] as $army) {
+                                if ($army['swim']) {
+                                    $me->increaseStep($this->_db);
+                                    $this->sendToUser($user, array(
+                                        'type' => 'step',
+                                        'step' => $step + 1
+                                    ));
+                                }
+                            }
+                        }
                         break;
                     case 1:
                         break;
@@ -75,7 +100,8 @@ class Cli_TutorialHandler extends Cli_CommonHandler
                 }
                 break;
             case 2:
-                switch ($me->getStep()) {
+                $step = $me->getStep();
+                switch ($step) {
                     case 0:
                         break;
                     case 1:
@@ -99,7 +125,7 @@ class Cli_TutorialHandler extends Cli_CommonHandler
             echo 'a';
         }
 //        if ($user) {
-            $this->handleTutorial($token, $user);
+        $this->handleTutorial($token, $user);
 //        }
         parent::sendToChannel($game, $token, $debug);
     }

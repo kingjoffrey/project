@@ -5,7 +5,7 @@ var Move = new function () {
 
     this.start = function (r, ii) {
         if (notSet(r.path)) {
-            WebSocketSend.setExecuting(0)
+            Execute.setExecuting(0)
             if (CommonMe.colorEquals(r.color)) {
                 Gui.unlock()
                 Message.simple(translations.army, translations.noMoreMoves)

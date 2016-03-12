@@ -25,7 +25,16 @@ class Application_Model_Tutorial extends Coret_Db_Table_Abstract
         return $this->selectRow($select);
     }
 
-    public function init()
+    public function getNumber()
+    {
+        $select = $this->_db->select('tutorialNumber')
+            ->from($this->_name)
+            ->where($this->_db->quoteIdentifier('playerId') . ' = ?', $this->_playerId);
+
+        return $this->selectOne($select);
+    }
+
+    public function add()
     {
         $data = array(
             'playerId' => $this->_playerId
@@ -47,7 +56,7 @@ class Application_Model_Tutorial extends Coret_Db_Table_Abstract
         $this->update($data, $where);
     }
 
-    public function updateTutorialNumber($oldTutorialNumber, $newTutorialNumber)
+    public function updateNumber($oldTutorialNumber, $newTutorialNumber)
     {
         $data = array(
             'tutorialNumber' => $newTutorialNumber
@@ -60,4 +69,3 @@ class Application_Model_Tutorial extends Coret_Db_Table_Abstract
         $this->update($data, $where);
     }
 }
-
