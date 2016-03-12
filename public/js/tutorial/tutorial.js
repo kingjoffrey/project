@@ -39,22 +39,18 @@ var Tutorial = new function () {
                     'description': ''
                 },
                 2: {
-                    'goal': 'Swim to shore near ruins',
+                    'goal': 'Swim to shore near ruins and unload hero on shore',
                     'description': ''
                 },
                 3: {
-                    'goal': 'Unload hero on shore',
-                    'description': ''
-                },
-                4: {
                     'goal': 'Take hero to ruins',
                     'description': ''
                 },
-                5: {
+                4: {
                     'goal': 'Search ruins',
                     'description': ''
                 },
-                6: {
+                5: {
                     'goal': 'Conquer all castles',
                     'description': ''
                 }

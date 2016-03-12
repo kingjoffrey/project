@@ -24,8 +24,9 @@ class Cli_Model_TutorialMe extends Cli_Model_Me
 
     public function increaseStep($db)
     {
+        $this->_step++;
         $mTutorial = new Application_Model_Tutorial($this->_id, $db);
-        $mTutorial->updateStep($this->_step++, $this->_number);
+        $mTutorial->updateStep($this->_step, $this->_number);
     }
 
     public function setStep($step, $db)
@@ -39,15 +40,8 @@ class Cli_Model_TutorialMe extends Cli_Model_Me
     {
         $mTutorial = new Application_Model_Tutorial($this->_id, $db);
         $tutorial = $mTutorial->get();
-
-        if (isset($tutorial['tutorialId'])) {
-            $this->_number = $tutorial['tutorialNumber'];
-            $this->_step = $tutorial['step'];
-        } else {
-            $this->_number = 0;
-            $this->_step = 0;
-            $mTutorial->add();
-        }
+        $this->_number = $tutorial['tutorialNumber'];
+        $this->_step = $tutorial['step'];
     }
 
     public function toArray()

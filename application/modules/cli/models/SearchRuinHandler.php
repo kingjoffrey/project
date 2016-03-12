@@ -3,7 +3,7 @@
 class Cli_Model_SearchRuinHandler
 {
 
-    public function __construct($armyId, Devristo\Phpws\Protocol\WebSocketTransportInterface $user, $handler)
+    public function __construct($armyId, Devristo\Phpws\Protocol\WebSocketTransportInterface $user, $handler, $giveMeDragons = false)
     {
         if (!Zend_Validate::is($armyId, 'Digits')) {
             $handler->sendError($user, 'Brak armii!');
@@ -39,6 +39,10 @@ class Cli_Model_SearchRuinHandler
             return;
         }
 
-        $ruin->search($game, $army, $heroId, $playerId, $handler);
+        if ($giveMeDragons) {
+            $ruin->giveMeDragons($game, $army, $heroId, $playerId, $handler);
+        } else {
+            $ruin->search($game, $army, $heroId, $playerId, $handler);
+        }
     }
 }

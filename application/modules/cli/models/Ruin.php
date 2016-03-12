@@ -201,4 +201,33 @@ class Cli_Model_Ruin extends Cli_Model_Entity
 
         $handler->sendToChannel($game, $token);
     }
+
+    public function giveMeDragons(Cli_Model_Game $game, Cli_Model_Army $army, $heroId, $playerId, $handler)
+    {
+        $numberOfUnits = 3;
+        $gameId = $game->getId();
+        $color = $game->getPlayerColor($playerId);
+        $db = $handler->getDb();
+
+        for ($i = 0; $i < $numberOfUnits; $i++) {
+            $army->createSoldier($gameId, $playerId, $game->getUnits()->getSpecialUnitId(4), $db);
+        }
+
+        $army->getHeroes()->getHero($heroId)->zeroMovesLeft($gameId, $db);
+        $this->setEmpty($gameId, $db);
+        $found = array('allies', $numberOfUnits);
+
+        $token = array(
+            'type' => 'ruin',
+            'army' => $army->toArray(),
+            'ruin' => array(
+                'ruinId' => $this->_id,
+                'empty' => $this->_empty
+            ),
+            'find' => $found,
+            'color' => $color
+        );
+
+        $handler->sendToChannel($game, $token);
+    }
 }

@@ -46,6 +46,11 @@ class Cli_CommonHandler extends WebSocketUriHandler
         new Cli_Model_CommonOpen($dataIn, $user, $this);
     }
 
+    public function ruin($armyId, WebSocketTransportInterface $user)
+    {
+        new Cli_Model_SearchRuinHandler($armyId, $user, $this);
+    }
+
     public function onMessage(WebSocketTransportInterface $user, WebSocketMessageInterface $msg)
     {
         $config = Zend_Registry::get('config');
@@ -164,7 +169,7 @@ class Cli_CommonHandler extends WebSocketUriHandler
                 break;
 
             case 'ruin':
-                new Cli_Model_SearchRuinHandler($dataIn['armyId'], $user, $this);
+                $this->ruin($dataIn['armyId'], $user);
                 break;
 
             case 'nextTurn':

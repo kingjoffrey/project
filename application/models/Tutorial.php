@@ -27,8 +27,8 @@ class Application_Model_Tutorial extends Coret_Db_Table_Abstract
 
     public function getNumber()
     {
-        $select = $this->_db->select('tutorialNumber')
-            ->from($this->_name)
+        $select = $this->_db->select()
+            ->from($this->_name, 'tutorialNumber')
             ->where($this->_db->quoteIdentifier('playerId') . ' = ?', $this->_playerId);
 
         return $this->selectOne($select);

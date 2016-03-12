@@ -12,7 +12,9 @@ class TutorialController extends Coret_Controller_Authorized
         $gameId = $mGame->getMyTutorial($playerId);
         if (!$gameId) {
             $mTutorial = new Application_Model_Tutorial($playerId);
-            switch ($mTutorial->getNumber()) {
+            $number = $mTutorial->getNumber();
+
+            switch ($number) {
                 case 0:
                     $mapId = 296;
                     break;
@@ -24,6 +26,7 @@ class TutorialController extends Coret_Controller_Authorized
                     break;
                 default:
                     $mapId = 296;
+                    $mTutorial->add();
             }
             $gameId = $mGame->createGame(array(
                 'numberOfPlayers' => 2,
