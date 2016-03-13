@@ -30,14 +30,26 @@ class Cli_Model_Garrison
             }
         }
 
+        $moreThenOneArmyAtCastleStartPosition = false;
         foreach ($fields->getField($x, $y)->getArmies() as $fieldArmyId => $fieldArmyColor) {
             if ($fieldArmyColor == $color) {
+                if ($moreThenOneArmyAtCastleStartPosition) {
+                    $path = new Cli_Model_Path(array(0 => array(
+                        'x' => $x,
+                        'y' => $y,
+                        't' => 'c')
+                    ), $army, $game->getTerrain());
+                    $army->move($game, $path, $handler);
+                    break;
+                }
 //                echo 'GGG ';
                 $army = $armies->getArmy($fieldArmyId);
                 $army->resetOldPath();
                 $armyId = $army->getId();
+                $moreThenOneArmyAtCastleStartPosition = true;
             }
         }
+
 
         $countGarrisonUnits = $army->getWalkingSoldiers()->count();
         $heroes = $army->getHeroes();
