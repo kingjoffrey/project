@@ -51,7 +51,17 @@ var WebSocketMessage = new function () {
                 Fields.get(r.x, r.y).setType('g')
                 var children = Scene.get().children
                 for (var i in children) {
-                    if (children[i].position.x - 0.5 == r.x && children[i].position.z - 0.5 == r.y) {
+                    if (children[i].position.x - 1 == 2 * r.x && children[i].position.z - 1 == 2 * r.y) {
+                        Scene.remove(children[i])
+                        break
+                    }
+                }
+                break
+            case 'water':
+                Fields.get(r.x, r.y).setType('w')
+                var children = Scene.get().children
+                for (var i in children) {
+                    if (children[i].position.x - 1 == 2 * r.x && children[i].position.z - 1 == 2 * r.y) {
                         Scene.remove(children[i])
                         break
                     }

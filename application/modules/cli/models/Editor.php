@@ -241,7 +241,7 @@ class Cli_Model_Editor
             case 'r':
                 return $this->grass($dataIn['mapId'], $dataIn['x'], $dataIn['y'], $field, $db);
             case 'b':
-                return $this->grass($dataIn['mapId'], $dataIn['x'], $dataIn['y'], $field, $db);
+                return $this->water($dataIn['mapId'], $dataIn['x'], $dataIn['y'], $field, $db);
             case 'g':
                 if ($castleId = $field->getCastleId()) {
                     $mMapCastles = new Application_Model_MapCastles($dataIn['mapId'], $db);
@@ -289,6 +289,19 @@ class Cli_Model_Editor
         $field->setType('g');
         return array(
             'type' => 'grass',
+            'x' => $x,
+            'y' => $y
+        );
+
+    }
+
+    private function water($mapId, $x, $y, Cli_Model_Field $field, Zend_Db_Adapter_Pdo_Pgsql $db)
+    {
+        $mMapFields = new Application_Model_MapFields($mapId, $db);
+        $mMapFields->edit($x, $y, 'w');
+        $field->setType('w');
+        return array(
+            'type' => 'water',
             'x' => $x,
             'y' => $y
         );
