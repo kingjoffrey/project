@@ -83,12 +83,12 @@ class Cli_Model_EditorCastle extends Cli_Model_Castle
         return array(
             'x' => $this->_x,
             'y' => $this->_y,
-            'defense' => $this->_defense,
+            'defense' => intval($this->_defense),
             'name' => $this->_name,
-            'income' => $this->_income,
-            'capital' => $this->_capital,
+            'income' => intval($this->_income),
+            'capital' => intval($this->_capital),
             'mapPlayerId' => $mapPlayerId,
-            'enclaveNumber' => $this->_enclaveNumber,
+            'enclaveNumber' => intval($this->_enclaveNumber),
         );
     }
 

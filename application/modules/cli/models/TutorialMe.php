@@ -17,6 +17,13 @@ class Cli_Model_TutorialMe extends Cli_Model_Me
         $this->_number++;
     }
 
+    public function resetNumber($db)
+    {
+        $mTutorial = new Application_Model_Tutorial($this->_id, $db);
+        $mTutorial->updateNumber($this->_number, 0);
+        $this->_number = 0;
+    }
+
     public function getStep()
     {
         return $this->_step;

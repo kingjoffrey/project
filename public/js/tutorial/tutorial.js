@@ -32,41 +32,41 @@ var Tutorial = new function () {
             1: {
                 0: {
                     'goal': 'Make ship',
-                    'description': ''
+                    'description': 'Enter into castle management and star ship production. After setting ship production change turn 6 times until ship will be produced.'
                 },
                 1: {
                     'goal': 'Load hero on ship',
-                    'description': ''
+                    'description': 'Select your hero and move him into ship position.'
                 },
                 2: {
                     'goal': 'Swim to shore near ruins and unload hero on shore',
-                    'description': ''
+                    'description': 'Select ship and move it toward ruins. Yellow thing in right bottom corner.'
                 },
                 3: {
                     'goal': 'Take hero to ruins',
-                    'description': ''
+                    'description': 'Unload hero from ship and step onto ruins position.'
                 },
                 4: {
                     'goal': 'Search ruins',
-                    'description': ''
+                    'description': 'When you hero is standing in the same position as ruins you can order him to search it. You should get 3 dragons which can fly and take you hero over water.'
                 },
                 5: {
-                    'goal': 'Conquer all castles',
-                    'description': ''
+                    'goal': 'Win',
+                    'description': 'There is 5 castles on the map. To win you have to conquer 3 of them.'
                 }
             },
             2: {
                 0: {
-                    'goal': 'Improve castle defense to 4',
-                    'description': 'Your castle does not provide sufficient protection. You have to Improve castle defense to maximum.'
+                    'goal': 'Take over all towers',
+                    'description': 'To increase your gold income you need to take control over towers. There is 8 towers on this map and when you will control all of them it will give you 40 gold every turn.'
                 },
                 1: {
-                    'goal': 'Take over all towers',
-                    'description': ''
+                    'goal': 'Improve castle defense to 4',
+                    'description': 'Your castle does not provide sufficient protection. You have to improve castle defense to maximum.'
                 },
                 2: {
                     'goal': 'Win',
-                    'description': ''
+                    'description': 'When your castle is secure and you have sufficient income you can build your army and attack enemy castle. Don\'t forget to leave part of you troops as garrison of the castle.'
                 }
             }
         }

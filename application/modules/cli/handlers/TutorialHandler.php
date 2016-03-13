@@ -159,16 +159,35 @@ class Cli_TutorialHandler extends Cli_CommonHandler
                 $step = $me->getStep();
                 switch ($step) {
                     case 0:
+                        if ($token['type'] == 'move') {
+                            $game = Cli_CommonHandler::getGameFromUser($user);
+                            if ($game->getPlayers()->getPlayer($me->getColor())->getTowers()->count() == 8) {
+                                $me->increaseStep($this->_db);
+                                $this->sendToUser($user, array(
+                                    'type' => 'step',
+                                    'step' => $step + 1
+                                ));
+                            }
+                        }
                         break;
                     case 1:
+                        if ($token['type'] == 'defense' && $token['defense'] == 4) {
+                            $me->increaseStep($this->_db);
+                            $this->sendToUser($user, array(
+                                'type' => 'step',
+                                'step' => $step + 1
+                            ));
+                        }
                         break;
                     case 2:
-                        break;
-                    case 3:
-                        break;
-                    case 4:
-                        break;
-                    case 5:
+                        if ($token['type'] == 'end') {
+                            $me->setStep(0, $this->_db);
+                            $this->sendToUser($user, array(
+                                'type' => 'step',
+                                'step' => $step + 1
+                            ));
+                            $me->resetNumber($this->_db);
+                        }
                         break;
                 }
                 break;
@@ -178,11 +197,8 @@ class Cli_TutorialHandler extends Cli_CommonHandler
     public function sendToChannel(Cli_Model_Game $game, $token, $debug = null)
     {
         foreach ($game->getUsers() as $user) {
-            echo 'a';
         }
-//        if ($user) {
         $this->handleTutorial($token, $user);
-//        }
         parent::sendToChannel($game, $token, $debug);
     }
 
