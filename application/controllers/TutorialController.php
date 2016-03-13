@@ -22,7 +22,7 @@ class TutorialController extends Coret_Controller_Authorized
                     $mapId = 295;
                     break;
                 case 2:
-                    $mapId = 294;
+                    $mapId = 298;
                     break;
                 default:
                     $mapId = 296;

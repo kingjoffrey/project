@@ -87,9 +87,6 @@ var Move = new function () {
     }
     this.end = function (r, ii) {
         army.update(r.army)
-        //if (player.isComputer() && !Gui.getShow()) {
-        //    army.setPosition(army.getX(), army.getY())
-        //}
         //Zoom.getLens().setcenter(army.getX(), army.getY())
 
         if (r.battle) {
