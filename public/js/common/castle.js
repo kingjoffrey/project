@@ -27,7 +27,7 @@ var CommonCastle = function (castle, bgC, miniMapColor, textColor) {
         return castle.name
     }
     this.getIncome = function () {
-        return castle.income
+        return castle.income * castle.defense
     }
     this.getDefense = function () {
         return castle.defense

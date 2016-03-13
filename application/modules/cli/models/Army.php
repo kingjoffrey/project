@@ -111,6 +111,8 @@ class Cli_Model_Army
             return;
         }
 
+        $end = false;
+
         $db = $handler->getDb();
 
         $players = $game->getPlayers();
@@ -127,7 +129,7 @@ class Cli_Model_Army
             if ($battleResult->getVictory()) {
                 $this->updateArmyPosition($game, $path, $db);
                 if ($battleResult->getCastleId() && $game->playerHasMoreThanFiftyPercentOfCastles($this->_color)) {
-                    new Cli_Model_SaveResults($game, $handler);
+                    $end = true;
                 }
             } else {
                 $game->getFields()->getField($this->_x, $this->_y)->removeArmy($this->_id);
@@ -149,6 +151,10 @@ class Cli_Model_Army
         );
 
         $handler->sendToChannel($game, $token);
+
+        if ($end) {
+            new Cli_Model_SaveResults($game, $handler);
+        }
     }
 
     public function getMovementType()

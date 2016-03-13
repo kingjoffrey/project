@@ -72,7 +72,9 @@ var Tutorial = new function () {
         }
 
     this.showDescription = function () {
-        Message.simple('Tutorial', steps[number][step].description)
+        if (isSet(steps[number]) && isSet(steps[number][step])) {
+            Message.simple('Tutorial', steps[number][step].description)
+        }
     }
     this.changeStep = function (s) {
         step = s
