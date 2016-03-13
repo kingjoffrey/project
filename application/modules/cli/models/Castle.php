@@ -60,7 +60,7 @@ class Cli_Model_Castle extends Cli_Model_Entity
             'productionId' => $this->_productionId,
             'productionTurn' => $this->_productionTurn,
             'relocationCastleId' => $this->_relocationCastleId,
-            'defense' => $this->getDefenseModifier(),
+            'defense' => $this->getDefense(),
             'name' => $this->_name,
             'income' => $this->_income,
             'capital' => $this->_capital,
@@ -102,7 +102,7 @@ class Cli_Model_Castle extends Cli_Model_Entity
 
     public function getIncome()
     {
-        return $this->_income;
+        return $this->_income * $this->getDefense();
     }
 
     public function resetProductionTurn($gameId, Zend_Db_Adapter_Pdo_Pgsql $db)
@@ -156,7 +156,7 @@ class Cli_Model_Castle extends Cli_Model_Entity
         return $unitId;
     }
 
-    public function getDefenseModifier()
+    public function getDefense()
     {
         return $this->_defense + $this->_defenseMod;
     }
@@ -168,7 +168,7 @@ class Cli_Model_Castle extends Cli_Model_Entity
 
     public function decreaseDefenceMod($playerId, $gameId, $db)
     {
-        if ($this->getDefenseModifier() > 1) {
+        if ($this->getDefense() > 1) {
             $this->_defenseMod--;
             $this->saveDefenceMod($playerId, $gameId, $db);
         }
@@ -176,7 +176,7 @@ class Cli_Model_Castle extends Cli_Model_Entity
 
     public function increaseDefenceMod($playerId, $gameId, $db)
     {
-        if ($this->getDefenseModifier() < 4) {
+        if ($this->getDefense() < 4) {
             $this->_defenseMod++;
             $this->saveDefenceMod($playerId, $gameId, $db);
         }

@@ -32,7 +32,7 @@ class Cli_Model_CastleRaze
         }
 
         $castles = $player->getCastles();
-        $defense = $castles->getCastle($castleId)->getDefenseModifier();
+        $defense = $castles->getCastle($castleId)->getDefense();
 
         $db = $handler->getDb();
         $castles->razeCastle($castleId, $playerId, $game, $db);

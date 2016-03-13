@@ -28,7 +28,7 @@ class Cli_Model_CastleBuildDefense
         }
 
         $costs = 0;
-        for ($i = 1; $i <= $castle->getDefenseModifier(); $i++) {
+        for ($i = 1; $i <= $castle->getDefense(); $i++) {
             $costs += $i * 100;
         }
         if ($player->getGold() < $costs) {
@@ -45,7 +45,7 @@ class Cli_Model_CastleBuildDefense
             'type' => 'defense',
             'color' => $color,
             'gold' => $player->getGold(),
-            'defense' => $castle->getDefenseModifier(),
+            'defense' => $castle->getDefense(),
             'castleId' => $castleId
         );
 
