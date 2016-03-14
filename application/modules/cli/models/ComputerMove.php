@@ -3,6 +3,7 @@
 class Cli_Model_ComputerMove extends Cli_Model_ComputerMethods
 {
     private $_searchRuin = false;
+    private $_inCastle = false;
 
     public function __construct(Cli_Model_Army $army, Devristo\Phpws\Protocol\WebSocketTransportInterface $user, $handler)
     {
@@ -33,6 +34,7 @@ class Cli_Model_ComputerMove extends Cli_Model_ComputerMethods
     {
         $this->_l->logMethodName();
         $this->_l->log('W ZAMKU');
+        $this->_inCastle = true;
         $myCastle = $this->_player->getCastles()->getCastle($castleId);
         if ($this->_game->getNumberOfGarrisonUnits()) {
             $garrison = new Cli_Model_Garrison($myCastle->getX(), $myCastle->getY(), $this->_color, $this->_player->getArmies(), $this->_game, $this->_handler);
@@ -57,6 +59,7 @@ class Cli_Model_ComputerMove extends Cli_Model_ComputerMethods
     {
         $this->_l->logMethodName();
         $this->_l->log('POZA ZAMKIEM');
+        $this->_inCastle = false;
         return $this->ruinBlock();
     }
 
@@ -99,7 +102,7 @@ class Cli_Model_ComputerMove extends Cli_Model_ComputerMethods
             $path = $this->getPathToMyArmyInRange();
             if ($path && $path->targetWithin()) {
                 $this->_l->log('JEST MOJA ARMIA W ZASIĘGU - DOŁĄCZ!');
-                $this->_army->setFortified(1);
+                $this->_army->setFortified(true);
                 $this->move($path);
                 return;
             }
@@ -149,6 +152,11 @@ class Cli_Model_ComputerMove extends Cli_Model_ComputerMethods
             return;
         } else {
             $this->_l->log('WRÓG JEST SILNIEJSZY');
+            if($this->_inCastle){
+                $this->_army->setFortified(true);
+                $this->next();
+                return;
+            }
             $path = $this->getPathToMyArmyInRange();
             if ($path) {
                 if ($path->targetWithin()) {

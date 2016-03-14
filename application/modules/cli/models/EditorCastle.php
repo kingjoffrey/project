@@ -58,7 +58,7 @@ class Cli_Model_EditorCastle extends Cli_Model_Castle
         foreach ($data['production'] as $i => $slot) {
             if (isset($this->_production[$i])) {
                 if ($slot['unitId']) {
-                    if ($this->_production[$i]['unitId'] == $slot['unitId']) {
+                    if ($this->_production[$i]['unitId'] == $slot['unitId'] && $this->_production[$i]['time'] == $slot['time']) {
                         continue;
                     }
                     $mMapCastleProduction->editCastleProduction($this->_id, $this->_production[$i]['unitId'], $slot);

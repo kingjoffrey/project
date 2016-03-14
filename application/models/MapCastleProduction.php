@@ -47,18 +47,18 @@ class Application_Model_MapCastleProduction extends Coret_Db_Table_Abstract
             'unitId' => $slot['unitId'],
             'time' => $slot['time'],
         );
-        $where = $this->_db->quoteInto(
-            $this->_db->quoteIdentifier('castleId') . ' = ?', $castleId,
-            $this->_db->quoteIdentifier('unitId') . ' = ?', $oldUnitId
+        $where = array(
+            $this->_db->quoteInto($this->_db->quoteIdentifier('castleId') . ' = ?', $castleId),
+            $this->_db->quoteInto($this->_db->quoteIdentifier('unitId') . ' = ?', $oldUnitId)
         );
         return $this->update($data, $where);
     }
 
     public function removeCastleProduction($castleId, $unitId)
     {
-        $where = $this->_db->quoteInto(
-            $this->_db->quoteIdentifier('castleId') . ' = ?', $castleId,
-            $this->_db->quoteIdentifier('unitId') . ' = ?', $unitId
+        $where = array(
+            $this->_db->quoteInto($this->_db->quoteIdentifier('castleId') . ' = ?', $castleId),
+            $this->_db->quoteInto($this->_db->quoteIdentifier('unitId') . ' = ?', $unitId)
         );
         return $this->delete($where);
     }

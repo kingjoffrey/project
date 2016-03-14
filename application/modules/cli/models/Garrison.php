@@ -118,6 +118,8 @@ class Cli_Model_Garrison
             }
         }
 
+        $armies->getArmy($armyId)->setFortified(true);
+
         if ($this->_newArmyId) {
 //            echo 'ooo ';
             $token = array(
