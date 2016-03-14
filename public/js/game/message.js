@@ -1,20 +1,19 @@
 var Message = new function () {
-    var max = false,
-        maxHeight,
+    var maxHeight,
         maxWidth
 
-    this.remove = function (id) {
-        if (isSet(id)) {
-            $('#' + id).fadeOut(200, function () {
-                $('#' + id).remove()
-            })
+    this.simple = function (title, message) {
+        if ($('.message').length) {
+            MessageQueue.addQueue({title: title, message: message})
         } else {
-            if (!Turn.isMy() && $('.message .showCastle').length) {
-                $('.message:not(:has(.showCastle))').remove()
-            } else {
-                $('.message').remove()
-            }
+            var id = this.show(title, $('<div>').html(message).addClass('simple'))
+            this.close(id)
+            return id
         }
+    }
+    this.error = function (message) {
+        Sound.play('error')
+        this.simple(translations.error, $('<div>').html(message).addClass('error'));
     }
     this.show = function (title, txt) {
         this.remove()
@@ -29,6 +28,19 @@ var Message = new function () {
         )
         this.adjust(id)
         return id
+    }
+    this.remove = function (id) {
+        if (isSet(id)) {
+            $('#' + id).fadeOut(200, function () {
+                $('#' + id).remove()
+            })
+        } else {
+            if (!Turn.isMy() && $('.message .showCastle').length) {
+                $('.message:not(:has(.showCastle))').remove()
+            } else {
+                $('.message').remove()
+            }
+        }
     }
     this.adjust = function (id) {
         maxHeight = Scene.getHeight() - 140
@@ -126,14 +138,5 @@ var Message = new function () {
                     Message.remove(id)
                 })
         )
-    }
-    this.simple = function (title, message) {
-        var id = this.show(title, $('<div>').html(message).addClass('simple'))
-        this.close(id)
-        return id
-    }
-    this.error = function (message) {
-        Sound.play('error')
-        this.simple(translations.error, $('<div>').html(message).addClass('error'));
     }
 }
