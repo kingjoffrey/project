@@ -2,30 +2,32 @@ var Message = new function () {
     var maxHeight,
         maxWidth
 
+    this.info = function (title, message) {
+        var id = this.show(title, $('<div>').html(message).addClass('simple'), 1)
+        this.close(id)
+    }
     this.simple = function (title, message) {
-        if ($('.message').length) {
-            MessageQueue.addQueue({title: title, message: message})
-        } else {
-            var id = this.show(title, $('<div>').html(message).addClass('simple'))
-            this.close(id)
-            return id
-        }
+        var id = this.show(title, $('<div>').html(message).addClass('simple'))
+        this.close(id)
+        return id
     }
     this.error = function (message) {
         Sound.play('error')
         this.simple(translations.error, $('<div>').html(message).addClass('error'));
     }
-    this.show = function (title, txt) {
+    this.show = function (title, txt, info) {
         this.remove()
-        var id = makeId(10)
-        $('#goldBox').after(
-            $('<div>')
+        var id = makeId(10),
+            div = $('<div>')
                 .addClass('message box')
                 .attr('id', id)
                 .append($('<div>').append($('<h3>').html(title)).addClass('msgTitle'))
                 .append($(txt).addClass('overflow'))
                 .fadeIn(200)
-        )
+        if (isSet(info)) {
+            div.addClass('info')
+        }
+        $('#goldBox').after(div)
         this.adjust(id)
         return id
     }
@@ -38,7 +40,7 @@ var Message = new function () {
             if (!Turn.isMy() && $('.message .showCastle').length) {
                 $('.message:not(:has(.showCastle))').remove()
             } else {
-                $('.message').remove()
+                $('.message:not(.info)').remove()
             }
         }
     }
@@ -57,6 +59,13 @@ var Message = new function () {
         if ($('#' + id + ' .showCastle').length) {
             $('#' + id).css({
                 'z-index': $('#' + id).css('z-index') + 1,
+                left: Scene.getWidth() / 2 - $('#' + id).outerWidth() / 2 + 'px',
+                'max-width': maxWidth + 'px',
+                'max-height': maxHeight + 'px'
+            })
+            $('#' + id + ' .msgTitle').css({width: $('#' + id).width() - 50})
+        } else if ($('#' + id).length) {
+            $('#' + id).css({
                 left: Scene.getWidth() / 2 - $('#' + id).outerWidth() / 2 + 'px',
                 'max-width': maxWidth + 'px',
                 'max-height': maxHeight + 'px'
@@ -100,7 +109,7 @@ var Message = new function () {
                     if (isSet(func)) {
                         func();
                     }
-                    Message.remove(id);
+                    Message.remove(id)
                 })
         );
 

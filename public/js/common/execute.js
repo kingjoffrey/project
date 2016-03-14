@@ -5,7 +5,7 @@ var Execute = new function () {
         i = 0,
         execute = function (r) {
             executing = 1
-            console.log(r)
+            //console.log(r)
             switch (r.type) {
                 case 'move':
                     Move.start(r, i)

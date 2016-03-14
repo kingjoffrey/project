@@ -57,14 +57,18 @@ var Tutorial = new function () {
             },
             2: {
                 0: {
-                    'goal': 'Take over all towers',
-                    'description': 'To increase your gold income you need to take control over towers. There is 8 towers on this map and when you will control all of them it will give you 40 gold every turn.'
+                    'goal': 'Improve castle defense to 2',
+                    'description': 'Your castle does not provide sufficient protection. You have to improve castle defense. Select army which is inside castle (if there is no army inside castle produce one or move existing one) and order it to build defense.'
                 },
                 1: {
+                    'goal': 'Take over all towers',
+                    'description': 'Every unit take some amount of gold from your treasure so to build strong army you will need a lot of gold. You can get gold from castles and towers. To increase your gold income you need to take control over towers. There is 8 towers on this map and when you will control all of them it will give you 40 gold every turn.'
+                },
+                2: {
                     'goal': 'Improve castle defense to 4',
                     'description': 'Your castle does not provide sufficient protection. You have to improve castle defense to maximum.'
                 },
-                2: {
+                3: {
                     'goal': 'Win',
                     'description': 'When your castle is secure and you have sufficient income you can build your army and attack enemy castle. Don\'t forget to leave part of you troops as garrison of the castle.'
                 }
@@ -73,7 +77,7 @@ var Tutorial = new function () {
 
     this.showDescription = function () {
         if (isSet(steps[number]) && isSet(steps[number][step])) {
-            Message.simple('Tutorial', steps[number][step].description)
+            Message.info('Tutorial', steps[number][step].description)
         }
     }
     this.changeStep = function (s) {

@@ -143,7 +143,6 @@ class TutorialController extends Coret_Controller_Authorized
         $this->view->headScript()->appendFile('/js/tutorial/tutorial.js?v=' . $version);
         $this->view->headScript()->appendFile('/js/tutorial/websocket.js?v=' . $version);
         $this->view->headScript()->appendFile('/js/tutorial/websocketMessage.js?v=' . $version);
-        $this->view->headScript()->appendFile('/js/tutorial/me.js?v=' . $version);
 
         $this->view->headScript()->appendFile('/js/game/picker.js?v=' . $version);
         $this->view->headScript()->appendFile('/js/game/unit.js?v=' . $version);
@@ -156,7 +155,6 @@ class TutorialController extends Coret_Controller_Authorized
         $this->view->headScript()->appendFile('/js/game/army.js?v=' . $version);
 
         $this->view->headScript()->appendFile('/js/game/message.js?v=' . $version);
-        $this->view->headScript()->appendFile('/js/game/messageQueue.js?v=' . $version);
         $this->view->headScript()->appendFile('/js/game/astar.js?v=' . $version);
         $this->view->headScript()->appendFile('/js/game/chat.js?v=' . $version);
         $this->view->headScript()->appendFile('/js/game/gui.js?v=' . $version);

@@ -394,13 +394,19 @@ var CommonMe = new function () {
         this.selectArmy(armyId, 0)
     }
     this.findFirst = function () {
-        if (this.getArmies().count()) {
-            this.findNext()
+        if (CommonMe.getArmies().count()) {
+            CommonMe.findNext()
         }
     }
     this.turnOn = function () {
         this.resetSkippedArmies()
-        Me.turnOn()
+        if (Turn.isMy() && Turn.getNumber() == 1 && !this.getCastle(this.getFirsCastleId()).getProductionId()) {
+            CastleWindow.show(this.getCastle(this.getFirsCastleId()))
+        } else {
+            //Players.showFirst(color)
+            var id = Message.show(translations.yourTurn, translations.thisIsYourTurnNow)
+            Message.ok(id, CommonMe.findFirst)
+        }
         Gui.unlock()
         Gui.titleBlink(translations.yourTurn)
         this.handleHeroButtons()
