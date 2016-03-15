@@ -69,6 +69,10 @@ var Tutorial = new function () {
                     'description': 'Your castle does not provide sufficient protection. You have to improve castle defense to maximum.'
                 },
                 3: {
+                    'goal': 'Create one flying unit',
+                    'description': 'Flying units added to army boosts up attack of every unit in the army by one. It doesn\'t matter how many flying units are in the army because army attack can only be increased by one.'
+                },
+                4: {
                     'goal': 'Win',
                     'description': 'When your castle is secure and you have sufficient income you can build your army and attack enemy castle. Don\'t forget to leave part of you troops as garrison of the castle.'
                 }

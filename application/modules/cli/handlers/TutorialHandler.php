@@ -191,6 +191,20 @@ class Cli_TutorialHandler extends Cli_CommonHandler
                         }
                         break;
                     case 3:
+                        if ($token['type'] == 'startTurn') {
+                            foreach ($token['armies'] as $army) {
+                                if ($army['fly']) {
+                                    $me->increaseStep($this->_db);
+                                    $this->sendToUser($user, array(
+                                        'type' => 'step',
+                                        'step' => $step + 1
+                                    ));
+                                    break;
+                                }
+                            }
+                        }
+                        break;
+                    case 4:
                         if ($token['type'] == 'end') {
                             $me->setStep(0, $this->_db);
                             $this->sendToUser($user, array(

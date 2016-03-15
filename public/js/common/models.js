@@ -250,7 +250,7 @@ var Models = new function () {
             material1 = new THREE.MeshBasicMaterial({
                 color: 'gold',
                 transparent: true,
-                opacity: 0.7,
+                opacity: 0.5,
                 side: THREE.DoubleSide
             }),
             material2 = new THREE.MeshBasicMaterial({
@@ -265,13 +265,13 @@ var Models = new function () {
 
         switch (Fields.get(x, y).getType()) {
             case 'm':
-                var height = 1.5
+                var height = Ground.getMountainLevel() + 0.01
                 break
             case 'h':
-                var height = 0.5
+                var height = Ground.getHillLevel() + 0.01
                 break
             default :
-                var height = 0.1
+                var height = 0.01
                 break
         }
         var cylinder = new THREE.Mesh(geometry1, material1)
@@ -283,6 +283,9 @@ var Models = new function () {
         var circle = new THREE.Mesh(geometry2, material2)
         circle.position.set(x * 2 + 1, height, y * 2 + 1)
         circle.rotation.x = Math.PI / 2
+        if (shadows) {
+            circle.castShadow = true
+        }
         Scene.add(circle)
         armyCircles.push(circle)
     }
