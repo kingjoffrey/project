@@ -58,14 +58,14 @@ var WebSocketSend = new function () {
 
         ws.send(JSON.stringify(token))
     }
-    this.nop = function (mapId) {
+    this.map = function (mapId) {
         if (closed) {
             console.log(translations.sorryServerIsDisconnected)
             return;
         }
 
         var token = {
-            type: 'nop',
+            type: 'map',
             mapId: mapId
         }
 

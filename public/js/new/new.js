@@ -2,10 +2,66 @@
 var New = new function () {
     var table,
         empty,
-        changeMap = function () {
-            $('#map').attr('src', '/img/maps/' + $('#mapId').children(':selected').attr('value') + '.png');
-        }
+        setPixel = function (ctx, x, y, color) {
+            ctx.fillStyle = color;
+            ctx.fillRect(x, y, 1, 1);
+        },
+        maxWidth = 500
 
+    this.changeMap = function (fields) {
+        var x, y,
+            tmpCanvas = document.createElement('canvas'),
+            ctx = tmpCanvas.getContext('2d'),
+            canvas = document.createElement('canvas'),
+            context = canvas.getContext('2d')
+
+        for (y in fields) {
+            for (x in fields[y]) {
+                switch (fields[y][x]) {
+                    case 'g':
+                        setPixel(ctx, x, y, '#00aa00')
+                        break
+                    case 'f':
+                        setPixel(ctx, x, y, '#009900')
+                        break
+                    case 'w':
+                        setPixel(ctx, x, y, '#3333c1')
+                        break
+                    case 'h':
+                        setPixel(ctx, x, y, '#555500')
+                        break
+                    case 'm':
+                        setPixel(ctx, x, y, '#555555')
+                        break
+                    case 'r':
+                        setPixel(ctx, x, y, '#c1c1c1')
+                        break
+                    case 'b':
+                        setPixel(ctx, x, y, '#c1c1c1')
+                        break
+                    case 's':
+                        setPixel(ctx, x, y, '#33c133')
+                        break
+                }
+            }
+        }
+        x++
+        y++
+        if (x > y) {
+            var ratio = maxWidth / x
+        } else {
+            var ratio = maxWidth / y
+        }
+        var width = x * ratio,
+            height = y * ratio
+
+        canvas.width = width
+        canvas.height = height
+
+        context.drawImage(tmpCanvas, 0, 0, x, y, 0, 0, width, height)
+
+        $('#img').html(canvas)
+    }
     this.removeGame = function (gameId) {
         $('tr#' + gameId).remove()
         if (!$('.trlink').length) {
@@ -43,11 +99,11 @@ var New = new function () {
         PrivateChat.setType('new')
         table = $('#join.table table')
         empty = $('<tr id="0">').append($('<td colspan="4">').html(info).css('padding', '15px'))
-        changeMap()
+
         $('#mapId').change(function () {
-            changeMap()
-            WebSocketSend.nop($('#mapId').val())
+            WebSocketSend.map($('#mapId').val())
         })
+
         WebSocketNew.init()
         PrivateChat.prepare()
     }
