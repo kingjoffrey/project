@@ -10,7 +10,7 @@ var WebSocketSend = new function () {
         return closed
     }
     this.open = function () {
-        if (New.closed) {
+        if (closed) {
             console.log(translations.sorryServerIsDisconnected)
             return;
         }

@@ -7,14 +7,11 @@
 }
 
 #new #img {
-    width: 502px;
-    height: 402px;
-    margin: 20px;
+    width: 520px;
+    height: 520px;
 }
 
-#new img {
-    max-height: 400px;
-    max-width: 500px;
+#new canvas {
     border: 10px solid grey;
     box-shadow: 1px 1px 5px #000;
 }
