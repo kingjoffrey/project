@@ -24,4 +24,3 @@ class NewController extends Game_Controller_Gui
         }
     }
 }
-

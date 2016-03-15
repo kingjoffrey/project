@@ -1,20 +1,12 @@
+"use strict"
 var New = new function () {
     var table,
         empty,
         changeMap = function () {
             $('#map').attr('src', '/img/maps/' + $('#mapId').children(':selected').attr('value') + '.png');
-        },
-        getNumberOfPlayersForm = function () {
-            var mapId = $('#mapId').val()
-            $.getJSON('/' + lang + '/newajax/nop/mapId/' + mapId, function (result) {
-                var html = $.parseHTML(result);
-                console.log($($(html)[0][0]).val())
-                $('#x').val($($(html)[0][0]).val())
-                $('#numberOfPlayers').val($($(html)[0][1]).val())
-            })
         }
 
-    this.removeGame=function(gameId){
+    this.removeGame = function (gameId) {
         $('tr#' + gameId).remove()
         if (!$('.trlink').length) {
             table.append(empty)
@@ -54,7 +46,7 @@ var New = new function () {
         changeMap()
         $('#mapId').change(function () {
             changeMap()
-            getNumberOfPlayersForm()
+            WebSocketSend.nop($('#mapId').val())
         })
         WebSocketNew.init()
         PrivateChat.prepare()

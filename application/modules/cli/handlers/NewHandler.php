@@ -61,6 +61,14 @@ class Cli_NewHandler extends WebSocketUriHandler
                 );
                 $this->sendToChannelExceptPlayersAndMe($user->parameters['playerId'], $this->getNew(), $token);
                 break;
+            case 'nop':
+                $mMapPlayers = new Application_Model_MapPlayers($dataIn['mapId'], $this->_db);
+                $token = array(
+                    'type' => 'nop',
+                    'number' => $mMapPlayers->getNumberOfPlayersForNewGame()
+                );
+                $this->sendToUser($user, $token);
+                break;
             default:
                 print_r($dataIn);
         }

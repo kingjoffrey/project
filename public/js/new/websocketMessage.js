@@ -28,6 +28,10 @@ var WebSocketMessage = new function () {
             case 'chat':
                 PrivateChat.message(2, r.name, r.id, r.msg)
                 break
+            case 'nop':
+                $('#x').val(r.number)
+                $('#numberOfPlayers').val(r.number)
+                break;
             default:
                 console.log(r)
         }
