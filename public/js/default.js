@@ -28,10 +28,7 @@ var Page = new function () {
             var x = $(this).scrollTop();
             $(this).css('background-position', '0% ' + parseInt(-x / 10) + 'px');
         })
-
-        $('#envelope').css({
-            right: $('#logout').width() + 37 + 'px'
-        }).click(function () {
+        $('#envelope').click(function () {
             window.location = '/' + lang + '/messages'
         })
 

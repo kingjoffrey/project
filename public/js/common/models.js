@@ -443,7 +443,7 @@ var Models = new function () {
             }),
             mesh = new THREE.Mesh(new THREE.PlaneGeometry(2, 2), roadMaterial)
         mesh.rotation.x = Math.PI / 2
-        mesh.position.set(x * 2 + 1, 0.01, y * 2 + 1)
+        mesh.position.set(x * 2 + 1, 0.0001, y * 2 + 1)
 
         if (shadows) {
             mesh.receiveShadow = true

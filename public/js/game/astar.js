@@ -44,7 +44,7 @@ var AStar = new function () {
     this.showPath = function () {
         army = CommonMe.getSelectedArmy()
         movementType = army.getMovementType()
-        if (getG(field.getType()) > 6 && !field.hasArmies()) {
+        if (getG(field.getType()) > 6 && !field.hasArmies() && !field.getCastleId()) {
             return
         }
         open = {}

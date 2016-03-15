@@ -18,21 +18,21 @@ var Tutorial = new function () {
                 },
                 3: {
                     'goal': 'Conquer "Shadow" castle',
-                    'description': 'Now when you have army it is time to conquer some castles. Move your army into castle with grey flag.'
+                    'description': 'Now when you have army and you know how to move it it is time to conquer some castles. Move your army into castle with grey flag to attack it.'
                 },
                 4: {
                     'goal': 'Set unit relocation',
                     'description': 'You can relocate unit production from one castle to another. Go to your first castle, click on relocate production button and after that click on you second castle.'
                 },
                 5: {
-                    'goal': 'Win',
+                    'goal': 'Try to win',
                     'description': 'There should be only two castle left which doesn\'t belong to you. To win you have to conquer one of them.'
                 }
             },
             1: {
                 0: {
                     'goal': 'Make ship',
-                    'description': 'Enter into castle management and star ship production. After setting ship production change turn 6 times until ship will be produced.'
+                    'description': 'Enter into castle management and set ship production. After setting ship production change turn 6 times (until ship is produced).'
                 },
                 1: {
                     'goal': 'Load hero on ship',
@@ -44,14 +44,14 @@ var Tutorial = new function () {
                 },
                 3: {
                     'goal': 'Take hero to ruins',
-                    'description': 'Unload hero from ship and step onto ruins position.'
+                    'description': 'Unload hero from ship and move him onto ruins position.'
                 },
                 4: {
                     'goal': 'Search ruins',
-                    'description': 'When you hero is standing in the same position as ruins you can order him to search it. You should get 3 dragons which can fly and take you hero over water.'
+                    'description': 'When you hero is standing in the same position as ruins location order him to search it. After search you should get 3 dragons which can fly and take you hero over water.'
                 },
                 5: {
-                    'goal': 'Win',
+                    'goal': 'Try to win',
                     'description': 'There is 5 castles on the map. To win you have to conquer 3 of them.'
                 }
             },
@@ -73,7 +73,7 @@ var Tutorial = new function () {
                     'description': 'Flying units added to army boosts up attack of every unit in the army by one. It doesn\'t matter how many flying units are in the army because army attack can only be increased by one.'
                 },
                 4: {
-                    'goal': 'Win',
+                    'goal': 'Try to win',
                     'description': 'When your castle is secure and you have sufficient income you can build your army and attack enemy castle. Don\'t forget to leave part of you troops as garrison of the castle.'
                 }
             }
