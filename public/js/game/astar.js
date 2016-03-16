@@ -73,7 +73,7 @@ var AStar = new function () {
             }
 
             if (movesEnd) {
-                Models.addPathCircle(path[i].x, path[i].y, 'gray', path[i].tt)
+                Models.addPathCircle(path[i].x, path[i].y, 'white', path[i].tt)
             } else {
                 Models.addPathCircle(path[i].x, path[i].y, 'green', path[i].tt)
             }

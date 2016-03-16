@@ -17,6 +17,10 @@ var Models = new function () {
         loader = new THREE.JSONLoader(),
         tl = new THREE.TextureLoader(),
         loading = 0,
+        pathMaterialGreen,
+        pathMaterialRed,
+        pathMaterialWhite,
+        pathGeometry,
         createTextMesh = function (text, color) {
             var mesh = new THREE.Mesh(new THREE.TextGeometry(text, {
                 size: 0.25,
@@ -212,21 +216,33 @@ var Models = new function () {
             } else {
                 return 0
             }
-        }
+        },
+        initPathCircle = function () {
+            var radius = 1,
+                segments = 64
 
-    this.addPathCircle = function (x, y, color, t) {
-        var radius = 1,
-            segments = 64,
-            material = new THREE.MeshBasicMaterial({
-                color: color,
+            pathMaterialGreen = new THREE.MeshBasicMaterial({
+                color: 'green',
                 transparent: true,
                 opacity: 0.5,
                 side: THREE.DoubleSide
-            }),
-            geometry = new THREE.CircleGeometry(radius, segments)
+            })
+            pathMaterialWhite = new THREE.MeshBasicMaterial({
+                color: 'white',
+                transparent: true,
+                opacity: 0.5,
+                side: THREE.DoubleSide
+            })
+            pathMaterialRed = new THREE.MeshBasicMaterial({
+                color: 'red',
+                transparent: true,
+                opacity: 0.5,
+                side: THREE.DoubleSide
+            })
+            pathGeometry = new THREE.CircleGeometry(radius, segments)
+        }
 
-        var circle = new THREE.Mesh(geometry, material)
-
+    this.addPathCircle = function (x, y, color, t) {
         switch (t) {
             case 'm':
                 var height = Ground.getMountainLevel() + 0.01
@@ -234,10 +250,27 @@ var Models = new function () {
             case 'h':
                 var height = Ground.getHillLevel() + 0.01
                 break
+            case 'E':
+                this.addPathCircle(x, y, 'red', Fields.get(x, y).getType())
+                return
+                break
             default :
                 var height = 0.01
                 break
         }
+        switch (color) {
+            case 'green':
+                var circle = new THREE.Mesh(pathGeometry, pathMaterialGreen)
+                break
+            case 'red':
+                var circle = new THREE.Mesh(pathGeometry, pathMaterialRed)
+                break
+            case 'white':
+                var circle = new THREE.Mesh(pathGeometry, pathMaterialWhite)
+                break
+        }
+
+
         circle.position.set(x * 2 + 1, height, y * 2 + 1)
         circle.rotation.x = Math.PI / 2
 
@@ -541,5 +574,6 @@ var Models = new function () {
         initFlag()
         initTree()
         initHill()
+        initPathCircle()
     }
 }

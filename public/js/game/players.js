@@ -104,6 +104,9 @@ var GamePlayers = new function () {
         }
     }
     this.setOnline = function (shortName, value) {
+        if (!init) {
+            return
+        }
         if (isSet(wedges[shortName].online)) {
             wedges[shortName].online.remove()
         }
