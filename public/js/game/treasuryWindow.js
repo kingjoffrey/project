@@ -18,6 +18,10 @@ var TreasuryWindow = new function () {
                 myUnitsOutcome += Units.get(army.getWalkingSoldier(j).unitId).cost
                 myUnits++
             }
+            for (var j in army.getFlyingSoldiers()) {
+                myUnitsOutcome += Units.get(army.getFlyingSoldier(j).unitId).cost
+                myUnits++
+            }
             for (var j in army.getSwimmingSoldiers()) {
                 myUnitsOutcome += Units.get(army.getSwimmingSoldier(j).unitId).cost
                 myUnits++
@@ -49,7 +53,11 @@ var TreasuryWindow = new function () {
                     .append($('<td>').html(translations.units).addClass('c'))
                     .append($('<td>').html(myUnitsOutcome + ' ' + translations.gold).addClass('r'))))
             .append($('<h3>').html('<br>' + translations.profit + ':'))
-            .append($('<div>').html(myTowers * 5 + myCastlesIncome - myUnitsOutcome + ' ' + translations.goldPerTurn))
+            .append($('<table>')
+                .addClass('treasury')
+                .append($('<tr>')
+                    .append($('<td>').html(myTowers * 5 + myCastlesIncome - myUnitsOutcome + ' ' + translations.goldPerTurn))))
+
         Message.simple(translations.treasury, div)
     }
     this.income = function () {
@@ -103,9 +111,7 @@ var TreasuryWindow = new function () {
                 .append($('<td>').html(myTowers * 5 + ' ' + translations.gold).addClass('r'))
         ).append(
             $('<tr>')
-                .append($('<td>'))
-                .append($('<td>'))
-                .append($('<td>').html(myTowers * 5 + myCastlesIncome + ' ' + translations.gold).addClass('r'))
+                .append($('<td colspan="3">').html(myTowers * 5 + myCastlesIncome + ' ' + translations.gold).addClass('r'))
         )
 
 
@@ -139,11 +145,28 @@ var TreasuryWindow = new function () {
                         .append($('<td>').html(Units.get(soldier.unitId).name_lang))
                         .append($('<td>').html(Units.get(soldier.unitId).cost + ' ' + translations.gold).addClass('r'))
                         .append(
-                        $('<td>')
-                            .html($('<img>').attr('src', '/img/game/center.png'))
-                            .addClass('iconButton buttonColors')
-                            .click(center(i))
-                    )
+                            $('<td>')
+                                .html($('<img>').attr('src', '/img/game/center.png'))
+                                .addClass('iconButton buttonColors')
+                                .click(center(i))
+                        )
+                )
+            }
+            for (var j in army.getFlyingSoldiers()) {
+                var soldier = army.getFlyingSoldier(j)
+                myUnitsGold += Units.get(soldier.unitId).cost
+                myUnits++
+                table.append(
+                    $('<tr>')
+                        .append($('<td>').html($('<img>').attr('src', Unit.getImage(soldier.unitId, CommonMe.getColor()))))
+                        .append($('<td>').html(Units.get(soldier.unitId).name_lang))
+                        .append($('<td>').html(Units.get(soldier.unitId).cost + ' ' + translations.gold).addClass('r'))
+                        .append(
+                            $('<td>')
+                                .html($('<img>').attr('src', '/img/game/center.png'))
+                                .addClass('iconButton buttonColors')
+                                .click(center(i))
+                        )
                 )
             }
             for (var j in army.getSwimmingSoldiers()) {
@@ -156,20 +179,18 @@ var TreasuryWindow = new function () {
                         .append($('<td>').html(Units.get(soldier.unitId).name_lang))
                         .append($('<td>').html(Units.get(soldier.unitId).cost + ' ' + translations.gold).addClass('r'))
                         .append(
-                        $('<td>')
-                            .html($('<img>').attr('src', '/img/game/center.png'))
-                            .addClass('iconButton buttonColors')
-                            .click(center(i))
-                    )
+                            $('<td>')
+                                .html($('<img>').attr('src', '/img/game/center.png'))
+                                .addClass('iconButton buttonColors')
+                                .click(center(i))
+                        )
                 )
             }
         }
 
         table.append(
             $('<tr>')
-                .append($('<td>').html(myUnits).addClass('r'))
-                .append($('<td>').html(translations.units).addClass('c'))
-                .append($('<td>').html(myUnitsGold + ' ' + translations.gold).addClass('r'))
+                .append($('<td colspan="3">').html(myUnitsGold + ' ' + translations.gold).addClass('r'))
         )
 
         var div = $('<div>')

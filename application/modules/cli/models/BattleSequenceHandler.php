@@ -13,8 +13,7 @@ class Cli_Model_BattleSequenceHandler
         $game = Cli_CommonHandler::getGameFromUser($user);
         $me = Cli_Model_Me::getMe($user);
         $player = $game->getPlayers()->getPlayer($me->getColor());
-        $db = $handler->getDb();
-        $mBattleSequence = new Application_Model_BattleSequence($game->getId(), $db);
+        $mBattleSequence = new Application_Model_BattleSequence($game->getId(), $handler->getDb());
         $result = 0;
 
         if ($data['attack']) {

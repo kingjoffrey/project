@@ -1024,3 +1024,7 @@ table.treasury td.c {
     position: relative;
     padding: 3px;
 }
+
+table.treasury td{
+    height: 28px !important;
+}

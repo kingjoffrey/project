@@ -16,13 +16,14 @@ var Move = new function () {
         army = player.getArmies().get(r.army.id)
 
         switch (army.getMovementType()) {
-            case 'flying':
+            case 'fly':
                 Sound.play('fly');
                 break;
-            case 'swimming':
+            case 'swim':
                 Sound.play('swim');
                 break;
             default:
+                console.log(army.getMovementType())
                 Sound.play('walk');
                 break;
         }

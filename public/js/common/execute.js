@@ -163,6 +163,7 @@ var Execute = new function () {
                     if (Turn.isMy()) {
                         Message.remove()
                         CommonMe.setGold(r.gold)
+                        CommonMe.incomeIncrement(CommonMe.getCastle(r.castleId).getIncome() / r.defense)
                     }
                     Execute.setExecuting(0)
                     break;
