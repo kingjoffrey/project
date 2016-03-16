@@ -2,9 +2,8 @@
 var Zoom = new function () {
     var lens,
         smallImage,
-        scale,
         smallImage = function () {
-            var image = $('#mapImage'),
+            var image = $('#map canvas'),
                 node = image[0],
                 $obj = {}
 
@@ -161,17 +160,13 @@ var Zoom = new function () {
     this.getLens = function () {
         return lens
     }
-    this.getScale = function () {
-        return scale
-    }
     this.calculateMiniMapX = function (x) {
         return parseInt(smallImage.w * x / Fields.getMaxX())
     }
     this.calculateMiniMapY = function (y) {
         return parseInt(smallImage.h * y / Fields.getMaxY())
     }
-    this.init = function (s) {
-        scale = s
+    this.init = function () {
         Game.getMapElement().bind('mousedown', function (e) {
             if (e.pageX > smallImage.pos.r || e.pageX < smallImage.pos.l || e.pageY < smallImage.pos.t || e.pageY > smallImage.pos.b) {
                 return false;

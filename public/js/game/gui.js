@@ -9,8 +9,6 @@ var Gui = new function () {
         mapBox = {close: 0},
         speed = 200,
         documentTitle = 'WoF',
-        mapWidth,
-        mapHeight,
         friendsShow = false,
         changeCloseArrowLR = function (move, el) {
             if (move > 0) {
@@ -335,7 +333,7 @@ var Gui = new function () {
             left: $('#limitBox').width() + 4 + 'px'
         })
         $('#limitBox').css({
-            top: mapHeight + 30 + 'px'
+            top: Fields.getHeight() + 30 + 'px'
         })
         Gui.armyBoxAdjust()
         //Message.adjust()
@@ -392,24 +390,19 @@ var Gui = new function () {
             window.onmousemove = null
         })
     }
-    this.init = function (map) {
+    this.init = function () {
         $(window).resize(function () {
             Gui.adjust()
         })
 
-        var scale = 233 / map.mapWidth
-
-        mapWidth = map.mapWidth * scale
-        mapHeight = map.mapHeight * scale
-
         $('#mapImage').css({
-            width: mapWidth + 'px',
-            height: mapHeight + 'px'
+            width: Fields.getWidth() + 'px',
+            height: Fields.getHeight() + 'px'
         })
 
         Game.getMapElement().css({
-            width: mapWidth + 'px',
-            height: mapHeight + 'px'
+            width: Fields.getWidth() + 'px',
+            height: Fields.getHeight() + 'px'
         })
 
         $('body')
@@ -435,12 +428,12 @@ var Gui = new function () {
             }
         })
 
-        Zoom.init(scale)
+        Zoom.init()
         $('#mapBox').css({
-            width: mapWidth + 'px',
-            height: mapHeight + 18 + 'px'
+            width: Fields.getWidth() + 'px',
+            height: Fields.getHeight() + 18 + 'px'
         });
-        $('#terrain').css('top', mapHeight + 4 + 'px')
+        $('#terrain').css('top', Fields.getHeight() + 4 + 'px')
         $('#commandsBox').css({top: $('#playersBox').height() + 14 + 'px'})
         prepareButtons()
         this.prepareBoxes()

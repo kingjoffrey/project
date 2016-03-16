@@ -7,7 +7,7 @@ class TutorialController extends Coret_Controller_Authorized
     public function initAction()
     {
         $this->_helper->layout->setLayout('empty');
-        $playerId = Zend_Auth::getInstance()->getIdentity()->playerId;
+        $playerId = $this->_auth->getIdentity()->playerId;
         $mGame = new Application_Model_Game();
         $gameId = $mGame->getMyTutorial($playerId);
         if (!$gameId) {
@@ -101,10 +101,6 @@ class TutorialController extends Coret_Controller_Authorized
         $this->view->translations();
         $this->view->Websocket($this->_auth->getIdentity());
         $this->view->Friends();
-
-        $mGame = new Application_Model_Game($this->view->gameId);
-        $this->view->map($mGame->getMapId());
-
 
         $this->view->headScript()->appendFile('/js/jquery-ui-1.10.3.custom.js');
         $this->view->headScript()->appendFile('/js/jquery.mousewheel.min.js');

@@ -34,9 +34,6 @@ class GameController extends Coret_Controller_Authorized
         $this->view->Websocket($this->_auth->getIdentity());
         $this->view->Friends();
 
-        $mGame = new Application_Model_Game($this->_gameId);
-        $this->view->map($mGame->getMapId());
-
         $version = Zend_Registry::get('config')->version;
 
         $this->view->headLink()->appendStylesheet('/css/game.css?v=' . $version);

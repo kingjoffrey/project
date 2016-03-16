@@ -3,6 +3,8 @@ var Fields = new function () {
     var fields = {},
         maxX,
         maxY,
+        width,
+        height,
         initRoads = function () {
             for (var y = 0; y <= maxY; y++) {
                 for (var x = 0; x <= maxX; x++) {
@@ -12,24 +14,70 @@ var Fields = new function () {
                     }
                 }
             }
+        },
+        setPixel = function (ctx, x, y, color) {
+            ctx.fillStyle = color;
+            ctx.fillRect(x, y, 1, 1);
         }
+
     this.init = function (fields, mapId) {
-        for (maxY in fields) {
-            for (maxX in fields[maxY]) {
-                switch (fields[maxY][maxX].type) {
-                    case 's':
-                        Models.addSwamp(maxX, maxY)
+        var tmpCanvas = document.createElement('canvas'),
+            ctx = tmpCanvas.getContext('2d'),
+            canvas = document.createElement('canvas'),
+            context = canvas.getContext('2d'),
+            maxWidth = 233
+
+        for (var y in fields) {
+            for (var x in fields[y]) {
+                switch (fields[y][x].type) {
+                    case 'g':
+                        setPixel(ctx, x, y, '#009900')
                         break
                     case 'f':
-                        Models.addTree(maxX, maxY)
+                        setPixel(ctx, x, y, '#004e00')
+                        Models.addTree(x, y)
+                        break
+                    case 'w':
+                        setPixel(ctx, x, y, '#0000cd')
                         break
                     case 'h':
-                        //Models.addHill(maxX, maxY)
+                        setPixel(ctx, x, y, '#505200')
+                        break
+                    case 'm':
+                        setPixel(ctx, x, y, '#262728')
+                        break
+                    case 'r':
+                        setPixel(ctx, x, y, '#c1c1c1')
+                        break
+                    case 'b':
+                        setPixel(ctx, x, y, '#c1c1c1')
+                        break
+                    case 's':
+                        setPixel(ctx, x, y, '#39723E')
+                        Models.addSwamp(x, y)
                         break
                 }
-                this.add(maxX, maxY, fields[maxY][maxX])
+                this.add(x, y, fields[y][x])
             }
         }
+        maxX = x
+        maxY = y
+        x++
+        y++
+        var ratio = maxWidth / x
+        width = x * ratio
+        height = y * ratio
+
+        canvas.width = width
+        canvas.height = height
+
+        context.drawImage(tmpCanvas, 0, 0, x, y, 0, 0, width, height)
+
+        $('#map').append(canvas).css({
+            width: width,
+            height: height
+        })
+
         Ground.init(maxX, maxY, '/img/maps/' + mapId + '.png')
         initRoads()
     }
@@ -39,6 +87,12 @@ var Fields = new function () {
                 fields[i][j].setCastle(castleId, color);
             }
         }
+    }
+    this.getWidth = function () {
+        return width
+    }
+    this.getHeight = function () {
+        return height
     }
     this.getMaxX = function () {
         return maxX

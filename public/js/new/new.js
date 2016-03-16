@@ -19,19 +19,19 @@ var New = new function () {
             for (x in fields[y]) {
                 switch (fields[y][x]) {
                     case 'g':
-                        setPixel(ctx, x, y, '#00aa00')
-                        break
-                    case 'f':
                         setPixel(ctx, x, y, '#009900')
                         break
+                    case 'f':
+                        setPixel(ctx, x, y, '#004e00')
+                        break
                     case 'w':
-                        setPixel(ctx, x, y, '#3333c1')
+                        setPixel(ctx, x, y, '#0000cd')
                         break
                     case 'h':
-                        setPixel(ctx, x, y, '#555500')
+                        setPixel(ctx, x, y, '#505200')
                         break
                     case 'm':
-                        setPixel(ctx, x, y, '#555555')
+                        setPixel(ctx, x, y, '#262728')
                         break
                     case 'r':
                         setPixel(ctx, x, y, '#c1c1c1')
@@ -40,7 +40,7 @@ var New = new function () {
                         setPixel(ctx, x, y, '#c1c1c1')
                         break
                     case 's':
-                        setPixel(ctx, x, y, '#33c133')
+                        setPixel(ctx, x, y, '#39723E')
                         break
                 }
             }
