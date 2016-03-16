@@ -307,15 +307,14 @@ var Gui = new function () {
         //})
     }
     this.adjust = function () {
-        Zoom.getLens().setdimensions()
+        Scene.resize()
+        MiniMap.adjust()
 
         commandsBox.close = 0
         chatBox.close = 0
         playerBox.close = 0
         limitBox.close = 0
         mapBox.close = 0
-
-        Scene.resize()
 
         if (!Players.countHumans() > 1) {
             $('#chatBox').css({display: 'none'});
@@ -428,7 +427,7 @@ var Gui = new function () {
             }
         })
 
-        Zoom.init()
+        MiniMap.init()
         $('#mapBox').css({
             width: Fields.getWidth() + 'px',
             height: Fields.getHeight() + 18 + 'px'

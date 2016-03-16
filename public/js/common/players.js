@@ -44,15 +44,15 @@ var Players = new function () {
 
         if (castles.has(castleId)) {
             var castle = castles.get(castleId)
-            Zoom.getLens().setcenter(castle.getX(), castle.getY(), func)
+            MiniMap.centerOn(castle.getX(), castle.getY(), func)
         } else if (firstCastleId = castles.getFirsCastleId()) {
             var castle = castles.get(firstCastleId)
-            Zoom.getLens().setcenter(castle.getX(), castle.getY(), func)
+            MiniMap.centerOn(castle.getX(), castle.getY(), func)
         } else {
             var armies = player.getArmies()
             for (var armyId in armies.toArray()) {
                 var army = armies.get(armyId)
-                Zoom.getLens().setcenter(army.getX(), army.getY(), func)
+                MiniMap.centerOn(army.getX(), army.getY(), func)
                 break
             }
         }

@@ -77,7 +77,7 @@ var StatusWindow = new function () {
 
         var get = function (i) {
             return function () {
-                Zoom.getLens().setcenter(castles[i].x, castles[i].y)
+                MiniMap.centerOn(castles[i].x, castles[i].y)
             }
         }
 

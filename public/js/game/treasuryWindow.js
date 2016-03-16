@@ -62,7 +62,7 @@ var TreasuryWindow = new function () {
 
         var click = function (i) {
             return function () {
-                Zoom.getLens().setcenter(CommonMe.getCastle(i).getX(), CommonMe.getCastle(i).getY())
+                MiniMap.centerOn(CommonMe.getCastle(i).getX(), CommonMe.getCastle(i).getY())
             }
         }
 
@@ -123,7 +123,7 @@ var TreasuryWindow = new function () {
 
         var center = function (i) {
             return function () {
-                Zoom.getLens().setcenter(CommonMe.getArmy(i).getX(), CommonMe.getArmy(i).getY())
+                MiniMap.centerOn(CommonMe.getArmy(i).getX(), CommonMe.getArmy(i).getY())
             }
         }
 

@@ -34,7 +34,7 @@ var Move = new function () {
         if (player.isComputer() && !Gui.getShow()) {
             stepLoop(r, ii)
         } else {
-            Zoom.getLens().setcenter(r.path[0].x, r.path[0].y, function () {
+            MiniMap.centerOn(r.path[0].x, r.path[0].y, function () {
                 Move.startStepLoop(r, ii)
             })
         }
@@ -58,8 +58,8 @@ var Move = new function () {
 
                 $('#' + army.getArmyId() + '.a')
                     .animate({
-                        left: Zoom.calculateMiniMapX(r.path[step].x) + 'px',
-                        top: Zoom.calculateMiniMapY(r.path[step].y) + 'px'
+                        left: MiniMap.calculateX(r.path[step].x) + 'px',
+                        top: MiniMap.calculateY(r.path[step].y) + 'px'
                     }, stepTime, function () {
                         if (typeof r.path[step] == 'undefined') {
                             console.log('step: ' + step)
@@ -77,7 +77,7 @@ var Move = new function () {
         } else {
             if (isTruthful(r.battle) && (!player.isComputer() || Gui.getShow())) {
                 Sound.play('fight')
-                Zoom.getLens().setcenter(r.path[step].x, r.path[step].y, function () {
+                MiniMap.centerOn(r.path[step].x, r.path[step].y, function () {
                     BattleWindow.battle(r, ii)
                 })
             } else {
@@ -87,7 +87,7 @@ var Move = new function () {
     }
     this.end = function (r, ii) {
         army.update(r.army)
-        //Zoom.getLens().setcenter(army.getX(), army.getY())
+        //MiniMap.centerOn(army.getX(), army.getY())
 
         if (r.battle) {
             if (player.isComputer() && !Gui.getShow()) {

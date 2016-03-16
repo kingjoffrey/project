@@ -2,7 +2,6 @@
 
 class Cli_Model_Battle
 {
-
     private $_result;
     private $_attacker;
     private $_defender;
@@ -162,10 +161,10 @@ class Cli_Model_Battle
                 }
             }
             foreach ($attack['walk'] as $a => $attackingFighter) {
-                foreach ($defence['swim'] as $d => $defendingFighter) {
+                foreach ($defence['fly'] as $d => $defendingFighter) {
                     $lives = $this->combat($attackingFighter, $defendingFighter, $lives);
                     if ($lives['attack'] > $lives['defense']) {
-                        unset($defence['swim'][$d]);
+                        unset($defence['fly'][$d]);
                     } else {
                         unset($attack['walk'][$a]);
                         break;
@@ -173,109 +172,32 @@ class Cli_Model_Battle
                 }
             }
             foreach ($attack['walk'] as $a => $attackingFighter) {
-                foreach ($defence['fly'] as $d => $defendingFighter) {
+                foreach ($defence['swim'] as $d => $defendingFighter) {
                     $lives = $this->combat($attackingFighter, $defendingFighter, $lives);
                     if ($lives['attack'] > $lives['defense']) {
-                        unset($defence['fly'][$d]);
+                        unset($defence['swim'][$d]);
                     } else {
                         unset($attack['walk'][$a]);
                         break;
                     }
                 }
             }
-            foreach ($attack['heroes'] as $a => $attackingFighter) {
-                foreach ($defence['walk'] as $d => $defendingFighter) {
-                    $lives = $this->combat($attackingFighter, $defendingFighter, $lives);
-                    if ($lives['attack'] > $lives['defense']) {
-                        unset($defence['walk'][$d]);
-                    } else {
-                        unset($attack['heroes'][$a]);
-                        break;
-                    }
-                }
-            }
-            foreach ($attack['heroes'] as $a => $attackingFighter) {
-                foreach ($defence['heroes'] as $d => $defendingFighter) {
-                    $lives = $this->combat($attackingFighter, $defendingFighter, $lives);
-                    if ($lives['attack'] > $lives['defense']) {
-                        unset($defence['heroes'][$d]);
-                    } else {
-                        unset($attack['heroes'][$a]);
-                        break;
-                    }
-                }
-            }
-            foreach ($attack['heroes'] as $a => $attackingFighter) {
-                foreach ($defence['swim'] as $d => $defendingFighter) {
-                    $lives = $this->combat($attackingFighter, $defendingFighter, $lives);
-                    if ($lives['attack'] > $lives['defense']) {
-                        unset($defence['swim'][$d]);
-                    } else {
-                        unset($attack['heroes'][$a]);
-                        break;
-                    }
-                }
-            }
-            foreach ($attack['heroes'] as $a => $attackingFighter) {
-                foreach ($defence['fly'] as $d => $defendingFighter) {
-                    $lives = $this->combat($attackingFighter, $defendingFighter, $lives);
-                    if ($lives['attack'] > $lives['defense']) {
-                        unset($defence['fly'][$d]);
-                    } else {
-                        unset($attack['heroes'][$a]);
-                        break;
-                    }
-                }
-            }
-            foreach ($attack['swim'] as $a => $attackingFighter) {
-                foreach ($defence['walk'] as $d => $defendingFighter) {
-                    $lives = $this->combat($attackingFighter, $defendingFighter, $lives);
-                    if ($lives['attack'] > $lives['defense']) {
-                        unset($defence['walk'][$d]);
-                    } else {
-                        unset($attack['swim'][$a]);
-                        break;
-                    }
-                }
-            }
-            foreach ($attack['swim'] as $a => $attackingFighter) {
-                foreach ($defence['heroes'] as $d => $defendingFighter) {
-                    $lives = $this->combat($attackingFighter, $defendingFighter, $lives);
-                    if ($lives['attack'] > $lives['defense']) {
-                        unset($defence['heroes'][$d]);
-                    } else {
-                        unset($attack['swim'][$a]);
-                        break;
-                    }
-                }
-            }
-            foreach ($attack['swim'] as $a => $attackingFighter) {
-                foreach ($defence['swim'] as $d => $defendingFighter) {
-                    $lives = $this->combat($attackingFighter, $defendingFighter, $lives);
-                    if ($lives['attack'] > $lives['defense']) {
-                        unset($defence['swim'][$d]);
-                    } else {
-                        unset($attack['swim'][$a]);
-                        break;
-                    }
-                }
-            }
-            foreach ($attack['swim'] as $a => $attackingFighter) {
-                foreach ($defence['fly'] as $d => $defendingFighter) {
-                    $lives = $this->combat($attackingFighter, $defendingFighter, $lives);
-                    if ($lives['attack'] > $lives['defense']) {
-                        unset($defence['fly'][$d]);
-                    } else {
-                        unset($attack['swim'][$a]);
-                        break;
-                    }
-                }
-            }
             foreach ($attack['fly'] as $a => $attackingFighter) {
                 foreach ($defence['walk'] as $d => $defendingFighter) {
                     $lives = $this->combat($attackingFighter, $defendingFighter, $lives);
                     if ($lives['attack'] > $lives['defense']) {
                         unset($defence['walk'][$d]);
+                    } else {
+                        unset($attack['fly'][$a]);
+                        break;
+                    }
+                }
+            }
+            foreach ($attack['fly'] as $a => $attackingFighter) {
+                foreach ($defence['fly'] as $d => $defendingFighter) {
+                    $lives = $this->combat($attackingFighter, $defendingFighter, $lives);
+                    if ($lives['attack'] > $lives['defense']) {
+                        unset($defence['fly'][$d]);
                     } else {
                         unset($attack['fly'][$a]);
                         break;
@@ -304,13 +226,90 @@ class Cli_Model_Battle
                     }
                 }
             }
-            foreach ($attack['fly'] as $a => $attackingFighter) {
+            foreach ($attack['heroes'] as $a => $attackingFighter) {
+                foreach ($defence['walk'] as $d => $defendingFighter) {
+                    $lives = $this->combat($attackingFighter, $defendingFighter, $lives);
+                    if ($lives['attack'] > $lives['defense']) {
+                        unset($defence['walk'][$d]);
+                    } else {
+                        unset($attack['heroes'][$a]);
+                        break;
+                    }
+                }
+            }
+            foreach ($attack['heroes'] as $a => $attackingFighter) {
                 foreach ($defence['fly'] as $d => $defendingFighter) {
                     $lives = $this->combat($attackingFighter, $defendingFighter, $lives);
                     if ($lives['attack'] > $lives['defense']) {
                         unset($defence['fly'][$d]);
                     } else {
-                        unset($attack['fly'][$a]);
+                        unset($attack['heroes'][$a]);
+                        break;
+                    }
+                }
+            }
+            foreach ($attack['heroes'] as $a => $attackingFighter) {
+                foreach ($defence['heroes'] as $d => $defendingFighter) {
+                    $lives = $this->combat($attackingFighter, $defendingFighter, $lives);
+                    if ($lives['attack'] > $lives['defense']) {
+                        unset($defence['heroes'][$d]);
+                    } else {
+                        unset($attack['heroes'][$a]);
+                        break;
+                    }
+                }
+            }
+            foreach ($attack['heroes'] as $a => $attackingFighter) {
+                foreach ($defence['swim'] as $d => $defendingFighter) {
+                    $lives = $this->combat($attackingFighter, $defendingFighter, $lives);
+                    if ($lives['attack'] > $lives['defense']) {
+                        unset($defence['swim'][$d]);
+                    } else {
+                        unset($attack['heroes'][$a]);
+                        break;
+                    }
+                }
+            }
+            foreach ($attack['swim'] as $a => $attackingFighter) {
+                foreach ($defence['walk'] as $d => $defendingFighter) {
+                    $lives = $this->combat($attackingFighter, $defendingFighter, $lives);
+                    if ($lives['attack'] > $lives['defense']) {
+                        unset($defence['walk'][$d]);
+                    } else {
+                        unset($attack['swim'][$a]);
+                        break;
+                    }
+                }
+            }
+            foreach ($attack['swim'] as $a => $attackingFighter) {
+                foreach ($defence['heroes'] as $d => $defendingFighter) {
+                    $lives = $this->combat($attackingFighter, $defendingFighter, $lives);
+                    if ($lives['attack'] > $lives['defense']) {
+                        unset($defence['heroes'][$d]);
+                    } else {
+                        unset($attack['swim'][$a]);
+                        break;
+                    }
+                }
+            }
+            foreach ($attack['swim'] as $a => $attackingFighter) {
+                foreach ($defence['fly'] as $d => $defendingFighter) {
+                    $lives = $this->combat($attackingFighter, $defendingFighter, $lives);
+                    if ($lives['attack'] > $lives['defense']) {
+                        unset($defence['fly'][$d]);
+                    } else {
+                        unset($attack['swim'][$a]);
+                        break;
+                    }
+                }
+            }
+            foreach ($attack['swim'] as $a => $attackingFighter) {
+                foreach ($defence['swim'] as $d => $defendingFighter) {
+                    $lives = $this->combat($attackingFighter, $defendingFighter, $lives);
+                    if ($lives['attack'] > $lives['defense']) {
+                        unset($defence['swim'][$d]);
+                    } else {
+                        unset($attack['swim'][$a]);
                         break;
                     }
                 }

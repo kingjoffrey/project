@@ -1,8 +1,8 @@
 "use strict"
-var Zoom = new function () {
+var MiniMap = new function () {
     var lens,
-        smallImage,
-        smallImage = function () {
+        miniMap,
+        miniMap = function () {
             var image = $('#map canvas'),
                 node = image[0],
                 $obj = {}
@@ -55,24 +55,22 @@ var Zoom = new function () {
             return $obj;
         },
         lens = function () {
-            var $obj = {};
+            var $obj = {}
             $obj.node = $('.zoomPup')
             $obj.setdimensions = function () {
                 var visibleMapWidth = Scene.getWidth() / 85,
                     visibleMapHeight = Scene.getHeight() / 85
 
-                $obj.node.w = smallImage.w * visibleMapWidth / Fields.getMaxX()
-                $obj.node.h = smallImage.h * visibleMapHeight / Fields.getMaxY()
+                $obj.node.w = miniMap.w * visibleMapWidth / Fields.getMaxX()
+                $obj.node.h = miniMap.h * visibleMapHeight / Fields.getMaxY()
                 $obj.node.css({
                     'width': $obj.node.w,
                     'height': $obj.node.h
                 });
-                //$obj.node.top = (smallImage.oh - $obj.node.h - 2) / 2;
-                //$obj.node.left = (smallImage.ow - $obj.node.w - 2) / 2;
             };
             $obj.setcenter = function (x, y, func) {
-                $obj.node.top = smallImage.h * y / Fields.getMaxY() - $obj.node.h / 2
-                $obj.node.left = smallImage.w * x / Fields.getMaxX() - $obj.node.w / 2
+                $obj.node.top = miniMap.h * y / Fields.getMaxY() - $obj.node.h / 2
+                $obj.node.left = miniMap.w * x / Fields.getMaxX() - $obj.node.w / 2
                 $obj.node.css({
                     top: $obj.node.top,
                     left: $obj.node.left
@@ -107,32 +105,32 @@ var Zoom = new function () {
                     lenstop = 0
 
                 function overleft(lens) {
-                    return mouseX < smallImage.pos.l;
+                    return mouseX < miniMap.pos.l;
                 }
 
                 function overright(lens) {
-                    return mouseX > smallImage.pos.r;
+                    return mouseX > miniMap.pos.r;
                 }
 
                 function overtop(lens) {
-                    return mouseY < smallImage.pos.t;
+                    return mouseY < miniMap.pos.t;
                 }
 
                 function overbottom(lens) {
-                    return mouseY > smallImage.pos.b;
+                    return mouseY > miniMap.pos.b;
                 }
 
-                lensleft = mouseX + smallImage.bleft - smallImage.pos.l - ($obj.node.w + 2) / 2;
-                lenstop = mouseY + smallImage.btop - smallImage.pos.t - ($obj.node.h + 2) / 2;
+                lensleft = mouseX + miniMap.bleft - miniMap.pos.l - ($obj.node.w + 2) / 2;
+                lenstop = mouseY + miniMap.btop - miniMap.pos.t - ($obj.node.h + 2) / 2;
                 if (overleft($obj.node)) {
-                    lensleft = smallImage.bleft - $obj.node.w / 2;
+                    lensleft = miniMap.bleft - $obj.node.w / 2;
                 } else if (overright($obj.node)) {
-                    lensleft = smallImage.w + smallImage.bleft - $obj.node.w / 2;
+                    lensleft = miniMap.w + miniMap.bleft - $obj.node.w / 2;
                 }
                 if (overtop($obj.node)) {
-                    lenstop = smallImage.btop - $obj.node.h / 2;
+                    lenstop = miniMap.btop - $obj.node.h / 2;
                 } else if (overbottom($obj.node)) {
-                    lenstop = smallImage.h + smallImage.btop - $obj.node.h / 2;
+                    lenstop = miniMap.h + miniMap.btop - $obj.node.h / 2;
                 }
 
                 $obj.node.left = lensleft;
@@ -146,8 +144,8 @@ var Zoom = new function () {
                     centerX = $obj.node.left + $obj.node.w / 2,
                     centerY = $obj.node.top + $obj.node.h / 2
 
-                Scene.getCamera().position.x = (Fields.getMaxX() * centerX / smallImage.w) * 2 - Scene.getCameraY() - yOffset
-                Scene.getCamera().position.z = (Fields.getMaxY() * centerY / smallImage.h) * 2 + Scene.getCameraY() + yOffset
+                Scene.getCamera().position.x = (Fields.getMaxX() * centerX / miniMap.w) * 2 - Scene.getCameraY() - yOffset
+                Scene.getCamera().position.z = (Fields.getMaxY() * centerY / miniMap.h) * 2 + Scene.getCameraY() + yOffset
             };
             $obj.show = function () {
                 $obj.node.show();
@@ -157,24 +155,27 @@ var Zoom = new function () {
             return $obj;
         }
 
-    this.getLens = function () {
-        return lens
+    this.calculateX = function (x) {
+        return parseInt(miniMap.w * x / Fields.getMaxX())
     }
-    this.calculateMiniMapX = function (x) {
-        return parseInt(smallImage.w * x / Fields.getMaxX())
+    this.calculateY = function (y) {
+        return parseInt(miniMap.h * y / Fields.getMaxY())
     }
-    this.calculateMiniMapY = function (y) {
-        return parseInt(smallImage.h * y / Fields.getMaxY())
+    this.centerOn = function (x, y, func) {
+        lens.setcenter(x, y, func)
+    }
+    this.adjust = function () {
+        lens.setdimensions()
     }
     this.init = function () {
         Game.getMapElement().bind('mousedown', function (e) {
-            if (e.pageX > smallImage.pos.r || e.pageX < smallImage.pos.l || e.pageY < smallImage.pos.t || e.pageY > smallImage.pos.b) {
+            if (e.pageX > miniMap.pos.r || e.pageX < miniMap.pos.l || e.pageY < miniMap.pos.t || e.pageY > miniMap.pos.b) {
                 return false;
             }
             lens.setposition(e)
         })
 
-        smallImage = smallImage()
+        miniMap = miniMap()
         lens = lens()
         lens.show()
     }

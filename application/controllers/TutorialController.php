@@ -154,7 +154,7 @@ class TutorialController extends Coret_Controller_Authorized
         $this->view->headScript()->appendFile('/js/game/chat.js?v=' . $version);
         $this->view->headScript()->appendFile('/js/game/gui.js?v=' . $version);
         $this->view->headScript()->appendFile('/js/game/move.js?v=' . $version);
-        $this->view->headScript()->appendFile('/js/game/zoom.js?v=' . $version);
+        $this->view->headScript()->appendFile('/js/game/minimap.js?v=' . $version);
         $this->view->headScript()->appendFile('/js/game/timer.js?v=' . $version);
         $this->view->headScript()->appendFile('/js/game/turn.js?v=' . $version);
         $this->view->headScript()->appendFile('/js/game/sound.js?v=' . $version);

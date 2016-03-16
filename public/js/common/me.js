@@ -221,7 +221,7 @@ var CommonMe = new function () {
 
         if (notSet(center)) {
             //zoomer.setCenterIfOutOfScreen(a.x * 40, a.y * 40);
-            Zoom.getLens().setcenter(army.getX(), army.getY(), function () {
+            MiniMap.centerOn(army.getX(), army.getY(), function () {
                 selectedArmyId = armyId
             })
         } else {
