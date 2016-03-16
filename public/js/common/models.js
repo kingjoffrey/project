@@ -219,24 +219,25 @@ var Models = new function () {
         },
         initPathCircle = function () {
             var radius = 1,
-                segments = 64
+                segments = 64,
+                opacity = 0.7
 
             pathMaterialGreen = new THREE.MeshBasicMaterial({
                 color: 'green',
                 transparent: true,
-                opacity: 0.5,
+                opacity: opacity,
                 side: THREE.DoubleSide
             })
             pathMaterialWhite = new THREE.MeshBasicMaterial({
                 color: 'white',
                 transparent: true,
-                opacity: 0.5,
+                opacity: opacity,
                 side: THREE.DoubleSide
             })
             pathMaterialRed = new THREE.MeshBasicMaterial({
                 color: 'red',
                 transparent: true,
-                opacity: 0.5,
+                opacity: opacity,
                 side: THREE.DoubleSide
             })
             pathGeometry = new THREE.CircleGeometry(radius, segments)
@@ -492,7 +493,7 @@ var Models = new function () {
             }),
             mesh = new THREE.Mesh(new THREE.PlaneGeometry(2, 2), swampMaterial)
         mesh.rotation.x = Math.PI / 2
-        mesh.position.set(x * 2 + 1, 0.01, y * 2 + 1)
+        mesh.position.set(x * 2 + 1, 0.0001, y * 2 + 1)
 
         if (shadows) {
             mesh.receiveShadow = true
