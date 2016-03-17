@@ -41,7 +41,7 @@ var Ruins = new function () {
                 if (army.getNumberOfUnits() > 1) {
                     army.update(r.army)
                 } else {
-                    Players.get(r.color).getArmies().delete(r.army.id)
+                    Players.get(r.color).getArmies().destroy(r.army.id)
                 }
                 if (CommonMe.colorEquals(r.color)) {
                     Sound.play('death');

@@ -23,7 +23,6 @@ var Move = new function () {
                 Sound.play('swim');
                 break;
             default:
-                console.log(army.getMovementType())
                 Sound.play('walk');
                 break;
         }

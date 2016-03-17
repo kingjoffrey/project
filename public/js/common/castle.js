@@ -1,4 +1,4 @@
-var CommonCastle = function (castle, bgC, miniMapColor, textColor) {
+var CommonCastle = function (castle, bgC) {
     var mesh = Models.addCastle(castle, bgC),
         bgColor = bgC
 
