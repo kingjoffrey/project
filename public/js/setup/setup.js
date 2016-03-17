@@ -8,11 +8,7 @@ var Setup = new function () {
                 .html(translations.select)
                 .attr('id', mapPlayerId)
                 .click(function () {
-                    var token = {
-                        type: 'change',
-                        mapPlayerId: this.id
-                    }
-                    ws.send(JSON.stringify(token))
+                    WebSocketSend.change(this.id)
                 }))
         },
         initButtons = function () {
@@ -99,6 +95,7 @@ var Setup = new function () {
         return gameMasterId
     }
     this.init = function () {
+        playersOutElement = $('#playersout')
         PrivateChat.setType('setup')
         PrivateChat.enable()
         initButtons()

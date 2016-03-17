@@ -47,6 +47,19 @@ var WebSocketSend = new function () {
 
         ws.send(JSON.stringify(token))
     }
+    this.change = function (id) {
+        if (closed) {
+            console.log(translations.sorryServerIsDisconnected)
+            return;
+        }
+
+        var token = {
+            type: 'change',
+            mapPlayerId: id
+        }
+
+        ws.send(JSON.stringify(token))
+    }
     this.init = function (param) {
         ws = param
     }
