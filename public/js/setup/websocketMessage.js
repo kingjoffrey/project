@@ -21,7 +21,7 @@ var WebSocketMessage = new function () {
                 break;
 
             case 'update':
-                gameMasterId = r.gameMasterId
+                Setup.setGameMasterId(r.gameMasterId)
                 Setup.removePlayer(r.player.playerId)
 
                 if (notSet(r.close)) {

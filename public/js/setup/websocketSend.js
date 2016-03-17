@@ -60,6 +60,19 @@ var WebSocketSend = new function () {
 
         ws.send(JSON.stringify(token))
     }
+    this.start = function (team) {
+        if (closed) {
+            console.log(translations.sorryServerIsDisconnected)
+            return;
+        }
+
+        var token = {
+            type: 'start',
+            team: team
+        }
+
+        ws.send(JSON.stringify(token))
+    }
     this.init = function (param) {
         ws = param
     }

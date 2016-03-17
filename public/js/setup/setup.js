@@ -58,13 +58,7 @@ var Setup = new function () {
                                 team[id] = $(this).find('select').val()
                             }
                         })
-
-                        var token = {
-                            type: 'start',
-                            team: team
-                        }
-
-                        ws.send(JSON.stringify(token))
+                        WebSocketSend.start(team)
                     })
             } else {
                 $('#start')
@@ -93,6 +87,9 @@ var Setup = new function () {
     }
     this.getGameMasterId = function () {
         return gameMasterId
+    }
+    this.setGameMasterId = function (i) {
+        gameMasterId = i
     }
     this.init = function () {
         playersOutElement = $('#playersout')
