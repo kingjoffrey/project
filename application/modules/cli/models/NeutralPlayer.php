@@ -87,6 +87,7 @@ class Cli_Model_NeutralPlayer extends Cli_Model_DefaultPlayer
             'longName' => $this->_longName,
             'team' => $this->_team,
             'backgroundColor' => $this->_backgroundColor,
+            'miniMapColor' => $this->_backgroundColor,
             'armies' => $this->_armies->toArray(),
             'castles' => $this->_castles->toArray(),
             'towers' => $this->_towers->toArray()
