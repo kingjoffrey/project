@@ -517,7 +517,7 @@ var Models = new function () {
             flagMesh.castShadow = true
         }
         this.setArmyPosition(mesh, x, y)
-        flagMesh.position.set(-0.2, 0, 0)
+        flagMesh.position.set(-0.5, 0, 0)
         mesh.rotation.y = Math.PI / 2 + Math.PI / 4
         mesh.add(flagMesh)
         Scene.add(mesh)
