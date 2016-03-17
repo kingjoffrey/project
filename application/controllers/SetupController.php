@@ -10,8 +10,16 @@ class SetupController extends Game_Controller_Gui
         }
 
         $this->view->headLink()->appendStylesheet($this->view->baseUrl() . '/css/playerslist.css?v=' . $this->_version);
-        $this->view->headScript()->appendFile('/js/setup.js?v=' . $this->_version);
-        $this->view->headScript()->appendFile('/js/new.js?v=' . $this->_version);
+        $this->view->headScript()->appendFile('/js/setup/init.js?v=' . $this->_version);
+        $this->view->headScript()->appendFile('/js/setup/setup.js?v=' . $this->_version);
+        $this->view->headScript()->appendFile('/js/setup/websocket.js?v=' . $this->_version);
+        $this->view->headScript()->appendFile('/js/setup/websocketMessage.js?v=' . $this->_version);
+        $this->view->headScript()->appendFile('/js/setup/websocketSend.js?v=' . $this->_version);
+        $this->view->headScript()->appendFile('/js/new/init.js?v=' . $this->_version);
+        $this->view->headScript()->appendFile('/js/new/new.js?v=' . $this->_version);
+        $this->view->headScript()->appendFile('/js/new/websocket.js?v=' . $this->_version);
+        $this->view->headScript()->appendFile('/js/new/websocketMessage.js?v=' . $this->_version);
+        $this->view->headScript()->appendFile('/js/new/websocketSend.js?v=' . $this->_version);
 
         $mGame = new Application_Model_Game($gameId);
         $game = $mGame->getGame();

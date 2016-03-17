@@ -101,7 +101,7 @@ var New = new function () {
         empty = $('<tr id="0">').append($('<td colspan="4">').html(info).css('padding', '15px'))
 
         $('#mapId').change(function () {
-            WebSocketSend.map($('#mapId').val())
+            WebSocketSendNew.map($('#mapId').val())
         })
 
         WebSocketNew.init()

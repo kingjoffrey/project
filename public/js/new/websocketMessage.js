@@ -1,10 +1,10 @@
-var WebSocketMessage = new function () {
+var WebSocketMessageNew = new function () {
     this.switch = function (r) {
         console.log(r)
         switch (r.type) {
             case 'games':
                 New.addGames(r.games)
-                WebSocketSend.map($('#mapId').val())
+                WebSocketSendNew.map($('#mapId').val())
                 break
             case 'addGame':
                 New.addGame(r.game)
