@@ -178,29 +178,29 @@ var Move = new function () {
                         var battleArmy = r.battle.defenders[color][armyId],
                             defenderArmy = defenderArmies.get(armyId)
 
-                        for (var soldierId in battleArmy.walk) {
-                            if (battleArmy.walk[soldierId]) {
-                                defenderArmy.deleteWalkingSoldier(soldierId)
-                            }
-                        }
-                        for (var soldierId in battleArmy.swim) {
-                            if (battleArmy.swim[soldierId]) {
-                                defenderArmy.deleteSwimmingSoldier(soldierId)
-                            }
-                        }
-                        for (var soldierId in battleArmy.fly) {
-                            if (battleArmy.fly[soldierId]) {
-                                defenderArmy.deleteFlyingSoldier(soldierId)
-                            }
-                        }
-                        for (var heroId in battleArmy.hero) {
-                            if (battleArmy.hero[heroId]) {
-                                defenderArmy.deleteHero(heroId)
-                            }
-                        }
+                        //for (var soldierId in battleArmy.walk) {
+                        //    if (battleArmy.walk[soldierId]) {
+                        //        defenderArmy.deleteWalkingSoldier(soldierId)
+                        //    }
+                        //}
+                        //for (var soldierId in battleArmy.swim) {
+                        //    if (battleArmy.swim[soldierId]) {
+                        //        defenderArmy.deleteSwimmingSoldier(soldierId)
+                        //    }
+                        //}
+                        //for (var soldierId in battleArmy.fly) {
+                        //    if (battleArmy.fly[soldierId]) {
+                        //        defenderArmy.deleteFlyingSoldier(soldierId)
+                        //    }
+                        //}
+                        //for (var heroId in battleArmy.hero) {
+                        //    if (battleArmy.hero[heroId]) {
+                        //        defenderArmy.deleteHero(heroId)
+                        //    }
+                        //}
                         defenderArmy.setNumberOfUnits(defenderArmy.toArray())
                         if (defenderArmy.getNumberOfUnits()) {
-                            defenderArmy.update(defenderArmy)
+                            defenderArmy.update(defenderArmy.toArray())
                         } else {
                             defenderArmies.destroy(armyId)
                         }

@@ -2,7 +2,6 @@
 var Gui = new function () {
     var lock = true,
         show = true,
-        commandsBox = {close: 0},
         chatBox = {close: 0},
         playerBox = {close: 0},
         limitBox = {close: 0},
@@ -285,23 +284,6 @@ var Gui = new function () {
                 changeCloseArrowLR(playerBox.move, playerBox.el);
             })
         })
-        $('#commandsBox .close').click(function () {
-            var right = parseInt($('#commandsBox').css('right')),
-                move = $('#commandsBox').width()
-
-            commandsBox.el = this;
-
-            if (commandsBox.close) {
-                move = -move;
-            }
-
-            commandsBox.move = move;
-
-            $('#commandsBox').animate({'right': right - move + 'px'}, speed, function () {
-                commandsBox.close = !commandsBox.close;
-                changeCloseArrowLR(commandsBox.move, commandsBox.el);
-            })
-        })
         //$('#chatBox .close').click(function () {
         //    Gui.moveChatBox()
         //})
@@ -310,7 +292,6 @@ var Gui = new function () {
         Scene.resize()
         MiniMap.adjust()
 
-        commandsBox.close = 0
         chatBox.close = 0
         playerBox.close = 0
         limitBox.close = 0
@@ -334,7 +315,7 @@ var Gui = new function () {
         $('#limitBox').css({
             top: Fields.getHeight() + 30 + 'px'
         })
-        Gui.armyBoxAdjust()
+        //Gui.armyBoxAdjust()
         //Message.adjust()
         //Message.setOverflowHeight()
     }
@@ -433,7 +414,6 @@ var Gui = new function () {
             height: Fields.getHeight() + 18 + 'px'
         });
         $('#terrain').css('top', Fields.getHeight() + 4 + 'px')
-        $('#commandsBox').css({top: $('#playersBox').height() + 14 + 'px'})
         prepareButtons()
         this.prepareBoxes()
         this.adjust()

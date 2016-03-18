@@ -13,7 +13,7 @@
 <div id="game">
     <div id="mapBox" class="box">
         <div id="map">
-            <div class="zoomPup"></div>
+            <div class="lens"></div>
         </div>
         <div class="close">&#x25C0</div>
         <div id="terrain">
@@ -98,38 +98,31 @@
         </div>
         <div class="close">&#x25B6</div>
     </div>
-    <div id="commandsBox" class="box">
-        <div class="close">&#x25B6</div>
-        <div id="armyButtonsBox">
-            <div class="armyButtons">
-                <a id="deselectArmy"
-                   class="button buttonColors buttonOff"><?php echo $this->translate('Deselect army') ?></a>
-                <a id="searchRuins"
-                   class="button buttonColors buttonOff"><?php echo $this->translate('Search ruins') ?> (r) </a>
-                <a id="showCastle"
-                   class="button buttonColors buttonOff"><?php echo $this->translate('Show castle') ?> (c) </a>
-                <a id="buildCastleDefense"
-                   class="button buttonColors buttonOff"><?php echo $this->translate('Build defense') ?> (b) </a>
-                <a id="razeCastle"
-                   class="button buttonColors buttonOff"><?php echo $this->translate('Raze castle') ?></a>
-                <a id="splitArmy"
-                   class="button buttonColors buttonOff"><?php echo $this->translate('Split army') ?></a>
-                <a id="armyStatus"
-                   class="button buttonColors buttonOff"><?php echo $this->translate('Army status') ?> (s) </a>
-            </div>
-        </div>
-    </div>
     <div id="armyBox" class="box">
         <div id="unitsBox"></div>
         <div id="armyButtons">
             <a id="disbandArmy"
-               class="iconButton buttonColors buttonOff"> X </a>
+               class="iconButton buttonColors buttonOff" title="<?php echo $this->translate('Disband army') ?>"></a>
+            <a id="deselectArmy"
+               class="iconButton buttonColors buttonOff" title="<?php echo $this->translate('Deselect army') ?>"></a>
+            <a id="showCastle"
+               class="iconButton buttonColors buttonOff" title="<?php echo $this->translate('Show castle') ?> (c) "></a>
+            <a id="buildCastleDefense"
+               class="iconButton buttonColors buttonOff" title="<?php echo $this->translate('Build defense') ?> (b) "></a>
+            <a id="razeCastle"
+               class="iconButton buttonColors buttonOff" title="<?php echo $this->translate('Raze castle') ?>"></a>
+            <a id="searchRuins"
+               class="iconButton buttonColors buttonOff" title="<?php echo $this->translate('Search ruins') ?> (r) "></a>
+            <a id="splitArmy"
+               class="iconButton buttonColors buttonOff" title="<?php echo $this->translate('Split army') ?>"></a>
+            <a id="armyStatus"
+               class="iconButton buttonColors buttonOff" title="<?php echo $this->translate('Army status') ?> (s) "></a>
             <a id="quitArmy"
-               class="iconButton buttonColors buttonOff"> <> </a>
+               class="iconButton buttonColors buttonOff" title="<?php echo $this->translate('Fortify army') ?> (f) "></a>
             <a id="skipArmy"
-               class="iconButton buttonColors buttonOff"> || </a>
+               class="iconButton buttonColors buttonOff" title="<?php echo $this->translate('Skip army') ?>"></a>
             <a id="nextArmy"
-               class="iconButton buttonColors buttonOff"> >> </a>
+               class="iconButton buttonColors buttonOff" title="<?php echo $this->translate('Find next army') ?> (n) "></a>
         </div>
         <div></div>
     </div>
@@ -144,6 +137,7 @@
             <input id="friendId" value=""/>
             <input type="text" name="msg" id="msg">
             <a id="send" class="button buttonColors"> > </a>
+
             <div id="chatTitle"></div>
         </div>
     </div>

@@ -46,7 +46,7 @@
     left: 0px;
 }
 
-.zoomPup {
+#lens {
     border: 1px solid #fff;
     top: 0;
     left: 0;
@@ -59,7 +59,6 @@
     top: 0px;
     left: 0px;
 }
-
 
 #map .c {
     border: 1px solid #000;
@@ -631,7 +630,7 @@
 
 #armyBox #armyButtons {
     float: right;
-    width: 124px;
+    /*width: 124px;*/
     height: 30px;
 }
 
@@ -641,31 +640,6 @@
     height: 25px;
     display: inline-block;
     text-shadow: none;
-}
-
-#commandsBox {
-    border-top-left-radius: 10px;
-    border-bottom-left-radius: 10px;
-    width: 188px;
-    right: -2px;
-}
-
-#commandsBox #nameBox {
-    height: 14px;
-    line-height: 14px;
-    margin: 5px;
-    text-align: center;
-    /*background: url("/img/bg_0.jpg");*/
-}
-
-#commandsBox #attrBox {
-    height: 26px;
-    margin: 5px;
-}
-
-#commandsBox #attrBox div {
-    width: 73px;
-    /*background: url("/img/bg_0.jpg");*/
 }
 
 .text-right {
@@ -949,11 +923,6 @@ table.treasury td.c {
     top: 12px;
 }
 
-#commandsBox .close {
-    left: -23px;
-    top: 8px;
-}
-
 #battleAttack {
     width: 27px;
     height: 27px;
@@ -1025,6 +994,90 @@ table.treasury td.c {
     padding: 3px;
 }
 
-table.treasury td{
+table.treasury td {
     height: 28px !important;
+}
+
+#disbandArmy {
+    background: url(/img/game/buttons/delete.png) center center no-repeat !important;
+}
+
+#disbandArmy.buttonOff {
+    background: url(/img/game/buttons/delete_off.png) center center no-repeat !important;
+}
+
+#quitArmy {
+    background: url(/img/game/buttons/stop.png) center center no-repeat !important;
+}
+
+#quitArmy.buttonOff {
+    background: url(/img/game/buttons/stop_off.png) center center no-repeat !important;
+}
+
+#skipArmy {
+    background: url(/img/game/buttons/pause.png) center center no-repeat !important;
+}
+
+#skipArmy.buttonOff {
+    background: url(/img/game/buttons/pause_off.png) center center no-repeat !important;
+}
+
+#nextArmy {
+    background: url(/img/game/buttons/search.png) center center no-repeat !important;
+}
+
+#splitArmy {
+    background: url(/img/game/buttons/split.png) center center no-repeat !important;
+}
+
+#splitArmy.buttonOff {
+    background: url(/img/game/buttons/split_off.png) center center no-repeat !important;
+}
+
+#deselectArmy {
+    background: url(/img/game/buttons/deselect.png) center center no-repeat !important;
+}
+
+#deselectArmy.buttonOff {
+    background: url(/img/game/buttons/deselect_off.png) center center no-repeat !important;
+}
+
+#showCastle {
+    background: url(/img/game/buttons/castle.png) center center no-repeat !important;
+}
+
+#showCastle.buttonOff {
+    background: url(/img/game/buttons/castle_off.png) center center no-repeat !important;
+}
+
+#razeCastle {
+    background: url(/img/game/buttons/raze.png) center center no-repeat !important;
+}
+
+#razeCastle.buttonOff {
+    background: url(/img/game/buttons/raze_off.png) center center no-repeat !important;
+}
+
+#armyStatus {
+    background: url(/img/game/buttons/status.png) center center no-repeat !important;
+}
+
+#armyStatus.buttonOff {
+    background: url(/img/game/buttons/status_off.png) center center no-repeat !important;
+}
+
+#searchRuins {
+    background: url(/img/game/buttons/ruins.png) center center no-repeat !important;
+}
+
+#searchRuins.buttonOff {
+    background: url(/img/game/buttons/ruins_off.png) center center no-repeat !important;
+}
+
+#buildCastleDefense {
+    background: url(/img/game/buttons/build.png) center center no-repeat !important;
+}
+
+#buildCastleDefense.buttonOff {
+    background: url(/img/game/buttons/build_off.png) center center no-repeat !important;
 }

@@ -56,7 +56,7 @@ var MiniMap = new function () {
         },
         lens = function () {
             var $obj = {}
-            $obj.node = $('.zoomPup')
+            $obj.node = $('#lens')
             $obj.setdimensions = function () {
                 var visibleMapWidth = Scene.getWidth() / 85,
                     visibleMapHeight = Scene.getHeight() / 85

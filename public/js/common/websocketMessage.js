@@ -1,7 +1,7 @@
 "use strict"
 var WebSocketMessage = new function () {
     this.switch = function (r) {
-        //console.log(r)
+        console.log(r)
         switch (r.type) {
             case 'move':
                 Execute.addQueue(r)
