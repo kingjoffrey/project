@@ -4,9 +4,7 @@ if (!Detector.webgl) {
 }
 
 var Scene = new function () {
-    var minHeight = 665,
-        minWidth = 950,
-        gameWidth,
+    var gameWidth,
         gameHeight,
         scene = new THREE.Scene(),
         camera,
@@ -122,12 +120,6 @@ var Scene = new function () {
     this.resize = function () {
         gameWidth = $(window).innerWidth()
         gameHeight = $(window).innerHeight()
-        if (gameWidth < minWidth) {
-            gameWidth = minWidth
-        }
-        if (gameHeight < minHeight) {
-            gameHeight = minHeight
-        }
         $('#game')
             .css({
                     width: gameWidth + 'px',
@@ -141,12 +133,6 @@ var Scene = new function () {
     this.init = function () {
         gameWidth = $(window).innerWidth()
         gameHeight = $(window).innerHeight()
-        if (gameWidth < minWidth) {
-            gameWidth = minWidth
-        }
-        if (gameHeight < minHeight) {
-            gameHeight = minHeight
-        }
 
         $('#game')
             .append(renderer.domElement)
