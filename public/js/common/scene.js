@@ -62,7 +62,7 @@ var Scene = new function () {
         return shadows
     }
     this.setCameraPosition = function (x, z) {
-        camera.position.set(x, cameraY, parseInt(z))
+        camera.position.set(x, cameraY, parseFloat(z))
     }
     this.getCameraY = function () {
         return cameraY

@@ -2,6 +2,8 @@
 var MiniMap = new function () {
     var lens,
         miniMap,
+        zz,
+        xx,
         miniMap = function () {
             var image = $('#map canvas'),
                 node = image[0],
@@ -69,6 +71,9 @@ var MiniMap = new function () {
                 });
             };
             $obj.setcenter = function (x, y, func) {
+                xx = x
+                zz = y
+                console.log(xx, zz)
                 $obj.node.top = miniMap.h * y / Fields.getMaxY() - $obj.node.h / 2
                 $obj.node.left = miniMap.w * x / Fields.getMaxX() - $obj.node.w / 2
                 $obj.node.css({
@@ -163,6 +168,14 @@ var MiniMap = new function () {
     }
     this.centerOn = function (x, y, func) {
         lens.setcenter(x, y, func)
+    }
+    this.moveGround = function (x, y) {
+        console.log(x + ' ' + y)
+        //var xxx = -x + y,
+        //    zzz = x - y
+        //console.log(xxx + ' ' + zzz)
+
+        this.centerOn(xx + x, zz + y)
     }
     this.adjust = function () {
         lens.setdimensions()

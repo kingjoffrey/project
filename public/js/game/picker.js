@@ -1,4 +1,6 @@
 var Picker = new function () {
+    var dragStart = 0
+
     this.onContainerMouseDown = function (event) {
         PickerCommon.intersect(event)
         if (PickerCommon.intersects()) {
@@ -26,6 +28,8 @@ var Picker = new function () {
                             } else {
                                 CastleWindow.show(CommonMe.getCastle(castleId))
                             }
+                        } else {
+                            dragStart = PickerCommon.getPoint()
                         }
                     }
                     break
@@ -46,9 +50,34 @@ var Picker = new function () {
             if (AStar.cursorPosition(PickerCommon.convertX(), PickerCommon.convertZ()) && CommonMe.getSelectedArmyId()) {
                 AStar.showPath()
             }
+            if (dragStart) {
+                var dragEnd = PickerCommon.getPoint()
+
+                if (dragStart.x > dragEnd.x) {
+                    var x = 1
+                } else {
+                    var x = -1
+                }
+
+                if (dragStart.z > dragEnd.z) {
+                    var y = 1
+                } else {
+                    var y = -1
+                }
+                //x = dragStart.x - dragEnd.x,
+                //z = dragStart.z - dragEnd.z
+
+                MiniMap.moveGround(x, y)
+                dragStart = dragEnd
+            }
         }
     }
     this.onContainerMouseUp = function (event) {
-        event.preventDefault();
+        event.preventDefault()
+        dragStart = 0
+    }
+    this.onContainerMouseOut = function (event) {
+        event.preventDefault()
+        dragStart = 0
     }
 }

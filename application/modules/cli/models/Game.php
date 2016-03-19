@@ -177,7 +177,6 @@ class Cli_Model_Game
             'fields' => $this->_Fields->toArray(),
             'terrain' => $this->_Terrain->toArray(),
             'capitals' => $this->_capitals,
-            'online' => $this->_online,
             'chatHistory' => $this->_chatHistory,
             'turnHistory' => $this->_turnHistory,
             'players' => $this->_Players->toArray(),

@@ -3,7 +3,8 @@ var PickerCommon = new function () {
         objects = [],
         intersects = [],
         camera,
-        container
+        container,
+        vector
 
     this.init = function () {
         camera = Scene.getCamera()
@@ -12,15 +13,16 @@ var PickerCommon = new function () {
         container.addEventListener('mousedown', Picker.onContainerMouseDown, false);
         container.addEventListener('mousemove', Picker.onContainerMouseMove, false);
         container.addEventListener('mouseup', Picker.onContainerMouseUp, false);
+        container.addEventListener('mouseout', Picker.onContainerMouseOut, false);
     }
     this.intersect = function (event) {
-        var x = event.offsetX == undefined ? event.layerX : event.offsetX;
-        var y = event.offsetY == undefined ? event.layerY : event.offsetY;
+        var x = event.offsetX == undefined ? event.layerX : event.offsetX,
+            y = event.offsetY == undefined ? event.layerY : event.offsetY
 
-        var vector = new THREE.Vector3(( x / container.width ) * 2 - 1, -( y / container.height ) * 2 + 1, 1);
-        vector.unproject(camera);
-        raycaster.set(camera.position, vector.sub(camera.position).normalize());
-        intersects = raycaster.intersectObjects(objects, true)
+        vector = new THREE.Vector3(( x / container.width ) * 2 - 1, -( y / container.height ) * 2 + 1, 1)
+        vector.unproject(camera)
+        raycaster.set(camera.position, vector.sub(camera.position).normalize())
+        intersects = raycaster.intersectObjects(objects, false)
     }
     this.convertX = function () {
         return Math.floor(parseInt(intersects[0].point.x) / 2)
@@ -41,5 +43,9 @@ var PickerCommon = new function () {
     }
     this.intersects = function () {
         return isSet(intersects[0])
+    }
+    this.getPoint = function () {
+        return {x: vector.x, z: vector.y}
+        //return {x: intersects[0].point.x, z: intersects[0].point.z}
     }
 }
