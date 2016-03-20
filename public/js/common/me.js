@@ -199,25 +199,8 @@ var CommonMe = new function () {
         this.updateInfo(armyId)
         $('#name').html('Army')
 
-        $('#splitArmy').removeClass('buttonOff');
         $('#deselectArmy').removeClass('buttonOff');
         $('#armyStatus').removeClass('buttonOff');
-        $('#disbandArmy').removeClass('buttonOff');
-        $('#skipArmy').removeClass('buttonOff');
-        $('#quitArmy').removeClass('buttonOff');
-
-        if (army.getHeroKey()) {
-            if (Fields.get(army.getX(), army.getY()).getRuinId()) {
-                $('#searchRuins').removeClass('buttonOff');
-            }
-            //    $('#showArtifacts').removeClass('buttonOff');
-        }
-
-        if (this.colorEquals(Fields.get(army.getX(), army.getY()).getCastleColor())) {
-            $('#razeCastle').removeClass('buttonOff');
-            $('#buildCastleDefense').removeClass('buttonOff');
-            $('#showCastle').removeClass('buttonOff');
-        }
 
         if (notSet(center)) {
             //zoomer.setCenterIfOutOfScreen(a.x * 40, a.y * 40);
@@ -268,22 +251,9 @@ var CommonMe = new function () {
         }
         selectedArmyId = null
         $('.path').remove();
-        $('#splitArmy').addClass('buttonOff');
         $('#deselectArmy').addClass('buttonOff');
         $('#armyStatus').addClass('buttonOff');
-        $('#skipArmy').addClass('buttonOff');
-        $('#quitArmy').addClass('buttonOff');
-        $('#searchRuins').addClass('buttonOff');
-        $('#razeCastle').addClass('buttonOff');
-        $('#buildCastleDefense').addClass('buttonOff');
-        $('#showCastle').addClass('buttonOff');
-        $('#showArtifacts').addClass('buttonOff');
-        $('#disbandArmy').addClass('buttonOff');
     }
-    //this.attachPicker = function () {
-    //    me.getArmies().attachPicker()
-    //    me.getCastles().attachPicker()
-    //}
     this.removeFromSkipped = function (armyId) {
         if (isTruthful(skippedArmies[armyId])) {
             delete skippedArmies[armyId]

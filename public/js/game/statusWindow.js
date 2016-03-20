@@ -1,5 +1,5 @@
 var StatusWindow = new function () {
-    var statusContent = function (numberOfUnits, soldier, color, attackFlyBonus, attackHeroBonus, defenseFlyBonus, defenseHeroBonus, defenseTowerBonus, defenseCastleBonus) {
+    var statusRowContent = function (numberOfUnits, soldier, color, attackFlyBonus, attackHeroBonus, defenseFlyBonus, defenseHeroBonus, defenseTowerBonus, defenseCastleBonus) {
         return $('<div>')
             .addClass('row')
             .append($('<div>')
@@ -16,11 +16,11 @@ var StatusWindow = new function () {
                     .append($('<tr>')
                         .append($('<td>').html(translations.currentMoves + ': '))
                         .append($('<td>').html(soldier.movesLeft).addClass('value'))
-                )
+                    )
                     .append($('<tr>')
                         .append($('<td>').html(translations.defaultMoves + ': '))
                         .append($('<td>').html(Units.get(soldier.unitId).moves).addClass('value'))
-                )
+                    )
                     .append($('<tr>')
                         .append($('<td>').html(translations.attackPoints + ': '))
                         .append($('<td>')
@@ -28,8 +28,8 @@ var StatusWindow = new function () {
                             .append(attackFlyBonus.clone())
                             .append(attackHeroBonus.clone())
                             .addClass('value')
+                        )
                     )
-                )
                     .append($('<tr>')
                         .append($('<td>').html(translations.defencePoints + ': '))
                         .append($('<td>')
@@ -39,29 +39,28 @@ var StatusWindow = new function () {
                             .append(defenseTowerBonus.clone())
                             .append(defenseCastleBonus.clone())
                             .addClass('value')
+                        )
                     )
                 )
-            )
                 .append($('<table>')
                     .addClass('rightTable')
                     .append($('<tr>')
                         .append($('<td>').html(translations.movementCostThroughTheForest + ': '))
                         .append($('<td>').html(Units.get(soldier.unitId).f).addClass('value'))
-                )
+                    )
                     .append($('<tr>')
                         .append($('<td>').html(translations.movementCostThroughTheSwamp + ': '))
                         .append($('<p>').html(Units.get(soldier.unitId).s).addClass('value')))
                     .append($('<tr>')
                         .append($('<td>').html(translations.movementCostThroughTheHills + ': '))
                         .append($('<p>').html(Units.get(soldier.unitId).h).addClass('value'))
+                    )
                 )
             )
-        )
     }
 
     this.show = function () {
-        var div = $('<div>').addClass('status'),
-            numberOfUnits = 0,
+        var numberOfUnits = 0,
             bonusTower = 0,
             army = CommonMe.getArmy(CommonMe.getSelectedArmyId()),
             color = CommonMe.getColor(),
@@ -73,16 +72,23 @@ var StatusWindow = new function () {
             attackHeroBonus = $('<div>'),
             defenseHeroBonus = $('<div>'),
             defenseTowerBonus = $('<div>'),
-            defenseCastleBonus = $('<div>')
+            defenseCastleBonus = $('<div>'),
+            field = Fields.get(army.getX(), army.getY()),
+            showCastle = 'buttonOff',
+            buildCastleDefense = 'buttonOff',
+            searchRuins = 'buttonOff',
+            splitArmy = 'buttonOff'
 
-        var get = function (i) {
-            return function () {
-                MiniMap.centerOn(castles[i].x, castles[i].y)
-            }
+        if (field.getRuinId()) {
+            searchRuins = ''
         }
 
-        if (Fields.get(army.getX(), army.getY()).getTowerId()) {
+        if (field.getTowerId()) {
             bonusTower = 1;
+        }
+
+        if (army.getNumberOfUnits() > 1) {
+            splitArmy = ''
         }
 
         if (army.getFlyBonus()) {
@@ -98,19 +104,99 @@ var StatusWindow = new function () {
         }
         if (castleDefense) {
             defenseCastleBonus.html(' +' + castleDefense).addClass('value plus')
+            showCastle = ''
+            if (castleDefense < 4) {
+                console.log(castleDefense)
+                buildCastleDefense = ''
+            }
         }
+
+        var div = $('<div>').addClass('status').append(
+            $('<div>')
+                .append(
+                    $('<a>').attr({
+                        id: 'disbandArmy',
+                        title: 'Disband army'
+                    }).addClass('iconButton buttonColors').click(function () {
+                        CommonMe.disband()
+                    })
+                )
+                .append(
+                    $('<a>').attr({
+                        id: 'showCastle',
+                        title: 'Show castle (c)'
+                    }).addClass('iconButton buttonColors ' + showCastle).click(function () {
+                        var castle = CommonMe.getCastle(field.getCastleId())
+                        if (isSet(castle)) {
+                            CastleWindow.show(castle)
+                        }
+                    })
+                )
+                .append(
+                    $('<a>').attr({
+                        id: 'buildCastleDefense',
+                        title: 'Build defense (b)'
+                    }).addClass('iconButton buttonColors ' + buildCastleDefense).click(function () {
+                        CastleWindow.build()
+                    })
+                )
+                .append(
+                    $('<a>').attr({
+                        id: 'razeCastle',
+                        title: 'Raze castle'
+                    }).addClass('iconButton buttonColors ' + showCastle).click(function () {
+                        CastleWindow.raze()
+                    })
+                )
+                .append(
+                    $('<a>').attr({
+                        id: 'searchRuins',
+                        title: 'Search ruins (r)'
+                    }).addClass('iconButton buttonColors ' + searchRuins).click(function () {
+                        WebSocketSend.ruin()
+                    })
+                )
+                .append(
+                    $('<a>').attr({
+                        id: 'splitArmy',
+                        title: 'Split army'
+                    }).addClass('iconButton buttonColors ' + splitArmy).click(function () {
+                        if (!CommonMe.getSelectedArmyId()) {
+                            return
+                        }
+
+                        SplitWindow.show()
+                    })
+                )
+                .append(
+                    $('<a>').attr({
+                        id: 'quitArmy',
+                        title: 'Fortify army (f)'
+                    }).addClass('iconButton buttonColors').click(function () {
+                        WebSocketSend.fortify()
+                    })
+                )
+                .append(
+                    $('<a>').attr({
+                        id: 'skipArmy',
+                        title: 'Skip army'
+                    }).addClass('iconButton buttonColors').click(function () {
+                        CommonMe.skip()
+                    })
+                )
+        )
 
         for (var i in army.getWalkingSoldiers()) {
             numberOfUnits++
-            div.append(statusContent(numberOfUnits, army.getWalkingSoldier(i), color, attackFlyBonus, attackHeroBonus, defenseFlyBonus, defenseHeroBonus, defenseTowerBonus, defenseCastleBonus));
+            div.append(statusRowContent(numberOfUnits, army.getWalkingSoldier(i), color, attackFlyBonus, attackHeroBonus, defenseFlyBonus, defenseHeroBonus, defenseTowerBonus, defenseCastleBonus));
         }
         for (var i in army.getSwimmingSoldiers()) {
             numberOfUnits++
-            div.append(statusContent(numberOfUnits, army.getSwimmingSoldier(i), color, attackFlyBonus, attackHeroBonus, defenseFlyBonus, defenseHeroBonus, defenseTowerBonus, defenseCastleBonus));
+            div.append(statusRowContent(numberOfUnits, army.getSwimmingSoldier(i), color, attackFlyBonus, attackHeroBonus, defenseFlyBonus, defenseHeroBonus, defenseTowerBonus, defenseCastleBonus));
         }
         for (var i in army.getFlyingSoldiers()) {
             numberOfUnits++
-            div.append(statusContent(numberOfUnits, army.getFlyingSoldier(i), color, attackFlyBonus, attackHeroBonus, defenseFlyBonus, defenseHeroBonus, defenseTowerBonus, defenseCastleBonus));
+            div.append(statusRowContent(numberOfUnits, army.getFlyingSoldier(i), color, attackFlyBonus, attackHeroBonus, defenseFlyBonus, defenseHeroBonus, defenseTowerBonus, defenseCastleBonus));
         }
         for (var i in army.getHeroes()) {
             numberOfUnits++
@@ -119,56 +205,56 @@ var StatusWindow = new function () {
                 $('<div>')
                     .addClass('row')
                     .append(
-                    $('<div>')
-                        .addClass('rowContent')
-                        .append($('<div>').addClass('nr').html(numberOfUnits))
-                        .append($('<div>').addClass('img').html(
-                            $('<img>').attr({
-                                'src': Hero.getImage(color),
-                                'id': 'hero' + hero.heroId
-                            })
-                        ))
-                        .append(
-                        $('<table>').addClass('leftTable')
+                        $('<div>')
+                            .addClass('rowContent')
+                            .append($('<div>').addClass('nr').html(numberOfUnits))
+                            .append($('<div>').addClass('img').html(
+                                $('<img>').attr({
+                                    'src': Hero.getImage(color),
+                                    'id': 'hero' + hero.heroId
+                                })
+                            ))
                             .append(
-                            $('<tr>')
-                                .append($('<td>').html(translations.currentMoves + ': '))
-                                .append($('<td>').html(hero.movesLeft).addClass('value'))
-                        )
-                            .append(
-                            $('<tr>')
-                                .append($('<td>').html(translations.defaultMoves + ': '))
-                                .append($('<td>').html(hero.moves).addClass('value'))
-                        )
-                            .append(
-                            $('<tr>')
-                                .append($('<td>').html(translations.attackPoints + ': '))
-                                .append(
-                                $('<td>')
-                                    .append($('<div>').html(hero.attack))
-                                    .append(attackFlyBonus.clone())
-//                                                    .append(attackHeroBonus.clone())
-                                    .addClass('value')
+                                $('<table>').addClass('leftTable')
+                                    .append(
+                                        $('<tr>')
+                                            .append($('<td>').html(translations.currentMoves + ': '))
+                                            .append($('<td>').html(hero.movesLeft).addClass('value'))
+                                    )
+                                    .append(
+                                        $('<tr>')
+                                            .append($('<td>').html(translations.defaultMoves + ': '))
+                                            .append($('<td>').html(hero.moves).addClass('value'))
+                                    )
+                                    .append(
+                                        $('<tr>')
+                                            .append($('<td>').html(translations.attackPoints + ': '))
+                                            .append(
+                                                $('<td>')
+                                                    .append($('<div>').html(hero.attack))
+                                                    .append(attackFlyBonus.clone())
+                                                    //                                                    .append(attackHeroBonus.clone())
+                                                    .addClass('value')
+                                            )
+                                    )
+                                    .append(
+                                        $('<tr>')
+                                            .append($('<td>').html(translations.defencePoints + ': '))
+                                            .append(
+                                                $('<td>')
+                                                    .append($('<div>').html(hero.defense))
+                                                    .append(defenseFlyBonus.clone())
+                                                    //                                                    .append(defenseHeroBonus.clone())
+                                                    .append(defenseTowerBonus.clone())
+                                                    .append(defenseCastleBonus.clone())
+                                                    .addClass('value')
+                                            )
+                                    )
                             )
-                        )
                             .append(
-                            $('<tr>')
-                                .append($('<td>').html(translations.defencePoints + ': '))
-                                .append(
-                                $('<td>')
-                                    .append($('<div>').html(hero.defense))
-                                    .append(defenseFlyBonus.clone())
-//                                                    .append(defenseHeroBonus.clone())
-                                    .append(defenseTowerBonus.clone())
-                                    .append(defenseCastleBonus.clone())
-                                    .addClass('value')
+                                $('<table>').addClass('rightTable')
                             )
-                        )
                     )
-                        .append(
-                        $('<table>').addClass('rightTable')
-                    )
-                )
             );
         }
 

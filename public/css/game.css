@@ -158,7 +158,7 @@
 .message #buttons .button {
     width: auto;
     margin: 10px;
-    padding: 2px 12px;
+    padding: 12px 12px;
 }
 
 .message .msgTitle {
@@ -207,7 +207,7 @@
 
 .message div.showCastle .button {
     line-height: 28px;
-    margin: 2px
+    margin: 12px 2px
 }
 
 .message div.showCastle #next {
@@ -611,7 +611,7 @@
     background: url(/img/deska_0.png) 132px 33px;
     min-width: 230px;
     height: 35px;
-    bottom: -5px;
+    bottom: 0px;
 }
 
 #armyBox #unitsBox {
@@ -634,12 +634,13 @@
     height: 30px;
 }
 
-#armyBox .iconButton {
+#armyBox .iconButton, .status .iconButton {
     width: 25px;
     line-height: 25px;
     height: 25px;
     display: inline-block;
     text-shadow: none;
+    margin: 5px;
 }
 
 .text-right {
@@ -654,10 +655,9 @@
 }
 
 .box {
-    position: absolute;
+    position: fixed;
     z-index: 27000;
-    /*background: transparent url('/img/game/message_bg.png');*/
-    background: url(/img/deska_1.png);
+    background: url(/img/deska_1_transparent.png);
     border: 0px solid green;
     border-radius: 0px !important;
     box-shadow: 0 0 20px #000;

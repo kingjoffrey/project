@@ -142,22 +142,6 @@ var Gui = new function () {
                 CommonMe.findNext()
             })
 
-            $('#skipArmy').click(function () {
-                CommonMe.skip()
-            })
-
-            $('#quitArmy').click(function () {
-                WebSocketSend.fortify()
-            })
-
-            $('#splitArmy').click(function () {
-                if (!CommonMe.getSelectedArmyId()) {
-                    return
-                }
-
-                SplitWindow.show()
-            })
-
             $('#armyStatus').click(function () {
                 if (!CommonMe.getSelectedArmyId()) {
                     return
@@ -166,20 +150,12 @@ var Gui = new function () {
                 StatusWindow.show()
             });
 
-            $('#disbandArmy').click(function () {
-                CommonMe.disband()
-            });
-
             $('#deselectArmy').click(function () {
                 if (!CommonMe.getSelectedArmyId()) {
                     return;
                 }
 
                 CommonMe.deselectArmy()
-            });
-
-            $('#searchRuins').click(function () {
-                WebSocketSend.ruin()
             });
 
             $('#heroResurrection').click(function () {
@@ -192,25 +168,8 @@ var Gui = new function () {
                 var id = Message.show(translations.hireHero, $('<div>').html(translations.doYouWantToHireNewHeroFor1000Gold))
                 Message.ok(id, WebSocketSend.hire)
                 Message.cancel(id)
-            });
-
-            $('#razeCastle').click(function () {
-                CastleWindow.raze()
-            });
-
-            $('#buildCastleDefense').click(function () {
-                CastleWindow.build()
-            });
-
-            $('#showCastle').click(function () {
-                var army = CommonMe.getArmy(CommonMe.getSelectedArmyId())
-                if (army) {
-                    var castle = CommonMe.getCastle(Fields.get(army.getX(), army.getY()).getCastleId())
-                    if (isSet(castle)) {
-                        CastleWindow.show(castle)
-                    }
-                }
             })
+
             $('#showFriends').click(function () {
                 if (friendsShow) {
                     $('#friends').css({

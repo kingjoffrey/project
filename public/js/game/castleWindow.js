@@ -18,7 +18,6 @@ var CastleWindow = new function () {
     this.show = function (castle) {
         var time = '',
             attr,
-            capital = '',
             table = $('<table>'),
             info = $('<table>'),
             j = 0,
@@ -140,7 +139,12 @@ var CastleWindow = new function () {
                 .append($('<td>'))
                 .append($('<td>').append(translations.incomeFromCastle + ': '))
                 .append($('<td>').append(castle.getIncome() + ' ' + translations.gold_turn))
-                .append($('<td>')))
+                .append($('<td>')
+                    .append($('<div>')
+                        .html($('<img>').attr({src: '/img/game/center.png'}))
+                        .addClass('iconButton buttonColors')
+                        .click(center(castle.getCastleId()))
+                        .attr('id', 'center'))))
         window
             .append(info)
             .append($('<div>').addClass('production').append($('<div>').html(translations.availableUnits).addClass('title')).append(table).attr('id', castle.getCastleId()))
@@ -171,11 +175,6 @@ var CastleWindow = new function () {
                         Message.remove(id)
                     }
                 }))
-            .append($('<div>')
-                .html($('<img>').attr({src: '/img/game/center.png'}))
-                .addClass('iconButton buttonColors')
-                .click(center(castle.getCastleId()))
-                .attr('id', 'center'))
             .append($('<div>')
                 .addClass('button buttonColors buttonOff')
                 .attr('id', 'go')
