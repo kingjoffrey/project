@@ -2,8 +2,6 @@
 var MiniMap = new function () {
     var lens,
         miniMap,
-        zz,
-        xx,
         miniMap = function () {
             var image = $('#map canvas'),
                 node = image[0],
@@ -70,10 +68,7 @@ var MiniMap = new function () {
                     'height': $obj.node.h
                 });
             };
-            $obj.setcenter = function (x, y, func) {
-                xx = x
-                zz = y
-                console.log(xx, zz)
+            $obj.centerOn = function (x, y, func) {
                 $obj.node.top = miniMap.h * y / Fields.getMaxY() - $obj.node.h / 2
                 $obj.node.left = miniMap.w * x / Fields.getMaxX() - $obj.node.w / 2
                 $obj.node.css({
@@ -102,6 +97,18 @@ var MiniMap = new function () {
                         func()
                     })
                 }
+            }
+            $obj.centerOnCameraPosition = function () {
+                var yOffset = Scene.getCamera().position.y - Scene.getCameraY(),
+                    x = (Scene.getCamera().position.x + Scene.getCameraY() + yOffset) / 2 / Fields.getMaxX() * miniMap.w - lens.node.w / 2,
+                    y = (Scene.getCamera().position.z - Scene.getCameraY() - yOffset) / 2 / Fields.getMaxY() * miniMap.h - lens.node.h / 2
+
+                $obj.node.top = y
+                $obj.node.left = x
+                $obj.node.css({
+                    top: $obj.node.top,
+                    left: $obj.node.left
+                })
             }
             $obj.setposition = function (e) {
                 var mouseX = e.pageX,
@@ -149,9 +156,11 @@ var MiniMap = new function () {
                     centerX = $obj.node.left + $obj.node.w / 2,
                     centerY = $obj.node.top + $obj.node.h / 2
 
-                Scene.getCamera().position.x = (Fields.getMaxX() * centerX / miniMap.w) * 2 - Scene.getCameraY() - yOffset
-                Scene.getCamera().position.z = (Fields.getMaxY() * centerY / miniMap.h) * 2 + Scene.getCameraY() + yOffset
-            };
+                Scene.setCameraPosition(
+                    (Fields.getMaxX() * centerX / miniMap.w) * 2 - Scene.getCameraY() - yOffset,
+                    (Fields.getMaxY() * centerY / miniMap.h) * 2 + Scene.getCameraY() + yOffset
+                )
+            }
             $obj.show = function () {
                 $obj.node.show();
             };
@@ -167,15 +176,10 @@ var MiniMap = new function () {
         return parseInt(miniMap.h * y / Fields.getMaxY())
     }
     this.centerOn = function (x, y, func) {
-        lens.setcenter(x, y, func)
+        lens.centerOn(x, y, func)
     }
-    this.moveGround = function (x, y) {
-        console.log(x + ' ' + y)
-        //var xxx = -x + y,
-        //    zzz = x - y
-        //console.log(xxx + ' ' + zzz)
-
-        this.centerOn(xx + x, zz + y)
+    this.centerOnCameraPosition = function () {
+        lens.centerOnCameraPosition()
     }
     this.adjust = function () {
         lens.setdimensions()

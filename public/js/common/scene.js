@@ -62,7 +62,7 @@ var Scene = new function () {
         return shadows
     }
     this.setCameraPosition = function (x, z) {
-        camera.position.set(x, cameraY, parseFloat(z))
+        camera.position.set(parseFloat(x), cameraY, parseFloat(z))
     }
     this.getCameraY = function () {
         return cameraY
@@ -87,22 +87,28 @@ var Scene = new function () {
 
         camera.position.x += xSign * (Math.abs(x) + Math.abs(y)) / 50
         camera.position.z += zSign * (Math.abs(x) + Math.abs(y)) / 50
+
+        MiniMap.centerOnCameraPosition()
     }
     this.moveCameraLeft = function () {
         camera.position.x += -2
         camera.position.z += -2
+        MiniMap.centerOnCameraPosition()
     }
     this.moveCameraRight = function () {
         camera.position.x += 2
         camera.position.z += 2
+        MiniMap.centerOnCameraPosition()
     }
     this.moveCameraUp = function () {
         camera.position.x += 2
         camera.position.z += -2
+        MiniMap.centerOnCameraPosition()
     }
     this.moveCameraDown = function () {
         camera.position.x += -2
         camera.position.z += 2
+        MiniMap.centerOnCameraPosition()
     }
     this.moveCameraAway = function () {
         camera.position.y += 2

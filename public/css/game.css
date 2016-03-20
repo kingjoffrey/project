@@ -1081,3 +1081,7 @@ table.treasury td {
 #buildCastleDefense.buttonOff {
     background: url(/img/game/buttons/build_off.png) center center no-repeat !important;
 }
+
+#game canvas {
+    cursor: pointer;
+}

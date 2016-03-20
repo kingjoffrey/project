@@ -105,9 +105,9 @@ var WebSocketMessage = new function () {
                 break;
 
             case 'online':
-                if (!CommonMe.colorEquals(r.color)) {
+                //if (!CommonMe.colorEquals(r.color)) {
                     GamePlayers.setOnline(r.color, 1)
-                }
+                //}
                 break;
 
             case 'chat':
