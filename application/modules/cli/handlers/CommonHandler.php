@@ -141,6 +141,7 @@ class Cli_CommonHandler extends WebSocketUriHandler
 
         switch ($dataIn['type']) {
             case 'move':
+		#pcntl_fork();
                 new Cli_Model_Move($dataIn, $user, $this);
                 break;
 

@@ -67,6 +67,27 @@ var Scene = new function () {
     this.getCameraY = function () {
         return cameraY
     }
+    this.moveCamera = function (x, y) {
+        var xSign,
+            zSign
+
+        if (y >= -x && y >= x) {
+            xSign = -1
+            zSign = 1
+        } else if (y > -x && y < x) {
+            xSign = 1
+            zSign = 1
+        } else if (y <= -x && y <= x) {
+            xSign = 1
+            zSign = -1
+        } else if (y < -x && y > x) {
+            xSign = -1
+            zSign = -1
+        }
+
+        camera.position.x += xSign * (Math.abs(x) + Math.abs(y)) / 50
+        camera.position.z += zSign * (Math.abs(x) + Math.abs(y)) / 50
+    }
     this.moveCameraLeft = function () {
         camera.position.x += -2
         camera.position.z += -2

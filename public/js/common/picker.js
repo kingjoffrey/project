@@ -44,8 +44,4 @@ var PickerCommon = new function () {
     this.intersects = function () {
         return isSet(intersects[0])
     }
-    this.getPoint = function () {
-        return {x: vector.x, z: vector.y}
-        //return {x: intersects[0].point.x, z: intersects[0].point.z}
-    }
 }

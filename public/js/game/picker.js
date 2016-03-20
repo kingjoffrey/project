@@ -29,7 +29,7 @@ var Picker = new function () {
                                 CastleWindow.show(CommonMe.getCastle(castleId))
                             }
                         } else {
-                            dragStart = PickerCommon.getPoint()
+                            dragStart = Picker.getPoint(event)
                         }
                     }
                     break
@@ -51,23 +51,8 @@ var Picker = new function () {
                 AStar.showPath()
             }
             if (dragStart) {
-                var dragEnd = PickerCommon.getPoint()
-
-                if (dragStart.x > dragEnd.x) {
-                    var x = 1
-                } else {
-                    var x = -1
-                }
-
-                if (dragStart.z > dragEnd.z) {
-                    var y = 1
-                } else {
-                    var y = -1
-                }
-                //x = dragStart.x - dragEnd.x,
-                //z = dragStart.z - dragEnd.z
-
-                MiniMap.moveGround(x, y)
+                var dragEnd = Picker.getPoint()
+                Scene.moveCamera(dragStart.x - dragEnd.x, dragStart.y - dragEnd.y)
                 dragStart = dragEnd
             }
         }
@@ -79,5 +64,10 @@ var Picker = new function () {
     this.onContainerMouseOut = function (event) {
         event.preventDefault()
         dragStart = 0
+    }
+    this.getPoint = function () {
+        var x = event.offsetX == undefined ? event.layerX : event.offsetX,
+            y = event.offsetY == undefined ? event.layerY : event.offsetY
+        return {x: x, y: y}
     }
 }
