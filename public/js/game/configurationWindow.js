@@ -33,7 +33,16 @@ var ConfigurationWindow = new function () {
                 'src': '/img/game/fullScreen.png',
                 'alt': 'Full screen'
             })).click(function () {
-                console.log('aaa')
+                var elem = document.getElementById('game');
+                if (elem.requestFullscreen) {
+                    elem.requestFullscreen()
+                } else if (elem.msRequestFullscreen) {
+                    elem.msRequestFullscreen()
+                } else if (elem.mozRequestFullScreen) {
+                    elem.mozRequestFullScreen()
+                } else if (elem.webkitRequestFullscreen) {
+                    elem.webkitRequestFullscreen()
+                }
             })
         )
 

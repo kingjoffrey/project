@@ -110,18 +110,10 @@
     left: 4px;
 }
 
-#show.iconButton {
+#config.iconButton {
     top: 146px;
     left: 150px;
 }
-
-/*#show img {*/
-/*margin-top: 5px;*/
-/*}*/
-
-/*#sound.iconButton {*/
-/*top: 78px;*/
-/*}*/
 
 #turn {
     width: 80px;
