@@ -99,16 +99,15 @@
         <div class="close">&#x25B6</div>
     </div>
     <div id="armyBox" class="box">
-        <div id="unitsBox"></div>
         <div id="armyButtons">
-            <a id="deselectArmy"
-               class="iconButton buttonColors buttonOff" title="<?php echo $this->translate('Deselect army') ?>"></a>
-            <a id="armyStatus"
-               class="iconButton buttonColors buttonOff" title="<?php echo $this->translate('Army status') ?> (s) "></a>
             <a id="nextArmy"
                class="iconButton buttonColors buttonOff" title="<?php echo $this->translate('Find next army') ?> (n) "></a>
+            <a id="armyStatus"
+               class="iconButton buttonColors buttonOff" title="<?php echo $this->translate('Army status') ?> (s) "></a>
+            <a id="deselectArmy"
+               class="iconButton buttonColors buttonOff" title="<?php echo $this->translate('Deselect army') ?>"></a>
         </div>
-        <div></div>
+        <div id="unitsBox"></div>
     </div>
     <div id="chatBox" class="box disabled">
         <div class="close">&#x25B6</div>
@@ -126,6 +125,7 @@
         </div>
     </div>
 </div>
+<div id="loading"><?php echo $this->translate('Loading') ?>...</div>
 </body>
 </html>
 <?php echo $this->layout()->content; ?>

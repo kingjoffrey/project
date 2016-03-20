@@ -63,6 +63,7 @@ var Game = new function () {
         }
 
         Sound.play('gamestart')
+        $('#loading').css('display', 'none')
     }
 }
 

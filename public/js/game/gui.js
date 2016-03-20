@@ -49,8 +49,11 @@ var Gui = new function () {
                     CastleWindow.build()
                     break;
                 case 67: //c
-                    var army = CommonMe.getSelectedArmy(),
-                        castle = CommonMe.getCastle(Fields.get(army.getX(), army.getY()).getCastleId())
+                    var army = CommonMe.getSelectedArmy()
+                    if (!army) {
+                        return
+                    }
+                    var castle = CommonMe.getCastle(Fields.get(army.getX(), army.getY()).getCastleId())
                     if (isSet(castle)) {
                         CastleWindow.show(castle)
                     }

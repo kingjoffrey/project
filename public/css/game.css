@@ -608,16 +608,12 @@
 #armyBox {
     border: none;
     border-radius: 0px;
-    background: url(/img/deska_0.png) 132px 33px;
-    min-width: 230px;
-    height: 35px;
+    background: url(/img/deska_0.png) 197px 55px;
     bottom: 0px;
 }
 
 #armyBox #unitsBox {
-    float: left;
-    min-width: 100px;
-    height: 30px;
+    float: right;
 }
 
 #armyBox #unitsBox div {
@@ -629,9 +625,7 @@
 }
 
 #armyBox #armyButtons {
-    float: right;
-    /*width: 124px;*/
-    height: 30px;
+    float: left;
 }
 
 #armyBox .iconButton, .status .iconButton {
@@ -641,6 +635,7 @@
     display: inline-block;
     text-shadow: none;
     margin: 5px;
+    padding: 5px;
 }
 
 .text-right {
@@ -1084,4 +1079,16 @@ table.treasury td {
 
 #game canvas {
     cursor: pointer;
+}
+
+#loading {
+    position: fixed;
+    top: 0;
+    left: 0;
+    background: #000;
+    color: #fff;
+    width: 100%;
+    height: 100%;
+    font-size: 50px;
+    z-index: 99999;
 }
