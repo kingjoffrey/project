@@ -30,7 +30,7 @@ var ConfigurationWindow = new function () {
         )
         .append(
             $('<div>').attr('id', 'fullScreen').addClass('iconButton buttonColors').append($('<img>').attr({
-                'src': '/img/game/fullScreen.png',
+                'src': '/img/game/full_screen.png',
                 'alt': 'Full screen'
             })).click(function () {
                 var elem = document.getElementById('game');
