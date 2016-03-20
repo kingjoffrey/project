@@ -109,27 +109,7 @@ var Gui = new function () {
 
             $('#exit').click(function () {
                 Gui.exit()
-            });
-
-            $('#show').click(function () {
-                Sound.play('click');
-                show = !show;
-                if (show) {
-                    $(this).children().attr('src', '/img/game/show.png')
-                } else {
-                    $(this).children().attr('src', '/img/game/show_off.png')
-                }
-            });
-
-            $('#sound').click(function () {
-                Sound.play('click');
-                Sound.mute = !Sound.mute;
-                if (Sound.mute) {
-                    $(this).children().attr('src', '/img/game/sound_off.png')
-                } else {
-                    $(this).children().attr('src', '/img/game/sound_on.png')
-                }
-            });
+            })
 
             $('#surrender').click(function () {
                 var id = Message.show(translations.surrender, $('<div>').html(translations.areYouSure))
@@ -139,7 +119,11 @@ var Gui = new function () {
 
             $('#statistics').click(function () {
                 WebSocketSend.statistics();
-            });
+            })
+
+            $('#config').click(function () {
+                ConfigurationWindow.show()
+            })
 
             $('#nextTurn').click(function () {
                 Turn.next()
