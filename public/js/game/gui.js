@@ -49,7 +49,11 @@ var Gui = new function () {
                     CastleWindow.build()
                     break;
                 case 67: //c
-                    Castle.show();
+                    var army = CommonMe.getSelectedArmy(),
+                        castle = CommonMe.getCastle(Fields.get(army.getX(), army.getY()).getCastleId())
+                    if (isSet(castle)) {
+                        CastleWindow.show(castle)
+                    }
                     break;
                 case 68: //d
                     CommonMe.disband()
@@ -274,14 +278,9 @@ var Gui = new function () {
         $('#limitBox').css({
             top: Fields.getHeight() + 30 + 'px'
         })
-        //Gui.armyBoxAdjust()
+
         //Message.adjust()
         //Message.setOverflowHeight()
-    }
-    this.armyBoxAdjust = function () {
-        $('#armyBox').css({
-            left: Scene.getWidth() / 2 - ($('#chatBox').width() + $('#armyBox').width()) / 2 + 'px'
-        })
     }
     this.exit = function () {
         window.location = '/' + lang + '/index'

@@ -190,7 +190,6 @@ var CommonMe = new function () {
             unitsBox.append($('<div>').html(unitTypes[unitId]).css({'background-image': 'url(' + Unit.getImage(unitId, color) + ')'}))
         }
 
-        Gui.armyBoxAdjust()
         Models.addArmyCircle(army.getX(), army.getY(), army.getBackgroundColor())
         Message.remove()
 
