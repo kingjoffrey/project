@@ -15,9 +15,18 @@ var Page = new function () {
         }
 
     this.adjust = function () {
+        var padding = 360,
+            height = $(window).height() - padding,
+            top = height / 2 - 192 / 2
         $('#page').css({
-            'min-height': $(window).height() - 67 + 'px'
+            'min-height': height + 'px'
         })
+
+        if (top > 0) {
+            $('#content #title').css({
+                'margin-top': +'px',
+            })
+        }
     }
     this.init = function () {
         $(window).resize(function () {

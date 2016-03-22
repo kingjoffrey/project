@@ -2,8 +2,8 @@
 
 class Cli_Model_TutorialMe extends Cli_Model_Me
 {
-    private $_number;
-    private $_step;
+    private $_number = 0;
+    private $_step = 0;
 
     public function getNumber()
     {
