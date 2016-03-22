@@ -47,11 +47,11 @@ class Cli_Model_TutorialMe extends Cli_Model_Me
     {
         $mTutorial = new Application_Model_Tutorial($this->_id, $db);
         $tutorial = $mTutorial->get();
-        if ($tutorial['tutorialNumber']) {
+        if ($tutorial) {
             $this->_number = $tutorial['tutorialNumber'];
-        }
-        if ($tutorial['step']) {
             $this->_step = $tutorial['step'];
+        } else {
+            $mTutorial->add();
         }
     }
 

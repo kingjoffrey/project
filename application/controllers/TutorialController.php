@@ -13,21 +13,18 @@ class TutorialController extends Coret_Controller_Authorized
         if (!$gameId) {
             $mTutorial = new Application_Model_Tutorial($playerId);
             $number = $mTutorial->getNumber();
-            if ($number === false) {
-                $mapId = 296;
-                $mTutorial->add();
-            } else {
-                switch ($number) {
-                    case 0:
-                        $mapId = 296;
-                        break;
-                    case 1:
-                        $mapId = 295;
-                        break;
-                    case 2:
-                        $mapId = 298;
-                        break;
-                }
+            switch ($number) {
+                case 0:
+                    $mapId = 296;
+                    break;
+                case 1:
+                    $mapId = 295;
+                    break;
+                case 2:
+                    $mapId = 298;
+                    break;
+                default:
+                    $mapId = 296;
             }
             $gameId = $mGame->createGame(array(
                 'numberOfPlayers' => 2,
