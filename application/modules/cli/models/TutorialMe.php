@@ -47,8 +47,10 @@ class Cli_Model_TutorialMe extends Cli_Model_Me
     {
         $mTutorial = new Application_Model_Tutorial($this->_id, $db);
         $tutorial = $mTutorial->get();
-        $this->_number = $tutorial['tutorialNumber'];
-        $this->_step = $tutorial['step'];
+        if ($tutorial['tutorialNumber']) {
+            $this->_number = $tutorial['tutorialNumber'];
+            $this->_step = $tutorial['step'];
+        }
     }
 
     public function toArray()

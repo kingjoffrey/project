@@ -83,9 +83,8 @@
 }
 
 #playersBox .iconButton {
-    width: 30px;
-    line-height: 32px;
-    height: 32px;
+    width: 40px;
+    height: 40px;
     position: absolute;
     display: inline-flex;
 }
@@ -96,23 +95,23 @@
 }
 
 #exit.iconButton {
-    top: 4px;
-    left: 4px;
+    top: 2px;
+    left: 0px;
 }
 
 #surrender.iconButton {
-    top: 4px;
-    left: 150px;
+    top: 2px;
+    left: 148px;
 }
 
 #statistics.iconButton {
     top: 146px;
-    left: 4px;
+    left: 0px;
 }
 
 #config.iconButton {
     top: 146px;
-    left: 150px;
+    left: 148px;
 }
 
 #turn {
@@ -131,14 +130,25 @@
 }
 
 .message {
+    position: absolute;
+    top: 70px;
+    text-align: center;
+    z-index: 1;
+    width: 100%;
+}
+
+.message #content {
     min-width: 321px;
     min-height: 70px;
-    top: 70px;
-    padding-top: 30px !important;
-    /*border: 2px solid #fff !important;*/
-    border-radius: 0;
-    text-align: center;
-    z-index: 28000 !important;
+    padding-top: 30px;
+    background: url(/img/deska_1.png);
+    margin: 0 auto;
+    display: inline-block;
+    border: 0px solid green;
+    border-radius: 0px !important;
+    box-shadow: 0 0 20px #000;
+    color: #FFA774;
+    z-index: 28000;
 }
 
 .message #buttons {
@@ -155,9 +165,8 @@
 
 .message .msgTitle {
     text-align: center;
-    top: -16px;
-    position: absolute;
     border: none;
+    margin: -47px auto 0 auto;
 }
 
 .message .msgTitle h3 {

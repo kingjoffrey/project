@@ -19,10 +19,12 @@ var Message = new function () {
         this.remove()
         var id = makeId(10),
             div = $('<div>')
-                .addClass('message box')
+                .addClass('message')
                 .attr('id', id)
-                .append($('<div>').append($('<h3>').html(title)).addClass('msgTitle'))
-                .append($(txt).addClass('overflow'))
+                .append($('<div>').attr('id', 'content')
+                    .append($('<div>').append($('<h3>').html(title)).addClass('msgTitle'))
+                    .append($(txt).addClass('overflow'))
+                )
                 .fadeIn(200)
         if (isSet(info)) {
             div.addClass('info')
@@ -46,38 +48,24 @@ var Message = new function () {
     }
     this.adjust = function (id) {
         maxHeight = Scene.getHeight() - 140
-        maxWidth = Scene.getWidth() - 40
 
         if (maxHeight < parseInt($('#' + id).css('min-height'))) {
             maxHeight = parseInt($('#' + id).css('min-height'))
-
-        }
-        if (maxWidth < parseInt($('#' + id).css('min-width'))) {
-            maxWidth = parseInt($('#' + id).css('min-width'))
         }
 
         if ($('#' + id + ' .showCastle').length) {
             $('#' + id).css({
                 'z-index': $('#' + id).css('z-index') + 1,
-                left: Scene.getWidth() / 2 - $('#' + id).outerWidth() / 2 + 'px',
-                'max-width': maxWidth + 'px',
                 'max-height': maxHeight + 'px'
             })
-            $('#' + id + ' .msgTitle').css({width: $('#' + id).width() - 50})
         } else if ($('#' + id).length) {
             $('#' + id).css({
-                left: Scene.getWidth() / 2 - $('#' + id).outerWidth() / 2 + 'px',
-                'max-width': maxWidth + 'px',
                 'max-height': maxHeight + 'px'
             })
-            $('#' + id + ' .msgTitle').css({width: $('#' + id).width() - 50})
         } else {
             $('.message').css({
-                left: Scene.getWidth() / 2 - $('.message').outerWidth() / 2 + 'px',
-                'max-width': maxWidth + 'px',
                 'max-height': maxHeight + 'px'
             })
-            $('.message .msgTitle').css({width: $('.message').width() - 50})
         }
     }
     this.setOverflowHeight = function (id) {
@@ -99,7 +87,7 @@ var Message = new function () {
     }
     this.ok = function (id, func) {
         if (!$('#' + id + ' #buttons').length) {
-            $('#' + id).append($('<div>').attr('id', 'buttons'))
+            $('#' + id + ' #content').append($('<div>').attr('id', 'buttons'))
         }
         $('#' + id + ' #buttons').append(
             $('<div>')
@@ -117,7 +105,7 @@ var Message = new function () {
     }
     this.cancel = function (id, func) {
         if (!$('#' + id + ' #buttons').length) {
-            $('#' + id).append($('<div>').attr('id', 'buttons'))
+            $('#' + id + ' #content').append($('<div>').attr('id', 'buttons'))
         }
         $('#' + id + ' #buttons').append(
             $('<div>')
@@ -133,7 +121,7 @@ var Message = new function () {
     }
     this.close = function (id, func) {
         if (!$('#' + id + ' #buttons').length) {
-            $('#' + id).append($('<div>').attr('id', 'buttons'))
+            $('#' + id + ' #content').append($('<div>').attr('id', 'buttons'))
         }
         $('#' + id + ' #buttons').append(
             $('<div>')
