@@ -134,6 +134,7 @@
     top: 70px;
     text-align: center;
     width: 100%;
+    z-index: 28000;
     pointer-events: none
 }
 
@@ -148,7 +149,6 @@
     border-radius: 0px !important;
     box-shadow: 0 0 20px #000;
     color: #FFA774;
-    z-index: 28000;
     pointer-events: auto;
 }
 
@@ -164,7 +164,7 @@
 
 .message #buttons .button {
     width: auto;
-    /*margin: 10px;*/
+    margin: 0 36px;
     padding: 12px 12px;
 }
 

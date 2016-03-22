@@ -47,7 +47,6 @@ var Message = new function () {
     }
     this.adjust = function (id) {
         maxHeight = Scene.getHeight() - 140
-        console.log(Scene.getHeight())
 
         if (maxHeight < parseInt($('#' + id + ' #content').css('min-height'))) {
             maxHeight = parseInt($('#' + id + ' #content').css('min-height'))
@@ -55,7 +54,7 @@ var Message = new function () {
 
         if ($('#' + id + ' .showCastle').length) {
             $('#' + id + ' #content').css({
-                'z-index': $('#' + id + ' #content').css('z-index') + 1,
+                'z-index': $('#' + id).css('z-index') + 1,
                 'max-height': maxHeight + 'px'
             })
         } else if ($('#' + id).length) {

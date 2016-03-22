@@ -15,10 +15,10 @@ var PickerCommon = new function () {
         container.addEventListener('mouseup', Picker.onContainerMouseUp, false);
         container.addEventListener('mouseout', Picker.onContainerMouseOut, false);
 
-        container.addEventListener("touchstart", PickerCommon.touchHandler, true);
-        container.addEventListener("touchmove", PickerCommon.touchHandler, true);
-        container.addEventListener("touchend", PickerCommon.touchHandler, true);
-        container.addEventListener("touchcancel", PickerCommon.touchHandler, true);
+        //container.addEventListener("touchstart", PickerCommon.touchHandler, true);
+        //container.addEventListener("touchmove", PickerCommon.touchHandler, true);
+        //container.addEventListener("touchend", PickerCommon.touchHandler, true);
+        //container.addEventListener("touchcancel", PickerCommon.touchHandler, true);
     }
     this.intersect = function (event) {
         var x = event.offsetX == undefined ? event.layerX : event.offsetX,

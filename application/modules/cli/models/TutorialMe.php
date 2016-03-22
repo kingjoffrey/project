@@ -49,6 +49,8 @@ class Cli_Model_TutorialMe extends Cli_Model_Me
         $tutorial = $mTutorial->get();
         if ($tutorial['tutorialNumber']) {
             $this->_number = $tutorial['tutorialNumber'];
+        }
+        if ($tutorial['step']) {
             $this->_step = $tutorial['step'];
         }
     }
