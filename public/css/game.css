@@ -155,7 +155,10 @@
 .message #content tr {
     background: none !important;
 }
-
+.message.info #content{
+    max-width: 300px;
+    background: url(/img/bg_0.jpg);
+}
 .message #buttons {
     width: auto;
     height: 50px;

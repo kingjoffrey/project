@@ -6,7 +6,7 @@ var Tutorial = new function () {
             0: {
                 0: {
                     goal: 'Set production',
-                    description: 'To lead the conquest you need to have an army. To have an army you need to produce units in castles.'
+                    description: 'To lead the conquest you need to have an army. To have an army you need to produce units in castles. There is open window of your capital castle properties. Select unit and click "Start production" button. You will get new unit in next turn.'
                 },
                 1: {
                     'goal': 'Change turn',
