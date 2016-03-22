@@ -6,6 +6,7 @@ var Picker = new function () {
         if (PickerCommon.intersects()) {
             switch (event.button) {
                 case 0:
+                    console.log('a')
                     if (CommonMe.getSelectedArmyId()) {
                         WebSocketSend.move()
                     } else {

@@ -1,6 +1,5 @@
 var Message = new function () {
-    var maxHeight,
-        maxWidth
+    var maxHeight
 
     this.info = function (title, message) {
         var id = this.show(title, $('<div>').html(message).addClass('simple'), 1)
@@ -48,36 +47,37 @@ var Message = new function () {
     }
     this.adjust = function (id) {
         maxHeight = Scene.getHeight() - 140
+        console.log(Scene.getHeight())
 
-        if (maxHeight < parseInt($('#' + id).css('min-height'))) {
-            maxHeight = parseInt($('#' + id).css('min-height'))
+        if (maxHeight < parseInt($('#' + id + ' #content').css('min-height'))) {
+            maxHeight = parseInt($('#' + id + ' #content').css('min-height'))
         }
 
         if ($('#' + id + ' .showCastle').length) {
-            $('#' + id).css({
-                'z-index': $('#' + id).css('z-index') + 1,
+            $('#' + id + ' #content').css({
+                'z-index': $('#' + id + ' #content').css('z-index') + 1,
                 'max-height': maxHeight + 'px'
             })
         } else if ($('#' + id).length) {
-            $('#' + id).css({
+            $('#' + id + ' #content').css({
                 'max-height': maxHeight + 'px'
             })
         } else {
-            $('.message').css({
+            $('.message #content').css({
                 'max-height': maxHeight + 'px'
             })
         }
     }
     this.setOverflowHeight = function (id) {
         if ($('#' + id + ' .showCastle').length) {
-            var minus = 0
-        } else if ($('#' + id).height() == maxHeight) {
+            var minus = -20
+        } else if ($('#' + id + ' #content').height() == maxHeight) {
             var minus = 65
         } else {
             var minus = 20
         }
 
-        var height = $('#' + id).height() - minus;
+        var height = $('#' + id + ' #content').height() - minus;
 
         $('#' + id + ' div.overflow').css('height', height + 'px')
 

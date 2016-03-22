@@ -133,8 +133,8 @@
     position: absolute;
     top: 70px;
     text-align: center;
-    z-index: 1;
     width: 100%;
+    pointer-events: none
 }
 
 .message #content {
@@ -149,6 +149,11 @@
     box-shadow: 0 0 20px #000;
     color: #FFA774;
     z-index: 28000;
+    pointer-events: auto;
+}
+
+.message #content tr {
+    background: none !important;
 }
 
 .message #buttons {
@@ -1092,4 +1097,8 @@ table.treasury td {
     height: 100%;
     font-size: 50px;
     z-index: 99999;
+}
+
+#buttons {
+    padding-top: 20px;
 }
