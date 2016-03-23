@@ -127,7 +127,7 @@ var Gui = new function () {
 
             $('#nextTurn').click(function () {
                 Turn.next()
-            });
+            })
 
             $('#nextArmy').click(function () {
                 CommonMe.findNext()

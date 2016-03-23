@@ -69,14 +69,14 @@ var Message = new function () {
     }
     this.setOverflowHeight = function (id) {
         if ($('#' + id + ' .showCastle').length) {
-            var minus = -20
+            var minus = 25
         } else if ($('#' + id + ' #content').height() == maxHeight) {
-            var minus = 11
+            var minus = 74
         } else {
-            var minus = 20
+            var minus = 74
         }
 
-        var height = $('#' + id + ' #content').height() - minus;
+        var height = $('#' + id + ' #content').height() - minus
 
         $('#' + id + ' div.overflow').css('height', height + 'px')
 

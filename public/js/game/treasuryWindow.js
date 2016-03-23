@@ -115,10 +115,8 @@ var TreasuryWindow = new function () {
         )
 
 
-        var div = $('<div>')
-            .addClass('overflow')
-            .append(table)
-        Message.simple(translations.income, div)
+        var id = Message.simple(translations.income, table)
+        Message.setOverflowHeight(id)
     }
     this.upkeep = function () {
         var myUnits = 0,
@@ -193,9 +191,7 @@ var TreasuryWindow = new function () {
                 .append($('<td colspan="3">').html(myUnitsGold + ' ' + translations.gold).addClass('r'))
         )
 
-        var div = $('<div>')
-            .addClass('overflow')
-            .append(table)
-        Message.simple(translations.upkeep, div);
+        var id = Message.simple(translations.upkeep, table)
+        Message.setOverflowHeight(id)
     }
 }

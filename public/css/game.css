@@ -155,10 +155,12 @@
 .message #content tr {
     background: none !important;
 }
-.message.info #content{
+
+.message.info #content {
     max-width: 300px;
     background: url(/img/bg_0.jpg);
 }
+
 .message #buttons {
     width: auto;
     height: 50px;
@@ -202,11 +204,8 @@
 
 .message div.overflow {
     overflow: auto;
-    padding: 0 17px;
-}
-
-.message div.simple {
-    padding-top: 20px;
+    padding: 20px;
+    line-height: 22px;
 }
 
 .message div.showCastle {
@@ -848,6 +847,7 @@ table.statistics td.shortName {
 table.treasury {
     margin: 0 auto;
     text-shadow: none;
+    min-width: 300px !important;
 }
 
 table.treasury td {
@@ -1102,6 +1102,16 @@ table.treasury td {
     z-index: 99999;
 }
 
-#buttons {
+#playersBox #buttons {
     padding-top: 20px;
+}
+
+.configuration .iconButton {
+    width: 40px;
+    height: 40px;
+    vertical-align: middle;
+}
+
+.configuration .row{
+    text-align: left;
 }

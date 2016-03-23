@@ -73,8 +73,7 @@ var Turn = new function () {
         }
     }
     this.next = function () {
-        var id = Message.show(translations.nextTurn, $('<div>').html(translations.areYouSure))
-        Message.ok(id, WebSocketSend.nextTurn);
-        Message.cancel(id)
+        var id = Message.simple(translations.nextTurn, translations.areYouSure)
+        Message.ok(id, WebSocketSend.nextTurn)
     }
 }

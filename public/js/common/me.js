@@ -373,7 +373,7 @@ var CommonMe = new function () {
             CastleWindow.show(this.getCastle(this.getFirsCastleId()))
         } else {
             //Players.showFirst(color)
-            var id = Message.show(translations.yourTurn, translations.thisIsYourTurnNow)
+            var id = Message.simple(translations.yourTurn, translations.thisIsYourTurnNow)
             Message.ok(id, CommonMe.findFirst)
         }
         Gui.unlock()
