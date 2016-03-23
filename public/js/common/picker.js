@@ -15,10 +15,28 @@ var PickerCommon = new function () {
         container.addEventListener('mouseup', Picker.onContainerMouseUp, false);
         container.addEventListener('mouseout', Picker.onContainerMouseOut, false);
 
-        //container.addEventListener("touchstart", PickerCommon.touchHandler, true);
-        //container.addEventListener("touchmove", PickerCommon.touchHandler, true);
-        //container.addEventListener("touchend", PickerCommon.touchHandler, true);
+
+        //container.addEventListener('touchstart', PickerCommon.touchHandler, true)
+        container.addEventListener('touchstart', Picker.onContainerTouchStart, true)
+        //container.addEventListener('touchstart', Picker.onContainerMouseDown, true)
+        //container.addEventListener("touchmove", function(event){
+        //    console.log(event)
+        //}, true);
+
+
+        //container.addEventListener('touchmove', PickerCommon.touchHandler, true)
+        //container.addEventListener('touchmove', Picker.onContainerMouseMove, true)
+        container.addEventListener('touchmove', Picker.onContainerTouchMove, true)
+
+
+
+        //container.addEventListener('touchend', PickerCommon.touchHandler, true)
+        //container.addEventListener('touchend', Picker.onContainerMouseUp, true)
+        container.addEventListener('touchend', Picker.onContainerTouchEnd, true)
+
+
         //container.addEventListener("touchcancel", PickerCommon.touchHandler, true);
+        container.addEventListener('touchcancel', Picker.onContainerTouchEnd, true);
     }
     this.intersect = function (event) {
         var x = event.offsetX == undefined ? event.layerX : event.offsetX,
@@ -66,10 +84,6 @@ var PickerCommon = new function () {
             default:
                 return;
         }
-
-        // initMouseEvent(type, canBubble, cancelable, view, clickCount,
-        //                screenX, screenY, clientX, clientY, ctrlKey,
-        //                altKey, shiftKey, metaKey, button, relatedTarget);
 
         var simulatedEvent = document.createEvent("MouseEvent");
         simulatedEvent.initMouseEvent(type, true, true, window, 1,

@@ -529,6 +529,7 @@ p#info {
     background: url('/img/envelope-icon.png') no-repeat right center;
     position: absolute;
     top: 35px;
+    left: 435px;
 }
 
 #envelope span {
