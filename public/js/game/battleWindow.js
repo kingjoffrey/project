@@ -301,7 +301,6 @@ var BattleWindow = new function () {
     this.attack = function () {
         var div = $('<div>')
             .append($('<div>').html(translations.changeBattleAttackSequenceByMovingUnits))
-            .append($('<br>'))
             .append(configuration('attack'))
 
         var id = Message.show(translations.battleConfiguration, div)
@@ -315,7 +314,6 @@ var BattleWindow = new function () {
     this.defence = function () {
         var div = $('<div>')
             .append($('<div>').html(translations.changeBattleDefenceSequenceByMovingUnits))
-            .append($('<br>'))
             .append(configuration('defense'))
 
         var id = Message.show(translations.battleConfiguration, div)
