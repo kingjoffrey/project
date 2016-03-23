@@ -2,7 +2,8 @@
 var Game = new function () {
     var loading = 1,
         timeoutId = null,
-        game
+        game,
+        touch = 0
 
     this.getMapElement = function () {
         return $('#map')
@@ -24,6 +25,9 @@ var Game = new function () {
     }
     this.getLoading = function () {
         return loading
+    }
+    this.hasTouch = function () {
+        return touch
     }
     this.init = function (g) {
         game = g
@@ -64,12 +68,9 @@ var Game = new function () {
 
         Sound.play('gamestart')
         $('#loading').css('display', 'none')
+
+        if (typeof window.orientation !== 'undefined') {
+            touch = 'ontouchstart' in document.documentElement
+        }
     }
 }
-
-$(document).ready(function () {
-    AStar.init()
-    Scene.init()
-    WebSocketGame.init()
-    PrivateChat.init()
-})

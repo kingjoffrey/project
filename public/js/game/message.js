@@ -71,7 +71,7 @@ var Message = new function () {
         if ($('#' + id + ' .showCastle').length) {
             var minus = -20
         } else if ($('#' + id + ' #content').height() == maxHeight) {
-            var minus = 65
+            var minus = 11
         } else {
             var minus = 20
         }

@@ -1,14 +1,16 @@
 var Picker = new function () {
-    var dragStart = 0,
-        touch = 0,
-        click = 0
+    var dragStart = 0
 
     this.onContainerMouseDown = function (event) {
-        console.log('md1')
-        PickerCommon.intersect(event)
-        if (PickerCommon.intersects()) {
-            switch (event.button) {
-                case 0:
+        if (Game.hasTouch()) {
+            return
+        }
+        //console.log('down')
+        switch (event.button) {
+            case 0:
+                console.log(event.button)
+                PickerCommon.intersect(event)
+                if (PickerCommon.intersects()) {
                     if (CommonMe.getSelectedArmyId()) {
                         WebSocketSend.move()
                     } else {
@@ -35,24 +37,25 @@ var Picker = new function () {
                             dragStart = Picker.getPoint(event)
                         }
                     }
-                    break
+                }
+                break
 
-                case 1:
-                    // middle button
-                    break
+            case 1:
+                // middle button
+                break
 
-                case 2:
-                    CommonMe.deselectArmy()
-                    break
-            }
+            case 2:
+                CommonMe.deselectArmy()
+                break
         }
     }
     this.onContainerTouchStart = function (event) {
         event.offsetX = event.changedTouches[0].clientX
         event.offsetY = event.changedTouches[0].clientY
-        console.log('ts1')
+        //console.log('touchStart')
         PickerCommon.intersect(event)
         if (CommonMe.getSelectedArmyId()) {
+            AStar.cursorPosition(PickerCommon.convertX(), PickerCommon.convertZ())
             WebSocketSend.move()
         } else {
             var field = PickerCommon.getField()
@@ -80,7 +83,10 @@ var Picker = new function () {
         }
     }
     this.onContainerMouseMove = function (event) {
-        console.log('mm1')
+        if (Game.hasTouch()) {
+            return
+        }
+        //console.log('mm')
         PickerCommon.intersect(event)
         if (PickerCommon.intersects()) {
             if (AStar.cursorPosition(PickerCommon.convertX(), PickerCommon.convertZ()) && CommonMe.getSelectedArmyId()) {
@@ -94,9 +100,7 @@ var Picker = new function () {
         }
     }
     this.onContainerTouchMove = function (event) {
-        //console.log(event.changedTouches[0])
-        console.log('tm1')
-
+        //console.log('touchMove')
         event.offsetX = event.changedTouches[0].clientX
         event.offsetY = event.changedTouches[0].clientY
 
@@ -108,7 +112,10 @@ var Picker = new function () {
         }
     }
     this.onContainerMouseUp = function (event) {
-        console.log('up1')
+        if (Game.hasTouch()) {
+            return
+        }
+        //console.log('up')
         event.preventDefault()
         dragStart = 0
     }
@@ -117,6 +124,7 @@ var Picker = new function () {
         dragStart = 0
     }
     this.onContainerTouchEnd = function (event) {
+        //console.log('touchEnd')
         dragStart = 0
     }
     this.getPoint = function () {

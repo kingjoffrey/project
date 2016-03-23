@@ -10,3 +10,9 @@ var CommonInit = new function () {
         Init.init(g)
     }
 }
+$(document).ready(function () {
+    AStar.init()
+    Scene.init()
+    WebSocketGame.init()
+    PrivateChat.init()
+})
