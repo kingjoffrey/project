@@ -18,14 +18,10 @@ var Page = new function () {
         var padding = 360,
             height = $(window).height() - padding,
             top = height / 2 - 192 / 2
-        $('#page').css({
-            'min-height': height + 'px'
-        })
 
+        $('#page').css('min-height', height + 'px')
         if (top > 0) {
-            $('#content #title').css({
-                'margin-top': +'px',
-            })
+            $('#bg #page #content #title').css('margin-top', top + 'px')
         }
     }
     this.init = function () {
