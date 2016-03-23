@@ -42,8 +42,8 @@
 }
 
 #mapBox {
-    background: #000;
     left: 0px;
+    width: 233px;
 }
 
 #lens {
@@ -62,15 +62,11 @@
 
 #map .c {
     border: 1px solid #000;
-    /*border-bottom: 1px solid #000;*/
-    /*border-right: 1px solid #000;*/
     position: absolute;
 }
 
 #map .a {
     border: 1px solid #000;
-    /*border-bottom: 1px solid #000;*/
-    /*border-right: 1px solid #000;*/
     position: absolute;
 }
 
@@ -1086,7 +1082,7 @@ table.treasury td {
     background: url(/img/game/buttons/build_off.png) center center no-repeat !important;
 }
 
-#game canvas {
+#game #scene {
     cursor: pointer;
 }
 

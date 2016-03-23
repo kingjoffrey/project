@@ -33,6 +33,9 @@ var Gui = new function () {
                     Message.remove();
                     CommonMe.deselectArmy()
                     break;
+                case 32: //SPACE
+                    CommonMe.skip()
+                    break;
                 case 37://left
                     Scene.moveCameraLeft()
                     break;
@@ -73,17 +76,14 @@ var Gui = new function () {
                 case 79: //o
                     $('.message .go').click()
                     break;
-                case 81: //q
-                    CommonMe.skip()
-                    break;
                 case 82: //r
                     WebSocketSend.ruin()
                     break;
                 case 83: //s
                     StatusWindow.show()
                     break;
-//            default:
-//                console.log(key)
+            //default:
+            //    console.log(key)
             }
         },
         prepareButtons = function () {
@@ -355,9 +355,8 @@ var Gui = new function () {
 
         MiniMap.init()
         $('#mapBox').css({
-            width: Fields.getWidth() + 'px',
             height: Fields.getHeight() + 18 + 'px'
-        });
+        })
         $('#terrain').css('top', Fields.getHeight() + 4 + 'px')
         prepareButtons()
         this.prepareBoxes()

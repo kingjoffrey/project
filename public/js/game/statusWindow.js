@@ -179,7 +179,7 @@ var StatusWindow = new function () {
                 .append(
                     $('<a>').attr({
                         id: 'skipArmy',
-                        title: 'Skip army'
+                        title: 'Skip army (space)'
                     }).addClass('iconButton buttonColors').click(function () {
                         CommonMe.skip()
                     })

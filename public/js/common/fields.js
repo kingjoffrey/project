@@ -25,7 +25,7 @@ var Fields = new function () {
             ctx = tmpCanvas.getContext('2d'),
             canvas = document.createElement('canvas'),
             context = canvas.getContext('2d'),
-            maxWidth = 233
+            maxWidth = parseInt($('#mapBox').css('width'))
 
         for (var y in fields) {
             for (var x in fields[y]) {

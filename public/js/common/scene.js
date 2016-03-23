@@ -171,6 +171,7 @@ var Scene = new function () {
 
         initCamera()
         renderer.setSize(gameWidth, gameHeight)
+        renderer.domElement.id = 'scene'
         Models.init()
         PickerCommon.init()
     }
