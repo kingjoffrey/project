@@ -8,6 +8,7 @@ var Move = new function () {
             Execute.setExecuting(0)
             if (CommonMe.colorEquals(r.color)) {
                 Gui.unlock()
+                Models.clearMoveCircles()
                 Message.simple(translations.army, translations.noMoreMoves)
             }
             return
@@ -227,5 +228,6 @@ var Move = new function () {
         }
 
         Execute.setExecuting(0)
+        Models.clearMoveCircles()
     }
 }

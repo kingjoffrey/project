@@ -12,7 +12,8 @@ var Models = new function () {
         shadows,
         roadTexture,
         swampTexture,
-        circles = [],
+        pathCircles = [],
+        moveCircles = [],
         armyCircles = [],
         loader = new THREE.JSONLoader(),
         tl = new THREE.TextureLoader(),
@@ -276,7 +277,7 @@ var Models = new function () {
         circle.rotation.x = Math.PI / 2
 
         Scene.add(circle)
-        circles.push(circle)
+        pathCircles.push(circle)
     }
     this.addArmyCircle = function (x, y, color) {
         var radius = 1,
@@ -323,11 +324,23 @@ var Models = new function () {
         Scene.add(circle)
         armyCircles.push(circle)
     }
-    this.clearPathCircles = function () {
-        for (var i in circles) {
-            Scene.remove(circles[i])
+    this.movePathCircles = function () {
+        for (var i in pathCircles) {
+            moveCircles[i] = pathCircles[i]
         }
-        circles = []
+        pathCircles = []
+    }
+    this.clearMoveCircles = function () {
+        for (var i in moveCircles) {
+            Scene.remove(moveCircles[i])
+        }
+        moveCircles = []
+    }
+    this.clearPathCircles = function () {
+        for (var i in pathCircles) {
+            Scene.remove(pathCircles[i])
+        }
+        pathCircles = []
     }
     this.clearArmyCircles = function () {
         for (var i in armyCircles) {

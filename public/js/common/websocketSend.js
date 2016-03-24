@@ -141,6 +141,7 @@ var WebSocketSend = new function () {
         var armyId = CommonMe.getSelectedArmyId()
 
         Gui.setLock()
+        Models.movePathCircles()
         CommonMe.deselectArmy(1)
 
         var token = {
