@@ -9,14 +9,14 @@ class zend_View_Helper_HelpMenu extends Zend_View_Helper_Abstract
             ->setPostfix('</div>');
 
         $menu = array(
+            'game' => $this->view->translate('Game'),
+            'castle' => $this->view->translate('Castle'),
+            'army' => $this->view->translate('Army'),
             'units' => $this->view->translate('Units'),
             'hero' => $this->view->translate('Hero'),
-            'castle' => $this->view->translate('Castle'),
-            'tower' => $this->view->translate('Tower'),
             'ruin' => $this->view->translate('Ruin'),
+            'tower' => $this->view->translate('Tower'),
             'terrain' => $this->view->translate('Terrain'),
-            'army' => $this->view->translate('Army'),
-            'game' => $this->view->translate('Game')
         );
 
         foreach ($menu as $key => $val) {
