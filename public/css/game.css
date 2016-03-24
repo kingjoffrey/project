@@ -79,8 +79,8 @@
 }
 
 #playersBox .iconButton {
-    width: 40px;
-    height: 40px;
+    width: 45px;
+    height: 45px;
     position: absolute;
     display: inline-flex;
 }
@@ -97,17 +97,17 @@
 
 #surrender.iconButton {
     top: 2px;
-    left: 148px;
+    left: 143px;
 }
 
 #statistics.iconButton {
-    top: 146px;
+    top: 136px;
     left: 0px;
 }
 
 #config.iconButton {
-    top: 146px;
-    left: 148px;
+    top: 136px;
+    left: 143px;
 }
 
 #turn {
@@ -936,17 +936,17 @@ table.treasury td.c {
 #nextTurn {
     line-height: 20px;
     position: absolute;
-    top: 101px;
+    top: 64px;
     left: 59px;
     display: inline-flex;
-    padding: 2px 20px;
+    padding: 15px 20px;
     box-shadow: none;
-    color: #000 !important;
-    background: #fff !important;
+    color: rgba(0, 0, 0, 0) !important;
+    background: none !important;
 }
 
 #nextTurn:hover {
-    color: #fff !important;
+    color: rgba(255, 255, 255, 1) !important;
     background: red !important;
 }
 
@@ -1099,7 +1099,7 @@ table.treasury td {
 }
 
 #playersBox #buttons {
-    padding-top: 20px;
+    padding-top: 4px;
 }
 
 .configuration .iconButton {
@@ -1108,6 +1108,14 @@ table.treasury td {
     vertical-align: middle;
 }
 
-.configuration .row{
+.configuration .row {
     text-align: left;
+}
+
+.configuration .row div {
+    display: inline-block;
+}
+
+.configuration .row div.description {
+    padding-left: 10px;
 }

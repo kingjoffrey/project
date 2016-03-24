@@ -15,7 +15,31 @@ var CommonMe = new function () {
         me,
         selectedCastleId = null,
         selectedUnitId = null,
-        battleSequence = []
+        battleSequence = [],
+        updateGold = function () {
+            $('#gold #value').fadeOut(300, function () {
+                $('#gold #value').html(gold)
+                $('#gold #value').fadeIn()
+                if (gold > 1000) {
+                    $('#heroHire').removeClass('buttonOff')
+                } else {
+                    $('#heroHire').addClass('buttonOff')
+                }
+            })
+
+        },
+        updateUpkeep = function () {
+            $('#costs #value').fadeOut(300, function () {
+                $('#costs #value').html(upkeep)
+                $('#costs #value').fadeIn(300)
+            })
+        },
+        updateIncome = function () {
+            $('#income #value').fadeOut(300, function () {
+                $('#income #value').html(income)
+                $('#income #value').fadeIn(300)
+            })
+        }
 
     this.init = function (c, g, bSequence) {
         color = c
@@ -56,30 +80,6 @@ var CommonMe = new function () {
     }
     this.colorEquals = function (value) {
         return color == value
-    }
-    var updateGold = function () {
-        $('#gold #value').fadeOut(300, function () {
-            $('#gold #value').html(gold)
-            $('#gold #value').fadeIn()
-            if (gold > 1000) {
-                $('#heroHire').removeClass('buttonOff')
-            } else {
-                $('#heroHire').addClass('buttonOff')
-            }
-        })
-
-    }
-    var updateUpkeep = function () {
-        $('#costs #value').fadeOut(300, function () {
-            $('#costs #value').html(upkeep)
-            $('#costs #value').fadeIn(300)
-        })
-    }
-    var updateIncome = function () {
-        $('#income #value').fadeOut(300, function () {
-            $('#income #value').html(income)
-            $('#income #value').fadeIn(300)
-        })
     }
     this.setGold = function (value) {
         gold = value
@@ -372,7 +372,6 @@ var CommonMe = new function () {
         if (Turn.isMy() && Turn.getNumber() == 1 && !this.getCastle(this.getFirsCastleId()).getProductionId()) {
             CastleWindow.show(this.getCastle(this.getFirsCastleId()))
         } else {
-            //Players.showFirst(color)
             var id = Message.simple(translations.yourTurn, translations.thisIsYourTurnNow)
             Message.ok(id, CommonMe.findFirst)
         }

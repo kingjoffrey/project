@@ -8,7 +8,6 @@ var Picker = new function () {
         //console.log('down')
         switch (event.button) {
             case 0:
-                console.log(event.button)
                 PickerCommon.intersect(event)
                 if (PickerCommon.intersects()) {
                     if (CommonMe.getSelectedArmyId()) {

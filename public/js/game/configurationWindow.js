@@ -7,14 +7,16 @@ var ConfigurationWindow = new function () {
                     'alt': 'Show others'
                 })).click(function () {
                     Sound.play('click');
-                    show = !show;
-                    if (show) {
+                    Gui.setShow(!Gui.getShow())
+                    if (Gui.getShow()) {
                         $(this).children().attr('src', '/img/game/show.png')
                     } else {
                         $(this).children().attr('src', '/img/game/show_off.png')
                     }
                 })
-            ).addClass('row')
+            ).addClass('row').append(
+                $('<div>').html('Show other players moves').addClass('description')
+            )
         )
         .append(
             $('<div>').append(
@@ -30,7 +32,9 @@ var ConfigurationWindow = new function () {
                         $(this).children().attr('src', '/img/game/sound_on.png')
                     }
                 })
-            ).addClass('row')
+            ).addClass('row').append(
+                $('<div>').html('Turn sound on/off').addClass('description')
+            )
         )
         .append(
             $('<div>').append(
@@ -49,7 +53,9 @@ var ConfigurationWindow = new function () {
                         elem.webkitRequestFullscreen()
                     }
                 })
-            ).addClass('row')
+            ).addClass('row').append(
+                $('<div>').html('Toggle full screen').addClass('description')
+            )
         )
 
     this.show = function () {

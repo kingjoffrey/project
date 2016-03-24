@@ -82,8 +82,8 @@ var Gui = new function () {
                 case 83: //s
                     StatusWindow.show()
                     break;
-            //default:
-            //    console.log(key)
+                //default:
+                //    console.log(key)
             }
         },
         prepareButtons = function () {
@@ -289,6 +289,9 @@ var Gui = new function () {
     }
     this.getDocumentTitle = function () {
         return documentTitle
+    }
+    this.setShow = function (s) {
+        show = s
     }
     this.getShow = function () {
         return show
