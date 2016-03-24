@@ -8,8 +8,25 @@ class Admin_Model_Help extends Coret_Model_ParentDb
 
     protected $_columns = array(
         'helpId' => array('label' => 'Side ID', 'type' => 'number', 'active' => array('db' => false, 'form' => false)),
+        'action' => array('label' => 'Akcja', 'type' => 'select'),
+    );
+
+    protected $_columns_lang = array(
         'title' => array('label' => 'Tytuł', 'type' => 'varchar'),
         'content' => array('label' => 'Treść', 'type' => 'text'),
     );
-}
 
+    static public function getActionArray()
+    {
+        return array(
+            'game' => 'Game',
+            'castle' => 'Castle',
+            'army' => 'Army',
+            'units' => 'Units',
+            'hero' => 'Hero',
+            'ruin' => 'Ruin',
+            'tower' => 'Tower',
+            'terrain' => 'Terrain',
+        );
+    }
+}
