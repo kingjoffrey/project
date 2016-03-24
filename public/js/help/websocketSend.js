@@ -1,5 +1,5 @@
 "use strict"
-var WebSocketSendNew = new function () {
+var WebSocketSend = new function () {
     var closed = true,
         ws
 
@@ -17,6 +17,7 @@ var WebSocketSendNew = new function () {
 
         var token = {
             type: 'open',
+            playerId: id,
             langId: langId,
             accessKey: accessKey
         }

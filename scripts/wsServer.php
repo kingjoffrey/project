@@ -30,6 +30,7 @@ include_once(APPLICATION_PATH . '/modules/cli/handlers/GameHandler.php');
 include_once(APPLICATION_PATH . '/modules/cli/handlers/TutorialHandler.php');
 include_once(APPLICATION_PATH . '/modules/cli/handlers/SetupHandler.php');
 include_once(APPLICATION_PATH . '/modules/cli/handlers/NewHandler.php');
+include_once(APPLICATION_PATH . '/modules/cli/handlers/HelpHandler.php');
 include_once(APPLICATION_PATH . '/modules/cli/handlers/EditorHandler.php');
 include_once(APPLICATION_PATH . '/modules/cli/handlers/GeneratorHandler.php');
 
@@ -54,6 +55,7 @@ $router->addRoute('#^/game$#i', new Cli_GameHandler($logger));
 $router->addRoute('#^/tutorial$#i', new Cli_TutorialHandler($logger));
 $router->addRoute('#^/setup$#i', new Cli_SetupHandler($logger));
 $router->addRoute('#^/new$#i', new Cli_NewHandler($logger));
+$router->addRoute('#^/help$#i', new Cli_HelpHandler($logger));
 $router->addRoute('#^/editor$#i', new Cli_EditorHandler($logger));
 $router->addRoute('#^/generator$#i', new Cli_GeneratorHandler($logger));
 

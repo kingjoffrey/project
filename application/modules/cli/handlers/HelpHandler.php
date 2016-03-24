@@ -10,10 +10,10 @@ use Devristo\Phpws\Server\UriHandler\WebSocketUriHandler;
  * @author Bartosz Krzeszewski
  *
  */
-class Cli_EditorHandler extends WebSocketUriHandler
+class Cli_HelpHandler extends WebSocketUriHandler
 {
     private $_db;
-    private $_editors;
+    private $_help;
 
     public function __construct($logger)
     {
@@ -26,25 +26,18 @@ class Cli_EditorHandler extends WebSocketUriHandler
         return $this->_db;
     }
 
-    public function addEditor($mapId, Cli_Model_Editor $editor)
+    public function add(Cli_Model_Help $help)
     {
-        $this->_editors[$mapId] = $editor;
-    }
-
-    public function removeEditor($mapId)
-    {
-        unset($this->_editors[$mapId]);
+        $this->_help = $help;
     }
 
     /**
      * @param $mapId
      * @return Cli_Model_Editor
      */
-    public function getEditor($mapId)
+    public function get()
     {
-        if (isset($this->_editors[$mapId])) {
-            return $this->_editors[$mapId];
-        }
+        return $this->_help;
     }
 
     public function onMessage(WebSocketTransportInterface $user, WebSocketMessageInterface $msg)
@@ -56,7 +49,7 @@ class Cli_EditorHandler extends WebSocketUriHandler
         }
 
         if ($dataIn['type'] == 'open') {
-            new Cli_Model_EditorOpen($dataIn, $user, $this);
+            new Cli_Model_HelpOpen($dataIn, $user, $this);
             return;
         }
 
@@ -66,25 +59,7 @@ class Cli_EditorHandler extends WebSocketUriHandler
         }
 
         switch ($dataIn['type']) {
-            case 'add':
-                $this->sendToUser($user, $this->getEditor($dataIn['mapId'])->add($dataIn, $this->_db));
-                break;
 
-            case 'edit':
-                $this->sendToUser($user, $this->getEditor($dataIn['mapId'])->edit($dataIn, $this->_db));
-                break;
-
-            case 'remove':
-                $this->sendToUser($user, $this->getEditor($dataIn['mapId'])->remove($dataIn, $this->_db));
-                break;
-
-            case 'up':
-                $this->sendToUser($user, $this->getEditor($dataIn['mapId'])->up($dataIn, $this->_db));
-                break;
-
-            case 'down':
-                $this->sendToUser($user, $this->getEditor($dataIn['mapId'])->down($dataIn, $this->_db));
-                break;
         }
     }
 

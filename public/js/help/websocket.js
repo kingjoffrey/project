@@ -4,19 +4,19 @@ var WebSocketHelp = new function () {
         var ws = new WebSocket(wsURL + '/help')
 
         ws.onopen = function () {
-            WebSocketSendNew.setClosed(0)
-            WebSocketSendNew.open()
+            WebSocketSend.setClosed(0)
+            WebSocketSend.open()
         }
         ws.onmessage = function (e) {
             if (typeof gameId === 'undefined') {
-                WebSocketMessageNew.switch($.parseJSON(e.data))
+                WebSocketMessage.switch($.parseJSON(e.data))
             }
         }
         ws.onclose = function () {
-            WebSocketSendNew.setClosed(1)
-            setTimeout('WebSocketNew.init()', 1000);
+            WebSocketSend.setClosed(1)
+            setTimeout('WebSocketHelp.init()', 1000);
         }
 
-        WebSocketSendNew.init(ws)
+        WebSocketSend.init(ws)
     }
 }
