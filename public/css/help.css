@@ -18,5 +18,17 @@
     border: 2px solid #fff;
     border-radius: 5px;
     background: #000;
-    margin: 2px;
+    box-shadow: 1px 1px 5px #000;
+    margin: 4px;
+    text-shadow: none;
+    cursor: pointer;
+}
+
+#helpMenu div:hover {
+    background: #fff;
+    color: #000;
+}
+
+#helpMenu div#active {
+    color: grey;
 }

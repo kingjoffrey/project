@@ -16,8 +16,7 @@ class zend_View_Helper_HelpMenu extends Zend_View_Helper_Abstract
             'ruin' => $this->view->translate('Ruin'),
             'terrain' => $this->view->translate('Terrain'),
             'army' => $this->view->translate('Army'),
-            'game' => $this->view->translate('Game'),
-            '' => $this->view->translate(''),
+            'game' => $this->view->translate('Game')
         );
 
         foreach ($menu as $key => $val) {
