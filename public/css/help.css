@@ -11,3 +11,12 @@
     top: 80px;
     left: 360px
 }
+
+#helpMenu div {
+    display: inline-block;
+    padding: 10px;
+    border: 2px solid #fff;
+    border-radius: 5px;
+    background: #000;
+    margin: 2px;
+}
