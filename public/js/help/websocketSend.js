@@ -1,0 +1,28 @@
+"use strict"
+var WebSocketSendNew = new function () {
+    var closed = true,
+        ws
+
+    this.setClosed = function (param) {
+        closed = param
+    }
+    this.isClosed = function () {
+        return closed
+    }
+    this.open = function () {
+        if (closed) {
+            console.log(translations.sorryServerIsDisconnected)
+            return;
+        }
+
+        var token = {
+            type: 'open',
+            langId: langId,
+            accessKey: accessKey
+        }
+        ws.send(JSON.stringify(token))
+    }
+    this.init = function (param) {
+        ws = param
+    }
+}
