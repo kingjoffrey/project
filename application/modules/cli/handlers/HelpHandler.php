@@ -59,7 +59,8 @@ class Cli_HelpHandler extends WebSocketUriHandler
         }
 
         switch ($dataIn['type']) {
-
+            case 'get':
+                break;
         }
     }
 
