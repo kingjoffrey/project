@@ -6,7 +6,7 @@ class Cli_Model_Help
 
     public function __construct(Zend_Db_Adapter_Pdo_Pgsql $db)
     {
-        $mHelp = new Application_Model_Help();
+        $mHelp = new Application_Model_Help($db);
         $help = $mHelp->get();
 
         $action = Admin_Model_Help::getActionArray();

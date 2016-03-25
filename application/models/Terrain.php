@@ -5,9 +5,8 @@ class Application_Model_Terrain extends Coret_Db_Table_Abstract
 
     protected $_name = 'terrain';
     protected $_primary = 'terrainId';
-    protected $mapId;
 
-    public function __construct($db = null)
+    public function __construct(Zend_Db_Adapter_Pdo_Pgsql $db = null)
     {
         if ($db) {
             $this->_db = $db;

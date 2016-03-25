@@ -18,7 +18,10 @@ class Application_Model_Help extends Coret_Db_Table_Abstract
     public function get()
     {
         $select = $this->_db->select()
-            ->from($this->_name, array('action', 'title', 'content'));
+            ->from($this->_name, array('action'))
+            ->where('id_lang = ?', Zend_Registry::get('id_lang'))
+            ->join($this->_name . '_Lang', $this->_name . ' . ' . $this->_db->quoteIdentifier($this->_primary) . ' = ' . $this->_db->quoteIdentifier($this->_name . '_Lang') . ' . ' . $this->_db->quoteIdentifier($this->_primary), array('title', 'content'))
+            ->order($this->_name . '.' . $this->_primary);
 
         return $this->selectAll($select);
     }
