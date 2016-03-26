@@ -266,6 +266,12 @@ input#submit {
     float: right;
     background: white;
     border: 2px solid #0f0;
+    width: auto;
+    margin-top: 2px;
+}
+
+input#submit:hover {
+    background: #0f0;
 }
 
 input#nrb {
@@ -275,7 +281,7 @@ input#nrb {
 form {
     padding: 10px 10px 5px 10px;
     margin: 10px auto;
-    width: 732px;
+    width: 98%;
     border: 1px solid #ddd;
     border-radius: 15px;
     background: #E2ECF5;
@@ -443,4 +449,18 @@ input#search {
     text-shadow: 0;
     display: inline-block;
     height: 15px;
+}
+
+fieldset input, fieldset textarea {
+    width: 100%;
+}
+
+fieldset #id_lang-label, fieldset #submit-label, fieldset #id-label {
+    display: none;
+}
+
+#zapisz {
+    float: right;
+    margin-top: -25px;
+    margin-right: 20px;
 }
