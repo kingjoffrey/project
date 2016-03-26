@@ -4,6 +4,8 @@ var Help = new function () {
         text
 
     this.click = function (id) {
+        $('#helpMenu div').removeClass('off')
+        $('#' + id).addClass('off')
         this.fillText(help[id])
     }
     this.fillText = function (action) {

@@ -29,6 +29,18 @@
     color: #000;
 }
 
-#helpMenu div#active {
+#helpMenu div.off {
     color: grey;
+    cursor: default;
+}
+
+#helpMenu div.off:hover {
+    background: #000;
+    color: grey;
+}
+
+#text h5 {
+    padding: 10px;
+    text-align: center;
+    font-size: 150%;
 }
