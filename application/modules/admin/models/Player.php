@@ -16,13 +16,13 @@ class Admin_Model_Player extends Coret_Model_ParentDb
         'creationDate' => array('label' => 'Data utworzenia', 'type' => 'date', 'active' => array('form' => false))
     );
 
-    public function addSelectWhere($select)
-    {
-        $select = parent::addSelectWhere($select);
-        $select->where($this->_name . '.computer = false');
-
-        return $select;
-    }
+//    public function addSelectWhere($select)
+//    {
+//        $select = parent::addSelectWhere($select);
+//        $select->where($this->_name . '.computer = false');
+//
+//        return $select;
+//    }
 
     protected function addOrder($select)
     {

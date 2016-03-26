@@ -3,7 +3,7 @@
 class Admin_View_Helper_JavascriptLang extends Zend_View_Helper_Abstract
 {
 
-    public function javascriptLang($controllerName)
+    public function javascriptLang($controllerName, $columnsLangKeys)
     {
         $script = '
 $().ready(function () {
@@ -13,17 +13,21 @@ $().ready(function () {
 var Lang = new function () {
     var get = function () {
         var data = {
-            "id": $("#id").val(),
-            "id_lang": $("#lang #id_lang").val(),
-            "c": "' . $controllerName . '"
-        }
+                "id": $("#id").val(),
+                "id_lang": $("#lang #id_lang").val(),
+                "c": "' . $controllerName . '"
+            },
+            columnsLangKeys = ' . Zend_Json::encode($columnsLangKeys) . '
+
         $.ajax({
             type: "POST",
             url: "/admin/ajaxlang/get",
             data: data,
             success: function (r) {
-                var result = $.parseJSON(r);
-                $("#lang #name").val(result.name);
+                var result = $.parseJSON(r)
+                for (var i in columnsLangKeys) {
+                    $("#lang #" + columnsLangKeys[i]).val(result[columnsLangKeys[i]])
+                }
             }
         })
     }
@@ -31,10 +35,16 @@ var Lang = new function () {
         get()
         $("#zapisz").click(function () {
             var data = {
-                "id": $("#id").val(),
-                "id_lang": $("#lang #id_lang").val(),
-                "c": "' . $controllerName . '"
+                    "id": $("#id").val(),
+                    "id_lang": $("#lang #id_lang").val(),
+                    "c": "' . $controllerName . '"
+                },
+                columnsLangKeys = ' . Zend_Json::encode($columnsLangKeys) . '
+
+            for (var i in columnsLangKeys) {
+                data[columnsLangKeys[i]] = $("#lang #" + columnsLangKeys[i]).val()
             }
+
             $.ajax({
                 type: "POST",
                 url: "/admin/ajaxlang/save",

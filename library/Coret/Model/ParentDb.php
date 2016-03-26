@@ -81,12 +81,9 @@ abstract class Coret_Model_ParentDb extends Coret_Db_Table_Abstract
 
             if ($dane['data_lang'] && $post['id_lang']) {
                 if ($this->checkIfLangExist($post['id'], $post['id_lang'])) {
-                    $dane['data_lang']['id_lang'] = $post['id_lang'];
                     return $this->updateElementLang($dane['data_lang'], $post['id']);
                 } else {
-                    $dane['data_lang'][$this->_primary] = $post['id'];
-                    $dane['data_lang']['id_lang'] = $post['id_lang'];
-                    return $this->insertElementLang($dane['data_lang']);
+                    $this->insertElementLang($dane['data_lang'], $post['id']);
                 }
             }
         } else {
@@ -102,8 +99,7 @@ abstract class Coret_Model_ParentDb extends Coret_Db_Table_Abstract
                 $this->updateElement($dane['data']);
             }
             if ($dane['data_lang']) {
-                $dane['data_lang'][$this->_primary] = $id;
-                return $this->insertElementLang($dane['data_lang']);
+                $this->insertElementLang($dane['data_lang'], $id);
             }
             return true;
         }
@@ -148,36 +144,32 @@ abstract class Coret_Model_ParentDb extends Coret_Db_Table_Abstract
      */
     public function insertElement($dane)
     {
-        $this->insert($dane);
-        if (isset($this->_sequence) && $this->_sequence) {
-            return $this->_db->lastSequenceId($this->_sequence);
-        } else {
-            return $this->_db->lastInsertId();
-        }
+        return $this->insert($dane);
     }
 
     /**
      * @param $dane
-     * @return string
+     * @param $id
+     * @return mixed|string
+     * @throws Exception
+     * @throws Zend_Exception
      */
-    public function insertElementLang($dane)
+    public function insertElementLang($dane, $id)
     {
+        $dane[$this->_primary] = $id;
         if (!isset($dane['id_lang']) || !$dane['id_lang']) {
-            $dane['id_lang'] = 1;
+            $dane['id_lang'] = Zend_Registry::get('config')->id_lang;
         }
-        return $this->insert($dane, $this->_name . '_Lang');
-//        if (isset($this->_sequence)) {
-//            return $this->_db->lastSequenceId($this->_sequence);
-//        } else {
-//            return $this->_db->lastInsertId();
-//        }
+        $this->_sequence = true;
+        $this->insert($dane, $this->_name . '_Lang');
     }
 
     /**
-     * @param $dane
-     * @return int
+     * @param array $dane
+     * @return int|void
+     * @throws Exception
      */
-    public function updateElement($dane)
+    public function updateElement(array $dane)
     {
         $where = array(
             $this->_db->quoteInto($this->_db->quoteIdentifier($this->_primary) . ' = ?', $this->_id)
@@ -187,10 +179,12 @@ abstract class Coret_Model_ParentDb extends Coret_Db_Table_Abstract
     }
 
     /**
-     * @param $dane
-     * @return mixed
+     * @param array $dane
+     * @param $id
+     * @return int|void
+     * @throws Exception
      */
-    public function updateElementLang($dane, $id)
+    public function updateElementLang(array $dane, $id)
     {
         $where = array(
             $this->_db->quoteInto($this->_db->quoteIdentifier($this->_primary) . ' = ?', $id)
@@ -203,6 +197,7 @@ abstract class Coret_Model_ParentDb extends Coret_Db_Table_Abstract
 
     /**
      * @param array $columns
+     * @param array $columns_lang
      */
     protected function prepareSelect(array $columns = array(), array $columns_lang = array())
     {
@@ -306,7 +301,6 @@ abstract class Coret_Model_ParentDb extends Coret_Db_Table_Abstract
         $this->addSelectWhereLang();
         $this->addSelectWhere();
         $this->addSelectJoin();
-
         $result = $this->_db->fetchRow($this->_select);
         if ($result) {
             if (isset($result['adminId'])) {
@@ -328,17 +322,8 @@ abstract class Coret_Model_ParentDb extends Coret_Db_Table_Abstract
      * @param array $columns_lang
      * @return mixed
      */
-    protected function addSelectJoin($columns_lang = array())
+    protected function addSelectJoin()
     {
-        if ($columns_lang) {
-            return $this->_select->join($this->_name . '_Lang', $this->_name . ' . ' . $this->_db->quoteIdentifier($this->_primary) . ' = ' . $this->_db->quoteIdentifier($this->_name . '_Lang') . ' . ' . $this->_db->quoteIdentifier($this->_primary), $columns_lang);
-        } elseif (isset($this->_columns_lang) && $this->_columns_lang) {
-            $columns_lang = array();
-            foreach (array_keys($this->_columns_lang) as $column) {
-                $columns_lang[] = $column;
-            }
-            return $this->_select->join($this->_name . '_Lang', $this->_name . ' . ' . $this->_db->quoteIdentifier($this->_primary) . ' = ' . $this->_db->quoteIdentifier($this->_name . '_Lang') . ' . ' . $this->_db->quoteIdentifier($this->_primary), $columns_lang);
-        }
     }
 
     /**
@@ -378,7 +363,15 @@ abstract class Coret_Model_ParentDb extends Coret_Db_Table_Abstract
      */
     protected function addSelectWhereLang()
     {
-        if (isset($this->_columns_lang) && $this->_columns_lang && isset($this->_params['id_lang']) && $this->_params['id_lang']) {
+        if (isset($this->_columns_lang) && $this->_columns_lang) {
+            if (!isset($this->_params['id_lang']) || !$this->_params['id_lang']) {
+                $this->_params['id_lang'] = Zend_Registry::get('config')->id_lang;
+            }
+            $columns_lang = array();
+            foreach (array_keys($this->_columns_lang) as $column) {
+                $columns_lang[] = $column;
+            }
+            $this->_select->join($this->_name . '_Lang', $this->_name . ' . ' . $this->_db->quoteIdentifier($this->_primary) . ' = ' . $this->_db->quoteIdentifier($this->_name . '_Lang') . ' . ' . $this->_db->quoteIdentifier($this->_primary), $columns_lang);
             $this->_select->where($this->_db->quoteIdentifier($this->_name . '_Lang') . ' . id_lang = ?', $this->_params['id_lang']);
         }
     }
@@ -505,6 +498,7 @@ abstract class Coret_Model_ParentDb extends Coret_Db_Table_Abstract
         }
 
         if (isset($this->_columns_lang) && $this->_columns_lang) {
+            $data_lang['id_lang'] = $post['id_lang'];
             for ($i = 0; $i < count($this->_columns_lang); $i++) {
                 $column_lang = key($this->_columns_lang);
 

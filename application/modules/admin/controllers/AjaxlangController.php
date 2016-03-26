@@ -31,9 +31,9 @@ class Admin_AjaxlangController extends Coret_Controller_BackendAjax
     public function saveAction()
     {
         $model = new $this->_modelClassName($this->params, $this->_id);
-        $model->save($this->_request->getParams());
+        echo Zend_Json::encode($model->save($this->_request->getParams()));
 
-        echo Zend_Json::encode($model->getElement());
+//        echo Zend_Json::encode($model->getElement());
     }
 
     public function getAction()

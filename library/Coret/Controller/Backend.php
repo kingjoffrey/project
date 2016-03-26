@@ -172,7 +172,7 @@ abstract class Coret_Controller_Backend extends Zend_Controller_Action
         $columnsLang = $model->getColumnsLang();
         if ($columnsLang) {
             $this->addLangForm($id, $columnsLang);
-            $this->view->JavascriptLang($this->view->controllerName);
+            $this->view->JavascriptLang($this->view->controllerName, array_keys($columnsLang));
         }
     }
 
@@ -219,7 +219,7 @@ abstract class Coret_Controller_Backend extends Zend_Controller_Action
         if ($model->isLang()) {
             $f = new Coret_Form_IdLang();
             $this->view->form->addElements($f->getElements());
-            $this->view->form->setDefault('id_lang', 1);
+            $this->view->form->setDefault('id_lang', Zend_Registry::get('config')->id_lang);
         }
     }
 
