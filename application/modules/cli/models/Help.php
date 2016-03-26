@@ -9,7 +9,7 @@ class Cli_Model_Help
         $mHelp = new Application_Model_Help($db);
         $help = $mHelp->get();
 
-        $action = Admin_Model_Help::getActionArray();
+        $action = Admin_Model_Help::getMenuArray();
         foreach (array_keys($action) as $key) {
             foreach ($help as $k => $row) {
                 if ($key == $row['action']) {

@@ -8,7 +8,7 @@ class Admin_Model_Help extends Coret_Model_ParentDb
 
     protected $_columns = array(
         'helpId' => array('label' => 'Side ID', 'type' => 'number', 'active' => array('db' => false, 'form' => false)),
-        'action' => array('label' => 'Akcja', 'type' => 'select'),
+        'menu' => array('label' => 'Akcja menu', 'type' => 'select'),
     );
 
     protected $_columns_lang = array(
@@ -16,7 +16,7 @@ class Admin_Model_Help extends Coret_Model_ParentDb
         'content' => array('label' => 'Treść', 'type' => 'text'),
     );
 
-    static public function getActionArray()
+    static public function getMenuArray()
     {
         return array(
             'game' => 'Game',

@@ -54,4 +54,3 @@ var Page = new function () {
         })
     }
 }
-

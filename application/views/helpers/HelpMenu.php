@@ -8,7 +8,7 @@ class zend_View_Helper_HelpMenu extends Zend_View_Helper_Abstract
             ->setPrefix('<div id="helpMenu">')
             ->setPostfix('</div>');
 
-        foreach (Admin_Model_Help::getActionArray() as $key => $val) {
+        foreach (Admin_Model_Help::getMenuArray() as $key => $val) {
             $this->view->placeholder('helpMenu')->append('<div id="' . $key . '">' . $this->view->translate($val) . '</div>');
         }
     }

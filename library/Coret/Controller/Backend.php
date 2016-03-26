@@ -172,6 +172,7 @@ abstract class Coret_Controller_Backend extends Zend_Controller_Action
         $columnsLang = $model->getColumnsLang();
         if ($columnsLang) {
             $this->addLangForm($id, $columnsLang);
+            $this->view->JavascriptLang($this->view->controllerName);
         }
     }
 

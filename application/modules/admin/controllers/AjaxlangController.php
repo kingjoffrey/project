@@ -25,13 +25,6 @@ class Admin_AjaxlangController extends Coret_Controller_BackendAjax
         }
 
         $this->params = array('id_lang' => $id_lang);
-        if ($this->_request->getParam('id_kategoria')) {
-            $this->params['id_kategoria'] = $this->_request->getParam('id_kategoria');
-        }
-        if ($this->_request->getParam('id_podkategoria')) {
-            $this->params['id_podkategoria'] = $this->_request->getParam('id_podkategoria');
-        }
-
         $this->_modelClassName = 'Admin_Model_' . ucfirst($this->_modelClassName);
     }
 
