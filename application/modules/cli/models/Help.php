@@ -9,14 +9,14 @@ class Cli_Model_Help
         $mHelp = new Application_Model_Help($db);
         $help = $mHelp->get();
 
-        $action = Admin_Model_Help::getMenuArray();
-        foreach (array_keys($action) as $key) {
+        $menu = Admin_Model_Help::getMenuArray();
+        foreach (array_keys($menu) as $key) {
             foreach ($help as $k => $row) {
-                if ($key == $row['action']) {
+                if ($key == $row['menu']) {
                     if (!isset($this->_help[$key])) {
                         $this->_help[$key] = array();
                     }
-                    unset($row['action']);
+                    unset($row['menu']);
                     $this->_help[$key][] = $row;
                     unset($help[$k]);
                 }
