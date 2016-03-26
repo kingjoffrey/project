@@ -16,26 +16,9 @@ var PickerCommon = new function () {
         container.addEventListener('mouseout', Picker.onContainerMouseOut, false);
 
 
-        //container.addEventListener('touchstart', PickerCommon.touchHandler, true)
         container.addEventListener('touchstart', Picker.onContainerTouchStart, true)
-        //container.addEventListener('touchstart', Picker.onContainerMouseDown, true)
-        //container.addEventListener("touchmove", function(event){
-        //    console.log(event)
-        //}, true);
-
-
-        //container.addEventListener('touchmove', PickerCommon.touchHandler, true)
-        //container.addEventListener('touchmove', Picker.onContainerMouseMove, true)
         container.addEventListener('touchmove', Picker.onContainerTouchMove, true)
-
-
-
-        //container.addEventListener('touchend', PickerCommon.touchHandler, true)
-        //container.addEventListener('touchend', Picker.onContainerMouseUp, true)
         container.addEventListener('touchend', Picker.onContainerTouchEnd, true)
-
-
-        //container.addEventListener("touchcancel", PickerCommon.touchHandler, true);
         container.addEventListener('touchcancel', Picker.onContainerTouchEnd, true);
     }
     this.intersect = function (event) {
@@ -67,31 +50,4 @@ var PickerCommon = new function () {
     this.intersects = function () {
         return isSet(intersects[0])
     }
-    //this.touchHandler = function (event) {
-    //    var touches = event.changedTouches,
-    //        first = touches[0],
-    //        type = "";
-    //    switch (event.type) {
-    //        case "touchstart":
-    //            type = "mousedown";
-    //            break;
-    //        case "touchmove":
-    //            type = "mousemove";
-    //            break;
-    //        case "touchend":
-    //            type = "mouseup";
-    //            break;
-    //        default:
-    //            return;
-    //    }
-    //
-    //    var simulatedEvent = document.createEvent("MouseEvent");
-    //    simulatedEvent.initMouseEvent(type, true, true, window, 1,
-    //        first.screenX, first.screenY,
-    //        first.clientX, first.clientY, false,
-    //        false, false, false, 0/*left*/, null);
-    //
-    //    first.target.dispatchEvent(simulatedEvent);
-    //    event.preventDefault();
-    //}
 }

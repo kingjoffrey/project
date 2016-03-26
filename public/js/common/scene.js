@@ -4,8 +4,8 @@ if (!Detector.webgl) {
 }
 
 var Scene = new function () {
-    var gameWidth,
-        gameHeight,
+    var canvasWidth,
+        canvasHeight,
         scene = new THREE.Scene(),
         camera,
         sun,
@@ -13,13 +13,12 @@ var Scene = new function () {
         shadows = 1,
         cameraY = 24,
         timeOut = 100,
-        water,
         initCamera = function () {
             var viewAngle = 22,
                 near = 1,
                 far = 1000
 
-            camera = new THREE.PerspectiveCamera(viewAngle, gameWidth / gameHeight, near, far)
+            camera = new THREE.PerspectiveCamera(viewAngle, canvasWidth / canvasHeight, near, far)
             camera.rotation.order = 'YXZ'
             camera.rotation.y = -Math.PI / 4
             camera.rotation.x = Math.atan(-1 / Math.sqrt(2))
@@ -136,47 +135,26 @@ var Scene = new function () {
         return renderer
     }
     this.getWidth = function () {
-        return gameWidth
+        return canvasWidth
     }
     this.getHeight = function () {
-        return gameHeight
+        return canvasHeight
     }
     this.setFPS = function (fps) {
         timeOut = parseInt(1000 / fps)
     }
     this.resize = function () {
-        gameWidth = $(window).innerWidth()
-        gameHeight = $(window).innerHeight()
+        canvasWidth = $(window).innerWidth()
+        canvasHeight = $(window).innerHeight()
         $('#game')
             .css({
-                    width: gameWidth + 'px',
-                    height: gameHeight + 'px'
+                    width: canvasWidth + 'px',
+                    height: canvasHeight + 'px'
                 }
             )
-        renderer.setSize(gameWidth, gameHeight)
-        camera.aspect = gameWidth / gameHeight
+        renderer.setSize(canvasWidth, canvasHeight)
+        camera.aspect = canvasWidth / canvasHeight
         camera.updateProjectionMatrix()
-    }
-    this.init = function () {
-        gameWidth = $(window).innerWidth()
-        gameHeight = $(window).innerHeight()
-
-        $('#game')
-            .append(renderer.domElement)
-            .css({
-                    width: gameWidth + 'px',
-                    height: gameHeight + 'px'
-                }
-            )
-
-        initCamera()
-        renderer.setSize(gameWidth, gameHeight)
-        renderer.domElement.id = 'scene'
-        Models.init()
-        PickerCommon.init()
-    }
-    this.setWater = function (w) {
-        water = w
     }
     this.render = function () {
         if (TWEEN.update()) {
@@ -185,10 +163,47 @@ var Scene = new function () {
         } else {
             renderer.render(scene, camera)
             setTimeout(function () {
-                //water.material.uniforms.time.value += 1.0 / 60.0
-                //water.render()
                 requestAnimationFrame(Scene.render)
             }, timeOut)
         }
+    }
+    this.renderSimple = function () {
+        renderer.render(scene, camera)
+        setTimeout(function () {
+            requestAnimationFrame(Scene.renderSimple)
+        }, timeOut)
+    }
+    this.init = function () {
+        canvasWidth = $(window).innerWidth()
+        canvasHeight = $(window).innerHeight()
+
+        $('#game')
+            .append(renderer.domElement)
+            .css({
+                    width: canvasWidth + 'px',
+                    height: canvasHeight + 'px'
+                }
+            )
+
+        initCamera()
+        renderer.setSize(canvasWidth, canvasHeight)
+        renderer.domElement.id = 'scene'
+    }
+    this.initSimple = function () {
+        canvasWidth = 300
+        canvasHeight = 300
+        cameraY = 14
+
+        $('#graphics')
+            .append(renderer.domElement)
+            .css({
+                    width: canvasWidth + 'px',
+                    height: canvasHeight + 'px'
+                }
+            )
+
+        initCamera()
+        renderer.setSize(canvasWidth, canvasHeight)
+        renderer.domElement.id = 'scene'
     }
 }

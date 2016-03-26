@@ -13,6 +13,8 @@ var CommonInit = new function () {
 $(document).ready(function () {
     AStar.init()
     Scene.init()
+    Models.init()
+    PickerCommon.init()
     WebSocketGame.init()
     PrivateChat.init()
 })

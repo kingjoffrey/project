@@ -25,22 +25,29 @@
 }
 
 #helpMenu div:hover {
-    background: #fff;
-    color: #000;
+    background: green;
+    color: #fff;
 }
 
 #helpMenu div.off {
-    color: grey;
+    background: #fff;
+    color: #000;
     cursor: default;
-}
-
-#helpMenu div.off:hover {
-    background: #000;
-    color: grey;
 }
 
 #text h5 {
     padding: 10px;
     text-align: center;
     font-size: 150%;
+}
+
+#text {
+    min-height: 300px;
+}
+
+#graphics {
+    float: left;
+    width: 300px;
+    height: 300px;
+    margin-right: 5px;
 }

@@ -108,12 +108,14 @@ input[type="radio"], input[type="checkbox"] {
 }
 
 .button:hover, #submit:hover {
-    background: #fff;
-    color: #000;
+    background: green;
+    color: #fff;
 }
 
 .button#active {
-    color: grey;
+    background: #fff;
+    color: #000;
+    cursor: default;
 }
 
 .button#active:hover {

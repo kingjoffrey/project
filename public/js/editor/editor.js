@@ -19,5 +19,7 @@ var Editor = new function () {
 
 $(document).ready(function () {
     Scene.init()
+    Models.init()
+    PickerCommon.init()
     WebSocketEditor.init()
 })

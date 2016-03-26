@@ -7,6 +7,17 @@ var Help = new function () {
         $('#helpMenu div').removeClass('off')
         $('#' + id).addClass('off')
         this.fillText(help[id])
+        switch (id) {
+            case 'castle':
+                Models.addCastle({x: 0, y: -2, defense: 4,name:'Castle'}, 'orange')
+                break
+            case 'tower':
+                Models.addTower(0, 0, 'orange')
+                break
+            case 'ruin':
+                Models.addRuin(0, 0, 'gold')
+                break
+        }
     }
     this.fillText = function (action) {
         text.html('')
