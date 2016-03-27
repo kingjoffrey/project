@@ -3,7 +3,198 @@ var Help = new function () {
     var help,
         text,
         graphics,
-        mesh = 0
+        mesh = 0,
+        currentUnitId = 0,
+        unitProperties = function (unit) {
+            $('#unit').remove()
+            if (unit.special) {
+                var special = 'yes'
+            } else {
+                var special = 'no'
+            }
+            if (unit.canFly) {
+                var table = $('<table>')
+                    .append(
+                        $('<tr>')
+                            .append($('<th>'))
+                            .append($('<th>').html('Road'))
+                            .append($('<th>').html('Grass'))
+                            .append($('<th>').html('Forest'))
+                            .append($('<th>').html('Swamp'))
+                            .append($('<th>').html('Hill'))
+                            .append($('<th>').html('Mountain'))
+                            .append($('<th>').html('Water'))
+                    )
+                    .append(
+                        $('<tr>')
+                            .append($('<td>').html('Walk'))
+                            .append($('<td>').html('1'))
+                            .append($('<td>').html('2'))
+                            .append($('<td>').html(unit.modMovesForest))
+                            .append($('<td>').html(unit.modMovesSwamp))
+                            .append($('<td>').html(unit.modMovesHills))
+                            .append($('<td>').html('-'))
+                            .append($('<td>').html('-'))
+                    )
+                    .append(
+                        $('<tr>')
+                            .append($('<td>').html('Fly'))
+                            .append($('<td>').html('2'))
+                            .append($('<td>').html('2'))
+                            .append($('<td>').html('2'))
+                            .append($('<td>').html('2'))
+                            .append($('<td>').html('2'))
+                            .append($('<td>').html('2'))
+                            .append($('<td>').html('2'))
+                    )
+                    .append(
+                        $('<tr>')
+                            .append($('<td>').html('Swim'))
+                            .append($('<td>').html('-'))
+                            .append($('<td>').html('-'))
+                            .append($('<td>').html('-'))
+                            .append($('<td>').html('-'))
+                            .append($('<td>').html('-'))
+                            .append($('<td>').html('-'))
+                            .append($('<td>').html('-'))
+                    )
+            } else if (unit.canSwim) {
+                var table = $('<table>')
+                    .append(
+                        $('<tr>')
+                            .append($('<th>'))
+                            .append($('<th>').html('Road'))
+                            .append($('<th>').html('Grass'))
+                            .append($('<th>').html('Forest'))
+                            .append($('<th>').html('Swamp'))
+                            .append($('<th>').html('Hill'))
+                            .append($('<th>').html('Mountain'))
+                            .append($('<th>').html('Water'))
+                    )
+                    .append(
+                        $('<tr>')
+                            .append($('<td>').html('Walk'))
+                            .append($('<td>').html('-'))
+                            .append($('<td>').html('-'))
+                            .append($('<td>').html('-'))
+                            .append($('<td>').html('-'))
+                            .append($('<td>').html('-'))
+                            .append($('<td>').html('-'))
+                            .append($('<td>').html('-'))
+                    )
+                    .append(
+                        $('<tr>')
+                            .append($('<td>').html('Fly'))
+                            .append($('<td>').html('-'))
+                            .append($('<td>').html('-'))
+                            .append($('<td>').html('-'))
+                            .append($('<td>').html('-'))
+                            .append($('<td>').html('-'))
+                            .append($('<td>').html('-'))
+                            .append($('<td>').html('-'))
+                    )
+                    .append(
+                        $('<tr>')
+                            .append($('<td>').html('Swim'))
+                            .append($('<td>').html('-'))
+                            .append($('<td>').html('-'))
+                            .append($('<td>').html('-'))
+                            .append($('<td>').html('-'))
+                            .append($('<td>').html('-'))
+                            .append($('<td>').html('-'))
+                            .append($('<td>').html('1'))
+                    )
+            } else {
+                var table = $('<table>')
+                    .append(
+                        $('<tr>')
+                            .append($('<th>'))
+                            .append($('<th>').html('Road'))
+                            .append($('<th>').html('Grass'))
+                            .append($('<th>').html('Forest'))
+                            .append($('<th>').html('Swamp'))
+                            .append($('<th>').html('Hill'))
+                            .append($('<th>').html('Mountain'))
+                            .append($('<th>').html('Water'))
+                    )
+                    .append(
+                        $('<tr>')
+                            .append($('<td>').html('Walk'))
+                            .append($('<td>').html('1'))
+                            .append($('<td>').html('2'))
+                            .append($('<td>').html(unit.modMovesForest))
+                            .append($('<td>').html(unit.modMovesSwamp))
+                            .append($('<td>').html(unit.modMovesHills))
+                            .append($('<td>').html('-'))
+                            .append($('<td>').html('-'))
+                    )
+                    .append(
+                        $('<tr>')
+                            .append($('<td>').html('Fly'))
+                            .append($('<td>').html('-'))
+                            .append($('<td>').html('-'))
+                            .append($('<td>').html('-'))
+                            .append($('<td>').html('-'))
+                            .append($('<td>').html('-'))
+                            .append($('<td>').html('-'))
+                            .append($('<td>').html('-'))
+                    )
+                    .append(
+                        $('<tr>')
+                            .append($('<td>').html('Swim'))
+                            .append($('<td>').html('-'))
+                            .append($('<td>').html('-'))
+                            .append($('<td>').html('-'))
+                            .append($('<td>').html('-'))
+                            .append($('<td>').html('-'))
+                            .append($('<td>').html('-'))
+                            .append($('<td>').html('-'))
+                    )
+            }
+            return $('<div>')
+                .attr('id', 'unit')
+                .append($('<h3>')
+                    .append($('<span>').html('<< ').click(function () {
+                        changeUnit('-')
+                    }))
+                    .append(unit.name_lang)
+                    .append($('<span>').html(' >>').click(function () {
+                        console.log('xxx')
+                        changeUnit('+')
+                    }))
+                )
+                .append($('<div>').html('attack/defense - ' + unit.attackPoints + '/' + unit.defensePoints))
+                .append($('<div>').html('cost - ' + unit.cost + ', moves - ' + unit.numberOfMoves))
+                .append($('<div>').html('special unit - ' + special))
+                .append(table)
+        },
+        changeUnit = function (direction) {
+            if (mesh) {
+                Scene.remove(mesh)
+            }
+            var stop = 0,
+                lastUnitId = 0
+
+            for (var unitId in help.list) {
+                if (stop) {
+                    lastUnitId = unitId
+                    break
+                }
+                if (unitId == currentUnitId) {
+                    stop = 1
+                    if (direction == '-') {
+                        break
+                    }
+                }
+                lastUnitId = unitId
+            }
+            if (!lastUnitId) {
+                lastUnitId = unitId
+            }
+            mesh = Models.addUnit('orange', help.list[lastUnitId].name.replace(' ', '_').toLowerCase())
+            text.prepend(unitProperties(help.list[lastUnitId]))
+            currentUnitId = lastUnitId
+        }
 
     this.click = function (id) {
         this.fillText(id)
@@ -27,7 +218,7 @@ var Help = new function () {
                 mesh = Models.addCastle({x: 0, y: -2, defense: 4, name: 'Castle'}, 'orange')
                 break
             case 'hero':
-                mesh = Models.addHero(0, 0, 'orange')
+                mesh = Models.addHero('orange')
                 break
             case 'tower':
                 mesh = Models.addTower(0, 0, 'orange')
@@ -36,7 +227,12 @@ var Help = new function () {
                 mesh = Models.addRuin(0, 0, 'gold')
                 break
             case 'units':
-console.log('aaa')
+                for (var unitId in help.list) {
+                    mesh = Models.addUnit('orange', help.list[unitId].name.replace(' ', '_').toLowerCase())
+                    text.prepend(unitProperties(help.list[unitId]))
+                    currentUnitId = unitId
+                    break
+                }
                 break
         }
         if (mesh) {

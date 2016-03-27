@@ -51,3 +51,12 @@
     height: 300px;
     margin-right: 5px;
 }
+
+#text #unit table {
+    width: 583px;
+    margin: 10px 0;
+}
+
+#text #unit h3 {
+    margin: 10px 0;
+}
