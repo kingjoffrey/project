@@ -219,6 +219,9 @@ var Help = new function () {
                 break
             case 'castle':
                 mesh = Models.addCastle({x: 0, y: -2, defense: 4, name: 'Castle'}, 'orange')
+                mesh.scale.x = 1.3
+                mesh.scale.y = 1.3
+                mesh.scale.z = 1.3
                 break
             case 'hero':
                 mesh = Models.addHero('orange')
@@ -230,7 +233,7 @@ var Help = new function () {
                 mesh.scale.z = 1.7
                 break
             case 'ruin':
-                mesh = Models.addRuin(0, 0, 'gold')
+                mesh = Models.addRuin(0, -1, 'gold')
                 mesh.scale.x = 3
                 mesh.scale.y = 3
                 mesh.scale.z = 3
