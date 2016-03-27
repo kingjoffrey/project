@@ -4,8 +4,7 @@ var WebSocketMessage = new function () {
         switch (r.type) {
             case 'open':
                 Help.set(r)
-                $('#game').addClass('off')
-                Help.fillText(r.game)
+                Help.fillText('game')
                 break
             default:
                 console.log(r)

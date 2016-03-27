@@ -513,6 +513,19 @@ var Models = new function () {
         }
         Scene.add(mesh)
     }
+    this.addHero = function (x, y, color) {
+        var mesh = new THREE.Mesh(window['heroModel'].geometry, new THREE.MeshLambertMaterial({
+            color: color,
+            side: THREE.DoubleSide
+        }))
+        mesh.rotation.y = Math.PI / 2 + Math.PI / 4
+        mesh.scale.x = 5
+        mesh.scale.y = 5
+        mesh.scale.z = 5
+        console.log(mesh.scale)
+        Scene.add(mesh)
+        return mesh
+    }
     this.addArmy = function (x, y, color, number, modelName) {
         var armyMaterial = new THREE.MeshLambertMaterial({color: color, side: THREE.DoubleSide}),
             flagMesh = new THREE.Mesh(flagModels[number - 1].geometry, new THREE.MeshLambertMaterial({

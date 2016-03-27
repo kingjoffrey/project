@@ -1,32 +1,49 @@
 "use strict"
 var Help = new function () {
     var help,
-        text
+        text,
+        graphics,
+        mesh = 0
 
     this.click = function (id) {
+        this.fillText(id)
+    }
+    this.fillText = function (id) {
+        var menu = help[id]
         $('#helpMenu div').removeClass('off')
         $('#' + id).addClass('off')
-        this.fillText(help[id])
+        if (mesh) {
+            Scene.remove(mesh)
+            mesh = 0
+        }
+        text.html('')
+        for (var i in menu) {
+            text
+                .append($('<h5>').html(menu[i].title))
+                .append($('<p>').html(Help.nl2br(menu[i].content)))
+        }
         switch (id) {
             case 'castle':
-                Models.addCastle({x: 0, y: -2, defense: 4,name:'Castle'}, 'orange')
+                mesh = Models.addCastle({x: 0, y: -2, defense: 4, name: 'Castle'}, 'orange')
+                break
+            case 'hero':
+                mesh = Models.addHero(0, 0, 'orange')
                 break
             case 'tower':
-                Models.addTower(0, 0, 'orange')
+                mesh = Models.addTower(0, 0, 'orange')
                 break
             case 'ruin':
-                Models.addRuin(0, 0, 'gold')
+                mesh = Models.addRuin(0, 0, 'gold')
+                break
+            case 'units':
+console.log('aaa')
                 break
         }
-    }
-    this.fillText = function (action) {
-        text.html('')
-        for (var i in action) {
-            text
-                .append($('<h5>').html(action[i].title))
-                .append($('<p>').html(Help.nl2br(action[i].content)))
+        if (mesh) {
+            graphics.css('display', 'block')
+        } else {
+            graphics.css('display', 'none')
         }
-
     }
     this.set = function (r) {
         help = r
@@ -40,6 +57,7 @@ var Help = new function () {
             Help.click($(this).attr('id'))
         })
 
+        graphics = $('#graphics')
         text = $('#text')
 
         WebSocketHelp.init()

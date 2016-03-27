@@ -22,6 +22,9 @@ class Cli_Model_Help
                 }
             }
         }
+
+        $mUnit = new Application_Model_Unit();
+        $this->_help['units']['list'] = $mUnit->getAll();
     }
 
     public function toArray()
