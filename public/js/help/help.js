@@ -215,32 +215,32 @@ var Help = new function () {
         }
         switch (id) {
             case 'army':
-                mesh = Models.addArmySimple('orange', 'light_infantry')
+                mesh = Models.addArmySimple(5, 5, 'orange', 'light_infantry')
                 break
             case 'castle':
-                mesh = Models.addCastle({x: 0, y: -2, defense: 4, name: 'Castle'}, 'orange')
+                mesh = Models.addCastle({x: 1.5, y: 0.5, defense: 4, name: 'Castle'}, 'orange')
                 mesh.scale.x = 1.3
                 mesh.scale.y = 1.3
                 mesh.scale.z = 1.3
                 break
             case 'hero':
-                mesh = Models.addHero('orange')
+                mesh = Models.addHero(5, 4, 'orange')
                 break
             case 'tower':
-                mesh = Models.addTower(-1, 1, 'orange')
+                mesh = Models.addTower(1.5, 3, 'orange')
                 mesh.scale.x = 1.7
                 mesh.scale.y = 1.7
                 mesh.scale.z = 1.7
                 break
             case 'ruin':
-                mesh = Models.addRuin(0, -1, 'gold')
+                mesh = Models.addRuin(1.5, 2, 'gold')
                 mesh.scale.x = 3
                 mesh.scale.y = 3
                 mesh.scale.z = 3
                 break
             case 'units':
                 for (var unitId in help.list) {
-                    mesh = Models.addUnit('orange', help.list[unitId].name.replace(' ', '_').toLowerCase())
+                    mesh = Models.addUnit(5, 4, 'orange', help.list[unitId].name.replace(' ', '_').toLowerCase())
                     text.prepend(unitProperties(help.list[unitId]))
                     currentUnitId = unitId
                     break
@@ -269,5 +269,17 @@ var Help = new function () {
         text = $('#text')
 
         WebSocketHelp.init()
+
+        var mesh = new THREE.Mesh(new THREE.PlaneBufferGeometry(10, 10), new THREE.MeshLambertMaterial({
+            color: 0xffffff,
+            side: THREE.DoubleSide
+        }))
+        mesh.rotation.x = Math.PI / 2
+        mesh.position.set(5, 0, 3)
+        Scene.add(mesh)
+        if (Scene.getShadows()) {
+            mesh.receiveShadow = true
+        }
+        mesh = 0
     }
 }
