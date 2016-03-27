@@ -543,6 +543,31 @@ var Models = new function () {
         Scene.add(mesh)
         return mesh
     }
+    this.addArmySimple = function (color, modelName) {
+        var armyMaterial = new THREE.MeshLambertMaterial({color: color, side: THREE.DoubleSide}),
+            flagMesh = new THREE.Mesh(flagModels[7].geometry, new THREE.MeshLambertMaterial({
+                color: color,
+                side: THREE.DoubleSide
+            }))
+        if (modelName + 'Model' in window) {
+            var mesh = new THREE.Mesh(window[modelName + 'Model'].geometry, armyMaterial)
+        } else {
+            var mesh = new THREE.Mesh(untitledModel.geometry, armyMaterial)
+        }
+        if (shadows) {
+            mesh.castShadow = true
+            mesh.receiveShadow = true
+            flagMesh.castShadow = true
+        }
+        flagMesh.position.set(-0.5, 0, 0)
+        mesh.rotation.y = Math.PI / 2 + Math.PI / 4
+        mesh.add(flagMesh)
+        mesh.scale.x = 3
+        mesh.scale.y = 3
+        mesh.scale.z = 3
+        Scene.add(mesh)
+        return mesh
+    }
     this.addArmy = function (x, y, color, number, modelName) {
         var armyMaterial = new THREE.MeshLambertMaterial({color: color, side: THREE.DoubleSide}),
             flagMesh = new THREE.Mesh(flagModels[number - 1].geometry, new THREE.MeshLambertMaterial({

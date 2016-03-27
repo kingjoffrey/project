@@ -214,6 +214,9 @@ var Help = new function () {
                 .append($('<p>').html(Help.nl2br(menu[i].content)))
         }
         switch (id) {
+            case 'army':
+                mesh = Models.addArmySimple('orange', 'light_infantry')
+                break
             case 'castle':
                 mesh = Models.addCastle({x: 0, y: -2, defense: 4, name: 'Castle'}, 'orange')
                 break
@@ -221,10 +224,16 @@ var Help = new function () {
                 mesh = Models.addHero('orange')
                 break
             case 'tower':
-                mesh = Models.addTower(0, 0, 'orange')
+                mesh = Models.addTower(-1, 1, 'orange')
+                mesh.scale.x = 1.7
+                mesh.scale.y = 1.7
+                mesh.scale.z = 1.7
                 break
             case 'ruin':
                 mesh = Models.addRuin(0, 0, 'gold')
+                mesh.scale.x = 3
+                mesh.scale.y = 3
+                mesh.scale.z = 3
                 break
             case 'units':
                 for (var unitId in help.list) {
