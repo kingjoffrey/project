@@ -16,6 +16,7 @@ var CommonMe = new function () {
         selectedCastleId = null,
         selectedUnitId = null,
         battleSequence = [],
+        scene,
         updateGold = function () {
             $('#gold #value').fadeOut(300, function () {
                 $('#gold #value').html(gold)
@@ -41,40 +42,6 @@ var CommonMe = new function () {
             })
         }
 
-    this.init = function (c, g, bSequence) {
-        color = c
-        me = Players.get(color)
-
-        this.setBattleSequence(bSequence)
-        this.setGold(g)
-        for (var armyId in Players.get(color).getArmies().toArray()) {
-            var army = Players.get(color).getArmies().get(armyId)
-            if (army.getFortified()) {
-                this.addQuited(armyId)
-            }
-        }
-        var armies = this.getArmies()
-        for (var armyId in armies.toArray()) {
-            var army = armies.get(armyId)
-            for (var soldierId in army.getWalkingSoldiers()) {
-                this.upkeepIncrement(Units.get(army.getWalkingSoldier(soldierId).unitId).cost)
-            }
-            for (var soldierId in army.getFlyingSoldiers()) {
-                this.upkeepIncrement(Units.get(army.getFlyingSoldier(soldierId).unitId).cost)
-            }
-            for (var soldierId in army.getSwimmingSoldiers()) {
-                this.upkeepIncrement(Units.get(army.getSwimmingSoldier(soldierId).unitId).cost)
-            }
-        }
-        var castles = this.getCastles()
-        for (var castleId in castles.toArray()) {
-            this.incomeIncrement(castles.get(castleId).getIncome())
-        }
-        this.incomeIncrement(this.getTowers().count() * 5)
-        updateGold()
-        updateUpkeep()
-        updateIncome()
-    }
     this.getColor = function () {
         return color
     }
@@ -154,18 +121,24 @@ var CommonMe = new function () {
     this.setParentArmyId = function (armyId) {
         parentArmyId = armyId
     }
+    this.getScene = function () {
+        return scene
+    }
     this.selectArmy = function (armyId, center) {
         var army = this.getArmy(armyId),
-            unitsBox = $('#unitsBox'),
-            number,
-            unitTypes = {}
+            unitTypes = {},
+            number
 
-        unitsBox.html('')
+        $('#unitsBox').html('')
+
         if (number = countProperties(army.getHeroes())) {
-            unitsBox.append(
-                $('<div>').html(number).css({'background-image': 'url(' + Hero.getImage(color) + ')'})
-// todo scene 3d
-            )
+            var scene = new SimpleScene()
+            scene.init(40, 40, 'unitsBox')
+            scene.setCameraPosition(-8, 16)
+            scene.initSun(30)
+            scene.add(Models.addHero(4, 4, army.getBackgroundColor()))
+            scene.render()
+            $('#unitsBox canvas').last().before($('<div>').html(number))
         }
 
         for (var soldierId in army.getWalkingSoldiers()) {
@@ -190,7 +163,13 @@ var CommonMe = new function () {
             }
         }
         for (var unitId in unitTypes) {
-            unitsBox.append($('<div>').html(unitTypes[unitId]).css({'background-image': 'url(' + Unit.getImage(unitId, color) + ')'}))
+            var scene = new SimpleScene()
+            scene.init(40, 40, 'unitsBox')
+            scene.setCameraPosition(-8, 16)
+            scene.initSun(30)
+            scene.add(Models.addUnit(4, 4, army.getBackgroundColor(), Unit.getName(unitId)))
+            scene.render()
+            $('#unitsBox canvas').last().before($('<div>').html(unitTypes[unitId]))
         }
 
         Models.addArmyCircle(army.getX(), army.getY(), army.getBackgroundColor())
@@ -198,8 +177,6 @@ var CommonMe = new function () {
 
         this.removeFromSkipped(armyId)
         this.deleteQuited(armyId)
-        this.updateInfo(armyId)
-        $('#name').html('Army')
 
         $('#deselectArmy').removeClass('buttonOff');
         $('#armyStatus').removeClass('buttonOff');
@@ -232,11 +209,6 @@ var CommonMe = new function () {
         //Castle.deselectedArmyCursor()
         //this.enemyCursorWhenUnselected()
         //Castle.myCursor()
-
-        $('#name').html('');
-        $('#moves').html('');
-        $('#attack').html('');
-        $('#defense').html('');
 
         this.armyButtonsOff()
     }
@@ -330,13 +302,6 @@ var CommonMe = new function () {
             nextArmies = {}
             this.findNext()
         }
-    }
-    this.updateInfo = function (armyId) {
-        var army = this.getArmy(armyId)
-        $('#name').html(army.name);
-        $('#attack').html(army.attack);
-        $('#defense').html(army.defense);
-        $('#moves').html(army.moves);
     }
     this.addQuited = function (armyId) {
         quitedArmies[armyId] = 1
@@ -513,5 +478,39 @@ var CommonMe = new function () {
             $('#heroResurrection').addClass('buttonOff')
             $('#heroHire').addClass('buttonOff')
         }
+    }
+    this.init = function (c, g, bSequence) {
+        color = c
+        me = Players.get(color)
+
+        this.setBattleSequence(bSequence)
+        this.setGold(g)
+        for (var armyId in Players.get(color).getArmies().toArray()) {
+            var army = Players.get(color).getArmies().get(armyId)
+            if (army.getFortified()) {
+                this.addQuited(armyId)
+            }
+        }
+        var armies = this.getArmies()
+        for (var armyId in armies.toArray()) {
+            var army = armies.get(armyId)
+            for (var soldierId in army.getWalkingSoldiers()) {
+                this.upkeepIncrement(Units.get(army.getWalkingSoldier(soldierId).unitId).cost)
+            }
+            for (var soldierId in army.getFlyingSoldiers()) {
+                this.upkeepIncrement(Units.get(army.getFlyingSoldier(soldierId).unitId).cost)
+            }
+            for (var soldierId in army.getSwimmingSoldiers()) {
+                this.upkeepIncrement(Units.get(army.getSwimmingSoldier(soldierId).unitId).cost)
+            }
+        }
+        var castles = this.getCastles()
+        for (var castleId in castles.toArray()) {
+            this.incomeIncrement(castles.get(castleId).getIncome())
+        }
+        this.incomeIncrement(this.getTowers().count() * 5)
+        updateGold()
+        updateUpkeep()
+        updateIncome()
     }
 }

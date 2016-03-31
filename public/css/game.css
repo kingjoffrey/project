@@ -621,11 +621,13 @@
 }
 
 #armyBox #unitsBox div {
-    min-width: 35px;
-    height: 30px;
     display: inline-block;
-    background-repeat: no-repeat;
-    background-position: 10px 0;
+    position: fixed;
+    padding: 2px;
+}
+
+#armyBox #unitsBox canvas {
+    display: inline-block;
 }
 
 #armyBox #armyButtons {

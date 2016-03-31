@@ -1,13 +1,14 @@
-var SimpleScene = new function () {
+var SimpleScene = function () {
     var canvasWidth,
         canvasHeight,
         scene = new THREE.Scene(),
         camera,
         sun,
         renderer = new THREE.WebGLRenderer({antialias: true}),
-        shadows = 1,
-        cameraY = 24,
+        shadows = 0,
+        cameraY = 14,
         timeOut = 100,
+        elementId,
         initCamera = function () {
             var viewAngle = 22,
                 near = 1,
@@ -138,15 +139,9 @@ var SimpleScene = new function () {
     this.setFPS = function (fps) {
         timeOut = parseInt(1000 / fps)
     }
-    this.resize = function () {
-        canvasWidth = $(window).innerWidth()
-        canvasHeight = $(window).innerHeight()
-        $('#game')
-            .css({
-                    width: canvasWidth + 'px',
-                    height: canvasHeight + 'px'
-                }
-            )
+    this.resize = function (w, h) {
+        canvasWidth = w
+        canvasHeight = h
         renderer.setSize(canvasWidth, canvasHeight)
         camera.aspect = canvasWidth / canvasHeight
         camera.updateProjectionMatrix()
@@ -157,40 +152,18 @@ var SimpleScene = new function () {
     this.renderLoop = function () {
         renderer.render(scene, camera)
         setTimeout(function () {
-            requestAnimationFrame(Scene.renderLoop)
+            requestAnimationFrame(CommonMe.getA().renderLoop)
         }, timeOut)
     }
-    this.init = function (w, h, elementId) {
+    this.init = function (w, h, id) {
         canvasWidth = w
         canvasHeight = h
+        elementId = id
 
-        $('#' + elementId)
-            .append(renderer.domElement)
-            .css({
-                    width: canvasWidth + 'px',
-                    height: canvasHeight + 'px'
-                }
-            )
+        $('#' + elementId).append(renderer.domElement)
 
         initCamera()
         renderer.setSize(canvasWidth, canvasHeight)
         //renderer.domElement.id = 'scene'
-    }
-    this.initSimple = function () {
-        canvasWidth = 300
-        canvasHeight = 300
-        cameraY = 14
-
-        $('#graphics')
-            .append(renderer.domElement)
-            .css({
-                    width: canvasWidth + 'px',
-                    height: canvasHeight + 'px'
-                }
-            )
-
-        initCamera()
-        renderer.setSize(canvasWidth, canvasHeight)
-        renderer.domElement.id = 'scene'
     }
 }
