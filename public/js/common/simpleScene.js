@@ -4,11 +4,9 @@ var SimpleScene = function () {
         scene = new THREE.Scene(),
         camera,
         sun,
-        renderer = new THREE.WebGLRenderer({antialias: true}),
+        renderer = new THREE.WebGLRenderer(),
         shadows = 0,
         cameraY = 14,
-        timeOut = 100,
-        elementId,
         initCamera = function () {
             var viewAngle = 22,
                 near = 1,
@@ -28,33 +26,10 @@ var SimpleScene = function () {
     this.initSun = function (size) {
         sun = new THREE.DirectionalLight(0xdfebff, 0.75)
         sun.position.set(100, 200, 150)
-        if (shadows) {
-            renderer.shadowMap.enabled = true
-            renderer.shadowMapSoft = false
-
-            sun.castShadow = true
-
-            sun.shadow.mapSize.width = 2048
-            sun.shadow.mapSize.height = 2048
-
-            var d = 2.1 * size
-
-            sun.shadow.camera.left = -d / 1.93
-            sun.shadow.camera.right = d / 1.29
-            sun.shadow.camera.top = 0
-            sun.shadow.camera.bottom = -d
-            sun.shadow.camera.far = 300
-
-            //var helper = new THREE.CameraHelper(sun.shadow.camera)
-            //scene.add(helper)
-        }
         scene.add(sun)
     }
     this.getSun = function () {
         return sun
-    }
-    this.getShadows = function () {
-        return shadows
     }
     this.setCameraPosition = function (x, z) {
         camera.position.set(parseFloat(x), cameraY, parseFloat(z))
@@ -136,9 +111,6 @@ var SimpleScene = function () {
     this.getHeight = function () {
         return canvasHeight
     }
-    this.setFPS = function (fps) {
-        timeOut = parseInt(1000 / fps)
-    }
     this.resize = function (w, h) {
         canvasWidth = w
         canvasHeight = h
@@ -149,21 +121,16 @@ var SimpleScene = function () {
     this.render = function () {
         renderer.render(scene, camera)
     }
-    this.renderLoop = function () {
-        renderer.render(scene, camera)
-        setTimeout(function () {
-            requestAnimationFrame(CommonMe.getA().renderLoop)
-        }, timeOut)
+    this.addId = function (id) {
+        renderer.domElement.id = id
     }
     this.init = function (w, h, id) {
         canvasWidth = w
         canvasHeight = h
-        elementId = id
 
-        $('#' + elementId).append(renderer.domElement)
+        $('#' + id).append(renderer.domElement)
 
         initCamera()
         renderer.setSize(canvasWidth, canvasHeight)
-        //renderer.domElement.id = 'scene'
     }
 }

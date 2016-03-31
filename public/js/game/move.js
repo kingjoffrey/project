@@ -221,13 +221,14 @@ var Move = new function () {
                 }
             }
             Gui.unlock()
+            Execute.setExecuting(0)
         }
 
         for (var i in r.deletedIds) {
             Players.get(r.color).getArmies().destroy(r.deletedIds[i])
         }
 
-        Execute.setExecuting(0)
+
         Models.clearMoveCircles()
     }
 }
