@@ -162,7 +162,10 @@ var CommonMe = new function () {
 
         unitsBox.html('')
         if (number = countProperties(army.getHeroes())) {
-            unitsBox.append($('<div>').html(number).css({'background-image': 'url(' + Hero.getImage(color) + ')'}))
+            unitsBox.append(
+                $('<div>').html(number).css({'background-image': 'url(' + Hero.getImage(color) + ')'})
+// todo scene 3d
+            )
         }
 
         for (var soldierId in army.getWalkingSoldiers()) {
