@@ -522,11 +522,11 @@ var Models = new function () {
             mesh.castShadow = true
             mesh.receiveShadow = true
         }
-        mesh.rotation.y = Math.PI / 2 + Math.PI / 4
-        mesh.scale.x = 5
-        mesh.scale.y = 5
-        mesh.scale.z = 5
-        mesh.position.set(x, 0, y)
+        //mesh.rotation.y = Math.PI / 2 + Math.PI / 4
+        mesh.scale.x = 50
+        mesh.scale.y = 50
+        mesh.scale.z = 50
+        mesh.position.set(0, -30, 0)
         Scene.add(mesh)
         return mesh
     }
@@ -541,11 +541,12 @@ var Models = new function () {
             mesh.castShadow = true
             mesh.receiveShadow = true
         }
-        mesh.rotation.y = Math.PI / 2 + Math.PI / 4
-        mesh.scale.x = 5
-        mesh.scale.y = 5
-        mesh.scale.z = 5
-        mesh.position.set(x, 0, y)
+        //mesh.rotation.y = Math.PI / 2 + Math.PI / 4
+        mesh.rotation.y = Math.PI / 2
+        mesh.scale.x = 50
+        mesh.scale.y = 50
+        mesh.scale.z = 50
+        mesh.position.set(0, -30, 0)
         Scene.add(mesh)
         return mesh
     }

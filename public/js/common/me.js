@@ -500,7 +500,10 @@ var CommonMe = new function () {
 
         scene = new SimpleScene()
         scene.init(40, 40, 'unitsBox')
-        scene.setCameraPosition(-8, 16)
+        //scene.setCameraPosition(-8, 16)
         scene.initSun(30)
+    }
+    this.scene = function () {
+        return scene
     }
 }

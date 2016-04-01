@@ -13,11 +13,12 @@ var SimpleScene = function () {
                 near = 1,
                 far = 1000
 
-            camera = new THREE.PerspectiveCamera(viewAngle, canvasWidth / canvasHeight, near, far)
-            camera.rotation.order = 'YXZ'
-            camera.rotation.y = -Math.PI / 4
-            camera.rotation.x = Math.atan(-1 / Math.sqrt(2))
-            camera.position.y = cameraY
+            //camera = new THREE.PerspectiveCamera(viewAngle, canvasWidth / canvasHeight, near, far)
+            camera = new THREE.OrthographicCamera(canvasWidth / -2, canvasWidth / 2, canvasHeight / 2, canvasHeight / -2, near, far)
+            //camera.rotation.order = 'YXZ'
+            //camera.rotation.y = -Math.PI / 4
+            //camera.rotation.x = Math.atan(-1 / Math.sqrt(2))
+            camera.position.z = 20
             camera.scale.addScalar(1)
             scene.add(camera)
             scene.add(new THREE.AmbientLight(0x777777))
@@ -111,7 +112,11 @@ var SimpleScene = function () {
         canvasWidth = w
         canvasHeight = h
         renderer.setSize(canvasWidth, canvasHeight)
-        camera.aspect = canvasWidth / canvasHeight
+        //camera.aspect = canvasWidth / canvasHeight
+        camera.left = canvasWidth / -2
+        camera.right = canvasWidth / 2
+        camera.top = canvasHeight / 2
+        camera.bottom = canvasHeight / -2
         camera.updateProjectionMatrix()
     }
     this.render = function () {
