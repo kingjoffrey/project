@@ -100,8 +100,28 @@ var BattleWindow = new function () {
         }
 
     this.battle = function (r, ii) {
+
+        var div = $('<div>')
+            .append($('<p>').html('&nbsp;'))
+            .append(
+                $('<div>')
+                    .addClass('grass')
+                    .append(
+                        $('<div>')
+                            .append($('<div>').html(Players.get(color).getLongName() + ' (' + translations.defence + ')'))
+                            .append($('<div>').addClass('battle defense').attr('id', 'attack'))
+                    )
+                    .append($('<p>').html('&nbsp;'))
+                    .append(
+                        $('<div>')
+                        .append($('<div>').addClass('battle attack').attr('id', 'attack'))
+                        .append($('<div>').html(Players.get(r.color).getLongName() + ' (' + translations.attack + ')'))
+                    )
+            )
+
+        Message.simple(translations.battle, div);
+
         var killed = new Array(),
-            attack = $('<div>').addClass('battle attack').attr('id', 'attack'),
             attackArmy = Players.get(r.color).getArmies().get(r.army.id),
             attackBgColor = attackArmy.getBackgroundColor()
 
@@ -137,13 +157,6 @@ var BattleWindow = new function () {
             }
             addHero(attackBgColor, heroId, 'attack')
         }
-
-        var attackLayout = $('<div>')
-            .append(attack)
-            .append($('<div>').html(Players.get(r.color).getLongName() + ' (' + translations.attack + ')'))
-
-        var defense = $('<div>').addClass('battle defense').attr('id', 'attack'),
-            defenseLayout = $('<div>')
 
         for (var color in r.battle.defenders) {
             for (var armyId in r.battle.defenders[color]) {
@@ -189,8 +202,6 @@ var BattleWindow = new function () {
                 }
             }
 
-            defenseLayout.append($('<div>').html(Players.get(color).getLongName() + ' (' + translations.defence + ')'))
-
             //if (r.battle.castleId) {
             //    defenseLayout.append(
             //        $('<div>')
@@ -215,20 +226,8 @@ var BattleWindow = new function () {
             //    )
             //}
 
-            defenseLayout.append(defense)
+
         }
-
-        var div = $('<div>')
-            .append($('<p>').html('&nbsp;'))
-            .append(
-                $('<div>')
-                    .addClass('grass')
-                    .append(defenseLayout)
-                    .append($('<p>').html('&nbsp;'))
-                    .append(attackLayout)
-            )
-
-        Message.simple(translations.battle, div);
 
         $('.message .close').css('display', 'none')
 
