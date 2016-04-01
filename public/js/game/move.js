@@ -222,6 +222,8 @@ var Move = new function () {
             }
             Gui.unlock()
             Execute.setExecuting(0)
+        }else {
+            Execute.setExecuting(0)
         }
 
         for (var i in r.deletedIds) {

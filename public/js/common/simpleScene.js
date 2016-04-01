@@ -7,6 +7,7 @@ var SimpleScene = function () {
         renderer = new THREE.WebGLRenderer(),
         shadows = 0,
         cameraY = 14,
+        meshes = [],
         initCamera = function () {
             var viewAngle = 22,
                 near = 1,
@@ -94,22 +95,17 @@ var SimpleScene = function () {
         return scene
     }
     this.add = function (object) {
+        meshes.push(object)
         scene.add(object)
     }
-    this.remove = function (object) {
-        scene.remove(object)
+    this.removeMeshes = function () {
+        for (var i in meshes) {
+            scene.remove(meshes[i])
+        }
+        meshes = []
     }
     this.getCamera = function () {
         return camera
-    }
-    this.getRenderer = function () {
-        return renderer
-    }
-    this.getWidth = function () {
-        return canvasWidth
-    }
-    this.getHeight = function () {
-        return canvasHeight
     }
     this.resize = function (w, h) {
         canvasWidth = w

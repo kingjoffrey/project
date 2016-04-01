@@ -102,21 +102,11 @@ var BattleWindow = new function () {
     this.battle = function (r, ii) {
 
         var div = $('<div>')
-            .append($('<p>').html('&nbsp;'))
             .append(
                 $('<div>')
                     .addClass('grass')
-                    .append(
-                        $('<div>')
-                            .append($('<div>').html(Players.get(color).getLongName() + ' (' + translations.defence + ')'))
-                            .append($('<div>').addClass('battle defense').attr('id', 'attack'))
-                    )
-                    .append($('<p>').html('&nbsp;'))
-                    .append(
-                        $('<div>')
-                        .append($('<div>').addClass('battle attack').attr('id', 'attack'))
-                        .append($('<div>').html(Players.get(r.color).getLongName() + ' (' + translations.attack + ')'))
-                    )
+                    .append($('<div>').addClass('battle defense').attr('id', 'defense'))
+                    .append($('<div>').addClass('battle attack').attr('id', 'attack'))
             )
 
         Message.simple(translations.battle, div);

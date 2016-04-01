@@ -127,18 +127,13 @@ var CommonMe = new function () {
     this.selectArmy = function (armyId, center) {
         var army = this.getArmy(armyId),
             unitTypes = {},
-            number
-
-        $('#unitsBox').html('')
+            number,
+            i = 0
 
         if (number = countProperties(army.getHeroes())) {
-            var scene = new SimpleScene()
-            scene.init(40, 40, 'unitsBox')
-            scene.setCameraPosition(-8, 16)
-            scene.initSun(30)
+            i++
             scene.add(Models.addHero(4, 4, army.getBackgroundColor()))
-            scene.render()
-            $('#unitsBox canvas').last().before($('<div>').html(number))
+            //$('#unitsBox canvas').last().before($('<div>').html(number))
         }
 
         for (var soldierId in army.getWalkingSoldiers()) {
@@ -163,14 +158,13 @@ var CommonMe = new function () {
             }
         }
         for (var unitId in unitTypes) {
-            var scene = new SimpleScene()
-            scene.init(40, 40, 'unitsBox')
-            scene.setCameraPosition(-8, 16)
-            scene.initSun(30)
-            scene.add(Models.addUnit(4, 4, army.getBackgroundColor(), Unit.getName(unitId)))
-            scene.render()
-            $('#unitsBox canvas').last().before($('<div>').html(unitTypes[unitId]))
+            i++
+            scene.add(Models.addUnit(4 * i, 4 * i, army.getBackgroundColor(), Unit.getName(unitId)))
+            //$('#unitsBox canvas').last().before($('<div>').html(unitTypes[unitId]))
         }
+
+        scene.resize(40 * i, 40)
+        scene.render()
 
         Models.addArmyCircle(army.getX(), army.getY(), army.getBackgroundColor())
         Message.remove()
@@ -191,7 +185,10 @@ var CommonMe = new function () {
         }
     }
     this.deselectArmy = function (skipJoin) {
-        Message.remove()
+        scene.removeMeshes()
+        scene.resize(40, 40)
+        scene.render()
+
         if (notSet(skipJoin) && parentArmyId && selectedArmyId) {
             var selectedArmy = this.getArmy(selectedArmyId),
                 parentArmy = this.getArmy(parentArmyId)
@@ -202,26 +199,14 @@ var CommonMe = new function () {
         }
         parentArmyId = null
 
-        $('#unitsBox').html('')
         Models.clearArmyCircles()
         Models.clearPathCircles()
         this.setIsSelected(0)
-        //Castle.deselectedArmyCursor()
-        //this.enemyCursorWhenUnselected()
-        //Castle.myCursor()
-
         this.armyButtonsOff()
     }
     this.armyButtonsOff = function () {
         if (selectedArmyId) {
             deselectedArmyId = selectedArmyId
-
-            //Army.deselected.heroSplitKey = null
-            //Army.deselected.soldierSplitKey = null
-            //
-            //Army.deselected.skippedHeroes = {};
-            //Army.deselected.skippedSoldiers = {};
-
         }
         selectedArmyId = null
         $('.path').remove();
@@ -512,5 +497,10 @@ var CommonMe = new function () {
         updateGold()
         updateUpkeep()
         updateIncome()
+
+        scene = new SimpleScene()
+        scene.init(40, 40, 'unitsBox')
+        scene.setCameraPosition(-8, 16)
+        scene.initSun(30)
     }
 }
