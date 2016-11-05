@@ -17,10 +17,6 @@ class HelpController extends Game_Controller_Gui
 
         $this->view->headScript()->appendFile('/js/three/three.js');
         $this->view->headScript()->appendFile('/js/three/Detector.js');
-//        $this->view->headScript()->appendFile('/js/geometries/TextGeometry.js');
-//        $this->view->headScript()->appendFile('/js/utils/FontUtils.js');
-//        $this->view->headScript()->appendFile('/fonts/helvetiker_regular.typeface.js');
-//        $this->view->headScript()->appendFile('/fonts/helvetiker_regular.typeface.json');
 
 
         $this->view->headScript()->appendFile('/js/common/scene.js?v=' . $this->_version);

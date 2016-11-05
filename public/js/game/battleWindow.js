@@ -81,22 +81,22 @@ var BattleWindow = new function () {
             }
         },
         addUnit = function (soldierId, color, unitId, elementId) {
-            var scene = new SimpleScene()
-            scene.init(40, 40, elementId)
-            scene.setCameraPosition(-8, 16)
-            scene.initSun(30)
-            scene.add(Models.addUnit(4, 4, color, Unit.getName(unitId)))
-            scene.render()
-            scene.addId('unit' + soldierId)
+            // var scene = new SimpleScene()
+            // scene.init(40, 40, elementId)
+            // scene.setCameraPosition(-8, 16)
+            // scene.initSun(30)
+            // scene.add(Models.addUnit(4, 4, color, Unit.getName(unitId)))
+            // scene.render()
+            // scene.addId('unit' + soldierId)
         },
         addHero = function (color, heroId, elementId) {
-            var scene = new SimpleScene()
-            scene.init(40, 40, elementId)
-            scene.setCameraPosition(-8, 16)
-            scene.initSun(30)
-            scene.add(Models.addHero(4, 4, color))
-            scene.render()
-            scene.addId('hero' + heroId)
+            // var scene = new SimpleScene()
+            // scene.init(40, 40, elementId)
+            // scene.setCameraPosition(-8, 16)
+            // scene.initSun(30)
+            // scene.add(Models.addHero(4, 4, color))
+            // scene.render()
+            // scene.addId('hero' + heroId)
         }
 
     this.battle = function (r, ii) {
@@ -119,7 +119,7 @@ var BattleWindow = new function () {
             if (r.battle.attack.walk[soldierId]) {
                 killed[r.battle.attack.walk[soldierId]] = {
                     'soldierId': soldierId
-                };
+                }
             }
             addUnit(soldierId, attackBgColor, attackArmy.getWalkingSoldier(soldierId).unitId, 'attack')
         }
@@ -137,7 +137,7 @@ var BattleWindow = new function () {
                     'soldierId': soldierId
                 };
             }
-            addUnit(soldierId, attackBgColor, attackArmy.getSwimmingSoldier(soldierId).unitId, 'attack')
+            addUnit(soldierId, attackBgColor, attackArmy.getFlyingSoldier(soldierId).unitId, 'attack')
         }
         for (var heroId in r.battle.attack.hero) {
             if (r.battle.attack.hero[heroId]) {

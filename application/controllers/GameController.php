@@ -45,9 +45,6 @@ class GameController extends Coret_Controller_Authorized
         $this->view->headScript()->appendFile('/js/three/Detector.js');
         $this->view->headScript()->appendFile('/js/three/Mirror.js');
         $this->view->headScript()->appendFile('/js/three/WaterShader.js');
-        $this->view->headScript()->appendFile('/js/geometries/TextGeometry.js');
-        $this->view->headScript()->appendFile('/js/utils/FontUtils.js');
-        $this->view->headScript()->appendFile('/fonts/helvetiker_regular.typeface.js');
 
         $this->view->headScript()->appendFile('/js/common/init.js?v=' . $version);
         $this->view->headScript()->appendFile('/js/common/castle.js?v=' . $version);

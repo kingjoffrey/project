@@ -26,7 +26,8 @@ var Models = new function () {
             var loader = new THREE.FontLoader()
             var fontName = 'helvetiker',
                 fontWeight = 'regular'
-            loader.load('../fonts/' + fontName + '_' + fontWeight + '.typeface.json', function (response) {
+
+            loader.load(window.location.origin + '/fonts/' + fontName + '_' + fontWeight + '.typeface.json', function (response) {
                 font = response;
             })
 

@@ -132,7 +132,7 @@ var CommonMe = new function () {
 
         if (number = countProperties(army.getHeroes())) {
             i++
-            scene.add(Models.addHero(4, 4, army.getBackgroundColor()))
+            // scene.add(Models.addHero(4, 4, army.getBackgroundColor()))
             //$('#unitsBox canvas').last().before($('<div>').html(number))
         }
 
@@ -159,12 +159,12 @@ var CommonMe = new function () {
         }
         for (var unitId in unitTypes) {
             i++
-            scene.add(Models.addUnit(4 * i, 4 * i, army.getBackgroundColor(), Unit.getName(unitId)))
+            // scene.add(Models.addUnit(4 * i, 4 * i, army.getBackgroundColor(), Unit.getName(unitId)))
             //$('#unitsBox canvas').last().before($('<div>').html(unitTypes[unitId]))
         }
 
-        scene.resize(40 * i, 40)
-        scene.render()
+        // scene.resize(40 * i, 40)
+        // scene.render()
 
         Models.addArmyCircle(army.getX(), army.getY(), army.getBackgroundColor())
         Message.remove()
@@ -185,9 +185,9 @@ var CommonMe = new function () {
         }
     }
     this.deselectArmy = function (skipJoin) {
-        scene.removeMeshes()
-        scene.resize(40, 40)
-        scene.render()
+        // scene.removeMeshes()
+        // scene.resize(40, 40)
+        // scene.render()
 
         if (notSet(skipJoin) && parentArmyId && selectedArmyId) {
             var selectedArmy = this.getArmy(selectedArmyId),
@@ -498,10 +498,10 @@ var CommonMe = new function () {
         updateUpkeep()
         updateIncome()
 
-        scene = new SimpleScene()
-        scene.init(40, 40, 'unitsBox')
+        // scene = new SimpleScene()
+        // scene.init(40, 40, 'unitsBox')
         //scene.setCameraPosition(-8, 16)
-        scene.initSun(30)
+        // scene.initSun(30)
     }
     this.scene = function () {
         return scene
