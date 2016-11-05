@@ -159,7 +159,6 @@ var Help = new function () {
                     }))
                     .append(unit.name_lang)
                     .append($('<span>').html(' >>').click(function () {
-                        console.log('xxx')
                         changeUnit('+')
                     }))
                 )
@@ -191,7 +190,7 @@ var Help = new function () {
             if (!lastUnitId) {
                 lastUnitId = unitId
             }
-            mesh = Models.addUnit('orange', help.list[lastUnitId].name.replace(' ', '_').toLowerCase())
+            mesh = Models.addUnit(5, 4, 'orange', help.list[lastUnitId].name.replace(' ', '_').toLowerCase())
             text.prepend(unitProperties(help.list[lastUnitId]))
             currentUnitId = lastUnitId
         }
@@ -200,6 +199,7 @@ var Help = new function () {
         this.fillText(id)
     }
     this.fillText = function (id) {
+        console.log(id)
         var menu = help[id]
         $('#helpMenu div').removeClass('off')
         $('#' + id).addClass('off')
@@ -219,24 +219,24 @@ var Help = new function () {
                 break
             case 'castle':
                 mesh = Models.addCastle({x: 1.5, y: 0.5, defense: 4, name: 'Castle'}, 'orange')
-                mesh.scale.x = 1.3
-                mesh.scale.y = 1.3
-                mesh.scale.z = 1.3
+                mesh.scale.x = 13
+                mesh.scale.y = 13
+                mesh.scale.z = 13
                 break
             case 'hero':
                 mesh = Models.addHero(5, 4, 'orange')
                 break
             case 'tower':
                 mesh = Models.addTower(1.5, 3, 'orange')
-                mesh.scale.x = 1.7
-                mesh.scale.y = 1.7
-                mesh.scale.z = 1.7
+                mesh.scale.x = 17
+                mesh.scale.y = 17
+                mesh.scale.z = 17
                 break
             case 'ruin':
                 mesh = Models.addRuin(1.5, 2, 'gold')
-                mesh.scale.x = 3
-                mesh.scale.y = 3
-                mesh.scale.z = 3
+                mesh.scale.x = 30
+                mesh.scale.y = 30
+                mesh.scale.z = 30
                 break
             case 'units':
                 for (var unitId in help.list) {
@@ -270,12 +270,12 @@ var Help = new function () {
 
         WebSocketHelp.init()
 
-        var mesh = new THREE.Mesh(new THREE.PlaneBufferGeometry(10, 10), new THREE.MeshLambertMaterial({
+        mesh = new THREE.Mesh(new THREE.PlaneBufferGeometry(200, 200), new THREE.MeshLambertMaterial({
             color: 0xffffff,
             side: THREE.DoubleSide
         }))
         mesh.rotation.x = Math.PI / 2
-        mesh.position.set(5, 0, 3)
+        mesh.position.set(0, -30, 0)
         Scene.add(mesh)
         if (Scene.getShadows()) {
             mesh.receiveShadow = true

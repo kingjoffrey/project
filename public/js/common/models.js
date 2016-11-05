@@ -22,8 +22,18 @@ var Models = new function () {
         pathMaterialRed,
         pathMaterialWhite,
         pathGeometry,
+        loadFont = function () {
+            var loader = new THREE.FontLoader()
+            var fontName = 'helvetiker',
+                fontWeight = 'regular'
+            loader.load('../fonts/' + fontName + '_' + fontWeight + '.typeface.json', function (response) {
+                font = response;
+            })
+
+        },
         createTextMesh = function (text, color) {
             var mesh = new THREE.Mesh(new THREE.TextGeometry(text, {
+                font: font,
                 size: 0.25,
                 height: 0.05
             }), new THREE.MeshPhongMaterial({color: color}))
@@ -641,6 +651,7 @@ var Models = new function () {
         return loading
     }
     this.init = function () {
+        loadFont()
         shadows = Scene.getShadows()
         initRoadTexture()
         initSwampTexture()
