@@ -22,15 +22,15 @@ var Models = new function () {
         pathMaterialRed,
         pathMaterialWhite,
         pathGeometry,
+        font,
         loadFont = function () {
-            var loader = new THREE.FontLoader()
-            var fontName = 'helvetiker',
+            var loader = new THREE.FontLoader(),
+                fontName = 'helvetiker',
                 fontWeight = 'regular'
 
             loader.load(window.location.origin + '/fonts/' + fontName + '_' + fontWeight + '.typeface.json', function (response) {
                 font = response;
             })
-
         },
         createTextMesh = function (text, color) {
             var mesh = new THREE.Mesh(new THREE.TextGeometry(text, {
