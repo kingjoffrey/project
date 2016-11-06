@@ -9,7 +9,6 @@ var Scene = new function () {
         scene = new THREE.Scene(),
         camera,
         sun,
-        renderer = new THREE.WebGLRenderer({antialias: true}),
         shadows = 1,
         cameraY = 24,
         timeOut = 100,
@@ -155,6 +154,14 @@ var Scene = new function () {
         renderer.setSize(canvasWidth, canvasHeight)
         camera.aspect = canvasWidth / canvasHeight
         camera.updateProjectionMatrix()
+    }
+    this.animate = function () {
+
+        requestAnimationFrame(animate);
+
+        render();
+        stats.update();
+
     }
     this.render = function () {
         if (TWEEN.update()) {

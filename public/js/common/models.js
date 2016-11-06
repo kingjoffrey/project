@@ -193,6 +193,16 @@ var Models = new function () {
             for (var i in armyModels) {
                 armyModels[i].scale = 16
                 window[i + 'Model'] = loader.parse(armyModels[i])
+                if (i == 'hero') {
+                    tl.load(window.location.origin + '/img/modelMaps/hero.png', function (texture) {
+                        window['heroModel'].material = new THREE.MeshLambertMaterial({
+                            map: texture,
+                            side: THREE.DoubleSide
+                        })
+
+                    })
+
+                }
             }
 
             flag_1.scale = 15
@@ -525,18 +535,16 @@ var Models = new function () {
         Scene.add(mesh)
     }
     this.addHero = function (x, y, color) {
-        var mesh = new THREE.Mesh(window['heroModel'].geometry, new THREE.MeshLambertMaterial({
-            color: color,
-            side: THREE.DoubleSide
-        }))
+
+        var mesh = new THREE.Mesh(window['heroModel'].geometry, window['heroModel'].material)
         if (shadows) {
             mesh.castShadow = true
             mesh.receiveShadow = true
         }
         //mesh.rotation.y = Math.PI / 2 + Math.PI / 4
-        mesh.scale.x = 50
-        mesh.scale.y = 50
-        mesh.scale.z = 50
+        mesh.scale.x = 90
+        mesh.scale.y = 90
+        mesh.scale.z = 90
         mesh.position.set(0, -30, 0)
         Scene.add(mesh)
         return mesh
