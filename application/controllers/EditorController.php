@@ -50,9 +50,6 @@ class EditorController extends Game_Controller_Gui
         $this->view->headScript()->appendFile('/js/three/Detector.js');
         $this->view->headScript()->appendFile('/js/three/Mirror.js');
         $this->view->headScript()->appendFile('/js/three/WaterShader.js');
-        $this->view->headScript()->appendFile('/js/geometries/TextGeometry.js');
-        $this->view->headScript()->appendFile('/js/utils/FontUtils.js');
-        $this->view->headScript()->appendFile('/fonts/helvetiker_regular.typeface.js');
 
         $this->view->headScript()->appendFile('/js/editor/init.js?v=' . $version);
         $this->view->headScript()->appendFile('/js/editor/message.js?v=' . $version);
@@ -73,6 +70,7 @@ class EditorController extends Game_Controller_Gui
         $this->view->headScript()->appendFile('/js/common/init.js?v=' . $version);
         $this->view->headScript()->appendFile('/js/common/castle.js?v=' . $version);
         $this->view->headScript()->appendFile('/js/common/castles.js?v=' . $version);
+        $this->view->headScript()->appendFile('/js/common/renderer.js?v=' . $version);
         $this->view->headScript()->appendFile('/js/common/scene.js?v=' . $version);
         $this->view->headScript()->appendFile('/js/common/ground.js?v=' . $version);
         $this->view->headScript()->appendFile('/js/common/models.js?v=' . $version);

@@ -11,7 +11,6 @@ var Scene = new function () {
         sun,
         shadows = 1,
         cameraY = 24,
-        timeOut = 100,
         initCamera = function () {
             var viewAngle = 22,
                 near = 1,
@@ -32,8 +31,7 @@ var Scene = new function () {
         sun = new THREE.DirectionalLight(0xdfebff, 0.75)
         sun.position.set(100, 200, 150)
         if (shadows) {
-            renderer.shadowMap.enabled = true
-            renderer.shadowMapSoft = false
+            Renderer.turnOnShadows()
 
             sun.castShadow = true
 
@@ -130,17 +128,11 @@ var Scene = new function () {
     this.getCamera = function () {
         return camera
     }
-    this.getRenderer = function () {
-        return renderer
-    }
     this.getWidth = function () {
         return canvasWidth
     }
     this.getHeight = function () {
         return canvasHeight
-    }
-    this.setFPS = function (fps) {
-        timeOut = parseInt(1000 / fps)
     }
     this.resize = function () {
         canvasWidth = $(window).innerWidth()
@@ -151,66 +143,39 @@ var Scene = new function () {
                     height: canvasHeight + 'px'
                 }
             )
-        renderer.setSize(canvasWidth, canvasHeight)
+        Renderer.setSize(canvasWidth, canvasHeight)
         camera.aspect = canvasWidth / canvasHeight
         camera.updateProjectionMatrix()
-    }
-    this.animate = function () {
-
-        requestAnimationFrame(animate);
-
-        render();
-        stats.update();
-
-    }
-    this.render = function () {
-        if (TWEEN.update()) {
-            requestAnimationFrame(Scene.render)
-            renderer.render(scene, camera)
-        } else {
-            renderer.render(scene, camera)
-            setTimeout(function () {
-                requestAnimationFrame(Scene.render)
-            }, timeOut)
-        }
-    }
-    this.renderSimple = function () {
-        renderer.render(scene, camera)
-        setTimeout(function () {
-            requestAnimationFrame(Scene.renderSimple)
-        }, timeOut)
     }
     this.init = function () {
         canvasWidth = $(window).innerWidth()
         canvasHeight = $(window).innerHeight()
 
-        $('#game')
-            .append(renderer.domElement)
-            .css({
-                    width: canvasWidth + 'px',
-                    height: canvasHeight + 'px'
-                }
-            )
+        $('#game').css({
+            width: canvasWidth + 'px',
+            height: canvasHeight + 'px'
+        })
 
         initCamera()
-        renderer.setSize(canvasWidth, canvasHeight)
-        renderer.domElement.id = 'scene'
+        Renderer.setScene(scene)
+        Renderer.setCamera(camera)
+        Renderer.init(canvasWidth, canvasHeight, 'game')
     }
     this.initSimple = function () {
         canvasWidth = 300
         canvasHeight = 300
         cameraY = 14
 
-        $('#graphics')
-            .append(renderer.domElement)
-            .css({
-                    width: canvasWidth + 'px',
-                    height: canvasHeight + 'px'
-                }
-            )
+        $('#graphics').css({
+            width: canvasWidth + 'px',
+            height: canvasHeight + 'px'
+        })
 
         initCamera()
-        renderer.setSize(canvasWidth, canvasHeight)
-        renderer.domElement.id = 'scene'
+        Renderer.setScene(scene)
+        Renderer.setCamera(camera)
+        Renderer.init(canvasWidth, canvasHeight, 'graphics')
+        // renderer.setSize(canvasWidth, canvasHeight)
+        // renderer.domElement.id = 'scene'
     }
 }

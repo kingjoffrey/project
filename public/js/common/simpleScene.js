@@ -4,7 +4,6 @@ var SimpleScene = function () {
         scene = new THREE.Scene(),
         camera,
         sun,
-        renderer = new THREE.WebGLRenderer(),
         shadows = 0,
         cameraY = 14,
         meshes = [],

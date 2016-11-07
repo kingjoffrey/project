@@ -6,6 +6,6 @@ $().ready(function () {
     Scene.getCamera().position.y = 84
     Scene.getCamera().position.z = 90
     Scene.initSun(30)
-    Scene.renderSimple()
+    Renderer.renderSimple()
     Models.init()
 })

@@ -5,3 +5,7 @@ var Init = new function () {
         Game.init(g)
     }
 }
+$(document).ready(function () {
+    AStar.init()
+    WebSocketGame.init()
+})
