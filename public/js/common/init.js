@@ -11,7 +11,7 @@ var CommonInit = new function () {
     }
 }
 $(document).ready(function () {
-    Scene.init()
+    Scene.init($(window).innerWidth(), $(window).innerHeight())
     Models.init()
     PickerCommon.init()
 })

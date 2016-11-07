@@ -11,14 +11,14 @@ var Editor = new function () {
             Gui.init()
             Scene.setCameraPosition(0, Fields.getMaxY())
             Scene.initSun(Fields.getMaxY())
-            Renderer.render()
+            RendererGame.render()
         }
         //console.log(r)
     }
 }
 
 $(document).ready(function () {
-    Scene.init()
+    Scene.init($(window).innerWidth(), $(window).innerHeight())
     Models.init()
     PickerCommon.init()
     WebSocketEditor.init()

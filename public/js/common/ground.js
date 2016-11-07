@@ -64,7 +64,7 @@ var Ground = new function () {
             var waterNormals = new THREE.TextureLoader().load('/img/editor/jasny_niebieski.png')
             waterNormals.wrapS = waterNormals.wrapT = THREE.RepeatWrapping
 
-            var water = new THREE.Water(Renderer.getRenderer(), Scene.getCamera(), Scene.get(), {
+            var water = new THREE.Water(Renderer.get(), Scene.getCamera(), Scene.get(), {
                 textureWidth: 1024,
                 textureHeight: 1024,
                 waterNormals: waterNormals,

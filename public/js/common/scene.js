@@ -134,22 +134,21 @@ var Scene = new function () {
     this.getHeight = function () {
         return canvasHeight
     }
-    this.resize = function () {
-        canvasWidth = $(window).innerWidth()
-        canvasHeight = $(window).innerHeight()
+    this.resize = function (w, h) {
+        canvasWidth = w
+        canvasHeight = h
         $('#game')
             .css({
                     width: canvasWidth + 'px',
                     height: canvasHeight + 'px'
                 }
             )
-        Renderer.setSize(canvasWidth, canvasHeight)
         camera.aspect = canvasWidth / canvasHeight
         camera.updateProjectionMatrix()
     }
-    this.init = function () {
-        canvasWidth = $(window).innerWidth()
-        canvasHeight = $(window).innerHeight()
+    this.init = function (w, h) {
+        canvasWidth = w
+        canvasHeight = h
 
         $('#game').css({
             width: canvasWidth + 'px',
@@ -157,25 +156,8 @@ var Scene = new function () {
         })
 
         initCamera()
-        Renderer.setScene(scene)
-        Renderer.setCamera(camera)
-        Renderer.init(canvasWidth, canvasHeight, 'game')
-    }
-    this.initSimple = function () {
-        canvasWidth = 300
-        canvasHeight = 300
-        cameraY = 14
-
-        $('#graphics').css({
-            width: canvasWidth + 'px',
-            height: canvasHeight + 'px'
-        })
-
-        initCamera()
-        Renderer.setScene(scene)
-        Renderer.setCamera(camera)
-        Renderer.init(canvasWidth, canvasHeight, 'graphics')
-        // renderer.setSize(canvasWidth, canvasHeight)
-        // renderer.domElement.id = 'scene'
+        // Renderer.setScene(scene)
+        // Renderer.setCamera(camera)
+        // Renderer.init(canvasWidth, canvasHeight, 'game')
     }
 }
