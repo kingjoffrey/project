@@ -14,5 +14,4 @@ $(document).ready(function () {
     Scene.init()
     Models.init()
     PickerCommon.init()
-    PrivateChat.init()
 })

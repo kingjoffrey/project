@@ -46,7 +46,7 @@ var Game = new function () {
             CommonMe.init(game.color, game.gold, game.bSequence)
             Chat.init(game.chatHistory)
             Scene.initSun(Fields.getMaxY())
-            Scene.render()
+            Renderer.render()
         }
         GamePlayers.initOnline(game.online)
         if (Turn.isMy()) {

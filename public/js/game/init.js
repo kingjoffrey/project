@@ -7,4 +7,5 @@ var Init = new function () {
 $(document).ready(function () {
     AStar.init()
     WebSocketGame.init()
+    PrivateChat.init()
 })
