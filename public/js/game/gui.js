@@ -360,6 +360,11 @@ var Gui = new function () {
             }
         })
 
+        // $('#game').css({
+        //     width: width + 'px',
+        //     height: height + 'px'
+        // })
+
         MiniMap.init()
         $('#mapBox').css({
             height: Fields.getHeight() + 18 + 'px'

@@ -110,7 +110,6 @@ var SimpleScene = function () {
     this.resize = function (w, h) {
         canvasWidth = w
         canvasHeight = h
-        renderer.setSize(canvasWidth, canvasHeight)
         //camera.aspect = canvasWidth / canvasHeight
         camera.left = canvasWidth / -2
         camera.right = canvasWidth / 2
@@ -118,19 +117,10 @@ var SimpleScene = function () {
         camera.bottom = canvasHeight / -2
         camera.updateProjectionMatrix()
     }
-    this.render = function () {
-        renderer.render(scene, camera)
-    }
-    this.addId = function (id) {
-        renderer.domElement.id = id
-    }
-    this.init = function (w, h, id) {
+    this.init = function (w, h) {
         canvasWidth = w
         canvasHeight = h
 
-        $('#' + id).append(renderer.domElement)
-
         initCamera()
-        renderer.setSize(canvasWidth, canvasHeight)
     }
 }

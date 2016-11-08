@@ -137,23 +137,12 @@ var Scene = new function () {
     this.resize = function (w, h) {
         canvasWidth = w
         canvasHeight = h
-        $('#game')
-            .css({
-                    width: canvasWidth + 'px',
-                    height: canvasHeight + 'px'
-                }
-            )
         camera.aspect = canvasWidth / canvasHeight
         camera.updateProjectionMatrix()
     }
     this.init = function (w, h) {
         canvasWidth = w
         canvasHeight = h
-
-        $('#game').css({
-            width: canvasWidth + 'px',
-            height: canvasHeight + 'px'
-        })
 
         initCamera()
         // Renderer.setScene(scene)

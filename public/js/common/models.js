@@ -535,21 +535,15 @@ var Models = new function () {
         Scene.add(mesh)
     }
     this.addHero = function (x, y, color) {
-
         var mesh = new THREE.Mesh(window['heroModel'].geometry, window['heroModel'].material)
         if (shadows) {
             mesh.castShadow = true
             mesh.receiveShadow = true
         }
         //mesh.rotation.y = Math.PI / 2 + Math.PI / 4
-        mesh.scale.x = 90
-        mesh.scale.y = 90
-        mesh.scale.z = 90
-        mesh.position.set(0, -30, 0)
-        Scene.add(mesh)
         return mesh
     }
-    this.addUnit = function (x, y, color, modelName) {
+    this.addUnit = function (color, modelName) {
         var armyMaterial = new THREE.MeshLambertMaterial({color: color, side: THREE.DoubleSide})
         if (modelName + 'Model' in window) {
             var mesh = new THREE.Mesh(window[modelName + 'Model'].geometry, armyMaterial)
@@ -561,12 +555,12 @@ var Models = new function () {
             mesh.receiveShadow = true
         }
         //mesh.rotation.y = Math.PI / 2 + Math.PI / 4
-        mesh.rotation.y = Math.PI / 2
-        mesh.scale.x = 50
-        mesh.scale.y = 50
-        mesh.scale.z = 50
-        mesh.position.set(0, -30, 0)
-        Scene.add(mesh)
+        // mesh.rotation.y = Math.PI / 2
+        // mesh.scale.x = 50
+        // mesh.scale.y = 50
+        // mesh.scale.z = 50
+        // mesh.position.set(0, -30, 0)
+        // Scene.add(mesh)
         return mesh
     }
     this.addArmySimple = function (x, y, color, modelName) {

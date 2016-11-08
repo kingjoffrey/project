@@ -132,8 +132,13 @@ var CommonMe = new function () {
 
         if (number = countProperties(army.getHeroes())) {
             i++
-            // scene.add(Models.addHero(4, 4, army.getBackgroundColor()))
-            //$('#unitsBox canvas').last().before($('<div>').html(number))
+            var mesh = Models.addHero(4, 4, army.getBackgroundColor())
+            scene.add(mesh)
+            mesh.rotation.y = Math.PI / 2
+            mesh.scale.x = 190
+            mesh.scale.y = 190
+            mesh.scale.z = 190
+            mesh.position.set(0, -30, 0)
         }
 
         for (var soldierId in army.getWalkingSoldiers()) {
@@ -159,12 +164,17 @@ var CommonMe = new function () {
         }
         for (var unitId in unitTypes) {
             i++
-            // scene.add(Models.addUnit(4 * i, 4 * i, army.getBackgroundColor(), Unit.getName(unitId)))
-            //$('#unitsBox canvas').last().before($('<div>').html(unitTypes[unitId]))
+            var mesh = Models.addUnit(army.getBackgroundColor(), Unit.getName(unitId))
+            mesh.rotation.y = Math.PI / 2
+            mesh.scale.x = 90
+            mesh.scale.y = 90
+            mesh.scale.z = 90
+            mesh.position.set(i * 40, -30, 0)
+            scene.add(mesh)
         }
 
-        // scene.resize(40 * i, 40)
-        // scene.render()
+        scene.resize(400, 40)
+        RendererGame.addViewport(scene.get(), scene.getCamera(), 100, 2, 400, 40)
 
         Models.addArmyCircle(army.getX(), army.getY(), army.getBackgroundColor())
         Message.remove()
@@ -185,8 +195,8 @@ var CommonMe = new function () {
         }
     }
     this.deselectArmy = function (skipJoin) {
-        // scene.removeMeshes()
-        // scene.resize(40, 40)
+        scene.removeMeshes()
+        RendererGame.removeViewport()
         // scene.render()
 
         if (notSet(skipJoin) && parentArmyId && selectedArmyId) {
@@ -498,10 +508,11 @@ var CommonMe = new function () {
         updateUpkeep()
         updateIncome()
 
-        // scene = new SimpleScene()
-        // scene.init(40, 40, 'unitsBox')
-        //scene.setCameraPosition(-8, 16)
-        // scene.initSun(30)
+        scene = new SimpleScene()
+        scene.init(40, 40, 'unitsBox')
+        scene.setCameraPosition(-8, 16)
+        scene.initSun(30)
+
     }
     this.scene = function () {
         return scene
