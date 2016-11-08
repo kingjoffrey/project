@@ -131,7 +131,6 @@ var CommonMe = new function () {
             i = 0
 
         if (number = countProperties(army.getHeroes())) {
-            i++
             var mesh = Models.addHero(4, 4, army.getBackgroundColor())
             scene.add(mesh)
             mesh.rotation.y = Math.PI / 2
@@ -169,7 +168,7 @@ var CommonMe = new function () {
             mesh.scale.x = 90
             mesh.scale.y = 90
             mesh.scale.z = 90
-            mesh.position.set(i * 40, -30, 0)
+            mesh.position.set(i * 50, -30, 0)
             scene.add(mesh)
         }
 
