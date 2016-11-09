@@ -40,13 +40,13 @@ var HelpModels = new function () {
         HelpScene.add(mesh)
         return mesh
     }
-    this.addUnit = function (color, modelName) {
-        var mesh = Models.addUnit(color, modelName)
+    this.addUnit = function (modelName) {
+        var mesh = Models.addUnit('orange', modelName)
         //mesh.rotation.y = Math.PI / 2 + Math.PI / 4
         mesh.rotation.y = Math.PI / 2
-        mesh.scale.x = 50
-        mesh.scale.y = 50
-        mesh.scale.z = 50
+        mesh.scale.x = 3
+        mesh.scale.y = 3
+        mesh.scale.z = 3
         mesh.position.set(25, 0, -25)
 
         HelpScene.add(mesh)
@@ -82,9 +82,9 @@ var HelpModels = new function () {
 
         mesh.position.set(20, 0, -20)
 
-        mesh.scale.x = 17
-        mesh.scale.y = 17
-        mesh.scale.z = 17
+        mesh.scale.x = 20
+        mesh.scale.y = 20
+        mesh.scale.z = 20
 
         HelpScene.add(mesh)
         return mesh

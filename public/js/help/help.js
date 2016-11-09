@@ -190,7 +190,7 @@ var Help = new function () {
             if (!lastUnitId) {
                 lastUnitId = unitId
             }
-            mesh = HelpModels.addUnit(5, 4, 'orange', help.list[lastUnitId].name.replace(' ', '_').toLowerCase())
+            mesh = HelpModels.addUnit(help.list[lastUnitId].name.replace(' ', '_').toLowerCase())
             text.prepend(unitProperties(help.list[lastUnitId]))
             currentUnitId = lastUnitId
         }
@@ -231,7 +231,7 @@ var Help = new function () {
                 break
             case 'units':
                 for (var unitId in help.list) {
-                    mesh = HelpModels.addUnit(5, 4, 'orange', help.list[unitId].name.replace(' ', '_').toLowerCase())
+                    mesh = HelpModels.addUnit(help.list[unitId].name.replace(' ', '_').toLowerCase())
                     text.prepend(unitProperties(help.list[unitId]))
                     currentUnitId = unitId
                     break
