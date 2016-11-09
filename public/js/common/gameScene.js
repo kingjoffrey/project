@@ -3,7 +3,7 @@ if (!Detector.webgl) {
     document.getElementById('container').innerHTML = "";
 }
 
-var Scene = new function () {
+var GameScene = new function () {
     var canvasWidth,
         canvasHeight,
         scene = new THREE.Scene(),

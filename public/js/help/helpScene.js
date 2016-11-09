@@ -29,7 +29,7 @@ var HelpScene = new function () {
 
     this.initSun = function () {
         sun = new THREE.DirectionalLight(0xdfebff, 0.75)
-        sun.position.set(100, 200, 150)
+        sun.position.set(100, 200, 160)
         sun.target.position.set(0, 0, 0)
         if (shadows) {
             HelpRenderer.turnOnShadows()
@@ -41,7 +41,7 @@ var HelpScene = new function () {
 
             sun.shadow.camera.right = 80
             sun.shadow.camera.left = 0
-            sun.shadow.camera.top = 20
+            sun.shadow.camera.top = 50
             sun.shadow.camera.bottom = -30
             sun.shadow.camera.far = 290
 

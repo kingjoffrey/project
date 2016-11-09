@@ -11,7 +11,7 @@ var CommonInit = new function () {
     }
 }
 $(document).ready(function () {
-    Scene.init($(window).innerWidth(), $(window).innerHeight())
-    Models.init()
+    GameScene.init($(window).innerWidth(), $(window).innerHeight())
+    GameModels.init()
     PickerCommon.init()
 })

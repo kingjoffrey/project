@@ -49,9 +49,9 @@ var Ground = new function () {
                 }))
                 mesh.rotation.x = Math.PI / 2
                 mesh.position.set(maxX / 2, -waterLevel, maxY / 2)
-                Scene.add(mesh)
+                GameScene.add(mesh)
                 PickerCommon.attach(mesh)
-                if (Scene.getShadows()) {
+                if (GameScene.getShadows()) {
                     mesh.receiveShadow = true
                 }
             })
@@ -59,7 +59,7 @@ var Ground = new function () {
         ccreateWater = function (maxX, maxY) {
             var light = new THREE.DirectionalLight(0xffffbb, 1);
             light.position.set(-1, 1, -1);
-            Scene.add(light)
+            GameScene.add(light)
 
             var waterNormals = new THREE.TextureLoader().load('/img/editor/jasny_niebieski.png')
             waterNormals.wrapS = waterNormals.wrapT = THREE.RepeatWrapping
@@ -75,7 +75,7 @@ var Ground = new function () {
                 distortionScale: 5.0,
             })
 
-            Scene.setWater(water)
+            GameScene.setWater(water)
 
             var mirrorMesh = new THREE.Mesh(
                 new THREE.PlaneBufferGeometry(maxX, maxY),
@@ -87,7 +87,7 @@ var Ground = new function () {
             mirrorMesh.position.x = maxX / 2
             mirrorMesh.position.y = -waterLevel
             mirrorMesh.position.z = maxY / 2
-            Scene.add(mirrorMesh);
+            GameScene.add(mirrorMesh);
 
             //var cubeMap = new THREE.CubeTexture([]);
             //cubeMap.format = THREE.RGBFormat;
@@ -253,10 +253,10 @@ var Ground = new function () {
                     })
                     grassMesh = new THREE.Mesh(grassGeometry, grassMaterial)
                     grassMesh.rotation.x = Math.PI / 2
-                    if (Scene.getShadows()) {
+                    if (GameScene.getShadows()) {
                         grassMesh.receiveShadow = true
                     }
-                    Scene.add(grassMesh)
+                    GameScene.add(grassMesh)
                     PickerCommon.attach(grassMesh)
 
                     //var helper = new THREE.WireframeHelper(grassMesh, 0xff00ff)
@@ -266,10 +266,10 @@ var Ground = new function () {
             } else {
                 grassMesh = new THREE.Mesh(grassGeometry, grassMaterial)
                 grassMesh.rotation.x = Math.PI / 2
-                if (Scene.getShadows()) {
+                if (GameScene.getShadows()) {
                     grassMesh.receiveShadow = true
                 }
-                Scene.add(grassMesh)
+                GameScene.add(grassMesh)
                 PickerCommon.attach(grassMesh)
             }
         },

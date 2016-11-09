@@ -58,8 +58,8 @@ var MiniMap = new function () {
             var $obj = {}
             $obj.node = $('#lens')
             $obj.setdimensions = function () {
-                var visibleMapWidth = Scene.getWidth() / 85,
-                    visibleMapHeight = Scene.getHeight() / 85
+                var visibleMapWidth = GameScene.getWidth() / 85,
+                    visibleMapHeight = GameScene.getHeight() / 85
 
                 $obj.node.w = miniMap.w * visibleMapWidth / Fields.getMaxX()
                 $obj.node.h = miniMap.h * visibleMapHeight / Fields.getMaxY()
@@ -76,19 +76,19 @@ var MiniMap = new function () {
                     left: $obj.node.left
                 });
 
-                var yOffset = Scene.getCamera().position.y - Scene.getCameraY(),
+                var yOffset = GameScene.getCamera().position.y - GameScene.getCameraY(),
                     startPosition = {
-                        x: Scene.getCamera().position.x,
-                        z: Scene.getCamera().position.z
+                        x: GameScene.getCamera().position.x,
+                        z: GameScene.getCamera().position.z
                     },
                     endPosition = {
-                        x: x * 2 - Scene.getCameraY() - yOffset,
-                        z: y * 2 + Scene.getCameraY() + yOffset
+                        x: x * 2 - GameScene.getCameraY() - yOffset,
+                        z: y * 2 + GameScene.getCameraY() + yOffset
                     },
                     tween = new TWEEN.Tween(startPosition)
                         .to(endPosition, Math.sqrt(Math.pow(endPosition.x - startPosition.x, 2) + Math.pow(startPosition.z - endPosition.z, 2)) * 5)
                         .onUpdate(function () {
-                            Scene.setCameraPosition(endPosition.x, endPosition.z)
+                            GameScene.setCameraPosition(endPosition.x, endPosition.z)
                         })
                         .start()
 
@@ -99,9 +99,9 @@ var MiniMap = new function () {
                 }
             }
             $obj.centerOnCameraPosition = function () {
-                var yOffset = Scene.getCamera().position.y - Scene.getCameraY(),
-                    x = (Scene.getCamera().position.x + Scene.getCameraY() + yOffset) / 2 / Fields.getMaxX() * miniMap.w - lens.node.w / 2,
-                    y = (Scene.getCamera().position.z - Scene.getCameraY() - yOffset) / 2 / Fields.getMaxY() * miniMap.h - lens.node.h / 2
+                var yOffset = GameScene.getCamera().position.y - GameScene.getCameraY(),
+                    x = (GameScene.getCamera().position.x + GameScene.getCameraY() + yOffset) / 2 / Fields.getMaxX() * miniMap.w - lens.node.w / 2,
+                    y = (GameScene.getCamera().position.z - GameScene.getCameraY() - yOffset) / 2 / Fields.getMaxY() * miniMap.h - lens.node.h / 2
 
                 $obj.node.top = y
                 $obj.node.left = x
@@ -152,13 +152,13 @@ var MiniMap = new function () {
                     'top': lenstop + 'px'
                 });
 
-                var yOffset = Scene.getCamera().position.y - Scene.getCameraY(),
+                var yOffset = GameScene.getCamera().position.y - GameScene.getCameraY(),
                     centerX = $obj.node.left + $obj.node.w / 2,
                     centerY = $obj.node.top + $obj.node.h / 2
 
                 Scene.setCameraPosition(
-                    (Fields.getMaxX() * centerX / miniMap.w) * 2 - Scene.getCameraY() - yOffset,
-                    (Fields.getMaxY() * centerY / miniMap.h) * 2 + Scene.getCameraY() + yOffset
+                    (Fields.getMaxX() * centerX / miniMap.w) * 2 - GameScene.getCameraY() - yOffset,
+                    (Fields.getMaxY() * centerY / miniMap.h) * 2 + GameScene.getCameraY() + yOffset
                 )
             }
             $obj.show = function () {

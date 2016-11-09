@@ -429,14 +429,7 @@ var Models = new function () {
     }
     this.addTree = function (x, y) {
         var mesh = new THREE.Mesh(treeModel.geometry, treeModel.material)
-        mesh.position.set(x * 2 + 1, 0, y * 2 + 1)
-        mesh.rotation.y = 2 * Math.PI * Math.random()
-
-        if (shadows) {
-            mesh.castShadow = true
-            mesh.receiveShadow = true
-        }
-        Scene.add(mesh)
+        return mesh
     }
     this.addHill = function (x, y) {
         var mesh = new THREE.Mesh(hillModel.geometry, hillModel.material)
@@ -508,13 +501,7 @@ var Models = new function () {
                 opacity: 0.7
             }),
             mesh = new THREE.Mesh(new THREE.PlaneGeometry(2, 2), roadMaterial)
-        mesh.rotation.x = Math.PI / 2
-        mesh.position.set(x * 2 + 1, 0.0001, y * 2 + 1)
-
-        if (shadows) {
-            mesh.receiveShadow = true
-        }
-        Scene.add(mesh)
+        return mesh
     }
     this.addSwamp = function (x, y) {
         var swampMaterial = new THREE.MeshLambertMaterial({
@@ -524,13 +511,7 @@ var Models = new function () {
                 opacity: 0.5
             }),
             mesh = new THREE.Mesh(new THREE.PlaneGeometry(2, 2), swampMaterial)
-        mesh.rotation.x = Math.PI / 2
-        mesh.position.set(x * 2 + 1, 0.0001, y * 2 + 1)
-
-        if (shadows) {
-            mesh.receiveShadow = true
-        }
-        Scene.add(mesh)
+        return mesh
     }
     this.addHero = function (color) {
         var mesh = new THREE.Mesh(window['heroModel'].geometry, window['heroModel'].material)
@@ -580,29 +561,7 @@ var Models = new function () {
         flagMesh.position.set(-0.5, 0, 0)
         // mesh.rotation.y = Math.PI / 2 + Math.PI / 4
         mesh.add(flagMesh)
-        // this.setArmyPosition(mesh, x, y)
-        // Scene.add(mesh)
         return mesh
-    }
-    this.setArmyPosition = function (mesh, x, y) {
-        switch (Fields.get(x, y).getType()) {
-            case 'm':
-                var height = Ground.getMountainLevel()
-                break
-            case 'h':
-                var height = Ground.getHillLevel()
-                break
-            case 'w':
-                var height = Ground.getWaterLevel()
-                break
-            case 'b':
-                var height = Ground.getWaterLevel()
-                break
-            default :
-                var height = 0
-                break
-        }
-        mesh.position.set(x * 2 + 0.5, height, y * 2 + 0.5)
     }
     this.getCastleModels = function () {
         return castleModels

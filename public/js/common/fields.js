@@ -10,7 +10,7 @@ var Fields = new function () {
                 for (var x = 0; x <= maxX; x++) {
                     var type = fields[y][x].getType()
                     if (type == 'r' || type == 'b') {
-                        Models.addRoad(x, y)
+                        GameModels.addRoad(x, y)
                     }
                 }
             }
@@ -35,7 +35,7 @@ var Fields = new function () {
                         break
                     case 'f':
                         setPixel(ctx, x, y, '#004e00')
-                        Models.addTree(x, y)
+                        GameModels.addTree(x, y)
                         break
                     case 'w':
                         setPixel(ctx, x, y, '#0000cd')
@@ -54,7 +54,7 @@ var Fields = new function () {
                         break
                     case 's':
                         setPixel(ctx, x, y, '#39723E')
-                        Models.addSwamp(x, y)
+                        GameModels.addSwamp(x, y)
                         break
                 }
                 this.add(x, y, fields[y][x])

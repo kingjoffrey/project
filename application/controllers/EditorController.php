@@ -48,8 +48,6 @@ class EditorController extends Game_Controller_Gui
         $this->view->headScript()->appendFile('/js/Tween.js');
         $this->view->headScript()->appendFile('/js/three/three.js');
         $this->view->headScript()->appendFile('/js/three/Detector.js');
-        $this->view->headScript()->appendFile('/js/three/Mirror.js');
-        $this->view->headScript()->appendFile('/js/three/WaterShader.js');
 
         $this->view->headScript()->appendFile('/js/editor/init.js?v=' . $version);
         $this->view->headScript()->appendFile('/js/editor/message.js?v=' . $version);

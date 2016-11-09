@@ -7,7 +7,7 @@ var PickerCommon = new function () {
         vector
 
     this.init = function () {
-        camera = Scene.getCamera()
+        camera = GameScene.getCamera()
         container = GameRenderer.getDomElement()
 
         container.addEventListener('mousedown', Picker.onContainerMouseDown, false);

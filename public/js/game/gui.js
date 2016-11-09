@@ -37,16 +37,16 @@ var Gui = new function () {
                     CommonMe.skip()
                     break;
                 case 37://left
-                    Scene.moveCameraLeft()
+                    GameScene.moveCameraLeft()
                     break;
                 case 38://up
-                    Scene.moveCameraUp()
+                    GameScene.moveCameraUp()
                     break;
                 case 39://right
-                    Scene.moveCameraRight()
+                    GameScene.moveCameraRight()
                     break;
                 case 40://down
-                    Scene.moveCameraDown()
+                    GameScene.moveCameraDown()
                     break;
                 case 66: //b
                     CastleWindow.build()
@@ -241,7 +241,7 @@ var Gui = new function () {
     this.adjust = function () {
         var width = $(window).innerWidth(),
             height = $(window).innerHeight()
-        Scene.resize(width, height)
+        GameScene.resize(width, height)
         GameRenderer.setSize(width, height)
 
         MiniMap.adjust()
@@ -255,7 +255,7 @@ var Gui = new function () {
             $('#chatBox').css({display: 'none'});
         }
 
-        var goldBoxLeft = Scene.getWidth() / 2 - $('#goldBox').outerWidth() / 2
+        var goldBoxLeft = GameScene.getWidth() / 2 - $('#goldBox').outerWidth() / 2
 
         $('#goldBox').css({
             'left': goldBoxLeft + 'px'
@@ -350,12 +350,12 @@ var Gui = new function () {
 
         $('#game canvas').mousewheel(function (event) {
             if (event.deltaY > 0) {
-                if (Scene.getCameraY() < 230) {
-                    Scene.moveCameraAway()
+                if (GameScene.getCameraY() < 230) {
+                    GameScene.moveCameraAway()
                 }
             } else {
-                if (Scene.getCameraY() > 22) {
-                    Scene.moveCameraClose()
+                if (GameScene.getCameraY() > 22) {
+                    GameScene.moveCameraClose()
                 }
             }
         })

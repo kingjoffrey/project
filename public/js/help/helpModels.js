@@ -38,10 +38,10 @@ var HelpModels = new function () {
         var mesh = Models.addArmy('orange', 8, 'light_infantry')
 
         mesh.rotation.y = Math.PI / 2 + Math.PI / 4
-        mesh.scale.x = 3
-        mesh.scale.y = 3
-        mesh.scale.z = 3
-        mesh.position.set(25, 0, -25)
+        mesh.scale.x = 5
+        mesh.scale.y = 5
+        mesh.scale.z = 5
+        mesh.position.set(20, 0, -20)
 
         HelpScene.add(mesh)
         return mesh
@@ -50,10 +50,10 @@ var HelpModels = new function () {
         var mesh = Models.addUnit('orange', modelName)
         //mesh.rotation.y = Math.PI / 2 + Math.PI / 4
         mesh.rotation.y = Math.PI / 2
-        mesh.scale.x = 3
-        mesh.scale.y = 3
-        mesh.scale.z = 3
-        mesh.position.set(25, 0, -25)
+        mesh.scale.x = 5
+        mesh.scale.y = 5
+        mesh.scale.z = 5
+        mesh.position.set(20, 0, -20)
 
         if (HelpScene.getShadows()) {
             mesh.castShadow = true
@@ -84,7 +84,7 @@ var HelpModels = new function () {
     }
     this.addTower = function () {
         var mesh = Models.addTower('orange')
-        mesh.position.set(25, 0, -25)
+        mesh.position.set(20, 0, -20)
 
         mesh.scale.x = 2
         mesh.scale.y = 2
