@@ -199,7 +199,6 @@ var Help = new function () {
         this.fillText(id)
     }
     this.fillText = function (id) {
-        console.log(id)
         var menu = help[id]
         $('#helpMenu div').removeClass('off')
         $('#' + id).addClass('off')
@@ -254,6 +253,7 @@ var Help = new function () {
     this.init = function () {
         HelpScene.init(300, 300)
         HelpRenderer.init(HelpScene)
+        HelpScene.initSun(40)
         HelpModels.init()
         $('#helpMenu div').click(function () {
             Help.click($(this).attr('id'))

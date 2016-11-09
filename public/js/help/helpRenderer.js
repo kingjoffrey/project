@@ -9,13 +9,9 @@ var HelpRenderer = new function () {
             renderer.render(scene, camera)
         }
 
-    this.setSize = function (w, h) {
-        width = w
-        height = h
-        renderer.setSize(w, h)
-    }
-    this.getDomElement = function () {
-        return renderer.domElement
+    this.turnOnShadows = function () {
+        renderer.shadowMap.enabled = true
+        renderer.shadowMapSoft = false
     }
     this.animate = function () {
         setTimeout(function () {
@@ -25,7 +21,6 @@ var HelpRenderer = new function () {
         render()
         // stats.update();
     }
-
     this.init = function (s) {
         scene = s.get()
         camera = s.getCamera()

@@ -27,27 +27,26 @@ var HelpScene = new function () {
             //camera.add(new THREE.PointLight(0xffffff, 0.7))
         }
 
-    this.initSun = function (size) {
+    this.initSun = function () {
         sun = new THREE.DirectionalLight(0xdfebff, 0.75)
         sun.position.set(100, 200, 150)
+        sun.target.position.set(0, 0, 0)
         if (shadows) {
-            Renderer.turnOnShadows()
+            HelpRenderer.turnOnShadows()
 
             sun.castShadow = true
 
             sun.shadow.mapSize.width = 2048
             sun.shadow.mapSize.height = 2048
 
-            var d = 2.1 * size
+            sun.shadow.camera.right = 80
+            sun.shadow.camera.left = 0
+            sun.shadow.camera.top = 20
+            sun.shadow.camera.bottom = -30
+            sun.shadow.camera.far = 290
 
-            sun.shadow.camera.left = -d / 1.93
-            sun.shadow.camera.right = d / 1.29
-            sun.shadow.camera.top = 0
-            sun.shadow.camera.bottom = -d
-            sun.shadow.camera.far = 300
-
-            //var helper = new THREE.CameraHelper(sun.shadow.camera)
-            //scene.add(helper)
+            var helper = new THREE.CameraHelper(sun.shadow.camera)
+            scene.add(helper)
         }
         scene.add(sun)
     }
@@ -62,59 +61,6 @@ var HelpScene = new function () {
     }
     this.getCameraY = function () {
         return cameraY
-    }
-    this.moveCamera = function (x, y) {
-        var xSign,
-            zSign
-
-        if (y >= -x && y >= x) {
-            xSign = -1
-            zSign = 1
-        } else if (y > -x && y < x) {
-            xSign = 1
-            zSign = 1
-        } else if (y <= -x && y <= x) {
-            xSign = 1
-            zSign = -1
-        } else if (y < -x && y > x) {
-            xSign = -1
-            zSign = -1
-        }
-
-        camera.position.x += xSign * (Math.abs(x) + Math.abs(y)) / 50
-        camera.position.z += zSign * (Math.abs(x) + Math.abs(y)) / 50
-
-        MiniMap.centerOnCameraPosition()
-    }
-    this.moveCameraLeft = function () {
-        camera.position.x += -2
-        camera.position.z += -2
-        MiniMap.centerOnCameraPosition()
-    }
-    this.moveCameraRight = function () {
-        camera.position.x += 2
-        camera.position.z += 2
-        MiniMap.centerOnCameraPosition()
-    }
-    this.moveCameraUp = function () {
-        camera.position.x += 2
-        camera.position.z += -2
-        MiniMap.centerOnCameraPosition()
-    }
-    this.moveCameraDown = function () {
-        camera.position.x += -2
-        camera.position.z += 2
-        MiniMap.centerOnCameraPosition()
-    }
-    this.moveCameraAway = function () {
-        camera.position.y += 2
-        camera.position.x -= 2
-        camera.position.z += 2
-    }
-    this.moveCameraClose = function () {
-        camera.position.y -= 2
-        camera.position.x += 2
-        camera.position.z -= 2
     }
     this.get = function () {
         return scene
