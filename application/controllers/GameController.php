@@ -50,6 +50,7 @@ class GameController extends Coret_Controller_Authorized
         $this->view->headScript()->appendFile('/js/common/renderer.js?v=' . $version);
         $this->view->headScript()->appendFile('/js/common/gameRenderer.js?v=' . $version);
         $this->view->headScript()->appendFile('/js/common/gameScene.js?v=' . $version);
+        $this->view->headScript()->appendFile('/js/common/unitScene.js?v=' . $version);
         $this->view->headScript()->appendFile('/js/common/ground.js?v=' . $version);
         $this->view->headScript()->appendFile('/js/common/game.js?v=' . $version);
         $this->view->headScript()->appendFile('/js/common/models.js?v=' . $version);

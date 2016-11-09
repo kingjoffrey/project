@@ -12,9 +12,6 @@ var Models = new function () {
         shadows = 1,
         roadTexture,
         swampTexture,
-        pathCircles = [],
-        moveCircles = [],
-        armyCircles = [],
         loader = new THREE.JSONLoader(),
         tl = new THREE.TextureLoader(),
         loading = 0,
@@ -117,18 +114,12 @@ var Models = new function () {
             })
         },
         initRuin = function () {
-            ruin.scale = 9
             ruinModel = loader.parse(ruin)
         },
         initTower = function () {
-            tower.scale = 2.4
             towerModel = loader.parse(tower)
         },
         initCastle = function () {
-            castle_1.scale = 3.8
-            castle_2.scale = 3.8
-            castle_3.scale = 3.8
-            castle_4.scale = 3.8
             castleModels = {
                 0: loader.parse(castle_1),
                 1: loader.parse(castle_2),
@@ -137,7 +128,6 @@ var Models = new function () {
             }
         },
         initFlag = function () {
-            flag.scale = 0.6
             flagModel = loader.parse(flag)
         },
         getCastleModel = function (defense) {
@@ -191,7 +181,6 @@ var Models = new function () {
                 'pegasi': pegasi
             }
             for (var i in armyModels) {
-                armyModels[i].scale = 16
                 window[i + 'Model'] = loader.parse(armyModels[i])
                 if (i == 'hero') {
                     tl.load(window.location.origin + '/img/modelMaps/hero.png', function (texture) {
@@ -205,32 +194,18 @@ var Models = new function () {
                 }
             }
 
-            flag_1.scale = 15
             flagModels[0] = loader.parse(flag_1)
-            flag_2.scale = 15
             flagModels[1] = loader.parse(flag_2)
-            flag_3.scale = 15
             flagModels[2] = loader.parse(flag_3)
-            flag_4.scale = 15
             flagModels[3] = loader.parse(flag_4)
-            flag_5.scale = 15
             flagModels[4] = loader.parse(flag_5)
-            flag_6.scale = 15
             flagModels[5] = loader.parse(flag_6)
-            flag_7.scale = 15
             flagModels[6] = loader.parse(flag_7)
-            flag_8.scale = 15
             flagModels[7] = loader.parse(flag_8)
         },
         initTree = function () {
-            tree.scale = 6
             treeModel = loader.parse(tree)
             treeModel.material = new THREE.MeshLambertMaterial({color: '#003300', side: THREE.DoubleSide})
-        },
-        initHill = function () {
-            hill.scale = 3
-            hillModel = loader.parse(hill)
-            hillModel.material = new THREE.MeshLambertMaterial({color: '#001900', side: THREE.DoubleSide})
         },
         isRoad = function (type) {
             if (type == 'r' || type == 'b') {
@@ -265,42 +240,20 @@ var Models = new function () {
             pathGeometry = new THREE.CircleGeometry(radius, segments)
         }
 
-    this.addPathCircle = function (x, y, color, t) {
-        switch (t) {
-            case 'm':
-                var height = Ground.getMountainLevel() + 0.01
-                break
-            case 'h':
-                var height = Ground.getHillLevel() + 0.01
-                break
-            case 'E':
-                this.addPathCircle(x, y, 'red', Fields.get(x, y).getType())
-                return
-                break
-            default :
-                var height = 0.01
-                break
-        }
+    this.getPathCircle = function (color) {
         switch (color) {
             case 'green':
-                var circle = new THREE.Mesh(pathGeometry, pathMaterialGreen)
+                return new THREE.Mesh(pathGeometry, pathMaterialGreen)
                 break
             case 'red':
-                var circle = new THREE.Mesh(pathGeometry, pathMaterialRed)
+                return new THREE.Mesh(pathGeometry, pathMaterialRed)
                 break
             case 'white':
-                var circle = new THREE.Mesh(pathGeometry, pathMaterialWhite)
+                return new THREE.Mesh(pathGeometry, pathMaterialWhite)
                 break
         }
-
-
-        circle.position.set(x * 2 + 1, height, y * 2 + 1)
-        circle.rotation.x = Math.PI / 2
-
-        Scene.add(circle)
-        pathCircles.push(circle)
     }
-    this.addArmyCircle = function (x, y, color) {
+    this.getArmyCircle = function () {
         var radius = 1,
             segments = 64,
             material1 = new THREE.MeshBasicMaterial({
@@ -319,55 +272,7 @@ var Models = new function () {
             geometry2 = new THREE.CircleGeometry(radius, segments)
         //geometry = new THREE.TorusGeometry(radius, 0.3, segments, segments)
 
-        switch (Fields.get(x, y).getType()) {
-            case 'm':
-                var height = Ground.getMountainLevel() + 0.01
-                break
-            case 'h':
-                var height = Ground.getHillLevel() + 0.01
-                break
-            default :
-                var height = 0.01
-                break
-        }
-        var cylinder = new THREE.Mesh(geometry1, material1)
-        cylinder.position.set(x * 2 + 1, 2 + height, y * 2 + 1)
-        //cylinder.rotation.x = Math.PI / 2
-        Scene.add(cylinder)
-        armyCircles.push(cylinder)
-
-        var circle = new THREE.Mesh(geometry2, material2)
-        circle.position.set(x * 2 + 1, height, y * 2 + 1)
-        circle.rotation.x = Math.PI / 2
-        if (shadows) {
-            circle.castShadow = true
-        }
-        Scene.add(circle)
-        armyCircles.push(circle)
-    }
-    this.movePathCircles = function () {
-        for (var i in pathCircles) {
-            moveCircles[i] = pathCircles[i]
-        }
-        pathCircles = []
-    }
-    this.clearMoveCircles = function () {
-        for (var i in moveCircles) {
-            Scene.remove(moveCircles[i])
-        }
-        moveCircles = []
-    }
-    this.clearPathCircles = function () {
-        for (var i in pathCircles) {
-            Scene.remove(pathCircles[i])
-        }
-        pathCircles = []
-    }
-    this.clearArmyCircles = function () {
-        for (var i in armyCircles) {
-            Scene.remove(armyCircles[i])
-        }
-        armyCircles = []
+        return {cylinder: new THREE.Mesh(geometry1, material1), circle: new THREE.Mesh(geometry2, material2)}
     }
     this.addRuin = function (color) {
         var mesh = new THREE.Mesh(ruinModel.geometry, new THREE.MeshPhongMaterial({
@@ -430,17 +335,6 @@ var Models = new function () {
     this.addTree = function (x, y) {
         var mesh = new THREE.Mesh(treeModel.geometry, treeModel.material)
         return mesh
-    }
-    this.addHill = function (x, y) {
-        var mesh = new THREE.Mesh(hillModel.geometry, hillModel.material)
-        mesh.position.set(x * 2 + 1, 0, y * 2 + 1)
-        mesh.rotation.y = 2 * Math.PI * Math.random()
-
-        if (shadows) {
-            mesh.castShadow = true
-            mesh.receiveShadow = true
-        }
-        Scene.add(mesh)
     }
     this.addRoad = function (x, y) {
         var x = x * 1,
@@ -594,7 +488,6 @@ var Models = new function () {
         initCastle()
         initFlag()
         initTree()
-        initHill()
         initPathCircle()
     }
 }

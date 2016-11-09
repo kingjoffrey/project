@@ -19,5 +19,5 @@ var Ruin = function (ruin) {
     this.getMesh = function () {
         return mesh
     }
-    var mesh = Models.addRuin(ruin.x, ruin.y, this.getColor())
+    var mesh = GameModels.addRuin(ruin.x, ruin.y, this.getColor())
 }

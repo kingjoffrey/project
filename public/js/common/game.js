@@ -45,8 +45,8 @@ var Game = new function () {
             Ruins.init(game.ruins)
             CommonMe.init(game.color, game.gold, game.bSequence)
             Chat.init(game.chatHistory)
-            Scene.initSun(Fields.getMaxY())
-            GameRenderer.init(Scene.get(), Scene.getCamera(), Scene.getWidth(), Scene.getHeight())
+            GameScene.initSun(Fields.getMaxY())
+            GameRenderer.init()
             GameRenderer.animate()
         }
         GamePlayers.initOnline(game.online)

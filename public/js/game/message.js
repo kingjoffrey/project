@@ -46,7 +46,7 @@ var Message = new function () {
         }
     }
     this.adjust = function (id) {
-        maxHeight = Scene.getHeight() - 140
+        maxHeight = GameScene.getHeight() - 140
 
         if (maxHeight < parseInt($('#' + id + ' #content').css('min-height'))) {
             maxHeight = parseInt($('#' + id + ' #content').css('min-height'))

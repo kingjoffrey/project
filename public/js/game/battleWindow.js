@@ -81,7 +81,7 @@ var BattleWindow = new function () {
             }
         },
         addUnit = function (soldierId, color, unitId, elementId) {
-            // var scene = new SimpleScene()
+            // var scene = new UnitScene()
             // scene.init(40, 40, elementId)
             // scene.setCameraPosition(-8, 16)
             // scene.initSun(30)
@@ -90,7 +90,7 @@ var BattleWindow = new function () {
             // scene.addId('unit' + soldierId)
         },
         addHero = function (color, heroId, elementId) {
-            // var scene = new SimpleScene()
+            // var scene = new UnitScene()
             // scene.init(40, 40, elementId)
             // scene.setCameraPosition(-8, 16)
             // scene.initSun(30)

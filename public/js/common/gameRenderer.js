@@ -8,17 +8,17 @@ var GameRenderer = new function () {
         timeOut = 100,
         i = 0,
         render = function () {
-            renderer.clear()
+            // renderer.clear()
 
-            renderer.setViewport(0, 0, width, height)
+            // renderer.setViewport(0, 0, width, height)
             renderer.render(scene, camera)
 
-            for (var i in viewports) {
-                var viewport = viewports[i]
-                // renderer.clearDepth()
-                renderer.setViewport(viewport.x, viewport.y, viewport.width, viewport.height);
-                renderer.render(viewport.scene, viewport.camera)
-            }
+            // for (var i in viewports) {
+            //     var viewport = viewports[i]
+                renderer.clearDepth()
+                // renderer.setViewport(viewport.x, viewport.y, viewport.width, viewport.height);
+                // renderer.render(viewport.scene, viewport.camera)
+            // }
         }
 
     this.addViewport = function (scene, camera, x, y, width, height) {
@@ -56,12 +56,12 @@ var GameRenderer = new function () {
         // stats.update();
     }
 
-    this.init = function (s, c, w, h) {
-        scene = s
-        camera = c
-        width = w
-        height = h
+    this.init = function () {
+        scene = GameScene.get()
+        camera = GameScene.getCamera()
+        width = GameScene.getWidth()
+        height = GameScene.getHeight()
         $('#game').append(renderer.domElement)
-        renderer.autoClear = false
+        // renderer.autoClear = false
     }
 }

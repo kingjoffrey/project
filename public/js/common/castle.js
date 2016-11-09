@@ -1,5 +1,5 @@
 var CommonCastle = function (castle, bgC) {
-    var mesh = Models.addCastle(castle, bgC),
+    var mesh = GameModels.addCastle(castle, bgC),
         bgColor = bgC
 
     this.toArray = function () {

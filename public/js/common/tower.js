@@ -1,5 +1,5 @@
 var Tower = function (tower, bgColor) {
-    var mesh = Models.addTower(tower.x, tower.y, bgColor)
+    var mesh = GameModels.addTower(tower.x, tower.y, bgColor)
 
     this.update = function (bgColor) {
         mesh.children[0].material.color.set(bgColor)

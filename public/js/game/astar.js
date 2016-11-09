@@ -50,7 +50,7 @@ var AStar = new function () {
         open = {}
         close = {}
         nr = 0
-        Models.clearPathCircles()
+        GameModels.clearPathCircles()
         var startX = army.getX(),
             startY = army.getY(),
             key = destX + '_' + destY
@@ -73,9 +73,9 @@ var AStar = new function () {
             }
 
             if (movesEnd) {
-                Models.addPathCircle(path[i].x, path[i].y, 'white', path[i].tt)
+                GameModels.addPathCircle(path[i].x, path[i].y, 'white', path[i].tt)
             } else {
-                Models.addPathCircle(path[i].x, path[i].y, 'green', path[i].tt)
+                GameModels.addPathCircle(path[i].x, path[i].y, 'green', path[i].tt)
             }
         }
     }

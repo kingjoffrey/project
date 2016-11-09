@@ -156,7 +156,7 @@ var MiniMap = new function () {
                     centerX = $obj.node.left + $obj.node.w / 2,
                     centerY = $obj.node.top + $obj.node.h / 2
 
-                Scene.setCameraPosition(
+                GameScene.setCameraPosition(
                     (Fields.getMaxX() * centerX / miniMap.w) * 2 - GameScene.getCameraY() - yOffset,
                     (Fields.getMaxY() * centerY / miniMap.h) * 2 + GameScene.getCameraY() + yOffset
                 )

@@ -172,10 +172,10 @@ var CommonMe = new function () {
             scene.add(mesh)
         }
 
-        scene.resize(400, 40)
-        GameRenderer.addViewport(scene.get(), scene.getCamera(), 100, 2, 400, 40)
+        // scene.resize(400, 40)
+        // GameRenderer.addViewport(scene.get(), scene.getCamera(), 100, 2, 400, 40)
 
-        Models.addArmyCircle(army.getX(), army.getY(), army.getBackgroundColor())
+        // Models.addArmyCircle(army.getX(), army.getY(), army.getBackgroundColor())
         Message.remove()
 
         this.removeFromSkipped(armyId)
@@ -208,8 +208,8 @@ var CommonMe = new function () {
         }
         parentArmyId = null
 
-        Models.clearArmyCircles()
-        Models.clearPathCircles()
+        GameModels.clearArmyCircles()
+        GameModels.clearPathCircles()
         this.setIsSelected(0)
         this.armyButtonsOff()
     }
@@ -507,11 +507,8 @@ var CommonMe = new function () {
         updateUpkeep()
         updateIncome()
 
-        scene = new SimpleScene()
-        scene.init(40, 40, 'unitsBox')
-        scene.setCameraPosition(-8, 16)
-        scene.initSun(30)
-
+        scene = new UnitScene()
+        scene.init()
     }
     this.scene = function () {
         return scene
