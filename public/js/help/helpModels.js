@@ -1,0 +1,92 @@
+var HelpModels = new function () {
+
+    this.init = function () {
+        Models.init()
+
+        var mesh = new THREE.Mesh(new THREE.PlaneBufferGeometry(200, 200), new THREE.MeshLambertMaterial({
+            color: 0xffffff,
+            side: THREE.DoubleSide
+        }))
+        mesh.rotation.x = Math.PI / 2
+        // mesh.position.set(0, -30, 0)
+        HelpScene.add(mesh)
+        if (HelpScene.getShadows()) {
+            mesh.receiveShadow = true
+        }
+    }
+
+    this.addCastle = function () {
+        var mesh = Models.addCastle({defense: 4, name: 'Castle'}, 'orange')
+
+        // mesh.rotation.y = Math.PI / 2 + Math.PI / 4
+
+        mesh.position.set(25, 0, -25)
+        mesh.scale.x = 2
+        mesh.scale.y = 2
+        mesh.scale.z = 2
+
+        HelpScene.add(mesh)
+        return mesh
+    }
+    this.addArmy = function () {
+        var mesh = Models.addArmy('orange', 8, 'light_infantry')
+
+        mesh.rotation.y = Math.PI / 2 + Math.PI / 4
+        mesh.scale.x = 3
+        mesh.scale.y = 3
+        mesh.scale.z = 3
+        mesh.position.set(25, 0, -25)
+
+        HelpScene.add(mesh)
+        return mesh
+    }
+    this.addUnit = function (color, modelName) {
+        var mesh = Models.addUnit(color, modelName)
+        //mesh.rotation.y = Math.PI / 2 + Math.PI / 4
+        mesh.rotation.y = Math.PI / 2
+        mesh.scale.x = 50
+        mesh.scale.y = 50
+        mesh.scale.z = 50
+        mesh.position.set(25, 0, -25)
+
+        HelpScene.add(mesh)
+        return mesh
+    }
+    this.addRuin = function () {
+        var mesh = Models.addRuin('gold')
+
+        mesh.scale.x = 3
+        mesh.scale.y = 3
+        mesh.scale.z = 3
+
+        mesh.position.set(25, 0, -25)
+
+        mesh.rotation.y = 2 * Math.PI * Math.random()
+
+        HelpScene.add(mesh)
+        return mesh
+    }
+    this.addTower = function () {
+        var mesh = Models.addTower('orange')
+        mesh.position.set(20, 0, -20)
+
+        mesh.scale.x = 2
+        mesh.scale.y = 2
+        mesh.scale.z = 2
+
+        HelpScene.add(mesh)
+        return mesh
+    }
+    this.addHero = function () {
+        var mesh = Models.addHero('orange')
+
+        mesh.position.set(20, 0, -20)
+
+        mesh.scale.x = 17
+        mesh.scale.y = 17
+        mesh.scale.z = 17
+
+        HelpScene.add(mesh)
+        return mesh
+    }
+}

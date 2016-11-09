@@ -9,7 +9,7 @@ var Models = new function () {
         hillModel,
         treeModel,
         waterModel,
-        shadows,
+        shadows = 1,
         roadTexture,
         swampTexture,
         pathCircles = [],
@@ -369,7 +369,7 @@ var Models = new function () {
         }
         armyCircles = []
     }
-    this.addRuin = function (x, y, color) {
+    this.addRuin = function (color) {
         var mesh = new THREE.Mesh(ruinModel.geometry, new THREE.MeshPhongMaterial({
             color: color,
             side: THREE.DoubleSide
@@ -378,12 +378,12 @@ var Models = new function () {
             mesh.castShadow = true
             mesh.receiveShadow = true
         }
-        mesh.position.set(x * 2 + 1, 0, y * 2 + 1)
-        mesh.rotation.y = 2 * Math.PI * Math.random()
-        Scene.add(mesh)
+        // mesh.position.set(x * 2 + 1, 0, y * 2 + 1)
+        // mesh.rotation.y = 2 * Math.PI * Math.random()
+        // Scene.add(mesh)
         return mesh
     }
-    this.addTower = function (x, y, color) {
+    this.addTower = function (color) {
         var mesh = new THREE.Mesh(towerModel.geometry, new THREE.MeshLambertMaterial({
                 color: '#6B6B6B',
                 side: THREE.DoubleSide
@@ -399,8 +399,8 @@ var Models = new function () {
             flagMesh.receiveShadow = true
         }
         mesh.add(flagMesh)
-        mesh.position.set(x * 2 + 1.5, 0, y * 2 + 0.5)
-        Scene.add(mesh)
+        // mesh.position.set(x * 2 + 1.5, 0, y * 2 + 0.5)
+        // Scene.add(mesh)
         return mesh
     }
     this.addCastle = function (castle, color) {
@@ -418,11 +418,9 @@ var Models = new function () {
             flagMesh.castShadow = true
             flagMesh.receiveShadow = true
         }
-        mesh.position.set(castle.x * 2 + 2, 0, castle.y * 2 + 2)
         mesh.add(flagMesh)
         mesh.add(createTextMesh(castle.name, '#ffffff'))
         updateCastleModel(mesh, castle.defense)
-        Scene.add(mesh)
         return mesh
     }
     this.castleChangeDefense = function (mesh, defense) {
@@ -534,7 +532,7 @@ var Models = new function () {
         }
         Scene.add(mesh)
     }
-    this.addHero = function (x, y, color) {
+    this.addHero = function (color) {
         var mesh = new THREE.Mesh(window['heroModel'].geometry, window['heroModel'].material)
         if (shadows) {
             mesh.castShadow = true
@@ -563,33 +561,7 @@ var Models = new function () {
         // Scene.add(mesh)
         return mesh
     }
-    this.addArmySimple = function (x, y, color, modelName) {
-        var armyMaterial = new THREE.MeshLambertMaterial({color: color, side: THREE.DoubleSide}),
-            flagMesh = new THREE.Mesh(flagModels[7].geometry, new THREE.MeshLambertMaterial({
-                color: color,
-                side: THREE.DoubleSide
-            }))
-        if (modelName + 'Model' in window) {
-            var mesh = new THREE.Mesh(window[modelName + 'Model'].geometry, armyMaterial)
-        } else {
-            var mesh = new THREE.Mesh(untitledModel.geometry, armyMaterial)
-        }
-        if (shadows) {
-            mesh.castShadow = true
-            mesh.receiveShadow = true
-            flagMesh.castShadow = true
-        }
-        flagMesh.position.set(-0.5, 0, 0)
-        mesh.rotation.y = Math.PI / 2 + Math.PI / 4
-        mesh.add(flagMesh)
-        mesh.scale.x = 3
-        mesh.scale.y = 3
-        mesh.scale.z = 3
-        mesh.position.set(x, 0, y)
-        Scene.add(mesh)
-        return mesh
-    }
-    this.addArmy = function (x, y, color, number, modelName) {
+    this.addArmy = function (color, number, modelName) {
         var armyMaterial = new THREE.MeshLambertMaterial({color: color, side: THREE.DoubleSide}),
             flagMesh = new THREE.Mesh(flagModels[number - 1].geometry, new THREE.MeshLambertMaterial({
                 color: color,
@@ -605,11 +577,11 @@ var Models = new function () {
             mesh.receiveShadow = true
             flagMesh.castShadow = true
         }
-        this.setArmyPosition(mesh, x, y)
         flagMesh.position.set(-0.5, 0, 0)
-        mesh.rotation.y = Math.PI / 2 + Math.PI / 4
+        // mesh.rotation.y = Math.PI / 2 + Math.PI / 4
         mesh.add(flagMesh)
-        Scene.add(mesh)
+        // this.setArmyPosition(mesh, x, y)
+        // Scene.add(mesh)
         return mesh
     }
     this.setArmyPosition = function (mesh, x, y) {
@@ -655,7 +627,6 @@ var Models = new function () {
     }
     this.init = function () {
         loadFont()
-        shadows = Scene.getShadows()
         initRoadTexture()
         initSwampTexture()
         initRuin()

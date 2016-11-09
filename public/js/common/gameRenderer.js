@@ -1,4 +1,4 @@
-var RendererGame = new function () {
+var GameRenderer = new function () {
     var renderer = new THREE.WebGLRenderer({antialias: true}),
         scene,
         camera,
@@ -45,10 +45,10 @@ var RendererGame = new function () {
     }
     this.animate = function () {
         if (TWEEN.update()) {
-            requestAnimationFrame(RendererGame.animate)
+            requestAnimationFrame(GameRenderer.animate)
         } else {
             setTimeout(function () {
-                requestAnimationFrame(RendererGame.animate)
+                requestAnimationFrame(GameRenderer.animate)
             }, timeOut)
         }
 

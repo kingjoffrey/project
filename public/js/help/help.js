@@ -169,7 +169,7 @@ var Help = new function () {
         },
         changeUnit = function (direction) {
             if (mesh) {
-                Scene.remove(mesh)
+                HelpScene.remove(mesh)
             }
             var stop = 0,
                 lastUnitId = 0
@@ -190,7 +190,7 @@ var Help = new function () {
             if (!lastUnitId) {
                 lastUnitId = unitId
             }
-            mesh = Models.addUnit(5, 4, 'orange', help.list[lastUnitId].name.replace(' ', '_').toLowerCase())
+            mesh = HelpModels.addUnit(5, 4, 'orange', help.list[lastUnitId].name.replace(' ', '_').toLowerCase())
             text.prepend(unitProperties(help.list[lastUnitId]))
             currentUnitId = lastUnitId
         }
@@ -204,7 +204,7 @@ var Help = new function () {
         $('#helpMenu div').removeClass('off')
         $('#' + id).addClass('off')
         if (mesh) {
-            Scene.remove(mesh)
+            HelpScene.remove(mesh)
             mesh = 0
         }
         text.html('')
@@ -215,32 +215,23 @@ var Help = new function () {
         }
         switch (id) {
             case 'army':
-                mesh = Models.addArmySimple(5, 5, 'orange', 'light_infantry')
+                mesh = HelpModels.addArmy()
                 break
             case 'castle':
-                mesh = Models.addCastle({x: 1.5, y: 0.5, defense: 4, name: 'Castle'}, 'orange')
-                mesh.scale.x = 13
-                mesh.scale.y = 13
-                mesh.scale.z = 13
+                mesh = HelpModels.addCastle()
                 break
             case 'hero':
-                mesh = Models.addHero(5, 4, 'orange')
+                mesh = HelpModels.addHero()
                 break
             case 'tower':
-                mesh = Models.addTower(1.5, 3, 'orange')
-                mesh.scale.x = 17
-                mesh.scale.y = 17
-                mesh.scale.z = 17
+                mesh = HelpModels.addTower()
                 break
             case 'ruin':
-                mesh = Models.addRuin(1.5, 2, 'gold')
-                mesh.scale.x = 30
-                mesh.scale.y = 30
-                mesh.scale.z = 30
+                mesh = HelpModels.addRuin()
                 break
             case 'units':
                 for (var unitId in help.list) {
-                    mesh = Models.addUnit(5, 4, 'orange', help.list[unitId].name.replace(' ', '_').toLowerCase())
+                    mesh = HelpModels.addUnit(5, 4, 'orange', help.list[unitId].name.replace(' ', '_').toLowerCase())
                     text.prepend(unitProperties(help.list[unitId]))
                     currentUnitId = unitId
                     break
@@ -261,6 +252,9 @@ var Help = new function () {
         return (str + '').replace(/([^>\r\n]?)(\r\n|\n\r|\r|\n)/g, '$1' + breakTag + '$2');
     }
     this.init = function () {
+        HelpScene.init(300, 300)
+        HelpRenderer.init(HelpScene)
+        HelpModels.init()
         $('#helpMenu div').click(function () {
             Help.click($(this).attr('id'))
         })
@@ -269,17 +263,5 @@ var Help = new function () {
         text = $('#text')
 
         WebSocketHelp.init()
-
-        mesh = new THREE.Mesh(new THREE.PlaneBufferGeometry(200, 200), new THREE.MeshLambertMaterial({
-            color: 0xffffff,
-            side: THREE.DoubleSide
-        }))
-        mesh.rotation.x = Math.PI / 2
-        mesh.position.set(0, -30, 0)
-        Scene.add(mesh)
-        if (Scene.getShadows()) {
-            mesh.receiveShadow = true
-        }
-        mesh = 0
     }
 }

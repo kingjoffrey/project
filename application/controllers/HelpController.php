@@ -7,20 +7,20 @@ class HelpController extends Game_Controller_Gui
     {
         $this->view->models();
 
-        $this->view->headLink()->appendStylesheet($this->view->baseUrl() . '/css/help.css?v=' . $this->_version);
-
-        $this->view->headScript()->appendFile($this->view->baseUrl() . '/js/help/init.js?v=' . $this->_version);
-        $this->view->headScript()->appendFile($this->view->baseUrl() . '/js/help/help.js?v=' . $this->_version);
-        $this->view->headScript()->appendFile($this->view->baseUrl() . '/js/help/websocket.js?v=' . $this->_version);
-        $this->view->headScript()->appendFile($this->view->baseUrl() . '/js/help/websocketMessage.js?v=' . $this->_version);
-        $this->view->headScript()->appendFile($this->view->baseUrl() . '/js/help/websocketSend.js?v=' . $this->_version);
+        $this->view->headLink()->appendStylesheet('/css/help.css?v=' . $this->_version);
 
         $this->view->headScript()->appendFile('/js/three/three.js');
         $this->view->headScript()->appendFile('/js/three/Detector.js');
 
+        $this->view->headScript()->appendFile('/js/help/init.js?v=' . $this->_version);
+        $this->view->headScript()->appendFile('/js/help/help.js?v=' . $this->_version);
+        $this->view->headScript()->appendFile('/js/help/helpModels.js?v=' . $this->_version);
+        $this->view->headScript()->appendFile('/js/help/helpScene.js?v=' . $this->_version);
+        $this->view->headScript()->appendFile('/js/help/helpRenderer.js?v=' . $this->_version);
+        $this->view->headScript()->appendFile('/js/help/websocket.js?v=' . $this->_version);
+        $this->view->headScript()->appendFile('/js/help/websocketMessage.js?v=' . $this->_version);
+        $this->view->headScript()->appendFile('/js/help/websocketSend.js?v=' . $this->_version);
 
-        $this->view->headScript()->appendFile('/js/common/renderer.js?v=' . $this->_version);
-        $this->view->headScript()->appendFile('/js/common/scene.js?v=' . $this->_version);
         $this->view->headScript()->appendFile('/js/common/models.js?v=' . $this->_version);
 
         $this->view->helpMenu();

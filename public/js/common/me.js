@@ -173,7 +173,7 @@ var CommonMe = new function () {
         }
 
         scene.resize(400, 40)
-        RendererGame.addViewport(scene.get(), scene.getCamera(), 100, 2, 400, 40)
+        GameRenderer.addViewport(scene.get(), scene.getCamera(), 100, 2, 400, 40)
 
         Models.addArmyCircle(army.getX(), army.getY(), army.getBackgroundColor())
         Message.remove()
@@ -195,7 +195,7 @@ var CommonMe = new function () {
     }
     this.deselectArmy = function (skipJoin) {
         scene.removeMeshes()
-        RendererGame.removeViewport()
+        GameRenderer.removeViewport()
         // scene.render()
 
         if (notSet(skipJoin) && parentArmyId && selectedArmyId) {
