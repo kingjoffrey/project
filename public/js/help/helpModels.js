@@ -17,42 +17,58 @@ var HelpModels = new function () {
     }
 
     this.addCastle = function () {
-        var mesh = Models.addCastle({defense: 4, name: 'Castle'}, 'orange')
+        var mesh = Models.getCastle({defense: 4, name: 'Castle'}, 'orange')
 
-        // mesh.rotation.y = Math.PI / 2 + Math.PI / 4
+        mesh.rotation.y = Math.PI / 16
 
         mesh.position.set(25, 0, -25)
-        mesh.scale.x = 2
-        mesh.scale.y = 2
-        mesh.scale.z = 2
+        mesh.scale.x = 0.5
+        mesh.scale.y = 0.5
+        mesh.scale.z = 0.5
+
+        mesh.children[0].scale.x = 7
+        mesh.children[0].scale.y = 7
+        mesh.children[0].scale.z = 7
 
         if (HelpScene.getShadows()) {
             mesh.castShadow = true
             mesh.receiveShadow = true
+            mesh.children[0].castShadow = true
         }
 
         HelpScene.add(mesh)
         return mesh
     }
     this.addArmy = function () {
-        var mesh = Models.addArmy('orange', 8, 'light_infantry')
+        var mesh = Models.getArmy('orange', 8, 'light_infantry')
 
         mesh.rotation.y = Math.PI / 2 + Math.PI / 4
-        mesh.scale.x = 5
-        mesh.scale.y = 5
-        mesh.scale.z = 5
+        mesh.scale.x = 0.5
+        mesh.scale.y = 0.5
+        mesh.scale.z = 0.5
+
+        mesh.children[0].scale.x = 2
+        mesh.children[0].scale.y = 2
+        mesh.children[0].scale.z = 2
+
         mesh.position.set(20, 0, -20)
+
+        if (HelpScene.getShadows()) {
+            mesh.castShadow = true
+            mesh.receiveShadow = true
+            mesh.children[0].castShadow = true
+        }
 
         HelpScene.add(mesh)
         return mesh
     }
     this.addUnit = function (modelName) {
-        var mesh = Models.addUnit('orange', modelName)
+        var mesh = Models.getUnit('orange', modelName)
         //mesh.rotation.y = Math.PI / 2 + Math.PI / 4
         mesh.rotation.y = Math.PI / 2
-        mesh.scale.x = 5
-        mesh.scale.y = 5
-        mesh.scale.z = 5
+        mesh.scale.x = 0.5
+        mesh.scale.y = 0.5
+        mesh.scale.z = 0.5
         mesh.position.set(20, 0, -20)
 
         if (HelpScene.getShadows()) {
@@ -64,11 +80,11 @@ var HelpModels = new function () {
         return mesh
     }
     this.addRuin = function () {
-        var mesh = Models.addRuin('gold')
+        var mesh = Models.getRuin('gold')
 
-        mesh.scale.x = 3
-        mesh.scale.y = 3
-        mesh.scale.z = 3
+        mesh.scale.x = 0.3
+        mesh.scale.y = 0.3
+        mesh.scale.z = 0.3
 
         mesh.position.set(25, 0, -25)
 
@@ -83,29 +99,34 @@ var HelpModels = new function () {
         return mesh
     }
     this.addTower = function () {
-        var mesh = Models.addTower('orange')
+        var mesh = Models.getTower('orange')
         mesh.position.set(20, 0, -20)
 
-        mesh.scale.x = 2
-        mesh.scale.y = 2
-        mesh.scale.z = 2
+        mesh.scale.x = 1
+        mesh.scale.y = 1
+        mesh.scale.z = 1
+
+        mesh.children[0].scale.x = 3.3
+        mesh.children[0].scale.y = 3.3
+        mesh.children[0].scale.z = 3.3
 
         if (HelpScene.getShadows()) {
             mesh.castShadow = true
             mesh.receiveShadow = true
+            mesh.children[0].castShadow = true
         }
 
         HelpScene.add(mesh)
         return mesh
     }
     this.addHero = function () {
-        var mesh = Models.addHero('orange')
+        var mesh = Models.getHero('orange')
 
         mesh.position.set(20, 0, -20)
 
-        mesh.scale.x = 20
-        mesh.scale.y = 20
-        mesh.scale.z = 20
+        mesh.scale.x = 1.5
+        mesh.scale.y = 1.5
+        mesh.scale.z = 1.5
 
         if (HelpScene.getShadows()) {
             mesh.castShadow = true

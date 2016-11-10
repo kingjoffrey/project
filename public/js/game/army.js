@@ -60,8 +60,8 @@ var Army = function (army, bgColor, miniMapColor, textColor, color) {
             army[key] = a[key]
         }
         Fields.get(army.x, army.y).addArmyId(army.id, color)
-        Scene.remove(army.mesh)
-        army.mesh = Models.addArmy(army.x, army.y, bgColor, numberOfUnits, this.getModelName())
+        GameScene.remove(army.mesh)
+        army.mesh = GameModels.addArmy(army.x, army.y, bgColor, numberOfUnits, this.getModelName())
         $('#' + army.id + '.a').css({
             left: MiniMap.calculateX(army.x) + 'px',
             top: MiniMap.calculateY(army.y) + 'px'

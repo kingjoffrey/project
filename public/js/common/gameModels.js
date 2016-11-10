@@ -8,7 +8,7 @@ var GameModels = new function () {
     }
 
     this.addCastle = function (castle, color) {
-        var mesh = Models.addCastle(castle, color)
+        var mesh = Models.getCastle(castle, color)
 
         // mesh.rotation.y = Math.PI / 2 + Math.PI / 4
 
@@ -18,22 +18,36 @@ var GameModels = new function () {
         mesh.scale.y = 0.2
         mesh.scale.z = 0.2
 
+        mesh.children[0].scale.x = 7
+        mesh.children[0].scale.y = 7
+        mesh.children[0].scale.z = 7
+
         if (GameScene.getShadows()) {
             mesh.castShadow = true
             mesh.receiveShadow = true
+            mesh.children[0].castShadow = true
         }
 
         GameScene.add(mesh)
         return mesh
     }
     this.addArmy = function (x, y, color, number, modelName) {
-        var mesh = Models.addArmy(color, number, modelName)
+        var mesh = Models.getArmy(color, number, modelName)
 
         mesh.rotation.y = Math.PI / 2 + Math.PI / 4
         mesh.scale.x = 0.1
         mesh.scale.y = 0.1
         mesh.scale.z = 0.1
 
+        mesh.children[0].scale.x = 2
+        mesh.children[0].scale.y = 2
+        mesh.children[0].scale.z = 2
+
+        if (GameScene.getShadows()) {
+            mesh.castShadow = true
+            mesh.receiveShadow = true
+            mesh.children[0].castShadow = true
+        }
         this.setArmyPosition(mesh, x, y)
         GameScene.add(mesh)
         return mesh
@@ -59,11 +73,11 @@ var GameModels = new function () {
         mesh.position.set(x * 2 + 0.5, height, y * 2 + 0.5)
     }
     this.addRuin = function (x, y, color) {
-        var mesh = Models.addRuin(color)
+        var mesh = Models.getRuin(color)
 
-        mesh.scale.x = 0.1
-        mesh.scale.y = 0.1
-        mesh.scale.z = 0.1
+        mesh.scale.x = 0.05
+        mesh.scale.y = 0.05
+        mesh.scale.z = 0.05
 
         mesh.position.set(x * 2 + 0.5, 0, y * 2 + 0.5)
 
@@ -78,23 +92,28 @@ var GameModels = new function () {
         return mesh
     }
     this.addTower = function (x, y, color) {
-        var mesh = Models.addTower(color)
+        var mesh = Models.getTower(color)
         mesh.position.set(x * 2 + 0.5, 0, y * 2 + 0.5)
 
-        mesh.scale.x = 0.1
-        mesh.scale.y = 0.1
-        mesh.scale.z = 0.1
+        mesh.scale.x = 0.3
+        mesh.scale.y = 0.3
+        mesh.scale.z = 0.3
+
+        mesh.children[0].scale.x = 3.3
+        mesh.children[0].scale.y = 3.3
+        mesh.children[0].scale.z = 3.3
 
         if (GameScene.getShadows()) {
             mesh.castShadow = true
             mesh.receiveShadow = true
+            mesh.children[0].castShadow = true
         }
 
         GameScene.add(mesh)
         return mesh
     }
     this.addTree = function (x, y) {
-        var mesh = Models.addTree(x, y)
+        var mesh = Models.getTree(x, y)
         mesh.position.set(x * 2 + 1, 0, y * 2 + 1)
         mesh.rotation.y = 2 * Math.PI * Math.random()
 
@@ -109,7 +128,7 @@ var GameModels = new function () {
         GameScene.add(mesh)
     }
     this.addSwamp = function (x, y) {
-        var mesh = Models.addSwamp(x, y)
+        var mesh = Models.getSwamp(x, y)
 
         mesh.rotation.x = Math.PI / 2
         mesh.position.set(x * 2 + 1, 0.0001, y * 2 + 1)
@@ -120,7 +139,7 @@ var GameModels = new function () {
         GameScene.add(mesh)
     }
     this.addRoad = function (x, y) {
-        var mesh = Models.addRoad(x, y)
+        var mesh = Models.getRoad(x, y)
         mesh.rotation.x = Math.PI / 2
         mesh.position.set(x * 2 + 1, 0.0001, y * 2 + 1)
 
@@ -168,7 +187,7 @@ var GameModels = new function () {
                 break
         }
 
-        meshes.cylinder.position.set(x * 2 + 1, 2 + height, y * 2 + 1)
+        meshes.cylinder.position.set(x * 2 + 1, 4 + height, y * 2 + 1)
         //cylinder.rotation.x = Math.PI / 2
         GameScene.add(meshes.cylinder)
         armyCircles.push(meshes.cylinder)

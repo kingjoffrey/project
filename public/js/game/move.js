@@ -8,7 +8,7 @@ var Move = new function () {
             Execute.setExecuting(0)
             if (CommonMe.colorEquals(r.color)) {
                 Gui.unlock()
-                Models.clearMoveCircles()
+                GameModels.clearMoveCircles()
                 Message.simple(translations.army, translations.noMoreMoves)
             }
             return
@@ -67,7 +67,7 @@ var Move = new function () {
                             console.log('path: ' + r.path)
                             throw('error20150224')
                         }
-                        Models.setArmyPosition(army.getMesh(), r.path[step].x, r.path[step].y)
+                        GameModels.setArmyPosition(army.getMesh(), r.path[step].x, r.path[step].y)
                         delete r.path[step].c
                         stepLoop(r, ii);
                     })
@@ -230,7 +230,6 @@ var Move = new function () {
             Players.get(r.color).getArmies().destroy(r.deletedIds[i])
         }
 
-
-        Models.clearMoveCircles()
+        GameModels.clearMoveCircles()
     }
 }

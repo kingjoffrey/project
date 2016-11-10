@@ -5,10 +5,7 @@ var Models = new function () {
         armyModels = {},
         castleModels = {},
         flagModels = {},
-        mountainModel,
-        hillModel,
         treeModel,
-        waterModel,
         shadows = 1,
         roadTexture,
         swampTexture,
@@ -32,10 +29,10 @@ var Models = new function () {
         createTextMesh = function (text, color) {
             var mesh = new THREE.Mesh(new THREE.TextGeometry(text, {
                 font: font,
-                size: 0.25,
-                height: 0.05
+                size: 1.5,
+                height: 0.3
             }), new THREE.MeshPhongMaterial({color: color}))
-            mesh.position.set(0, 2, 0.2)
+            mesh.position.set(0, 10, 0.2)
             mesh.rotation.y = -Math.PI / 4
             return mesh
         },
@@ -194,13 +191,21 @@ var Models = new function () {
                 }
             }
 
+            flag_1.scale = 2.5
             flagModels[0] = loader.parse(flag_1)
+            flag_2.scale = 2.5
             flagModels[1] = loader.parse(flag_2)
+            flag_3.scale = 2.5
             flagModels[2] = loader.parse(flag_3)
+            flag_4.scale = 2.5
             flagModels[3] = loader.parse(flag_4)
+            flag_5.scale = 2.5
             flagModels[4] = loader.parse(flag_5)
+            flag_6.scale = 2.5
             flagModels[5] = loader.parse(flag_6)
+            flag_7.scale = 2.5
             flagModels[6] = loader.parse(flag_7)
+            flag_8.scale = 2.5
             flagModels[7] = loader.parse(flag_8)
         },
         initTree = function () {
@@ -244,13 +249,10 @@ var Models = new function () {
         switch (color) {
             case 'green':
                 return new THREE.Mesh(pathGeometry, pathMaterialGreen)
-                break
             case 'red':
                 return new THREE.Mesh(pathGeometry, pathMaterialRed)
-                break
             case 'white':
                 return new THREE.Mesh(pathGeometry, pathMaterialWhite)
-                break
         }
     }
     this.getArmyCircle = function () {
@@ -274,7 +276,7 @@ var Models = new function () {
 
         return {cylinder: new THREE.Mesh(geometry1, material1), circle: new THREE.Mesh(geometry2, material2)}
     }
-    this.addRuin = function (color) {
+    this.getRuin = function (color) {
         var mesh = new THREE.Mesh(ruinModel.geometry, new THREE.MeshPhongMaterial({
             color: color,
             side: THREE.DoubleSide
@@ -283,12 +285,9 @@ var Models = new function () {
             mesh.castShadow = true
             mesh.receiveShadow = true
         }
-        // mesh.position.set(x * 2 + 1, 0, y * 2 + 1)
-        // mesh.rotation.y = 2 * Math.PI * Math.random()
-        // Scene.add(mesh)
         return mesh
     }
-    this.addTower = function (color) {
+    this.getTower = function (color) {
         var mesh = new THREE.Mesh(towerModel.geometry, new THREE.MeshLambertMaterial({
                 color: '#6B6B6B',
                 side: THREE.DoubleSide
@@ -303,12 +302,11 @@ var Models = new function () {
             flagMesh.castShadow = true
             flagMesh.receiveShadow = true
         }
+
         mesh.add(flagMesh)
-        // mesh.position.set(x * 2 + 1.5, 0, y * 2 + 0.5)
-        // Scene.add(mesh)
         return mesh
     }
-    this.addCastle = function (castle, color) {
+    this.getCastle = function (castle, color) {
         var mesh = new THREE.Mesh(castleModels[0].geometry, new THREE.MeshLambertMaterial({
                 color: '#3B3028',
                 side: THREE.DoubleSide
@@ -332,11 +330,11 @@ var Models = new function () {
         mesh.children.splice(2, 3)
         updateCastleModel(mesh, defense)
     }
-    this.addTree = function (x, y) {
+    this.getTree = function (x, y) {
         var mesh = new THREE.Mesh(treeModel.geometry, treeModel.material)
         return mesh
     }
-    this.addRoad = function (x, y) {
+    this.getRoad = function (x, y) {
         var x = x * 1,
             y = y * 1,
             f1, f2, f3, f4
@@ -397,7 +395,7 @@ var Models = new function () {
             mesh = new THREE.Mesh(new THREE.PlaneGeometry(2, 2), roadMaterial)
         return mesh
     }
-    this.addSwamp = function (x, y) {
+    this.getSwamp = function (x, y) {
         var swampMaterial = new THREE.MeshLambertMaterial({
                 map: swampTexture,
                 side: THREE.DoubleSide,
@@ -407,36 +405,20 @@ var Models = new function () {
             mesh = new THREE.Mesh(new THREE.PlaneGeometry(2, 2), swampMaterial)
         return mesh
     }
-    this.addHero = function (color) {
+    this.getHero = function (color) {
         var mesh = new THREE.Mesh(window['heroModel'].geometry, window['heroModel'].material)
-        if (shadows) {
-            mesh.castShadow = true
-            mesh.receiveShadow = true
-        }
-        //mesh.rotation.y = Math.PI / 2 + Math.PI / 4
         return mesh
     }
-    this.addUnit = function (color, modelName) {
+    this.getUnit = function (color, modelName) {
         var armyMaterial = new THREE.MeshLambertMaterial({color: color, side: THREE.DoubleSide})
         if (modelName + 'Model' in window) {
             var mesh = new THREE.Mesh(window[modelName + 'Model'].geometry, armyMaterial)
         } else {
             var mesh = new THREE.Mesh(untitledModel.geometry, armyMaterial)
         }
-        if (shadows) {
-            mesh.castShadow = true
-            mesh.receiveShadow = true
-        }
-        //mesh.rotation.y = Math.PI / 2 + Math.PI / 4
-        // mesh.rotation.y = Math.PI / 2
-        // mesh.scale.x = 50
-        // mesh.scale.y = 50
-        // mesh.scale.z = 50
-        // mesh.position.set(0, -30, 0)
-        // Scene.add(mesh)
         return mesh
     }
-    this.addArmy = function (color, number, modelName) {
+    this.getArmy = function (color, number, modelName) {
         var armyMaterial = new THREE.MeshLambertMaterial({color: color, side: THREE.DoubleSide}),
             flagMesh = new THREE.Mesh(flagModels[number - 1].geometry, new THREE.MeshLambertMaterial({
                 color: color,
@@ -447,12 +429,8 @@ var Models = new function () {
         } else {
             var mesh = new THREE.Mesh(untitledModel.geometry, armyMaterial)
         }
-        if (shadows) {
-            mesh.castShadow = true
-            mesh.receiveShadow = true
-            flagMesh.castShadow = true
-        }
-        flagMesh.position.set(-0.5, 0, 0)
+
+        flagMesh.position.set(-10, 0, 2)
         // mesh.rotation.y = Math.PI / 2 + Math.PI / 4
         mesh.add(flagMesh)
         return mesh
