@@ -69,9 +69,11 @@ class EditorController extends Game_Controller_Gui
         $this->view->headScript()->appendFile('/js/common/castle.js?v=' . $version);
         $this->view->headScript()->appendFile('/js/common/castles.js?v=' . $version);
         $this->view->headScript()->appendFile('/js/common/renderer.js?v=' . $version);
-        $this->view->headScript()->appendFile('/js/common/scene.js?v=' . $version);
+        $this->view->headScript()->appendFile('/js/common/gameRenderer.js?v=' . $version);
+        $this->view->headScript()->appendFile('/js/common/gameScene.js?v=' . $version);
         $this->view->headScript()->appendFile('/js/common/ground.js?v=' . $version);
         $this->view->headScript()->appendFile('/js/common/models.js?v=' . $version);
+        $this->view->headScript()->appendFile('/js/common/gameModels.js?v=' . $version);
         $this->view->headScript()->appendFile('/js/common/field.js?v=' . $version);
         $this->view->headScript()->appendFile('/js/common/fields.js?v=' . $version);
         $this->view->headScript()->appendFile('/js/common/picker.js?v=' . $version);

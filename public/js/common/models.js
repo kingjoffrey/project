@@ -270,7 +270,7 @@ var Models = new function () {
                 opacity: 0.7,
                 side: THREE.DoubleSide
             }),
-            geometry1 = new THREE.CylinderGeometry(0.5, 0, 1, segments, segments, 1),
+            geometry1 = new THREE.CylinderGeometry(0.5, 0, 2, segments, segments, 1),
             geometry2 = new THREE.CircleGeometry(radius, segments)
         //geometry = new THREE.TorusGeometry(radius, 0.3, segments, segments)
 

@@ -9,17 +9,18 @@ var Editor = new function () {
             Ruins.init(r.ruins)
             Players.init(r.players)
             Gui.init()
-            Scene.setCameraPosition(0, Fields.getMaxY())
-            Scene.initSun(Fields.getMaxY())
-            GameRenderer.render()
+            GameScene.setCameraPosition(0, Fields.getMaxY())
+            GameScene.initSun(Fields.getMaxY())
+            GameRenderer.init()
+            GameRenderer.animate()
         }
         //console.log(r)
     }
 }
 
 $(document).ready(function () {
-    Scene.init($(window).innerWidth(), $(window).innerHeight())
-    Models.init()
+    GameScene.init($(window).innerWidth(), $(window).innerHeight())
+    GameModels.init()
     PickerCommon.init()
     WebSocketEditor.init()
 })

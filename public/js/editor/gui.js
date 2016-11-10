@@ -6,16 +6,16 @@ var Gui = new function () {
             var key = event.keyCode || event.charCode;
             switch (key) {
                 case 37://left
-                    Scene.moveCameraLeft()
+                    GameScene.moveCameraLeft()
                     break;
                 case 38://up
-                    Scene.moveCameraUp()
+                    GameScene.moveCameraUp()
                     break;
                 case 39://right
-                    Scene.moveCameraRight()
+                    GameScene.moveCameraRight()
                     break;
                 case 40://down
-                    Scene.moveCameraDown()
+                    GameScene.moveCameraDown()
                     break;
 //            default:
 //                console.log(key)
@@ -58,10 +58,13 @@ var Gui = new function () {
     this.exit = function () {
         window.location = '/' + lang + '/index'
     }
+    this.adjust = function () {
+        GameScene.resize($(window).innerWidth(), $(window).innerHeight())
+    }
     this.init = function () {
-        //$(window).resize(function () {
-        //    Gui.adjust()
-        //})
+        $(window).resize(function () {
+           Gui.adjust()
+        })
         $('body')
             .keydown(function (event) {
                 doKey(event)
@@ -74,15 +77,16 @@ var Gui = new function () {
             })
         $('#game canvas').mousewheel(function (event) {
             if (event.deltaY > 0) {
-                if (Scene.getCameraY() < 230) {
-                    Scene.moveCameraAway()
+                if (GameScene.getCameraY() < 230) {
+                    GameScene.moveCameraAway()
                 }
             } else {
-                if (Scene.getCameraY() > 22) {
-                    Scene.moveCameraClose()
+                if (GameScene.getCameraY() > 22) {
+                    GameScene.moveCameraClose()
                 }
             }
         })
         activateButtons()
+        this.adjust()
     }
 }

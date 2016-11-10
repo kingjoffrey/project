@@ -66,7 +66,7 @@ var Picker = new function () {
                 case 2:
                     // remove mesh
                     if (draggedMesh) {
-                        Scene.remove(draggedMesh)
+                        GameScene.remove(draggedMesh)
                         draggedMesh = 0
                     }
                     Message.remove()

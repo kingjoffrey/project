@@ -242,7 +242,6 @@ var Gui = new function () {
         var width = $(window).innerWidth(),
             height = $(window).innerHeight()
         GameScene.resize(width, height)
-        GameRenderer.setSize(width, height)
 
         MiniMap.adjust()
 

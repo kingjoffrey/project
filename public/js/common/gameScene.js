@@ -139,6 +139,7 @@ var GameScene = new function () {
         canvasHeight = h
         camera.aspect = canvasWidth / canvasHeight
         camera.updateProjectionMatrix()
+        GameRenderer.setSize(w, h)
     }
     this.init = function (w, h) {
         canvasWidth = w
