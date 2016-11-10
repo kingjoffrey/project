@@ -16,7 +16,7 @@ var CommonMe = new function () {
         selectedCastleId = null,
         selectedUnitId = null,
         battleSequence = [],
-        scene,
+        s,
         updateGold = function () {
             $('#gold #value').fadeOut(300, function () {
                 $('#gold #value').html(gold)
@@ -121,9 +121,6 @@ var CommonMe = new function () {
     this.setParentArmyId = function (armyId) {
         parentArmyId = armyId
     }
-    this.getScene = function () {
-        return scene
-    }
     this.selectArmy = function (armyId, center) {
         var army = this.getArmy(armyId),
             unitTypes = {},
@@ -131,13 +128,7 @@ var CommonMe = new function () {
             i = 0
 
         if (number = countProperties(army.getHeroes())) {
-            // var mesh = Models.getHero(4, 4, army.getBackgroundColor())
-            // scene.add(mesh)
-            // mesh.rotation.y = Math.PI / 2
-            // mesh.scale.x = 190
-            // mesh.scale.y = 190
-            // mesh.scale.z = 190
-            // mesh.position.set(0, -30, 0)
+            UnitModels.addHero(army.getBackgroundColor(), s)
         }
 
         for (var soldierId in army.getWalkingSoldiers()) {
@@ -163,17 +154,11 @@ var CommonMe = new function () {
         }
         for (var unitId in unitTypes) {
             i++
-            // var mesh = Models.addUnit(army.getBackgroundColor(), Unit.getName(unitId))
-            // mesh.rotation.y = Math.PI / 2
-            // mesh.scale.x = 90
-            // mesh.scale.y = 90
-            // mesh.scale.z = 90
-            // mesh.position.set(i * 50, -30, 0)
-            // scene.add(mesh)
+            UnitModels.addUnit(i, army.getBackgroundColor(), Unit.getName(unitId), s)
         }
 
-        // scene.resize(400, 40)
-        // GameRenderer.addViewport(scene.get(), scene.getCamera(), 100, 2, 400, 40)
+        // s.resize(400, 40)
+        // GameRenderer.addViewport(s.get(), s.getCamera(), 100, 2, 400, 40)
 
         GameModels.addArmyCircle(army.getX(), army.getY(), army.getBackgroundColor())
         Message.remove()
@@ -194,9 +179,9 @@ var CommonMe = new function () {
         }
     }
     this.deselectArmy = function (skipJoin) {
-        scene.removeMeshes()
-        GameRenderer.removeViewport()
-        // scene.render()
+        s.removeMeshes()
+        // GameRenderer.removeViewport()
+        // s.render()
 
         if (notSet(skipJoin) && parentArmyId && selectedArmyId) {
             var selectedArmy = this.getArmy(selectedArmyId),
@@ -507,10 +492,10 @@ var CommonMe = new function () {
         updateUpkeep()
         updateIncome()
 
-        scene = new UnitScene()
-        scene.init()
-    }
-    this.scene = function () {
-        return scene
+        s = new UnitScene()
+        s.init()
+
+        UnitRenderer.init('unitsBox', s)
+        UnitRenderer.animate()
     }
 }

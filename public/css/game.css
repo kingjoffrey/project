@@ -628,6 +628,7 @@
 
 #armyBox #unitsBox canvas {
     display: inline-block;
+    height: 50px;
 }
 
 #armyBox #armyButtons {

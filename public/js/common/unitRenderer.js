@@ -56,12 +56,13 @@ var UnitRenderer = new function () {
         // stats.update();
     }
 
-    this.init = function (id) {
-        scene = UnitScene.get()
-        camera = UnitScene.getCamera()
-        width = UnitScene.getWidth()
-        height = UnitScene.getHeight()
+    this.init = function (id, s) {
+        scene = s.get()
+        camera = s.getCamera()
+        width = s.getWidth()
+        height = s.getHeight()
         $('#' + id).append(renderer.domElement)
+        renderer.setSize(width, height)
         // renderer.autoClear = false
     }
 }
