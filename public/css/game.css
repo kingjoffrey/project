@@ -328,18 +328,18 @@
 }
 
 .message div.row {
-    padding: 3px;
+    padding: 8px;
     border: 1px solid #222;
     border-radius: 3px;
+    cursor: pointer;
+}
+
+.message div.row:hover {
+    color: #000;
+    text-shadow: none;
 }
 
 .message div.row div.nr {
-    position: relative;
-    top: 2px;
-    left: 2px;
-    width: 20px;
-    height: 15px;
-    float: left;
     display: inline-block;
 }
 
@@ -353,11 +353,6 @@
     height: 20px;
 }
 
-.message .split div.row {
-    clear: both;
-    height: 31px;
-}
-
 .message .split div.row:hover {
     background: lime;
 }
@@ -366,30 +361,6 @@
     background: #fff;
     color: #000;
     text-shadow: none;
-}
-
-.message .split div.row div {
-    width: 30px;
-    height: 30px;
-    position: relative;
-    top: 9px;
-}
-
-.message .split div.row span {
-    line-height: 30px;
-}
-
-.message .split div.row img {
-    margin: 1px 12px;
-}
-
-.message .split div.row div.img {
-    width: 50px;
-    height: 30px;
-    float: left;
-    position: relative;
-    top: 0px;
-    left: 0px;
 }
 
 .message .status div.row {

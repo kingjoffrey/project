@@ -130,7 +130,7 @@ class Zend_View_Helper_Translations extends Zend_View_Helper_Abstract
                 'yourTurn' => $this->view->translate('Your turn!'),
                 'incomingChat' => $this->view->translate('Incoming chat!'),
                 'configuration' => $this->view->translate('Configuration'),
-                '' => $this->view->translate(''),
+                'hero' => $this->view->translate('Hero'),
                 '' => $this->view->translate(''),
                 '' => $this->view->translate(''),
                 '' => $this->view->translate(''),
