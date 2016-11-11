@@ -31,7 +31,7 @@ var GameScene = new function () {
         sun = new THREE.DirectionalLight(0xdfebff, 0.75)
         sun.position.set(100, 200, 150)
         if (shadows) {
-            Renderer.turnOnShadows()
+            GameRenderer.turnOnShadows()
 
             sun.castShadow = true
 

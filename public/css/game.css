@@ -441,7 +441,7 @@
     color: lime;
 }
 
-.message .status div.row div.img {
+.message .status div.row div.canvas {
     position: absolute;
     top: 30px;
     left: 5px;

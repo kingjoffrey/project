@@ -17,6 +17,10 @@ var GameRenderer = new function () {
     this.getDomElement = function () {
         return renderer.domElement
     }
+    this.turnOnShadows = function () {
+        renderer.shadowMap.enabled = true
+        renderer.shadowMapSoft = false
+    }
     this.animate = function () {
         if (TWEEN.update()) {
             requestAnimationFrame(GameRenderer.animate)

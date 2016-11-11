@@ -1,16 +1,11 @@
 var StatusWindow = new function () {
-    var statusRowContent = function (numberOfUnits, soldier, color, attackFlyBonus, attackHeroBonus, defenseFlyBonus, defenseHeroBonus, defenseTowerBonus, defenseCastleBonus) {
+    var statusRowContent = function (id, numberOfUnits, soldier, color, attackFlyBonus, attackHeroBonus, defenseFlyBonus, defenseHeroBonus, defenseTowerBonus, defenseCastleBonus) {
         return $('<div>')
             .addClass('row')
             .append($('<div>')
                 .addClass('rowContent')
                 .append($('<div>').addClass('nr').html(numberOfUnits))
-                .append($('<div>').addClass('img').html(
-                    $('<img>').attr({
-                        'src': Unit.getImage(soldier.unitId, color),
-                        'id': 'unit' + soldier.soldierId
-                    })
-                ))
+                .append($('<div>').addClass('canvas').attr({'id': 'soldier' + id}))
                 .append($('<table>')
                     .addClass('leftTable')
                     .append($('<tr>')
@@ -186,21 +181,21 @@ var StatusWindow = new function () {
                 )
         )
 
-        for (var i in army.getWalkingSoldiers()) {
+        for (var soldierId in army.getWalkingSoldiers()) {
             numberOfUnits++
-            div.append(statusRowContent(numberOfUnits, army.getWalkingSoldier(i), color, attackFlyBonus, attackHeroBonus, defenseFlyBonus, defenseHeroBonus, defenseTowerBonus, defenseCastleBonus));
+            div.append(statusRowContent(soldierId, numberOfUnits, army.getWalkingSoldier(soldierId), color, attackFlyBonus, attackHeroBonus, defenseFlyBonus, defenseHeroBonus, defenseTowerBonus, defenseCastleBonus));
         }
-        for (var i in army.getSwimmingSoldiers()) {
+        for (var soldierId in army.getSwimmingSoldiers()) {
             numberOfUnits++
-            div.append(statusRowContent(numberOfUnits, army.getSwimmingSoldier(i), color, attackFlyBonus, attackHeroBonus, defenseFlyBonus, defenseHeroBonus, defenseTowerBonus, defenseCastleBonus));
+            div.append(statusRowContent(soldierId, numberOfUnits, army.getSwimmingSoldier(soldierId), color, attackFlyBonus, attackHeroBonus, defenseFlyBonus, defenseHeroBonus, defenseTowerBonus, defenseCastleBonus));
         }
-        for (var i in army.getFlyingSoldiers()) {
+        for (var soldierId in army.getFlyingSoldiers()) {
             numberOfUnits++
-            div.append(statusRowContent(numberOfUnits, army.getFlyingSoldier(i), color, attackFlyBonus, attackHeroBonus, defenseFlyBonus, defenseHeroBonus, defenseTowerBonus, defenseCastleBonus));
+            div.append(statusRowContent(soldierId, numberOfUnits, army.getFlyingSoldier(soldierId), color, attackFlyBonus, attackHeroBonus, defenseFlyBonus, defenseHeroBonus, defenseTowerBonus, defenseCastleBonus));
         }
-        for (var i in army.getHeroes()) {
+        for (var heroId in army.getHeroes()) {
             numberOfUnits++
-            var hero = army.getHero(i)
+            var hero = army.getHero(heroId)
             div.append(
                 $('<div>')
                     .addClass('row')
@@ -208,12 +203,7 @@ var StatusWindow = new function () {
                         $('<div>')
                             .addClass('rowContent')
                             .append($('<div>').addClass('nr').html(numberOfUnits))
-                            .append($('<div>').addClass('img').html(
-                                $('<img>').attr({
-                                    'src': Hero.getImage(color),
-                                    'id': 'hero' + hero.heroId
-                                })
-                            ))
+                            .append($('<div>').addClass('canvas').attr({'id': 'hero' + heroId}))
                             .append(
                                 $('<table>').addClass('leftTable')
                                     .append(
@@ -260,5 +250,58 @@ var StatusWindow = new function () {
 
         var id = Message.simple(translations.armyStatus, div)
         Message.setOverflowHeight(id)
+
+        for (var soldierId in army.getWalkingSoldiers()) {
+            var unitScene = new UnitScene()
+            unitScene.init(100, 100)
+
+            UnitModels.addUnit(Players.get(color).getBackgroundColor(), Unit.getName(army.getWalkingSoldier(soldierId).unitId), unitScene)
+
+            var unitRenderer1 = new UnitRenderer()
+            unitRenderer1.init('soldier' + soldierId, unitScene)
+            requestAnimationFrame(function animate() {
+                unitRenderer1.render()
+                requestAnimationFrame(animate)
+            })
+        }
+        for (var soldierId in army.getSwimmingSoldiers()) {
+            var unitScene = new UnitScene()
+            unitScene.init(100, 100)
+
+            UnitModels.addUnit(Players.get(color).getBackgroundColor(), Unit.getName(army.getSwimmingSoldier(soldierId).unitId), unitScene)
+
+            var unitRenderer = new UnitRenderer()
+            unitRenderer.init('soldier' + soldierId, unitScene)
+            requestAnimationFrame(function animate() {
+                unitRenderer.render()
+                requestAnimationFrame(animate)
+            })
+        }
+        for (var soldierId in army.getFlyingSoldiers()) {
+            var unitScene = new UnitScene()
+            unitScene.init(100, 100)
+
+            UnitModels.addUnit(Players.get(color).getBackgroundColor(), Unit.getName(army.getFlyingSoldier(soldierId).unitId), unitScene)
+
+            var unitRenderer = new UnitRenderer()
+            unitRenderer.init('soldier' + soldierId, unitScene)
+            requestAnimationFrame(function animate() {
+                unitRenderer.render()
+                requestAnimationFrame(animate)
+            })
+        }
+        for (var heroId in army.getHeroes()) {
+            var unitScene = new UnitScene()
+            unitScene.init(100, 100)
+
+            UnitModels.addHero(color, unitScene)
+
+            var unitRenderer = new UnitRenderer()
+            unitRenderer.init('hero' + heroId, unitScene)
+            requestAnimationFrame(function animate() {
+                unitRenderer.render()
+                requestAnimationFrame(animate)
+            })
+        }
     }
 }

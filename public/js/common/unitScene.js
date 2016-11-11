@@ -1,6 +1,6 @@
 var UnitScene = function () {
-    var canvasWidth = 400,
-        canvasHeight = 40,
+    var canvasWidth,
+        canvasHeight,
         scene = new THREE.Scene(),
         camera,
         sun,
@@ -47,7 +47,13 @@ var UnitScene = function () {
     this.getShadows = function () {
         return shadows
     }
-    this.init = function () {
+    this.init = function (w, h) {
+        if (notSet(w) || notSet(h)) {
+            throw 'Not set'
+        }
+
+        canvasWidth = w
+        canvasHeight = h
         initCamera()
         initSun()
     }

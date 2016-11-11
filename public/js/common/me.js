@@ -153,8 +153,7 @@ var CommonMe = new function () {
             }
         }
         for (var unitId in unitTypes) {
-            i++
-            UnitModels.addUnit(i, army.getBackgroundColor(), Unit.getName(unitId), s)
+            UnitModels.addUnit(army.getBackgroundColor(), Unit.getName(unitId), s)
         }
 
         // s.resize(400, 40)
@@ -493,9 +492,13 @@ var CommonMe = new function () {
         updateIncome()
 
         s = new UnitScene()
-        s.init()
+        s.init(400, 40)
 
-        UnitRenderer.init('unitsBox', s)
-        UnitRenderer.animate()
+        var unitRenderer = new UnitRenderer()
+        unitRenderer.init('unitsBox', s)
+        requestAnimationFrame(function animate() {
+            unitRenderer.render()
+            requestAnimationFrame(animate)
+        })
     }
 }
