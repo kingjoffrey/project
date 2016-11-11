@@ -22,8 +22,6 @@ var UnitModels = new function () {
         scene.add(mesh)
     }
     this.addUnit = function (color, modelName, scene) {
-        console.log(color)
-        console.log(modelName)
         var mesh = Models.getUnit(color, modelName)
         //mesh.rotation.y = Math.PI / 2 + Math.PI / 4
         // mesh.rotation.y = Math.PI / 2

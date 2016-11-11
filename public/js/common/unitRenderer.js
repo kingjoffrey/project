@@ -4,6 +4,7 @@ var UnitRenderer = function () {
         camera,
         width,
         height
+
     this.render = function () {
         renderer.render(scene, camera)
     }
@@ -14,6 +15,12 @@ var UnitRenderer = function () {
     }
     this.getDomElement = function () {
         return renderer.domElement
+    }
+    this.clear = function () {
+        renderer.forceContextLoss()
+        renderer.context = null
+        renderer.domElement = null
+        renderer = null
     }
     this.init = function (id, s) {
         scene = s.get()
