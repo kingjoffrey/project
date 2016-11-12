@@ -5,6 +5,9 @@ var CommonCastle = function (castle, bgC) {
     this.toArray = function () {
         return castle
     }
+    this.getBackgroundColor = function () {
+        return bgColor
+    }
     this.getMesh = function () {
         return mesh
     }
@@ -62,9 +65,7 @@ var CommonCastle = function (castle, bgC) {
         })
         mesh.children[0].material.color.set(bgColor)
     }
-    this.handle = function (stop, relocation) {
-        var unitId = $('input:radio[name=production]:checked').val()
-
+    this.handle = function (unitId, stop, relocation) {
         if (relocation) {
             if (!unitId) {
                 Message.error(translations.noUnitSelected)
@@ -85,7 +86,6 @@ var CommonCastle = function (castle, bgC) {
 
         if (unitId) {
             WebSocketSend.production(castle.id, unitId)
-            return
         }
     }
     this.setDefense = function (defense) {

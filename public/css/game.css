@@ -285,23 +285,16 @@
     border-bottom-right-radius: 5px;
 }
 
-.message .production .unit:hover {
+.message .production .unit.select {
+    background: red !important;
+}
+
+.message .production .unit.checked {
     background: lime;
 }
 
-.message .production input[type="radio"] {
-    display: none;
-}
-
-.message .production .unit .img {
-    padding: 5px 0 5px 5px;
-    width: 30px;
-    height: 30px;
-    text-align: center;
-}
-
-.message .production .unit .name {
-    float: right;
+.message .production .unit:hover {
+    background: lime;
 }
 
 .message .production .unit div.attributes {
@@ -1056,10 +1049,6 @@ table.treasury td {
     background: url(/img/game/buttons/build_off.png) center center no-repeat !important;
 }
 
-#game #scene {
-    cursor: pointer;
-}
-
 #loading {
     position: fixed;
     top: 0;
@@ -1070,10 +1059,6 @@ table.treasury td {
     height: 100%;
     font-size: 50px;
     z-index: 99999;
-}
-
-#playersBox #buttons {
-    padding-top: 4px;
 }
 
 .configuration .iconButton {

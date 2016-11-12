@@ -149,18 +149,6 @@ var Gui = new function () {
                 CommonMe.deselectArmy()
             });
 
-            $('#heroResurrection').click(function () {
-                var id = Message.show(translations.resurrectHero, $('<div>').append(translations.doYouWantToResurrectHeroFor100Gold))
-                Message.ok(id, WebSocketSend.resurrection)
-                Message.cancel(id)
-            })
-
-            $('#heroHire').click(function () {
-                var id = Message.show(translations.hireHero, $('<div>').html(translations.doYouWantToHireNewHeroFor1000Gold))
-                Message.ok(id, WebSocketSend.hire)
-                Message.cancel(id)
-            })
-
             $('#showFriends').click(function () {
                 if (friendsShow) {
                     $('#friends').css({

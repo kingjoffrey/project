@@ -17,7 +17,7 @@ var CastleWindow = new function () {
 
     this.show = function (castle) {
         var time = '',
-            attr,
+            checked,
             table = $('<table>'),
             info = $('<table>'),
             j = 0,
@@ -29,20 +29,11 @@ var CastleWindow = new function () {
                 unit = Units.get(unitId)
 
             if (unitId == castle.getProductionId()) {
-                attr = {
-                    type: 'radio',
-                    name: 'production',
-                    value: unitId,
-                    checked: 'checked'
-                }
+                checked = ' checked'
                 time = castle.getProductionTurn() + '/';
             } else {
-                attr = {
-                    type: 'radio',
-                    name: 'production',
-                    value: unitId
-                }
-                time = '';
+                checked = ''
+                time = ''
             }
 
             if (unit.canFly) {
@@ -60,19 +51,18 @@ var CastleWindow = new function () {
             }
 
             td[j] = $('<td>')
-                .addClass('unit')
+                .addClass('unit' + checked)
                 .attr('id', unitId)
-                .append($('<div>')
-                    .append($('<input>').attr(attr))
-                    .append($('<div>')
-                        .html('<b>' + name + '</b>' + '<br/> (' + travelBy + ')')
-                        .addClass('name'))
-                    .addClass('top'))
-                .append($('<div>')
-                    .append($('<img>').attr('src', Unit.getImage(unitId, CommonMe.getColor())))
-                    .addClass('img'))
-                .append($('<div>')
-                    .addClass('attributes')
+                .append(
+                    $('<div>')
+                        .append($('<div>').addClass('canvas')
+                            .attr({'id': 'unit' + unitId}))
+                        .append($('<div>').addClass('top')
+                            .append($('<div>').addClass('name')
+                                .html('<b>' + name + '</b>' + '<br/> (' + travelBy + ')')
+                            ))
+                )
+                .append($('<div>').addClass('attributes')
                     .append($('<p>').html(translations.productionTime + ': ' + time + '<span>' + castle.getProduction()[unitId].time + '</span>&nbsp;' + translations.turn))
                     .append($('<p>').html(translations.costOfLiving + ': ' + '<span>' + unit.cost + '</span>&nbsp;' + translations.gold + '/' + translations.turn))
                     .append($('<p>').html(translations.movementPoints + ': ' + '<span>' + unit.moves + '</span>'))
@@ -107,26 +97,24 @@ var CastleWindow = new function () {
             nextCastle = CommonMe.findNextCastle(castle.getCastleId()),
             previousCastle = CommonMe.findPreviousCastle(castle.getCastleId())
         if (nextCastle) {
-            next.
-                append($('<div>')
-                    .addClass('button buttonColors next')
-                    .html('>>')
-                    .click(function () {
-                        CastleWindow.show(nextCastle)
-                        MiniMap.centerOn(nextCastle.getX(), nextCastle.getY())
-                        Message.remove(id)
-                    }))
+            next.append($('<div>')
+                .addClass('button buttonColors next')
+                .html('>>')
+                .click(function () {
+                    CastleWindow.show(nextCastle)
+                    MiniMap.centerOn(nextCastle.getX(), nextCastle.getY())
+                    Message.remove(id)
+                }))
         }
         if (previousCastle) {
-            previous.
-                append($('<div>')
-                    .addClass('button buttonColors next')
-                    .html('<<')
-                    .click(function () {
-                        CastleWindow.show(previousCastle)
-                        MiniMap.centerOn(previousCastle.getX(), previousCastle.getY())
-                        Message.remove(id)
-                    }))
+            previous.append($('<div>')
+                .addClass('button buttonColors next')
+                .html('<<')
+                .click(function () {
+                    CastleWindow.show(previousCastle)
+                    MiniMap.centerOn(previousCastle.getX(), previousCastle.getY())
+                    Message.remove(id)
+                }))
         }
 
         info
@@ -160,8 +148,8 @@ var CastleWindow = new function () {
                 .addClass('button buttonColors' + stopButtonOff)
                 .attr('id', 'stop')
                 .click(function () {
-                    if ($('input:radio[name=production]:checked').val()) {
-                        castle.handle(1, 0)
+                    if ($('.unit.chcecked').attr('id')) {
+                        castle.handle($('.unit.checked').attr('id'), 1, 0)
                         Message.remove(id)
                     }
                 }))
@@ -170,8 +158,11 @@ var CastleWindow = new function () {
                 .addClass('button buttonColors' + relocationButtonOff)
                 .attr('id', 'relocation')
                 .click(function () {
-                    if ($('input:radio[name=production]:checked').val()) {
-                        castle.handle(0, 1)
+                    if ($('.unit.checked').attr('id')) {
+                        castle.handle($('.unit.checked').attr('id'), 0, 1)
+                        Message.remove(id)
+                    } else if ($('.unit.select').attr('id')) {
+                        castle.handle($('.unit.select').attr('id'), 0, 1)
                         Message.remove(id)
                     }
                 }))
@@ -180,8 +171,10 @@ var CastleWindow = new function () {
                 .attr('id', 'go')
                 .html(translations.startProduction)
                 .click(function () {
-                    castle.handle()
-                    Message.remove(id)
+                    if ($('.unit.select').attr('id')) {
+                        castle.handle($('.unit.select').attr('id'))
+                        Message.remove(id)
+                    }
                 }))
             .append($('<div>')
                 .addClass('button buttonColors cancel')
@@ -189,6 +182,21 @@ var CastleWindow = new function () {
                 .click(function () {
                     Message.remove(id)
                 }))
+            .append($('<div>')
+                .addClass('button buttonColors buttonOff')
+                .attr('id', 'heroResurrection')
+                .html(translations.resurrectHero)
+                .click(function () {
+                    Message.remove(id)
+                }))
+            .append($('<div>')
+                .addClass('button buttonColors buttonOff')
+                .attr('id', 'heroHire')
+                .html(translations.hireHero)
+                .click(function () {
+                    Message.remove(id)
+                }))
+
 
         // relocation to
 
@@ -246,35 +254,18 @@ var CastleWindow = new function () {
 
         Message.setOverflowHeight(id)
 
-        $('.production .unit input[type=radio]:checked').parent().parent().css({
+        $('.production .unit .checked').css({
             background: '#222',
             color: '#fff'
         })
-        $('.production .unit input[type=radio]:checked').parent().parent().find('.attributes span').css({
+        $('.production .unit .checked .attributes span').css({
             color: 'yellow'
         })
 
 
         $('.production .unit').click(function (e) {
-            $('.production .unit :radio').each(function () {
-                $(this).prop('checked', false).parent().parent().css({
-                    background: '#fff',
-                    color: '#000'
-                })
-            })
-
-            $('td#' + $(this).attr('id') + '.unit input').prop('checked', true).parent().parent().css({
-                background: '#222',
-                color: '#fff'
-            })
-
-            $('td#' + $(this).attr('id') + '.unit .attributes span').css({
-                color: 'gold'
-            })
-
-            $('td:not(#' + $(this).attr('id') + ').unit .attributes span').css({
-                color: '#000'
-            })
+            $(this).addClass('select')
+            $('td:not(#' + $(this).attr('id') + ').unit').removeClass('select')
 
             if (CommonMe.getCastles().count() > 1) {
                 $('.showCastle #relocation').removeClass('buttonOff')
@@ -286,6 +277,26 @@ var CastleWindow = new function () {
                 $('.showCastle #go').removeClass('buttonOff')
             }
         })
+
+        $('#heroResurrection').click(function () {
+            var id = Message.show(translations.resurrectHero, $('<div>').append(translations.doYouWantToResurrectHeroFor100Gold))
+            Message.ok(id, WebSocketSend.resurrection)
+            Message.cancel(id)
+        })
+
+        $('#heroHire').click(function () {
+            var id = Message.show(translations.hireHero, $('<div>').html(translations.doYouWantToHireNewHeroFor1000Gold))
+            Message.ok(id, WebSocketSend.hire)
+            Message.cancel(id)
+        })
+
+        for (var unitId in castle.getProduction()) {
+            var unitScene = new UnitScene()
+            unitScene.init(50, 50)
+
+            UnitModels.addUnit(castle.getBackgroundColor(), Unit.getName(unitId), unitScene)
+            Renderers.add('unit' + unitId, unitScene)
+        }
     }
     this.raze = function () {
         if (!CommonMe.getSelectedArmyId()) {
