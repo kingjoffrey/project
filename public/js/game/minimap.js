@@ -184,8 +184,8 @@ var MiniMap = new function () {
     this.adjust = function () {
         lens.setdimensions()
     }
-    this.init = function () {
-        Game.getMapElement().bind('mousedown', function (e) {
+    this.init = function (mapElement) {
+        mapElement.bind('mousedown', function (e) {
             if (e.pageX > miniMap.pos.r || e.pageX < miniMap.pos.l || e.pageY < miniMap.pos.t || e.pageY > miniMap.pos.b) {
                 return false;
             }

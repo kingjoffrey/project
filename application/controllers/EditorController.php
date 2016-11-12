@@ -64,6 +64,7 @@ class EditorController extends Game_Controller_Gui
         $this->view->headScript()->appendFile('/js/game/player.js?v=' . $version);
         $this->view->headScript()->appendFile('/js/game/armies.js?v=' . $version);
         $this->view->headScript()->appendFile('/js/game/unit.js?v=' . $version);
+        $this->view->headScript()->appendFile('/js/game/minimap.js?v=' . $version);
 
         $this->view->headScript()->appendFile('/js/common/init.js?v=' . $version);
         $this->view->headScript()->appendFile('/js/common/castle.js?v=' . $version);

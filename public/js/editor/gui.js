@@ -86,6 +86,12 @@ var Gui = new function () {
                 }
             }
         })
+
+        MiniMap.init($('#map'))
+        $('#mapBox').css({
+            height: Fields.getHeight() + 18 + 'px'
+        })
+        $('#terrain').css('top', Fields.getHeight() + 4 + 'px')
         activateButtons()
         this.adjust()
     }

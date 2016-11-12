@@ -261,7 +261,7 @@ var Ground = new function () {
 
                     //var helper = new THREE.WireframeHelper(grassMesh, 0xff00ff)
                     //helper.material.linewidth = 1
-                    //Scene.add(helper)
+                    //GameScene.add(helper)
                 })
             } else {
                 grassMesh = new THREE.Mesh(grassGeometry, grassMaterial)
@@ -466,10 +466,10 @@ var Ground = new function () {
         //    grassVertices[index + 2] = grassVertexPositions[i][2]
         //}
         //grassGeometry.addAttribute('position', new THREE.BufferAttribute(grassVertices, 3))
-        Scene.remove(grassMesh)
+        GameScene.remove(grassMesh)
         //grassMesh = new THREE.Mesh(grassGeometry, grassMaterial)
         //grassMesh.rotation.x = Math.PI / 2
-        //Scene.add(grassMesh)
+        //GameScene.add(grassMesh)
         createGround(maxX * 2, maxY * 2)
     }
     this.init = function (maxX, maxY, textureName) {

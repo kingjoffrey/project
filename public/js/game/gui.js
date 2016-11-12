@@ -352,7 +352,7 @@ var Gui = new function () {
         //     height: height + 'px'
         // })
 
-        MiniMap.init()
+        MiniMap.init(Game.getMapElement())
         $('#mapBox').css({
             height: Fields.getHeight() + 18 + 'px'
         })

@@ -11,7 +11,15 @@
 </head>
 <body>
 <div id="game">
-    <div id="board"></div>
+    <div id="mapBox" class="box">
+        <div id="map">
+            <div id="lens"></div>
+        </div>
+        <div class="close">&#x25C0</div>
+        <div id="terrain">
+            <?php echo $this->translate('Terrain') ?>: <span id="coord" class="font-gold"></span>
+        </div>
+    </div>
     <div id="editorMenu" class="box">
         <a class="button buttonColors" id="castle"><?php echo $this->translate('Castle') ?></a>
         <a class="button buttonColors" id="ruin"><?php echo $this->translate('Ruin') ?></a>
