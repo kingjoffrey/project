@@ -255,13 +255,14 @@
 }
 
 .message .production td.unit {
-    background: #fff;
-    color: #000;
+    background: #000;
+    color: #fff;
     margin: 0;
     padding: 5px;
     text-align: center;
     text-shadow: none;
     cursor: pointer;
+    box-shadow: 1px 1px 5px #000;
 }
 
 .message .production td {
@@ -287,14 +288,17 @@
 
 .message .production .unit.select {
     background: red !important;
+    color: #fff !important;
 }
 
 .message .production .unit.checked {
-    background: lime;
+    background: lime !important;
+    color: #000 !important;
 }
 
 .message .production .unit:hover {
-    background: lime;
+    background: lime !important;
+    color: #000 !important;
 }
 
 .message .production .unit div.attributes {
@@ -671,8 +675,8 @@ html {
 
 .buttonColors {
     border: 1px solid #fff !important;
-    background: url('/img/steel-plate.jpg') !important;
-    color: #000 !important;
+    background: #000 !important;
+    color: #fff !important;
     cursor: pointer;
     font-weight: bold;
 }
@@ -689,7 +693,7 @@ html {
 }
 
 #buttons .button.buttonOff, .armyButtons .button.buttonOff {
-    background: #000 !important;
+    background: #fff !important;
     border: 1px solid gray;
     color: gray !important;
 }
@@ -907,13 +911,10 @@ table.treasury td.c {
     left: 59px;
     display: inline-flex;
     padding: 15px 20px;
-    box-shadow: none;
-    color: rgba(0, 0, 0, 0) !important;
-    background: none !important;
 }
 
 #nextTurn:hover {
-    color: rgba(255, 255, 255, 1) !important;
+    color: #000 !important;
     background: red !important;
 }
 

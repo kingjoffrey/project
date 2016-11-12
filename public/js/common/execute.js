@@ -121,9 +121,6 @@ var Execute = new function () {
                         CommonMe.upkeepIncrement(-upkeep)
                     }
                     Players.get(r.color).getArmies().destroy(r.id)
-                    if (Turn.isMy()) {
-                        CommonMe.handleHeroButtons()
-                    }
                     Execute.setExecuting(0)
                     break;
 
@@ -138,7 +135,6 @@ var Execute = new function () {
                             if (Turn.isMy()) {
                                 Message.remove()
                                 CommonMe.setGold(r.gold)
-                                CommonMe.handleHeroButtons()
                             }
                             Execute.setExecuting(0)
                         })

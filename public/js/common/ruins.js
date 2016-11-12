@@ -46,7 +46,6 @@ var Ruins = new function () {
                 if (CommonMe.colorEquals(r.color)) {
                     Sound.play('death');
                     Message.simple(translations.ruins, translations.youHaveFound + ' ' + translations.death)
-                    CommonMe.handleHeroButtons()
                 }
                 break
             case 'allies':

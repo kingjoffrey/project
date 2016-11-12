@@ -323,14 +323,11 @@ var CommonMe = new function () {
         }
         Gui.unlock()
         Gui.titleBlink(translations.yourTurn)
-        this.handleHeroButtons()
     }
     this.turnOff = function () {
         this.deselectArmy()
         $('#nextTurn').addClass('buttonOff')
         $('#nextArmy').addClass('buttonOff')
-        $('#heroResurrection').addClass('buttonOff')
-        $('#heroHire').addClass('buttonOff')
         //makeMyCursorLock();
     }
     this.getTurnActive = function () {
@@ -446,16 +443,7 @@ var CommonMe = new function () {
         }
     }
     this.handleHeroButtons = function () {
-        if (!this.findHero() && this.getGold() >= 100) {
-            $('#heroResurrection').removeClass('buttonOff')
-            $('#heroHire').addClass('buttonOff')
-        } else if (this.getGold() >= 1000) {
-            $('#heroResurrection').addClass('buttonOff')
-            $('#heroHire').removeClass('buttonOff')
-        } else {
-            $('#heroResurrection').addClass('buttonOff')
-            $('#heroHire').addClass('buttonOff')
-        }
+
     }
     this.init = function (c, g, bSequence) {
         color = c
@@ -492,7 +480,7 @@ var CommonMe = new function () {
         updateIncome()
 
         s = new UnitScene()
-        s.init(400, 40)
+        s.init(40, 40)
 
         var unitRenderer = new UnitRenderer()
         unitRenderer.init('unitsBox', s)

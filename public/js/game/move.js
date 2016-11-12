@@ -164,7 +164,6 @@ var Move = new function () {
                     } else if (CommonMe.getArmy(army.getArmyId()).getMoves()) {
                         CommonMe.selectArmy(army.getArmyId())
                     }
-                    CommonMe.handleHeroButtons()
                     Gui.unlock()
                 }
             } else {
@@ -208,9 +207,6 @@ var Move = new function () {
                     }
                 }
                 if (CommonMe.colorEquals(r.color)) {
-                    if (Turn.isMy()) {
-                        CommonMe.handleHeroButtons()
-                    }
                     Gui.unlock()
                 }
             }
