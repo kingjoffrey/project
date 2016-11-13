@@ -303,6 +303,10 @@
     color: #000 !important;
 }
 
+.message .production .unit .canvas {
+    float: left;
+}
+
 .message .production .unit div.attributes {
     padding: 1px;
 }

@@ -34,7 +34,7 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
         $view->headMeta()->appendName('author', 'Bartosz Krzeszewski');
         $view->headMeta()->appendName('date', '2011');
         $view->headMeta()->appendName('copyright', 'Bartosz Krzeszewski 2011');
-        $view->headMeta()->appendName('viewport', 'width=800, height=600, user-scalable=1, initial-scale=1, minimum-scale=1, maximum-scale=1, target-densitydpi=device-dpi');
+        $view->headMeta()->appendName('viewport', 'width=800, height=600, user-scalable=1, initial-scale=1, minimum-scale=1, maximum-scale=1');
 
 //         $view->headMeta()->appendName('google-site-verification', '');
     }

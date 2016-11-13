@@ -8,11 +8,20 @@ var UnitScene = function () {
         meshes = [],
         initCamera = function () {
             var near = 1,
-                far = 1000
+                far = 1000,
+                frustumSize = 100,
+                aspect = canvasWidth / canvasHeight
 
-            camera = new THREE.OrthographicCamera(canvasWidth / -2, canvasWidth / 2, canvasHeight / 2, canvasHeight / -2, near, far)
-            camera.position = {x: 0, y: 20, z: 0}
-            camera.scale.addScalar(1)
+            // camera = new THREE.OrthographicCamera(canvasWidth / -2, canvasWidth / 2, canvasHeight / 2, canvasHeight / -2, near, far)
+
+            camera = new THREE.OrthographicCamera(frustumSize * aspect / -2, frustumSize * aspect / 2, frustumSize / 2, frustumSize / -2, near, far);
+
+            // var cameraOrthoHelper = new THREE.CameraHelper(camera)
+            // scene.add(cameraOrthoHelper);
+
+            // camera.position = {x: 10, y: 200, z: -10}
+            // camera.scale.addScalar(1)
+
             scene.add(camera)
             scene.add(new THREE.AmbientLight(0x777777))
         },

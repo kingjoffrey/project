@@ -148,7 +148,7 @@ var CastleWindow = new function () {
                 .addClass('button buttonColors' + stopButtonOff)
                 .attr('id', 'stop')
                 .click(function () {
-                    if ($('.unit.chcecked').attr('id')) {
+                    if ($('.unit.checked').attr('id')) {
                         castle.handle($('.unit.checked').attr('id'), 1, 0)
                         Message.remove(id)
                     }

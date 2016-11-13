@@ -6,6 +6,24 @@ var UnitRenderer = function () {
         height
 
     this.render = function () {
+        // var r = Date.now() * 0.0005,
+        //     mesh = scene.children[3]
+        //
+        // if (isSet(mesh)) {
+        //     mesh.position.x = 700 * Math.cos(r)
+        //     mesh.position.z = 700 * Math.sin(r)
+        //     mesh.position.y = 700 * Math.sin(r)
+        //     camera.far = mesh.position.length()
+        //     camera.updateProjectionMatrix()
+        // }
+
+        var timer = Date.now() * 0.0001
+
+        camera.position.x = Math.cos(timer) * 200
+        camera.position.z = Math.sin(timer) * 200
+        camera.lookAt(scene.position)
+        camera.updateProjectionMatrix()
+
         renderer.render(scene, camera)
     }
     this.setSize = function (w, h) {
