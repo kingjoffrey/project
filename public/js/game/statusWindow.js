@@ -1,14 +1,10 @@
 var StatusWindow = new function () {
     var backgroundColor,
-        statusRowContent = function (id, numberOfUnits, soldier, attackFlyBonus, attackHeroBonus, defenseFlyBonus, defenseHeroBonus, defenseTowerBonus, defenseCastleBonus) {
-            return $('<div>')
-                .addClass('row')
-                .append($('<div>')
-                    .addClass('rowContent')
-                    .append($('<div>').addClass('nr').html(numberOfUnits))
+        statusRowContent = function (id, soldier, attackFlyBonus, attackHeroBonus, defenseFlyBonus, defenseHeroBonus, defenseTowerBonus, defenseCastleBonus) {
+            return $('<div>').addClass('row')
+                .append($('<div>').addClass('rowContent')
                     .append($('<div>').addClass('canvas').attr({'id': 'soldier' + id}))
-                    .append($('<table>')
-                        .addClass('leftTable')
+                    .append($('<table>').addClass('leftTable')
                         .append($('<tr>')
                             .append($('<td>').html(translations.currentMoves + ': '))
                             .append($('<td>').html(soldier.movesLeft).addClass('value'))
@@ -38,8 +34,7 @@ var StatusWindow = new function () {
                             )
                         )
                     )
-                    .append($('<table>')
-                        .addClass('rightTable')
+                    .append($('<table>').addClass('rightTable')
                         .append($('<tr>')
                             .append($('<td>').html(translations.movementCostThroughTheForest + ': '))
                             .append($('<td>').html(Units.get(soldier.unitId).f).addClass('value'))
@@ -56,8 +51,7 @@ var StatusWindow = new function () {
         }
 
     this.show = function () {
-        var numberOfUnits = 0,
-            bonusTower = 0,
+        var bonusTower = 0,
             army = CommonMe.getArmy(CommonMe.getSelectedArmyId()),
             castleDefense = CommonMe.getMyCastleDefenseFromPosition(army.getX(), army.getY()),
             attackPoints = 0,
@@ -183,19 +177,15 @@ var StatusWindow = new function () {
         )
 
         for (var soldierId in army.getWalkingSoldiers()) {
-            numberOfUnits++
-            div.append(statusRowContent(soldierId, numberOfUnits, army.getWalkingSoldier(soldierId), attackFlyBonus, attackHeroBonus, defenseFlyBonus, defenseHeroBonus, defenseTowerBonus, defenseCastleBonus));
+            div.append(statusRowContent(soldierId, army.getWalkingSoldier(soldierId), attackFlyBonus, attackHeroBonus, defenseFlyBonus, defenseHeroBonus, defenseTowerBonus, defenseCastleBonus));
         }
         for (var soldierId in army.getSwimmingSoldiers()) {
-            numberOfUnits++
-            div.append(statusRowContent(soldierId, numberOfUnits, army.getSwimmingSoldier(soldierId), attackFlyBonus, attackHeroBonus, defenseFlyBonus, defenseHeroBonus, defenseTowerBonus, defenseCastleBonus));
+            div.append(statusRowContent(soldierId, army.getSwimmingSoldier(soldierId), attackFlyBonus, attackHeroBonus, defenseFlyBonus, defenseHeroBonus, defenseTowerBonus, defenseCastleBonus));
         }
         for (var soldierId in army.getFlyingSoldiers()) {
-            numberOfUnits++
-            div.append(statusRowContent(soldierId, numberOfUnits, army.getFlyingSoldier(soldierId), attackFlyBonus, attackHeroBonus, defenseFlyBonus, defenseHeroBonus, defenseTowerBonus, defenseCastleBonus));
+            div.append(statusRowContent(soldierId, army.getFlyingSoldier(soldierId), attackFlyBonus, attackHeroBonus, defenseFlyBonus, defenseHeroBonus, defenseTowerBonus, defenseCastleBonus));
         }
         for (var heroId in army.getHeroes()) {
-            numberOfUnits++
             var hero = army.getHero(heroId)
             div.append(
                 $('<div>')
@@ -203,7 +193,6 @@ var StatusWindow = new function () {
                     .append(
                         $('<div>')
                             .addClass('rowContent')
-                            .append($('<div>').addClass('nr').html(numberOfUnits))
                             .append($('<div>').addClass('canvas').attr({'id': 'hero' + heroId}))
                             .append(
                                 $('<table>').addClass('leftTable')
@@ -254,28 +243,28 @@ var StatusWindow = new function () {
 
         for (var soldierId in army.getWalkingSoldiers()) {
             var unitScene = new UnitScene()
-            unitScene.init(100, 100)
+            unitScene.init(60, 95)
 
             UnitModels.addUnit(backgroundColor, Unit.getName(army.getWalkingSoldier(soldierId).unitId), unitScene)
             Renderers.add('soldier' + soldierId, unitScene)
         }
         for (var soldierId in army.getSwimmingSoldiers()) {
             var unitScene = new UnitScene()
-            unitScene.init(100, 100)
+            unitScene.init(60, 95)
 
             UnitModels.addUnit(backgroundColor, Unit.getName(army.getSwimmingSoldier(soldierId).unitId), unitScene)
             Renderers.add('soldier' + soldierId, unitScene)
         }
         for (var soldierId in army.getFlyingSoldiers()) {
             var unitScene = new UnitScene()
-            unitScene.init(100, 100)
+            unitScene.init(60, 95)
 
             UnitModels.addUnit(backgroundColor, Unit.getName(army.getFlyingSoldier(soldierId).unitId), unitScene)
             Renderers.add('soldier' + soldierId, unitScene)
         }
         for (var heroId in army.getHeroes()) {
             var unitScene = new UnitScene()
-            unitScene.init(100, 100)
+            unitScene.init(60, 95)
 
             UnitModels.addHero(backgroundColor, unitScene)
             Renderers.add('hero' + heroId, unitScene)

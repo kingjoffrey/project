@@ -42,7 +42,7 @@ var Castles = function () {
                 field.setCastleId(0)
             }
         }
-        Scene.remove(castle.getMesh())
+        GameScene.remove(castle.getMesh())
         $('#c' + castleId).remove()
         this.remove(castleId)
     }
@@ -50,7 +50,7 @@ var Castles = function () {
         delete castles[castleId]
     }
     this.clear = function (castleId) {
-        Scene.remove(castles[castleId].getMesh())
+        GameScene.remove(castles[castleId].getMesh())
         delete castles[castleId]
     }
     /**

@@ -26,7 +26,7 @@ var Towers = function () {
         delete towers[towerId]
     }
     this.clear = function (towerId) {
-        Scene.remove(towers[towerId].getMesh())
+        GameScene.remove(towers[towerId].getMesh())
         delete towers[towerId]
     }
     this.count = function () {

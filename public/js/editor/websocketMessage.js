@@ -49,39 +49,39 @@ var WebSocketMessage = new function () {
                 break
             case 'grass':
                 Fields.get(r.x, r.y).setType('g')
-                var children = Scene.get().children
+                var children = GameScene.get().children
                 for (var i in children) {
                     if (children[i].position.x - 1 == 2 * r.x && children[i].position.z - 1 == 2 * r.y) {
-                        Scene.remove(children[i])
+                        GameScene.remove(children[i])
                         break
                     }
                 }
                 break
             case 'water':
                 Fields.get(r.x, r.y).setType('w')
-                var children = Scene.get().children
+                var children = GameScene.get().children
                 for (var i in children) {
                     if (children[i].position.x - 1 == 2 * r.x && children[i].position.z - 1 == 2 * r.y) {
-                        Scene.remove(children[i])
+                        GameScene.remove(children[i])
                         break
                     }
                 }
                 break
             case 's':
                 Fields.get(r.x, r.y).setType(r.type)
-                Models.addSwamp(r.x, r.y)
+                GameModels.addSwamp(r.x, r.y)
                 break
             case 'f':
                 Fields.get(r.x, r.y).setType(r.type)
-                Models.addTree(r.x, r.y)
+                GameModels.addTree(r.x, r.y)
                 break
             case 'r':
                 Fields.get(r.x, r.y).setType(r.type)
-                Models.addRoad(r.x, r.y)
+                GameModels.addRoad(r.x, r.y)
                 break
             case 'b':
                 Fields.get(r.x, r.y).setType(r.type)
-                Models.addRoad(r.x, r.y)
+                GameModels.addRoad(r.x, r.y)
                 break
             case 'g':
                 Fields.get(r.x, r.y).setType(r.type)

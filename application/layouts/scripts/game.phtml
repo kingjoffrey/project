@@ -20,28 +20,28 @@
             <?php echo $this->translate('Terrain') ?>: <span id="coord" class="font-gold"></span>
         </div>
     </div>
-<!--    <div id="limitBox" class="box">-->
-<!--        <div class="close">&#x25C0</div>-->
-<!--        <table>-->
-<!--            <tr>-->
-<!--                <td>--><?php //echo $this->translate('Turn') ?><!--</td>-->
-<!--                <td id="turnTimeLimit" class="font-gold">-->
-<!--                    <span id="hour">00</span>:<span id="minute">00</span>:<span id="second">00</span>-->
-<!--                </td>-->
-<!--                <td id="turnTimeLimit2" class="font-gold"></td>-->
-<!--            </tr>-->
-<!--            <tr>-->
-<!--                <td>--><?php //echo $this->translate('Game') ?><!--</td>-->
-<!--                <td id="timeLimit" class="font-gold">-->
-<!--                    <span id="hour">00</span>:<span id="minute">00</span>:<span id="second">00</span>-->
-<!--                </td>-->
-<!--                <td id="timeLimit2" class="font-gold"></td>-->
-<!--            </tr>-->
-<!--        </table>-->
-<!--        <div id="timerScroll">-->
-<!--            <div id="timerRows"></div>-->
-<!--        </div>-->
-<!--    </div>-->
+    <!--    <div id="limitBox" class="box">-->
+    <!--        <div class="close">&#x25C0</div>-->
+    <!--        <table>-->
+    <!--            <tr>-->
+    <!--                <td>--><?php //echo $this->translate('Turn') ?><!--</td>-->
+    <!--                <td id="turnTimeLimit" class="font-gold">-->
+    <!--                    <span id="hour">00</span>:<span id="minute">00</span>:<span id="second">00</span>-->
+    <!--                </td>-->
+    <!--                <td id="turnTimeLimit2" class="font-gold"></td>-->
+    <!--            </tr>-->
+    <!--            <tr>-->
+    <!--                <td>--><?php //echo $this->translate('Game') ?><!--</td>-->
+    <!--                <td id="timeLimit" class="font-gold">-->
+    <!--                    <span id="hour">00</span>:<span id="minute">00</span>:<span id="second">00</span>-->
+    <!--                </td>-->
+    <!--                <td id="timeLimit2" class="font-gold"></td>-->
+    <!--            </tr>-->
+    <!--        </table>-->
+    <!--        <div id="timerScroll">-->
+    <!--            <div id="timerRows"></div>-->
+    <!--        </div>-->
+    <!--    </div>-->
     <div id="goldBox" class="box">
         <div id="battleAttack" class="iconButton buttonColors"
              title="<?php echo $this->translate('Battle attack sequence') ?>">
@@ -90,13 +90,15 @@
     </div>
     <div id="armyBox" class="box">
         <div id="armyButtons">
-            <a id="nextArmy"
-               class="iconButton buttonColors buttonOff"
-               title="<?php echo $this->translate('Find next army') ?> (n) "></a>
-            <a id="armyStatus"
-               class="iconButton buttonColors buttonOff" title="<?php echo $this->translate('Army status') ?> (s) "></a>
-            <a id="deselectArmy"
-               class="iconButton buttonColors buttonOff" title="<?php echo $this->translate('Deselect army') ?>"></a>
+            <div id="nextArmy" class="iconButton buttonColors buttonOff">
+                <div title="<?php echo $this->translate('Find next army') ?> (n) "></div>
+            </div>
+            <div id="armyStatus" class="iconButton buttonColors buttonOff">
+                <div title="<?php echo $this->translate('Army status') ?> (s) "></div>
+            </div>
+            <div id="deselectArmy" class="iconButton buttonColors buttonOff">
+                <div title="<?php echo $this->translate('Deselect army') ?>"></div>
+            </div>
         </div>
         <div id="unitsBox"></div>
     </div>

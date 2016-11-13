@@ -109,7 +109,7 @@ class TutorialController extends Coret_Controller_Authorized
         $this->view->headScript()->appendFile('/js/common/init.js?v=' . $version);
         $this->view->headScript()->appendFile('/js/common/castle.js?v=' . $version);
         $this->view->headScript()->appendFile('/js/common/castles.js?v=' . $version);
-        $this->view->headScript()->appendFile('/js/common/renderer.js?v=' . $version);
+        $this->view->headScript()->appendFile('/js/common/renderers.js?v=' . $version);
         $this->view->headScript()->appendFile('/js/common/gameRenderer.js?v=' . $version);
         $this->view->headScript()->appendFile('/js/common/gameScene.js?v=' . $version);
         $this->view->headScript()->appendFile('/js/common/unitScene.js?v=' . $version);
@@ -117,6 +117,7 @@ class TutorialController extends Coret_Controller_Authorized
         $this->view->headScript()->appendFile('/js/common/game.js?v=' . $version);
         $this->view->headScript()->appendFile('/js/common/models.js?v=' . $version);
         $this->view->headScript()->appendFile('/js/common/gameModels.js?v=' . $version);
+        $this->view->headScript()->appendFile('/js/common/unitModels.js?v=' . $version);
         $this->view->headScript()->appendFile('/js/common/field.js?v=' . $version);
         $this->view->headScript()->appendFile('/js/common/fields.js?v=' . $version);
         $this->view->headScript()->appendFile('/js/common/picker.js?v=' . $version);
@@ -126,6 +127,7 @@ class TutorialController extends Coret_Controller_Authorized
         $this->view->headScript()->appendFile('/js/common/tower.js?v=' . $version);
         $this->view->headScript()->appendFile('/js/common/towers.js?v=' . $version);
         $this->view->headScript()->appendFile('/js/common/units.js?v=' . $version);
+        $this->view->headScript()->appendFile('/js/common/unitRenderer.js?v=' . $version);
         $this->view->headScript()->appendFile('/js/common/execute.js?v=' . $version);
         $this->view->headScript()->appendFile('/js/common/websocketSend.js?v=' . $version);
         $this->view->headScript()->appendFile('/js/common/websocketMessage.js?v=' . $version);

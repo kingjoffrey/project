@@ -44,6 +44,7 @@
 #mapBox {
     left: 0px;
     width: 233px;
+    background: none;
 }
 
 #lens {
@@ -73,9 +74,10 @@
 #playersBox {
     border-bottom-left-radius: 10px;
     border-top-left-radius: 0;
-    width: 188px;
+    width: 180px;
     top: -2px;
     right: -2px;
+    background: none;
 }
 
 #playersBox .iconButton {
@@ -91,13 +93,13 @@
 }
 
 #exit.iconButton {
-    top: 2px;
+    top: 4px;
     left: 0px;
 }
 
 #surrender.iconButton {
-    top: 2px;
-    left: 143px;
+    top: 4px;
+    left: 133px;
 }
 
 #statistics.iconButton {
@@ -107,7 +109,7 @@
 
 #config.iconButton {
     top: 136px;
-    left: 143px;
+    left: 133px;
 }
 
 #turn {
@@ -328,7 +330,7 @@
     padding: 8px;
     border: 1px solid #222;
     border-radius: 3px;
-    cursor: pointer;
+    /*cursor: pointer;*/
 }
 
 .message div.row:hover {
@@ -376,11 +378,11 @@
 }
 
 .message .status table.leftTable {
-    margin-left: 30px;
+    margin-left: 68px;
 }
 
 .message .status table.rightTable {
-    margin-left: 5px;
+    margin-left: 1px;
 }
 
 .message .status tr {
@@ -411,8 +413,8 @@
 
 .message .status div.row div.canvas {
     position: absolute;
-    top: 30px;
-    left: 5px;
+    /*top: 30px;*/
+    /*left: 5px;*/
 }
 
 .message .battle {
@@ -543,6 +545,7 @@
     border-radius: 0px;
     text-shadow: none;
     background: url(/img/deska_0.png) 132px 33px;
+    display: none;
 }
 
 #goldBox table {
@@ -577,42 +580,6 @@
     display: inline-block;
 }
 
-#armyBox {
-    border: none;
-    border-radius: 0px;
-    background: url(/img/deska_0.png) 197px 55px;
-    bottom: 0px;
-}
-
-#armyBox #unitsBox {
-    float: right;
-}
-
-#armyBox #unitsBox div {
-    display: inline-block;
-    position: fixed;
-    padding: 2px;
-}
-
-#armyBox #unitsBox canvas {
-    display: inline-block;
-    height: 50px;
-}
-
-#armyBox #armyButtons {
-    float: left;
-}
-
-#armyBox .iconButton, .status .iconButton {
-    width: 25px;
-    line-height: 25px;
-    height: 25px;
-    display: inline-block;
-    text-shadow: none;
-    margin: 5px;
-    padding: 5px;
-}
-
 .text-right {
     text-align: right;
 }
@@ -627,7 +594,7 @@
 .box {
     position: fixed;
     z-index: 27000;
-    background: url(/img/deska_1_transparent.png);
+    /*background: url(/img/deska_1_transparent.png);*/
     border: 0px solid green;
     border-radius: 0px !important;
     box-shadow: 0 0 20px #000;
@@ -927,6 +894,7 @@ table.treasury td.c {
 }
 
 #chatBox {
+    display: none;
     right: -2px;
 }
 
@@ -966,6 +934,52 @@ table.treasury td {
     height: 28px !important;
 }
 
+#armyBox {
+    border: none;
+    border-radius: 0px;
+    /*background: url(/img/deska_0.png) 197px 55px;*/
+    background: none;
+    bottom: 0px;
+}
+
+#armyBox #unitsBox {
+    float: right;
+}
+
+#armyBox #unitsBox div {
+    display: inline-block;
+    position: fixed;
+    padding: 2px;
+}
+
+#armyBox #unitsBox canvas {
+    display: inline-block;
+    height: 50px;
+}
+
+#armyBox #armyButtons {
+    float: left;
+}
+
+#armyBox .iconButton, .status .iconButton {
+    width: 25px;
+    line-height: 25px;
+    height: 25px;
+    display: inline-block;
+    text-shadow: none;
+    margin: 5px;
+    padding: 5px;
+}
+
+#armyBox .iconButton:hover {
+    background: #fff;
+}
+
+#armyBox .iconButton.buttonOff:hover {
+    background: #000 !important;
+    cursor: default;
+}
+
 #disbandArmy {
     background: url(/img/game/buttons/delete.png) center center no-repeat !important;
 }
@@ -974,11 +988,19 @@ table.treasury td {
     background: url(/img/game/buttons/delete_off.png) center center no-repeat !important;
 }
 
-#quitArmy {
+#nextArmy div {
+    width: 23px;
+    height: 23px;
+    background: url(/img/game/buttons/search.png) center center no-repeat !important;
+}
+
+#quitArmy div {
+    width: 23px;
+    height: 23px;
     background: url(/img/game/buttons/stop.png) center center no-repeat !important;
 }
 
-#quitArmy.buttonOff {
+#quitArmy.buttonOff div {
     background: url(/img/game/buttons/stop_off.png) center center no-repeat !important;
 }
 
@@ -990,10 +1012,6 @@ table.treasury td {
     background: url(/img/game/buttons/pause_off.png) center center no-repeat !important;
 }
 
-#nextArmy {
-    background: url(/img/game/buttons/search.png) center center no-repeat !important;
-}
-
 #splitArmy {
     background: url(/img/game/buttons/split.png) center center no-repeat !important;
 }
@@ -1002,11 +1020,13 @@ table.treasury td {
     background: url(/img/game/buttons/split_off.png) center center no-repeat !important;
 }
 
-#deselectArmy {
+#deselectArmy div {
+    width: 23px;
+    height: 23px;
     background: url(/img/game/buttons/deselect.png) center center no-repeat !important;
 }
 
-#deselectArmy.buttonOff {
+#deselectArmy.buttonOff div {
     background: url(/img/game/buttons/deselect_off.png) center center no-repeat !important;
 }
 
@@ -1026,11 +1046,13 @@ table.treasury td {
     background: url(/img/game/buttons/raze_off.png) center center no-repeat !important;
 }
 
-#armyStatus {
+#armyStatus div {
+    width: 23px;
+    height: 23px;
     background: url(/img/game/buttons/status.png) center center no-repeat !important;
 }
 
-#armyStatus.buttonOff {
+#armyStatus.buttonOff div {
     background: url(/img/game/buttons/status_off.png) center center no-repeat !important;
 }
 
