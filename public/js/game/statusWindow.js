@@ -1,6 +1,5 @@
 var StatusWindow = new function () {
-    var backgroundColor,
-        statusRowContent = function (id, soldier, attackFlyBonus, attackHeroBonus, defenseFlyBonus, defenseHeroBonus, defenseTowerBonus, defenseCastleBonus) {
+    var statusRowContent = function (id, soldier, attackFlyBonus, attackHeroBonus, defenseFlyBonus, defenseHeroBonus, defenseTowerBonus, defenseCastleBonus) {
             return $('<div>').addClass('row')
                 .append($('<div>').addClass('rowContent')
                     .append($('<div>').addClass('canvas').attr({'id': 'soldier' + id}))
@@ -48,11 +47,139 @@ var StatusWindow = new function () {
                         )
                     )
                 )
+        },
+        buttons = function (field, castleDefense, army) {
+            var showCastle = 'buttonOff',
+                buildCastleDefense = 'buttonOff',
+                searchRuins = 'buttonOff',
+                splitArmy = 'buttonOff'
+
+            if (field.getRuinId()) {
+                searchRuins = ''
+            }
+            if (castleDefense) {
+                showCastle = ''
+                if (castleDefense < 4) {
+                    buildCastleDefense = ''
+                }
+                if (castleDefense < 4) {
+                    buildCastleDefense = ''
+                }
+            }
+
+            if (army.getNumberOfUnits() > 1) {
+                splitArmy = ''
+            }
+
+            return $('<div>').addClass('status').append(
+                $('<div>')
+                    .append(
+                        $('<div>').addClass('iconButton buttonColors')
+                            .click(function () {
+                                CommonMe.disband()
+                            })
+                            .append($('<div>'))
+                            .attr({
+                                id: 'disbandArmy',
+                                title: 'Disband army'
+                            })
+                    )
+                    .append(
+                        $('<div>').addClass('iconButton buttonColors ' + showCastle)
+                            .click(function () {
+                                var castle = CommonMe.getCastle(field.getCastleId())
+                                if (isSet(castle)) {
+                                    CastleWindow.show(castle)
+                                }
+                            })
+                            .append($('<div>'))
+                            .attr({
+                                id: 'showCastle',
+                                title: 'Show castle (c)'
+                            })
+                    )
+                    .append(
+                        $('<div>').addClass('iconButton buttonColors ' + buildCastleDefense)
+                            .click(function () {
+                                CastleWindow.build()
+                            })
+                            .append($('<div>'))
+                            .attr({
+                                id: 'buildCastleDefense',
+                                title: 'Build defense (b)'
+                            })
+                    )
+                    .append(
+                        $('<div>')
+                            .addClass('iconButton buttonColors ' + showCastle)
+                            .click(function () {
+                                CastleWindow.raze()
+                            })
+                            .append($('<div>'))
+                            .attr({
+                                id: 'razeCastle',
+                                title: 'Raze castle'
+                            })
+                    )
+                    .append(
+                        $('<div>')
+                            .addClass('iconButton buttonColors ' + searchRuins)
+                            .click(function () {
+                                WebSocketSend.ruin()
+                            })
+                            .append($('<div>'))
+                            .attr({
+                                id: 'searchRuins',
+                                title: 'Search ruins (r)'
+                            })
+                    )
+                    .append(
+                        $('<div>')
+                            .addClass('iconButton buttonColors ' + splitArmy)
+                            .click(function () {
+                                if (!CommonMe.getSelectedArmyId()) {
+                                    return
+                                }
+                                SplitWindow.show()
+                            })
+                            .append($('<div>'))
+                            .attr({
+                                id: 'splitArmy',
+                                title: 'Split army'
+                            })
+                    )
+                    .append(
+                        $('<div>')
+                            .addClass('iconButton buttonColors')
+                            .click(function () {
+                                WebSocketSend.fortify()
+                            })
+                            .append($('<div>'))
+                            .attr({
+                                id: 'quitArmy',
+                                title: 'Fortify army (f)'
+                            })
+                    )
+                    .append(
+                        $('<div>')
+                            .addClass('iconButton buttonColors')
+                            .click(function () {
+                                CommonMe.skip()
+                            })
+                            .append($('<div>'))
+                            .attr({
+                                id: 'skipArmy',
+                                title: 'Skip army (space)'
+                            })
+                    )
+            )
         }
 
     this.show = function () {
-        var bonusTower = 0,
+        var backgroundColor = Players.get(CommonMe.getColor()).getBackgroundColor(),
             army = CommonMe.getArmy(CommonMe.getSelectedArmyId()),
+            field = Fields.get(army.getX(), army.getY()),
+            bonusTower = 0,
             castleDefense = CommonMe.getMyCastleDefenseFromPosition(army.getX(), army.getY()),
             attackPoints = 0,
             defensePoints = 0,
@@ -62,24 +189,11 @@ var StatusWindow = new function () {
             defenseHeroBonus = $('<div>'),
             defenseTowerBonus = $('<div>'),
             defenseCastleBonus = $('<div>'),
-            field = Fields.get(army.getX(), army.getY()),
-            showCastle = 'buttonOff',
-            buildCastleDefense = 'buttonOff',
-            searchRuins = 'buttonOff',
-            splitArmy = 'buttonOff'
+            div = buttons(field, castleDefense, army)
 
-        backgroundColor = Players.get(CommonMe.getColor()).getBackgroundColor()
-
-        if (field.getRuinId()) {
-            searchRuins = ''
-        }
 
         if (field.getTowerId()) {
             bonusTower = 1;
-        }
-
-        if (army.getNumberOfUnits() > 1) {
-            splitArmy = ''
         }
 
         if (army.getFlyBonus()) {
@@ -95,86 +209,7 @@ var StatusWindow = new function () {
         }
         if (castleDefense) {
             defenseCastleBonus.html(' +' + castleDefense).addClass('value plus')
-            showCastle = ''
-            if (castleDefense < 4) {
-                buildCastleDefense = ''
-            }
         }
-
-        var div = $('<div>').addClass('status').append(
-            $('<div>')
-                .append(
-                    $('<a>').attr({
-                        id: 'disbandArmy',
-                        title: 'Disband army'
-                    }).addClass('iconButton buttonColors').click(function () {
-                        CommonMe.disband()
-                    })
-                )
-                .append(
-                    $('<a>').attr({
-                        id: 'showCastle',
-                        title: 'Show castle (c)'
-                    }).addClass('iconButton buttonColors ' + showCastle).click(function () {
-                        var castle = CommonMe.getCastle(field.getCastleId())
-                        if (isSet(castle)) {
-                            CastleWindow.show(castle)
-                        }
-                    })
-                )
-                .append(
-                    $('<a>').attr({
-                        id: 'buildCastleDefense',
-                        title: 'Build defense (b)'
-                    }).addClass('iconButton buttonColors ' + buildCastleDefense).click(function () {
-                        CastleWindow.build()
-                    })
-                )
-                .append(
-                    $('<a>').attr({
-                        id: 'razeCastle',
-                        title: 'Raze castle'
-                    }).addClass('iconButton buttonColors ' + showCastle).click(function () {
-                        CastleWindow.raze()
-                    })
-                )
-                .append(
-                    $('<a>').attr({
-                        id: 'searchRuins',
-                        title: 'Search ruins (r)'
-                    }).addClass('iconButton buttonColors ' + searchRuins).click(function () {
-                        WebSocketSend.ruin()
-                    })
-                )
-                .append(
-                    $('<a>').attr({
-                        id: 'splitArmy',
-                        title: 'Split army'
-                    }).addClass('iconButton buttonColors ' + splitArmy).click(function () {
-                        if (!CommonMe.getSelectedArmyId()) {
-                            return
-                        }
-
-                        SplitWindow.show()
-                    })
-                )
-                .append(
-                    $('<a>').attr({
-                        id: 'quitArmy',
-                        title: 'Fortify army (f)'
-                    }).addClass('iconButton buttonColors').click(function () {
-                        WebSocketSend.fortify()
-                    })
-                )
-                .append(
-                    $('<a>').attr({
-                        id: 'skipArmy',
-                        title: 'Skip army (space)'
-                    }).addClass('iconButton buttonColors').click(function () {
-                        CommonMe.skip()
-                    })
-                )
-        )
 
         for (var soldierId in army.getWalkingSoldiers()) {
             div.append(statusRowContent(soldierId, army.getWalkingSoldier(soldierId), attackFlyBonus, attackHeroBonus, defenseFlyBonus, defenseHeroBonus, defenseTowerBonus, defenseCastleBonus));

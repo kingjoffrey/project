@@ -17,7 +17,7 @@ var UnitRenderer = function () {
         //     camera.updateProjectionMatrix()
         // }
 
-        var timer = Date.now() * 0.0001
+        var timer = Date.now() * 0.0005
 
         camera.position.x = Math.cos(timer) * 200
         camera.position.z = Math.sin(timer) * 200

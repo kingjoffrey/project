@@ -975,20 +975,22 @@ table.treasury td {
     padding: 5px;
 }
 
-#armyBox .iconButton:hover {
+#armyBox .iconButton:hover, .status .iconButton:hover {
     background: #fff;
 }
 
-#armyBox .iconButton.buttonOff:hover {
+#armyBox .iconButton.buttonOff:hover, .status .iconButton.buttonOff:hover {
     background: #000 !important;
     cursor: default;
 }
 
-#disbandArmy {
+#disbandArmy div {
+    width: 23px;
+    height: 23px;
     background: url(/img/game/buttons/delete.png) center center no-repeat !important;
 }
 
-#disbandArmy.buttonOff {
+#disbandArmy.buttonOff div {
     background: url(/img/game/buttons/delete_off.png) center center no-repeat !important;
 }
 
@@ -1008,19 +1010,23 @@ table.treasury td {
     background: url(/img/game/buttons/stop_off.png) center center no-repeat !important;
 }
 
-#skipArmy {
+#skipArmy div {
+    width: 23px;
+    height: 23px;
     background: url(/img/game/buttons/pause.png) center center no-repeat !important;
 }
 
-#skipArmy.buttonOff {
+#skipArmy.buttonOff div {
     background: url(/img/game/buttons/pause_off.png) center center no-repeat !important;
 }
 
-#splitArmy {
+#splitArmy div {
+    width: 23px;
+    height: 23px;
     background: url(/img/game/buttons/split.png) center center no-repeat !important;
 }
 
-#splitArmy.buttonOff {
+#splitArmy.buttonOff div {
     background: url(/img/game/buttons/split_off.png) center center no-repeat !important;
 }
 
@@ -1034,19 +1040,23 @@ table.treasury td {
     background: url(/img/game/buttons/deselect_off.png) center center no-repeat !important;
 }
 
-#showCastle {
+#showCastle div {
+    width: 23px;
+    height: 23px;
     background: url(/img/game/buttons/castle.png) center center no-repeat !important;
 }
 
-#showCastle.buttonOff {
+#showCastle.buttonOff div {
     background: url(/img/game/buttons/castle_off.png) center center no-repeat !important;
 }
 
-#razeCastle {
+#razeCastle div {
+    width: 23px;
+    height: 23px;
     background: url(/img/game/buttons/raze.png) center center no-repeat !important;
 }
 
-#razeCastle.buttonOff {
+#razeCastle.buttonOff div {
     background: url(/img/game/buttons/raze_off.png) center center no-repeat !important;
 }
 
@@ -1060,19 +1070,23 @@ table.treasury td {
     background: url(/img/game/buttons/status_off.png) center center no-repeat !important;
 }
 
-#searchRuins {
+#searchRuins div {
+    width: 23px;
+    height: 23px;
     background: url(/img/game/buttons/ruins.png) center center no-repeat !important;
 }
 
-#searchRuins.buttonOff {
+#searchRuins.buttonOff div {
     background: url(/img/game/buttons/ruins_off.png) center center no-repeat !important;
 }
 
-#buildCastleDefense {
+#buildCastleDefense div {
+    width: 23px;
+    height: 23px;
     background: url(/img/game/buttons/build.png) center center no-repeat !important;
 }
 
-#buildCastleDefense.buttonOff {
+#buildCastleDefense.buttonOff div {
     background: url(/img/game/buttons/build_off.png) center center no-repeat !important;
 }
 
