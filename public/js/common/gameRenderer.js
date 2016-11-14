@@ -34,12 +34,12 @@ var GameRenderer = new function () {
         // stats.update();
     }
 
-    this.init = function () {
-        scene = GameScene.get()
-        camera = GameScene.getCamera()
-        width = GameScene.getWidth()
-        height = GameScene.getHeight()
-        $('#game').append(renderer.domElement)
+    this.init = function (id, Scene) {
+        scene = Scene.get()
+        camera = Scene.getCamera()
+        width = Scene.getWidth()
+        height = Scene.getHeight()
+        $('#' + id).append(renderer.domElement)
         // renderer.autoClear = false
     }
 }

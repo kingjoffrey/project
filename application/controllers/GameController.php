@@ -54,6 +54,7 @@ class GameController extends Coret_Controller_Authorized
         $this->view->headScript()->appendFile('/js/common/ground.js?v=' . $version);
         $this->view->headScript()->appendFile('/js/common/game.js?v=' . $version);
         $this->view->headScript()->appendFile('/js/common/models.js?v=' . $version);
+        $this->view->headScript()->appendFile('/js/common/battleModels.js?v=' . $version);
         $this->view->headScript()->appendFile('/js/common/gameModels.js?v=' . $version);
         $this->view->headScript()->appendFile('/js/common/unitModels.js?v=' . $version);
         $this->view->headScript()->appendFile('/js/common/field.js?v=' . $version);
@@ -66,6 +67,7 @@ class GameController extends Coret_Controller_Authorized
         $this->view->headScript()->appendFile('/js/common/towers.js?v=' . $version);
         $this->view->headScript()->appendFile('/js/common/units.js?v=' . $version);
         $this->view->headScript()->appendFile('/js/common/unitRenderer.js?v=' . $version);
+        $this->view->headScript()->appendFile('/js/common/battleRenderer.js?v=' . $version);
         $this->view->headScript()->appendFile('/js/common/execute.js?v=' . $version);
         $this->view->headScript()->appendFile('/js/common/websocketSend.js?v=' . $version);
         $this->view->headScript()->appendFile('/js/common/websocketMessage.js?v=' . $version);

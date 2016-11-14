@@ -88,6 +88,7 @@ var BattleWindow = new function () {
             // scene.add(Models.addUnit(4, 4, color, Unit.getName(unitId)))
             // scene.render()
             // scene.addId('unit' + soldierId)
+            UnitModels
         },
         addHero = function (color, heroId, elementId) {
             // var scene = new UnitScene()
@@ -101,15 +102,21 @@ var BattleWindow = new function () {
 
     this.battle = function (r, ii) {
 
-        var div = $('<div>')
-            .append(
-                $('<div>')
-                    .addClass('grass')
-                    .append($('<div>').addClass('battle defense').attr('id', 'defense'))
-                    .append($('<div>').addClass('battle attack').attr('id', 'attack'))
-            )
+        // var div = $('<div>')
+        //     .append(
+        //         $('<div>')
+        //             .addClass('grass')
+        //             .append($('<div>').addClass('battle defense').attr('id', 'defense'))
+        //             .append($('<div>').addClass('battle attack').attr('id', 'attack'))
+        //     )
 
-        Message.simple(translations.battle, div);
+        // Message.simple(translations.battle, div)
+
+        $('#game').css('display', 'none')
+        var div = $('body').append($('<div>').attr('id', 'battle'))
+        BattleScene.init($(window).innerWidth(), $(window).innerHeight())
+        BattleScene.initSun(Fields.getMaxY())
+        GameRenderer.init('battle', BattleScene)
 
         var killed = new Array(),
             attackArmy = Players.get(r.color).getArmies().get(r.army.id),

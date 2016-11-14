@@ -11,7 +11,7 @@ var Editor = new function () {
             Gui.init()
             GameScene.setCameraPosition(0, Fields.getMaxY())
             GameScene.initSun(Fields.getMaxY())
-            GameRenderer.init()
+            GameRenderer.init('game', GameScene)
             GameRenderer.animate()
         }
         //console.log(r)
