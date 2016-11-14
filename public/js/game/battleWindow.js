@@ -1,104 +1,93 @@
 var BattleWindow = new function () {
     var kill = function (b, r, ii) {
-            for (var i in b) {
-                break
-            }
-
-            if (notSet(b[i])) {
-                if (!Players.get(r.color).isComputer()) {
-                    $('.close').fadeIn(100)
-                }
-                Move.end(r, ii)
-                return
-            }
-
-            if (isSet(b[i].soldierId)) {
-                var unitElement = $('#unit' + b[i].soldierId)
-                if (!unitElement.length) {
-                    Move.end(r, ii)
-                }
-
-                unitElement.append($('<div>').addClass('killed'));
-                if (!Players.get(r.color).isComputer()) {
-                    setTimeout(function () {
-                        Sound.play('error');
-                    }, 500)
-                }
-                $('#unit' + b[i].soldierId + ' .killed').fadeIn(1000, function () {
-                    if (CommonMe.colorEquals(r.color)) {
-                        var soldier = CommonMe.getArmy(r.army.id).getWalkingSoldier(b[i].soldierId)
-                        if (isTruthful(soldier)) {
-                            CommonMe.upkeepIncrement(-Units.get(soldier.unitId).cost)
-                        }
-                        soldier = CommonMe.getArmy(r.army.id).getFlyingSoldier(b[i].soldierId)
-                        if (isTruthful(soldier)) {
-                            CommonMe.upkeepIncrement(-Units.get(soldier.unitId).cost)
-                        }
-                        soldier = CommonMe.getArmy(r.army.id).getSwimmingSoldier(b[i].soldierId)
-                        if (isTruthful(soldier)) {
-                            CommonMe.upkeepIncrement(-Units.get(soldier.unitId).cost)
-                        }
-                    }
-
-                    for (var color in r.defenders) {
-                        if (CommonMe.colorEquals(color)) {
-                            for (var armyId in r.defenders[color]) {
-                                var soldier = CommonMe.getArmy(armyId).getWalkingSoldier(b[i].soldierId)
-                                if (isTruthful(soldier)) {
-                                    CommonMe.upkeepIncrement(-Units.get(soldier.unitId).cost)
-                                }
-                                soldier = CommonMe.getArmy(r.army.id).getFlyingSoldier(b[i].soldierId)
-                                if (isTruthful(soldier)) {
-                                    CommonMe.upkeepIncrement(-Units.get(soldier.unitId).cost)
-                                }
-                                soldier = CommonMe.getArmy(r.army.id).getSwimmingSoldier(b[i].soldierId)
-                                if (isTruthful(soldier)) {
-                                    CommonMe.upkeepIncrement(-Units.get(soldier.unitId).cost)
-                                }
-                            }
-                            break;
-                        }
-                    }
-                    delete b[i];
-                    kill(b, r, ii);
-                })
-            } else if (isSet(b[i].heroId)) {
-                var heroElement = $('#hero' + b[i].heroId)
-                if (!heroElement.length) {
-                    Move.end(r, ii)
-                }
-
-                heroElement.append($('<div>').addClass('killed'));
-                if (!Players.get(r.color).isComputer()) {
-                    setTimeout(function () {
-                        Sound.play('error');
-                    }, 500)
-                }
-                $('#hero' + b[i].heroId + ' .killed').fadeIn(1000, function () {
-                    delete b[i];
-                    kill(b, r, ii);
-                });
-            }
-        },
-        addUnit = function (soldierId, color, unitId, elementId) {
-            // var scene = new UnitScene()
-            // scene.init(40, 40, elementId)
-            // scene.setCameraPosition(-8, 16)
-            // scene.initSun(30)
-            // scene.add(Models.addUnit(4, 4, color, Unit.getName(unitId)))
-            // scene.render()
-            // scene.addId('unit' + soldierId)
-            UnitModels
-        },
-        addHero = function (color, heroId, elementId) {
-            // var scene = new UnitScene()
-            // scene.init(40, 40, elementId)
-            // scene.setCameraPosition(-8, 16)
-            // scene.initSun(30)
-            // scene.add(Models.addHero(4, 4, color))
-            // scene.render()
-            // scene.addId('hero' + heroId)
+        for (var i in b) {
+            break
         }
+
+        if (notSet(b[i])) {
+            // if (!Players.get(r.color).isComputer()) {
+            //     $('.close').fadeIn(100)
+            // }
+            Move.end(r, ii)
+            return
+        }
+
+        if (isSet(b[i].soldierId)) {
+            // var unitElement = $('#unit' + b[i].soldierId)
+            // if (!unitElement.length) {
+            //     Move.end(r, ii)
+            // }
+            // unitElement.append($('<div>').addClass('killed'))
+
+            if (!Players.get(r.color).isComputer()) {
+                setTimeout(function () {
+                    Sound.play('error');
+                }, 500)
+            }
+
+            // $('#unit' + b[i].soldierId + ' .killed').fadeIn(1000, function () {
+            setTimeout(function () {
+                if (CommonMe.colorEquals(r.color)) {
+                    var soldier = CommonMe.getArmy(r.army.id).getWalkingSoldier(b[i].soldierId)
+                    if (isTruthful(soldier)) {
+                        CommonMe.upkeepIncrement(-Units.get(soldier.unitId).cost)
+                    }
+                    soldier = CommonMe.getArmy(r.army.id).getFlyingSoldier(b[i].soldierId)
+                    if (isTruthful(soldier)) {
+                        CommonMe.upkeepIncrement(-Units.get(soldier.unitId).cost)
+                    }
+                    soldier = CommonMe.getArmy(r.army.id).getSwimmingSoldier(b[i].soldierId)
+                    if (isTruthful(soldier)) {
+                        CommonMe.upkeepIncrement(-Units.get(soldier.unitId).cost)
+                    }
+                }
+
+                for (var color in r.defenders) {
+                    if (CommonMe.colorEquals(color)) {
+                        for (var armyId in r.defenders[color]) {
+                            var soldier = CommonMe.getArmy(armyId).getWalkingSoldier(b[i].soldierId)
+                            if (isTruthful(soldier)) {
+                                CommonMe.upkeepIncrement(-Units.get(soldier.unitId).cost)
+                            }
+                            soldier = CommonMe.getArmy(r.army.id).getFlyingSoldier(b[i].soldierId)
+                            if (isTruthful(soldier)) {
+                                CommonMe.upkeepIncrement(-Units.get(soldier.unitId).cost)
+                            }
+                            soldier = CommonMe.getArmy(r.army.id).getSwimmingSoldier(b[i].soldierId)
+                            if (isTruthful(soldier)) {
+                                CommonMe.upkeepIncrement(-Units.get(soldier.unitId).cost)
+                            }
+                        }
+                        break;
+                    }
+                }
+                BattleScene.remove(b[i].mesh)
+                delete b[i];
+                kill(b, r, ii);
+            }, 1000)
+            // })
+        } else if (isSet(b[i].heroId)) {
+            // var heroElement = $('#hero' + b[i].heroId)
+            // if (!heroElement.length) {
+            //     Move.end(r, ii)
+            // }
+            // heroElement.append($('<div>').addClass('killed'));
+
+            if (!Players.get(r.color).isComputer()) {
+                setTimeout(function () {
+                    Sound.play('error');
+                }, 500)
+            }
+
+            // $('#hero' + b[i].heroId + ' .killed').fadeIn(1000, function () {
+            setTimeout(function () {
+                BattleScene.remove(b[i].mesh)
+                delete b[i]
+                kill(b, r, ii)
+            }, 1000)
+            // });
+        }
+    }
 
     this.battle = function (r, ii) {
 
@@ -118,41 +107,50 @@ var BattleWindow = new function () {
         BattleScene.initSun(Fields.getMaxY())
         GameRenderer.init('battle', BattleScene)
 
-        var killed = new Array(),
+        var killed = {},
             attackArmy = Players.get(r.color).getArmies().get(r.army.id),
-            attackBgColor = attackArmy.getBackgroundColor()
+            attackBgColor = attackArmy.getBackgroundColor(),
+            unitNumber = 0
 
         for (var soldierId in r.battle.attack.walk) {
+            unitNumber++
+            var mesh = BattleModels.addUnit('attack', unitNumber, attackBgColor, Unit.getName(attackArmy.getWalkingSoldier(soldierId).unitId), BattleScene)
             if (r.battle.attack.walk[soldierId]) {
                 killed[r.battle.attack.walk[soldierId]] = {
-                    'soldierId': soldierId
+                    'soldierId': soldierId,
+                    'mesh': mesh
                 }
             }
-            addUnit(soldierId, attackBgColor, attackArmy.getWalkingSoldier(soldierId).unitId, 'attack')
         }
         for (var soldierId in r.battle.attack.swim) {
+            unitNumber++
+            var mesh = BattleModels.addUnit('attack', unitNumber, attackBgColor, Unit.getName(attackArmy.getSwimmingSoldier(soldierId).unitId), BattleScene)
             if (r.battle.attack.swim[soldierId]) {
                 killed[r.battle.attack.swim[soldierId]] = {
-                    'soldierId': soldierId
+                    'soldierId': soldierId,
+                    'mesh': mesh
                 };
             }
-            addUnit(soldierId, attackBgColor, attackArmy.getSwimmingSoldier(soldierId).unitId, 'attack')
         }
         for (var soldierId in r.battle.attack.fly) {
+            unitNumber++
+            var mesh = BattleModels.addUnit('attack', unitNumber, attackBgColor, Unit.getName(attackArmy.getFlyingSoldier(soldierId).unitId), BattleScene)
             if (r.battle.attack.fly[soldierId]) {
                 killed[r.battle.attack.fly[soldierId]] = {
-                    'soldierId': soldierId
+                    'soldierId': soldierId,
+                    'mesh': mesh
                 };
             }
-            addUnit(soldierId, attackBgColor, attackArmy.getFlyingSoldier(soldierId).unitId, 'attack')
         }
         for (var heroId in r.battle.attack.hero) {
+            unitNumber++
+            var mesh = BattleModels.addHero('attack', unitNumber, attackBgColor, BattleScene)
             if (r.battle.attack.hero[heroId]) {
                 killed[r.battle.attack.hero[heroId]] = {
-                    'heroId': heroId
+                    'heroId': heroId,
+                    'mesh': mesh
                 };
             }
-            addHero(attackBgColor, heroId, 'attack')
         }
 
         for (var color in r.battle.defenders) {
@@ -161,41 +159,49 @@ var BattleWindow = new function () {
                     defenseBgArmy = defenseArmy.getBackgroundColor()
 
                 for (var soldierId in r.battle.defenders[color][armyId].walk) {
-                    if (r.battle.defenders[color][armyId].walk[soldierId]) {
-                        killed[r.battle.defenders[color][armyId].walk[soldierId]] = {
-                            'soldierId': soldierId
-                        }
-                    }
                     if (color == 'neutral') {
                         var unitId = Game.getFirstUnitId()
                     } else {
                         var unitId = defenseArmy.getWalkingSoldier(soldierId).unitId
                     }
-                    addUnit(soldierId, defenseBgArmy, unitId, 'defense')
+                    unitNumber++
+                    var mesh = BattleModels.addUnit('defense', unitNumber, defenseBgArmy, unitId, BattleScene)
+                    if (r.battle.defenders[color][armyId].walk[soldierId]) {
+                        killed[r.battle.defenders[color][armyId].walk[soldierId]] = {
+                            'soldierId': soldierId,
+                            'mesh': mesh
+                        }
+                    }
                 }
                 for (var soldierId in r.battle.defenders[color][armyId].swim) {
+                    unitNumber++
+                    var mesh = BattleModels.addUnit('defense', unitNumber, defenseBgArmy, defenseArmy.getSwimmingSoldier(soldierId).unitId, BattleScene)
                     if (r.battle.defenders[color][armyId].swim[soldierId]) {
                         killed[r.battle.defenders[color][armyId].swim[soldierId]] = {
-                            'soldierId': soldierId
+                            'soldierId': soldierId,
+                            'mesh': mesh
                         }
                     }
-                    addUnit(soldierId, defenseBgArmy, defenseArmy.getSwimmingSoldier(soldierId).unitId, 'defense')
                 }
                 for (var soldierId in r.battle.defenders[color][armyId].fly) {
+                    unitNumber++
+                    var mesh = BattleModels.addUnit('defense', unitNumber, defenseBgArmy, defenseArmy.getFlyingSoldier(soldierId).unitId, BattleScene)
                     if (r.battle.defenders[color][armyId].fly[soldierId]) {
                         killed[r.battle.defenders[color][armyId].fly[soldierId]] = {
-                            'soldierId': soldierId
+                            'soldierId': soldierId,
+                            'mesh': mesh
                         }
                     }
-                    addUnit(soldierId, defenseBgArmy, defenseArmy.getFlyingSoldier(soldierId).unitId, 'defense')
                 }
                 for (var heroId in r.battle.defenders[color][armyId].hero) {
+                    unitNumber++
+                    var mesh = BattleModels.addHero('defense', unitNumber, defenseBgArmy, BattleScene)
                     if (r.battle.defenders[color][armyId].hero[heroId]) {
                         killed[r.battle.defenders[color][armyId].hero[heroId]] = {
-                            'heroId': heroId
+                            'heroId': heroId,
+                            'mesh': mesh
                         }
                     }
-                    addHero(defenseBgArmy, heroId, 'defense')
                 }
             }
 
@@ -226,17 +232,17 @@ var BattleWindow = new function () {
 
         }
 
-        $('.message .close').css('display', 'none')
+        // $('.message .close').css('display', 'none')
 
-        if (killed) {
-            if (Players.get(r.color).isComputer()) {
+        // if (killed) {
+        if (Players.get(r.color).isComputer()) {
+            kill(killed, r, ii);
+        } else {
+            setTimeout(function () {
                 kill(killed, r, ii);
-            } else {
-                setTimeout(function () {
-                    kill(killed, r, ii);
-                }, 2500);
-            }
+            }, 2500);
         }
+        // }
     }
 
     var configuration = function (type) {
