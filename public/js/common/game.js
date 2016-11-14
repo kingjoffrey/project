@@ -45,7 +45,12 @@ var Game = new function () {
             Ruins.init(game.ruins)
             CommonMe.init(game.color, game.gold, game.bSequence)
             Chat.init(game.chatHistory)
+
+            BattleScene.init($(window).innerWidth(), $(window).innerHeight())
+            BattleScene.initSun(Fields.getMaxY())
+
             GameScene.initSun(Fields.getMaxY())
+
             GameRenderer.init('game', GameScene)
             GameRenderer.animate()
         }

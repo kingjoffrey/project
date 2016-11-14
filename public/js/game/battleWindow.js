@@ -8,6 +8,11 @@ var BattleWindow = new function () {
             // if (!Players.get(r.color).isComputer()) {
             //     $('.close').fadeIn(100)
             // }
+
+            $('#game').css('display', 'block')
+            GameRenderer.init('game', GameScene)
+            $('#battle').remove()
+
             Move.end(r, ii)
             return
         }
@@ -103,8 +108,6 @@ var BattleWindow = new function () {
 
         $('#game').css('display', 'none')
         var div = $('body').append($('<div>').attr('id', 'battle'))
-        BattleScene.init($(window).innerWidth(), $(window).innerHeight())
-        BattleScene.initSun(Fields.getMaxY())
         GameRenderer.init('battle', BattleScene)
 
         var killed = {},
