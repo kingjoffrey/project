@@ -1,106 +1,90 @@
 var BattleWindow = new function () {
-    var kill = function (b, r, ii) {
-        console.log('start kill')
-        for (var i in b) {
-            break
-        }
-
-        if (notSet(b[i])) {
-            // if (!Players.get(r.color).isComputer()) {
-            //     $('.close').fadeIn(100)
-            // }
-
-            console.log('NOT set killed')
-
-            $('#game').css('display', 'block')
-            GameRenderer.init('game', GameScene)
-            $('#battle').remove()
-
-            Move.end(r, ii)
-            return
-        }
-
-        if (isSet(b[i].soldierId)) {
-            // var unitElement = $('#unit' + b[i].soldierId)
-            // if (!unitElement.length) {
-            //     Move.end(r, ii)
-            // }
-            // unitElement.append($('<div>').addClass('killed'))
-
-            if (!Players.get(r.color).isComputer()) {
-                setTimeout(function () {
-                    Sound.play('error');
-                }, 500)
+    var castleMesh = null,
+        towerMesh = null,
+        kill = function (b, r, ii) {
+            for (var i in b) {
+                break
             }
 
-            // $('#unit' + b[i].soldierId + ' .killed').fadeIn(1000, function () {
-            setTimeout(function () {
-                if (CommonMe.colorEquals(r.color)) {
-                    var soldier = CommonMe.getArmy(r.army.id).getWalkingSoldier(b[i].soldierId)
-                    if (isTruthful(soldier)) {
-                        CommonMe.upkeepIncrement(-Units.get(soldier.unitId).cost)
+            if (notSet(b[i])) {
+                setTimeout(function () {
+                    $('#game').css('display', 'block')
+                    GameRenderer.init('game', GameScene)
+                    $('#battle').remove()
+                    if (castleMesh) {
+                        GameScene.remove(castleMesh)
                     }
-                    soldier = CommonMe.getArmy(r.army.id).getFlyingSoldier(b[i].soldierId)
-                    if (isTruthful(soldier)) {
-                        CommonMe.upkeepIncrement(-Units.get(soldier.unitId).cost)
+                    if (towerMesh) {
+                        GameScene.remove(towerMesh)
                     }
-                    soldier = CommonMe.getArmy(r.army.id).getSwimmingSoldier(b[i].soldierId)
-                    if (isTruthful(soldier)) {
-                        CommonMe.upkeepIncrement(-Units.get(soldier.unitId).cost)
-                    }
+
+                    Move.end(r, ii)
+                }, 500)
+                return
+            }
+
+            if (isSet(b[i].soldierId)) {
+                if (!Players.get(r.color).isComputer()) {
+                    setTimeout(function () {
+                        Sound.play('error');
+                    }, 500)
                 }
 
-                for (var color in r.defenders) {
-                    if (CommonMe.colorEquals(color)) {
-                        for (var armyId in r.defenders[color]) {
-                            var soldier = CommonMe.getArmy(armyId).getWalkingSoldier(b[i].soldierId)
-                            if (isTruthful(soldier)) {
-                                CommonMe.upkeepIncrement(-Units.get(soldier.unitId).cost)
-                            }
-                            soldier = CommonMe.getArmy(r.army.id).getFlyingSoldier(b[i].soldierId)
-                            if (isTruthful(soldier)) {
-                                CommonMe.upkeepIncrement(-Units.get(soldier.unitId).cost)
-                            }
-                            soldier = CommonMe.getArmy(r.army.id).getSwimmingSoldier(b[i].soldierId)
-                            if (isTruthful(soldier)) {
-                                CommonMe.upkeepIncrement(-Units.get(soldier.unitId).cost)
-                            }
+                setTimeout(function () {
+                    if (CommonMe.colorEquals(r.color)) {
+                        var soldier = CommonMe.getArmy(r.army.id).getWalkingSoldier(b[i].soldierId)
+                        if (isTruthful(soldier)) {
+                            CommonMe.upkeepIncrement(-Units.get(soldier.unitId).cost)
                         }
-                        break;
+                        soldier = CommonMe.getArmy(r.army.id).getFlyingSoldier(b[i].soldierId)
+                        if (isTruthful(soldier)) {
+                            CommonMe.upkeepIncrement(-Units.get(soldier.unitId).cost)
+                        }
+                        soldier = CommonMe.getArmy(r.army.id).getSwimmingSoldier(b[i].soldierId)
+                        if (isTruthful(soldier)) {
+                            CommonMe.upkeepIncrement(-Units.get(soldier.unitId).cost)
+                        }
                     }
+
+                    for (var color in r.defenders) {
+                        if (CommonMe.colorEquals(color)) {
+                            for (var armyId in r.defenders[color]) {
+                                var soldier = CommonMe.getArmy(armyId).getWalkingSoldier(b[i].soldierId)
+                                if (isTruthful(soldier)) {
+                                    CommonMe.upkeepIncrement(-Units.get(soldier.unitId).cost)
+                                }
+                                soldier = CommonMe.getArmy(r.army.id).getFlyingSoldier(b[i].soldierId)
+                                if (isTruthful(soldier)) {
+                                    CommonMe.upkeepIncrement(-Units.get(soldier.unitId).cost)
+                                }
+                                soldier = CommonMe.getArmy(r.army.id).getSwimmingSoldier(b[i].soldierId)
+                                if (isTruthful(soldier)) {
+                                    CommonMe.upkeepIncrement(-Units.get(soldier.unitId).cost)
+                                }
+                            }
+                            break;
+                        }
+                    }
+                    BattleScene.remove(b[i].mesh)
+                    delete b[i];
+                    kill(b, r, ii);
+                }, 1000)
+            } else if (isSet(b[i].heroId)) {
+                if (!Players.get(r.color).isComputer()) {
+                    setTimeout(function () {
+                        Sound.play('error');
+                    }, 500)
                 }
-                BattleScene.remove(b[i].mesh)
-                delete b[i];
-                kill(b, r, ii);
-            }, 1000)
-            // })
-        } else if (isSet(b[i].heroId)) {
-            // var heroElement = $('#hero' + b[i].heroId)
-            // if (!heroElement.length) {
-            //     Move.end(r, ii)
-            // }
-            // heroElement.append($('<div>').addClass('killed'));
 
-            if (!Players.get(r.color).isComputer()) {
                 setTimeout(function () {
-                    Sound.play('error');
-                }, 500)
+                    BattleScene.remove(b[i].mesh)
+                    delete b[i]
+                    kill(b, r, ii)
+                }, 1000)
             }
-
-            // $('#hero' + b[i].heroId + ' .killed').fadeIn(1000, function () {
-            setTimeout(function () {
-                BattleScene.remove(b[i].mesh)
-                delete b[i]
-                kill(b, r, ii)
-            }, 1000)
-            // });
         }
-        console.log('end kill')
-    }
 
     this.battle = function (r, ii) {
-        console.log('START battle')
-
         $('#game').css('display', 'none')
         $('body').append($('<div>').attr('id', 'battle'))
         GameRenderer.init('battle', BattleScene)
@@ -205,36 +189,25 @@ var BattleWindow = new function () {
                 }
             }
 
-            //if (r.battle.castleId) {
-            //    defenseLayout.append(
-            //        $('<div>')
-            //            .addClass('castle')
-            //            .css({
-            //                position: 'static',
-            //                background: 'url(/img/game/castles/' + color + '.png) center center no-repeat',
-            //                margin: '0 auto'
-            //            })
-            //    )
-            //}
-            //
-            //if (r.battle.towerId) {
-            //    defenseLayout.append(
-            //        $('<div>')
-            //            .addClass('tower')
-            //            .css({
-            //                position: 'static',
-            //                background: 'url(/img/game/towers/' + color + '.png) center center no-repeat',
-            //                margin: '0 auto'
-            //            })
-            //    )
-            //}
+            if (r.battle.castleId) {
+                var castle
+                for (var color in Players.toArray()) {
+                    if (castle = Players.get(color).getCastles().get(r.battle.castleId)) {
+                        castleMesh = BattleModels.addCastle(castle, color, BattleScene)
+                    }
+                }
+            }
 
-
+            if (r.battle.towerId) {
+                var tower
+                for (var color in Players.toArray()) {
+                    if (Players.get(color).getTowers().get(r.battle.towerId)) {
+                        towerMesh = BattleModels.addTower(color, BattleScene)
+                    }
+                }
+            }
         }
 
-        // $('.message .close').css('display', 'none')
-
-        // if (killed) {
         if (Players.get(r.color).isComputer()) {
             kill(killed, r, ii);
         } else {
@@ -242,8 +215,6 @@ var BattleWindow = new function () {
                 kill(killed, r, ii);
             }, 2500);
         }
-        // }
-        console.log('END battle')
     }
 
     var configuration = function (type) {
@@ -306,6 +277,5 @@ var BattleWindow = new function () {
 
         $("#sortable").sortable()
         $("#sortable").disableSelection()
-
     }
 }

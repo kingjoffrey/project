@@ -61,4 +61,47 @@ var BattleModels = new function () {
 
         return mesh
     }
+    this.addCastle = function (castle, color, scene) {
+        var mesh = Models.getCastle(castle, color)
+
+        mesh.scale.x = 0.2
+        mesh.scale.y = 0.2
+        mesh.scale.z = 0.2
+
+        mesh.children[0].scale.x = 7
+        mesh.children[0].scale.y = 7
+        mesh.children[0].scale.z = 7
+
+        mesh.position.y = 2
+
+        if (scene.getShadows()) {
+            mesh.castShadow = true
+            mesh.receiveShadow = true
+            mesh.children[0].castShadow = true
+        }
+
+        scene.add(mesh)
+        return mesh
+    }
+    this.addTower = function (color, scene) {
+        var mesh = Models.getTower(color)
+        mesh.scale.x = 0.3
+        mesh.scale.y = 0.3
+        mesh.scale.z = 0.3
+
+        mesh.children[0].scale.x = 3.3
+        mesh.children[0].scale.y = 3.3
+        mesh.children[0].scale.z = 3.3
+
+        mesh.position.y = 2
+
+        if (scene.getShadows()) {
+            mesh.castShadow = true
+            mesh.receiveShadow = true
+            mesh.children[0].castShadow = true
+        }
+
+        scene.add(mesh)
+        return mesh
+    }
 }
