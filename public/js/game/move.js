@@ -210,6 +210,7 @@ var Move = new function () {
                     Gui.unlock()
                 }
             }
+            Execute.setExecuting(0)
         } else if (CommonMe.colorEquals(r.color)) {
             if (army.getNumberOfUnits()) {
                 if (army.getMoves() > 0) {

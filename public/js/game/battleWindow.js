@@ -1,5 +1,6 @@
 var BattleWindow = new function () {
     var kill = function (b, r, ii) {
+        console.log('start kill')
         for (var i in b) {
             break
         }
@@ -8,6 +9,8 @@ var BattleWindow = new function () {
             // if (!Players.get(r.color).isComputer()) {
             //     $('.close').fadeIn(100)
             // }
+
+            console.log('NOT set killed')
 
             $('#game').css('display', 'block')
             GameRenderer.init('game', GameScene)
@@ -92,22 +95,14 @@ var BattleWindow = new function () {
             }, 1000)
             // });
         }
+        console.log('end kill')
     }
 
     this.battle = function (r, ii) {
-
-        // var div = $('<div>')
-        //     .append(
-        //         $('<div>')
-        //             .addClass('grass')
-        //             .append($('<div>').addClass('battle defense').attr('id', 'defense'))
-        //             .append($('<div>').addClass('battle attack').attr('id', 'attack'))
-        //     )
-
-        // Message.simple(translations.battle, div)
+console.log('START battle')
 
         $('#game').css('display', 'none')
-        var div = $('body').append($('<div>').attr('id', 'battle'))
+        $('body').append($('<div>').attr('id', 'battle'))
         GameRenderer.init('battle', BattleScene)
 
         var killed = {},
@@ -116,7 +111,6 @@ var BattleWindow = new function () {
             unitNumber = 0
 
         for (var soldierId in r.battle.attack.walk) {
-            unitNumber++
             var mesh = BattleModels.addUnit('attack', unitNumber, attackBgColor, Unit.getName(attackArmy.getWalkingSoldier(soldierId).unitId), BattleScene)
             if (r.battle.attack.walk[soldierId]) {
                 killed[r.battle.attack.walk[soldierId]] = {
@@ -124,36 +118,37 @@ var BattleWindow = new function () {
                     'mesh': mesh
                 }
             }
+            unitNumber++
         }
         for (var soldierId in r.battle.attack.swim) {
-            unitNumber++
             var mesh = BattleModels.addUnit('attack', unitNumber, attackBgColor, Unit.getName(attackArmy.getSwimmingSoldier(soldierId).unitId), BattleScene)
             if (r.battle.attack.swim[soldierId]) {
                 killed[r.battle.attack.swim[soldierId]] = {
                     'soldierId': soldierId,
                     'mesh': mesh
-                };
+                }
             }
+            unitNumber++
         }
         for (var soldierId in r.battle.attack.fly) {
-            unitNumber++
             var mesh = BattleModels.addUnit('attack', unitNumber, attackBgColor, Unit.getName(attackArmy.getFlyingSoldier(soldierId).unitId), BattleScene)
             if (r.battle.attack.fly[soldierId]) {
                 killed[r.battle.attack.fly[soldierId]] = {
                     'soldierId': soldierId,
                     'mesh': mesh
-                };
+                }
             }
+            unitNumber++
         }
         for (var heroId in r.battle.attack.hero) {
-            unitNumber++
             var mesh = BattleModels.addHero('attack', unitNumber, attackBgColor, BattleScene)
             if (r.battle.attack.hero[heroId]) {
                 killed[r.battle.attack.hero[heroId]] = {
                     'heroId': heroId,
                     'mesh': mesh
-                };
+                }
             }
+            unitNumber++
         }
 
         for (var color in r.battle.defenders) {
@@ -167,7 +162,6 @@ var BattleWindow = new function () {
                     } else {
                         var unitId = defenseArmy.getWalkingSoldier(soldierId).unitId
                     }
-                    unitNumber++
                     var mesh = BattleModels.addUnit('defense', unitNumber, defenseBgArmy, unitId, BattleScene)
                     if (r.battle.defenders[color][armyId].walk[soldierId]) {
                         killed[r.battle.defenders[color][armyId].walk[soldierId]] = {
@@ -175,9 +169,9 @@ var BattleWindow = new function () {
                             'mesh': mesh
                         }
                     }
+                    unitNumber++
                 }
                 for (var soldierId in r.battle.defenders[color][armyId].swim) {
-                    unitNumber++
                     var mesh = BattleModels.addUnit('defense', unitNumber, defenseBgArmy, defenseArmy.getSwimmingSoldier(soldierId).unitId, BattleScene)
                     if (r.battle.defenders[color][armyId].swim[soldierId]) {
                         killed[r.battle.defenders[color][armyId].swim[soldierId]] = {
@@ -185,9 +179,9 @@ var BattleWindow = new function () {
                             'mesh': mesh
                         }
                     }
+                    unitNumber++
                 }
                 for (var soldierId in r.battle.defenders[color][armyId].fly) {
-                    unitNumber++
                     var mesh = BattleModels.addUnit('defense', unitNumber, defenseBgArmy, defenseArmy.getFlyingSoldier(soldierId).unitId, BattleScene)
                     if (r.battle.defenders[color][armyId].fly[soldierId]) {
                         killed[r.battle.defenders[color][armyId].fly[soldierId]] = {
@@ -195,9 +189,9 @@ var BattleWindow = new function () {
                             'mesh': mesh
                         }
                     }
+                    unitNumber++
                 }
                 for (var heroId in r.battle.defenders[color][armyId].hero) {
-                    unitNumber++
                     var mesh = BattleModels.addHero('defense', unitNumber, defenseBgArmy, BattleScene)
                     if (r.battle.defenders[color][armyId].hero[heroId]) {
                         killed[r.battle.defenders[color][armyId].hero[heroId]] = {
@@ -205,6 +199,7 @@ var BattleWindow = new function () {
                             'mesh': mesh
                         }
                     }
+                    unitNumber++
                 }
             }
 
@@ -246,6 +241,7 @@ var BattleWindow = new function () {
             }, 2500);
         }
         // }
+        console.log('END battle')
     }
 
     var configuration = function (type) {

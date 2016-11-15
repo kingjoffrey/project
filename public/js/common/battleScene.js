@@ -5,18 +5,16 @@ var BattleScene = new function () {
         camera,
         sun,
         shadows = 1,
-        cameraY = 24,
+        cameraZ = 24,
         initCamera = function () {
-            var viewAngle = 22,
+            var fov = 22,
                 near = 1,
                 far = 1000
 
-            camera = new THREE.PerspectiveCamera(viewAngle, canvasWidth / canvasHeight, near, far)
-            camera.rotation.order = 'YXZ'
-            camera.rotation.y = -Math.PI / 4
-            camera.rotation.x = Math.atan(-1 / Math.sqrt(2))
-            camera.position.y = cameraY
-            camera.scale.addScalar(1)
+            camera = new THREE.PerspectiveCamera(fov, canvasWidth / canvasHeight, near, far)
+            camera.position.z = cameraZ
+            camera.lookAt(scene.position)
+
             scene.add(camera)
             scene.add(new THREE.AmbientLight(0x777777))
         }

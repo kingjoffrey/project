@@ -8,12 +8,20 @@ var BattleModels = new function () {
         }
 
         mesh.rotation.y = Math.PI / 2
-        mesh.scale.x = 10
-        mesh.scale.y = 10
-        mesh.scale.z = 10
-        mesh.position.set(0, -40, 0)
+        mesh.scale.x = 0.1
+        mesh.scale.y = 0.1
+        mesh.scale.z = 0.1
+
+        if (side == 'attack') {
+            mesh.position.y = -1
+        } else {
+            mesh.position.y = 1
+        }
+        // mesh.position.set(0, 0, 0)
 
         scene.add(mesh)
+
+        return mesh
     }
     this.addUnit = function (side, i, color, modelName, scene) {
         var mesh = Models.getUnit(color, modelName)
@@ -24,11 +32,19 @@ var BattleModels = new function () {
         }
 
         mesh.rotation.y = Math.PI / 2
-        mesh.scale.x = 5
-        mesh.scale.y = 5
-        mesh.scale.z = 5
-        mesh.position.set(0, -40, 0)
+        mesh.scale.x = 0.2
+        mesh.scale.y = 0.2
+        mesh.scale.z = 0.2
+
+        if (side == 'attack') {
+            mesh.position.y = -1
+        } else {
+            mesh.position.y = 1
+        }
+        // mesh.position.set(0, 0, 0)
 
         scene.add(mesh)
+
+        return mesh
     }
 }
