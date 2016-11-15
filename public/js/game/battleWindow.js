@@ -99,7 +99,7 @@ var BattleWindow = new function () {
     }
 
     this.battle = function (r, ii) {
-console.log('START battle')
+        console.log('START battle')
 
         $('#game').css('display', 'none')
         $('body').append($('<div>').attr('id', 'battle'))
@@ -151,6 +151,8 @@ console.log('START battle')
             unitNumber++
         }
 
+        unitNumber = 0
+
         for (var color in r.battle.defenders) {
             for (var armyId in r.battle.defenders[color]) {
                 var defenseArmy = Players.get(color).getArmies().get(armyId),
@@ -162,7 +164,7 @@ console.log('START battle')
                     } else {
                         var unitId = defenseArmy.getWalkingSoldier(soldierId).unitId
                     }
-                    var mesh = BattleModels.addUnit('defense', unitNumber, defenseBgArmy, unitId, BattleScene)
+                    var mesh = BattleModels.addUnit('defense', unitNumber, defenseBgArmy, Unit.getName(unitId), BattleScene)
                     if (r.battle.defenders[color][armyId].walk[soldierId]) {
                         killed[r.battle.defenders[color][armyId].walk[soldierId]] = {
                             'soldierId': soldierId,
@@ -172,7 +174,7 @@ console.log('START battle')
                     unitNumber++
                 }
                 for (var soldierId in r.battle.defenders[color][armyId].swim) {
-                    var mesh = BattleModels.addUnit('defense', unitNumber, defenseBgArmy, defenseArmy.getSwimmingSoldier(soldierId).unitId, BattleScene)
+                    var mesh = BattleModels.addUnit('defense', unitNumber, defenseBgArmy, Unit.getName(defenseArmy.getSwimmingSoldier(soldierId).unitId), BattleScene)
                     if (r.battle.defenders[color][armyId].swim[soldierId]) {
                         killed[r.battle.defenders[color][armyId].swim[soldierId]] = {
                             'soldierId': soldierId,
@@ -182,7 +184,7 @@ console.log('START battle')
                     unitNumber++
                 }
                 for (var soldierId in r.battle.defenders[color][armyId].fly) {
-                    var mesh = BattleModels.addUnit('defense', unitNumber, defenseBgArmy, defenseArmy.getFlyingSoldier(soldierId).unitId, BattleScene)
+                    var mesh = BattleModels.addUnit('defense', unitNumber, defenseBgArmy, Unit.getName(defenseArmy.getFlyingSoldier(soldierId).unitId), BattleScene)
                     if (r.battle.defenders[color][armyId].fly[soldierId]) {
                         killed[r.battle.defenders[color][armyId].fly[soldierId]] = {
                             'soldierId': soldierId,

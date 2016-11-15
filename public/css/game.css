@@ -254,15 +254,14 @@
 .message .production table {
     padding: 2px;
     margin: 0 auto;
+    border-spacing: 5px !important;
 }
 
 .message .production td.unit {
-    background: #000;
     color: #fff;
     margin: 0;
     padding: 5px;
     text-align: center;
-    text-shadow: none;
     cursor: pointer;
     box-shadow: 1px 1px 5px #000;
 }
@@ -289,18 +288,21 @@
 }
 
 .message .production .unit.select {
-    background: red !important;
-    color: #fff !important;
+    background: #fff !important;
+    color: #000 !important;
+    text-shadow: none;
 }
 
 .message .production .unit.checked {
     background: lime !important;
     color: #000 !important;
+    text-shadow: none;
 }
 
 .message .production .unit:hover {
     background: lime !important;
     color: #000 !important;
+    text-shadow: none;
 }
 
 .message .production .unit .canvas {
@@ -334,7 +336,6 @@
     padding: 8px;
     border: 1px solid #222;
     border-radius: 3px;
-    /*cursor: pointer;*/
 }
 
 .message div.row:hover {
@@ -354,6 +355,10 @@
 .message .split #selectAll {
     text-align: right;
     height: 20px;
+}
+
+.message .split div.row {
+    cursor: pointer;
 }
 
 .message .split div.row:hover {
@@ -700,6 +705,13 @@ html {
 .buttonOff {
     border: 1px solid #444 !important;
     color: #444 !important;
+    cursor: default !important;
+}
+
+.buttonOff:hover {
+    background: #000 !important;
+    color: #444 !important;
+    cursor: default !important;
 }
 
 .castle .relocation_out {
@@ -977,11 +989,6 @@ table.treasury td {
 
 #armyBox .iconButton:hover, .status .iconButton:hover {
     background: #fff;
-}
-
-#armyBox .iconButton.buttonOff:hover, .status .iconButton.buttonOff:hover {
-    background: #000 !important;
-    cursor: default;
 }
 
 #disbandArmy div {

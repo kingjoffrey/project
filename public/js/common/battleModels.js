@@ -17,6 +17,13 @@ var BattleModels = new function () {
         } else {
             mesh.position.y = 1
         }
+
+        if (i % 2 == 0) {
+            mesh.position.x = -i / 2
+        } else {
+            mesh.position.x = (i + 1) / 2
+        }
+
         // mesh.position.set(0, 0, 0)
 
         scene.add(mesh)
@@ -32,15 +39,22 @@ var BattleModels = new function () {
         }
 
         mesh.rotation.y = Math.PI / 2
-        mesh.scale.x = 0.2
-        mesh.scale.y = 0.2
-        mesh.scale.z = 0.2
+        mesh.scale.x = 0.05
+        mesh.scale.y = 0.05
+        mesh.scale.z = 0.05
 
         if (side == 'attack') {
             mesh.position.y = -1
         } else {
             mesh.position.y = 1
         }
+
+        if (i % 2 == 0) {
+            mesh.position.x = -i / 2
+        } else {
+            mesh.position.x = (i + 1) / 2
+        }
+
         // mesh.position.set(0, 0, 0)
 
         scene.add(mesh)
