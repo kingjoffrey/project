@@ -1,6 +1,7 @@
 var BattleWindow = new function () {
     var castleMesh = null,
         towerMesh = null,
+        winners = [],
         kill = function (b, r, ii) {
             for (var i in b) {
                 break
@@ -12,10 +13,14 @@ var BattleWindow = new function () {
                     GameRenderer.init('game', GameScene)
                     $('#battle').remove()
                     if (castleMesh) {
-                        GameScene.remove(castleMesh)
+                        BattleScene.remove(castleMesh)
                     }
                     if (towerMesh) {
-                        GameScene.remove(towerMesh)
+                        BattleScene.remove(towerMesh)
+                    }
+
+                    for (var i in winners) {
+                        BattleScene.remove(winners[i])
                     }
 
                     Move.end(r, ii)
@@ -94,6 +99,8 @@ var BattleWindow = new function () {
             attackBgColor = attackArmy.getBackgroundColor(),
             unitNumber = 0
 
+        winners = []
+
         for (var soldierId in r.battle.attack.walk) {
             var mesh = BattleModels.addUnit('attack', unitNumber, attackBgColor, Unit.getName(attackArmy.getWalkingSoldier(soldierId).unitId), BattleScene)
             if (r.battle.attack.walk[soldierId]) {
@@ -101,6 +108,8 @@ var BattleWindow = new function () {
                     'soldierId': soldierId,
                     'mesh': mesh
                 }
+            } else {
+                winners.push(mesh)
             }
             unitNumber++
         }
@@ -111,6 +120,8 @@ var BattleWindow = new function () {
                     'soldierId': soldierId,
                     'mesh': mesh
                 }
+            } else {
+                winners.push(mesh)
             }
             unitNumber++
         }
@@ -121,6 +132,8 @@ var BattleWindow = new function () {
                     'soldierId': soldierId,
                     'mesh': mesh
                 }
+            } else {
+                winners.push(mesh)
             }
             unitNumber++
         }
@@ -131,6 +144,8 @@ var BattleWindow = new function () {
                     'heroId': heroId,
                     'mesh': mesh
                 }
+            } else {
+                winners.push(mesh)
             }
             unitNumber++
         }
@@ -154,6 +169,8 @@ var BattleWindow = new function () {
                             'soldierId': soldierId,
                             'mesh': mesh
                         }
+                    } else {
+                        winners.push(mesh)
                     }
                     unitNumber++
                 }
@@ -164,6 +181,8 @@ var BattleWindow = new function () {
                             'soldierId': soldierId,
                             'mesh': mesh
                         }
+                    } else {
+                        winners.push(mesh)
                     }
                     unitNumber++
                 }
@@ -174,6 +193,8 @@ var BattleWindow = new function () {
                             'soldierId': soldierId,
                             'mesh': mesh
                         }
+                    } else {
+                        winners.push(mesh)
                     }
                     unitNumber++
                 }
@@ -184,6 +205,8 @@ var BattleWindow = new function () {
                             'heroId': heroId,
                             'mesh': mesh
                         }
+                    } else {
+                        winners.push(mesh)
                     }
                     unitNumber++
                 }
@@ -193,7 +216,7 @@ var BattleWindow = new function () {
                 var castle
                 for (var color in Players.toArray()) {
                     if (castle = Players.get(color).getCastles().get(r.battle.castleId)) {
-                        castleMesh = BattleModels.addCastle(castle, color, BattleScene)
+                        castleMesh = BattleModels.addCastle(castle.toArray(), color, BattleScene)
                     }
                 }
             }

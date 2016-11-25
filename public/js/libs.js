@@ -80,8 +80,8 @@ function countProperties(obj) {
 
     for (var prop in obj) {
         if (obj.hasOwnProperty(prop))
-            ++count;
+            ++count
     }
 
-    return count;
+    return count
 }

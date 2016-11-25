@@ -140,271 +140,258 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>three.js webgl - cameras</title>
+    <title>three.js webgl - animation - skinning</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
     <style>
         body {
-            color: #808080;
-            font-family: Monospace;
-            font-size: 13px;
-            text-align: center;
+            color: #fff;
+            font-family:Monospace;
+            font-size:13px;
+            text-align:center;
 
-            background-color: #000;
+            background-color: #fff;
             margin: 0px;
             overflow: hidden;
         }
 
         #info {
             position: absolute;
-            top: 0px;
-            width: 100%;
+            top: 0px; width: 100%;
             padding: 5px;
-            z-index: 100;
-        }
-
-        a {
-
-            color: #0080ff;
-        }
-
-        b {
-            color: lightgreen
         }
     </style>
 </head>
 <body>
-<div id="info"><a href="http://threejs.org" target="_blank">three.js</a> - cameras<br/>
-    <b>O</b> orthographic <b>P</b> perspective
+<div id="container"></div>
+<div id="info">
+    <a href="http://threejs.org" target="_blank">three.js</a> - Skeletal Animation Blending
+    <br><br> Adjust blend weights to affect the animations that are currently playing.
+    <br> Cross fades (and warping) blend between 2 animations and end with a single animation.
 </div>
 
 <script src="https://threejs.org/examples/../build/three.js"></script>
+
+<script src="https://threejs.org/examples/js/Detector.js"></script>
 <script src="https://threejs.org/examples/js/libs/stats.min.js"></script>
-<script src="/models/hero.json"></script>
+<script src="https://threejs.org/examples/js/controls/OrbitControls.js"></script>
+<script src="/js/BlendCharacter.js"></script>
+<script src="/js/BlendCharacterGui.js"></script>
+<script src="https://threejs.org/examples/js/libs/dat.gui.min.js"></script>
 
 <script>
 
-    var SCREEN_WIDTH = window.innerWidth;
-    var SCREEN_HEIGHT = window.innerHeight;
-    var aspect = SCREEN_WIDTH / SCREEN_HEIGHT;
+    if ( ! Detector.webgl ) Detector.addGetWebGLMessage();
 
     var container, stats;
-    var camera, scene1, scene2, renderer, mesh, mesh2;
-    var cameraRig, activeCamera, activeHelper;
-    var cameraPerspective, cameraOrtho;
-    var cameraPerspectiveHelper, cameraOrthoHelper;
-    var frustumSize = 600;
 
-    var loader = new THREE.JSONLoader()
-    var tl = new THREE.TextureLoader()
+    var blendMesh, helper, camera, scene, renderer, controls;
+
+    var clock = new THREE.Clock();
+    var gui = null;
+
+    var isFrameStepping = false;
+    var timeToStep = 0;
 
     init();
 
     function init() {
 
-        container = document.createElement('div');
-        document.body.appendChild(container);
+        container = document.getElementById( 'container' );
 
-        scene1 = new THREE.Scene();
-        scene2 = new THREE.Scene();
+        scene = new THREE.Scene();
+        scene.add ( new THREE.AmbientLight( 0xffffff ) );
 
-        //
+        renderer = new THREE.WebGLRenderer( { antialias: true, alpha: false } );
+        renderer.setClearColor( 0x777777 );
+        renderer.setPixelRatio( window.devicePixelRatio );
+        renderer.setSize( window.innerWidth, window.innerHeight );
+        renderer.autoClear = true;
 
-        camera = new THREE.PerspectiveCamera(50, 0.5 * aspect, 1, 10000);
-        camera.position.z = 2500;
-
-        cameraPerspective = new THREE.PerspectiveCamera(50, 0.5 * aspect, 150, 1000);
-
-        cameraPerspectiveHelper = new THREE.CameraHelper(cameraPerspective);
-        scene1.add(cameraPerspectiveHelper);
-
-        //
-        cameraOrtho = new THREE.OrthographicCamera(0.5 * frustumSize * aspect / -2, 0.5 * frustumSize * aspect / 2, frustumSize / 2, frustumSize / -2, 150, 1000);
-
-        cameraOrthoHelper = new THREE.CameraHelper(cameraOrtho);
-        scene1.add(cameraOrthoHelper);
+        container.appendChild( renderer.domElement );
 
         //
 
-        activeCamera = cameraPerspective;
-        activeHelper = cameraPerspectiveHelper;
-
-
-        // counteract different front orientation of cameras vs rig
-
-        cameraOrtho.rotation.y = Math.PI;
-        cameraPerspective.rotation.y = Math.PI;
-
-        cameraRig = new THREE.Group();
-
-        cameraRig.add(cameraPerspective);
-        cameraRig.add(cameraOrtho);
-
-        scene1.add(cameraRig);
+        stats = new Stats();
+        container.appendChild( stats.dom );
 
         //
 
-        hero.scale = 0.009
-        boguszModel = loader.parse(hero)
+        window.addEventListener( 'resize', onWindowResize, false );
 
-        tl.load(window.location.origin + '/img/modelMaps/hero.png', function (texture) {
-            mesh = new THREE.Mesh(
-                boguszModel.geometry,
-                new THREE.MeshBasicMaterial({
-                    map: texture,
-                    color: 0xffffff,
-                    wireframe: true,
-                    side: THREE.DoubleSide
-                })
-            );
+        // listen for messages from the gui
+        window.addEventListener( 'start-animation', onStartAnimation );
+        window.addEventListener( 'stop-animation', onStopAnimation );
+        window.addEventListener( 'pause-animation', onPauseAnimation );
+        window.addEventListener( 'step-animation', onStepAnimation );
+        window.addEventListener( 'weight-animation', onWeightAnimation );
+        window.addEventListener( 'crossfade', onCrossfade );
+        window.addEventListener( 'warp', onWarp );
+        window.addEventListener( 'toggle-show-skeleton', onShowSkeleton );
+        window.addEventListener( 'toggle-show-model', onShowModel );
 
-            console.log('aaa')
+        blendMesh = new THREE.BlendCharacter();
+//        blendMesh.load( "https://threejs.org/examples/models/skinned/marine/marine_anims_core.json", start );
+        blendMesh.load( "/models/PIKMAN-WALK.json", start );
 
-            scene1.add(mesh);
-
-        mesh2 = new THREE.Mesh(
-					new THREE.SphereBufferGeometry( 100, 16, 8 ),
-					new THREE.MeshBasicMaterial( { color: 0xffffff, wireframe: true } )
-				);
-				scene2.add( mesh2 );
-
-
-            renderer = new THREE.WebGLRenderer({antialias: true});
-            renderer.setPixelRatio(window.devicePixelRatio);
-            renderer.setSize(SCREEN_WIDTH, SCREEN_HEIGHT);
-            renderer.domElement.style.position = "relative";
-            container.appendChild(renderer.domElement);
-
-            renderer.autoClear = false;
-
-            //
-
-            stats = new Stats();
-            container.appendChild(stats.dom);
-
-            //
-
-            window.addEventListener('resize', onWindowResize, false);
-            document.addEventListener('keydown', onKeyDown, false);
-
-            animate();
-
-        })
     }
 
-    //
+    function onWindowResize() {
 
-    function onKeyDown(event) {
+        camera.aspect = window.innerWidth / window.innerHeight;
+        camera.updateProjectionMatrix();
 
-        switch (event.keyCode) {
+        renderer.setSize( window.innerWidth, window.innerHeight );
 
-            case 79: /*O*/
+    }
 
-                activeCamera = cameraOrtho;
-                activeHelper = cameraOrthoHelper;
+    function onStartAnimation( event ) {
 
-                break;
+        var data = event.detail;
 
-            case 80: /*P*/
+        blendMesh.stopAll();
+        blendMesh.unPauseAll();
 
-                activeCamera = cameraPerspective;
-                activeHelper = cameraPerspectiveHelper;
+        // the blend mesh will combine 1 or more animations
+        for ( var i = 0; i < data.anims.length; ++i ) {
 
-                break;
+            blendMesh.play(data.anims[i], data.weights[i]);
+
+        }
+
+        isFrameStepping = false;
+
+    }
+
+    function onStopAnimation( event ) {
+
+        blendMesh.stopAll();
+        isFrameStepping = false;
+
+    }
+
+    function onPauseAnimation( event ) {
+
+        ( isFrameStepping ) ? blendMesh.unPauseAll(): blendMesh.pauseAll();
+
+        isFrameStepping = false;
+
+    }
+
+    function onStepAnimation( event ) {
+
+        blendMesh.unPauseAll();
+        isFrameStepping = true;
+        timeToStep = event.detail.stepSize;
+    }
+
+    function onWeightAnimation(event) {
+
+        var data = event.detail;
+        for ( var i = 0; i < data.anims.length; ++i ) {
+
+            blendMesh.applyWeight( data.anims[ i ], data.weights[ i ] );
 
         }
 
     }
 
-    //
+    function onCrossfade(event) {
 
-    function onWindowResize(event) {
+        var data = event.detail;
 
-        SCREEN_WIDTH = window.innerWidth;
-        SCREEN_HEIGHT = window.innerHeight;
-        aspect = SCREEN_WIDTH / SCREEN_HEIGHT;
+        blendMesh.stopAll();
+        blendMesh.crossfade( data.from, data.to, data.time );
 
-        renderer.setSize(SCREEN_WIDTH, SCREEN_HEIGHT);
-
-        camera.aspect = 0.5 * aspect;
-        camera.updateProjectionMatrix();
-
-        cameraPerspective.aspect = 0.5 * aspect;
-        cameraPerspective.updateProjectionMatrix();
-
-        cameraOrtho.left = -0.5 * frustumSize * aspect / 2;
-        cameraOrtho.right = 0.5 * frustumSize * aspect / 2;
-        cameraOrtho.top = frustumSize / 2;
-        cameraOrtho.bottom = -frustumSize / 2;
-        cameraOrtho.updateProjectionMatrix();
+        isFrameStepping = false;
 
     }
 
-    //
+    function onWarp( event ) {
+
+        var data = event.detail;
+
+        blendMesh.stopAll();
+        blendMesh.warp( data.from, data.to, data.time );
+
+        isFrameStepping = false;
+
+    }
+
+    function onShowSkeleton( event ) {
+
+        var shouldShow = event.detail.shouldShow;
+        helper.visible = shouldShow;
+
+    }
+
+    function onShowModel( event ) {
+
+        var shouldShow = event.detail.shouldShow;
+        blendMesh.showModel( shouldShow );
+
+    }
+
+    function start() {
+
+        blendMesh.rotation.y = Math.PI * -135 / 180;
+        scene.add( blendMesh );
+
+        var aspect = window.innerWidth / window.innerHeight;
+        var radius = blendMesh.geometry.boundingSphere.radius;
+
+        camera = new THREE.PerspectiveCamera( 45, aspect, 1, 10000 );
+        camera.position.set( 0.0, radius, radius * 3.5 );
+
+        controls = new THREE.OrbitControls( camera );
+        controls.target.set( 0, radius, 0 );
+        controls.update();
+
+        // Set default weights
+//        blendMesh.applyWeight( 'idle', 1 / 3 );
+        blendMesh.applyWeight( 'walk', 1 / 3 );
+//        blendMesh.applyWeight( 'run', 1 / 3 );
+
+        gui = new BlendCharacterGui(blendMesh);
+
+        // Create the debug visualization
+
+        helper = new THREE.SkeletonHelper( blendMesh );
+        helper.material.linewidth = 3;
+        scene.add( helper );
+
+        helper.visible = false;
+
+        animate();
+    }
 
     function animate() {
 
-        requestAnimationFrame(animate);
+        requestAnimationFrame( animate, renderer.domElement );
 
-        render();
-        stats.update();
+        stats.begin();
 
-    }
+        // step forward in time based on whether we're stepping and scale
 
+        var scale = gui.getTimeScale();
+        var delta = clock.getDelta();
+        var stepSize = (!isFrameStepping) ? delta * scale: timeToStep;
 
-    function render() {
+        // modify blend weights
 
-        var r = Date.now() * 0.0005;
+        blendMesh.update( stepSize );
+        helper.update();
+        gui.update( blendMesh.mixer.time );
 
-        mesh.position.x = 700 * Math.cos(r);
-        mesh.position.z = 700 * Math.sin(r);
-        mesh.position.y = 700 * Math.sin(r);
+        renderer.render( scene, camera );
+        stats.end();
 
-        if (activeCamera === cameraPerspective) {
+        // if we are stepping, consume time
+        // ( will equal step size next time a single step is desired )
 
-            cameraPerspective.fov = 35 + 30 * Math.sin(0.5 * r);
-            cameraPerspective.far = mesh.position.length();
-            cameraPerspective.updateProjectionMatrix();
-
-            cameraPerspectiveHelper.update();
-            cameraPerspectiveHelper.visible = true;
-
-            cameraOrthoHelper.visible = false;
-
-        } else {
-
-            cameraOrtho.far = mesh.position.length();
-            cameraOrtho.updateProjectionMatrix();
-
-            cameraOrthoHelper.update();
-            cameraOrthoHelper.visible = true;
-
-            cameraPerspectiveHelper.visible = false;
-
-        }
-
-        cameraRig.lookAt(mesh.position);
-
-        renderer.clear();
-
-        activeHelper.visible = false;
-
-        renderer.setViewport(0, 0, 100, 100);
-        renderer.render(scene1, activeCamera);
-
-        activeHelper.visible = true;
-
-        renderer.setViewport(SCREEN_WIDTH / 2, 0, SCREEN_WIDTH / 2, SCREEN_HEIGHT);
-        renderer.render(scene2, camera);
-
-
-//        renderer.clear();
-//        renderer.render(scene, camera);
-//        renderer.clearDepth();
-//        renderer.render(scene2, camera);
+        timeToStep = 0;
 
     }
-
 
 </script>
 

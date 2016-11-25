@@ -194,6 +194,7 @@ var Army = function (army, bgColor, miniMapColor, textColor, color) {
         if (numberOfUnits > 8) {
             numberOfUnits = 8
         }
+        console.log(numberOfUnits)
     }
     this.getHeroBonus = function () {
         return countProperties(army.heroes)

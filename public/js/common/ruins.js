@@ -39,8 +39,10 @@ var Ruins = new function () {
                 var army = Players.get(r.color).getArmies().get(r.army.id)
                 army.setNumberOfUnits(r.army)
                 if (army.getNumberOfUnits() > 1) {
+                    console.log(army.getNumberOfUnits())
                     army.update(r.army)
                 } else {
+                    console.log('dupa')
                     Players.get(r.color).getArmies().destroy(r.army.id)
                 }
                 if (CommonMe.colorEquals(r.color)) {
