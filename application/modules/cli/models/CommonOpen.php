@@ -1,21 +1,21 @@
 <?php
 
-class Cli_Model_CommonOpen
+class CommonOpen extends Thread
 {
-    protected $_db;
-
     /**
      * @param $dataIn
-     * @param \Devristo\Phpws\Protocol\WebSocketTransportInterface $user
-     * @param Cli_CommonHandler $handler
      * @throws Exception
      */
-    public function __construct($dataIn, Devristo\Phpws\Protocol\WebSocketTransportInterface $user, Cli_CommonHandler $handler)
+    public function __construct($dataIn)
     {
         if (!isset($dataIn['gameId']) || !isset($dataIn['playerId']) || !isset($dataIn['langId'])) {
             throw new Exception('Brak "gameId" lub "playerId" lub "langId');
             return;
         }
+    }
+
+    public function run()
+    {
         $this->_db = $handler->getDb();
         $mWebSocket = new Application_Model_Websocket($dataIn['playerId'], $this->_db);
         if (!$mWebSocket->checkAccessKey($dataIn['accessKey'], $this->_db)) {

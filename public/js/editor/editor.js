@@ -19,8 +19,5 @@ var Editor = new function () {
 }
 
 $(document).ready(function () {
-    GameScene.init($(window).innerWidth(), $(window).innerHeight())
-    GameModels.init()
-    PickerCommon.init()
     WebSocketEditor.init()
 })

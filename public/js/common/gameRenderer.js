@@ -22,6 +22,7 @@ var GameRenderer = new function () {
         renderer.shadowMapSoft = false
     }
     this.animate = function () {
+        console.log(1)
         if (TWEEN.update()) {
             requestAnimationFrame(GameRenderer.animate)
         } else {
