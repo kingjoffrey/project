@@ -24,15 +24,15 @@ $application = new Zend_Application(
 $application->getBootstrap()->bootstrap(array('date', 'config', 'modules', 'frontController'));
 
 include_once(APPLICATION_PATH . '/modules/cli/handlers/PrivateChatHandler.php');
-include_once(APPLICATION_PATH . '/modules/cli/handlers/CommonHandler.php');
-include_once(APPLICATION_PATH . '/modules/cli/handlers/GameHandler.php');
-include_once(APPLICATION_PATH . '/modules/cli/handlers/TutorialHandler.php');
+//include_once(APPLICATION_PATH . '/modules/cli/handlers/CommonHandler.php');
+//include_once(APPLICATION_PATH . '/modules/cli/handlers/GameHandler.php');
+//include_once(APPLICATION_PATH . '/modules/cli/handlers/TutorialHandler.php');
 include_once(APPLICATION_PATH . '/modules/cli/handlers/SetupHandler.php');
 include_once(APPLICATION_PATH . '/modules/cli/handlers/NewHandler.php');
 include_once(APPLICATION_PATH . '/modules/cli/handlers/HelpHandler.php');
 include_once(APPLICATION_PATH . '/modules/cli/handlers/EditorHandler.php');
 include_once(APPLICATION_PATH . '/modules/cli/handlers/GeneratorHandler.php');
-include_once(APPLICATION_PATH . '/modules/cli/handlers/TestHandler.php');
+//include_once(APPLICATION_PATH . '/modules/cli/handlers/TestHandler.php');
 
 $loop = \React\EventLoop\Factory::create();
 
@@ -42,7 +42,10 @@ $writer = new Zend\Log\Writer\Stream("php://output");
 $logger->addWriter($writer);
 
 // Create a WebSocket server
-$address = 'tcp://' . Zend_Registry::get('config')->websockets->aHost . ':' . Zend_Registry::get('config')->websockets->aPort;
+$configWS = Zend_Registry::get('config')->websockets;
+$privateChatPort = $configWS->aPort + 1;
+
+$address = 'tcp://' . $configWS->aHost . ':' . $privateChatPort;
 $server = new WebSocketServer($address, $loop, $logger);
 
 // Create a router which transfers all /chat connections to the ChatHandler class
@@ -52,14 +55,14 @@ $router = new \Devristo\Phpws\Server\UriHandler\ClientRouter($server, $logger);
 //$router->addRoute('#^/chat$#i', new ChatHandler($logger));
 
 $router->addRoute('#^/chat$#i', new Cli_PrivateChatHandler($logger));
-$router->addRoute('#^/game$#i', new Cli_GameHandler($logger));
-$router->addRoute('#^/tutorial$#i', new Cli_TutorialHandler($logger));
+//$router->addRoute('#^/game$#i', new Cli_GameHandler($logger));
+//$router->addRoute('#^/tutorial$#i', new Cli_TutorialHandler($logger));
 $router->addRoute('#^/setup$#i', new Cli_SetupHandler($logger));
 $router->addRoute('#^/new$#i', new Cli_NewHandler($logger));
 $router->addRoute('#^/help$#i', new Cli_HelpHandler($logger));
 $router->addRoute('#^/editor$#i', new Cli_EditorHandler($logger));
 $router->addRoute('#^/generator$#i', new Cli_GeneratorHandler($logger));
-$router->addRoute('#^/test$#i', new Cli_TestHandler($logger));
+//$router->addRoute('#^/test$#i', new Cli_TestHandler($logger));
 
 // Bind the server
 $server->bind();

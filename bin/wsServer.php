@@ -2,7 +2,7 @@
 require dirname(__DIR__) . '/vendor/autoload.php';
 
 $loop = React\EventLoop\Factory::create();
-$handler = new GameSever\Handler();
+$handler = new GameServer\Handler();
 
 $context = new React\ZMQ\Context($loop);
 $pull = $context->getSocket(ZMQ::SOCKET_PULL);

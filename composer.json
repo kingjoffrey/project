@@ -1,11 +1,18 @@
 {
     "autoload": {
         "psr-0": {
-            "MyApp": "src"
+            "GameServer": "src"
         }
     },
     "require": {
         "cboden/ratchet": "0.3.*",
-        "react/zmq": "0.2.*|0.3.*"
-    }
+        "react/zmq": "0.2.*|0.3.*",
+        "devristo/phpws": "dev-master"
+    },
+    "repositories": [
+        {
+            "type": "vcs",
+            "url": "https://github.com/Devristo/phpws"
+        }
+    ]
 }
