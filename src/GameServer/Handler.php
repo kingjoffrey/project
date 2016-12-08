@@ -129,12 +129,21 @@ class Handler implements MessageComponentInterface
     public function onMessage(ConnectionInterface $from, $msg)
     {
         $dataIn = json_decode($msg);
+        print_r($dataIn);
         if ($dataIn->type == 'open') {
-            $data = array(
-                'id' => $from->resourceId,
-                'msg' => $dataIn
-            );
-            msg_send($this->_queue, 1, $data, $this->_serialize, $this->_blocking, $err);
+//            $data = array(
+//                'id' => $from->resourceId,
+//                'msg' => $dataIn
+//            );
+//            msg_send($this->_queue, 1, $data, $this->_serialize, $this->_blocking, $err);
+
+            $pid = pcntl_fork();
+            switch ($pid) {
+                case -1:    // pcntl_fork() failed
+                    die('could not fork');
+                case 0:    // you're in the new (child) process
+                    exec('/usr/bin/php /home/idea/WOF/bin/zmqThread.php ' . $dataIn->gameId . ' &>/home/idea/WOF/log/' . $dataIn->gameId . '.log &');
+            }
         } else {
             if ($gameId = $this->_games->find($from->resourceId)) {
                 $data = array(

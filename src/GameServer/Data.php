@@ -1,6 +1,6 @@
 <?php
-
-class Data extends Threaded
+namespace GameServer;
+class Data extends \Threaded
 {
     private $_dataIn;
     private $_db;
@@ -11,13 +11,13 @@ class Data extends Threaded
      */
     public function __construct($dataIn)
     {
-        if (!isset($dataIn['gameId']) || !isset($dataIn['playerId']) || !isset($dataIn['langId'])) {
+        if (!isset($dataIn->gameId) || !isset($dataIn->playerId) || !isset($dataIn->langId)) {
             throw new Exception('Brak "gameId" lub "playerId" lub "langId');
             return;
         }
 
         $this->_dataIn = $dataIn;
-        $this->_db = Cli_Model_Database::getDb();;
+        $this->_db = Database::getDb();;
     }
 
     public function getDb()

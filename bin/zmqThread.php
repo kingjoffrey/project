@@ -1,5 +1,4 @@
 <?php
-namespace GameServer;
 require dirname(__DIR__) . '/vendor/autoload.php';
 
 defined('APPLICATION_PATH')
@@ -7,10 +6,11 @@ defined('APPLICATION_PATH')
 defined('APPLICATION_ENV')
 || define('APPLICATION_ENV', (getenv('APPLICATION_ENV') ? getenv('APPLICATION_ENV') : 'development'));
 require_once 'Zend/Application.php';
-$application = new \Zend_Application(
+$application = new Zend_Application(
     APPLICATION_ENV,
     APPLICATION_PATH . '/configs/application.ini'
 );
+$application->getBootstrap()->bootstrap(array('date', 'config', 'modules'));
 
 $run = true;
 $queue = msg_get_queue(123402);
@@ -18,7 +18,7 @@ $unserialize = true;
 $flags = 0;
 
 while ($run) {
-    msg_receive($queue, 0, $type, 1024, $data, $unserialize, $flags, $err);
+    msg_receive($queue, $argv[1], $type, 1024, $data, $unserialize, $flags, $err);
     if ($err) {
         print_r($err);
     }

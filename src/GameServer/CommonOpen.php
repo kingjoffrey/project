@@ -1,6 +1,6 @@
 <?php
-
-class CommonOpen extends Thread
+namespace GameServer;
+class CommonOpen extends \Thread
 {
     public function __construct($dataIn)
     {
@@ -9,9 +9,11 @@ class CommonOpen extends Thread
 
     public function run()
     {
-        $this->_db = Cli_Model_Database::getDb();;
-        $mWebSocket = new Application_Model_Websocket($this->_dataIn['playerId'], $this->_db);
-        if (!$mWebSocket->checkAccessKey($this->_dataIn['accessKey'], $this->_db)) {
+        $db = $this->_dataIn->getDb();
+        $data=$this->_dataIn->getData();
+
+        $mWebSocket = new \Application_Model_Websocket($data->playerId, $db);
+        if (!$mWebSocket->checkAccessKey($data->accessKey, $db)) {
             throw new Exception('Brak uprawnień!');
         } else {
             echo 'Wszystko gra';

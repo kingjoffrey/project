@@ -5,7 +5,7 @@ use Devristo\Phpws\Server\UriHandler\WebSocketUriHandler;
 
 class Cli_CommonHandler extends WebSocketUriHandler
 {
-    protected $_games = array();
+    protected $_game;
     protected $_db;
 
     public function __construct($logger)
@@ -17,33 +17,6 @@ class Cli_CommonHandler extends WebSocketUriHandler
     public function getDb()
     {
         return $this->_db;
-    }
-
-    public function addGame($gameId)
-    {
-        $this->_games[$gameId] = new Cli_Model_Game($gameId, $this->_db);
-    }
-
-    public function removeGame($gameId)
-    {
-        $this->_games[$gameId] = null;
-        unset($this->_games[$gameId]);
-    }
-
-    /**
-     * @param $gameId
-     * @return Cli_Model_Common
-     */
-    public function getGame($gameId)
-    {
-        if (isset($this->_games[$gameId])) {
-            return $this->_games[$gameId];
-        }
-    }
-
-    public function open($dataIn, WebSocketTransportInterface $user)
-    {
-        new Cli_Model_CommonOpen($dataIn, $user, $this);
     }
 
     public function ruin($armyId, WebSocketTransportInterface $user)
@@ -65,7 +38,7 @@ class Cli_CommonHandler extends WebSocketUriHandler
         $l->log($dataIn);
 
         if ($dataIn['type'] == 'open') {
-            $this->open($dataIn, $user);
+            new Cli_Model_CommonOpen($dataIn, $user, $this);
             $game = Cli_CommonHandler::getGameFromUser($user);
             if ($game->isActive() && $game->getPlayers()->getPlayer($game->getPlayerColor($game->getTurnPlayerId()))->getComputer()) {
                 new Cli_Model_Computer($user, $this);
@@ -141,9 +114,7 @@ class Cli_CommonHandler extends WebSocketUriHandler
 
         switch ($dataIn['type']) {
             case 'move':
-# pcntl_fork();
-                $move = new Cli_Model_Move($dataIn, $user, $this);
-                $move->start();
+                new Cli_Model_Move($dataIn, $user, $this);
                 break;
 
             case 'split':

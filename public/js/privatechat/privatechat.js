@@ -142,7 +142,7 @@ var Websocket = new function () {
         setTimeout('Websocket.init()', 1000)
     }
     this.init = function () {
-        ws = new WebSocket(wsPrivateChatURL + '/chat')
+        ws = new WebSocket(wsURL + '/chat')
 
         ws.onopen = function () {
             closed = false
