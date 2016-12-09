@@ -44,6 +44,11 @@ class Game
         return $this->_players[$key];
     }
 
+    public function countPlayers()
+    {
+        return count($this->_players);
+    }
+
     /**
      * @param $id
      * @return Player
@@ -60,9 +65,9 @@ class Game
 
     public function removePlayer(Player $Player)
     {
-        foreach (array_keys($this->_players) as $key) {
-            $P = $this->getPlayer($key);
-            if ($Player->getId() == $P->getId()) {
+        foreach ($this->_players as $key => $P) {
+            if ($Player == $P) {
+                $Player = null;
                 unset($this->_players[$key]);
                 return true;
             }
@@ -83,10 +88,14 @@ class Game
 class Cli_PCNTLHandler extends WebSocketUriHandler
 {
     private $_games = array();
+    private $_ports = array();
+    private $_mainPort;
 
     public function __construct($logger)
     {
         parent::__construct($logger);
+        $this->_mainPort = Zend_Registry::get('config')->websockets->aPort;
+
     }
 
     public function onMessage(WebSocketTransportInterface $user, WebSocketMessageInterface $msg)
@@ -105,14 +114,17 @@ class Cli_PCNTLHandler extends WebSocketUriHandler
                 $Game->addPlayer($Player);
             }
 
+            $pcntlPort = $this->_mainPort + $Game->getPort();
+
             $token = array(
                 'type' => 'port',
-                'port' => $Game->getPort()
+                'port' => $pcntlPort
             );
 
             $user->sendString(Zend_Json::encode($token));
         } else {
-            $port = 8081;
+            $port = $this->initPort();
+            $pcntlPort = $this->_mainPort + $port;
             $pid = pcntl_fork();
             if ($pid == -1) {
                 // pcntl_fork() failed
@@ -122,14 +134,13 @@ class Cli_PCNTLHandler extends WebSocketUriHandler
                 $this->addGame($dataIn['gameId'], $user->getId(), $port);
                 $token = array(
                     'type' => 'port',
-                    'port' => $port
+                    'port' => $pcntlPort
                 );
 
                 $user->sendString(Zend_Json::encode($token));
             } elseif ($pid == 0) {
                 // you're in the new (child) process
-                exec('/usr/bin/php /home/idea/WOF/scripts/gameWSServer.php ' . $dataIn['gameId'] . ' ' . $port . ' &>/home/idea/WOF/log/' . $dataIn['gameId'] . '.log &');
-//                echo '/usr/bin/php /home/idea/WOF/scripts/gameWSServer.php ' . $dataIn['gameId'] . ' ' . $port . ' &>/home/idea/WOF/log/' . $dataIn['gameId'] . '.log &';
+                exec('/usr/bin/php /home/idea/WOF/scripts/gameWSServer.php ' . $dataIn['gameId'] . ' ' . $pcntlPort . ' &>/home/idea/WOF/log/' . $dataIn['gameId'] . '.log &');
                 exit;
             }
         }
@@ -138,7 +149,12 @@ class Cli_PCNTLHandler extends WebSocketUriHandler
     public function onDisconnect(WebSocketTransportInterface $user)
     {
         if ($Game = $this->findGame($user->parameters['gameId'])) {
-            if ($Player = $Game->findPlayer($user->getId())) {
+            if ($Game->countPlayers() > 1) {
+                if ($Player = $Game->findPlayer($user->getId())) {
+                    $Game->removePlayer($Player);
+                }
+            } else {
+                $this->removeGame($Game);
             }
         }
     }
@@ -175,6 +191,17 @@ class Cli_PCNTLHandler extends WebSocketUriHandler
         return $this->_games[$key];
     }
 
+    public function removeGame(Game $Game)
+    {
+        foreach ($this->_games as $key => $G) {
+            if ($Game == $G) {
+                $Game = null;
+                unset($this->_games[$key]);
+                return true;
+            }
+        }
+    }
+
     /**
      * @param $id
      * @return Game
@@ -189,5 +216,16 @@ class Cli_PCNTLHandler extends WebSocketUriHandler
         }
     }
 
-
+    public function initPort()
+    {
+        end($this->_ports);
+        $maxPort = current($this->_ports);
+//        $length = count($this->_ports);
+//        if($maxPort<$length){
+//
+//        }
+        $port = $maxPort + 1;
+        $this->_ports[] = $port;
+        return $port;
+    }
 }

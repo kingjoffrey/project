@@ -30,7 +30,7 @@ class Cli_Model_CommonOpen
 
         $game->addUser($dataIn['playerId'], $user);
         $myColor = $game->getPlayerColor($dataIn['playerId']);
-        $this->me($user, $myColor, $dataIn['playerId']);
+        $user->parameters['me'] = new Cli_Model_Me($myColor, $dataIn['playerId']);
 
         if (!$game->isActive()) {
             $token = array(
@@ -56,10 +56,4 @@ class Cli_Model_CommonOpen
         );
         $handler->sendToChannel($token);
     }
-
-    public function me($user, $myColor, $playerId)
-    {
-        $user->parameters['me'] = new Cli_Model_Me($myColor, $playerId);
-    }
-
 }
