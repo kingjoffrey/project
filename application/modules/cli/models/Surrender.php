@@ -26,7 +26,7 @@ class Cli_Model_Surrender
             'color' => $color
         );
 
-        $handler->sendToChannel($game, $token);
+        $handler->sendToChannel($token);
     }
 
 }

@@ -13,7 +13,7 @@ class Cli_Model_SaveResults
             $token = array(
                 'type' => 'end'
             );
-            $handler->sendToChannel($game, $token);
+            $handler->sendToChannel($token);
             $handler->removeGame($game->getId());
             return;
         }
@@ -162,7 +162,7 @@ class Cli_Model_SaveResults
         $token = array(
             'type' => 'end'
         );
-        $handler->sendToChannel($game, $token);
+        $handler->sendToChannel($token);
         $handler->removeGame($game->getId());
     }
 }

@@ -49,6 +49,6 @@ class Cli_Model_CastleBuildDefense
             'castleId' => $castleId
         );
 
-        $handler->sendToChannel($game, $token);
+        $handler->sendToChannel($token);
     }
 }

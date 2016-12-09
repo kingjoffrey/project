@@ -128,7 +128,7 @@ class Cli_Model_Garrison
                 'childArmy' => $armies->getArmy($this->_newArmyId)->toArray(),
                 'color' => $army->getColor()
             );
-            $handler->sendToChannel($game, $token);
+            $handler->sendToChannel($token);
         }
     }
 

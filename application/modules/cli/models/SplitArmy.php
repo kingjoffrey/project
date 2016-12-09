@@ -74,6 +74,6 @@ class Cli_Model_SplitArmy
             'color' => $color
         );
 
-        $handler->sendToChannel($game, $token);
+        $handler->sendToChannel($token);
     }
 }

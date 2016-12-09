@@ -107,7 +107,7 @@ class Cli_Model_Army
                 'color' => $this->_color
             );
 
-            $handler->sendToChannel($game, $token);
+            $handler->sendToChannel($token);
             return;
         }
 
@@ -150,7 +150,7 @@ class Cli_Model_Army
             'type' => 'move'
         );
 
-        $handler->sendToChannel($game, $token);
+        $handler->sendToChannel($token);
 
         if ($end) {
             new Cli_Model_SaveResults($game, $handler);

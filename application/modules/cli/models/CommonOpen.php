@@ -2,8 +2,6 @@
 
 class Cli_Model_CommonOpen
 {
-    protected $_db;
-
     /**
      * @param $dataIn
      * @param \Devristo\Phpws\Protocol\WebSocketTransportInterface $user
@@ -16,21 +14,20 @@ class Cli_Model_CommonOpen
             throw new Exception('Brak "gameId" lub "playerId" lub "langId');
             return;
         }
-        $this->_db = $handler->getDb();
-        $mWebSocket = new Application_Model_Websocket($dataIn['playerId'], $this->_db);
-        if (!$mWebSocket->checkAccessKey($dataIn['accessKey'], $this->_db)) {
+        $db = $handler->getDb();
+        $mWebSocket = new Application_Model_Websocket($dataIn['playerId'], $db);
+        if (!$mWebSocket->checkAccessKey($dataIn['accessKey'], $db)) {
             throw new Exception('Brak uprawnień!');
         }
 
         Zend_Registry::set('id_lang', $dataIn['langId']);
 
-        if (!($user->parameters['game'] = $handler->getGame($dataIn['gameId']))) {
+        if (!($game = $handler->getGame())) {
             echo 'not set' . "\n";
-            $handler->addGame($dataIn['gameId']);
-            $user->parameters['game'] = $handler->getGame($dataIn['gameId']);
+            $handler->initGame($dataIn['gameId']);
+            $game = $handler->getGame();
         }
 
-        $game = Cli_CommonHandler::getGameFromUser($user);
         $game->addUser($dataIn['playerId'], $user);
         $myColor = $game->getPlayerColor($dataIn['playerId']);
         $this->me($user, $myColor, $dataIn['playerId']);
@@ -39,7 +36,7 @@ class Cli_Model_CommonOpen
             $token = array(
                 'type' => 'end'
             );
-            $handler->sendToChannel($game, $token);
+            $handler->sendToChannel($token);
             return;
         }
 
@@ -57,7 +54,7 @@ class Cli_Model_CommonOpen
             'type' => 'online',
             'color' => $myColor
         );
-        $handler->sendToChannel($game, $token);
+        $handler->sendToChannel($token);
     }
 
     public function me($user, $myColor, $playerId)

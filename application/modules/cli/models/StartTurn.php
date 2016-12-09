@@ -116,7 +116,7 @@ class Cli_Model_StartTurn
             'armies' => $armies->toArray(),
             'color' => $color
         );
-        $handler->sendToChannel($game, $token);
+        $handler->sendToChannel($token);
 
         if ($player->getComputer()) {
             new Cli_Model_Computer($user, $handler);

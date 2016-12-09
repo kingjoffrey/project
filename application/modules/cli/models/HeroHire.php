@@ -45,6 +45,6 @@ class Cli_Model_HeroHire
             'color' => $color
         );
 
-        $handler->sendToChannel($game, $token);
+        $handler->sendToChannel($token);
     }
 }

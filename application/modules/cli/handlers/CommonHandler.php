@@ -19,6 +19,16 @@ class Cli_CommonHandler extends WebSocketUriHandler
         return $this->_db;
     }
 
+    public function getGame()
+    {
+        return $this->_game;
+    }
+
+    public function initGame($gameId)
+    {
+        $this->_game = new Cli_Model_Game($gameId, $this->_db);
+    }
+
     public function ruin($armyId, WebSocketTransportInterface $user)
     {
         new Cli_Model_SearchRuinHandler($armyId, $user, $this);
@@ -39,15 +49,13 @@ class Cli_CommonHandler extends WebSocketUriHandler
 
         if ($dataIn['type'] == 'open') {
             new Cli_Model_CommonOpen($dataIn, $user, $this);
-            $game = Cli_CommonHandler::getGameFromUser($user);
-            if ($game->isActive() && $game->getPlayers()->getPlayer($game->getPlayerColor($game->getTurnPlayerId()))->getComputer()) {
+            if ($this->_game && $this->_game->isActive() && $this->_game->getPlayers()->getPlayer($this->_game->getPlayerColor($this->_game->getTurnPlayerId()))->getComputer()) {
                 new Cli_Model_Computer($user, $this);
             }
             return;
         }
 
-        $game = Cli_CommonHandler::getGameFromUser($user);
-        $gameId = $game->getId();
+        $gameId = $this->_game->getId();
         $playerId = $user->parameters['me']->getId();
 
         // AUTHORIZATION
@@ -61,14 +69,14 @@ class Cli_CommonHandler extends WebSocketUriHandler
             return;
         }
 
-        if ($timeLimit = $game->getTimeLimit()) {
-            if (time() - $game->getBegin() > $timeLimit * 600) {
-                new Cli_Model_SaveResults($game, $this);
+        if ($timeLimit = $this->_game->getTimeLimit()) {
+            if (time() - $this->_game->getBegin() > $timeLimit * 600) {
+                new Cli_Model_SaveResults($this->_game, $this);
                 return;
             }
         }
 
-        if ($turnTimeLimit = $game->getTurnTimeLimit()) {
+        if ($turnTimeLimit = $this->_game->getTurnTimeLimit()) {
             $mTurn = new Application_Model_TurnHistory($gameId, $this->_db);
             $turn = $mTurn->getCurrentStatus();
             if (time() - strtotime($turn['date']) > $turnTimeLimit * 60) {
@@ -103,7 +111,7 @@ class Cli_CommonHandler extends WebSocketUriHandler
             return;
         }
 
-        if (!$game->isPlayerTurn($playerId)) {
+        if (!$this->_game->isPlayerTurn($playerId)) {
             $this->sendError($user, 'Not your turn.');
 
             if ($config->exitOnErrors) {
@@ -173,21 +181,21 @@ class Cli_CommonHandler extends WebSocketUriHandler
 
     public function onDisconnect(WebSocketTransportInterface $user)
     {
-        $game = Cli_CommonHandler::getGameFromUser($user);
-        if ($game) {
+        if ($this->_game) {
             $playerId = $user->parameters['me']->getId();
-            $game->removeUser($playerId, $this->_db);
+            $this->_game->removeUser($playerId, $this->_db);
 
-            if ($game->getUsers()) {
-                $color = $game->getPlayerColor($playerId);
+            if ($this->_game->getUsers()) {
+                $color = $this->_game->getPlayerColor($playerId);
                 $token = array(
                     'type' => 'close',
                     'color' => $color
                 );
 
-                $this->sendToChannel($game, $token);
+                $this->sendToChannel($token);
             } else {
-                $this->removeGame($game->getId());
+                $this->_game = null;
+                exit;
             }
         }
     }
@@ -198,14 +206,14 @@ class Cli_CommonHandler extends WebSocketUriHandler
      * @param null $debug
      * @throws Zend_Exception
      */
-    public function sendToChannel(Cli_Model_Game $game, $token, $debug = null)
+    public function sendToChannel($token, $debug = null)
     {
         if ($debug || Zend_Registry::get('config')->debug) {
             print_r('ODPOWIEDŹ ');
             print_r($token);
         }
 
-        foreach ($game->getUsers() as $user) {
+        foreach ($this->_game->getUsers() as $user) {
             $this->sendToUser($user, $token);
         }
     }
@@ -237,14 +245,5 @@ class Cli_CommonHandler extends WebSocketUriHandler
         }
 
         $user->sendString(Zend_Json::encode($token));
-    }
-
-    /**
-     * @param WebSocketTransportInterface $user
-     * @return Cli_Model_Game
-     */
-    static public function getGameFromUser(Devristo\Phpws\Protocol\WebSocketTransportInterface $user)
-    {
-        return $user->parameters['game'];
     }
 }

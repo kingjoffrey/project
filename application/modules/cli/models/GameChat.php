@@ -18,6 +18,6 @@ class Cli_Model_GameChat
             'color' => $me->getColor()
         );
 
-        $handler->sendToChannel($game, $token);
+        $handler->sendToChannel($token);
     }
 }

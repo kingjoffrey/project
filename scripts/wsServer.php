@@ -50,8 +50,7 @@ $router->addRoute('#^/new$#i', new Cli_NewHandler($logger));
 $router->addRoute('#^/help$#i', new Cli_HelpHandler($logger));
 $router->addRoute('#^/editor$#i', new Cli_EditorHandler($logger));
 $router->addRoute('#^/generator$#i', new Cli_GeneratorHandler($logger));
-$router->addRoute('#^/game$#i', new Cli_PCNTLHandler($logger));
-$router->addRoute('#^/tutorial$#i', new Cli_PCNTLHandler($logger));
+$router->addRoute('#^/pcntl$#i', new Cli_PCNTLHandler($logger));
 
 
 // Bind the server

@@ -32,7 +32,7 @@ class Cli_Model_NextTurn
                     'nr' => $turnNumber,
                     'color' => $nextPlayerColor
                 );
-                $handler->sendToChannel($game, $token);
+                $handler->sendToChannel($token);
                 return;
             } else {
                 $players->getPlayer($nextPlayerColor)->setLost($game->getId(), $db);
@@ -40,7 +40,7 @@ class Cli_Model_NextTurn
                     'type' => 'dead',
                     'color' => $nextPlayerColor
                 );
-                $handler->sendToChannel($game, $token);
+                $handler->sendToChannel($token);
             }
         }
     }
@@ -82,7 +82,7 @@ class Cli_Model_NextTurn
                 'type' => 'neutral',
                 'armies' => $game->getPlayers()->getPlayer('neutral')->getArmies()->toArray()
             );
-            $handler->sendToChannel($game, $token);
+            $handler->sendToChannel($token);
         }
         $turnPlayerId = $game->getPlayers()->getPlayer($nextPlayerColor)->getId();
         $game->setTurnPlayerId($turnPlayerId);

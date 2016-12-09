@@ -23,7 +23,7 @@ class Cli_Model_DisbandArmy
             'id' => $armyId,
             'color' => $color
         );
-        $handler->sendToChannel($game, $token);
+        $handler->sendToChannel($token);
 
     }
 

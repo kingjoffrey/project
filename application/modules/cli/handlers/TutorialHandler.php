@@ -219,12 +219,12 @@ class Cli_TutorialHandler extends Cli_CommonHandler
         }
     }
 
-    public function sendToChannel(Cli_Model_Game $game, $token, $debug = null)
+    public function sendToChannel($token, $debug = null)
     {
-        foreach ($game->getUsers() as $user) {
+        foreach ($this->_game->getUsers() as $user) {
         }
         $this->handleTutorial($token, $user);
-        parent::sendToChannel($game, $token, $debug);
+        parent::sendToChannel($token, $debug);
     }
 
     public function sendToUser(Devristo\Phpws\Protocol\WebSocketTransportInterface $user, $token, $debug = null)

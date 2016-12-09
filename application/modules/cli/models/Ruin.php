@@ -199,7 +199,7 @@ class Cli_Model_Ruin extends Cli_Model_Entity
             'color' => $color
         );
 
-        $handler->sendToChannel($game, $token);
+        $handler->sendToChannel($token);
     }
 
     public function giveMeDragons(Cli_Model_Game $game, Cli_Model_Army $army, $heroId, $playerId, $handler)
@@ -228,6 +228,6 @@ class Cli_Model_Ruin extends Cli_Model_Entity
             'color' => $color
         );
 
-        $handler->sendToChannel($game, $token);
+        $handler->sendToChannel($token);
     }
 }

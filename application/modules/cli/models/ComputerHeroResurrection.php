@@ -47,6 +47,6 @@ class Cli_Model_ComputerHeroResurrection
             'color' => $color
         );
 
-        $handler->sendToChannel($game, $token);
+        $handler->sendToChannel($token);
     }
 }

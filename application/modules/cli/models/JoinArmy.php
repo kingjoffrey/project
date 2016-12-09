@@ -23,6 +23,6 @@ class Cli_Model_JoinArmy
             'color' => $color
         );
 
-        $handler->sendToChannel($game, $token);
+        $handler->sendToChannel($token);
     }
 }

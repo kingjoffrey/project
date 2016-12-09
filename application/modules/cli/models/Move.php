@@ -24,7 +24,7 @@ class Cli_Model_Move
         $y = $dataIn['y'];
 
         $playerId = $user->parameters['me']->getId();
-        $game = Cli_CommonHandler::getGameFromUser($user);
+        $game = $handler->getGame();
 
         if (!Zend_Validate::is($attackerArmyId, 'Digits') || !Zend_Validate::is($x, 'Digits') || !Zend_Validate::is($y, 'Digits')) {
             $handler->sendError($user, 'Niepoprawny format danych!');

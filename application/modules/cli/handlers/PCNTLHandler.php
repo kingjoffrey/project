@@ -128,7 +128,9 @@ class Cli_PCNTLHandler extends WebSocketUriHandler
                 $user->sendString(Zend_Json::encode($token));
             } elseif ($pid == 0) {
                 // you're in the new (child) process
-                exec('/usr/bin/php /home/idea/WOF/scripts/gameWSServer.php ' . $dataIn['gameId'] . $port . ' &>/home/idea/WOF/log/' . $dataIn['gameId'] . '.log &');
+                exec('/usr/bin/php /home/idea/WOF/scripts/gameWSServer.php ' . $dataIn['gameId'] . ' ' . $port . ' &>/home/idea/WOF/log/' . $dataIn['gameId'] . '.log &');
+//                echo '/usr/bin/php /home/idea/WOF/scripts/gameWSServer.php ' . $dataIn['gameId'] . ' ' . $port . ' &>/home/idea/WOF/log/' . $dataIn['gameId'] . '.log &';
+                exit;
             }
         }
     }

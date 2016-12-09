@@ -47,7 +47,7 @@ class Cli_Model_HeroResurrection
             'gold' => $player->getGold(),
             'color' => $color
         );
-        $handler->sendToChannel($game, $token);
+        $handler->sendToChannel($token);
     }
 
 
