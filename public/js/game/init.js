@@ -6,6 +6,6 @@ var Init = new function () {
 }
 $(document).ready(function () {
     AStar.init()
-    WebSocketPCNTL.init()
+    WebSocketExec.init()
     PrivateChat.init()
 })

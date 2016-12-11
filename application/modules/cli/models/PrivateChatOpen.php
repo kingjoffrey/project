@@ -11,7 +11,7 @@ class Cli_Model_PrivateChatOpen
     public function __construct($dataIn, Devristo\Phpws\Protocol\WebSocketTransportInterface $user, Cli_PrivateChatHandler $handler)
     {
         if (!isset($dataIn['playerId']) || !isset($dataIn['langId'])) {
-            throw new Exception('Brak "playerId" lub "langId');
+            echo('Brak "playerId" lub "langId' . "\n");
             return;
         }
 
@@ -19,7 +19,7 @@ class Cli_Model_PrivateChatOpen
         $mWebSocket = new Application_Model_Websocket($dataIn['playerId'], $db);
 
         if (!$mWebSocket->checkAccessKey($dataIn['accessKey'], $db)) {
-            throw new Exception('Brak uprawnień!');
+            echo('Brak uprawnień!' . "\n");
             return;
         }
 

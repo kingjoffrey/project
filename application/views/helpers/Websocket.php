@@ -18,7 +18,7 @@ class Zend_View_Helper_Websocket extends Zend_View_Helper_Abstract
 
         $script = '
         WEB_SOCKET_DEBUG = true;
-        var wsURL1 = "' . $configWS->aSchema . '://' . $configWS->aHost . '", wsURL2 = "' . $configWS->aPort . '",
+        var wsURL = "' . $configWS->aSchema . '://' . $configWS->aHost . '", wsPort = "' . $configWS->aPort . '",
   id = ' . $identity->playerId . ', accessKey = "' . $identity->accessKey . '", langId =  ' . Zend_Registry::get('id_lang') . ',
   playerName = "' . $identity->firstName . ' ' . $identity->lastName . '";
   ';

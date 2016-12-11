@@ -1,7 +1,7 @@
 "use strict"
 var WebSocketEditor = new function () {
     this.init = function () {
-        var ws = new WebSocket(wsURL + '/editor')
+        var ws = new WebSocket(wsURL + ':' + wsPort + '/editor')
 
         ws.onopen = function () {
             WebSocketSend.setClosed(0)

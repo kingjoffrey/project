@@ -11,8 +11,7 @@ class Cli_Model_Database
                 'host' => $params->host,
                 'username' => $params->username,
                 'password' => $params->password,
-                'dbname' => $params->dbname,
-                'persistent' => true
+                'dbname' => $params->dbname
             ));
         } catch (PDOException $e) {
             die('Database connection could not be established.');

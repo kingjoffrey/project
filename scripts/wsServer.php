@@ -28,7 +28,7 @@ include_once(APPLICATION_PATH . '/modules/cli/handlers/NewHandler.php');
 include_once(APPLICATION_PATH . '/modules/cli/handlers/HelpHandler.php');
 include_once(APPLICATION_PATH . '/modules/cli/handlers/EditorHandler.php');
 include_once(APPLICATION_PATH . '/modules/cli/handlers/GeneratorHandler.php');
-include_once(APPLICATION_PATH . '/modules/cli/handlers/PCNTLHandler.php');
+include_once(APPLICATION_PATH . '/modules/cli/handlers/ExecHandler.php');
 
 $loop = \React\EventLoop\Factory::create();
 
@@ -50,7 +50,7 @@ $router->addRoute('#^/new$#i', new Cli_NewHandler($logger));
 $router->addRoute('#^/help$#i', new Cli_HelpHandler($logger));
 $router->addRoute('#^/editor$#i', new Cli_EditorHandler($logger));
 $router->addRoute('#^/generator$#i', new Cli_GeneratorHandler($logger));
-$router->addRoute('#^/pcntl$#i', new Cli_PCNTLHandler($logger));
+$router->addRoute('#^/exec$#i', new Cli_ExecHandler($logger));
 
 
 // Bind the server

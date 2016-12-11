@@ -85,7 +85,7 @@ class Game
     }
 }
 
-class Cli_PCNTLHandler extends WebSocketUriHandler
+class Cli_ExecHandler extends WebSocketUriHandler
 {
     private $_games = array();
     private $_ports = array();
@@ -125,24 +125,15 @@ class Cli_PCNTLHandler extends WebSocketUriHandler
         } else {
             $port = $this->initPort();
             $pcntlPort = $this->_mainPort + $port;
-            $pid = pcntl_fork();
-            if ($pid == -1) {
-                // pcntl_fork() failed
-                echo('could not fork ' . $dataIn['gameId']);
-            } elseif ($pid) {
-                $user->parameters['gameId'] = $dataIn['gameId'];
-                $this->addGame($dataIn['gameId'], $user->getId(), $port);
-                $token = array(
-                    'type' => 'port',
-                    'port' => $pcntlPort
-                );
+            $user->parameters['gameId'] = $dataIn['gameId'];
+            $this->addGame($dataIn['gameId'], $user->getId(), $port);
+            $token = array(
+                'type' => 'port',
+                'port' => $pcntlPort
+            );
 
-                $user->sendString(Zend_Json::encode($token));
-            } elseif ($pid == 0) {
-                // you're in the new (child) process
-                exec('/usr/bin/php /home/idea/WOF/scripts/gameWSServer.php ' . $dataIn['gameId'] . ' ' . $pcntlPort . ' &>/home/idea/WOF/log/' . $dataIn['gameId'] . '.log &');
-                exit;
-            }
+            $user->sendString(Zend_Json::encode($token));
+            exec('/usr/bin/php /home/idea/WOF/scripts/gameWSServer.php ' . $dataIn['gameId'] . ' ' . $pcntlPort . ' &>/home/idea/WOF/log/' . $dataIn['gameId'] . '.log &');
         }
     }
 

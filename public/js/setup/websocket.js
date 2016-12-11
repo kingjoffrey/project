@@ -1,6 +1,6 @@
 var WebSocketSetup = new function () {
     this.init = function () {
-        var ws = new WebSocket(wsURL + '/setup')
+        var ws = new WebSocket(wsURL + ':' + wsPort + '/setup')
 
         ws.onopen = function () {
             WebSocketSend.setClosed(0)

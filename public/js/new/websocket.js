@@ -1,7 +1,7 @@
 "use strict"
 var WebSocketNew = new function () {
     this.init = function () {
-        var ws = new WebSocket(wsURL + '/new')
+        var ws = new WebSocket(wsURL + ':' + wsPort + '/new')
 
         ws.onopen = function () {
             WebSocketSendNew.setClosed(0)

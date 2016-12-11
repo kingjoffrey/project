@@ -3,7 +3,7 @@ var WebSocketGame = new function () {
     var port
     this.init = function (p) {
         port = p
-        var ws = new WebSocket(wsURL1 + ':' + port + '/game' + gameId)
+        var ws = new WebSocket(wsURL + ':' + port + '/game' + gameId)
 
         ws.onopen = function () {
             WebSocketSend.setClosed(0)
@@ -25,12 +25,12 @@ var WebSocketGame = new function () {
         return port
     }
 }
-var WebSocketPCNTL = new function () {
+var WebSocketExec = new function () {
     var closed = true,
         ws
 
     this.init = function () {
-        ws = new WebSocket(wsURL1 + ':' + wsURL2 + '/pcntl')
+        ws = new WebSocket(wsURL + ':' + wsPort + '/exec')
 
         ws.onopen = function () {
             closed = 0
@@ -57,7 +57,7 @@ var WebSocketPCNTL = new function () {
 
         ws.onclose = function () {
             closed = 1
-            setTimeout('WebSocketPCNTL.init()', 1000)
+            setTimeout('WebSocketExec.init()', 1000)
         }
     }
 }
