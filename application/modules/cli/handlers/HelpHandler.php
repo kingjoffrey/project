@@ -79,7 +79,7 @@ class Cli_HelpHandler extends WebSocketUriHandler
      * @param $token
      * @param null $debug
      */
-    public function sendToUser(Devristo\Phpws\Protocol\WebSocketTransportInterface $user, $token, $debug = null)
+    public function sendToUser(WebSocketTransportInterface $user, $token, $debug = null)
     {
         if ($debug || Zend_Registry::get('config')->debug) {
             print_r('ODPOWIEDŹ');

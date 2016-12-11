@@ -1,5 +1,5 @@
 <?php
-
+use Devristo\Phpws\Protocol\WebSocketTransportInterface;
 class Cli_Model_BattleSequenceHandler
 {
     /**
@@ -8,7 +8,7 @@ class Cli_Model_BattleSequenceHandler
      * @param \Devristo\Phpws\Protocol\WebSocketTransportInterface $user
      * @param $handler
      */
-    public function __construct($data, Devristo\Phpws\Protocol\WebSocketTransportInterface $user, $handler)
+    public function __construct($data, WebSocketTransportInterface $user, $handler)
     {
         $game = Cli_CommonHandler::getGameFromUser($user);
         $me = Cli_Model_Me::getMe($user);

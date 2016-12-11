@@ -1,21 +1,22 @@
 <?php
+use Devristo\Phpws\Protocol\WebSocketTransportInterface;
 
 class Cli_TutorialHandler extends Cli_CommonHandler
 {
-    public function open($dataIn, Devristo\Phpws\Protocol\WebSocketTransportInterface $user)
+    public function open($dataIn, WebSocketTransportInterface $user)
     {
         new Cli_Model_TutorialOpen($dataIn, $user, $this);
     }
 
-    public function ruin($armyId, Devristo\Phpws\Protocol\WebSocketTransportInterface $user)
+    public function ruin($armyId, WebSocketTransportInterface $user)
     {
         $giveMeDragons = true;
         new Cli_Model_SearchRuinHandler($armyId, $user, $this, $giveMeDragons);
     }
 
-    public function handleTutorial($token, Devristo\Phpws\Protocol\WebSocketTransportInterface $user)
+    public function handleTutorial($token, WebSocketTransportInterface $user)
     {
-        $me = Cli_TutorialHandler::getMeFromUser($user);
+        $me = $user->parameters['me'];
         switch ($me->getNumber()) {
             case 0:
                 $step = $me->getStep();
@@ -111,8 +112,7 @@ class Cli_TutorialHandler extends Cli_CommonHandler
                     case 2:
                         if ($token['type'] == 'move' && !$token['army']['swim'] && $token['army']['heroes']) {
                             $me->increaseStep($this->_db);
-                            $game = Cli_CommonHandler::getGameFromUser($user);
-                            $field = $game->getFields()->getField($token['army']['x'], $token['army']['y']);
+                            $field = $this->_game->getFields()->getField($token['army']['x'], $token['army']['y']);
                             if ($field->getRuinId()) {
                                 $me->increaseStep($this->_db);
                                 $step++;
@@ -125,8 +125,7 @@ class Cli_TutorialHandler extends Cli_CommonHandler
                         break;
                     case 3:
                         if ($token['type'] == 'move' && $token['army']['heroes']) {
-                            $game = Cli_CommonHandler::getGameFromUser($user);
-                            $field = $game->getFields()->getField($token['army']['x'], $token['army']['y']);
+                            $field = $this->_game->getFields()->getField($token['army']['x'], $token['army']['y']);
                             if ($field->getRuinId()) {
                                 $me->increaseStep($this->_db);
                                 $this->sendToUser($user, array(
@@ -171,8 +170,7 @@ class Cli_TutorialHandler extends Cli_CommonHandler
                         break;
                     case 1:
                         if ($token['type'] == 'move') {
-                            $game = Cli_CommonHandler::getGameFromUser($user);
-                            if ($game->getPlayers()->getPlayer($me->getColor())->getTowers()->count() == 8) {
+                            if ($this->_game->getPlayers()->getPlayer($me->getColor())->getTowers()->count() == 8) {
                                 $me->increaseStep($this->_db);
                                 $this->sendToUser($user, array(
                                     'type' => 'step',
@@ -227,7 +225,7 @@ class Cli_TutorialHandler extends Cli_CommonHandler
         parent::sendToChannel($token, $debug);
     }
 
-    public function sendToUser(Devristo\Phpws\Protocol\WebSocketTransportInterface $user, $token, $debug = null)
+    public function sendToUser(WebSocketTransportInterface $user, $token, $debug = null)
     {
         $this->handleTutorial($token, $user);
         parent::sendToUser($user, $token, $debug);
@@ -237,7 +235,7 @@ class Cli_TutorialHandler extends Cli_CommonHandler
      * @param WebSocketTransportInterface $user
      * @return Cli_Model_TutorialMe
      */
-    static public function getMeFromUser(Devristo\Phpws\Protocol\WebSocketTransportInterface $user)
+    static public function getMeFromUser(WebSocketTransportInterface $user)
     {
         return $user->parameters['me'];
     }

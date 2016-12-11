@@ -2,6 +2,8 @@
 
 class Cli_Model_CommonOpen
 {
+    protected $_db;
+
     /**
      * @param $dataIn
      * @param \Devristo\Phpws\Protocol\WebSocketTransportInterface $user
@@ -14,9 +16,9 @@ class Cli_Model_CommonOpen
             throw new Exception('Brak "gameId" lub "playerId" lub "langId');
             return;
         }
-        $db = $handler->getDb();
-        $mWebSocket = new Application_Model_Websocket($dataIn['playerId'], $db);
-        if (!$mWebSocket->checkAccessKey($dataIn['accessKey'], $db)) {
+        $this->_db = $handler->getDb();
+        $mWebSocket = new Application_Model_Websocket($dataIn['playerId'], $this->_db);
+        if (!$mWebSocket->checkAccessKey($dataIn['accessKey'], $this->_db)) {
             throw new Exception('Brak uprawnień!');
         }
 
@@ -30,7 +32,7 @@ class Cli_Model_CommonOpen
 
         $game->addUser($dataIn['playerId'], $user);
         $myColor = $game->getPlayerColor($dataIn['playerId']);
-        $user->parameters['me'] = new Cli_Model_Me($myColor, $dataIn['playerId']);
+        $this->handleMe($user, $myColor, $dataIn['playerId']);
 
         if (!$game->isActive()) {
             $token = array(
@@ -55,5 +57,10 @@ class Cli_Model_CommonOpen
             'color' => $myColor
         );
         $handler->sendToChannel($token);
+    }
+
+    public function handleMe($user, $myColor, $playerId)
+    {
+        $user->parameters['me'] = new Cli_Model_Me($myColor, $playerId);
     }
 }

@@ -116,7 +116,7 @@ class Cli_SetupHandler extends WebSocketUriHandler
      * @param $token
      * @param null $debug
      */
-    public function sendToUser(Devristo\Phpws\Protocol\WebSocketTransportInterface $user, $token, $debug = null)
+    public function sendToUser(WebSocketTransportInterface $user, $token, $debug = null)
     {
         if ($debug || Zend_Registry::get('config')->debug) {
             print_r('ODPOWIEDŹ');
@@ -144,7 +144,7 @@ class Cli_SetupHandler extends WebSocketUriHandler
         }
     }
 
-    public function sendToChannelExceptUser(Devristo\Phpws\Protocol\WebSocketTransportInterface $u, $token, $debug = null)
+    public function sendToChannelExceptUser(WebSocketTransportInterface $u, $token, $debug = null)
     {
         if ($debug || Zend_Registry::get('config')->debug) {
             print_r('ODPOWIEDŹ ');

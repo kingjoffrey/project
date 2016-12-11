@@ -133,7 +133,7 @@ class Cli_ExecHandler extends WebSocketUriHandler
             );
 
             $user->sendString(Zend_Json::encode($token));
-            exec('/usr/bin/php /home/idea/WOF/scripts/gameWSServer.php ' . $dataIn['gameId'] . ' ' . $pcntlPort . ' &>/home/idea/WOF/log/' . $dataIn['gameId'] . '.log &');
+            exec('/usr/bin/php /home/idea/WOF/scripts/gameWSServer.php ' . $dataIn['gameId'] . ' ' . $pcntlPort . ' >/home/idea/WOF/log/' . $dataIn['gameId'] . '.log 2>&1 &');
         }
     }
 
@@ -155,7 +155,7 @@ class Cli_ExecHandler extends WebSocketUriHandler
      * @param $token
      * @param null $debug
      */
-    public function sendToUser(Devristo\Phpws\Protocol\WebSocketTransportInterface $user, $token, $debug = null)
+    public function sendToUser(WebSocketTransportInterface $user, $token, $debug = null)
     {
         if ($debug || Zend_Registry::get('config')->debug) {
             print_r('ODPOWIEDŹ');

@@ -3,10 +3,16 @@ use Devristo\Phpws\Messaging\WebSocketMessageInterface;
 use Devristo\Phpws\Protocol\WebSocketTransportInterface;
 use Devristo\Phpws\Server\UriHandler\WebSocketUriHandler;
 
+
 class Cli_CommonHandler extends WebSocketUriHandler
 {
     protected $_game;
     protected $_db;
+
+    public function open($dataIn, WebSocketTransportInterface $user)
+    {
+        new Cli_Model_CommonOpen($dataIn, $user, $this);
+    }
 
     public function __construct($logger)
     {
@@ -48,7 +54,7 @@ class Cli_CommonHandler extends WebSocketUriHandler
         $l->log($dataIn);
 
         if ($dataIn['type'] == 'open') {
-            new Cli_Model_CommonOpen($dataIn, $user, $this);
+            $this->open($dataIn, $user);
             if ($this->_game && $this->_game->isActive() && $this->_game->getPlayers()->getPlayer($this->_game->getPlayerColor($this->_game->getTurnPlayerId()))->getComputer()) {
                 new Cli_Model_Computer($user, $this);
             }
@@ -237,7 +243,7 @@ class Cli_CommonHandler extends WebSocketUriHandler
      * @param $token
      * @param null $debug
      */
-    public function sendToUser(Devristo\Phpws\Protocol\WebSocketTransportInterface $user, $token, $debug = null)
+    public function sendToUser(WebSocketTransportInterface $user, $token, $debug = null)
     {
         if ($debug || Zend_Registry::get('config')->debug) {
             print_r('ODPOWIEDŹ');
