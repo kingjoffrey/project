@@ -90,11 +90,14 @@ class Cli_ExecHandler extends WebSocketUriHandler
     private $_games = array();
     private $_ports = array();
     private $_mainPort;
+    private $_portMax = 65535;
+//    private $_portMax = 8084;
 
     public function __construct($logger)
     {
         parent::__construct($logger);
         $this->_mainPort = Zend_Registry::get('config')->websockets->aPort;
+        $this->_portMax = $this->_portMax - $this->_mainPort;
 
     }
 
@@ -114,26 +117,29 @@ class Cli_ExecHandler extends WebSocketUriHandler
                 $Game->addPlayer($Player);
             }
 
-            $pcntlPort = $this->_mainPort + $Game->getPort();
+            $execPort = $this->_mainPort + $Game->getPort();
 
             $token = array(
                 'type' => 'port',
-                'port' => $pcntlPort
+                'port' => $execPort
             );
 
             $user->sendString(Zend_Json::encode($token));
         } else {
             $port = $this->initPort();
-            $pcntlPort = $this->_mainPort + $port;
+            $execPort = $this->_mainPort + $port;
+
+            exec('/usr/bin/php /home/idea/WOF/scripts/gameWSServer.php ' . $dataIn['gameId'] . ' ' . $execPort . ' >/home/idea/WOF/log/' . $dataIn['gameId'] . '.log 2>&1 &');
+
             $user->parameters['gameId'] = $dataIn['gameId'];
             $this->addGame($dataIn['gameId'], $user->getId(), $port);
+
             $token = array(
                 'type' => 'port',
-                'port' => $pcntlPort
+                'port' => $execPort
             );
 
             $user->sendString(Zend_Json::encode($token));
-            exec('/usr/bin/php /home/idea/WOF/scripts/gameWSServer.php ' . $dataIn['gameId'] . ' ' . $pcntlPort . ' >/home/idea/WOF/log/' . $dataIn['gameId'] . '.log 2>&1 &');
         }
     }
 
@@ -182,12 +188,22 @@ class Cli_ExecHandler extends WebSocketUriHandler
         return $this->_games[$key];
     }
 
+    /**
+     * @param Game $Game
+     * @return bool
+     */
     public function removeGame(Game $Game)
     {
-        foreach ($this->_games as $key => $G) {
+        foreach ($this->_games as $key1 => $G) {
             if ($Game == $G) {
+                $port = $Game->getPort();
+                foreach ($this->_ports as $key2 => $p) {
+                    if ($p == $port) {
+                        unset($this->_ports[$key2]);
+                    }
+                }
                 $Game = null;
-                unset($this->_games[$key]);
+                unset($this->_games[$key1]);
                 return true;
             }
         }
@@ -210,12 +226,27 @@ class Cli_ExecHandler extends WebSocketUriHandler
     public function initPort()
     {
         end($this->_ports);
-        $maxPort = current($this->_ports);
-//        $length = count($this->_ports);
-//        if($maxPort<$length){
-//
-//        }
-        $port = $maxPort + 1;
+        $port = current($this->_ports) + 1;
+        if ($port > $this->_portMax) {
+            $endOfLoop = false;
+            $firsAvailablePort = 1;
+            foreach ($this->_ports as $key => $p) {
+                if ($p > $firsAvailablePort) {
+                    $port = $firsAvailablePort;
+                    $endOfLoop = true;
+                    break;
+                } else {
+                    $firsAvailablePort++;
+                }
+            }
+            if ($firsAvailablePort <= $this->_portMax) {
+                $port = $firsAvailablePort;
+                $endOfLoop = true;
+            }
+            if (!$endOfLoop) {
+                throw new Exception('Nie ma wolnego portu!');
+            }
+        }
         $this->_ports[] = $port;
         return $port;
     }
