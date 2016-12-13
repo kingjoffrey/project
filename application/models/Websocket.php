@@ -35,19 +35,6 @@ class Application_Model_Websocket extends Coret_Db_Table_Abstract
         return md5(rand(0, time()));
     }
 
-    public function aaaa($serverUserId, $websocketId)
-    {
-        $data = array(
-            'serverUserId' => $serverUserId,
-        );
-
-        $where = array(
-            $this->_db->quoteInto($this->_db->quoteIdentifier('websocketId') . ' = ?', $websocketId)
-        );
-
-        $this->update($data, $where);
-    }
-
     public function create($handler, $accessKey)
     {
         $data = array(

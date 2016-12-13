@@ -3,15 +3,31 @@ use Devristo\Phpws\Messaging\WebSocketMessageInterface;
 use Devristo\Phpws\Protocol\WebSocketTransportInterface;
 use Devristo\Phpws\Server\UriHandler\WebSocketUriHandler;
 
-class Cli_HelpHandler extends WebSocketUriHandler
+class Cli_MainHandler extends WebSocketUriHandler
 {
     private $_db;
-    private $_help;
+    private $_menu;
 
     public function __construct($logger)
     {
         $this->_db = Cli_Model_Database::getDb();
         parent::__construct($logger);
+
+        $translator = Zend_Registry::get('Zend_Translate');
+        $adapter = $translator->getAdapter();
+
+        $this->_menu = array(
+            'play' => $adapter->translate('Play'),
+            'load' => $adapter->translate('Load game'),
+            'halloffame' => $adapter->translate('Hall of Fame'),
+//            'hero' => $adapter->translate('Hero'),
+            'players' => $adapter->translate('Players'),
+            'profile' => $adapter->translate('Profile'),
+            'help' => $adapter->translate('Help'),
+//            'stats' => $adapter->translate('Stats'),
+            'editor' => $adapter->translate('Map editor'),
+//            'market' => $adapter->translate('Market'),
+        );
     }
 
     public function getDb()
@@ -19,18 +35,12 @@ class Cli_HelpHandler extends WebSocketUriHandler
         return $this->_db;
     }
 
-    public function add(Cli_Model_Help $help)
-    {
-        $this->_help = $help;
-    }
-
     /**
-     * @param $mapId
-     * @return Cli_Model_Editor
+     * @return array
      */
-    public function get()
+    public function menu()
     {
-        return $this->_help;
+        return $this->_menu;
     }
 
     public function onMessage(WebSocketTransportInterface $user, WebSocketMessageInterface $msg)
@@ -42,17 +52,20 @@ class Cli_HelpHandler extends WebSocketUriHandler
         }
 
         if ($dataIn['type'] == 'open') {
-            new Cli_Model_HelpOpen($dataIn, $user, $this);
+            new Cli_Model_MainOpen($dataIn, $user, $this);
             return;
         }
 
         if (!Zend_Validate::is($user->parameters['playerId'], 'Digits')) {
-            $this->sendError($user, 'Brak "playerId". Brak autoryzacji.');
+            $this->sendError($user, 'Brak autoryzacji.');
             return;
         }
 
         switch ($dataIn['type']) {
             case 'get':
+                break;
+            default:
+                print_r($dataIn);
                 break;
         }
     }

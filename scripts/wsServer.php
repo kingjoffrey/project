@@ -20,7 +20,7 @@ $application = new Zend_Application(
     APPLICATION_PATH . '/configs/application.ini'
 );
 
-$application->getBootstrap()->bootstrap(array('date', 'config', 'modules'));
+$application->getBootstrap()->bootstrap(array('date', 'config', 'modules', 'translate'));
 
 include_once(APPLICATION_PATH . '/modules/cli/handlers/PrivateChatHandler.php');
 include_once(APPLICATION_PATH . '/modules/cli/handlers/SetupHandler.php');
@@ -29,6 +29,7 @@ include_once(APPLICATION_PATH . '/modules/cli/handlers/HelpHandler.php');
 include_once(APPLICATION_PATH . '/modules/cli/handlers/EditorHandler.php');
 include_once(APPLICATION_PATH . '/modules/cli/handlers/GeneratorHandler.php');
 include_once(APPLICATION_PATH . '/modules/cli/handlers/ExecHandler.php');
+include_once(APPLICATION_PATH . '/modules/cli/handlers/MainHandler.php');
 
 $loop = \React\EventLoop\Factory::create();
 
@@ -51,6 +52,7 @@ $router->addRoute('#^/help$#i', new Cli_HelpHandler($logger));
 $router->addRoute('#^/editor$#i', new Cli_EditorHandler($logger));
 $router->addRoute('#^/generator$#i', new Cli_GeneratorHandler($logger));
 $router->addRoute('#^/exec$#i', new Cli_ExecHandler($logger));
+$router->addRoute('#^/main$#i', new Cli_MainHandler($logger));
 
 
 // Bind the server
