@@ -19,7 +19,7 @@ class Cli_Model_PrivateChatOpen
         $mWebSocket = new Application_Model_Websocket($dataIn['playerId'], $db);
 
         if (!$mWebSocket->checkAccessKey($dataIn['accessKey'], $db)) {
-            echo('Brak uprawnień!' . "\n");
+            echo ('Brak uprawnień (playerId=' . $dataIn['playerId'] . ')') . "\n";
             return;
         }
 

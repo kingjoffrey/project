@@ -14,7 +14,8 @@ class Cli_Model_GeneratorOpen
         $mWebSocket = new Application_Model_Websocket($dataIn['playerId'], $db);
 
         if (!$mWebSocket->checkAccessKey($dataIn['accessKey'], $db)) {
-            throw new Exception('Brak uprawnień!');
+            echo ('Brak uprawnień (playerId=' . $dataIn['playerId'] . ')') . "\n";
+            return;
         }
 
         $user->parameters['playerId'] = $dataIn['playerId'];

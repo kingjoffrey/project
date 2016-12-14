@@ -16,6 +16,7 @@ class Cli_Model_MainOpen
 
         if (!$mWebSocket->checkAccessKey($dataIn['accessKey'], $db)) {
             echo ('Brak uprawnień (playerId=' . $dataIn['playerId'] . ')') . "\n";
+            return;
         }
 
         Zend_Registry::set('id_lang', $dataIn['langId']);

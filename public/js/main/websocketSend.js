@@ -9,6 +9,17 @@ var WebSocketMainSend = new function () {
     this.isClosed = function () {
         return closed
     }
+    this.controller = function (controller) {
+        if (closed) {
+            console.log(translations.sorryServerIsDisconnected)
+            return;
+        }
+
+        var token = {
+            type: controller
+        }
+        ws.send(JSON.stringify(token))
+    }
     this.open = function () {
         if (closed) {
             console.log(translations.sorryServerIsDisconnected)

@@ -19,7 +19,8 @@ class Cli_Model_CommonOpen
         $this->_db = $handler->getDb();
         $mWebSocket = new Application_Model_Websocket($dataIn['playerId'], $this->_db);
         if (!$mWebSocket->checkAccessKey($dataIn['accessKey'], $this->_db)) {
-            throw new Exception('Brak uprawnień!');
+            echo ('Brak uprawnień (playerId=' . $dataIn['playerId'] . ')') . "\n";
+            return;
         }
 
         Zend_Registry::set('id_lang', $dataIn['langId']);

@@ -19,27 +19,26 @@ class Application_Model_Websocket extends Coret_Db_Table_Abstract
         $this->_playerId = $playerId;
     }
 
-    public function auth($accessKey, $websocketId)
-    {
-        $select = $this->_db->select()
-            ->from($this->_name, 'playerId')
-            ->where($this->_db->quoteIdentifier('playerId') . ' = ?', $this->_playerId)
-            ->where($this->_db->quoteIdentifier('websocketId') . ' = ?', $websocketId)
-            ->where($this->_db->quoteIdentifier('accessKey') . ' = ?', $accessKey);
-
-        return $this->selectOne($select);
-    }
+//    public function auth($accessKey, $websocketId)
+//    {
+//        $select = $this->_db->select()
+//            ->from($this->_name, 'playerId')
+//            ->where($this->_db->quoteIdentifier('playerId') . ' = ?', $this->_playerId)
+//            ->where($this->_db->quoteIdentifier('websocketId') . ' = ?', $websocketId)
+//            ->where($this->_db->quoteIdentifier('accessKey') . ' = ?', $accessKey);
+//
+//        return $this->selectOne($select);
+//    }
 
     public function generateKey()
     {
         return md5(rand(0, time()));
     }
 
-    public function create($handler, $accessKey)
+    public function create($accessKey)
     {
         $data = array(
             'playerId' => $this->_playerId,
-            'handler' => $handler,
             'accessKey' => $accessKey,
         );
 
