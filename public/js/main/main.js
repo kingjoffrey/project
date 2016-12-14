@@ -1,6 +1,7 @@
 "use strict"
 var Main = new function () {
     var active,
+        init = 0,
         click = function (controller) {
             return function () {
                 WebSocketMainSend.controller(controller)
@@ -10,6 +11,10 @@ var Main = new function () {
         WebSocketMain.init()
     }
     this.createMenu = function (menu) {
+        if (init) {
+            return
+        }
+        init = 1
         var menuDiv = $('#menu')
         for (var controller in menu) {
             if (active == controller) {

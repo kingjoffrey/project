@@ -96,6 +96,14 @@ class Cli_MainHandler extends WebSocketUriHandler
                         break;
                     case 'test';
                         break;
+                    default:
+                        $mMap = new Application_Model_Map (0, $this->_db);
+                        $token = array(
+                            'type' => 'controller',
+                            'data' => $mMap->getPlayerMapList($user->parameters['playerId'])
+                        );
+                        $this->sendToUser($user, $token);
+                        break;
                 }
 
                 break;
