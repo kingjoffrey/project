@@ -3,6 +3,14 @@ use Devristo\Phpws\Messaging\WebSocketMessageInterface;
 use Devristo\Phpws\Protocol\WebSocketTransportInterface;
 use Devristo\Phpws\Server\UriHandler\WebSocketUriHandler;
 
+include_once(APPLICATION_PATH . '/modules/cli/controllers/Play.php');
+include_once(APPLICATION_PATH . '/modules/cli/controllers/Load.php');
+include_once(APPLICATION_PATH . '/modules/cli/controllers/Halloffame.php');
+include_once(APPLICATION_PATH . '/modules/cli/controllers/Players.php');
+include_once(APPLICATION_PATH . '/modules/cli/controllers/Profile.php');
+include_once(APPLICATION_PATH . '/modules/cli/controllers/Help.php');
+include_once(APPLICATION_PATH . '/modules/cli/controllers/Editor.php');
+
 class Cli_MainHandler extends WebSocketUriHandler
 {
     private $_db;
@@ -64,52 +72,15 @@ class Cli_MainHandler extends WebSocketUriHandler
             return;
         }
 
-        switch ($dataIn['type']) {
-            case 'editor':
-                switch ($dataIn['action']) {
-                    case 'create';
-                        $this->_view->form = new Application_Form_Createmap ();
-                        $this->_view->formIsValid = false;
-                        if ($this->_request->isPost()) {
-                            if ($this->_view->form->isValid($this->_request->getPost())) {
-                                $this->_view->formIsValid = true;
-                                $mMap = new Application_Model_Map ();
-                                $this->_view->mapId = $mMap->createMap($this->_view->form->getValues(), Zend_Auth::getInstance()->getIdentity()->playerId);
-
-                                $mSide = new Application_Model_Side();
-
-                                $mMapPlayers = new Application_Model_MapPlayers($this->_view->mapId);
-                                $mMapPlayers->create($mSide->getWithLimit($this->_request->getParam('maxPlayers')), $this->_view->mapId);
-
-                                $this->_view->mapSize = $this->_request->getParam('mapSize');
-
-                                $this->_helper->layout->setLayout('empty');
-
-                                $this->_view->headScript()->appendFile('/js/mapgenerator/init.js?v=' . Zend_Registry::get('config')->version);
-                                $this->_view->headScript()->appendFile('/js/mapgenerator/diamondsquare.js?v=' . Zend_Registry::get('config')->version);
-                                $this->_view->headScript()->appendFile('/js/mapgenerator/mapgenerator.js?v=' . Zend_Registry::get('config')->version);
-                                $this->_view->headScript()->appendFile('/js/mapgenerator/websocket.js?v=' . Zend_Registry::get('config')->version);
-                            }
-                        }
-                        break;
-                    case 'edit';
-                        break;
-                    case 'test';
-                        break;
-                    default:
-                        $mMap = new Application_Model_Map (0, $this->_db);
-                        $token = array(
-                            'type' => 'controller',
-                            'data' => $mMap->getPlayerMapList($user->parameters['playerId'])
-                        );
-                        $this->sendToUser($user, $token);
-                        break;
-                }
-
-                break;
-            default:
-                print_r($dataIn);
-                break;
+        $className = ucfirst($dataIn['type']) . 'Controller';
+        if (class_exists($className)) {
+            $controller = new $className();
+            $methodName = $dataIn['action'];
+            if (is_callable($controller, $methodName)) {
+                $controller->$methodName($user, $this, $dataIn);
+            }
+        } else {
+            print_r($dataIn);
         }
     }
 

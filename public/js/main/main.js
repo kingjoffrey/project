@@ -31,7 +31,4 @@ var Main = new function () {
             )
         }
     }
-    this.controller = function (r) {
-        console.log(r)
-    }
 }

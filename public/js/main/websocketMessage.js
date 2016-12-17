@@ -1,16 +1,19 @@
 var WebSocketMainMessage = new function () {
     this.switch = function (r) {
-        console.log(r)
-        switch (r.type) {
-            case 'controller':
-                Main.controller(r)
-                break
-            case 'open':
-                delete r.type
-                Main.createMenu(r)
-                break
-            default:
-                console.log(r)
+        if (r.type == 'open') {
+            delete r.type
+            Main.createMenu(r)
+        } else {
+            var className = r.type + 'Controller'
+            console.log(className)
+            if (typeof window[className] !== "undefined") {
+                var methodName = r.action
+                if (typeof window[className][methodName] === "function") {
+                    window[className][methodName](r)
+                }
+            }
+
         }
+        console.log(r)
     }
 }
