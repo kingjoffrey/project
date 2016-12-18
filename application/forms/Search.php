@@ -5,6 +5,9 @@ class Application_Form_Search extends Zend_Form
 
     public function init()
     {
+        $translator = Zend_Registry::get('Zend_Translate');
+        $adapter = $translator->getAdapter();
+
         $this->setAttrib('id', 'search');
 
         $f = new Coret_Form_Varchar(
@@ -17,7 +20,7 @@ class Application_Form_Search extends Zend_Form
         $f = new Coret_Form_Submit(
             array(
                 'name' => 'submit',
-                'label' => $this->getView()->translate('Search')
+                'label' => $adapter->translate('Search')
             )
         );
         $this->addElements($f->getElements());

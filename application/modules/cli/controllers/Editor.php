@@ -53,6 +53,9 @@ class EditorController
 
     function edit()
     {
+        $this->_helper->layout->setLayout('editor');
 
+
+        $this->view->mapId = $this->_request->getParam('mapId');
     }
 }

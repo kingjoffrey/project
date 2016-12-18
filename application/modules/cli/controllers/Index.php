@@ -1,21 +1,17 @@
 <?php
 
-class PlayController
+class IndexController
 {
     function index(Devristo\Phpws\Protocol\WebSocketTransportInterface $user, Cli_MainHandler $handler)
     {
         $view = new Zend_View();
-        $db = $handler->getDb();
-
-        $mTutorial = new Application_Model_Tutorial($user->parameters['playerId'], $db);
-        $view->tutorial = $mTutorial->get();
 
         $view->addScriptPath(APPLICATION_PATH . '/views/scripts');
 
         $token = array(
-            'type' => 'play',
+            'type' => 'index',
             'action' => 'index',
-            'data' => $view->render('play/index.phtml')
+            'data' => $view->render('index/index.phtml')
         );
         $handler->sendToUser($user, $token);
     }
