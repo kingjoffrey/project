@@ -7,17 +7,18 @@ class Application_Form_Email extends Zend_Form
     {
         $this->setAttrib('id', 'email');
 
-        $this->getView();
+        $translator = Zend_Registry::get('Zend_Translate');
+        $adapter = $translator->getAdapter();
 
         $f = new Coret_Form_Email(
             array(
-                'label' => $this->_view->translate('E-mail'),
+                'label' => $adapter->translate('E-mail'),
                 'name' => 'login'
             )
         );
         $this->addElements($f->getElements());
 
-        $f = new Coret_Form_Submit(array('label' => $this->_view->translate('Submit')));
+        $f = new Coret_Form_Submit(array('label' => $adapter->translate('Submit')));
         $this->addElements($f->getElements());
     }
 

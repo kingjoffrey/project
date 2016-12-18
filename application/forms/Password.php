@@ -5,11 +5,12 @@ class Application_Form_Password extends Zend_Form
 
     public function init()
     {
-        $this->getView();
+        $translator = Zend_Registry::get('Zend_Translate');
+        $adapter = $translator->getAdapter();
 
         $f = new Coret_Form_Password(
             array(
-                'label' => $this->_view->translate('Password'),
+                'label' => $adapter->translate('Password'),
                 'required' => true,
             )
         );
@@ -17,7 +18,7 @@ class Application_Form_Password extends Zend_Form
 
         $f = new Coret_Form_Password(
             array(
-                'label' => $this->_view->translate('Repeat password'),
+                'label' => $adapter->translate('Repeat password'),
                 'name' => 'repeatPassword',
                 'required' => true,
                 'validators' => array(
@@ -27,7 +28,7 @@ class Application_Form_Password extends Zend_Form
         );
         $this->addElements($f->getElements());
 
-        $f = new Coret_Form_Submit(array('label' => $this->_view->translate('Submit')));
+        $f = new Coret_Form_Submit(array('label' => $adapter->translate('Submit')));
         $this->addElements($f->getElements());
     }
 }

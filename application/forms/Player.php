@@ -4,10 +4,12 @@ class Application_Form_Player extends Zend_Form
 {
     public function init()
     {
-        $this->getView();
+        $translator = Zend_Registry::get('Zend_Translate');
+        $adapter = $translator->getAdapter();
+
         $f = new Coret_Form_Varchar(
             array(
-                'label' => $this->_view->translate('First name') . ' (' . $this->_view->translate('imaginary') . ')',
+                'label' => $adapter->translate('First name') . ' (' . $adapter->translate('imaginary') . ')',
                 'name' => 'firstName',
                 'required' => true,
             )
@@ -15,13 +17,13 @@ class Application_Form_Player extends Zend_Form
         $this->addElements($f->getElements());
         $f = new Coret_Form_Varchar(
             array(
-                'label' => $this->_view->translate('Last name') . ' (' . $this->_view->translate('imaginary') . ')',
+                'label' => $adapter->translate('Last name') . ' (' . $adapter->translate('imaginary') . ')',
                 'name' => 'lastName',
                 'required' => true,
             )
         );
         $this->addElements($f->getElements());
-        $f = new Coret_Form_Submit(array('label' => $this->_view->translate('Submit')));
+        $f = new Coret_Form_Submit(array('label' => $adapter->translate('Submit')));
         $this->addElements($f->getElements());
     }
 }

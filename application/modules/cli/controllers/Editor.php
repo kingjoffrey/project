@@ -2,7 +2,7 @@
 
 class EditorController
 {
-    function index(Devristo\Phpws\Protocol\WebSocketTransportInterface $user, Cli_HelpHandler $handler)
+    function index(Devristo\Phpws\Protocol\WebSocketTransportInterface $user, Cli_MainHandler $handler)
     {
         $db = $handler->getDb();
         $mMap = new Application_Model_Map (0, $db);
@@ -11,7 +11,7 @@ class EditorController
             'action' => 'index',
             'data' => $mMap->getPlayerMapList($user->parameters['playerId'])
         );
-        $this->sendToUser($user, $token);
+        $handler->sendToUser($user, $token);
     }
 
     function create()

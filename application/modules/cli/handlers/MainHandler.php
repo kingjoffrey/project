@@ -76,7 +76,7 @@ class Cli_MainHandler extends WebSocketUriHandler
         if (class_exists($className)) {
             $controller = new $className();
             $methodName = $dataIn['action'];
-            if (is_callable($controller, $methodName)) {
+            if (method_exists($controller, $methodName)) {
                 $controller->$methodName($user, $this, $dataIn);
             }
         } else {

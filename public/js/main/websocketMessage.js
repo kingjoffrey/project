@@ -5,7 +5,6 @@ var WebSocketMainMessage = new function () {
             Main.createMenu(r)
         } else {
             var className = r.type + 'Controller'
-            console.log(className)
             if (typeof window[className] !== "undefined") {
                 var methodName = r.action
                 if (typeof window[className][methodName] === "function") {
@@ -14,6 +13,5 @@ var WebSocketMainMessage = new function () {
             }
 
         }
-        console.log(r)
     }
 }

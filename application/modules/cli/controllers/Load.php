@@ -2,7 +2,7 @@
 
 class LoadController
 {
-    function index(Devristo\Phpws\Protocol\WebSocketTransportInterface $user, Cli_HelpHandler $handler)
+    function index(Devristo\Phpws\Protocol\WebSocketTransportInterface $user, Cli_MainHandler $handler)
     {
         
     }
