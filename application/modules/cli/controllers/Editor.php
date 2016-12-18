@@ -6,11 +6,21 @@ class EditorController
     {
         $db = $handler->getDb();
         $mMap = new Application_Model_Map (0, $db);
+
+        $view = new Zend_View();
+        $view->mapList = $mMap->getPlayerMapList($user->parameters['playerId']);
+        $view->addScriptPath(APPLICATION_PATH . '/views/scripts');
+
         $token = array(
             'type' => 'editor',
             'action' => 'index',
-            'data' => $mMap->getPlayerMapList($user->parameters['playerId'])
+            'data' => $view->render('editor/index.phtml')
         );
+//        $token = array(
+//            'type' => 'editor',
+//            'action' => 'index',
+//            'data' => $mMap->getPlayerMapList($user->parameters['playerId'])
+//        );
         $handler->sendToUser($user, $token);
     }
 

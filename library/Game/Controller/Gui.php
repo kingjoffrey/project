@@ -18,9 +18,12 @@ abstract class Game_Controller_Gui extends Coret_Controller_Authorized
 
         $this->view->jquery();
         $this->view->headScript()->appendFile('/js/default.js?v=' . $this->_version);
+        $this->view->headScript()->appendFile('/js/libs.js?v=' . $this->_version);
 
         $this->view->headScript()->appendFile('/js/main/init.js?v=' . $this->_version);
         $this->view->headScript()->appendFile('/js/main/main.js?v=' . $this->_version);
+        $this->view->headScript()->appendFile('/js/main/editor.js?v=' . $this->_version);
+        $this->view->headScript()->appendFile('/js/main/profile.js?v=' . $this->_version);
         $this->view->headScript()->appendFile('/js/main/websocket.js?v=' . $this->_version);
         $this->view->headScript()->appendFile('/js/main/websocketMessage.js?v=' . $this->_version);
         $this->view->headScript()->appendFile('/js/main/websocketSend.js?v=' . $this->_version);
