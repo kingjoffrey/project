@@ -47,9 +47,8 @@ class Application_Model_Game extends Coret_Db_Table_Abstract
         return $this->selectRow($select);
     }
 
-    public function getMyGames($playerId, $pageNumber)
+    public function getMyGames($playerId, $pageNumber,$mPlayersInGame)
     {
-        $mPlayersInGame = new Application_Model_PlayersInGame($this->_gameId);
         $select = $this->_db->select()
             ->from(array('a' => $this->_name), array('gameMasterId', 'turnNumber', $this->_primary, 'numberOfPlayers', 'begin', 'end', 'turnsLimit', 'turnTimeLimit', 'timeLimit', 'turnPlayerId', 'mapId'))
             ->join(array('b' => 'playersingame'), 'a."gameId" = b."gameId"', null)
@@ -69,16 +68,6 @@ class Application_Model_Game extends Coret_Db_Table_Abstract
             $l->log($select->__toString());
             $l->log($e);
             throw $e;
-        }
-
-        $mPlayer = new Application_Model_Player();
-
-        foreach ($paginator as &$val) {
-            $mPlayersInGame = new Application_Model_PlayersInGame($val['gameId']);
-            $val['players'] = $mPlayersInGame->getGamePlayers();
-            $val['playerTurn'] = $mPlayer->getPlayer($val['turnPlayerId']);
-            $mMapPlayers = new Application_Model_MapPlayers($val['mapId']);
-            $val['teams'] = $mMapPlayers->getMapPlayerIdToBackgroundColorRelations();
         }
 
         return $paginator;
