@@ -3,13 +3,14 @@ use Devristo\Phpws\Messaging\WebSocketMessageInterface;
 use Devristo\Phpws\Protocol\WebSocketTransportInterface;
 use Devristo\Phpws\Server\UriHandler\WebSocketUriHandler;
 
-include_once(APPLICATION_PATH . '/modules/cli/controllers/Play.php');
-include_once(APPLICATION_PATH . '/modules/cli/controllers/Load.php');
+include_once(APPLICATION_PATH . '/modules/cli/controllers/Editor.php');
+include_once(APPLICATION_PATH . '/modules/cli/controllers/Help.php');
 include_once(APPLICATION_PATH . '/modules/cli/controllers/Halloffame.php');
+include_once(APPLICATION_PATH . '/modules/cli/controllers/Index.php');
+include_once(APPLICATION_PATH . '/modules/cli/controllers/Load.php');
+include_once(APPLICATION_PATH . '/modules/cli/controllers/Play.php');
 include_once(APPLICATION_PATH . '/modules/cli/controllers/Players.php');
 include_once(APPLICATION_PATH . '/modules/cli/controllers/Profile.php');
-include_once(APPLICATION_PATH . '/modules/cli/controllers/Help.php');
-include_once(APPLICATION_PATH . '/modules/cli/controllers/Editor.php');
 
 class Cli_MainHandler extends WebSocketUriHandler
 {

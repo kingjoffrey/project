@@ -4,19 +4,19 @@ var WebSocketMain = new function () {
         var ws = new WebSocket(wsURL + ':' + wsPort + '/main')
 
         ws.onopen = function () {
-            WebSocketMainSend.setClosed(0)
-            WebSocketMainSend.open()
+            WebSocketSendMain.setClosed(0)
+            WebSocketSendMain.open()
         }
         ws.onmessage = function (e) {
             if (typeof gameId === 'undefined') {
-                WebSocketMainMessage.switch($.parseJSON(e.data))
+                WebSocketMessageMain.switch($.parseJSON(e.data))
             }
         }
         ws.onclose = function () {
-            WebSocketMainSend.setClosed(1)
+            WebSocketSendMain.setClosed(1)
             setTimeout('WebSocketMain.init()', 1000);
         }
 
-        WebSocketMainSend.init(ws)
+        WebSocketSendMain.init(ws)
     }
 }

@@ -1,5 +1,5 @@
 "use strict"
-var WebSocketMainSend = new function () {
+var WebSocketSendMain = new function () {
     var closed = true,
         ws
 

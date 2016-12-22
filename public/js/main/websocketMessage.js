@@ -1,4 +1,4 @@
-var WebSocketMainMessage = new function () {
+var WebSocketMessageMain = new function () {
     this.switch = function (r) {
         if (r.type == 'open') {
             delete r.type

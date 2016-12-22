@@ -4,7 +4,7 @@ var Main = new function () {
         init = 0,
         click = function (controller) {
             return function () {
-                WebSocketMainSend.controller(controller)
+                WebSocketSendMain.controller(controller)
             }
         }
     this.init = function () {

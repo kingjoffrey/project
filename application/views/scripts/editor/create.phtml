@@ -1,14 +1,5 @@
-<?php if (isset($this->mapId)):
-    $this->headScript()->captureStart() ?>
-    var mapId = <?php echo $this->mapId; ?>,
-    mapSize = <?php echo $this->mapSize;
-    $this->headScript()->captureEnd();
-else: ?>
-    <h1><?php echo $this->translate('Map editor') ?></h1>
-    <div class="table">
-        <h2><?php echo $this->translate('Create new map') ?></h2>
-        <?php echo $this->form; ?>
-    </div>
-    <a class="button"
-       href="<?php echo $this->url(array('controller' => 'editor', 'action' => 'index', 'mapId' => null)) ?>">&laquo; <?php echo $this->translate('Back') ?></a>
-<?php endif ?>
+<div class="table">
+    <h2><?php echo $this->translate('Create new map') ?></h2>
+    <?php echo $this->formCreate; ?>
+</div>
+<a class="button" id="back">&laquo; <?php echo $this->translate('Back') ?></a>
