@@ -1,5 +1,5 @@
 var GameRenderer = new function () {
-    var renderer = new THREE.WebGLRenderer({antialias: true}),
+    var renderer,
         scene,
         camera,
         width,
@@ -41,6 +41,7 @@ var GameRenderer = new function () {
         width = Scene.getWidth()
         height = Scene.getHeight()
         $('#' + id).append(renderer.domElement)
+        renderer = new THREE.WebGLRenderer({antialias: true})
         // renderer.autoClear = false
     }
 }

@@ -9,7 +9,6 @@ class PlayController
 
         $mTutorial = new Application_Model_Tutorial($user->parameters['playerId'], $db);
         $view->tutorial = $mTutorial->get();
-        $view->lang = Zend_Registry::get('lang');
 
         $view->addScriptPath(APPLICATION_PATH . '/views/scripts');
 

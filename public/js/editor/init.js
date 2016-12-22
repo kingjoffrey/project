@@ -4,3 +4,7 @@ var Init = new function () {
         Editor.init(g)
     }
 }
+
+$(document).ready(function () {
+    // WebSocketEditor.init()
+})

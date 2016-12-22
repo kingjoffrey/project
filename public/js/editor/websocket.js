@@ -4,20 +4,20 @@ var WebSocketEditor = new function () {
         var ws = new WebSocket(wsURL + ':' + wsPort + '/editor')
 
         ws.onopen = function () {
-            WebSocketSend.setClosed(0)
-            WebSocketSend.open()
+            WebSocketSendEditor.setClosed(0)
+            WebSocketSendEditor.open()
         }
 
         ws.onmessage = function (e) {
             var r = $.parseJSON(e.data);
-            WebSocketMessage.switch(r)
+            WebSocketMessageEditor.switch(r)
         }
 
         ws.onclose = function () {
-            WebSocketSend.setClosed(1)
+            WebSocketSendEditor.setClosed(1)
             setTimeout('WebSocketEditor.init()', 1000)
         }
 
-        WebSocketSend.init(ws)
+        WebSocketSendEditor.init(ws)
     }
 }

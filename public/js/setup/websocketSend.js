@@ -1,4 +1,4 @@
-var WebSocketSend = new function () {
+var WebSocketSendSetup = new function () {
     var closed = true,
         ws
 

@@ -1,5 +1,5 @@
 "use strict"
-var WebSocketMessage = new function () {
+var WebSocketMessageCommon = new function () {
     this.switch = function (r) {
         console.log(r)
         switch (r.type) {

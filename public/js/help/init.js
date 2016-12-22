@@ -1,4 +1,4 @@
 "use strict"
 $().ready(function () {
-    Help.init()
+    // Help.init()
 })

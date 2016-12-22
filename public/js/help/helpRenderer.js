@@ -1,5 +1,5 @@
 var HelpRenderer = new function () {
-    var renderer = new THREE.WebGLRenderer({antialias: true}),
+    var renderer,
         scene,
         camera,
         width,
@@ -26,6 +26,7 @@ var HelpRenderer = new function () {
         camera = s.getCamera()
         width = s.getWidth()
         height = s.getHeight()
+        renderer = new THREE.WebGLRenderer({antialias: true})
         renderer.setSize(width, height)
         $('#graphics').append(renderer.domElement)
         HelpRenderer.animate()

@@ -18,6 +18,3 @@ var Editor = new function () {
     }
 }
 
-$(document).ready(function () {
-    WebSocketEditor.init()
-})

@@ -1,4 +1,4 @@
-var WebSocketMessage = new function () {
+var WebSocketMessageSetup = new function () {
     this.switch = function (r) {
         console.log(r)
         switch (r.type) {
