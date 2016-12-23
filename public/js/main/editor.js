@@ -1,5 +1,6 @@
 "use strict"
 var EditorController = new function () {
+    var mapId
     this.index = function (r) {
         var content = $('#content'),
             data = r.data
@@ -13,7 +14,8 @@ var EditorController = new function () {
             WebSocketSendMain.controller('editor', 'create')
         })
         $('.trlink').click(function () {
-            WebSocketSendMain.controller('editor', 'create')
+            mapId = $(this).attr('id')
+            WebSocketSendMain.controller('editor', 'edit')
         })
     }
     this.create = function (r) {
@@ -32,5 +34,9 @@ var EditorController = new function () {
             console.log($('#maxPlayers').val())
             // WebSocketSendMain.controller('index', 'index')
         })
+    }
+    this.edit = function (r) {
+        console.log(mapId)
+        console.log(r)
     }
 }

@@ -60,11 +60,18 @@ class EditorController
 //        }
     }
 
-    function edit()
+    function edit(Devristo\Phpws\Protocol\WebSocketTransportInterface $user, Cli_MainHandler $handler, $dataIn)
     {
-        $this->_helper->layout->setLayout('editor');
+        $layout = new Zend_Layout();
+        $layout->setLayoutPath(APPLICATION_PATH . '/layouts/scripts');
+        $layout->setLayout('editor');
 
+        $token = array(
+            'type' => 'editor',
+            'action' => 'edit',
+            'data' => $layout->render()
+        );
 
-        $this->view->mapId = $this->_request->getParam('mapId');
+        $handler->sendToUser($user, $token);
     }
 }

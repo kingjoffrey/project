@@ -9,7 +9,7 @@ var WebSocketSendMain = new function () {
     this.isClosed = function () {
         return closed
     }
-    this.controller = function (controller, action) {
+    this.controller = function (controller, action, params) {
         if (closed) {
             console.log(translations.sorryServerIsDisconnected)
             return;
@@ -22,6 +22,9 @@ var WebSocketSendMain = new function () {
         var token = {
             type: controller,
             action: action
+        }
+        if (isSet(params)) {
+            token.params = params
         }
         ws.send(JSON.stringify(token))
     }

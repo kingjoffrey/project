@@ -25,10 +25,16 @@ var Main = new function () {
             menuDiv.append(
                 $('<a>')
                     .addClass('button')
-                    .attr('id', id)
+                    .attr('id', controller)
                     .html(menu[controller])
                     .click(click(controller))
             )
         }
+    }
+    this.updateMenu = function (controller) {
+        $('#menu .button').each(function () {
+            $(this).removeClass('active')
+        })
+        $('#menu .button#' + controller).addClass('active')
     }
 }
