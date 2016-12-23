@@ -5,7 +5,7 @@ var Editor = new function () {
         if (!init) {
             init = 1
             Units.init(r.units)
-            Fields.init(r.fields, mapId)
+            Fields.init(r.fields, EditorController.getMapId())
             Ruins.init(r.ruins)
             Players.init(r.players)
             Gui.init()

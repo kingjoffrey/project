@@ -1,4 +1,17 @@
-#editor {
-
+#editor #editMenu {
+    width: 230px;
 }
 
+#editor #editMenu .button {
+    padding: 0;
+    width: 224px;
+}
+
+#editor #mainMenu {
+    width: 230px;
+    right: 0px;
+}
+
+#editor #mainMenu .button {
+    padding: 0;
+}

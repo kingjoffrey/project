@@ -50,14 +50,10 @@ var Gui = new function () {
                 EditorModels.createMesh('down')
             })
             $('#exit').click(function () {
-                Gui.exit()
-            });
+                WebSocketSendMain.controller('index', 'index')
+            })
         }
 
-
-    this.exit = function () {
-        window.location = '/' + lang + '/index'
-    }
     this.adjust = function () {
         GameScene.resize($(window).innerWidth(), $(window).innerHeight())
     }

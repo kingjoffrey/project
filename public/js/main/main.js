@@ -2,6 +2,7 @@
 var Main = new function () {
     var active,
         init = 0,
+        body = '',
         click = function (controller) {
             return function () {
                 WebSocketSendMain.controller(controller)
@@ -36,5 +37,11 @@ var Main = new function () {
             $(this).removeClass('active')
         })
         $('#menu .button#' + controller).addClass('active')
+    }
+    this.setBody = function (b) {
+        body = b
+    }
+    this.getBody = function () {
+        return body
     }
 }

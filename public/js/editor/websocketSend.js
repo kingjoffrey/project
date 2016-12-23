@@ -17,7 +17,7 @@ var WebSocketSendEditor = new function () {
 
         var token = {
             type: 'add',
-            mapId: mapId,
+            mapId: EditorController.getMapId(),
             itemName: itemName,
             x: x,
             y: y
@@ -33,7 +33,7 @@ var WebSocketSendEditor = new function () {
 
         var token = {
             type: 'up',
-            mapId: mapId,
+            mapId: EditorController.getMapId(),
             x: x,
             y: y
         }
@@ -48,7 +48,7 @@ var WebSocketSendEditor = new function () {
 
         var token = {
             type: 'down',
-            mapId: mapId,
+            mapId: EditorController.getMapId(),
             x: x,
             y: y
         }
@@ -68,7 +68,7 @@ var WebSocketSendEditor = new function () {
         }
         var token = {
             type: 'edit',
-            mapId: mapId,
+            mapId: EditorController.getMapId(),
             castleId: castleId,
             name: $('input[name=name]').val(),
             income: $('input[name=income]').val(),
@@ -95,7 +95,7 @@ var WebSocketSendEditor = new function () {
         }
         var token = {
             type: 'remove',
-            mapId: mapId,
+            mapId: EditorController.getMapId(),
             x: x,
             y: y
         }
@@ -110,7 +110,7 @@ var WebSocketSendEditor = new function () {
 
         var token = {
             type: 'open',
-            mapId: mapId,
+            mapId: EditorController.getMapId(),
             playerId: id,
             langId: langId,
             accessKey: accessKey

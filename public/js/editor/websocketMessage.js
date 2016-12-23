@@ -5,6 +5,7 @@ var WebSocketMessageEditor = new function () {
         switch (r.type) {
             case 'open':
                 CommonInit.init(r)
+                Editor.init(r)
                 break
             case 'castleId':
                 Players.get('neutral').getCastles().add(r.value, {

@@ -7,7 +7,6 @@ var CommonInit = new function () {
             }, 500)
             return
         }
-        Init.init(g)
     }
 }
 $(document).ready(function () {

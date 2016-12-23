@@ -36,7 +36,12 @@ var EditorController = new function () {
         })
     }
     this.edit = function (r) {
-        console.log(mapId)
-        console.log(r)
+        var body = $('body')
+        Main.setBody(body.html())
+        body.html(r.data)
+        WebSocketEditor.init()
+    }
+    this.getMapId = function () {
+        return mapId
     }
 }

@@ -15,6 +15,7 @@ class IndexController extends Coret_Controller_Authorized
         $this->view->headLink()->prependStylesheet('/css/main.css?v=' . $this->_version);
         $this->view->headLink()->appendStylesheet('/css/help.css?v=' . $this->_version);
         $this->view->headLink()->appendStylesheet('/css/editor.css?v=' . $this->_version);
+        $this->view->headLink()->appendStylesheet('/css/game.css?v=' . $this->_version);
         $this->view->headLink()->appendStylesheet('/css/new.css?v=' . $this->_version);
         $this->view->headLink()->appendStylesheet('/css/playerslist.css?v=' . $this->_version);
 
@@ -52,7 +53,6 @@ class IndexController extends Coret_Controller_Authorized
 
         $this->view->headScript()->appendFile('/js/halloffame.js?v=' . $this->_version);
 
-        $this->view->headScript()->appendFile('/js/editor/init.js?v=' . $this->_version);
         $this->view->headScript()->appendFile('/js/editor/message.js?v=' . $this->_version);
         $this->view->headScript()->appendFile('/js/editor/castle.js?v=' . $this->_version);
         $this->view->headScript()->appendFile('/js/editor/castleWindow.js?v=' . $this->_version);
