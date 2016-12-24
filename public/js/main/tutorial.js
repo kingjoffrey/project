@@ -1,13 +1,9 @@
 "use strict"
 var TutorialController = new function () {
     this.index = function (r) {
-        var content = $('#content'),
-            data = r.data
-
-        content.html(data)
-
-        $('#back').click(function () {
-            WebSocketSendMain.controller('index', 'index')
-        })
+        var body = $('body')
+        Main.setBody(body.html())
+        body.html(r.data)
+        // WebSocketTutorial.init()
     }
 }

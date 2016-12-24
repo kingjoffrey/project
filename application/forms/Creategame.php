@@ -5,9 +5,10 @@ class Application_Form_Creategame extends Zend_Form
 
     public function init()
     {
-        $this->setMethod('post');
+        $translator = Zend_Registry::get('Zend_Translate');
+        $adapter = $translator->getAdapter();
 
-        $mMap = new Application_Model_Map();
+        $mMap = new Application_Model_Map(0, $this->_attribs['db']);
 
         if (isset($this->_attribs['mapId'])) {
             $mapId = $this->_attribs['mapId'];
@@ -15,21 +16,24 @@ class Application_Form_Creategame extends Zend_Form
             $mapId = $mMap->getMinMapId();
         }
 
-        $f = new Coret_Form_Select(array('name' => 'mapId', 'label' => $this->getView()->translate('Select map') . ':', 'opt' => $mMap->getAllMultiMapsList()));
+        $f = new Coret_Form_Select(array('name' => 'mapId', 'label' => $adapter->translate('Select map') . ':', 'opt' => $mMap->getAllMultiMapsList()));
         $this->addElements($f->getElements());
 
-        $f = new Application_Form_NumberOfPlayers(array('mapId' => $mapId));
+        $f = new Application_Form_NumberOfPlayers(array(
+            'mapId' => $mapId,
+            'db' => $this->_attribs['db']
+        ));
         $this->addElements($f->getElements());
 
         $timeLimits = Application_Model_Limit::timeLimits();
 
-        $f = new Coret_Form_Select(array('name' => 'timeLimit', 'label' => $this->getView()->translate('Select time limit') . ':', 'opt' => $timeLimits));
+        $f = new Coret_Form_Select(array('name' => 'timeLimit', 'label' => $adapter->translate('Select time limit') . ':', 'opt' => $timeLimits));
         $this->addElements($f->getElements());
 
         $f = new Coret_Form_Number(
             array(
                 'name' => 'turnsLimit',
-                'label' => $this->getView()->translate('Turns limit') . ':',
+                'label' => $adapter->translate('Turns limit') . ':',
                 'value' => 0,
                 'required' => true
             )
@@ -38,10 +42,10 @@ class Application_Form_Creategame extends Zend_Form
 
         $turnTimeLimit = Application_Model_Limit::turnTimeLimit();
 
-        $f = new Coret_Form_Select(array('name' => 'turnTimeLimit', 'label' => $this->getView()->translate('Select time limit per turn') . ':', 'opt' => $turnTimeLimit));
+        $f = new Coret_Form_Select(array('name' => 'turnTimeLimit', 'label' => $adapter->translate('Select time limit per turn') . ':', 'opt' => $turnTimeLimit));
         $this->addElements($f->getElements());
 
-        $this->addElement('submit', 'submit', array('label' => $this->getView()->translate('Create game')));
+        $this->addElement('submit', 'submit', array('label' => $adapter->translate('Create game')));
     }
 
 }

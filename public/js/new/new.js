@@ -6,7 +6,8 @@ var New = new function () {
             ctx.fillStyle = color;
             ctx.fillRect(x, y, 1, 1);
         },
-        maxWidth = 500
+        maxWidth = 500,
+        info = 'There are no open games'
 
     this.changeMap = function (fields) {
         var x, y,

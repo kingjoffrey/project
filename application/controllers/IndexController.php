@@ -20,6 +20,8 @@ class IndexController extends Coret_Controller_Authorized
         $this->view->headLink()->appendStylesheet('/css/playerslist.css?v=' . $this->_version);
 
         $this->view->jquery();
+        $this->view->headScript()->appendFile('/js/kinetic-v4.7.4.min.js');
+        $this->view->headScript()->appendFile('/js/date.js');
         $this->view->headScript()->appendFile('/js/jquery.mousewheel.min.js');
         $this->view->headScript()->appendFile('/js/Tween.js');
         $this->view->headScript()->appendFile('/js/three/three.js');
@@ -44,6 +46,11 @@ class IndexController extends Coret_Controller_Authorized
         $this->view->headScript()->appendFile('/js/main/websocket.js?v=' . $this->_version);
         $this->view->headScript()->appendFile('/js/main/websocketMessage.js?v=' . $this->_version);
         $this->view->headScript()->appendFile('/js/main/websocketSend.js?v=' . $this->_version);
+
+        $this->view->headScript()->appendFile('/js/new/new.js?v=' . $this->_version);
+        $this->view->headScript()->appendFile('/js/new/websocket.js?v=' . $this->_version);
+        $this->view->headScript()->appendFile('/js/new/websocketMessage.js?v=' . $this->_version);
+        $this->view->headScript()->appendFile('/js/new/websocketSend.js?v=' . $this->_version);
 
         $this->view->headScript()->appendFile('/js/help/init.js?v=' . $this->_version);
         $this->view->headScript()->appendFile('/js/help/help.js?v=' . $this->_version);
@@ -91,8 +98,12 @@ class IndexController extends Coret_Controller_Authorized
         $this->view->headScript()->appendFile('/js/common/towers.js?v=' . $this->_version);
         $this->view->headScript()->appendFile('/js/common/units.js?v=' . $this->_version);
 
+        $this->view->headScript()->appendFile('/js/tutorial/tutorial.js?v=' . $this->_version);
+        $this->view->headScript()->appendFile('/js/tutorial/websocket.js?v=' . $this->_version);
+        $this->view->headScript()->appendFile('/js/tutorial/websocketMessage.js?v=' . $this->_version);
+
+        $this->view->sound();
         $this->view->models();
-//        $this->view->MainMenu();
         $this->view->Friends();
         $this->view->ChatInput();
         $this->view->ChatTitle();

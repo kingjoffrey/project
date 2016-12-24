@@ -1,5 +1,5 @@
 "use strict"
-var WebSocketGame = new function () {
+var WebSocketTutorial = new function () {
     var port
     this.init = function (p) {
         port = p
@@ -16,7 +16,7 @@ var WebSocketGame = new function () {
 
         ws.onclose = function () {
             WebSocketSendCommon.setClosed(1)
-            setTimeout('WebSocketGame.init(WebSocketGame.getPort())', 1000)
+            setTimeout('WebSocketTutorial.init(WebSocketTutorial.getPort())', 1000)
         }
 
         WebSocketSendCommon.init(ws)
@@ -51,7 +51,7 @@ var WebSocketExec = new function () {
             var r = $.parseJSON(e.data)
             console.log(r)
             if (isSet(r.port)) {
-                WebSocketGame.init(r.port)
+                WebSocketTutorial.init(r.port)
             }
         }
 

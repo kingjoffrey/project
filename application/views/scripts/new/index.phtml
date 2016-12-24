@@ -19,8 +19,4 @@
         </tr>
     </table>
 </div>
-<a class="button" href="/">&laquo; <?php echo $this->translate('Back') ?></a>
-
-<?php $this->headScript()->captureStart() ?>
-var info = '<?php echo $this->translate('There are no open games') ?>';
-<?php $this->headScript()->captureEnd() ?>
+<a class="button" id="back">&laquo; <?php echo $this->translate('Back') ?></a>
