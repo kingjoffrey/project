@@ -38,7 +38,7 @@ var Game = new function () {
             Terrain.init(game.terrain)
             Fields.init(game.fields, game.map.mapId)
             Turn.init(game.turnHistory)
-            Gui.init()
+            GameGui.init()
             Players.init(game.players)
             GamePlayers.init(game.players)
             Timer.init(game.begin, game.turnTimeLimit, game.timeLimit)
@@ -58,7 +58,7 @@ var Game = new function () {
         if (Turn.isMy()) {
             CommonMe.turnOn()
             if (!CommonMe.getTurnActive()) {
-                WebSocketSend.startMyTurn()
+                WebSocketSendCommon.startMyTurn()
             }
         } else {
             CommonMe.turnOff()

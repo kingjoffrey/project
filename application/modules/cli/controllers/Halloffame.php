@@ -6,6 +6,11 @@ class HalloffameController
     {
         $view = new Zend_View();
         $db = $handler->getDb();
+
+        if (!isset($dataIn['page'])) {
+            $dataIn['page'] = 1;
+        }
+
         $mPlayer = new Application_Model_Player($db);
         $view->hallOfFame = $mPlayer->hallOfFame($dataIn['page']);
 

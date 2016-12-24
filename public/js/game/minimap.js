@@ -2,7 +2,7 @@
 var MiniMap = new function () {
     var lens,
         miniMap,
-        miniMap = function () {
+        getMiniMap = function () {
             var image = $('#map canvas'),
                 node = image[0],
                 $obj = {}
@@ -54,7 +54,7 @@ var MiniMap = new function () {
             $obj.fetchdata()
             return $obj;
         },
-        lens = function () {
+        getLens = function () {
             var $obj = {}
             $obj.node = $('#lens')
             $obj.setdimensions = function () {
@@ -192,8 +192,8 @@ var MiniMap = new function () {
             lens.setposition(e)
         })
 
-        miniMap = miniMap()
-        lens = lens()
+        miniMap = getMiniMap()
+        lens = getLens()
         lens.show()
     }
 }

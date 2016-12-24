@@ -1,15 +1,3 @@
-<?php echo $this->doctype() ?>
-<html>
-<head>
-    <?php
-    echo $this->headMeta() . "\n";
-    echo $this->headTitle() . "\n";
-    echo $this->headLink() . "\n";
-    echo $this->headScript() . "\n";
-    ?>
-</head>
-<body>
-<?php echo $this->placeholder('sound') ?>
 <div id="game">
     <div id="mapBox" class="box">
         <div id="map">
@@ -119,6 +107,3 @@
     </div>
 </div>
 <div id="loading"><?php echo $this->translate('Loading') ?>...</div>
-</body>
-</html>
-<?php echo $this->layout()->content; ?>

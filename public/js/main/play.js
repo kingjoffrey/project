@@ -5,5 +5,15 @@ var PlayController = new function () {
             data = r.data
 
         content.html(data)
+
+        $('#back').click(function () {
+            WebSocketSendMain.controller('index', 'index')
+        })
+        $('#tutorial').click(function () {
+            WebSocketSendMain.controller('tutorial', 'index')
+        })
+        $('#new').click(function () {
+            WebSocketSendMain.controller('new', 'index')
+        })
     }
 }

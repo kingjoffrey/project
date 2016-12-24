@@ -1,4 +1,4 @@
-var Gui = new function () {
+var EditorGui = new function () {
     var doKey = function (event) {
             if ($(event.target).attr('id') == 'msg') {
                 return;
@@ -50,6 +50,7 @@ var Gui = new function () {
                 EditorModels.createMesh('down')
             })
             $('#exit').click(function () {
+                Editor.setInit(0)
                 WebSocketSendMain.controller('index', 'index')
             })
         }
@@ -59,7 +60,7 @@ var Gui = new function () {
     }
     this.init = function () {
         $(window).resize(function () {
-           Gui.adjust()
+            EditorGui.adjust()
         })
         $('body')
             .keydown(function (event) {
@@ -84,10 +85,6 @@ var Gui = new function () {
         })
 
         MiniMap.init($('#map'))
-        // $('#mapBox').css({
-        //     height: Fields.getHeight() + 18 + 'px'
-        // })
-        // $('#terrain').css('top', Fields.getHeight() + 4 + 'px')
         activateButtons()
         this.adjust()
     }

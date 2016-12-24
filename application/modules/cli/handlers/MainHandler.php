@@ -4,6 +4,7 @@ use Devristo\Phpws\Protocol\WebSocketTransportInterface;
 use Devristo\Phpws\Server\UriHandler\WebSocketUriHandler;
 
 include_once(APPLICATION_PATH . '/modules/cli/controllers/Editor.php');
+include_once(APPLICATION_PATH . '/modules/cli/controllers/Game.php');
 include_once(APPLICATION_PATH . '/modules/cli/controllers/Help.php');
 include_once(APPLICATION_PATH . '/modules/cli/controllers/Halloffame.php');
 include_once(APPLICATION_PATH . '/modules/cli/controllers/Index.php');

@@ -12,9 +12,11 @@ var Editor = new function () {
             GameRenderer.init('editor', GameScene)
             GameScene.initSun(Fields.getMaxY())
             GameRenderer.animate()
-            Gui.init()
+            EditorGui.init()
         }
-        //console.log(r)
+    }
+    this.setInit = function (i) {
+        init = i
     }
 }
 

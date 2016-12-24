@@ -7,6 +7,10 @@ class LoadController
         $view = new Zend_View();
         $db = $handler->getDb();
 
+        if (!isset($dataIn['page'])) {
+            $dataIn['page'] = 1;
+        }
+
         $mGame = new Application_Model_Game(0, $db);
         $paginator = $mGame->getMyGames($user->parameters['playerId'], $dataIn['page'], new Application_Model_PlayersInGame(0, $db));
 

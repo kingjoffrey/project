@@ -1,5 +1,5 @@
 "use strict"
-var Gui = new function () {
+var GameGui = new function () {
     var lock = true,
         show = true,
         chatBox = {close: 0},
@@ -108,7 +108,7 @@ var Gui = new function () {
             })
 
             $('#exit').click(function () {
-                Gui.exit()
+                GameGui.exit()
             })
 
             $('#surrender').click(function () {
@@ -305,13 +305,13 @@ var Gui = new function () {
 
         $(document).bind("mousemove keypress", function () {
             clearInterval(Game.getTimeoutId())
-            document.title = Gui.getDocumentTitle()
+            document.title = GameGui.getDocumentTitle()
             window.onmousemove = null
         })
     }
     this.init = function () {
         $(window).resize(function () {
-            Gui.adjust()
+            GameGui.adjust()
         })
 
         $('#mapImage').css({
@@ -353,10 +353,10 @@ var Gui = new function () {
         // })
 
         MiniMap.init(Game.getMapElement())
-        $('#mapBox').css({
-            height: Fields.getHeight() + 18 + 'px'
-        })
-        $('#terrain').css('top', Fields.getHeight() + 4 + 'px')
+        // $('#mapBox').css({
+        //     height: Fields.getHeight() + 18 + 'px'
+        // })
+        // $('#terrain').css('top', Fields.getHeight() + 4 + 'px')
         prepareButtons()
         this.prepareBoxes()
         this.adjust()

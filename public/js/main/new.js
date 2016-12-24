@@ -1,5 +1,5 @@
 "use strict"
-var ProfileController = new function () {
+var NewController = new function () {
     this.index = function (r) {
         var content = $('#content'),
             data = r.data

@@ -5,5 +5,9 @@ var HalloffameController = new function () {
             data = r.data
 
         content.html(data)
+
+        $('#back').click(function () {
+            WebSocketSendMain.controller('index', 'index')
+        })
     }
 }
