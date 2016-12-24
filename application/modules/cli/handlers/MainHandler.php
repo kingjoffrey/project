@@ -81,7 +81,10 @@ class Cli_MainHandler extends WebSocketUriHandler
             $controller = new $className();
             $methodName = $dataIn['action'];
             if (method_exists($controller, $methodName)) {
-                $controller->$methodName($user, $this, $dataIn);
+                if (!isset($dataIn['params'])) {
+                    $dataIn['params'] = null;
+                }
+                $controller->$methodName($user, $this, $dataIn['params']);
             }
         } else {
             print_r($dataIn);

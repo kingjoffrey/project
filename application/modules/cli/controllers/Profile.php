@@ -60,16 +60,28 @@ class ProfileController
 //        }
     }
 
-    function show(Devristo\Phpws\Protocol\WebSocketTransportInterface $user, Cli_MainHandler $handler)
+    function show(Devristo\Phpws\Protocol\WebSocketTransportInterface $user, Cli_MainHandler $handler,$dataIn)
     {
-        if (!$playerId = $this->_request->getParam('playerId')) {
+        if (!$playerId = $dataIn['id']) {
             return;
         }
-        $this->view->headScript()->appendFile('/js/profile.js?v=' . Zend_Registry::get('config')->version);
-        $mPlayer = new Application_Model_Player();
-        $this->view->player = $mPlayer->getPlayer($playerId);
+        $db = $handler->getDb();
+        $view = new Zend_View();
 
-        $mGameScore = new Application_Model_GameScore();
-        $this->view->playerScores = $mGameScore->getPlayerScores($playerId);
+        $mPlayer = new Application_Model_Player($db);
+        $view->player = $mPlayer->getPlayer($playerId);
+
+        $mGameScore = new Application_Model_GameScore($db);
+        $view->playerScores = $mGameScore->getPlayerScores($playerId);
+
+
+        $view->addScriptPath(APPLICATION_PATH . '/views/scripts');
+
+        $token = array(
+            'type' => 'profile',
+            'action' => 'show',
+            'data' => $view->render('profile/show.phtml')
+        );
+        $handler->sendToUser($user, $token);
     }
 }
