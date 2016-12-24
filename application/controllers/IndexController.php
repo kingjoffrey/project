@@ -72,6 +72,7 @@ class IndexController extends Coret_Controller_Authorized
         $this->view->headScript()->appendFile('/js/common/init.js?v=' . $this->_version);
         $this->view->headScript()->appendFile('/js/common/castle.js?v=' . $this->_version);
         $this->view->headScript()->appendFile('/js/common/castles.js?v=' . $this->_version);
+        $this->view->headScript()->appendFile('/js/common/renderer.js?v=' . $this->_version);
         $this->view->headScript()->appendFile('/js/common/gameRenderer.js?v=' . $this->_version);
         $this->view->headScript()->appendFile('/js/common/gameScene.js?v=' . $this->_version);
         $this->view->headScript()->appendFile('/js/common/ground.js?v=' . $this->_version);

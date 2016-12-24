@@ -36,12 +36,12 @@ var GameRenderer = new function () {
     }
 
     this.init = function (id, Scene) {
+        renderer = Renderer.get()
         scene = Scene.get()
         camera = Scene.getCamera()
         width = Scene.getWidth()
         height = Scene.getHeight()
         $('#' + id).append(renderer.domElement)
-        renderer = new THREE.WebGLRenderer({antialias: true})
         // renderer.autoClear = false
     }
 }

@@ -1,8 +1,4 @@
-#editor #editMenu {
-    width: 230px;
-}
-
-#editor #editMenu .button {
+#editor #mapBox .button {
     padding: 0;
     width: 224px;
 }
@@ -14,4 +10,10 @@
 
 #editor #mainMenu .button {
     padding: 0;
+}
+
+
+#editor #terrain {
+    position: static;
+
 }

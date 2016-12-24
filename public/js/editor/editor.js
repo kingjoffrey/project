@@ -8,11 +8,11 @@ var Editor = new function () {
             Fields.init(r.fields, EditorController.getMapId())
             Ruins.init(r.ruins)
             Players.init(r.players)
-            Gui.init()
             GameScene.setCameraPosition(0, Fields.getMaxY())
+            GameRenderer.init('editor', GameScene)
             GameScene.initSun(Fields.getMaxY())
-            GameRenderer.init('game', GameScene)
             GameRenderer.animate()
+            Gui.init()
         }
         //console.log(r)
     }

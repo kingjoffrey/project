@@ -38,6 +38,11 @@ var Main = new function () {
         })
         $('#menu .button#' + controller).addClass('active')
     }
+    this.updateMenuClick = function () {
+        $('#menu a').each(function () {
+            $(this).click(click($(this).attr('id')))
+        })
+    }
     this.setBody = function (b) {
         body = b
     }

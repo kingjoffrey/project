@@ -71,7 +71,7 @@ var Gui = new function () {
             .on('dragstart', function () {
                 return false
             })
-        $('#game canvas').mousewheel(function (event) {
+        $('#editor canvas').mousewheel(function (event) {
             if (event.deltaY > 0) {
                 if (GameScene.getCameraY() < 230) {
                     GameScene.moveCameraAway()
@@ -84,10 +84,10 @@ var Gui = new function () {
         })
 
         MiniMap.init($('#map'))
-        $('#mapBox').css({
-            height: Fields.getHeight() + 18 + 'px'
-        })
-        $('#terrain').css('top', Fields.getHeight() + 4 + 'px')
+        // $('#mapBox').css({
+        //     height: Fields.getHeight() + 18 + 'px'
+        // })
+        // $('#terrain').css('top', Fields.getHeight() + 4 + 'px')
         activateButtons()
         this.adjust()
     }
