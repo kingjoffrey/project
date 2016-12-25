@@ -4,6 +4,8 @@ class Application_Form_Player extends Zend_Form
 {
     public function init()
     {
+        $this->setAttrib('id', 'player');
+
         $translator = Zend_Registry::get('Zend_Translate');
         $adapter = $translator->getAdapter();
 

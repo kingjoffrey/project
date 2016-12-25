@@ -909,28 +909,28 @@ table.treasury td.c {
     color: red;
 }
 
-#chatBox {
+#game #chatBox {
     display: none;
     right: -2px;
 }
 
-#chatBox input {
+#game #chatBox input {
     border: 1px solid goldenrod;
     margin-left: 3px;
     width: 281px;
 }
 
-#chatBox #send {
+#game #chatBox #send {
     height: 26px;
     line-height: 26px;
     width: 13px;
 }
 
-#chatBox #chatTitle {
+#game #chatBox #chatTitle {
     left: 38px;
 }
 
-#friends {
+#game #friends {
     display: none;
     position: absolute;
     width: 300px;

@@ -2,7 +2,7 @@
 
 class ProfileController
 {
-    function index(Devristo\Phpws\Protocol\WebSocketTransportInterface $user, Cli_MainHandler $handler)
+    function index(Devristo\Phpws\Protocol\WebSocketTransportInterface $user, Cli_MainHandler $handler, $dataIn)
     {
         $db = $handler->getDb();
         $mPlayer = new Application_Model_Player($db);
@@ -23,44 +23,53 @@ class ProfileController
 
         $view->addScriptPath(APPLICATION_PATH . '/views/scripts');
 
-        $token = array(
-            'type' => 'profile',
-            'action' => 'index',
-            'data' => $view->render('profile/index.phtml')
-        );
-        $handler->sendToUser($user, $token);
 
-//        if (!$this->_request->isPost()) {
-//            return;
-//        }
-//
-//        $data = $this->_request->getPost();
-//        unset($data['submit']);
-//        $valid = false;
-//
-//        if ($this->_request->getParam('password')) {
-//            if ($view->formPassword->isValid($data)) {
-//                $valid = true;
-//            }
-//            unset($data['repeatPassword']);
-//            $data['password'] = md5($data['password']);
-//        } elseif ($this->_request->getParam('login')) {
-//            if ($view->formEmail->isValid($data)) {
-//                $valid = true;
-//            }
-//        } else {
-//            if ($view->formPlayer->isValid($data)) {
-//                $valid = true;
-//            }
-//        }
-//
-//        if ($valid) {
-//            $mPlayer->updatePlayer($data, $this->_playerId);
-//            $this->redirect('/' . $this->_request->getParam('lang') . '/profile');
-//        }
+        if (isset($dataIn['firstName']) || isset($dataIn['password']) || isset($dataIn['login'])) {
+            $valid = true;
+
+            if ($dataIn['firstName']) {
+                if (!$view->formPlayer->isValid($dataIn)) {
+                    $valid = false;
+                }
+            }
+            if ($dataIn['password']) {
+                if (!$view->formPassword->isValid($dataIn)) {
+                    $valid = false;
+                }
+                unset($dataIn['repeatPassword']);
+                $dataIn['password'] = md5($dataIn['password']);
+            }
+            if ($dataIn['login']) {
+                if (!$view->formEmail->isValid($dataIn)) {
+                    $valid = false;
+                }
+            }
+
+            if ($valid) {
+                $mPlayer->updatePlayer($dataIn, $user->parameters['playerId']);
+                $token = array(
+                    'type' => 'profile',
+                    'action' => 'ok',
+                    'data' => $view->render('profile/ok.phtml')
+                );
+            } else {
+                $token = array(
+                    'type' => 'profile',
+                    'action' => 'index',
+                    'data' => $view->render('profile/index.phtml')
+                );
+            }
+        } else {
+            $token = array(
+                'type' => 'profile',
+                'action' => 'index',
+                'data' => $view->render('profile/index.phtml')
+            );
+        }
+        $handler->sendToUser($user, $token);
     }
 
-    function show(Devristo\Phpws\Protocol\WebSocketTransportInterface $user, Cli_MainHandler $handler,$dataIn)
+    function show(Devristo\Phpws\Protocol\WebSocketTransportInterface $user, Cli_MainHandler $handler, $dataIn)
     {
         if (!$playerId = $dataIn['id']) {
             return;
