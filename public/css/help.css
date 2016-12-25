@@ -29,7 +29,7 @@
     color: #fff;
 }
 
-#helpMenu div.off {
+#helpMenu div.active {
     background: #fff;
     color: #000;
     cursor: default;

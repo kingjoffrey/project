@@ -1,7 +1,10 @@
-<?php echo $this->placeholder('helpMenu') ?>
+<div id="helpMenu">
+    <?php foreach (Admin_Model_Help::getMenuArray() as $key => $val): ?>
+        <div id="help<?php echo $key ?>"><?php echo $this->translate($val) ?></div>
+    <?php endforeach ?>
+</div>
 <div class="table">
     <div id="graphics"></div>
     <div id="text"></div>
 </div>
 <a class="button" id="back">&laquo; <?php echo $this->translate('Back') ?></a>
-

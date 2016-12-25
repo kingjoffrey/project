@@ -196,6 +196,11 @@ var Help = new function () {
         }
 
     this.click = function (id) {
+        $('#helpMenu div').each(function () {
+            $(this).removeClass('active')
+        })
+        $('#helpMenu div#' + id).addClass('active')
+        var id = id.substring(4)
         this.fillText(id)
     }
     this.fillText = function (id) {
@@ -261,6 +266,8 @@ var Help = new function () {
 
         graphics = $('#graphics')
         text = $('#text')
+
+        $('#helpMenu div').first().addClass('active')
 
         WebSocketHelp.init()
     }

@@ -27,19 +27,19 @@ class ProfileController
         if (isset($dataIn['firstName']) || isset($dataIn['password']) || isset($dataIn['login'])) {
             $valid = true;
 
-            if ($dataIn['firstName']) {
+            if (isset($dataIn['firstName']) && $dataIn['firstName']) {
                 if (!$view->formPlayer->isValid($dataIn)) {
                     $valid = false;
                 }
             }
-            if ($dataIn['password']) {
+            if (isset($dataIn['password']) && $dataIn['password']) {
                 if (!$view->formPassword->isValid($dataIn)) {
                     $valid = false;
                 }
                 unset($dataIn['repeatPassword']);
                 $dataIn['password'] = md5($dataIn['password']);
             }
-            if ($dataIn['login']) {
+            if (isset($dataIn['login']) && $dataIn['login']) {
                 if (!$view->formEmail->isValid($dataIn)) {
                     $valid = false;
                 }

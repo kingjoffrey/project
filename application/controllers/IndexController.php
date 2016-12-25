@@ -53,7 +53,6 @@ class IndexController extends Coret_Controller_Authorized
         $this->view->headScript()->appendFile('/js/new/websocketMessage.js?v=' . $this->_version);
         $this->view->headScript()->appendFile('/js/new/websocketSend.js?v=' . $this->_version);
 
-        $this->view->headScript()->appendFile('/js/help/init.js?v=' . $this->_version);
         $this->view->headScript()->appendFile('/js/help/help.js?v=' . $this->_version);
         $this->view->headScript()->appendFile('/js/help/helpModels.js?v=' . $this->_version);
         $this->view->headScript()->appendFile('/js/help/helpScene.js?v=' . $this->_version);

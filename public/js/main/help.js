@@ -9,5 +9,7 @@ var HelpController = new function () {
         $('#back').click(function () {
             WebSocketSendMain.controller('index', 'index')
         })
+
+        Help.init()
     }
 }

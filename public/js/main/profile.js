@@ -44,4 +44,14 @@ var ProfileController = new function () {
             WebSocketSendMain.controller('over', 'index', {'id': id})
         })
     }
+    this.ok = function (r) {
+        var content = $('#content'),
+            data = r.data
+
+        content.html(data)
+
+        $('#back').click(function () {
+            WebSocketSendMain.controller('index', 'index')
+        })
+    }
 }
