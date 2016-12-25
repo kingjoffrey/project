@@ -32,7 +32,11 @@ var EditorController = new function () {
             console.log($('#name').val())
             console.log($('#mapSize').val())
             console.log($('#maxPlayers').val())
-            // WebSocketSendMain.controller('index', 'index')
+            WebSocketSendMain.controller('editor', 'create', {
+                'name': $('#name').val(),
+                'mapSize': $('#mapSize').val(),
+                'maxPlayers': $('#maxPlayers').val()
+            })
         })
     }
     this.edit = function (r) {

@@ -11,6 +11,7 @@ include_once(APPLICATION_PATH . '/modules/cli/controllers/Index.php');
 include_once(APPLICATION_PATH . '/modules/cli/controllers/Load.php');
 include_once(APPLICATION_PATH . '/modules/cli/controllers/New.php');
 include_once(APPLICATION_PATH . '/modules/cli/controllers/Tutorial.php');
+include_once(APPLICATION_PATH . '/modules/cli/controllers/Over.php');
 include_once(APPLICATION_PATH . '/modules/cli/controllers/Play.php');
 include_once(APPLICATION_PATH . '/modules/cli/controllers/Players.php');
 include_once(APPLICATION_PATH . '/modules/cli/controllers/Profile.php');

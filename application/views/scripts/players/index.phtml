@@ -12,11 +12,12 @@
                 <tr>
                     <td><?php echo $row['firstName'] . ' ' . $row['lastName'] ?></td>
                     <td>
-                        <a href="/<?php echo Zend_Registry::get('lang') ?>/players/add/friendId/<?php echo $row['playerId'] ?>"><?php echo $this->translate('Add to friends') ?></a>
+                        <a id="<?php echo $row['playerId'] ?>"><?php echo $this->translate('Add to friends') ?></a>
                     </td>
                 </tr>
             <?php endforeach ?>
         <?php endif ?>
     </table>
 </div>
-<a class="button" href="/">&laquo; <?php echo $this->translate('Back') ?></a>
+<a class="button" id="back">&laquo; <?php echo $this->translate('Back') ?></a>
+

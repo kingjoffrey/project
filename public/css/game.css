@@ -600,7 +600,7 @@
     left: 2px;
 }
 
-.box {
+#game .box {
     position: fixed;
     z-index: 27000;
     /*background: url(/img/deska_1_transparent.png);*/

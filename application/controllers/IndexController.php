@@ -35,6 +35,7 @@ class IndexController extends Coret_Controller_Authorized
         $this->view->headScript()->appendFile('/js/main/main.js?v=' . $this->_version);
         $this->view->headScript()->appendFile('/js/main/editor.js?v=' . $this->_version);
         $this->view->headScript()->appendFile('/js/main/game.js?v=' . $this->_version);
+        $this->view->headScript()->appendFile('/js/main/over.js?v=' . $this->_version);
         $this->view->headScript()->appendFile('/js/main/new.js?v=' . $this->_version);
         $this->view->headScript()->appendFile('/js/main/tutorial.js?v=' . $this->_version);
         $this->view->headScript()->appendFile('/js/main/load.js?v=' . $this->_version);
@@ -60,8 +61,6 @@ class IndexController extends Coret_Controller_Authorized
         $this->view->headScript()->appendFile('/js/help/websocket.js?v=' . $this->_version);
         $this->view->headScript()->appendFile('/js/help/websocketMessage.js?v=' . $this->_version);
         $this->view->headScript()->appendFile('/js/help/websocketSend.js?v=' . $this->_version);
-
-        $this->view->headScript()->appendFile('/js/halloffame.js?v=' . $this->_version);
 
         $this->view->headScript()->appendFile('/js/editor/message.js?v=' . $this->_version);
         $this->view->headScript()->appendFile('/js/editor/castle.js?v=' . $this->_version);
