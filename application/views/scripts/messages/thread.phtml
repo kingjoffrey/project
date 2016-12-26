@@ -1,5 +1,4 @@
 <h1><?php echo $this->translate('Messages') ?></h1>
-
 <div class="table">
     <h2><?php echo $this->translate('Conversation history') ?></h2>
     <table id="messages">
@@ -9,7 +8,7 @@
                     <td>
                         <div class="date"><?php echo Coret_View_Helper_Formatuj::date($row['date']) ?></div>
                         <div class="name"><?php echo $row['firstName'] . ' ' . $row['lastName'] ?></div>
-                        <div class="message"><?php echo $row['message'] ?></div>
+                        <div class="msg"><?php echo $row['message'] ?></div>
                     </td>
                 </tr>
             <?php endforeach ?>
@@ -17,4 +16,4 @@
     </table>
 </div>
 <?php echo $this->paginationControl($this->paginator, 'Sliding', 'pagination_control.phtml'); ?>
-<a href="/" class="button">&laquo; <?php echo $this->translate('Back') ?></a>
+<a class="button" id="back">&laquo; <?php echo $this->translate('Back') ?></a>

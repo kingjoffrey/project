@@ -1,6 +1,1 @@
 <div id="title"><div><h1>Wars of Fate</h1><p>strategic game</p></div></div>
-<?php $this->headScript()->captureStart() ?>
-var debug = '<?php echo Zend_Registry::get('config')->debug ?>'
-var timeLimits = <?php echo Zend_Json::encode(Application_Model_Limit::timeLimits()); ?>;
-var turnTimeLimit = <?php echo Zend_Json::encode(Application_Model_Limit::turnTimeLimit()); ?>;
-<?php $this->headScript()->captureEnd() ?>

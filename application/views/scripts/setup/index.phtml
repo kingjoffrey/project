@@ -47,14 +47,11 @@
         </p>
     </div>
 </div>
-<a class="button"
-   href="/<?php echo Zend_Registry::get('lang') ?>/new">&laquo; <?php echo $this->translate('Back') ?></a>
+<a class="button" id="back">&laquo; <?php echo $this->translate('Back') ?></a>
 
 <?php $this->headScript()->captureStart() ?>
 var numberOfPlayers = <?php echo (int)$this->game['numberOfPlayers'] ?>;
 var mapPlayers = <?php echo Zend_Json::encode($this->mapPlayers) ?>;
-
-var gameId = <?php echo (int)$this->gameId ?>;
 
 var form = '<?php echo str_replace("\n", '', $this->form) ?>';
 <?php $this->headScript()->captureEnd() ?>

@@ -66,15 +66,28 @@ class MessagesController
 
     public function thread(Devristo\Phpws\Protocol\WebSocketTransportInterface $user, Cli_MainHandler $handler, $dataIn)
     {
-        $playerId = $this->_request->getParam('id');
+        $view = new Zend_View();
+
+        $playerId = $dataIn['id'];
         if (!$playerId) {
-            $this->redirect('/messages');
+            $view->addScriptPath(APPLICATION_PATH . '/views/scripts');
+
+            $token = array(
+                'type' => 'index',
+                'action' => 'index',
+                'data' => $view->render('index/index.phtml')
+            );
+            $handler->sendToUser($user, $token);
             return;
         }
 
-        $view = new Zend_View();
+        if (!isset($dataIn['page'])) {
+            $dataIn['page'] = 1;
+        }
 
-        $mPrivateChat = new Application_Model_PrivateChat($user->parameters['playerId']);
+        $db = $handler->getDb();
+
+        $mPrivateChat = new Application_Model_PrivateChat($user->parameters['playerId'], $db);
         $view->paginator = $mPrivateChat->getChatHistoryMessages($playerId, $dataIn['page']);
         $messages = array();
         foreach ($view->paginator as $row) {
@@ -87,8 +100,8 @@ class MessagesController
 
         $token = array(
             'type' => 'messages',
-            'action' => 'index',
-            'data' => $view->render('messages/index.phtml')
+            'action' => 'thread',
+            'data' => $view->render('messages/thread.phtml')
         );
         $handler->sendToUser($user, $token);
     }

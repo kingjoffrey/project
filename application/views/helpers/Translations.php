@@ -5,6 +5,7 @@ class Zend_View_Helper_Translations extends Zend_View_Helper_Abstract
 
     public function translations()
     {
+        $this->view->headScript()->appendScript('var debug = "' . Zend_Registry::get('config')->debug . '", timeLimits = ' . Zend_Json::encode(Application_Model_Limit::timeLimits()).', turnTimeLimit = ' . Zend_Json::encode(Application_Model_Limit::turnTimeLimit()));
         $this->view->headScript()->appendScript('var translations = ' . Zend_Json::encode(array(
                 'castlesHeld' => $this->view->translate('Castles held'),
                 'castlesConquered' => $this->view->translate('Castles conquered'),
