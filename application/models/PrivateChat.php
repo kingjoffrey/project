@@ -37,43 +37,6 @@ class Application_Model_PrivateChat extends Coret_Db_Table_Abstract
         $paginator->setCurrentPageNumber($pageNumber);
         $paginator->setItemCountPerPage(20);
 
-        $ids = '';
-        $recipients = array();
-        foreach ($paginator as $row) {
-            if ($ids) {
-                $ids .= ',';
-            }
-            if ($row['playerId'] == $this->_playerId) {
-                $ids .= $row['recipientId'];
-            } else {
-                $recipients[$row['playerId']] = $row;
-                $ids .= $row['playerId'];
-            }
-        }
-
-        if ($ids) {
-            $mPlayer = new Application_Model_Player();
-            $players = $mPlayer->getPlayersNames($ids);
-            foreach ($paginator as &$row) {
-                if ($row['playerId'] == $this->_playerId) {
-                    $row['name'] = $players[$row['recipientId']];
-                    $row['id'] = $row['recipientId'];
-                    if (isset($recipients[$row['recipientId']])) {
-                        $row['messages'] += $recipients[$row['recipientId']]['messages'];
-                        $row['read'] = $recipients[$row['recipientId']]['read'];
-                    }else{
-                        $row['read'] = 0;
-                    }
-                } else {
-                    if (isset($recipients[$row['playerId']])) {
-                        continue;
-                    }
-                    $row['name'] = $players[$row['playerId']];
-                    $row['id'] = $row['playerId'];
-                }
-            }
-        }
-
         return $paginator;
     }
 

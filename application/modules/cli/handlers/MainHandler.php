@@ -9,6 +9,7 @@ include_once(APPLICATION_PATH . '/modules/cli/controllers/Help.php');
 include_once(APPLICATION_PATH . '/modules/cli/controllers/Halloffame.php');
 include_once(APPLICATION_PATH . '/modules/cli/controllers/Index.php');
 include_once(APPLICATION_PATH . '/modules/cli/controllers/Load.php');
+include_once(APPLICATION_PATH . '/modules/cli/controllers/Messages.php');
 include_once(APPLICATION_PATH . '/modules/cli/controllers/New.php');
 include_once(APPLICATION_PATH . '/modules/cli/controllers/Tutorial.php');
 include_once(APPLICATION_PATH . '/modules/cli/controllers/Over.php');

@@ -68,7 +68,7 @@ var GameGui = new function () {
                     Turn.next()
                     break;
                 case 70: //f
-                    WebSocketSend.fortify()
+                    WebSocketSendCommon.fortify()
                     break;
                 case 78: //n
                     CommonMe.findNext()
@@ -77,7 +77,7 @@ var GameGui = new function () {
                     $('.message .go').click()
                     break;
                 case 82: //r
-                    WebSocketSend.ruin()
+                    WebSocketSendCommon.ruin()
                     break;
                 case 83: //s
                     StatusWindow.show()
@@ -113,12 +113,12 @@ var GameGui = new function () {
 
             $('#surrender').click(function () {
                 var id = Message.show(translations.surrender, $('<div>').html(translations.areYouSure))
-                Message.ok(id, WebSocketSend.surrender)
+                Message.ok(id, WebSocketSendCommon.surrender)
                 Message.cancel(id)
             });
 
             $('#statistics').click(function () {
-                WebSocketSend.statistics();
+                WebSocketSendCommon.statistics();
             })
 
             $('#config').click(function () {
@@ -139,7 +139,7 @@ var GameGui = new function () {
                 }
 
                 StatusWindow.show()
-            });
+            })
 
             $('#deselectArmy').click(function () {
                 if (!CommonMe.getSelectedArmyId()) {
@@ -147,7 +147,7 @@ var GameGui = new function () {
                 }
 
                 CommonMe.deselectArmy()
-            });
+            })
 
             $('#showFriends').click(function () {
                 if (friendsShow) {
@@ -261,10 +261,10 @@ var GameGui = new function () {
         //Message.setOverflowHeight()
     }
     this.exit = function () {
-        window.location = '/' + lang + '/index'
+        WebSocketSendMain.controller('index', 'index')
     }
     this.end = function () {
-        window.location = '/' + lang + '/over/index/id/' + gameId
+        WebSocketSendMain.controller('over', 'index', {'id': gameId})
     }
     this.unlock = function () {
         lock = false;

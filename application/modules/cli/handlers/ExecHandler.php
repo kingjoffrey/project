@@ -106,7 +106,7 @@ class Cli_ExecHandler extends WebSocketUriHandler
         $dataIn = Zend_Json::decode($msg->getData());
 
         if (!isset($dataIn['gameId'])) {
-            throw new Exception('Brak "gameId"');
+            echo('EXEC: brak "gameId"');
             return;
         }
 

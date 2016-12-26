@@ -33,8 +33,9 @@ var Page = new function () {
             var x = $(this).scrollTop();
             $(this).css('background-position', '0% ' + parseInt(-x / 10) + 'px');
         })
+
         $('#envelope').click(function () {
-            window.location = '/' + lang + '/messages'
+            WebSocketSendMain.controller('messages', 'index')
         })
 
         $('#friendsBox .close').click(function () {

@@ -1,5 +1,5 @@
 "use strict"
-var LoadController = new function () {
+var MessagesController = new function () {
     this.index = function (r) {
         var content = $('#content'),
             data = r.data
@@ -9,8 +9,8 @@ var LoadController = new function () {
         $('#back').click(function () {
             WebSocketSendMain.controller('index', 'index')
         })
-        $('.trlink').click(function () {
-            WebSocketSendMain.controller('game', 'index', {'gameId': $(this).attr('id')})
+        $('#threads .trlink').click(function () {
+            WebSocketSendMain.controller('messages', 'thread', {'id': $(this).attr('id')})
         })
     }
 }

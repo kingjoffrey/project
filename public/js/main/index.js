@@ -8,6 +8,7 @@ var IndexController = new function () {
             Main.setMain('')
             Main.updateMenu()
             Main.updateMenuClick()
+            Page.init()
         }
 
         var content = $('#content'),
