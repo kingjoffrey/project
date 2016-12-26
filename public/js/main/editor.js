@@ -40,9 +40,9 @@ var EditorController = new function () {
         })
     }
     this.edit = function (r) {
-        var body = $('body')
-        Main.setBody(body.html())
-        body.html(r.data)
+        var main = $('#main')
+        Main.setMain(main.html())
+        main.html(r.data)
         WebSocketEditor.init()
     }
     this.getMapId = function () {

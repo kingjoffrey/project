@@ -1,11 +1,11 @@
 "use strict"
 var IndexController = new function () {
     this.index = function (r) {
-        var body = Main.getBody()
+        var main = Main.getMain()
 
-        if (body) {
-            $('body').html(body)
-            Main.setBody('')
+        if (main) {
+            $('#main').html(main)
+            Main.setMain('')
             Main.updateMenu()
             Main.updateMenuClick()
         }

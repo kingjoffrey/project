@@ -3,7 +3,7 @@ var WebSocketTutorial = new function () {
     var port
     this.init = function (p) {
         port = p
-        var ws = new WebSocket(wsURL + ':' + port + '/tutorial' + gameId)
+        var ws = new WebSocket(wsURL + ':' + port + '/tutorial' + Game.getGameId())
 
         ws.onopen = function () {
             WebSocketSendCommon.setClosed(0)
@@ -25,7 +25,7 @@ var WebSocketTutorial = new function () {
         return port
     }
 }
-var WebSocketExec = new function () {
+var WebSocketExecTutorial = new function () {
     var closed = true,
         ws
 
@@ -41,7 +41,7 @@ var WebSocketExec = new function () {
             }
 
             var token = {
-                gameId: gameId
+                'gameId': Game.getGameId()
             }
 
             ws.send(JSON.stringify(token))
@@ -49,15 +49,14 @@ var WebSocketExec = new function () {
 
         ws.onmessage = function (e) {
             var r = $.parseJSON(e.data)
-            console.log(r)
             if (isSet(r.port)) {
-                WebSocketTutorial.init(r.port)
+                setTimeout(function() {WebSocketTutorial.init(r.port)}, 1000)
             }
         }
 
         ws.onclose = function () {
             closed = 1
-            setTimeout('WebSocketExec.init()', 1000)
+            setTimeout('WebSocketExecTutorial.init()', 1000)
         }
     }
 }

@@ -1,9 +1,12 @@
 "use strict"
 var TutorialController = new function () {
     this.index = function (r) {
-        var body = $('body')
-        Main.setBody(body.html())
-        body.html(r.data)
-        // WebSocketTutorial.init()
+        var main = $('#main')
+        Main.setMain(main.html())
+        main.html(r.data)
+
+        Game.setGameId(r.gameId)
+
+        WebSocketExecTutorial.init()
     }
 }

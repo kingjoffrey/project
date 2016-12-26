@@ -12,22 +12,22 @@ var WebSocketSendCommon = new function () {
     this.ruin = function () {
         if (closed) {
             Message.error(translations.sorryServerIsDisconnected)
-            return;
+            return
         }
 
         if (!Turn.isMy()) {
-            return;
+            return
         }
         if (!CommonMe.getSelectedArmyId()) {
-            return;
+            return
         }
 
         CommonMe.deselectArmy()
 
         var token = {
-            type: 'ruin',
-            armyId: CommonMe.getDeselectedArmyId()
-        };
+            'type': 'ruin',
+            'armyId': CommonMe.getDeselectedArmyId()
+        }
 
         ws.send(JSON.stringify(token));
     }
@@ -41,7 +41,7 @@ var WebSocketSendCommon = new function () {
         if (!Turn.isMy()) {
             return
         }
-        if (Gui.lock) {
+        if (GameGui.lock) {
             return
         }
 
@@ -56,9 +56,9 @@ var WebSocketSendCommon = new function () {
         CommonMe.findNext()
 
         var token = {
-            type: 'fortify',
-            armyId: armyId,
-            fortify: 1
+            'type': 'fortify',
+            'armyId': armyId,
+            'fortify': 1
         };
 
         ws.send(JSON.stringify(token));
@@ -67,20 +67,20 @@ var WebSocketSendCommon = new function () {
     this.unfortify = function (armyId) {
         if (closed) {
             Message.error(translations.sorryServerIsDisconnected)
-            return;
+            return
         }
 
         if (!Turn.isMy()) {
             return
         }
-        if (Gui.lock) {
+        if (GameGui.lock) {
             return
         }
 
         var token = {
-            type: 'fortify',
-            armyId: armyId,
-            fortify: 0
+            'type': 'fortify',
+            'armyId': armyId,
+            'fortify': 0
         };
 
         ws.send(JSON.stringify(token));
@@ -93,26 +93,26 @@ var WebSocketSendCommon = new function () {
         }
 
         if (!Turn.isMy()) {
-            return;
+            return
         }
 
         CommonMe.setParentArmyId(null)
         var token = {
-            type: 'join',
-            armyId: armyId
-        };
+            'type': 'join',
+            'armyId': armyId
+        }
 
-        ws.send(JSON.stringify(token));
+        ws.send(JSON.stringify(token))
     }
 
     this.disband = function () {
         if (closed) {
             Message.error(translations.sorryServerIsDisconnected)
-            return;
+            return
         }
 
         if (!Turn.isMy()) {
-            return;
+            return
         }
         if (!CommonMe.getSelectedArmyId()) {
             return
@@ -120,8 +120,8 @@ var WebSocketSendCommon = new function () {
         CommonMe.deselectArmy(1)
 
         var token = {
-            type: 'disband',
-            armyId: CommonMe.getDeselectedArmyId()
+            'type': 'disband',
+            'armyId': CommonMe.getDeselectedArmyId()
         };
 
         ws.send(JSON.stringify(token));
@@ -140,15 +140,15 @@ var WebSocketSendCommon = new function () {
 
         var armyId = CommonMe.getSelectedArmyId()
 
-        Gui.setLock()
+        GameGui.setLock()
         GameModels.movePathCircles()
         CommonMe.deselectArmy(1)
 
         var token = {
-            type: 'move',
-            x: AStar.getX(),
-            y: AStar.getY(),
-            armyId: armyId
+            'type': 'move',
+            'x': AStar.getX(),
+            'y': AStar.getY(),
+            'armyId': armyId
         }
 
         ws.send(JSON.stringify(token))
@@ -164,33 +164,33 @@ var WebSocketSendCommon = new function () {
             Message.error(translations.itIsNotYourTurn);
             return;
         }
-        var h = '';
-        var s = '';
+        var h = ''
+        var s = ''
 
         $('.message input[type="checkbox"]:checked').each(function () {
             if ($(this).attr('name') == 'heroId') {
                 if (h) {
-                    h += ',';
+                    h += ','
                 }
-                h += $(this).val();
+                h += $(this).val()
             } else {
                 if (s) {
-                    s += ',';
+                    s += ','
                 }
-                s += $(this).val();
+                s += $(this).val()
             }
-        });
+        })
 
         if (!s && !h) {
-            return;
+            return
         }
 
         var token = {
-            type: 'split',
-            armyId: CommonMe.getSelectedArmyId(),
-            s: s,
-            h: h
-        };
+            'type': 'split',
+            'armyId': CommonMe.getSelectedArmyId(),
+            's': s,
+            'h': h
+        }
 
         ws.send(JSON.stringify(token));
     }
@@ -212,8 +212,8 @@ var WebSocketSendCommon = new function () {
         CommonMe.deselectArmy()
 
         var token = {
-            type: 'resurrection'
-        };
+            'type': 'resurrection'
+        }
 
         ws.send(JSON.stringify(token));
     }
@@ -221,18 +221,18 @@ var WebSocketSendCommon = new function () {
     this.hire = function () {
         if (closed) {
             Message.error(translations.sorryServerIsDisconnected)
-            return;
+            return
         }
 
         if (!Turn.isMy()) {
-            return;
+            return
         }
 
         CommonMe.deselectArmy()
 
         var token = {
-            type: 'hire'
-        };
+            'type': 'hire'
+        }
 
         ws.send(JSON.stringify(token));
     }
@@ -252,9 +252,9 @@ var WebSocketSendCommon = new function () {
         }
 
         var token = {
-            type: 'raze',
-            armyId: CommonMe.getSelectedArmyId()
-        };
+            'type': 'raze',
+            'armyId': CommonMe.getSelectedArmyId()
+        }
 
         ws.send(JSON.stringify(token));
     }
@@ -274,9 +274,9 @@ var WebSocketSendCommon = new function () {
         }
 
         var token = {
-            type: 'defense',
-            castleId: castleId
-        };
+            'type': 'defense',
+            'castleId': castleId
+        }
 
         ws.send(JSON.stringify(token));
     }
@@ -284,40 +284,40 @@ var WebSocketSendCommon = new function () {
     this.startMyTurn = function () {
         if (closed) {
             Message.error(translations.sorryServerIsDisconnected)
-            return;
+            return
         }
 
         var token = {
-            type: 'startTurn'
-        };
+            'type': 'startTurn'
+        }
 
-        ws.send(JSON.stringify(token));
+        ws.send(JSON.stringify(token))
     }
 
     this.nextTurn = function () {
         if (closed) {
             Message.error(translations.sorryServerIsDisconnected)
-            return;
+            return
         }
 
         var token = {
-            type: 'nextTurn'
-        };
+            'type': 'nextTurn'
+        }
 
-        ws.send(JSON.stringify(token));
+        ws.send(JSON.stringify(token))
     }
 
     this.statistics = function () {
         if (closed) {
             Message.error(translations.sorryServerIsDisconnected)
-            return;
+            return
         }
 
         var token = {
-            type: 'statistics'
-        };
+            'type': 'statistics'
+        }
 
-        ws.send(JSON.stringify(token));
+        ws.send(JSON.stringify(token))
     }
 
     this.battleAttack = function () {
@@ -331,7 +331,7 @@ var WebSocketSendCommon = new function () {
     this.battleConfiguration = function (attack) {
         if (closed) {
             Message.error(translations.sorryServerIsDisconnected)
-            return;
+            return
         }
 
         var sequence = {},
@@ -343,12 +343,12 @@ var WebSocketSendCommon = new function () {
         })
 
         var token = {
-            type: 'bSequence',
-            attack: attack,
-            sequence: sequence
+            'type': 'bSequence',
+            'attack': attack,
+            'sequence': sequence
         }
 
-        ws.send(JSON.stringify(token));
+        ws.send(JSON.stringify(token))
     }
 
     this.computer = function () {
@@ -358,62 +358,62 @@ var WebSocketSendCommon = new function () {
         }
 
         var token = {
-            type: 'computer'
+            'type': 'computer'
         }
 
-        ws.send(JSON.stringify(token));
+        ws.send(JSON.stringify(token))
     }
 
     this.production = function (castleId, unitId, relocationToCastleId) {
         if (closed) {
             Message.error(translations.sorryServerIsDisconnected)
-            return;
+            return
         }
 
         if (!unitId) {
             Message.error('Error');
-            return;
+            return
         }
 
         var token = {
-            type: 'production',
-            castleId: castleId,
-            unitId: unitId,
-            relocationToCastleId: relocationToCastleId
+            'type': 'production',
+            'castleId': castleId,
+            'unitId': unitId,
+            'relocationToCastleId': relocationToCastleId
         };
 
-        ws.send(JSON.stringify(token));
+        ws.send(JSON.stringify(token))
     }
 
     this.surrender = function () {
         if (closed) {
             Message.error(translations.sorryServerIsDisconnected)
-            return;
+            return
         }
 
         var token = {
-            type: 'surrender'
+            'type': 'surrender'
         };
 
-        ws.send(JSON.stringify(token));
+        ws.send(JSON.stringify(token))
     }
     this.chat = function () {
         if (closed) {
             Message.error(translations.sorryServerIsDisconnected)
-            return;
+            return
         }
 
-        var msg = $('#msg').val();
+        var msg = $('#msg').val()
 
         if (msg) {
-            $('#msg').val('');
+            $('#msg').val('')
 
             var token = {
-                type: 'chat',
-                msg: msg
+                'type': 'chat',
+                'msg': msg
             }
 
-            ws.send(JSON.stringify(token));
+            ws.send(JSON.stringify(token))
         }
     }
     this.open = function () {
@@ -423,11 +423,11 @@ var WebSocketSendCommon = new function () {
         }
 
         var token = {
-            type: 'open',
-            gameId: gameId,
-            playerId: id,
-            langId: langId,
-            accessKey: accessKey
+            'type': 'open',
+            'gameId': Game.getGameId(),
+            'playerId': id,
+            'langId': langId,
+            'accessKey': accessKey
         }
 
         ws.send(JSON.stringify(token))

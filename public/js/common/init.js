@@ -7,10 +7,15 @@ var CommonInit = new function () {
             }, 500)
             return
         }
+        if (isSet(g.tutorial)) {
+            Tutorial.init(g.tutorial)
+        }
+        Game.init(g)
     }
 }
 $(document).ready(function () {
-    // GameScene.init($(window).innerWidth(), $(window).innerHeight())
+    AStar.init()
+    GameScene.init($(window).innerWidth(), $(window).innerHeight())
     // GameModels.init()
     // PickerCommon.init()
 })

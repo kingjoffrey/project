@@ -2,7 +2,7 @@
 var Main = new function () {
     var active,
         init = 0,
-        body = '',
+        main = '',
         click = function (controller) {
             return function () {
                 WebSocketSendMain.controller(controller)
@@ -43,10 +43,10 @@ var Main = new function () {
             $(this).click(click($(this).attr('id')))
         })
     }
-    this.setBody = function (b) {
-        body = b
+    this.setMain = function (b) {
+        main = b
     }
-    this.getBody = function () {
-        return body
+    this.getMain = function () {
+        return main
     }
 }

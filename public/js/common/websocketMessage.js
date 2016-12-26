@@ -36,7 +36,7 @@ var WebSocketMessageCommon = new function () {
                 CommonMe.setUpkeep(r.upkeep)
                 CommonMe.setGold(r.gold)
                 CommonMe.setIncome(r.income)
-                Gui.unlock()
+                GameGui.unlock()
                 break
 
             case 'nextTurn':
@@ -93,7 +93,7 @@ var WebSocketMessageCommon = new function () {
 
             case 'error':
                 Message.error(r.msg);
-                Gui.unlock();
+                GameGui.unlock();
                 break;
 
             case 'open':

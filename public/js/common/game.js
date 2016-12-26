@@ -3,8 +3,15 @@ var Game = new function () {
     var loading = 1,
         timeoutId = null,
         game,
-        touch = 0
+        touch = 0,
+        gameId
 
+    this.setGameId = function (id) {
+        gameId = id
+    }
+    this.getGameId = function () {
+        return gameId
+    }
     this.getMapElement = function () {
         return $('#map')
     }
@@ -33,26 +40,23 @@ var Game = new function () {
         game = g
         if (loading) {
             loading = 0
-
             Units.init(game.units)
             Terrain.init(game.terrain)
             Fields.init(game.fields, game.map.mapId)
             Turn.init(game.turnHistory)
-            GameGui.init()
+            MiniMap.init(Game.getMapElement())
             Players.init(game.players)
             GamePlayers.init(game.players)
             Timer.init(game.begin, game.turnTimeLimit, game.timeLimit)
             Ruins.init(game.ruins)
             CommonMe.init(game.color, game.gold, game.bSequence)
             Chat.init(game.chatHistory)
-
+            GameRenderer.init('game', GameScene)
+            GameScene.initSun(Fields.getMaxY())
+            GameRenderer.animate()
             BattleScene.init($(window).innerWidth(), $(window).innerHeight())
             BattleScene.initSun(Fields.getMaxY())
-
-            GameScene.initSun(Fields.getMaxY())
-
-            GameRenderer.init('game', GameScene)
-            GameRenderer.animate()
+            GameGui.init()
         }
         GamePlayers.initOnline(game.online)
         if (Turn.isMy()) {

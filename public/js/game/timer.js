@@ -19,7 +19,7 @@ var Timer = new function () {
         turnTimeL,
         timeL
 
-    this.init = function (begin,turnTimeL, timeL) {
+    this.init = function (begin, turnTimeL, timeL) {
         gameBegin = Date.parse(begin.substr(0, 19)).getTime()
         $('#turnTimeLimit2').html(turnTimeLimit[turnTimeL])
         $('#timeLimit2').html(timeLimits[timeL])
@@ -158,14 +158,14 @@ var Timer = new function () {
                 .append($('<div class="left color">').html($('<img>').attr('src', Hero.getImage(color))))
                 .append($('<div class="left nr">').html(number))
                 .append(
-                $('<div class="left time" id="' + color + number + '">')
-                    .append($('<div>').attr('id', 'second').html(seconds))
-                    .append($('<div>').html(':'))
-                    .append($('<div>').attr('id', 'minute').html(minutes))
-                    .append($('<div>').html(':'))
-                    .append($('<div>').attr('id', 'hour').html(hours))
-            )
-        );
+                    $('<div class="left time" id="' + color + number + '">')
+                        .append($('<div>').attr('id', 'second').html(seconds))
+                        .append($('<div>').html(':'))
+                        .append($('<div>').attr('id', 'minute').html(minutes))
+                        .append($('<div>').html(':'))
+                        .append($('<div>').attr('id', 'hour').html(hours))
+                )
+            );
     }
     //this.scroll = function () {
     //    $('#timerScroll').animate({scrollTop: $('#timerRows .row').length * this.height}, 1000)

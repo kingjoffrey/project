@@ -216,7 +216,7 @@ var CommonMe = new function () {
             return
         }
 
-        if (Gui.lock) {
+        if (GameGui.lock) {
             return
         }
 
@@ -233,7 +233,7 @@ var CommonMe = new function () {
             return
         }
 
-        if (Gui.lock) {
+        if (GameGui.lock) {
             return
         }
 
@@ -273,7 +273,7 @@ var CommonMe = new function () {
             var id = Message.show(translations.nextArmy, $('<div>').html(translations.thereIsNoFreeArmyWithSpareMovePoints))
             Message.cancel(id)
             Message.ok(id, function () {
-                WebSocketSend.nextTurn()
+                WebSocketSendCommon.nextTurn()
             })
         } else {
             this.deselectArmy()
@@ -286,7 +286,7 @@ var CommonMe = new function () {
     }
     this.deleteQuited = function (armyId) {
         if (isTruthful(quitedArmies[armyId])) {
-            WebSocketSend.unfortify(armyId, 0)
+            WebSocketSendCommon.unfortify(armyId, 0)
             delete quitedArmies[armyId]
         }
     }
@@ -297,7 +297,7 @@ var CommonMe = new function () {
         isSelected = value
     }
     this.armyClick = function (armyId) {
-        if (Gui.lock) {
+        if (GameGui.lock) {
             return
         }
 
@@ -321,8 +321,8 @@ var CommonMe = new function () {
             var id = Message.simple(translations.yourTurn, translations.thisIsYourTurnNow)
             Message.ok(id, CommonMe.findFirst)
         }
-        Gui.unlock()
-        Gui.titleBlink(translations.yourTurn)
+        GameGui.unlock()
+        GameGui.titleBlink(translations.yourTurn)
     }
     this.turnOff = function () {
         this.deselectArmy()

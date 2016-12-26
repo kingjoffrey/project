@@ -8,43 +8,44 @@
     echo $this->headLink() . "\n";
     ?>
 </head>
-<?php echo $this->placeholder('sound') ?>
 <body>
-<div id="chatBox" class="box disabled">
-    <div id="title"><?php echo $this->placeholder('chatTitle') ?></div>
-    <div class="close">&#x25B6</div>
-    <input id="friendId" value=""/>
+<div id="main">
+    <div id="chatBox" class="box disabled">
+        <div id="title"><?php echo $this->placeholder('chatTitle') ?></div>
+        <div class="close">&#x25B6</div>
+        <input id="friendId" value=""/>
 
-    <div id="chatWindow">
-        <div id="chatContent"></div>
-    </div>
-    <div id="chatInput">
-        <input type="text" name="msg" id="msg" value="<?php echo $this->placeholder('chatInput') ?>"/>
+        <div id="chatWindow">
+            <div id="chatContent"></div>
+        </div>
+        <div id="chatInput">
+            <input type="text" name="msg" id="msg" value="<?php echo $this->placeholder('chatInput') ?>"/>
 
-        <div id="send" class="button buttonColors"> ></div>
-        <div id="chatTitle"></div>
+            <div id="send" class="button buttonColors"> ></div>
+            <div id="chatTitle"></div>
+        </div>
     </div>
-</div>
-<div id="friendsBox" class="box">
-    <div id="title"><?php echo $this->placeholder('friendsTitle') ?></div>
-    <div class="close">&#x25C0</div>
-    <div id="friends"><?php echo $this->placeholder('friends') ?></div>
-</div>
-<div id="bg">
-    <div id="page">
-        <div id="menuBox">
-            <div id="menuTop">
-                <div id="title">Wars of Fate</div>
-                <?php echo $this->placeholder('logout') ?>
-                <div id="envelope"></div>
+    <div id="friendsBox" class="box">
+        <div id="title"><?php echo $this->placeholder('friendsTitle') ?></div>
+        <div class="close">&#x25C0</div>
+        <div id="friends"><?php echo $this->placeholder('friends') ?></div>
+    </div>
+    <div id="bg">
+        <div id="page">
+            <div id="menuBox">
+                <div id="menuTop">
+                    <div id="title">Wars of Fate</div>
+                    <?php echo $this->placeholder('logout') ?>
+                    <div id="envelope"></div>
+                </div>
+                <div id="menu"></div>
             </div>
-            <div id="menu"></div>
-        </div>
-        <div id="content">
-            <?php echo $this->layout()->content ?>
+            <div id="content">
+                <?php echo $this->layout()->content ?>
+            </div>
         </div>
     </div>
 </div>
-
+<?php echo $this->placeholder('sound') ?>
 </body>
 </html>
