@@ -92,7 +92,7 @@ var New = new function () {
                 .append($('<td>').append($('<span>').html(numberOfPlayersInGame)).append('/' + game.numberOfPlayers))
                 .append($('<td>').html(game.begin.split('.')[0]))
                 .click(function () {
-                    top.location.replace('/' + lang + '/setup/index/gameId/' + $(this).attr('id'))
+                    WebSocketSendMain.controller('new', 'setup', {'gameId': $(this).attr('id')})
                 })
         )
     }

@@ -8,14 +8,11 @@ class Application_Form_NumberOfPlayers extends Zend_Form
         $translator = Zend_Registry::get('Zend_Translate');
         $adapter = $translator->getAdapter();
 
-        $mMapPlayers = new Application_Model_MapPlayers($this->_attribs['mapId'],$this->_attribs['db']);
-        $numberOfPlayers = $mMapPlayers->getNumberOfPlayersForNewGame();
-
         $f = new Coret_Form_Varchar(
             array(
                 'name' => 'x',
                 'label' => $adapter->translate('Number of players') . ':',
-                'value' => $numberOfPlayers,
+                'value' => $this->_attribs['numberOfPlayers'],
                 'attr' => array('disabled' => 'disabled')
             )
         );
@@ -24,8 +21,8 @@ class Application_Form_NumberOfPlayers extends Zend_Form
         $f = new Coret_Form_Hidden(
             array(
                 'name' => 'numberOfPlayers',
-                'value' => $numberOfPlayers,
-                'validators' => array(array('Alnum'), array('identical', false, array(array('token' => $numberOfPlayers, 'strict' => FALSE)))),
+                'value' => $this->_attribs['numberOfPlayers'],
+                'validators' => array(array('Alnum'), array('identical', false, array(array('token' => $this->_attribs['numberOfPlayers'], 'strict' => FALSE)))),
             )
         );
         $this->addElements($f->getElements());
