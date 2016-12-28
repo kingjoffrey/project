@@ -16,7 +16,7 @@ var WebSocketSendSetup = new function () {
 
         var token = {
             type: 'open',
-            gameId: gameId,
+            gameId: Setup.getGameId(),
             playerId: id,
             name: playerName,
             langId: langId,

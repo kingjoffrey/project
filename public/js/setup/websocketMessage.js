@@ -6,18 +6,18 @@ var WebSocketMessageSetup = new function () {
                 PrivateChat.message(2, r.name, r.id, r.msg)
                 break
 
-            case 'open':
-                WebSocketNew.init()
-                break
+            // case 'open':
+            //     WebSocketNew.init()
+            //     break
 
             case 'team':
                 $('tr#' + r.mapPlayerId + ' select').val(r.teamId)
-                $('tr#' + r.mapPlayerId + ' .td4 img').attr('src', '/img/game/heroes/' + mapPlayers[r.teamId].shortName + '.png')
+                $('tr#' + r.mapPlayerId + ' .td4 img').attr('src', '/img/game/heroes/' + Setup.getMapPlayers()[r.teamId].shortName + '.png')
                 break
 
             case 'start':
-                WebSocketSendNew.removeGame(gameId)
-                top.location.replace('/' + lang + '/game/index/id/' + gameId)
+                WebSocketSendNew.removeGame(Setup.getGameId())
+                WebSocketSendMain.controller('game', 'index', {'gameId': Setup.getGameId()})
                 break;
 
             case 'update':

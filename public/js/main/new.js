@@ -11,9 +11,8 @@ var NewController = new function () {
         })
         $('form').submit(function (e) {
             e.preventDefault()
-            WebSocketSendMain.controller('new', 'setup', {
+            WebSocketSendMain.controller('new', 'index', {
                 'mapId': $('select#mapId').val(),
-                'numberOfPlayers': $('input#numberOfPlayers').val(),
                 'timeLimit': $('select#timeLimit').val(),
                 'turnsLimit': $('input#turnsLimit').val(),
                 'turnTimeLimit': $('select#turnTimeLimit').val()
@@ -31,5 +30,7 @@ var NewController = new function () {
         $('#back').click(function () {
             WebSocketSendMain.controller('index', 'index')
         })
+
+        Setup.init(r.mapPlayers, r.form, r.gameId)
     }
 }

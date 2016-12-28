@@ -44,10 +44,10 @@ class Cli_Model_SetupOpen
             $setup->update($u->parameters['playerId'], $handler);
         }
 
-        $token = array(
-            'type' => 'open'
-        );
-
-        $handler->sendToUser($user, $token);
+//        $token = array(
+//            'type' => 'open'
+//        );
+//
+//        $handler->sendToUser($user, $token);
     }
 }

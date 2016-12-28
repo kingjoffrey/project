@@ -30,7 +30,6 @@ var WebSocketMessageNew = new function () {
                 PrivateChat.message(2, r.name, r.id, r.msg)
                 break
             case 'map':
-                $('#x').val(r.number)
                 $('#numberOfPlayers').val(r.number)
                 New.changeMap(r.fields)
                 break;

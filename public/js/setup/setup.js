@@ -1,14 +1,17 @@
 var Setup = new function () {
     var playersOutElement,
         gameMasterId,
+        gameId,
         numberOfSelectedPlayers = 0,
+        form,
+        mapPlayers,
         initButton = function (mapPlayerId) {
             $('#' + mapPlayerId + ' .td2').html($('<a>')
                 .addClass('button')
                 .html(translations.select)
                 .attr('id', mapPlayerId)
                 .click(function () {
-                    WebSocketSend.change(this.id)
+                    WebSocketSendSetup.change(this.id)
                 }))
         },
         initButtons = function () {
@@ -19,7 +22,7 @@ var Setup = new function () {
         initTeams = function () {
             var click = function (i) {
                 return function () {
-                    Setup.team(i)
+                    WebSocketSendSetup.team(i)
                 }
             }
 
@@ -58,7 +61,7 @@ var Setup = new function () {
                                 team[id] = $(this).find('select').val()
                             }
                         })
-                        WebSocketSend.start(team)
+                        WebSocketSendSetup.start(team)
                     })
             } else {
                 $('#start')
@@ -91,7 +94,17 @@ var Setup = new function () {
     this.setGameMasterId = function (i) {
         gameMasterId = i
     }
-    this.init = function () {
+    this.getGameId = function () {
+        return gameId
+    }
+    this.getMapPlayers = function () {
+        return mapPlayers
+    }
+    this.init = function (mapP, f, id) {
+        mapPlayers = mapP
+        form = f
+        gameId = id
+
         playersOutElement = $('#playersout')
         PrivateChat.setType('setup')
         PrivateChat.enable()

@@ -11,7 +11,14 @@ class Application_Form_Creategame extends Zend_Form
         $f = new Coret_Form_Select(array('name' => 'mapId', 'label' => $adapter->translate('Select map') . ':', 'opt' => $this->_attribs['mapsList']));
         $this->addElements($f->getElements());
 
-        $f = new Application_Form_NumberOfPlayers(array('numberOfPlayers' => $this->_attribs['numberOfPlayers']));
+        $f = new Coret_Form_Varchar(
+            array(
+                'name' => 'numberOfPlayers',
+                'label' => $adapter->translate('Number of players') . ':',
+                'value' => $this->_attribs['numberOfPlayers'],
+                'attr' => array('disabled' => 'disabled')
+            )
+        );
         $this->addElements($f->getElements());
 
         $timeLimits = Application_Model_Limit::timeLimits();

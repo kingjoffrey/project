@@ -7,21 +7,22 @@ class NewController
         $view = new Zend_View();
         $db = $handler->getDb();
 
+        $mMap = new Application_Model_Map(0, $db);
         if (!isset($dataIn['mapId'])) {
-            $mMap = new Application_Model_Map(0, $db);
             $mapId = $mMap->getMinMapId();
         } else {
             $mapId = $dataIn['mapId'];
         }
 
         $mMapPlayers = new Application_Model_MapPlayers($mapId, $db);
+        $numberOfPlayers = $mMapPlayers->getNumberOfPlayersForNewGame();
 
         $view->form = new Application_Form_Creategame(array(
             'mapId' => $mapId,
-            'numberOfPlayers' => $mMapPlayers->getNumberOfPlayersForNewGame(),
+            'numberOfPlayers' => $numberOfPlayers,
             'mapsList' => $mMap->getAllMultiMapsList()
         ));
-        $view->form->setView($view);
+        $dataIn['numberOfPlayers'] = $numberOfPlayers;
 
         $view->addScriptPath(APPLICATION_PATH . '/views/scripts');
 
@@ -31,7 +32,6 @@ class NewController
 
             $mGame = new Application_Model_Game($gameId, $db);
             $game = $mGame->getGame();
-            $mMapPlayers = new Application_Model_MapPlayers($game['mapId'], $db);
 
             $view->mapPlayers = $mMapPlayers->getAll();
             $view->game = $game;
@@ -44,14 +44,21 @@ class NewController
             $view->timeLimits = Application_Model_Limit::timeLimits();
             $view->turnTimeLimit = Application_Model_Limit::turnTimeLimit();
 
-            $view->form = new Application_Form_Team(array('mapId' => $game['mapId']));
+            $view->form = new Application_Form_Team(array('longNames' => $mMapPlayers->getLongNames()));
+            $view->form->setView($view);
 
             $token = array(
                 'type' => 'new',
                 'action' => 'setup',
-                'data' => $view->render('new/setup.phtml')
+                'data' => $view->render('new/setup.phtml'),
+                'mapPlayers' => $mMapPlayers->getAll(),
+                'numberOfPlayers' => $game['numberOfPlayers'],
+                'form' => $view->form->__toString(),
+                'gameId' => $gameId
             );
         } else {
+            $view->form->setView($view);
+
             $token = array(
                 'type' => 'new',
                 'action' => 'index',
