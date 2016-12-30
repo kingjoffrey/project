@@ -34,43 +34,18 @@ class Cli_Model_NewOpen
         $new = Cli_Model_New::getNew($user);
         $new->addUser($dataIn['playerId'], $user);
 
-        if (isset($dataIn['gameMasterId']) && isset($dataIn['gameId'])) { //setup
-            if ($dataIn['gameMasterId'] == $dataIn['playerId']) {
-                if (!$game = $new->getGame($dataIn['gameId'])) {
-                    $mGame = new Application_Model_Game($dataIn['gameId'], $db);
-                    $game = $mGame->getOpen($dataIn['gameMasterId']);
-                    $new->addGame($dataIn['gameId'], $game, $dataIn['name']);
-                }
+        $token = array(
+            'type' => 'games',
+            'games' => $new->gamesToArray()
+        );
+        $handler->sendToUser($user, $token);
 
-                $new->getGame($dataIn['gameId'])->addPlayer($dataIn['playerId']);
-                $token = array(
-                    'type' => 'addGame',
-                    'game' => $new->getGame($dataIn['gameId'])->toArray()
-                );
-            } else {
-                $new->getGame($dataIn['gameId'])->addPlayer($dataIn['playerId']);
-                $token = array(
-                    'type' => 'addPlayer',
-                    'playerId' => $dataIn['playerId'],
-                    'gameId' => $dataIn['gameId']
-                );
-            }
-            $user->parameters['gameId'] = $dataIn['gameId'];
-            $handler->sendToChannelExceptPlayers($new, $token);
-        } else { //new
-            $token = array(
-                'type' => 'games',
-                'games' => $new->gamesToArray()
-            );
-            $handler->sendToUser($user, $token);
-
-            $token = array(
-                'type' => 'open',
-                'id' => $dataIn['playerId'],
-                'name' => $dataIn['name']
-            );
-            $handler->sendToChannelExceptUser($user, $new, $token);
-        }
+        $token = array(
+            'type' => 'open',
+            'id' => $dataIn['playerId'],
+            'name' => $dataIn['name']
+        );
+        $handler->sendToChannelExceptUser($user, $new, $token);
 
         $user->parameters['name'] = $dataIn['name'];
         $user->parameters['playerId'] = $dataIn['playerId'];

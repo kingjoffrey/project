@@ -27,10 +27,10 @@ class Cli_Model_SetupOpen
             return;
         }
 
-        if (!($user->parameters['game'] = $handler->getGame($dataIn['gameId']))) {
+        if (!($user->parameters['game'] = $handler->getSetupGame($dataIn['gameId']))) {
             echo 'not set' . "\n";
-            $handler->addGame($dataIn['gameId'], new Cli_Model_Setup($dataIn['gameId'], $db));
-            $user->parameters['game'] = $handler->getGame($dataIn['gameId']);
+            $handler->addSetupGame($dataIn['gameId'], new Cli_Model_Setup($dataIn['gameId'], $db));
+            $user->parameters['game'] = $handler->getSetupGame($dataIn['gameId']);
         }
 
         $setup = Cli_Model_Setup::getSetup($user);
@@ -40,14 +40,14 @@ class Cli_Model_SetupOpen
         $user->parameters['name'] = $dataIn['name'];
         $user->parameters['accessKey'] = $dataIn['accessKey'];
 
-        foreach ($setup->getUsers() as $u) {
+        foreach ($setup->getSetupUsers() as $u) {
             $setup->update($u->parameters['playerId'], $handler);
         }
 
-//        $token = array(
-//            'type' => 'open'
-//        );
-//
-//        $handler->sendToUser($user, $token);
+        $token = array(
+            'type' => 'open'
+        );
+
+        $handler->sendToUser($user, $token);
     }
 }

@@ -53,18 +53,6 @@ class IndexController extends Coret_Controller_Authorized
         $this->view->headScript()->appendFile('/js/new/websocketMessage.js?v=' . $version);
         $this->view->headScript()->appendFile('/js/new/websocketSend.js?v=' . $version);
 
-
-//        $this->view->headScript()->appendFile('/js/setup/init.js?v=' . $version);
-        $this->view->headScript()->appendFile('/js/setup/setup.js?v=' . $version);
-        $this->view->headScript()->appendFile('/js/setup/websocket.js?v=' . $version);
-        $this->view->headScript()->appendFile('/js/setup/websocketMessage.js?v=' . $version);
-        $this->view->headScript()->appendFile('/js/setup/websocketSend.js?v=' . $version);
-//        $this->view->headScript()->appendFile('/js/new/init.js?v=' . $version);
-        $this->view->headScript()->appendFile('/js/new/new.js?v=' . $version);
-        $this->view->headScript()->appendFile('/js/new/websocket.js?v=' . $version);
-        $this->view->headScript()->appendFile('/js/new/websocketMessage.js?v=' . $version);
-        $this->view->headScript()->appendFile('/js/new/websocketSend.js?v=' . $version);
-        
         $this->view->headScript()->appendFile('/js/help/help.js?v=' . $version);
         $this->view->headScript()->appendFile('/js/help/helpModels.js?v=' . $version);
         $this->view->headScript()->appendFile('/js/help/helpScene.js?v=' . $version);

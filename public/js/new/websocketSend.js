@@ -31,6 +31,84 @@ var WebSocketSendNew = new function () {
         }
         ws.send(JSON.stringify(token))
     }
+    this.setup = function (gameMasterId) {
+        if (closed) {
+            console.log(translations.sorryServerIsDisconnected)
+            return;
+        }
+
+        var token = {
+            type: 'setup',
+            'gameMasterId': gameMasterId
+        }
+
+        ws.send(JSON.stringify(token))
+    }
+    // this.open = function () {
+    //     if (closed) {
+    //         console.log(translations.sorryServerIsDisconnected)
+    //         return;
+    //     }
+    //
+    //     var token = {
+    //         type: 'open',
+    //         gameId: New.getGameId(),
+    //         playerId: id,
+    //         name: playerName,
+    //         langId: langId,
+    //         accessKey: accessKey
+    //     }
+    //
+    //     ws.send(JSON.stringify(token));
+    // }
+    this.team = function (mapPlayerId) {
+        var token = {
+            type: 'team',
+            mapPlayerId: mapPlayerId,
+            teamId: $('tr#' + mapPlayerId + ' select').val()
+        }
+
+        ws.send(JSON.stringify(token));
+    }
+    this.chat = function (msg) {
+        if (closed) {
+            console.log(translations.sorryServerIsDisconnected)
+            return;
+        }
+
+        var token = {
+            type: 'chat',
+            msg: msg
+        }
+
+        ws.send(JSON.stringify(token))
+    }
+    this.change = function (id) {
+        if (closed) {
+            console.log(translations.sorryServerIsDisconnected)
+            return;
+        }
+
+        var token = {
+            type: 'change',
+            mapPlayerId: id
+        }
+
+        ws.send(JSON.stringify(token))
+    }
+    this.start = function (team) {
+        if (closed) {
+            console.log(translations.sorryServerIsDisconnected)
+            return;
+        }
+
+        var token = {
+            type: 'start',
+            team: team
+        }
+
+        ws.send(JSON.stringify(token))
+    }
     this.removeGame = function (gameId) {
         if (closed) {
             console.log(translations.sorryServerIsDisconnected)
@@ -54,19 +132,6 @@ var WebSocketSendNew = new function () {
             type: 'chat',
             msg: msg,
             name: playerName
-        }
-
-        ws.send(JSON.stringify(token))
-    }
-    this.map = function (mapId) {
-        if (closed) {
-            console.log(translations.sorryServerIsDisconnected)
-            return;
-        }
-
-        var token = {
-            type: 'map',
-            mapId: mapId
         }
 
         ws.send(JSON.stringify(token))

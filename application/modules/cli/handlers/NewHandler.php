@@ -7,6 +7,7 @@ class Cli_NewHandler extends WebSocketUriHandler
 {
     private $_db;
     private $_new;
+    private $_setupGames = array();
 
     public function __construct($logger)
     {
@@ -37,13 +38,69 @@ class Cli_NewHandler extends WebSocketUriHandler
         return $this->_new;
     }
 
+
+
+    public function addSetupGame($gameId, Cli_Model_Setup $game)
+    {
+        $this->_setupGames[$gameId] = $game;
+    }
+
+    public function removeSetupGame($gameId)
+    {
+        $this->_setupGames[$gameId] = null;
+        unset($this->_setupGames[$gameId]);
+    }
+
+    /**
+     * @param $gameId
+     * @return Cli_Model_Setup
+     */
+    public function getSetupGame($gameId)
+    {
+        if (isset($this->_setupGames[$gameId])) {
+            return $this->_setupGames[$gameId];
+        }
+    }
+
     public function onMessage(WebSocketTransportInterface $user, WebSocketMessageInterface $msg)
     {
         $dataIn = Zend_Json::decode($msg->getData());
 
         switch ($dataIn['type']) {
+//            case 'open':
+//                new Cli_Model_SetupOpen($dataIn, $user, $this);
+//                break;
+            case 'team':
+                $this->sendToChannel(Cli_Model_Setup::getSetup($user), array(
+                    'type' => 'team',
+                    'mapPlayerId' => $dataIn['mapPlayerId'],
+                    'teamId' => $dataIn['teamId']
+                ));
+                break;
+
+            case 'start':
+                new Cli_Model_SetupStart($dataIn, $user, $this);
+                break;
+
+            case 'change':
+                new Cli_Model_SetupChange($dataIn, $user, $this);
+                break;
+
+//            case 'chat':
+//                $token = array(
+//                    'type' => 'chat',
+//                    'id' => $user->parameters['playerId'],
+//                    'name' => $user->parameters['name'],
+//                    'msg' => strip_tags($dataIn['msg'])
+//                );
+//                $this->sendToChannelExceptUser($user, $token);
+//                break;
+
             case 'open':
                 new Cli_Model_NewOpen($dataIn, $user, $this);
+                break;
+            case 'setup':
+                new Cli_Model_NewSetup($dataIn, $user, $this);
                 break;
             case 'remove':
                 $token = array(
@@ -60,16 +117,6 @@ class Cli_NewHandler extends WebSocketUriHandler
                     'msg' => strip_tags($dataIn['msg'])
                 );
                 $this->sendToChannelExceptPlayersAndMe($user->parameters['playerId'], $this->getNew(), $token);
-                break;
-            case 'map':
-                $mMapPlayers = new Application_Model_MapPlayers($dataIn['mapId'], $this->_db);
-                $mMapFields = new Application_Model_MapFields($dataIn['mapId'], $this->_db);
-                $token = array(
-                    'type' => 'map',
-                    'number' => $mMapPlayers->getNumberOfPlayersForNewGame(),
-                    'fields' => $mMapFields->getMapFields()
-                );
-                $this->sendToUser($user, $token);
                 break;
             default:
                 print_r($dataIn);
@@ -117,6 +164,23 @@ class Cli_NewHandler extends WebSocketUriHandler
                 $this->removeNew();
             }
         }
+
+//        $setup = Cli_Model_Setup::getSetup($user);
+//        if ($setup) {
+//            $setup->removeUser($user, $this->_db);
+//
+//            if ($setup->getSetupUsers()) {
+//                if (!$setup->getIsOpen()) {
+//                    return;
+//                }
+//                if ($setup->getGameMasterId() == $user->parameters['playerId']) {
+//                    $setup->setNewGameMaster($this->_db);
+//                }
+//                $setup->update($user->parameters['playerId'], $this, 1);
+//            } else {
+//                $this->removeSetupGame($setup->getGameId());
+//            }
+//        }
     }
 
     /**
@@ -234,4 +298,39 @@ class Cli_NewHandler extends WebSocketUriHandler
             }
         }
     }
+
+    /**
+     * @param Cli_Model_Setup $setup
+     * @param $token
+     * @param null $debug
+     * @throws Zend_Exception
+     */
+//    public function sendToChannel(Cli_Model_Setup $setup, $token, $debug = null)
+//    {
+//        if ($debug || Zend_Registry::get('config')->debug) {
+//            print_r('ODPOWIEDŹ ');
+//            print_r($token);
+//        }
+//
+//        foreach ($setup->getSetupUsers() AS $user) {
+//            $this->sendToUser($user, $token);
+//        }
+//    }
+//
+//    public function sendToChannelExceptUser(WebSocketTransportInterface $u, $token, $debug = null)
+//    {
+//        if ($debug || Zend_Registry::get('config')->debug) {
+//            print_r('ODPOWIEDŹ ');
+//            print_r($token);
+//        }
+//
+//        $setup = Cli_Model_Setup::getSetup($u);
+//
+//        foreach ($setup->getSetupUsers() AS $user) {
+//            if ($u == $user) {
+//                continue;
+//            }
+//            $this->sendToUser($user, $token);
+//        }
+//    }
 }

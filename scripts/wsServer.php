@@ -23,7 +23,6 @@ $application = new Zend_Application(
 $application->getBootstrap()->bootstrap(array('date', 'config', 'modules', 'translate'));
 
 include_once(APPLICATION_PATH . '/modules/cli/handlers/PrivateChatHandler.php');
-include_once(APPLICATION_PATH . '/modules/cli/handlers/SetupHandler.php');
 include_once(APPLICATION_PATH . '/modules/cli/handlers/NewHandler.php');
 include_once(APPLICATION_PATH . '/modules/cli/handlers/HelpHandler.php');
 include_once(APPLICATION_PATH . '/modules/cli/handlers/EditorHandler.php');
@@ -46,7 +45,6 @@ $server = new WebSocketServer($address, $loop, $logger);
 // Create a router which transfers all connections to the suitable Handler class
 $router = new \Devristo\Phpws\Server\UriHandler\ClientRouter($server, $logger);
 $router->addRoute('#^/chat$#i', new Cli_PrivateChatHandler($logger));
-$router->addRoute('#^/setup$#i', new Cli_SetupHandler($logger));
 $router->addRoute('#^/new$#i', new Cli_NewHandler($logger));
 $router->addRoute('#^/help$#i', new Cli_HelpHandler($logger));
 $router->addRoute('#^/editor$#i', new Cli_EditorHandler($logger));

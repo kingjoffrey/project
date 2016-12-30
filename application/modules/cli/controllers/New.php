@@ -67,4 +67,19 @@ class NewController
         }
         $handler->sendToUser($user, $token);
     }
+
+    function map(Devristo\Phpws\Protocol\WebSocketTransportInterface $user, Cli_MainHandler $handler, $dataIn)
+    {
+        $db = $handler->getDb();
+
+        $mMapPlayers = new Application_Model_MapPlayers($dataIn['mapId'], $db);
+        $mMapFields = new Application_Model_MapFields($dataIn['mapId'], $db);
+        $token = array(
+            'type' => 'new',
+            'action' => 'map',
+            'number' => $mMapPlayers->getNumberOfPlayersForNewGame(),
+            'fields' => $mMapFields->getMapFields()
+        );
+        $handler->sendToUser($user, $token);
+    }
 }

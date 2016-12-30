@@ -30,9 +30,9 @@ class Cli_Model_SetupStart
 
         $setup->setIsOpen(false);
         $db = $handler->getDb();
-        $mPlayersInGame = new Application_Model_PlayersInGame($setup->getId(), $db);
+        $mPlayersInGame = new Application_Model_PlayersInGame($setup->getGameId(), $db);
 
-        $mGame = new Application_Model_Game($setup->getId(), $db);
+        $mGame = new Application_Model_Game($setup->getGameId(), $db);
         $mapId = $mGame->getMapId();
 
         $mMapCastles = new Application_Model_MapCastles($mapId, $db);
@@ -55,7 +55,7 @@ class Cli_Model_SetupStart
             $mPlayersInGame->joinGame($playerId, $mapPlayerId);
 
             if ($first) {
-                $mTurn = new Application_Model_TurnHistory($setup->getId(), $db);
+                $mTurn = new Application_Model_TurnHistory($setup->getGameId(), $db);
                 $mTurn->add($playerId, 1);
                 $mGame->startGame($playerId);
                 $first = false;
@@ -69,14 +69,14 @@ class Cli_Model_SetupStart
                 $mHero->createHero();
                 $playerHeroes = $mHero->getHeroes($playerId, $db);
             }
-            $mArmy = new Application_Model_Army($setup->getId(), $db);
+            $mArmy = new Application_Model_Army($setup->getGameId(), $db);
 
             $armyId = $mArmy->createArmy($startPositions[$mapPlayer['mapPlayerId']], $playerId);
 
-            $mHeroesInGame = new Application_Model_HeroesInGame($setup->getId(), $db);
+            $mHeroesInGame = new Application_Model_HeroesInGame($setup->getGameId(), $db);
             $mHeroesInGame->add($armyId, $playerHeroes[0]['heroId']);
 
-            $mCastlesInGame = new Application_Model_CastlesInGame($setup->getId(), $db);
+            $mCastlesInGame = new Application_Model_CastlesInGame($setup->getGameId(), $db);
             $mCastlesInGame->addCastle($startPositions[$mapPlayer['mapPlayerId']]['mapCastleId'], $playerId);
         }
 
