@@ -3,12 +3,13 @@
 class Cli_Model_SetupChange
 {
     /**
+     * Cli_Model_SetupChange constructor.
      * @param $dataIn
      * @param \Devristo\Phpws\Protocol\WebSocketTransportInterface $user
-     * @param Cli_SetupHandler $handler
+     * @param Cli_NewHandler $handler
      * @throws Exception
      */
-    public function __construct($dataIn, Devristo\Phpws\Protocol\WebSocketTransportInterface $user, Cli_SetupHandler $handler)
+    public function __construct($dataIn, Devristo\Phpws\Protocol\WebSocketTransportInterface $user, Cli_NewHandler $handler)
     {
         $mapPlayerId = $dataIn['mapPlayerId'];
 
@@ -17,7 +18,7 @@ class Cli_Model_SetupChange
             return;
         }
 
-        $setup = Cli_Model_Setup::getSetup($user);
+        $setup = SetupGame::getSetup($user);
         $playerId = $setup->getPlayerIdByMapPlayerId($mapPlayerId);
 
         if ($user->parameters['playerId'] == $playerId) { // unselect

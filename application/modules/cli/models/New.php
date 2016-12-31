@@ -1,4 +1,5 @@
 <?php
+use Devristo\Phpws\Protocol\WebSocketTransportInterface;
 
 class Cli_Model_New
 {
@@ -7,12 +8,12 @@ class Cli_Model_New
 
     public function addGame($gameId, $game, $gameMasterName)
     {
-        $this->_games[$gameId] = new Cli_Model_NewGame($gameId, $game, $gameMasterName);
+        $this->_games[$gameId] = new NewGame($game, $gameMasterName);
     }
 
     /**
      * @param $gameId
-     * @return Cli_Model_NewGame
+     * @return NewGame
      */
     public function getGame($gameId)
     {
@@ -38,12 +39,12 @@ class Cli_Model_New
         return $array;
     }
 
-    public function addUser($playerId, Devristo\Phpws\Protocol\WebSocketTransportInterface $user)
+    public function addUser($playerId, WebSocketTransportInterface $user)
     {
         $this->_users[$playerId] = $user;
     }
 
-    public function removeUser(Devristo\Phpws\Protocol\WebSocketTransportInterface $user, Zend_Db_Adapter_Pdo_Pgsql $db)
+    public function removeUser(WebSocketTransportInterface $user, Zend_Db_Adapter_Pdo_Pgsql $db)
     {
         $mWebSocket = new Application_Model_Websocket($user->parameters['playerId'], $db);
         $mWebSocket->disconnect($user->parameters['accessKey']);
@@ -56,19 +57,19 @@ class Cli_Model_New
     }
 
     /**
-     * @param Devristo\Phpws\Protocol\WebSocketTransportInterface $user
+     * @param WebSocketTransportInterface $user
      * @return Cli_Model_New
      */
-    static public function getNew(Devristo\Phpws\Protocol\WebSocketTransportInterface $user)
+    static public function getNew(WebSocketTransportInterface $user)
     {
         return $user->parameters['new'];
     }
 }
 
-class Cli_Model_NewGame
+class NewGame
 {
     private $_id;
-    private $_name;
+    private $_mapName;
     private $_begin;
     private $_numberOfPlayers;
     private $_gameMasterId;
@@ -79,10 +80,10 @@ class Cli_Model_NewGame
 
     private $_players = array();
 
-    public function __construct($gameId, $game, $gameMasterName)
+    public function __construct($game, $gameMasterName)
     {
-        $this->_id = $gameId;
-        $this->_name = $game['name'];
+        $this->_id = $game['id'];
+        $this->_mapName = $game['mapName'];
         $this->_begin = $game['begin'];
         $this->_numberOfPlayers = $game['numberOfPlayers'];
         $this->_gameMasterId = $game['gameMasterId'];
@@ -117,7 +118,7 @@ class Cli_Model_NewGame
     {
         return array(
             'id' => $this->_id,
-            'name' => $this->_name,
+            'mapName' => $this->_mapName,
             'begin' => $this->_begin,
             'numberOfPlayers' => $this->_numberOfPlayers,
             'gameMasterId' => $this->_gameMasterId,
@@ -127,15 +128,18 @@ class Cli_Model_NewGame
     }
 }
 
-class Cli_Model_Setup
+class SetupGame
 {
     private $_gameId;
+    private $_mapName;
+    private $_begin;
+    private $_numberOfPlayers;
+    private $_gameMasterId;
+    private $_gameMasterName;
     private $_isOpen = true;
 
-    private $_setupUsers = array();
+    private $_users = array();
     private $_players = array();
-
-    private $_gameMasterId;
 
     public function __construct($gameId, Zend_Db_Adapter_Pdo_Pgsql $db)
     {
@@ -144,14 +148,23 @@ class Cli_Model_Setup
         $this->_gameId = $gameId;
 
         $mGame = new Application_Model_Game($this->_gameId, $db);
-        $this->_gameMasterId = $mGame->getGameMasterId();
+        $game = $mGame->getGame();
+
+        $mMap = new Application_Model_Map($game['mapId'], $db);
+        $map = $mMap->getMap();
+
+        $this->_mapName = $map['name'];
+        $this->_begin = $game['begin'];
+        $this->_numberOfPlayers = $game['numberOfPlayers'];
+        $this->_gameMasterId = $game['gameMasterId'];
         if (empty($this->_gameMasterId)) {
             $this->setNewGameMaster($db);
             $this->_gameMasterId = $mGame->getGameMasterId();
         }
+
     }
 
-    public function update($playerId, Cli_SetupHandler $handler, $close = false)
+    public function update($playerId, Cli_NewHandler $handler, $close = false)
     {
         if ($close) {
             $token = array(
@@ -217,8 +230,8 @@ class Cli_Model_Setup
 
     public function findNewGameMaster()
     {
-        reset($this->_setupUsers);
-        return key($this->_setupUsers);
+        reset($this->_users);
+        return key($this->_users);
     }
 
     public function getGameMasterId()
@@ -231,7 +244,7 @@ class Cli_Model_Setup
         return $this->_gameId;
     }
 
-    public function addUser($playerId, Devristo\Phpws\Protocol\WebSocketTransportInterface $user, $db)
+    public function addUser($playerId, WebSocketTransportInterface $user, $db)
     {
         $mPlayer = new Application_Model_Player($db);
         $player = $mPlayer->getPlayer($playerId);
@@ -241,19 +254,19 @@ class Cli_Model_Setup
             'firstName' => $player['firstName'],
             'lastName' => $player['lastName']
         );
-        $this->_setupUsers[$playerId] = $user;
+        $this->_users[$playerId] = $user;
     }
 
-    public function removeUser(Devristo\Phpws\Protocol\WebSocketTransportInterface $user, Zend_Db_Adapter_Pdo_Pgsql $db)
+    public function removeUser(WebSocketTransportInterface $user, Zend_Db_Adapter_Pdo_Pgsql $db)
     {
         $mWebSocket = new Application_Model_Websocket($user->parameters['playerId'], $db);
         $mWebSocket->disconnect($user->parameters['accessKey']);
-        unset($this->_setupUsers[$user->parameters['playerId']]);
+        unset($this->_users[$user->parameters['playerId']]);
     }
 
-    public function getSetupUsers()
+    public function getUsers()
     {
-        return $this->_setupUsers;
+        return $this->_users;
     }
 
     public function getPlayers()
@@ -271,11 +284,23 @@ class Cli_Model_Setup
         $this->_isOpen = $isOpen;
     }
 
+    public function toArray()
+    {
+        return array(
+            'id' => $this->_gameId,
+            'mapName' => $this->_mapName,
+            'begin' => $this->_begin,
+            'numberOfPlayers' => $this->_numberOfPlayers,
+            'gameMasterId' => $this->_gameMasterId,
+            'gameMasterName' => $this->_gameMasterName
+        );
+    }
+
     /**
-     * @param Devristo\Phpws\Protocol\WebSocketTransportInterface $user
-     * @return Cli_Model_Setup
+     * @param WebSocketTransportInterface $user
+     * @return SetupGame
      */
-    static public function getSetup(Devristo\Phpws\Protocol\WebSocketTransportInterface $user)
+    static public function getSetup(WebSocketTransportInterface $user)
     {
         return $user->parameters['game'];
     }

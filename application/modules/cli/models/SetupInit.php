@@ -1,27 +1,40 @@
 <?php
 
-class Cli_Model_NewSetup
+class Cli_Model_SetupInit
 {
     /**
-     * Cli_Model_NewSetup constructor.
+     * Cli_Model_SetupInit constructor.
      * @param $dataIn
      * @param \Devristo\Phpws\Protocol\WebSocketTransportInterface $user
      * @param Cli_NewHandler $handler
-     * @throws Exception
      */
     public function __construct($dataIn, Devristo\Phpws\Protocol\WebSocketTransportInterface $user, Cli_NewHandler $handler)
     {
-        if (!isset($dataIn['gameMasterId'])) {
-            throw new Exception('Brak "gameMasterId"');
+        if (!isset($dataIn['gameId'])) {
+            echo('Setup: brak "gameId"' . "\n");
+            return;
         }
 
         $db = $handler->getDb();
+
+        if (!($user->parameters['game'] = $handler->getSetupGame($dataIn['gameId']))) {
+            echo 'not set' . "\n";
+            $handler->addSetupGame($dataIn['gameId'], new SetupGame($dataIn['gameId'], $db));
+            $user->parameters['game'] = $handler->getSetupGame($dataIn['gameId']);
+        }
+
+        $setup = SetupGame::getSetup($user);
+        $setup->addUser($user->parameters['playerId'], $user, $db, $handler);
+
+        foreach ($setup->getUsers() as $u) {
+            $setup->update($u->parameters['playerId'], $handler);
+        }
+
         $new = Cli_Model_New::getNew($user);
-        if ($dataIn['gameMasterId'] == $user->parameters['playerId']) {
+        $gameMasterId = $setup->getGameMasterId();
+        if ($gameMasterId == $user->parameters['playerId']) {
             if (!$game = $new->getGame($dataIn['gameId'])) {
-                $mGame = new Application_Model_Game($dataIn['gameId'], $db);
-                $game = $mGame->getOpen($dataIn['gameMasterId']);
-                $new->addGame($dataIn['gameId'], $game, $dataIn['name']);
+                $new->addGame($dataIn['gameId'], $setup->toArray(), $user->parameters['name']);
             }
 
             $new->getGame($dataIn['gameId'])->addPlayer($user->parameters['playerId']);
@@ -39,5 +52,11 @@ class Cli_Model_NewSetup
         }
         $user->parameters['gameId'] = $dataIn['gameId'];
         $handler->sendToChannelExceptPlayers($new, $token);
+
+//        $token = array(
+//            'type' => 'setup'
+//        );
+//
+//        $handler->sendToUser($user, $token);
     }
 }

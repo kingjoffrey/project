@@ -105,8 +105,6 @@ var New = new function () {
         return mapPlayers
     }
 
-
-
     this.removeGame = function (gameId) {
         $('tr#' + gameId).remove()
         if (!$('.trlink').length) {
@@ -131,11 +129,12 @@ var New = new function () {
             $('<tr>')
                 .addClass('trlink')
                 .attr('id', game.id)
-                .append($('<td>').html(game.name))
+                .append($('<td>').html(game.mapName))
                 .append($('<td>').html(game.gameMasterName))
                 .append($('<td>').append($('<span>').html(numberOfPlayersInGame)).append('/' + game.numberOfPlayers))
                 .append($('<td>').html(game.begin.split('.')[0]))
                 .click(function () {
+                    console.log('aaa')
                     WebSocketSendMain.controller('new', 'setup', {'gameId': $(this).attr('id')})
                 })
         )
@@ -150,7 +149,7 @@ var New = new function () {
         // PrivateChat.enable()
         initButtons()
         initTeams()
-        WebSocketSetup.init()
+        WebSocketSendNew.setup()
     }
     this.init = function () {
         // PrivateChat.setType('new')

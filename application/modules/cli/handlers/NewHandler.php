@@ -40,7 +40,7 @@ class Cli_NewHandler extends WebSocketUriHandler
 
 
 
-    public function addSetupGame($gameId, Cli_Model_Setup $game)
+    public function addSetupGame($gameId, SetupGame $game)
     {
         $this->_setupGames[$gameId] = $game;
     }
@@ -53,7 +53,7 @@ class Cli_NewHandler extends WebSocketUriHandler
 
     /**
      * @param $gameId
-     * @return Cli_Model_Setup
+     * @return SetupGame
      */
     public function getSetupGame($gameId)
     {
@@ -67,11 +67,11 @@ class Cli_NewHandler extends WebSocketUriHandler
         $dataIn = Zend_Json::decode($msg->getData());
 
         switch ($dataIn['type']) {
-//            case 'open':
-//                new Cli_Model_SetupOpen($dataIn, $user, $this);
-//                break;
+            case 'setup':
+                new Cli_Model_SetupInit($dataIn, $user, $this);
+                break;
             case 'team':
-                $this->sendToChannel(Cli_Model_Setup::getSetup($user), array(
+                $this->sendToChannel(SetupGame::getSetup($user), array(
                     'type' => 'team',
                     'mapPlayerId' => $dataIn['mapPlayerId'],
                     'teamId' => $dataIn['teamId']
@@ -99,9 +99,9 @@ class Cli_NewHandler extends WebSocketUriHandler
             case 'open':
                 new Cli_Model_NewOpen($dataIn, $user, $this);
                 break;
-            case 'setup':
-                new Cli_Model_NewSetup($dataIn, $user, $this);
-                break;
+//            case 'setup':
+//                new Cli_Model_NewSetup($dataIn, $user, $this);
+//                break;
             case 'remove':
                 $token = array(
                     'type' => 'removeGame',
@@ -198,7 +198,7 @@ class Cli_NewHandler extends WebSocketUriHandler
     }
 
     /**
-     * @param $user
+     * @param WebSocketTransportInterface $user
      * @param $token
      * @param null $debug
      */
@@ -213,12 +213,11 @@ class Cli_NewHandler extends WebSocketUriHandler
     }
 
     /**
-     * @param Cli_Model_New $new
+     * @param $new
      * @param $token
      * @param null $debug
-     * @throws Zend_Exception
      */
-    public function sendToChannel(Cli_Model_New $new, $token, $debug = null)
+    public function sendToChannel($new, $token, $debug = null)
     {
         if ($debug || Zend_Registry::get('config')->debug) {
             print_r('ODPOWIEDŹ ');
@@ -300,7 +299,7 @@ class Cli_NewHandler extends WebSocketUriHandler
     }
 
     /**
-     * @param Cli_Model_Setup $setup
+     * @param SetupGame $setup
      * @param $token
      * @param null $debug
      * @throws Zend_Exception

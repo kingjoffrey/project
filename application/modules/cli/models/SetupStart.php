@@ -3,14 +3,14 @@
 class Cli_Model_SetupStart
 {
     /**
+     * Cli_Model_SetupStart constructor.
      * @param $dataIn
      * @param \Devristo\Phpws\Protocol\WebSocketTransportInterface $user
-     * @param Cli_SetupHandler $handler
-     * @throws Exception
+     * @param Cli_NewHandler $handler
      */
-    public function __construct($dataIn, Devristo\Phpws\Protocol\WebSocketTransportInterface $user, Cli_SetupHandler $handler)
+    public function __construct($dataIn, Devristo\Phpws\Protocol\WebSocketTransportInterface $user, Cli_NewHandler $handler)
     {
-        $setup = Cli_Model_Setup::getSetup($user);
+        $setup = SetupGame::getSetup($user);
         if (!$setup->isGameMaster($user->parameters['playerId'])) {
             echo('Not game master!');
             return;

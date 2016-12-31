@@ -31,7 +31,7 @@ var NewController = new function () {
             WebSocketSendMain.controller('index', 'index')
         })
 
-        Setup.init(r.mapPlayers, r.form, r.gameId)
+        New.setup(r.mapPlayers, r.form, r.gameId)
     }
     this.map = function (r) {
         var tmpCanvas = document.createElement('canvas'),

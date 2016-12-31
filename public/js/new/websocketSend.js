@@ -16,56 +16,33 @@ var WebSocketSendNew = new function () {
         }
 
         var token = {
-            type: 'open',
-            playerId: id,
-            name: playerName,
-            langId: langId,
-            accessKey: accessKey
+            'type': 'open',
+            'playerId': id,
+            'name': playerName,
+            'langId': langId,
+            'accessKey': accessKey
         }
 
-        if (typeof gameId !== 'undefined') {
-            if (Setup.getGameMasterId() == id) {
-                token.gameMasterId = id
-                token.gameId = gameId
-            }
-        }
         ws.send(JSON.stringify(token))
     }
-    this.setup = function (gameMasterId) {
+    this.setup = function () {
         if (closed) {
             console.log(translations.sorryServerIsDisconnected)
             return;
         }
 
         var token = {
-            type: 'setup',
-            'gameMasterId': gameMasterId
+            'type': 'setup',
+            'gameId': New.getGameId()
         }
 
-        ws.send(JSON.stringify(token))
+        ws.send(JSON.stringify(token));
     }
-    // this.open = function () {
-    //     if (closed) {
-    //         console.log(translations.sorryServerIsDisconnected)
-    //         return;
-    //     }
-    //
-    //     var token = {
-    //         type: 'open',
-    //         gameId: New.getGameId(),
-    //         playerId: id,
-    //         name: playerName,
-    //         langId: langId,
-    //         accessKey: accessKey
-    //     }
-    //
-    //     ws.send(JSON.stringify(token));
-    // }
     this.team = function (mapPlayerId) {
         var token = {
-            type: 'team',
-            mapPlayerId: mapPlayerId,
-            teamId: $('tr#' + mapPlayerId + ' select').val()
+            'type': 'team',
+            'mapPlayerId': mapPlayerId,
+            'teamId': $('tr#' + mapPlayerId + ' select').val()
         }
 
         ws.send(JSON.stringify(token));
@@ -77,8 +54,8 @@ var WebSocketSendNew = new function () {
         }
 
         var token = {
-            type: 'chat',
-            msg: msg
+            'type': 'chat',
+            'msg': msg
         }
 
         ws.send(JSON.stringify(token))
@@ -90,8 +67,8 @@ var WebSocketSendNew = new function () {
         }
 
         var token = {
-            type: 'change',
-            mapPlayerId: id
+            'type': 'change',
+            'mapPlayerId': id
         }
 
         ws.send(JSON.stringify(token))
@@ -103,8 +80,8 @@ var WebSocketSendNew = new function () {
         }
 
         var token = {
-            type: 'start',
-            team: team
+            'type': 'start',
+            'team': team
         }
 
         ws.send(JSON.stringify(token))
@@ -116,8 +93,8 @@ var WebSocketSendNew = new function () {
         }
 
         var token = {
-            type: 'remove',
-            gameId: gameId
+            'type': 'remove',
+            'gameId': gameId
         }
 
         ws.send(JSON.stringify(token))
@@ -129,9 +106,9 @@ var WebSocketSendNew = new function () {
         }
 
         var token = {
-            type: 'chat',
-            msg: msg,
-            name: playerName
+            'type': 'chat',
+            'msg': msg,
+            'name': playerName
         }
 
         ws.send(JSON.stringify(token))
