@@ -302,6 +302,8 @@ class SetupGame
      */
     static public function getSetup(WebSocketTransportInterface $user)
     {
-        return $user->parameters['game'];
+        if (isset($user->parameters['game'])) {
+            return $user->parameters['game'];
+        }
     }
 }

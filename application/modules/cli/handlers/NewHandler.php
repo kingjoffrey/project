@@ -165,22 +165,27 @@ class Cli_NewHandler extends WebSocketUriHandler
             }
         }
 
-//        $setup = Cli_Model_Setup::getSetup($user);
-//        if ($setup) {
-//            $setup->removeUser($user, $this->_db);
-//
-//            if ($setup->getSetupUsers()) {
-//                if (!$setup->getIsOpen()) {
-//                    return;
-//                }
-//                if ($setup->getGameMasterId() == $user->parameters['playerId']) {
-//                    $setup->setNewGameMaster($this->_db);
-//                }
-//                $setup->update($user->parameters['playerId'], $this, 1);
-//            } else {
-//                $this->removeSetupGame($setup->getGameId());
-//            }
-//        }
+        $setup = SetupGame::getSetup($user);
+        if ($setup) {
+            echo 'a';
+            $setup->removeUser($user, $this->_db);
+
+            if ($setup->getUsers()) {
+                echo 'b';
+                if (!$setup->getIsOpen()) {
+                    return;
+                }
+                echo 'c';
+                if ($setup->getGameMasterId() == $user->parameters['playerId']) {
+                    echo 'f';
+                    $setup->setNewGameMaster($this->_db);
+                }
+                $setup->update($user->parameters['playerId'], $this, 1);
+            } else {
+                echo 'd';
+                $this->removeSetupGame($setup->getGameId());
+            }
+        }
     }
 
     /**
@@ -298,24 +303,6 @@ class Cli_NewHandler extends WebSocketUriHandler
         }
     }
 
-    /**
-     * @param SetupGame $setup
-     * @param $token
-     * @param null $debug
-     * @throws Zend_Exception
-     */
-//    public function sendToChannel(Cli_Model_Setup $setup, $token, $debug = null)
-//    {
-//        if ($debug || Zend_Registry::get('config')->debug) {
-//            print_r('ODPOWIEDŹ ');
-//            print_r($token);
-//        }
-//
-//        foreach ($setup->getSetupUsers() AS $user) {
-//            $this->sendToUser($user, $token);
-//        }
-//    }
-//
 //    public function sendToChannelExceptUser(WebSocketTransportInterface $u, $token, $debug = null)
 //    {
 //        if ($debug || Zend_Registry::get('config')->debug) {

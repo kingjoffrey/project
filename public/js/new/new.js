@@ -134,7 +134,6 @@ var New = new function () {
                 .append($('<td>').append($('<span>').html(numberOfPlayersInGame)).append('/' + game.numberOfPlayers))
                 .append($('<td>').html(game.begin.split('.')[0]))
                 .click(function () {
-                    console.log('aaa')
                     WebSocketSendMain.controller('new', 'setup', {'gameId': $(this).attr('id')})
                 })
         )
