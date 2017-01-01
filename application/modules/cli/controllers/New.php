@@ -79,9 +79,9 @@ class NewController
             'action' => 'setup',
             'data' => $view->render('new/setup.phtml'),
             'mapPlayers' => $mMapPlayers->getAll(),
-            'numberOfPlayers' => $game['numberOfPlayers'],
             'form' => $view->form->__toString(),
-            'gameId' => $gameId
+            'gameId' => $gameId,
+            'gameMasterId' => $game['gameMasterId']
         );
         $handler->sendToUser($user, $token);
     }

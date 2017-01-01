@@ -23,20 +23,17 @@ class Cli_Model_SetupInit
             $user->parameters['game'] = $handler->getSetupGame($dataIn['gameId']);
         }
 
-        $setup = SetupGame::getSetup($user);
-        $setup->addUser($user->parameters['playerId'], $user, $db, $handler);
+        $setupGame = SetupGame::getSetup($user);
+        $setupGame->addUser($user->parameters['playerId'], $user, $db, $handler);
 
-        foreach ($setup->getUsers() as $u) {
-            $setup->update($u->parameters['playerId'], $handler);
+        foreach ($setupGame->getUsers() as $u) {
+            $setupGame->update($u->parameters['playerId'], $handler);
         }
 
         $new = Cli_Model_New::getNew($user);
-        $gameMasterId = $setup->getGameMasterId();
-        if ($gameMasterId == $user->parameters['playerId']) {
-            if (!$game = $new->getGame($dataIn['gameId'])) {
-                $new->addGame($dataIn['gameId'], $setup->toArray(), $user->parameters['name']);
-            }
-
+        if ($setupGame->getGameMasterId() == $user->parameters['playerId']) {
+            $setupGame->setGameMasterName($user->parameters['name']);
+            $new->addGame($dataIn['gameId'], $setupGame, $user->parameters['name']);
             $new->getGame($dataIn['gameId'])->addPlayer($user->parameters['playerId']);
             $token = array(
                 'type' => 'addGame',
@@ -52,11 +49,5 @@ class Cli_Model_SetupInit
         }
         $user->parameters['gameId'] = $dataIn['gameId'];
         $handler->sendToChannelExceptPlayers($new, $token);
-
-//        $token = array(
-//            'type' => 'setup'
-//        );
-//
-//        $handler->sendToUser($user, $token);
     }
 }

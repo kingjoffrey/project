@@ -27,7 +27,7 @@ var WebSocketGame = new function () {
 }
 var WebSocketExecGame = new function () {
     var closed = true,
-        ws
+        ws = 0
 
     this.init = function () {
         ws = new WebSocket(wsURL + ':' + wsPort + '/exec')
@@ -57,6 +57,16 @@ var WebSocketExecGame = new function () {
         ws.onclose = function () {
             closed = 1
             setTimeout('WebSocketExecGame.init()', 1000)
+        }
+    }
+    this.close = function () {
+        ws.onclose = 0
+        ws.close()
+        ws = 0
+    }
+    this.isOpen = function () {
+        if (ws) {
+            return 1
         }
     }
 }

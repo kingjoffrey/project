@@ -5,7 +5,6 @@ var WebSocketNew = new function () {
         ws = new WebSocket(wsURL + ':' + wsPort + '/new')
 
         ws.onopen = function () {
-            console.log(ws.readyState)
             WebSocketSendNew.setClosed(0)
             WebSocketSendNew.open()
         }

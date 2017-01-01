@@ -68,26 +68,15 @@ class Cli_Model_New
 
 class NewGame
 {
-    private $_id;
-    private $_mapName;
-    private $_begin;
-    private $_numberOfPlayers;
-    private $_gameMasterId;
-    private $_gameMasterName;
-    private $_turnsLimit;
-    private $_turnTimeLimit;
-    private $_timeLimit;
-
+    /**
+     * @var SetupGame
+     */
+    private $_game;
     private $_players = array();
 
-    public function __construct($game, $gameMasterName)
+    public function __construct(SetupGame $game, $gameMasterName)
     {
-        $this->_id = $game['id'];
-        $this->_mapName = $game['mapName'];
-        $this->_begin = $game['begin'];
-        $this->_numberOfPlayers = $game['numberOfPlayers'];
-        $this->_gameMasterId = $game['gameMasterId'];
-        $this->_gameMasterName = $gameMasterName;
+        $this->_game = $game;
     }
 
     public function addPlayer($playerId)
@@ -116,15 +105,10 @@ class NewGame
 
     public function toArray()
     {
-        return array(
-            'id' => $this->_id,
-            'mapName' => $this->_mapName,
-            'begin' => $this->_begin,
-            'numberOfPlayers' => $this->_numberOfPlayers,
-            'gameMasterId' => $this->_gameMasterId,
-            'gameMasterName' => $this->_gameMasterName,
-            'players' => $this->_players
-        );
+        $array = $this->_game->toArray();
+        $array['players'] = $this->_players;
+
+        return $array;
     }
 }
 
@@ -137,6 +121,10 @@ class SetupGame
     private $_gameMasterId;
     private $_gameMasterName;
     private $_isOpen = true;
+
+    private $_turnsLimit;
+    private $_turnTimeLimit;
+    private $_timeLimit;
 
     private $_users = array();
     private $_players = array();
@@ -157,11 +145,11 @@ class SetupGame
         $this->_begin = $game['begin'];
         $this->_numberOfPlayers = $game['numberOfPlayers'];
         $this->_gameMasterId = $game['gameMasterId'];
-        if (empty($this->_gameMasterId)) {
-            $this->setNewGameMaster($db);
-            $this->_gameMasterId = $mGame->getGameMasterId();
-        }
+    }
 
+    public function setGameMasterName($name)
+    {
+        $this->_gameMasterName = $name;
     }
 
     public function update($playerId, Cli_NewHandler $handler, $close = false)
@@ -169,14 +157,12 @@ class SetupGame
         if ($close) {
             $token = array(
                 'player' => array('playerId' => $playerId),
-                'gameMasterId' => $this->_gameMasterId,
                 'close' => 1,
                 'type' => 'update'
             );
         } else {
             $token = array(
                 'player' => $this->_players[$playerId],
-                'gameMasterId' => $this->_gameMasterId,
                 'type' => 'update'
             );
         }
@@ -219,19 +205,6 @@ class SetupGame
     public function isGameMaster($playerId)
     {
         return $playerId == $this->_gameMasterId;
-    }
-
-    public function setNewGameMaster($db)
-    {
-        $this->_gameMasterId = $this->findNewGameMaster();
-        $mGame = new Application_Model_Game($this->_gameId, $db);
-        $mGame->setNewGameMaster($this->_gameMasterId);
-    }
-
-    public function findNewGameMaster()
-    {
-        reset($this->_users);
-        return key($this->_users);
     }
 
     public function getGameMasterId()

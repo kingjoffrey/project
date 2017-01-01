@@ -97,16 +97,6 @@ class Application_Model_Game extends Coret_Db_Table_Abstract
         $this->updateGame($data);
     }
 
-    public function setNewGameMaster($gameMasterId)
-    {
-        if ($gameMasterId) {
-            $data = array(
-                'gameMasterId' => $gameMasterId
-            );
-            $this->updateGame($data);
-        }
-    }
-
     public function getGame()
     {
         $select = $this->_db->select()

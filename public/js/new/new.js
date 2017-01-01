@@ -95,9 +95,6 @@ var New = new function () {
     this.getGameMasterId = function () {
         return gameMasterId
     }
-    this.setGameMasterId = function (i) {
-        gameMasterId = i
-    }
     this.getGameId = function () {
         return gameId
     }
@@ -138,10 +135,11 @@ var New = new function () {
                 })
         )
     }
-    this.setup = function (mapP, f, id) {
+    this.setup = function (mapP, f, id, gmId) {
         mapPlayers = mapP
         form = f
         gameId = id
+        gameMasterId = gmId
 
         playersOutElement = $('#playersout')
         // PrivateChat.setType('setup')
@@ -156,7 +154,7 @@ var New = new function () {
         empty = $('<tr id="0">').append($('<td colspan="4">').html(info).css('padding', '15px'))
 
         $('#mapId').change(function () {
-            WebSocketSendMain.controller('new','map',{'mapId':$('#mapId').val()})
+            WebSocketSendMain.controller('new', 'map', {'mapId': $('#mapId').val()})
         })
 
         WebSocketNew.init()

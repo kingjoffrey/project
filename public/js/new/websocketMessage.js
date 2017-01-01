@@ -21,10 +21,8 @@ var WebSocketMessageNew = new function () {
                 break;
 
             case 'update':
-                New.setGameMasterId(r.gameMasterId)
-                New.removePlayer(r.player.playerId)
-
                 if (notSet(r.close)) {
+                    New.removePlayer(r.player.playerId)
                     if (r.player.mapPlayerId) {
                         $('#' + r.player.mapPlayerId + ' .td3').html(r.player.firstName + ' ' + r.player.lastName)
 
@@ -32,7 +30,7 @@ var WebSocketMessageNew = new function () {
                             $('#' + r.player.mapPlayerId + ' .td2 a').html(translations.deselect)
                             $('#' + r.player.mapPlayerId).addClass('selected')
                         } else {
-                            if (r.gameMasterId == id) {
+                            if (New.getGameMasterId() == id) {
                                 $('#' + r.player.mapPlayerId + ' .td2 a').html(translations.deselect);
                             } else {
                                 $('#' + r.player.mapPlayerId + ' .td2 a').remove();
@@ -46,8 +44,10 @@ var WebSocketMessageNew = new function () {
                                 .attr('id', r.player.playerId)
                         )
                     }
+                    New.updateStartButton()
+                } else {
+                    WebSocketSendMain.controller('new', 'index')
                 }
-                New.updateStartButton()
                 break;
 
             case 'games':

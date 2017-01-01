@@ -39,7 +39,6 @@ class Cli_NewHandler extends WebSocketUriHandler
     }
 
 
-
     public function addSetupGame($gameId, SetupGame $game)
     {
         $this->_setupGames[$gameId] = $game;
@@ -167,22 +166,18 @@ class Cli_NewHandler extends WebSocketUriHandler
 
         $setup = SetupGame::getSetup($user);
         if ($setup) {
-            echo 'a';
             $setup->removeUser($user, $this->_db);
 
-            if ($setup->getUsers()) {
-                echo 'b';
-                if (!$setup->getIsOpen()) {
-                    return;
-                }
-                echo 'c';
-                if ($setup->getGameMasterId() == $user->parameters['playerId']) {
-                    echo 'f';
-                    $setup->setNewGameMaster($this->_db);
-                }
+            if ($setup->getGameMasterId() == $user->parameters['playerId']) {
+//            if ($setup->getUsers()) {
+//                if (!$setup->getIsOpen()) {
+//                    return;
+//                }
+//                if ($setup->getGameMasterId() == $user->parameters['playerId']) {
+//                    $setup->setNewGameMaster($this->_db);
+//                }
                 $setup->update($user->parameters['playerId'], $this, 1);
-            } else {
-                echo 'd';
+//            } else {
                 $this->removeSetupGame($setup->getGameId());
             }
         }

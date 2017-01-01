@@ -1,16 +1,15 @@
 "use strict"
 var WebSocketHelp = new function () {
+    var ws = 0
     this.init = function () {
-        var ws = new WebSocket(wsURL + ':' + wsPort + '/help')
+        ws = new WebSocket(wsURL + ':' + wsPort + '/help')
 
         ws.onopen = function () {
             WebSocketSendHelp.setClosed(0)
             WebSocketSendHelp.open()
         }
         ws.onmessage = function (e) {
-            if (typeof gameId === 'undefined') {
-                WebSocketMessageHelp.switch($.parseJSON(e.data))
-            }
+            WebSocketMessageHelp.switch($.parseJSON(e.data))
         }
         ws.onclose = function () {
             WebSocketSendHelp.setClosed(1)
@@ -18,5 +17,15 @@ var WebSocketHelp = new function () {
         }
 
         WebSocketSendHelp.init(ws)
+    }
+    this.close = function () {
+        ws.onclose = 0
+        ws.close()
+        ws = 0
+    }
+    this.isOpen = function () {
+        if (ws) {
+            return 1
+        }
     }
 }
