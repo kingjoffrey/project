@@ -252,4 +252,13 @@ class Cli_CommonHandler extends WebSocketUriHandler
 
         $user->sendString(Zend_Json::encode($token));
     }
+
+    /**
+     * @param WebSocketTransportInterface $user
+     * @return Cli_Model_Game
+     */
+    static public function getGameFromUser($user)
+    {
+        return $user->parameters['game'];
+    }
 }

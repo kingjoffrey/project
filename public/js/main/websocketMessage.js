@@ -9,7 +9,6 @@ var WebSocketMessageMain = new function () {
             if (typeof window[className] !== "undefined") {
                 var methodName = r.action
                 if (typeof window[className][methodName] === "function") {
-                    console.log(r.type + ' ' + r.action)
                     Main.updateMenu(r.type)
                     window[className][methodName](r)
                     if (r.type != 'new' && WebSocketNew.isOpen()) {

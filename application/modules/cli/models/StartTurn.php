@@ -1,9 +1,9 @@
 <?php
-
+use Devristo\Phpws\Protocol\WebSocketTransportInterface;
 class Cli_Model_StartTurn
 {
 
-    public function __construct($playerId, Devristo\Phpws\Protocol\WebSocketTransportInterface $user, $handler)
+    public function __construct($playerId, $user, $handler)
     {
         $game = Cli_CommonHandler::getGameFromUser($user);
         $players = $game->getPlayers();
