@@ -40,6 +40,7 @@ var Game = new function () {
         game = g
         if (loading) {
             loading = 0
+            GameScene.init($(window).innerWidth(), $(window).innerHeight())
             Units.init(game.units)
             Terrain.init(game.terrain)
             Fields.init(game.fields, game.map.mapId)

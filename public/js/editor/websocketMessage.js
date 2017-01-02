@@ -4,7 +4,6 @@ var WebSocketMessageEditor = new function () {
         console.log(r)
         switch (r.type) {
             case 'open':
-                CommonInit.init(r)
                 Editor.init(r)
                 break
             case 'castleId':

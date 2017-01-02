@@ -6,6 +6,7 @@ var GameRenderer = new function () {
         height,
         viewports = {},
         timeOut = 100,
+        stop,
         render = function () {
             renderer.render(scene, camera)
         }
@@ -22,6 +23,9 @@ var GameRenderer = new function () {
         renderer.shadowMapSoft = false
     }
     this.animate = function () {
+        if (stop) {
+            return
+        }
         // console.log(1)
         if (TWEEN.update()) {
             requestAnimationFrame(GameRenderer.animate)
@@ -34,8 +38,12 @@ var GameRenderer = new function () {
         render()
         // stats.update();
     }
+    this.stop = function () {
+        stop = 1
+    }
 
     this.init = function (id, Scene) {
+        stop = 0
         renderer = Renderer.get()
         scene = Scene.get()
         camera = Scene.getCamera()

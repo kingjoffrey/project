@@ -14,6 +14,26 @@ var WebSocketMessageMain = new function () {
                     if (r.type != 'new' && WebSocketNew.isOpen()) {
                         WebSocketNew.close()
                     }
+                    if (r.type != 'help' && WebSocketHelp.isOpen()) {
+                        WebSocketHelp.close()
+                        HelpRenderer.stop()
+                    }
+                    if (r.type != 'editor' && WebSocketEditor.isOpen()) {
+                        WebSocketEditor.close()
+                        GameRenderer.stop()
+                    }
+                    if (r.type != 'game') {
+                        if (WebSocketGame.isOpen()) {
+                            WebSocketGame.close()
+                            WebSocketExecGame.close()
+                            GameRenderer.stop()
+                        }
+                        if (WebSocketTutorial.isOpen()) {
+                            WebSocketTutorial.close()
+                            WebSocketExecTutorial.close()
+                            GameRenderer.stop()
+                        }
+                    }
                 }
             }
         }

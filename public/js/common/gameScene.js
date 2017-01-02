@@ -6,7 +6,7 @@ if (!Detector.webgl) {
 var GameScene = new function () {
     var canvasWidth,
         canvasHeight,
-        scene = new THREE.Scene(),
+        scene,
         camera,
         sun,
         shadows = 1,
@@ -144,6 +144,8 @@ var GameScene = new function () {
     this.init = function (w, h) {
         canvasWidth = w
         canvasHeight = h
+
+        scene = new THREE.Scene()
 
         initCamera()
         // Renderer.setScene(scene)

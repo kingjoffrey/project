@@ -1,9 +1,10 @@
 "use strict"
 var WebSocketTutorial = new function () {
-    var port
+    var port,
+        ws = 0
     this.init = function (p) {
         port = p
-        var ws = new WebSocket(wsURL + ':' + port + '/tutorial' + Game.getGameId())
+        ws = new WebSocket(wsURL + ':' + port + '/tutorial' + Game.getGameId())
 
         ws.onopen = function () {
             WebSocketSendCommon.setClosed(0)
@@ -24,39 +25,44 @@ var WebSocketTutorial = new function () {
     this.getPort = function () {
         return port
     }
+    this.close = function () {
+        ws.onclose = 0
+        ws.close()
+        ws = 0
+    }
+    this.isOpen = function () {
+        if (ws) {
+            return 1
+        }
+    }
 }
 var WebSocketExecTutorial = new function () {
-    var closed = true,
-        ws
+    var ws
 
     this.init = function () {
         ws = new WebSocket(wsURL + ':' + wsPort + '/exec')
 
         ws.onopen = function () {
-            closed = 0
-
-            if (closed) {
-                Message.error(translations.sorryServerIsDisconnected)
-                return;
-            }
-
             var token = {
                 'gameId': Game.getGameId()
             }
 
             ws.send(JSON.stringify(token))
         }
-
         ws.onmessage = function (e) {
             var r = $.parseJSON(e.data)
             if (isSet(r.port)) {
-                setTimeout(function() {WebSocketTutorial.init(r.port)}, 1000)
+                setTimeout(function () {
+                    WebSocketTutorial.init(r.port)
+                }, 1000)
             }
         }
-
         ws.onclose = function () {
-            closed = 1
             setTimeout('WebSocketExecTutorial.init()', 1000)
         }
+    }
+    this.close = function () {
+        ws.onclose = 0
+        ws.close()
     }
 }

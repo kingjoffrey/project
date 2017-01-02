@@ -5,6 +5,7 @@ var HelpRenderer = new function () {
         width,
         height,
         timeOut = 100,
+        stop,
         render = function () {
             renderer.render(scene, camera)
         }
@@ -14,6 +15,9 @@ var HelpRenderer = new function () {
         renderer.shadowMapSoft = false
     }
     this.animate = function () {
+        if (stop) {
+            return
+        }
         setTimeout(function () {
             requestAnimationFrame(HelpRenderer.animate)
         }, timeOut)
@@ -21,7 +25,11 @@ var HelpRenderer = new function () {
         render()
         // stats.update();
     }
+    this.stop = function () {
+        stop = 1
+    }
     this.init = function (s) {
+        stop = 0
         renderer = Renderer.get()
         scene = s.get()
         camera = s.getCamera()
