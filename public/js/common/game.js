@@ -58,6 +58,7 @@ var Game = new function () {
             BattleScene.init($(window).innerWidth(), $(window).innerHeight())
             BattleScene.initSun(Fields.getMaxY())
             GameGui.init()
+            PickerCommon.init(PickerGame)
         }
         GamePlayers.initOnline(game.online)
         if (Turn.isMy()) {

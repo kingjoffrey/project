@@ -1,4 +1,4 @@
-var Picker = new function () {
+var PickerGame = new function () {
     var dragStart = 0
 
     this.onContainerMouseDown = function (event) {
@@ -11,7 +11,7 @@ var Picker = new function () {
                 PickerCommon.intersect(event)
                 if (PickerCommon.intersects()) {
                     if (CommonMe.getSelectedArmyId()) {
-                        WebSocketSend.move()
+                        WebSocketSendCommon.move()
                     } else {
                         var field = PickerCommon.getField()
                         if (field.hasArmies()) {
@@ -25,7 +25,7 @@ var Picker = new function () {
                             var castleId = field.getCastleId()
                             if (CommonMe.getSelectedCastleId()) {
                                 if (CommonMe.getSelectedCastleId() != castleId) {
-                                    WebSocketSend.production(CommonMe.getSelectedCastleId(), CommonMe.getSelectedUnitId(), castleId)
+                                    WebSocketSendCommon.production(CommonMe.getSelectedCastleId(), CommonMe.getSelectedUnitId(), castleId)
                                 }
                                 CommonMe.setSelectedCastleId(null)
                                 CommonMe.setSelectedUnitId(null)
@@ -55,7 +55,7 @@ var Picker = new function () {
         PickerCommon.intersect(event)
         if (CommonMe.getSelectedArmyId()) {
             AStar.cursorPosition(PickerCommon.convertX(), PickerCommon.convertZ())
-            WebSocketSend.move()
+            WebSocketSendCommon.move()
         } else {
             var field = PickerCommon.getField()
             if (field.hasArmies()) {
@@ -69,7 +69,7 @@ var Picker = new function () {
                 var castleId = field.getCastleId()
                 if (CommonMe.getSelectedCastleId()) {
                     if (CommonMe.getSelectedCastleId() != castleId) {
-                        WebSocketSend.production(CommonMe.getSelectedCastleId(), CommonMe.getSelectedUnitId(), castleId)
+                        WebSocketSendCommon.production(CommonMe.getSelectedCastleId(), CommonMe.getSelectedUnitId(), castleId)
                     }
                     CommonMe.setSelectedCastleId(null)
                     CommonMe.setSelectedUnitId(null)

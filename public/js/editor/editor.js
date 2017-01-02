@@ -15,6 +15,7 @@ var Editor = new function () {
             GameScene.initSun(Fields.getMaxY())
             GameRenderer.animate()
             EditorGui.init()
+            PickerCommon.init(PickerEditor)
         }
     }
     this.setInit = function (i) {

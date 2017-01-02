@@ -8,18 +8,18 @@ var WebSocketMessageEditor = new function () {
                 break
             case 'castleId':
                 Players.get('neutral').getCastles().add(r.value, {
-                    x: Picker.getX(),
-                    y: Picker.getZ(),
+                    x: PickerEditor.getX(),
+                    y: PickerEditor.getZ(),
                     name: 'Unknown',
                     defense: 1,
                     production: [null, null, null, null]
                 })
                 break
             case 'towerId':
-                Players.get('neutral').getTowers().add(r.value, {x: Picker.getX(), y: Picker.getZ()})
+                Players.get('neutral').getTowers().add(r.value, {x: PickerEditor.getX(), y: PickerEditor.getZ()})
                 break
             case 'ruinId':
-                Ruins.add(r.value, new Ruin({x: Picker.getX(), y: Picker.getZ(), empty: 0}))
+                Ruins.add(r.value, new Ruin({x: PickerEditor.getX(), y: PickerEditor.getZ(), empty: 0}))
                 break
             case 'edit':
                 Message.remove()

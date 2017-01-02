@@ -72,7 +72,7 @@ var EditorModels = new function () {
         }
         mesh.itemName = type
         GameScene.add(mesh)
-        GameScene.remove(Picker.getDraggedMesh())
-        Picker.addDraggedMesh(mesh)
+        GameScene.remove(PickerEditor.getDraggedMesh())
+        PickerEditor.addDraggedMesh(mesh)
     }
 }

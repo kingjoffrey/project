@@ -6,20 +6,20 @@ var PickerCommon = new function () {
         container,
         vector
 
-    this.init = function () {
+    this.init = function (picker) {
         camera = GameScene.getCamera()
         container = GameRenderer.getDomElement()
 
-        container.addEventListener('mousedown', Picker.onContainerMouseDown, false);
-        container.addEventListener('mousemove', Picker.onContainerMouseMove, false);
-        container.addEventListener('mouseup', Picker.onContainerMouseUp, false);
-        container.addEventListener('mouseout', Picker.onContainerMouseOut, false);
+        container.addEventListener('mousedown', picker.onContainerMouseDown, false)
+        container.addEventListener('mousemove', picker.onContainerMouseMove, false)
+        container.addEventListener('mouseup', picker.onContainerMouseUp, false)
+        container.addEventListener('mouseout', picker.onContainerMouseOut, false)
 
 
-        container.addEventListener('touchstart', Picker.onContainerTouchStart, true)
-        container.addEventListener('touchmove', Picker.onContainerTouchMove, true)
-        container.addEventListener('touchend', Picker.onContainerTouchEnd, true)
-        container.addEventListener('touchcancel', Picker.onContainerTouchEnd, true);
+        container.addEventListener('touchstart', picker.onContainerTouchStart, true)
+        container.addEventListener('touchmove', picker.onContainerTouchMove, true)
+        container.addEventListener('touchend', picker.onContainerTouchEnd, true)
+        container.addEventListener('touchcancel', picker.onContainerTouchEnd, true)
     }
     this.intersect = function (event) {
         var x = event.offsetX == undefined ? event.layerX : event.offsetX,
