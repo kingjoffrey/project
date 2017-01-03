@@ -7,7 +7,7 @@ var Move = new function () {
         if (notSet(r.path)) {
             Execute.setExecuting(0)
             if (CommonMe.colorEquals(r.color)) {
-                Gui.unlock()
+                GameGui.unlock()
                 GameModels.clearMoveCircles()
                 Message.simple(translations.army, translations.noMoreMoves)
             }
@@ -164,7 +164,7 @@ var Move = new function () {
                     } else if (CommonMe.getArmy(army.getArmyId()).getMoves()) {
                         CommonMe.selectArmy(army.getArmyId())
                     }
-                    Gui.unlock()
+                    GameGui.unlock()
                 }
             } else {
                 Players.get(r.color).getArmies().destroy(army.getArmyId())
@@ -207,7 +207,7 @@ var Move = new function () {
                     }
                 }
                 if (CommonMe.colorEquals(r.color)) {
-                    Gui.unlock()
+                    GameGui.unlock()
                 }
             }
             Execute.setExecuting(0)
@@ -217,9 +217,9 @@ var Move = new function () {
                     CommonMe.selectArmy(r.army.id)
                 }
             }
-            Gui.unlock()
+            GameGui.unlock()
             Execute.setExecuting(0)
-        }else {
+        } else {
             Execute.setExecuting(0)
         }
 

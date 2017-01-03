@@ -31,6 +31,7 @@ class Cli_Model_CommonOpen
             $game = $handler->getGame();
         }
 
+        $user->parameters['game'] = $game;
         $game->addUser($dataIn['playerId'], $user);
         $myColor = $game->getPlayerColor($dataIn['playerId']);
         $this->handleMe($user, $myColor, $dataIn['playerId']);
@@ -62,6 +63,10 @@ class Cli_Model_CommonOpen
 
     public function handleMe($user, $myColor, $playerId)
     {
-        $user->parameters['me'] = new Cli_Model_Me($myColor, $playerId);
+        $me = new Cli_Model_Me($myColor, $playerId);
+        if (empty($me)) {
+            throw new Exception('Cli_Model_Me me object is empty');
+        }
+        $user->parameters['me'] = $me;
     }
 }
