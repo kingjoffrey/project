@@ -293,31 +293,31 @@ var CastleWindow = new function () {
             }
             $('#heroResurrection:not(.buttonOff)').click(function () {
                 var id = Message.show(translations.resurrectHero, $('<div>').append(translations.doYouWantToResurrectHeroFor100Gold))
-                Message.ok(id, WebSocketSend.resurrection)
+                Message.ok(id, WebSocketSendCommon.resurrection)
                 Message.cancel(id)
             })
 
             $('#heroHire:not(.buttonOff)').click(function () {
                 var id = Message.show(translations.hireHero, $('<div>').html(translations.doYouWantToHireNewHeroFor1000Gold))
-                Message.ok(id, WebSocketSend.hire)
+                Message.ok(id, WebSocketSendCommon.hire)
                 Message.cancel(id)
             })
         }
 
-        for (var unitId in castle.getProduction()) {
-            var unitScene = new UnitScene()
-            unitScene.init(50, 50)
-
-            UnitModels.addUnit(castle.getBackgroundColor(), Unit.getName(unitId), unitScene)
-            Renderers.add('unit' + unitId, unitScene)
-        }
+        // for (var unitId in castle.getProduction()) {
+        //     var unitScene = new UnitScene()
+        //     unitScene.init(50, 50)
+        //
+        //     UnitModels.addUnit(castle.getBackgroundColor(), Unit.getName(unitId), unitScene)
+        //     Renderers.add('unit' + unitId, unitScene)
+        // }
     }
     this.raze = function () {
         if (!CommonMe.getSelectedArmyId()) {
             return;
         }
         var id = Message.show(translations.destroyCastle, $('<div>').html(translations.areYouSure))
-        Message.ok(id, WebSocketSend.raze);
+        Message.ok(id, WebSocketSendCommon.raze);
         Message.cancel(id)
     }
     this.build = function () {
@@ -346,7 +346,7 @@ var CastleWindow = new function () {
                 .append($('<div>').html(translations.newDefense + ': ' + newDefense))
                 .append($('<div>').html(translations.cost + ': ' + costBuildDefense + ' ' + translations.gold))
             var id = Message.show(translations.buildCastleDefense, div);
-            Message.ok(id, WebSocketSend.defense);
+            Message.ok(id, WebSocketSendCommon.defense);
         }
         Message.cancel(id)
     }

@@ -16,7 +16,7 @@ var CommonMe = new function () {
         selectedCastleId = null,
         selectedUnitId = null,
         battleSequence = [],
-        s,
+        // s,
         updateGold = function () {
             $('#gold #value').fadeOut(300, function () {
                 $('#gold #value').html(gold)
@@ -127,9 +127,9 @@ var CommonMe = new function () {
             number,
             i = 0
 
-        if (number = countProperties(army.getHeroes())) {
-            UnitModels.addHero(army.getBackgroundColor(), s)
-        }
+        // if (number = countProperties(army.getHeroes())) {
+        //     UnitModels.addHero(army.getBackgroundColor(), s)
+        // }
 
         for (var soldierId in army.getWalkingSoldiers()) {
             if (isSet(unitTypes[army.getWalkingSoldier(soldierId).unitId])) {
@@ -152,9 +152,9 @@ var CommonMe = new function () {
                 unitTypes[army.getSwimmingSoldier(soldierId).unitId] = 1
             }
         }
-        for (var unitId in unitTypes) {
-            UnitModels.addUnit(army.getBackgroundColor(), Unit.getName(unitId), s)
-        }
+        // for (var unitId in unitTypes) {
+        //     UnitModels.addUnit(army.getBackgroundColor(), Unit.getName(unitId), s)
+        // }
 
         // s.resize(400, 40)
         // GameRenderer.addViewport(s.get(), s.getCamera(), 100, 2, 400, 40)
@@ -178,7 +178,7 @@ var CommonMe = new function () {
         }
     }
     this.deselectArmy = function (skipJoin) {
-        s.removeMeshes()
+        // s.removeMeshes()
         // GameRenderer.removeViewport()
         // s.render()
 
@@ -187,7 +187,7 @@ var CommonMe = new function () {
                 parentArmy = this.getArmy(parentArmyId)
             parentArmy.getX()
             if (selectedArmy.getX() == parentArmy.getX() && selectedArmy.getY() == parentArmy.getY()) {
-                WebSocketSend.join(selectedArmyId)
+                WebSocketSendCommon.join(selectedArmyId)
             }
         }
         parentArmyId = null
@@ -399,7 +399,7 @@ var CommonMe = new function () {
     }
     this.disband = function () {
         var id = Message.show(translations.disbandArmy, $('<div>').html(translations.areYouSure))
-        Message.ok(id, WebSocketSend.disband)
+        Message.ok(id, WebSocketSendCommon.disband)
         Message.cancel(id)
     }
     this.findHero = function () {
@@ -479,14 +479,14 @@ var CommonMe = new function () {
         updateUpkeep()
         updateIncome()
 
-        s = new UnitScene()
-        s.init(40, 40)
+        // s = new UnitScene()
+        // s.init(40, 40)
 
-        var unitRenderer = new UnitRenderer()
-        unitRenderer.init('unitsBox', s)
-        requestAnimationFrame(function animate() {
-            unitRenderer.render()
-            requestAnimationFrame(animate)
-        })
+        // var unitRenderer = new UnitRenderer()
+        // unitRenderer.init('unitsBox', s)
+        // requestAnimationFrame(function animate() {
+        //     unitRenderer.render()
+        //     requestAnimationFrame(animate)
+        // })
     }
 }

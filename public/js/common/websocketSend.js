@@ -321,11 +321,11 @@ var WebSocketSendCommon = new function () {
     }
 
     this.battleAttack = function () {
-        WebSocketSend.battleConfiguration(1)
+        WebSocketSendCommon.battleConfiguration(1)
     }
 
     this.battleDefence = function () {
-        WebSocketSend.battleConfiguration(0)
+        WebSocketSendCommon.battleConfiguration(0)
     }
 
     this.battleConfiguration = function (attack) {

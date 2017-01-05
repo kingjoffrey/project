@@ -46,7 +46,7 @@ var Timer = new function () {
                 seconds = date.getSeconds()
 
             if (turnTimeL && hours * 60 + minutes >= turnTimeL) {
-                WebSocketSend.nextTurn()
+                WebSocketSendCommon.nextTurn()
             }
 
             if (seconds < 10) {

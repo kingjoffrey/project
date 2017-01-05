@@ -85,7 +85,7 @@ var CommonCastle = function (castle, bgC) {
         }
 
         if (unitId) {
-            WebSocketSend.production(castle.id, unitId)
+            WebSocketSendCommon.production(castle.id, unitId)
         }
     }
     this.setDefense = function (defense) {

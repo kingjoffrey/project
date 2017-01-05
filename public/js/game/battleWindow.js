@@ -282,7 +282,7 @@ var BattleWindow = new function () {
             .append(configuration('attack'))
 
         var id = Message.show(translations.battleConfiguration, div)
-        Message.ok(id, WebSocketSend.battleAttack)
+        Message.ok(id, WebSocketSendCommon.battleAttack)
         Message.cancel(id)
 
         $("#sortable").sortable()
@@ -295,7 +295,7 @@ var BattleWindow = new function () {
             .append(configuration('defense'))
 
         var id = Message.show(translations.battleConfiguration, div)
-        Message.ok(id, WebSocketSend.battleDefence)
+        Message.ok(id, WebSocketSendCommon.battleDefence)
         Message.cancel(id)
 
         $("#sortable").sortable()

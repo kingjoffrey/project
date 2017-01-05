@@ -125,7 +125,7 @@ var StatusWindow = new function () {
                         $('<div>')
                             .addClass('iconButton buttonColors ' + searchRuins)
                             .click(function () {
-                                WebSocketSend.ruin()
+                                WebSocketSendCommon.ruin()
                             })
                             .append($('<div>'))
                             .attr({
@@ -152,7 +152,7 @@ var StatusWindow = new function () {
                         $('<div>')
                             .addClass('iconButton buttonColors')
                             .click(function () {
-                                WebSocketSend.fortify()
+                                WebSocketSendCommon.fortify()
                             })
                             .append($('<div>'))
                             .attr({
@@ -277,32 +277,32 @@ var StatusWindow = new function () {
         Message.setOverflowHeight(id)
 
         for (var soldierId in army.getWalkingSoldiers()) {
-            var unitScene = new UnitScene()
-            unitScene.init(60, 95)
-
-            UnitModels.addUnit(backgroundColor, Unit.getName(army.getWalkingSoldier(soldierId).unitId), unitScene)
-            Renderers.add('soldier' + soldierId, unitScene)
+            // var unitScene = new UnitScene()
+            // unitScene.init(60, 95)
+            $('soldier' + soldierId).html(Unit.getName(army.getWalkingSoldier(soldierId).unitId))
+            // UnitModels.addUnit(backgroundColor, Unit.getName(army.getWalkingSoldier(soldierId).unitId), unitScene)
+            // Renderers.add('soldier' + soldierId, unitScene)
         }
         for (var soldierId in army.getSwimmingSoldiers()) {
-            var unitScene = new UnitScene()
-            unitScene.init(60, 95)
-
-            UnitModels.addUnit(backgroundColor, Unit.getName(army.getSwimmingSoldier(soldierId).unitId), unitScene)
-            Renderers.add('soldier' + soldierId, unitScene)
+            // var unitScene = new UnitScene()
+            // unitScene.init(60, 95)
+            //
+            // UnitModels.addUnit(backgroundColor, Unit.getName(army.getSwimmingSoldier(soldierId).unitId), unitScene)
+            // Renderers.add('soldier' + soldierId, unitScene)
         }
         for (var soldierId in army.getFlyingSoldiers()) {
-            var unitScene = new UnitScene()
-            unitScene.init(60, 95)
-
-            UnitModels.addUnit(backgroundColor, Unit.getName(army.getFlyingSoldier(soldierId).unitId), unitScene)
-            Renderers.add('soldier' + soldierId, unitScene)
+            // var unitScene = new UnitScene()
+            // unitScene.init(60, 95)
+            //
+            // UnitModels.addUnit(backgroundColor, Unit.getName(army.getFlyingSoldier(soldierId).unitId), unitScene)
+            // Renderers.add('soldier' + soldierId, unitScene)
         }
         for (var heroId in army.getHeroes()) {
-            var unitScene = new UnitScene()
-            unitScene.init(60, 95)
-
-            UnitModels.addHero(backgroundColor, unitScene)
-            Renderers.add('hero' + heroId, unitScene)
+            // var unitScene = new UnitScene()
+            // unitScene.init(60, 95)
+            //
+            // UnitModels.addHero(backgroundColor, unitScene)
+            // Renderers.add('hero' + heroId, unitScene)
         }
     }
 }

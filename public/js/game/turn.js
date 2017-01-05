@@ -60,7 +60,7 @@ var Turn = new function () {
 
         if (Turn.isMy()) {
             CommonMe.turnOn()
-            WebSocketSend.startMyTurn();
+            WebSocketSendCommon.startMyTurn();
             return
         } else {
             CommonMe.turnOff()
@@ -74,6 +74,6 @@ var Turn = new function () {
     }
     this.next = function () {
         var id = Message.simple(translations.nextTurn, translations.areYouSure)
-        Message.ok(id, WebSocketSend.nextTurn)
+        Message.ok(id, WebSocketSendCommon.nextTurn)
     }
 }
