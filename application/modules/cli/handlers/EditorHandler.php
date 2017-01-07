@@ -61,7 +61,7 @@ class Cli_EditorHandler extends WebSocketUriHandler
         }
 
         if (!Zend_Validate::is($user->parameters['playerId'], 'Digits')) {
-            $this->sendError($user, 'Brak "playerId". Brak autoryzacji.');
+            $this->sendError($user, 'Brak autoryzacji.');
             return;
         }
 

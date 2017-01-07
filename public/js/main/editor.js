@@ -27,17 +27,21 @@ var EditorController = new function () {
         $('#back').click(function () {
             WebSocketSendMain.controller('index', 'index')
         })
-        $('#submit').submit(function (e) {
+        $('form').submit(function (e) {
             e.preventDefault()
-            console.log($('#name').val())
-            console.log($('#mapSize').val())
-            console.log($('#maxPlayers').val())
             WebSocketSendMain.controller('editor', 'create', {
                 'name': $('#name').val(),
                 'mapSize': $('#mapSize').val(),
                 'maxPlayers': $('#maxPlayers').val()
             })
         })
+    }
+    this.generate = function (r) {
+        var main = $('#main')
+        Main.setMain(main.html())
+        main.html('')
+        mapId = r.mapId
+        MapGenerator.init(r.mapSize)
     }
     this.edit = function (r) {
         var main = $('#main')

@@ -2,27 +2,9 @@ var MapGenerator = new function () {
     var DATA_SIZE = 1025,
         canvas = document.createElement('canvas'),
         ctx = canvas.getContext('2d'),
-        init = 0,
         fields = [],
-        fieldsNumber
-
-    this.getFields = function () {
-        return fields
-    }
-    this.getImage = function () {
-        return canvas.toDataURL('image/png')
-    }
-    this.getInit = function () {
-        return init
-    }
-    this.init = function (mapSize) {
-        init = 1
-        fieldsNumber = mapSize
-
-        resetCanvas()
-        generate()
-    }
-    var resetCanvas = function () {
+        fieldsNumber,
+        resetCanvas = function () {
             canvas.width = DATA_SIZE - 1
             canvas.height = DATA_SIZE - 1
             canvas.pixels = []
@@ -126,7 +108,7 @@ var MapGenerator = new function () {
                     }
                 }
             }
-            WebSocketEditor.save()
+            WebSocketMapgenerator.init()
         },
         grid = function (size) {
             var grid = []
@@ -303,4 +285,17 @@ var MapGenerator = new function () {
 
             return data
         }
+
+    this.getFields = function () {
+        return fields
+    }
+    this.getImage = function () {
+        return canvas.toDataURL('image/png')
+    }
+    this.init = function (mapSize) {
+        fieldsNumber = mapSize
+
+        resetCanvas()
+        generate()
+    }
 }

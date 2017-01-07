@@ -17,12 +17,12 @@ class Application_Model_MapPlayers extends Coret_Db_Table_Abstract
         }
     }
 
-    public function create($sides, $mapId)
+    public function create($sides)
     {
         $i = 0;
         foreach ($sides as $side) {
             $i++;
-            $this->insert(array('sideId' => $side['sideId'], 'startOrder' => $i, 'mapId' => $mapId));
+            $this->insert(array('sideId' => $side['sideId'], 'startOrder' => $i, 'mapId' => $this->_mapId));
         }
     }
 

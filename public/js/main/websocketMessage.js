@@ -27,11 +27,13 @@ var WebSocketMessageMain = new function () {
                             WebSocketGame.close()
                             WebSocketExecGame.close()
                             GameRenderer.stop()
+                            Game.resetLoading()
                         }
                         if (WebSocketTutorial.isOpen()) {
                             WebSocketTutorial.close()
                             WebSocketExecTutorial.close()
                             GameRenderer.stop()
+                            Game.resetLoading()
                         }
                     }
                 }

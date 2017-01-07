@@ -18,7 +18,15 @@ class Cli_Model_GeneratorOpen
             return;
         }
 
-        $user->parameters['playerId'] = $dataIn['playerId'];
-        $user->parameters['accessKey'] = $dataIn['accessKey'];
+        $map = str_replace('data:image/png;base64,', '', $dataIn['map']);
+        $map = str_replace(' ', '+', $map);
+        $file = APPLICATION_PATH . '/../public/img/maps/' . $dataIn['mapId'] . '.png';
+        $success = file_put_contents($file, base64_decode($map));
+        $mapFields = new Application_Model_MapFields($dataIn['mapId'], $db);
+        foreach ($dataIn['fields'] as $y => $row) {
+            foreach ($row as $x => $type) {
+                $mapFields->add($x, $y, $type);
+            }
+        }
     }
 }

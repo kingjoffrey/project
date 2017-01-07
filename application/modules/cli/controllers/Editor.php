@@ -20,44 +20,41 @@ class EditorController
         $handler->sendToUser($user, $token);
     }
 
-    function create(Devristo\Phpws\Protocol\WebSocketTransportInterface $user, Cli_MainHandler $handler)
+    function create(Devristo\Phpws\Protocol\WebSocketTransportInterface $user, Cli_MainHandler $handler, $dataIn)
     {
+        print_r($dataIn);
+
         $view = new Zend_View();
         $view->formCreate = new Application_Form_Createmap ();
         $view->formCreate->setView($view);
 
         $view->addScriptPath(APPLICATION_PATH . '/views/scripts');
 
-        $token = array(
-            'type' => 'editor',
-            'action' => 'create',
-            'data' => $view->render('editor/create.phtml')
-        );
+        if (isset($dataIn['name']) && $view->formCreate->isValid($dataIn)) {
+            $db = $handler->getDb();
 
+            $mMap = new Application_Model_Map (0, $db);
+            $mapId = $mMap->createMap($view->formCreate->getValues(), $user->parameters['playerId']);
+
+            $mSide = new Application_Model_Side(0, $db);
+
+            $mMapPlayers = new Application_Model_MapPlayers($mapId, $db);
+            $mMapPlayers->create($mSide->getWithLimit($dataIn['maxPlayers']));
+
+            $token = array(
+                'type' => 'editor',
+                'action' => 'generate',
+                'mapSize' => $dataIn['mapSize'],
+                'mapId' => $mapId
+            );
+        } else {
+            $token = array(
+                'type' => 'editor',
+                'action' => 'create',
+                'data' => $view->render('editor/create.phtml')
+            );
+        }
         $handler->sendToUser($user, $token);
-
-//        $this->_view->formIsValid = false;
-//        if ($this->_request->isPost()) {
-//            if ($this->_view->form->isValid($this->_request->getPost())) {
-//                $this->_view->formIsValid = true;
-//                $mMap = new Application_Model_Map ();
-//                $this->_view->mapId = $mMap->createMap($this->_view->form->getValues(), Zend_Auth::getInstance()->getIdentity()->playerId);
-//
-//                $mSide = new Application_Model_Side();
-//
-//                $mMapPlayers = new Application_Model_MapPlayers($this->_view->mapId);
-//                $mMapPlayers->create($mSide->getWithLimit($this->_request->getParam('maxPlayers')), $this->_view->mapId);
-//
-//                $this->_view->mapSize = $this->_request->getParam('mapSize');
-//
-//                $this->_helper->layout->setLayout('empty');
-//
-//                $this->_view->headScript()->appendFile('/js/mapgenerator/init.js?v=' . Zend_Registry::get('config')->version);
-//                $this->_view->headScript()->appendFile('/js/mapgenerator/diamondsquare.js?v=' . Zend_Registry::get('config')->version);
-//                $this->_view->headScript()->appendFile('/js/mapgenerator/mapgenerator.js?v=' . Zend_Registry::get('config')->version);
-//                $this->_view->headScript()->appendFile('/js/mapgenerator/websocket.js?v=' . Zend_Registry::get('config')->version);
-//            }
-//        }
     }
 
     function edit(Devristo\Phpws\Protocol\WebSocketTransportInterface $user, Cli_MainHandler $handler)

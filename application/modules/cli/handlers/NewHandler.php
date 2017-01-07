@@ -65,6 +65,16 @@ class Cli_NewHandler extends WebSocketUriHandler
     {
         $dataIn = Zend_Json::decode($msg->getData());
 
+        if ($dataIn['type'] == 'open') {
+            new Cli_Model_NewOpen($dataIn, $user, $this);
+            return;
+        }
+
+        if (!Zend_Validate::is($user->parameters['playerId'], 'Digits')) {
+            $this->sendError($user, 'Brak autoryzacji.');
+            return;
+        }
+
         switch ($dataIn['type']) {
             case 'setup':
                 new Cli_Model_SetupInit($dataIn, $user, $this);
@@ -95,9 +105,6 @@ class Cli_NewHandler extends WebSocketUriHandler
 //                $this->sendToChannelExceptUser($user, $token);
 //                break;
 
-            case 'open':
-                new Cli_Model_NewOpen($dataIn, $user, $this);
-                break;
 //            case 'setup':
 //                new Cli_Model_NewSetup($dataIn, $user, $this);
 //                break;

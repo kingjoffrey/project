@@ -33,6 +33,9 @@ var Game = new function () {
     this.getLoading = function () {
         return loading
     }
+    this.resetLoading = function () {
+        loading = 1
+    }
     this.hasTouch = function () {
         return touch
     }
