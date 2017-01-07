@@ -10,6 +10,6 @@ var HelpController = new function () {
             WebSocketSendMain.controller('index', 'index')
         })
 
-        Help.init()
+        Help.init(r)
     }
 }

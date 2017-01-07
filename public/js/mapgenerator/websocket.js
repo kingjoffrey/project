@@ -8,7 +8,7 @@ var WebSocketMapgenerator = new function () {
             WebSocketSendMapgenerator.open()
         }
         ws.onmessage = function (e) {
-
+            WebSocketMessageMapgenerator.switch($.parseJSON(e.data))
         }
         ws.onclose = function () {
 

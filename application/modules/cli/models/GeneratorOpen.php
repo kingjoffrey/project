@@ -28,5 +28,8 @@ class Cli_Model_GeneratorOpen
                 $mapFields->add($x, $y, $type);
             }
         }
+
+        $token = array('type' => 'open');
+        $handler->sendToUser($user, $token);
     }
 }

@@ -14,8 +14,7 @@ var WebSocketMessageMain = new function () {
                     if (r.type != 'new' && WebSocketNew.isOpen()) {
                         WebSocketNew.close()
                     }
-                    if (r.type != 'help' && WebSocketHelp.isOpen()) {
-                        WebSocketHelp.close()
+                    if (r.type != 'help' && HelpRenderer.isRunning()) {
                         HelpRenderer.stop()
                     }
                     if (r.type != 'editor' && WebSocketEditor.isOpen()) {

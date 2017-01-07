@@ -1,6 +1,6 @@
 <?php
 
-class Cli_Model_HelpOpen
+class Cli_Model_ExecOpen
 {
 
     public function __construct($dataIn, Devristo\Phpws\Protocol\WebSocketTransportInterface $user, Cli_HelpHandler $handler)
@@ -18,21 +18,7 @@ class Cli_Model_HelpOpen
             return;
         }
 
-        Zend_Registry::set('id_lang', $dataIn['langId']);
-
-        if (!$help = $handler->get()) {
-            echo 'not set' . "\n";
-            $handler->add(new Cli_Model_Help($db));
-            $help = $handler->get();
-        }
-
-//
         $user->parameters['playerId'] = $dataIn['playerId'];
         $user->parameters['accessKey'] = $dataIn['accessKey'];
-
-        $token = $help->toArray();
-        $token['type'] = 'open';
-
-        $handler->sendToUser($user, $token);
     }
 }

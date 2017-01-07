@@ -248,14 +248,13 @@ var Help = new function () {
             graphics.css('display', 'none')
         }
     }
-    this.set = function (r) {
-        help = r
-    }
     this.nl2br = function (str, is_xhtml) {
         var breakTag = (is_xhtml || typeof is_xhtml === 'undefined') ? '<br />' : '<br>';
         return (str + '').replace(/([^>\r\n]?)(\r\n|\n\r|\r|\n)/g, '$1' + breakTag + '$2');
     }
-    this.init = function () {
+    this.init = function (r) {
+        help = r
+
         HelpScene.init(300, 300)
         HelpRenderer.init(HelpScene)
         HelpScene.initSun(40)
@@ -268,7 +267,6 @@ var Help = new function () {
         text = $('#text')
 
         $('#helpMenu div').first().addClass('active')
-
-        WebSocketHelp.init()
+        this.fillText('game')
     }
 }

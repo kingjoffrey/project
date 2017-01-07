@@ -91,6 +91,7 @@ class Cli_ExecHandler extends WebSocketUriHandler
     private $_ports = array();
     private $_mainPort;
     private $_portMax = 65535;
+
 //    private $_portMax = 8084;
 
     public function __construct($logger)
@@ -104,9 +105,23 @@ class Cli_ExecHandler extends WebSocketUriHandler
     public function onMessage(WebSocketTransportInterface $user, WebSocketMessageInterface $msg)
     {
         $dataIn = Zend_Json::decode($msg->getData());
+        if (Zend_Registry::get('config')->debug) {
+            print_r('ZAPYTANIE ');
+            print_r($dataIn);
+        }
 
         if (!isset($dataIn['gameId'])) {
             echo('EXEC: brak "gameId"');
+            return;
+        }
+
+        if ($dataIn['type'] == 'open') {
+            new Cli_Model_ExecOpen($dataIn, $user, $this);
+            return;
+        }
+
+        if (!Zend_Validate::is($user->parameters['playerId'], 'Digits')) {
+            $this->sendError($user, 'Brak autoryzacji.');
             return;
         }
 
@@ -153,6 +168,12 @@ class Cli_ExecHandler extends WebSocketUriHandler
             } else {
                 $this->removeGame($Game);
             }
+        }
+        if (isset($user->parameters['playerId'])) {
+            unset($user->parameters['playerId']);
+        }
+        if (isset($user->parameters['accessKey'])) {
+            unset($user->parameters['accessKey']);
         }
     }
 

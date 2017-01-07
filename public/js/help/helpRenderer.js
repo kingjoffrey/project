@@ -28,6 +28,9 @@ var HelpRenderer = new function () {
     this.stop = function () {
         stop = 1
     }
+    this.isRunning = function () {
+        return !stop
+    }
     this.init = function (s) {
         stop = 0
         renderer = Renderer.get()

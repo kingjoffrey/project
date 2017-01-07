@@ -22,13 +22,9 @@ class EditorController
 
     function create(Devristo\Phpws\Protocol\WebSocketTransportInterface $user, Cli_MainHandler $handler, $dataIn)
     {
-        print_r($dataIn);
-
         $view = new Zend_View();
         $view->formCreate = new Application_Form_Createmap ();
         $view->formCreate->setView($view);
-
-        $view->addScriptPath(APPLICATION_PATH . '/views/scripts');
 
         if (isset($dataIn['name']) && $view->formCreate->isValid($dataIn)) {
             $db = $handler->getDb();
@@ -41,13 +37,20 @@ class EditorController
             $mMapPlayers = new Application_Model_MapPlayers($mapId, $db);
             $mMapPlayers->create($mSide->getWithLimit($dataIn['maxPlayers']));
 
+            $layout = new Zend_Layout();
+            $layout->setLayoutPath(APPLICATION_PATH . '/layouts/scripts');
+            $layout->setLayout('editor');
+
             $token = array(
                 'type' => 'editor',
                 'action' => 'generate',
                 'mapSize' => $dataIn['mapSize'],
-                'mapId' => $mapId
+                'mapId' => $mapId,
+                'data' => $layout->render()
             );
         } else {
+            $view->addScriptPath(APPLICATION_PATH . '/views/scripts');
+
             $token = array(
                 'type' => 'editor',
                 'action' => 'create',

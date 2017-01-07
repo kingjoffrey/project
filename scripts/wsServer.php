@@ -24,7 +24,6 @@ $application->getBootstrap()->bootstrap(array('date', 'config', 'modules', 'tran
 
 include_once(APPLICATION_PATH . '/modules/cli/handlers/PrivateChatHandler.php');
 include_once(APPLICATION_PATH . '/modules/cli/handlers/NewHandler.php');
-include_once(APPLICATION_PATH . '/modules/cli/handlers/HelpHandler.php');
 include_once(APPLICATION_PATH . '/modules/cli/handlers/EditorHandler.php');
 include_once(APPLICATION_PATH . '/modules/cli/handlers/GeneratorHandler.php');
 include_once(APPLICATION_PATH . '/modules/cli/handlers/ExecHandler.php');
@@ -46,7 +45,6 @@ $server = new WebSocketServer($address, $loop, $logger);
 $router = new \Devristo\Phpws\Server\UriHandler\ClientRouter($server, $logger);
 $router->addRoute('#^/chat$#i', new Cli_PrivateChatHandler($logger));
 $router->addRoute('#^/new$#i', new Cli_NewHandler($logger));
-$router->addRoute('#^/help$#i', new Cli_HelpHandler($logger));
 $router->addRoute('#^/editor$#i', new Cli_EditorHandler($logger));
 $router->addRoute('#^/generator$#i', new Cli_GeneratorHandler($logger));
 $router->addRoute('#^/exec$#i', new Cli_ExecHandler($logger));

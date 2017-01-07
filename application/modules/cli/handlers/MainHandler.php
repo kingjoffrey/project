@@ -22,6 +22,7 @@ class Cli_MainHandler extends WebSocketUriHandler
     private $_db;
     private $_menu;
     private $_view;
+    private $_help;
 
     public function __construct($logger)
     {
@@ -50,6 +51,19 @@ class Cli_MainHandler extends WebSocketUriHandler
     public function getDb()
     {
         return $this->_db;
+    }
+
+    public function addHelp(Cli_Model_Help $help)
+    {
+        $this->_help = $help;
+    }
+
+    /**
+     * @return Cli_Model_Help
+     */
+    public function getHelp()
+    {
+        return $this->_help;
     }
 
     /**
@@ -101,6 +115,8 @@ class Cli_MainHandler extends WebSocketUriHandler
 
         $mWebSocket = new Application_Model_Websocket($user->parameters['playerId'], $this->_db);
         $mWebSocket->disconnect($user->parameters['accessKey']);
+
+
     }
 
     /**

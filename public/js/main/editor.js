@@ -39,7 +39,7 @@ var EditorController = new function () {
     this.generate = function (r) {
         var main = $('#main')
         Main.setMain(main.html())
-        main.html('')
+        main.html(r.data)
         mapId = r.mapId
         MapGenerator.init(r.mapSize)
     }

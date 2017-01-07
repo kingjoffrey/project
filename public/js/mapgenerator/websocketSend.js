@@ -1,14 +1,8 @@
 "use strict"
 var WebSocketSendMapgenerator = new function () {
-    var closed = true,
-        ws
+    var ws
 
     this.open = function () {
-        if (closed) {
-            console.log(translations.sorryServerIsDisconnected)
-            return
-        }
-
         var token = {
             type: 'open',
             playerId: id,
