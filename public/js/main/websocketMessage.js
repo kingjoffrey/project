@@ -20,6 +20,7 @@ var WebSocketMessageMain = new function () {
                     if (r.type != 'editor' && WebSocketEditor.isOpen()) {
                         WebSocketEditor.close()
                         GameRenderer.stop()
+                        Editor.setInit(0)
                     }
                     if (r.type != 'game') {
                         if (WebSocketGame.isOpen()) {

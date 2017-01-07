@@ -70,6 +70,12 @@ class Cli_Model_Editor
         );
     }
 
+    public function publish(Zend_Db_Adapter_Pdo_Pgsql $db)
+    {
+        $mMap = new Application_Model_Map($this->_mapId, $db);
+        $mMap->publish();
+    }
+
     public function up($dataIn, Zend_Db_Adapter_Pdo_Pgsql $db)
     {
         switch ($this->_Fields->getField($dataIn['x'], $dataIn['y'])->getType()) {

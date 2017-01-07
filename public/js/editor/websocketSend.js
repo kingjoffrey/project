@@ -9,6 +9,19 @@ var WebSocketSendEditor = new function () {
     this.isClosed = function () {
         return closed
     }
+    this.publish = function () {
+        if (closed) {
+            console.log(translations.sorryServerIsDisconnected)
+            return;
+        }
+
+        var token = {
+            type: 'publish',
+            mapId: EditorController.getMapId()
+        }
+
+        ws.send(JSON.stringify(token))
+    }
     this.add = function (itemName, x, y) {
         if (closed) {
             console.log(translations.sorryServerIsDisconnected)
