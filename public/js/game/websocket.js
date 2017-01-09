@@ -44,7 +44,9 @@ var WebSocketExecGame = new function () {
 
         ws.onopen = function () {
             var token = {
-                'gameId': Game.getGameId()
+                'gameId': Game.getGameId(),
+                'playerId': id,
+                'accessKey': accessKey
             }
 
             ws.send(JSON.stringify(token))

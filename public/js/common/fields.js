@@ -173,4 +173,46 @@ var Fields = new function () {
             }
         }
     }
+    this.createTexture = function () {
+        var canvas = document.createElement('canvas'),
+            context = canvas.getContext('2d'),
+            makeField = function (x, y, color) {
+                context.fillStyle = color;
+                context.fillRect(x * 3, y * 3, 3, 3);
+            }
+        for (var y in fields) {
+            for (var x in fields[y]) {
+                switch (fields[y][x].type) {
+                    case 'g':
+                        makeField(x, y, '#009900')
+                        break
+                    case 'f':
+                        makeField(x, y, '#004e00')
+                        break
+                    case 'w':
+                        makeField(x, y, '#009900')
+                        break
+                    case 'h':
+                        makeField(x, y, '#505200')
+                        break
+                    case 'm':
+                        makeField(x, y, '#262728')
+                        break
+                    case 'r':
+                        makeField(x, y, '#009900')
+                        break
+                    case 'b':
+                        makeField(x, y, '#009900')
+                        break
+                    case 's':
+                        makeField(x, y, '#39723E')
+                        break
+                }
+            }
+        }
+        context.drawImage(canvas, 0, 0)
+        // $('#map canvas').remove()
+        $('#map').append(canvas)
+        return {'canvas': canvas, 'context': context}
+    }
 }

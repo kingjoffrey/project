@@ -57,7 +57,7 @@ var CreateSimpleMesh = new function () {
     var xy = [],
         maxX = 10,
         maxY = 10,
-        river = [[0, 5], [0, 4], [1, 3], [2, 2], [3, 2], [4, 1], [5, 1], [6, 0]],
+        river = [[0, 5], [0, 4], [1, 3], [1, 4], [2, 2], [2, 3], [3, 2], [3, 3], [4, 1], [5, 1], [6, 0]],
         grassGeometry = new THREE.BufferGeometry(),
         grassVertexPositions = [],
         color = new THREE.Color()
@@ -136,8 +136,8 @@ var CreateSimpleMesh = new function () {
         var grassMaterial = new THREE.MeshLambertMaterial({color: 0x00ff00}),
             grassMesh = new THREE.Mesh(grassGeometry, grassMaterial)
 
-        var decalMesh = new THREE.Mesh(Test.getDecalGeometry(grassMesh, vertex, direction), Test.getDecalMaterial());
-        grassMesh.add(decalMesh);
+        // var decalMesh = new THREE.Mesh(Test.getDecalGeometry(grassMesh, vertex, direction), Test.getDecalMaterial());
+        // grassMesh.add(decalMesh);
 
         //var material = new THREE.MeshPhongMaterial({
         //    color: 0xffffff,
@@ -152,6 +152,7 @@ var CreateSimpleMesh = new function () {
 
         var helper = new THREE.WireframeHelper(grassMesh, 0xff00ff); // alternate
         helper.material.linewidth = 1;
+        helper.rotation.x = -Math.PI / 2
         Test.getScene().add(helper);
 
         //console.log(grassMesh.geometry.attributes)
@@ -161,7 +162,54 @@ var CreateSimpleMesh = new function () {
     //console.log(ground.geometry.attributes)
 }
 
+var Triangle = new function () {
+    var vertexPositions = [],
+        geometry = new THREE.BufferGeometry()
+
+    this.init = function () {
+        vertexPositions.push([0, 0, 0])
+        vertexPositions.push([1, 0, 0])
+        vertexPositions.push([1, 1, 0])
+
+        var vertices = new Float32Array(vertexPositions.length * 3),
+            normals = new Float32Array(vertexPositions.length * 3),
+            colors = new Float32Array(vertexPositions.length * 3),
+            uvs = new Float32Array(vertexPositions.length * 2)
+
+        for (var i = 0; i < vertexPositions.length; i++) {
+            var index = 3 * i
+            vertices[index + 0] = vertexPositions[i][0];
+            vertices[index + 1] = vertexPositions[i][1];
+            vertices[index + 2] = vertexPositions[i][2];
+
+            //color.setHSL(i / grassVertexPositions.length, 1.0, 0.5)
+            //colors[index] = color.r;
+            //colors[index + 1] = color.g;
+            //colors[index + 2] = color.b;
+            //
+            //uvs[index] = 1
+            //uvs[index + 1] = 0.5
+        }
+
+        geometry.addAttribute('position', new THREE.BufferAttribute(vertices, 3))
+        geometry.addAttribute('normal', new THREE.BufferAttribute(normals, 3))
+        geometry.addAttribute('color', new THREE.BufferAttribute(colors, 3))
+        geometry.addAttribute('uv', new THREE.BufferAttribute(uvs, 2))
+
+        geometry.computeVertexNormals()
+
+        console.log(geometry)
+
+        var material = new THREE.MeshLambertMaterial({color: 0x00ff00}),
+            mesh = new THREE.Mesh(geometry, material)
+
+        // mesh.rotation.x = -Math.PI / 2
+        Test.getScene().add(mesh)
+    }
+}
+
 $(document).ready(function () {
     Test.init()
-    CreateSimpleMesh.init()
+    // CreateSimpleMesh.init()
+    Triangle.init()
 });

@@ -4,6 +4,7 @@ var MapGenerator = new function () {
         ctx = canvas.getContext('2d'),
         fields = [],
         fieldsNumber,
+        fieldSize,
         resetCanvas = function () {
             canvas.width = DATA_SIZE - 1
             canvas.height = DATA_SIZE - 1
@@ -35,15 +36,15 @@ var MapGenerator = new function () {
                 },
                 x = 0,
                 y = 0,
-                fieldSize = (DATA_SIZE - 1) / (fieldsNumber - 1),
-                imageData = [],
-                maxI = 0, maxJ = 0
+                fieldColor,
+                imageData = []
 
+            fieldSize = (DATA_SIZE - 1) / (fieldsNumber - 1)
             ctx.translate(0, canvas.height)
             ctx.rotate(270 * Math.PI / 180)
 
             for (var maxI in data) {
-                imageData[maxI] = {}
+                imageData[maxI] = []
                 for (var maxJ in data[maxI]) {
                     switch (data[maxI][maxJ]) { //OLD
                         case 1:
@@ -79,8 +80,10 @@ var MapGenerator = new function () {
                             fields[y] = []
                         }
                         fields[y][x] = type
+                        fieldColor = color
                         x++
                     }
+                    // imageData[maxI][maxJ] = fieldColor
                     imageData[maxI][maxJ] = color
                 }
                 if (maxI % fieldSize == 0) {
@@ -88,27 +91,57 @@ var MapGenerator = new function () {
                     y++
                 }
             }
-            var cutLength = Math.floor(fieldSize / 2), offset = DATA_SIZE - cutLength
-            for (i = 0; i < maxI; i++) {
-                if (i < offset) {
-                    for (j = 0; j < maxJ; j++) {
-                        if (j < offset) {
-                            setPixel(i + cutLength, j + cutLength, imageData[i][j])
-                        } else {
-                            setPixel(i + cutLength, j - offset + 1, imageData[i][j])
-                        }
-                    }
-                } else {
-                    for (j = 0; j < maxJ; j++) {
-                        if (j < offset) {
-                            setPixel(i - offset + 1, j + cutLength, imageData[i][j])
-                        } else {
-                            setPixel(i - offset + 1, j - offset + 1, imageData[i][j])
-                        }
+            // console.log(imageData)
+            // var cutLength = Math.floor(fieldSize / 2), offset = DATA_SIZE - cutLength
+            // for (var i = 0; i < maxI; i++) {
+            //     if (i < offset) {
+            //         for (var j = 0; j < maxJ; j++) {
+            //             if (j < offset) {
+            //                 setPixel(i + cutLength, j + cutLength, imageData[i][j])
+            //             } else {
+            //                 setPixel(i + cutLength, j - offset + 1, imageData[i][j])
+            //             }
+            //         }
+            //     } else {
+            //         for (var j = 0; j < maxJ; j++) {
+            //             if (j < offset) {
+            //                 setPixel(i - offset + 1, j + cutLength, imageData[i][j])
+            //             } else {
+            //                 setPixel(i - offset + 1, j - offset + 1, imageData[i][j])
+            //             }
+            //         }
+            //     }
+            // }
+            for (var i in fields) {
+                for (var j in fields[i]) {
+                    switch (fields[i][j]) {
+                        case 'w':
+                            // paintField(i, j, '#00ff00')
+                            setPixel(i, j, '#00ff00')
+                            break;
+                        case 'g':
+                            // paintField(i, j, '#004700')
+                            setPixel(i, j, '#004700')
+                            break;
+                        case 'h':
+                            // paintField(i, j, '#242400')
+                            setPixel(i, j, '#242400')
+                            break;
+                        case 'm':
+                            // paintField(i, j, '#cccccc')
+                            setPixel(i, j, '#cccccc')
+                            break;
                     }
                 }
             }
             WebSocketMapgenerator.init()
+        },
+        paintField = function (i, j, color) {
+            for (var k = 0; k < fieldSize; k++) {
+                for (var l = 0; l < fieldSize; l++) {
+                    setPixel(i + k, j + l, color)
+                }
+            }
         },
         grid = function (size) {
             var grid = []
@@ -193,21 +226,21 @@ var MapGenerator = new function () {
                 }
             }
 
-            for (var i in data) {
-                for (var j in data[i]) {
-                    data = removeDots(i, j, data)
-                }
-            }
-            for (var i in data) {
-                for (var j in data[i]) {
-                    data = removeDots(i, j, data)
-                }
-            }
-            for (var i in data) {
-                for (var j in data[i]) {
-                    data = replacePixelsBetween(i, j, data)
-                }
-            }
+            // for (var i in data) {
+            //     for (var j in data[i]) {
+            //         data = removeDots(i, j, data)
+            //     }
+            // }
+            // for (var i in data) {
+            //     for (var j in data[i]) {
+            //         data = removeDots(i, j, data)
+            //     }
+            // }
+            // for (var i in data) {
+            //     for (var j in data[i]) {
+            //         data = replacePixelsBetween(i, j, data)
+            //     }
+            // }
 
             return data
         },

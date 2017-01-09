@@ -1,1 +1,4 @@
-<div></div>
+<div id="game"></div>
+<?php $this->headScript()->captureStart() ?>
+var fields = <?php echo Zend_Json::encode($this->fields); ?>;
+<?php $this->headScript()->captureEnd() ?>

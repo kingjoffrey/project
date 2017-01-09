@@ -1,16 +1,18 @@
 <?php
 
+use Devristo\Phpws\Protocol\WebSocketTransportInterface;
+
 class Cli_Model_ExecOpen
 {
 
-    public function __construct($dataIn, Devristo\Phpws\Protocol\WebSocketTransportInterface $user, Cli_HelpHandler $handler)
+    public function __construct($dataIn, WebSocketTransportInterface $user, Cli_ExecHandler $handler)
     {
         if (!isset($dataIn['playerId'])) {
             $handler->sendError($user, 'Brak "playerId"');
             return;
         }
 
-        $db = $handler->getDb();
+        $db = Cli_Model_Database::getDb();
         $mWebSocket = new Application_Model_Websocket($dataIn['playerId'], $db);
 
         if (!$mWebSocket->checkAccessKey($dataIn['accessKey'], $db)) {

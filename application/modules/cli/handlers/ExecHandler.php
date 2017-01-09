@@ -115,10 +115,7 @@ class Cli_ExecHandler extends WebSocketUriHandler
             return;
         }
 
-        if ($dataIn['type'] == 'open') {
-            new Cli_Model_ExecOpen($dataIn, $user, $this);
-            return;
-        }
+        new Cli_Model_ExecOpen($dataIn, $user, $this);
 
         if (!Zend_Validate::is($user->parameters['playerId'], 'Digits')) {
             $this->sendError($user, 'Brak autoryzacji.');
@@ -190,6 +187,20 @@ class Cli_ExecHandler extends WebSocketUriHandler
         }
 
         $user->sendString(Zend_Json::encode($token));
+    }
+
+    /**
+     * @param $user
+     * @param $msg
+     */
+    public function sendError($user, $msg)
+    {
+        $token = array(
+            'type' => 'error',
+            'msg' => $msg
+        );
+
+        $this->sendToUser($user, $token);
     }
 
     public function addGame($gameId, $userId, $port)

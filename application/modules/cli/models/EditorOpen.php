@@ -1,9 +1,11 @@
 <?php
 
+use Devristo\Phpws\Protocol\WebSocketTransportInterface;
+
 class Cli_Model_EditorOpen
 {
 
-    public function __construct($dataIn, Devristo\Phpws\Protocol\WebSocketTransportInterface $user, Cli_EditorHandler $handler)
+    public function __construct($dataIn, WebSocketTransportInterface $user, Cli_EditorHandler $handler)
     {
         if (!isset($dataIn['playerId'])) {
             $handler->sendError($user, 'Brak "playerId"');

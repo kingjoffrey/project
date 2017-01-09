@@ -9,35 +9,6 @@ var Ground = new function () {
         grassMesh,
         grassMaterial,
         tl = new THREE.TextureLoader(),
-    //createClouds = function (maxX, maxY) {
-    //    var cloudsVertexPositions = [],
-    //        cloudsVertices = new Float32Array(18),
-    //        cloudsGeometry = new THREE.BufferGeometry(),
-    //        cloudsMaterial = new THREE.MeshBasicMaterial({
-    //            color: 0x0000ff,
-    //            side: THREE.DoubleSide
-    //        })
-    //
-    //    cloudsVertexPositions.push([0, 0, cloudsLevel])
-    //    cloudsVertexPositions.push([maxX, 0, cloudsLevel])
-    //    cloudsVertexPositions.push([0, maxY, cloudsLevel])
-    //
-    //    cloudsVertexPositions.push([maxX, maxY, cloudsLevel])
-    //    cloudsVertexPositions.push([0, maxY, cloudsLevel])
-    //    cloudsVertexPositions.push([maxX, 0, cloudsLevel])
-    //
-    //    for (var i = 0; i < 6; i++) {
-    //        var index = i * 3
-    //        cloudsVertices[index + 0] = cloudsVertexPositions[i][0]
-    //        cloudsVertices[index + 1] = cloudsVertexPositions[i][1]
-    //        cloudsVertices[index + 2] = cloudsVertexPositions[i][2]
-    //    }
-    //
-    //    cloudsGeometry.addAttribute('position', new THREE.BufferAttribute(cloudsVertices, 3))
-    //    var waterMesh = new THREE.Mesh(cloudsGeometry, cloudsMaterial)
-    //    waterMesh.rotation.x = Math.PI / 2
-    //    Scene.add(waterMesh)
-    //},
         createWater = function (maxX, maxY) {
             tl.load('/img/editor/jasny_niebieski.png', function (texture) {
                 var mesh = new THREE.Mesh(new THREE.PlaneBufferGeometry(maxX, maxY), new THREE.MeshLambertMaterial({
@@ -55,88 +26,6 @@ var Ground = new function () {
                     mesh.receiveShadow = true
                 }
             })
-        },
-        ccreateWater = function (maxX, maxY) {
-            var light = new THREE.DirectionalLight(0xffffbb, 1);
-            light.position.set(-1, 1, -1);
-            GameScene.add(light)
-
-            var waterNormals = new THREE.TextureLoader().load('/img/editor/jasny_niebieski.png')
-            waterNormals.wrapS = waterNormals.wrapT = THREE.RepeatWrapping
-
-            var water = new THREE.Water(Renderer.get(), Scene.getCamera(), Scene.get(), {
-                textureWidth: 1024,
-                textureHeight: 1024,
-                waterNormals: waterNormals,
-                alpha: 1.0,
-                sunDirection: light.position.clone().normalize(),
-                sunColor: 0xffffff,
-                waterColor: 0x0000ff,
-                distortionScale: 5.0,
-            })
-
-            GameScene.setWater(water)
-
-            var mirrorMesh = new THREE.Mesh(
-                new THREE.PlaneBufferGeometry(maxX, maxY),
-                water.material
-            )
-
-            mirrorMesh.add(water);
-            mirrorMesh.rotation.x = -Math.PI / 2
-            mirrorMesh.position.x = maxX / 2
-            mirrorMesh.position.y = -waterLevel
-            mirrorMesh.position.z = maxY / 2
-            GameScene.add(mirrorMesh);
-
-            //var cubeMap = new THREE.CubeTexture([]);
-            //cubeMap.format = THREE.RGBFormat;
-            //
-            //var loader = new THREE.ImageLoader();
-            //loader.load('/img/skyboxsun25degtest.png', function (image) {
-            //
-            //    var getSide = function (x, y) {
-            //
-            //        var size = 1024;
-            //
-            //        var canvas = document.createElement('canvas');
-            //        canvas.width = size;
-            //        canvas.height = size;
-            //
-            //        var context = canvas.getContext('2d');
-            //        context.drawImage(image, -x * size, -y * size);
-            //
-            //        return canvas;
-            //
-            //    };
-            //
-            //    cubeMap.images[0] = getSide(2, 1); // px
-            //    cubeMap.images[1] = getSide(0, 1); // nx
-            //    cubeMap.images[2] = getSide(1, 0); // py
-            //    cubeMap.images[3] = getSide(1, 2); // ny
-            //    cubeMap.images[4] = getSide(1, 1); // pz
-            //    cubeMap.images[5] = getSide(3, 1); // nz
-            //    cubeMap.needsUpdate = true;
-            //
-            //});
-            //
-            //var cubeShader = THREE.ShaderLib['cube'];
-            //cubeShader.uniforms['tCube'].value = cubeMap;
-            //
-            //var skyBoxMaterial = new THREE.ShaderMaterial({
-            //    fragmentShader: cubeShader.fragmentShader,
-            //    vertexShader: cubeShader.vertexShader,
-            //    uniforms: cubeShader.uniforms,
-            //    depthWrite: false,
-            //    side: THREE.BackSide
-            //});
-            //
-            //var skyBox = new THREE.Mesh(
-            //    new THREE.BoxGeometry(1000, 1000, 1000),
-            //    skyBoxMaterial
-            //);
-            //
-            //Scene.add(skyBox)
         },
         createGround = function (maxX, maxY, textureName) {
             var xy = [],
@@ -440,41 +329,28 @@ var Ground = new function () {
     this.change = function (x, y, type) {
         var maxX = Fields.getMaxX(),
             maxY = Fields.getMaxY()
-        //grassVertices = new Float32Array(grassVertexPositions.length * 3),
-        //i = y * 12 + x * 24 * (maxY * 1 + 1),
-        //maxI = maxX * maxY * 6
-        //console.log(i)
-        //switch (type) {
-        //    case 'w':
-        //        grassVertexPositions = changeGroundLevel(grassVertexPositions, maxX, maxY, maxI, i, bottomLevel, type)
-        //        break
-        //    case 'b':
-        //        grassVertexPositions = changeGroundLevel(grassVertexPositions, maxX, maxY, maxI, i, bottomLevel, type)
-        //        break
-        //    case 'm':
-        //        grassVertexPositions = changeGroundLevel(grassVertexPositions, maxX, maxY, maxI, i, -mountainLevel, type)
-        //        break
-        //    case 'h':
-        //        grassVertexPositions = changeGroundLevel(grassVertexPositions, maxX, maxY, maxI, i, -hillLevel, type)
-        //        break
-        //}
-        //
-        //for (var i = 0; i < grassVertexPositions.length; i++) {
-        //    var index = 3 * i
-        //    grassVertices[index + 0] = grassVertexPositions[i][0]
-        //    grassVertices[index + 1] = grassVertexPositions[i][1]
-        //    grassVertices[index + 2] = grassVertexPositions[i][2]
-        //}
-        //grassGeometry.addAttribute('position', new THREE.BufferAttribute(grassVertices, 3))
         GameScene.remove(grassMesh)
-        //grassMesh = new THREE.Mesh(grassGeometry, grassMaterial)
-        //grassMesh.rotation.x = Math.PI / 2
-        //GameScene.add(grassMesh)
         createGround(maxX * 2, maxY * 2)
+    }
+    this.changeTexture = function () {
+        var a = Fields.createTexture()
+        // var texture = new THREE.Texture(a.canvas)
+        // texture.needsUpdate = true
+        // GameScene.remove(grassMesh)
+        // grassMaterial = new THREE.MeshLambertMaterial({
+        //     map: texture,
+        //     side: THREE.DoubleSide
+        // })
+        // grassMesh = new THREE.Mesh(grassGeometry, grassMaterial)
+        // grassMesh.rotation.x = Math.PI / 2
+        // if (GameScene.getShadows()) {
+        //     grassMesh.receiveShadow = true
+        // }
+        // GameScene.add(grassMesh)
+        // PickerCommon.attach(grassMesh)
     }
     this.init = function (maxX, maxY, textureName) {
         createGround(maxX * 2, maxY * 2, textureName)
         createWater(maxX * 2, maxY * 2)
-        //createClouds(maxX * 2, maxY * 2)
     }
 }

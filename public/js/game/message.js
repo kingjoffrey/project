@@ -33,7 +33,6 @@ var Message = new function () {
         return id
     }
     this.remove = function (id) {
-        Renderers.clear()
         if (isSet(id)) {
             $('#' + id).fadeOut(200, function () {
                 $('#' + id).remove()
