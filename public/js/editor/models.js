@@ -16,8 +16,8 @@ var EditorModels = new function () {
                     side: THREE.DoubleSide
                 }))
                 mesh.scale.x = 0.05
-        mesh.scale.y = 0.05
-        mesh.scale.z = 0.05
+                mesh.scale.y = 0.05
+                mesh.scale.z = 0.05
                 break
             case 'tower':
                 var mesh = new THREE.Mesh(Models.getTowerModel().geometry, new THREE.MeshLambertMaterial({
@@ -25,8 +25,8 @@ var EditorModels = new function () {
                     side: THREE.DoubleSide
                 }))
                 mesh.scale.x = 0.3
-        mesh.scale.y = 0.3
-        mesh.scale.z = 0.3
+                mesh.scale.y = 0.3
+                mesh.scale.z = 0.3
                 break
             case 'road':
                 var mesh = new THREE.Mesh(new THREE.PlaneGeometry(2, 2), new THREE.MeshLambertMaterial({
@@ -41,8 +41,8 @@ var EditorModels = new function () {
             case 'forest':
                 var mesh = new THREE.Mesh(Models.getTreeModel().geometry, Models.getTreeModel().material)
                 mesh.scale.x = 0.3
-        mesh.scale.y = 0.3
-        mesh.scale.z = 0.3
+                mesh.scale.y = 0.3
+                mesh.scale.z = 0.3
                 break
             case 'swamp':
                 var mesh = new THREE.Mesh(new THREE.PlaneGeometry(2, 2), new THREE.MeshLambertMaterial({

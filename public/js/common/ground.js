@@ -318,10 +318,8 @@ var Ground = new function () {
         return waterLevel
     }
     this.change = function (x, y, type) {
-        var maxX = Fields.getMaxX(),
-            maxY = Fields.getMaxY()
         GameScene.remove(grassMesh)
-        createGround(maxX * 2, maxY * 2)
+        Fields.initGround()
     }
     this.changeTexture = function () {
         // var a = Fields.createTexture()

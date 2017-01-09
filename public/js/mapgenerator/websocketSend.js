@@ -8,7 +8,6 @@ var WebSocketSendMapgenerator = new function () {
             playerId: id,
             accessKey: accessKey,
             mapId: EditorController.getMapId(),
-            map: MapGenerator.getImage(),
             fields: MapGenerator.getFields()
         }
 

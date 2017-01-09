@@ -33,7 +33,7 @@ class TestController extends Coret_Controller_Authorized
         $this->view->headScript()->appendFile('/js/common/renderer.js?v=' . $version);
         $this->view->headScript()->appendFile('/js/common/picker.js?v=' . $version);
 
-        $mMapFields = new Application_Model_MapFields(1);
+        $mMapFields = new Application_Model_MapFields(321);
         $Fields = new Cli_Model_Fields($mMapFields->getMapFields());
         $this->view->fields = $Fields->toArray();
 

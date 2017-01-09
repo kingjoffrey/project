@@ -15,50 +15,58 @@ var Fields = new function () {
                 }
             }
         },
-        paintField = function (x, y, color) {
+        paintMapField = function (x, y, color) {
             mapContext.fillStyle = color;
             mapContext.fillRect(x * 3, y * 3, 3, 3);
         },
+        paintTextureField = function (x, y, color) {
+            tmpTextureContext.fillStyle = color;
+            tmpTextureContext.fillRect(x * 8, y * 8, 8, 8);
+        },
         mapCanvas = document.createElement('canvas'),
         mapContext = mapCanvas.getContext('2d'),
+        tmpTextureCanvas = document.createElement('canvas'),
+        tmpTextureContext = tmpTextureCanvas.getContext('2d'),
         textureCanvas = document.createElement('canvas'),
         textureContext = textureCanvas.getContext('2d')
 
-    this.init = function (fields) {
-        width = fields[0].length * 3
-        height = fields.length * 3
-
-        mapCanvas.width = width
-        mapCanvas.height = height
-
+    this.initGround = function () {
         for (var y in fields) {
             for (var x in fields[y]) {
                 switch (fields[y][x].type) {
                     case 'g':
-                        paintField(x, y, '#009900')
+                        paintMapField(x, y, '#009900')
+                        paintTextureField(x, y, '#009900')
                         break
                     case 'f':
-                        paintField(x, y, '#004e00')
-                        // GameModels.addTree(x, y)
+                        paintMapField(x, y, '#004e00')
+                        paintTextureField(x, y, '#004e00')
+                        GameModels.addTree(x, y)
                         break
                     case 'w':
-                        paintField(x, y, '#0000cd')
+                        paintMapField(x, y, '#0000cd')
+                        paintTextureField(x, y, '#009900')
                         break
                     case 'h':
-                        paintField(x, y, '#505200')
+                        paintMapField(x, y, '#505200')
+                        paintTextureField(x, y, '#505200')
                         break
                     case 'm':
-                        paintField(x, y, '#262728')
+                        paintMapField(x, y, '#262728')
+                        paintTextureField(x, y, '#262728')
                         break
                     case 'r':
-                        paintField(x, y, '#c1c1c1')
+                        paintMapField(x, y, '#c1c1c1')
+                        paintTextureField(x, y, '#009900')
                         break
                     case 'b':
-                        paintField(x, y, '#c1c1c1')
+                        paintMapField(x, y, '#c1c1c1')
+                        paintTextureField(x, y, '#009900')
                         break
                     case 's':
-                        paintField(x, y, '#39723E')
-                        // GameModels.addSwamp(x, y)
+                        paintMapField(x, y, '#39723E')
+                        paintTextureField(x, y, '#009900')
+                        GameModels.addSwamp(x, y)
                         break
                 }
                 this.add(x, y, fields[y][x])
@@ -67,18 +75,14 @@ var Fields = new function () {
         maxX = x
         maxY = y
 
-        textureCanvas.width = width
-        textureCanvas.height = height
-
-        textureContext.translate(0, height)
+        textureContext.translate(0, height * 8)
         textureContext.scale(1, -1)
 
-        textureContext.drawImage(mapCanvas, 0, 0, width, height, 0, 0, width, height)
+        textureContext.drawImage(tmpTextureCanvas, 0, 0, width * 8, height * 8, 0, 0, width * 8, height * 8)
 
         $('#map').append(mapCanvas)
 
         Ground.init(maxX, maxY, textureCanvas)
-        // initRoads()
     }
     this.initCastle = function (x, y, castleId, color) {
         for (var i = y; i <= y + 1; i++) {
@@ -172,46 +176,20 @@ var Fields = new function () {
             }
         }
     }
-    this.createTexture = function () {
-        var canvas = document.createElement('canvas'),
-            context = canvas.getContext('2d'),
-            makeField = function (x, y, color) {
-                context.fillStyle = color;
-                context.fillRect(x * 3, y * 3, 3, 3);
-            }
-        for (var y in fields) {
-            for (var x in fields[y]) {
-                switch (fields[y][x].type) {
-                    case 'g':
-                        makeField(x, y, '#009900')
-                        break
-                    case 'f':
-                        makeField(x, y, '#004e00')
-                        break
-                    case 'w':
-                        makeField(x, y, '#009900')
-                        break
-                    case 'h':
-                        makeField(x, y, '#505200')
-                        break
-                    case 'm':
-                        makeField(x, y, '#262728')
-                        break
-                    case 'r':
-                        makeField(x, y, '#009900')
-                        break
-                    case 'b':
-                        makeField(x, y, '#009900')
-                        break
-                    case 's':
-                        makeField(x, y, '#39723E')
-                        break
-                }
-            }
-        }
-        context.drawImage(canvas, 0, 0)
-        // $('#map canvas').remove()
-        $('#map').append(canvas)
-        return {'canvas': canvas, 'context': context}
+    this.init = function (f) {
+        fields = f
+
+        width = fields[0].length
+        height = fields.length
+
+        mapCanvas.width = width * 3
+        mapCanvas.height = height * 3
+        tmpTextureCanvas.width = width * 8
+        tmpTextureCanvas.height = height * 8
+        textureCanvas.width = width * 8
+        textureCanvas.height = height * 8
+
+        this.initGround()
+        initRoads()
     }
 }
