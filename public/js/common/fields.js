@@ -15,46 +15,50 @@ var Fields = new function () {
                 }
             }
         },
-        setPixel = function (ctx, x, y, color) {
-            ctx.fillStyle = color;
-            ctx.fillRect(x, y, 1, 1);
-        }
+        paintField = function (x, y, color) {
+            mapContext.fillStyle = color;
+            mapContext.fillRect(x * 3, y * 3, 3, 3);
+        },
+        mapCanvas = document.createElement('canvas'),
+        mapContext = mapCanvas.getContext('2d'),
+        textureCanvas = document.createElement('canvas'),
+        textureContext = textureCanvas.getContext('2d')
 
-    this.init = function (fields, mapId) {
-        var tmpCanvas = document.createElement('canvas'),
-            ctx = tmpCanvas.getContext('2d'),
-            canvas = document.createElement('canvas'),
-            context = canvas.getContext('2d'),
-            maxWidth = parseInt($('#mapBox').css('width'))
+    this.init = function (fields) {
+        width = fields[0].length * 3
+        height = fields.length * 3
+
+        mapCanvas.width = width
+        mapCanvas.height = height
 
         for (var y in fields) {
             for (var x in fields[y]) {
                 switch (fields[y][x].type) {
                     case 'g':
-                        setPixel(ctx, x, y, '#009900')
+                        paintField(x, y, '#009900')
                         break
                     case 'f':
-                        setPixel(ctx, x, y, '#004e00')
-                        GameModels.addTree(x, y)
+                        paintField(x, y, '#004e00')
+                        // GameModels.addTree(x, y)
                         break
                     case 'w':
-                        setPixel(ctx, x, y, '#0000cd')
+                        paintField(x, y, '#0000cd')
                         break
                     case 'h':
-                        setPixel(ctx, x, y, '#505200')
+                        paintField(x, y, '#505200')
                         break
                     case 'm':
-                        setPixel(ctx, x, y, '#262728')
+                        paintField(x, y, '#262728')
                         break
                     case 'r':
-                        setPixel(ctx, x, y, '#c1c1c1')
+                        paintField(x, y, '#c1c1c1')
                         break
                     case 'b':
-                        setPixel(ctx, x, y, '#c1c1c1')
+                        paintField(x, y, '#c1c1c1')
                         break
                     case 's':
-                        setPixel(ctx, x, y, '#39723E')
-                        GameModels.addSwamp(x, y)
+                        paintField(x, y, '#39723E')
+                        // GameModels.addSwamp(x, y)
                         break
                 }
                 this.add(x, y, fields[y][x])
@@ -62,24 +66,19 @@ var Fields = new function () {
         }
         maxX = x
         maxY = y
-        x++
-        y++
-        var ratio = maxWidth / x
-        width = x * ratio
-        height = y * ratio
 
-        canvas.width = width
-        canvas.height = height
+        textureCanvas.width = width
+        textureCanvas.height = height
 
-        context.drawImage(tmpCanvas, 0, 0, x, y, 0, 0, width, height)
+        textureContext.translate(0, height)
+        textureContext.scale(1, -1)
 
-        $('#map').append(canvas).css({
-            width: width,
-            height: height
-        })
+        textureContext.drawImage(mapCanvas, 0, 0, width, height, 0, 0, width, height)
 
-        Ground.init(maxX, maxY, '/img/maps/' + mapId + '.png')
-        initRoads()
+        $('#map').append(mapCanvas)
+
+        Ground.init(maxX, maxY, textureCanvas)
+        // initRoads()
     }
     this.initCastle = function (x, y, castleId, color) {
         for (var i = y; i <= y + 1; i++) {

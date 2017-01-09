@@ -1,11 +1,15 @@
 var Test = new function () {
-    var canvas = document.createElement('canvas'),
-        ctx = canvas.getContext('2d'),
+    var mapCanvas = document.createElement('canvas'),
+        mapContext = mapCanvas.getContext('2d'),
+        textureCanvas = document.createElement('canvas'),
+        textureContext = textureCanvas.getContext('2d'),
         setPixel = function (x, y, color) {
-            ctx.fillStyle = color;
-            ctx.fillRect(x * 3, y * 3, 3, 3);
+            mapContext.fillStyle = color;
+            mapContext.fillRect(x * 3, y * 3, 3, 3);
         }
     this.init = function () {
+        mapCanvas.width = 327
+        mapCanvas.height = 468
         for (var y in fields) {
             for (var x in fields[y]) {
                 switch (fields[y][x].type) {
@@ -36,18 +40,30 @@ var Test = new function () {
                 }
             }
         }
+        var width = x * 3 + 3,
+            height = y * 3 + 3
 
-        ctx.drawImage(canvas, 0, 0)
+        textureCanvas.width = width
+        textureCanvas.height = height
 
-        $('div').append(canvas)
+        textureContext.translate(0, height)
+        textureContext.scale(1, -1)
+
+        textureContext.drawImage(mapCanvas, 0, 0, width, height, 0, 0, width, height)
+
+        // $('#2d').append(textureCanvas)
+        return textureCanvas
     }
 }
 $(document).ready(function () {
     // Test.init()
-    Models.init()
+    // Models.init()
     GameScene.init($(window).innerWidth(), $(window).innerHeight())
-    Fields.init(fields, 7)
+    Fields.init(fields, 1)
     GameRenderer.init('game', GameScene)
     GameScene.initSun(Fields.getMaxY())
     GameRenderer.animate()
+    GameScene.getCamera().position.x = -150
+    GameScene.getCamera().position.y = 265
+    GameScene.getCamera().position.z = 450
 })

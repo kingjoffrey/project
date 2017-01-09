@@ -15,7 +15,4 @@ var CommonInit = new function () {
 }
 $(document).ready(function () {
     AStar.init()
-    GameScene.init($(window).innerWidth(), $(window).innerHeight())
-    // GameModels.init()
-    // PickerCommon.init()
 })

@@ -27,7 +27,7 @@ var Ground = new function () {
                 }
             })
         },
-        createGround = function (maxX, maxY, textureName) {
+        createGround = function (maxX, maxY, canvas) {
             var xy = [],
                 uv = [],
                 maxI = maxX * maxY * 6
@@ -134,33 +134,24 @@ var Ground = new function () {
 
             grassGeometry.computeVertexNormals()
 
-            if (isSet(textureName)) {
-                tl.load(textureName, function (texture) {
-                    grassMaterial = new THREE.MeshLambertMaterial({
-                        map: texture,
-                        side: THREE.DoubleSide
-                    })
-                    grassMesh = new THREE.Mesh(grassGeometry, grassMaterial)
-                    grassMesh.rotation.x = Math.PI / 2
-                    if (GameScene.getShadows()) {
-                        grassMesh.receiveShadow = true
-                    }
-                    GameScene.add(grassMesh)
-                    PickerCommon.attach(grassMesh)
+            var texture = new THREE.Texture(canvas)
+            texture.needsUpdate = true
 
-                    //var helper = new THREE.WireframeHelper(grassMesh, 0xff00ff)
-                    //helper.material.linewidth = 1
-                    //GameScene.add(helper)
-                })
-            } else {
-                grassMesh = new THREE.Mesh(grassGeometry, grassMaterial)
-                grassMesh.rotation.x = Math.PI / 2
-                if (GameScene.getShadows()) {
-                    grassMesh.receiveShadow = true
-                }
-                GameScene.add(grassMesh)
-                PickerCommon.attach(grassMesh)
+            grassMaterial = new THREE.MeshLambertMaterial({
+                map: texture,
+                side: THREE.DoubleSide
+            })
+            grassMesh = new THREE.Mesh(grassGeometry, grassMaterial)
+            grassMesh.rotation.x = Math.PI / 2
+            if (GameScene.getShadows()) {
+                grassMesh.receiveShadow = true
             }
+            GameScene.add(grassMesh)
+            PickerCommon.attach(grassMesh)
+
+            //var helper = new THREE.WireframeHelper(grassMesh, 0xff00ff)
+            //helper.material.linewidth = 1
+            //GameScene.add(helper)
         },
         adjustMountainLevels = function (grassVertexPositions, maxX, maxY) {
             for (var i = 0; i < grassVertexPositions.length; i++) {
@@ -333,24 +324,33 @@ var Ground = new function () {
         createGround(maxX * 2, maxY * 2)
     }
     this.changeTexture = function () {
-        var a = Fields.createTexture()
-        // var texture = new THREE.Texture(a.canvas)
-        // texture.needsUpdate = true
-        // GameScene.remove(grassMesh)
-        // grassMaterial = new THREE.MeshLambertMaterial({
-        //     map: texture,
-        //     side: THREE.DoubleSide
-        // })
-        // grassMesh = new THREE.Mesh(grassGeometry, grassMaterial)
-        // grassMesh.rotation.x = Math.PI / 2
-        // if (GameScene.getShadows()) {
-        //     grassMesh.receiveShadow = true
-        // }
-        // GameScene.add(grassMesh)
+        // var a = Fields.createTexture()
+
+        var canvas = Test.init()
+
+
+        var texture = new THREE.Texture(canvas)
+        texture.needsUpdate = true
+
+        GameScene.remove(grassMesh)
+
+        grassMaterial = new THREE.MeshLambertMaterial({
+            map: texture,
+            side: THREE.DoubleSide
+        })
+        grassMesh = new THREE.Mesh(grassGeometry, grassMaterial)
+        grassMesh.rotation.x = Math.PI / 2
+
+        if (GameScene.getShadows()) {
+            grassMesh.receiveShadow = true
+        }
+
+        GameScene.add(grassMesh)
+
         // PickerCommon.attach(grassMesh)
     }
-    this.init = function (maxX, maxY, textureName) {
-        createGround(maxX * 2, maxY * 2, textureName)
+    this.init = function (maxX, maxY, canvas) {
+        createGround(maxX * 2, maxY * 2, canvas)
         createWater(maxX * 2, maxY * 2)
     }
 }

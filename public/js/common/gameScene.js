@@ -148,8 +148,5 @@ var GameScene = new function () {
         scene = new THREE.Scene()
 
         initCamera()
-        // Renderer.setScene(scene)
-        // Renderer.setCamera(camera)
-        // Renderer.init(canvasWidth, canvasHeight, 'game')
     }
 }
