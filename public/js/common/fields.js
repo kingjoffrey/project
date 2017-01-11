@@ -164,6 +164,9 @@ var Fields = new function () {
     this.init = function (f) {
         for (var y in f) {
             for (var x in f[y]) {
+                if (x > 31) {
+                    continue
+                }
                 var type = f[y][x]
                 switch (type) {
                     case 'f':
@@ -179,8 +182,11 @@ var Fields = new function () {
         var r = f.reverse()
         for (var y in r) {
             for (var x in r[y]) {
+                if (x > 31) {
+                    continue
+                }
                 var type = r[y][x],
-                    yy = y * 1 + 33
+                    yy = y * 1 + 32
                 switch (type) {
                     case 'f':
                         GameModels.addTree(x, yy)

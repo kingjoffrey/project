@@ -49,11 +49,11 @@ var PickerEditor = new function () {
                         }
                     } else {
                         if (castleId = field.getCastleId()) {
-                            Message.show('Castle', CastleWindow.form(castleId))
+                            EditorMessage.show('Castle', EditorCastleWindow.form(castleId))
                         } else if (towerId = field.getTowerId()) {
-                            Message.show('Tower', towerId)
+                            EditorMessage.show('Tower', towerId)
                         } else if (ruinId = field.getRuinId()) {
-                            Message.show('Ruin', ruinId)
+                            EditorMessage.show('Ruin', ruinId)
                         }
 
                     }
@@ -69,7 +69,7 @@ var PickerEditor = new function () {
                         GameScene.remove(draggedMesh)
                         draggedMesh = 0
                     }
-                    Message.remove()
+                    EditorMessage.remove()
                     break
             }
         }

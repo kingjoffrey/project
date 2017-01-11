@@ -1,4 +1,4 @@
-var CastleWindow = new function () {
+var EditorCastleWindow = new function () {
     this.form = function (id) {
         var selectColor = $('<select>').attr('name', 'color'),
             selectDefence = $('<select>').attr('name', 'defence'),

@@ -1,8 +1,8 @@
-var Message = new function () {
+var EditorMessage = new function () {
     var max = false,
         maxHeight,
         maxWidth,
-        element = '#editorMenu'
+        element = '#mainMenu'
 
     this.remove = function (id) {
         if (isSet(id)) {
@@ -18,18 +18,20 @@ var Message = new function () {
         var id = makeId(10)
         $(element).after(
             $('<div>')
-                .addClass('message box')
+                .addClass('message')
                 .attr('id', id)
-                .append($('<div>').append($('<h3>').html(title)).addClass('msgTitle'))
-                .append($(txt).addClass('overflow'))
+                .append($('<div>').attr('id', 'content')
+                    .append($('<div>').append($('<h3>').html(title)).addClass('msgTitle'))
+                    .append($(txt).addClass('overflow'))
+                )
                 .fadeIn(200)
         )
         this.adjust(id)
         return id
     }
     this.adjust = function (id) {
-        maxHeight = Scene.getHeight() - 140
-        maxWidth = Scene.getWidth() - 40
+        maxHeight = GameScene.getHeight() - 140
+        maxWidth = GameScene.getWidth() - 40
 
         if (maxHeight < parseInt($('#' + id).css('min-height'))) {
             maxHeight = parseInt($('#' + id).css('min-height'))
@@ -42,14 +44,14 @@ var Message = new function () {
         if ($('#' + id + ' .showCastle').length) {
             $('#' + id).css({
                 'z-index': $('#' + id).css('z-index') + 1,
-                left: Scene.getWidth() / 2 - $('#' + id).outerWidth() / 2 + 'px',
+                left: GameScene.getWidth() / 2 - $('#' + id).outerWidth() / 2 + 'px',
                 'max-width': maxWidth + 'px',
                 'max-height': maxHeight + 'px'
             })
             $('#' + id + ' .msgTitle').css({width: $('#' + id).width() - 50})
         } else {
             $('.message').css({
-                left: Scene.getWidth() / 2 - $('.message').outerWidth() / 2 + 'px',
+                left: GameScene.getWidth() / 2 - $('.message').outerWidth() / 2 + 'px',
                 'max-width': maxWidth + 'px',
                 'max-height': maxHeight + 'px'
             })
@@ -68,10 +70,6 @@ var Message = new function () {
         var height = $('#' + id).height() - minus;
 
         $('#' + id + ' div.overflow').css('height', height + 'px')
-
-        if (CommonMe.isSelected()) {
-            CommonMe.setIsSelected(0)
-        }
     }
     this.ok = function (id, func) {
         if (!$('#' + id + ' #buttons').length) {
@@ -85,7 +83,7 @@ var Message = new function () {
                     if (isSet(func)) {
                         func();
                     }
-                    Message.remove(id);
+                    EditorMessage.remove(id);
                 })
         );
 
@@ -103,7 +101,7 @@ var Message = new function () {
                     if (isSet(func)) {
                         func()
                     }
-                    Message.remove(id)
+                    EditorMessage.remove(id)
                 })
         )
     }
@@ -120,7 +118,7 @@ var Message = new function () {
                     if (isSet(func)) {
                         func()
                     }
-                    Message.remove(id)
+                    EditorMessage.remove(id)
                 })
         )
     }

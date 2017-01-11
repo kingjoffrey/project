@@ -117,7 +117,7 @@ var WebSocketSendEditor = new function () {
     }
     this.open = function () {
         if (closed) {
-            Message.error(translations.sorryServerIsDisconnected)
+            EditorMessage.error(translations.sorryServerIsDisconnected)
             return;
         }
 
