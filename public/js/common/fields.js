@@ -176,6 +176,22 @@ var Fields = new function () {
                 this.add(x, y, type)
             }
         }
+        var r = f.reverse()
+        for (var y in r) {
+            for (var x in r[y]) {
+                var type = r[y][x],
+                    yy = y * 1 + 33
+                switch (type) {
+                    case 'f':
+                        GameModels.addTree(x, yy)
+                        break
+                    case 's':
+                        GameModels.addSwamp(x, yy)
+                        break
+                }
+                this.add(x, yy, type)
+            }
+        }
 
         maxX = fields[0].length
         maxY = fields.length

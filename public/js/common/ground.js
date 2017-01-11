@@ -318,7 +318,9 @@ var Ground = new function () {
         return waterLevel
     }
     this.change = function (x, y, type) {
-        Fields.get(x, y).setType(type)
+        if (isSet(x)) {
+            Fields.get(x, y).setType(type)
+        }
 
         GameScene.remove(grassMesh)
         Fields.createTextures()

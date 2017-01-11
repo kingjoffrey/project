@@ -49,9 +49,6 @@ var EditorGui = new function () {
             $('#down').click(function () {
                 EditorModels.createMesh('down')
             })
-            $('#texture').click(function () {
-                Ground.changeTexture()
-            })
             $('#exit').click(function () {
                 WebSocketSendMain.controller('index', 'index')
             })
