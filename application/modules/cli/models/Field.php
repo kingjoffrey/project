@@ -17,9 +17,7 @@ class Cli_Model_Field
 
     public function toArray()
     {
-        return array(
-            'type' => $this->_type
-        );
+        return $this->_type;
     }
 
     public function addArmy($armyId, $color)

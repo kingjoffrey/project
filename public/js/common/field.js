@@ -1,12 +1,14 @@
 "use strict"
-var Field = function (field) {
-    field.armies = {}
-    field.ruinId = 0
-    field.towerId = 0
-    field.castleId = 0
-    field.towerColor = 0
-    field.castleColor = 0
-
+var Field = function (type) {
+    var field = {
+        'armies': {},
+        'ruinId': 0,
+        'towerId': 0,
+        'castleId': 0,
+        'towerColor': 0,
+        'castleColor': 0,
+        'type': type
+    }
     this.setRuinId = function (ruinId) {
         field.ruinId = ruinId
     }

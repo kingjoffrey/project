@@ -84,19 +84,15 @@ var WebSocketMessageEditor = new function () {
                 GameModels.addRoad(r.x, r.y)
                 break
             case 'g':
-                Fields.get(r.x, r.y).setType(r.type)
                 Ground.change(r.x, r.y, r.type)
                 break
             case 'h':
-                Fields.get(r.x, r.y).setType(r.type)
                 Ground.change(r.x, r.y, r.type)
                 break
             case 'm':
-                Fields.get(r.x, r.y).setType(r.type)
                 Ground.change(r.x, r.y, r.type)
                 break
             case 'w':
-                Fields.get(r.x, r.y).setType(r.type)
                 Ground.change(r.x, r.y, r.type)
                 break
         }

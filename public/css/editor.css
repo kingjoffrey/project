@@ -6,6 +6,10 @@
     position: fixed;
 }
 
+#editor #map {
+    position: static;
+}
+
 #editor #mapBox .button {
     padding: 0;
     width: 224px;

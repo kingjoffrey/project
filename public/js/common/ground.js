@@ -318,34 +318,11 @@ var Ground = new function () {
         return waterLevel
     }
     this.change = function (x, y, type) {
-        GameScene.remove(grassMesh)
-        Fields.initGround()
-    }
-    this.changeTexture = function () {
-        // var a = Fields.createTexture()
-
-        var canvas = Test.init()
-
-
-        var texture = new THREE.Texture(canvas)
-        texture.needsUpdate = true
+        Fields.get(x, y).setType(type)
 
         GameScene.remove(grassMesh)
-
-        grassMaterial = new THREE.MeshLambertMaterial({
-            map: texture,
-            side: THREE.DoubleSide
-        })
-        grassMesh = new THREE.Mesh(grassGeometry, grassMaterial)
-        grassMesh.rotation.x = Math.PI / 2
-
-        if (GameScene.getShadows()) {
-            grassMesh.receiveShadow = true
-        }
-
-        GameScene.add(grassMesh)
-
-        // PickerCommon.attach(grassMesh)
+        Fields.createTextures()
+        createGround((Fields.getMaxX() - 1) * 2, (Fields.getMaxY() - 1) * 2, Fields.getCanvas())
     }
     this.init = function (maxX, maxY, canvas) {
         createGround(maxX * 2, maxY * 2, canvas)

@@ -46,7 +46,7 @@ var Game = new function () {
             GameScene.init($(window).innerWidth(), $(window).innerHeight())
             Units.init(game.units)
             Terrain.init(game.terrain)
-            Fields.init(game.fields, game.map.mapId)
+            Fields.init(game.fields)
             Turn.init(game.turnHistory)
             MiniMap.init(Game.getMapElement())
             Players.init(game.players)

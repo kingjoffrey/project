@@ -34,17 +34,11 @@
 }
 
 #map {
-    overflow: hidden;
+    position: absolute;
 }
 
 #map * {
     cursor: url(/img/game/lupa.png) 13 13, crosshair
-}
-
-#mapBox {
-    left: 0px;
-    width: 233px;
-    background: none;
 }
 
 #lens {
@@ -59,6 +53,7 @@
     position: absolute;
     top: 0px;
     left: 0px;
+    box-shadow: 2px 2px 5px #000;
 }
 
 #map .c {

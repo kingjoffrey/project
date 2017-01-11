@@ -5,7 +5,6 @@ var GameGui = new function () {
         chatBox = {close: 0},
         playerBox = {close: 0},
         limitBox = {close: 0},
-        mapBox = {close: 0},
         speed = 200,
         documentTitle = 'WoF',
         friendsShow = false,
@@ -171,23 +170,6 @@ var GameGui = new function () {
             })
         }
     this.prepareBoxes = function () {
-        $('#mapBox .close').click(function () {
-            var left = parseInt($('#mapBox').css('left')),
-                move = -$('#mapBox').width()
-
-            mapBox.el = this;
-
-            if (mapBox.close) {
-                move = -move;
-            }
-
-            mapBox.move = move;
-
-            $('#mapBox').animate({'left': left + move + 'px'}, speed, function () {
-                mapBox.close = !mapBox.close;
-                changeCloseArrowLR(mapBox.move, mapBox.el);
-            });
-        });
         $('#limitBox .close').click(function () {
             var left = parseInt($('#limitBox').css('left')),
                 move = -$('#limitBox').width()
@@ -236,7 +218,6 @@ var GameGui = new function () {
         chatBox.close = 0
         playerBox.close = 0
         limitBox.close = 0
-        mapBox.close = 0
 
         if (!Players.countHumans() > 1) {
             $('#chatBox').css({display: 'none'});
@@ -247,16 +228,14 @@ var GameGui = new function () {
         $('#goldBox').css({
             'left': goldBoxLeft + 'px'
         })
-        $('#mapBox .close').css({
-            left: $('#mapBox').width() + 4 + 'px'
-        })
         $('#limitBox .close').css({
             left: $('#limitBox').width() + 4 + 'px'
         })
         $('#limitBox').css({
-            top: Fields.getHeight() + 30 + 'px'
+            top: $('map canvas').height() + 30 + 'px'
         })
-
+        $('#map').height($('#map canvas').height())
+        $('#terrain').css('top', $('#map canvas').height())
         //Message.adjust()
         //Message.setOverflowHeight()
     }
@@ -314,16 +293,6 @@ var GameGui = new function () {
             GameGui.adjust()
         })
 
-        $('#mapImage').css({
-            width: Fields.getWidth() + 'px',
-            height: Fields.getHeight() + 'px'
-        })
-
-        Game.getMapElement().css({
-            width: Fields.getWidth() + 'px',
-            height: Fields.getHeight() + 'px'
-        })
-
         $('body')
             .keydown(function (event) {
                 doKey(event)
@@ -347,15 +316,6 @@ var GameGui = new function () {
             }
         })
 
-        // $('#game').css({
-        //     width: width + 'px',
-        //     height: height + 'px'
-        // })
-
-        // $('#mapBox').css({
-        //     height: Fields.getHeight() + 18 + 'px'
-        // })
-        // $('#terrain').css('top', Fields.getHeight() + 4 + 'px')
         prepareButtons()
         this.prepareBoxes()
         this.adjust()

@@ -62,6 +62,8 @@ var EditorGui = new function () {
         }
 
     this.adjust = function () {
+        $('#mapBox').width($('#map canvas').width())
+        $('#map').height($('#map canvas').height())
         GameScene.resize($(window).innerWidth(), $(window).innerHeight())
     }
     this.init = function () {
