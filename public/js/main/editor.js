@@ -24,7 +24,7 @@ var EditorController = new function () {
         })
     }
     this.delete = function (r) {
-        $('.trlink #' + r.id).remove()
+        $('#' + r.id + '.trlink').remove()
     }
     this.create = function (r) {
         var content = $('#content'),

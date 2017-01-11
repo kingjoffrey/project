@@ -112,11 +112,11 @@ class Application_Model_Map extends Coret_Db_Table_Abstract
     public function deleteNotPublished($playerId)
     {
         $where = array(
-            $this->_db->quoteInto('publish = ?', false),
+            $this->_db->quoteInto('publish = ?', $this->parseBool(false)),
             $this->_db->quoteInto($this->_db->quoteIdentifier('playerId') . ' = ?', $playerId),
             $this->_db->quoteInto($this->_db->quoteIdentifier($this->_primary) . ' = ?', $this->_mapId)
         );
-        return parent::delete($where);
+        return $this->delete($where);
     }
 }
 

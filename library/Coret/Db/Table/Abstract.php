@@ -208,7 +208,7 @@ Został zaktualizowany więcej niż jeden rekord (' . $updateResult . ').
         }
     }
 
-    public function paraseBool($value)
+    public function parseBool($value)
     {
         if ($value) {
             return 't';

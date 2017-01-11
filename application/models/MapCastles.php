@@ -80,7 +80,7 @@ class Application_Model_MapCastles extends Coret_Db_Table_Abstract
 
     public function edit($data, $mapCastleId)
     {
-        $data['capital'] = $this->paraseBool($data['capital']);
+        $data['capital'] = $this->parseBool($data['capital']);
         $where = $this->_db->quoteInto($this->_db->quoteIdentifier('mapCastleId') . ' = ?', $mapCastleId);
         return $this->update($data, $where);
     }

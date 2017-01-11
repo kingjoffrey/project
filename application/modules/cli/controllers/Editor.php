@@ -75,7 +75,7 @@ class EditorController
         $handler->sendToUser($user, $token);
     }
 
-    function deleteNotPublished(Devristo\Phpws\Protocol\WebSocketTransportInterface $user, Cli_MainHandler $handler, $dataIn)
+    function delete(Devristo\Phpws\Protocol\WebSocketTransportInterface $user, Cli_MainHandler $handler, $dataIn)
     {
         if (!isset($dataIn['id'])) {
             return;
@@ -84,10 +84,8 @@ class EditorController
         $db = $handler->getDb();
 
         $mMap = new Application_Model_Map ($dataIn['id'], $db);
-        $del=$mMap->delete($user->parameters['playerId']);
-        print_r($del);
-        if ($del) {
 
+        if ($mMap->deleteNotPublished($user->parameters['playerId'])) {
             $token = array(
                 'type' => 'editor',
                 'action' => 'delete',
