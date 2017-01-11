@@ -139,7 +139,7 @@ class SetupGame
         $game = $mGame->getGame();
 
         $mMap = new Application_Model_Map($game['mapId'], $db);
-        $map = $mMap->getMap();
+        $map = $mMap->get();
 
         $this->_mapName = $map['name'];
         $this->_begin = $game['begin'];

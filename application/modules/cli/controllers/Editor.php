@@ -30,7 +30,7 @@ class EditorController
             $db = $handler->getDb();
 
             $mMap = new Application_Model_Map (0, $db);
-            $mapId = $mMap->createMap($view->formCreate->getValues(), $user->parameters['playerId']);
+            $mapId = $mMap->create($view->formCreate->getValues(), $user->parameters['playerId']);
 
             $mSide = new Application_Model_Side(0, $db);
 
@@ -73,5 +73,28 @@ class EditorController
         );
 
         $handler->sendToUser($user, $token);
+    }
+
+    function deleteNotPublished(Devristo\Phpws\Protocol\WebSocketTransportInterface $user, Cli_MainHandler $handler, $dataIn)
+    {
+        if (!isset($dataIn['id'])) {
+            return;
+        }
+
+        $db = $handler->getDb();
+
+        $mMap = new Application_Model_Map ($dataIn['id'], $db);
+        $del=$mMap->delete($user->parameters['playerId']);
+        print_r($del);
+        if ($del) {
+
+            $token = array(
+                'type' => 'editor',
+                'action' => 'delete',
+                'id' => $dataIn['id']
+            );
+
+            $handler->sendToUser($user, $token);
+        }
     }
 }

@@ -17,7 +17,7 @@ class Application_Model_Map extends Coret_Db_Table_Abstract
         }
     }
 
-    public function createMap($params, $playerId)
+    public function create($params, $playerId)
     {
         $data = array(
             'name' => $params['name'],
@@ -38,14 +38,10 @@ class Application_Model_Map extends Coret_Db_Table_Abstract
             ->from($this->_name)
             ->where('publish = false')
             ->where($this->_db->quoteIdentifier('playerId') . ' = ?', $playerId);
-        try {
-            return $this->_db->query($select)->fetchAll();
-        } catch (PDOException $e) {
-            throw new Exception($select->__toString());
-        }
+        return $this->selectAll($select);
     }
 
-    public function getMap()
+    public function get()
     {
         $select = $this->_db->select()
             ->from($this->_name, array('mapWidth', 'mapHeight', 'name', 'mapId'))
@@ -58,12 +54,8 @@ class Application_Model_Map extends Coret_Db_Table_Abstract
     {
         $select = $this->_db->select()
             ->from($this->_name, 'name')
-            ->where('"' . $this->_primary . '" = ?', $this->_mapId);
-        try {
-            return $this->_db->fetchOne($select);
-        } catch (PDOException $e) {
-            throw new Exception($select->__toString());
-        }
+            ->where($this->_db->quoteIdentifier($this->_primary) . '  = ?', $this->_mapId);
+        return $this->selectOne($select);
     }
 
     public function getAllMapsList()
@@ -115,6 +107,16 @@ class Application_Model_Map extends Coret_Db_Table_Abstract
         $data = array('publish' => true);
         $where = array($this->_db->quoteInto($this->_db->quoteIdentifier($this->_primary) . ' = ?', $this->_mapId));
         return $this->update($data, $where);
+    }
+
+    public function deleteNotPublished($playerId)
+    {
+        $where = array(
+            $this->_db->quoteInto('publish = ?', false),
+            $this->_db->quoteInto($this->_db->quoteIdentifier('playerId') . ' = ?', $playerId),
+            $this->_db->quoteInto($this->_db->quoteIdentifier($this->_primary) . ' = ?', $this->_mapId)
+        );
+        return parent::delete($where);
     }
 }
 

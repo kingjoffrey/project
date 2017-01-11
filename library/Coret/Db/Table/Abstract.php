@@ -194,7 +194,7 @@ Został zaktualizowany więcej niż jeden rekord (' . $updateResult . ').
     public function delete($where)
     {
         try {
-            $this->_db->delete($this->_name, $where);
+            return $this->_db->delete($this->_name, $where);
         } catch (Exception $e) {
             if ($this->_cli) {
                 $l = new Coret_Model_Logger('cli');

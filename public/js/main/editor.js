@@ -17,6 +17,14 @@ var EditorController = new function () {
             mapId = $(this).attr('id')
             WebSocketSendMain.controller('editor', 'edit')
         })
+        $('.trash').click(function (e) {
+            e.preventDefault()
+            e.stopPropagation()
+            WebSocketSendMain.controller('editor', 'delete', {'id': $(this).parent().attr('id')})
+        })
+    }
+    this.delete = function (r) {
+        $('.trlink #' + r.id).remove()
     }
     this.create = function (r) {
         var content = $('#content'),

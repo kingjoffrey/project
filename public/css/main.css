@@ -651,3 +651,11 @@ tr.trlink:hover td {
 .i {
     font-style: italic;
 }
+
+td #trash {
+    width: 15px;
+    height: 20px;
+    background-image: url('/img/trash.png');
+    margin: 2px auto;
+    cursor: pointer;
+}

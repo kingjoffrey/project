@@ -62,7 +62,7 @@ class NewController
         $view->game = $game;
 
         $mMap = new Application_Model_Map($game['mapId'], $db);
-        $map = $mMap->getMap();
+        $map = $mMap->get();
 
         $view->map = $map['name'];
 
