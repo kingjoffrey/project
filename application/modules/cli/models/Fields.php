@@ -124,10 +124,12 @@ class Cli_Model_Fields
     public function toArray()
     {
         $fields = array();
-        foreach ($this->_fields as $y => $row) {
-            $fields[$y] = array();
-            foreach ($row as $x => $type) {
-                $fields[$y][$x] = $this->getField($x, $y)->toArray();
+        if (is_array($this->_fields)) {
+            foreach ($this->_fields as $y => $row) {
+                $fields[$y] = array();
+                foreach ($row as $x => $type) {
+                    $fields[$y][$x] = $this->getField($x, $y)->toArray();
+                }
             }
         }
         return $fields;

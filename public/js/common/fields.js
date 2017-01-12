@@ -164,7 +164,7 @@ var Fields = new function () {
     this.init = function (f) {
         for (var y in f) {
             for (var x in f[y]) {
-                if (x > 31) {
+                if (x > 32) {
                     continue
                 }
                 var type = f[y][x]
@@ -182,7 +182,7 @@ var Fields = new function () {
         var r = f.reverse()
         for (var y in r) {
             for (var x in r[y]) {
-                if (x > 31) {
+                if (x > 32) {
                     continue
                 }
                 var type = r[y][x],
@@ -201,6 +201,8 @@ var Fields = new function () {
 
         maxX = fields[0].length
         maxY = fields.length
+
+        console.log(maxX + ' ' + maxY)
 
         mapCanvas.width = maxX * mapMultiplier
         mapCanvas.height = maxY * mapMultiplier
