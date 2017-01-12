@@ -1,6 +1,7 @@
 "use strict"
 var Fields = new function () {
     var fields = [],
+        grassField,
         maxX,
         maxY,
         mapMultiplier = 7,
@@ -58,11 +59,15 @@ var Fields = new function () {
      * @param y
      * @returns {Field}
      */
-    this.get = function (x, y) {
+    this.get = function (x, y, grass) {
         if (isSet(fields[y]) && isSet(fields[y][x])) {
             return fields[y][x]
         } else {
-            console.log('no field at x=' + x + ' y=' + y)
+            if (isSet(grass)) {
+                return grassField
+            } else {
+                console.log('no field at x=' + x + ' y=' + y)
+            }
         }
     }
     this.getAStarType = function (x, y, destX, destY) {
@@ -159,12 +164,17 @@ var Fields = new function () {
             }
         }
 
-        textureContext.drawImage(tmpTextureCanvas, 0, 0, maxX * textureMultiplier - textureMultiplier, maxY * textureMultiplier - textureMultiplier, 0, 0, maxX * textureMultiplier, maxY * textureMultiplier)
+        textureContext.drawImage(tmpTextureCanvas, 0, 0, maxX * textureMultiplier, maxY * textureMultiplier, 0, 0, maxX * textureMultiplier, maxY * textureMultiplier)
     }
     this.init = function (f) {
+        grassField = new Field('g')
+
         for (var y in f) {
+            if (y > 31) {
+                continue
+            }
             for (var x in f[y]) {
-                if (x > 32) {
+                if (x > 31) {
                     continue
                 }
                 var type = f[y][x]
@@ -179,14 +189,20 @@ var Fields = new function () {
                 this.add(x, y, type)
             }
         }
+
+        var height = y * 1-1
+
         var r = f.reverse()
         for (var y in r) {
+            if (y < 1) {
+                continue
+            }
             for (var x in r[y]) {
-                if (x > 32) {
+                if (x > 31) {
                     continue
                 }
                 var type = r[y][x],
-                    yy = y * 1 + 32
+                    yy = y * 1 + height
                 switch (type) {
                     case 'f':
                         GameModels.addTree(x, yy)
@@ -216,7 +232,7 @@ var Fields = new function () {
 
         this.createTextures()
         $('#map').append(mapCanvas)
-        Ground.init(maxX - 1, maxY - 1, textureCanvas)
+        Ground.init(maxX, maxY, textureCanvas)
         initRoads()
     }
 }

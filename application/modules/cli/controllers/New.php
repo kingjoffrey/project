@@ -62,9 +62,7 @@ class NewController
         $view->game = $game;
 
         $mMap = new Application_Model_Map($game['mapId'], $db);
-        $map = $mMap->get();
-
-        $view->map = $map['name'];
+        $view->mapName = $mMap->getName();
 
         $view->timeLimits = Application_Model_Limit::timeLimits();
         $view->turnTimeLimit = Application_Model_Limit::turnTimeLimit();

@@ -1,15 +1,16 @@
 var MapGenerator = new function () {
-    var fields = []
+    var fields = [],
+        mapSize = 2
 
     this.getFields = function () {
         return fields
     }
-    this.init = function (mapSize) {
-        for (var y = 0; y < mapSize - 1; y++) {
+    this.init = function () {
+        for (var y = 0; y < mapSize; y++) {
             if (notSet(fields[y])) {
                 fields[y] = []
             }
-            for (var x = 0; x < mapSize - 1; x++) {
+            for (var x = 0; x < mapSize; x++) {
                 fields[y][x] = 'g'
             }
         }

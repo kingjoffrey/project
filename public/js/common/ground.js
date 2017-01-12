@@ -75,7 +75,7 @@ var Ground = new function () {
                 }
                 // every field?
                 if (grassVertexPositions[i][0] % 2 == 0 && grassVertexPositions[i][1] % 2 == 0) {
-                    var type = Fields.get(grassVertexPositions[i][0] / 2, grassVertexPositions[i][1] / 2).getType()
+                    var type = Fields.get(grassVertexPositions[i][0] / 2, grassVertexPositions[i][1] / 2, 1).getType()
                     switch (type) {
                         case 'w':
                             grassVertexPositions = changeGroundLevel(grassVertexPositions, maxX, maxY, maxI, i, bottomLevel, type)

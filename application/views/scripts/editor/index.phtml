@@ -2,7 +2,6 @@
     <h2><?php echo $this->translate('Map list') ?></h2>
     <table>
         <th>Map name</th>
-        <th>Size</th>
         <th>Max players</th>
         <th>Creation date</th>
         <th>Delete</th>
@@ -10,7 +9,6 @@
             <?php foreach ($this->mapList as $map): ?>
                 <tr id="<?php echo $map['mapId'] ?>" class="trlink">
                     <td><?php echo $map['name'] ?></td>
-                    <td><?php echo $map['mapWidth'] ?></td>
                     <td><?php echo $map['maxPlayers'] ?></td>
                     <td><?php echo Coret_View_Helper_Formatuj::date($map['date']) ?></td>
                     <td class="trash"><div id="trash"></div></td>

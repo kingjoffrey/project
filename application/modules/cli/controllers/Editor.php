@@ -44,7 +44,6 @@ class EditorController
             $token = array(
                 'type' => 'editor',
                 'action' => 'generate',
-                'mapSize' => $dataIn['mapSize'],
                 'mapId' => $mapId,
                 'data' => $layout->render()
             );

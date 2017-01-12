@@ -31,16 +31,13 @@
     <h2><?php echo $this->translate('Game settings') ?></h2>
 
     <div class="box">
-        <p><?php echo $this->translate('Map') ?>: <span class="yellow"><?php echo $this->map ?></span></p>
-
+        <p><?php echo $this->translate('Map') ?>: <span class="yellow"><?php echo $this->mapName ?></span></p>
         <p><?php echo $this->translate('Required number of players') ?>: <span
                 class="yellow"><?php echo $this->game['numberOfPlayers'] ?></span></p>
-
         <p><?php echo $this->translate('Time limit') ?>: <span
                 class="yellow"><?php echo $this->timeLimits[$this->game['timeLimit']] ?></span></p>
-
         <p><?php echo $this->translate('Limit of the number of turns') ?>:
-            <span class="yellow"><?php  if ($this->game['turnsLimit']): echo $this->game['turnsLimit'];
+            <span class="yellow"><?php if ($this->game['turnsLimit']): echo $this->game['turnsLimit'];
             else: echo $this->translate('no limit'); endif ?></p></span>
         <p><?php echo $this->translate('Time limit per turn') ?>: <span
                 class="yellow"><?php echo $this->translate($this->turnTimeLimit[$this->game['turnTimeLimit']]) ?></span>

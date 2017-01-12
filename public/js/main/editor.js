@@ -39,7 +39,6 @@ var EditorController = new function () {
             e.preventDefault()
             WebSocketSendMain.controller('editor', 'create', {
                 'name': $('#name').val(),
-                'mapSize': $('#mapSize').val(),
                 'maxPlayers': $('#maxPlayers').val()
             })
         })
@@ -49,7 +48,7 @@ var EditorController = new function () {
         Main.setMain(main.html())
         main.html(r.data)
         mapId = r.mapId
-        MapGenerator.init(r.mapSize)
+        MapGenerator.init()
     }
     this.edit = function (r) {
         var main = $('#main')

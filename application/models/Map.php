@@ -21,8 +21,6 @@ class Application_Model_Map extends Coret_Db_Table_Abstract
     {
         $data = array(
             'name' => $params['name'],
-            'mapWidth' => $params['mapSize'],
-            'mapHeight' => $params['mapSize'],
             'maxPlayers' => $params['maxPlayers'],
             'playerId' => $playerId
         );
@@ -41,13 +39,13 @@ class Application_Model_Map extends Coret_Db_Table_Abstract
         return $this->selectAll($select);
     }
 
-    public function get()
+    public function getName()
     {
         $select = $this->_db->select()
-            ->from($this->_name, array('mapWidth', 'mapHeight', 'name', 'mapId'))
+            ->from($this->_name, 'name')
             ->where($this->_db->quoteIdentifier($this->_primary) . ' = ?', $this->_mapId);
 
-        return $this->selectRow($select);
+        return $this->selectOne($select);
     }
 
     public function getMapName()
