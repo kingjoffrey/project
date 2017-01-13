@@ -1,6 +1,6 @@
 var MapGenerator = new function () {
     var fields = [],
-        mapSize = 2
+        mapSize = 32
 
     this.getFields = function () {
         return fields

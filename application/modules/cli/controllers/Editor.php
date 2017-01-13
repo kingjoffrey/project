@@ -94,4 +94,15 @@ class EditorController
             $handler->sendToUser($user, $token);
         }
     }
+
+//    function aaa(Devristo\Phpws\Protocol\WebSocketTransportInterface $user, Cli_MainHandler $handler, $dataIn)
+//    {
+//        $db = $handler->getDb();
+//        $mapFields = new Application_Model_MapFields($dataIn['id'], $db);
+//        foreach ($dataIn['f'] as $y => $row) {
+//            foreach ($row as $x => $type) {
+//                $mapFields->add($x, $y, $type);
+//            }
+//        }
+//    }
 }
