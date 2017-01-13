@@ -205,7 +205,7 @@ var GameGui = new function () {
             })
         })
         //$('#chatBox .close').click(function () {
-        //    Gui.moveChatBox()
+        //    GameGui.moveChatBox()
         //})
     }
     this.adjust = function () {

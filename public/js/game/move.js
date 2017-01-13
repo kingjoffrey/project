@@ -28,11 +28,11 @@ var Move = new function () {
                 break;
         }
 
-        if (Turn.isMy() || (!player.isComputer() || Gui.getShow())) {
+        if (Turn.isMy() || (!player.isComputer() || GameGui.getShow())) {
             Message.remove()
         }
 
-        if (player.isComputer() && !Gui.getShow()) {
+        if (player.isComputer() && !GameGui.getShow()) {
             stepLoop(r, ii)
         } else {
             MiniMap.centerOn(r.path[0].x, r.path[0].y, function () {
@@ -54,7 +54,7 @@ var Move = new function () {
         if (isSet(r.path[step].c)) {
             //console.log(step)
             //console.log(r.path[step])
-            if (!player.isComputer() || Gui.getShow()) {
+            if (!player.isComputer() || GameGui.getShow()) {
                 //zoomer.setCenterIfOutOfScreen(r.path[step].x * 40, r.path[step].y * 40);
 
                 $('#' + army.getArmyId() + '.a')
@@ -76,7 +76,7 @@ var Move = new function () {
                 stepLoop(r, ii);
             }
         } else {
-            if (isTruthful(r.battle) && (!player.isComputer() || Gui.getShow())) {
+            if (isTruthful(r.battle) && (!player.isComputer() || GameGui.getShow())) {
                 Sound.play('fight')
                 MiniMap.centerOn(r.path[step].x, r.path[step].y, function () {
                     BattleWindow.battle(r, ii)
@@ -91,7 +91,7 @@ var Move = new function () {
         //MiniMap.centerOn(army.getX(), army.getY())
 
         if (r.battle) {
-            if (player.isComputer() && !Gui.getShow()) {
+            if (player.isComputer() && !GameGui.getShow()) {
                 for (var color in r.battle.defenders) {
                     if (CommonMe.colorEquals(color)) {
                         var defenderArmies = CommonMe.getArmies(),

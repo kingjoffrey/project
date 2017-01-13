@@ -16,7 +16,7 @@ var Execute = new function () {
                     if (Players.get(r.color).isComputer()) {
                         WebSocketSendCommon.computer()
                     }
-                    if (Players.get(r.color).isComputer() && !Gui.getShow()) {
+                    if (Players.get(r.color).isComputer() && !GameGui.getShow()) {
                         Execute.setExecuting(0)
                     } else {
                         Players.showFirst(r.color, function () {
@@ -42,7 +42,7 @@ var Execute = new function () {
                     break;
 
                 case 'ruin':
-                    if (Players.get(r.color).isComputer() && !Gui.getShow()) {
+                    if (Players.get(r.color).isComputer() && !GameGui.getShow()) {
                         Ruins.handle(r)
                         Execute.setExecuting(0)
                     } else {
@@ -62,7 +62,7 @@ var Execute = new function () {
                         CommonMe.setParentArmyId(r.parentArmy.id)
                         CommonMe.selectArmy(r.childArmy.id)
                         Execute.setExecuting(0)
-                    } else if (Players.get(r.color).isComputer() && !Gui.getShow()) {
+                    } else if (Players.get(r.color).isComputer() && !GameGui.getShow()) {
                         //zoomer.setCenterIfOutOfScreen(r.parentArmy.x * 40, r.parentArmy.y * 40);
                         var armies = Players.get(r.color).getArmies()
                         armies.handle(r.parentArmy)
@@ -84,7 +84,7 @@ var Execute = new function () {
                         Message.remove()
                     }
                     //zoomer.setCenterIfOutOfScreen(r.army.x * 40, r.army.y * 40);
-                    if (Players.get(r.color).isComputer() && !Gui.getShow()) {
+                    if (Players.get(r.color).isComputer() && !GameGui.getShow()) {
                         var armies = Players.get(r.color).getArmies()
                         for (var i in r.deletedIds) {
                             armies.destroy(r.deletedIds[i])
@@ -126,7 +126,7 @@ var Execute = new function () {
 
                 case 'resurrection':
                     Sound.play('resurrection');
-                    if (Players.get(Turn.getColor()).isComputer() && !Gui.getShow()) {
+                    if (Players.get(Turn.getColor()).isComputer() && !GameGui.getShow()) {
                         Players.get(r.color).getArmies().handle(r.army)
                         Execute.setExecuting(0)
                     } else {
@@ -182,11 +182,11 @@ var Execute = new function () {
 
                 case 'end':
                     if (Game.getLoading()) {
-                        Gui.end()
+                        GameGui.end()
                     } else {
                         CommonMe.turnOff()
                         var id = Message.show(translations.gameOver, $('<div>').append($('<div>').html(translations.thisIsTheEnd)))
-                        Message.ok(id, Gui.end)
+                        Message.ok(id, GameGui.end)
                     }
                     break;
 

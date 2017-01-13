@@ -36,13 +36,13 @@ var Chat = new function () {
     this.message = function (color, msg, time) {
         renderChatCloud(time, msg, color)
         if ($('#chatBox.mini').length) {
-            Gui.moveChatBox(showMsg)
+            GameGui.moveChatBox(showMsg)
         }
         //else {
         showMsg()
         //}
         if (!CommonMe.colorEquals(color)) {
-            Gui.titleBlink(translations.incomingChat)
+            GameGui.titleBlink(translations.incomingChat)
         }
     }
 }

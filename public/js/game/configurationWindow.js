@@ -7,8 +7,8 @@ var ConfigurationWindow = new function () {
                     'alt': 'Show others'
                 })).click(function () {
                     Sound.play('click');
-                    Gui.setShow(!Gui.getShow())
-                    if (Gui.getShow()) {
+                    GameGui.setShow(!GameGui.getShow())
+                    if (GameGui.getShow()) {
                         $(this).children().attr('src', '/img/game/show.png')
                     } else {
                         $(this).children().attr('src', '/img/game/show_off.png')
