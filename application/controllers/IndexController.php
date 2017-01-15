@@ -19,7 +19,6 @@ class IndexController extends Coret_Controller_Authorized
         $this->view->headLink()->appendStylesheet('/css/playerslist.css?v=' . $version);
 
         $this->view->jquery();
-        $this->view->headScript()->appendFile('/js/kinetic-v4.7.4.min.js');
         $this->view->headScript()->appendFile('/js/date.js');
         $this->view->headScript()->appendFile('/js/jquery.mousewheel.min.js');
         $this->view->headScript()->appendFile('/js/Tween.js');
@@ -78,13 +77,12 @@ class IndexController extends Coret_Controller_Authorized
         $this->view->headScript()->appendFile('/js/game/unit.js?v=' . $version);
         $this->view->headScript()->appendFile('/js/game/terrain.js?v=' . $version);
         $this->view->headScript()->appendFile('/js/game/castle.js?v=' . $version);
-        $this->view->headScript()->appendFile('/js/game/players.js?v=' . $version);
         $this->view->headScript()->appendFile('/js/game/player.js?v=' . $version);
         $this->view->headScript()->appendFile('/js/game/armies.js?v=' . $version);
         $this->view->headScript()->appendFile('/js/game/army.js?v=' . $version);
         $this->view->headScript()->appendFile('/js/game/message.js?v=' . $version);
         $this->view->headScript()->appendFile('/js/game/astar.js?v=' . $version);
-        $this->view->headScript()->appendFile('/js/game/chat.js?v=' . $version);
+//         $this->view->headScript()->appendFile('/js/game/chat.js?v=' . $version);
         $this->view->headScript()->appendFile('/js/game/gui.js?v=' . $version);
         $this->view->headScript()->appendFile('/js/game/move.js?v=' . $version);
         $this->view->headScript()->appendFile('/js/game/minimap.js?v=' . $version);
@@ -106,8 +104,6 @@ class IndexController extends Coret_Controller_Authorized
         $this->view->headScript()->appendFile('/js/common/castle.js?v=' . $version);
         $this->view->headScript()->appendFile('/js/common/castles.js?v=' . $version);
         $this->view->headScript()->appendFile('/js/common/renderer.js?v=' . $version);
-//        $this->view->headScript()->appendFile('/js/common/renderers.js?v=' . $version);
-//        $this->view->headScript()->appendFile('/js/common/unitScene.js?v=' . $version);
         $this->view->headScript()->appendFile('/js/common/ground.js?v=' . $version);
         $this->view->headScript()->appendFile('/js/common/game.js?v=' . $version);
         $this->view->headScript()->appendFile('/js/common/gameRenderer.js?v=' . $version);
@@ -123,8 +119,6 @@ class IndexController extends Coret_Controller_Authorized
         $this->view->headScript()->appendFile('/js/common/tower.js?v=' . $version);
         $this->view->headScript()->appendFile('/js/common/towers.js?v=' . $version);
         $this->view->headScript()->appendFile('/js/common/units.js?v=' . $version);
-//        $this->view->headScript()->appendFile('/js/common/unitModels.js?v=' . $version);
-//        $this->view->headScript()->appendFile('/js/common/unitRenderer.js?v=' . $version);
         $this->view->headScript()->appendFile('/js/common/execute.js?v=' . $version);
         $this->view->headScript()->appendFile('/js/common/websocketSend.js?v=' . $version);
         $this->view->headScript()->appendFile('/js/common/websocketMessage.js?v=' . $version);

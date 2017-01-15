@@ -26,6 +26,7 @@ var GamePlayers = new function () {
         }
 
     this.rotate = function (color, players) {
+        return
         var i = 0,
             start = 0,
             end = 0
@@ -61,9 +62,11 @@ var GamePlayers = new function () {
         animation.start()
     }
     this.hasSkull = function (shortName) {
+        return
         return isSet(wedges[shortName].skull)
     }
     this.drawSkull = function (shortName) {
+        return
         var imageObj = new Image();
         imageObj.onload = function () {
             wedges[shortName].skull = new Kinetic.Image({
@@ -79,6 +82,7 @@ var GamePlayers = new function () {
         imageObj.src = '/img/game/skull_and_crossbones.png'
     }
     this.drawTurn = function () {
+        return
         if (Game.getTurnsLimit()) {
             var turnNumber = Turn.getNumber() + '/' + Game.getTurnsLimit()
         } else {
@@ -104,6 +108,7 @@ var GamePlayers = new function () {
         }
     }
     this.setOnline = function (shortName, value) {
+        return
         if (!init) {
             return
         }
@@ -134,6 +139,7 @@ var GamePlayers = new function () {
         layer.draw()
     }
     this.initOnline = function (online) {
+        return
         if (!init) {
             setTimeout(function () {
                 Players.initOnline(online)
@@ -146,6 +152,8 @@ var GamePlayers = new function () {
         layer.draw()
     }
     this.init = function (players) {
+        return
+        
         length = Object.size(players) - 1
 
         var angle = 360 / length,
@@ -224,12 +232,3 @@ var GamePlayers = new function () {
         init = 1
     }
 }
-
-Object.size = function (obj) {
-    var size = 0, key;
-    for (key in obj) {
-        if (obj.hasOwnProperty(key)) size++;
-    }
-    return size;
-};
-

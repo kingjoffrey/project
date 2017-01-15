@@ -2,26 +2,8 @@
 var GameGui = new function () {
     var lock = true,
         show = true,
-        chatBox = {close: 0},
-        playerBox = {close: 0},
-        limitBox = {close: 0},
-        speed = 200,
         documentTitle = 'WoF',
         friendsShow = false,
-        changeCloseArrowLR = function (move, el) {
-            if (move > 0) {
-                $(el).html('&#x25C0');
-            } else {
-                $(el).html('&#x25B6');
-            }
-        },
-        changeCloseArrowUD = function (move, el) {
-            if (move > 0) {
-                $(el).html('&#x25C1');
-            } else {
-                $(el).html('&#x25B7');
-            }
-        },
         doKey = function (event) {
             if ($(event.target).attr('id') == 'msg') {
                 return;
@@ -169,75 +151,23 @@ var GameGui = new function () {
                 }
             })
         }
-    this.prepareBoxes = function () {
-        $('#limitBox .close').click(function () {
-            var left = parseInt($('#limitBox').css('left')),
-                move = -$('#limitBox').width()
-
-            limitBox.el = this
-
-            if (limitBox.close) {
-                move = -move
-            }
-
-            limitBox.move = move
-
-            $('#limitBox').animate({left: left + move + 'px'}, speed, function () {
-                limitBox.close = !limitBox.close;
-                changeCloseArrowLR(limitBox.move, limitBox.el);
-            })
-        })
-        $('#playersBox .close').click(function () {
-            var right = parseInt($('#playersBox').css('right')),
-                move = $('#playersBox').width()
-
-            playerBox.el = this;
-
-            if (playerBox.close) {
-                move = -move;
-            }
-
-            playerBox.move = move;
-
-            $('#playersBox').animate({right: right - move + 'px'}, speed, function () {
-                playerBox.close = !playerBox.close;
-                changeCloseArrowLR(playerBox.move, playerBox.el);
-            })
-        })
-        //$('#chatBox .close').click(function () {
-        //    GameGui.moveChatBox()
-        //})
-    }
     this.adjust = function () {
-        var width = $(window).innerWidth(),
-            height = $(window).innerHeight()
-        GameScene.resize(width, height)
+        GameScene.resize($(window).innerWidth(), $(window).innerHeight())
 
-        MiniMap.adjust()
+//         MiniMap.adjust()
 
-        chatBox.close = 0
-        playerBox.close = 0
-        limitBox.close = 0
+//         console.log(Players.countHumans())
+        
+//         if (!Players.countHumans() > 1) {
+//             console.log('b')
+            $('#chatBox').css({display: 'none'})
+//         }
 
-        if (!Players.countHumans() > 1) {
-            $('#chatBox').css({display: 'none'});
-        }
+        var goldBoxLeft = GameScene.getWidth() / 2 - $('#gold').outerWidth() / 2
 
-        var goldBoxLeft = GameScene.getWidth() / 2 - $('#goldBox').outerWidth() / 2
-
-        $('#goldBox').css({
+        $('#gold').css({
             'left': goldBoxLeft + 'px'
         })
-        $('#limitBox .close').css({
-            left: $('#limitBox').width() + 4 + 'px'
-        })
-        $('#limitBox').css({
-            top: $('map canvas').height() + 30 + 'px'
-        })
-        $('#map').height($('#map canvas').height())
-        $('#terrain').css('top', $('#map canvas').height())
-        //Message.adjust()
-        //Message.setOverflowHeight()
     }
     this.exit = function () {
         WebSocketSendMain.controller('index', 'index')
@@ -317,7 +247,6 @@ var GameGui = new function () {
         })
 
         prepareButtons()
-        this.prepareBoxes()
         this.adjust()
     }
 }

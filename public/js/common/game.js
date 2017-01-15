@@ -43,6 +43,7 @@ var Game = new function () {
         game = g
         if (loading) {
             loading = 0
+            AStar.init()
             GameScene.init($(window).innerWidth(), $(window).innerHeight())
             Units.init(game.units)
             Terrain.init(game.terrain)
@@ -50,11 +51,9 @@ var Game = new function () {
             Turn.init(game.turnHistory)
             MiniMap.init(Game.getMapElement())
             Players.init(game.players)
-            GamePlayers.init(game.players)
             Timer.init(game.begin, game.turnTimeLimit, game.timeLimit)
             Ruins.init(game.ruins)
             CommonMe.init(game.color, game.gold, game.bSequence)
-            Chat.init(game.chatHistory)
             GameRenderer.init('game', GameScene)
             GameScene.initSun(Fields.getMaxY())
             GameRenderer.animate()
@@ -63,7 +62,9 @@ var Game = new function () {
             GameGui.init()
             PickerCommon.init(PickerGame)
         }
-        GamePlayers.initOnline(game.online)
+        
+//         GamePlayers.initOnline(game.online)
+
         if (Turn.isMy()) {
             CommonMe.turnOn()
             if (!CommonMe.getTurnActive()) {
@@ -74,17 +75,17 @@ var Game = new function () {
         }
         Players.showFirst(Turn.getColor())
 
-        if (Players.countHumans() > 1) {
-            PrivateChat.setType('game')
-            PrivateChat.enable()
-        } else {
-            PrivateChat.disable()
-        }
+//         if (Players.countHumans() > 1) {
+//             PrivateChat.setType('game')
+//             PrivateChat.enable()
+//         } else {
+//             PrivateChat.disable()
+//         }
 
         Sound.play('gamestart')
         $('#loading').css('display', 'none')
 
-        if (typeof window.orientation !== 'undefined') {
+        if (isSet(window.orientation)) {
             touch = 'ontouchstart' in document.documentElement
         }
     }

@@ -1,6 +1,6 @@
 var Ground = new function () {
     var mountainLevel = 1.95,
-        hillLevel = 0.3,
+        hillLevel = 0.9,
         bottomLevel = 2,
         waterLevel = 0.1,
         cloudsLevel = -30,

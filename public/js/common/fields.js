@@ -22,19 +22,25 @@ var Fields = new function () {
                 }
             }
         },
-        paintMapField = function (x, y, color) {
-            mapContext.fillStyle = color;
-            mapContext.fillRect(x * mapMultiplier, y * mapMultiplier, mapMultiplier, mapMultiplier);
-        },
-        paintTextureField = function (x, y, color) {
-            tmpTextureContext.fillStyle = color;
-            tmpTextureContext.fillRect(x * textureMultiplier, y * textureMultiplier, textureMultiplier, textureMultiplier);
+        paintTextureField = function (x, y, color1, color2, percent) {
+            var howManyTimes = textureMultiplier * textureMultiplier * (percent/100)
+
+            tmpTextureContext.fillStyle = color1
+            tmpTextureContext.fillRect(x * textureMultiplier, y * textureMultiplier, textureMultiplier, textureMultiplier)
+            tmpTextureContext.fillStyle = color2
+
+            for(var i = 0; i < howManyTimes; i++) {
+                var valueX = Math.floor((Math.random() * textureMultiplier)),
+                    valueY = Math.floor((Math.random() * textureMultiplier))
+                    
+                tmpTextureContext.fillRect(x * textureMultiplier + valueX, y * textureMultiplier + valueY, 1, 1)
+            }
         }
 
     this.initCastle = function (x, y, castleId, color) {
         for (var i = y; i <= y + 1; i++) {
             for (var j = x; j <= x + 1; j++) {
-                fields[i][j].setCastle(castleId, color);
+                fields[i][j].setCastle(castleId, color)
             }
         }
     }
@@ -129,36 +135,29 @@ var Fields = new function () {
             for (var x in fields[y]) {
                 switch (this.get(x, y).getType()) {
                     case 'g':
-                        paintMapField(x, y, '#009900')
-                        paintTextureField(x, y, '#009900')
+                        paintTextureField(x, y, '#3c963c', '#3fa342', 5)
                         break
                     case 'f':
-                        paintMapField(x, y, '#004e00')
-                        paintTextureField(x, y, '#004e00')
+                        paintTextureField(x, y, '#3c963c', '#0b7e22', 5)
+                        GameModels.addTree(x, y)
                         break
                     case 'w':
-                        paintMapField(x, y, '#0000cd')
-                        paintTextureField(x, y, '#009900')
+                        paintTextureField(x, y, '#3c963c', '#ffff7f', 10)
                         break
                     case 'h':
-                        paintMapField(x, y, '#505200')
-                        paintTextureField(x, y, '#505200')
+                        paintTextureField(x, y, '#0b7e22', '#3c963c', 1)
                         break
                     case 'm':
-                        paintMapField(x, y, '#262728')
-                        paintTextureField(x, y, '#262728')
+                        paintTextureField(x, y, '#ededed', '#131313', 1)
                         break
                     case 'r':
-                        paintMapField(x, y, '#c1c1c1')
-                        paintTextureField(x, y, '#009900')
+                        paintTextureField(x, y, '#3c963c', '#c4c720', 0)
                         break
                     case 'b':
-                        paintMapField(x, y, '#c1c1c1')
-                        paintTextureField(x, y, '#009900')
+                        paintTextureField(x, y, '#3c963c', '#ffff7f', 10)
                         break
                     case 's':
-                        paintMapField(x, y, '#39723E')
-                        paintTextureField(x, y, '#009900')
+                        paintTextureField(x, y, '#3c963c', '#828396', 60)
                         break
                 }
             }
@@ -177,16 +176,16 @@ var Fields = new function () {
                 // if (x > 31) {
                 //     continue
                 // }
-                var type = f[y][x]
-                switch (type) {
-                    case 'f':
-                        GameModels.addTree(x, y)
-                        break
-                    case 's':
-                        GameModels.addSwamp(x, y)
-                        break
-                }
-                this.add(x, y, type)
+//                 var type = f[y][x]
+//                 switch (type) {
+//                     case 'f':
+//                         GameModels.addTree(x, y)
+//                         break
+//                     case 's':
+//                         GameModels.addSwamp(x, y)
+//                         break
+//                 }
+                this.add(x, y, f[y][x])
             }
         }
 

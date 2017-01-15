@@ -19,78 +19,129 @@ var CastleWindow = new function () {
         var time = '',
             checked,
             table = $('<table>'),
-            info = $('<table>'),
             j = 0,
-            td = new Array(),
-            window = $('<div>').addClass('showCastle')
+            productionUnitTD = [],
+            castleWindow = $('<div>').addClass('showCastle'),
+            createProductionTD = function() {
+                for (var unitId in castle.getProduction()) {
+                    var travelBy = '',
+                        unit = Units.get(unitId)
 
-        for (var unitId in castle.getProduction()) {
-            var travelBy = '',
-                unit = Units.get(unitId)
+                    if (unitId == castle.getProductionId()) {
+                        checked = ' checked'
+                        time = castle.getProductionTurn() + '/';
+                    } else {
+                        checked = ''
+                        time = ''
+                    }
 
-            if (unitId == castle.getProductionId()) {
-                checked = ' checked'
-                time = castle.getProductionTurn() + '/';
-            } else {
-                checked = ''
-                time = ''
+                    if (unit.canFly) {
+                        travelBy = translations.ground + ' / ' + translations.air;
+                    } else if (unit.canSwim) {
+                        travelBy = translations.water;
+                    } else {
+                        travelBy = translations.ground;
+                    }
+
+                    if (unit.name_lang) {
+                        var unitName = unit.name_lang;
+                    } else {
+                        var unitName = unit.name;
+                    }
+
+                    var unitHeader = $('<td>')
+                            .addClass('unit' + checked)
+                            .attr('id', unitId)
+                            .append(
+                                $('<div>').addClass('name').html('<b>' + unitName + '</b>' + '<br/> (' + travelBy + ')')
+                            ),
+                        normal = unitHeader.clone(),
+                        event = unitHeader.clone()
+                        
+                    normal.append($('<div>').addClass('attributes')
+                        .append($('<p>').html(translations.productionTime + ': ' + time + '<span>' + castle.getProduction()[unitId].time + '</span>&nbsp;' + translations.turn))
+                        .append($('<p>').html(translations.costOfLiving + ': ' + '<span>' + unit.cost + '</span>&nbsp;' + translations.gold + '/' + translations.turn))
+                        .append($('<p>').html(translations.movementPoints + ': ' + '<span>' + unit.moves + '</span>'))
+                        .append($('<p>').html(translations.attackPoints + ': ' + '<span>' + unit.a + '</span>'))
+                        .append($('<p>').html(translations.defencePoints + ': ' + '<span>' + unit.d + '</span>'))
+                    )
+
+                    var stopButtonOff = ' buttonOff',
+                        relocationButtonOff = ' buttonOff'
+                        
+                    if (castle.getProductionId()) {
+                        if (CommonMe.countCastles() > 1) {
+                            var relocationButtonOff = ''
+                        }
+                        var stopButtonOff = ''
+                    }
+
+                    if (castle.getProductionId() && castle.getRelocationCastleId() && CommonMe.getCastles().has(castle.getRelocationCastleId())) {
+                        event
+                            .append(
+                                $('<div>')
+                                    .html(translations.relocationTo + ' ' + CommonMe.getCastle(castle.getRelocationCastleId()).getName())
+                                    .addClass('button buttonColors')
+                                    .click(function () {
+                                        CastleWindow.show(CommonMe.getCastle(castle.getRelocationCastleId()))
+                                        Message.remove(id)
+                                    }))
+                            .append(
+                                $('<div>')
+                                    .html(translations.stop)
+                                    .addClass('button buttonColors' + stopButtonOff)
+                                    .attr('id', 'stop')
+                                    .click(function () {
+                                        if ($('.unit.checked').attr('id')) {
+                                            castle.handle($('.unit.checked').attr('id'), 1, 0)
+                                            Message.remove(id)
+                                        }
+                                    }))
+                            .append(
+                                $('<div>')
+                                    .html(translations.relocation)
+                                    .addClass('button buttonColors' + relocationButtonOff)
+                                    .attr('id', 'relocation')
+                                    .click(function () {
+                                        if ($('.unit.checked').attr('id')) {
+                                            castle.handle($('.unit.checked').attr('id'), 0, 1)
+                                            Message.remove(id)
+                                        } else if ($('.unit.select').attr('id')) {
+                                            castle.handle($('.unit.select').attr('id'), 0, 1)
+                                            Message.remove(id)
+                                        }
+                                    }))
+                            .append(
+                                $('<div>')
+                                    .addClass('button buttonColors buttonOff')
+                                    .attr('id', 'go')
+                                    .html(translations.start)
+                                    .click(function () {
+                                        if ($('.unit.select').attr('id')) {
+                                            castle.handle($('.unit.select').attr('id'))
+                                            Message.remove(id)
+                                        }
+                                    }))
+                    }
+                    
+                    productionUnitTD[j] = {'normal': normal, 'event': event}
+                    j++;
+                }
             }
-
-            if (unit.canFly) {
-                travelBy = translations.ground + ' / ' + translations.air;
-            } else if (unit.canSwim) {
-                travelBy = translations.water;
-            } else {
-                travelBy = translations.ground;
-            }
-
-            if (unit.name_lang) {
-                var name = unit.name_lang;
-            } else {
-                var name = unit.name;
-            }
-
-            td[j] = $('<td>')
-                .addClass('unit' + checked)
-                .attr('id', unitId)
-                .append(
-                    $('<div>')
-                        .append($('<div>').addClass('canvas')
-                            .attr({'id': 'unit' + unitId}))
-                        .append($('<div>').addClass('top')
-                            .append($('<div>').addClass('name')
-                                .html('<b>' + name + '</b>' + '<br/> (' + travelBy + ')')
-                            ))
-                )
-                .append($('<div>').addClass('attributes')
-                    .append($('<p>').html(translations.productionTime + ': ' + time + '<span>' + castle.getProduction()[unitId].time + '</span>&nbsp;' + translations.turn))
-                    .append($('<p>').html(translations.costOfLiving + ': ' + '<span>' + unit.cost + '</span>&nbsp;' + translations.gold + '/' + translations.turn))
-                    .append($('<p>').html(translations.movementPoints + ': ' + '<span>' + unit.moves + '</span>'))
-                    .append($('<p>').html(translations.attackPoints + ': ' + '<span>' + unit.a + '</span>'))
-                    .append($('<p>').html(translations.defencePoints + ': ' + '<span>' + unit.d + '</span>')))
-            j++;
-        }
-        var k = Math.ceil(j / 2);
+            
+        createProductionTD()
+        var k = Math.ceil(j / 2)
         for (l = 0; l < k; l++) {
-            var tr = $('<tr>');
-            var m = l * 2;
-            tr.append(td[m]);
-            if (typeof td[m + 1] != 'undefined') {
-                tr.append(td[m + 1]);
+            var tr = $('<tr>')
+            var m = l * 2
+            tr.append(productionUnitTD[m].normal)
+            if (isSet(productionUnitTD[m + 1])) {
+                tr.append(productionUnitTD[m + 1].normal)
             }
-            table.append(tr);
+            table.append(tr)
         }
 
         // stop & relocation
-
-        var stopButtonOff = ' buttonOff'
-        var relocationButtonOff = ' buttonOff'
-        if (castle.getProductionId()) {
-            if (CommonMe.countCastles() > 1) {
-                var relocationButtonOff = ''
-            }
-            var stopButtonOff = ''
-        }
 
         var next = $('<td>').attr('id', 'next'),
             previous = $('<td>').attr('id', 'previous'),
@@ -117,73 +168,36 @@ var CastleWindow = new function () {
                 }))
         }
 
-        info
-            .append($('<tr>')
-                .append(previous)
-                .append($('<td>').append(translations.castleDefense + ': '))
-                .append($('<td>').append(castle.getDefense()))
-                .append(next))
-            .append($('<tr>')
-                .append($('<td>'))
-                .append($('<td>').append(translations.incomeFromCastle + ': '))
-                .append($('<td>').append(castle.getIncome() + ' ' + translations.gold_turn))
-                .append($('<td>')
-                    .append($('<div>')
-                        .html($('<img>').attr({src: '/img/game/center.png'}))
-                        .addClass('iconButton buttonColors')
-                        .click(center(castle.getCastleId()))
-                        .attr('id', 'center'))))
-        window
-            .append(info)
+        castleWindow
+            .append(
+                $('<table>')
+                    .append($('<tr>')
+                        .append(previous)
+                        .append($('<td>')
+                            .append($('<div>')
+                                .addClass('button buttonColors cancel')
+                                .html(translations.close)
+                                .click(function () {
+                                    Message.remove(id)
+                                })))
+                        .append(next)))
+            .append(
+                $('<table>')
+                .append($('<tr>')
+                    .append($('<td>').append(translations.incomeFromCastle + ': '))
+                    .append($('<td>').append(castle.getIncome() + ' ' + translations.gold_turn))
+                )
+            )
             .append($('<div>').addClass('production').append($('<div>').html(translations.availableUnits).addClass('title')).append(table).attr('id', castle.getCastleId()))
 
         if (castle.getCapital()) {
-            var id = Message.show(translations.capitalCity + '&nbsp;' + castle.getName(), window)
+            var id = Message.show(translations.capitalCity + '&nbsp;' + castle.getName(), castleWindow)
         } else {
-            var id = Message.show(translations.castle + '&nbsp;' + castle.getName(), window)
+            var id = Message.show(translations.castle + '&nbsp;' + castle.getName(), castleWindow)
         }
-        window
-            .append($('<div>')
-                .html(translations.stopProduction)
-                .addClass('button buttonColors' + stopButtonOff)
-                .attr('id', 'stop')
-                .click(function () {
-                    if ($('.unit.checked').attr('id')) {
-                        castle.handle($('.unit.checked').attr('id'), 1, 0)
-                        Message.remove(id)
-                    }
-                }))
-            .append($('<div>')
-                .html(translations.productionRelocation)
-                .addClass('button buttonColors' + relocationButtonOff)
-                .attr('id', 'relocation')
-                .click(function () {
-                    if ($('.unit.checked').attr('id')) {
-                        castle.handle($('.unit.checked').attr('id'), 0, 1)
-                        Message.remove(id)
-                    } else if ($('.unit.select').attr('id')) {
-                        castle.handle($('.unit.select').attr('id'), 0, 1)
-                        Message.remove(id)
-                    }
-                }))
-            .append($('<div>')
-                .addClass('button buttonColors buttonOff')
-                .attr('id', 'go')
-                .html(translations.startProduction)
-                .click(function () {
-                    if ($('.unit.select').attr('id')) {
-                        castle.handle($('.unit.select').attr('id'))
-                        Message.remove(id)
-                    }
-                }))
-            .append($('<div>')
-                .addClass('button buttonColors cancel')
-                .html(translations.close)
-                .click(function () {
-                    Message.remove(id)
-                }))
+
         if (castle.getCapital()) {
-            window
+            castleWindow
                 .append($('<div>')
                     .addClass('button buttonColors buttonOff')
                     .attr('id', 'heroResurrection')
@@ -198,29 +212,6 @@ var CastleWindow = new function () {
                     .click(function () {
                         Message.remove(id)
                     }))
-        }
-
-        // relocation to
-
-        if (castle.getProductionId() && castle.getRelocationCastleId() && CommonMe.getCastles().has(castle.getRelocationCastleId())) {
-            window
-                .append($('<div>').addClass('relocatedProduction').append($('<div>').html(translations.relocatingTo).addClass('title')).append(
-                    $('<table>').append(
-                        $('<tr>').append(
-                            $('<td>').append($('<img>').attr('src', Unit.getImage(castle.getProductionId(), CommonMe.getColor()))))
-                            .append($('<td>')
-                                .html(castle.getProductionTurn() + ' / ' + castle.getProduction()[castle.getProductionId()].time))
-                            .append($('<td>')
-                                .html(CommonMe.getCastle(castle.getRelocationCastleId()).getName())
-                                .addClass('button buttonColors')
-                                .click(function () {
-                                    CastleWindow.show(CommonMe.getCastle(castle.getRelocationCastleId()))
-                                    Message.remove(id)
-                                }))
-                            .append($('<td>')
-                                .html($('<img>').attr('src', '/img/game/center.png'))
-                                .addClass('iconButton buttonColors')
-                                .click(center(castle.getRelocationCastleId()))))))
         }
 
         // relocation from
@@ -250,7 +241,7 @@ var CastleWindow = new function () {
                             .click(center(castleIdFrom)))
                 )
             }
-            window
+            castleWindow
                 .append($('<div>').addClass('relocatedProduction').append($('<div>').html(translations.relocatingFrom).addClass('title')).append(relocatingFrom))
         }
 
@@ -265,19 +256,22 @@ var CastleWindow = new function () {
         })
 
 
-        $('.production .unit').click(function (e) {
-            $(this).addClass('select')
-            $('td:not(#' + $(this).attr('id') + ').unit').removeClass('select')
-
-            if (CommonMe.getCastles().count() > 1) {
-                $('.showCastle #relocation').removeClass('buttonOff')
+        $('.production .unit').click(function () {
+            for (var i in productionUnitTD) {
+                if ($(this).attr('id') == productionUnitTD[i].normal.attr('id')) {
+                    $(this).html(productionUnitTD[i].event.html())
+                }
             }
-
-            if (castle.getProductionId() == $(this).attr('id')) {
-                $('.showCastle #go').addClass('buttonOff')
-            } else {
-                $('.showCastle #go').removeClass('buttonOff')
-            }
+//             $(this).addClass('select')
+//             $('td:not(#' + $(this).attr('id') + ').unit').removeClass('select')
+//             if (CommonMe.getCastles().count() > 1) {
+//                 $('.showCastle #relocation').removeClass('buttonOff')
+//             }
+//             if (castle.getProductionId() == $(this).attr('id')) {
+//                 $('.showCastle #go').addClass('buttonOff')
+//             } else {
+//                 $('.showCastle #go').removeClass('buttonOff')
+//             }
         })
 
         if (castle.getCapital()) {

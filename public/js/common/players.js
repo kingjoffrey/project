@@ -20,7 +20,7 @@ var Players = new function () {
     this.count = function () {
         return Object.size(players) - 1
     }
-    this.countHumans = function () {
+    this.countHumanss = function () {
         var numberOfHumans = 0
         for (var color in players) {
             if (color == 'neutral') {
@@ -28,10 +28,11 @@ var Players = new function () {
             }
             var player = this.get(color)
             if (!player.isComputer()) {
+                console.log('a')
                 numberOfHumans++
             }
         }
-        return numberOfHumans;
+        return numberOfHumans
     }
     this.toArray = function () {
         return players

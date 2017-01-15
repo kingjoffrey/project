@@ -1,5 +1,3 @@
-// *** A* ***
-
 var AStar = new function () {
     var destX,
         destY,
@@ -10,10 +8,12 @@ var AStar = new function () {
         army,
         myCastleId = {},
         movementType,
-        coord
+        element,
+        showCoordinates = 0,
+        coordinates = ''
 
     this.init = function () {
-        coord = $('#coord')
+        element = $('#terrain')
     }
     this.getX = function () {
         return destX
@@ -28,16 +28,21 @@ var AStar = new function () {
         destX = x
         destY = y
         field = Fields.get(destX, destY)
+        
+        if (showCoordinates) {            
+            coordinates = ' ' + destX + 'x' + destY
+        }
+        
         if (field.getCastleId()) {
-            coord.html(Players.get(field.getCastleColor()).getCastles().get(field.getCastleId()).getName() + ' ' + destX + 'x' + destY)
+            element.html(Players.get(field.getCastleColor()).getCastles().get(field.getCastleId()).getName() + coordinates)
         } else if (field.getTowerId()) {
-            coord.html(translations.tower + ' ' + destX + 'x' + destY)
+            element.html(translations.tower + coordinates)
         } else if (field.getRuinId()) {
-            coord.html(translations.ruin + ' ' + destX + 'x' + destY)
+            element.html(translations.ruin + coordinates)
         } else if (field.hasArmies()) {
-            coord.html(translations.army + ' ' + destX + 'x' + destY)
+            element.html(translations.army + coordinates)
         } else {
-            coord.html(Terrain.getName(field.getType()) + ' ' + destX + 'x' + destY)
+            element.html(Terrain.getName(field.getType()) + coordinates)
         }
         return 1
     }

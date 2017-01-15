@@ -2,78 +2,26 @@
     <div id="map">
         <div id="lens"></div>
     </div>
-    <div id="terrain">
-        <?php echo $this->translate('Terrain') ?>: <span id="coord" class="font-gold"></span>
+    <div id="terrain"></div>
+    <div id="gold" class="button buttonColors">
+        <div class="text-right font-gold" id="value">0</div>
+        <div><?php echo $this->translate('Gold') ?></div>
     </div>
-    <div id="goldBox" class="box">
-        <div id="battleAttack" class="iconButton buttonColors"
-             title="<?php echo $this->translate('Battle attack sequence') ?>">
-            <img src="/img/game/attack_settings.png" alt="<?php echo $this->translate('Battle attack sequence') ?>"/>
-        </div>
-        <table>
-            <tr>
-                <td id="income" class="button buttonColors">
-                    <div><?php echo $this->translate('Income') ?></div>
-                    <div class="text-right font-red" id="value">0</div>
-                </td>
-                <td id="costs" class="button buttonColors">
-                    <div><?php echo $this->translate('Upkeep') ?></div>
-                    <div class="text-right font-red" id="value">0</div>
-                </td>
-                <td id="gold" class="button buttonColors">
-                    <div><?php echo $this->translate('Treasury') ?></div>
-                    <div class="text-right font-red" id="value">0</div>
-                </td>
-            </tr>
-        </table>
-        <div id="battleDefence" class="iconButton buttonColors"
-             title="<?php echo $this->translate('Battle defence sequence') ?>">
-            <img src="/img/game/defence_settings.png" alt="<?php echo $this->translate('Battle defence sequence') ?>"/>
-        </div>
     </div>
-    <div id="playersBox" class="box">
-        <div id="turn"><span id="turnNumber"></span></div>
-        <div id="playersCanvas"></div>
-        <div id="exit" class="iconButton buttonColors">
-            <span class="Centerer"></span>
-            <img src="/img/game/exit.png" alt="<?php echo $this->translate('Exit game') ?>"/>
-        </div>
-        <div id="config" class="iconButton buttonColors">
-            <img src="/img/game/config.png" alt="<?php echo $this->translate('Configuration') ?>"/>
-        </div>
-        <div id="surrender" class="iconButton buttonColors">
-            <img src="/img/game/white_flag.png" alt="<?php echo $this->translate('Surrender') ?>"/>
-        </div>
-        <div id="statistics" class="iconButton buttonColors">
-            <img src="/img/game/statistics.png" alt="<?php echo $this->translate('Statistics') ?>"/>
-        </div>
-        <a id="nextTurn" class="button buttonColors">>></a>
 
-        <div class="close">&#x25B6</div>
+    <div id="exit" class="iconButton buttonColors">
+        <span class="Centerer"></span>
+        <img src="/img/game/exit.png" alt="<?php echo $this->translate('Exit game') ?>"/>
     </div>
-    <div id="armyBox" class="box">
-        <div id="armyButtons">
-            <div id="nextArmy" class="iconButton buttonColors buttonOff">
-                <div title="<?php echo $this->translate('Find next army') ?> (n) "></div>
-            </div>
-            <div id="armyStatus" class="iconButton buttonColors buttonOff">
-                <div title="<?php echo $this->translate('Army status') ?> (s) "></div>
-            </div>
-        </div>
-    </div>
-    <div id="chatBox" class="box disabled">
-        <div class="close">&#x25B6</div>
-        <div id="friends"><?php echo $this->placeholder('friends') ?></div>
-        <div id="chatWindow">
-            <div id="chatContent"></div>
-        </div>
-        <div id="chatInput">
-            <div id="showFriends" class="iconButton buttonColors"><img src="/img/friends.png"/></div>
-            <input id="friendId" value=""/>
-            <input type="text" name="msg" id="msg">
-            <a id="send" class="button buttonColors"> > </a>
 
-            <div id="chatTitle"></div>
+    <div id="nextTurn" class="iconButton buttonColors"><span id="turnNumber"></span> >></div>
+
+    <div id="armyButtons">
+        <div id="nextArmy" class="iconButton buttonColors buttonOff">
+            <div title="<?php echo $this->translate('Find next army') ?> (n) "></div>
+        </div>
+        <div id="armyStatus" class="iconButton buttonColors buttonOff">
+            <div title="<?php echo $this->translate('Army status') ?> (s) "></div>
         </div>
     </div>
 </div>

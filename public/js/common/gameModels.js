@@ -113,19 +113,25 @@ var GameModels = new function () {
         return mesh
     }
     this.addTree = function (x, y) {
-        var mesh = Models.getTree(x, y)
-        mesh.position.set(x * 2 + 1, 0, y * 2 + 1)
-        mesh.rotation.y = 2 * Math.PI * Math.random()
+        var maxI = Math.floor((Math.random() * 5))
+        for(var i = 0; i < maxI + 2; i++) {
+            var mesh = Models.getTree(x, y),
+                randomX = Math.floor((Math.random() * 2)),
+                randomY = Math.floor((Math.random() * 2))
+                
+            mesh.position.set(x * 2 + randomX, 0, y * 2 + randomY)
+            mesh.rotation.y = 2 * Math.PI * Math.random()
 
-        mesh.scale.x = 0.3
-        mesh.scale.y = 0.3
-        mesh.scale.z = 0.3
+            mesh.scale.x = 0.15
+            mesh.scale.y = 0.15
+            mesh.scale.z = 0.15
 
-        if (GameScene.getShadows()) {
-            mesh.castShadow = true
-            mesh.receiveShadow = true
+            if (GameScene.getShadows()) {
+                mesh.castShadow = true
+                mesh.receiveShadow = true
+            }
+            GameScene.add(mesh)
         }
-        GameScene.add(mesh)
     }
     this.addSwamp = function (x, y) {
         var mesh = Models.getSwamp(x, y)

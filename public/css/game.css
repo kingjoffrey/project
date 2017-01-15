@@ -35,6 +35,7 @@
 
 #map {
     position: absolute;
+    display: none
 }
 
 #map * {
@@ -88,23 +89,29 @@
 }
 
 #exit.iconButton {
-    top: 4px;
-    left: 0px;
+    position: absolute;
+    right: 2px;
+    top: 2px;
+    width: 30px;
+    height: 30px;
 }
 
 #surrender.iconButton {
     top: 4px;
     left: 133px;
+    display: none;
 }
 
 #statistics.iconButton {
     top: 136px;
     left: 0px;
+    display: none;
 }
 
 #config.iconButton {
     top: 136px;
     left: 133px;
+    display: none;
 }
 
 #turn {
@@ -135,7 +142,7 @@
     min-width: 321px;
     min-height: 70px;
     padding-top: 30px;
-    background: url(/img/deska_1.png);
+/*     background: url(/img/deska_1.png); */
     margin: 0 auto;
     display: inline-block;
     border: 0px solid green;
@@ -157,7 +164,7 @@
 .message #buttons {
     width: auto;
     height: 50px;
-    margin: 0 auto;
+    margin: 0 auto 10px auto;
 }
 
 .message #buttons .button {
@@ -178,9 +185,9 @@
     padding: 8px;
     color: #fff;
     border: none;
-    background: url(/img/deska_0.png) 132px 33px;
-    box-shadow: 3px 3px 5px #000;
-    width: 300px;
+    background: #000;
+/*     box-shadow: 0 0 5px #000; */
+/*     width: 300px; */
 }
 
 .message h4 {
@@ -207,8 +214,13 @@
 }
 
 .message div.showCastle .button {
-    line-height: 28px;
-    margin: 12px 2px
+    line-height: 0;
+    margin: 2px;
+    padding: 19px;
+}
+
+.message div.showCastle .unit .button {
+    display: block;
 }
 
 .message div.showCastle #next {
@@ -543,36 +555,11 @@
     width: 50px;
 }
 
-#goldBox {
-    min-width: 200px;
-    border: none;
-    border-radius: 0px;
+#gold {
     text-shadow: none;
-    background: url(/img/deska_0.png) 132px 33px;
-    display: none;
-}
-
-#goldBox table {
-    width: auto;
-    min-width: 0;
-    border-spacing: 0;
-    display: inline-flex;
-}
-
-#goldBox table tr:nth-child(odd) {
-    background: none;
-}
-
-#goldBox td {
-    height: 25px;
-    padding: 2px;
-    width: 116px;
-    text-align: center;
-    /*border: none !important;*/
-}
-
-#goldBox td div {
-    line-height: 14px;
+    line-height: normal;
+    position: absolute;    
+    padding: 0 2px;
 }
 
 #battleSettingsBox {
@@ -649,7 +636,7 @@ html {
     background: #000 !important;
     color: #fff !important;
     cursor: pointer;
-    font-weight: bold;
+/*     font-weight: bold; */
 }
 
 .buttonColors:hover {
@@ -844,34 +831,6 @@ table.treasury td.c {
     background: none;
 }
 
-.close {
-    width: 19px;
-    height: 19px;
-    line-height: 18px;
-    text-shadow: none;
-    color: #fff;
-    /*border: 2px solid orangered;*/
-    cursor: pointer;
-    /*border-radius: 5px;*/
-}
-
-.close:hover {
-    color: gold;
-}
-
-#mapBox .close {
-    top: 12px;
-}
-
-#limitBox .close {
-    top: 8px;
-}
-
-#playersBox .close {
-    left: -23px;
-    top: 12px;
-}
-
 #battleAttack {
     width: 27px;
     height: 27px;
@@ -883,12 +842,12 @@ table.treasury td.c {
 }
 
 #nextTurn {
-    line-height: 20px;
+    line-height: 0px;
     position: absolute;
-    top: 64px;
-    left: 59px;
-    display: inline-flex;
+    top: 2px;
+    right: 37px;
     padding: 15px 20px;
+    text-shadow: none;
 }
 
 #nextTurn:hover {
@@ -945,45 +904,14 @@ table.treasury td {
     height: 28px !important;
 }
 
-#armyBox {
+#armyButtons {
     border: none;
     border-radius: 0px;
-    /*background: url(/img/deska_0.png) 197px 55px;*/
     background: none;
     bottom: 0px;
-}
-
-#armyBox #unitsBox {
-    float: right;
-}
-
-#armyBox #unitsBox div {
-    display: inline-block;
-    position: fixed;
-    padding: 2px;
-}
-
-#armyBox #unitsBox canvas {
-    display: inline-block;
-    height: 50px;
-}
-
-#armyBox #armyButtons {
-    float: left;
-}
-
-#armyBox .iconButton, .status .iconButton {
-    width: 25px;
-    line-height: 25px;
-    height: 25px;
-    display: inline-block;
-    text-shadow: none;
-    margin: 5px;
-    padding: 5px;
-}
-
-#armyBox .iconButton:hover, .status .iconButton:hover {
-    background: #fff;
+    position: absolute;
+    right: 0;
+    bottom: 0;
 }
 
 #disbandArmy div {
@@ -996,10 +924,15 @@ table.treasury td {
     background: url(/img/game/buttons/delete_off.png) center center no-repeat !important;
 }
 
+#nextArmy {
+    box-shadow: 0 0 5px #000;
+}
+
 #nextArmy div {
     width: 23px;
     height: 23px;
     background: url(/img/game/buttons/search.png) center center no-repeat !important;
+    padding: 7px;
 }
 
 #quitArmy div {
@@ -1062,10 +995,15 @@ table.treasury td {
     background: url(/img/game/buttons/raze_off.png) center center no-repeat !important;
 }
 
+#armyStatus {
+    box-shadow: 0 0 5px #000;
+}
+
 #armyStatus div {
     width: 23px;
     height: 23px;
     background: url(/img/game/buttons/status.png) center center no-repeat !important;
+    padding: 7px;
 }
 
 #armyStatus.buttonOff div {
@@ -1120,4 +1058,12 @@ table.treasury td {
 
 .configuration .row div.description {
     padding-left: 10px;
+}
+
+#game h3 {
+    color: #fff;
+}
+
+#playersCanvas {
+    display: none;
 }

@@ -7,7 +7,7 @@ var Message = new function () {
     }
     this.simple = function (title, message) {
         var id = this.show(title, $('<div>').html(message).addClass('simple'))
-        this.close(id)
+        this.closee(id)
         return id
     }
     this.error = function (message) {
@@ -28,7 +28,7 @@ var Message = new function () {
         if (isSet(info)) {
             div.addClass('info')
         }
-        $('#goldBox').after(div)
+        $('#game').append(div)
         this.adjust(id)
         return id
     }
@@ -102,7 +102,7 @@ var Message = new function () {
 
         this.setOverflowHeight(id)
     }
-    this.cancel = function (id, func) {
+    this.cancell = function (id, func) {
         if (!$('#' + id + ' #buttons').length) {
             $('#' + id + ' #content').append($('<div>').attr('id', 'buttons'))
         }
@@ -118,7 +118,7 @@ var Message = new function () {
                 })
         )
     }
-    this.close = function (id, func) {
+    this.closee = function (id, func) {
         if (!$('#' + id + ' #buttons').length) {
             $('#' + id + ' #content').append($('<div>').attr('id', 'buttons'))
         }

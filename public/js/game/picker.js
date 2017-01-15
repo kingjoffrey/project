@@ -33,7 +33,7 @@ var PickerGame = new function () {
                                 CastleWindow.show(CommonMe.getCastle(castleId))
                             }
                         } else {
-                            dragStart = Picker.getPoint(event)
+                            dragStart = PickerGame.getPoint(event)
                         }
                     }
                 }
@@ -77,7 +77,7 @@ var PickerGame = new function () {
                     CastleWindow.show(CommonMe.getCastle(castleId))
                 }
             } else {
-                dragStart = Picker.getPoint(event)
+                dragStart = PickerGame.getPoint(event)
             }
         }
     }
@@ -92,8 +92,8 @@ var PickerGame = new function () {
                 AStar.showPath()
             }
             if (dragStart) {
-                var dragEnd = Picker.getPoint()
-                Scene.moveCamera(dragStart.x - dragEnd.x, dragStart.y - dragEnd.y)
+                var dragEnd = PickerGame.getPoint()
+                GameScene.moveCamera(dragStart.x - dragEnd.x, dragStart.y - dragEnd.y)
                 dragStart = dragEnd
             }
         }
@@ -105,8 +105,8 @@ var PickerGame = new function () {
 
         PickerCommon.intersect(event)
         if (dragStart) {
-            var dragEnd = Picker.getPoint()
-            Scene.moveCamera(dragStart.x - dragEnd.x, dragStart.y - dragEnd.y)
+            var dragEnd = PickerGame.getPoint()
+            GameScene.moveCamera(dragStart.x - dragEnd.x, dragStart.y - dragEnd.y)
             dragStart = dragEnd
         }
     }

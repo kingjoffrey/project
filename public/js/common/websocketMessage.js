@@ -101,17 +101,17 @@ var WebSocketMessageCommon = new function () {
                 break;
 
             case 'close':
-                GamePlayers.setOnline(r.color, 0)
+//                 GamePlayers.setOnline(r.color, 0)
                 break;
 
             case 'online':
                 //if (!CommonMe.colorEquals(r.color)) {
-                    GamePlayers.setOnline(r.color, 1)
+//                     GamePlayers.setOnline(r.color, 1)
                 //}
                 break;
 
             case 'chat':
-                Chat.message(r.color, r.msg, makeTime())
+//                 Chat.message(r.color, r.msg, makeTime())
                 break;
 
             case 'production':
