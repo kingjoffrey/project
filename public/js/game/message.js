@@ -7,7 +7,7 @@ var Message = new function () {
     }
     this.simple = function (title, message) {
         var id = this.show(title, $('<div>').html(message).addClass('simple'))
-        this.closee(id)
+        this.close(id)
         return id
     }
     this.error = function (message) {
@@ -102,7 +102,7 @@ var Message = new function () {
 
         this.setOverflowHeight(id)
     }
-    this.cancell = function (id, func) {
+    this.cancel = function (id, func) {
         if (!$('#' + id + ' #buttons').length) {
             $('#' + id + ' #content').append($('<div>').attr('id', 'buttons'))
         }
@@ -118,7 +118,7 @@ var Message = new function () {
                 })
         )
     }
-    this.closee = function (id, func) {
+    this.close = function (id, func) {
         if (!$('#' + id + ' #buttons').length) {
             $('#' + id + ' #content').append($('<div>').attr('id', 'buttons'))
         }

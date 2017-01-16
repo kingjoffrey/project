@@ -65,6 +65,10 @@ var CommonCastle = function (castle, bgC) {
         })
         mesh.children[0].material.color.set(bgColor)
     }
+    this.setDefense = function (defense) {
+        castle.defense = defense
+        Models.castleChangeDefense(mesh, defense)
+    }
     this.handle = function (unitId, stop, relocation) {
         if (relocation) {
             if (!unitId) {
@@ -87,9 +91,5 @@ var CommonCastle = function (castle, bgC) {
         if (unitId) {
             WebSocketSendCommon.production(castle.id, unitId)
         }
-    }
-    this.setDefense = function (defense) {
-        castle.defense = defense
-        Models.castleChangeDefense(mesh, defense)
     }
 }

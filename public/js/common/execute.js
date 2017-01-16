@@ -191,9 +191,9 @@ var Execute = new function () {
                     break;
 
                 case 'dead':
-                    if (!GamePlayers.hasSkull(r.color)) {
-                        GamePlayers.drawSkull(r.color)
-                    }
+                    // if (!GamePlayers.hasSkull(r.color)) {
+                    //     GamePlayers.drawSkull(r.color)
+                    // }
                     Execute.setExecuting(0)
                     break;
             }

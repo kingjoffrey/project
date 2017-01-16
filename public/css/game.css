@@ -142,14 +142,13 @@
     min-width: 321px;
     min-height: 70px;
     padding-top: 30px;
-/*     background: url(/img/deska_1.png); */
     margin: 0 auto;
     display: inline-block;
-    border: 0px solid green;
+    border: 1px solid green;
     border-radius: 0px !important;
     box-shadow: 0 0 20px #000;
-    color: #FFA774;
     pointer-events: auto;
+    color: #fff;
 }
 
 .message #content tr {
@@ -175,7 +174,7 @@
 
 .message .msgTitle {
     text-align: center;
-    border: none;
+    border-bottom: 1px solid green;
     margin: -47px auto 0 auto;
 }
 
@@ -186,8 +185,6 @@
     color: #fff;
     border: none;
     background: #000;
-/*     box-shadow: 0 0 5px #000; */
-/*     width: 300px; */
 }
 
 .message h4 {
@@ -219,10 +216,6 @@
     padding: 19px;
 }
 
-.message div.showCastle .unit .button {
-    display: block;
-}
-
 .message div.showCastle #next {
     width: 90px;
 }
@@ -235,27 +228,27 @@
     border: none;
 }
 
-.message div.showCastle tr td:first-of-type {
-    text-align: right;
-}
+/*.message div.showCastle tr td:first-of-type {*/
+/*text-align: right;*/
+/*}*/
 
 .message div.showCastle tr {
     background: none;
-    /*color: #D7DAA4;*/
 }
 
 .message div.production, .message div.relocatedProduction {
-    /*text-shadow: none;*/
-    border: 1px solid grey;
+    border: 1px solid #000;
     border-radius: 5px;
     padding: 0;
     font-size: 20px;
-    color: goldenrod;
-    margin: 10px 0;
+    color: #fff;
+    font-weight: bold;
+    margin-bottom: 2px;
 }
 
 .message div.production div.title, .message div.relocatedProduction div.title {
     padding: 10px;
+    background: #000;
 }
 
 .message .production table {
@@ -267,10 +260,16 @@
 .message .production td.unit {
     color: #fff;
     margin: 0;
-    padding: 5px;
     text-align: center;
-    cursor: pointer;
-    box-shadow: 1px 1px 5px #000;
+    box-shadow: 0 0 5px #000;
+    min-width: 225px;
+    height: 180px !important;
+    overflow: hidden;
+    vertical-align: top;
+}
+
+.message .production .unit.checked {
+    border: 1px solid lime;
 }
 
 .message .production td {
@@ -294,34 +293,25 @@
     border-bottom-right-radius: 5px;
 }
 
-.message .production .unit.select {
+.message .production .unit .name {
+    text-shadow: none;
     background: #fff !important;
     color: #000 !important;
-    text-shadow: none;
 }
 
-.message .production .unit.checked {
+.message .production .unit.checked .name {
     background: lime !important;
-    color: #000 !important;
-    text-shadow: none;
-}
-
-.message .production .unit:hover {
-    background: lime !important;
-    color: #000 !important;
-    text-shadow: none;
-}
-
-.message .production .unit .canvas {
-    float: left;
 }
 
 .message .production .unit div.attributes {
-    padding: 1px;
+    text-align: right;
 }
 
-.message .production .unit div p {
-    text-align: right;
+.message .production .unit div.attributes div {
+    background: #000;
+    display: inline-block;
+    margin: 1px;
+    padding-left: 5px;
 }
 
 .message .showCastle .iconButton {
@@ -558,7 +548,7 @@
 #gold {
     text-shadow: none;
     line-height: normal;
-    position: absolute;    
+    position: absolute;
     padding: 0 2px;
 }
 
@@ -636,7 +626,7 @@ html {
     background: #000 !important;
     color: #fff !important;
     cursor: pointer;
-/*     font-weight: bold; */
+    /*     font-weight: bold; */
 }
 
 .buttonColors:hover {
