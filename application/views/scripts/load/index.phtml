@@ -15,7 +15,7 @@
                 <div class="padding"><?php echo $this->translate('Time limit per turn') ?></div>
             </th>
             <th><?php echo $this->translate('Player name') ?>, <?php echo $this->translate('Player color') ?>
-                , <?php echo $this->translate('Team color') ?>, <?php echo $this->translate('Kingdom name') ?></th>
+                , <?php echo $this->translate('Team color') ?></th>
             <th>
                 <div class="padding"><?php echo $this->translate('Turn nr') ?></div>
                 <hr style="border: 1px solid #fff">
@@ -45,14 +45,11 @@
                     <td style="min-width: 500px">
                         <?php foreach ($game['players'] as $v): ?>
                             <div>
-                                <div
-                                    style="height: 34px;float: left;line-height: 34px;width: 285px"><?php echo $v['firstName'] . ' ' . $v['lastName'] ?></div>
+                                <div style="height: 34px;float: left;line-height: 34px;width: 285px"><?php echo $v['firstName'] . ' ' . $v['lastName'] ?></div>
                                 <div style="width:80px;height: 34px;float: left">
-                                    <img src="/img/game/heroes/<?php echo $v['color'] ?>.png"
-                                         style="display:inline-block;box-shadow: 24px 0 3px <?php echo $game['teams'][$v['team']] ?>;margin:2px"/>
+                                    <div class="colorBox" style="background: <?php echo $v['backgroundColor'] ?>"></div>
+                                    <div class="colorBox" style="background: <?php echo $game['teams'][$v['team']] ?>"></div>
                                 </div>
-                                <div
-                                    style="height: 34px;float: left;line-height: 34px"><?php echo $v['longName'] ?></div>
                             </div>
                         <?php endforeach ?>
                     </td>

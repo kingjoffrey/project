@@ -100,6 +100,23 @@ class Application_Model_MapPlayers extends Coret_Db_Table_Abstract
         return $array;
     }
 
+    public function getShortNames()
+    {
+        $select = $this->_db->select()
+            ->from(array('a' => $this->_name), 'mapPlayerId')
+            ->join(array('b' => 'side'), 'a."sideId" = b."sideId"', 'shortName')
+            ->where($this->_db->quoteIdentifier('mapId') . ' = ?', $this->_mapId)
+            ->order('startOrder');
+
+        $array = array();
+
+        foreach ($this->selectAll($select) as $row) {
+            $array[$row['mapPlayerId']] = $row['shortName'];
+        }
+
+        return $array;
+    }
+
     public function getAll()
     {
         $select = $this->_db->select()

@@ -12,7 +12,7 @@ var WebSocketMessageNew = new function () {
 
             case 'team':
                 $('tr#' + r.mapPlayerId + ' select').val(r.teamId)
-                $('tr#' + r.mapPlayerId + ' .td4 img').attr('src', '/img/game/heroes/' + New.getMapPlayers()[r.teamId].shortName + '.png')
+                $('tr#' + r.mapPlayerId + ' .colorBox').css('background', New.getMapPlayers()[r.teamId].backgroundColor)
                 break
 
             case 'start':

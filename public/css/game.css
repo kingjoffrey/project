@@ -138,6 +138,10 @@
     pointer-events: none
 }
 
+.message.info {
+    z-index: 29000;
+}
+
 .message #content {
     min-width: 321px;
     min-height: 70px;

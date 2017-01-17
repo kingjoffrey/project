@@ -355,10 +355,3 @@ var Army = function (army, bgColor, miniMapColor, textColor, color) {
             .addClass('a')
     )
 }
-
-
-var Hero = {
-    getImage: function (color) {
-        return '/img/game/heroes/' + color + '.png';
-    }
-}

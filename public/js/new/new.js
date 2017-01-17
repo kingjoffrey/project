@@ -32,8 +32,8 @@ var New = new function () {
 
             for (var mapPlayerId in mapPlayers) {
                 $('#' + mapPlayerId + ' .td4')
-                    .html($(form).children('dl').children('dd').children('select'))
-                    .append($('<img>').attr('src', '/img/game/heroes/' + mapPlayers[mapPlayerId].shortName + '.png'))
+                    .append($('<div>').html($(form).children('dl').children('dd').children('select')))
+                    .append($('<div>').addClass('colorBox').css('background', mapPlayers[mapPlayerId].backgroundColor))
                 $('#' + mapPlayerId + ' .td4 select')
                     .val(mapPlayerId)
                     .attr('id', mapPlayerId)

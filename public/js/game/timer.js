@@ -155,7 +155,7 @@ var Timer = new function () {
 
         $('#timerRows')
             .prepend($('<div class="row">')
-                .append($('<div class="left color">').html($('<img>').attr('src', Hero.getImage(color))))
+                .append($('<div class="left color">').html(color))
                 .append($('<div class="left nr">').html(number))
                 .append(
                     $('<div class="left time" id="' + color + number + '">')

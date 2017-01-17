@@ -67,7 +67,7 @@ class NewController
         $view->timeLimits = Application_Model_Limit::timeLimits();
         $view->turnTimeLimit = Application_Model_Limit::turnTimeLimit();
 
-        $view->form = new Application_Form_Team(array('longNames' => $mMapPlayers->getLongNames()));
+        $view->form = new Application_Form_Team(array('longNames' => $mMapPlayers->getShortNames()));
         $view->form->setView($view);
 
         $view->addScriptPath(APPLICATION_PATH . '/views/scripts');

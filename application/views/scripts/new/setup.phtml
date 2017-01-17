@@ -1,7 +1,7 @@
 <div class="table">
     <h2><?php echo $this->translate('Select your color and team') ?></h2>
     <table id="playersingame">
-        <th><?php echo $this->translate('Player name & color') ?></th>
+        <th><?php echo $this->translate('Player color') ?></th>
         <th><?php echo $this->translate('Select your color') ?></th>
         <th><?php echo $this->translate('Human/AI') ?></th>
         <th><?php echo $this->translate('Select your team') ?></th>
@@ -9,10 +9,8 @@
             <tr id="<?php echo $mapPlayerId ?>">
                 <td class="td1">
                     <div>
-                        <img src="/img/game/heroes/<?php echo $mapPlayer['shortName'] ?>.png"/>
-                        <span
-                            style="color:<?php echo $mapPlayer['backgroundColor'] ?>;text-shadow: 2px 2px 0 <?php echo $mapPlayer['textColor'] ?>">
-                            <?php echo $mapPlayer['longName'] ?>
+                        <span style="color:<?php echo $mapPlayer['backgroundColor'] ?>;text-shadow: 2px 2px 0 <?php echo $mapPlayer['textColor'] ?>">
+                            <?php echo $mapPlayer['shortName'] ?>
                         </span>
                     </div>
                 </td>
