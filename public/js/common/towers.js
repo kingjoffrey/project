@@ -22,6 +22,9 @@ var Towers = function () {
     this.get = function (towerId) {
         return towers[towerId]
     }
+    this.has = function (castleId) {
+        return isSet(towers[towerId])
+    }
     this.delete = function (towerId) {
         delete towers[towerId]
     }

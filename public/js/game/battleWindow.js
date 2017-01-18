@@ -213,20 +213,16 @@ var BattleWindow = new function () {
             }
 
             if (r.battle.castleId) {
-                var castle
-                for (var color in Players.toArray()) {
-                    if (castle = Players.get(color).getCastles().get(r.battle.castleId)) {
-                        castleMesh = BattleModels.addCastle(castle.toArray(), color, BattleScene)
-                    }
+                if (Players.get(color).getCastles().has(r.battle.castleId)) {
+                    var castle = Players.get(color).getCastles().get(r.battle.castleId)
+                    castleMesh = BattleModels.addCastle(castle.toArray(), color, BattleScene)
                 }
             }
 
             if (r.battle.towerId) {
-                var tower
-                for (var color in Players.toArray()) {
-                    if (Players.get(color).getTowers().get(r.battle.towerId)) {
-                        towerMesh = BattleModels.addTower(color, BattleScene)
-                    }
+                if (Players.get(color).getTowers().has(r.battle.towerId)) {
+                    var tower = Players.get(color).getTowers().get(r.battle.towerId)
+                    towerMesh = BattleModels.addTower(color, BattleScene)
                 }
             }
         }

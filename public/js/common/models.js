@@ -406,7 +406,8 @@ var Models = new function () {
         return mesh
     }
     this.getHero = function (color) {
-        var mesh = new THREE.Mesh(window['heroModel'].geometry, window['heroModel'].material)
+        var armyMaterial = new THREE.MeshLambertMaterial({color: color, side: THREE.DoubleSide})
+        var mesh = new THREE.Mesh(window['heroModel'].geometry, armyMaterial)
         return mesh
     }
     this.getUnit = function (color, modelName) {

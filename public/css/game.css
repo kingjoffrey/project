@@ -18,10 +18,9 @@
     clear: both;
 }
 
-#game table {
+#game table, .message table {
     min-width: 0;
     border-spacing: 1px;
-    font-size: 12px;
     border: none !important;
 }
 

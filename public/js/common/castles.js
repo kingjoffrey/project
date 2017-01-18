@@ -59,11 +59,7 @@ var Castles = function () {
      * @returns Castle
      */
     this.get = function (castleId) {
-        if (this.has(castleId)) {
-            return castles[castleId]
-        } else {
-            console.log('No castle in castles with id=' + castleId)
-        }
+        return castles[castleId]
     }
     this.has = function (castleId) {
         return isSet(castles[castleId])
