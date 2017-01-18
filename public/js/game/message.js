@@ -28,7 +28,7 @@ var Message = new function () {
         if (isSet(info)) {
             div.addClass('info')
         }
-        $('#game').append(div)
+        $('#main').append(div)
         this.adjust(id)
         return id
     }

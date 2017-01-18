@@ -69,48 +69,54 @@ var GameGui = new function () {
         },
         prepareButtons = function () {
             $('#gold').click(function () {
+                Sound.play('click')
                 TreasuryWindow.treasury()
             })
 
             $('#income').click(function () {
+                Sound.play('click')
                 TreasuryWindow.income()
             })
 
             $('#costs').click(function () {
+                Sound.play('click')
                 TreasuryWindow.upkeep()
             })
 
             $('#battleAttack').click(function () {
+                Sound.play('click')
                 BattleWindow.attack()
             })
 
             $('#battleDefence').click(function () {
+                Sound.play('click')
                 BattleWindow.defence()
             })
 
             $('#exit').click(function () {
+                Sound.play('click')
                 GameGui.exit()
             })
 
             $('#surrender').click(function () {
+                Sound.play('click')
                 var id = Message.show(translations.surrender, $('<div>').html(translations.areYouSure))
                 Message.ok(id, WebSocketSendCommon.surrender)
                 Message.cancel(id)
             });
 
             $('#statistics').click(function () {
+                Sound.play('click')
                 WebSocketSendCommon.statistics();
             })
 
-            $('#config').click(function () {
-                ConfigurationWindow.show()
-            })
-
             $('#nextTurn').click(function () {
+                Sound.play('click')
                 Turn.next()
             })
 
             $('#nextArmy').click(function () {
+                Sound.play('click')
                 CommonMe.findNext()
             })
 
@@ -130,26 +136,48 @@ var GameGui = new function () {
                 CommonMe.deselectArmy()
             })
 
-            $('#showFriends').click(function () {
-                if (friendsShow) {
-                    $('#friends').css({
-                        display: 'none',
-                        top: 0
-                    })
-                    friendsShow = false
+            $('#show').click(function () {
+                Sound.play('click')
+                GameGui.setShow(!GameGui.getShow())
+                if (GameGui.getShow()) {
+                    $(this).children().attr('src', '/img/game/show.png')
                 } else {
-                    var height = $('#friends').height()
-                    $('#friends').css({
-                        display: 'block',
-                        height: 0
-                    })
-                    $('#friends').animate({
-                        top: -height - 10 + 'px',
-                        height: height + 'px'
-                    }, 200)
-                    friendsShow = true
+                    $(this).children().attr('src', '/img/game/show_off.png')
                 }
             })
+            $('#sound').click(function () {
+                Sound.play('click')
+                Sound.mute = !Sound.mute
+                if (Sound.mute) {
+                    $(this).children().attr('src', '/img/game/sound_off.png')
+                } else {
+                    $(this).children().attr('src', '/img/game/sound_on.png')
+                }
+            })
+            $('#fullScreen').click(function () {
+                Sound.play('click')
+                var elem = document.getElementById('game');
+                if (elem.requestFullscreen) {
+                    elem.requestFullscreen()
+                } else if (elem.msRequestFullscreen) {
+                    elem.msRequestFullscreen()
+                } else if (elem.mozRequestFullScreen) {
+                    elem.mozRequestFullScreen()
+                } else if (elem.webkitRequestFullscreen) {
+                    elem.webkitRequestFullscreen()
+                }
+            })
+            $('#showMenu').click(function () {
+                $('#game').hide()
+                $('#gameMenu').show()
+            })
+            $('#cancel').click(function () {
+                $('#game').show()
+                $('#gameMenu').hide()
+            })
+            // $('#').click(function () {
+            //
+            // })
         }
     this.adjust = function () {
         GameScene.resize($(window).innerWidth(), $(window).innerHeight())
@@ -157,10 +185,10 @@ var GameGui = new function () {
 //         MiniMap.adjust()
 
 //         console.log(Players.countHumans())
-        
+
 //         if (!Players.countHumans() > 1) {
 //             console.log('b')
-            $('#chatBox').css({display: 'none'})
+        $('#chatBox').css({display: 'none'})
 //         }
 
         var goldBoxLeft = GameScene.getWidth() / 2 - $('#gold').outerWidth() / 2

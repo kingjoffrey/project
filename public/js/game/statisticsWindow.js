@@ -1,22 +1,18 @@
 var StatisticsWindow = new function () {
     this.show = function (r) {
-        var statistics = $('<div>'),
-            table = $('<table>')
-                .addClass('statistics')
-                .append($('<tr>')
-                    .append($('<th>'))
-                    .append($('<th>'))
-                    .append($('<th>').html(translations.castlesHeld))
-                    .append($('<th>').html(translations.castlesConquered))
-                    .append($('<th>').html(translations.castlesLost))
-                    .append($('<th>').html(translations.castlesRazed))
-                    .append($('<th>').html(translations.unitsCreated))
-                    .append($('<th>').html(translations.unitsKilled))
-                    .append($('<th>').html(translations.unitsLost))
-                    .append($('<th>').html(translations.heroesKilled))
-                    .append($('<th>').html(translations.heroesLost))
-            ),
-            color
+        var table = $('<table>')
+            .addClass('statistics')
+            .append($('<tr>')
+                .append($('<th>').html(translations.castlesHeld))
+                .append($('<th>').html(translations.castlesConquered))
+                .append($('<th>').html(translations.castlesLost))
+                .append($('<th>').html(translations.castlesRazed))
+                .append($('<th>').html(translations.unitsCreated))
+                .append($('<th>').html(translations.unitsKilled))
+                .append($('<th>').html(translations.unitsLost))
+                .append($('<th>').html(translations.heroesKilled))
+                .append($('<th>').html(translations.heroesLost))
+            )
 
         for (var color in Players.toArray()) {
             var tr = $('<tr>'),
@@ -24,15 +20,8 @@ var StatisticsWindow = new function () {
                 numberOfCastlesHeld = player.getCastles().count(),
                 backgroundColor = player.getBackgroundColor()
 
-            if (color == 'neutral') {
-                var scr = Unit.getImage(Game.getFirstUnitId(), color)
-            } else {
-                var scr = Hero.getImage(color)
-            }
-            tr.append($('<td>').addClass('shortName').html($('<img>').attr('src', scr)))
 
             var td = $('<td>').addClass('shortName');
-            tr.append(td.html(player.getLongName()))
 
             var td = $('<td>').css({
                 border: '1px solid ' + backgroundColor
@@ -116,10 +105,9 @@ var StatisticsWindow = new function () {
                 tr.append(td.html('0'))
             }
 
-            table.append(tr);
+            table.append(tr)
         }
-        statistics.append(table);
 
-        Message.simple(translations.statistics, statistics)
+        Message.simple(translations.statistics, $('<div>').append(table))
     }
 }

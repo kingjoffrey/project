@@ -13,6 +13,7 @@ class Admin_Model_Map extends Coret_Model_ParentDb
         'mapHeight' => array('label' => 'Wysokość', 'type' => 'number'),
         'maxPlayers' => array('label' => 'Maksymalna ilość graczy', 'type' => 'number'),
         'tutorial' => array('label' => 'Tutorial', 'type' => 'checkbox'),
+        'publish' => array('label' => 'Publish', 'type' => 'checkbox'),
         'date' => array('label' => 'Data', 'type' => 'date', 'active' => array('db' => false, 'form' => false)),
     );
 

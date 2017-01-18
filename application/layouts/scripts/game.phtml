@@ -7,11 +7,10 @@
         <div class="text-right font-gold" id="value">0</div>
         <div><?php echo $this->translate('Gold') ?></div>
     </div>
-    </div>
 
-    <div id="exit" class="iconButton buttonColors">
+    <div id="showMenu" class="iconButton buttonColors">
         <span class="Centerer"></span>
-        <img src="/img/game/exit.png" alt="<?php echo $this->translate('Exit game') ?>"/>
+        <img src="/img/game/showMenu.png" alt="<?php echo $this->translate('Show menu') ?>"/>
     </div>
 
     <div id="nextTurn" class="iconButton buttonColors"><span id="turnNumber"></span> >></div>
@@ -26,3 +25,55 @@
     </div>
 </div>
 <div id="loading"><?php echo $this->translate('Loading') ?>...</div>
+<div id="gameMenu">
+    <div class="row">
+        <div class="description">Exit game</div>
+        <div id="exit" class="iconButton buttonColors">
+            <span class="Centerer"></span>
+            <img src="/img/game/exit.png" alt="<?php echo $this->translate('Exit game') ?>"/>
+        </div>
+    </div>
+    <div class="row">
+        <div class="description">Surrender</div>
+        <div id="surrender" class="iconButton buttonColors">
+            <span class="Centerer"></span>
+            <img src="/img/game/white_flag.png" alt="<?php echo $this->translate('Surrender') ?>"/>
+        </div>
+    </div>
+    <div class="row">
+        <div class="description">Show statistics</div>
+        <div id="statistics" class="iconButton buttonColors">
+            <span class="Centerer"></span>
+            <img src="/img/game/statistics.png" alt="<?php echo $this->translate('Statistics') ?>"/>
+        </div>
+    </div>
+    <div class="row">
+        <div class="description">Show other players moves</div>
+        <div id="show" class="iconButton buttonColors">
+            <span class="Centerer"></span>
+            <img src="/img/game/show.png" alt="<?php echo $this->translate('Show others') ?>"/>
+        </div>
+    </div>
+    <div class="row">
+        <div class="description">Turn sound on/off</div>
+        <div id="sound" class="iconButton buttonColors">
+            <span class="Centerer"></span>
+            <img src="/img/game/sound_on.png" alt="<?php echo $this->translate('Sound') ?>"/>
+        </div>
+    </div>
+    <div class="row">
+        <div class="description">Toggle full screen</div>
+        <div id="fullScreen" class="iconButton buttonColors">
+            <span class="Centerer"></span>
+            <img src="/img/game/full_screen.png" alt="<?php echo $this->translate('Full screen') ?>"/>
+        </div>
+    </div>
+<!--    <div>-->
+<!--        <div id="" class="iconButton buttonColors">-->
+<!--            <img src="/img/game/.png" alt="--><?php //echo $this->translate('') ?><!--"/>-->
+<!--        </div>-->
+<!--        <div></div>-->
+<!--    </div>-->
+    <div id="cancel" class="iconButton buttonColors"><?php echo $this->translate('cancel') ?></div>
+
+</div>

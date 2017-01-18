@@ -90,7 +90,6 @@ class IndexController extends Coret_Controller_Authorized
         $this->view->headScript()->appendFile('/js/game/turn.js?v=' . $version);
         $this->view->headScript()->appendFile('/js/game/sound.js?v=' . $version);
         $this->view->headScript()->appendFile('/js/game/castleWindow.js?v=' . $version);
-        $this->view->headScript()->appendFile('/js/game/configurationWindow.js?v=' . $version);
         $this->view->headScript()->appendFile('/js/game/splitWindow.js?v=' . $version);
         $this->view->headScript()->appendFile('/js/game/statusWindow.js?v=' . $version);
         $this->view->headScript()->appendFile('/js/game/battleWindow.js?v=' . $version);

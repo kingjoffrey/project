@@ -88,32 +88,6 @@
     font-size: 20px;
 }
 
-#exit.iconButton {
-    position: absolute;
-    right: 2px;
-    top: 2px;
-    width: 30px;
-    height: 30px;
-}
-
-#surrender.iconButton {
-    top: 4px;
-    left: 133px;
-    display: none;
-}
-
-#statistics.iconButton {
-    top: 136px;
-    left: 0px;
-    display: none;
-}
-
-#config.iconButton {
-    top: 136px;
-    left: 133px;
-    display: none;
-}
-
 #turn {
     width: 80px;
     position: absolute;
@@ -153,6 +127,7 @@
     box-shadow: 0 0 20px #000;
     pointer-events: auto;
     color: #fff;
+    background: url("/img/game/message_bg.png");
 }
 
 .message #content tr {
@@ -186,9 +161,10 @@
     text-align: center;
     margin: 0 auto;
     padding: 8px;
-    color: #fff;
+    color: #000;
     border: none;
-    background: #000;
+    background: #fff;
+    text-shadow: none;
 }
 
 .message h4 {
@@ -339,11 +315,6 @@
     border-radius: 3px;
 }
 
-.message div.row:hover {
-    color: #000;
-    text-shadow: none;
-}
-
 .message div.row div.nr {
     display: inline-block;
 }
@@ -372,73 +343,37 @@
     text-shadow: none;
 }
 
+.message .status .firstDiv {
+    padding: 5px;
+    height: auto;
+}
+
+.message .status .attr, .message .status .value div {
+    display: inline-block;
+}
+
+.message .status .firstDiv.name {
+    vertical-align: top;
+}
+
 .message .status div.row {
-    width: 560px;
-    background: transparent url('/img/game/message_bg.png');
-    background: url(/img/bg_0.jpg)
-}
-
-.message .status div.rowContent {
-    position: relative;
-}
-
-.message .status table {
-    width: auto;
-    display: inline-table;
-}
-
-.message .status table.leftTable {
-    margin-left: 68px;
-}
-
-.message .status table.rightTable {
-    margin-left: 1px;
-}
-
-.message .status tr {
-    background: none !important;
-    color: #fff;
-}
-
-.message .status td {
-    border: none;
-    text-align: right;
-    height: 14px;
     padding: 0;
-    margin: 0;
-    /*background: #000;*/
 }
 
 .message .status .value {
     color: gold;
 }
 
-.message .status .value div {
-    float: left;
-}
-
 .message .status .plus {
     color: lime;
 }
 
-.message .status div.row div.canvas {
-    position: absolute;
-    /*top: 30px;*/
-    /*left: 5px;*/
-}
-
-.message .battle {
-    width: 100%;
-    text-align: center;
-    margin-top: 4px;
-    min-height: 31px;
-}
-
-.message .grass {
-    background: url(/img/game/grass.png);
-    border-radius: 5px;
+.message .status .iconButton div {
     padding: 5px;
-    box-shadow: 0 0 10px #0f0;
+}
+
+.message .status .iconButton {
+    margin: 5px;
 }
 
 .center {
@@ -455,98 +390,6 @@
 #log {
     width: 150px;
     height: 29px;
-}
-
-#turnBox {
-    position: absolute;
-    top: 185px;
-    /*margin: 2px;*/
-    /*height: 12px;*/
-    width: 220px;
-}
-
-#turnBox div {
-    /*    width:90px;*/
-}
-
-#limitBox {
-    border-top-right-radius: 10px;
-    border-bottom-right-radius: 10px;
-    width: 229px;
-    left: 0px;
-}
-
-#limitBox .row {
-    height: 30px;
-}
-
-#limitBox .left {
-    padding: 1px;
-    background: none;
-    text-align: center;
-    line-height: 30px;
-}
-
-#limitBox #timerScroll {
-    overflow: hidden;
-    overflow-y: scroll;
-    width: 230px;
-    margin-bottom: 5px;
-}
-
-#limitBox #timerRows {
-    width: 230px;
-}
-
-#timerScroll .color {
-    width: 37px;
-}
-
-#timerScroll .nr {
-    width: 50px;
-}
-
-#timerScroll .time {
-    width: 122px;
-    overflow: hidden;
-}
-
-#timerScroll .time {
-    overflow: hidden;
-}
-
-#timerScroll .time div {
-    float: right;
-}
-
-#timerScroll #second {
-    width: 20px;
-    text-align: left;
-    padding: 0 3px;
-}
-
-#timerScroll #minute {
-    width: 20px;
-    text-align: left;
-    padding: 0 3px;
-}
-
-#timerScroll #hour {
-    min-width: 30px;
-    text-align: left;
-    padding: 0 3px;
-}
-
-/*888888888888888888*/
-
-#limitBox span {
-    width: 16px;
-    display: inline-block;
-    text-align: right;
-}
-
-#limitBox span#hour {
-    width: 50px;
 }
 
 #gold {
@@ -579,46 +422,10 @@
 #game .box {
     position: fixed;
     z-index: 27000;
-    /*background: url(/img/deska_1_transparent.png);*/
     border: 0px solid green;
     border-radius: 0px !important;
     box-shadow: 0 0 20px #000;
     padding: 2px;
-    color: #FFA774;
-    /*D7DAA4;*/
-}
-
-#playersCanvas {
-    width: 180px;
-    height: 180px;
-}
-
-#chest {
-    background: #fff;
-    text-shadow: none;
-}
-
-#chest div {
-    border: 1px solid #ccc;
-}
-
-#inventory {
-    background: #fff;
-    text-shadow: none;
-}
-
-#inventory div {
-    border: 1px solid #ccc;
-}
-
-.artifactDescription {
-    position: absolute;
-    background: #555;
-    text-shadow: none;
-    color: #fff;
-    min-width: 200px;
-    min-height: 200px;
-    z-index: 28000;
 }
 
 html {
@@ -630,7 +437,6 @@ html {
     background: #000 !important;
     color: #fff !important;
     cursor: pointer;
-    /*     font-weight: bold; */
 }
 
 .buttonColors:hover {
@@ -690,18 +496,6 @@ html {
     cursor: default !important;
 }
 
-.castle .relocation_out {
-    position: absolute;
-    top: 13px;
-    left: 77px;
-}
-
-.castle .relocation_in {
-    position: absolute;
-    top: 13px;
-    left: 84px;
-}
-
 .battleUnit {
     display: inline-block;
     width: 30px;
@@ -713,33 +507,8 @@ html {
     width: 30px;
 }
 
-.killed {
-    position: absolute;
-    background: url("/img/game/killed.png");
-    width: 25px;
-    height: 28px;
-    display: none;
-}
-
-.war {
-    position: absolute;
-    background: url("/img/game/war.png");
-    width: 111px;
-    height: 120px;
-    z-index: 26998;
-}
-
-.ruinSearch {
-    position: absolute;
-    background: url("/img/game/ruinSearch.png");
-    width: 38px;
-    height: 40px;
-    z-index: 26998;
-}
-
 table.statistics tr {
     background: none;
-    /*color: #D7DAA4;*/
 }
 
 table.statistics td {
@@ -835,6 +604,12 @@ table.treasury td.c {
     height: 27px;
 }
 
+#showMenu {
+    position: absolute;
+    top: 2px;
+    right: 2px;
+}
+
 #nextTurn {
     line-height: 0px;
     position: absolute;
@@ -855,43 +630,6 @@ table.treasury td.c {
 
 .font-red {
     color: red;
-}
-
-#game #chatBox {
-    display: none;
-    right: -2px;
-}
-
-#game #chatBox input {
-    border: 1px solid goldenrod;
-    margin-left: 3px;
-    width: 281px;
-}
-
-#game #chatBox #send {
-    height: 26px;
-    line-height: 26px;
-    width: 13px;
-}
-
-#game #chatBox #chatTitle {
-    left: 38px;
-}
-
-#game #friends {
-    display: none;
-    position: absolute;
-    width: 300px;
-    background: url(/img/deska_0.png);
-    padding: 5px;
-    border-top-left-radius: 2px;
-    border-top-right-radius: 2px;
-}
-
-#showFriends {
-    top: 3px;
-    position: relative;
-    padding: 3px;
 }
 
 table.treasury td {
@@ -1036,21 +774,21 @@ table.treasury td {
     z-index: 99999;
 }
 
-.configuration .iconButton {
+#gameMenu .row .iconButton {
     width: 40px;
     height: 40px;
     vertical-align: middle;
 }
 
-.configuration .row {
-    text-align: left;
+#gameMenu .row {
+    margin: 5px;
 }
 
-.configuration .row div {
+#gameMenu .row div {
     display: inline-block;
 }
 
-.configuration .row div.description {
+#gameMenu .row div.description {
     padding-left: 10px;
 }
 
@@ -1058,6 +796,19 @@ table.treasury td {
     color: #fff;
 }
 
-#playersCanvas {
+#gameMenu {
+    position: fixed;
+    top: 0;
+    left: 0;
+    background: #000;
+    color: #fff;
+    width: 100%;
+    height: 100%;
     display: none;
+    text-align: center;
+}
+
+#cancel {
+    padding: 10px;
+    text-shadow: none;
 }
