@@ -593,6 +593,10 @@ table.treasury td.c {
     background: none;
 }
 
+#battle {
+    display: none;
+}
+
 #battleAttack {
     width: 27px;
     height: 27px;

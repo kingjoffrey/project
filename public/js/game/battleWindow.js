@@ -9,9 +9,10 @@ var BattleWindow = new function () {
 
             if (notSet(b[i])) {
                 setTimeout(function () {
-                    $('#game').css('display', 'block')
+                    $('#game').show()
+                    $('#battle').hide()
                     GameRenderer.init('game', GameScene)
-                    $('#battle').remove()
+
                     if (castleMesh) {
                         BattleScene.remove(castleMesh)
                     }
@@ -90,8 +91,9 @@ var BattleWindow = new function () {
         }
 
     this.battle = function (r, ii) {
-        $('#game').css('display', 'none')
-        $('body').append($('<div>').attr('id', 'battle'))
+        $('#game').hide()
+        $('#battle').show()
+
         GameRenderer.init('battle', BattleScene)
 
         var killed = {},

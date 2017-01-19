@@ -7,10 +7,10 @@ var BattleModels = new function () {
             mesh.receiveShadow = true
         }
 
-        mesh.rotation.y = Math.PI / 2
-        mesh.scale.x = 0.1
-        mesh.scale.y = 0.1
-        mesh.scale.z = 0.1
+        mesh.rotation.y = Math.PI
+        mesh.scale.x = 0.05
+        mesh.scale.y = 0.05
+        mesh.scale.z = 0.05
 
         if (side == 'attack') {
             mesh.position.y = -1
@@ -38,7 +38,7 @@ var BattleModels = new function () {
             mesh.receiveShadow = true
         }
 
-        mesh.rotation.y = Math.PI / 2
+        mesh.rotation.y = Math.PI
         mesh.scale.x = 0.05
         mesh.scale.y = 0.05
         mesh.scale.z = 0.05
@@ -62,17 +62,20 @@ var BattleModels = new function () {
         return mesh
     }
     this.addCastle = function (castle, color, scene) {
-        var mesh = Models.getCastle(castle, color)
+        var mesh = Models.getCastle({name: '', defense: castle.defense}, color)
 
-        mesh.scale.x = 0.2
-        mesh.scale.y = 0.2
-        mesh.scale.z = 0.2
+        mesh.rotation.x = Math.PI / 16
 
-        mesh.children[0].scale.x = 7
-        mesh.children[0].scale.y = 7
-        mesh.children[0].scale.z = 7
+        mesh.scale.x = 0.3
+        mesh.scale.y = 0.3
+        mesh.scale.z = 0.3
+
+        mesh.children[0].scale.x = 4
+        mesh.children[0].scale.y = 4
+        mesh.children[0].scale.z = 4
 
         mesh.position.y = 2
+        mesh.position.z = -6
 
         if (scene.getShadows()) {
             mesh.castShadow = true
@@ -94,6 +97,7 @@ var BattleModels = new function () {
         mesh.children[0].scale.z = 3.3
 
         mesh.position.y = 2
+        mesh.position.z = -6
 
         if (scene.getShadows()) {
             mesh.castShadow = true
