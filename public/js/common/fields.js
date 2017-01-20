@@ -15,7 +15,7 @@ var Fields = new function () {
         initRoads = function () {
             for (var y = 0; y < maxY; y++) {
                 for (var x = 0; x < maxX; x++) {
-                    var type = fields[y][x].getType()
+                    var type = Fields.get(x, y, 1).getType()
                     if (type == 'r' || type == 'b') {
                         GameModels.addRoad(x, y)
                     }
@@ -23,16 +23,16 @@ var Fields = new function () {
             }
         },
         paintTextureField = function (x, y, color1, color2, percent) {
-            var howManyTimes = textureMultiplier * textureMultiplier * (percent/100)
+            var howManyTimes = textureMultiplier * textureMultiplier * (percent / 100)
 
             tmpTextureContext.fillStyle = color1
             tmpTextureContext.fillRect(x * textureMultiplier, y * textureMultiplier, textureMultiplier, textureMultiplier)
             tmpTextureContext.fillStyle = color2
 
-            for(var i = 0; i < howManyTimes; i++) {
+            for (var i = 0; i < howManyTimes; i++) {
                 var valueX = Math.floor((Math.random() * textureMultiplier)),
                     valueY = Math.floor((Math.random() * textureMultiplier))
-                    
+
                 tmpTextureContext.fillRect(x * textureMultiplier + valueX, y * textureMultiplier + valueY, 1, 1)
             }
         }

@@ -1,8 +1,8 @@
 var Message = new function () {
     var maxHeight
 
-    this.info = function (title, message) {
-        var id = this.show(title, $('<div>').html(message).addClass('simple'), 1)
+    this.tutorial = function (title, message) {
+        var id = this.show(title, $('<div>').html(message), 1)
         this.close(id)
     }
     this.simple = function (title, message) {
@@ -14,7 +14,7 @@ var Message = new function () {
         Sound.play('error')
         this.simple(translations.error, $('<div>').html(message).addClass('error'));
     }
-    this.show = function (title, txt, info) {
+    this.show = function (title, txt, tutorial) {
         this.remove()
         var id = makeId(10),
             div = $('<div>')
@@ -25,8 +25,8 @@ var Message = new function () {
                     .append($(txt).addClass('overflow'))
                 )
                 .fadeIn(200)
-        if (isSet(info)) {
-            div.addClass('info')
+        if (isSet(tutorial)) {
+            div.addClass('tutorial')
         }
         $('#main').append(div)
         this.adjust(id)
@@ -41,7 +41,7 @@ var Message = new function () {
             if (!Turn.isMy() && $('.message .showCastle').length) {
                 $('.message:not(:has(.showCastle))').remove()
             } else {
-                $('.message:not(.info)').remove()
+                $('.message:not(.tutorial)').remove()
             }
         }
     }

@@ -111,8 +111,19 @@
     pointer-events: none
 }
 
-.message.info {
+.message.tutorial {
     z-index: 29000;
+}
+
+.message.tutorial #content {
+    max-width: 300px;
+    background: url(/img/bg_0.jpg);
+}
+
+.message.tutorial .goal {
+    padding-bottom: 14px;
+    text-align: left;
+    font-weight: bold;
 }
 
 .message #content {
@@ -131,11 +142,6 @@
 
 .message #content tr {
     background: none !important;
-}
-
-.message.info #content {
-    max-width: 300px;
-    background: url(/img/bg_0.jpg);
 }
 
 .message #buttons {
