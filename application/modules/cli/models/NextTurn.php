@@ -11,6 +11,10 @@ class Cli_Model_NextTurn
 
         while (true) {
             $nextPlayerId = $this->getExpectedNextTurnPlayer($game, $handler);
+            if (!$nextPlayerId) {
+                new Cli_Model_SaveResults($game, $handler);
+                return;
+            }
             $nextPlayerColor = $game->getPlayerColor($nextPlayerId);
 
             $player = $players->getPlayer($nextPlayerColor);
@@ -47,10 +51,9 @@ class Cli_Model_NextTurn
 
     private function getExpectedNextTurnPlayer(Cli_Model_Game $game, $handler)
     {
-        $playerColor = $game->getPlayerColor($game->getTurnPlayerId());
+        $currentPlayerColor = $game->getPlayerColor($game->getTurnPlayerId());
         $find = false;
         $playersInGameColors = $game->getPlayersColors();
-
 
         reset($playersInGameColors);
         $firstColor = current($playersInGameColors);
@@ -58,14 +61,15 @@ class Cli_Model_NextTurn
         /* szukam następnego koloru w dostępnych kolorach */
         foreach ($playersInGameColors as $color) {
             /* znajduję kolor gracza, który ma aktualnie turę i przewijam na następny */
-            if ($playerColor == $color) {
+            if ($currentPlayerColor == $color) {
                 $find = true;
                 continue;
             }
 
             /* to jest przewinięty kolor gracza */
-            if ($find) {
+            if ($find && $game->getPlayers()->getPlayer($color)->armiesOrCastlesExists()) {
                 $nextPlayerColor = $color;
+                echo '$nextPlayerColor=' . $nextPlayerColor . "\n";
                 break;
             }
         }
@@ -73,6 +77,11 @@ class Cli_Model_NextTurn
         /* jeśli nie znalazłem następnego gracza to następnym graczem jest gracz pierwszy */
         if (!isset($nextPlayerColor)) {
             $nextPlayerColor = $firstColor;
+        }
+
+        /* jeśli następny kolor to ten sam, który rozpoczął zmianę tury to nie ma więcej żywych graczy - zakończ grę */
+        if ($nextPlayerColor == $currentPlayerColor) {
+            return;
         }
 
         /* jeżeli następny gracz to pierwszy gracz to wtedy nowa tura */

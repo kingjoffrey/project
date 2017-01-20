@@ -1,8 +1,10 @@
 <?php
 
+use Devristo\Phpws\Protocol\WebSocketTransportInterface;
+
 class TutorialController
 {
-    function index(Devristo\Phpws\Protocol\WebSocketTransportInterface $user, Cli_MainHandler $handler)
+    function index(WebSocketTransportInterface $user, Cli_MainHandler $handler)
     {
         $db = $handler->getDb();
         $playerId = $user->parameters['playerId'];

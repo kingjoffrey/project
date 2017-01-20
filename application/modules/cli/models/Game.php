@@ -70,18 +70,8 @@ class Cli_Model_Game
 
         $this->_mapId = $game['mapId'];
 
-//        $mMap = new Application_Model_Map($game['mapId'], $db);
-//        $this->_map = $mMap->getMap();
-
         $mTurnHistory = new Application_Model_TurnHistory($this->_id, $db);
         $this->_turnHistory = $mTurnHistory->getTurnHistory();
-
-        $mChat = new Application_Model_GameChat($this->_id, $db);
-        $this->_chatHistory = $mChat->getChatHistory();
-        foreach ($this->_chatHistory as $k => $v) {
-            $this->_chatHistory[$k]['color'] = $this->_playersColors[$v['playerId']];
-            unset($this->_chatHistory[$k]['playerId']);
-        }
 
         $mMapFields = new Application_Model_MapFields($this->_mapId, $db);
         $this->_Fields = new Cli_Model_Fields($mMapFields->getMapFields());
@@ -178,7 +168,6 @@ class Cli_Model_Game
             'fields' => $this->_Fields->toArray(),
             'terrain' => $this->_Terrain->toArray(),
             'capitals' => $this->_capitals,
-            'chatHistory' => $this->_chatHistory,
             'turnHistory' => $this->_turnHistory,
             'players' => $this->_Players->toArray(),
             'ruins' => $this->_Ruins->toArray()

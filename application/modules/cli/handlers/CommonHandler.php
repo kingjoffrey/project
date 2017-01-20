@@ -66,7 +66,8 @@ class Cli_CommonHandler extends WebSocketUriHandler
 
         // AUTHORIZATION
         if (!Zend_Validate::is($gameId, 'Digits') || !Zend_Validate::is($playerId, 'Digits')) {
-            $this->sendError($user, 'No game ID or player ID. Not authorized.');
+            echo ('No game ID or player ID. Not authorized.'."\n");
+            $this->sendError($user, 'Not authorized.');
             return;
         }
 

@@ -12,7 +12,7 @@ var Ground = new function () {
             var maxX = x * 2,
                 maxY = y * 2
 
-            tl.load('/img/editor/jasny_niebieski.png', function (texture) {
+            tl.load('/img/editor/ciemny_niebieskii.png', function (texture) {
                 var mesh = new THREE.Mesh(new THREE.PlaneBufferGeometry(maxX, maxY), new THREE.MeshLambertMaterial({
                     map: texture,
                     //color: 0x0000ff,
