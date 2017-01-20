@@ -201,7 +201,7 @@ var GameGui = new function () {
         WebSocketSendMain.controller('index', 'index')
     }
     this.end = function () {
-        WebSocketSendMain.controller('over', 'index', {'id': gameId})
+        WebSocketSendMain.controller('over', 'index', {'id': Game.getGameId()})
     }
     this.unlock = function () {
         lock = false;

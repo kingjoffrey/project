@@ -3,7 +3,7 @@
 class Cli_Model_Units
 {
     private $_units;
-    private $_special;
+    private $_specialIds;
 
     public function toArray()
     {
@@ -44,15 +44,37 @@ class Cli_Model_Units
         return key($this->_units);
     }
 
-    public function getSpecialUnitId($key)
+    public function initSpecial()
     {
-        if (!$this->_special) {
+        if (!$this->_specialIds) {
             foreach ($this->_units as $unitId => $unit) {
                 if ($unit->getSpecial()) {
-                    $this->_special[] = $unitId;
+                    $this->_specialIds[] = $unitId;
                 }
             }
         }
-        return $this->_special[$key];
+    }
+
+    public function countSpecialUnits()
+    {
+        $this->initSpecial();
+        return count($this->_specialIds);
+    }
+
+    public function getSpecialUnitId($key)
+    {
+        $this->initSpecial();
+        return $this->_specialIds[$key];
+    }
+
+    public function getDragonId()
+    {
+        foreach ($this->_units as $unitId => $unit) {
+            if ($unit->getSpecial()) {
+                if ($unit->getName() == 'Dragon') {
+                    return $unit->getId();
+                }
+            }
+        }
     }
 }

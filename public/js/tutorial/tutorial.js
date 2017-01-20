@@ -26,7 +26,7 @@ var Tutorial = new function () {
                 },
                 {
                     'goal': 'Try to win',
-                    'description': 'There should be only two castle left which doesn\'t belong to you. To win you have to conquer one of them.'
+                    'description': 'There should be only two castle left which doesn\'t belong to you. To win you have to conquer all of them.'
                 }
             ),
             new Array(
@@ -52,7 +52,7 @@ var Tutorial = new function () {
                 },
                 {
                     'goal': 'Try to win',
-                    'description': 'There is 5 castles on the map. To win you have to conquer 3 of them.'
+                    'description': 'There is 5 castles on the map. To win you have to conquer all of them.'
                 }
             ),
             new Array(
@@ -91,24 +91,21 @@ var Tutorial = new function () {
     }
     this.changeStep = function (s) {
         step = s
+
         this.showDescription()
-        var html = $('<div>'),
-            add
-        for (var i in steps[number]) {
-            if (i < step) {
-                add = '+'
-            } else if (i == step) {
-                add = '>'
-            } else {
-                add = '-'
-            }
-            html.append($('<div>').append(add + ' ' + steps[number][i].goal))
-        }
-        $('#limitBox').html(html)
+
+        $('#tutorial').html('Goal: ' + steps[number][step].goal)
     }
     this.init = function (t) {
         console.log(t)
         number = t.number
+
+        var tutorial = $('<div id="tutorial">').click(function () {
+            Tutorial.showDescription()
+        })
+
+        $('#terrain').after(tutorial)
+
         this.changeStep(t.step)
     }
 }

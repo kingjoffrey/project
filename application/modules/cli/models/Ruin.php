@@ -65,6 +65,8 @@ class Cli_Model_Ruin extends Cli_Model_Entity
         } elseif ($random < 85) { //30%
 //jednostki
             $turnNumber = $game->getTurnNumber();
+            $maxSpecialUnitKey = $game->getUnits()->countSpecialUnits() - 1;
+
             if ($turnNumber <= 9) {
                 $min1 = 1;
                 $max1 = 1;
@@ -77,77 +79,77 @@ class Cli_Model_Ruin extends Cli_Model_Entity
                 $max2 = 1;
             } elseif ($turnNumber <= 17) {
                 $min1 = 0;
-                $max1 = 2;
+                $max1 = $maxSpecialUnitKey - 1;
                 $min2 = 1;
                 $max2 = 1;
             } elseif ($turnNumber <= 21) {
                 $min1 = 0;
-                $max1 = 3;
+                $max1 = $maxSpecialUnitKey;
                 $min2 = 1;
                 $max2 = 1;
             } elseif ($turnNumber <= 25) {
                 $min1 = 0;
-                $max1 = 4;
+                $max1 = $maxSpecialUnitKey;
                 $min2 = 1;
                 $max2 = 1;
             } elseif ($turnNumber <= 32) {
                 $min1 = 0;
-                $max1 = 4;
+                $max1 = $maxSpecialUnitKey;
                 $min2 = 1;
                 $max2 = 2;
             } elseif ($turnNumber <= 39) {
                 $min1 = 0;
-                $max1 = 4;
+                $max1 = $maxSpecialUnitKey;
                 $min2 = 1;
                 $max2 = 3;
             } elseif ($turnNumber <= 46) {
                 $min1 = 0;
-                $max1 = 4;
+                $max1 = $maxSpecialUnitKey;
                 $min2 = 2;
                 $max2 = 3;
             } elseif ($turnNumber <= 53) {
                 $min1 = 0;
-                $max1 = 4;
+                $max1 = $maxSpecialUnitKey;
                 $min2 = 3;
                 $max2 = 3;
             } elseif ($turnNumber <= 60) {
                 $min1 = 0;
-                $max1 = 4;
+                $max1 = $maxSpecialUnitKey;
                 $min2 = 4;
                 $max2 = 4;
             } elseif ($turnNumber <= 67) {
                 $min1 = 0;
-                $max1 = 4;
+                $max1 = $maxSpecialUnitKey;
                 $min2 = 5;
                 $max2 = 5;
             } elseif ($turnNumber <= 74) {
                 $min1 = 0;
-                $max1 = 4;
+                $max1 = $maxSpecialUnitKey;
                 $min2 = 6;
                 $max2 = 6;
             } elseif ($turnNumber <= 81) {
                 $min1 = 0;
-                $max1 = 4;
+                $max1 = $maxSpecialUnitKey;
                 $min2 = 7;
                 $max2 = 7;
             } elseif ($turnNumber <= 88) {
                 $min1 = 0;
-                $max1 = 4;
+                $max1 = $maxSpecialUnitKey;
                 $min2 = 8;
                 $max2 = 8;
             } elseif ($turnNumber <= 95) {
                 $min1 = 0;
-                $max1 = 4;
+                $max1 = $maxSpecialUnitKey;
                 $min2 = 9;
                 $max2 = 9;
             } elseif ($turnNumber <= 102) {
                 $min1 = 0;
-                $max1 = 4;
+                $max1 = $maxSpecialUnitKey;
                 $min2 = 10;
                 $max2 = 10;
             } else {
                 $min1 = 0;
-                $max1 = 4;
+                $max1 = $maxSpecialUnitKey;
                 $min2 = 11;
                 $max2 = 11;
             }
@@ -209,8 +211,10 @@ class Cli_Model_Ruin extends Cli_Model_Entity
         $color = $game->getPlayerColor($playerId);
         $db = $handler->getDb();
 
+        $dragonId = $game->getUnits()->getDragonId();
+
         for ($i = 0; $i < $numberOfUnits; $i++) {
-            $army->createSoldier($gameId, $playerId, $game->getUnits()->getSpecialUnitId(4), $db);
+            $army->createSoldier($gameId, $playerId, $dragonId, $db);
         }
 
         $army->getHeroes()->getHero($heroId)->zeroMovesLeft($gameId, $db);

@@ -28,6 +28,9 @@ var Message = new function () {
         if (isSet(tutorial)) {
             div.addClass('tutorial')
         }
+        if (div.find('.error').length) {
+            div.addClass('error')
+        }
         $('#main').append(div)
         this.adjust(id)
         return id

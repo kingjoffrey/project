@@ -106,4 +106,9 @@ class Cli_Model_Unit
     {
         return $this->_id;
     }
+
+    public function getName()
+    {
+        return $this->_name;
+    }
 }

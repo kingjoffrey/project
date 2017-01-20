@@ -172,6 +172,10 @@
     text-shadow: none;
 }
 
+.message.error .msgTitle h3 {
+    background: red;
+}
+
 .message h4 {
     color: #ddd;
     margin: 3px 3px 3px 4px;
@@ -213,10 +217,6 @@
     border: none;
 }
 
-/*.message div.showCastle tr td:first-of-type {*/
-/*text-align: right;*/
-/*}*/
-
 .message div.showCastle tr {
     background: none;
 }
@@ -251,10 +251,15 @@
     height: 180px !important;
     overflow: hidden;
     vertical-align: top;
+    border: 1px solid gray;
 }
 
 .message .production .unit.checked {
     border: 1px solid lime;
+}
+
+.message .production td.unit .buttons {
+    padding-top: 1px;
 }
 
 .message .production td {
@@ -820,4 +825,11 @@ table.treasury td {
 #cancel {
     padding: 10px;
     text-shadow: none;
+}
+
+#game #tutorial {
+    position: absolute;
+    cursor: pointer;
+    bottom: 2px;
+    left: 2px;
 }
