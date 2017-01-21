@@ -141,7 +141,7 @@ class Cli_ExecHandler extends WebSocketUriHandler
             $port = $this->initPort();
             $execPort = $this->_mainPort + $port;
 
-            exec('/usr/bin/php /home/idea/WOF/scripts/gameWSServer.php ' . $dataIn['gameId'] . ' ' . $execPort . ' >/home/idea/WOF/log/' . $dataIn['gameId'] . '.log 2>&1 &');
+            exec('/usr/bin/php ~/htdocs/scripts/gameWSServer.php ' . $dataIn['gameId'] . ' ' . $execPort . ' >~/htdocs/log/' . $dataIn['gameId'] . '.log 2>&1 &');
 
             $user->parameters['gameId'] = $dataIn['gameId'];
             $this->addGame($dataIn['gameId'], $user->getId(), $port);
