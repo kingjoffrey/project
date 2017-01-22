@@ -10,6 +10,10 @@ class Admin_Model_Mapcastles extends Coret_Model_ParentDb
         'mapId' => array('label' => 'Map ID', 'type' => 'select'),
         'x' => array('label' => 'X', 'type' => 'number'),
         'y' => array('label' => 'Y', 'type' => 'number'),
+        'name' => array('label' => 'Nazwa', 'type' => 'varchar'),
+        'income' => array('label' => 'Przychód', 'type' => 'number'),
+        'defense' => array('label' => 'Obrona', 'type' => 'number'),
+        'capital' => array('label' => 'Stolica', 'type' => 'checkbox'),
         'enclaveNumber' => array('label' => 'Enclave number', 'type' => 'number')
     );
 
