@@ -1,12 +1,15 @@
 <div class="table">
-    <h2><?php echo $this->translate('Player profile') . ' ' . $this->player['firstName'] . ' ' . $this->player['lastName'] ?></h2>
+    <h2><?php echo $this->player['firstName'] . ' ' . $this->player['lastName'] ?></h2>
     <table>
         <tr>
             <th>
-                <div class="padding"><?php echo $this->translate('Begin') ?></div>
+                <div class="padding"><?php echo $this->translate('Map name') ?></div>
             </th>
             <th>
-                <div class="padding"><?php echo $this->translate('End') ?></div>
+                <div class="padding"><?php echo $this->translate('Number of players') ?></div>
+            </th>
+            <th>
+                <div class="padding"><?php echo $this->translate('Begin') ?> - <?php echo $this->translate('End') ?></div>
             </th>
             <th>
                 <div class="padding"><?php echo $this->translate('Number of rounds') ?></div>
@@ -18,8 +21,9 @@
         <?php if (count($this->playerScores)): ?>
             <?php foreach ($this->playerScores as $row): ?>
                 <tr class="trlink" id="<?php echo $row['gameId'] ?>">
-                    <td><?php echo Coret_View_Helper_Formatuj::date($row['begin']) ?></td>
-                    <td><?php echo Coret_View_Helper_Formatuj::date($row['end']) ?></td>
+                    <td><?php echo $row['name'] ?></td>
+                    <td><?php echo $row['numberOfPlayers'] ?></td>
+                    <td><?php echo Coret_View_Helper_Formatuj::shortDate($row['begin']) ?> - <?php echo Coret_View_Helper_Formatuj::shortDate($row['end']) ?></td>
                     <td><?php echo $row['turnNumber'] ?></td>
                     <td><?php echo $row['score'] ?></td>
                 </tr>

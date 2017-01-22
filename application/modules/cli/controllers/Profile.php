@@ -1,8 +1,10 @@
 <?php
 
+use Devristo\Phpws\Protocol\WebSocketTransportInterface;
+
 class ProfileController
 {
-    function index(Devristo\Phpws\Protocol\WebSocketTransportInterface $user, Cli_MainHandler $handler, $dataIn)
+    function index(WebSocketTransportInterface $user, Cli_MainHandler $handler, $dataIn)
     {
         $db = $handler->getDb();
         $mPlayer = new Application_Model_Player($db);
@@ -69,7 +71,7 @@ class ProfileController
         $handler->sendToUser($user, $token);
     }
 
-    function show(Devristo\Phpws\Protocol\WebSocketTransportInterface $user, Cli_MainHandler $handler, $dataIn)
+    function show(WebSocketTransportInterface $user, Cli_MainHandler $handler, $dataIn)
     {
         if (!$playerId = $dataIn['id']) {
             return;

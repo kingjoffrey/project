@@ -176,7 +176,7 @@ h2 {
     padding: 0;
     color: #fff;
     letter-spacing: 3px;
-    text-align: center;
+    text-align: left;
     text-shadow: 2px 1px 1px #000;
 }
 
@@ -666,4 +666,8 @@ td #trash {
     box-shadow: 0 0 5px #fff;
     display: inline-block;
     margin: 5px;
+}
+
+#content .table .playerName {
+    margin-top: 10px;
 }

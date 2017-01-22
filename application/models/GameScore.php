@@ -41,17 +41,22 @@ class Application_Model_GameScore extends Coret_Db_Table_Abstract
     {
         $select = $this->_db->select()
             ->from($this->_name, $this->_primary)
-            ->where('"gameId" = ?', $gameId);
+            ->where($this->_db->quoteIdentifier('gameId') . ' = ?', $gameId);
 
         return $this->selectOne($select);
     }
 
     public function getPlayerScores($playerId)
     {
+        $gameId = $this->_db->quoteIdentifier('gameId');
+        $mapId = $this->_db->quoteIdentifier('mapId');
+
         $select = $this->_db->select()
             ->from(array('a' => $this->_name), 'score')
-            ->join(array('b' => 'game'), 'a."gameId" = b."gameId"', array('gameId', 'begin', 'end', 'turnNumber'))
-            ->where('"playerId" = ?', $playerId);
+            ->join(array('b' => 'game'), 'a.' . $gameId . ' = b.' . $gameId, array('gameId', 'begin', 'end', 'turnNumber', 'numberOfPlayers'))
+            ->join(array('c' => 'map'), 'b.' . $mapId . ' = c.' . $mapId, array('name'))
+            ->where('a.' . $this->_db->quoteIdentifier('playerId') . ' = ?', $playerId)
+            ->where('tutorial = ?', $this->parseBool(false));
 
         return $this->selectAll($select);
     }
@@ -60,7 +65,7 @@ class Application_Model_GameScore extends Coret_Db_Table_Abstract
     {
         $select = $this->_db->select()
             ->from($this->_name)
-            ->where('"gameId" = ?', $gameId)
+            ->where($this->_db->quoteIdentifier('gameId') . ' = ?', $gameId)
             ->order('score desc');
 
         return $this->selectAll($select);

@@ -77,7 +77,7 @@ class Application_Model_Player extends Coret_Db_Table_Abstract
             ->from($this->_name, array('playerId', 'firstName', 'lastName', 'score'))
             ->where('computer = false')
             ->where('score > 0')
-            ->where('"playerId" > 0')
+            ->where($this->_db->quoteIdentifier('playerId') . ' > 0')
             ->order('score desc');
 
         $paginator = new Zend_Paginator(new Zend_Paginator_Adapter_DbSelect($select));

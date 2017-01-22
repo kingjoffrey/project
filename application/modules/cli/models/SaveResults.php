@@ -156,7 +156,9 @@ class Cli_Model_SaveResults
             }
 
             $mGameScore->add($game->getId(), $playerId, $points);
-            $mPlayer->addScore($playerId, $sumPoints);
+            if (!$mGame->isTutorial()) {
+                $mPlayer->addScore($playerId, $sumPoints);
+            }
         }
 
         $token = array(

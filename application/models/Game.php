@@ -47,7 +47,7 @@ class Application_Model_Game extends Coret_Db_Table_Abstract
         return $this->selectRow($select);
     }
 
-    public function getMyGames($playerId, $pageNumber,$mPlayersInGame)
+    public function getMyGames($playerId, $pageNumber, $mPlayersInGame)
     {
         $select = $this->_db->select()
             ->from(array('a' => $this->_name), array('gameMasterId', 'turnNumber', $this->_primary, 'numberOfPlayers', 'begin', 'end', 'turnsLimit', 'turnTimeLimit', 'timeLimit', 'turnPlayerId', 'mapId'))
@@ -75,14 +75,28 @@ class Application_Model_Game extends Coret_Db_Table_Abstract
 
     public function getMyTutorial($playerId)
     {
+        $mapId = $this->_db->quoteIdentifier('mapId');
+
         $select = $this->_db->select()
             ->from(array('a' => $this->_name), array('gameId'))
             ->join(array('b' => 'playersingame'), 'a."gameId" = b."gameId"', null)
-            ->join(array('c' => 'map'), 'a."mapId" = c."mapId"', null)
+            ->join(array('c' => 'map'), 'a.' . $mapId . ' = c.' . $mapId, null)
             ->where('"isOpen" = false')
             ->where('"isActive" = true')
             ->where('b."playerId" = ?', $playerId)
             ->where('c."tutorial" = true');
+        return $this->selectOne($select);
+    }
+
+    public function isTutorial()
+    {
+        $mapId = $this->_db->quoteIdentifier('mapId');
+
+        $select = $this->_db->select()
+            ->from(array('a' => $this->_name), null)
+            ->join(array('b' => 'map'), 'a.' . $mapId . ' = b.' . $mapId, 'tutorial')
+            ->where($this->_db->quoteIdentifier($this->_primary) . ' = ?', $this->_gameId);
+
         return $this->selectOne($select);
     }
 

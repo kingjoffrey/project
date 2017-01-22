@@ -18,13 +18,17 @@ class Coret_View_Helper_Formatuj extends Zend_View_Helper_Abstract
         if (!$data) {
             return;
         }
-        if ($format) {
-            return date($format, strtotime($data));
+        if (!$format) {
+            $format = '%F %H:%M:%S';
         }
-        if ($data) {
+
 //            return date('Y-m-d H:i:s', strtotime($data));
-            return strftime('%F %H:%M:%S', strtotime($data));
-        }
+        return date($format, strtotime($data));
+    }
+
+    static public function shortDate($data)
+    {
+        return self::date($data, 'Y.m.d');
     }
 
     static public function nrb($nrb)
