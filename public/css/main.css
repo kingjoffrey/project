@@ -212,11 +212,11 @@ div.table {
     box-shadow: 0 0 5px #000;
 }
 
-table {
+.table table {
     border-spacing: 0px;
     width: 100%;
     font-size: 14px;
-    border: 2px solid grey;
+    border: 1px solid grey;
     border-radius: 5px;
 }
 
@@ -299,7 +299,7 @@ td:first-of-type {
 #content form {
     background: url('/img/bg_1.jpg');
     border-radius: 5px;
-    border: 2px solid grey;
+    border: 1px solid grey;
     padding: 10px;
     text-align: center;
     box-shadow: 1px 1px 5px #000;
@@ -308,6 +308,11 @@ td:first-of-type {
 #content form label {
     color: #fff;
     text-shadow: 1px 1px 0 #000;
+}
+
+#content form#search {
+    background: none;
+    border: none;
 }
 
 dt {

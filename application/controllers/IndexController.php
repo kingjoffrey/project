@@ -128,6 +128,7 @@ class IndexController extends Coret_Controller_Authorized
         $this->view->headScript()->appendFile('/js/tutorial/websocketMessage.js?v=' . $version);
 
         $this->view->sound();
+        $this->view->title();
         $this->view->models();
         $this->view->Friends();
         $this->view->ChatInput();

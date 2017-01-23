@@ -141,7 +141,8 @@ class Cli_ExecHandler extends WebSocketUriHandler
             $port = $this->initPort();
             $execPort = $this->_mainPort + $port;
 
-            exec('/usr/bin/php ~/htdocs/scripts/gameWSServer.php ' . $dataIn['gameId'] . ' ' . $execPort . ' >~/htdocs/log/' . $dataIn['gameId'] . '.log 2>&1 &');
+            $projectDirName = Zend_Registry::get('config')->projectDir->name;
+            exec('/usr/bin/php ~/' . $projectDirName . '/scripts/gameWSServer.php ' . $dataIn['gameId'] . ' ' . $execPort . ' >>~/' . $projectDirName . '/log/' . $dataIn['gameId'] . '.log 2>&1 &');
 
             $user->parameters['gameId'] = $dataIn['gameId'];
             $this->addGame($dataIn['gameId'], $user->getId(), $port);

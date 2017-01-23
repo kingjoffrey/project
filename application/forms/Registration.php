@@ -7,7 +7,21 @@ class Application_Form_Registration extends Zend_Form
     {
         $this->setMethod('post');
 
-        $f = new Application_Form_Player();
+        $f = new Coret_Form_Varchar(
+            array(
+                'label' => $this->getView()->translate('First name') . ' (' . $this->getView()->translate('imaginary') . ')',
+                'name' => 'firstName',
+                'required' => true,
+            )
+        );
+        $this->addElements($f->getElements());
+        $f = new Coret_Form_Varchar(
+            array(
+                'label' => $this->getView()->translate('Last name') . ' (' . $this->getView()->translate('imaginary') . ')',
+                'name' => 'lastName',
+                'required' => true,
+            )
+        );
         $this->addElements($f->getElements());
 
         $this->addElement('text', 'login', array(
@@ -26,7 +40,24 @@ class Application_Form_Registration extends Zend_Form
             )
         );
 
-        $f = new Application_Form_Password();
+        $f = new Coret_Form_Password(
+            array(
+                'label' => $this->getView()->translate('Password'),
+                'required' => true,
+            )
+        );
+        $this->addElements($f->getElements());
+
+        $f = new Coret_Form_Password(
+            array(
+                'label' => $this->getView()->translate('Repeat password'),
+                'name' => 'repeatPassword',
+                'required' => true,
+                'validators' => array(
+                    array('identical', false, array('token' => 'password'))
+                )
+            )
+        );
         $this->addElements($f->getElements());
 
         $this->addElement('submit', 'submit', array('label' => $this->getView()->translate('Register')));
