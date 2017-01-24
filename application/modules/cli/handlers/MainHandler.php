@@ -23,6 +23,7 @@ class Cli_MainHandler extends WebSocketUriHandler
     private $_menu;
     private $_view;
     private $_help;
+    private $_tutorial;
 
     public function __construct($logger)
     {
@@ -36,13 +37,10 @@ class Cli_MainHandler extends WebSocketUriHandler
             'play' => $adapter->translate('Play'),
             'load' => $adapter->translate('Load game'),
             'halloffame' => $adapter->translate('Hall of Fame'),
-//            'hero' => $adapter->translate('Hero'),
             'players' => $adapter->translate('Players'),
             'profile' => $adapter->translate('Profile'),
             'help' => $adapter->translate('Help'),
-//            'stats' => $adapter->translate('Stats'),
             'editor' => $adapter->translate('Map editor'),
-//            'market' => $adapter->translate('Market'),
         );
 
         $this->_view = new Zend_View();
@@ -51,6 +49,19 @@ class Cli_MainHandler extends WebSocketUriHandler
     public function getDb()
     {
         return $this->_db;
+    }
+
+    public function addTutorial(Cli_Model_Tutorial $tutorial)
+    {
+        $this->_tutorial = $tutorial;
+    }
+
+    /**
+     * @return Cli_Model_Tutorial
+     */
+    public function getTutorial()
+    {
+        return $this->_tutorial;
     }
 
     public function addHelp(Cli_Model_Help $help)

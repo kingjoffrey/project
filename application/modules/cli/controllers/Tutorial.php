@@ -7,7 +7,15 @@ class TutorialController
     function index(WebSocketTransportInterface $user, Cli_MainHandler $handler)
     {
         $db = $handler->getDb();
+
+        if (!$tutorial = $handler->getTutorial()) {
+            echo 'not set' . "\n";
+            $tutorial = new Cli_Model_Tutorial($db);
+            $handler->addTutorial($tutorial);
+        }
+
         $playerId = $user->parameters['playerId'];
+
         $mGame = new Application_Model_Game(0, $db);
         $gameId = $mGame->getMyTutorial($playerId);
         if (!$gameId) {
@@ -84,6 +92,7 @@ class TutorialController
         $token = array(
             'type' => 'tutorial',
             'action' => 'index',
+            'steps' => $tutorial->toArray(),
             'data' => $layout->render(),
             'gameId' => $gameId
         );

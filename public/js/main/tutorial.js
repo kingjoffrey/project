@@ -6,6 +6,7 @@ var TutorialController = new function () {
         main.html(r.data)
 
         Game.setGameId(r.gameId)
+        Tutorial.initSteps(r.steps)
 
         WebSocketExecTutorial.init()
     }
