@@ -6,7 +6,7 @@ then
 else
     data=`date +%Y%m%d`
     czas=`date +%H.%M.%S`
-    path="/home/wof/htdocs/scripts"
+    path="/home/wof/20170123/scripts"
 
 
     export APPLICATION_ENV=cli

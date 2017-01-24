@@ -36,7 +36,7 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
         $view->headMeta()->appendName('copyright', 'Bartosz Krzeszewski 2011');
         $view->headMeta()->appendName('viewport', 'width=800, height=600, user-scalable=1, initial-scale=1, minimum-scale=1, maximum-scale=1');
 
-//         $view->headMeta()->appendName('google-site-verification', '');
+         $view->headMeta()->appendName('google-site-verification', 'XVxNHItfpHO6b643-xv5cPacS54KgbNXeE1EfaBawuI');
     }
 
     protected function _initRegisterLogger()
