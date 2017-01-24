@@ -213,9 +213,14 @@ var Help = new function () {
         }
         text.html('')
         for (var i in menu) {
-            text
-                .append($('<h5>').html(menu[i].title))
-                .append($('<p>').html(Help.nl2br(menu[i].content)))
+            var content = menu[i].content.split("\n")
+            for (var j in content) {
+                if (content[j].search('#')) { // return 0 if first
+                    text.append($('<p>').html(content[j]))
+                } else {
+                    text.append($('<div>').html(content[j].substring(1) + ':').addClass('title'))
+                }
+            }
         }
         switch (id) {
             case 'army':

@@ -7,7 +7,7 @@ class PlayController
         $view = new Zend_View();
         $db = $handler->getDb();
 
-        $mTutorial = new Application_Model_Tutorial($user->parameters['playerId'], $db);
+        $mTutorial = new Application_Model_TutorialProgress($user->parameters['playerId'], $db);
         $view->tutorial = $mTutorial->get();
 
         $view->addScriptPath(APPLICATION_PATH . '/views/scripts');

@@ -4,11 +4,10 @@ class Application_Model_Tutorial extends Coret_Db_Table_Abstract
 {
     protected $_name = 'tutorial';
     protected $_primary = 'tutorialId';
-    protected $_playerId;
+    protected $_sequence = 'tutorial_tutorialId_seq1';
 
-    public function __construct($playerId, Zend_Db_Adapter_Pdo_Pgsql $db = null)
+    public function __construct(Zend_Db_Adapter_Pdo_Pgsql $db = null)
     {
-        $this->_playerId = $playerId;
         if ($db) {
             $this->_db = $db;
         } else {
@@ -19,53 +18,12 @@ class Application_Model_Tutorial extends Coret_Db_Table_Abstract
     public function get()
     {
         $select = $this->_db->select()
-            ->from($this->_name)
-            ->where($this->_db->quoteIdentifier('playerId') . ' = ?', $this->_playerId);
+            ->from($this->_name, null)
+            ->where('id_lang = ?', Zend_Registry::get('id_lang'))
+            ->join($this->_name . '_Lang', $this->_name . ' . ' . $this->_db->quoteIdentifier($this->_primary) . ' = ' . $this->_db->quoteIdentifier($this->_name . '_Lang') . ' . ' . $this->_db->quoteIdentifier($this->_primary), array('goal', 'description'))
+            ->order('number, step');
 
-        return $this->selectRow($select);
-    }
-
-    public function getNumber()
-    {
-        $select = $this->_db->select()
-            ->from($this->_name, 'tutorialNumber')
-            ->where($this->_db->quoteIdentifier('playerId') . ' = ?', $this->_playerId);
-
-        return $this->selectOne($select);
-    }
-
-    public function add()
-    {
-        $data = array(
-            'playerId' => $this->_playerId
-        );
-
-        $this->insert($data);
-    }
-
-    public function updateStep($step, $tutorialNumber)
-    {
-        $data = array(
-            'step' => $step
-        );
-        $where = array(
-            $this->_db->quoteInto($this->_db->quoteIdentifier('playerId') . ' = ?', $this->_playerId),
-            $this->_db->quoteInto($this->_db->quoteIdentifier('tutorialNumber') . ' = ?', $tutorialNumber),
-        );
-
-        $this->update($data, $where);
-    }
-
-    public function updateNumber($oldTutorialNumber, $newTutorialNumber)
-    {
-        $data = array(
-            'tutorialNumber' => $newTutorialNumber
-        );
-        $where = array(
-            $this->_db->quoteInto($this->_db->quoteIdentifier('playerId') . ' = ?', $this->_playerId),
-            $this->_db->quoteInto($this->_db->quoteIdentifier('tutorialNumber') . ' = ?', $oldTutorialNumber),
-        );
-
-        $this->update($data, $where);
+        return $this->selectAll($select);
     }
 }
+

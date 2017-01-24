@@ -12,14 +12,14 @@ class Cli_Model_TutorialMe extends Cli_Model_Me
 
     public function increaseNumber($db)
     {
-        $mTutorial = new Application_Model_Tutorial($this->_id, $db);
+        $mTutorial = new Application_Model_TutorialProgress($this->_id, $db);
         $mTutorial->updateNumber($this->_number, $this->_number + 1);
         $this->_number++;
     }
 
     public function resetNumber($db)
     {
-        $mTutorial = new Application_Model_Tutorial($this->_id, $db);
+        $mTutorial = new Application_Model_TutorialProgress($this->_id, $db);
         $mTutorial->updateNumber($this->_number, 0);
         $this->_number = 0;
     }
@@ -32,20 +32,20 @@ class Cli_Model_TutorialMe extends Cli_Model_Me
     public function increaseStep($db)
     {
         $this->_step++;
-        $mTutorial = new Application_Model_Tutorial($this->_id, $db);
+        $mTutorial = new Application_Model_TutorialProgress($this->_id, $db);
         $mTutorial->updateStep($this->_step, $this->_number);
     }
 
     public function setStep($step, $db)
     {
-        $mTutorial = new Application_Model_Tutorial($this->_id, $db);
+        $mTutorial = new Application_Model_TutorialProgress($this->_id, $db);
         $mTutorial->updateStep($step, $this->_number);
         $this->_step = $step;
     }
 
     public function initTutorial(Zend_Db_Adapter_Pdo_Pgsql $db)
     {
-        $mTutorial = new Application_Model_Tutorial($this->_id, $db);
+        $mTutorial = new Application_Model_TutorialProgress($this->_id, $db);
         $tutorial = $mTutorial->get();
         if ($tutorial) {
             $this->_number = $tutorial['tutorialNumber'];

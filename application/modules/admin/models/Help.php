@@ -12,7 +12,6 @@ class Admin_Model_Help extends Coret_Model_ParentDb
     );
 
     protected $_columns_lang = array(
-        'title' => array('label' => 'Tytuł', 'type' => 'varchar'),
         'content' => array('label' => 'Treść', 'type' => 'text'),
     );
 
@@ -27,6 +26,7 @@ class Admin_Model_Help extends Coret_Model_ParentDb
             'ruin' => 'Ruin',
             'tower' => 'Tower',
             'terrain' => 'Terrain',
+            'gold' => 'Gold'
         );
     }
 }

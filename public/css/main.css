@@ -676,3 +676,9 @@ td #trash {
 #content .table .playerName {
     margin-top: 10px;
 }
+
+.table #text .title {
+    padding: 5px;
+    color: #A8A47D;
+    font-weight: bold;
+}

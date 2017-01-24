@@ -11,7 +11,7 @@ class TutorialController
         $mGame = new Application_Model_Game(0, $db);
         $gameId = $mGame->getMyTutorial($playerId);
         if (!$gameId) {
-            $mTutorial = new Application_Model_Tutorial($playerId, $db);
+            $mTutorial = new Application_Model_TutorialProgress($playerId, $db);
             $number = $mTutorial->getNumber();
             switch ($number) {
                 case 0:
