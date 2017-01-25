@@ -44,6 +44,10 @@ var PickerCommon = new function () {
     this.detach = function (object) {
         objects.splice(objects.indexOf(object), 1);
     }
+    /**
+     *
+     * @returns {Field}
+     */
     this.getField = function () {
         return Fields.get(PickerCommon.convertX(), PickerCommon.convertZ())
     }
