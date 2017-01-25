@@ -63,7 +63,6 @@ class IndexController extends Coret_Controller_Authorized
         $this->view->headScript()->appendFile('/js/help/helpRenderer.js?v=' . $version);
 
         $this->view->headScript()->appendFile('/js/editor/message.js?v=' . $version);
-        $this->view->headScript()->appendFile('/js/editor/castle.js?v=' . $version);
         $this->view->headScript()->appendFile('/js/editor/castleWindow.js?v=' . $version);
         $this->view->headScript()->appendFile('/js/editor/editor.js?v=' . $version);
         $this->view->headScript()->appendFile('/js/editor/models.js?v=' . $version);
@@ -76,16 +75,13 @@ class IndexController extends Coret_Controller_Authorized
         $this->view->headScript()->appendFile('/js/game/picker.js?v=' . $version);
         $this->view->headScript()->appendFile('/js/game/unit.js?v=' . $version);
         $this->view->headScript()->appendFile('/js/game/terrain.js?v=' . $version);
-        $this->view->headScript()->appendFile('/js/game/castle.js?v=' . $version);
         $this->view->headScript()->appendFile('/js/game/player.js?v=' . $version);
         $this->view->headScript()->appendFile('/js/game/armies.js?v=' . $version);
         $this->view->headScript()->appendFile('/js/game/army.js?v=' . $version);
         $this->view->headScript()->appendFile('/js/game/message.js?v=' . $version);
         $this->view->headScript()->appendFile('/js/game/astar.js?v=' . $version);
-//         $this->view->headScript()->appendFile('/js/game/chat.js?v=' . $version);
         $this->view->headScript()->appendFile('/js/game/gui.js?v=' . $version);
         $this->view->headScript()->appendFile('/js/game/move.js?v=' . $version);
-        $this->view->headScript()->appendFile('/js/game/minimap.js?v=' . $version);
         $this->view->headScript()->appendFile('/js/game/timer.js?v=' . $version);
         $this->view->headScript()->appendFile('/js/game/turn.js?v=' . $version);
         $this->view->headScript()->appendFile('/js/game/sound.js?v=' . $version);

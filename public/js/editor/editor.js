@@ -7,7 +7,6 @@ var Editor = new function () {
             GameScene.init($(window).innerWidth(), $(window).innerHeight())
             Units.init(r.units)
             Fields.init(r.fields, EditorController.getMapId())
-            MiniMap.init(Game.getMapElement())
             Ruins.init(r.ruins)
             Players.init(r.players)
             GameScene.setCameraPosition(0, Fields.getMaxY())

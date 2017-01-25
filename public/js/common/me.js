@@ -16,7 +16,6 @@ var CommonMe = new function () {
         selectedCastleId = null,
         selectedUnitId = null,
         battleSequence = [],
-        // s,
         updateGold = function () {
             $('#gold #value').fadeOut(300, function () {
                 $('#gold #value').html(gold)
@@ -170,7 +169,7 @@ var CommonMe = new function () {
 
         if (notSet(center)) {
             //zoomer.setCenterIfOutOfScreen(a.x * 40, a.y * 40);
-            MiniMap.centerOn(army.getX(), army.getY(), function () {
+            GameScene.centerOn(army.getX(), army.getY(), function () {
                 selectedArmyId = armyId
             })
         } else {
@@ -178,10 +177,6 @@ var CommonMe = new function () {
         }
     }
     this.deselectArmy = function (skipJoin) {
-        // s.removeMeshes()
-        // GameRenderer.removeViewport()
-        // s.render()
-
         if (notSet(skipJoin) && parentArmyId && selectedArmyId) {
             var selectedArmy = this.getArmy(selectedArmyId),
                 parentArmy = this.getArmy(parentArmyId)
@@ -442,9 +437,6 @@ var CommonMe = new function () {
             }
         }
     }
-    this.handleHeroButtons = function () {
-
-    }
     this.init = function (c, g, bSequence) {
         color = c
         me = Players.get(color)
@@ -478,15 +470,5 @@ var CommonMe = new function () {
         updateGold()
         updateUpkeep()
         updateIncome()
-
-        // s = new UnitScene()
-        // s.init(40, 40)
-
-        // var unitRenderer = new UnitRenderer()
-        // unitRenderer.init('unitsBox', s)
-        // requestAnimationFrame(function animate() {
-        //     unitRenderer.render()
-        //     requestAnimationFrame(animate)
-        // })
     }
 }

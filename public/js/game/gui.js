@@ -181,18 +181,7 @@ var GameGui = new function () {
         }
     this.adjust = function () {
         GameScene.resize($(window).innerWidth(), $(window).innerHeight())
-
-//         MiniMap.adjust()
-
-//         console.log(Players.countHumans())
-
-//         if (!Players.countHumans() > 1) {
-//             console.log('b')
-        $('#chatBox').css({display: 'none'})
-//         }
-
         var goldBoxLeft = GameScene.getWidth() / 2 - $('#gold').outerWidth() / 2
-
         $('#gold').css({
             'left': goldBoxLeft + 'px'
         })

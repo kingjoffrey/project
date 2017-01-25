@@ -89,7 +89,6 @@ var EditorGui = new function () {
             }
         })
 
-        MiniMap.init($('#map'))
         activateButtons()
         this.adjust()
     }

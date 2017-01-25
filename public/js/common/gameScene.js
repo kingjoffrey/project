@@ -63,6 +63,29 @@ var GameScene = new function () {
     this.getCameraY = function () {
         return cameraY
     }
+    this.centerOn = function (x, y, func) {
+        var yOffset = camera.position.y - GameScene.getCameraY(),
+            startPosition = {
+                x: camera.position.x,
+                z: camera.position.z
+            },
+            endPosition = {
+                x: x * 2 - cameraY - yOffset,
+                z: y * 2 + cameraY + yOffset
+            },
+            tween = new TWEEN.Tween(startPosition)
+                .to(endPosition, Math.sqrt(Math.pow(endPosition.x - startPosition.x, 2) + Math.pow(startPosition.z - endPosition.z, 2)) * 5)
+                .onUpdate(function () {
+                    GameScene.setCameraPosition(endPosition.x, endPosition.z)
+                })
+                .start()
+
+        if (isSet(func)) {
+            tween.onComplete(function () {
+                func()
+            })
+        }
+    }
     this.moveCamera = function (x, y) {
         var xSign,
             zSign
@@ -83,28 +106,22 @@ var GameScene = new function () {
 
         camera.position.x += xSign * (Math.abs(x) + Math.abs(y)) / 50
         camera.position.z += zSign * (Math.abs(x) + Math.abs(y)) / 50
-
-        MiniMap.centerOnCameraPosition()
     }
     this.moveCameraLeft = function () {
         camera.position.x += -2
         camera.position.z += -2
-        MiniMap.centerOnCameraPosition()
     }
     this.moveCameraRight = function () {
         camera.position.x += 2
         camera.position.z += 2
-        MiniMap.centerOnCameraPosition()
     }
     this.moveCameraUp = function () {
         camera.position.x += 2
         camera.position.z += -2
-        MiniMap.centerOnCameraPosition()
     }
     this.moveCameraDown = function () {
         camera.position.x += -2
         camera.position.z += 2
-        MiniMap.centerOnCameraPosition()
     }
     this.moveCameraAway = function () {
         camera.position.y += 2

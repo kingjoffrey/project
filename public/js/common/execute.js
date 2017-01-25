@@ -46,7 +46,7 @@ var Execute = new function () {
                         Ruins.handle(r)
                         Execute.setExecuting(0)
                     } else {
-                        MiniMap.centerOn(r.army.x, r.army.y, function () {
+                        GameScene.centerOn(r.army.x, r.army.y, function () {
                             Ruins.handle(r)
                             Execute.setExecuting(0)
                         })
@@ -70,7 +70,7 @@ var Execute = new function () {
                         Execute.setExecuting(0)
 
                     } else {
-                        MiniMap.centerOn(r.parentArmy.x, r.parentArmy.y, function () {
+                        GameScene.centerOn(r.parentArmy.x, r.parentArmy.y, function () {
                             var armies = Players.get(r.color).getArmies()
                             armies.handle(r.parentArmy)
                             armies.handle(r.childArmy)
@@ -92,7 +92,7 @@ var Execute = new function () {
                         armies.handle(r.army)
                         Execute.setExecuting(0)
                     } else {
-                        MiniMap.centerOn(r.army.x, r.army.y, function () {
+                        GameScene.centerOn(r.army.x, r.army.y, function () {
                             var armies = Players.get(r.color).getArmies()
                             for (var i in r.deletedIds) {
                                 armies.destroy(r.deletedIds[i])
@@ -130,7 +130,7 @@ var Execute = new function () {
                         Players.get(r.color).getArmies().handle(r.army)
                         Execute.setExecuting(0)
                     } else {
-                        MiniMap.centerOn(r.army.x, r.army.y, function () {
+                        GameScene.centerOn(r.army.x, r.army.y, function () {
                             Players.get(r.color).getArmies().handle(r.army)
                             if (Turn.isMy()) {
                                 Message.remove()

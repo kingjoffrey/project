@@ -70,7 +70,7 @@ var TreasuryWindow = new function () {
 
         var click = function (i) {
             return function () {
-                MiniMap.centerOn(CommonMe.getCastle(i).getX(), CommonMe.getCastle(i).getY())
+                GameScene.centerOn(CommonMe.getCastle(i).getX(), CommonMe.getCastle(i).getY())
             }
         }
 
@@ -127,7 +127,7 @@ var TreasuryWindow = new function () {
 
         var center = function (i) {
             return function () {
-                MiniMap.centerOn(CommonMe.getArmy(i).getX(), CommonMe.getArmy(i).getY())
+                GameScene.centerOn(CommonMe.getArmy(i).getX(), CommonMe.getArmy(i).getY())
             }
         }
 

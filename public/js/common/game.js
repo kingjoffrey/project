@@ -49,7 +49,6 @@ var Game = new function () {
             Terrain.init(game.terrain)
             Fields.init(game.fields)
             Turn.init(game.turnHistory)
-            MiniMap.init(Game.getMapElement())
             Players.init(game.players)
             Timer.init(game.begin, game.turnTimeLimit, game.timeLimit)
             Ruins.init(game.ruins)

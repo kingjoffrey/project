@@ -35,7 +35,7 @@ var Move = new function () {
         if (player.isComputer() && !GameGui.getShow()) {
             stepLoop(r, ii)
         } else {
-            MiniMap.centerOn(r.path[0].x, r.path[0].y, function () {
+            GameScene.centerOn(r.path[0].x, r.path[0].y, function () {
                 Move.startStepLoop(r, ii)
             })
         }
@@ -57,20 +57,16 @@ var Move = new function () {
             if (!player.isComputer() || GameGui.getShow()) {
                 //zoomer.setCenterIfOutOfScreen(r.path[step].x * 40, r.path[step].y * 40);
 
-                $('#' + army.getArmyId() + '.a')
-                    .animate({
-                        left: MiniMap.calculateX(r.path[step].x) + 'px',
-                        top: MiniMap.calculateY(r.path[step].y) + 'px'
-                    }, stepTime, function () {
-                        if (typeof r.path[step] == 'undefined') {
-                            console.log('step: ' + step)
-                            console.log('path: ' + r.path)
-                            throw('error20150224')
-                        }
-                        GameModels.setArmyPosition(army.getMesh(), r.path[step].x, r.path[step].y)
-                        delete r.path[step].c
-                        stepLoop(r, ii);
-                    })
+                if (typeof r.path[step] == 'undefined') {
+                    console.log('step: ' + step)
+                    console.log('path: ' + r.path)
+                    dupa.blada()
+                }
+                GameModels.setArmyPosition(army.getMesh(), r.path[step].x, r.path[step].y)
+                delete r.path[step].c
+                setTimeout(function () {
+                    stepLoop(r, ii)
+                }, stepTime)
             } else {
                 delete r.path[step].c;
                 stepLoop(r, ii);
@@ -78,7 +74,7 @@ var Move = new function () {
         } else {
             if (isTruthful(r.battle) && (!player.isComputer() || GameGui.getShow())) {
                 Sound.play('fight')
-                MiniMap.centerOn(r.path[step].x, r.path[step].y, function () {
+                GameScene.centerOn(r.path[step].x, r.path[step].y, function () {
                     BattleWindow.battle(r, ii)
                 })
             } else {
@@ -179,24 +175,24 @@ var Move = new function () {
                             defenderArmy = defenderArmies.get(armyId)
 
                         for (var soldierId in battleArmy.walk) {
-                           if (battleArmy.walk[soldierId]) {
-                               defenderArmy.deleteWalkingSoldier(soldierId)
-                           }
+                            if (battleArmy.walk[soldierId]) {
+                                defenderArmy.deleteWalkingSoldier(soldierId)
+                            }
                         }
                         for (var soldierId in battleArmy.swim) {
-                           if (battleArmy.swim[soldierId]) {
-                               defenderArmy.deleteSwimmingSoldier(soldierId)
-                           }
+                            if (battleArmy.swim[soldierId]) {
+                                defenderArmy.deleteSwimmingSoldier(soldierId)
+                            }
                         }
                         for (var soldierId in battleArmy.fly) {
-                           if (battleArmy.fly[soldierId]) {
-                               defenderArmy.deleteFlyingSoldier(soldierId)
-                           }
+                            if (battleArmy.fly[soldierId]) {
+                                defenderArmy.deleteFlyingSoldier(soldierId)
+                            }
                         }
                         for (var heroId in battleArmy.hero) {
-                           if (battleArmy.hero[heroId]) {
-                               defenderArmy.deleteHero(heroId)
-                           }
+                            if (battleArmy.hero[heroId]) {
+                                defenderArmy.deleteHero(heroId)
+                            }
                         }
                         defenderArmy.setNumberOfUnits(defenderArmy.toArray())
                         if (defenderArmy.getNumberOfUnits()) {

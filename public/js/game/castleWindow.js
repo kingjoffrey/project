@@ -4,7 +4,7 @@
 var CastleWindow = new function () {
     var center = function (i) {
             return function () {
-                MiniMap.centerOn(CommonMe.getCastle(i).getX(), CommonMe.getCastle(i).getY())
+                GameScene.centerOn(CommonMe.getCastle(i).getX(), CommonMe.getCastle(i).getY())
             }
         },
         click = function (i, id) {
@@ -143,7 +143,7 @@ var CastleWindow = new function () {
                 .html('>>')
                 .click(function () {
                     CastleWindow.show(nextCastle)
-                    MiniMap.centerOn(nextCastle.getX(), nextCastle.getY())
+                    GameScene.centerOn(nextCastle.getX(), nextCastle.getY())
                     Message.remove(messageId)
                 }))
         }
@@ -154,7 +154,7 @@ var CastleWindow = new function () {
                 .html('<<')
                 .click(function () {
                     CastleWindow.show(previousCastle)
-                    MiniMap.centerOn(previousCastle.getX(), previousCastle.getY())
+                    GameScene.centerOn(previousCastle.getX(), previousCastle.getY())
                     Message.remove(messageId)
                 }))
         }

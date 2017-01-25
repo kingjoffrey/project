@@ -62,10 +62,6 @@ var Army = function (army, bgColor, miniMapColor, textColor, color) {
         Fields.get(army.x, army.y).addArmyId(army.id, color)
         GameScene.remove(army.mesh)
         army.mesh = GameModels.addArmy(army.x, army.y, bgColor, numberOfUnits, this.getModelName())
-        $('#' + army.id + '.a').css({
-            left: MiniMap.calculateX(army.x) + 'px',
-            top: MiniMap.calculateY(army.y) + 'px'
-        })
     }
     this.toArray = function () {
         return army
@@ -340,18 +336,4 @@ var Army = function (army, bgColor, miniMapColor, textColor, color) {
     army.mesh = GameModels.addArmy(army.x, army.y, bgColor, numberOfUnits, this.getModelName())
 
     Fields.get(army.x, army.y).addArmyId(army.id, color)
-    Game.getMapElement().append(
-        $('<div>')
-            .css({
-                left: MiniMap.calculateX(army.x) + 'px',
-                top: MiniMap.calculateY(army.y) + 'px',
-                background: miniMapColor,
-                'border-color': textColor,
-                'z-index': 10,
-                width: MiniMap.calculateX(1) + 'px',
-                height: MiniMap.calculateY(1) + 'px'
-            })
-            .attr('id', army.id)
-            .addClass('a')
-    )
 }

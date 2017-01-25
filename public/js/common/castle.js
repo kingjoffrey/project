@@ -1,4 +1,4 @@
-var CommonCastle = function (castle, bgC) {
+var Castle = function (castle, bgC) {
     var mesh = GameModels.addCastle(castle, bgC),
         bgColor = bgC
 
@@ -56,13 +56,9 @@ var CommonCastle = function (castle, bgC) {
     this.getEnclaveNumber = function () {
         return castle.enclaveNumber
     }
-    this.update = function (bgC, miniMapColor, textColor) {
+    this.update = function (bgC) {
         bgColor = bgC
         this.setProductionId(null)
-        $('#c' + castle.id).css({
-            background: miniMapColor,
-            'border-color': textColor
-        })
         mesh.children[0].material.color.set(bgColor)
     }
     this.setDefense = function (defense) {

@@ -1,13 +1,23 @@
 var Castles = function () {
-    var castles = {}, bgColor, miniMapColor, textColor, color
+    var castles = {},
+        bgColor,
+        miniMapColor,
+        textColor,
+        color
+
     this.init = function (castles, bgC, miniMapC, textC, c) {
-        bgColor = bgC, miniMapColor = miniMapC, textColor = textC, color = c
+
+        bgColor = bgC
+        miniMapColor = miniMapC
+        textColor = textC
+        color = c
+
         for (var castleId in castles) {
             this.add(castleId, castles[castleId])
         }
     }
     this.add = function (castleId, castle) {
-        if (castle instanceof CommonCastle) {
+        if (castle instanceof Castle) {
             if (CommonMe.sameTeam(color)) {
                 var type = null
             } else {
@@ -22,7 +32,7 @@ var Castles = function () {
             castles[castleId] = castle
             castle.update(bgColor, miniMapColor, textColor)
         } else {
-            castles[castleId] = new Castle(castle, bgColor, miniMapColor, textColor)
+            castles[castleId] = new Castle(castle, bgColor)
             for (var x = castle.x; x <= castle.x + 1; x++) {
                 for (var y = castle.y; y <= castle.y + 1; y++) {
                     var field = Fields.get(x, y)
