@@ -17,25 +17,25 @@ var Models = new function () {
         pathMaterialWhite,
         pathGeometry,
         font,
-        loadFont = function () {
-            var loader = new THREE.FontLoader(),
-                fontName = 'helvetiker',
-                fontWeight = 'regular'
-
-            loader.load(window.location.origin + '/fonts/' + fontName + '_' + fontWeight + '.typeface.json', function (response) {
-                font = response;
-            })
-        },
-        createTextMesh = function (text, color) {
-            var mesh = new THREE.Mesh(new THREE.TextGeometry(text, {
-                font: font,
-                size: 1.5,
-                height: 0.3
-            }), new THREE.MeshPhongMaterial({color: color}))
-            mesh.position.set(0, 10, 0.2)
-            mesh.rotation.y = -Math.PI / 4
-            return mesh
-        },
+        // loadFont = function () {
+        //     var loader = new THREE.FontLoader(),
+        //         fontName = 'helvetiker',
+        //         fontWeight = 'regular'
+        //
+        //     loader.load(window.location.origin + '/fonts/' + fontName + '_' + fontWeight + '.typeface.json', function (response) {
+        //         font = response;
+        //     })
+        // },
+        // createTextMesh = function (text, color) {
+        //     var mesh = new THREE.Mesh(new THREE.TextGeometry(text, {
+        //         font: font,
+        //         size: 1.5,
+        //         height: 0.3
+        //     }), new THREE.MeshPhongMaterial({color: color}))
+        //     mesh.position.set(0, 10, 0.2)
+        //     mesh.rotation.y = -Math.PI / 4
+        //     return mesh
+        // },
         initRoadTexture = function () {
             roadTexture = {}
             tl.load('/img/game/road/road_c.png', function (tex) {
@@ -322,7 +322,7 @@ var Models = new function () {
             flagMesh.receiveShadow = true
         }
         mesh.add(flagMesh)
-        mesh.add(createTextMesh(castle.name, '#ffffff'))
+        // mesh.add(createTextMesh(castle.name, '#ffffff'))
         updateCastleModel(mesh, castle.defense)
         return mesh
     }
@@ -458,7 +458,7 @@ var Models = new function () {
         return loading
     }
     this.init = function () {
-        loadFont()
+        // loadFont()
         initRoadTexture()
         initSwampTexture()
         initRuin()

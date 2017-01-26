@@ -41,7 +41,10 @@ var GameRenderer = new function () {
     this.stop = function () {
         stop = 1
     }
-
+    this.start = function () {
+        stop = 0
+        this.animate()
+    }
     this.init = function (id, Scene) {
         stop = 0
         renderer = Renderer.get()

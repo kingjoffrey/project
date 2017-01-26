@@ -168,10 +168,12 @@ var GameGui = new function () {
                 }
             })
             $('#showMenu').click(function () {
+                GameRenderer.stop()
                 $('#game').hide()
                 $('#gameMenu').show()
             })
-            $('#cancel').click(function () {
+            $('#close').click(function () {
+                GameRenderer.start()
                 $('#game').show()
                 $('#gameMenu').hide()
             })

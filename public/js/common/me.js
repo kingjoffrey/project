@@ -122,43 +122,11 @@ var CommonMe = new function () {
     }
     this.selectArmy = function (armyId, center) {
         var army = this.getArmy(armyId),
-            unitTypes = {},
             number,
             i = 0
 
-        // if (number = countProperties(army.getHeroes())) {
-        //     UnitModels.addHero(army.getBackgroundColor(), s)
-        // }
-
-        for (var soldierId in army.getWalkingSoldiers()) {
-            if (isSet(unitTypes[army.getWalkingSoldier(soldierId).unitId])) {
-                unitTypes[army.getWalkingSoldier(soldierId).unitId]++
-            } else {
-                unitTypes[army.getWalkingSoldier(soldierId).unitId] = 1
-            }
-        }
-        for (var soldierId in army.getFlyingSoldiers()) {
-            if (isSet(unitTypes[army.getFlyingSoldier(soldierId).unitId])) {
-                unitTypes[army.getFlyingSoldier(soldierId).unitId]++
-            } else {
-                unitTypes[army.getFlyingSoldier(soldierId).unitId] = 1
-            }
-        }
-        for (var soldierId in army.getSwimmingSoldiers()) {
-            if (isSet(unitTypes[army.getSwimmingSoldier(soldierId).unitId])) {
-                unitTypes[army.getSwimmingSoldier(soldierId).unitId]++
-            } else {
-                unitTypes[army.getSwimmingSoldier(soldierId).unitId] = 1
-            }
-        }
-        // for (var unitId in unitTypes) {
-        //     UnitModels.addUnit(army.getBackgroundColor(), Unit.getName(unitId), s)
-        // }
-
-        // s.resize(400, 40)
-        // GameRenderer.addViewport(s.get(), s.getCamera(), 100, 2, 400, 40)
-
         GameModels.addArmyCircle(army.getX(), army.getY(), army.getBackgroundColor())
+        $('#terrain').html(army.getHero(army.getHeroKey()).name)
         Message.remove()
 
         this.removeFromSkipped(armyId)
