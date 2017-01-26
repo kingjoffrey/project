@@ -682,3 +682,15 @@ td #trash {
     color: #A8A47D;
     font-weight: bold;
 }
+
+#findFriends {
+    color: #fff;
+    text-decoration: underline;
+    cursor: pointer;
+    display: inline;
+}
+
+#findFriends:hover {
+    color: gray;
+    text-decoration: none;
+}

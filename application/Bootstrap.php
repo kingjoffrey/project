@@ -26,17 +26,18 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
         $view->doctype('XHTML1_TRANSITIONAL');
 
         // Set the initial title and separator:
-        $view->headTitle('Wars of Fate')->setSeparator(' :: ');
+        $view->headTitle('Wars of the Heroes')->setSeparator(' :: ');
 
         $view->headMeta()->appendHttpEquiv('Content-Type', 'text/html; charset=UTF-8');
         $view->headMeta()->appendName('keywords', 'turn based, strategic, game');
-        $view->headMeta()->appendName('description', 'This is a multiplayer strategic game');
+        $view->headMeta()->appendName('description', 'Wars of the Heroes is a multiplayer, turn based strategic game.');
         $view->headMeta()->appendName('author', 'Bartosz Krzeszewski');
         $view->headMeta()->appendName('date', '2011');
         $view->headMeta()->appendName('copyright', 'Bartosz Krzeszewski 2011');
-        $view->headMeta()->appendName('viewport', 'width=800, height=600, user-scalable=1, initial-scale=1, minimum-scale=1, maximum-scale=1');
+        $view->headMeta()->appendName('viewport', 'width=1000, user-scalable=no');
+//        $view->headMeta()->appendName('viewport', 'user-scalable=no, initial-scale=2, maximum-scale=1, minimum-scale=1, width=device-width, height=device-height');
 
-         $view->headMeta()->appendName('google-site-verification', 'XVxNHItfpHO6b643-xv5cPacS54KgbNXeE1EfaBawuI');
+        $view->headMeta()->appendName('google-site-verification', 'XVxNHItfpHO6b643-xv5cPacS54KgbNXeE1EfaBawuI');
     }
 
     protected function _initRegisterLogger()
@@ -46,19 +47,6 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
         $logger->addWriter(new Zend_Log_Writer_Stream(APPLICATION_PATH . '/../log/' . date('Y-m-d') . '.log'));
         Zend_Registry::set('Zend_Log', $logger);
     }
-
-//    protected function _initRegisterLogger()
-//    {
-//        $this->bootstrap('Log');
-//
-//        if (!$this->hasPluginResource('Log')) {
-//            throw new Zend_Exception('Log not enabled in application.ini');
-//        }
-//
-//        $logger = $this->getResource('Log');
-//        assert($logger != null);
-//        Zend_Registry::set('Zend_Log', $logger);
-//    }
 
     protected function _initSession()
     {
@@ -70,16 +58,6 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
         $config = new Zend_Config($this->getOptions());
         Zend_Registry::set('config', $config);
     }
-
-//    protected function _initRouter() {
-//        if (PHP_SAPI == 'cli') {
-//            $this->bootstrap('FrontController');
-//            $front = $this->getResource('FrontController');
-//            $front->setParam('disableOutputBuffering', true);
-//            $front->setRouter(new Game_Router_Cli());
-//            $front->setRequest(new Zend_Controller_Request_Simple());
-//        }
-//    }
 
     public function _initRoutes()
     {

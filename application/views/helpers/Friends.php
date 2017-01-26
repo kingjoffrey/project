@@ -17,7 +17,7 @@ class zend_View_Helper_Friends extends Zend_View_Helper_Abstract
                 $this->view->placeholder('friends')->append('<div id="' . $row['friendId'] . '" class="friends"><div id="online"></div><div id="trash"></div><span>' . $row['firstName'] . ' ' . $row['lastName'] . '</span></div>');
             }
         } else {
-            $this->view->placeholder('friends')->append($this->view->translate('You don\'t have friends') . ': <a href="/' . Zend_Registry::get('lang') . '/players">' . $this->view->translate('find some friends') . '</a>.');
+            $this->view->placeholder('friends')->append($this->view->translate('You don\'t have friends') . ': <div id="findFriends">' . $this->view->translate('find some friends') . '</div>.');
         }
     }
 

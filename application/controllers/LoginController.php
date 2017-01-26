@@ -67,15 +67,25 @@ class LoginController extends Coret_Controller_AuthenticateFrontend
         if ($result->isValid()) {
             $this->handleAuthenticated();
         } elseif ($facebookId) {
-            $data = array(
-                'fbId' => $facebookId,
-                'firstName' => $userProfile->getFirstName(),
-                'lastName' => $userProfile->getLastName(),
-            );
+            if ($firstName = $userProfile->getFirstName() || $lastName = $userProfile->getLastName()) {
+                $data = array(
+                    'fbId' => $facebookId,
+                    'firstName' => $firstName,
+                    'lastName' => $lastName,
+                );
+            } else {
+                $data = array(
+                    'fbId' => $facebookId,
+                    'firstName' => $userProfile->getName()
+                );
+            }
+
             $mPlayer = new Application_Model_Player();
             if ($playerId = $mPlayer->createPlayer($data)) {
                 $modelHero = new Application_Model_Hero($playerId);
                 $modelHero->createHero();
+                $this->_authAdapter = $this->getAuthAdapterFacebook($facebookId);
+                $this->_auth->authenticate($this->_authAdapter);
                 $this->handleAuthenticated();
             }
         } else {

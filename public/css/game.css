@@ -126,6 +126,10 @@
     font-weight: bold;
 }
 
+.message.tutorial .description {
+    text-align: justify;
+}
+
 .message #content {
     min-width: 321px;
     min-height: 70px;

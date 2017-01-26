@@ -137,7 +137,7 @@ class Zend_View_Helper_Translations extends Zend_View_Helper_Abstract
                 'hero' => $this->view->translate('Hero'),
                 'resurrectHero' => $this->view->translate('Resurrect Hero'),
                 'hireHero' => $this->view->translate('Hire Hero'),
-                '' => $this->view->translate(''),
+                'Goal' => $this->view->translate('Goal'),
                 '' => $this->view->translate(''),
                 '' => $this->view->translate(''),
                 '' => $this->view->translate(''),

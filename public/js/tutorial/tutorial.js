@@ -12,8 +12,8 @@ var Tutorial = new function () {
             var stepPlus = step * 1 + 1,
                 numberPlus = number * 1 + 1,
                 html = $('<div>')
-                    .append($('<div>').html('Goal ' + stepPlus + '/' + steps[number].length + ': ' + steps[number][step].goal).addClass('goal'))
-                    .append($('<div>').html(steps[number][step].description))
+                    .append($('<div>').html(translations.Goal + ' ' + stepPlus + '/' + steps[number].length + ': ' + steps[number][step].goal).addClass('goal'))
+                    .append($('<div>').html(steps[number][step].description.replace("\n", '<br><br>')).addClass('description'))
             Message.tutorial('Tutorial ' + numberPlus + '/' + steps.length, html.html())
         }
     }
@@ -22,7 +22,7 @@ var Tutorial = new function () {
 
         this.showDescription()
 
-        $('#tutorial').html('Goal: ' + steps[number][step].goal)
+        $('#tutorial').html(translations.Goal + ': ' + steps[number][step].goal)
     }
     this.init = function (t) {
         console.log(t)
