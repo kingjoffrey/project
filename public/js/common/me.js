@@ -126,7 +126,9 @@ var CommonMe = new function () {
             i = 0
 
         GameModels.addArmyCircle(army.getX(), army.getY(), army.getBackgroundColor())
-        $('#terrain').html(army.getHero(army.getHeroKey()).name)
+        if (army.getHeroKey()) {
+            $('#terrain').html(army.getHero(army.getHeroKey()).name)
+        }
         Message.remove()
 
         this.removeFromSkipped(armyId)

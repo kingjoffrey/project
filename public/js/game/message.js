@@ -18,15 +18,18 @@ var Message = new function () {
         this.remove()
         var id = makeId(10),
             div = $('<div>')
-                .addClass('message')
                 .attr('id', id)
-                .append($('<div>').attr('id', 'content')
+                .html($('<div>').attr('id', 'content')
                     .append($('<div>').append($('<h3>').html(title)).addClass('msgTitle'))
                     .append($(txt).addClass('overflow'))
                 )
                 .fadeIn(200)
+                .addClass('message')
         if (isSet(tutorial)) {
             div.addClass('tutorial')
+            $('.message.tutorial').fadeOut(200, function () {
+                $('.message.tutorial').remove()
+            })
         }
         if (div.find('.error').length) {
             div.addClass('error')
@@ -42,9 +45,13 @@ var Message = new function () {
             })
         } else {
             if (!Turn.isMy() && $('.message .showCastle').length) {
-                $('.message:not(:has(.showCastle))').remove()
+                $('.message:not(:has(.showCastle))').fadeOut(200, function () {
+                    $('.message:not(:has(.showCastle))').remove()
+                })
             } else {
-                $('.message:not(.tutorial)').remove()
+                $('.message:not(.tutorial)').fadeOut(200, function () {
+                    $('.message:not(.tutorial)').remove()
+                })
             }
         }
     }

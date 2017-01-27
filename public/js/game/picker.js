@@ -17,6 +17,7 @@ var PickerGame = new function () {
                         AStar.cursorPosition(x, y)
                         AStar.showPath()
                     }
+                    dragStart = PickerGame.getPoint(event)
                 } else {
                     clickStart = 0
                     var field = PickerCommon.getField()
@@ -51,7 +52,7 @@ var PickerGame = new function () {
                 //     AStar.showPath()
                 // }
                 if (dragStart) {
-                    var dragEnd = PickerGame.getPoint()
+                    var dragEnd = PickerGame.getPoint(event)
                     GameScene.moveCamera(dragStart.x - dragEnd.x, dragStart.y - dragEnd.y)
                     dragStart = dragEnd
                 }
@@ -115,7 +116,7 @@ var PickerGame = new function () {
      *
      * @returns {{x: Number, y: Number}}
      */
-    this.getPoint = function () {
+    this.getPoint = function (event) {
         var x = event.offsetX == undefined ? event.layerX : event.offsetX,
             y = event.offsetY == undefined ? event.layerY : event.offsetY
         return {x: x, y: y}
