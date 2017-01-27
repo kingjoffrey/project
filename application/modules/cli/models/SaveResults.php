@@ -14,7 +14,6 @@ class Cli_Model_SaveResults
                 'type' => 'end'
             );
             $handler->sendToChannel($token);
-            $handler->removeGame($game->getId());
             return;
         }
 

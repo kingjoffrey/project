@@ -1,14 +1,14 @@
 <?php
+use Devristo\Phpws\Protocol\WebSocketTransportInterface;
 
 class Cli_Model_NextTurn
 {
 
-    public function __construct(Devristo\Phpws\Protocol\WebSocketTransportInterface $user, $handler)
+    public function __construct(WebSocketTransportInterface $user, $handler)
     {
         $game = Cli_CommonHandler::getGameFromUser($user);
         $players = $game->getPlayers();
         $db = $handler->getDb();
-
         while (true) {
             $nextPlayerId = $this->getExpectedNextTurnPlayer($game, $handler);
             if (!$nextPlayerId) {
@@ -69,7 +69,6 @@ class Cli_Model_NextTurn
             /* to jest przewinięty kolor gracza */
             if ($find && $game->getPlayers()->getPlayer($color)->armiesOrCastlesExists()) {
                 $nextPlayerColor = $color;
-                echo '$nextPlayerColor=' . $nextPlayerColor . "\n";
                 break;
             }
         }
@@ -86,12 +85,16 @@ class Cli_Model_NextTurn
 
         /* jeżeli następny gracz to pierwszy gracz to wtedy nowa tura */
         if ($nextPlayerColor == $firstColor) {
-            $game->turnNumberIncrement();
-            $token = array(
-                'type' => 'neutral',
-                'armies' => $game->getPlayers()->getPlayer('neutral')->getArmies()->toArray()
-            );
-            $handler->sendToChannel($token);
+            if ($game->getPlayers()->getPlayer($nextPlayerColor)->armiesOrCastlesExists()) {
+                $game->turnNumberIncrement();
+                $token = array(
+                    'type' => 'neutral',
+                    'armies' => $game->getPlayers()->getPlayer('neutral')->getArmies()->toArray()
+                );
+                $handler->sendToChannel($token);
+            } else {
+                return;
+            }
         }
         $turnPlayerId = $game->getPlayers()->getPlayer($nextPlayerColor)->getId();
         $game->setTurnPlayerId($turnPlayerId);
