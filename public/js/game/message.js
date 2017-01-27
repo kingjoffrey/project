@@ -27,9 +27,7 @@ var Message = new function () {
                 .addClass('message')
         if (isSet(tutorial)) {
             div.addClass('tutorial')
-            $('.message.tutorial').fadeOut(200, function () {
-                $('.message.tutorial').remove()
-            })
+            $('.message.tutorial').remove()
         }
         if (div.find('.error').length) {
             div.addClass('error')
@@ -40,18 +38,12 @@ var Message = new function () {
     }
     this.remove = function (id) {
         if (isSet(id)) {
-            $('#' + id).fadeOut(200, function () {
-                $('#' + id).remove()
-            })
+            $('#' + id).remove()
         } else {
             if (!Turn.isMy() && $('.message .showCastle').length) {
-                $('.message:not(:has(.showCastle))').fadeOut(200, function () {
-                    $('.message:not(:has(.showCastle))').remove()
-                })
+                $('.message:not(:has(.showCastle))').remove()
             } else {
-                $('.message:not(.tutorial)').fadeOut(200, function () {
-                    $('.message:not(.tutorial)').remove()
-                })
+                $('.message:not(.tutorial)').remove()
             }
         }
     }

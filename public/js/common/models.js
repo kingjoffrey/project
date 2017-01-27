@@ -327,7 +327,7 @@ var Models = new function () {
         return mesh
     }
     this.castleChangeDefense = function (mesh, defense) {
-        mesh.children.splice(2, 3)
+        mesh.children.splice(1, 3) // usuń 3 elementy począwszy od indexu 1
         updateCastleModel(mesh, defense)
     }
     this.getTree = function (x, y) {

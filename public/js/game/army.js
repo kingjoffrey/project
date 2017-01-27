@@ -198,18 +198,18 @@ var Army = function (army, bgColor, miniMapColor, textColor, color) {
     this.getFlyBonus = function () {
         return countProperties(army.fly)
     }
-    //this.deleteWalkingSoldier = function (soldierId) {
-    //    delete army.walk[soldierId]
-    //}
-    //this.deleteSwimmingSoldier = function (soldierId) {
-    //    delete army.swim[soldierId]
-    //}
-    //this.deleteFlyingSoldier = function (soldierId) {
-    //    delete army.fly[soldierId]
-    //}
-    //this.deleteHero = function (heroId) {
-    //    delete army.heroes[heroId]
-    //}
+    this.deleteWalkingSoldier = function (soldierId) {
+       delete army.walk[soldierId]
+    }
+    this.deleteSwimmingSoldier = function (soldierId) {
+       delete army.swim[soldierId]
+    }
+    this.deleteFlyingSoldier = function (soldierId) {
+       delete army.fly[soldierId]
+    }
+    this.deleteHero = function (heroId) {
+       delete army.heroes[heroId]
+    }
     this.getFortified = function () {
         return army.fortified
     }
