@@ -21,6 +21,7 @@ var CastleWindow = new function () {
             messageId,
             table = $('<table>'),
             j = 0,
+            capital = false,
             castleWindow = $('<div>').addClass('showCastle'),
             createProductionTD = function () {
                 var array = []
@@ -112,8 +113,8 @@ var CastleWindow = new function () {
                 return array
             }
 
-        if (castle.getCapital()) {
-            messageId = Message.show(translations.capitalCity + '&nbsp;' + castle.getName(), castleWindow)
+        if (castle.getCastleId() == CommonMe.getCapitalId()) {
+            messageId = Message.show(castle.getName() + '&nbsp;(' + translations.capitalCity + ')', castleWindow)
         } else {
             messageId = Message.show(translations.castle + '&nbsp;' + castle.getName(), castleWindow)
         }
@@ -181,7 +182,7 @@ var CastleWindow = new function () {
             )
             .append($('<div>').addClass('production').append($('<div>').html(translations.availableUnits).addClass('title')).append(table).attr('id', castle.getCastleId()))
 
-        if (castle.getCapital()) {
+        if (castle.getCastleId() == CommonMe.getCapitalId()) {
             castleWindow
                 .append($('<div>')
                     .addClass('button buttonColors buttonOff')
@@ -231,7 +232,7 @@ var CastleWindow = new function () {
 
         Message.setOverflowHeight(messageId)
 
-        if (castle.getCapital()) {
+        if (castle.getCastleId() == CommonMe.getCapitalId()) {
             if (!CommonMe.findHero() && CommonMe.getGold() >= 100) {
                 $('#heroResurrection').removeClass('buttonOff')
                 $('#heroHire').addClass('buttonOff')

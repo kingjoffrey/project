@@ -13,6 +13,3 @@ var CommonInit = new function () {
         Game.init(g)
     }
 }
-$(document).ready(function () {
-    AStar.init()
-})

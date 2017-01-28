@@ -8,7 +8,9 @@ var PickerGame = new function () {
                     var x = PickerCommon.convertX(),
                         y = PickerCommon.convertZ()
 
-                    if (clickStart && clickStart.x == x && clickStart.y == y) {
+                    if (CommonMe.getSelectedArmy().getX() == x && CommonMe.getSelectedArmy().getY() == y) {
+                        SplitWindow.show()
+                    } else if (clickStart && clickStart.x == x && clickStart.y == y) {
                         clickStart = 0
                         AStar.cursorPosition(x, y)
                         WebSocketSendCommon.move()

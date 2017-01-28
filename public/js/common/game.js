@@ -12,9 +12,6 @@ var Game = new function () {
     this.getGameId = function () {
         return gameId
     }
-    this.getMapElement = function () {
-        return $('#map')
-    }
     this.getTimeoutId = function () {
         return timeoutId
     }
@@ -52,7 +49,7 @@ var Game = new function () {
             Players.init(game.players)
             Timer.init(game.begin, game.turnTimeLimit, game.timeLimit)
             Ruins.init(game.ruins)
-            CommonMe.init(game.color, game.gold, game.bSequence)
+            CommonMe.init(game.color, game.gold, game.bSequence, game.capitals)
             GameRenderer.init('game', GameScene)
             GameScene.initSun(Fields.getMaxY())
             GameRenderer.animate()
@@ -61,8 +58,6 @@ var Game = new function () {
             GameGui.init()
             PickerCommon.init(PickerGame)
         }
-        
-//         GamePlayers.initOnline(game.online)
 
         if (Turn.isMy()) {
             CommonMe.turnOn()
@@ -73,13 +68,6 @@ var Game = new function () {
             CommonMe.turnOff()
         }
         Players.showFirst(Turn.getColor())
-
-//         if (Players.countHumans() > 1) {
-//             PrivateChat.setType('game')
-//             PrivateChat.enable()
-//         } else {
-//             PrivateChat.disable()
-//         }
 
         Sound.play('gamestart')
         $('#loading').css('display', 'none')

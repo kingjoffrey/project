@@ -1,7 +1,7 @@
 <div class="table">
     <h2><?php echo $this->translate('Game score') ?></h2>
     <?php foreach ($this->score as $k => $v): ?>
-        <div class="playerName"><?php echo $this->players[$v['playerId']]['firstName'] . ' ' . $this->players[$v['playerId']]['lastName'] . ' - ' . $v['score'] ?></div>
+        <div class="playerName"><?php echo $this->players[$v['playerId']]['firstName'] . ' ' . $this->players[$v['playerId']]['lastName'] . ': ' . $v['score'] ?></div>
         <table>
             <tr>
                 <th><?php echo $this->translate('Castles conquered') ?></th>

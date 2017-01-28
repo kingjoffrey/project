@@ -54,7 +54,7 @@ var GameGui = new function () {
                 case 78: //n
                     CommonMe.findNext()
                     break;
-                case 79: //o
+                case 13: //enter
                     $('.message .go').click()
                     break;
                 case 82: //r
@@ -63,7 +63,7 @@ var GameGui = new function () {
                 case 83: //s
                     StatusWindow.show()
                     break;
-                //default:
+                // default:
                 //    console.log(key)
             }
         },

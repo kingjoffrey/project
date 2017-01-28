@@ -16,6 +16,7 @@ var CommonMe = new function () {
         selectedCastleId = null,
         selectedUnitId = null,
         battleSequence = [],
+        capitalId = null,
         updateGold = function () {
             $('#gold #value').fadeOut(300, function () {
                 $('#gold #value').html(gold)
@@ -407,9 +408,16 @@ var CommonMe = new function () {
             }
         }
     }
-    this.init = function (c, g, bSequence) {
+    this.setCapitalId = function (id) {
+        capitalId = id
+    }
+    this.getCapitalId = function () {
+        return capitalId
+    }
+    this.init = function (c, g, bSequence, capitals) {
         color = c
         me = Players.get(color)
+        capitalId = capitals[color]
 
         this.setBattleSequence(bSequence)
         this.setGold(g)
