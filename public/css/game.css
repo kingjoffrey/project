@@ -107,12 +107,12 @@
     top: 70px;
     text-align: center;
     width: 100%;
-    z-index: 9999999999;
+    z-index: 9999;
     pointer-events: none
 }
 
 .message.tutorial {
-    z-index: 214748364709;
+    z-index: 10000;
 }
 
 .message.tutorial #content {

@@ -156,7 +156,7 @@ var GameGui = new function () {
             })
             $('#fullScreen').click(function () {
                 Sound.play('click')
-                var elem = document.getElementById('game');
+                var elem = document.getElementById('main');
                 if (elem.requestFullscreen) {
                     elem.requestFullscreen()
                 } else if (elem.msRequestFullscreen) {
