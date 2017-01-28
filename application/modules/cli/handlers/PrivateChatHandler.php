@@ -52,6 +52,8 @@ class Cli_PrivateChatHandler extends WebSocketUriHandler
     {
         if (isset($this->_players[$playerId])) {
             return $this->_players[$playerId];
+        } else {
+            return array();
         }
     }
 

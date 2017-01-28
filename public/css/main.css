@@ -511,6 +511,13 @@ p#info {
 
 #searchResults a {
     color: #fff;
+    cursor: pointer;
+    text-decoration: underline;
+}
+
+#searchResults a:hover {
+    color: gray;
+    text-decoration: none;
 }
 
 #playersingame .td1 {

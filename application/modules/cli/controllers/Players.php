@@ -1,8 +1,8 @@
 <?php
-
+use Devristo\Phpws\Protocol\WebSocketTransportInterface;
 class PlayersController
 {
-    function index(Devristo\Phpws\Protocol\WebSocketTransportInterface $user, Cli_MainHandler $handler, $dataIn)
+    function index(WebSocketTransportInterface $user, Cli_MainHandler $handler, $dataIn)
     {
         $view = new Zend_View();
         $view->searchForm = new Application_Form_Search();
@@ -26,7 +26,7 @@ class PlayersController
         $handler->sendToUser($user, $token);
     }
 
-    function add(Devristo\Phpws\Protocol\WebSocketTransportInterface $user, Cli_MainHandler $handler, $dataIn)
+    function add(WebSocketTransportInterface $user, Cli_MainHandler $handler, $dataIn)
     {
         if ($dataIn['friendId']) {
             $db = $handler->getDb();
@@ -34,16 +34,9 @@ class PlayersController
             $mFriend->create($user->parameters['playerId'], $dataIn['friendId']);
         }
 
-        $view = new Zend_View();
-        $view->searchForm = new Application_Form_Search();
-        $view->searchForm->setView($view);
-
-        $view->addScriptPath(APPLICATION_PATH . '/views/scripts');
-
         $token = array(
             'type' => 'players',
-            'action' => 'index',
-            'data' => $view->render('players/index.phtml')
+            'action' => 'add'
         );
         $handler->sendToUser($user, $token);
     }

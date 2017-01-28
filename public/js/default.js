@@ -37,10 +37,6 @@ var Page = new function () {
             WebSocketSendMain.controller('messages', 'index')
         })
 
-        $('#findFriends').click(function () {
-            WebSocketSendMain.controller('players', 'index')
-        })
-
         $('#friendsBox .close').click(function () {
             var left = $(this).parent().position().left,
                 move = $(this).parent().width()

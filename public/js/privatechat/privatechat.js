@@ -73,7 +73,6 @@ var PrivateChat = new function () {
         }
     }
     this.init = function () {
-        console.log('init')
         inputWidth = $('#chatBox #msg').width()
         Websocket.init()
         $('#send').click(function () {
@@ -103,16 +102,6 @@ var PrivateChat = new function () {
                         width: inputWidth
                     })
             }
-        })
-        $('#friends span').click(function () {
-            if ($('#chatBox.disabled #msg').val() == translations.selectFriendFromFriendsList) {
-                $('#chatBox.disabled #msg').val('')
-            }
-            PrivateChat.prepare($(this).html(), $(this).parent().attr('id'))
-        })
-        $('#friends #trash').click(function () {
-            Websocket.delete($(this).parent().attr('id'))
-            $(this).parent().remove()
         })
         //this.disable()
     }
@@ -165,14 +154,14 @@ var Websocket = new function () {
                     PrivateChat.message(0, r.name, r.id, r.msg)
                     break
                 case 'open':
-                    $('#friends #' + r.id + ' #online').css({display: 'block'})
+                    $('#friends #' + r.id + ' #online').show()
                     break
                 case 'close':
-                    $('#friends #' + r.id + ' #online').css({display: 'none'})
+                    $('#friends #' + r.id + ' #online').hide()
                     break
                 case 'friends':
                     for (var i in r.friends) {
-                        $('#friends #' + r.friends[i] + ' #online').css({display: 'block'})
+                        $('#friends #' + r.friends[i] + ' #online').show()
                     }
                     break
                 default:
