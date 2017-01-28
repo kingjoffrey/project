@@ -12,11 +12,9 @@ class IndexController extends Coret_Controller_Authorized
         $version = Zend_Registry::get('config')->version;
 
         $this->view->headLink()->prependStylesheet('/css/main.css?v=' . $version);
-        $this->view->headLink()->appendStylesheet('/css/help.css?v=' . $version);
         $this->view->headLink()->appendStylesheet('/css/editor.css?v=' . $version);
         $this->view->headLink()->appendStylesheet('/css/game.css?v=' . $version);
         $this->view->headLink()->appendStylesheet('/css/new.css?v=' . $version);
-        $this->view->headLink()->appendStylesheet('/css/playerslist.css?v=' . $version);
 
         $this->view->jquery();
         $this->view->headScript()->appendFile('/js/date.js');
@@ -126,15 +124,13 @@ class IndexController extends Coret_Controller_Authorized
         $this->view->sound();
         $this->view->title();
         $this->view->models();
-        $this->view->Friends();
-        $this->view->ChatInput();
-        $this->view->ChatTitle();
-        $this->view->FriendsTitle();
         $this->view->translations();
-//        $this->view->googleAnalytics();
         $this->view->Version();
-
         $this->view->Websocket($identity);
+
+        $this->view->placeholder('friendsTitle')->append($this->view->translate('Friends'));
+        $this->view->placeholder('chatTitle')->append($this->view->translate('Chat'));
+        $this->view->placeholder('chatInput')->append($this->view->translate('Select friend from friends list'));
     }
 
     protected function authorized()

@@ -8,9 +8,7 @@ var WebSocketMain = new function () {
             WebSocketSendMain.open()
         }
         ws.onmessage = function (e) {
-            if (typeof gameId === 'undefined') {
-                WebSocketMessageMain.switch($.parseJSON(e.data))
-            }
+            WebSocketMessageMain.switch($.parseJSON(e.data))
         }
         ws.onclose = function () {
             WebSocketSendMain.setClosed(1)

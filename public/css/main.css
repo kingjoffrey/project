@@ -70,7 +70,7 @@ a:hover {
 input {
     border: 1px solid grey;
     border-radius: 5px;
-    padding: 7px 6px;
+    padding: 21px 6px;
     box-shadow: 1px 1px 5px #000;
     text-align: center;
     background: #373737;
@@ -698,4 +698,115 @@ td #trash {
 #main {
     width: 100%;
     height: 100%;
+}
+
+#helpMenu {
+    margin-bottom: 6px;
+}
+
+.frame {
+    border-radius: 5px;
+    border: 2px solid grey;
+    width: 60px;
+    background: url(/img/bg_1.jpg);
+    box-shadow: 2px 2px 5px #000;
+}
+
+.third {
+    position: absolute;
+    top: 80px;
+    left: 360px
+}
+
+#helpMenu div {
+    display: inline-block;
+    padding: 10px;
+    border: 2px solid #fff;
+    border-radius: 5px;
+    background: #000;
+    box-shadow: 1px 1px 5px #000;
+    text-shadow: none;
+    cursor: pointer;
+}
+
+#helpMenu div:hover {
+    background: green;
+    color: #fff;
+}
+
+#helpMenu div.active {
+    background: #fff;
+    color: #000;
+    cursor: default;
+}
+
+#text h5 {
+    padding: 10px;
+    text-align: center;
+    font-size: 150%;
+}
+
+#text {
+    min-height: 300px;
+}
+
+#graphics {
+    float: left;
+    width: 300px;
+    height: 300px;
+    margin-right: 5px;
+}
+
+#text #unit table {
+    width: 583px;
+    margin: 10px 0;
+}
+
+#text #unit h3 {
+    margin: 10px 0;
+}
+
+#playersingame td {
+    line-height: 26px;
+    min-width: 100px;
+    height: 62px;
+}
+
+#playersingame tr td div.left {
+    width: 300px;
+    overflow: hidden;
+    padding: 5px;
+}
+
+#playersingame tr td div.right {
+    text-shadow: none;
+    min-width: 117px;
+    margin-right: 1px;
+    border-radius: 5px;
+    padding: 5px;
+}
+
+#playersout td {
+    line-height: 24px;
+    padding: 2px;
+    margin: 2px;
+}
+
+.selected {
+    background: lightslategrey !important;
+}
+
+.selected td {
+    color: #000;
+    text-shadow: none;
+}
+
+.selected:hover td {
+    color: #000;
+}
+
+.selected .td1 span {
+    /*background: gray;*/
+    padding: 5px;
+    text-shadow: 0 0 2px #000;
 }

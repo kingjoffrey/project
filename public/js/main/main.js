@@ -11,6 +11,20 @@ var Main = new function () {
     this.init = function () {
         WebSocketMain.init()
     }
+    this.createFriends = function (friends) {
+        for (var id in friends) {
+            $('#friends').append($('<div>').attr('id', id).addClass('friends')
+                .append($('<div>').attr('id', 'online'))
+                .append($('<div>').attr('id', 'trash'))
+                .append($('<span>').html(friends[id])))
+        }
+        if (notSet(id)) {
+            $('#friends')
+                .append(translations.YouDontHaveFriends + ': ')
+                .append($('<div>').attr('id', 'findFriends').html(translations.findSomeFriends))
+        }
+        PrivateChat.init()
+    }
     this.createMenu = function (menu) {
         if (init) {
             return
