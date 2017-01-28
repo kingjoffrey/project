@@ -40,6 +40,7 @@ var Game = new function () {
         game = g
         if (loading) {
             loading = 0
+            Execute.setExecuting(0)
             AStar.init()
             GameScene.init($(window).innerWidth(), $(window).innerHeight())
             Units.init(game.units)

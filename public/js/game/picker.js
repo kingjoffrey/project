@@ -7,7 +7,6 @@ var PickerGame = new function () {
                 if (CommonMe.getSelectedArmyId()) {
                     var x = PickerCommon.convertX(),
                         y = PickerCommon.convertZ()
-
                     if (CommonMe.getSelectedArmy().getX() == x && CommonMe.getSelectedArmy().getY() == y) {
                         SplitWindow.show()
                     } else if (clickStart && clickStart.x == x && clickStart.y == y) {
