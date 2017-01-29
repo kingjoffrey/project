@@ -1,5 +1,6 @@
 $(document).ready(function () {
     Page.init()
+    Chat.init()
 })
 
 var Page = new function () {

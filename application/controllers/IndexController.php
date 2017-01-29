@@ -26,6 +26,11 @@ class IndexController extends Coret_Controller_Authorized
         $this->view->headScript()->appendFile('/js/default.js?v=' . $version);
         $this->view->headScript()->appendFile('/js/libs.js?v=' . $version);
 
+        $this->view->headScript()->appendFile('/js/chat/init.js?v=' . $version);
+        $this->view->headScript()->appendFile('/js/chat/websocket.js?v=' . $version);
+        $this->view->headScript()->appendFile('/js/chat/websocketMessage.js?v=' . $version);
+        $this->view->headScript()->appendFile('/js/chat/websocketSend.js?v=' . $version);
+
         $this->view->headScript()->appendFile('/js/mapgenerator/mapgenerator.js?v=' . $version);
         $this->view->headScript()->appendFile('/js/mapgenerator/websocket.js?v=' . $version);
         $this->view->headScript()->appendFile('/js/mapgenerator/websocketMessage.js?v=' . $version);

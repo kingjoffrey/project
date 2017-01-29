@@ -1,18 +1,4 @@
 <div class="table">
-    <h2><?php echo $this->translate('Conversation history') ?></h2>
-    <table id="messages">
-        <?php if (count($this->messages)): ?>
-            <?php foreach ($this->messages as $row): ?>
-                <tr id="<?php echo $row['playerId'] ?>">
-                    <td>
-                        <div class="date"><?php echo Coret_View_Helper_Formatuj::date($row['date']) ?></div>
-                        <div class="name"><?php echo $row['firstName'] . ' ' . $row['lastName'] ?></div>
-                        <div class="msg"><?php echo $row['message'] ?></div>
-                    </td>
-                </tr>
-            <?php endforeach ?>
-        <?php endif ?>
-    </table>
+    <table id="messages"></table>
 </div>
-<?php echo $this->paginationControl($this->paginator, 'Sliding', 'pagination_control.phtml'); ?>
 <a class="button" id="back">&laquo; <?php echo $this->translate('Back') ?></a>

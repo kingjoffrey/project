@@ -576,13 +576,8 @@ tr.trlink:hover td {
     background: lightslategrey;
 }
 
-#messages .name {
+#messages td {
     text-align: left;
-    font-weight: bold;
-}
-
-#messages .date {
-    float: right;
 }
 
 #menuBox {

@@ -6,15 +6,7 @@ var WebSocketSendNew = new function () {
     this.setClosed = function (param) {
         closed = param
     }
-    this.isClosed = function () {
-        return closed
-    }
     this.open = function () {
-        if (closed) {
-            console.log(translations.sorryServerIsDisconnected)
-            return;
-        }
-
         var token = {
             'type': 'open',
             'playerId': id,
@@ -46,19 +38,6 @@ var WebSocketSendNew = new function () {
         }
 
         ws.send(JSON.stringify(token));
-    }
-    this.chat = function (msg) {
-        if (closed) {
-            console.log(translations.sorryServerIsDisconnected)
-            return;
-        }
-
-        var token = {
-            'type': 'chat',
-            'msg': msg
-        }
-
-        ws.send(JSON.stringify(token))
     }
     this.change = function (id) {
         if (closed) {
@@ -95,20 +74,6 @@ var WebSocketSendNew = new function () {
         var token = {
             'type': 'remove',
             'gameId': gameId
-        }
-
-        ws.send(JSON.stringify(token))
-    }
-    this.chat = function (msg) {
-        if (closed) {
-            console.log(translations.sorryServerIsDisconnected)
-            return;
-        }
-
-        var token = {
-            'type': 'chat',
-            'msg': msg,
-            'name': playerName
         }
 
         ws.send(JSON.stringify(token))
