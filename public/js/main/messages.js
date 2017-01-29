@@ -1,5 +1,7 @@
 "use strict"
 var MessagesController = new function () {
+    var playerId
+
     this.index = function (r) {
         var content = $('#content'),
             data = r.data
@@ -10,7 +12,8 @@ var MessagesController = new function () {
             WebSocketSendMain.controller('index', 'index')
         })
         $('#threads .trlink').click(function () {
-            WebSocketSendMain.controller('messages', 'thread', {'id': $(this).attr('id')})
+            playerId = $(this).attr('id')
+            WebSocketSendMain.controller('messages', 'thread', {'id': playerId})
         })
     }
     this.thread = function (r) {
@@ -28,14 +31,28 @@ var MessagesController = new function () {
             )
         }
 
-        $('.table')
-            .append($('<textarea>'))
+        $('.table').append($('<div>').addClass('chat')
+            .append($('<input>'))
             .append($('<div>').addClass('button').html(translations.send).click(function () {
-                WebSocketSendChat.send()
+                var message = $('.chat input').val()
+                $('#messages').append(
+                    $('<tr>').addClass('trlink')
+                        .append($('<td>').addClass('date').html(playerName))
+                        .append($('<td>').addClass('msg').html(message))
+                )
+                $('.chat input').val('')
+                WebSocketSendChat.send(message, MessagesController.getPlayerId())
             }))
+        )
 
         $('#back').click(function () {
             WebSocketSendMain.controller('index', 'index')
         })
+    }
+    this.getPlayerId = function () {
+        return playerId
+    }
+    this.setPlayerId = function (id) {
+        playerId = id
     }
 }

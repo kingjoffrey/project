@@ -140,7 +140,7 @@ class Zend_View_Helper_Translations extends Zend_View_Helper_Abstract
                 'Goal' => $this->view->translate('Goal'),
                 'findSomeFriends' => $this->view->translate('find some friends'),
                 'YouDontHaveFriends' => $this->view->translate('You don\'t have friends'),
-                '' => $this->view->translate(''),
+                'send' => $this->view->translate('Send'),
                 '' => $this->view->translate(''),
                 '' => $this->view->translate(''),
             )));

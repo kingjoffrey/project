@@ -360,154 +360,10 @@ p#info {
     display: inline-block;
 }
 
-.close {
-    position: absolute;
-    text-align: center;
-    background: none;
-    cursor: pointer;
-}
-
-.close:hover {
-    color: #fff;
-}
-
-#chatBox .close {
-    left: -23px;
-    top: 8px;
-}
-
-#chatBox {
-    position: fixed;
-    bottom: 0px;
-    right: 0px;
-    z-index: 27000;
-    width: 365px;
-    height: 236px;
-    border-top-left-radius: 5px;
-    text-transform: none;
-    padding: 0;
-    border-bottom: none;
-    border-right: none;
-}
-
-#chatBox #friendId {
-    display: none;
-}
-
-#chatBox #chatTitle {
-    position: absolute;
-    top: 11px;
-    left: 11px;
-    font-size: 13px;
-    letter-spacing: 0;
-    text-shadow: none;
-    color: darkblue;
-    cursor: pointer;
-}
-
-#chatBox #chatTitle:hover {
-    text-decoration: line-through;
-}
-
-#chatBox #chatWindow {
-    height: 188px;
-    width: 356px;
-    border: none;
-    overflow: hidden;
-    overflow-y: scroll;
-    position: absolute;
-    top: 5px;
-    left: 5px;
-}
-
-#chatBox #chatWindow #chatContent {
-    position: relative;
-    left: 0;
-    width: 100%;
-    border: none;
-    line-height: 12px;
-    font-size: 10px;
-}
-
-#chatBox #chatContent div.chatCloud {
-    margin: 5px 5px 5px 0;
-    border-radius: 2px;
-    padding: 2px;
-    display: inline-block;
-    /*box-shadow: 0 1px 0 0 rgba(0, 0, 0, .5);*/
-    color: white;
-    /*background: grey;*/
-    /*border: 1px solid darkgray;*/
-    max-width: 299px;
-}
-
-#chatBox #chatContent div.chatCloud span {
-    font-weight: bold;
-}
-
-#chatBox #chatContent div.chatCloudContainer {
-}
-
-#chatBox #chatContent div.chatCloudContainer img {
-    margin-right: 5px;
-}
-
-#chatBox #chatInput {
-    height: 36px;
-    width: 360px;
-    overflow: hidden;
-    border-top: 1px solid #000;
-    position: absolute;
-    top: 198px;
-}
-
-#chatBox input {
-    width: 308px;
-    border: 1px solid #000;
-    border-radius: 5px;
-    padding: 5px;
-    text-align: left;
-    font-size: 13px;
-    letter-spacing: 0;
-    position: absolute;
-    top: 5px;
-    background: #fff;
-    color: #000;
-    margin-left: 5px;
-
-    -webkit-touch-callout: text;
-    -webkit-user-select: text;
-    -khtml-user-select: text;
-    -moz-user-select: text;
-    -ms-user-select: text;
-    user-select: text;
-}
-
-#chatBox #send {
-    position: absolute;
-    right: 0px;
-    top: 2px;
-    padding: 0 5px;
-    line-height: 21px;
-}
-
 .box #title {
     position: absolute;
     top: -21px;
     color: gold;
-}
-
-#friendsBox {
-    z-index: 27000;
-    min-width: 360px;
-    text-transform: none;
-    border-bottom: none;
-    border-left: none;
-    border-top-right-radius: 5px;
-    padding: 5px 0;
-    position: fixed;
-    bottom: 0px;
-    left: 0px;
 }
 
 #searchResults a {
@@ -797,4 +653,9 @@ td #trash {
     /*background: gray;*/
     padding: 5px;
     text-shadow: 0 0 2px #000;
+}
+
+.chat {
+    text-align: right;
+    padding-top: 5px;
 }
