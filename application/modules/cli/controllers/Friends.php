@@ -7,8 +7,30 @@ class FriendsController
     {
         $db = $handler->getDb();
 
-        $mFriend = new Application_Model_Friends($db);
-        $friends = $mFriend->getFriends($user->parameters['playerId']);
+        $mFriends = new Application_Model_Friends($db);
+        $this->friends($mFriends, $user, $handler);
+    }
+
+    function add(WebSocketTransportInterface $user, Cli_MainHandler $handler, $dataIn)
+    {
+        if ($dataIn['friendId']) {
+            $db = $handler->getDb();
+            $mFriends = new Application_Model_Friends($db);
+
+            if ($mFriends->create($user->parameters['playerId'], $dataIn['friendId'])) {
+                $this->friends($mFriends, $user, $handler);
+            }
+        }
+    }
+
+    function delete(WebSocketTransportInterface $user, Cli_MainHandler $handler, $dataIn)
+    {
+
+    }
+
+    private function friends($mFriends, WebSocketTransportInterface $user, Cli_MainHandler $handler)
+    {
+        $friends = $mFriends->getFriends($user->parameters['playerId']);
 
         $friendsFormatted = array();
         foreach ($friends as $row) {
@@ -25,9 +47,6 @@ class FriendsController
             'friends' => $friendsFormatted,
         );
         $handler->sendToUser($user, $token);
-    }
-
-    function delete(WebSocketTransportInterface $user, Cli_MainHandler $handler, $dataIn){
 
     }
 }

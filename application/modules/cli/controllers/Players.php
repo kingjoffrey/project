@@ -26,19 +26,4 @@ class PlayersController
         );
         $handler->sendToUser($user, $token);
     }
-
-    function add(WebSocketTransportInterface $user, Cli_MainHandler $handler, $dataIn)
-    {
-        if ($dataIn['friendId']) {
-            $db = $handler->getDb();
-            $mFriend = new Application_Model_Friends($db);
-            if ($mFriend->create($user->parameters['playerId'], $dataIn['friendId'])) {
-                $token = array(
-                    'type' => 'players',
-                    'action' => 'add'
-                );
-                $handler->sendToUser($user, $token);
-            }
-        }
-    }
 }

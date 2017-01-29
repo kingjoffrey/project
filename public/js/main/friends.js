@@ -10,21 +10,21 @@ var FriendsController = new function () {
             }
         },
         addNoFriends = function () {
-            $('#friendsList').append($('<tr>').attr('id', id).addClass('friends')
+            $('#friendsList').append($('<tr>').attr('id', id)
                 .append(translations.YouDontHaveFriends + ': ')
-                .append($('<div>').attr('id', 'findFriends').html(translations.findSomeFriends))
+                .append($('<span>').attr('id', 'findFriends').html(translations.findSomeFriends))
                 .click(function () {
                     WebSocketSendMain.controller('players', 'index')
                 })
             )
         },
         addFriend = function (friend, id) {
-            $('#friendsList').append($('<tr>').attr('id', id).addClass('friends')
-                .append($('<td>').append($('<span>').attr('id', 'online')))
+            $('#friendsList').append($('<tr>').attr('id', id)
+                .append($('<td>').append($('<div>').attr('id', 'online')))
                 .append($('<td>').html(friend))
-                .append($('<td>').attr('id', 'trash').click(function () {
+                .append($('<td>').append($('<div>').attr('id', 'trash').click(function () {
                         WebSocketSendMain.controller('friends', 'delete', {'id': $(this).parent().attr('id')})
-                    })
+                    }))
                 )
             )
         }
@@ -40,6 +40,7 @@ var FriendsController = new function () {
             WebSocketSendMain.controller('index', 'index')
         })
     }
-
-
+    this.delete = function (r) {
+        $('#friendsList #' + r.friendId).remove()
+    }
 }

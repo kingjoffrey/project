@@ -17,13 +17,7 @@ var PlayersController = new function () {
         })
         $('#searchResults a').click(function () {
             friendId = $(this).attr('id')
-            WebSocketSendMain.controller('players', 'add', {'friendId': friendId})
+            WebSocketSendMain.controller('friends', 'add', {'friendId': friendId})
         })
-    }
-    this.add = function () {
-        if ($('#findFriends').length) {
-            $('#friends').html('')
-        }
-        Main.addFriend($('#searchResults a#' + friendId).parent().parent().children(':first').html(), friendId)
     }
 }
