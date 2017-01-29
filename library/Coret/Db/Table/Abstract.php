@@ -106,9 +106,11 @@ Został zaktualizowany więcej niż jeden rekord (' . $updateResult . ').
             $name = $this->_name;
         }
         try {
-            $this->_db->insert($name, $data);
             if ($this->_sequence !== true) {
+                $this->_db->insert($name, $data);
                 return $this->_db->lastSequenceId($this->_sequence);
+            } else {
+                return $this->_db->insert($name, $data);
             }
         } catch (Exception $e) {
             if ($this->_cli) {

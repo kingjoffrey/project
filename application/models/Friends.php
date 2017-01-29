@@ -24,7 +24,7 @@ class Application_Model_Friends extends Coret_Db_Table_Abstract
             $this->_db->quoteInto($this->_db->quoteIdentifier('playerId') . ' = ?', $playerId),
             $this->_db->quoteInto($this->_db->quoteIdentifier('friendId') . ' = ?', $friendId)
         );
-        $this->delete($where);
+        return $this->delete($where);
     }
 
     public function getFriends($playerId)

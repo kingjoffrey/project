@@ -1,7 +1,6 @@
 "use strict"
 var FriendsController = new function () {
-    var friendId = 0,
-        createFriends = function (friends) {
+    var createFriends = function (friends) {
             for (var id in friends) {
                 addFriend(friends[id], id)
             }
@@ -11,8 +10,8 @@ var FriendsController = new function () {
         },
         addNoFriends = function () {
             $('#friendsList').append($('<tr>').attr('id', id)
-                .append(translations.YouDontHaveFriends + ': ')
-                .append($('<span>').attr('id', 'findFriends').html(translations.findSomeFriends))
+                .append($('<td>').html(translations.YouDontHaveFriends + ': '))
+                .append($('<td>').html($('<span>').attr('id', 'findFriends').html(translations.findSomeFriends)))
                 .click(function () {
                     WebSocketSendMain.controller('players', 'index')
                 })
@@ -23,7 +22,7 @@ var FriendsController = new function () {
                 .append($('<td>').append($('<div>').attr('id', 'online')))
                 .append($('<td>').html(friend))
                 .append($('<td>').append($('<div>').attr('id', 'trash').click(function () {
-                        WebSocketSendMain.controller('friends', 'delete', {'id': $(this).parent().attr('id')})
+                        WebSocketSendMain.controller('friends', 'delete', {'id': $(this).parent().parent().attr('id')})
                     }))
                 )
             )
@@ -41,6 +40,9 @@ var FriendsController = new function () {
         })
     }
     this.delete = function (r) {
-        $('#friendsList #' + r.friendId).remove()
+        $('#friendsList #' + r.id).remove()
+        if ($('#friendsList td').length == 0) {
+            addNoFriends()
+        }
     }
 }

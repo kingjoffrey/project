@@ -13,11 +13,10 @@ class FriendsController
 
     function add(WebSocketTransportInterface $user, Cli_MainHandler $handler, $dataIn)
     {
-        if ($dataIn['friendId']) {
+        if ($dataIn['id']) {
             $db = $handler->getDb();
             $mFriends = new Application_Model_Friends($db);
-
-            if ($mFriends->create($user->parameters['playerId'], $dataIn['friendId'])) {
+            if ($mFriends->create($user->parameters['playerId'], $dataIn['id'])) {
                 $this->friends($mFriends, $user, $handler);
             }
         }
@@ -25,7 +24,16 @@ class FriendsController
 
     function delete(WebSocketTransportInterface $user, Cli_MainHandler $handler, $dataIn)
     {
-
+        $db = $handler->getDb();
+        $mFriends = new Application_Model_Friends($db);
+        if ($mFriends->remove($user->parameters['playerId'], $dataIn['id'])) {
+            $token = array(
+                'type' => 'friends',
+                'action' => 'delete',
+                'id' => $dataIn['id']
+            );
+            $handler->sendToUser($user, $token);
+        }
     }
 
     private function friends($mFriends, WebSocketTransportInterface $user, Cli_MainHandler $handler)
