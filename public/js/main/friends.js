@@ -21,6 +21,10 @@ var FriendsController = new function () {
             $('#friendsList').append($('<tr>').attr('id', id)
                 .append($('<td>').append($('<div>').attr('id', 'online')))
                 .append($('<td>').html(friend))
+                .append($('<td>').html($('<span>').addClass('write').html(translations.write).click(function () {
+                        WebSocketSendMain.controller('messages', 'thread', {'id': $(this).parent().parent().attr('id')})
+                    }))
+                )
                 .append($('<td>').append($('<div>').attr('id', 'trash').click(function () {
                         WebSocketSendMain.controller('friends', 'delete', {'id': $(this).parent().parent().attr('id')})
                     }))

@@ -7,6 +7,13 @@ var WebSocketMessageChat = new function () {
                 }
                 $('#envelope').html($('<span>').html(r.count))
                 break
+            case 'chat':
+                $('#messages').append(
+                    $('<tr>').addClass('trlink')
+                        .append($('<td>').addClass('date').html(r.name))
+                        .append($('<td>').addClass('msg').html(r.message))
+                )
+                break
             default:
                 console.log(r);
         }
