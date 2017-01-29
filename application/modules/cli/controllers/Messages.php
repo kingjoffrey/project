@@ -1,8 +1,8 @@
 <?php
-
+use Devristo\Phpws\Protocol\WebSocketTransportInterface;
 class MessagesController
 {
-    function index(Devristo\Phpws\Protocol\WebSocketTransportInterface $user, Cli_MainHandler $handler, $dataIn)
+    function index(WebSocketTransportInterface $user, Cli_MainHandler $handler, $dataIn)
     {
         $view = new Zend_View();
         $db = $handler->getDb();
@@ -64,7 +64,7 @@ class MessagesController
         $handler->sendToUser($user, $token);
     }
 
-    public function thread(Devristo\Phpws\Protocol\WebSocketTransportInterface $user, Cli_MainHandler $handler, $dataIn)
+    public function thread(WebSocketTransportInterface $user, Cli_MainHandler $handler, $dataIn)
     {
         $view = new Zend_View();
 

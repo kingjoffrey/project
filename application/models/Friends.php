@@ -15,7 +15,7 @@ class Application_Model_Friends extends Coret_Db_Table_Abstract
 
     public function create($playerId, $friendId)
     {
-        $this->insert(array('playerId' => $playerId, 'friendId' => $friendId));
+        return $this->insert(array('playerId' => $playerId, 'friendId' => $friendId));
     }
 
     public function remove($playerId, $friendId)

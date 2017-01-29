@@ -41,7 +41,7 @@ body {
 }
 
 #title {
-    margin: 0 auto;
+    margin: 7px auto 0 auto;
     width: 760px;
     height: 192px;
     background: url('/img/logo_bg.png') 0px 15px no-repeat !important;

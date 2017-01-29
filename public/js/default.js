@@ -1,26 +1,16 @@
 $(document).ready(function () {
     Page.init()
-    Page.adjust()
 })
 
 var Page = new function () {
-    var close = 0,
-        changeCloseArrowLR = function (move, el) {
-            if (move > 0) {
-                $(el).html('&#x25C0');
-            } else {
-                $(el).html('&#x25B6');
-            }
-        }
-
     this.adjust = function () {
-        var padding = 360,
-            height = $(window).height() - padding,
-            top = height / 2 - 192 / 2
+        var height = $(window).height() - $('#menuBox').height(),
+            top = height / 2 - $('#page #content #title div').height() / 2
 
         $('#page').css('min-height', height + 'px')
+
         if (top > 0) {
-            $('#bg #page #content #title').css('margin-top', top + 'px')
+            $('#page #content #title').css('margin-top', top + 'px')
         }
     }
     this.init = function () {
@@ -35,22 +25,6 @@ var Page = new function () {
 
         $('#envelope').click(function () {
             WebSocketSendMain.controller('messages', 'index')
-        })
-
-        $('#friendsBox .close').click(function () {
-            var left = $(this).parent().position().left,
-                move = $(this).parent().width()
-
-            if (close) {
-                close = 0
-            } else {
-                move = -move
-                close = 1
-            }
-            changeCloseArrowLR(move, this)
-            $(this).parent().animate({left: left + move + 'px'}, 200)
-        }).css({
-            left: $('#friendsBox').width() + 10 + 'px'
         })
     }
 }

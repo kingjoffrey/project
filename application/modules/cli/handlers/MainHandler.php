@@ -4,6 +4,7 @@ use Devristo\Phpws\Protocol\WebSocketTransportInterface;
 use Devristo\Phpws\Server\UriHandler\WebSocketUriHandler;
 
 include_once(APPLICATION_PATH . '/modules/cli/controllers/Editor.php');
+include_once(APPLICATION_PATH . '/modules/cli/controllers/Friends.php');
 include_once(APPLICATION_PATH . '/modules/cli/controllers/Game.php');
 include_once(APPLICATION_PATH . '/modules/cli/controllers/Help.php');
 include_once(APPLICATION_PATH . '/modules/cli/controllers/Halloffame.php');
@@ -39,6 +40,8 @@ class Cli_MainHandler extends WebSocketUriHandler
             'halloffame' => $adapter->translate('Hall of Fame'),
             'players' => $adapter->translate('Players'),
             'profile' => $adapter->translate('Profile'),
+            'friends' => $adapter->translate('Friends'),
+            'contact' => $adapter->translate('Contact'),
             'help' => $adapter->translate('Help'),
             'editor' => $adapter->translate('Map editor'),
         );

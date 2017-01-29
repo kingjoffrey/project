@@ -2,7 +2,6 @@ var WebSocketMessageMain = new function () {
     this.switch = function (r) {
         if (r.type == 'open') {
             Main.createMenu(r.menu)
-            Main.createFriends(r.friends)
         } else {
             var className = r.type + 'Controller'
             className = capitalizeFirstLetter(className)

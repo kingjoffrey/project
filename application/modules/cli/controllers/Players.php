@@ -1,5 +1,6 @@
 <?php
 use Devristo\Phpws\Protocol\WebSocketTransportInterface;
+
 class PlayersController
 {
     function index(WebSocketTransportInterface $user, Cli_MainHandler $handler, $dataIn)
@@ -31,13 +32,13 @@ class PlayersController
         if ($dataIn['friendId']) {
             $db = $handler->getDb();
             $mFriend = new Application_Model_Friends($db);
-            $mFriend->create($user->parameters['playerId'], $dataIn['friendId']);
+            if ($mFriend->create($user->parameters['playerId'], $dataIn['friendId'])) {
+                $token = array(
+                    'type' => 'players',
+                    'action' => 'add'
+                );
+                $handler->sendToUser($user, $token);
+            }
         }
-
-        $token = array(
-            'type' => 'players',
-            'action' => 'add'
-        );
-        $handler->sendToUser($user, $token);
     }
 }

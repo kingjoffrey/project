@@ -42,8 +42,7 @@ body, html {
 #page {
     margin: 0 auto;
     width: 900px;
-    padding-top: 310px;
-    padding-bottom: 50px;
+    padding-top: 262px;
 }
 
 #content {
@@ -173,7 +172,7 @@ h1 {
 }
 
 h2 {
-    padding: 0;
+    padding: 0 0 21px 0;
     color: #fff;
     letter-spacing: 3px;
     text-align: left;
@@ -237,8 +236,9 @@ tr:last-of-type td {
 th {
     text-align: center;
     padding: 4px;
-    color: #A0B4B0;
-    background: url("/img/game/message_bg.png");
+    color: #000;
+    background: #fff;
+    text-shadow: none;
 }
 
 td {
@@ -264,7 +264,7 @@ td:first-of-type {
 
 #menuTop {
     height: 21px;
-    padding: 37px;
+    padding: 21px;
     border-bottom-right-radius: 5px;
     border-bottom-left-radius: 5px;
     background: #000;
@@ -274,6 +274,7 @@ td:first-of-type {
 #menu {
     width: 900px;
     text-align: center;
+    margin: 7px 0;
 }
 
 #logout {
@@ -542,7 +543,7 @@ p#info {
     display: inline-block;
     background: url('/img/envelope-icon.png') no-repeat right center;
     position: absolute;
-    top: 35px;
+    top: 20px;
     left: 435px;
 }
 
@@ -589,12 +590,7 @@ tr.trlink:hover td {
     top: 0px;
 }
 
-#friends {
-    font-size: 14px;
-
-}
-
-#friends #online {
+#friendsList #online {
     display: none;
     width: 10px;
     height: 10px;
@@ -602,27 +598,24 @@ tr.trlink:hover td {
     box-shadow: 1px 1px 2px #000;
     background: green;
     margin: 7px;
-    position: absolute;
 }
 
-#friends #trash {
+#friendsList #trash {
     width: 15px;
     height: 20px;
     background-image: url('/img/trash.png');
     margin: 2px;
     cursor: pointer;
-    position: absolute;
-    right: 5px;
 }
 
-#friends span {
+#friendsList span {
     line-height: 25px;
     padding: 0 5px 0 35px;
     border-radius: 2px;
     cursor: pointer;
 }
 
-#friends span:hover {
+#friendsList span:hover {
     background: #fff;
 }
 

@@ -223,12 +223,4 @@ var Websocket = new function () {
             }
         }
     }
-    this.delete = function (playerId) {
-        var token = {
-            type: 'delete',
-            playerId: playerId
-        }
-
-        ws.send(JSON.stringify(token))
-    }
 }

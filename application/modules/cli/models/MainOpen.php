@@ -24,18 +24,9 @@ class Cli_Model_MainOpen
         $user->parameters['playerId'] = $dataIn['playerId'];
         $user->parameters['accessKey'] = $dataIn['accessKey'];
 
-        $mFriend = new Application_Model_Friends($db);
-        $friends = $mFriend->getFriends($user->parameters['playerId']);
-
-        $friendsFormatted = array();
-        foreach ($friends as $row) {
-            $friendsFormatted[$row['friendId']] = $row['firstName'] . ' ' . $row['lastName'];
-        }
-
         $token = array(
             'type' => 'open',
             'menu' => $handler->menu(),
-            'friends' => $friendsFormatted,
         );
 
         $handler->sendToUser($user, $token);
