@@ -3,7 +3,6 @@ var WebSocketMessageMain = new function () {
         if (r.type == 'open') {
             Main.createMenu(r.menu)
         } else {
-            console.log(r)
             var className = r.type + 'Controller'
             className = capitalizeFirstLetter(className)
             if (typeof window[className] !== "undefined") {

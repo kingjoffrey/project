@@ -219,16 +219,6 @@ div.table {
     border-radius: 5px;
 }
 
-#content tr:nth-child(odd) {
-    /*background: url(/img/bg_1.jpg);*/
-    color: #D7DAA4;
-}
-
-#content tr:nth-child(even) {
-    background: url(/img/bg_0.jpg);
-    /*color: #D7DAA4;*/
-}
-
 tr:last-of-type td {
     border-bottom: 1px solid #000;
 }
@@ -241,15 +231,18 @@ th {
     text-shadow: none;
 }
 
-td {
+.trlink td {
     border-top: 1px solid #000;
     border-right: 1px solid #000;
+}
+
+td {
     height: 20px;
     text-align: center;
     padding: 2px;
 }
 
-td:first-of-type {
+.trlink td:first-of-type {
     border-left: 1px solid #000;
 }
 
@@ -624,4 +617,12 @@ td .trash {
 .chat {
     text-align: right;
     padding-top: 5px;
+}
+
+.contact td:first-child {
+    text-align: right;
+}
+
+.contact td:last-child {
+    text-align: left;
 }

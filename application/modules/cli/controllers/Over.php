@@ -1,8 +1,9 @@
 <?php
+use Devristo\Phpws\Protocol\WebSocketTransportInterface;
 
 class OverController
 {
-    function index(Devristo\Phpws\Protocol\WebSocketTransportInterface $user, Cli_MainHandler $handler, $dataIn)
+    function index(WebSocketTransportInterface $user, Cli_MainHandler $handler, $dataIn)
     {
         $view = new Zend_View();
         $db = $handler->getDb();
