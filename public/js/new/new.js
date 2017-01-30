@@ -103,9 +103,6 @@ var New = new function () {
         table = $('#join.table table')
         empty = $('<tr id="0">').append($('<td colspan="4">').html(translations.Therearenoopengames).css('padding', '15px'))
 
-        $('#mapId').change(function () {
-            WebSocketSendMain.controller('new', 'map', {'mapId': $('#mapId').val()})
-        })
 
         WebSocketNew.init()
     }

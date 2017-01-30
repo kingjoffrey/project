@@ -11,9 +11,10 @@ var NewController = new function () {
         })
         $('form').submit(function (e) {
             e.preventDefault()
-            WebSocketSendMain.controller('new', 'index', {
-                'mapId': $('select#mapId').val()
-            })
+            WebSocketSendMain.controller('new', 'index', {'mapId': $('#mapId').val()})
+        })
+        $('#mapId').change(function () {
+            WebSocketSendMain.controller('new', 'map', {'mapId': $('#mapId').val()})
         })
 
         New.init()

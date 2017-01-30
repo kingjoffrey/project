@@ -11,9 +11,12 @@ var SingleController = new function () {
         })
         $('form').submit(function (e) {
             e.preventDefault()
-            WebSocketSendMain.controller('single', 'index', {
-                'mapId': $('select#mapId').val()
-            })
+            WebSocketSendMain.controller('single', 'index', {'mapId': $('#mapId').val()})
         })
+        $('#mapId').change(function () {
+            WebSocketSendMain.controller('new', 'map', {'mapId': $('#mapId').val()})
+        })
+
+        WebSocketSendMain.controller('new', 'map', {'mapId': $('#mapId').val()})
     }
 }
