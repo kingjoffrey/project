@@ -6,18 +6,9 @@
     <table id="searchResults">
         <tr>
             <th><?php echo $this->translate('Player name') ?></th>
+            <th></th>
             <th><?php echo $this->translate('Action') ?></th>
         </tr>
-        <?php if (count($this->searchResults)): ?>
-            <?php foreach ($this->searchResults as $row): ?>
-                <tr>
-                    <td><?php echo $row['firstName'] . ' ' . $row['lastName'] ?></td>
-                    <td>
-                        <a id="<?php echo $row['playerId'] ?>"><?php echo $this->translate('Add to friends') ?></a>
-                    </td>
-                </tr>
-            <?php endforeach ?>
-        <?php endif ?>
     </table>
 </div>
 <a class="button" id="back">&laquo; <?php echo $this->translate('Back') ?></a>

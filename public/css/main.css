@@ -366,13 +366,13 @@ p#info {
     color: gold;
 }
 
-#searchResults a {
+#searchResults a, #friendsList a {
     color: #fff;
     cursor: pointer;
     text-decoration: underline;
 }
 
-#searchResults a:hover {
+#searchResults a:hover, #friendsList a:hover {
     color: gray;
     text-decoration: none;
 }
@@ -441,7 +441,7 @@ tr.trlink:hover td {
     top: 0px;
 }
 
-#friendsList #online {
+#friendsList .online {
     display: none;
     width: 10px;
     height: 10px;
@@ -462,45 +462,11 @@ tr.trlink:hover td {
     background: #fff;
 }
 
-#chatBox.mini, #chatBox.disabled {
-    height: 41px;
-}
-
-#chatBox.disabled .close {
-    display: none;
-}
-
-#chatBox.disabled #chatTitle {
-    display: none;
-}
-
-#chatBox.mini #chatWindow, #chatBox.disabled #chatWindow {
-    display: none;
-}
-
-#chatBox.mini #chatInput, #chatBox.disabled #chatInput {
-    top: 2px;
-    border: none;
-}
-
-#chatBox.disabled #msg {
-    background: #373737;
-}
-
-#chatContent .name {
-    color: #0398CA;
-    cursor: pointer;
-}
-
-#chatContent .name:hover {
-    color: #fff;
-}
-
 .i {
     font-style: italic;
 }
 
-td #trash {
+td .trash {
     width: 15px;
     height: 20px;
     background-image: url('/img/trash.png');

@@ -95,34 +95,12 @@ class Cli_NewHandler extends WebSocketUriHandler
                 new Cli_Model_SetupChange($dataIn, $user, $this);
                 break;
 
-//            case 'chat':
-//                $token = array(
-//                    'type' => 'chat',
-//                    'id' => $user->parameters['playerId'],
-//                    'name' => $user->parameters['name'],
-//                    'msg' => strip_tags($dataIn['msg'])
-//                );
-//                $this->sendToChannelExceptUser($user, $token);
-//                break;
-
-//            case 'setup':
-//                new Cli_Model_NewSetup($dataIn, $user, $this);
-//                break;
             case 'remove':
                 $token = array(
                     'type' => 'removeGame',
                     'gameId' => $dataIn['gameId']
                 );
                 $this->sendToChannelExceptPlayers($this->getNew(), $token);
-                break;
-            case 'chat':
-                $token = array(
-                    'type' => 'chat',
-                    'id' => $user->parameters['playerId'],
-                    'name' => $user->parameters['name'],
-                    'msg' => strip_tags($dataIn['msg'])
-                );
-                $this->sendToChannelExceptPlayersAndMe($user->parameters['playerId'], $this->getNew(), $token);
                 break;
             default:
                 print_r($dataIn);
@@ -176,15 +154,7 @@ class Cli_NewHandler extends WebSocketUriHandler
             $setup->removeUser($user, $this->_db);
 
             if ($setup->getGameMasterId() == $user->parameters['playerId']) {
-//            if ($setup->getUsers()) {
-//                if (!$setup->getIsOpen()) {
-//                    return;
-//                }
-//                if ($setup->getGameMasterId() == $user->parameters['playerId']) {
-//                    $setup->setNewGameMaster($this->_db);
-//                }
                 $setup->update($user->parameters['playerId'], $this, 1);
-//            } else {
                 $this->removeSetupGame($setup->getGameId());
             }
         }
@@ -304,21 +274,4 @@ class Cli_NewHandler extends WebSocketUriHandler
             }
         }
     }
-
-//    public function sendToChannelExceptUser(WebSocketTransportInterface $u, $token, $debug = null)
-//    {
-//        if ($debug || Zend_Registry::get('config')->debug) {
-//            print_r('ODPOWIEDŹ ');
-//            print_r($token);
-//        }
-//
-//        $setup = Cli_Model_Setup::getSetup($u);
-//
-//        foreach ($setup->getSetupUsers() AS $user) {
-//            if ($u == $user) {
-//                continue;
-//            }
-//            $this->sendToUser($user, $token);
-//        }
-//    }
 }

@@ -1,6 +1,6 @@
 "use strict"
 var MessagesController = new function () {
-    var playerId
+    var playerId = 0
 
     this.index = function (r) {
         var content = $('#content'),
@@ -35,13 +35,15 @@ var MessagesController = new function () {
             .append($('<input>'))
             .append($('<div>').addClass('button').html(translations.send).click(function () {
                 var message = $('.chat input').val()
-                $('#messages').append(
-                    $('<tr>').addClass('trlink')
-                        .append($('<td>').addClass('date').html(playerName))
-                        .append($('<td>').addClass('msg').html(message))
-                )
-                $('.chat input').val('')
-                WebSocketSendChat.send(message, MessagesController.getPlayerId())
+                if (message) {
+                    $('#messages').append(
+                        $('<tr>').addClass('trlink')
+                            .append($('<td>').addClass('date').html(playerName))
+                            .append($('<td>').addClass('msg').html(message))
+                    )
+                    $('.chat input').val('')
+                    WebSocketSendChat.send(message, MessagesController.getPlayerId())
+                }
             }))
         )
 

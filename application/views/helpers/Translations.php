@@ -142,6 +142,10 @@ class Zend_View_Helper_Translations extends Zend_View_Helper_Abstract
                 'YouDontHaveFriends' => $this->view->translate('You don\'t have friends'),
                 'send' => $this->view->translate('Send'),
                 'write' => $this->view->translate('Write'),
+                'Addtofriends' => $this->view->translate('Add to friends'),
+                'Nosearchresults' => $this->view->translate('No search results'),
+                '' => $this->view->translate(''),
+                '' => $this->view->translate(''),
                 '' => $this->view->translate(''),
             )));
     }

@@ -1,20 +1,22 @@
 <?php
-
+use Devristo\Phpws\Protocol\WebSocketTransportInterface;
 class Cli_Model_NewOpen
 {
     /**
      * Cli_Model_NewOpen constructor.
      * @param $dataIn
-     * @param \Devristo\Phpws\Protocol\WebSocketTransportInterface $user
+     * @param WebSocketTransportInterface $user
      * @param Cli_NewHandler $handler
      */
-    public function __construct($dataIn, Devristo\Phpws\Protocol\WebSocketTransportInterface $user, Cli_NewHandler $handler)
+    public function __construct($dataIn, WebSocketTransportInterface $user, Cli_NewHandler $handler)
     {
         if (!isset($dataIn['playerId'])) {
-            throw new Exception('Brak "playerId"');
+            echo('Brak "playerId"');
+            return;
         }
         if (!isset($dataIn['langId'])) {
-            throw new Exception('Brak langId');
+            echo('Brak langId');
+            return;
         }
 
         $db = $handler->getDb();
@@ -39,13 +41,6 @@ class Cli_Model_NewOpen
             'games' => $new->gamesToArray()
         );
         $handler->sendToUser($user, $token);
-
-        $token = array(
-            'type' => 'open',
-            'id' => $dataIn['playerId'],
-            'name' => $dataIn['name']
-        );
-        $handler->sendToChannelExceptUser($user, $new, $token);
 
         $user->parameters['name'] = $dataIn['name'];
         $user->parameters['playerId'] = $dataIn['playerId'];

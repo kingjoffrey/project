@@ -2,14 +2,6 @@ var WebSocketMessageNew = new function () {
     this.switch = function (r) {
         console.log(r)
         switch (r.type) {
-            // case 'chat':
-            //     PrivateChat.message(2, r.name, r.id, r.msg)
-            //     break
-
-            // case 'open':
-            //     WebSocketSendNew.setup(gameMasterId)
-            //     break
-
             case 'team':
                 $('tr#' + r.mapPlayerId + ' select').val(r.teamId)
                 $('tr#' + r.mapPlayerId + ' .colorBox').css('background', New.getMapPlayers()[r.teamId].backgroundColor)
@@ -67,15 +59,6 @@ var WebSocketMessageNew = new function () {
             case 'removePlayer':
                 var numberOfPlayersInGame = $('tr#' + r.gameId + ' span').html()
                 $('tr#' + r.gameId + ' span').html(numberOfPlayersInGame--)
-                break
-            case 'open':
-                PrivateChat.message(2, r.name, r.id, translations.connected)
-                break
-            case 'close':
-                PrivateChat.message(2, r.name, r.id, translations.disconnected)
-                break
-            case 'chat':
-                PrivateChat.message(2, r.name, r.id, r.msg)
                 break
             default:
                 console.log(r)

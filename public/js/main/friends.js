@@ -9,7 +9,7 @@ var FriendsController = new function () {
             }
         },
         addNoFriends = function () {
-            $('#friendsList').append($('<tr>').attr('id', id)
+            $('#friendsList').append($('<tr>')
                 .append($('<td>').html(translations.YouDontHaveFriends + ': '))
                 .append($('<td>').html($('<span>').attr('id', 'findFriends').html(translations.findSomeFriends)))
                 .click(function () {
@@ -18,15 +18,17 @@ var FriendsController = new function () {
             )
         },
         addFriend = function (friend, id) {
-            $('#friendsList').append($('<tr>').attr('id', id)
-                .append($('<td>').append($('<div>').attr('id', 'online')))
+            $('#friendsList').append($('<tr>')
+                .append($('<td>').append($('<div>').addClass('online')))
                 .append($('<td>').html(friend))
-                .append($('<td>').html($('<span>').addClass('write').html(translations.write).click(function () {
-                        WebSocketSendMain.controller('messages', 'thread', {'id': $(this).parent().parent().attr('id')})
+                .append($('<td>').html($('<a>').attr('id', id).html(translations.write).click(function () {
+                        var playerId = $(this).attr('id')
+                        MessagesController.setPlayerId(playerId)
+                        WebSocketSendMain.controller('messages', 'thread', {'id': playerId})
                     }))
                 )
-                .append($('<td>').append($('<div>').attr('id', 'trash').click(function () {
-                        WebSocketSendMain.controller('friends', 'delete', {'id': $(this).parent().parent().attr('id')})
+                .append($('<td>').append($('<div>').addClass('trash').attr('id', id).click(function () {
+                        WebSocketSendMain.controller('friends', 'delete', {'id': $(this).attr('id')})
                     }))
                 )
             )
