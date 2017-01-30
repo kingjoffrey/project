@@ -4,10 +4,7 @@ var Fields = new function () {
         grassField,
         maxX,
         maxY,
-        mapMultiplier = 7,
         textureMultiplier = 16,
-        mapCanvas = document.createElement('canvas'),
-        mapContext = mapCanvas.getContext('2d'),
         tmpTextureCanvas = document.createElement('canvas'),
         tmpTextureContext = tmpTextureCanvas.getContext('2d'),
         textureCanvas = document.createElement('canvas'),
@@ -216,8 +213,6 @@ var Fields = new function () {
         maxX = fields[0].length
         maxY = fields.length
 
-        mapCanvas.width = maxX * mapMultiplier
-        mapCanvas.height = maxY * mapMultiplier
         tmpTextureCanvas.width = maxX * textureMultiplier
         tmpTextureCanvas.height = maxY * textureMultiplier
         textureCanvas.width = maxX * textureMultiplier
@@ -227,7 +222,6 @@ var Fields = new function () {
         textureContext.scale(1, -1)
 
         this.createTextures()
-        $('#map').append(mapCanvas)
         Ground.init(maxX, maxY, textureCanvas)
         initRoads()
     }

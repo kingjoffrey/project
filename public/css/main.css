@@ -608,12 +608,6 @@ td .trash {
     color: #000;
 }
 
-.selected .td1 span {
-    /*background: gray;*/
-    padding: 5px;
-    text-shadow: 0 0 2px #000;
-}
-
 .chat {
     text-align: right;
     padding-top: 5px;

@@ -12,10 +12,7 @@ var NewController = new function () {
         $('form').submit(function (e) {
             e.preventDefault()
             WebSocketSendMain.controller('new', 'index', {
-                'mapId': $('select#mapId').val(),
-                'timeLimit': $('select#timeLimit').val(),
-                'turnsLimit': $('input#turnsLimit').val(),
-                'turnTimeLimit': $('select#turnTimeLimit').val()
+                'mapId': $('select#mapId').val()
             })
         })
 
@@ -23,7 +20,8 @@ var NewController = new function () {
     }
     this.setup = function (r) {
         var content = $('#content'),
-            data = r.data
+            data = r.data,
+            mapPlayers = r.mapPlayers
 
         content.html(data)
 
@@ -31,20 +29,44 @@ var NewController = new function () {
             WebSocketSendMain.controller('index', 'index')
         })
 
-        New.setup(r.mapPlayers, r.form, r.gameId, r.gameMasterId)
+        for (var id in mapPlayers) {
+            $('#playersingame').append($('<tr>').attr('id', id)
+                .append($('<td>').addClass('td1')
+                    .append($('<div>').html(mapPlayers[id].shortName).css({
+                        'color': mapPlayers[id].backgroundColor,
+                        'text-shadow': '2px 2px 0 ' + mapPlayers[id].textColor
+                    }))
+                )
+                .append($('<td>').addClass('td2')
+                    .append($('<a>').addClass('button').html(translations.select).attr('id', id).click(function () {
+                        WebSocketSendNew.change(this.id)
+                    }))
+                )
+                .append($('<td>').addClass('td3'))
+                .append($('<td>').addClass('td4').html($('<div>').addClass('colorBox').css('background', mapPlayers[id].backgroundColor)))
+            )
+        }
+
+        New.setup(r.gameId, r.gameMasterId)
     }
     this.map = function (r) {
         var tmpCanvas = document.createElement('canvas'),
             ctx = tmpCanvas.getContext('2d'),
             canvas = document.createElement('canvas'),
             context = canvas.getContext('2d'),
-            maxWidth = 500,
+            multiplier = 5,
             setPixel = function (ctx, x, y, color) {
                 ctx.fillStyle = color;
-                ctx.fillRect(x, y, 1, 1);
+                ctx.fillRect(x * multiplier, y * multiplier, multiplier, multiplier);
             }
 
-        $('#numberOfPlayers').val(r.number)
+        var w = r.fields[0].length * multiplier
+        var h = r.fields.length * multiplier
+
+        canvas.width = w
+        canvas.height = h
+        tmpCanvas.width = w
+        tmpCanvas.height = h
 
         for (var y in r.fields) {
             for (var x in r.fields[y]) {
@@ -65,10 +87,12 @@ var NewController = new function () {
                         setPixel(ctx, x, y, '#262728')
                         break
                     case 'r':
-                        setPixel(ctx, x, y, '#c1c1c1')
+                        // setPixel(ctx, x, y, '#c1c1c1')
+                        setPixel(ctx, x, y, '#009900')
                         break
                     case 'b':
-                        setPixel(ctx, x, y, '#c1c1c1')
+                        // setPixel(ctx, x, y, '#c1c1c1')
+                        setPixel(ctx, x, y, '#009900')
                         break
                     case 's':
                         setPixel(ctx, x, y, '#39723E')
@@ -76,20 +100,8 @@ var NewController = new function () {
                 }
             }
         }
-        x++
-        y++
-        if (x > y) {
-            var ratio = maxWidth / x
-        } else {
-            var ratio = maxWidth / y
-        }
-        var width = x * ratio,
-            height = y * ratio
 
-        canvas.width = width
-        canvas.height = height
-
-        context.drawImage(tmpCanvas, 0, 0, x, y, 0, 0, width, height)
+        context.drawImage(tmpCanvas, 0, 0, w, h, 0, 0, w, h)
 
         $('#img').html(canvas)
     }

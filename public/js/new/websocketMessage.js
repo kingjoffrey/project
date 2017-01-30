@@ -2,11 +2,6 @@ var WebSocketMessageNew = new function () {
     this.switch = function (r) {
         console.log(r)
         switch (r.type) {
-            case 'team':
-                $('tr#' + r.mapPlayerId + ' select').val(r.teamId)
-                $('tr#' + r.mapPlayerId + ' .colorBox').css('background', New.getMapPlayers()[r.teamId].backgroundColor)
-                break
-
             case 'start':
                 WebSocketSendNew.removeGame(New.getGameId())
                 WebSocketSendMain.controller('game', 'index', {'gameId': New.getGameId()})
@@ -30,7 +25,7 @@ var WebSocketMessageNew = new function () {
                         }
                         $('#' + r.player.mapPlayerId + ' .td1').attr('id', r.player.playerId)
                     } else {
-                        New.getPlayersOutElement().append(
+                        $('#playersout').append(
                             $('<tr>')
                                 .html($('<td>').html(r.player.firstName + ' ' + r.player.lastName))
                                 .attr('id', r.player.playerId)

@@ -2,44 +2,9 @@
 var New = new function () {
     var table,
         empty,
-        info = 'There are no open games',
-        playersOutElement,
         gameMasterId,
         gameId,
-        numberOfSelectedPlayers = 0,
-        form,
-        mapPlayers,
-        initButton = function (mapPlayerId) {
-            $('#' + mapPlayerId + ' .td2').html($('<a>')
-                .addClass('button')
-                .html(translations.select)
-                .attr('id', mapPlayerId)
-                .click(function () {
-                    WebSocketSendNew.change(this.id)
-                }))
-        },
-        initButtons = function () {
-            for (var mapPlayerId in mapPlayers) {
-                initButton(mapPlayerId)
-            }
-        },
-        initTeams = function () {
-            var click = function (i) {
-                return function () {
-                    WebSocketSendNew.team(i)
-                }
-            }
-
-            for (var mapPlayerId in mapPlayers) {
-                $('#' + mapPlayerId + ' .td4')
-                    .append($('<div>').html($(form).children('dl').children('dd').children('select')))
-                    .append($('<div>').addClass('colorBox').css('background', mapPlayers[mapPlayerId].backgroundColor))
-                $('#' + mapPlayerId + ' .td4 select')
-                    .val(mapPlayerId)
-                    .attr('id', mapPlayerId)
-                    .change(click(mapPlayerId))
-            }
-        }
+        numberOfSelectedPlayers = 0
 
     this.updateStartButton = function () {
         $('.td3').each(function () {
@@ -83,14 +48,11 @@ var New = new function () {
         var tr = $('#' + playerId + '.td1').parent()
         if (tr.length) {
             tr.removeClass('selected')
-            initButton(tr.attr('id'))
+            $('#' + tr.attr('id') + ' .td2 a').html(translations.select)
             tr.find('.td3').html('')
             $('#' + playerId + '.td1').attr('id', '')
         }
-        playersOutElement.find('#' + playerId).remove()
-    }
-    this.getPlayersOutElement = function () {
-        return playersOutElement
+        $('#playersout').find('#' + playerId).remove()
     }
     this.getGameMasterId = function () {
         return gameMasterId
@@ -98,10 +60,6 @@ var New = new function () {
     this.getGameId = function () {
         return gameId
     }
-    this.getMapPlayers = function () {
-        return mapPlayers
-    }
-
     this.removeGame = function (gameId) {
         $('tr#' + gameId).remove()
         if (!$('.trlink').length) {
@@ -135,20 +93,15 @@ var New = new function () {
                 })
         )
     }
-    this.setup = function (mapP, f, id, gmId) {
-        mapPlayers = mapP
-        form = f
+    this.setup = function (id, gmId) {
         gameId = id
         gameMasterId = gmId
 
-        playersOutElement = $('#playersout')
-        initButtons()
-        initTeams()
         WebSocketSendNew.setup()
     }
     this.init = function () {
         table = $('#join.table table')
-        empty = $('<tr id="0">').append($('<td colspan="4">').html(info).css('padding', '15px'))
+        empty = $('<tr id="0">').append($('<td colspan="4">').html(translations.Therearenoopengames).css('padding', '15px'))
 
         $('#mapId').change(function () {
             WebSocketSendMain.controller('new', 'map', {'mapId': $('#mapId').val()})

@@ -20,6 +20,16 @@ class Application_Model_Game extends Coret_Db_Table_Abstract
 
     public function createGame($params, $playerId)
     {
+        if (!isset($params['turnsLimit'])) {
+            $params['turnsLimit'] = 0;
+        }
+        if (!isset($params['turnTimeLimit'])) {
+            $params['turnTimeLimit'] = 0;
+        }
+        if (!isset($params['timeLimit'])) {
+            $params['timeLimit'] = 0;
+        }
+
         $data = array(
             'numberOfPlayers' => $params['numberOfPlayers'],
             'gameMasterId' => $playerId,

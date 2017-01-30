@@ -36,11 +36,7 @@ class TutorialController
             }
             $gameId = $mGame->createGame(array(
                 'numberOfPlayers' => 2,
-                'gameMasterId' => $playerId,
-                'mapId' => $mapId,
-                'turnsLimit' => 0,
-                'turnTimeLimit' => 0,
-                'timeLimit' => 0,
+                'mapId' => $mapId
             ), $playerId);
 
             $mPlayersInGame = new Application_Model_PlayersInGame($gameId, $db);

@@ -1,14 +1,14 @@
 <?php
-
+use Devristo\Phpws\Protocol\WebSocketTransportInterface;
 class Cli_Model_SetupStart
 {
     /**
      * Cli_Model_SetupStart constructor.
      * @param $dataIn
-     * @param \Devristo\Phpws\Protocol\WebSocketTransportInterface $user
+     * @param WebSocketTransportInterface $user
      * @param Cli_NewHandler $handler
      */
-    public function __construct($dataIn, Devristo\Phpws\Protocol\WebSocketTransportInterface $user, Cli_NewHandler $handler)
+    public function __construct($dataIn, WebSocketTransportInterface $user, Cli_NewHandler $handler)
     {
         $setup = SetupGame::getSetup($user);
         if (!$setup->isGameMaster($user->parameters['playerId'])) {
@@ -61,7 +61,7 @@ class Cli_Model_SetupStart
                 $first = false;
             }
 
-            $mPlayersInGame->setTeam($playerId, $dataIn['team'][$mapPlayerId]);
+//            $mPlayersInGame->setTeam($playerId, $dataIn['team'][$mapPlayerId]);
 
             $mHero = new Application_Model_Hero($playerId, $db);
             $playerHeroes = $mHero->getHeroes();

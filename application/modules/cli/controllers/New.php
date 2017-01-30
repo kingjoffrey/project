@@ -20,14 +20,13 @@ class NewController
 
         $view->form = new Application_Form_Creategame(array(
             'mapId' => $mapId,
-            'numberOfPlayers' => $numberOfPlayers,
             'mapsList' => $mMap->getAllMultiMapsList()
         ));
         $dataIn['numberOfPlayers'] = $numberOfPlayers;
 
         if (isset($dataIn['mapId']) && $view->form->isValid($dataIn)) {
             $mGame = new Application_Model_Game (0, $db);
-            $gameId = $mGame->createGame($view->form->getValues(), $user->parameters['playerId']);
+            $gameId = $mGame->createGame($dataIn, $user->parameters['playerId']);
 
             $this->setup($user, $handler, array('gameId' => $gameId));
         } else {
@@ -52,23 +51,11 @@ class NewController
         $view = new Zend_View();
         $db = $handler->getDb();
 
-        $gameId = $dataIn['gameId'];
-
-        $mGame = new Application_Model_Game($gameId, $db);
+        $mGame = new Application_Model_Game($dataIn['gameId'], $db);
         $game = $mGame->getGame();
 
         $mMapPlayers = new Application_Model_MapPlayers($game['mapId'], $db);
-        $view->mapPlayers = $mMapPlayers->getAll();
-        $view->game = $game;
-
         $mMap = new Application_Model_Map($game['mapId'], $db);
-        $view->mapName = $mMap->getName();
-
-        $view->timeLimits = Application_Model_Limit::timeLimits();
-        $view->turnTimeLimit = Application_Model_Limit::turnTimeLimit();
-
-        $view->form = new Application_Form_Team(array('longNames' => $mMapPlayers->getShortNames()));
-        $view->form->setView($view);
 
         $view->addScriptPath(APPLICATION_PATH . '/views/scripts');
 
@@ -77,8 +64,8 @@ class NewController
             'action' => 'setup',
             'data' => $view->render('new/setup.phtml'),
             'mapPlayers' => $mMapPlayers->getAll(),
-            'form' => $view->form->__toString(),
-            'gameId' => $gameId,
+            'gameId' => $dataIn['gameId'],
+            'mapName' => $mMap->getName(),
             'gameMasterId' => $game['gameMasterId']
         );
         $handler->sendToUser($user, $token);

@@ -2,13 +2,11 @@
     border: 2px solid grey;
     border-radius: 5px;
     text-align: center;
-    height: 444px;
     box-shadow: 1px 1px 5px #000;
 }
 
 #new #img {
     width: 520px;
-    height: 520px;
 }
 
 #new canvas {
