@@ -1,5 +1,6 @@
 <?php
 use Devristo\Phpws\Protocol\WebSocketTransportInterface;
+
 class Cli_Model_SetupStart
 {
     /**
@@ -43,17 +44,11 @@ class Cli_Model_SetupStart
         $first = true;
 
         foreach ($mMapPlayers->getAll() as $mapPlayerId => $mapPlayer) {
-            if (!$playerId = $setup->getPlayerIdByMapPlayerId($mapPlayerId)) {
-                $playerId = $mPlayersInGame->getComputerPlayerId();
-                if (!$playerId) {
-                    $modelPlayer = new Application_Model_Player($db);
-                    $playerId = $modelPlayer->createComputerPlayer();
-                    $modelHero = new Application_Model_Hero($playerId, $db);
-                    $modelHero->createHero();
-                }
-            }
-            $mPlayersInGame->joinGame($playerId, $mapPlayerId);
 
+            $playerId = $setup->getPlayerIdByMapPlayerId($mapPlayerId);
+            if (empty($playerId)) {
+                throw new Exception('Chuj do dupt!');
+            }
             if ($first) {
                 $mTurn = new Application_Model_TurnHistory($setup->getGameId(), $db);
                 $mTurn->add($playerId, 1);
@@ -61,7 +56,8 @@ class Cli_Model_SetupStart
                 $first = false;
             }
 
-//            $mPlayersInGame->setTeam($playerId, $dataIn['team'][$mapPlayerId]);
+            $mPlayersInGame->joinGame($playerId, $mapPlayerId);
+            $mPlayersInGame->setTeam($playerId, $mapPlayerId);
 
             $mHero = new Application_Model_Hero($playerId, $db);
             $playerHeroes = $mHero->getHeroes();

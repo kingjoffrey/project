@@ -28,7 +28,7 @@ class SingleController
             $mGame = new Application_Model_Game (0, $db);
             $gameId = $mGame->createGame($dataIn, $user->parameters['playerId']);
 
-            $this->setup($user, $handler, array('gameId' => $gameId));
+            new Cli_Model_SingleStart($user, $handler, $gameId);
         } else {
             $view->addScriptPath(APPLICATION_PATH . '/views/scripts');
             $view->form->setView($view);
