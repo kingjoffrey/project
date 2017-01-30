@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: WOF\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-01-26 17:40+0100\n"
-"PO-Revision-Date: 2017-01-26 17:45+0100\n"
+"POT-Creation-Date: 2017-01-30 04:59+0100\n"
+"PO-Revision-Date: 2017-01-30 05:02+0100\n"
 "Last-Translator: Bartosz Krzeszewski <bartek@core-t.pl>\n"
 "Language-Team: \n"
 "Language: pl\n"
@@ -16,7 +16,22 @@ msgstr ""
 "X-Generator: Poedit 1.8.5\n"
 "X-Poedit-SearchPath-0: application\n"
 
-#: application/controllers/LoginController.php:92
+#: application/controllers/IndexController.php:136
+#: application/modules/cli/handlers/MainHandler.php:44
+#: application/views/scripts/friends/index.phtml:2
+msgid "Friends"
+msgstr "Znajomi"
+
+#: application/controllers/IndexController.php:137
+msgid "Chat"
+msgstr "Czat"
+
+#: application/controllers/IndexController.php:138
+#: application/views/helpers/Translations.php:131
+msgid "Select friend from friends list"
+msgstr "Wybierz znajomego z listy znajomych"
+
+#: application/controllers/LoginController.php:85
 msgid "Incorrect login details"
 msgstr "Nieprawidłowy e-mail lub hasło!"
 
@@ -42,26 +57,7 @@ msgstr "Zaloguj się"
 msgid "Select map"
 msgstr "Wybierz mapę"
 
-#: application/forms/Creategame.php:17 application/forms/Createmap.php:38
-#: application/views/scripts/new/index.phtml:6
-#: application/views/scripts/profile/show.phtml:9
-msgid "Number of players"
-msgstr "Ilość graczy"
-
-#: application/forms/Creategame.php:26
-msgid "Select time limit"
-msgstr "Ustaw limit czasu"
-
-#: application/forms/Creategame.php:32
-#: application/views/scripts/load/index.phtml:13
-msgid "Turns limit"
-msgstr "Limit tur"
-
-#: application/forms/Creategame.php:41
-msgid "Select time limit per turn"
-msgstr "Ustaw czas trwania tury"
-
-#: application/forms/Creategame.php:44
+#: application/forms/Creategame.php:14
 msgid "Create game"
 msgstr "Utwórz grę"
 
@@ -70,6 +66,12 @@ msgstr "Utwórz grę"
 #: application/views/scripts/profile/show.phtml:6
 msgid "Map name"
 msgstr "Nazwa mapy"
+
+#: application/forms/Createmap.php:38
+#: application/views/scripts/new/index.phtml:6
+#: application/views/scripts/profile/show.phtml:9
+msgid "Number of players"
+msgstr "Ilość graczy"
 
 #: application/forms/Createmap.php:45
 msgid "Create map"
@@ -112,7 +114,6 @@ msgstr "Szukaj"
 
 #: application/models/Limit.php:11 application/models/Limit.php:33
 #: application/views/scripts/load/index.phtml:40
-#: application/views/scripts/new/setup.phtml:39
 msgid "no limit"
 msgstr "bez limitu"
 
@@ -183,61 +184,38 @@ msgstr "Usunięcie elementu wymaga potwierdzenia. Czy na pewno chcesz go usuną�
 msgid "Yes"
 msgstr "Tak"
 
-#: application/modules/cli/handlers/MainHandler.php:37
-#: application/views/helpers/MainMenu.php:16
+#: application/modules/cli/handlers/MainHandler.php:39
 msgid "Play"
 msgstr "Graj"
 
-#: application/modules/cli/handlers/MainHandler.php:38
-#: application/views/helpers/MainMenu.php:17
+#: application/modules/cli/handlers/MainHandler.php:40
 msgid "Load game"
 msgstr "Wczytaj grę"
 
-#: application/modules/cli/handlers/MainHandler.php:39
-#: application/views/helpers/MainMenu.php:18
+#: application/modules/cli/handlers/MainHandler.php:41
 msgid "Hall of Fame"
 msgstr "Sala sław"
 
-#: application/modules/cli/handlers/MainHandler.php:40
-#: application/views/helpers/MainMenu.php:20
+#: application/modules/cli/handlers/MainHandler.php:42
 msgid "Players"
 msgstr "Gracze"
 
-#: application/modules/cli/handlers/MainHandler.php:41
-#: application/views/helpers/MainMenu.php:21
+#: application/modules/cli/handlers/MainHandler.php:43
 msgid "Profile"
 msgstr "Profil"
 
-#: application/modules/cli/handlers/MainHandler.php:42
-#: application/views/helpers/MainMenu.php:22
+#: application/modules/cli/handlers/MainHandler.php:45
+#: application/views/scripts/contact/index.phtml:2
+msgid "Contact"
+msgstr "Kontakt"
+
+#: application/modules/cli/handlers/MainHandler.php:46
 msgid "Help"
 msgstr "Pomoc"
 
-#: application/modules/cli/handlers/MainHandler.php:43
-#: application/views/helpers/MainMenu.php:24
+#: application/modules/cli/handlers/MainHandler.php:47
 msgid "Map editor"
 msgstr "Edytor map"
-
-#: application/views/helpers/ChatInput.php:7
-#: application/views/helpers/Translations.php:131
-msgid "Select friend from friends list"
-msgstr "Wybierz znajomego z listy znajomych"
-
-#: application/views/helpers/ChatTitle.php:7
-msgid "Chat"
-msgstr "Czat"
-
-#: application/views/helpers/Friends.php:20
-msgid "You don't have friends"
-msgstr "Nie masz znajomych"
-
-#: application/views/helpers/Friends.php:20
-msgid "find some friends"
-msgstr "wyszukaj znajomych"
-
-#: application/views/helpers/FriendsTitle.php:7
-msgid "Friends"
-msgstr "Znajomi"
 
 #: application/views/helpers/Logout.php:9
 msgid "Logout"
@@ -288,7 +266,7 @@ msgid "Heroes lost"
 msgstr "Utraconych herosów"
 
 #: application/views/helpers/Translations.php:19
-#: application/layouts/scripts/game.phtml:48
+#: application/layouts/scripts/game.phtml:45
 msgid "Statistics"
 msgstr "Statystyki"
 
@@ -374,7 +352,7 @@ msgid "Error"
 msgstr "Błąd"
 
 #: application/views/helpers/Translations.php:40
-#: application/layouts/scripts/game.phtml:41
+#: application/layouts/scripts/game.phtml:38
 msgid "Surrender"
 msgstr "Poddaj się"
 
@@ -487,11 +465,12 @@ msgid "Moves left"
 msgstr "Pozostałe ruchy"
 
 #: application/views/helpers/Translations.php:68
+#: application/views/scripts/friends/index.phtml:5
 msgid "Status"
 msgstr "Status"
 
 #: application/views/helpers/Translations.php:69
-#: application/layouts/scripts/game.phtml:23
+#: application/layouts/scripts/game.phtml:20
 msgid "Army status"
 msgstr "Status armii"
 
@@ -695,6 +674,7 @@ msgstr "Rozpocznij produkcję"
 
 #: application/views/helpers/Translations.php:120
 #: application/views/helpers/Translations.php:127
+#: application/layouts/scripts/game.phtml:69
 msgid "Close"
 msgstr "Zamknij"
 
@@ -771,6 +751,34 @@ msgstr "Najmij herosa"
 msgid "Goal"
 msgstr "Cel"
 
+#: application/views/helpers/Translations.php:141
+msgid "find some friends"
+msgstr "wyszukaj znajomych"
+
+#: application/views/helpers/Translations.php:142
+msgid "You don't have friends"
+msgstr "Nie masz znajomych"
+
+#: application/views/helpers/Translations.php:143
+msgid "Send"
+msgstr "Wyślij"
+
+#: application/views/helpers/Translations.php:144
+msgid "Write"
+msgstr "Napisz"
+
+#: application/views/helpers/Translations.php:145
+msgid "Add to friends"
+msgstr "Dodaj do znajomych"
+
+#: application/views/helpers/Translations.php:146
+msgid "No search results"
+msgstr "Brak wyników wyszukiwania"
+
+#: application/views/helpers/Translations.php:147
+msgid "There are no open games"
+msgstr "Brak otwartych gier"
+
 #: application/views/helpers/Version.php:6
 msgid "Version number"
 msgstr "Numer wersji"
@@ -803,66 +811,76 @@ msgstr "Opuść edytor"
 msgid "Publish"
 msgstr "Publikuj"
 
-#: application/layouts/scripts/game.phtml:8
+#: application/layouts/scripts/game.phtml:5
 #: application/views/scripts/over/index.phtml:15
 msgid "Gold"
 msgstr "Złoto"
 
-#: application/layouts/scripts/game.phtml:13
+#: application/layouts/scripts/game.phtml:10
 msgid "Show menu"
 msgstr "Pokaż menu"
 
-#: application/layouts/scripts/game.phtml:20
+#: application/layouts/scripts/game.phtml:17
 msgid "Find next army"
 msgstr "Znajdź następną armię"
 
-#: application/layouts/scripts/game.phtml:28
+#: application/layouts/scripts/game.phtml:25
 msgid "Loading"
 msgstr "Wczytywanie"
 
-#: application/layouts/scripts/game.phtml:34
+#: application/layouts/scripts/game.phtml:31
 msgid "Exit game"
 msgstr "Opuść grę"
 
-#: application/layouts/scripts/game.phtml:55
+#: application/layouts/scripts/game.phtml:52
 msgid "Show others"
 msgstr "Pokaż innych"
 
-#: application/layouts/scripts/game.phtml:62
+#: application/layouts/scripts/game.phtml:59
 msgid "Sound"
 msgstr "Dźwięk"
 
-#: application/layouts/scripts/game.phtml:69
+#: application/layouts/scripts/game.phtml:66
 msgid "Full screen"
 msgstr "Pełen ekran"
-
-#: application/layouts/scripts/game.phtml:78
-msgid "cancel"
-msgstr "anuluj"
 
 #: application/modules/admin/views/scripts/pagination_control.phtml:6
 msgid "First"
 msgstr "Pierwszy"
 
 #: application/modules/admin/views/scripts/pagination_control.phtml:7
+#: application/views/scripts/contact/index.phtml:18
 #: application/views/scripts/editor/create.phtml:5
 #: application/views/scripts/editor/index.phtml:20
+#: application/views/scripts/friends/index.phtml:12
 #: application/views/scripts/halloffame/index.phtml:21
 #: application/views/scripts/help/index.phtml:10
 #: application/views/scripts/hero/index.phtml:33
 #: application/views/scripts/load/index.phtml:73
-#: application/views/scripts/messages/index.phtml:23
-#: application/views/scripts/messages/thread.phtml:19
+#: application/views/scripts/messages/index.phtml:21
+#: application/views/scripts/messages/thread.phtml:4
 #: application/views/scripts/new/index.phtml:22
-#: application/views/scripts/new/setup.phtml:45
+#: application/views/scripts/new/setup.phtml:15
 #: application/views/scripts/over/index.phtml:31
-#: application/views/scripts/play/index.phtml:24
-#: application/views/scripts/players/index.phtml:22
+#: application/views/scripts/play/index.phtml:32
+#: application/views/scripts/players/index.phtml:14
 #: application/views/scripts/profile/index.phtml:15
 #: application/views/scripts/profile/ok.phtml:4
 #: application/views/scripts/profile/show.phtml:34
 msgid "Back"
 msgstr "Cofnij"
+
+#: application/views/scripts/contact/index.phtml:5
+msgid "Author"
+msgstr "Autor"
+
+#: application/views/scripts/contact/index.phtml:9
+msgid "Email address"
+msgstr "Adres email"
+
+#: application/views/scripts/contact/index.phtml:13
+msgid "Mobile number"
+msgstr "Telefon kom."
 
 #: application/views/scripts/editor/create.phtml:2
 msgid "Create new map"
@@ -876,6 +894,14 @@ msgstr "Lista map"
 msgid "Create"
 msgstr "Utwórz"
 
+#: application/views/scripts/friends/index.phtml:6
+msgid "Friend name"
+msgstr "Imię znajomego"
+
+#: application/views/scripts/friends/index.phtml:8
+msgid "Delete friend"
+msgstr "Usuń znajomego"
+
 #: application/views/scripts/halloffame/index.phtml:2
 msgid "Players list"
 msgstr "Lista graczy"
@@ -886,7 +912,7 @@ msgstr "Miejsce"
 
 #: application/views/scripts/halloffame/index.phtml:6
 #: application/views/scripts/load/index.phtml:17
-#: application/views/scripts/messages/index.phtml:6
+#: application/views/scripts/messages/index.phtml:5
 #: application/views/scripts/players/index.phtml:8
 msgid "Player name"
 msgstr "Nazwa gracza"
@@ -926,17 +952,19 @@ msgid "Start date"
 msgstr "Data rozpoczęcia"
 
 #: application/views/scripts/load/index.phtml:11
-#: application/views/scripts/new/setup.phtml:35
 msgid "Time limit"
 msgstr "Limit czasu"
 
+#: application/views/scripts/load/index.phtml:13
+msgid "Turns limit"
+msgstr "Limit tur"
+
 #: application/views/scripts/load/index.phtml:15
-#: application/views/scripts/new/setup.phtml:40
 msgid "Time limit per turn"
 msgstr "Czas trwania tury"
 
 #: application/views/scripts/load/index.phtml:17
-#: application/views/scripts/new/setup.phtml:4
+#: application/views/scripts/new/setup.phtml:5
 msgid "Player color"
 msgstr "Kolor gracza"
 
@@ -960,24 +988,18 @@ msgstr "Data wstrzymania"
 msgid "There are no games to load"
 msgstr "Brak gry do załadowania"
 
-#: application/views/scripts/messages/index.phtml:1
-#: application/views/scripts/messages/index.phtml:8
-#: application/views/scripts/messages/thread.phtml:1
-msgid "Messages"
-msgstr "Wiadomości"
-
-#: application/views/scripts/messages/index.phtml:3
+#: application/views/scripts/messages/index.phtml:2
 msgid "Conversations"
 msgstr "Konwersacje"
 
-#: application/views/scripts/messages/index.phtml:7
+#: application/views/scripts/messages/index.phtml:6
 #: application/views/scripts/new/index.phtml:7
 msgid "Date"
 msgstr "Data"
 
-#: application/views/scripts/messages/thread.phtml:3
-msgid "Conversation history"
-msgstr "Historia rozmowy"
+#: application/views/scripts/messages/index.phtml:7
+msgid "Messages"
+msgstr "Wiadomości"
 
 #: application/views/scripts/new/index.phtml:2
 msgid "Join one of the games listed below"
@@ -991,37 +1013,17 @@ msgstr "Utwórz nową grę"
 msgid "Select your color and team"
 msgstr "Wybierz swój kolor i drużynę"
 
-#: application/views/scripts/new/setup.phtml:5
+#: application/views/scripts/new/setup.phtml:6
 msgid "Select your color"
 msgstr "Wybierz swój kolor"
 
-#: application/views/scripts/new/setup.phtml:6
-msgid "Human/AI"
-msgstr "Człowiek/SI"
+#: application/views/scripts/new/setup.phtml:8
+msgid "Team"
+msgstr "Drużyna"
 
-#: application/views/scripts/new/setup.phtml:7
-msgid "Select your team"
-msgstr "Wybierz swoją drużynę"
-
-#: application/views/scripts/new/setup.phtml:23
+#: application/views/scripts/new/setup.phtml:11
 msgid "Undecided"
 msgstr "Niezdecydowani"
-
-#: application/views/scripts/new/setup.phtml:29
-msgid "Game settings"
-msgstr "Ustawienia gry"
-
-#: application/views/scripts/new/setup.phtml:32
-msgid "Map"
-msgstr "Mapa"
-
-#: application/views/scripts/new/setup.phtml:33
-msgid "Required number of players"
-msgstr "Wymagana ilość graczy"
-
-#: application/views/scripts/new/setup.phtml:37
-msgid "Limit of the number of turns"
-msgstr "Limit ilości tur"
 
 #: application/views/scripts/over/index.phtml:2
 msgid "Game score"
@@ -1050,10 +1052,15 @@ msgid "Tutorial"
 msgstr "Samouczek"
 
 #: application/views/scripts/play/index.phtml:18
+#: application/views/scripts/play/index.phtml:21
+msgid "Single player"
+msgstr "Rozgrywka jednoosobowa"
+
+#: application/views/scripts/play/index.phtml:26
 msgid "Multiplayer"
 msgstr "Rozgrywka wieloosobowa"
 
-#: application/views/scripts/play/index.phtml:21
+#: application/views/scripts/play/index.phtml:29
 msgid "Join / start game"
 msgstr "Dołącz / rozpocznij grę"
 
@@ -1061,9 +1068,9 @@ msgstr "Dołącz / rozpocznij grę"
 msgid "Search results"
 msgstr "Wyniki wyszukiwania"
 
-#: application/views/scripts/players/index.phtml:15
-msgid "Add to friends"
-msgstr "Dodaj do znajomych"
+#: application/views/scripts/players/index.phtml:10
+msgid "Action"
+msgstr "Akcja"
 
 #: application/views/scripts/profile/index.phtml:2
 msgid "Change your data"
@@ -1093,6 +1100,36 @@ msgstr "Zakończenie"
 msgid "Number of rounds"
 msgstr "Ilość rund"
 
+#~ msgid "Select time limit"
+#~ msgstr "Ustaw limit czasu"
+
+#~ msgid "Select time limit per turn"
+#~ msgstr "Ustaw czas trwania tury"
+
+#~ msgid "cancel"
+#~ msgstr "anuluj"
+
+#~ msgid "Conversation history"
+#~ msgstr "Historia rozmowy"
+
+#~ msgid "Human/AI"
+#~ msgstr "Człowiek/SI"
+
+#~ msgid "Select your team"
+#~ msgstr "Wybierz swoją drużynę"
+
+#~ msgid "Game settings"
+#~ msgstr "Ustawienia gry"
+
+#~ msgid "Map"
+#~ msgstr "Mapa"
+
+#~ msgid "Required number of players"
+#~ msgstr "Wymagana ilość graczy"
+
+#~ msgid "Limit of the number of turns"
+#~ msgstr "Limit ilości tur"
+
 #~ msgid "Movement cost through the forest"
 #~ msgstr "Koszt poruszania się po lesie"
 
@@ -1116,9 +1153,6 @@ msgstr "Ilość rund"
 
 #~ msgid "Player name & color"
 #~ msgstr "Nazwa i kolor gracza"
-
-#~ msgid "There are no open games"
-#~ msgstr "Brak otwartych gier"
 
 #~ msgid "Player profile"
 #~ msgstr "Profil gracza"
@@ -1182,9 +1216,6 @@ msgstr "Ilość rund"
 
 #~ msgid "from"
 #~ msgstr "od"
-
-#~ msgid "Send"
-#~ msgstr "Wyślij"
 
 #~ msgid "Fortify army"
 #~ msgstr "Fortyfikuj armię"

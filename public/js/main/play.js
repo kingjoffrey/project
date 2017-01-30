@@ -12,6 +12,9 @@ var PlayController = new function () {
         $('#tutorial').click(function () {
             WebSocketSendMain.controller('tutorial', 'index')
         })
+        $('#singlePlayer').click(function () {
+            WebSocketSendMain.controller('single', 'index')
+        })
         $('#newGame').click(function () {
             WebSocketSendMain.controller('new', 'index')
         })
