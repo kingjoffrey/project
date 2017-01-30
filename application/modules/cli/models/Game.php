@@ -70,9 +70,6 @@ class Cli_Model_Game
 
         $this->_mapId = $game['mapId'];
 
-        $mTurnHistory = new Application_Model_TurnHistory($this->_id, $db);
-        $this->_turnHistory = $mTurnHistory->getTurnHistory();
-
         $mMapFields = new Application_Model_MapFields($this->_mapId, $db);
         $this->_Fields = new Cli_Model_Fields($mMapFields->getMapFields());
 
@@ -168,7 +165,8 @@ class Cli_Model_Game
             'fields' => $this->_Fields->toArray(),
             'terrain' => $this->_Terrain->toArray(),
             'capitals' => $this->_capitals,
-            'turnHistory' => $this->_turnHistory,
+            'turnColor' => $this->getPlayerColor($this->_turnPlayerId),
+            'turnNumber' => $this->_turnNumber,
             'players' => $this->_Players->toArray(),
             'ruins' => $this->_Ruins->toArray()
         );
