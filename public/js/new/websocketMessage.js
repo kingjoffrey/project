@@ -3,13 +3,13 @@ var WebSocketMessageNew = new function () {
         console.log(r)
         switch (r.type) {
             case 'start':
-                WebSocketSendNew.removeGame(New.getGameId())
-                WebSocketSendMain.controller('game', 'index', {'gameId': New.getGameId()})
+                WebSocketSendNew.removeGame(Setup.getGameId())
+                WebSocketSendMain.controller('game', 'index', {'gameId': Setup.getGameId()})
                 break;
 
             case 'update':
                 if (notSet(r.close)) {
-                    New.removePlayer(r.player.playerId)
+                    Setup.removePlayer(r.player.playerId)
                     if (r.player.mapPlayerId) {
                         $('#' + r.player.mapPlayerId + ' .td3').html(r.player.firstName + ' ' + r.player.lastName)
 
@@ -17,7 +17,7 @@ var WebSocketMessageNew = new function () {
                             $('#' + r.player.mapPlayerId + ' .td2 a').html(translations.deselect)
                             $('#' + r.player.mapPlayerId).addClass('selected')
                         } else {
-                            if (New.getGameMasterId() == id) {
+                            if (Setup.getGameMasterId() == id) {
                                 $('#' + r.player.mapPlayerId + ' .td2 a').html(translations.deselect);
                             } else {
                                 $('#' + r.player.mapPlayerId + ' .td2 a').remove();
@@ -31,7 +31,7 @@ var WebSocketMessageNew = new function () {
                                 .attr('id', r.player.playerId)
                         )
                     }
-                    New.updateStartButton()
+                    Setup.updateStartButton()
                 } else {
                     WebSocketSendMain.controller('new', 'index')
                 }

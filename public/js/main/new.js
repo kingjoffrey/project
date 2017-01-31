@@ -22,7 +22,8 @@ var NewController = new function () {
     this.setup = function (r) {
         var content = $('#content'),
             data = r.data,
-            mapPlayers = r.mapPlayers
+            mapPlayers = r.mapPlayers,
+            numberOfMapPlayers = 0
 
         content.html(data)
 
@@ -31,6 +32,7 @@ var NewController = new function () {
         })
 
         for (var id in mapPlayers) {
+            numberOfMapPlayers++
             $('#playersingame').append($('<tr>').attr('id', id)
                 .append($('<td>').addClass('td1')
                     .append($('<div>').html(mapPlayers[id].shortName).css({
@@ -48,7 +50,9 @@ var NewController = new function () {
             )
         }
 
-        New.setup(r.gameId, r.gameMasterId)
+        WebSocketSendNew.setup()
+
+        Setup.init(r.gameId, r.gameMasterId, numberOfMapPlayers)
     }
     this.map = function (r) {
         var tmpCanvas = document.createElement('canvas'),

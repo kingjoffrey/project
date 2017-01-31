@@ -44,10 +44,10 @@ class Cli_Model_SetupStart
         $first = true;
 
         foreach ($mMapPlayers->getAll() as $mapPlayerId => $mapPlayer) {
-
             $playerId = $setup->getPlayerIdByMapPlayerId($mapPlayerId);
             if (empty($playerId)) {
-                throw new Exception('Chuj do dupt!');
+                echo('brak wszystkich graczy' . "\n");
+                return;
             }
             if ($first) {
                 $mTurn = new Application_Model_TurnHistory($setup->getGameId(), $db);

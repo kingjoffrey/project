@@ -122,11 +122,12 @@ var HelpModels = new function () {
     this.addHero = function () {
         var mesh = Models.getHero('orange')
 
-        mesh.position.set(20, 0, -20)
+        mesh.rotation.y = Math.PI / 2
 
-        mesh.scale.x = 1.5
-        mesh.scale.y = 1.5
-        mesh.scale.z = 1.5
+        mesh.scale.x = 0.5
+        mesh.scale.y = 0.5
+        mesh.scale.z = 0.5
+        mesh.position.set(20, 0, -20)
 
         if (HelpScene.getShadows()) {
             mesh.castShadow = true
