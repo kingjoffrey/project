@@ -8,6 +8,7 @@ class Cli_Model_SingleStart
      * @param WebSocketTransportInterface $user
      * @param Cli_MainHandler $handler
      * @param $gameId
+     * @throws Exception
      */
     public function __construct(WebSocketTransportInterface $user, Cli_MainHandler $handler, $gameId)
     {
@@ -34,6 +35,9 @@ class Cli_Model_SingleStart
                 $first = false;
             } else {
                 $playerId = $mPlayersInGame->getComputerPlayerId();
+                if (empty($playerId)) {
+                    throw new Exception('kamieni kupa!');
+                }
             }
 
             $mPlayersInGame->joinGame($playerId, $mapPlayerId);
@@ -56,17 +60,18 @@ class Cli_Model_SingleStart
             $mCastlesInGame->addCastle($startPositions[$mapPlayer['mapPlayerId']]['mapCastleId'], $playerId);
         }
 
-        $token = array('type' => 'start');
+
+        $layout = new Zend_Layout();
+        $layout->setLayoutPath(APPLICATION_PATH . '/layouts/scripts');
+        $layout->setLayout('game');
+
+        $token = array(
+            'type' => 'game',
+            'action' => 'index',
+            'data' => $layout->render(),
+            'gameId' => $gameId
+        );
 
         $handler->sendToUser($user, $token);
-    }
-
-    public function getPlayerIdByMapPlayerId($mapPlayerId)
-    {
-        foreach ($this->_players as $playerId => $player) {
-            if (isset($player['mapPlayerId']) && $player['mapPlayerId'] == $mapPlayerId) {
-                return $playerId;
-            }
-        }
     }
 }

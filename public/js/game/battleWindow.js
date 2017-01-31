@@ -23,7 +23,7 @@ var BattleWindow = new function () {
                     for (var i in winners) {
                         BattleScene.remove(winners[i])
                     }
-
+                    console.log(r)
                     Move.end(r, ii)
                 }, 500)
                 return
@@ -217,14 +217,14 @@ var BattleWindow = new function () {
             if (r.battle.castleId) {
                 if (Players.get(color).getCastles().has(r.battle.castleId)) {
                     var castle = Players.get(color).getCastles().get(r.battle.castleId)
-                    castleMesh = BattleModels.addCastle(castle.toArray(), color, BattleScene)
+                    castleMesh = BattleModels.addCastle(castle.toArray(), Players.get(color).getBackgroundColor(), BattleScene)
                 }
             }
 
             if (r.battle.towerId) {
                 if (Players.get(color).getTowers().has(r.battle.towerId)) {
                     var tower = Players.get(color).getTowers().get(r.battle.towerId)
-                    towerMesh = BattleModels.addTower(color, BattleScene)
+                    towerMesh = BattleModels.addTower(Players.get(color).getBackgroundColor(), BattleScene)
                 }
             }
         }
@@ -236,67 +236,5 @@ var BattleWindow = new function () {
                 kill(killed, r, ii);
             }, 2500);
         }
-    }
-
-    var configuration = function (type) {
-        var sequenceNumber = $('<div>'),
-            sequenceImage = $('<div>').attr('id', 'sortable'),
-            i = 0
-
-        for (k in CommonMe.getBattleSequence(type)) {
-            var unitId = CommonMe.getBattleSequence(type)[k],
-                unit = Units.get(unitId)
-            if (unit.canFly) {
-                continue
-            }
-            if (unit.canSwim) {
-                continue
-            }
-            i++
-            if (isSet(unit.name_lang)) {
-                var name = unit.name_lang
-            } else {
-                var name = unit.name
-            }
-            sequenceNumber
-                .append($('<div>').html(i).addClass('battleNumber'))
-            sequenceImage
-                .append(
-                    $('<div>')
-                        .append($('<img>').attr({
-                            src: Unit.getImage(unitId, CommonMe.getColor()),
-                            id: unitId,
-                            alt: name
-                        }))
-                        .addClass('battleUnit')
-                )
-        }
-
-        return sequenceNumber.add(sequenceImage)
-    }
-    this.attack = function () {
-        var div = $('<div>')
-            .append($('<div>').html(translations.changeBattleAttackSequenceByMovingUnits))
-            .append(configuration('attack'))
-
-        var id = Message.show(translations.battleConfiguration, div)
-        Message.ok(id, WebSocketSendCommon.battleAttack)
-        Message.cancel(id)
-
-        $("#sortable").sortable()
-        $("#sortable").disableSelection()
-
-    }
-    this.defence = function () {
-        var div = $('<div>')
-            .append($('<div>').html(translations.changeBattleDefenceSequenceByMovingUnits))
-            .append(configuration('defense'))
-
-        var id = Message.show(translations.battleConfiguration, div)
-        Message.ok(id, WebSocketSendCommon.battleDefence)
-        Message.cancel(id)
-
-        $("#sortable").sortable()
-        $("#sortable").disableSelection()
     }
 }

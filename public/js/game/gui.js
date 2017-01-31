@@ -83,16 +83,6 @@ var GameGui = new function () {
                 TreasuryWindow.upkeep()
             })
 
-            $('#battleAttack').click(function () {
-                Sound.play('click')
-                BattleWindow.attack()
-            })
-
-            $('#battleDefence').click(function () {
-                Sound.play('click')
-                BattleWindow.defence()
-            })
-
             $('#exit').click(function () {
                 Sound.play('click')
                 GameGui.exit()

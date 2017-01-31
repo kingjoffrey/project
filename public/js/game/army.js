@@ -9,6 +9,7 @@ var Army = function (army, bgColor, miniMapColor, textColor, color) {
         this.setNumberOfUnits(a)
         if (!numberOfUnits) { // no sens to update if no units (army will be destroyed)
             console.log('NO UNITS !!!')
+            i.chuj()
             return
         }
         for (var key in a) {
