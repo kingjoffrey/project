@@ -63,8 +63,11 @@ var GameGui = new function () {
                 case 83: //s
                     StatusWindow.show()
                     break;
-                // default:
-                //    console.log(key)
+                case 84: //t
+                    Turn.next()
+                    break;
+                default:
+                   console.log(key)
             }
         },
         prepareButtons = function () {
@@ -173,7 +176,10 @@ var GameGui = new function () {
         }
     this.adjust = function () {
         GameScene.resize($(window).innerWidth(), $(window).innerHeight())
-        var goldBoxLeft = GameScene.getWidth() / 2 - $('#gold').outerWidth() / 2
+        BattleScene.resize($(window).innerWidth(), $(window).innerHeight())
+        GameRenderer.setSize($(window).innerWidth(), $(window).innerHeight())
+
+        var goldBoxLeft = $(window).innerWidth() / 2 - $('#gold').outerWidth() / 2
         $('#gold').css({
             'left': goldBoxLeft + 'px'
         })

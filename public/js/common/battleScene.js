@@ -1,17 +1,15 @@
 var BattleScene = new function () {
-    var canvasWidth,
-        canvasHeight,
-        scene = new THREE.Scene(),
+    var scene = new THREE.Scene(),
         camera,
         sun,
         shadows = 1,
         cameraZ = 24,
-        initCamera = function () {
+        initCamera = function (w, h) {
             var fov = 22,
                 near = 1,
                 far = 1000
 
-            camera = new THREE.PerspectiveCamera(fov, canvasWidth / canvasHeight, near, far)
+            camera = new THREE.PerspectiveCamera(fov, w / h, near, far)
             camera.position.z = cameraZ
             camera.lookAt(scene.position)
 
@@ -58,23 +56,11 @@ var BattleScene = new function () {
     this.getCamera = function () {
         return camera
     }
-    this.getWidth = function () {
-        return canvasWidth
-    }
-    this.getHeight = function () {
-        return canvasHeight
-    }
     this.resize = function (w, h) {
-        canvasWidth = w
-        canvasHeight = h
-        camera.aspect = canvasWidth / canvasHeight
+        camera.aspect = w / h
         camera.updateProjectionMatrix()
-        GameRenderer.setSize(w, h)
     }
     this.init = function (w, h) {
-        canvasWidth = w
-        canvasHeight = h
-
-        initCamera()
+        initCamera(w, h)
     }
 }

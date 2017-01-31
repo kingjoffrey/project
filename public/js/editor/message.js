@@ -30,8 +30,8 @@ var EditorMessage = new function () {
         return id
     }
     this.adjust = function (id) {
-        maxHeight = GameScene.getHeight() - 140
-        maxWidth = GameScene.getWidth() - 40
+        maxHeight = $(window).innerHeight() - 140
+        maxWidth = $(window).innerWidth() - 40
 
         if (maxHeight < parseInt($('#' + id).css('min-height'))) {
             maxHeight = parseInt($('#' + id).css('min-height'))
@@ -44,14 +44,14 @@ var EditorMessage = new function () {
         if ($('#' + id + ' .showCastle').length) {
             $('#' + id).css({
                 'z-index': $('#' + id).css('z-index') + 1,
-                left: GameScene.getWidth() / 2 - $('#' + id).outerWidth() / 2 + 'px',
+                left: $(window).innerWidth() / 2 - $('#' + id).outerWidth() / 2 + 'px',
                 'max-width': maxWidth + 'px',
                 'max-height': maxHeight + 'px'
             })
             $('#' + id + ' .msgTitle').css({width: $('#' + id).width() - 50})
         } else {
             $('.message').css({
-                left: GameScene.getWidth() / 2 - $('.message').outerWidth() / 2 + 'px',
+                left: $(window).innerWidth() / 2 - $('.message').outerWidth() / 2 + 'px',
                 'max-width': maxWidth + 'px',
                 'max-height': maxHeight + 'px'
             })

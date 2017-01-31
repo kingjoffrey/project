@@ -4,19 +4,17 @@ if (!Detector.webgl) {
 }
 
 var GameScene = new function () {
-    var canvasWidth,
-        canvasHeight,
-        scene,
+    var scene,
         camera,
         sun,
         shadows = 1,
         cameraY = 24,
-        initCamera = function () {
+        initCamera = function (w,h) {
             var viewAngle = 22,
                 near = 1,
                 far = 1000
 
-            camera = new THREE.PerspectiveCamera(viewAngle, canvasWidth / canvasHeight, near, far)
+            camera = new THREE.PerspectiveCamera(viewAngle, w / h, near, far)
             camera.rotation.order = 'YXZ'
             camera.rotation.y = -Math.PI / 4
             camera.rotation.x = Math.atan(-1 / Math.sqrt(2))
@@ -145,25 +143,12 @@ var GameScene = new function () {
     this.getCamera = function () {
         return camera
     }
-    this.getWidth = function () {
-        return canvasWidth
-    }
-    this.getHeight = function () {
-        return canvasHeight
-    }
     this.resize = function (w, h) {
-        canvasWidth = w
-        canvasHeight = h
-        camera.aspect = canvasWidth / canvasHeight
+        camera.aspect = w / h
         camera.updateProjectionMatrix()
-        GameRenderer.setSize(w, h)
     }
     this.init = function (w, h) {
-        canvasWidth = w
-        canvasHeight = h
-
         scene = new THREE.Scene()
-
-        initCamera()
+        initCamera(w, h)
     }
 }

@@ -2,8 +2,6 @@ var GameRenderer = new function () {
     var renderer,
         scene,
         camera,
-        width,
-        height,
         viewports = {},
         timeOut = 100,
         stop,
@@ -11,8 +9,6 @@ var GameRenderer = new function () {
             renderer.render(scene, camera)
         }
     this.setSize = function (w, h) {
-        width = w
-        height = h
         renderer.setSize(w, h)
     }
     this.getDomElement = function () {
@@ -50,8 +46,6 @@ var GameRenderer = new function () {
         renderer = Renderer.get()
         scene = Scene.get()
         camera = Scene.getCamera()
-        width = Scene.getWidth()
-        height = Scene.getHeight()
         $('#' + id).append(renderer.domElement)
         // renderer.autoClear = false
     }
