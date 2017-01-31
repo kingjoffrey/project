@@ -40,6 +40,18 @@ class Application_Model_Unit extends Coret_Db_Table_Abstract
         return $units;
     }
 
+    public function getUnitsNames()
+    {
+        $unitId = $this->_db->quoteIdentifier('unitId');
+
+        $select = $this->_db->select()
+            ->from(array('a' => $this->_name), null)
+            ->join(array('b' => 'unit_Lang'), 'b.' . $unitId . ' = a.' . $unitId, 'name')
+            ->where('id_lang = ?', Zend_Registry::get('config')->id_lang);
+
+        return $this->selectAll($select);
+    }
+
     public function getUnitIdByName($name)
     {
         $select = $this->_db->select()

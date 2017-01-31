@@ -131,9 +131,9 @@
 }
 
 .message #content {
-    min-width: 321px;
-    min-height: 70px;
-    padding-top: 30px;
+    /*min-width: 321px;*/
+    /*min-height: 70px;*/
+    /*padding-top: 30px;*/
     margin: 0 auto;
     display: inline-block;
     border: 1px solid green;
@@ -163,7 +163,7 @@
 .message .msgTitle {
     text-align: center;
     border-bottom: 1px solid green;
-    margin: -47px auto 0 auto;
+    /*margin: -47px auto 0 auto;*/
 }
 
 .message .msgTitle h3 {
@@ -199,7 +199,6 @@
 }
 
 .message div.showCastle {
-    max-width: 500px;
     text-align: left;
 }
 
@@ -437,7 +436,7 @@
 #terrain {
     position: absolute;
     color: white;
-    z-index: 27000;
+    z-index: 900;
     left: 2px;
 }
 
@@ -845,4 +844,8 @@ table.treasury td {
     cursor: pointer;
     bottom: 2px;
     left: 2px;
+}
+
+#game .relocatingTo {
+    color: lime;
 }

@@ -215,6 +215,7 @@ var Execute = new function () {
         }
     }
     this.setExecuting = function (value) {
+        console.log(value)
         executing = value
     }
     this.getI = function () {

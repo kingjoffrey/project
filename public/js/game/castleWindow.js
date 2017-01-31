@@ -71,7 +71,9 @@ var CastleWindow = new function () {
 
                     if (checked) { // jest produkcja
                         if (castle.getRelocationCastleId() && CommonMe.getCastles().has(castle.getRelocationCastleId())) {
-                            unitElement.append($('<div>').html(translations.relocatingTo + ' ' + CommonMe.getCastle(castle.getRelocationCastleId()).getName()))
+                            unitElement.append($('<div>').addClass('relocatingTo').html(translations.relocatingTo + ' ' + CommonMe.getCastle(castle.getRelocationCastleId()).getName()))
+                        } else {
+                            unitElement.append($('<div>').addClass('relocatingTo').html(translations.production))
                         }
 
                         unitElement.find('.buttons')
