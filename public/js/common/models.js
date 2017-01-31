@@ -3,8 +3,8 @@ var Models = new function () {
         towerModel,
         flagModel,
         armyModels = {},
-        castleModels = {},
-        flagModels = {},
+        castleModels = [],
+        flagModels = [],
         treeModel,
         shadows = 1,
         roadTexture,
@@ -98,12 +98,12 @@ var Models = new function () {
             towerModel = loader.parse(tower)
         },
         initCastle = function () {
-            castleModels = {
-                0: loader.parse(castle_1),
-                1: loader.parse(castle_2),
-                2: loader.parse(castle_3),
-                3: loader.parse(castle_4)
-            }
+            castleModels = [
+                loader.parse(castle_1),
+                loader.parse(castle_2),
+                loader.parse(castle_3),
+                loader.parse(castle_4)
+            ]
         },
         initFlag = function () {
             flagModel = loader.parse(flag)

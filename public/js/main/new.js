@@ -50,7 +50,7 @@ var NewController = new function () {
             )
         }
 
-        WebSocketSendNew.setup()
+        WebSocketSendNew.setup(r.gameId)
 
         Setup.init(r.gameId, r.gameMasterId, numberOfMapPlayers)
     }

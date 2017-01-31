@@ -243,6 +243,7 @@
     padding: 2px;
     margin: 0 auto;
     border-spacing: 5px !important;
+    max-width: 600px;
 }
 
 .message .production td.unit {

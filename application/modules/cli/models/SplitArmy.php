@@ -3,7 +3,7 @@
 class Cli_Model_SplitArmy
 {
 
-    function  __construct($parentArmyId, $s, $h, $playerId, Devristo\Phpws\Protocol\WebSocketTransportInterface $user, $handler)
+    function __construct($parentArmyId, $s, $h, $playerId, Devristo\Phpws\Protocol\WebSocketTransportInterface $user, $handler)
     {
         if (empty($parentArmyId) || (empty($h) && empty($s))) {
             $handler->sendError($user, 'Brak "armyId", "s" lub "h"!');
@@ -17,6 +17,11 @@ class Cli_Model_SplitArmy
         $color = $game->getPlayerColor($playerId);
         $armies = $game->getPlayers()->getPlayer($color)->getArmies();
         $army = $armies->getArmy($parentArmyId);
+
+        if ($army->count() <= 1) {
+            return;
+        }
+
         $childArmyId = 0;
         $db = $handler->getDb();
 

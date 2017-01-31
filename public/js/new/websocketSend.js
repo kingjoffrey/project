@@ -17,7 +17,7 @@ var WebSocketSendNew = new function () {
 
         ws.send(JSON.stringify(token))
     }
-    this.setup = function () {
+    this.setup = function (gameId) {
         if (closed) {
             console.log(translations.sorryServerIsDisconnected)
             return;
@@ -25,20 +25,25 @@ var WebSocketSendNew = new function () {
 
         var token = {
             'type': 'setup',
-            'gameId': New.getGameId()
+            'gameId': gameId
         }
 
         ws.send(JSON.stringify(token));
     }
-    this.team = function (mapPlayerId) {
-        var token = {
-            'type': 'team',
-            'mapPlayerId': mapPlayerId,
-            'teamId': $('tr#' + mapPlayerId + ' select').val()
-        }
-
-        ws.send(JSON.stringify(token));
-    }
+    // this.team = function (mapPlayerId) {
+    //     if (closed) {
+    //         console.log(translations.sorryServerIsDisconnected)
+    //         return;
+    //     }
+    //
+    //     var token = {
+    //         'type': 'team',
+    //         'mapPlayerId': mapPlayerId,
+    //         'teamId': $('tr#' + mapPlayerId + ' select').val()
+    //     }
+    //
+    //     ws.send(JSON.stringify(token));
+    // }
     this.change = function (id) {
         if (closed) {
             console.log(translations.sorryServerIsDisconnected)

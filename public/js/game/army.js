@@ -5,11 +5,10 @@ var Army = function (army, bgColor, miniMapColor, textColor, color) {
         numberOfUnits = 0
 
     this.update = function (a) {
+        GameScene.remove(army.mesh)
         Fields.get(army.x, army.y).removeArmyId(army.id) // remove armyId from last visited field
         this.setNumberOfUnits(a)
         if (!numberOfUnits) { // no sens to update if no units (army will be destroyed)
-            console.log('NO UNITS !!!')
-            i.chuj()
             return
         }
         for (var key in a) {
@@ -61,7 +60,6 @@ var Army = function (army, bgColor, miniMapColor, textColor, color) {
             army[key] = a[key]
         }
         Fields.get(army.x, army.y).addArmyId(army.id, color)
-        GameScene.remove(army.mesh)
         army.mesh = GameModels.addArmy(army.x, army.y, bgColor, numberOfUnits, this.getModelName())
     }
     this.toArray = function () {
@@ -200,16 +198,16 @@ var Army = function (army, bgColor, miniMapColor, textColor, color) {
         return countProperties(army.fly)
     }
     this.deleteWalkingSoldier = function (soldierId) {
-       delete army.walk[soldierId]
+        delete army.walk[soldierId]
     }
     this.deleteSwimmingSoldier = function (soldierId) {
-       delete army.swim[soldierId]
+        delete army.swim[soldierId]
     }
     this.deleteFlyingSoldier = function (soldierId) {
-       delete army.fly[soldierId]
+        delete army.fly[soldierId]
     }
     this.deleteHero = function (heroId) {
-       delete army.heroes[heroId]
+        delete army.heroes[heroId]
     }
     this.getFortified = function () {
         return army.fortified
@@ -241,8 +239,11 @@ var Army = function (army, bgColor, miniMapColor, textColor, color) {
                 }
             }
         }
+
         if (name) {
             return name.replace(' ', '_').toLowerCase()
+        } else {
+            kupa()
         }
     }
     this.resetPathMoves = function () {

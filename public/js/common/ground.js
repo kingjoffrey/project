@@ -8,26 +8,24 @@ var Ground = new function () {
         grassMesh,
         grassMaterial,
         tl = new THREE.TextureLoader(),
-        createWater = function (x, y) {
+        createWater = function (x, y, canvas) {
             var maxX = x * 2,
                 maxY = y * 2
 
-            tl.load('/img/editor/ciemny_niebieskii.png', function (texture) {
-                var mesh = new THREE.Mesh(new THREE.PlaneBufferGeometry(maxX, maxY), new THREE.MeshLambertMaterial({
-                    map: texture,
-                    //color: 0x0000ff,
-                    side: THREE.DoubleSide
-                    //transparent: true,
-                    //opacity: 0.1
-                }))
-                mesh.rotation.x = Math.PI / 2
-                mesh.position.set(maxX / 2, -waterLevel, maxY / 2)
-                GameScene.add(mesh)
-                PickerCommon.attach(mesh)
-                if (GameScene.getShadows()) {
-                    mesh.receiveShadow = true
-                }
-            })
+            var texture = new THREE.Texture(canvas)
+            texture.needsUpdate = true
+
+            var mesh = new THREE.Mesh(new THREE.PlaneBufferGeometry(maxX, maxY), new THREE.MeshLambertMaterial({
+                map: texture,
+                side: THREE.DoubleSide
+            }))
+            mesh.rotation.x = Math.PI / 2
+            mesh.position.set(maxX / 2, -waterLevel, maxY / 2)
+            GameScene.add(mesh)
+            PickerCommon.attach(mesh)
+            if (GameScene.getShadows()) {
+                mesh.receiveShadow = true
+            }
         },
         createGround = function (x, y, canvas) {
             var maxX = x * 2,
@@ -330,8 +328,8 @@ var Ground = new function () {
         Fields.createTextures()
         createGround(Fields.getMaxX(), Fields.getMaxY(), Fields.getCanvas())
     }
-    this.init = function (maxX, maxY, canvas) {
-        createGround(maxX, maxY, canvas)
-        createWater(maxX, maxY)
+    this.init = function (maxX, maxY, groundCanvas, waterCanvas) {
+        createGround(maxX, maxY, groundCanvas)
+        createWater(maxX, maxY, waterCanvas)
     }
 }

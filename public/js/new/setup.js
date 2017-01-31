@@ -60,7 +60,9 @@ var Setup = new function () {
     this.getGameId = function () {
         return gameId
     }
-    this.init = function (gameId, gameMasterId, numberOfMapPlayers) {
-
+    this.init = function (gId, gMasterId, nOfMapPlayers) {
+        gameId = gId
+        gameMasterId = gMasterId
+        numberOfMapPlayers = nOfMapPlayers
     }
 }
