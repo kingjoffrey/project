@@ -40,6 +40,8 @@ class Cli_Model_Ruin extends Cli_Model_Entity
         $color = $game->getPlayerColor($playerId);
         $db = $handler->getDb();
 
+        print_r($random);
+
         if ($random < 10) { //10%
 //śmierć
             $turnNumber = $game->getTurnNumber();
@@ -53,6 +55,7 @@ class Cli_Model_Ruin extends Cli_Model_Entity
                     $game->getPlayers()->getPlayer($game->getPlayerColor($playerId))->getArmies()->removeArmy($army->getId(), $game, $db);
                 }
             }
+            echo 'a';
         } elseif ($random < 55) { //45%
 //kasa
             $gold = rand(50, 150);
@@ -62,6 +65,7 @@ class Cli_Model_Ruin extends Cli_Model_Entity
             $player->saveGold($gameId, $db);
             $army->getHeroes()->getHero($heroId)->zeroMovesLeft($gameId, $db);
             $this->setEmpty($gameId, $db);
+            echo 'b';
         } elseif ($random < 85) { //30%
 //jednostki
             $turnNumber = $game->getTurnNumber();
@@ -163,11 +167,13 @@ class Cli_Model_Ruin extends Cli_Model_Entity
             $army->getHeroes()->getHero($heroId)->zeroMovesLeft($gameId, $db);
             $this->setEmpty($gameId, $db);
             $found = array('allies', $numberOfUnits);
+            echo 'c';
 //        } elseif ($random < 95) { //10%
         } else {
 //nic
             $army->getHeroes()->getHero($heroId)->zeroMovesLeft($gameId, $db);
             $found = array('null', 1);
+            echo 'd';
 
 //        } else { //5%
 ////artefakt

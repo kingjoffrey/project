@@ -2,17 +2,13 @@
     position: relative;
 }
 
-#editor #mapBox {
+#editor #leftMenu {
     position: fixed;
 }
 
-#editor #map {
-    position: static;
-}
-
-#editor #mapBox .button {
+#editor #leftMenu .button {
     padding: 0;
-    width: 224px;
+    display: block;
 }
 
 #editor #mainMenu {

@@ -9,8 +9,6 @@ class Admin_Model_Map extends Coret_Model_ParentDb
     protected $_columns = array(
         'mapId' => array('label' => 'Map ID', 'type' => 'number', 'active' => array('db' => false, 'form' => false)),
         'name' => array('label' => 'Nazwa', 'type' => 'varchar'),
-        'mapWidth' => array('label' => 'Szerokość', 'type' => 'number'),
-        'mapHeight' => array('label' => 'Wysokość', 'type' => 'number'),
         'maxPlayers' => array('label' => 'Maksymalna ilość graczy', 'type' => 'number'),
         'tutorial' => array('label' => 'Tutorial', 'type' => 'checkbox'),
         'publish' => array('label' => 'Publish', 'type' => 'checkbox'),

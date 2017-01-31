@@ -847,6 +847,6 @@ table.treasury td {
     left: 2px;
 }
 
-#game .relocatingTo {
+.showCastle .relocatingTo {
     color: lime;
 }

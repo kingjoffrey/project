@@ -22,5 +22,6 @@ class Cli_Model_ExecOpen
 
         $user->parameters['playerId'] = $dataIn['playerId'];
         $user->parameters['accessKey'] = $dataIn['accessKey'];
+        $user->parameters['gameId'] = $dataIn['gameId'];
     }
 }
