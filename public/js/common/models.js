@@ -17,25 +17,6 @@ var Models = new function () {
         pathMaterialWhite,
         pathGeometry,
         font,
-        // loadFont = function () {
-        //     var loader = new THREE.FontLoader(),
-        //         fontName = 'helvetiker',
-        //         fontWeight = 'regular'
-        //
-        //     loader.load(window.location.origin + '/fonts/' + fontName + '_' + fontWeight + '.typeface.json', function (response) {
-        //         font = response;
-        //     })
-        // },
-        // createTextMesh = function (text, color) {
-        //     var mesh = new THREE.Mesh(new THREE.TextGeometry(text, {
-        //         font: font,
-        //         size: 1.5,
-        //         height: 0.3
-        //     }), new THREE.MeshPhongMaterial({color: color}))
-        //     mesh.position.set(0, 10, 0.2)
-        //     mesh.rotation.y = -Math.PI / 4
-        //     return mesh
-        // },
         initRoadTexture = function () {
             roadTexture = {}
             tl.load('/img/game/road/road_c.png', function (tex) {
@@ -159,36 +140,27 @@ var Models = new function () {
         },
         initArmy = function () {
             armyModels = {
-                'untitled': untitled,
                 'archers': archers,
                 'hero': hero,
                 'light_infantry': light_infantry,
                 'heavy_infantry': heavy_infantry,
-                'giants': giants,
-                'dwarves': dwarves,
-                'griffins': griffins,
                 'dragon': dragon,
                 'cavalry': cavalry,
                 'navy': navy,
-                'wolves': wolves,
                 'undead': undead,
                 'wizard': wizard,
-                'devil': devil,
-                'demon': demon,
-                'pegasi': pegasi
+                'demon': demon
             }
             for (var i in armyModels) {
                 window[i + 'Model'] = loader.parse(armyModels[i])
-                if (i == 'hero') {
-                    tl.load(window.location.origin + '/img/modelMaps/hero.png', function (texture) {
-                        window['heroModel'].material = new THREE.MeshLambertMaterial({
-                            map: texture,
-                            side: THREE.DoubleSide
-                        })
-
-                    })
-
-                }
+                // if (i == 'hero') {
+                //     tl.load(window.location.origin + '/img/modelMaps/hero.png', function (texture) {
+                //         window['heroModel'].material = new THREE.MeshLambertMaterial({
+                //             map: texture,
+                //             side: THREE.DoubleSide
+                //         })
+                //     })
+                // }
             }
 
             flag_1.scale = 2.5
@@ -322,7 +294,6 @@ var Models = new function () {
             flagMesh.receiveShadow = true
         }
         mesh.add(flagMesh)
-        // mesh.add(createTextMesh(castle.name, '#ffffff'))
         updateCastleModel(mesh, castle.defense)
         return mesh
     }
@@ -331,8 +302,7 @@ var Models = new function () {
         updateCastleModel(mesh, defense)
     }
     this.getTree = function (x, y) {
-        var mesh = new THREE.Mesh(treeModel.geometry, treeModel.material)
-        return mesh
+        return new THREE.Mesh(treeModel.geometry, treeModel.material)
     }
     this.getRoad = function (x, y) {
         var x = x * 1,
@@ -406,33 +376,28 @@ var Models = new function () {
         return mesh
     }
     this.getHero = function (color) {
-        var armyMaterial = new THREE.MeshLambertMaterial({color: color, side: THREE.DoubleSide})
-        var mesh = new THREE.Mesh(window['heroModel'].geometry, armyMaterial)
-        return mesh
+        return new THREE.Mesh(window['heroModel'].geometry, new THREE.MeshLambertMaterial({
+            color: color,
+            side: THREE.DoubleSide
+        }))
     }
     this.getUnit = function (color, modelName) {
-        var armyMaterial = new THREE.MeshLambertMaterial({color: color, side: THREE.DoubleSide})
-        if (modelName + 'Model' in window) {
-            var mesh = new THREE.Mesh(window[modelName + 'Model'].geometry, armyMaterial)
-        } else {
-            var mesh = new THREE.Mesh(untitledModel.geometry, armyMaterial)
-        }
-        return mesh
+        return new THREE.Mesh(window[modelName + 'Model'].geometry, new THREE.MeshLambertMaterial({
+            color: color,
+            side: THREE.DoubleSide
+        }))
     }
     this.getArmy = function (color, number, modelName) {
-        var armyMaterial = new THREE.MeshLambertMaterial({color: color, side: THREE.DoubleSide}),
-            flagMesh = new THREE.Mesh(flagModels[number - 1].geometry, new THREE.MeshLambertMaterial({
+        var flagMesh = new THREE.Mesh(flagModels[number - 1].geometry, new THREE.MeshLambertMaterial({
+                color: color,
+                side: THREE.DoubleSide
+            })),
+            mesh = new THREE.Mesh(window[modelName + 'Model'].geometry, new THREE.MeshLambertMaterial({
                 color: color,
                 side: THREE.DoubleSide
             }))
-        if (modelName + 'Model' in window) {
-            var mesh = new THREE.Mesh(window[modelName + 'Model'].geometry, armyMaterial)
-        } else {
-            var mesh = new THREE.Mesh(untitledModel.geometry, armyMaterial)
-        }
 
         flagMesh.position.set(-10, 0, 2)
-        // mesh.rotation.y = Math.PI / 2 + Math.PI / 4
         mesh.add(flagMesh)
         return mesh
     }
@@ -458,7 +423,6 @@ var Models = new function () {
         return loading
     }
     this.init = function () {
-        // loadFont()
         initRoadTexture()
         initSwampTexture()
         initRuin()

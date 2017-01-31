@@ -3,8 +3,6 @@
 class Application_Model_Websocket extends Coret_Db_Table_Abstract
 {
     protected $_name = 'websocket';
-    protected $_primary = 'websocketId';
-    protected $_sequence = 'websocket_websocketId_seq';
 
     protected $_playerId;
 
@@ -18,17 +16,6 @@ class Application_Model_Websocket extends Coret_Db_Table_Abstract
 
         $this->_playerId = $playerId;
     }
-
-//    public function auth($accessKey, $websocketId)
-//    {
-//        $select = $this->_db->select()
-//            ->from($this->_name, 'playerId')
-//            ->where($this->_db->quoteIdentifier('playerId') . ' = ?', $this->_playerId)
-//            ->where($this->_db->quoteIdentifier('websocketId') . ' = ?', $websocketId)
-//            ->where($this->_db->quoteIdentifier('accessKey') . ' = ?', $accessKey);
-//
-//        return $this->selectOne($select);
-//    }
 
     public function generateKey()
     {
@@ -58,7 +45,7 @@ class Application_Model_Websocket extends Coret_Db_Table_Abstract
     public function disconnect($accessKey)
     {
         $data = array(
-            'active' => 'false'
+            'disconnect' => new Zend_Db_Expr('now()')
         );
         $where = array(
             $this->_db->quoteInto($this->_db->quoteIdentifier('accessKey') . ' = ?', $accessKey)

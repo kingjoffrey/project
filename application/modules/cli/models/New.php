@@ -44,11 +44,9 @@ class Cli_Model_New
         $this->_users[$playerId] = $user;
     }
 
-    public function removeUser(WebSocketTransportInterface $user, Zend_Db_Adapter_Pdo_Pgsql $db)
+    public function removeUser($playerId)
     {
-        $mWebSocket = new Application_Model_Websocket($user->parameters['playerId'], $db);
-        $mWebSocket->disconnect($user->parameters['accessKey']);
-        unset($this->_users[$user->parameters['playerId']]);
+        unset($this->_users[$playerId]);
     }
 
     public function getUsers()
@@ -228,11 +226,9 @@ class SetupGame
         $this->_users[$playerId] = $user;
     }
 
-    public function removeUser(WebSocketTransportInterface $user, Zend_Db_Adapter_Pdo_Pgsql $db)
+    public function removeUser($playerId)
     {
-        $mWebSocket = new Application_Model_Websocket($user->parameters['playerId'], $db);
-        $mWebSocket->disconnect($user->parameters['accessKey']);
-        unset($this->_users[$user->parameters['playerId']]);
+        unset($this->_users[$playerId]);
     }
 
     public function getUsers()

@@ -111,7 +111,7 @@ class Cli_NewHandler extends WebSocketUriHandler
     {
         $new = Cli_Model_New::getNew($user);
         if ($new) {
-            $new->removeUser($user, $this->_db);
+            $new->removeUser($user->parameters['playerId']);
             $users = $new->getUsers();
             if ($users) {
                 if (isset($user->parameters['gameId'])) { //setup
@@ -151,7 +151,7 @@ class Cli_NewHandler extends WebSocketUriHandler
 
         $setup = SetupGame::getSetup($user);
         if ($setup) {
-            $setup->removeUser($user, $this->_db);
+            $setup->removeUser($user->parameters['playerId']);
 
             if ($setup->getGameMasterId() == $user->parameters['playerId']) {
                 $setup->update($user->parameters['playerId'], $this, 1);

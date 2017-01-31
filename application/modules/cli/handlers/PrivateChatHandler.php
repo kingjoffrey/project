@@ -84,9 +84,6 @@ class Cli_PrivateChatHandler extends WebSocketUriHandler
             return;
         }
 
-        $mWebSocket = new Application_Model_Websocket($user->parameters['playerId'], $this->_db);
-        $mWebSocket->disconnect($user->parameters['accessKey']);
-
         $token = array(
             'type' => 'close',
             'id' => $user->parameters['playerId']

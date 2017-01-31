@@ -125,14 +125,10 @@ class Cli_MainHandler extends WebSocketUriHandler
 
     public function onDisconnect(WebSocketTransportInterface $user)
     {
-        if (!isset($user->parameters['playerId'])) {
-            return;
+        if (isset($user->parameters['playerId'])) {
+            $mWebSocket = new Application_Model_Websocket($user->parameters['playerId'], $this->_db);
+            $mWebSocket->disconnect($user->parameters['accessKey']);
         }
-
-        $mWebSocket = new Application_Model_Websocket($user->parameters['playerId'], $this->_db);
-        $mWebSocket->disconnect($user->parameters['accessKey']);
-
-
     }
 
     /**
