@@ -5,8 +5,8 @@ var GameGui = new function () {
         documentTitle = 'WoF',
         friendsShow = false,
         doKey = function (event) {
-            if ($(event.target).attr('id') == 'msg') {
-                return;
+            if ($('#game').length == 0) {
+                return
             }
             var key = event.keyCode || event.charCode;
             switch (key) {
@@ -67,7 +67,7 @@ var GameGui = new function () {
                     Turn.next()
                     break;
                 default:
-                   console.log(key)
+                    console.log(key)
             }
         },
         prepareButtons = function () {

@@ -3,49 +3,25 @@ use Devristo\Phpws\Protocol\WebSocketTransportInterface;
 
 class NewController
 {
-    function index(WebSocketTransportInterface $user, Cli_MainHandler $handler, $dataIn)
+    function join(WebSocketTransportInterface $user, Cli_MainHandler $handler, $dataIn)
     {
         $view = new Zend_View();
-        $db = $handler->getDb();
 
-        $mMap = new Application_Model_Map(0, $db);
-        if (!isset($dataIn['mapId'])) {
-            $mapId = $mMap->getMinMapId();
-        } else {
-            $mapId = $dataIn['mapId'];
-        }
+        $view->addScriptPath(APPLICATION_PATH . '/views/scripts');
 
-        $mMapPlayers = new Application_Model_MapPlayers($mapId, $db);
-        $numberOfPlayers = $mMapPlayers->getNumberOfPlayersForNewGame();
-
-        $view->form = new Application_Form_Creategame(array(
-            'mapId' => $mapId,
-            'mapsList' => $mMap->getAllMultiMapsList()
-        ));
-        $dataIn['numberOfPlayers'] = $numberOfPlayers;
-
-        if (isset($dataIn['mapId']) && $view->form->isValid($dataIn)) {
-            $mGame = new Application_Model_Game (0, $db);
-            $gameId = $mGame->createGame($dataIn, $user->parameters['playerId']);
-
-            $this->setup($user, $handler, array('gameId' => $gameId));
-        } else {
-            $view->addScriptPath(APPLICATION_PATH . '/views/scripts');
-            $view->form->setView($view);
-
-            $token = array(
-                'type' => 'new',
-                'action' => 'index',
-                'data' => $view->render('new/index.phtml')
-            );
-            $handler->sendToUser($user, $token);
-        }
+        $token = array(
+            'type' => 'new',
+            'action' => 'join',
+            'data' => $view->render('new/join.phtml')
+        );
+        $handler->sendToUser($user, $token);
     }
 
     function setup(WebSocketTransportInterface $user, Cli_MainHandler $handler, $dataIn)
     {
-        if (empty($dataIn['gameId'])) {
+        if (!isset($dataIn['gameId']) || empty($dataIn['gameId'])) {
             echo('New/setup: brak gameId' . "\n");
+            return;
         }
 
         $view = new Zend_View();
@@ -67,21 +43,6 @@ class NewController
             'gameId' => $dataIn['gameId'],
             'mapName' => $mMap->getName(),
             'gameMasterId' => $game['gameMasterId']
-        );
-        $handler->sendToUser($user, $token);
-    }
-
-    function map(WebSocketTransportInterface $user, Cli_MainHandler $handler, $dataIn)
-    {
-        $db = $handler->getDb();
-
-        $mMapPlayers = new Application_Model_MapPlayers($dataIn['mapId'], $db);
-        $mMapFields = new Application_Model_MapFields($dataIn['mapId'], $db);
-        $token = array(
-            'type' => 'new',
-            'action' => 'map',
-            'number' => $mMapPlayers->getNumberOfPlayersForNewGame(),
-            'fields' => $mMapFields->getMapFields()
         );
         $handler->sendToUser($user, $token);
     }

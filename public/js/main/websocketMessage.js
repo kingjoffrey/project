@@ -1,5 +1,6 @@
 var WebSocketMessageMain = new function () {
     this.switch = function (r) {
+        Page.adjust()
         if (r.type == 'open') {
             Main.createMenu(r.menu)
         } else {

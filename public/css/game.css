@@ -32,40 +32,6 @@
     height: auto;
 }
 
-#map {
-    position: absolute;
-    display: none
-}
-
-#map * {
-    cursor: url(/img/game/lupa.png) 13 13, crosshair
-}
-
-#lens {
-    border: 1px solid #fff;
-    top: 0;
-    left: 0;
-    position: absolute;
-    z-index: 21001;
-}
-
-#map canvas {
-    position: absolute;
-    top: 0px;
-    left: 0px;
-    box-shadow: 2px 2px 5px #000;
-}
-
-#map .c {
-    border: 1px solid #000;
-    position: absolute;
-}
-
-#map .a {
-    border: 1px solid #000;
-    position: absolute;
-}
-
 #playersBox {
     border-bottom-left-radius: 10px;
     border-top-left-radius: 0;

@@ -37,6 +37,5 @@ var New = new function () {
     }
     this.init = function () {
         empty = $('<tr id="0">').append($('<td colspan="4">').html(translations.Therearenoopengames).css('padding', '15px'))
-        WebSocketNew.init()
     }
 }

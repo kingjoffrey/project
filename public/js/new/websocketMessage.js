@@ -39,7 +39,6 @@ var WebSocketMessageNew = new function () {
 
             case 'games':
                 New.addGames(r.games)
-                WebSocketSendMain.controller('new', 'map', {'mapId': $('#mapId').val()})
                 break
             case 'addGame':
                 New.addGame(r.game)

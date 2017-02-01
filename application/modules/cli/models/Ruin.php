@@ -40,8 +40,6 @@ class Cli_Model_Ruin extends Cli_Model_Entity
         $color = $game->getPlayerColor($playerId);
         $db = $handler->getDb();
 
-        print_r($random);
-
         if ($random < 10) { //10%
 //śmierć
             $turnNumber = $game->getTurnNumber();
@@ -55,7 +53,6 @@ class Cli_Model_Ruin extends Cli_Model_Entity
                     $game->getPlayers()->getPlayer($game->getPlayerColor($playerId))->getArmies()->removeArmy($army->getId(), $game, $db);
                 }
             }
-            echo 'a';
         } elseif ($random < 55) { //45%
 //kasa
             $gold = rand(50, 150);
@@ -65,8 +62,7 @@ class Cli_Model_Ruin extends Cli_Model_Entity
             $player->saveGold($gameId, $db);
             $army->getHeroes()->getHero($heroId)->zeroMovesLeft($gameId, $db);
             $this->setEmpty($gameId, $db);
-            echo 'b';
-        } elseif ($random < 85) { //30%
+        } elseif ($random < 90) { //40%
 //jednostki
             $turnNumber = $game->getTurnNumber();
             $maxSpecialUnitKey = $game->getUnits()->countSpecialUnits() - 1;
@@ -167,33 +163,10 @@ class Cli_Model_Ruin extends Cli_Model_Entity
             $army->getHeroes()->getHero($heroId)->zeroMovesLeft($gameId, $db);
             $this->setEmpty($gameId, $db);
             $found = array('allies', $numberOfUnits);
-            echo 'c';
-//        } elseif ($random < 95) { //10%
-        } else {
+        } else { // 10%
 //nic
             $army->getHeroes()->getHero($heroId)->zeroMovesLeft($gameId, $db);
             $found = array('null', 1);
-            echo 'd';
-
-//        } else { //5%
-////artefakt
-//            $artifactId = rand(5, 34);
-//
-//            $mChest = new Application_Model_Chest($playerId, $db);
-//
-//            if ($mChest->artifactExists($artifactId)) {
-//                $mChest->increaseArtifactQuantity($artifactId);
-//            } else {
-//                $mChest->add($artifactId);
-//            }
-//
-//            $found = array('artifact', $artifactId);
-//
-//            Cli_Model_Database::zeroHeroMovesLeft($gameId, $armyId, $heroId, $playerId, $db);
-//
-//            $mRuinsInGame = new Application_Model_RuinsInGame($gameId, $db);
-//            $mRuinsInGame->add($ruinId);
-//
         }
 
         $token = array(
