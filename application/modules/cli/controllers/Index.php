@@ -1,8 +1,9 @@
 <?php
+use Devristo\Phpws\Protocol\WebSocketTransportInterface;
 
 class IndexController
 {
-    function index(Devristo\Phpws\Protocol\WebSocketTransportInterface $user, Cli_MainHandler $handler)
+    function index(WebSocketTransportInterface $user, Cli_MainHandler $handler)
     {
         $view = new Zend_View();
 

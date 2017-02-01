@@ -11,11 +11,6 @@ var WebSocketMessageMain = new function () {
                     // Main.updateMenu(r.type)
                     window[className][methodName](r)
 
-                    $('#back').click(function () {
-                        Sound.play('click')
-                        WebSocketSendMain.controller('index', 'index')
-                    })
-
                     if (r.type != 'create' && r.type != 'join' && r.type != 'setup' && WebSocketNew.isOpen()) {
                         WebSocketNew.close()
                     }
@@ -46,9 +41,27 @@ var WebSocketMessageMain = new function () {
                         $('#menuBox').show()
                     } else {
                         $('#menuBox').hide()
-                        $('#content').append(
-                            $('<div>').append($('<div>').attr('id', 'back').addClass('button').html(translations.Back))
-                        )
+                        $('#content')
+                            .prepend($('<div>')
+                                .append(
+                                    $('<div>').attr('id', 'back').addClass('button').html(translations.Back).click(function () {
+                                        Sound.play('click')
+                                        WebSocketSendMain.controller('index', 'index')
+                                    })
+                                ).css({
+                                    'text-align': 'right'
+                                })
+                            )
+                            .append($('<div>')
+                                .append(
+                                    $('<div>').attr('id', 'back').addClass('button').html(translations.Back).click(function () {
+                                        Sound.play('click')
+                                        WebSocketSendMain.controller('index', 'index')
+                                    })
+                                ).css({
+                                    'text-align': 'right'
+                                })
+                            )
                     }
                 } else {
                     console.log('Method ' + methodName + ' in class ' + className + ' !exists')

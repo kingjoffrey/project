@@ -171,7 +171,7 @@ h1 {
 }
 
 h2 {
-    padding: 0 0 21px 0;
+    padding: 7px 0 14px 0;
     color: #fff;
     letter-spacing: 3px;
     text-align: left;
@@ -203,11 +203,10 @@ h3 {
 }
 
 div.table {
-    padding: 5px;
-    border: 1px solid #A8A45A;
-    border-radius: 5px;
+    padding: 7px;
+    border-radius: 3px;
+    box-shadow: 0 0 7px #000;
     background: url("/img/game/message_bg.png");
-    box-shadow: 0 0 5px #000;
 }
 
 .table table {
@@ -236,7 +235,7 @@ th {
 }
 
 td {
-    height: 20px;
+    height: 42px;
     text-align: center;
     padding: 2px;
 }
@@ -536,7 +535,7 @@ td .trash {
 }
 
 #text {
-    min-height: 300px;
+    /*min-height: 300px;*/
 }
 
 #graphics {
@@ -613,9 +612,4 @@ td .trash {
 
 #menuBox #menu .button {
     margin: 21px;
-}
-
-#back {
-    margin-top: 14px;
-    float: right;
 }
