@@ -42,7 +42,6 @@ body, html {
 #page {
     margin: 0 auto;
     width: 900px;
-    padding-top: 262px;
 }
 
 #content {
@@ -273,10 +272,8 @@ td {
 #logout {
     display: inline-block;
     float: right;
-    color: #A8A45A;
     font-weight: normal;
     font-size: 14px;
-    text-decoration: none;
     padding-top: 3px;
 }
 
@@ -296,7 +293,7 @@ td {
     border: 1px solid grey;
     padding: 10px;
     text-align: center;
-    box-shadow: 1px 1px 5px #000;
+    /*box-shadow: 1px 1px 5px #000;*/
 }
 
 #content form label {
@@ -375,13 +372,9 @@ p#info {
 }
 
 #menuTop #title {
-    height: 21px;
-    width: auto;
     display: inline-block;
-    line-height: 21px;
     color: #f00;
     font-weight: bold;
-    font-family: "Alpine", Verdana, Tahoma;
     padding-right: 40px;
 }
 
@@ -392,8 +385,6 @@ p#info {
     display: inline-block;
     background: url('/img/envelope-icon.png') no-repeat right center;
     position: absolute;
-    top: 20px;
-    left: 435px;
 }
 
 #envelope span {
@@ -427,11 +418,6 @@ tr.trlink:hover td {
 
 #messages td {
     text-align: left;
-}
-
-#menuBox {
-    position: absolute;
-    top: 0px;
 }
 
 #friendsList .online {
@@ -619,4 +605,17 @@ td .trash {
 
 .contact td:last-child {
     text-align: left;
+}
+
+#menuBox {
+    margin-bottom: 14px;
+}
+
+#menuBox #menu .button {
+    margin: 21px;
+}
+
+#back {
+    margin-top: 14px;
+    float: right;
 }

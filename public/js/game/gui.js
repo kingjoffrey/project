@@ -54,6 +54,11 @@ var GameGui = new function () {
                 case 78: //n
                     CommonMe.findNext()
                     break;
+                case 79: //m
+                    GameRenderer.stop()
+                    $('#game').hide()
+                    $('#gameMenu').show()
+                    break;
                 case 13: //enter
                     $('.message .go').click()
                     break;
@@ -66,8 +71,8 @@ var GameGui = new function () {
                 case 84: //t
                     Turn.next()
                     break;
-                default:
-                    console.log(key)
+                // default:
+                //     console.log(key)
             }
         },
         prepareButtons = function () {

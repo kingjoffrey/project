@@ -145,7 +145,7 @@ class Zend_View_Helper_Translations extends Zend_View_Helper_Abstract
                 'Addtofriends' => $this->view->translate('Add to friends'),
                 'Nosearchresults' => $this->view->translate('No search results'),
                 'Therearenoopengames' => $this->view->translate('There are no open games'),
-                '' => $this->view->translate(''),
+                'Back' => $this->view->translate('Back'),
                 '' => $this->view->translate(''),
             )));
     }

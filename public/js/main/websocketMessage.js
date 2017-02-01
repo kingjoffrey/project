@@ -8,7 +8,7 @@ var WebSocketMessageMain = new function () {
             if (typeof window[className] !== "undefined") {
                 var methodName = r.action
                 if (typeof window[className][methodName] === "function") {
-                    Main.updateMenu(r.type)
+                    // Main.updateMenu(r.type)
                     window[className][methodName](r)
 
                     $('#back').click(function () {
@@ -40,6 +40,15 @@ var WebSocketMessageMain = new function () {
                             GameRenderer.stop()
                             Game.resetLoading()
                         }
+                    }
+
+                    if (r.type == 'index') {
+                        $('#menuBox').show()
+                    } else {
+                        $('#menuBox').hide()
+                        $('#content').append(
+                            $('<div>').append($('<div>').attr('id', 'back').addClass('button').html(translations.Back))
+                        )
                     }
                 } else {
                     console.log('Method ' + methodName + ' in class ' + className + ' !exists')

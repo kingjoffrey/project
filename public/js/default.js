@@ -8,7 +8,7 @@ var Page = new function () {
         var height = $(window).height() - $('#menuBox').height(),
             top = height / 2 - $('#page #content #title div').height() / 2
 
-        $('#page').css('min-height', height + 'px')
+        $('#page').css('min-height', $(window).height() + 'px')
 
         if (top > 0) {
             $('#page #content #title').css('margin-top', top + 'px')
