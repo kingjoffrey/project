@@ -8,10 +8,6 @@ var SetupController = new function () {
 
         content.html(data)
 
-        $('#back').click(function () {
-            WebSocketSendMain.controller('index', 'index')
-        })
-
         for (var id in mapPlayers) {
             numberOfMapPlayers++
             $('#playersingame').append($('<tr>').attr('id', id)

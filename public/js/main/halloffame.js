@@ -7,9 +7,6 @@ var HalloffameController = new function () {
 
         content.html(data)
 
-        $('#back').click(function () {
-            WebSocketSendMain.controller('index', 'index')
-        })
         $('.trlink').click(function () {
             playerId = $(this).attr('id')
             WebSocketSendMain.controller('profile', 'show', {'id': playerId})

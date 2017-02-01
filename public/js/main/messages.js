@@ -8,9 +8,6 @@ var MessagesController = new function () {
 
         content.html(data)
 
-        $('#back').click(function () {
-            WebSocketSendMain.controller('index', 'index')
-        })
         $('#threads .trlink').click(function () {
             playerId = $(this).attr('id')
             WebSocketSendMain.controller('messages', 'thread', {'id': playerId})
@@ -46,10 +43,6 @@ var MessagesController = new function () {
                 }
             }))
         )
-
-        $('#back').click(function () {
-            WebSocketSendMain.controller('index', 'index')
-        })
     }
     this.getPlayerId = function () {
         return playerId

@@ -6,9 +6,6 @@ var LoadController = new function () {
 
         content.html(data)
 
-        $('#back').click(function () {
-            WebSocketSendMain.controller('index', 'index')
-        })
         $('.trlink').click(function () {
             WebSocketSendMain.controller('game', 'index', {'gameId': $(this).attr('id')})
         })

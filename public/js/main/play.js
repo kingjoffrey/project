@@ -6,9 +6,6 @@ var PlayController = new function () {
 
         content.html(data)
 
-        $('#back').click(function () {
-            WebSocketSendMain.controller('index', 'index')
-        })
         $('#tutorial').click(function () {
             WebSocketSendMain.controller('tutorial', 'index')
         })

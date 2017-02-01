@@ -6,9 +6,6 @@ var ProfileController = new function () {
 
         content.html(data)
 
-        $('#back').click(function () {
-            WebSocketSendMain.controller('index', 'index')
-        })
         $('form#player').submit(function (e) {
             e.preventDefault()
             WebSocketSendMain.controller('profile', 'index', {
@@ -36,9 +33,6 @@ var ProfileController = new function () {
 
         content.html(data)
 
-        $('#back').click(function () {
-            WebSocketSendMain.controller('index', 'index')
-        })
         $('.trlink').click(function () {
             var id = $(this).attr('id')
             WebSocketSendMain.controller('over', 'index', {'id': id})
@@ -49,9 +43,5 @@ var ProfileController = new function () {
             data = r.data
 
         content.html(data)
-
-        $('#back').click(function () {
-            WebSocketSendMain.controller('index', 'index')
-        })
     }
 }

@@ -8,7 +8,6 @@ var WebSocketMessageMain = new function () {
             if (typeof window[className] !== "undefined") {
                 var methodName = r.action
                 if (typeof window[className][methodName] === "function") {
-                    // Main.updateMenu(r.type)
                     window[className][methodName](r)
 
                     if (r.type != 'create' && r.type != 'join' && r.type != 'setup' && WebSocketNew.isOpen()) {
@@ -46,7 +45,7 @@ var WebSocketMessageMain = new function () {
                                 .append(
                                     $('<div>').attr('id', 'back').addClass('button').html(translations.Back).click(function () {
                                         Sound.play('click')
-                                        WebSocketSendMain.controller('index', 'index')
+                                        IndexController.index()
                                     })
                                 ).css({
                                     'text-align': 'right'
@@ -56,7 +55,7 @@ var WebSocketMessageMain = new function () {
                                 .append(
                                     $('<div>').attr('id', 'back').addClass('button').html(translations.Back).click(function () {
                                         Sound.play('click')
-                                        WebSocketSendMain.controller('index', 'index')
+                                        IndexController.index()
                                     })
                                 ).css({
                                     'text-align': 'right'

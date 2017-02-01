@@ -34,12 +34,6 @@ var Main = new function () {
         }
         Page.adjust()
     }
-    this.updateMenu = function (controller) {
-        $('#menu .button').each(function () {
-            $(this).removeClass('active')
-        })
-        $('#menu .button#' + controller).addClass('active')
-    }
     this.updateMenuClick = function () {
         $('#menu a').each(function () {
             $(this).click(click($(this).attr('id')))

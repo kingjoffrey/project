@@ -6,10 +6,6 @@ var JoinController = new function () {
 
         content.html(data)
 
-        $('#back').click(function () {
-            WebSocketSendMain.controller('index', 'index')
-        })
-
         WebSocketNew.init()
         Join.init()
     }

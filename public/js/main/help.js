@@ -6,10 +6,6 @@ var HelpController = new function () {
 
         content.html(data)
 
-        $('#back').click(function () {
-            WebSocketSendMain.controller('index', 'index')
-        })
-
         Help.init(r)
     }
 }

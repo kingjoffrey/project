@@ -7,7 +7,6 @@ var OverController = new function () {
             if (main) {
                 $('#main').html(main)
                 Main.setMain('')
-                Main.updateMenu()
                 Main.updateMenuClick()
                 Page.init()
             }
@@ -16,9 +15,5 @@ var OverController = new function () {
             data = r.data
 
         content.html(data)
-
-        $('#back').click(function () {
-            WebSocketSendMain.controller('index', 'index')
-        })
     }
 }

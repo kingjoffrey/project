@@ -35,9 +35,6 @@ var PlayersController = new function () {
 
         createPlayers(r.players)
 
-        $('#back').click(function () {
-            WebSocketSendMain.controller('index', 'index')
-        })
         $('form#search').submit(function (e) {
             e.preventDefault()
             WebSocketSendMain.controller('players', 'index', {'search': $('input#search').val()})

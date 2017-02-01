@@ -13,7 +13,6 @@ class IndexController extends Coret_Controller_Authorized
 
         $this->view->headLink()->prependStylesheet('/css/main.css?v=' . $version);
         $this->view->headLink()->appendStylesheet('/css/editor.css?v=' . $version);
-        $this->view->headLink()->appendStylesheet('/css/game.css?v=' . $version);
         $this->view->headLink()->appendStylesheet('/css/new.css?v=' . $version);
 
         $this->view->jquery();
