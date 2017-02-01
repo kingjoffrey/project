@@ -10,6 +10,12 @@ var WebSocketMessageMain = new function () {
                 if (typeof window[className][methodName] === "function") {
                     Main.updateMenu(r.type)
                     window[className][methodName](r)
+
+                    $('#back').click(function () {
+                        Sound.play('click')
+                        WebSocketSendMain.controller('index', 'index')
+                    })
+
                     if (r.type != 'create' && r.type != 'join' && r.type != 'setup' && WebSocketNew.isOpen()) {
                         WebSocketNew.close()
                     }

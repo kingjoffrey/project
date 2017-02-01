@@ -40,10 +40,6 @@ var FriendsController = new function () {
         content.html(data)
 
         createFriends(r.friends)
-
-        $('#back').click(function () {
-            WebSocketSendMain.controller('index', 'index')
-        })
     }
     this.delete = function (r) {
         $('#friendsList #' + r.id).remove()

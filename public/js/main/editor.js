@@ -7,9 +7,6 @@ var EditorController = new function () {
 
         content.html(data)
 
-        $('#back').click(function () {
-            WebSocketSendMain.controller('index', 'index')
-        })
         $('#create').click(function () {
             WebSocketSendMain.controller('editor', 'create')
         })

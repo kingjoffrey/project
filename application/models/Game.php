@@ -57,30 +57,20 @@ class Application_Model_Game extends Coret_Db_Table_Abstract
         return $this->selectRow($select);
     }
 
-    public function getMyGames($playerId, $pageNumber, $mPlayersInGame)
+    public function getMyGames($playerId, $mPlayersInGame)
     {
         $select = $this->_db->select()
-            ->from(array('a' => $this->_name), array('gameMasterId', 'turnNumber', $this->_primary, 'numberOfPlayers', 'begin', 'end', 'turnsLimit', 'turnTimeLimit', 'timeLimit', 'turnPlayerId', 'mapId'))
+            ->from(array('a' => $this->_name), array('gameMasterId', 'turnNumber', $this->_primary, 'numberOfPlayers', 'begin', 'end', 'turnPlayerId', 'mapId'))
             ->join(array('b' => 'playersingame'), 'a."gameId" = b."gameId"', null)
-            ->join(array('c' => 'map'), 'a."mapId" = c."mapId"', null)
+            ->join(array('c' => 'map'), 'a."mapId" = c."mapId"', 'name')
             ->where('"isOpen" = false')
             ->where('"isActive" = true')
             ->where('c."tutorial" = false')
             ->where('a."gameId" IN ?', $mPlayersInGame->getSelectForMyGames($playerId))
             ->where('b."playerId" = ?', $playerId)
             ->order('begin DESC');
-        try {
-            $paginator = new Zend_Paginator(new Zend_Paginator_Adapter_DbSelect($select));
-            $paginator->setCurrentPageNumber($pageNumber);
-            $paginator->setItemCountPerPage(10);
-        } catch (Exception $e) {
-            $l = new Coret_Model_Logger('www');
-            $l->log($select->__toString());
-            $l->log($e);
-            throw $e;
-        }
 
-        return $paginator;
+        return $this->selectAll($select);
     }
 
     public function getMyTutorial($playerId)

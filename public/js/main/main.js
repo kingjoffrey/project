@@ -5,6 +5,7 @@ var Main = new function () {
         main = '',
         click = function (controller) {
             return function () {
+                Sound.play('click')
                 WebSocketSendMain.controller(controller)
             }
         }

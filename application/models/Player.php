@@ -71,20 +71,17 @@ class Application_Model_Player extends Coret_Db_Table_Abstract
         $this->update($data, $where);
     }
 
-    public function hallOfFame($pageNumber)
+    public function hallOfFame()
     {
         $select = $this->_db->select()
             ->from($this->_name, array('playerId', 'firstName', 'lastName', 'score'))
             ->where('computer = false')
             ->where('score > 0')
             ->where($this->_db->quoteIdentifier('playerId') . ' > 0')
-            ->order('score desc');
+            ->order('score desc')
+            ->limit(100);
 
-        $paginator = new Zend_Paginator(new Zend_Paginator_Adapter_DbSelect($select));
-        $paginator->setCurrentPageNumber($pageNumber);
-        $paginator->setItemCountPerPage(20);
-
-        return $paginator;
+        return $this->selectAll($select);
     }
 
     public function isComputer($playerId)

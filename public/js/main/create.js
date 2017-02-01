@@ -6,9 +6,6 @@ var CreateController = new function () {
 
         content.html(data)
 
-        $('#back').click(function () {
-            WebSocketSendMain.controller('index', 'index')
-        })
         $('form').submit(function (e) {
             e.preventDefault()
             WebSocketSendMain.controller('create', 'index', {'mapId': $('#mapId').val()})

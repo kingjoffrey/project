@@ -4,23 +4,19 @@
         <tr>
             <th>
                 <div class="padding"><?php echo $this->translate('Game master') ?></div>
-                <hr style="border: 1px solid #fff">
                 <div class="padding"><?php echo $this->translate('Start date') ?></div>
             </th>
             <th>
-                <div class="padding"><?php echo $this->translate('Time limit') ?></div>
-                <hr style="border: 1px solid #fff">
-                <div class="padding"><?php echo $this->translate('Turns limit') ?></div>
-                <hr style="border: 1px solid #fff">
-                <div class="padding"><?php echo $this->translate('Time limit per turn') ?></div>
+                <div class="padding"><?php echo $this->translate('Map name') ?></div>
             </th>
-            <th><?php echo $this->translate('Player name') ?>, <?php echo $this->translate('Player color') ?>
-                , <?php echo $this->translate('Team color') ?></th>
+            <th>
+                <?php echo $this->translate('Player name') ?>,
+                <?php echo $this->translate('Player color') ?>,
+                <?php echo $this->translate('Team color') ?>
+            </th>
             <th>
                 <div class="padding"><?php echo $this->translate('Turn nr') ?></div>
-                <hr style="border: 1px solid #fff">
                 <div class="padding"><?php echo $this->translate('Player turn') ?></div>
-                <hr style="border: 1px solid #fff">
                 <div class="padding"><?php echo $this->translate('Pause date') ?></div>
             </th>
         </tr>
@@ -28,38 +24,39 @@
             <?php foreach ($this->myGames as $game): ?>
                 <tr id="<?php echo $game['gameId'] ?>" class="trlink">
                     <td>
-                        <div
-                            class="padding"><?php echo $game['players'][$game['gameMasterId']]['firstName'] . ' ' . $game['players'][$game['gameMasterId']]['lastName'] ?></div>
-                        <hr style="border: 1px solid #878967">
-                        <div class="padding"><?php echo Coret_View_Helper_Formatuj::date($game['begin']) ?></div>
+                        <div class="padding">
+                            <?php echo $game['players'][$game['gameMasterId']]['firstName'] . ' ' . $game['players'][$game['gameMasterId']]['lastName'] ?>
+                        </div>
+                        <div class="padding"><?php echo Coret_View_Helper_Formatuj::date($game['begin'], 'Y.m.d H:i') ?></div>
                     </td>
                     <td>
-                        <div class="padding"><?php echo $this->translate($this->timeLimits[$game['timeLimit']]) ?></div>
-                        <hr style="border: 1px solid #878967">
-                        <div class="padding"><?php if ($game['turnsLimit']): echo $game['turnsLimit'];
-                            else: echo $this->translate('no limit'); endif ?></div>
-                        <hr style="border: 1px solid #878967">
-                        <div
-                            class="padding"><?php echo $this->translate($this->turnTimeLimit[$game['turnTimeLimit']]) ?></div>
+                        <div><?php echo $game['name'] ?></div>
                     </td>
                     <td style="min-width: 500px">
                         <?php foreach ($game['players'] as $v): ?>
                             <div>
-                                <div style="height: 34px;float: left;line-height: 34px;width: 285px"><?php echo $v['firstName'] . ' ' . $v['lastName'] ?></div>
+                                <div style="height: 34px;float: left;line-height: 34px;width: 285px">
+                                    <?php echo $v['firstName'] . ' ' . $v['lastName'] ?>
+                                </div>
                                 <div style="width:80px;height: 34px;float: left">
-                                    <div class="colorBox" style="background: <?php echo $v['backgroundColor'] ?>"></div>
-                                    <div class="colorBox" style="background: <?php echo $game['teams'][$v['team']] ?>"></div>
+                                    <div class="colorBox" style="background: <?php echo $v['backgroundColor'] ?>">
+
+                                    </div>
+                                    <div class="colorBox" style="background: <?php echo $game['teams'][$v['team']] ?>">
+
+                                    </div>
                                 </div>
                             </div>
                         <?php endforeach ?>
                     </td>
                     <td>
                         <div class="padding"><?php echo $game['turnNumber'] ?></div>
-                        <hr style="border: 1px solid #878967">
-                        <div
-                            class="padding"><?php echo $game['playerTurn']['firstName'] . ' ' . $game['playerTurn']['lastName'] ?></div>
-                        <hr style="border: 1px solid #878967">
-                        <div class="padding"><?php echo Coret_View_Helper_Formatuj::date($game['end']) ?></div>
+                        <div class="padding">
+                            <?php echo $game['playerTurn']['firstName'] . ' ' . $game['playerTurn']['lastName'] ?>
+                        </div>
+                        <div class="padding">
+                            <?php echo Coret_View_Helper_Formatuj::date($game['end'], 'Y.m.d H:i') ?>
+                        </div>
                     </td>
                 </tr>
             <?php endforeach ?>
@@ -69,5 +66,4 @@
         <p id="info"><?php echo $this->translate('There are no games to load') ?></p>
     <?php endif ?>
 </div>
-<?php echo $this->paginationControl($this->myGames, 'Sliding', 'pagination_control.phtml'); ?>
 <a class="button" id="back">&laquo; <?php echo $this->translate('Back') ?></a>
