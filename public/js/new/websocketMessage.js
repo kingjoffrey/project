@@ -38,17 +38,17 @@ var WebSocketMessageNew = new function () {
                 break;
 
             case 'games':
-                New.addGames(r.games)
+                Join.addGames(r.games)
                 break
             case 'addGame':
-                New.addGame(r.game)
+                Join.addGame(r.game)
                 break
             case 'addPlayer':
                 var numberOfPlayersInGame = $('tr#' + r.gameId + ' span').html()
                 $('tr#' + r.gameId + ' span').html(numberOfPlayersInGame++)
                 break
             case 'removeGame':
-                New.removeGame(r.gameId)
+                Join.removeGame(r.gameId)
                 break;
             case 'removePlayer':
                 var numberOfPlayersInGame = $('tr#' + r.gameId + ' span').html()

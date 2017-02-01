@@ -15,5 +15,7 @@ var IndexController = new function () {
             data = r.data
 
         content.html(data)
+
+        Page.adjust()
     }
 }

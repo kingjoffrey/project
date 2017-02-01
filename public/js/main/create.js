@@ -18,6 +18,8 @@ var CreateController = new function () {
         })
 
         WebSocketSendMain.controller('create', 'map', {'mapId': $('#mapId').val()})
+
+        WebSocketNew.init()
     }
     this.map = function (r) {
         var tmpCanvas = document.createElement('canvas'),

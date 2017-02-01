@@ -1,14 +1,15 @@
 <?php
+use Devristo\Phpws\Protocol\WebSocketTransportInterface;
 
 class Cli_Model_SetupInit
 {
     /**
      * Cli_Model_SetupInit constructor.
      * @param $dataIn
-     * @param \Devristo\Phpws\Protocol\WebSocketTransportInterface $user
+     * @param WebSocketTransportInterface $user
      * @param Cli_NewHandler $handler
      */
-    public function __construct($dataIn, Devristo\Phpws\Protocol\WebSocketTransportInterface $user, Cli_NewHandler $handler)
+    public function __construct($dataIn, WebSocketTransportInterface $user, Cli_NewHandler $handler)
     {
         if (!isset($dataIn['gameId'])) {
             echo('Setup: brak "gameId"' . "\n");

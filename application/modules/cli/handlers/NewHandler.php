@@ -79,14 +79,6 @@ class Cli_NewHandler extends WebSocketUriHandler
             case 'setup':
                 new Cli_Model_SetupInit($dataIn, $user, $this);
                 break;
-            case 'team':
-                $this->sendToChannel(SetupGame::getSetup($user), array(
-                    'type' => 'team',
-                    'mapPlayerId' => $dataIn['mapPlayerId'],
-                    'teamId' => $dataIn['teamId']
-                ));
-                break;
-
             case 'start':
                 new Cli_Model_SetupStart($dataIn, $user, $this);
                 break;

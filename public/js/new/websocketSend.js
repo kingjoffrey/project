@@ -30,20 +30,6 @@ var WebSocketSendNew = new function () {
 
         ws.send(JSON.stringify(token));
     }
-    // this.team = function (mapPlayerId) {
-    //     if (closed) {
-    //         console.log(translations.sorryServerIsDisconnected)
-    //         return;
-    //     }
-    //
-    //     var token = {
-    //         'type': 'team',
-    //         'mapPlayerId': mapPlayerId,
-    //         'teamId': $('tr#' + mapPlayerId + ' select').val()
-    //     }
-    //
-    //     ws.send(JSON.stringify(token));
-    // }
     this.change = function (id) {
         if (closed) {
             console.log(translations.sorryServerIsDisconnected)

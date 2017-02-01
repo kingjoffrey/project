@@ -1,6 +1,5 @@
 var WebSocketMessageMain = new function () {
     this.switch = function (r) {
-        Page.adjust()
         if (r.type == 'open') {
             Main.createMenu(r.menu)
         } else {
@@ -11,7 +10,7 @@ var WebSocketMessageMain = new function () {
                 if (typeof window[className][methodName] === "function") {
                     Main.updateMenu(r.type)
                     window[className][methodName](r)
-                    if (r.type != 'new' && WebSocketNew.isOpen()) {
+                    if (r.type != 'create' && r.type != 'join' && r.type != 'setup' && WebSocketNew.isOpen()) {
                         WebSocketNew.close()
                     }
                     if (r.type != 'help' && HelpRenderer.isRunning()) {

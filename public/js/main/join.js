@@ -10,7 +10,7 @@ var JoinController = new function () {
             WebSocketSendMain.controller('index', 'index')
         })
 
-        New.init()
         WebSocketNew.init()
+        Join.init()
     }
 }

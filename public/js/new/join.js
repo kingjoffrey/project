@@ -1,5 +1,5 @@
 "use strict"
-var New = new function () {
+var Join = new function () {
     var empty
 
     this.removeGame = function (gameId) {
@@ -31,7 +31,7 @@ var New = new function () {
                 .append($('<td>').append($('<span>').html(numberOfPlayersInGame)).append('/' + game.numberOfPlayers))
                 .append($('<td>').html(game.begin.split('.')[0]))
                 .click(function () {
-                    WebSocketSendMain.controller('new', 'setup', {'gameId': $(this).attr('id')})
+                    WebSocketSendMain.controller('setup', 'index', {'gameId': $(this).attr('id')})
                 })
         )
     }
