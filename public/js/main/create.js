@@ -1,5 +1,5 @@
 "use strict"
-var NewController = new function () {
+var CreateController = new function () {
     this.index = function (r) {
         var content = $('#content'),
             data = r.data
@@ -11,14 +11,13 @@ var NewController = new function () {
         })
         $('form').submit(function (e) {
             e.preventDefault()
-            WebSocketSendMain.controller('new', 'index', {'mapId': $('#mapId').val()})
+            WebSocketSendMain.controller('create', 'index', {'mapId': $('#mapId').val()})
         })
         $('#mapId').change(function () {
-            WebSocketSendMain.controller('new', 'map', {'mapId': $('#mapId').val()})
+            WebSocketSendMain.controller('create', 'map', {'mapId': $('#mapId').val()})
         })
 
-        WebSocketSendMain.controller('new', 'map', {'mapId': $('#mapId').val()})
-        WebSocketNew.init()
+        WebSocketSendMain.controller('create', 'map', {'mapId': $('#mapId').val()})
     }
     this.map = function (r) {
         var tmpCanvas = document.createElement('canvas'),

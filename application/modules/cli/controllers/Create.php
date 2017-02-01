@@ -28,7 +28,7 @@ class CreateController
             $mGame = new Application_Model_Game (0, $db);
             $gameId = $mGame->createGame($dataIn, $user->parameters['playerId']);
 
-            $this->setup($user, $handler, array('gameId' => $gameId));
+            SetupController::index($user, $handler, array('gameId' => $gameId));
         } else {
             $view->addScriptPath(APPLICATION_PATH . '/views/scripts');
             $view->form->setView($view);
@@ -45,7 +45,7 @@ class CreateController
     function map(WebSocketTransportInterface $user, Cli_MainHandler $handler, $dataIn)
     {
         if (!isset($dataIn['mapId']) || empty($dataIn['mapId'])) {
-            echo('New/map: brak mapId' . "\n");
+            echo('Create/map: brak mapId' . "\n");
             return;
         }
         $db = $handler->getDb();
@@ -53,7 +53,7 @@ class CreateController
         $mMapPlayers = new Application_Model_MapPlayers($dataIn['mapId'], $db);
         $mMapFields = new Application_Model_MapFields($dataIn['mapId'], $db);
         $token = array(
-            'type' => 'new',
+            'type' => 'create',
             'action' => 'map',
             'number' => $mMapPlayers->getNumberOfPlayersForNewGame(),
             'fields' => $mMapFields->getMapFields()

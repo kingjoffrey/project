@@ -44,7 +44,7 @@ class IndexController extends Coret_Controller_Authorized
         $this->view->headScript()->appendFile('/js/main/friends.js?v=' . $version);
         $this->view->headScript()->appendFile('/js/main/game.js?v=' . $version);
         $this->view->headScript()->appendFile('/js/main/over.js?v=' . $version);
-        $this->view->headScript()->appendFile('/js/main/new.js?v=' . $version);
+        $this->view->headScript()->appendFile('/js/main/join.js?v=' . $version);
         $this->view->headScript()->appendFile('/js/main/messages.js?v=' . $version);
         $this->view->headScript()->appendFile('/js/main/tutorial.js?v=' . $version);
         $this->view->headScript()->appendFile('/js/main/load.js?v=' . $version);
@@ -53,6 +53,7 @@ class IndexController extends Coret_Controller_Authorized
         $this->view->headScript()->appendFile('/js/main/play.js?v=' . $version);
         $this->view->headScript()->appendFile('/js/main/players.js?v=' . $version);
         $this->view->headScript()->appendFile('/js/main/profile.js?v=' . $version);
+        $this->view->headScript()->appendFile('/js/main/setup.js?v=' . $version);
         $this->view->headScript()->appendFile('/js/main/single.js?v=' . $version);
         $this->view->headScript()->appendFile('/js/main/websocket.js?v=' . $version);
         $this->view->headScript()->appendFile('/js/main/websocketMessage.js?v=' . $version);

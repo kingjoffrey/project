@@ -36,7 +36,11 @@ var WebSocketMessageMain = new function () {
                             Game.resetLoading()
                         }
                     }
+                } else {
+                    console.log('Method ' + methodName + ' in class ' + className + ' !exists')
                 }
+            } else {
+                console.log('Class ' + className + ' !exists')
             }
         }
     }

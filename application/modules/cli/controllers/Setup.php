@@ -1,26 +1,12 @@
 <?php
 use Devristo\Phpws\Protocol\WebSocketTransportInterface;
 
-class NewController
+class SetupController
 {
-    function join(WebSocketTransportInterface $user, Cli_MainHandler $handler, $dataIn)
-    {
-        $view = new Zend_View();
-
-        $view->addScriptPath(APPLICATION_PATH . '/views/scripts');
-
-        $token = array(
-            'type' => 'new',
-            'action' => 'join',
-            'data' => $view->render('new/join.phtml')
-        );
-        $handler->sendToUser($user, $token);
-    }
-
-    function setup(WebSocketTransportInterface $user, Cli_MainHandler $handler, $dataIn)
+    static function index(WebSocketTransportInterface $user, Cli_MainHandler $handler, $dataIn)
     {
         if (!isset($dataIn['gameId']) || empty($dataIn['gameId'])) {
-            echo('New/setup: brak gameId' . "\n");
+            echo('Setup: brak gameId' . "\n");
             return;
         }
 
@@ -36,9 +22,9 @@ class NewController
         $view->addScriptPath(APPLICATION_PATH . '/views/scripts');
 
         $token = array(
-            'type' => 'new',
-            'action' => 'setup',
-            'data' => $view->render('new/setup.phtml'),
+            'type' => 'setup',
+            'action' => 'index',
+            'data' => $view->render('setup/index.phtml'),
             'mapPlayers' => $mMapPlayers->getAll(),
             'gameId' => $dataIn['gameId'],
             'mapName' => $mMap->getName(),
