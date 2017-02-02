@@ -37,7 +37,7 @@ var WebSocketMessageMain = new function () {
                     }
 
                     if (r.type == 'index') {
-                        $('#menuBox').show()
+                        zdichu()
                     } else {
                         $('#menuBox').hide()
                         $('#content')
@@ -45,7 +45,7 @@ var WebSocketMessageMain = new function () {
                                 .append(
                                     $('<div>').attr('id', 'back').addClass('button').html(translations.Back).click(function () {
                                         Sound.play('click')
-                                        IndexController.index()
+                                        IndexController.index({'data': Page.getIndex()})
                                     })
                                 ).css({
                                     'text-align': 'right'
@@ -55,7 +55,7 @@ var WebSocketMessageMain = new function () {
                                 .append(
                                     $('<div>').attr('id', 'back').addClass('button').html(translations.Back).click(function () {
                                         Sound.play('click')
-                                        IndexController.index()
+                                        IndexController.index({'data': Page.getIndex()})
                                     })
                                 ).css({
                                     'text-align': 'right'

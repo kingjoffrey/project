@@ -50,11 +50,11 @@ var EditorGui = new function () {
                 EditorModels.createMesh('down')
             })
             $('#exit').click(function () {
-                WebSocketSendMain.controller('index', 'index')
+                IndexController.index({'data': Page.getIndex()})
             })
             $('#publish').click(function () {
                 WebSocketSendEditor.publish()
-                WebSocketSendMain.controller('index', 'index')
+                IndexController.index({'data': Page.getIndex()})
             })
         }
 

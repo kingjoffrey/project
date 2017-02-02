@@ -1,15 +1,11 @@
 var StatusWindow = new function () {
     var statusRowContent = function (id, soldier, attackFlyBonus, attackHeroBonus, defenseFlyBonus, defenseHeroBonus, defenseTowerBonus, defenseCastleBonus) {
             return $('<tr>').addClass('row')
-                .append($('<td>').addClass('firstDiv name').html(Units.get(soldier.unitId).name_lang))
-                .append($('<td>').addClass('firstDiv')
+                .append($('<td>').addClass('name').html(Units.get(soldier.unitId).name_lang))
+                .append($('<td>')
                     .append($('<div>')
-                        .append($('<div>').addClass('attr').html(translations.currentMoves + ': '))
-                        .append($('<div>').addClass('attr value').html(soldier.movesLeft))
-                    )
-                    .append($('<div>')
-                        .append($('<div>').addClass('attr').html(translations.defaultMoves + ': '))
-                        .append($('<div>').addClass('attr value').html(Units.get(soldier.unitId).moves))
+                        .append($('<div>').addClass('attr').html(translations.moves + ': '))
+                        .append($('<div>').addClass('attr value').html(soldier.movesLeft + '/' + Units.get(soldier.unitId).moves))
                     )
                     .append($('<div>')
                         .append($('<div>').addClass('attr').html(translations.attackPoints + ': '))
@@ -30,7 +26,7 @@ var StatusWindow = new function () {
                         )
                     )
                 )
-                .append($('<td>').addClass('firstDiv')
+                .append($('<td>')
                     .append($('<div>')
                         .append($('<div>').addClass('attr').html(translations.forest + ': '))
                         .append($('<div>').addClass('attr value').html(Units.get(soldier.unitId).f))
@@ -137,6 +133,9 @@ var StatusWindow = new function () {
                                 if (!CommonMe.getSelectedArmyId()) {
                                     return
                                 }
+                                if (splitArmy) {
+                                    return
+                                }
                                 SplitWindow.show()
                             })
                             .append($('<div>'))
@@ -186,14 +185,8 @@ var StatusWindow = new function () {
             defenseHeroBonus = $('<div>'),
             defenseTowerBonus = $('<div>'),
             defenseCastleBonus = $('<div>'),
-            div = buttons(field, castleDefense, army)
-
-
-        div.append($('<tr>')
-            .append($('<th>').html('Name'))
-            .append($('<th>').html('Attributes'))
-            .append($('<th>').html('Moves costs'))
-        )
+            div = buttons(field, castleDefense, army),
+            table = $('<table>')
 
         if (field.getTowerId()) {
             bonusTower = 1;
@@ -215,28 +208,24 @@ var StatusWindow = new function () {
         }
 
         for (var soldierId in army.getWalkingSoldiers()) {
-            div.append(statusRowContent(soldierId, army.getWalkingSoldier(soldierId), attackFlyBonus, attackHeroBonus, defenseFlyBonus, defenseHeroBonus, defenseTowerBonus, defenseCastleBonus));
+            table.append(statusRowContent(soldierId, army.getWalkingSoldier(soldierId), attackFlyBonus, attackHeroBonus, defenseFlyBonus, defenseHeroBonus, defenseTowerBonus, defenseCastleBonus));
         }
         for (var soldierId in army.getSwimmingSoldiers()) {
-            div.append(statusRowContent(soldierId, army.getSwimmingSoldier(soldierId), attackFlyBonus, attackHeroBonus, defenseFlyBonus, defenseHeroBonus, defenseTowerBonus, defenseCastleBonus));
+            table.append(statusRowContent(soldierId, army.getSwimmingSoldier(soldierId), attackFlyBonus, attackHeroBonus, defenseFlyBonus, defenseHeroBonus, defenseTowerBonus, defenseCastleBonus));
         }
         for (var soldierId in army.getFlyingSoldiers()) {
-            div.append(statusRowContent(soldierId, army.getFlyingSoldier(soldierId), attackFlyBonus, attackHeroBonus, defenseFlyBonus, defenseHeroBonus, defenseTowerBonus, defenseCastleBonus));
+            table.append(statusRowContent(soldierId, army.getFlyingSoldier(soldierId), attackFlyBonus, attackHeroBonus, defenseFlyBonus, defenseHeroBonus, defenseTowerBonus, defenseCastleBonus));
         }
         for (var heroId in army.getHeroes()) {
             var hero = army.getHero(heroId)
-            div.append(
+            table.append(
                 $('<tr>')
                     .addClass('row')
-                    .append($('<td>').addClass('firstDiv name').html(translations.hero))
-                    .append($('<td>').addClass('firstDiv')
+                    .append($('<td>').addClass('name').html(translations.hero))
+                    .append($('<td>')
                         .append($('<div>')
-                            .append($('<div>').addClass('attr').html(translations.currentMoves + ': '))
-                            .append($('<div>').addClass('attr value').html(hero.movesLeft))
-                        )
-                        .append($('<div>')
-                            .append($('<div>').addClass('attr').html(translations.defaultMoves + ': '))
-                            .append($('<div>').addClass('attr value').html(hero.moves))
+                            .append($('<div>').addClass('attr').html(translations.moves + ': '))
+                            .append($('<div>').addClass('attr value').html(hero.movesLeft + '/' + hero.moves))
                         )
                         .append($('<div>')
                             .append($('<div>').addClass('attr').html(translations.attackPoints + ': '))
@@ -257,7 +246,7 @@ var StatusWindow = new function () {
                             )
                         )
                     )
-                    .append($('<td>').addClass('firstDiv')
+                    .append($('<td>')
                         .append($('<div>')
                             .append($('<div>').addClass('attr').html(translations.forest + ': '))
                             .append($('<div>').addClass('attr value').html(3))
@@ -273,6 +262,8 @@ var StatusWindow = new function () {
                     )
             )
         }
+
+        div.append(table)
 
         var id = Message.simple(translations.armyStatus, div)
         Message.setOverflowHeight(id)

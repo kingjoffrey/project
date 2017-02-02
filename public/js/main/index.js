@@ -1,6 +1,5 @@
 "use strict"
 var IndexController = new function () {
-    var index = ''
     this.index = function (r) {
         var main = Main.getMain()
 
@@ -11,10 +10,7 @@ var IndexController = new function () {
             Page.init()
         }
 
-        if (!index) {
-            index = r.data
-        }
-
-        $('#content').html(index)
+        $('#content').html(r.data)
+        $('#menuBox').show()
     }
 }

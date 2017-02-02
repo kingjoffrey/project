@@ -2,7 +2,7 @@
 var GameGui = new function () {
     var lock = true,
         show = true,
-        documentTitle = 'WoF',
+        documentTitle,
         friendsShow = false,
         doKey = function (event) {
             if ($('#game').length == 0) {
@@ -93,7 +93,7 @@ var GameGui = new function () {
 
             $('#exit').click(function () {
                 Sound.play('click')
-                GameGui.exit()
+                IndexController.index({'data': Page.getIndex()})
             })
 
             $('#surrender').click(function () {
@@ -189,9 +189,6 @@ var GameGui = new function () {
             'left': goldBoxLeft + 'px'
         })
     }
-    this.exit = function () {
-        WebSocketSendMain.controller('index', 'index')
-    }
     this.end = function () {
         WebSocketSendMain.controller('over', 'index', {'id': Game.getGameId()})
     }
@@ -199,13 +196,11 @@ var GameGui = new function () {
         lock = false;
         $('#nextTurn').removeClass('buttonOff');
         $('#nextArmy').removeClass('buttonOff');
-        //makeMyCursorUnlock();
     }
     this.setLock = function () {
         lock = true
         $('#nextTurn').addClass('buttonOff');
         $('#nextArmy').addClass('buttonOff');
-        //makeMyCursorLock();
     }
     this.getDocumentTitle = function () {
         return documentTitle
@@ -242,6 +237,8 @@ var GameGui = new function () {
         $(window).resize(function () {
             GameGui.adjust()
         })
+
+        documentTitle = document.title
 
         $('body')
             .keydown(function (event) {

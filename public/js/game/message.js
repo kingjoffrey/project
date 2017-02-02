@@ -19,7 +19,7 @@ var Message = new function () {
         var id = makeId(10),
             div = $('<div>')
                 .attr('id', id)
-                .html($('<div>').attr('id', 'content')
+                .html($('<div>').addClass('content')
                     .append($('<div>').append($('<h3>').html(title)).addClass('msgTitle'))
                     .append($(txt).addClass('overflow'))
                 )
@@ -55,7 +55,7 @@ var Message = new function () {
         // }
         //
         if ($('#' + id + ' .showCastle').length) {
-            $('#' + id + ' #content').css({
+            $('#' + id + ' .content').css({
                 'z-index': $('#' + id).css('z-index') + 1,
                 // 'max-height': maxHeight + 'px'
             })
@@ -89,7 +89,7 @@ var Message = new function () {
     }
     this.ok = function (id, func) {
         if (!$('#' + id + ' #buttons').length) {
-            $('#' + id + ' #content').append($('<div>').attr('id', 'buttons'))
+            $('#' + id + ' .content').append($('<div>').attr('id', 'buttons'))
         }
         $('#' + id + ' #buttons').append(
             $('<div>')
@@ -107,7 +107,7 @@ var Message = new function () {
     }
     this.cancel = function (id, func) {
         if (!$('#' + id + ' #buttons').length) {
-            $('#' + id + ' #content').append($('<div>').attr('id', 'buttons'))
+            $('#' + id + ' .content').append($('<div>').attr('id', 'buttons'))
         }
         $('#' + id + ' #buttons').append(
             $('<div>')
@@ -123,7 +123,7 @@ var Message = new function () {
     }
     this.close = function (id, func) {
         if (!$('#' + id + ' #buttons').length) {
-            $('#' + id + ' #content').append($('<div>').attr('id', 'buttons'))
+            $('#' + id + ' .content').append($('<div>').attr('id', 'buttons'))
         }
         $('#' + id + ' #buttons').append(
             $('<div>')

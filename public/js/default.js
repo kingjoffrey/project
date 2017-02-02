@@ -4,6 +4,10 @@ $(document).ready(function () {
 })
 
 var Page = new function () {
+    var index = ''
+    this.getIndex=function () {
+        return index
+    }
     this.adjust = function () {
         var height = $(window).height() - $('#menuBox').height(),
             top = height / 2 - $('#page #content #title div').height() / 2
@@ -27,5 +31,9 @@ var Page = new function () {
         $('#envelope').click(function () {
             WebSocketSendMain.controller('messages', 'index')
         })
+
+        if (!index) {
+            index = $('#content').html()
+        }
     }
 }

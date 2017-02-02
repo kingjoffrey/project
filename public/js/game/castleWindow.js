@@ -19,12 +19,10 @@ var CastleWindow = new function () {
         var time = '',
             checked,
             messageId,
-            table = $('<table>'),
-            j = 0,
             capital = false,
             castleWindow = $('<div>').addClass('showCastle'),
             createProductionTD = function () {
-                var array = []
+                var array = $('<div>')
 
                 for (var unitId in castle.getProduction()) {
                     var travelBy = '',
@@ -52,21 +50,22 @@ var CastleWindow = new function () {
                         var unitName = unit.name;
                     }
 
-                    var unitElement = $('<td>')
+                    var unitElement = $('<div>')
                         .addClass('unit' + checked)
                         .attr('id', unitId)
                         .append(
                             $('<div>').addClass('name').html('<b>' + unitName + '</b>' + '<br/> (' + travelBy + ')')
                         )
                         .append(
-                            $('<div>').addClass('buttons')
-                        )
-                        .append($('<div>').addClass('attributes')
-                            .append($('<div>').html(translations.productionTime + ': ' + time + '<span>' + castle.getProduction()[unitId].time + '</span>'))
-                            .append($('<div>').html(translations.costOfLiving + ': ' + '<span>' + unit.cost + '</span>'))
-                            .append($('<div>').html(translations.movementPoints + ': ' + '<span>' + unit.moves + '</span>'))
-                            .append($('<div>').html(translations.attackPoints + ': ' + '<span>' + unit.a + '</span>'))
-                            .append($('<div>').html(translations.defencePoints + ': ' + '<span>' + unit.d + '</span>'))
+                            $('<div>')
+                                .append($('<div>').addClass('buttons'))
+                                .append($('<div>').addClass('attributes')
+                                    .append($('<div>').html(translations.productionTime + ': ' + time + '<span>' + castle.getProduction()[unitId].time + '</span>'))
+                                    .append($('<div>').html(translations.costOfLiving + ': ' + '<span>' + unit.cost + '</span>'))
+                                    .append($('<div>').html(translations.movementPoints + ': ' + '<span>' + unit.moves + '</span>'))
+                                    .append($('<div>').html(translations.attackPoints + ': ' + '<span>' + unit.a + '</span>'))
+                                    .append($('<div>').html(translations.defencePoints + ': ' + '<span>' + unit.d + '</span>'))
+                                )
                         )
 
                     if (checked) { // jest produkcja
@@ -83,7 +82,7 @@ var CastleWindow = new function () {
                                     .addClass('button buttonColors')
                                     .attr('id', 'stop')
                                     .click(function () {
-                                        castle.handle($(this).parent().parent().attr('id'), 1, 0)
+                                        castle.handle($(this).parent().parent().parent().attr('id'), 1, 0)
                                         Message.remove(messageId)
                                     }))
                     } else { // nie ma produkcji
@@ -94,7 +93,7 @@ var CastleWindow = new function () {
                                     .attr('id', 'go')
                                     .html(translations.start)
                                     .click(function () {
-                                        castle.handle($(this).parent().parent().attr('id'))
+                                        castle.handle($(this).parent().parent().parent().attr('id'))
                                         Message.remove(messageId)
                                     }))
                         unitElement.find('.buttons')
@@ -104,13 +103,11 @@ var CastleWindow = new function () {
                                     .addClass('button buttonColors')
                                     .attr('id', 'relocation')
                                     .click(function () {
-                                        castle.handle($(this).parent().parent().attr('id'), 0, 1)
+                                        castle.handle($(this).parent().parent().parent().attr('id'), 0, 1)
                                         Message.remove(messageId)
                                     }))
                     }
-
-                    array[j] = unitElement
-                    j++;
+                    array.append(unitElement)
                 }
                 return array
             }
@@ -121,68 +118,49 @@ var CastleWindow = new function () {
             messageId = Message.show(translations.castle + '&nbsp;' + castle.getName(), castleWindow)
         }
 
-        var productionUnitArray = createProductionTD()
-
-        for (var l = 0; l < Math.ceil(j / 2); l++) {
-            var m = l * 2,
-                tr = $('<tr>').append(productionUnitArray[m])
-
-            if (isSet(productionUnitArray[m + 1])) {
-                tr.append(productionUnitArray[m + 1])
-            } else {
-                tr.append($('<td>').addClass('unit'))
-            }
-            table.append(tr)
-        }
-
-        var next = $('<td>').attr('id', 'next'),
-            previous = $('<td>').attr('id', 'previous'),
+        var next = $('<div>'),
+            previous = $('<div>'),
             nextCastle = CommonMe.findNextCastle(castle.getCastleId()),
             previousCastle = CommonMe.findPreviousCastle(castle.getCastleId())
 
         if (nextCastle) {
-            next.append($('<div>')
-                .addClass('button buttonColors next')
+            next = $('<div>')
+                .attr('id', 'next')
+                .addClass('button buttonColors')
                 .html('>>')
                 .click(function () {
                     CastleWindow.show(nextCastle)
                     GameScene.centerOn(nextCastle.getX(), nextCastle.getY())
                     Message.remove(messageId)
-                }))
+                })
         }
 
         if (previousCastle) {
-            previous.append($('<div>')
-                .addClass('button buttonColors next')
+            previous = $('<div>')
+                .attr('id', 'previous')
+                .addClass('button buttonColors')
                 .html('<<')
                 .click(function () {
                     CastleWindow.show(previousCastle)
                     GameScene.centerOn(previousCastle.getX(), previousCastle.getY())
                     Message.remove(messageId)
-                }))
+                })
         }
 
         castleWindow
+            .append($('<div>').html(translations.incomeFromCastle + ': ' + castle.getIncome() + ' ' + translations.gold_turn))
             .append(
-                $('<table>')
-                    .append($('<tr>')
-                        .append(previous)
-                        .append($('<td>')
-                            .append($('<div>')
-                                .addClass('button buttonColors cancel')
-                                .html(translations.close)
-                                .click(function () {
-                                    Message.remove(messageId)
-                                })))
-                        .append(next)))
-            .append(
-                $('<table>')
-                    .append($('<tr>')
-                        .append($('<td>').append(translations.incomeFromCastle + ': '))
-                        .append($('<td>').append(castle.getIncome() + ' ' + translations.gold_turn))
-                    )
+                $('<div>').addClass('text-right')
+                    .append(previous)
+                    .append($('<div>')
+                        .addClass('button buttonColors')
+                        .html(translations.close)
+                        .click(function () {
+                            Message.remove(messageId)
+                        }))
+                    .append(next)
             )
-            .append($('<div>').addClass('production').append($('<div>').html(translations.availableUnits).addClass('title')).append(table).attr('id', castle.getCastleId()))
+            .append($('<div>').addClass('production').append($('<div>').html(translations.availableUnits).addClass('title')).append(createProductionTD()).attr('id', castle.getCastleId()))
 
         if (castle.getCastleId() == CommonMe.getCapitalId()) {
             castleWindow
