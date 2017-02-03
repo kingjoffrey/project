@@ -21,7 +21,7 @@ var MessagesController = new function () {
         content.html(data)
 
         for (var i in messages) {
-            $('#messages').append(
+            $('.messages').append(
                 $('<tr>').addClass('trlink')
                     .append($('<td>').addClass('date').html(messages[i].date + '<br>' + messages[i].name))
                     .append($('<td>').addClass('msg').html(messages[i].message))
@@ -33,7 +33,7 @@ var MessagesController = new function () {
             .append($('<div>').addClass('button').html(translations.send).click(function () {
                 var message = $('.chat input').val()
                 if (message) {
-                    $('#messages').append(
+                    $('.messages').append(
                         $('<tr>').addClass('trlink')
                             .append($('<td>').addClass('date').html(playerName))
                             .append($('<td>').addClass('msg').html(message))
