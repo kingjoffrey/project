@@ -20,6 +20,8 @@ var HelpController = new function () {
 
         for (var id in menu) {
             $('#helpMenu').append($('<div>').attr('id', 'help' + id).html(menu[id]).addClass('button buttonColors').click(function () {
+                Sound.play('click')
+
                 var id = $(this).attr('id')
 
                 $('#helpMenu div').each(function () {

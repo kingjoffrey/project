@@ -18,14 +18,7 @@ var Page = new function () {
         return touch
     }
     this.adjust = function () {
-        var height = $(window).height() - $('#menuBox').height(),
-            top = height / 2 - $('#page #content #title div').height() / 2
-
         $('#page').css('min-height', $(window).height() + 'px')
-
-        if (top > 0) {
-            $('#page #content #title').css('margin-top', top + 'px')
-        }
     }
     this.init = function () {
         $(window).resize(function () {
@@ -37,17 +30,12 @@ var Page = new function () {
             $(this).css('background-position', '0% ' + parseInt(-x / 10) + 'px');
         })
 
-        $('#messages').click(function () {
-            WebSocketSendMain.controller('messages', 'index')
-        })
-
         if (!index) {
             index = $('#content').html()
         }
 
         if (isSet(window.orientation)) {
             touch = 'ontouchstart' in document.documentElement
-            console.log(touch)
 
             $(document).on('touchmove', function (e) {
                 e.preventDefault()

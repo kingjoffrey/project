@@ -268,7 +268,7 @@ var CastleWindow = new function () {
                 .append($('<h3>').html(translations.doYouWantToBuildCastleDefense))
                 .append($('<div>').html(translations.currentDefense + ': ' + castle.getDefense()))
                 .append($('<div>').html(translations.newDefense + ': ' + newDefense))
-                .append($('<div>').html(translations.cost + ': ' + costBuildDefense + ' ' + translations.gold))
+                .append($('<div>').html(translations.Cost + ': ' + costBuildDefense + ' ' + translations.gold))
             var id = Message.show(translations.buildCastleDefense, div);
             Message.ok(id, WebSocketSendCommon.defense);
         }

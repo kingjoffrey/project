@@ -128,7 +128,7 @@ h1 {
     font-family: "Alpine", Verdana, Tahoma;
     color: red;
     position: absolute;
-    top: 5px;
+    top: 11px;
     left: 20px;
 }
 
@@ -176,7 +176,15 @@ div.table {
     background: url("/img/game/message_bg.png");
 }
 
-.table table {
+div.table table.unitTable {
+    width: auto;
+}
+
+div.table table.unitTable td:first {
+    background: #fff;
+}
+
+div.table table {
     border-spacing: 0px;
     width: 100%;
     border: 1px solid grey;
@@ -219,24 +227,13 @@ th {
     font-style: italic;
 }
 
-#menuTop {
-    padding: 1px;
-    background: #fff;
-    box-shadow: 0 0 5px #000;
-}
-
-#menu {
-    width: 900px;
-    text-align: center;
-    margin: 14px 0;
-}
-
 #logout {
     display: inline-block;
     float: right;
     font-weight: normal;
     padding: 21px;
     background: #000;
+    border-left: 1px solid #000;
 }
 
 #logout:hover {
@@ -452,7 +449,7 @@ td .trash {
 }
 
 #helpMenu {
-    margin-bottom: 14px;
+    margin: 14px 0;
     text-align: center;
 }
 
@@ -484,13 +481,7 @@ td .trash {
     margin-right: 5px;
 }
 
-#text #unit table {
-    width: 583px;
-    margin: 10px 0;
-}
-
 #text #unit h3 {
-    margin: 10px 0;
     text-align: center;
 }
 
@@ -547,7 +538,24 @@ td .trash {
 }
 
 #menuBox {
-    margin-bottom: 14px;
+    padding-top: 21px;
+}
+
+#menuBox #menuTop {
+    padding: 1px;
+    background: #fff;
+    box-shadow: 0 0 5px #000;
+}
+
+#menuBox #menuSubTop {
+    margin: 1px;
+    border: 1px solid #000;
+}
+
+#menuBox #menu {
+    max-width: 900px;
+    text-align: center;
+    margin: 14px 0;
 }
 
 #menuBox #menu .button {
@@ -1274,4 +1282,9 @@ table.treasury td {
 #create {
     float: left;
     margin: 21px;
+}
+
+.unitName {
+    padding: 42px 0;
+    display: inline-block;
 }

@@ -5,27 +5,22 @@ var Help = new function () {
         currentUnitId = 0,
         unitProperties = function (unit) {
             $('#unit').remove()
-            if (unit.special) {
-                var special = 'yes'
-            } else {
-                var special = 'no'
-            }
             if (unit.canFly) {
                 var table = $('<table>')
                     .append(
                         $('<tr>')
                             .append($('<th>'))
-                            .append($('<th>').html('Road'))
-                            .append($('<th>').html('Grass'))
-                            .append($('<th>').html('Forest'))
-                            .append($('<th>').html('Swamp'))
-                            .append($('<th>').html('Hill'))
-                            .append($('<th>').html('Mountain'))
-                            .append($('<th>').html('Water'))
+                            .append($('<th>').html(translations.Road))
+                            .append($('<th>').html(translations.Grass))
+                            .append($('<th>').html(translations.Forest))
+                            .append($('<th>').html(translations.Swamp))
+                            .append($('<th>').html(translations.Hill))
+                            .append($('<th>').html(translations.Mountain))
+                            .append($('<th>').html(translations.Water))
                     )
                     .append(
                         $('<tr>')
-                            .append($('<td>').html('Walk'))
+                            .append($('<td>').html(translations.Walk))
                             .append($('<td>').html('1'))
                             .append($('<td>').html('2'))
                             .append($('<td>').html(unit.modMovesForest))
@@ -36,7 +31,7 @@ var Help = new function () {
                     )
                     .append(
                         $('<tr>')
-                            .append($('<td>').html('Fly'))
+                            .append($('<td>').html(translations.Fly))
                             .append($('<td>').html('2'))
                             .append($('<td>').html('2'))
                             .append($('<td>').html('2'))
@@ -47,7 +42,7 @@ var Help = new function () {
                     )
                     .append(
                         $('<tr>')
-                            .append($('<td>').html('Swim'))
+                            .append($('<td>').html(translations.Swim))
                             .append($('<td>').html('-'))
                             .append($('<td>').html('-'))
                             .append($('<td>').html('-'))
@@ -61,28 +56,17 @@ var Help = new function () {
                     .append(
                         $('<tr>')
                             .append($('<th>'))
-                            .append($('<th>').html('Road'))
-                            .append($('<th>').html('Grass'))
-                            .append($('<th>').html('Forest'))
-                            .append($('<th>').html('Swamp'))
-                            .append($('<th>').html('Hill'))
-                            .append($('<th>').html('Mountain'))
-                            .append($('<th>').html('Water'))
+                            .append($('<th>').html(translations.Road))
+                            .append($('<th>').html(translations.Grass))
+                            .append($('<th>').html(translations.Forest))
+                            .append($('<th>').html(translations.Swamp))
+                            .append($('<th>').html(translations.Hill))
+                            .append($('<th>').html(translations.Mountain))
+                            .append($('<th>').html(translations.Water))
                     )
                     .append(
                         $('<tr>')
-                            .append($('<td>').html('Walk'))
-                            .append($('<td>').html('-'))
-                            .append($('<td>').html('-'))
-                            .append($('<td>').html('-'))
-                            .append($('<td>').html('-'))
-                            .append($('<td>').html('-'))
-                            .append($('<td>').html('-'))
-                            .append($('<td>').html('-'))
-                    )
-                    .append(
-                        $('<tr>')
-                            .append($('<td>').html('Fly'))
+                            .append($('<td>').html(translations.Walk))
                             .append($('<td>').html('-'))
                             .append($('<td>').html('-'))
                             .append($('<td>').html('-'))
@@ -93,7 +77,18 @@ var Help = new function () {
                     )
                     .append(
                         $('<tr>')
-                            .append($('<td>').html('Swim'))
+                            .append($('<td>').html(translations.Fly))
+                            .append($('<td>').html('-'))
+                            .append($('<td>').html('-'))
+                            .append($('<td>').html('-'))
+                            .append($('<td>').html('-'))
+                            .append($('<td>').html('-'))
+                            .append($('<td>').html('-'))
+                            .append($('<td>').html('-'))
+                    )
+                    .append(
+                        $('<tr>')
+                            .append($('<td>').html(translations.Swim))
                             .append($('<td>').html('-'))
                             .append($('<td>').html('-'))
                             .append($('<td>').html('-'))
@@ -107,17 +102,17 @@ var Help = new function () {
                     .append(
                         $('<tr>')
                             .append($('<th>'))
-                            .append($('<th>').html('Road'))
-                            .append($('<th>').html('Grass'))
-                            .append($('<th>').html('Forest'))
-                            .append($('<th>').html('Swamp'))
-                            .append($('<th>').html('Hill'))
-                            .append($('<th>').html('Mountain'))
-                            .append($('<th>').html('Water'))
+                            .append($('<th>').html(translations.Road))
+                            .append($('<th>').html(translations.Grass))
+                            .append($('<th>').html(translations.Forest))
+                            .append($('<th>').html(translations.Swamp))
+                            .append($('<th>').html(translations.Hill))
+                            .append($('<th>').html(translations.Mountain))
+                            .append($('<th>').html(translations.Water))
                     )
                     .append(
                         $('<tr>')
-                            .append($('<td>').html('Walk'))
+                            .append($('<td>').html(translations.Walk))
                             .append($('<td>').html('1'))
                             .append($('<td>').html('2'))
                             .append($('<td>').html(unit.modMovesForest))
@@ -128,7 +123,7 @@ var Help = new function () {
                     )
                     .append(
                         $('<tr>')
-                            .append($('<td>').html('Fly'))
+                            .append($('<td>').html(translations.Fly))
                             .append($('<td>').html('-'))
                             .append($('<td>').html('-'))
                             .append($('<td>').html('-'))
@@ -139,7 +134,7 @@ var Help = new function () {
                     )
                     .append(
                         $('<tr>')
-                            .append($('<td>').html('Swim'))
+                            .append($('<td>').html(translations.Swim))
                             .append($('<td>').html('-'))
                             .append($('<td>').html('-'))
                             .append($('<td>').html('-'))
@@ -149,21 +144,46 @@ var Help = new function () {
                             .append($('<td>').html('-'))
                     )
             }
-            return $('<div>')
+            var unitDiv = $('<div>')
                 .attr('id', 'unit')
                 .append($('<h3>')
-                    .append($('<span>').html('<< ').addClass('left').click(function () {
+                    .append($('<span>').html('<<').addClass('left button buttonColors').click(function () {
                         changeUnit('-')
                     }))
-                    .append(unit.name_lang)
-                    .append($('<span>').html(' >>').addClass('right').click(function () {
+                    .append($('<span>').html(unit.name_lang).addClass('unitName'))
+                    .append($('<span>').html('>>').addClass('right button buttonColors').click(function () {
                         changeUnit('+')
                     }))
                 )
-                .append($('<div>').html('attack/defense - ' + unit.attackPoints + '/' + unit.defensePoints))
-                .append($('<div>').html('cost - ' + unit.cost + ', moves - ' + unit.numberOfMoves))
-                .append($('<div>').html('special unit - ' + special))
-                .append(table)
+                .append($('<div>').addClass('left')
+                    .append(
+                        $('<table>').addClass('unitTable')
+                            .append($('<tr>')
+                                .append($('<td>').html(translations.Attack))
+                                .append($('<td>').html(unit.attackPoints))
+                            )
+                            .append($('<tr>')
+                                .append($('<td>').html(translations.Defense))
+                                .append($('<td>').html(unit.defensePoints))
+                            )
+                            .append($('<tr>')
+                                .append($('<td>').html(translations.Moves))
+                                .append($('<td>').html(unit.numberOfMoves))
+                            )
+                            .append($('<tr>')
+                                .append($('<td>').html(translations.Cost))
+                                .append($('<td>').html(unit.cost))
+                            )
+                    )
+                )
+
+            if (unit.special) {
+                unitDiv.append($('<div>').html(translations.Specialunit).addClass('right'))
+            }
+
+            unitDiv.append(table)
+
+            return unitDiv
         },
         changeUnit = function (direction) {
             if (mesh) {
