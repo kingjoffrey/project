@@ -19,7 +19,7 @@ var HelpController = new function () {
         HelpModels.init()
 
         for (var id in menu) {
-            $('#helpMenu').append($('<div>').attr('id', 'help' + id).html(menu[id]).addClass('button').click(function () {
+            $('#helpMenu').append($('<div>').attr('id', 'help' + id).html(menu[id]).addClass('button buttonColors').click(function () {
                 var id = $(this).attr('id')
 
                 $('#helpMenu div').each(function () {

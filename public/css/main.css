@@ -76,7 +76,7 @@ input[type="radio"], input[type="checkbox"] {
     display: inline-block;
 }
 
-.button:hover, #submit:hover {
+.button:hover, #submit:hover, .iconButton:hover {
     background: green;
     color: #fff;
 }

@@ -36,15 +36,15 @@ var WebSocketMessageMain = new function () {
                         }
                     }
 
-                    if (r.type == 'index') {
-                        zdichu()
+                    if (r.type == 'create' && r.action == 'map') {
+                        return
                     } else {
                         $('#menuBox').hide()
                         if (r.type == 'help') {
                             $('#content')
                                 .append($('<div>')
                                     .append(
-                                        $('<div>').attr('id', 'back').addClass('button').html(translations.Back).click(function () {
+                                        $('<div>').attr('id', 'back').addClass('button buttonColors').html(translations.Back).click(function () {
                                             Sound.play('click')
                                             IndexController.index({'data': Page.getIndex()})
                                         })
@@ -56,7 +56,7 @@ var WebSocketMessageMain = new function () {
                             $('#content')
                                 .prepend($('<div>')
                                     .append(
-                                        $('<div>').attr('id', 'back').addClass('button').html(translations.Back).click(function () {
+                                        $('<div>').attr('id', 'back').addClass('button buttonColors').html(translations.Back).click(function () {
                                             Sound.play('click')
                                             IndexController.index({'data': Page.getIndex()})
                                         })
@@ -66,7 +66,7 @@ var WebSocketMessageMain = new function () {
                                 )
                                 .append($('<div>')
                                     .append(
-                                        $('<div>').attr('id', 'back').addClass('button').html(translations.Back).click(function () {
+                                        $('<div>').attr('id', 'back').addClass('button buttonColors').html(translations.Back).click(function () {
                                             Sound.play('click')
                                             IndexController.index({'data': Page.getIndex()})
                                         })
