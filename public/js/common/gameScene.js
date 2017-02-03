@@ -4,12 +4,11 @@ if (!Detector.webgl) {
 }
 
 var GameScene = new function () {
-    var scene,
+    var scene = new THREE.Scene(),
         camera,
         sun,
-        shadows = 1,
         cameraY = 24,
-        initCamera = function (w,h) {
+        initCamera = function (w, h) {
             var viewAngle = 22,
                 near = 1,
                 far = 1000
@@ -28,9 +27,7 @@ var GameScene = new function () {
     this.initSun = function (size) {
         sun = new THREE.DirectionalLight(0xdfebff, 0.75)
         sun.position.set(100, 200, 150)
-        if (shadows) {
-            GameRenderer.turnOnShadows()
-
+        if (Page.getShadows()) {
             sun.castShadow = true
 
             sun.shadow.mapSize.width = 2048
@@ -51,9 +48,6 @@ var GameScene = new function () {
     }
     this.getSun = function () {
         return sun
-    }
-    this.getShadows = function () {
-        return shadows
     }
     this.setCameraPosition = function (x, z) {
         camera.position.set(parseFloat(x), cameraY, parseFloat(z))
@@ -148,7 +142,6 @@ var GameScene = new function () {
         camera.updateProjectionMatrix()
     }
     this.init = function (w, h) {
-        scene = new THREE.Scene()
         initCamera(w, h)
     }
 }

@@ -40,27 +40,41 @@ var WebSocketMessageMain = new function () {
                         zdichu()
                     } else {
                         $('#menuBox').hide()
-                        $('#content')
-                            .prepend($('<div>')
-                                .append(
-                                    $('<div>').attr('id', 'back').addClass('button').html(translations.Back).click(function () {
-                                        Sound.play('click')
-                                        IndexController.index({'data': Page.getIndex()})
+                        if (r.type == 'help') {
+                            $('#content')
+                                .append($('<div>')
+                                    .append(
+                                        $('<div>').attr('id', 'back').addClass('button').html(translations.Back).click(function () {
+                                            Sound.play('click')
+                                            IndexController.index({'data': Page.getIndex()})
+                                        })
+                                    ).css({
+                                        'text-align': 'right'
                                     })
-                                ).css({
-                                    'text-align': 'right'
-                                })
-                            )
-                            .append($('<div>')
-                                .append(
-                                    $('<div>').attr('id', 'back').addClass('button').html(translations.Back).click(function () {
-                                        Sound.play('click')
-                                        IndexController.index({'data': Page.getIndex()})
+                                )
+                        } else {
+                            $('#content')
+                                .prepend($('<div>')
+                                    .append(
+                                        $('<div>').attr('id', 'back').addClass('button').html(translations.Back).click(function () {
+                                            Sound.play('click')
+                                            IndexController.index({'data': Page.getIndex()})
+                                        })
+                                    ).css({
+                                        'text-align': 'right'
                                     })
-                                ).css({
-                                    'text-align': 'right'
-                                })
-                            )
+                                )
+                                .append($('<div>')
+                                    .append(
+                                        $('<div>').attr('id', 'back').addClass('button').html(translations.Back).click(function () {
+                                            Sound.play('click')
+                                            IndexController.index({'data': Page.getIndex()})
+                                        })
+                                    ).css({
+                                        'text-align': 'right'
+                                    })
+                                )
+                        }
                     }
                 } else {
                     console.log('Method ' + methodName + ' in class ' + className + ' !exists')

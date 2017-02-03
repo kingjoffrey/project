@@ -23,7 +23,7 @@ var Ground = new function () {
             mesh.position.set(maxX / 2, -waterLevel, maxY / 2)
             GameScene.add(mesh)
             PickerCommon.attach(mesh)
-            if (GameScene.getShadows()) {
+            if (Page.getShadows()) {
                 mesh.receiveShadow = true
             }
         },
@@ -144,7 +144,7 @@ var Ground = new function () {
             })
             grassMesh = new THREE.Mesh(grassGeometry, grassMaterial)
             grassMesh.rotation.x = Math.PI / 2
-            if (GameScene.getShadows()) {
+            if (Page.getShadows()) {
                 grassMesh.receiveShadow = true
             }
             GameScene.add(grassMesh)

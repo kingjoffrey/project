@@ -22,7 +22,7 @@ var GameModels = new function () {
         mesh.children[0].scale.y = 7
         mesh.children[0].scale.z = 7
 
-        if (GameScene.getShadows()) {
+        if (Page.getShadows()) {
             mesh.castShadow = true
             mesh.receiveShadow = true
             mesh.children[0].castShadow = true
@@ -43,7 +43,7 @@ var GameModels = new function () {
         mesh.children[0].scale.y = 2
         mesh.children[0].scale.z = 2
 
-        if (GameScene.getShadows()) {
+        if (Page.getShadows()) {
             mesh.castShadow = true
             mesh.receiveShadow = true
             mesh.children[0].castShadow = true
@@ -83,7 +83,7 @@ var GameModels = new function () {
 
         mesh.rotation.y = 2 * Math.PI * Math.random()
 
-        if (GameScene.getShadows()) {
+        if (Page.getShadows()) {
             mesh.castShadow = true
             mesh.receiveShadow = true
         }
@@ -103,7 +103,7 @@ var GameModels = new function () {
         mesh.children[0].scale.y = 3.3
         mesh.children[0].scale.z = 3.3
 
-        if (GameScene.getShadows()) {
+        if (Page.getShadows()) {
             mesh.castShadow = true
             mesh.receiveShadow = true
             mesh.children[0].castShadow = true
@@ -113,12 +113,17 @@ var GameModels = new function () {
         return mesh
     }
     this.addTree = function (x, y) {
-        var maxI = Math.floor((Math.random() * 5))
-        for(var i = 0; i < maxI + 2; i++) {
+        if (Page.hasTouch()) {
+            var maxI = 1
+        } else {
+            var maxI = Math.floor((Math.random() * 5))
+        }
+
+        for (var i = 0; i < maxI + 2; i++) {
             var mesh = Models.getTree(x, y),
                 randomX = Math.floor((Math.random() * 2)),
                 randomY = Math.floor((Math.random() * 2))
-                
+
             mesh.position.set(x * 2 + randomX, 0, y * 2 + randomY)
             mesh.rotation.y = 2 * Math.PI * Math.random()
 
@@ -126,7 +131,7 @@ var GameModels = new function () {
             mesh.scale.y = 0.15
             mesh.scale.z = 0.15
 
-            if (GameScene.getShadows()) {
+            if (Page.getShadows()) {
                 mesh.castShadow = true
                 mesh.receiveShadow = true
             }
@@ -139,7 +144,7 @@ var GameModels = new function () {
         mesh.rotation.x = Math.PI / 2
         mesh.position.set(x * 2 + 1, 0.0001, y * 2 + 1)
 
-        if (GameScene.getShadows()) {
+        if (Page.getShadows()) {
             mesh.receiveShadow = true
         }
         GameScene.add(mesh)
@@ -149,7 +154,7 @@ var GameModels = new function () {
         mesh.rotation.x = Math.PI / 2
         mesh.position.set(x * 2 + 1, 0.0001, y * 2 + 1)
 
-        if (GameScene.getShadows()) {
+        if (Page.getShadows()) {
             mesh.receiveShadow = true
         }
         GameScene.add(mesh)
@@ -201,7 +206,7 @@ var GameModels = new function () {
 
         meshes.circle.position.set(x * 2 + 1, height, y * 2 + 1)
         meshes.circle.rotation.x = Math.PI / 2
-        if (GameScene.getShadows()) {
+        if (Page.getShadows()) {
             meshes.circle.castShadow = true
         }
         GameScene.add(meshes.circle)

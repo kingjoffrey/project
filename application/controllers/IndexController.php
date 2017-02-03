@@ -79,12 +79,18 @@ class IndexController extends Coret_Controller_Authorized
         $this->view->headScript()->appendFile('/js/editor/websocketSend.js?v=' . $version);
         $this->view->headScript()->appendFile('/js/editor/websocketMessage.js?v=' . $version);
 
+        $this->view->headScript()->appendFile('/js/game/battleModels.js?v=' . $version);
+        $this->view->headScript()->appendFile('/js/game/battleScene.js?v=' . $version);
+        $this->view->headScript()->appendFile('/js/game/game.js?v=' . $version);
         $this->view->headScript()->appendFile('/js/game/picker.js?v=' . $version);
         $this->view->headScript()->appendFile('/js/game/unit.js?v=' . $version);
         $this->view->headScript()->appendFile('/js/game/terrain.js?v=' . $version);
         $this->view->headScript()->appendFile('/js/game/player.js?v=' . $version);
+        $this->view->headScript()->appendFile('/js/game/players.js?v=' . $version);
         $this->view->headScript()->appendFile('/js/game/armies.js?v=' . $version);
         $this->view->headScript()->appendFile('/js/game/army.js?v=' . $version);
+        $this->view->headScript()->appendFile('/js/game/init.js?v=' . $version);
+        $this->view->headScript()->appendFile('/js/game/me.js?v=' . $version);
         $this->view->headScript()->appendFile('/js/game/message.js?v=' . $version);
         $this->view->headScript()->appendFile('/js/game/astar.js?v=' . $version);
         $this->view->headScript()->appendFile('/js/game/gui.js?v=' . $version);
@@ -99,14 +105,10 @@ class IndexController extends Coret_Controller_Authorized
         $this->view->headScript()->appendFile('/js/game/statisticsWindow.js?v=' . $version);
         $this->view->headScript()->appendFile('/js/game/websocket.js?v=' . $version);
 
-        $this->view->headScript()->appendFile('/js/common/init.js?v=' . $version);
-        $this->view->headScript()->appendFile('/js/common/battleModels.js?v=' . $version);
-        $this->view->headScript()->appendFile('/js/common/battleScene.js?v=' . $version);
         $this->view->headScript()->appendFile('/js/common/castle.js?v=' . $version);
         $this->view->headScript()->appendFile('/js/common/castles.js?v=' . $version);
         $this->view->headScript()->appendFile('/js/common/renderer.js?v=' . $version);
         $this->view->headScript()->appendFile('/js/common/ground.js?v=' . $version);
-        $this->view->headScript()->appendFile('/js/common/game.js?v=' . $version);
         $this->view->headScript()->appendFile('/js/common/gameRenderer.js?v=' . $version);
         $this->view->headScript()->appendFile('/js/common/gameScene.js?v=' . $version);
         $this->view->headScript()->appendFile('/js/common/gameModels.js?v=' . $version);
@@ -114,7 +116,6 @@ class IndexController extends Coret_Controller_Authorized
         $this->view->headScript()->appendFile('/js/common/field.js?v=' . $version);
         $this->view->headScript()->appendFile('/js/common/fields.js?v=' . $version);
         $this->view->headScript()->appendFile('/js/common/picker.js?v=' . $version);
-        $this->view->headScript()->appendFile('/js/common/players.js?v=' . $version);
         $this->view->headScript()->appendFile('/js/common/ruin.js?v=' . $version);
         $this->view->headScript()->appendFile('/js/common/ruins.js?v=' . $version);
         $this->view->headScript()->appendFile('/js/common/tower.js?v=' . $version);
@@ -123,7 +124,6 @@ class IndexController extends Coret_Controller_Authorized
         $this->view->headScript()->appendFile('/js/common/execute.js?v=' . $version);
         $this->view->headScript()->appendFile('/js/common/websocketSend.js?v=' . $version);
         $this->view->headScript()->appendFile('/js/common/websocketMessage.js?v=' . $version);
-        $this->view->headScript()->appendFile('/js/common/me.js?v=' . $version);
 
         $this->view->headScript()->appendFile('/js/tutorial/tutorial.js?v=' . $version);
         $this->view->headScript()->appendFile('/js/tutorial/websocket.js?v=' . $version);

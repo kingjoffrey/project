@@ -1,8 +1,8 @@
 <?php
-
+use Devristo\Phpws\Protocol\WebSocketTransportInterface;
 class HelpController
 {
-    function index(Devristo\Phpws\Protocol\WebSocketTransportInterface $user, Cli_MainHandler $handler)
+    function index(WebSocketTransportInterface $user, Cli_MainHandler $handler)
     {
         $db = $handler->getDb();
         if (!$help = $handler->getHelp()) {
@@ -12,13 +12,13 @@ class HelpController
         }
 
         $view = new Zend_View();
-
         $view->addScriptPath(APPLICATION_PATH . '/views/scripts');
 
         $token = array(
             'type' => 'help',
             'action' => 'index',
-            'data' => $view->render('help/index.phtml')
+            'data' => $view->render('help/index.phtml'),
+
         );
         $token = array_merge($token, $help->toArray());
         $handler->sendToUser($user, $token);

@@ -5,7 +5,7 @@ var WebSocketMessageChat = new function () {
                 if (!parseInt(r.count)) {
                     return
                 }
-                $('#envelope').html($('<span>').html(r.count))
+                // $('#messages').html($('<span>').html(r.count))
                 break
             case 'chat':
                 $('#messages').append(

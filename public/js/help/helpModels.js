@@ -9,7 +9,7 @@ var HelpModels = new function () {
         }))
         mesh.rotation.x = Math.PI / 2
         // mesh.position.set(0, -30, 0)
-        if (HelpScene.getShadows()) {
+        if (Page.getShadows()) {
             mesh.receiveShadow = true
         }
 
@@ -30,7 +30,7 @@ var HelpModels = new function () {
         mesh.children[0].scale.y = 7
         mesh.children[0].scale.z = 7
 
-        if (HelpScene.getShadows()) {
+        if (Page.getShadows()) {
             mesh.castShadow = true
             mesh.receiveShadow = true
             mesh.children[0].castShadow = true
@@ -53,7 +53,7 @@ var HelpModels = new function () {
 
         mesh.position.set(20, 0, -20)
 
-        if (HelpScene.getShadows()) {
+        if (Page.getShadows()) {
             mesh.castShadow = true
             mesh.receiveShadow = true
             mesh.children[0].castShadow = true
@@ -71,7 +71,7 @@ var HelpModels = new function () {
         mesh.scale.z = 0.5
         mesh.position.set(20, 0, -20)
 
-        if (HelpScene.getShadows()) {
+        if (Page.getShadows()) {
             mesh.castShadow = true
             mesh.receiveShadow = true
         }
@@ -90,7 +90,7 @@ var HelpModels = new function () {
 
         mesh.rotation.y = 2 * Math.PI * Math.random()
 
-        if (HelpScene.getShadows()) {
+        if (Page.getShadows()) {
             mesh.castShadow = true
             mesh.receiveShadow = true
         }
@@ -110,7 +110,7 @@ var HelpModels = new function () {
         mesh.children[0].scale.y = 3.3
         mesh.children[0].scale.z = 3.3
 
-        if (HelpScene.getShadows()) {
+        if (Page.getShadows()) {
             mesh.castShadow = true
             mesh.receiveShadow = true
             mesh.children[0].castShadow = true
@@ -129,7 +129,7 @@ var HelpModels = new function () {
         mesh.scale.z = 0.5
         mesh.position.set(20, 0, -20)
 
-        if (HelpScene.getShadows()) {
+        if (Page.getShadows()) {
             mesh.castShadow = true
             mesh.receiveShadow = true
         }

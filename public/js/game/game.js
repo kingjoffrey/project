@@ -3,7 +3,6 @@ var Game = new function () {
     var loading = 1,
         timeoutId = null,
         game,
-        touch = 0,
         gameId
 
     this.setGameId = function (id) {
@@ -33,10 +32,7 @@ var Game = new function () {
     this.resetLoading = function () {
         loading = 1
     }
-    this.hasTouch = function () {
-        return touch
-    }
-    this.init = function (g) {
+    this.start = function (g) {
         game = g
         if (loading) {
             loading = 0
@@ -71,9 +67,5 @@ var Game = new function () {
 
         Sound.play('gamestart')
         $('#loading').css('display', 'none')
-
-        if (isSet(window.orientation)) {
-            touch = 'ontouchstart' in document.documentElement
-        }
     }
 }

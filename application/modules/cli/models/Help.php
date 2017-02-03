@@ -6,11 +6,14 @@ class Cli_Model_Help
 
     public function __construct(Zend_Db_Adapter_Pdo_Pgsql $db)
     {
+        $translator = Zend_Registry::get('Zend_Translate');
+        $adapter = $translator->getAdapter();
+
         $mHelp = new Application_Model_Help($db);
         $help = $mHelp->get();
 
         $menu = Admin_Model_Help::getMenuArray();
-        foreach (array_keys($menu) as $key) {
+        foreach ($menu as $key => $val) {
             foreach ($help as $k => $row) {
                 if ($key == $row['menu']) {
                     if (!isset($this->_help[$key])) {
@@ -21,6 +24,7 @@ class Cli_Model_Help
                     unset($help[$k]);
                 }
             }
+            $this->_help['menu'][$key] = $adapter->translate($val);
         }
 
         $mUnit = new Application_Model_Unit($db);

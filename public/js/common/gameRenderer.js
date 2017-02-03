@@ -14,10 +14,6 @@ var GameRenderer = new function () {
     this.getDomElement = function () {
         return renderer.domElement
     }
-    this.turnOnShadows = function () {
-        renderer.shadowMap.enabled = true
-        renderer.shadowMapSoft = false
-    }
     this.animate = function () {
         if (stop) {
             return
@@ -44,6 +40,10 @@ var GameRenderer = new function () {
     this.init = function (id, Scene) {
         stop = 0
         renderer = Renderer.get()
+        if(Page.getShadows()){
+            renderer.shadowMap.enabled = true
+            renderer.shadowMapSoft = false
+        }
         scene = Scene.get()
         camera = Scene.getCamera()
         $('#' + id).append(renderer.domElement)

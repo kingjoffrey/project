@@ -2,7 +2,6 @@ var BattleScene = new function () {
     var scene = new THREE.Scene(),
         camera,
         sun,
-        shadows = 1,
         cameraZ = 24,
         initCamera = function (w, h) {
             var fov = 22,
@@ -20,9 +19,7 @@ var BattleScene = new function () {
     this.initSun = function (size) {
         sun = new THREE.DirectionalLight(0xdfebff, 0.75)
         sun.position.set(100, 200, 150)
-        if (shadows) {
-            GameRenderer.turnOnShadows()
-
+        if (Page.getShadows()) {
             sun.castShadow = true
 
             sun.shadow.mapSize.width = 2048
@@ -40,9 +37,6 @@ var BattleScene = new function () {
             //scene.add(helper)
         }
         scene.add(sun)
-    }
-    this.getShadows = function () {
-        return shadows
     }
     this.get = function () {
         return scene

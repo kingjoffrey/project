@@ -1,8 +1,6 @@
 "use strict"
 var Help = new function () {
     var help,
-        text,
-        graphics,
         mesh = 0,
         currentUnitId = 0,
         unitProperties = function (unit) {
@@ -154,11 +152,11 @@ var Help = new function () {
             return $('<div>')
                 .attr('id', 'unit')
                 .append($('<h3>')
-                    .append($('<span>').html('<< ').click(function () {
+                    .append($('<span>').html('<< ').addClass('left').click(function () {
                         changeUnit('-')
                     }))
                     .append(unit.name_lang)
-                    .append($('<span>').html(' >>').click(function () {
+                    .append($('<span>').html(' >>').addClass('right').click(function () {
                         changeUnit('+')
                     }))
                 )
@@ -191,34 +189,26 @@ var Help = new function () {
                 lastUnitId = unitId
             }
             mesh = HelpModels.addUnit(help.list[lastUnitId].name.replace(' ', '_').toLowerCase())
-            text.prepend(unitProperties(help.list[lastUnitId]))
+            $('#text').prepend(unitProperties(help.list[lastUnitId]))
             currentUnitId = lastUnitId
         }
 
-    this.click = function (id) {
-        $('#helpMenu div').each(function () {
-            $(this).removeClass('active')
-        })
-        $('#helpMenu div#' + id).addClass('active')
-        var id = id.substring(4)
-        this.fillText(id)
-    }
     this.fillText = function (id) {
-        var menu = help[id]
+        var element = help[id]
         $('#helpMenu div').removeClass('off')
         $('#' + id).addClass('off')
         if (mesh) {
             HelpScene.remove(mesh)
             mesh = 0
         }
-        text.html('')
-        for (var i in menu) {
-            var content = menu[i].content.split("\n")
+        $('#text').html('')
+        for (var i in element) {
+            var content = element[i].content.split("\n")
             for (var j in content) {
                 if (content[j].search('#')) { // return 0 if first
-                    text.append($('<p>').html(content[j]))
+                    $('#text').append($('<p>').html(content[j]))
                 } else {
-                    text.append($('<div>').html(content[j].substring(1) + ':').addClass('title'))
+                    $('#text').append($('<div>').html(content[j].substring(1) + ':').addClass('title'))
                 }
             }
         }
@@ -241,16 +231,16 @@ var Help = new function () {
             case 'units':
                 for (var unitId in help.list) {
                     mesh = HelpModels.addUnit(help.list[unitId].name.replace(' ', '_').toLowerCase())
-                    text.prepend(unitProperties(help.list[unitId]))
+                    $('#text').prepend(unitProperties(help.list[unitId]))
                     currentUnitId = unitId
                     break
                 }
                 break
         }
         if (mesh) {
-            graphics.css('display', 'block')
+            $('#graphics').css('display', 'block')
         } else {
-            graphics.css('display', 'none')
+            $('#graphics').css('display', 'none')
         }
     }
     this.nl2br = function (str, is_xhtml) {
@@ -259,19 +249,5 @@ var Help = new function () {
     }
     this.init = function (r) {
         help = r
-
-        HelpScene.init(300, 300)
-        HelpRenderer.init(HelpScene)
-        HelpScene.initSun(40)
-        HelpModels.init()
-        $('#helpMenu div').click(function () {
-            Help.click($(this).attr('id'))
-        })
-
-        graphics = $('#graphics')
-        text = $('#text')
-
-        $('#helpMenu div').first().addClass('active')
-        this.fillText('game')
     }
 }

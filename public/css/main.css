@@ -16,7 +16,7 @@ body {
     font-size: 18px;
     font-family: Impact, Charcoal, sans-serif;
     letter-spacing: 2px;
-    color: #A8A45A;
+    color: #fff;
     text-shadow: 1px 1px 0 #000;
 }
 
@@ -71,16 +71,9 @@ input[type="radio"], input[type="checkbox"] {
 .button, #submit {
     padding: 32px;
     margin: 4px;
-    text-align: center;
-    text-decoration: none;
-    cursor: pointer;
-    color: #fff;
-    text-shadow: none;
-    background: #181107;
     border: 2px solid #fff;
     border-radius: 5px;
     display: inline-block;
-    box-shadow: 1px 1px 5px #000;
 }
 
 .button:hover, #submit:hover {
@@ -156,10 +149,6 @@ h2 {
     text-shadow: 2px 1px 1px #000;
 }
 
-h3 {
-    color: #aaa;
-}
-
 .left {
     float: left;
 }
@@ -231,29 +220,29 @@ th {
 }
 
 #menuTop {
-    height: 21px;
-    padding: 21px;
-    border-bottom-right-radius: 5px;
-    border-bottom-left-radius: 5px;
-    background: #000;
+    padding: 1px;
+    background: #fff;
     box-shadow: 0 0 5px #000;
 }
 
 #menu {
     width: 900px;
     text-align: center;
-    margin: 7px 0;
+    margin: 14px 0;
 }
 
 #logout {
     display: inline-block;
     float: right;
     font-weight: normal;
-    padding-top: 3px;
+    padding: 21px;
+    background: #000;
 }
 
 #logout:hover {
-    color: gray;
+    text-decoration: none;
+    color: #fff;
+    background: red;
 }
 
 .errors {
@@ -348,21 +337,13 @@ p#info {
 
 #menuTop #title {
     display: inline-block;
-    color: #f00;
+    color: #000;
     font-weight: bold;
-    padding-right: 40px;
+    padding: 21px;
+    text-shadow: none;
 }
 
-#envelope {
-    cursor: pointer;
-    height: 23px;
-    width: 31px;
-    display: inline-block;
-    background: url('/img/envelope-icon.png') no-repeat right center;
-    position: absolute;
-}
-
-#envelope span {
+#messages span {
     position: absolute;
     top: -3px;
     left: 24px;
@@ -378,21 +359,27 @@ p#info {
     text-align: center;
 }
 
+#messages div {
+    background: url(/img/game/buttons/messages.png) center center no-repeat !important;
+}
+
 tr.trlink {
     cursor: pointer;
 
 }
 
+tr.trlink td {
+    text-decoration: underline;
+}
+
 tr.trlink:hover td {
     color: #fff;
+    text-decoration: none;
+    background: green;
 }
 
 #threads .trlink.read {
     background: lightslategrey;
-}
-
-#messages td {
-    text-align: left;
 }
 
 #friendsList .online {
@@ -465,7 +452,7 @@ td .trash {
 }
 
 #helpMenu {
-    margin: 14px;
+    margin-bottom: 14px;
     text-align: center;
 }
 
@@ -483,27 +470,11 @@ td .trash {
     left: 360px
 }
 
-#helpMenu div {
-    display: inline-block;
-    padding: 32px;
-    border: 2px solid #fff;
-    border-radius: 5px;
-    background: #000;
-    box-shadow: 1px 1px 5px #000;
-    text-shadow: none;
-    cursor: pointer;
-    margin: 14px;
-}
-
-#helpMenu div:hover {
-    background: green;
-    color: #fff;
-}
-
 #helpMenu div.active {
     background: #fff;
     color: #000;
     cursor: default;
+    text-shadow: none;
 }
 
 #graphics {
@@ -520,6 +491,7 @@ td .trash {
 
 #text #unit h3 {
     margin: 10px 0;
+    text-align: center;
 }
 
 #playersingame td {
@@ -579,7 +551,7 @@ td .trash {
 }
 
 #menuBox #menu .button {
-    margin: 21px;
+    margin: 1px;
 }
 
 * {
@@ -903,46 +875,41 @@ td .trash {
 
 .buttonColors {
     border: 1px solid #fff !important;
-    background: #000 !important;
-    color: #fff !important;
+    background: #000;
+    color: #fff;
     cursor: pointer;
-}
-
-.buttonColors:hover {
-    color: #000 !important;
-    background: #fff !important;
-}
-
-#buttons .button.buttonOff, .armyButtons .button.buttonOff {
-    background: #fff !important;
-    border: 1px solid gray;
-    color: gray !important;
+    text-align: center;
+    text-decoration: none;
+    box-shadow: 1px 1px 5px #000;
 }
 
 .iconButton, .button, #submit {
     border-radius: 2px;
 }
 
-.iconButton div {
-    padding: 32px;
+.iconButton div:not(.varchar) {
     width: 23px;
     height: 23px;
 }
 
+.iconButton div {
+    padding: 32px;
+}
+
 .iconButton {
     margin: 7px;
-    cursor: pointer;
-    text-align: center;
     display: inline-block;
 }
 
 .buttonOff {
     border: 1px solid #444 !important;
+    background: #000 !important;
     color: #444 !important;
     cursor: default !important;
 }
 
 .buttonOff:hover {
+    border: 1px solid #444 !important;
     background: #000 !important;
     color: #444 !important;
     cursor: default !important;

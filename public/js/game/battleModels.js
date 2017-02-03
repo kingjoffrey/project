@@ -2,7 +2,7 @@ var BattleModels = new function () {
     this.addHero = function (side, i, color, scene) {
         var mesh = Models.getHero(color)
 
-        if (scene.getShadows()) {
+        if (Page.getShadows()) {
             mesh.castShadow = true
             mesh.receiveShadow = true
         }
@@ -33,7 +33,7 @@ var BattleModels = new function () {
     this.addUnit = function (side, i, color, modelName, scene) {
         var mesh = Models.getUnit(color, modelName)
 
-        if (scene.getShadows()) {
+        if (Page.getShadows()) {
             mesh.castShadow = true
             mesh.receiveShadow = true
         }
@@ -77,7 +77,7 @@ var BattleModels = new function () {
         mesh.position.y = 2
         mesh.position.z = -6
 
-        if (scene.getShadows()) {
+        if (Page.getShadows()) {
             mesh.castShadow = true
             mesh.receiveShadow = true
             mesh.children[0].castShadow = true
@@ -99,7 +99,7 @@ var BattleModels = new function () {
         mesh.position.y = 2
         mesh.position.z = -6
 
-        if (scene.getShadows()) {
+        if (Page.getShadows()) {
             mesh.castShadow = true
             mesh.receiveShadow = true
             mesh.children[0].castShadow = true

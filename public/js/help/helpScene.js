@@ -4,19 +4,16 @@ if (!Detector.webgl) {
 }
 
 var HelpScene = new function () {
-    var canvasWidth,
-        canvasHeight,
-        scene,
+    var scene = new THREE.Scene(),
         camera,
         sun,
-        shadows = 1,
         cameraY = 24,
-        initCamera = function () {
+        initCamera = function (w, h) {
             var viewAngle = 22,
                 near = 1,
                 far = 1000
 
-            camera = new THREE.PerspectiveCamera(viewAngle, canvasWidth / canvasHeight, near, far)
+            camera = new THREE.PerspectiveCamera(viewAngle, w / h, near, far)
             camera.rotation.order = 'YXZ'
             camera.rotation.y = -Math.PI / 4
             camera.rotation.x = Math.atan(-1 / Math.sqrt(2))
@@ -31,9 +28,7 @@ var HelpScene = new function () {
         sun = new THREE.DirectionalLight(0xdfebff, 0.75)
         sun.position.set(100, 200, 160)
         sun.target.position.set(0, 0, 0)
-        if (shadows) {
-            HelpRenderer.turnOnShadows()
-
+        if (Page.getShadows()) {
             sun.castShadow = true
 
             sun.shadow.mapSize.width = 2048
@@ -53,9 +48,6 @@ var HelpScene = new function () {
     this.getSun = function () {
         return sun
     }
-    this.getShadows = function () {
-        return shadows
-    }
     this.setCameraPosition = function (x, z) {
         camera.position.set(parseFloat(x), cameraY, parseFloat(z))
     }
@@ -74,27 +66,11 @@ var HelpScene = new function () {
     this.getCamera = function () {
         return camera
     }
-    this.getWidth = function () {
-        return canvasWidth
-    }
-    this.getHeight = function () {
-        return canvasHeight
-    }
     this.resize = function (w, h) {
-        canvasWidth = w
-        canvasHeight = h
-        camera.aspect = canvasWidth / canvasHeight
+        camera.aspect = w / h
         camera.updateProjectionMatrix()
     }
     this.init = function (w, h) {
-        canvasWidth = w
-        canvasHeight = h
-
-        scene = new THREE.Scene()
-
-        initCamera()
-        // Renderer.setScene(scene)
-        // Renderer.setCamera(camera)
-        // Renderer.init(canvasWidth, canvasHeight, 'game')
+        initCamera(w, h)
     }
 }

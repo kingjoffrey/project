@@ -4,9 +4,18 @@ $(document).ready(function () {
 })
 
 var Page = new function () {
-    var index = ''
-    this.getIndex=function () {
+    var index = '',
+        touch = 0,
+        shadows = 1
+
+    this.getIndex = function () {
         return index
+    }
+    this.getShadows = function () {
+        return shadows
+    }
+    this.hasTouch = function () {
+        return touch
     }
     this.adjust = function () {
         var height = $(window).height() - $('#menuBox').height(),
@@ -28,12 +37,23 @@ var Page = new function () {
             $(this).css('background-position', '0% ' + parseInt(-x / 10) + 'px');
         })
 
-        $('#envelope').click(function () {
+        $('#messages').click(function () {
             WebSocketSendMain.controller('messages', 'index')
         })
 
         if (!index) {
             index = $('#content').html()
+        }
+
+        if (isSet(window.orientation)) {
+            touch = 'ontouchstart' in document.documentElement
+            console.log(touch)
+
+            $(document).on('touchmove', function (e) {
+                e.preventDefault()
+            })
+
+            shadows = 0
         }
     }
 }

@@ -2,28 +2,23 @@ var HelpRenderer = new function () {
     var renderer,
         scene,
         camera,
-        width,
-        height,
-        timeOut = 100,
+        timeOut = 1000,
         stop,
         render = function () {
             renderer.render(scene, camera)
         }
 
-    this.turnOnShadows = function () {
-        renderer.shadowMap.enabled = true
-        renderer.shadowMapSoft = false
-    }
+
     this.animate = function () {
         if (stop) {
             return
         }
+
+        render()
+
         setTimeout(function () {
             requestAnimationFrame(HelpRenderer.animate)
         }, timeOut)
-
-        render()
-        // stats.update();
     }
     this.stop = function () {
         stop = 1
@@ -31,14 +26,16 @@ var HelpRenderer = new function () {
     this.isRunning = function () {
         return !stop
     }
-    this.init = function (s) {
+    this.init = function (s, w, h) {
         stop = 0
         renderer = Renderer.get()
+        if(Page.getShadows()){
+            renderer.shadowMap.enabled = true
+            renderer.shadowMapSoft = false
+        }
         scene = s.get()
         camera = s.getCamera()
-        width = s.getWidth()
-        height = s.getHeight()
-        renderer.setSize(width, height)
+        renderer.setSize(w, h)
         $('#graphics').append(renderer.domElement)
         HelpRenderer.animate()
     }

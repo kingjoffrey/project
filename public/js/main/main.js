@@ -14,24 +14,33 @@ var Main = new function () {
     }
     this.createMenu = function (menu) {
         if (init) {
-            return
+            dupa.blada()
         }
         init = 1
-        var menuDiv = $('#menu')
+
         for (var controller in menu) {
-            if (active == controller) {
-                var id = 'active'
-            } else {
-                var id = ''
-            }
-            menuDiv.append(
-                $('<a>')
-                    .addClass('button')
-                    .attr('id', controller)
-                    .html(menu[controller])
+            $('#menu').append(
+                $('<div>').addClass('iconButton buttonColors')
                     .click(click(controller))
+                    .append(
+                        $('<div>').html(menu[controller]).addClass('varchar')
+                    )
+                    .attr('id', controller)
             )
         }
+
+        {
+            $('#menu').append(
+                $('<div>').addClass('iconButton buttonColors')
+                    .click(click('messages'))
+                    .append($('<div>').html('&nbsp;&nbsp;&nbsp;').addClass('varchar'))
+                    .attr({
+                        id: 'messages',
+                        title: 'Messages'
+                    })
+            )
+        }
+
         Page.adjust()
     }
     this.updateMenuClick = function () {
