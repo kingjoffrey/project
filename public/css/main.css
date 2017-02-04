@@ -47,9 +47,9 @@ a:hover {
 
 input {
     border: 1px solid grey;
-    border-radius: 5px;
-    padding: 21px 6px;
-    box-shadow: 1px 1px 5px #000;
+    border-radius: 2px;
+    padding: 21px 7px;
+    box-shadow: 0 0 7px #000;
     text-align: center;
     background: #373737;
     color: white;
@@ -71,8 +71,6 @@ input[type="radio"], input[type="checkbox"] {
 .button, #submit {
     padding: 32px;
     margin: 4px;
-    border: 2px solid #fff;
-    border-radius: 5px;
     display: inline-block;
 }
 
@@ -254,11 +252,10 @@ th {
     border: 1px solid grey;
     padding: 10px;
     text-align: center;
-    /*box-shadow: 1px 1px 5px #000;*/
 }
 
 #content form label {
-    color: #fff;
+    color: #999;
     text-shadow: 1px 1px 0 #000;
 }
 
@@ -571,12 +568,15 @@ td .trash {
     user-select: none;
 }
 
+.game, .editor {
+    display: none;
+}
+
 #game {
     position: relative;
     left: 0;
     top: 0;
-    background: url(/img/bg_0.jpg) #000;
-    display: block;
+    background: #000;
     overflow: hidden;
     clear: both;
 }
@@ -585,10 +585,6 @@ td .trash {
     min-width: 0;
     border-spacing: 1px;
     border: none !important;
-}
-
-#game tr:hover {
-
 }
 
 #game td {
@@ -632,14 +628,13 @@ td .trash {
 }
 
 .message .content {
-    margin: 0 auto;
-    display: inline-block;
     border: 1px solid green;
     border-radius: 0px !important;
     box-shadow: 0 0 20px #000;
     pointer-events: auto;
     color: #fff;
     background: url("/img/game/message_bg.png");
+    position: absolute;
 }
 
 .message .content tr {
@@ -872,26 +867,14 @@ td .trash {
     left: 2px;
 }
 
-#game .box {
-    position: fixed;
-    z-index: 27000;
-    border: 0px solid green;
-    border-radius: 0px !important;
-    box-shadow: 0 0 20px #000;
-    padding: 2px;
-}
-
-.buttonColors {
-    border: 1px solid #fff !important;
+.buttonColors, #submit {
+    border: 1px solid #fff;
     background: #000;
     color: #fff;
     cursor: pointer;
     text-align: center;
     text-decoration: none;
-    box-shadow: 1px 1px 5px #000;
-}
-
-.iconButton, .button, #submit {
+    box-shadow: 0 0 14px #000;
     border-radius: 2px;
 }
 
@@ -1228,6 +1211,7 @@ table.treasury td {
     font-size: 50px;
     z-index: 99999;
     margin: 21px;
+    display: none;
 }
 
 #gameMenu .row {
@@ -1287,4 +1271,83 @@ table.treasury td {
 .unitName {
     padding: 42px 0;
     display: inline-block;
+}
+
+#new {
+    border: 2px solid grey;
+    border-radius: 5px;
+    text-align: center;
+    box-shadow: 1px 1px 5px #000;
+}
+
+#new #img {
+    width: 520px;
+}
+
+#new canvas {
+    box-shadow: 0 0 5px #000;
+}
+
+#new form {
+    border: none;
+    background: none;
+    margin: 5px;
+    padding: 5px;
+    box-shadow: none;
+}
+
+#new #form {
+    width: 260px;
+}
+
+#new input[type="text"] {
+    width: 20px;
+}
+
+#join {
+    /*margin-top: 1px;*/
+}
+
+#numberOfPlayers-label {
+    display: none;
+}
+
+.bigLink {
+    text-align: center;
+    font-size: 30px;
+    margin: 9px 30px 30px 30px;
+    cursor: pointer;
+}
+
+.bigLink a {
+    background: green;
+    text-decoration: none;
+    display: block;
+    border: 1px solid white;
+    border-radius: 5px;
+    padding: 15px;
+}
+
+.bigLink a:hover {
+    color: red;
+    background: white;
+}
+
+#leftMenu {
+    position: absolute;
+    width: 100px;
+}
+
+#leftMenu .button {
+    padding: 0;
+    display: block;
+}
+
+#rightMenu {
+    right: 0px;
+    position: absolute;
+}
+
+#rightMenu .button {
+    padding: 0;
 }

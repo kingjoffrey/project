@@ -11,9 +11,9 @@ var SingleController = new function () {
             WebSocketSendMain.controller('single', 'index', {'mapId': $('#mapId').val()})
         })
         $('#mapId').change(function () {
-            WebSocketSendMain.controller('new', 'map', {'mapId': $('#mapId').val()})
+            WebSocketSendMain.controller('create', 'map', {'mapId': $('#mapId').val()})
         })
 
-        WebSocketSendMain.controller('new', 'map', {'mapId': $('#mapId').val()})
+        WebSocketSendMain.controller('create', 'map', {'mapId': $('#mapId').val()})
     }
 }

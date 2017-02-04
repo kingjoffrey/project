@@ -49,12 +49,12 @@ var EditorGui = new function () {
             $('#down').click(function () {
                 EditorModels.createMesh('down')
             })
-            $('#exit').click(function () {
-                IndexController.index({'data': Page.getIndex()})
+            $('#rightMenu #exit').click(function () {
+                IndexController.index()
             })
             $('#publish').click(function () {
                 WebSocketSendEditor.publish()
-                IndexController.index({'data': Page.getIndex()})
+                IndexController.index()
             })
         }
 
@@ -62,6 +62,7 @@ var EditorGui = new function () {
         $('#mapBox').width($('#map canvas').width())
         $('#map').height($('#map canvas').height())
         GameScene.resize($(window).innerWidth(), $(window).innerHeight())
+        GameRenderer.setSize($(window).innerWidth(), $(window).innerHeight())
     }
     this.init = function () {
         $(window).resize(function () {
@@ -77,7 +78,7 @@ var EditorGui = new function () {
             .on('dragstart', function () {
                 return false
             })
-        $('#editor canvas').mousewheel(function (event) {
+        $('#game canvas').mousewheel(function (event) {
             if (event.deltaY > 0) {
                 if (GameScene.getCameraY() < 230) {
                     GameScene.moveCameraAway()

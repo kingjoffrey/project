@@ -7,7 +7,7 @@ var LoadController = new function () {
         content.html(data)
 
         $('.trlink').click(function () {
-            WebSocketSendMain.controller('game', 'index', {'gameId': $(this).attr('id')})
+            GameController.index($(this).attr('id'))
         })
     }
 }

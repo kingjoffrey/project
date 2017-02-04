@@ -116,7 +116,6 @@ var TreasuryWindow = new function () {
 
 
         var id = Message.simple(translations.income, table)
-        Message.setOverflowHeight(id)
     }
     this.upkeep = function () {
         var myUnits = 0,
@@ -192,6 +191,5 @@ var TreasuryWindow = new function () {
         )
 
         var id = Message.simple(translations.upkeep, table)
-        Message.setOverflowHeight(id)
     }
 }

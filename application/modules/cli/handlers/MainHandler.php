@@ -7,7 +7,6 @@ include_once(APPLICATION_PATH . '/modules/cli/controllers/Contact.php');
 include_once(APPLICATION_PATH . '/modules/cli/controllers/Create.php');
 include_once(APPLICATION_PATH . '/modules/cli/controllers/Editor.php');
 include_once(APPLICATION_PATH . '/modules/cli/controllers/Friends.php');
-include_once(APPLICATION_PATH . '/modules/cli/controllers/Game.php');
 include_once(APPLICATION_PATH . '/modules/cli/controllers/Help.php');
 include_once(APPLICATION_PATH . '/modules/cli/controllers/Halloffame.php');
 include_once(APPLICATION_PATH . '/modules/cli/controllers/Load.php');

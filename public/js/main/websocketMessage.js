@@ -21,19 +21,18 @@ var WebSocketMessageMain = new function () {
                         GameRenderer.stop()
                         Editor.setInit(0)
                     }
-                    if (r.type != 'game') {
-                        if (WebSocketGame.isOpen()) {
-                            WebSocketGame.close()
-                            WebSocketExecGame.close()
-                            GameRenderer.stop()
-                            Game.resetLoading()
-                        }
-                        if (WebSocketTutorial.isOpen()) {
-                            WebSocketTutorial.close()
-                            WebSocketExecTutorial.close()
-                            GameRenderer.stop()
-                            Game.resetLoading()
-                        }
+
+                    if (WebSocketGame.isOpen()) {
+                        WebSocketGame.close()
+                        WebSocketExecGame.close()
+                        GameRenderer.stop()
+                        Game.resetLoading()
+                    }
+                    if (WebSocketTutorial.isOpen()) {
+                        WebSocketTutorial.close()
+                        WebSocketExecTutorial.close()
+                        GameRenderer.stop()
+                        Game.resetLoading()
                     }
 
                     if (r.type == 'create' && r.action == 'map') {
@@ -46,7 +45,7 @@ var WebSocketMessageMain = new function () {
                                     .append(
                                         $('<div>').attr('id', 'back').addClass('button buttonColors').html(translations.Back).click(function () {
                                             Sound.play('click')
-                                            IndexController.index({'data': Page.getIndex()})
+                                            IndexController.index()
                                         })
                                     ).css({
                                         'text-align': 'right'
@@ -58,7 +57,7 @@ var WebSocketMessageMain = new function () {
                                     .append(
                                         $('<div>').attr('id', 'back').addClass('button buttonColors').html(translations.Back).click(function () {
                                             Sound.play('click')
-                                            IndexController.index({'data': Page.getIndex()})
+                                            IndexController.index()
                                         })
                                     ).css({
                                         'text-align': 'right'
@@ -68,7 +67,7 @@ var WebSocketMessageMain = new function () {
                                     .append(
                                         $('<div>').attr('id', 'back').addClass('button buttonColors').html(translations.Back).click(function () {
                                             Sound.play('click')
-                                            IndexController.index({'data': Page.getIndex()})
+                                            IndexController.index()
                                         })
                                     ).css({
                                         'text-align': 'right'

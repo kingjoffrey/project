@@ -210,8 +210,6 @@ var CastleWindow = new function () {
                 .append($('<div>').addClass('relocatedProduction').append($('<div>').html(translations.relocatingFrom).addClass('title')).append(relocatingFrom))
         }
 
-        Message.setOverflowHeight(messageId)
-
         if (castle.getCastleId() == CommonMe.getCapitalId()) {
             if (!CommonMe.findHero() && CommonMe.getGold() >= 100) {
                 $('#heroResurrection').removeClass('buttonOff')
@@ -235,6 +233,8 @@ var CastleWindow = new function () {
                 Message.cancel(id)
             })
         }
+
+        Message.adjust(id)
     }
     this.raze = function () {
         if (!CommonMe.getSelectedArmyId()) {

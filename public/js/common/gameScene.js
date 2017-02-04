@@ -4,7 +4,7 @@ if (!Detector.webgl) {
 }
 
 var GameScene = new function () {
-    var scene = new THREE.Scene(),
+    var scene,
         camera,
         sun,
         cameraY = 24,
@@ -142,6 +142,7 @@ var GameScene = new function () {
         camera.updateProjectionMatrix()
     }
     this.init = function (w, h) {
+        scene = new THREE.Scene()
         initCamera(w, h)
     }
 }

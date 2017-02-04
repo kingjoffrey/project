@@ -1,8 +1,9 @@
 <?php
+use Devristo\Phpws\Protocol\WebSocketTransportInterface;
 
 class EditorController
 {
-    function index(Devristo\Phpws\Protocol\WebSocketTransportInterface $user, Cli_MainHandler $handler)
+    function index(WebSocketTransportInterface $user, Cli_MainHandler $handler)
     {
         $db = $handler->getDb();
         $mMap = new Application_Model_Map (0, $db);
@@ -20,7 +21,7 @@ class EditorController
         $handler->sendToUser($user, $token);
     }
 
-    function create(Devristo\Phpws\Protocol\WebSocketTransportInterface $user, Cli_MainHandler $handler, $dataIn)
+    function create(WebSocketTransportInterface $user, Cli_MainHandler $handler, $dataIn)
     {
         $view = new Zend_View();
         $view->formCreate = new Application_Form_Createmap ();
@@ -37,15 +38,10 @@ class EditorController
             $mMapPlayers = new Application_Model_MapPlayers($mapId, $db);
             $mMapPlayers->create($mSide->getWithLimit($dataIn['maxPlayers']));
 
-            $layout = new Zend_Layout();
-            $layout->setLayoutPath(APPLICATION_PATH . '/layouts/scripts');
-            $layout->setLayout('editor');
-
             $token = array(
                 'type' => 'editor',
                 'action' => 'generate',
-                'mapId' => $mapId,
-                'data' => $layout->render()
+                'mapId' => $mapId
             );
         } else {
             $view->addScriptPath(APPLICATION_PATH . '/views/scripts');
@@ -59,22 +55,7 @@ class EditorController
         $handler->sendToUser($user, $token);
     }
 
-    function edit(Devristo\Phpws\Protocol\WebSocketTransportInterface $user, Cli_MainHandler $handler)
-    {
-        $layout = new Zend_Layout();
-        $layout->setLayoutPath(APPLICATION_PATH . '/layouts/scripts');
-        $layout->setLayout('editor');
-
-        $token = array(
-            'type' => 'editor',
-            'action' => 'edit',
-            'data' => $layout->render()
-        );
-
-        $handler->sendToUser($user, $token);
-    }
-
-    function delete(Devristo\Phpws\Protocol\WebSocketTransportInterface $user, Cli_MainHandler $handler, $dataIn)
+    function delete(WebSocketTransportInterface $user, Cli_MainHandler $handler, $dataIn)
     {
         if (!isset($dataIn['id'])) {
             return;
@@ -95,7 +76,7 @@ class EditorController
         }
     }
 
-//    function aaa(Devristo\Phpws\Protocol\WebSocketTransportInterface $user, Cli_MainHandler $handler, $dataIn)
+//    function aaa(WebSocketTransportInterface $user, Cli_MainHandler $handler, $dataIn)
 //    {
 //        $db = $handler->getDb();
 //        $mapFields = new Application_Model_MapFields($dataIn['id'], $db);

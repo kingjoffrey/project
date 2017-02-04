@@ -12,7 +12,7 @@ var EditorController = new function () {
         })
         $('.trlink').click(function () {
             mapId = $(this).attr('id')
-            WebSocketSendMain.controller('editor', 'edit')
+            EditorController.edit()
         })
         $('.trash').click(function (e) {
             e.preventDefault()
@@ -38,16 +38,15 @@ var EditorController = new function () {
         })
     }
     this.generate = function (r) {
-        var main = $('#main')
-        Main.setMain(main.html())
-        main.html(r.data)
         mapId = r.mapId
         MapGenerator.init()
     }
-    this.edit = function (r) {
-        var main = $('#main')
-        Main.setMain(main.html())
-        main.html(r.data)
+    this.edit = function () {
+        $('#bg').hide()
+        $('.game').hide()
+
+        $('#game').show()
+        $('.editor').show()
         WebSocketEditor.init()
     }
     this.getMapId = function () {

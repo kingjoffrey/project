@@ -66,6 +66,11 @@ var Game = new function () {
         Players.showFirst(Turn.getColor())
 
         Sound.play('gamestart')
-        $('#loading').css('display', 'none')
+
+        $('#loading').hide()
+        $('.editor').hide()
+
+        $('#game').show()
+        $('.game').show()
     }
 }

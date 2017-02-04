@@ -1,16 +1,14 @@
 "use strict"
 var IndexController = new function () {
-    this.index = function (r) {
-        var main = Main.getMain()
+    this.index = function () {
+        $('.message').remove()
 
-        if (main) {
-            $('#main').html(main)
-            Main.setMain('')
-            Main.updateMenuClick()
-            Page.init()
-        }
+        $('#game').hide()
+        $('#gameMenu').hide()
 
-        $('#content').html(r.data)
+        $('#content').html(Page.getIndex())
+
+        $('#bg').show()
         $('#menuBox').show()
     }
 }

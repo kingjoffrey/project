@@ -48,43 +48,28 @@ var Message = new function () {
         }
     }
     this.adjust = function (id) {
-        // maxHeight = GameScene.getHeight() - 140
-        //
-        // if (maxHeight < parseInt($('#' + id + ' #content').css('min-height'))) {
-        //     maxHeight = parseInt($('#' + id + ' #content').css('min-height'))
-        // }
-        //
-        if ($('#' + id + ' .showCastle').length) {
-            $('#' + id + ' .content').css({
-                'z-index': $('#' + id).css('z-index') + 1,
-                // 'max-height': maxHeight + 'px'
-            })
-        }
-        // else if ($('#' + id).length) {
-        //     $('#' + id + ' #content').css({
-        //         'max-height': maxHeight + 'px'
-        //     })
-        // } else {
-        //     $('.message #content').css({
-        //         'max-height': maxHeight + 'px'
-        //     })
-        // }
-    }
-    this.setOverflowHeight = function (id) {
-        // if ($('#' + id + ' .showCastle').length) {
-        //     var minus = 25
-        // } else if ($('#' + id + ' #content').height() == maxHeight) {
-        //     var minus = 74
-        // } else {
-        //     var minus = 74
-        // }
-        //
-        // var height = $('#' + id + ' #content').height() - minus
-        //
-        // $('#' + id + ' div.overflow').css('height', height + 'px')
+        if (isSet(id)) {
+            if ($('#' + id + ' .showCastle').length) {
+                $('#' + id + ' .content').css({
+                    'z-index': $('#' + id + ' .content').css('z-index') + 100
+                })
+            }
 
-        if (CommonMe.isSelected()) {
-            CommonMe.setIsSelected(0)
+            var messageContentLeft = $(window).innerWidth() / 2 - $('#' + id + ' .content').outerWidth() / 2,
+                messageContentTop = $(window).innerHeight() / 2 - $('#' + id + ' .content').outerHeight() / 2
+
+            $('#' + id + ' .content').css({
+                'left': messageContentLeft + 'px',
+                'top': messageContentTop + 'px'
+            })
+        } else {
+            var messageContentLeft = $(window).innerWidth() / 2 - $('.message .content').outerWidth() / 2,
+                messageContentTop = $(window).innerHeight() / 2 - $('.message .content').outerHeight() / 2
+
+            $('.message .content').css({
+                'left': messageContentLeft + 'px',
+                'top': messageContentTop + 'px'
+            })
         }
     }
     this.ok = function (id, func) {
@@ -101,9 +86,13 @@ var Message = new function () {
                     }
                     Message.remove(id)
                 })
-        );
+        )
 
-        this.setOverflowHeight(id)
+        if (CommonMe.isSelected()) {
+            CommonMe.setIsSelected(0)
+        }
+
+        this.adjust(id)
     }
     this.cancel = function (id, func) {
         if (!$('#' + id + ' #buttons').length) {
@@ -120,6 +109,7 @@ var Message = new function () {
                     Message.remove(id)
                 })
         )
+        this.adjust(id)
     }
     this.close = function (id, func) {
         if (!$('#' + id + ' #buttons').length) {
@@ -137,5 +127,6 @@ var Message = new function () {
                     Message.remove(id)
                 })
         )
+        this.adjust(id)
     }
 }

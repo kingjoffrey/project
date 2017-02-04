@@ -81,15 +81,10 @@ class TutorialController
             }
         }
 
-        $layout = new Zend_Layout();
-        $layout->setLayoutPath(APPLICATION_PATH . '/layouts/scripts');
-        $layout->setLayout('game');
-
         $token = array(
             'type' => 'tutorial',
             'action' => 'index',
             'steps' => $tutorial->toArray(),
-            'data' => $layout->render(),
             'gameId' => $gameId
         );
 

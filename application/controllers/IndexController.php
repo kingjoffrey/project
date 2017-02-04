@@ -12,8 +12,6 @@ class IndexController extends Coret_Controller_Authorized
         $version = Zend_Registry::get('config')->version;
 
         $this->view->headLink()->prependStylesheet('/css/main.css?v=' . $version);
-        $this->view->headLink()->appendStylesheet('/css/editor.css?v=' . $version);
-        $this->view->headLink()->appendStylesheet('/css/new.css?v=' . $version);
 
         $this->view->jquery();
         $this->view->headScript()->appendFile('/js/jquery.mousewheel.min.js');

@@ -4,6 +4,7 @@ var GameGui = new function () {
         show = true,
         documentTitle,
         friendsShow = false,
+        init = 0,
         doKey = function (event) {
             if ($('#game').length == 0) {
                 return
@@ -91,9 +92,9 @@ var GameGui = new function () {
                 TreasuryWindow.upkeep()
             })
 
-            $('#exit').click(function () {
+            $('#gameMenu #exit').click(function () {
                 Sound.play('click')
-                IndexController.index({'data': Page.getIndex()})
+                IndexController.index()
             })
 
             $('#surrender').click(function () {
@@ -167,12 +168,10 @@ var GameGui = new function () {
             })
             $('#showMenu').click(function () {
                 GameRenderer.stop()
-                $('#game').hide()
                 $('#gameMenu').show()
             })
             $('#close').click(function () {
                 GameRenderer.start()
-                $('#game').show()
                 $('#gameMenu').hide()
             })
             // $('#').click(function () {
@@ -184,10 +183,16 @@ var GameGui = new function () {
         BattleScene.resize($(window).innerWidth(), $(window).innerHeight())
         GameRenderer.setSize($(window).innerWidth(), $(window).innerHeight())
 
-        var goldBoxLeft = $(window).innerWidth() / 2 - $('#gold').outerWidth() / 2
+        var goldButtonLeft = $(window).innerWidth() / 2 - $('#gold').outerWidth() / 2
         $('#gold').css({
-            'left': goldBoxLeft + 'px'
+            'left': goldButtonLeft + 'px'
         })
+
+        if (init) {
+            console.log('no to dupa')
+            Message.adjust()
+        }
+        init = 1
     }
     this.end = function () {
         WebSocketSendMain.controller('over', 'index', {'id': Game.getGameId()})

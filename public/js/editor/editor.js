@@ -10,7 +10,7 @@ var Editor = new function () {
             Ruins.init(r.ruins)
             Players.init(r.players)
             GameScene.setCameraPosition(0, Fields.getMaxY())
-            GameRenderer.init('editor', GameScene)
+            GameRenderer.init('game', GameScene)
             GameScene.initSun(Fields.getMaxY())
             GameRenderer.animate()
             EditorGui.init()

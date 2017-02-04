@@ -265,9 +265,6 @@ var StatusWindow = new function () {
 
         div.append(table)
 
-        var id = Message.simple(translations.armyStatus, div)
-        Message.setOverflowHeight(id)
-
         for (var soldierId in army.getWalkingSoldiers()) {
             $('soldier' + soldierId).html(Unit.getName(army.getWalkingSoldier(soldierId).unitId))
         }

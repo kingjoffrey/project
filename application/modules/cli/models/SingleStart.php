@@ -61,14 +61,9 @@ class Cli_Model_SingleStart
         }
 
 
-        $layout = new Zend_Layout();
-        $layout->setLayoutPath(APPLICATION_PATH . '/layouts/scripts');
-        $layout->setLayout('game');
-
         $token = array(
             'type' => 'game',
             'action' => 'index',
-            'data' => $layout->render(),
             'gameId' => $gameId
         );
 

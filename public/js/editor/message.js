@@ -58,19 +58,6 @@ var EditorMessage = new function () {
             $('.message .msgTitle').css({width: $('.message').width() - 50})
         }
     }
-    this.setOverflowHeight = function (id) {
-        if ($('#' + id + ' .showCastle').length) {
-            var minus = 0
-        } else if ($('#' + id).height() == maxHeight) {
-            var minus = 65
-        } else {
-            var minus = 20
-        }
-
-        var height = $('#' + id).height() - minus;
-
-        $('#' + id + ' div.overflow').css('height', height + 'px')
-    }
     this.ok = function (id, func) {
         if (!$('#' + id + ' #buttons').length) {
             $('#' + id).append($('<div>').attr('id', 'buttons'))
@@ -85,9 +72,7 @@ var EditorMessage = new function () {
                     }
                     EditorMessage.remove(id);
                 })
-        );
-
-        this.setOverflowHeight(id)
+        )
     }
     this.cancel = function (id, func) {
         if (!$('#' + id + ' #buttons').length) {

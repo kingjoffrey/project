@@ -124,6 +124,5 @@ var SplitWindow = new function () {
         var id = Message.show(translations.splitArmy, div);
         Message.cancel(id)
         Message.ok(id, WebSocketSendCommon.split)
-        Message.setOverflowHeight(id)
     }
 }
