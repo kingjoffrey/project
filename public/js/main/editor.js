@@ -44,9 +44,7 @@ var EditorController = new function () {
     this.edit = function () {
         $('#bg').hide()
         $('.game').hide()
-
-        $('#game').show()
-        $('.editor').show()
+        $('#loading').show()
         WebSocketEditor.init()
     }
     this.getMapId = function () {

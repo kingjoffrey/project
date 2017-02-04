@@ -10,31 +10,6 @@ var WebSocketMessageMain = new function () {
                 if (typeof window[className][methodName] === "function") {
                     window[className][methodName](r)
 
-                    if (r.type != 'create' && r.type != 'join' && r.type != 'setup' && WebSocketNew.isOpen()) {
-                        WebSocketNew.close()
-                    }
-                    if (r.type != 'help' && HelpRenderer.isRunning()) {
-                        HelpRenderer.stop()
-                    }
-                    if (r.type != 'editor' && WebSocketEditor.isOpen()) {
-                        WebSocketEditor.close()
-                        GameRenderer.stop()
-                        Editor.setInit(0)
-                    }
-
-                    if (WebSocketGame.isOpen()) {
-                        WebSocketGame.close()
-                        WebSocketExecGame.close()
-                        GameRenderer.stop()
-                        Game.resetLoading()
-                    }
-                    if (WebSocketTutorial.isOpen()) {
-                        WebSocketTutorial.close()
-                        WebSocketExecTutorial.close()
-                        GameRenderer.stop()
-                        Game.resetLoading()
-                    }
-
                     if (r.type == 'create' && r.action == 'map') {
                         return
                     } else {

@@ -17,7 +17,7 @@ var WebSocketGame = new function () {
 
         ws.onclose = function () {
             WebSocketSendGame.setClosed(1)
-            setTimeout('WebSocketGame.init(WebSocketGame.getPort())', 1000)
+            IndexController.index()
         }
 
         WebSocketSendGame.init(ws)
@@ -60,7 +60,7 @@ var WebSocketExecGame = new function () {
             }
         }
         ws.onclose = function () {
-            setTimeout('WebSocketExecGame.init()', 1000)
+            IndexController.index()
         }
     }
     this.close = function () {

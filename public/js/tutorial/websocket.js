@@ -17,7 +17,7 @@ var WebSocketTutorial = new function () {
 
         ws.onclose = function () {
             WebSocketSendGame.setClosed(1)
-            setTimeout('WebSocketTutorial.init(WebSocketTutorial.getPort())', 1000)
+            IndexController.index()
         }
 
         WebSocketSendGame.init(ws)
@@ -60,7 +60,7 @@ var WebSocketExecTutorial = new function () {
             }
         }
         ws.onclose = function () {
-            setTimeout('WebSocketExecTutorial.init()', 1000)
+            IndexController.index()
         }
     }
     this.close = function () {

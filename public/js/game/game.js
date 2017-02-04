@@ -53,6 +53,10 @@ var Game = new function () {
             BattleScene.initSun(Fields.getMaxY())
             GameGui.init()
             PickerCommon.init(PickerGame)
+
+            $('#loading').hide()
+            $('#game').show()
+            $('.game').show()
         }
 
         if (Turn.isMy()) {
@@ -66,11 +70,5 @@ var Game = new function () {
         Players.showFirst(Turn.getColor())
 
         Sound.play('gamestart')
-
-        $('#loading').hide()
-        $('.editor').hide()
-
-        $('#game').show()
-        $('.game').show()
     }
 }
