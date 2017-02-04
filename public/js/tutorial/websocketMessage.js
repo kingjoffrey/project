@@ -5,7 +5,7 @@ var WebSocketMessageTutorial = new function () {
         if (r.type == 'step') {
             Tutorial.changeStep(r.step)
         } else {
-            WebSocketMessageCommon.switch(r)
+            WebSocketMessageGame.switch(r)
         }
     }
 }

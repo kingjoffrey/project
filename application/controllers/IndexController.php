@@ -79,6 +79,7 @@ class IndexController extends Coret_Controller_Authorized
 
         $this->view->headScript()->appendFile('/js/game/battleModels.js?v=' . $version);
         $this->view->headScript()->appendFile('/js/game/battleScene.js?v=' . $version);
+        $this->view->headScript()->appendFile('/js/game/execute.js?v=' . $version);
         $this->view->headScript()->appendFile('/js/game/game.js?v=' . $version);
         $this->view->headScript()->appendFile('/js/game/picker.js?v=' . $version);
         $this->view->headScript()->appendFile('/js/game/unit.js?v=' . $version);
@@ -102,6 +103,8 @@ class IndexController extends Coret_Controller_Authorized
         $this->view->headScript()->appendFile('/js/game/treasuryWindow.js?v=' . $version);
         $this->view->headScript()->appendFile('/js/game/statisticsWindow.js?v=' . $version);
         $this->view->headScript()->appendFile('/js/game/websocket.js?v=' . $version);
+        $this->view->headScript()->appendFile('/js/game/websocketMessage.js?v=' . $version);
+        $this->view->headScript()->appendFile('/js/game/websocketSend.js?v=' . $version);
 
         $this->view->headScript()->appendFile('/js/common/castle.js?v=' . $version);
         $this->view->headScript()->appendFile('/js/common/castles.js?v=' . $version);
@@ -119,9 +122,6 @@ class IndexController extends Coret_Controller_Authorized
         $this->view->headScript()->appendFile('/js/common/tower.js?v=' . $version);
         $this->view->headScript()->appendFile('/js/common/towers.js?v=' . $version);
         $this->view->headScript()->appendFile('/js/common/units.js?v=' . $version);
-        $this->view->headScript()->appendFile('/js/common/execute.js?v=' . $version);
-        $this->view->headScript()->appendFile('/js/common/websocketSend.js?v=' . $version);
-        $this->view->headScript()->appendFile('/js/common/websocketMessage.js?v=' . $version);
 
         $this->view->headScript()->appendFile('/js/tutorial/tutorial.js?v=' . $version);
         $this->view->headScript()->appendFile('/js/tutorial/websocket.js?v=' . $version);

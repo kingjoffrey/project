@@ -1,5 +1,5 @@
 "use strict"
-var WebSocketMessageCommon = new function () {
+var WebSocketMessageGame = new function () {
     this.switch = function (r) {
         console.log(r)
         switch (r.type) {
@@ -98,20 +98,6 @@ var WebSocketMessageCommon = new function () {
 
             case 'open':
                 GameInit.init(r)
-                break;
-
-            case 'close':
-//                 GamePlayers.setOnline(r.color, 0)
-                break;
-
-            case 'online':
-                //if (!CommonMe.colorEquals(r.color)) {
-//                     GamePlayers.setOnline(r.color, 1)
-                //}
-                break;
-
-            case 'chat':
-//                 Chat.message(r.color, r.msg, makeTime())
                 break;
 
             case 'production':
