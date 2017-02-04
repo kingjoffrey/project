@@ -845,6 +845,7 @@ td .trash {
 #gold {
     text-shadow: none;
     position: absolute;
+    margin: 7px;
 }
 
 #gold #value {
