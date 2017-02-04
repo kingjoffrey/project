@@ -10,7 +10,7 @@ var Turn = new function () {
         number++
         if (Turn.isMy()) {
             CommonMe.turnOn()
-            WebSocketSendCommon.startMyTurn();
+            WebSocketSendGame.startMyTurn();
         } else {
             CommonMe.turnOff()
         }
@@ -25,7 +25,7 @@ var Turn = new function () {
     }
     this.next = function () {
         var id = Message.simple(translations.nextTurn, translations.areYouSure)
-        Message.ok(id, WebSocketSendCommon.nextTurn)
+        Message.ok(id, WebSocketSendGame.nextTurn)
     }
     this.init = function (c, n) {
         color = c

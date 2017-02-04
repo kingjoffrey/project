@@ -19,7 +19,6 @@ var CastleWindow = new function () {
         var time = '',
             checked,
             messageId,
-            capital = false,
             castleWindow = $('<div>').addClass('showCastle'),
             createProductionTD = function () {
                 var array = $('<div>')
@@ -111,12 +110,6 @@ var CastleWindow = new function () {
                 }
                 return array
             }
-
-        if (castle.getCastleId() == CommonMe.getCapitalId()) {
-            messageId = Message.show(castle.getName() + '&nbsp;(' + translations.capitalCity + ')', castleWindow)
-        } else {
-            messageId = Message.show(translations.castle + '&nbsp;' + castle.getName(), castleWindow)
-        }
 
         var next = $('<div>'),
             previous = $('<div>'),
@@ -223,25 +216,31 @@ var CastleWindow = new function () {
             }
             $('#heroResurrection:not(.buttonOff)').click(function () {
                 var id = Message.show(translations.resurrectHero, $('<div>').append(translations.doYouWantToResurrectHeroFor100Gold))
-                Message.ok(id, WebSocketSendCommon.resurrection)
+                Message.ok(id, WebSocketSendGame.resurrection)
                 Message.cancel(id)
             })
 
             $('#heroHire:not(.buttonOff)').click(function () {
                 var id = Message.show(translations.hireHero, $('<div>').html(translations.doYouWantToHireNewHeroFor1000Gold))
-                Message.ok(id, WebSocketSendCommon.hire)
+                Message.ok(id, WebSocketSendGame.hire)
                 Message.cancel(id)
             })
         }
 
-        Message.adjust(id)
+        if (castle.getCastleId() == CommonMe.getCapitalId()) {
+            messageId = Message.show(castle.getName() + '&nbsp;(' + translations.capitalCity + ')', castleWindow)
+        } else {
+            messageId = Message.show(translations.castle + '&nbsp;' + castle.getName(), castleWindow)
+        }
+
+        Message.adjust(messageId)
     }
     this.raze = function () {
         if (!CommonMe.getSelectedArmyId()) {
             return;
         }
         var id = Message.show(translations.destroyCastle, $('<div>').html(translations.areYouSure))
-        Message.ok(id, WebSocketSendCommon.raze);
+        Message.ok(id, WebSocketSendGame.raze);
         Message.cancel(id)
     }
     this.build = function () {
@@ -270,7 +269,7 @@ var CastleWindow = new function () {
                 .append($('<div>').html(translations.newDefense + ': ' + newDefense))
                 .append($('<div>').html(translations.Cost + ': ' + costBuildDefense + ' ' + translations.gold))
             var id = Message.show(translations.buildCastleDefense, div);
-            Message.ok(id, WebSocketSendCommon.defense);
+            Message.ok(id, WebSocketSendGame.defense);
         }
         Message.cancel(id)
     }

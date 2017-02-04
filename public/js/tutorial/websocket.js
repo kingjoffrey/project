@@ -7,8 +7,8 @@ var WebSocketTutorial = new function () {
         ws = new WebSocket(wsURL + ':' + port + '/tutorial' + Game.getGameId())
 
         ws.onopen = function () {
-            WebSocketSendCommon.setClosed(0)
-            WebSocketSendCommon.open()
+            WebSocketSendGame.setClosed(0)
+            WebSocketSendGame.open()
         }
 
         ws.onmessage = function (e) {
@@ -16,11 +16,11 @@ var WebSocketTutorial = new function () {
         }
 
         ws.onclose = function () {
-            WebSocketSendCommon.setClosed(1)
+            WebSocketSendGame.setClosed(1)
             setTimeout('WebSocketTutorial.init(WebSocketTutorial.getPort())', 1000)
         }
 
-        WebSocketSendCommon.init(ws)
+        WebSocketSendGame.init(ws)
     }
     this.getPort = function () {
         return port

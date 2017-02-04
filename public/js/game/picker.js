@@ -12,7 +12,7 @@ var PickerGame = new function () {
                     } else if (clickStart && clickStart.x == x && clickStart.y == y) {
                         clickStart = 0
                         AStar.cursorPosition(x, y)
-                        WebSocketSendCommon.move()
+                        WebSocketSendGame.move()
                     } else {
                         clickStart = {x: x, y: y}
                         AStar.cursorPosition(x, y)
@@ -33,7 +33,7 @@ var PickerGame = new function () {
                         var castleId = field.getCastleId()
                         if (CommonMe.getSelectedCastleId()) {
                             if (CommonMe.getSelectedCastleId() != castleId) {
-                                WebSocketSendCommon.production(CommonMe.getSelectedCastleId(), CommonMe.getSelectedUnitId(), castleId)
+                                WebSocketSendGame.production(CommonMe.getSelectedCastleId(), CommonMe.getSelectedUnitId(), castleId)
                             }
                             CommonMe.setSelectedCastleId(null)
                             CommonMe.setSelectedUnitId(null)

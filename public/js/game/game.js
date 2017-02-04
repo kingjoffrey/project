@@ -58,7 +58,7 @@ var Game = new function () {
         if (Turn.isMy()) {
             CommonMe.turnOn()
             if (!CommonMe.getTurnActive()) {
-                WebSocketSendCommon.startMyTurn()
+                WebSocketSendGame.startMyTurn()
             }
         } else {
             CommonMe.turnOff()

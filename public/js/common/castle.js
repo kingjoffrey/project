@@ -85,7 +85,7 @@ var Castle = function (castle, bgC) {
         }
 
         if (unitId) {
-            WebSocketSendCommon.production(castle.id, unitId)
+            WebSocketSendGame.production(castle.id, unitId)
         }
     }
 }

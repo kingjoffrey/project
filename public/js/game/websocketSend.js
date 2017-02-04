@@ -1,5 +1,5 @@
 "use strict"
-var WebSocketSendCommon = new function () {
+var WebSocketSendGame = new function () {
     var closed = true,
         ws
 
@@ -321,11 +321,11 @@ var WebSocketSendCommon = new function () {
     }
 
     this.battleAttack = function () {
-        WebSocketSendCommon.battleConfiguration(1)
+        WebSocketSendGame.battleConfiguration(1)
     }
 
     this.battleDefence = function () {
-        WebSocketSendCommon.battleConfiguration(0)
+        WebSocketSendGame.battleConfiguration(0)
     }
 
     this.battleConfiguration = function (attack) {

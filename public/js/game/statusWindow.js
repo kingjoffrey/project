@@ -118,7 +118,7 @@ var StatusWindow = new function () {
                         $('<div>')
                             .addClass('iconButton buttonColors ' + searchRuins)
                             .click(function () {
-                                WebSocketSendCommon.ruin()
+                                WebSocketSendGame.ruin()
                             })
                             .append($('<div>'))
                             .attr({
@@ -148,7 +148,7 @@ var StatusWindow = new function () {
                         $('<div>')
                             .addClass('iconButton buttonColors')
                             .click(function () {
-                                WebSocketSendCommon.fortify()
+                                WebSocketSendGame.fortify()
                             })
                             .append($('<div>'))
                             .attr({
@@ -263,10 +263,10 @@ var StatusWindow = new function () {
             )
         }
 
-        div.append(table)
+        var id = Message.simple(translations.armyStatus, div.append(table))
 
-        for (var soldierId in army.getWalkingSoldiers()) {
-            $('soldier' + soldierId).html(Unit.getName(army.getWalkingSoldier(soldierId).unitId))
-        }
+        // for (var soldierId in army.getWalkingSoldiers()) {
+        //     $('soldier' + soldierId).html(Unit.getName(army.getWalkingSoldier(soldierId).unitId))
+        // }
     }
 }

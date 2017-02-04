@@ -50,7 +50,7 @@ var GameGui = new function () {
                     Turn.next()
                     break;
                 case 70: //f
-                    WebSocketSendCommon.fortify()
+                    WebSocketSendGame.fortify()
                     break;
                 case 78: //n
                     CommonMe.findNext()
@@ -64,7 +64,7 @@ var GameGui = new function () {
                     $('.message .go').click()
                     break;
                 case 82: //r
-                    WebSocketSendCommon.ruin()
+                    WebSocketSendGame.ruin()
                     break;
                 case 83: //s
                     StatusWindow.show()
@@ -100,13 +100,13 @@ var GameGui = new function () {
             $('#surrender').click(function () {
                 Sound.play('click')
                 var id = Message.show(translations.surrender, $('<div>').html(translations.areYouSure))
-                Message.ok(id, WebSocketSendCommon.surrender)
+                Message.ok(id, WebSocketSendGame.surrender)
                 Message.cancel(id)
             });
 
             $('#statistics').click(function () {
                 Sound.play('click')
-                WebSocketSendCommon.statistics();
+                WebSocketSendGame.statistics();
             })
 
             $('#nextTurn').click(function () {
@@ -123,7 +123,7 @@ var GameGui = new function () {
                 if (!CommonMe.getSelectedArmyId()) {
                     return
                 }
-
+                Sound.play('click')
                 StatusWindow.show()
             })
 

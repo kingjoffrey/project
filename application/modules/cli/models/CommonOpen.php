@@ -53,12 +53,6 @@ class Cli_Model_CommonOpen
         $token['type'] = 'open';
 
         $handler->sendToUser($user, $token);
-
-        $token = array(
-            'type' => 'online',
-            'color' => $myColor
-        );
-        $handler->sendToChannel($token);
     }
 
     public function handleMe($user, $myColor, $playerId)

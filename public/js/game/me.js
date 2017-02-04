@@ -139,7 +139,6 @@ var CommonMe = new function () {
         $('#armyStatus').removeClass('buttonOff');
 
         if (notSet(center)) {
-            //zoomer.setCenterIfOutOfScreen(a.x * 40, a.y * 40);
             GameScene.centerOn(army.getX(), army.getY(), function () {
                 selectedArmyId = armyId
             })
@@ -153,7 +152,7 @@ var CommonMe = new function () {
                 parentArmy = this.getArmy(parentArmyId)
             parentArmy.getX()
             if (selectedArmy.getX() == parentArmy.getX() && selectedArmy.getY() == parentArmy.getY()) {
-                WebSocketSendCommon.join(selectedArmyId)
+                WebSocketSendGame.join(selectedArmyId)
             }
         }
         parentArmyId = null
@@ -239,7 +238,7 @@ var CommonMe = new function () {
             var id = Message.show(translations.nextArmy, $('<div>').html(translations.thereIsNoFreeArmyWithSpareMovePoints))
             Message.cancel(id)
             Message.ok(id, function () {
-                WebSocketSendCommon.nextTurn()
+                WebSocketSendGame.nextTurn()
             })
         } else {
             this.deselectArmy()
@@ -252,7 +251,7 @@ var CommonMe = new function () {
     }
     this.deleteQuited = function (armyId) {
         if (isTruthful(quitedArmies[armyId])) {
-            WebSocketSendCommon.unfortify(armyId, 0)
+            WebSocketSendGame.unfortify(armyId, 0)
             delete quitedArmies[armyId]
         }
     }
@@ -365,7 +364,7 @@ var CommonMe = new function () {
     }
     this.disband = function () {
         var id = Message.show(translations.disbandArmy, $('<div>').html(translations.areYouSure))
-        Message.ok(id, WebSocketSendCommon.disband)
+        Message.ok(id, WebSocketSendGame.disband)
         Message.cancel(id)
     }
     this.findHero = function () {
