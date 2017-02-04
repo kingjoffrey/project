@@ -2,37 +2,56 @@
 var Tutorial = new function () {
     var number = 0,
         step = 0,
-        steps = []
+        steps = [],
+        timeoutId = null,
+        blink = 0
 
     this.initSteps = function (s) {
         steps = s
     }
     this.showDescription = function () {
-        if (isSet(steps[number]) && isSet(steps[number][step])) {
-            var stepPlus = step * 1 + 1,
-                numberPlus = number * 1 + 1,
-                html = $('<div>')
-                    .append($('<div>').html(translations.Goal + ' ' + stepPlus + '/' + steps[number].length + ': ' + steps[number][step].goal).addClass('goal'))
-                    .append($('<div>').html(steps[number][step].description.replace("\n", '<br><br>')).addClass('description'))
-            Message.tutorial('Tutorial ' + numberPlus + '/' + steps.length, html.html())
-        }
+        var stepPlus = step * 1 + 1,
+            numberPlus = number * 1 + 1
+
+        Message.tutorial(
+            'Tutorial ' + numberPlus + '/' + steps.length,
+            translations.Goal + ' ' + stepPlus + '/' + steps[number].length + ': ' + steps[number][step].goal,
+            steps[number][step]
+        )
+
+        clearInterval(timeoutId)
+        $('#game #tutorial').css('color', '#fff')
     }
     this.changeStep = function (s) {
         step = s
 
-        this.showDescription()
+        var goal = translations.Goal + ': ' + steps[number][step].goal
 
-        $('#tutorial').html(translations.Goal + ': ' + steps[number][step].goal)
+        $('#game #tutorial').html(goal)
+        this.blink()
+    }
+    this.blink = function () {
+        if (timeoutId) {
+            clearInterval(timeoutId);
+        }
+
+        timeoutId = setInterval(function () {
+            if (blink) {
+                blink = 0
+                $('#game #tutorial').addClass('blink')
+            } else {
+                $('#game #tutorial').removeClass('blink')
+                blink = 1
+            }
+        }, 1000)
     }
     this.init = function (t) {
         console.log(t)
         number = t.number
 
-        var tutorial = $('<div id="tutorial">').click(function () {
+        $('#game #tutorial').click(function () {
             Tutorial.showDescription()
         })
-
-        $('#terrain').after(tutorial)
 
         this.changeStep(t.step)
     }

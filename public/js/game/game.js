@@ -1,7 +1,6 @@
 "use strict"
 var Game = new function () {
     var loading = 1,
-        timeoutId = null,
         game,
         gameId
 
@@ -10,12 +9,6 @@ var Game = new function () {
     }
     this.getGameId = function () {
         return gameId
-    }
-    this.getTimeoutId = function () {
-        return timeoutId
-    }
-    this.setTimeoutId = function (value) {
-        timeoutId = value
     }
     this.getCapitalId = function (color) {
         return game.capitals[color]

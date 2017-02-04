@@ -1,8 +1,12 @@
 var Message = new function () {
     var maxHeight
 
-    this.tutorial = function (title, message) {
-        var id = this.show(title, $('<div>').html(message), 1)
+    this.tutorial = function (title, goal, description) {
+        var html = $('<div>')
+            .append($('<div>').html(goal).addClass('goal'))
+            .append($('<div>').html(description.description.replace("\n", '<br><br>')).addClass('description'))
+
+        var id = this.show(title, html, 1)
         this.close(id)
     }
     this.simple = function (title, message) {

@@ -2,6 +2,7 @@
 var GameGui = new function () {
     var lock = true,
         show = true,
+        timeoutId = null,
         documentTitle,
         friendsShow = false,
         init = 0,
@@ -220,20 +221,20 @@ var GameGui = new function () {
         $('#chatBox').removeClass('mini')
     }
     this.titleBlink = function (msg) {
-        var timeoutId = Game.getTimeoutId()
         if (timeoutId) {
             clearInterval(timeoutId);
         }
-        Game.setTimeoutId(setInterval(function () {
+
+        timeoutId = setInterval(function () {
             if (document.title == msg) {
                 document.title = '...'
             } else {
                 document.title = msg
             }
-        }))
+        }, 1000)
 
         $(document).bind("mousemove keypress", function () {
-            clearInterval(Game.getTimeoutId())
+            clearInterval(timeoutId)
             document.title = GameGui.getDocumentTitle()
             window.onmousemove = null
         })

@@ -1251,8 +1251,22 @@ table.treasury td {
 #game #tutorial {
     position: absolute;
     cursor: pointer;
-    bottom: 2px;
-    left: 2px;
+    bottom: 7px;
+    left: 7px;
+    text-decoration: underline;
+}
+
+#game #tutorial:hover {
+    color: gray;
+    text-decoration: none;
+}
+
+#game #tutorial.blink {
+    color: gray;
+}
+
+#game #tutorial.blink:hover {
+    color: gray;
 }
 
 .showCastle .relocatingTo {
