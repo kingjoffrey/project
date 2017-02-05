@@ -32,19 +32,17 @@
                     <td>
                         <div><?php echo $game['name'] ?></div>
                     </td>
-                    <td style="min-width: 500px">
+                    <td>
                         <?php foreach ($game['players'] as $v): ?>
                             <div>
-                                <div style="height: 34px;float: left;line-height: 34px;width: 285px">
+                                <div class="playersName">
                                     <?php echo $v['firstName'] . ' ' . $v['lastName'] ?>
                                 </div>
-                                <div style="width:80px;height: 34px;float: left">
-                                    <div class="colorBox" style="background: <?php echo $v['backgroundColor'] ?>">
-
-                                    </div>
-                                    <div class="colorBox" style="background: <?php echo $game['teams'][$v['team']] ?>">
-
-                                    </div>
+                                <div class="playersColors">
+                                    <div class="colorBox"
+                                         style="background: <?php echo $v['backgroundColor'] ?>">&nbsp;</div>
+                                    <div class="colorBox"
+                                         style="background: <?php echo $game['teams'][$v['team']] ?>">&nbsp;</div>
                                 </div>
                             </div>
                         <?php endforeach ?>

@@ -216,7 +216,7 @@ var Help = new function () {
     this.fillText = function (id) {
         var element = help[id]
         $('#helpMenu div').removeClass('off')
-        $('#' + id).addClass('off')
+        $('#helpMenu #' + id).addClass('off')
         if (mesh) {
             HelpScene.remove(mesh)
             mesh = 0

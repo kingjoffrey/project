@@ -8,6 +8,7 @@ var Page = new function () {
         touch = 0,
         shadows = 1
 
+
     this.getIndex = function () {
         return index
     }
@@ -17,14 +18,9 @@ var Page = new function () {
     this.hasTouch = function () {
         return touch
     }
-    this.adjust = function () {
-        $('#page').css('min-height', $(window).height() + 'px')
-    }
-    this.init = function () {
-        $(window).resize(function () {
-            Page.adjust()
-        })
 
+
+    this.init = function () {
         $('#bg').scroll(function () {
             var x = $(this).scrollTop();
             $(this).css('background-position', '0% ' + parseInt(-x / 10) + 'px');
@@ -36,12 +32,11 @@ var Page = new function () {
 
         if (isSet(window.orientation)) {
             touch = 'ontouchstart' in document.documentElement
+            shadows = 0
 
-            $(document).on('touchmove', function (e) {
+            $(document).on('touchstart', function (e) {
                 e.preventDefault()
             })
-
-            shadows = 0
         }
     }
 }

@@ -190,10 +190,8 @@ var GameGui = new function () {
         })
 
         if (init) {
-            console.log('no to dupa')
             Message.adjust()
         }
-        init = 1
     }
     this.end = function () {
         WebSocketSendMain.controller('over', 'index', {'id': Game.getGameId()})
@@ -271,5 +269,6 @@ var GameGui = new function () {
 
         prepareButtons()
         this.adjust()
+        init = 1
     }
 }

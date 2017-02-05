@@ -40,8 +40,6 @@ var Main = new function () {
                     })
             )
         }
-
-        Page.adjust()
     }
     this.updateMenuClick = function () {
         $('#menu a').each(function () {
