@@ -9,8 +9,7 @@ var PlayersController = new function () {
             }
         },
         addNoPlayers = function () {
-            $('#searchResults').append($('<tr>').append($('<td>').html(translations.Nosearchresults))
-            )
+            $('#searchResults').after($('<div>').html(translations.Nosearchresults).addClass('after'))
         },
         addPlayer = function (player, id) {
             $('#searchResults').append($('<tr>')

@@ -12,8 +12,8 @@ class LoginController extends Coret_Controller_AuthenticateFrontend
         parent::indexAction();
 
         $this->_helper->layout->setLayout('login');
-        $this->view->headLink()->prependStylesheet($this->view->baseUrl() . '/css/main.css');
-        $this->view->headLink()->prependStylesheet($this->view->baseUrl() . '/css/login.css');
+        $version = Zend_Registry::get('config')->version;
+        $this->view->headLink()->prependStylesheet($this->view->baseUrl() . '/css/main.css?v=' . $version);
 
         $this->view->title();
         $this->view->Version();
@@ -22,8 +22,8 @@ class LoginController extends Coret_Controller_AuthenticateFrontend
     public function registrationAction()
     {
         $this->_helper->layout->setLayout('login');
-        $this->view->headLink()->prependStylesheet($this->view->baseUrl() . '/css/main.css');
-        $this->view->headLink()->prependStylesheet($this->view->baseUrl() . '/css/login.css');
+        $version = Zend_Registry::get('config')->version;
+        $this->view->headLink()->prependStylesheet($this->view->baseUrl() . '/css/main.css?v=' . $version);
 
         $this->view->title();
         $this->view->Version();

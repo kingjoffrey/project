@@ -9,9 +9,9 @@ var FriendsController = new function () {
             }
         },
         addNoFriends = function () {
-            $('#friendsList').append($('<tr>')
-                .append($('<td>').html(translations.YouDontHaveFriends + ': '))
-                .append($('<td>').html($('<span>').attr('id', 'findFriends').html(translations.findSomeFriends)))
+            $('#friendsList').after($('<div>').addClass('after')
+                .append(translations.YouDontHaveFriends + ': ')
+                .append($('<span>').attr('id', 'findFriends').html(translations.findSomeFriends))
                 .click(function () {
                     WebSocketSendMain.controller('players', 'index')
                 })

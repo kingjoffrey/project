@@ -147,15 +147,15 @@ var Help = new function () {
             var unitDiv = $('<div>')
                 .attr('id', 'unit')
                 .append($('<h3>')
-                    .append($('<span>').html('<<').addClass('left button buttonColors').click(function () {
+                    .append($('<span>').html('<<').addClass('button buttonColors').click(function () {
                         changeUnit('-')
                     }))
                     .append($('<span>').html(unit.name_lang).addClass('unitName'))
-                    .append($('<span>').html('>>').addClass('right button buttonColors').click(function () {
+                    .append($('<span>').html('>>').addClass('button buttonColors').click(function () {
                         changeUnit('+')
                     }))
                 )
-                .append($('<div>').addClass('left')
+                .append($('<div>')
                     .append(
                         $('<table>').addClass('unitTable')
                             .append($('<tr>')

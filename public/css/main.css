@@ -47,24 +47,13 @@ a:hover {
     color: gray;
 }
 
-input, select {
-    border: 1px solid grey;
-    border-radius: 2px;
-    padding: 2.1vw 0.7vw;
-    box-shadow: 0 0 0.7vw #000;
-    text-align: center;
-    background: #373737;
-    color: white;
-}
-
-/*input[type="radio"], input[type="checkbox"] {*/
-/*box-shadow: none;*/
-/*}*/
-
 .button, #submit {
-    padding: 3.2vw;
     margin: 0.4vw;
     display: inline-block;
+}
+
+.iconButton div, .button, #submit {
+    padding: 2.1vw;
 }
 
 .button:hover, #submit:hover, .iconButton:hover {
@@ -83,9 +72,50 @@ input, select {
 }
 
 .buttonOff {
-    background: gray;
-    border-color: darkgray;
-    color: darkgray;
+    border: 1px solid darkgray !important;
+    background: gray !important;
+    color: darkgray !important;
+    cursor: default !important;
+}
+
+.buttonOff:hover {
+    border: 1px solid darkgray !important;
+    background: gray !important;
+    color: darkgray !important;
+    cursor: default !important;
+}
+
+.buttonColors, #submit {
+    background: #000;
+    cursor: pointer;
+    text-decoration: none;
+    box-shadow: 0 0 1.4vw #000;
+}
+
+.buttonColors, #submit, input, select {
+    border: 1px solid #fff;
+    border-radius: 2px;
+    color: #fff;
+    text-align: center;
+}
+
+input, select {
+    font-size: 2vw;
+    font-family: Impact, Charcoal, sans-serif;
+    letter-spacing: 0.2vw;
+    padding: 2.1vw 0.7vw;
+    box-shadow: 0 0 0.7vw #000;
+    background: #373737;
+}
+
+.iconButton div:not(.varchar) {
+    width: 23px;
+    height: 23px;
+}
+
+.iconButton {
+    margin: 0.7vw;
+    display: inline-block;
 }
 
 h1 {
@@ -132,10 +162,9 @@ h1 {
 
 h2 {
     padding: 0.7vw 0 1.4vw 0;
-    color: #fff;
     letter-spacing: 0.3vw;
     text-align: left;
-    /*text-shadow: 2px 1px 1px #000;*/
+    color: gray;
 }
 
 .left {
@@ -162,22 +191,11 @@ div.table {
     padding: 0.7vw;
     border-radius: 3px;
     box-shadow: 0 0 7vw #000;
-    background: url("/img/game/message_bg.png");
-}
-
-div.table table.unitTable {
-    width: auto;
-}
-
-div.table table.unitTable td:first {
-    background: #fff;
 }
 
 div.table table {
     border-spacing: 0px;
     width: 100%;
-    border: 1px solid grey;
-    border-radius: 5px;
 }
 
 tr:last-of-type td {
@@ -201,6 +219,7 @@ th {
     height: 4.2vw;
     text-align: center;
     padding: 0.2vw;
+    background: url("/img/game/message_bg.png");
 }
 
 .trlink td:first-of-type {
@@ -208,11 +227,6 @@ th {
 }
 
 #versionNumber {
-    padding-left: 0.7vw;
-    padding-top: 2.1vw;
-    color: grey;
-    float: left;
-    text-shadow: none;
     font-style: italic;
 }
 
@@ -238,7 +252,7 @@ th {
 }
 
 #content form {
-    background: url('/img/bg_1.jpg');
+    background: url("/img/game/message_bg.png");
     border-radius: 5px;
     border: 1px solid grey;
     padding: 10px;
@@ -360,7 +374,7 @@ tr.trlink td {
 tr.trlink:hover td {
     color: #fff;
     text-decoration: none;
-    background: green;
+    background: green !important;
 }
 
 #threads .trlink.read {
@@ -413,12 +427,6 @@ td .trash {
     margin-top: 10px;
 }
 
-.table #text .title {
-    padding: 5px;
-    color: #A8A47D;
-    font-weight: bold;
-}
-
 #findFriends {
     color: #fff;
     text-decoration: underline;
@@ -462,7 +470,21 @@ td .trash {
     text-shadow: none;
 }
 
-#graphics {
+.table #text .title {
+    padding: 0.7vw;
+    color: gold;
+    font-weight: bold;
+    background: url("/img/game/message_bg.png");
+}
+
+.table #text p {
+    color: #000;
+    text-shadow: none;
+    background: #fff;
+}
+
+.table #graphics {
+    border: 1px solid #000;
     float: left;
     width: 300px;
     height: 300px;
@@ -471,6 +493,21 @@ td .trash {
 
 #text #unit h3 {
     text-align: center;
+}
+
+#text #unit .unitName {
+    padding: 2.1vw;
+    display: inline-block;
+    color: springgreen;
+}
+
+div.table table.unitTable {
+    width: auto;
+    margin: 0 auto;
+}
+
+div.table table.unitTable td:first {
+    background: #fff;
 }
 
 #playersingame td {
@@ -858,45 +895,6 @@ td .trash {
     left: 2px;
 }
 
-.buttonColors, #submit {
-    border: 1px solid #fff;
-    background: #000;
-    color: #fff;
-    cursor: pointer;
-    text-align: center;
-    text-decoration: none;
-    box-shadow: 0 0 1.4vw #000;
-    border-radius: 2px;
-}
-
-.iconButton div:not(.varchar) {
-    width: 23px;
-    height: 23px;
-}
-
-.iconButton div {
-    padding: 3.2vw;
-}
-
-.iconButton {
-    margin: 0.7vw;
-    display: inline-block;
-}
-
-.buttonOff {
-    border: 1px solid #444 !important;
-    background: #000 !important;
-    color: #444 !important;
-    cursor: default !important;
-}
-
-.buttonOff:hover {
-    border: 1px solid #444 !important;
-    background: #000 !important;
-    color: #444 !important;
-    cursor: default !important;
-}
-
 table.statistics tr {
     background: none;
 }
@@ -1251,11 +1249,6 @@ table.treasury td {
     margin: 2.1vw;
 }
 
-.unitName {
-    padding: 4.2vw 0;
-    display: inline-block;
-}
-
 #new {
     border: 2px solid grey;
     border-radius: 5px;
@@ -1308,8 +1301,8 @@ table.treasury td {
 }
 
 .bigLink a:hover {
-    color: red;
-    background: white;
+    color: white;
+    background: red;
 }
 
 #leftMenu {
@@ -1337,4 +1330,16 @@ table.treasury td {
 
 .playersColors {
     display: inline-block;
+}
+
+.after {
+    color: gray;
+    text-align: center;
+    padding: 1.4vw;
+    text-shadow: none;
+}
+
+.after span {
+    background: url("/img/game/message_bg.png");
+    padding: 0.7vw;
 }

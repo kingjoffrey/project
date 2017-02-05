@@ -9,13 +9,24 @@
     ?>
 </head>
 <body>
-<div id="page">
-    <div id="title"><div><h1><?php echo $this->placeholder('title') ?></h1><p>strategic game</p></div></div>
-    <div id="login">
-        <?php echo $this->layout()->content; ?>
-    </div>
-    <div>
-        <?php echo $this->placeholder('version') ?>
+<div id="main">
+    <div id="bg">
+        <div id="page">
+            <div id="content">
+                <div id="title">
+                    <div>
+                        <h1><?php echo $this->placeholder('title') ?></h1>
+                        <p>strategic game</p>
+                    </div>
+                </div>
+                <div class="table">
+                    <?php echo $this->layout()->content; ?>
+                </div>
+            </div>
+            <div>
+                <?php echo $this->placeholder('version') ?>
+            </div>
+        </div>
     </div>
 </div>
 </body>

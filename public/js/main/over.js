@@ -1,19 +1,14 @@
 "use strict"
 var OverController = new function () {
     this.index = function (r) {
-        if ($('#game').length) {
-            var main = Main.getMain()
+        $('#content').html(r.data)
 
-            if (main) {
-                $('#main').html(main)
-                Main.setMain('')
-                Main.updateMenuClick()
-                Page.init()
-            }
-        }
-        var content = $('#content'),
-            data = r.data
+        $('.message').remove()
 
-        content.html(data)
+        $('#game').hide()
+        $('#gameMenu').hide()
+
+        $('#bg').show()
+        $('#menuBox').show()
     }
 }
