@@ -19,7 +19,7 @@ body {
 }
 
 input, select, body {
-    font-size: 2.8vw;
+    font-size: 2.1vw;
     font-family: Impact, Charcoal, sans-serif;
     letter-spacing: 0.2vw;
 }
@@ -33,7 +33,7 @@ input, select, body {
 
 #page {
     margin: 0 auto;
-    width: 90vw;
+    width: 95vw;
     height: 100vh;
 }
 
@@ -271,30 +271,6 @@ p#info {
     text-align: center;
 }
 
-.yellow {
-    color: yellow;
-}
-
-.font-yellow {
-    color: yellow;
-}
-
-.box_pagination {
-    width: 530px;
-    margin: 0 auto;
-    text-align: center;
-}
-
-.box {
-    border: 2px solid grey;
-    background: url(/img/bg_0.jpg);
-    box-shadow: 2px 2px 5px #000;
-}
-
-.padding {
-    padding: 0 0 5px 0;
-}
-
 #search .zend_form {
     text-align: left;
 }
@@ -305,12 +281,6 @@ p#info {
 
 #search #search-element, #search #submit-element {
     display: inline-block;
-}
-
-.box #title {
-    position: absolute;
-    top: -2.1vw;
-    color: gold;
 }
 
 #searchResults a, #friendsList a {
@@ -330,22 +300,6 @@ p#info {
     font-weight: bold;
     padding: 2.1vw;
     text-shadow: none;
-}
-
-#messages span {
-    position: absolute;
-    top: -3px;
-    left: 24px;
-    background: orange;
-    color: #000;
-    min-width: 10px;
-    height: 10px;
-    padding: 2px 2px 2px 4px;
-    border-radius: 2px;
-    font-size: 10px;
-    font-weight: bold;
-    text-shadow: none;
-    text-align: center;
 }
 
 #messages div {
@@ -406,15 +360,11 @@ td .trash {
 }
 
 .colorBox {
-    width: 24px;
-    height: 24px;
+    width: 2.1vw;
+    height: 2.1vw;
     box-shadow: 0 0 5px #fff;
     display: inline-block;
-    margin: 5px;
-}
-
-#content .table .playerName {
-    margin-top: 10px;
+    margin: 0.7vw;
 }
 
 #findFriends {
@@ -579,14 +529,6 @@ div.table table.unitTable td:first {
     height: auto;
 }
 
-#turn {
-    width: 80px;
-    position: absolute;
-    top: 75px;
-    left: 60px;
-    z-index: 28000;
-}
-
 .message {
     position: absolute;
     top: 0;
@@ -601,7 +543,7 @@ div.table table.unitTable td:first {
 }
 
 .message.tutorial .content {
-    max-width: 300px;
+    max-width: 50vw;
     background: url(/img/bg_0.jpg);
 }
 
@@ -618,11 +560,12 @@ div.table table.unitTable td:first {
 .message .content {
     border: 1px solid green;
     border-radius: 0px !important;
-    box-shadow: 0 0 20px #000;
+    box-shadow: 0 0 2.1vw #000;
     pointer-events: auto;
     color: #fff;
     background: url("/img/game/message_bg.png");
     position: absolute;
+    overflow: auto;
 }
 
 .message .content tr {
@@ -631,12 +574,12 @@ div.table table.unitTable td:first {
 
 .message #buttons {
     width: auto;
-    margin: 10px auto;
+    margin: 0.7vw auto;
 }
 
 .message #buttons .button {
     width: auto;
-    margin: 0 36px;
+    margin: 0 3.5vw;
 }
 
 .message .msgTitle {
@@ -647,7 +590,7 @@ div.table table.unitTable td:first {
 .message .msgTitle h3 {
     text-align: center;
     margin: 0 auto;
-    padding: 8px;
+    padding: 0.7vw;
     color: #000;
     border: none;
     background: #fff;
@@ -670,38 +613,20 @@ div.table table.unitTable td:first {
     color: #d6d6d6;
 }
 
-.message div.overflow {
-    overflow: auto;
-    padding: 1.4vw;
-}
-
 .message div.showCastle #next {
-    width: 90px;
+    width: 9vw;
 }
 
 .message div.showCastle #previous {
-    width: 90px;
+    width: 9vw;
 }
 
 .message div.showCastle td {
     border: none;
 }
 
-.message div.showCastle tr {
-    background: none;
-}
-
-.message div.production, .message div.relocatedProduction {
-    border: 1px solid #000;
-    border-radius: 5px;
-    padding: 0;
-    color: #fff;
-    font-weight: bold;
-    margin-bottom: 2px;
-}
-
 .message div.production div.title, .message div.relocatedProduction div.title {
-    padding: 10px;
+    padding: 0.7vw;
     background: #000;
 }
 
@@ -748,23 +673,22 @@ div.table table.unitTable td:first {
 }
 
 .message div.row {
-    padding: 8px;
+    padding: 0.7vw;
     border: 1px solid #222;
-    border-radius: 3px;
+    border-radius: 0.3vw;
 }
 
 .message div.row div.nr {
     display: inline-block;
 }
 
-.message .split {
-    overflow: hidden;
-    overflow-y: auto;
-}
-
 .message .split #selectAll {
     text-align: right;
-    height: 20px;
+    height: 2.1vw;
+}
+
+.message .split #selectAll input {
+    margin: 0.7vw;
 }
 
 .message .split div.row {
@@ -878,45 +802,41 @@ table.statistics td.shortName {
 }
 
 .relocatedProduction table {
-    padding: 2px;
     width: 100%;
 }
 
 .relocatedProduction td {
-    line-height: 30px;
-    /*background: #CECEb0;*/
     border: none;
 }
 
 table.treasury {
     margin: 0 auto;
     text-shadow: none;
-    min-width: 300px !important;
+    min-width: 30vw !important;
 }
 
 table.treasury td {
     border: 1px solid gray;
     background: #000;
-    /*color: #D7DAA4;*/
     border-radius: 0;
-    padding: 5px;
-    height: 23px;
+    padding: 0.7vw;
+    height: 2.1vw;
 }
 
 table.treasury tr:first-of-type td:first-of-type {
-    border-top-left-radius: 5px;
+    border-top-left-radius: 0.7vw;
 }
 
 table.treasury tr:first-of-type td:last-of-type {
-    border-top-right-radius: 5px;
+    border-top-right-radius: 0.7vw;
 }
 
 table.treasury tr:last-of-type td:first-of-type {
-    border-bottom-left-radius: 5px;
+    border-bottom-left-radius: 0.7vw;
 }
 
 table.treasury tr:last-of-type td:last-of-type {
-    border-bottom-right-radius: 5px;
+    border-bottom-right-radius: 0.7vw;
 }
 
 table.treasury td.r {
@@ -978,7 +898,7 @@ table.treasury td {
 }
 
 #nextTurn {
-    box-shadow: 0 0 5px #000;
+    box-shadow: 0 0 0.7vw #000;
 }
 
 #nextTurn div {
@@ -995,7 +915,7 @@ table.treasury td {
 }
 
 #showMenu {
-    box-shadow: 0 0 5px #000;
+    box-shadow: 0 0 0.7vw #000;
 }
 
 #showMenu div {
@@ -1003,7 +923,7 @@ table.treasury td {
 }
 
 #nextArmy {
-    box-shadow: 0 0 5px #000;
+    box-shadow: 0 0 0.7vw #000;
 }
 
 #nextArmy div {
@@ -1011,7 +931,7 @@ table.treasury td {
 }
 
 #armyStatus {
-    box-shadow: 0 0 5px #000;
+    box-shadow: 0 0 0.7vw #000;
 }
 
 #armyStatus div {
@@ -1198,7 +1118,6 @@ table.treasury td {
 
 .showCastle .relocatingTo {
     color: lime;
-    padding: 2.9vw 0;
 }
 
 #back {

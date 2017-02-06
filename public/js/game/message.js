@@ -27,7 +27,6 @@ var Message = new function () {
                     .append($('<div>').append($('<h3>').html(title)).addClass('msgTitle'))
                     .append($(txt).addClass('overflow'))
                 )
-                .fadeIn(200)
                 .addClass('message')
         if (isSet(tutorial)) {
             div.addClass('tutorial')
@@ -36,8 +35,10 @@ var Message = new function () {
         if (div.find('.error').length) {
             div.addClass('error')
         }
+
         $('#main').append(div)
-        this.adjust(id)
+        Message.adjust(id)
+
         return id
     }
     this.remove = function (id) {
@@ -58,23 +59,30 @@ var Message = new function () {
                     'z-index': $('#' + id + ' .content').css('z-index') + 100
                 })
             }
-
-            var messageContentLeft = $(window).innerWidth() / 2 - $('#' + id + ' .content').outerWidth() / 2,
-                messageContentTop = $(window).innerHeight() / 2 - $('#' + id + ' .content').outerHeight() / 2
-
-            $('#' + id + ' .content').css({
-                'left': messageContentLeft + 'px',
-                'top': messageContentTop + 'px'
-            })
+            var element = $('#' + id + ' .content')
         } else {
-            var messageContentLeft = $(window).innerWidth() / 2 - $('.message .content').outerWidth() / 2,
-                messageContentTop = $(window).innerHeight() / 2 - $('.message .content').outerHeight() / 2
-
-            $('.message .content').css({
-                'left': messageContentLeft + 'px',
-                'top': messageContentTop + 'px'
-            })
+            var element = $('.message .content')
         }
+
+        var messageContentLeft = $(window).innerWidth() / 2 - element.outerWidth() / 2,
+            messageContentTop = $(window).innerHeight() / 2 - element.outerHeight() / 2
+
+
+        if (messageContentLeft < 0) {
+            messageContentLeft = 0
+        }
+        if (messageContentTop < 0) {
+            messageContentTop = 0
+            var messageContentHeight = '100vh'
+        } else {
+            var messageContentHeight = 'auto'
+        }
+
+        element.css({
+            'left': messageContentLeft + 'px',
+            'top': messageContentTop + 'px',
+            'height': messageContentHeight
+        })
     }
     this.ok = function (id, func) {
         if (!$('#' + id + ' #buttons').length) {

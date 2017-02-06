@@ -188,15 +188,22 @@ var CastleWindow = new function () {
                     $('<tr>')
                         .append($('<td>').html(Units.get(productionId).name_lang))
                         .append($('<td>')
-                            .html(castleFrom.getProductionTurn() + ' / ' + castleFrom.getProduction()[productionId].time))
-                        .append($('<td>')
-                            .html(castleFrom.getName())
+                            .html(castleFrom.getProductionTurn() + '/' + castleFrom.getProduction()[productionId].time))
+                        .append($('<td>').append($('<div>').html(castleFrom.getName())
                             .addClass('button buttonColors')
                             .click(click(castleIdFrom, messageId)))
-                        .append($('<td>')
-                            .html($('<img>').attr('src', '/img/game/center.png'))
-                            .addClass('iconButton buttonColors')
-                            .click(center(castleIdFrom)))
+                        )
+                        .append(
+                            $('<td>')
+                                .append(
+                                    $('<div>')
+                                        .append(
+                                            $('<img>').attr('src', '/img/game/center.png')
+                                                .addClass('iconButton buttonColors')
+                                                .click(center(castleIdFrom))
+                                        )
+                                )
+                        )
                 )
             }
             castleWindow
@@ -228,12 +235,16 @@ var CastleWindow = new function () {
         }
 
         if (castle.getCastleId() == CommonMe.getCapitalId()) {
-            messageId = Message.show(castle.getName() + '&nbsp;(' + translations.capitalCity + ')', castleWindow)
+            var title = castle.getName() + '&nbsp;(' + translations.capitalCity + ')'
+
         } else {
-            messageId = Message.show(translations.castle + '&nbsp;' + castle.getName(), castleWindow)
+            var title = castle.getName()
         }
 
-        Message.adjust(messageId)
+        setTimeout(function () {
+            messageId = Message.show(title, castleWindow)
+            Message.adjust(messageId)
+        }, 300)
     }
     this.raze = function () {
         if (!CommonMe.getSelectedArmyId()) {
