@@ -8,8 +8,8 @@ var HelpController = new function () {
 
         Help.init(r)
 
-        var width = 300,
-            height = 300,
+        var width = $(window).innerWidth() / 10 * 3,
+            height = width,
             menu = r.menu
 
 
@@ -35,6 +35,12 @@ var HelpController = new function () {
 
         $('#helpMenu div').first().addClass('active')
         Help.fillText('game')
-        $('.table').css({'min-height': '300px'})
+        $('.table').css({'min-height': '30vw'})
+
+        $(window).resize(function () {
+            var x = $(window).innerWidth() / 10 * 3
+            HelpScene.resize(x, x)
+            HelpRenderer.resize(x, x)
+        })
     }
 }

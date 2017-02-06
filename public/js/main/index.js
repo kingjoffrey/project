@@ -24,6 +24,7 @@ var IndexController = new function () {
             HelpRenderer.stop()
         }
 
+        $(window).off('resize')
 
         $('.message').remove()
 

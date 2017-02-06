@@ -133,10 +133,6 @@ class IndexController extends Coret_Controller_Authorized
         $this->view->translations();
         $this->view->Version();
         $this->view->Websocket($identity);
-
-        $this->view->placeholder('friendsTitle')->append($this->view->translate('Friends'));
-        $this->view->placeholder('chatTitle')->append($this->view->translate('Chat'));
-        $this->view->placeholder('chatInput')->append($this->view->translate('Select friend from friends list'));
     }
 
     protected function authorized()

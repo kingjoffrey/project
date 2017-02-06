@@ -26,16 +26,19 @@ var HelpRenderer = new function () {
     this.isRunning = function () {
         return !stop
     }
+    this.resize = function (w, h) {
+        renderer.setSize(w, h)
+    }
     this.init = function (s, w, h) {
         stop = 0
         renderer = Renderer.get()
-        if(Page.getShadows()){
+        if (Page.getShadows()) {
             renderer.shadowMap.enabled = true
             renderer.shadowMapSoft = false
         }
         scene = s.get()
         camera = s.getCamera()
-        renderer.setSize(w, h)
+        this.resize(w, h)
         $('#graphics').append(renderer.domElement)
         HelpRenderer.animate()
     }

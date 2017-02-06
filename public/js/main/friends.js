@@ -9,13 +9,18 @@ var FriendsController = new function () {
             }
         },
         addNoFriends = function () {
-            $('#friendsList').after($('<div>').addClass('after')
-                .append(translations.YouDontHaveFriends + ': ')
-                .append($('<span>').attr('id', 'findFriends').html(translations.findSomeFriends))
+            $('#friendsList')
+                .append(
+                    $('<tr>')
+                        .append(
+                            $('<td colspan="4">').addClass('after')
+                                .append(translations.YouDontHaveFriends + ': ')
+                                .append($('<span>').attr('id', 'findFriends').html(translations.findSomeFriends))
+                        )
+                )
                 .click(function () {
                     WebSocketSendMain.controller('players', 'index')
                 })
-            )
         },
         addFriend = function (friend, id) {
             $('#friendsList').append($('<tr>')

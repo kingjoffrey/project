@@ -13,12 +13,15 @@ html {
 }
 
 body {
-    font-size: 2vw;
-    font-family: Impact, Charcoal, sans-serif;
-    letter-spacing: 0.2vw;
     color: #fff;
     text-shadow: 1px 1px 0 #000;
     overflow-y: hidden;
+}
+
+input, select, body {
+    font-size: 2.8vw;
+    font-family: Impact, Charcoal, sans-serif;
+    letter-spacing: 0.2vw;
 }
 
 #bg {
@@ -52,7 +55,7 @@ a:hover {
     display: inline-block;
 }
 
-.iconButton div, .button, #submit {
+.iconButton div, .button, #submit, .bigLink a {
     padding: 2.1vw;
 }
 
@@ -100,9 +103,6 @@ a:hover {
 }
 
 input, select {
-    font-size: 2vw;
-    font-family: Impact, Charcoal, sans-serif;
-    letter-spacing: 0.2vw;
     padding: 2.1vw 0.7vw;
     box-shadow: 0 0 0.7vw #000;
     background: #373737;
@@ -116,12 +116,6 @@ input, select {
 .iconButton {
     margin: 0.7vw;
     display: inline-block;
-}
-
-h1 {
-    line-height: 4.4vw;
-    color: grey;
-    text-align: right;
 }
 
 #content #title {
@@ -145,7 +139,7 @@ h1 {
     font-family: "Alpine", Verdana, Tahoma;
     color: red;
     position: absolute;
-    top: 11px;
+    top: 5px;
     left: 20px;
     letter-spacing: 2px;
 }
@@ -161,10 +155,11 @@ h1 {
 }
 
 h2 {
-    padding: 0.7vw 0 1.4vw 0;
+    padding: 0.7vw 0 1.4vw 1.4vw;
     letter-spacing: 0.3vw;
     text-align: left;
-    color: gray;
+    color: #000;
+    text-shadow: none;
 }
 
 .left {
@@ -246,22 +241,21 @@ th {
 }
 
 .errors {
-    padding: 5px;
+    padding: 0.7vw;
     color: orchid;
     text-shadow: 1px 1px 0 #000;
 }
 
 #content form {
     background: url("/img/game/message_bg.png");
-    border-radius: 5px;
+    border-radius: 0.7vw;
     border: 1px solid grey;
-    padding: 10px;
+    padding: 0.7vw;
     text-align: center;
 }
 
 #content form label {
     color: #999;
-    text-shadow: 1px 1px 0 #000;
 }
 
 #content form#search {
@@ -270,7 +264,7 @@ th {
 }
 
 dt {
-    margin-top: 20px;
+    margin-top: 2vw;
 }
 
 p#info {
@@ -481,14 +475,13 @@ td .trash {
     color: #000;
     text-shadow: none;
     background: #fff;
+    padding: 0.7vw;
 }
 
 .table #graphics {
     border: 1px solid #000;
     float: left;
-    width: 300px;
-    height: 300px;
-    margin-right: 5px;
+    margin-right: 0.7vw;
 }
 
 #text #unit h3 {
@@ -508,31 +501,6 @@ div.table table.unitTable {
 
 div.table table.unitTable td:first {
     background: #fff;
-}
-
-#playersingame td {
-    line-height: 26px;
-    min-width: 100px;
-    height: 62px;
-}
-
-#playersingame tr td div.left {
-    width: 300px;
-    overflow: hidden;
-    padding: 5px;
-}
-
-#playersingame tr td div.right {
-    text-shadow: none;
-    min-width: 11.7vw;
-    margin-right: 1px;
-    border-radius: 5px;
-    padding: 5px;
-}
-
-#playersout td {
-    padding: 2.1vw;
-    margin: 2px;
 }
 
 .selected {
@@ -1249,39 +1217,15 @@ table.treasury td {
     margin: 2.1vw;
 }
 
-#new {
-    border: 2px solid grey;
-    border-radius: 5px;
-    text-align: center;
-    box-shadow: 1px 1px 5px #000;
-}
-
-#new #img {
-    width: 520px;
-}
-
 #new canvas {
-    box-shadow: 0 0 5px #000;
+    box-shadow: 0 0 0.7vw #fff;
+    margin: 0.7vw;
+    border: 1px solid #fff000;
 }
 
 #new form {
     border: none;
     background: none;
-    margin: 5px;
-    padding: 5px;
-    box-shadow: none;
-}
-
-#new #form {
-    width: 260px;
-}
-
-#new input[type="text"] {
-    width: 20px;
-}
-
-#numberOfPlayers-label {
-    display: none;
 }
 
 .bigLink {
@@ -1296,8 +1240,7 @@ table.treasury td {
     text-decoration: none;
     display: block;
     border: 1px solid white;
-    border-radius: 5px;
-    padding: 15px;
+    border-radius: 0.7vw;
 }
 
 .bigLink a:hover {
@@ -1332,14 +1275,6 @@ table.treasury td {
     display: inline-block;
 }
 
-.after {
-    color: gray;
-    text-align: center;
+#content td.after {
     padding: 1.4vw;
-    text-shadow: none;
-}
-
-.after span {
-    background: url("/img/game/message_bg.png");
-    padding: 0.7vw;
 }
