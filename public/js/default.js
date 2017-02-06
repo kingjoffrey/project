@@ -34,9 +34,14 @@ var Page = new function () {
             touch = 'ontouchstart' in document.documentElement
             shadows = 0
 
-            $(document).on('touchstart', function (e) {
-                e.preventDefault()
-            })
+            // $(document).on('touchstart', function (e) {
+            //     e.preventDefault()
+            // })
         }
+
+        $(document).on('click', function (e) {
+            e.preventDefault()
+            console.log(e)
+        })
     }
 }

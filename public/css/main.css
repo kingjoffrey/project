@@ -76,14 +76,14 @@ a:hover {
 
 .buttonOff {
     border: 1px solid darkgray !important;
-    background: gray !important;
+    background: #444 !important;
     color: darkgray !important;
     cursor: default !important;
 }
 
 .buttonOff:hover {
     border: 1px solid darkgray !important;
-    background: gray !important;
+    background: #444 !important;
     color: darkgray !important;
     cursor: default !important;
 }
@@ -324,10 +324,6 @@ p#info {
     text-decoration: none;
 }
 
-#playersingame .td1 {
-    text-align: left;
-}
-
 #menuTop #title {
     display: inline-block;
     color: #000;
@@ -503,11 +499,8 @@ div.table table.unitTable td:first {
     background: #fff;
 }
 
-.selected {
-    background: lightslategrey !important;
-}
-
 .selected td {
+    background: lightslategrey !important;
     color: #000;
     text-shadow: none;
 }
@@ -1277,4 +1270,8 @@ table.treasury td {
 
 #content td.after {
     padding: 1.4vw;
+}
+
+#playersingame {
+    padding-bottom: 1.4vw;
 }

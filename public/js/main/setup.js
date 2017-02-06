@@ -11,14 +11,9 @@ var SetupController = new function () {
         for (var id in mapPlayers) {
             numberOfMapPlayers++
             $('#playersingame').append($('<tr>').attr('id', id)
-                .append($('<td>').addClass('td1')
-                    .append($('<div>').html(mapPlayers[id].shortName).css({
-                        'color': mapPlayers[id].backgroundColor,
-                        'text-shadow': '2px 2px 0 ' + mapPlayers[id].textColor
-                    }))
-                )
+                .append($('<td>').addClass('td1').html($('<div>').addClass('colorBox').css('background', mapPlayers[id].backgroundColor)))
                 .append($('<td>').addClass('td2')
-                    .append($('<a>').addClass('button').html(translations.select).attr('id', id).click(function () {
+                    .append($('<a>').addClass('button buttonColors').html(translations.select).attr('id', id).click(function () {
                         WebSocketSendNew.change(this.id)
                     }))
                 )
