@@ -23,8 +23,6 @@ include_once(APPLICATION_PATH . '/modules/cli/controllers/Profile.php');
 class Cli_MainHandler extends WebSocketUriHandler
 {
     private $_db;
-    private $_menu;
-    private $_view;
     private $_help;
     private $_tutorial;
 
@@ -32,23 +30,6 @@ class Cli_MainHandler extends WebSocketUriHandler
     {
         $this->_db = Cli_Model_Database::getDb();
         parent::__construct($logger);
-
-        $translator = Zend_Registry::get('Zend_Translate');
-        $adapter = $translator->getAdapter();
-
-        $this->_menu = array(
-            'play' => $adapter->translate('Play'),
-            'load' => $adapter->translate('Load game'),
-            'halloffame' => $adapter->translate('Hall of Fame'),
-            'players' => $adapter->translate('Players'),
-            'friends' => $adapter->translate('Friends'),
-            'profile' => $adapter->translate('Profile'),
-            'contact' => $adapter->translate('Contact'),
-            'help' => $adapter->translate('Help'),
-            'editor' => $adapter->translate('Map editor'),
-        );
-
-        $this->_view = new Zend_View();
     }
 
     public function getDb()
@@ -80,14 +61,6 @@ class Cli_MainHandler extends WebSocketUriHandler
     public function getHelp()
     {
         return $this->_help;
-    }
-
-    /**
-     * @return array
-     */
-    public function menu()
-    {
-        return $this->_menu;
     }
 
     public function onMessage(WebSocketTransportInterface $user, WebSocketMessageInterface $msg)

@@ -25,14 +25,25 @@ class Cli_Model_MainOpen
 
         new Cli_Model_Language($dataIn['langId'], $db);
 
-        Zend_Registry::set('id_lang', $dataIn['langId']);
+        $translator = Zend_Registry::get('Zend_Translate');
+        $adapter = $translator->getAdapter();
 
         $user->parameters['playerId'] = $dataIn['playerId'];
         $user->parameters['accessKey'] = $dataIn['accessKey'];
 
         $token = array(
             'type' => 'open',
-            'menu' => $handler->menu(),
+            'menu' => array(
+                'play' => $adapter->translate('Play'),
+                'load' => $adapter->translate('Load game'),
+                'halloffame' => $adapter->translate('Hall of Fame'),
+                'players' => $adapter->translate('Players'),
+                'friends' => $adapter->translate('Friends'),
+                'profile' => $adapter->translate('Profile'),
+                'contact' => $adapter->translate('Contact'),
+                'help' => $adapter->translate('Help'),
+                'editor' => $adapter->translate('Map editor'),
+            )
         );
 
         $handler->sendToUser($user, $token);

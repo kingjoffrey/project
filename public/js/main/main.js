@@ -1,8 +1,6 @@
 "use strict"
 var Main = new function () {
-    var active,
-        init = 0,
-        main = '',
+    var init = 0,
         click = function (controller) {
             return function () {
                 Sound.play('click')
@@ -14,8 +12,9 @@ var Main = new function () {
     }
     this.createMenu = function (menu) {
         if (init) {
-            dupa.blada()
+            return
         }
+
         init = 1
 
         for (var controller in menu) {
@@ -45,11 +44,5 @@ var Main = new function () {
         $('#menu a').each(function () {
             $(this).click(click($(this).attr('id')))
         })
-    }
-    this.setMain = function (b) {
-        main = b
-    }
-    this.getMain = function () {
-        return main
     }
 }
