@@ -12,17 +12,23 @@ var PlayersController = new function () {
             $('#searchResults').append($('<tr>').append($('<td colspan="3">').html(translations.Nosearchresults).addClass('after')))
         },
         addPlayer = function (player, id) {
-            $('#searchResults').append($('<tr>')
+            $('#searchResults').append($('<tr>').attr('id', id)
                 .append($('<td>').html(player))
-                .append($('<td>').html($('<a>').attr('id', id).html(translations.write).click(function () {
-                        var playerId = $(this).attr('id')
-                        MessagesController.setPlayerId(playerId)
-                        WebSocketSendMain.controller('messages', 'thread', {'id': playerId})
-                    }))
+                .append($('<td>').html(
+                    $('<a>').addClass('write').html(translations.write)
+                        .click(function () {
+                            var playerId = $(this).parent().parent().attr('id')
+                            MessagesController.setPlayerId(playerId)
+                            WebSocketSendMain.controller('messages', 'thread', {'id': playerId})
+                        })
+                    )
                 )
-                .append($('<td>').append($('<div>').attr('id', id).html(translations.Addtofriends).click(function () {
-                        WebSocketSendMain.controller('friends', 'add', {'id': $(this).attr('id')})
-                    }))
+                .append($('<td>').html(
+                    $('<a>').addClass('add').html(translations.Addtofriends)
+                        .click(function () {
+                            WebSocketSendMain.controller('friends', 'add', {'id': $(this).parent().parent().attr('id')})
+                        })
+                    )
                 )
             )
         }
