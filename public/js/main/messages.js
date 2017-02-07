@@ -30,7 +30,7 @@ var MessagesController = new function () {
 
         $('.table').append($('<div>').addClass('chat')
             .append($('<input>'))
-            .append($('<div>').addClass('button').html(translations.send).click(function () {
+            .append($('<div>').addClass('button buttonColors').html(translations.send).click(function () {
                 var message = $('.chat input').val()
                 if (message) {
                     $('.messages').append(

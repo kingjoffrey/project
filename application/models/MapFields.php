@@ -60,16 +60,7 @@ class Application_Model_MapFields extends Coret_Db_Table_Abstract
 
     public function mirrorBottom()
     {
-        $select = $this->_db->select()
-            ->from($this->_name, array('x', 'y', 'type'))
-            ->where($this->_db->quoteIdentifier('mapId') . ' = ?', $this->_mapId)
-            ->order(array('y', 'x'));
-
-        $mapFields = array();
-
-        foreach ($this->selectAll($select) as $val) {
-            $mapFields[$val['y']][$val['x']] = $val['type'];
-        }
+        $mapFields = $this->getMapFields();
 
         $max = count($mapFields);
 
@@ -77,12 +68,30 @@ class Application_Model_MapFields extends Coret_Db_Table_Abstract
 
         foreach ($mirrorMapFields as $y => $row) {
             $newY = $y + $max;
-            foreach ($row[$y] as $x => $type) {
+            foreach ($row as $x => $type) {
                 $mapFields[$newY][$x] = $type;
             }
         }
 
+        return $mapFields;
+    }
 
+    public function mirrorTop()
+    {
+        $mapFields = $this->getMapFields();
+
+        $max = count($mapFields);
+
+        $mirrorMapFields = array_reverse($mapFields);
+
+        foreach ($mapFields as $y => $row) {
+            $newY = $y + $max;
+            foreach ($row as $x => $type) {
+                $mirrorMapFields[$newY][$x] = $type;
+            }
+        }
+
+        return $mirrorMapFields;
     }
 }
 

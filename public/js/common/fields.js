@@ -198,30 +198,6 @@ var Fields = new function () {
             }
         }
 
-        // var height = y * 1 - 1
-        // var r = f.reverse()
-        // for (var y in r) {
-        //     if (y < 1) {
-        //         continue
-        //     }
-        //     for (var x in r[y]) {
-        //         if (x > 31) {
-        //             continue
-        //         }
-        //         var type = r[y][x],
-        //             yy = y * 1 + height
-        //         switch (type) {
-        //             case 'f':
-        //                 GameModels.addTree(x, yy)
-        //                 break
-        //             case 's':
-        //                 GameModels.addSwamp(x, yy)
-        //                 break
-        //         }
-        //         this.add(x, yy, type)
-        //     }
-        // }
-
         maxX = fields[0].length
         maxY = fields.length
 

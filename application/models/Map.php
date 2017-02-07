@@ -39,20 +39,21 @@ class Application_Model_Map extends Coret_Db_Table_Abstract
         return $this->selectAll($select);
     }
 
+    public function get()
+    {
+        $select = $this->_db->select()
+            ->from($this->_name)
+            ->where($this->_db->quoteIdentifier($this->_primary) . ' = ?', $this->_mapId);
+
+        return $this->selectRow($select);
+    }
+
     public function getName()
     {
         $select = $this->_db->select()
             ->from($this->_name, 'name')
             ->where($this->_db->quoteIdentifier($this->_primary) . ' = ?', $this->_mapId);
 
-        return $this->selectOne($select);
-    }
-
-    public function getMapName()
-    {
-        $select = $this->_db->select()
-            ->from($this->_name, 'name')
-            ->where($this->_db->quoteIdentifier($this->_primary) . '  = ?', $this->_mapId);
         return $this->selectOne($select);
     }
 

@@ -91,15 +91,14 @@ class Cli_ExecHandler extends WebSocketUriHandler
     private $_ports = array();
     private $_mainPort;
     private $_portMax = 65535;
-
-//    private $_portMax = 8084;
+    private $_projectDirName;
 
     public function __construct($logger)
     {
         parent::__construct($logger);
         $this->_mainPort = Zend_Registry::get('config')->websockets->aPort;
         $this->_portMax = $this->_portMax - $this->_mainPort;
-
+        $this->_projectDirName = Zend_Registry::get('config')->projectDir->name;
     }
 
     public function onMessage(WebSocketTransportInterface $user, WebSocketMessageInterface $msg)
@@ -138,20 +137,25 @@ class Cli_ExecHandler extends WebSocketUriHandler
 
             $user->sendString(Zend_Json::encode($token));
         } else {
-            $port = $this->initPort();
-            $execPort = $this->_mainPort + $port;
+            if (isset($dataIn['gameId']) && (is_string($dataIn['gameId']) || is_int($dataIn['gameId']))) {
+                $port = $this->initPort();
+                $execPort = $this->_mainPort + $port;
+                $gameId = (int)$dataIn['gameId'];
+                exec('/usr/bin/php ~/' . $this->_projectDirName . '/scripts/gameWSServer.php ' . $gameId . ' ' . $execPort . ' >>~/' . $this->_projectDirName . '/log/' . $gameId . '.log 2>&1 &');
 
-            $projectDirName = Zend_Registry::get('config')->projectDir->name;
-            exec('/usr/bin/php ~/' . $projectDirName . '/scripts/gameWSServer.php ' . $dataIn['gameId'] . ' ' . $execPort . ' >>~/' . $projectDirName . '/log/' . $dataIn['gameId'] . '.log 2>&1 &');
+                $this->addGame($dataIn['gameId'], $user->getId(), $port);
 
-            $this->addGame($dataIn['gameId'], $user->getId(), $port);
+                $token = array(
+                    'type' => 'port',
+                    'port' => $execPort
+                );
 
-            $token = array(
-                'type' => 'port',
-                'port' => $execPort
-            );
-
-            $user->sendString(Zend_Json::encode($token));
+                $user->sendString(Zend_Json::encode($token));
+            } else {
+                echo gettype($dataIn['gameId']) . "\n";
+                echo '$dataIn gameId not int' . "\n";
+                print_r($dataIn);
+            }
         }
     }
 

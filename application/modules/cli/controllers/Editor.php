@@ -55,6 +55,51 @@ class EditorController
         $handler->sendToUser($user, $token);
     }
 
+    function mirror(WebSocketTransportInterface $user, Cli_MainHandler $handler, $dataIn)
+    {
+        if (!isset($dataIn['id']) || empty($dataIn['id'])) {
+            echo('mirror: brak mapId' . "\n");
+            return;
+        }
+
+        $db = $handler->getDb();
+
+        $mMap = new Application_Model_Map ($dataIn['id'], $db);
+        $oldMap = $mMap->get();
+
+        switch ($dataIn['mirror']) {
+            case 0:
+                $mapFields = new Application_Model_MapFields($oldMap['mapId'], $db);
+                $fields = $mapFields->mirrorTop();
+                break;
+            case 1:
+return;
+                break;
+            case 2:
+                $mapFields = new Application_Model_MapFields($oldMap['mapId'], $db);
+                $fields = $mapFields->mirrorBottom();
+                break;
+            default:
+return;
+                break;
+        }
+
+        if ($mapId = $mMap->create(array('maxPlayers' => $oldMap['maxPlayers'], 'name' => $oldMap['name'] . ' mirror'), $user->parameters['playerId'])) {
+
+            $mSide = new Application_Model_Side(0, $db);
+
+            $mMapPlayers = new Application_Model_MapPlayers($mapId, $db);
+            $mMapPlayers->create($mSide->getWithLimit($oldMap['maxPlayers']));
+
+            $mapFields = new Application_Model_MapFields($mapId, $db);
+            foreach ($fields as $y => $row) {
+                foreach ($row as $x => $type) {
+                    $mapFields->add($x, $y, $type);
+                }
+            }
+        }
+    }
+
     function delete(WebSocketTransportInterface $user, Cli_MainHandler $handler, $dataIn)
     {
         if (!isset($dataIn['id'])) {

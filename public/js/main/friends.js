@@ -32,9 +32,16 @@ var FriendsController = new function () {
                         WebSocketSendMain.controller('messages', 'thread', {'id': playerId})
                     }))
                 )
-                .append($('<td>').append($('<div>').addClass('trash').attr('id', id).click(function () {
-                        WebSocketSendMain.controller('friends', 'delete', {'id': $(this).attr('id')})
-                    }))
+                .append(
+                    $('<td>')
+                        .append(
+                            $('<div>').addClass('iconButton buttonColors')
+                                .append(
+                                    $('<div>').addClass('trash').attr('id', id).click(function () {
+                                        WebSocketSendMain.controller('friends', 'delete', {'id': $(this).attr('id')})
+                                    })
+                                )
+                        )
                 )
             )
         }

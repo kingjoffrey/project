@@ -1,17 +1,36 @@
 <div class="table">
     <h2><?php echo $this->translate('Map list') ?></h2>
     <table>
-        <th>Map name</th>
-        <th>Max players</th>
-        <th>Creation date</th>
-        <th>Delete</th>
+        <th><?php echo $this->translate('Map name') ?></th>
+        <th><?php echo $this->translate('Max players') ?></th>
+        <th><?php echo $this->translate('Creation date') ?></th>
+        <th><?php echo $this->translate('Mirror') ?></th>
+        <th><?php echo $this->translate('Delete') ?></th>
         <?php if (is_array($this->mapList)): ?>
             <?php foreach ($this->mapList as $map): ?>
                 <tr id="<?php echo $map['mapId'] ?>" class="trlink">
                     <td><?php echo $map['name'] ?></td>
                     <td><?php echo $map['maxPlayers'] ?></td>
                     <td><?php echo Coret_View_Helper_Formatuj::date($map['date']) ?></td>
-                    <td><div class="trash"></div></td>
+                    <td>
+                        <div class="iconButton buttonColors" id="0">
+                            <div class="mirror mirror0"></div>
+                        </div>
+                        <div class="iconButton buttonColors" id="1">
+                            <div class="mirror mirror1"></div>
+                        </div>
+                        <div class="iconButton buttonColors" id="2">
+                            <div class="mirror mirror2"></div>
+                        </div>
+                        <div class="iconButton buttonColors" id="3">
+                            <div class="mirror mirror3"></div>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="iconButton buttonColors">
+                            <div class="trash"></div>
+                        </div>
+                    </td>
                 </tr>
             <?php endforeach ?>
         <?php endif ?>

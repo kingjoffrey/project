@@ -17,7 +17,15 @@ var EditorController = new function () {
         $('.trash').parent().click(function (e) {
             e.preventDefault()
             e.stopPropagation()
-            WebSocketSendMain.controller('editor', 'delete', {'id': $(this).parent().attr('id')})
+            WebSocketSendMain.controller('editor', 'delete', {'id': $(this).parent().parent().attr('id')})
+        })
+        $('.mirror').parent().click(function (e) {
+            e.preventDefault()
+            e.stopPropagation()
+            WebSocketSendMain.controller('editor', 'mirror', {
+                'id': $(this).parent().parent().attr('id'),
+                'mirror': $(this).attr('id')
+            })
         })
     }
     this.delete = function (r) {

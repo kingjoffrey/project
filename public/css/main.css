@@ -349,15 +349,6 @@ tr.trlink:hover td {
     font-style: italic;
 }
 
-td .trash {
-    width: 15px;
-    height: 20px;
-    background-image: url('/img/trash.png');
-    margin: 2px;
-    cursor: pointer;
-    display: inline-block;
-}
-
 .colorBox {
     width: 2.1vw;
     height: 2.1vw;
@@ -1144,4 +1135,24 @@ div.table table.unitTable td:first {
 
 #playersingame {
     padding-bottom: 1.4vw;
+}
+
+td .trash {
+    background: url('/img/trash.png') center center no-repeat !important;
+}
+
+td .mirror0 {
+    background: url('/img/editor/mirror0.png') center center no-repeat !important;
+}
+
+td .mirror1 {
+    background: url('/img/editor/mirror1.png') center center no-repeat !important;
+}
+
+td .mirror2 {
+    background: url('/img/editor/mirror2.png') center center no-repeat !important;
+}
+
+td .mirror3 {
+    background: url('/img/editor/mirror3.png') center center no-repeat !important;
 }
