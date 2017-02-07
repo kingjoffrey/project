@@ -17,10 +17,9 @@ class Admin_Model_Language extends Coret_Model_ParentDb
     public function getLanguageIdByCountryCode($countryCode)
     {
         $select = $this->_db->select()
-            ->from($this->_name)
+            ->from($this->_name, $this->_primary)
             ->where($this->_db->quoteIdentifier('countryCode') . ' = ?', $countryCode);
 
         return $this->_db->fetchOne($select);
     }
 }
-

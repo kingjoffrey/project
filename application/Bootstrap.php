@@ -100,30 +100,20 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
             )
         );
 
-        $testRoute = new Zend_Controller_Router_Route(
-            'test/:controller/:action/*',
-            array(
-                'module' => 'default',
-                'controller' => 'test',
-                'action' => 'index'
-            )
-        );
-
         $router->addRoute('langRoute', $langRoute);
         $router->addRoute('defaultRoute', $defaultRoute);
         $router->addRoute('adminRoute', $adminRoute);
-        $router->addRoute('testRoute', $testRoute);
     }
 
-    protected function _initTranslate()
-    {
-        $translate = new Zend_Translate('gettext',
-            APPLICATION_PATH . "/resources/languages/",
-            null,
-            array('scan' => Zend_Translate::LOCALE_DIRECTORY));
-        $registry = Zend_Registry::getInstance();
-        $registry->set('Zend_Translate', $translate);
-    }
+//    protected function _initTranslate()
+//    {
+//        $translate = new Zend_Translate('gettext',
+//            APPLICATION_PATH . "/resources/languages/",
+//            null,
+//            array('scan' => Zend_Translate::LOCALE_DIRECTORY));
+//        $registry = Zend_Registry::getInstance();
+//        $registry->set('Zend_Translate', $translate);
+//    }
 
     protected function _initLanguage()
     {

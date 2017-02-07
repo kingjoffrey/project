@@ -3,7 +3,7 @@
 
 // Set timezone of script to UTC inorder to avoid DateTime warnings in
 // vendor/zendframework/zend-log/Zend/Log/Logger.php
-date_default_timezone_set('UTC');
+//date_default_timezone_set('UTC');
 
 require_once("../vendor/autoload.php");
 
@@ -20,7 +20,7 @@ $application = new Zend_Application(
     APPLICATION_PATH . '/configs/application.ini'
 );
 
-$application->getBootstrap()->bootstrap(array('date', 'config', 'modules', 'translate'));
+$application->getBootstrap()->bootstrap(array('date', 'config', 'modules'));
 
 include_once(APPLICATION_PATH . '/modules/cli/handlers/PrivateChatHandler.php');
 include_once(APPLICATION_PATH . '/modules/cli/handlers/NewHandler.php');

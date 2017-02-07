@@ -7,7 +7,11 @@ class Cli_Model_MainOpen
     public function __construct($dataIn, WebSocketTransportInterface $user, Cli_MainHandler $handler)
     {
         if (!isset($dataIn['playerId'])) {
-            $handler->sendError($user, 'Brak "playerId"');
+            echo('Cli_Model_MainOpen: Brak "playerId"');
+            return;
+        }
+        if (!isset($dataIn['langId'])) {
+            echo('Cli_Model_MainOpen: Brak "langId"');
             return;
         }
 
@@ -18,6 +22,8 @@ class Cli_Model_MainOpen
             echo ('Brak uprawnień (playerId=' . $dataIn['playerId'] . ')') . "\n";
             return;
         }
+
+        new Cli_Model_Language($dataIn['langId'], $db);
 
         Zend_Registry::set('id_lang', $dataIn['langId']);
 
