@@ -14,7 +14,7 @@ var EditorController = new function () {
             mapId = $(this).attr('id')
             EditorController.edit()
         })
-        $('.trash').click(function (e) {
+        $('.trash').parent().click(function (e) {
             e.preventDefault()
             e.stopPropagation()
             WebSocketSendMain.controller('editor', 'delete', {'id': $(this).parent().attr('id')})

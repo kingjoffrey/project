@@ -12,7 +12,6 @@ class Cli_Model_EditorPlayer extends Cli_Model_DefaultPlayer
         $this->_miniMapColor = $player['minimapColor'];
         $this->_backgroundColor = $player['backgroundColor'];
         $this->_textColor = $player['textColor'];
-        $this->_longName = $player['longName'];
 
         $this->_color = $player['shortName'];
 
@@ -70,7 +69,6 @@ class Cli_Model_EditorPlayer extends Cli_Model_DefaultPlayer
             'miniMapColor' => $this->_miniMapColor,
             'backgroundColor' => $this->_backgroundColor,
             'textColor' => $this->_textColor,
-            'longName' => $this->_longName,
             'armies' => $this->_armies->toArray(),
             'castles' => $this->_castles->toArray(),
             'towers' => $this->_towers->toArray()

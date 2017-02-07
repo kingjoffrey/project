@@ -10,7 +10,7 @@ var WebSocketMessageMain = new function () {
                 if (typeof window[className][methodName] === "function") {
                     window[className][methodName](r)
 
-                    if (r.type == 'create' && r.action == 'map') {
+                    if ($('#back').length) {
                         return
                     } else {
                         $('#menuBox').hide()
