@@ -4,7 +4,7 @@ var WebSocketMessageNew = new function () {
         switch (r.type) {
             case 'start':
                 WebSocketSendNew.removeGame(Setup.getGameId())
-                GameController.index(Setup.getGameId())
+                GameController.index({'gameId': Setup.getGameId()})
                 break;
 
             case 'update':

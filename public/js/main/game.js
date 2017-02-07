@@ -1,11 +1,11 @@
 "use strict"
 var GameController = new function () {
-    this.index = function (gameId) {
+    this.index = function (r) {
         $('#bg').hide()
         $('.editor').hide()
         $('#loading').show()
 
-        Game.setGameId(gameId)
+        Game.setGameId(r.gameId)
         WebSocketExecGame.init()
     }
 }

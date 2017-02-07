@@ -4,7 +4,7 @@ var LoadController = new function () {
         $('#content').html(r.data)
 
         $('.trlink').click(function () {
-            GameController.index($(this).attr('id'))
+            GameController.index({'gameId': $(this).attr('id')})
         })
     }
 }
