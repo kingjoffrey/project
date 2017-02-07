@@ -26,7 +26,7 @@ class SetupController
             'action' => 'index',
             'data' => $view->render('setup/index.phtml'),
             'mapPlayers' => $mMapPlayers->getAll(),
-            'gameId' => $dataIn['gameId'],
+            'gameId' => $game['gameId'],
             'mapName' => $mMap->getName(),
             'gameMasterId' => $game['gameMasterId']
         );

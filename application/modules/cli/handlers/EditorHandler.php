@@ -51,7 +51,7 @@ class Cli_EditorHandler extends WebSocketUriHandler
     {
         $dataIn = Zend_Json::decode($msg->getData());
         if (Zend_Registry::get('config')->debug) {
-            print_r('ZAPYTANIE ');
+            echo('Cli_EditorHandler ZAPYTANIE ');
             print_r($dataIn);
         }
 
@@ -99,7 +99,7 @@ class Cli_EditorHandler extends WebSocketUriHandler
     public function sendToUser(WebSocketTransportInterface $user, $token, $debug = null)
     {
         if ($debug || Zend_Registry::get('config')->debug) {
-            print_r('ODPOWIEDŹ');
+            print_r('Cli_EditorHandler ODPOWIEDŹ ');
             print_r($token);
         }
 

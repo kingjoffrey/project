@@ -46,7 +46,7 @@ class Cli_CommonHandler extends WebSocketUriHandler
         $dataIn = Zend_Json::decode($msg->getData());
 
         if ($config->debug) {
-            print_r('ZAPYTANIE ');
+            echo ('Cli_CommonHandler ZAPYTANIE ');
             print_r($dataIn);
         }
 
@@ -66,7 +66,7 @@ class Cli_CommonHandler extends WebSocketUriHandler
 
         // AUTHORIZATION
         if (!Zend_Validate::is($gameId, 'Digits') || !Zend_Validate::is($playerId, 'Digits')) {
-            echo ('No game ID or player ID. Not authorized.'."\n");
+            echo('No game ID or player ID. Not authorized.' . "\n");
             $this->sendError($user, 'Not authorized.');
             return;
         }
@@ -216,7 +216,7 @@ class Cli_CommonHandler extends WebSocketUriHandler
     public function sendToChannel($token, $debug = null)
     {
         if ($debug || Zend_Registry::get('config')->debug) {
-            print_r('ODPOWIEDŹ ');
+            print_r('Cli_CommonHandler ODPOWIEDŹ ');
             print_r($token);
         }
 
@@ -247,7 +247,7 @@ class Cli_CommonHandler extends WebSocketUriHandler
     public function sendToUser(WebSocketTransportInterface $user, $token, $debug = null)
     {
         if ($debug || Zend_Registry::get('config')->debug) {
-            print_r('ODPOWIEDŹ');
+            print_r('Cli_CommonHandler ODPOWIEDŹ ');
             print_r($token);
         }
 

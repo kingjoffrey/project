@@ -65,9 +65,16 @@ class Cli_MainHandler extends WebSocketUriHandler
 
     public function onMessage(WebSocketTransportInterface $user, WebSocketMessageInterface $msg)
     {
+        $config = Zend_Registry::get('config');
         $dataIn = Zend_Json::decode($msg->getData());
+
+        if ($config->debug) {
+            echo('Cli_MainHandler ZAPYTANIE ');
+            print_r($dataIn);
+        }
+
         if (Zend_Registry::get('config')->debug) {
-            print_r('ZAPYTANIE ');
+            print_r('Cli_MainHandler ZAPYTANIE ');
             print_r($dataIn);
         }
 
@@ -114,7 +121,7 @@ class Cli_MainHandler extends WebSocketUriHandler
     public function sendToUser(WebSocketTransportInterface $user, $token, $debug = null)
     {
         if ($debug || Zend_Registry::get('config')->debug) {
-            print_r('ODPOWIEDŹ');
+            print_r('Cli_MainHandler ODPOWIEDŹ ');
             print_r($token);
         }
 

@@ -29,7 +29,7 @@ class Cli_GeneratorHandler extends WebSocketUriHandler
     {
         $dataIn = Zend_Json::decode($msg->getData());
         if (Zend_Registry::get('config')->debug) {
-            print_r('ZAPYTANIE ');
+            print_r('Cli_GeneratorHandler ZAPYTANIE ');
             print_r($dataIn);
         }
 
@@ -46,7 +46,7 @@ class Cli_GeneratorHandler extends WebSocketUriHandler
     public function sendToUser(WebSocketTransportInterface $user, $token, $debug = null)
     {
         if ($debug || Zend_Registry::get('config')->debug) {
-            print_r('ODPOWIEDŹ');
+            print_r('Cli_GeneratorHandler ODPOWIEDŹ ');
             print_r($token);
         }
 

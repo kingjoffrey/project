@@ -63,7 +63,13 @@ class Cli_NewHandler extends WebSocketUriHandler
 
     public function onMessage(WebSocketTransportInterface $user, WebSocketMessageInterface $msg)
     {
+        $config = Zend_Registry::get('config');
         $dataIn = Zend_Json::decode($msg->getData());
+
+        if ($config->debug) {
+            echo('Cli_NewHandler ZAPYTANIE ');
+            print_r($dataIn);
+        }
 
         if ($dataIn['type'] == 'open') {
             new Cli_Model_NewOpen($dataIn, $user, $this);
@@ -174,7 +180,7 @@ class Cli_NewHandler extends WebSocketUriHandler
     public function sendToUser(WebSocketTransportInterface $user, $token, $debug = null)
     {
         if ($debug || Zend_Registry::get('config')->debug) {
-            print_r('ODPOWIEDŹ');
+            print_r('Cli_MainHandler ODPOWIEDŹ ');
             print_r($token);
         }
 
@@ -189,7 +195,7 @@ class Cli_NewHandler extends WebSocketUriHandler
     public function sendToChannel($new, $token, $debug = null)
     {
         if ($debug || Zend_Registry::get('config')->debug) {
-            print_r('ODPOWIEDŹ ');
+            print_r('Cli_MainHandler ODPOWIEDŹ ');
             print_r($token);
         }
 
@@ -208,7 +214,7 @@ class Cli_NewHandler extends WebSocketUriHandler
     public function sendToChannelExceptUser(WebSocketTransportInterface $u, Cli_Model_New $new, $token, $debug = null)
     {
         if ($debug || Zend_Registry::get('config')->debug) {
-            print_r('ODPOWIEDŹ ');
+            print_r('Cli_MainHandler ODPOWIEDŹ ');
             print_r($token);
         }
 
@@ -223,7 +229,7 @@ class Cli_NewHandler extends WebSocketUriHandler
     public function sendToChannelExceptPlayers(Cli_Model_New $new, $token, $debug = null)
     {
         if ($debug || Zend_Registry::get('config')->debug) {
-            print_r('ODPOWIEDŹ ');
+            print_r('Cli_MainHandler ODPOWIEDŹ ');
             print_r($token);
         }
 
@@ -238,7 +244,7 @@ class Cli_NewHandler extends WebSocketUriHandler
     public function sendToChannelExceptPlayersAndMe($myId, Cli_Model_New $new, $token, $debug = null)
     {
         if ($debug || Zend_Registry::get('config')->debug) {
-            print_r('ODPOWIEDŹ ');
+            print_r('Cli_MainHandler ODPOWIEDŹ ');
             print_r($token);
         }
 
@@ -256,7 +262,7 @@ class Cli_NewHandler extends WebSocketUriHandler
     public function sendToChannelOnlyPlayers(Cli_Model_New $new, $token, $debug = null)
     {
         if ($debug || Zend_Registry::get('config')->debug) {
-            print_r('ODPOWIEDŹ ');
+            print_r('Cli_MainHandler ODPOWIEDŹ ');
             print_r($token);
         }
 
