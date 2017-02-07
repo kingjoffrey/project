@@ -708,6 +708,15 @@ div.table table.unitTable td:first {
     text-shadow: none;
 }
 
+.message table.treasury {
+    border: 1px solid #fff !important;
+    min-width: 30vw;
+}
+
+.message table.treasury td {
+    background: gold;
+}
+
 .message .status table {
     width: 100%;
 }
@@ -752,11 +761,6 @@ div.table table.unitTable td:first {
     padding: 1px;
 }
 
-#log {
-    width: 150px;
-    height: 29px;
-}
-
 #gold {
     text-shadow: none;
     position: absolute;
@@ -780,28 +784,7 @@ div.table table.unitTable td:first {
     position: absolute;
     color: white;
     z-index: 900;
-    left: 2px;
-}
-
-table.statistics tr {
-    background: none;
-}
-
-table.statistics td {
-    border: none;
-    padding: 1px;
-    height: 36px;
-}
-
-table.statistics th {
-    background: none;
-    border: none;
-    padding: 5px;
-    color: goldenrod;
-}
-
-table.statistics td.shortName {
-    background: none;
+    left: 0.7vw;
 }
 
 .relocatedProduction table {
@@ -810,44 +793,6 @@ table.statistics td.shortName {
 
 .relocatedProduction td {
     border: none;
-}
-
-table.treasury {
-    margin: 0 auto;
-    text-shadow: none;
-    min-width: 30vw !important;
-}
-
-table.treasury td {
-    border: 1px solid gray;
-    background: #000;
-    border-radius: 0;
-    padding: 0.7vw;
-    height: 2.1vw;
-}
-
-table.treasury tr:first-of-type td:first-of-type {
-    border-top-left-radius: 0.7vw;
-}
-
-table.treasury tr:first-of-type td:last-of-type {
-    border-top-right-radius: 0.7vw;
-}
-
-table.treasury tr:last-of-type td:first-of-type {
-    border-bottom-left-radius: 0.7vw;
-}
-
-table.treasury tr:last-of-type td:last-of-type {
-    border-bottom-right-radius: 0.7vw;
-}
-
-table.treasury td.r {
-    text-align: right;
-}
-
-table.treasury td.c {
-    text-align: center;
 }
 
 #vs {
@@ -876,10 +821,6 @@ table.treasury td.c {
 
 .font-red {
     color: red;
-}
-
-table.treasury td {
-    height: 28px !important;
 }
 
 /* ----------------- */

@@ -193,22 +193,7 @@ var Fields = new function () {
         grassField = new Field('g')
 
         for (var y in f) {
-            // if (y > 31) {
-            //     continue
-            // }
             for (var x in f[y]) {
-                // if (x > 31) {
-                //     continue
-                // }
-//                 var type = f[y][x]
-//                 switch (type) {
-//                     case 'f':
-//                         GameModels.addTree(x, y)
-//                         break
-//                     case 's':
-//                         GameModels.addSwamp(x, y)
-//                         break
-//                 }
                 this.add(x, y, f[y][x])
             }
         }
@@ -260,14 +245,4 @@ var Fields = new function () {
         Ground.init(maxX, maxY, textureCanvas, waterTextureCanvas)
         initRoads()
     }
-    // this.getFields = function () {
-    //     var xxx = []
-    //     for (var y in fields) {
-    //         xxx[y] = []
-    //         for (var x in fields[y]) {
-    //             xxx[y][x] = this.get(x, y).getType()
-    //         }
-    //     }
-    //     return xxx
-    // }
 }
