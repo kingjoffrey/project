@@ -193,21 +193,26 @@ div.table table {
     width: 100%;
 }
 
-tr:last-of-type td {
-    border-bottom: 1px solid #000;
-}
-
-th {
+#content th {
     text-align: center;
     padding: 0.7vw;
     color: #000;
     background: #fff;
     text-shadow: none;
+    border-top: 1px solid #000;
 }
 
-.trlink td {
+#content td {
     border-top: 1px solid #000;
     border-right: 1px solid #000;
+}
+
+#content td:first-of-type {
+    border-left: 1px solid #000;
+}
+
+#content tr:last-of-type td {
+    border-bottom: 1px solid #000;
 }
 
 #content td {
@@ -215,10 +220,6 @@ th {
     text-align: center;
     padding: 0.2vw;
     background: url("/img/game/message_bg.png");
-}
-
-.trlink td:first-of-type {
-    border-left: 1px solid #000;
 }
 
 #versionNumber {
@@ -248,8 +249,6 @@ th {
 
 #content form {
     background: url("/img/game/message_bg.png");
-    border-radius: 0.7vw;
-    border: 1px solid grey;
     padding: 0.7vw;
     text-align: center;
 }
@@ -432,6 +431,10 @@ td .trash {
 
 #text #unit h3 {
     text-align: center;
+}
+
+#text #unit table {
+    padding: 0.7vw 0;
 }
 
 #text #unit .unitName {
@@ -906,11 +909,14 @@ table.treasury td {
 }
 
 #nextTurn:hover {
-    color: #000 !important;
     background: red !important;
 }
 
 #nextTurn.buttonOff div {
+    background: url(/img/game/buttons/nextTurn_off.png) center center no-repeat !important;
+}
+
+#nextTurn.buttonOff:hover div {
     background: url(/img/game/buttons/nextTurn_off.png) center center no-repeat !important;
 }
 
@@ -928,6 +934,10 @@ table.treasury td {
 
 #nextArmy div {
     background: url(/img/game/buttons/search.png) center center no-repeat !important;
+}
+
+#nextArmy.buttonOff div {
+    background: url(/img/game/buttons/search_off.png) center center no-repeat !important;
 }
 
 #armyStatus {

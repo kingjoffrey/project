@@ -257,12 +257,12 @@ var GameGui = new function () {
 
         $('#game canvas').mousewheel(function (event) {
             if (event.deltaY > 0) {
-                if (GameScene.getCameraY() < 230) {
-                    GameScene.moveCameraAway()
+                if (GameScene.getCamera().position.y > 12) {
+                    GameScene.moveCameraClose()
                 }
             } else {
-                if (GameScene.getCameraY() > 22) {
-                    GameScene.moveCameraClose()
+                if (GameScene.getCamera().position.y < 230) {
+                    GameScene.moveCameraAway()
                 }
             }
         })
