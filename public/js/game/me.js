@@ -89,6 +89,9 @@ var CommonMe = new function () {
     this.getCastle = function (castleId) {
         return me.getCastles().get(castleId)
     }
+    this.hasCastle = function (castleId) {
+        return me.getCastles().has(castleId)
+    }
     /**
      *
      * @param armyId

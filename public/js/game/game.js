@@ -50,6 +50,8 @@ var Game = new function () {
             $('#loading').hide()
             $('#game').show()
             $('.game').show()
+
+            $('canvas').css('cursor', 'move')
         }
 
         if (Turn.isMy()) {

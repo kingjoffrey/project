@@ -52,6 +52,27 @@ var PickerGame = new function () {
                 // if (AStar.cursorPosition(PickerCommon.convertX(), PickerCommon.convertZ()) && CommonMe.getSelectedArmyId()) {
                 //     AStar.showPath()
                 // }
+
+                var field = PickerCommon.getField(),
+                    castleId = field.getCastleId(),
+                    armies = field.getArmies()
+
+                if (CommonMe.getSelectedArmyId()) {
+                    if (castleId && CommonMe.hasCastle(castleId)) {
+                        $('canvas').css('cursor', 'pointer')
+                    } else {
+                    }
+                } else if (castleId) {
+                    if (CommonMe.hasCastle(castleId)) {
+
+                    }else{
+
+                    }
+                    $('canvas').css('cursor', 'pointer')
+
+                }
+
+
                 if (dragStart) {
                     var dragEnd = PickerGame.getPoint(event)
                     GameScene.moveCamera(dragStart.x - dragEnd.x, dragStart.y - dragEnd.y)
