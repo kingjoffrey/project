@@ -38,7 +38,6 @@ var Armies = function () {
         Fields.get(army.getX(), army.getY()).removeArmyId(armyId)
 
         GameScene.remove(army.getMesh())
-        $('#' + armyId).remove()
         delete armies[armyId]
     }
     this.hasArmy = function (armyId) {

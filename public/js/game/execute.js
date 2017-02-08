@@ -191,9 +191,6 @@ var Execute = new function () {
                     break;
 
                 case 'dead':
-                    // if (!GamePlayers.hasSkull(r.color)) {
-                    //     GamePlayers.drawSkull(r.color)
-                    // }
                     Execute.setExecuting(0)
                     break;
             }
@@ -215,10 +212,6 @@ var Execute = new function () {
         }
     }
     this.setExecuting = function (value) {
-        console.log(value)
         executing = value
-    }
-    this.getI = function () {
-        return i
     }
 }

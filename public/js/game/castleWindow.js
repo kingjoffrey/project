@@ -156,21 +156,38 @@ var CastleWindow = new function () {
             .append($('<div>').addClass('production').append($('<div>').html(translations.availableUnits).addClass('title')).append(createProductionTD()).attr('id', castle.getCastleId()))
 
         if (castle.getCastleId() == CommonMe.getCapitalId()) {
+            var resurrect = $('<div>').addClass('button buttonColors buttonOff').attr('id', 'heroResurrection')
+                .html(translations.resurrectHero)
+                .click(function () {
+                    Message.remove(messageId)
+                })
+
+            var hire = $('<div>').addClass('button buttonColors buttonOff').attr('id', 'heroHire')
+                .html(translations.hireHero)
+                .click(function () {
+                    Message.remove(messageId)
+                })
+
+            if (castle.getCastleId() == CommonMe.getCapitalId()) {
+                if (!CommonMe.findHero() && CommonMe.getGold() >= 100) {
+                    resurrect.removeClass('buttonOff').click(function () {
+                        var id = Message.show(translations.resurrectHero, $('<div>').append(translations.doYouWantToResurrectHeroFor100Gold))
+                        Message.ok(id, WebSocketSendGame.resurrection)
+                        Message.cancel(id)
+                    })
+                } else if (CommonMe.getGold() >= 1000) {
+                    hire.removeClass('buttonOff').click(function () {
+                        Message.remove(messageId)
+                        var id = Message.show(translations.hireHero, $('<div>').html(translations.doYouWantToHireNewHeroFor1000Gold))
+                        Message.ok(id, WebSocketSendGame.hire)
+                        Message.cancel(id)
+                    })
+                }
+            }
+
             castleWindow
-                .append($('<div>')
-                    .addClass('button buttonColors buttonOff')
-                    .attr('id', 'heroResurrection')
-                    .html(translations.resurrectHero)
-                    .click(function () {
-                        Message.remove(messageId)
-                    }))
-                .append($('<div>')
-                    .addClass('button buttonColors buttonOff')
-                    .attr('id', 'heroHire')
-                    .html(translations.hireHero)
-                    .click(function () {
-                        Message.remove(messageId)
-                    }))
+                .append(resurrect)
+                .append(hire)
         }
 
         // relocation from
@@ -208,30 +225,6 @@ var CastleWindow = new function () {
             }
             castleWindow
                 .append($('<div>').addClass('relocatedProduction').append($('<div>').html(translations.relocatingFrom).addClass('title')).append(relocatingFrom))
-        }
-
-        if (castle.getCastleId() == CommonMe.getCapitalId()) {
-            if (!CommonMe.findHero() && CommonMe.getGold() >= 100) {
-                $('#heroResurrection').removeClass('buttonOff')
-                $('#heroHire').addClass('buttonOff')
-            } else if (CommonMe.getGold() >= 1000) {
-                $('#heroResurrection').addClass('buttonOff')
-                $('#heroHire').removeClass('buttonOff')
-            } else {
-                $('#heroResurrection').addClass('buttonOff')
-                $('#heroHire').addClass('buttonOff')
-            }
-            $('#heroResurrection:not(.buttonOff)').click(function () {
-                var id = Message.show(translations.resurrectHero, $('<div>').append(translations.doYouWantToResurrectHeroFor100Gold))
-                Message.ok(id, WebSocketSendGame.resurrection)
-                Message.cancel(id)
-            })
-
-            $('#heroHire:not(.buttonOff)').click(function () {
-                var id = Message.show(translations.hireHero, $('<div>').html(translations.doYouWantToHireNewHeroFor1000Gold))
-                Message.ok(id, WebSocketSendGame.hire)
-                Message.cancel(id)
-            })
         }
 
         if (castle.getCastleId() == CommonMe.getCapitalId()) {

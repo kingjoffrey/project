@@ -19,7 +19,7 @@ body {
 }
 
 input, select, body {
-    font-size: 2.1vw;
+    font-size: 1.4vw;
     font-family: Impact, Charcoal, sans-serif;
     letter-spacing: 0.2vw;
 }
@@ -55,8 +55,15 @@ a:hover {
     display: inline-block;
 }
 
-.iconButton div, .button, #submit, .bigLink a {
-    padding: 2.1vw;
+input, select {
+    padding-left: 0.7vw;
+    padding-right: 0.7vw;
+    box-shadow: 0 0 0.7vw #000;
+    background: #373737;
+}
+
+.iconButton div, .button, #submit, .bigLink a, input, select {
+    padding: 1.4vw;
 }
 
 .button:hover, #submit:hover, .iconButton:hover {
@@ -102,19 +109,13 @@ a:hover {
     text-align: center;
 }
 
-input, select {
-    padding: 2.1vw 0.7vw;
-    box-shadow: 0 0 0.7vw #000;
-    background: #373737;
-}
-
 .iconButton div:not(.varchar) {
     width: 23px;
     height: 23px;
 }
 
 .iconButton {
-    margin: 0.7vw;
+    margin: 0.1vw;
     display: inline-block;
 }
 
@@ -458,11 +459,11 @@ div.table table.unitTable td:first {
     padding-top: 5px;
 }
 
-.contact td:first-child {
+#content table.contact td:first-of-type {
     text-align: right;
 }
 
-.contact td:last-child {
+#content table.contact td:last-of-type {
     text-align: left;
 }
 
@@ -1062,13 +1063,12 @@ div.table table.unitTable td:first {
     color: lime;
 }
 
-#back {
-    margin: 2.1vw;
+#back, #create {
+    margin: 1.4vw;
 }
 
 #create {
     float: left;
-    margin: 2.1vw;
 }
 
 #new canvas {

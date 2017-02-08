@@ -53,8 +53,7 @@ var Castles = function () {
             }
         }
         GameScene.remove(castle.getMesh())
-        $('#c' + castleId).remove()
-        this.remove(castleId)
+        delete castles[castleId]
     }
     this.delete = function (castleId) {
         delete castles[castleId]
