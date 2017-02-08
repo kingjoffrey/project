@@ -8,11 +8,13 @@ class Cli_Model_EditorOpen
     public function __construct($dataIn, WebSocketTransportInterface $user, Cli_EditorHandler $handler)
     {
         if (!isset($dataIn['playerId'])) {
-            $handler->sendError($user, 'Brak "playerId"');
+            $l = new Coret_Model_Logger('Cli_Model_EditorOpen');
+            $l->log('Brak "playerId"');
             return;
         }
         if (!isset($dataIn['mapId'])) {
-            $handler->sendError($user, 'Brak "mapId"');
+            $l = new Coret_Model_Logger('Cli_Model_EditorOpen');
+            $l->log('Brak "mapId"');
             return;
         }
 
@@ -20,7 +22,8 @@ class Cli_Model_EditorOpen
         $mWebSocket = new Application_Model_Websocket($dataIn['playerId'], $db);
 
         if (!$mWebSocket->checkAccessKey($dataIn['accessKey'], $db)) {
-            echo ('Brak uprawnień (playerId=' . $dataIn['playerId'] . ')') . "\n";
+            $l = new Coret_Model_Logger('Cli_Model_EditorOpen');
+            $l->log('Brak uprawnień (playerId=' . $dataIn['playerId'] . ')');
             return;
         }
 

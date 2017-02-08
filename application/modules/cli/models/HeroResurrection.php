@@ -12,12 +12,16 @@ class Cli_Model_HeroResurrection
         $player = $game->getPlayers()->getPlayer($color);
 
         if ($player->getGold() < 100) {
-            $handler->sendError($user, 'Za mało złota!');
+            $l = new Coret_Model_Logger('Cli_Model_HeroResurrection');
+            $l->log('Za mało złota!');
+            $handler->sendError($user, 'Error 1010');
             return;
         }
 
         if (!$capital = $player->getCastles()->getCastle($player->getCapitalId())) {
-            $handler->sendError($user, 'Aby wskrzesić herosa musisz posiadać stolicę!');
+            $l = new Coret_Model_Logger('Cli_Model_HeroResurrection');
+            $l->log('Aby wskrzesić herosa musisz posiadać stolicę!');
+            $handler->sendError($user, 'Error 1011');
             return;
         }
 
@@ -26,7 +30,9 @@ class Cli_Model_HeroResurrection
         $hero = $mHeroesInGame->getDeadHero($playerId);
 
         if (empty($hero)) {
-            $handler->sendError($user, 'Twój heros żyje! ');
+            $l = new Coret_Model_Logger('Cli_Model_HeroResurrection');
+            $l->log('Twój heros żyje!');
+            $handler->sendError($user, 'Error 1012');
             return;
         }
 

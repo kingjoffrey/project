@@ -61,7 +61,8 @@ class Cli_EditorHandler extends WebSocketUriHandler
         }
 
         if (!Zend_Validate::is($user->parameters['playerId'], 'Digits')) {
-            $this->sendError($user, 'Brak autoryzacji.');
+            $l = new Coret_Model_Logger('Cli_EditorHandler');
+            $l->log('Brak autoryzacji.');
             return;
         }
 

@@ -129,8 +129,6 @@ class SetupGame
 
     public function __construct($gameId, Zend_Db_Adapter_Pdo_Pgsql $db)
     {
-        $this->_l = new Coret_Model_Logger();
-
         $this->_gameId = $gameId;
 
         $mGame = new Application_Model_Game($this->_gameId, $db);

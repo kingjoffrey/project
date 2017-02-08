@@ -9,7 +9,7 @@ class Cli_Model_NearestWeakerHostileCastle
 
     public function __construct(Cli_Model_Game $game, $playerColor, Cli_Model_Army $army)
     {
-        $this->_l = new Coret_Model_Logger();
+        $this->_l = new Coret_Model_Logger('Cli_Model_NearestWeakerHostileCastle');
 
         $players = $game->getPlayers();
         $this->initHeuristics($players, $playerColor, $army->getX(), $army->getY(), $game);

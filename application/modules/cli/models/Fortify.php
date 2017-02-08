@@ -6,7 +6,8 @@ class Cli_Model_Fortify
     function  __construct($armyId, $fortify, Devristo\Phpws\Protocol\WebSocketTransportInterface $user, $handler)
     {
         if (empty($armyId)) {
-            $handler->sendError($user, 'No "armyId"!');
+            $l = new Coret_Model_Logger('Cli_Model_Fortify');
+            $l->log('No "armyId"!');
             return;
         }
 

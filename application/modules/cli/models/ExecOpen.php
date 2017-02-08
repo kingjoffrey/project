@@ -8,7 +8,8 @@ class Cli_Model_ExecOpen
     public function __construct($dataIn, WebSocketTransportInterface $user, Cli_ExecHandler $handler)
     {
         if (!isset($dataIn['playerId'])) {
-            $handler->sendError($user, 'Brak "playerId"');
+            $l = new Coret_Model_Logger('Cli_Model_ExecOpen');
+            $l->log('Brak "playerId"');
             return;
         }
 

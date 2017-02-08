@@ -50,7 +50,7 @@ class Cli_CommonHandler extends WebSocketUriHandler
             print_r($dataIn);
         }
 
-        $l = new Coret_Model_Logger();
+        $l = new Coret_Model_Logger('Cli_CommonHandler');
         $l->log($dataIn);
 
         if ($dataIn['type'] == 'open') {
@@ -66,8 +66,7 @@ class Cli_CommonHandler extends WebSocketUriHandler
 
         // AUTHORIZATION
         if (!Zend_Validate::is($gameId, 'Digits') || !Zend_Validate::is($playerId, 'Digits')) {
-            echo('No game ID or player ID. Not authorized.' . "\n");
-            $this->sendError($user, 'Not authorized.');
+            $l->log('No game ID or player ID. Not authorized.');
             return;
         }
 
@@ -119,6 +118,7 @@ class Cli_CommonHandler extends WebSocketUriHandler
         }
 
         if (!$this->_game->isPlayerTurn($playerId)) {
+            $l->log('Not your turn.');
             $this->sendError($user, 'Not your turn.');
 
             if ($config->exitOnErrors) {

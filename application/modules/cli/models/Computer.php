@@ -16,6 +16,7 @@ class Cli_Model_Computer
         }
 
         if (!$player->getComputer()) {
+            $l->log('To (' . $playerId . ') nie komputer!');
 //            echo 'To (' . $playerId . ') nie komputer!' . "\n";
 //            $this->sendError($user, 'To (' . $playerId . ') nie komputer!');
             return;

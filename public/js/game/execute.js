@@ -184,6 +184,8 @@ var Execute = new function () {
                     if (Game.getLoading()) {
                         GameGui.end()
                     } else {
+                        GameRenderer.start()
+                        $('#gameMenu').hide()
                         CommonMe.turnOff()
                         var id = Message.show(translations.gameOver, $('<div>').append($('<div>').html(translations.thisIsTheEnd)))
                         Message.ok(id, GameGui.end)

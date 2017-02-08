@@ -6,7 +6,9 @@ class Cli_Model_SplitArmy
     function __construct($parentArmyId, $s, $h, $playerId, Devristo\Phpws\Protocol\WebSocketTransportInterface $user, $handler)
     {
         if (empty($parentArmyId) || (empty($h) && empty($s))) {
-            $handler->sendError($user, 'Brak "armyId", "s" lub "h"!');
+            $l = new Coret_Model_Logger('Cli_Model_SplitArmy');
+            $l->log('Brak "armyId", "s" lub "h"!');
+            $handler->sendError($user, 'Error 1034');
             return;
         }
 
@@ -68,7 +70,9 @@ class Cli_Model_SplitArmy
         }
 
         if (empty($childArmyId)) {
-            $handler->sendError($user, 'Brak "childArmyId"');
+            $l = new Coret_Model_Logger('Cli_Model_SplitArmy');
+            $l->log('Brak "childArmyId"');
+            $handler->sendError($user, 'Error 1035');
             return;
         }
 

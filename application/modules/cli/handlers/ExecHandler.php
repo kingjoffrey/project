@@ -117,7 +117,8 @@ class Cli_ExecHandler extends WebSocketUriHandler
         new Cli_Model_ExecOpen($dataIn, $user, $this);
 
         if (!Zend_Validate::is($user->parameters['playerId'], 'Digits')) {
-            $this->sendError($user, 'Brak autoryzacji.');
+            $l = new Coret_Model_Logger('Cli_ExecHandler');
+            $l->log('Brak autoryzacji.');
             return;
         }
 
@@ -141,7 +142,7 @@ class Cli_ExecHandler extends WebSocketUriHandler
                 $port = $this->initPort();
                 $execPort = $this->_mainPort + $port;
                 $gameId = (int)$dataIn['gameId'];
-                exec('/usr/bin/php ~/' . $this->_projectDirName . '/scripts/gameWSServer.php ' . $gameId . ' ' . $execPort . ' >>~/' . $this->_projectDirName . '/log/' . $gameId . '.log 2>&1 &');
+                exec('/usr/bin/php ~/' . $this->_projectDirName . '/scripts/gameWSServer.php ' . $gameId . ' ' . $execPort . ' >>~/' . $this->_projectDirName . '/log/' . $gameId . '_' . date('Ymd') . '.log 2>&1 &');
 
                 $this->addGame($dataIn['gameId'], $user->getId(), $port);
 

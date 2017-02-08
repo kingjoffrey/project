@@ -11,12 +11,16 @@ class Cli_Model_HeroHire
         $player = $game->getPlayers()->getPlayer($color);
 
         if ($player->getGold() < 1000) {
-            $handler->sendError($user, 'Za mało złota!');
+            $l = new Coret_Model_Logger('Cli_Model_HeroHire');
+            $l->log('Za mało złota!');
+            $handler->sendError($user, 'Error 1008');
             return;
         }
 
         if (!$capital = $player->getCastles()->getCastle($player->getCapitalId())) {
-            $handler->sendError($user, 'Aby wynająć herosa musisz posiadać stolicę!');
+            $l = new Coret_Model_Logger('Cli_Model_HeroHire');
+            $l->log('Aby wynająć herosa musisz posiadać stolicę!');
+            $handler->sendError($user, 'Error 1009');
             return;
         }
 

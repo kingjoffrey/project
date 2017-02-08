@@ -6,7 +6,9 @@ class Cli_Model_SearchRuinHandler
     public function __construct($armyId, Devristo\Phpws\Protocol\WebSocketTransportInterface $user, $handler, $giveMeDragons = false)
     {
         if (!Zend_Validate::is($armyId, 'Digits')) {
-            $handler->sendError($user, 'Brak armii!');
+            $l = new Coret_Model_Logger('Cli_Model_SearchRuinHandler');
+            $l->log('Brak armii!');
+            $handler->sendError($user, 'Error 1029');
             return;
         }
 
@@ -16,26 +18,34 @@ class Cli_Model_SearchRuinHandler
         $army = $game->getPlayers()->getPlayer($color)->getArmies()->getArmy($armyId);
 
         if (!$ruinId = $game->getFields()->getField($army->getX(), $army->getY())->getRuinId()) {
-            $handler->sendError($user, 'Brak ruin');
+            $l = new Coret_Model_Logger('Cli_Model_SearchRuinHandler');
+            $l->log('Brak ruin!');
+            $handler->sendError($user, 'Error 1030');
             return;
         }
 
         $ruin = $game->getRuins()->getRuin($ruinId);
 
         if ($ruin->getEmpty()) {
-            $handler->sendError($user, 'Ruiny są już przeszukane.');
+            $l = new Coret_Model_Logger('Cli_Model_SearchRuinHandler');
+            $l->log('Ruiny są już przeszukane.');
+            $handler->sendError($user, 'Error 1031');
             return;
         }
 
         if (!$heroId = $army->getHeroes()->getAnyHeroId()) {
-            $handler->sendError($user, 'Tylko Heros może przeszukiwać ruiny!');
+            $l = new Coret_Model_Logger('Cli_Model_SearchRuinHandler');
+            $l->log('Tylko Heros może przeszukiwać ruiny!');
+            $handler->sendError($user, 'Error 1032');
             return;
         }
 
         $hero = $army->getHeroes()->getHero($heroId);
 
         if ($hero->getMovesLeft() <= 0) {
-            $handler->sendError($user, 'Heros ma za mało ruchów!');
+            $l = new Coret_Model_Logger('Cli_Model_SearchRuinHandler');
+            $l->log('Heros ma za mało ruchów!');
+            $handler->sendError($user, 'Error 1033');
             return;
         }
 

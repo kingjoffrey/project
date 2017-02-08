@@ -6,7 +6,9 @@ class Cli_Model_JoinArmy
     public function __construct($armyId, Devristo\Phpws\Protocol\WebSocketTransportInterface $user, $handler)
     {
         if (empty($armyId)) {
-            $handler->sendError($user, 'Brak "armyId"!');
+            $l = new Coret_Model_Logger('Cli_Model_JoinArmy');
+            $l->log('Brak "armyId"!');
+            $handler->sendError($user, 'Error 1013');
             return;
         }
 

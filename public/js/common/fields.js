@@ -1,18 +1,12 @@
 "use strict"
 var Fields = new function () {
-    var fields = [],
+    var fields,
         grassField,
         maxX,
         maxY,
         textureMultiplier = 16,
-        tmpWaterTextureCanvas = document.createElement('canvas'),
-        tmpWaterTextureContext = tmpWaterTextureCanvas.getContext('2d'),
-        waterTextureCanvas = document.createElement('canvas'),
-        waterTextureContext = waterTextureCanvas.getContext('2d'),
-        tmpTextureCanvas = document.createElement('canvas'),
-        tmpTextureContext = tmpTextureCanvas.getContext('2d'),
-        textureCanvas = document.createElement('canvas'),
-        textureContext = textureCanvas.getContext('2d'),
+        textureCanvas,
+        waterTextureCanvas,
         initRoads = function () {
             for (var y = 0; y < maxY; y++) {
                 for (var x = 0; x < maxX; x++) {
@@ -23,7 +17,7 @@ var Fields = new function () {
                 }
             }
         },
-        paintTextureField = function (x, y, color1, color2, percent) {
+        paintTextureField = function (tmpTextureContext, x, y, color1, color2, percent) {
             var howManyTimes = textureMultiplier * textureMultiplier * (percent / 100)
 
             tmpTextureContext.fillStyle = color1
@@ -37,7 +31,7 @@ var Fields = new function () {
                 tmpTextureContext.fillRect(x * textureMultiplier + valueX, y * textureMultiplier + valueY, 1, 1)
             }
         },
-        paintWaterTextureField = function (x, y, color1, color2, percent) {
+        paintWaterTextureField = function (tmpWaterTextureContext, x, y, color1, color2, percent) {
             var howManyTimes = textureMultiplier * textureMultiplier * (percent / 100)
 
             tmpWaterTextureContext.fillStyle = color1
@@ -146,60 +140,15 @@ var Fields = new function () {
         }
     }
     this.createTextures = function () {
-        for (var y in fields) {
-            for (var x in fields[y]) {
-                switch (this.get(x, y).getType()) {
-                    case 'g':
-                        paintTextureField(x, y, '#3c963c', '#3fa342', 5)
-                        paintWaterTextureField(x, y, '#365294', '#526daa', 0)
-                        break
-                    case 'f':
-                        paintTextureField(x, y, '#3c963c', '#0b7e22', 5)
-                        paintWaterTextureField(x, y, '#365294', '#526daa', 0)
-                        GameModels.addTree(x, y)
-                        break
-                    case 'w':
-                        paintTextureField(x, y, '#3c963c', '#ffff7f', 10)
-                        paintWaterTextureField(x, y, '#365294', '#526daa', 1)
-                        break
-                    case 'h':
-                        paintTextureField(x, y, '#0b7e22', '#3c963c', 1)
-                        paintWaterTextureField(x, y, '#365294', '#526daa', 0)
-                        break
-                    case 'm':
-                        paintTextureField(x, y, '#ededed', '#131313', 1)
-                        paintWaterTextureField(x, y, '#365294', '#526daa', 0)
-                        break
-                    case 'r':
-                        paintTextureField(x, y, '#3c963c', '#c4c720', 0)
-                        paintWaterTextureField(x, y, '#365294', '#526daa', 0)
-                        break
-                    case 'b':
-                        paintTextureField(x, y, '#3c963c', '#ffff7f', 10)
-                        paintWaterTextureField(x, y, '#365294', '#526daa', 1)
-                        break
-                    case 's':
-                        paintTextureField(x, y, '#3c963c', '#828396', 60)
-                        paintWaterTextureField(x, y, '#365294', '#526daa', 0)
-                        break
-                }
-            }
-        }
+        textureCanvas = document.createElement('canvas')
+        waterTextureCanvas = document.createElement('canvas')
 
-        textureContext.drawImage(tmpTextureCanvas, 0, 0, maxX * textureMultiplier, maxY * textureMultiplier, 0, 0, maxX * textureMultiplier, maxY * textureMultiplier)
-        waterTextureContext.drawImage(tmpWaterTextureCanvas, 0, 0, maxX * textureMultiplier, maxY * textureMultiplier, 0, 0, maxX * textureMultiplier, maxY * textureMultiplier)
-    }
-    this.init = function (f) {
-        grassField = new Field('g')
-
-        for (var y in f) {
-            for (var x in f[y]) {
-                this.add(x, y, f[y][x])
-            }
-        }
-
-        maxX = fields[0].length
-        maxY = fields.length
+        var tmpTextureCanvas = document.createElement('canvas'),
+            tmpTextureContext = tmpTextureCanvas.getContext('2d'),
+            tmpWaterTextureCanvas = document.createElement('canvas'),
+            tmpWaterTextureContext = tmpWaterTextureCanvas.getContext('2d'),
+            waterTextureContext = waterTextureCanvas.getContext('2d'),
+            textureContext = textureCanvas.getContext('2d')
 
         tmpWaterTextureCanvas.width = maxX * textureMultiplier
         tmpWaterTextureCanvas.height = maxY * textureMultiplier
@@ -216,6 +165,62 @@ var Fields = new function () {
 
         textureContext.translate(0, maxY * textureMultiplier)
         textureContext.scale(1, -1)
+
+        for (var y in fields) {
+            for (var x in fields[y]) {
+                switch (this.get(x, y).getType()) {
+                    case 'g':
+                        paintTextureField(tmpTextureContext, x, y, '#3c963c', '#3fa342', 5)
+                        paintWaterTextureField(tmpWaterTextureContext, x, y, '#365294', '#526daa', 0)
+                        break
+                    case 'f':
+                        paintTextureField(tmpTextureContext, x, y, '#3c963c', '#0b7e22', 5)
+                        paintWaterTextureField(tmpWaterTextureContext, x, y, '#365294', '#526daa', 0)
+                        GameModels.addTree(x, y)
+                        break
+                    case 'w':
+                        paintTextureField(tmpTextureContext, x, y, '#3c963c', '#ffff7f', 10)
+                        paintWaterTextureField(tmpWaterTextureContext, x, y, '#365294', '#526daa', 1)
+                        break
+                    case 'h':
+                        paintTextureField(tmpTextureContext, x, y, '#0b7e22', '#3c963c', 1)
+                        paintWaterTextureField(tmpWaterTextureContext, x, y, '#365294', '#526daa', 0)
+                        break
+                    case 'm':
+                        paintTextureField(tmpTextureContext, x, y, '#ededed', '#131313', 1)
+                        paintWaterTextureField(tmpWaterTextureContext, x, y, '#365294', '#526daa', 0)
+                        break
+                    case 'r':
+                        paintTextureField(tmpTextureContext, x, y, '#3c963c', '#c4c720', 0)
+                        paintWaterTextureField(tmpWaterTextureContext, x, y, '#365294', '#526daa', 0)
+                        break
+                    case 'b':
+                        paintTextureField(tmpTextureContext, x, y, '#3c963c', '#ffff7f', 10)
+                        paintWaterTextureField(tmpWaterTextureContext, x, y, '#365294', '#526daa', 1)
+                        break
+                    case 's':
+                        paintTextureField(tmpTextureContext, x, y, '#3c963c', '#828396', 60)
+                        paintWaterTextureField(tmpWaterTextureContext, x, y, '#365294', '#526daa', 0)
+                        break
+                }
+            }
+        }
+
+        textureContext.drawImage(tmpTextureCanvas, 0, 0, maxX * textureMultiplier, maxY * textureMultiplier, 0, 0, maxX * textureMultiplier, maxY * textureMultiplier)
+        waterTextureContext.drawImage(tmpWaterTextureCanvas, 0, 0, maxX * textureMultiplier, maxY * textureMultiplier, 0, 0, maxX * textureMultiplier, maxY * textureMultiplier)
+    }
+    this.init = function (f) {
+        grassField = new Field('g')
+        fields = []
+
+        for (var y in f) {
+            for (var x in f[y]) {
+                this.add(x, y, f[y][x])
+            }
+        }
+
+        maxX = fields[0].length
+        maxY = fields.length
 
         this.createTextures()
         Ground.init(maxX, maxY, textureCanvas, waterTextureCanvas)

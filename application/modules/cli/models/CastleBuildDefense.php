@@ -11,7 +11,8 @@ class Cli_Model_CastleBuildDefense
     public function __construct($castleId, Devristo\Phpws\Protocol\WebSocketTransportInterface $user, $handler)
     {
         if ($castleId == null) {
-            $handler->sendError($user, 'Brak "castleId"!');
+            $l = new Coret_Model_Logger('Cli_Model_CastleBuildDefense');
+            $l->log('Brak "castleId"!');
             return;
         }
 
@@ -23,7 +24,9 @@ class Cli_Model_CastleBuildDefense
         $castle = $player->getCastles()->getCastle($castleId);
 
         if (!$castle) {
-            $handler->sendError($user, 'To nie jest Twój zamek.');
+            $l = new Coret_Model_Logger('Cli_Model_CastleBuildDefense');
+            $l->log('To nie jest Twój zamek.');
+            $handler->sendError($user, 'Error 1001');
             return;
         }
 
@@ -32,7 +35,9 @@ class Cli_Model_CastleBuildDefense
             $costs += $i * 100;
         }
         if ($player->getGold() < $costs) {
-            $handler->sendError($user, 'Za mało złota!');
+            $l = new Coret_Model_Logger('Cli_Model_CastleBuildDefense');
+            $l->log('Za mało złota!');
+            $handler->sendError($user, 'Error 1002');
             return;
         }
 

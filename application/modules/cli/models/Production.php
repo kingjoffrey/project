@@ -12,7 +12,9 @@ class Cli_Model_Production
 
         if (isset($dataIn['relocationToCastleId'])) {
             if ($dataIn['relocationToCastleId'] == $castleId) {
-                $handler->sendError($user, 'Can\'t relocate production to the same castle!');
+                $l = new Coret_Model_Logger('Cli_Model_Production');
+                $l->log('Can not relocate production to the same castle!');
+                $handler->sendError($user, 'Error 1022');
                 return;
             }
             $relocationToCastleId = $dataIn['relocationToCastleId'];
@@ -21,12 +23,16 @@ class Cli_Model_Production
         }
 
         if ($castleId === null) {
-            $handler->sendError($user, 'No "castleId"!');
+            $l = new Coret_Model_Logger('Cli_Model_Production');
+            $l->log('No "castleId"!');
+            $handler->sendError($user, 'Error 1023');
             return;
         }
 
         if (empty($unitId)) {
-            $handler->sendError($user, 'No "unitId"!');
+            $l = new Coret_Model_Logger('Cli_Model_Production');
+            $l->log('No "unitId"!');
+            $handler->sendError($user, 'Error 1024');
             return;
         }
 
@@ -35,20 +41,26 @@ class Cli_Model_Production
         $castle = $game->getPlayers()->getPlayer($color)->getCastles()->getCastle($castleId);
 
         if (!$castle) {
-            $handler->sendError($user, 'To nie jest Twój zamek!');
+            $l = new Coret_Model_Logger('Cli_Model_Production');
+            $l->log('To nie jest Twój zamek!');
+            $handler->sendError($user, 'Error 1025');
             return;
         }
 
         $relocationToCastle = $game->getPlayers()->getPlayer($color)->getCastles()->getCastle($relocationToCastleId);
 
         if ($relocationToCastleId && !$relocationToCastle) {
-            $handler->sendError($user, 'To nie jest Twój zamek!');
+            $l = new Coret_Model_Logger('Cli_Model_Production');
+            $l->log('To nie jest Twój zamek!!');
+            $handler->sendError($user, 'Error 1026');
             return;
         }
 
         if ($unitId != -1) {
             if (!$castle->canProduceThisUnit($unitId)) {
-                $this->sendError($user, 'Can\'t produce this unit here!');
+                $l = new Coret_Model_Logger('Cli_Model_Production');
+                $l->log('Can not produce this unit here!');
+                $handler->sendError($user, 'Error 1027');
                 return;
             }
         } else {
@@ -63,9 +75,10 @@ class Cli_Model_Production
             $db = $handler->getDb();
             $castle->setProductionId($unitId, $relocationToCastleId, $playerId, $gameId, $db);
         } catch (Exception $e) {
-            $handler->sendError($user, 'Set castle production error!');
-            $l = new Coret_Model_Logger('Production');
+            $l = new Coret_Model_Logger('Cli_Model_Production');
+            $l->log('Set castle production error!');
             $l->log($e);
+            $handler->sendError($user, 'Error 1028');
             return;
         }
         $token = array(

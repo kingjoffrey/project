@@ -27,7 +27,9 @@ class Cli_Model_BattleSequenceHandler
         }
 
         if ($result != count($data['sequence'])) {
-            $handler->sendError($user, 'Error 1001');
+            $l = new Coret_Model_Logger('Cli_Model_BattleSequenceHandler');
+            $l->log('Error 1001');
+            $handler->sendError($user, 'Error 1000');
             return;
         }
 

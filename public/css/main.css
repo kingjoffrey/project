@@ -546,6 +546,10 @@ div.table table.unitTable td:first {
     background: url(/img/bg_0.jpg);
 }
 
+.message.tutorial .overflow {
+    padding: 2.1vw;
+}
+
 .message.tutorial .goal {
     padding-bottom: 1.4vw;
     text-align: left;

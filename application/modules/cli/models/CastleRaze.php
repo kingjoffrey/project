@@ -11,7 +11,9 @@ class Cli_Model_CastleRaze
     public function __construct($armyId, Devristo\Phpws\Protocol\WebSocketTransportInterface $user, $handler)
     {
         if ($armyId == null) {
-            $handler->sendError($user, 'No "armyId"!');
+            $l = new Coret_Model_Logger('Cli_Model_CastleRaze');
+            $l->log('No "armyId"!');
+            $handler->sendError($user, 'Error 1003');
             return;
         }
 
@@ -23,11 +25,15 @@ class Cli_Model_CastleRaze
         $field = $game->getFields()->getField($army->getX(), $army->getY());
         $castleId = $field->getCastleId();
         if (!$castleId) {
-            $handler->sendError($user, 'Brak zamku!');
+            $l = new Coret_Model_Logger('Cli_Model_CastleRaze');
+            $l->log('Brak zamku!');
+            $handler->sendError($user, 'Error 1004');
             return;
         }
         if ($field->getCastleColor() != $color) {
-            $handler->sendError($user, 'To nie jest twój zamek!');
+            $l = new Coret_Model_Logger('Cli_Model_CastleRaze');
+            $l->log('To nie jest twój zamek!');
+            $handler->sendError($user, 'Error 1005');
             return;
         }
 
