@@ -52,7 +52,7 @@ var PickerGame = new function () {
                 // if (AStar.cursorPosition(PickerCommon.convertX(), PickerCommon.convertZ()) && CommonMe.getSelectedArmyId()) {
                 //     AStar.showPath()
                 // }
-console.log('a')
+
                 if (dragStart) {
 // drag
                     var dragEnd = PickerGame.getPoint(event)
@@ -66,18 +66,14 @@ console.log('a')
                             castleColor = field.getCastleColor(),
                             armies = field.getArmies()
 
+                        for (var armyId in armies) {
+                            var hasArmy = 1
+                            break
+                        }
+
                         if (CommonMe.getSelectedArmyId()) {
 // selected
-                            if (castleColor) {
-// castle
-                                if (CommonMe.colorEquals(castleColor)) {
-// enter my castle
-                                    PickerCommon.cursor('enter')
-                                } else {
-// attack enemy castle
-                                    PickerCommon.cursor('attack')
-                                }
-                            } else if (armies) {
+                            if (hasArmy) {
 // armies
                                 for (var armyId in armies) {
                                     if (CommonMe.getSelectedArmyId() == armyId) {
@@ -93,6 +89,15 @@ console.log('a')
                                 }
 // attack enemy army
                                 PickerCommon.cursor('attack')
+                            } else if (castleColor) {
+// castle
+                                if (CommonMe.colorEquals(castleColor)) {
+// enter my castle
+                                    PickerCommon.cursor('enter')
+                                } else {
+// attack enemy castle
+                                    PickerCommon.cursor('attack')
+                                }
                             } else {
 // map
                                 if (CommonMe.getSelectedArmy().canFly()) {
@@ -118,10 +123,7 @@ console.log('a')
                             }
                         } else {
 // not selected
-                            if (castleColor && CommonMe.colorEquals(castleColor)) {
-// open my castle
-                                PickerCommon.cursor('open')
-                            } else if (armies) {
+                            if (hasArmy) {
                                 for (var armyId in armies) {
                                     if (CommonMe.colorEquals(armies[armyId])) {
 // select my army
@@ -131,6 +133,9 @@ console.log('a')
                                 }
 // grab map
                                 PickerCommon.cursor('grab')
+                            } else if (castleColor && CommonMe.colorEquals(castleColor)) {
+// open my castle
+                                PickerCommon.cursor('open')
                             } else {
 // grab map
                                 PickerCommon.cursor('grab')
