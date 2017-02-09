@@ -1,19 +1,19 @@
 var TreasuryWindow = new function () {
     this.treasury = function () {
-        var myTowers = CommonMe.getTowers().count(),
+        var myTowers = Me.getTowers().count(),
             myCastles = 0,
             myCastlesIncome = 0,
             myUnits = 0,
             myUnitsOutcome = 0
 
-        for (var i in CommonMe.getCastles().toArray()) {
-            var castle = CommonMe.getCastle(i)
+        for (var i in Me.getCastles().toArray()) {
+            var castle = Me.getCastle(i)
             myCastles++
             myCastlesIncome += castle.getIncome()
         }
 
-        for (var i in CommonMe.getArmies().toArray()) {
-            var army = CommonMe.getArmy(i)
+        for (var i in Me.getArmies().toArray()) {
+            var army = Me.getArmy(i)
             for (var j in army.getWalkingSoldiers()) {
                 myUnitsOutcome += Units.get(army.getWalkingSoldier(j).unitId).cost
                 myUnits++
@@ -61,7 +61,7 @@ var TreasuryWindow = new function () {
         Message.simple(translations.treasury, div)
     }
     this.income = function () {
-        var myTowers = CommonMe.getTowers().count(),
+        var myTowers = Me.getTowers().count(),
             myCastles = 0,
             myCastlesIncome = 0
 
@@ -70,12 +70,12 @@ var TreasuryWindow = new function () {
 
         var click = function (i) {
             return function () {
-                GameScene.centerOn(CommonMe.getCastle(i).getX(), CommonMe.getCastle(i).getY())
+                GameScene.centerOn(Me.getCastle(i).getX(), Me.getCastle(i).getY())
             }
         }
 
-        for (var i in CommonMe.getCastles().toArray()) {
-            var castle = CommonMe.getCastle(i)
+        for (var i in Me.getCastles().toArray()) {
+            var castle = Me.getCastle(i)
             myCastles++
             myCastlesIncome += castle.getIncome()
             table.append(
@@ -126,19 +126,19 @@ var TreasuryWindow = new function () {
 
         var center = function (i) {
             return function () {
-                GameScene.centerOn(CommonMe.getArmy(i).getX(), CommonMe.getArmy(i).getY())
+                GameScene.centerOn(Me.getArmy(i).getX(), Me.getArmy(i).getY())
             }
         }
 
-        for (var i in CommonMe.getArmies().toArray()) {
-            var army = CommonMe.getArmy(i)
+        for (var i in Me.getArmies().toArray()) {
+            var army = Me.getArmy(i)
             for (var j in army.getWalkingSoldiers()) {
                 var soldier = army.getWalkingSoldier(j)
                 myUnitsGold += Units.get(soldier.unitId).cost
                 myUnits++
                 table.append(
                     $('<tr>')
-                        .append($('<td>').html($('<img>').attr('src', Unit.getImage(soldier.unitId, CommonMe.getColor()))))
+                        .append($('<td>').html($('<img>').attr('src', Unit.getImage(soldier.unitId, Me.getColor()))))
                         .append($('<td>').html(Units.get(soldier.unitId).name_lang))
                         .append($('<td>').html(Units.get(soldier.unitId).cost + ' ' + translations.gold).addClass('r'))
                         .append(
@@ -155,7 +155,7 @@ var TreasuryWindow = new function () {
                 myUnits++
                 table.append(
                     $('<tr>')
-                        .append($('<td>').html($('<img>').attr('src', Unit.getImage(soldier.unitId, CommonMe.getColor()))))
+                        .append($('<td>').html($('<img>').attr('src', Unit.getImage(soldier.unitId, Me.getColor()))))
                         .append($('<td>').html(Units.get(soldier.unitId).name_lang))
                         .append($('<td>').html(Units.get(soldier.unitId).cost + ' ' + translations.gold).addClass('r'))
                         .append(
@@ -172,7 +172,7 @@ var TreasuryWindow = new function () {
                 myUnits++
                 table.append(
                     $('<tr>')
-                        .append($('<td>').html($('<img>').attr('src', Unit.getImage(soldier.unitId, CommonMe.getColor()))))
+                        .append($('<td>').html($('<img>').attr('src', Unit.getImage(soldier.unitId, Me.getColor()))))
                         .append($('<td>').html(Units.get(soldier.unitId).name_lang))
                         .append($('<td>').html(Units.get(soldier.unitId).cost + ' ' + translations.gold).addClass('r'))
                         .append(

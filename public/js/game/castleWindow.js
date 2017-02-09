@@ -4,12 +4,12 @@
 var CastleWindow = new function () {
     var center = function (i) {
             return function () {
-                GameScene.centerOn(CommonMe.getCastle(i).getX(), CommonMe.getCastle(i).getY())
+                GameScene.centerOn(Me.getCastle(i).getX(), Me.getCastle(i).getY())
             }
         },
         click = function (i, id) {
             return function () {
-                CastleWindow.show(CommonMe.getCastle(i))
+                CastleWindow.show(Me.getCastle(i))
                 Message.remove(id)
             }
         }
@@ -68,8 +68,8 @@ var CastleWindow = new function () {
                         )
 
                     if (checked) { // jest produkcja
-                        if (castle.getRelocationCastleId() && CommonMe.getCastles().has(castle.getRelocationCastleId())) {
-                            unitElement.append($('<div>').addClass('relocatingTo').html(translations.relocatingTo + ' ' + CommonMe.getCastle(castle.getRelocationCastleId()).getName()))
+                        if (castle.getRelocationCastleId() && Me.getCastles().has(castle.getRelocationCastleId())) {
+                            unitElement.append($('<div>').addClass('relocatingTo').html(translations.relocatingTo + ' ' + Me.getCastle(castle.getRelocationCastleId()).getName()))
                         } else {
                             unitElement.append($('<div>').addClass('relocatingTo').html(translations.production))
                         }
@@ -113,8 +113,8 @@ var CastleWindow = new function () {
 
         var next = $('<div>'),
             previous = $('<div>'),
-            nextCastle = CommonMe.findNextCastle(castle.getCastleId()),
-            previousCastle = CommonMe.findPreviousCastle(castle.getCastleId())
+            nextCastle = Me.findNextCastle(castle.getCastleId()),
+            previousCastle = Me.findPreviousCastle(castle.getCastleId())
 
         if (nextCastle) {
             next = $('<div>')
@@ -155,7 +155,7 @@ var CastleWindow = new function () {
             )
             .append($('<div>').addClass('production').append($('<div>').html(translations.availableUnits).addClass('title')).append(createProductionTD()).attr('id', castle.getCastleId()))
 
-        if (castle.getCastleId() == CommonMe.getCapitalId()) {
+        if (castle.getCastleId() == Me.getCapitalId()) {
             var resurrect = $('<div>').addClass('button buttonColors buttonOff').attr('id', 'heroResurrection')
                 .html(translations.resurrectHero)
                 .click(function () {
@@ -168,14 +168,14 @@ var CastleWindow = new function () {
                     Message.remove(messageId)
                 })
 
-            if (castle.getCastleId() == CommonMe.getCapitalId()) {
-                if (!CommonMe.findHero() && CommonMe.getGold() >= 100) {
+            if (castle.getCastleId() == Me.getCapitalId()) {
+                if (!Me.findHero() && Me.getGold() >= 100) {
                     resurrect.removeClass('buttonOff').click(function () {
                         var id = Message.show(translations.resurrectHero, $('<div>').append(translations.doYouWantToResurrectHeroFor100Gold))
                         Message.ok(id, WebSocketSendGame.resurrection)
                         Message.cancel(id)
                     })
-                } else if (CommonMe.getGold() >= 1000) {
+                } else if (Me.getGold() >= 1000) {
                     hire.removeClass('buttonOff').click(function () {
                         Message.remove(messageId)
                         var id = Message.show(translations.hireHero, $('<div>').html(translations.doYouWantToHireNewHeroFor1000Gold))
@@ -192,13 +192,13 @@ var CastleWindow = new function () {
 
         // relocation from
 
-        var relocatedProduction = CommonMe.getCastles().getRelocatedProduction(castle.getCastleId())
+        var relocatedProduction = Me.getCastles().getRelocatedProduction(castle.getCastleId())
         if (relocatedProduction.length) {
             var relocatingFrom = $('<table>')
 
             for (var i in relocatedProduction) {
                 var castleIdFrom = relocatedProduction[i],
-                    castleFrom = CommonMe.getCastle(castleIdFrom),
+                    castleFrom = Me.getCastle(castleIdFrom),
                     productionId = castleFrom.getProductionId()
 
                 relocatingFrom.append(
@@ -227,7 +227,7 @@ var CastleWindow = new function () {
                 .append($('<div>').addClass('relocatedProduction').append($('<div>').html(translations.relocatingFrom).addClass('title')).append(relocatingFrom))
         }
 
-        if (castle.getCastleId() == CommonMe.getCapitalId()) {
+        if (castle.getCastleId() == Me.getCapitalId()) {
             var title = castle.getName() + '&nbsp;(' + translations.capitalCity + ')'
 
         } else {
@@ -240,7 +240,7 @@ var CastleWindow = new function () {
         }, 300)
     }
     this.raze = function () {
-        if (!CommonMe.getSelectedArmyId()) {
+        if (!Me.getSelectedArmyId()) {
             return;
         }
         var id = Message.show(translations.destroyCastle, $('<div>').html(translations.areYouSure))
@@ -248,12 +248,12 @@ var CastleWindow = new function () {
         Message.cancel(id)
     }
     this.build = function () {
-        if (!CommonMe.getSelectedArmyId()) {
+        if (!Me.getSelectedArmyId()) {
             return;
         }
 
-        var army = CommonMe.getArmy(CommonMe.getSelectedArmyId())
-        var castle = CommonMe.getCastle(Fields.get(army.getX(), army.getY()).getCastleId())
+        var army = Me.getArmy(Me.getSelectedArmyId())
+        var castle = Me.getCastle(Fields.get(army.getX(), army.getY()).getCastleId())
 
         if (castle.getDefense() == 4) {
             var div = $('<div>')

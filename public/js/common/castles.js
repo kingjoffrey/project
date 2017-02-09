@@ -18,7 +18,7 @@ var Castles = function () {
     }
     this.add = function (castleId, castle) {
         if (castle instanceof Castle) {
-            if (CommonMe.sameTeam(color)) {
+            if (Me.sameTeam(color)) {
                 var type = null
             } else {
                 type = 'e'

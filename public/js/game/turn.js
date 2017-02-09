@@ -9,14 +9,14 @@ var Turn = new function () {
         color = c
         number++
         if (Turn.isMy()) {
-            CommonMe.turnOn()
+            Me.turnOn()
             WebSocketSendGame.startMyTurn();
         } else {
-            CommonMe.turnOff()
+            Me.turnOff()
         }
     }
     this.isMy = function () {
-        if (CommonMe.colorEquals(color)) {
+        if (Me.colorEquals(color)) {
             return true
         }
     }

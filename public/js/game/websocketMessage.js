@@ -15,27 +15,27 @@ var WebSocketMessageGame = new function () {
                     tower = towers.get(towerId)
                 Players.get(r.color).getTowers().add(towerId, tower)
                 towers.delete(towerId)
-                if (CommonMe.colorEquals(towerColor)) {
-                    CommonMe.incomeIncrement(-5)
+                if (Me.colorEquals(towerColor)) {
+                    Me.incomeIncrement(-5)
                 }
-                if (CommonMe.colorEquals(r.color)) {
-                    CommonMe.incomeIncrement(5)
+                if (Me.colorEquals(r.color)) {
+                    Me.incomeIncrement(5)
                 }
                 break
 
             case 'update':
-                CommonMe.setSelectedCastleId(0)
-                CommonMe.resetSkippedArmies()
+                Me.setSelectedCastleId(0)
+                Me.resetSkippedArmies()
 
-                var castles = CommonMe.getCastles()
+                var castles = Me.getCastles()
                 for (var castleId in r.productionTurns) {
                     castles.get(castleId).setProductionTurn(r.productionTurns[castleId])
                 }
                 Sound.play('startturn')
 
-                CommonMe.setUpkeep(r.upkeep)
-                CommonMe.setGold(r.gold)
-                CommonMe.setIncome(r.income)
+                Me.setUpkeep(r.upkeep)
+                Me.setGold(r.gold)
+                Me.setIncome(r.income)
                 GameGui.unlock()
                 break
 
@@ -101,7 +101,7 @@ var WebSocketMessageGame = new function () {
                 break;
 
             case 'production':
-                var castle = CommonMe.getCastle(r.castleId)
+                var castle = Me.getCastle(r.castleId)
                 castle.setProductionId(r.unitId)
                 castle.setProductionTurn(0)
                 castle.setRelocationCastleId(r.relocationToCastleId)
@@ -123,10 +123,10 @@ var WebSocketMessageGame = new function () {
             case 'bSequence':
                 if (r.attack == 'true') {
                     Message.simple(translations.battleSequence, translations.attackSequenceSuccessfullyUpdated)
-                    CommonMe.setAttackBattleSequence(r.sequence)
+                    Me.setAttackBattleSequence(r.sequence)
                 } else {
                     Message.simple(translations.battleSequence, translations.defenceSequenceSuccessfullyUpdated)
-                    CommonMe.setDefenseBattleSequence(r.sequence)
+                    Me.setDefenseBattleSequence(r.sequence)
                 }
                 break
 

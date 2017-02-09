@@ -14,10 +14,10 @@ var GameGui = new function () {
             switch (key) {
                 case 27: //ESC
                     Message.remove();
-                    CommonMe.deselectArmy()
+                    Me.deselectArmy()
                     break;
                 case 32: //SPACE
-                    CommonMe.skip()
+                    Me.skip()
                     break;
                 case 37://left
                     GameScene.moveCameraLeft()
@@ -35,17 +35,17 @@ var GameGui = new function () {
                     CastleWindow.build()
                     break;
                 case 67: //c
-                    var army = CommonMe.getSelectedArmy()
+                    var army = Me.getSelectedArmy()
                     if (!army) {
                         return
                     }
-                    var castle = CommonMe.getCastle(Fields.get(army.getX(), army.getY()).getCastleId())
+                    var castle = Me.getCastle(Fields.get(army.getX(), army.getY()).getCastleId())
                     if (isSet(castle)) {
                         CastleWindow.show(castle)
                     }
                     break;
                 case 68: //d
-                    CommonMe.disband()
+                    Me.disband()
                     break;
                 case 69: //e
                     Turn.next()
@@ -54,7 +54,7 @@ var GameGui = new function () {
                     WebSocketSendGame.fortify()
                     break;
                 case 78: //n
-                    CommonMe.findNext()
+                    Me.findNext()
                     break;
                 case 79: //m
                     GameRenderer.stop()
@@ -117,11 +117,11 @@ var GameGui = new function () {
 
             $('#nextArmy').click(function () {
                 Sound.play('click')
-                CommonMe.findNext()
+                Me.findNext()
             })
 
             $('#armyStatus').click(function () {
-                if (!CommonMe.getSelectedArmyId()) {
+                if (!Me.getSelectedArmyId()) {
                     return
                 }
                 Sound.play('click')
@@ -129,11 +129,11 @@ var GameGui = new function () {
             })
 
             $('#deselectArmy').click(function () {
-                if (!CommonMe.getSelectedArmyId()) {
+                if (!Me.getSelectedArmyId()) {
                     return;
                 }
 
-                CommonMe.deselectArmy()
+                Me.deselectArmy()
             })
 
             $('#show').click(function () {

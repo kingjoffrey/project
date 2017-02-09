@@ -72,10 +72,10 @@ var Castle = function (castle, bgC) {
             } else {
                 var id = Message.simple(translations.relocation, translations.selectCastleToWhichYouWantToRelocateThisProduction)
                 Message.cancel(id, function () {
-                    CommonMe.setSelectedCastleId(0)
+                    Me.setSelectedCastleId(0)
                 })
-                CommonMe.setSelectedCastleId(castle.id)
-                CommonMe.setSelectedUnitId(unitId)
+                Me.setSelectedCastleId(castle.id)
+                Me.setSelectedUnitId(unitId)
             }
             return
         }

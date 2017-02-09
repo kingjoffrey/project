@@ -21,10 +21,10 @@ var SplitWindow = new function () {
                         }))
                     .attr('id', 'selectAll')
                 ),
-            walk = CommonMe.getSelectedArmy().getWalkingSoldiers(),
-            swim = CommonMe.getSelectedArmy().getSwimmingSoldiers(),
-            fly = CommonMe.getSelectedArmy().getFlyingSoldiers(),
-            heroes = CommonMe.getSelectedArmy().getHeroes()
+            walk = Me.getSelectedArmy().getWalkingSoldiers(),
+            swim = Me.getSelectedArmy().getSwimmingSoldiers(),
+            fly = Me.getSelectedArmy().getFlyingSoldiers(),
+            heroes = Me.getSelectedArmy().getHeroes()
 
         for (var soldierId in walk) {
             div.append(

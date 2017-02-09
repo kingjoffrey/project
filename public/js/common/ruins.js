@@ -28,11 +28,11 @@ var Ruins = new function () {
         this.get(r.ruin.ruinId).update(r.ruin.empty)
         switch (r.find[0]) {
             case 'gold':
-                if (CommonMe.colorEquals(r.color)) {
+                if (Me.colorEquals(r.color)) {
                     Sound.play('gold1');
-                    CommonMe.goldIncrement(r.find[1])
+                    Me.goldIncrement(r.find[1])
                     Message.simple(translations.ruins, translations.youHaveFound + ' ' + r.find[1] + ' ' + translations.gold);
-                    CommonMe.getArmies().get(r.army.id).update(r.army) // zerowanie ruchów herosa
+                    Me.getArmies().get(r.army.id).update(r.army) // zerowanie ruchów herosa
                 }
                 break;
             case 'death':
@@ -45,30 +45,30 @@ var Ruins = new function () {
                     console.log('dupa')
                     Players.get(r.color).getArmies().destroy(r.army.id)
                 }
-                if (CommonMe.colorEquals(r.color)) {
+                if (Me.colorEquals(r.color)) {
                     Sound.play('death');
                     Message.simple(translations.ruins, translations.youHaveFound + ' ' + translations.death)
                 }
                 break
             case 'allies':
                 Players.get(r.color).getArmies().get(r.army.id).update(r.army)
-                if (CommonMe.colorEquals(r.color)) {
+                if (Me.colorEquals(r.color)) {
                     Sound.play('allies');
                     Message.simple(translations.ruins, r.find[1] + ' ' + translations.alliesJoinedYourArmy);
                 }
                 break
             case 'null':
-                if (CommonMe.colorEquals(r.color)) {
+                if (Me.colorEquals(r.color)) {
                     Sound.play('click');
                     Message.simple(translations.ruins, translations.youHaveFoundNothing)
-                    CommonMe.getArmies().get(r.army.id).update(r.army) // zerowanie ruchów herosa
+                    Me.getArmies().get(r.army.id).update(r.army) // zerowanie ruchów herosa
                 }
                 break
             case 'empty':
-                if (CommonMe.colorEquals(r.color)) {
+                if (Me.colorEquals(r.color)) {
                     Sound.play('error');
                     Message.simple(translations.ruins, translations.ruinsAreEmpty)
-                    CommonMe.getArmies().get(r.army.id).update(r.army) // zerowanie ruchów herosa
+                    Me.getArmies().get(r.army.id).update(r.army) // zerowanie ruchów herosa
                 }
                 break;
         }

@@ -37,35 +37,35 @@ var BattleWindow = new function () {
                 }
 
                 setTimeout(function () {
-                    if (CommonMe.colorEquals(r.color)) {
-                        var soldier = CommonMe.getArmy(r.army.id).getWalkingSoldier(b[i].soldierId)
+                    if (Me.colorEquals(r.color)) {
+                        var soldier = Me.getArmy(r.army.id).getWalkingSoldier(b[i].soldierId)
                         if (isTruthful(soldier)) {
-                            CommonMe.upkeepIncrement(-Units.get(soldier.unitId).cost)
+                            Me.upkeepIncrement(-Units.get(soldier.unitId).cost)
                         }
-                        soldier = CommonMe.getArmy(r.army.id).getFlyingSoldier(b[i].soldierId)
+                        soldier = Me.getArmy(r.army.id).getFlyingSoldier(b[i].soldierId)
                         if (isTruthful(soldier)) {
-                            CommonMe.upkeepIncrement(-Units.get(soldier.unitId).cost)
+                            Me.upkeepIncrement(-Units.get(soldier.unitId).cost)
                         }
-                        soldier = CommonMe.getArmy(r.army.id).getSwimmingSoldier(b[i].soldierId)
+                        soldier = Me.getArmy(r.army.id).getSwimmingSoldier(b[i].soldierId)
                         if (isTruthful(soldier)) {
-                            CommonMe.upkeepIncrement(-Units.get(soldier.unitId).cost)
+                            Me.upkeepIncrement(-Units.get(soldier.unitId).cost)
                         }
                     }
 
                     for (var color in r.defenders) {
-                        if (CommonMe.colorEquals(color)) {
+                        if (Me.colorEquals(color)) {
                             for (var armyId in r.defenders[color]) {
-                                var soldier = CommonMe.getArmy(armyId).getWalkingSoldier(b[i].soldierId)
+                                var soldier = Me.getArmy(armyId).getWalkingSoldier(b[i].soldierId)
                                 if (isTruthful(soldier)) {
-                                    CommonMe.upkeepIncrement(-Units.get(soldier.unitId).cost)
+                                    Me.upkeepIncrement(-Units.get(soldier.unitId).cost)
                                 }
-                                soldier = CommonMe.getArmy(r.army.id).getFlyingSoldier(b[i].soldierId)
+                                soldier = Me.getArmy(r.army.id).getFlyingSoldier(b[i].soldierId)
                                 if (isTruthful(soldier)) {
-                                    CommonMe.upkeepIncrement(-Units.get(soldier.unitId).cost)
+                                    Me.upkeepIncrement(-Units.get(soldier.unitId).cost)
                                 }
-                                soldier = CommonMe.getArmy(r.army.id).getSwimmingSoldier(b[i].soldierId)
+                                soldier = Me.getArmy(r.army.id).getSwimmingSoldier(b[i].soldierId)
                                 if (isTruthful(soldier)) {
-                                    CommonMe.upkeepIncrement(-Units.get(soldier.unitId).cost)
+                                    Me.upkeepIncrement(-Units.get(soldier.unitId).cost)
                                 }
                             }
                             break;

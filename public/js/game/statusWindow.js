@@ -69,7 +69,7 @@ var StatusWindow = new function () {
                     .append(
                         $('<div>').addClass('iconButton buttonColors')
                             .click(function () {
-                                CommonMe.disband()
+                                Me.disband()
                             })
                             .append($('<div>'))
                             .attr({
@@ -80,7 +80,7 @@ var StatusWindow = new function () {
                     .append(
                         $('<div>').addClass('iconButton buttonColors ' + showCastle)
                             .click(function () {
-                                var castle = CommonMe.getCastle(field.getCastleId())
+                                var castle = Me.getCastle(field.getCastleId())
                                 if (isSet(castle)) {
                                     CastleWindow.show(castle)
                                 }
@@ -130,7 +130,7 @@ var StatusWindow = new function () {
                         $('<div>')
                             .addClass('iconButton buttonColors ' + splitArmy)
                             .click(function () {
-                                if (!CommonMe.getSelectedArmyId()) {
+                                if (!Me.getSelectedArmyId()) {
                                     return
                                 }
                                 if (splitArmy) {
@@ -160,7 +160,7 @@ var StatusWindow = new function () {
                         $('<div>')
                             .addClass('iconButton buttonColors')
                             .click(function () {
-                                CommonMe.skip()
+                                Me.skip()
                             })
                             .append($('<div>'))
                             .attr({
@@ -172,11 +172,11 @@ var StatusWindow = new function () {
         }
 
     this.show = function () {
-        var backgroundColor = Players.get(CommonMe.getColor()).getBackgroundColor(),
-            army = CommonMe.getArmy(CommonMe.getSelectedArmyId()),
+        var backgroundColor = Players.get(Me.getColor()).getBackgroundColor(),
+            army = Me.getArmy(Me.getSelectedArmyId()),
             field = Fields.get(army.getX(), army.getY()),
             bonusTower = 0,
-            castleDefense = CommonMe.getMyCastleDefenseFromPosition(army.getX(), army.getY()),
+            castleDefense = Me.getMyCastleDefenseFromPosition(army.getX(), army.getY()),
             attackPoints = 0,
             defensePoints = 0,
             attackFlyBonus = $('<div>'),

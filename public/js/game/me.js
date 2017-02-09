@@ -1,4 +1,4 @@
-var CommonMe = new function () {
+var Me = new function () {
     var gold = 0,
         upkeep = 0,
         income = 0,
@@ -274,8 +274,8 @@ var CommonMe = new function () {
         this.selectArmy(armyId, 0)
     }
     this.findFirst = function () {
-        if (CommonMe.getArmies().count()) {
-            CommonMe.findNext()
+        if (Me.getArmies().count()) {
+            Me.findNext()
         }
     }
     this.turnOn = function () {
@@ -284,7 +284,7 @@ var CommonMe = new function () {
             CastleWindow.show(this.getCastle(this.getFirsCastleId()))
         } else {
             var id = Message.simple(translations.yourTurn, translations.thisIsYourTurnNow)
-            Message.ok(id, CommonMe.findFirst)
+            Message.ok(id, Me.findFirst)
         }
         GameGui.unlock()
         GameGui.titleBlink(translations.yourTurn)

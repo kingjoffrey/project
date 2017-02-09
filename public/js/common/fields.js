@@ -92,7 +92,7 @@ var Fields = new function () {
                 armies
 
             if (castleId = field.getCastleId()) {
-                if (CommonMe.sameTeam(field.getCastleColor())) {
+                if (Me.sameTeam(field.getCastleColor())) {
                     return 'c'
                 } else {
                     if (destX == x && destY == y) {
@@ -106,8 +106,8 @@ var Fields = new function () {
             } else if (field.hasArmies()) {
                 armies = field.getArmies()
                 for (var armyId in armies) {
-                    if (CommonMe.sameTeam(armies[armyId])) {
-                        if (CommonMe.colorEquals(armies[armyId]) && field.getType() == 'w' && CommonMe.getArmy(armyId).canSwim()) {
+                    if (Me.sameTeam(armies[armyId])) {
+                        if (Me.colorEquals(armies[armyId]) && field.getType() == 'w' && Me.getArmy(armyId).canSwim()) {
                             return 'S'
                         } else {
                             return field.getType()
@@ -115,13 +115,13 @@ var Fields = new function () {
                     } else {
                         if (destX == x && destY == y) {
                             if (field.getType() == 'w') {
-                                if (CommonMe.getSelectedArmy().canSwim() || CommonMe.getSelectedArmy().canFly()) {
+                                if (Me.getSelectedArmy().canSwim() || Me.getSelectedArmy().canFly()) {
                                     return 'E'
                                 } else {
                                     return 'e'
                                 }
                             } else if (field.getType() == 'm') {
-                                if (CommonMe.getSelectedArmy().canFly()) {
+                                if (Me.getSelectedArmy().canFly()) {
                                     return 'E'
                                 } else {
                                     return 'e'

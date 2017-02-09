@@ -100,8 +100,8 @@ var Message = new function () {
                 })
         )
 
-        if (CommonMe.isSelected()) {
-            CommonMe.setIsSelected(0)
+        if (Me.isSelected()) {
+            Me.setIsSelected(0)
         }
 
         this.adjust(id)

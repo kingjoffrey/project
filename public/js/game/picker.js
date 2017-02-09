@@ -4,10 +4,10 @@ var PickerGame = new function () {
         handleDownStart = function (event) {
             PickerCommon.intersect(event)
             if (PickerCommon.intersects()) {
-                if (CommonMe.getSelectedArmyId()) {
+                if (Me.getSelectedArmyId()) {
                     var x = PickerCommon.convertX(),
                         y = PickerCommon.convertZ()
-                    if (CommonMe.getSelectedArmy().getX() == x && CommonMe.getSelectedArmy().getY() == y) {
+                    if (Me.getSelectedArmy().getX() == x && Me.getSelectedArmy().getY() == y) {
                         SplitWindow.show()
                     } else if (clickStart && clickStart.x == x && clickStart.y == y) {
                         clickStart = 0
@@ -25,20 +25,20 @@ var PickerGame = new function () {
                     if (field.hasArmies()) {
                         var armies = field.getArmies()
                         for (var armyId in armies) {
-                            if (CommonMe.colorEquals(armies[armyId])) {
-                                CommonMe.armyClick(armyId)
+                            if (Me.colorEquals(armies[armyId])) {
+                                Me.armyClick(armyId)
                             }
                         }
-                    } else if (CommonMe.colorEquals(field.getCastleColor())) {
+                    } else if (Me.colorEquals(field.getCastleColor())) {
                         var castleId = field.getCastleId()
-                        if (CommonMe.getSelectedCastleId()) {
-                            if (CommonMe.getSelectedCastleId() != castleId) {
-                                WebSocketSendGame.production(CommonMe.getSelectedCastleId(), CommonMe.getSelectedUnitId(), castleId)
+                        if (Me.getSelectedCastleId()) {
+                            if (Me.getSelectedCastleId() != castleId) {
+                                WebSocketSendGame.production(Me.getSelectedCastleId(), Me.getSelectedUnitId(), castleId)
                             }
-                            CommonMe.setSelectedCastleId(null)
-                            CommonMe.setSelectedUnitId(null)
+                            Me.setSelectedCastleId(null)
+                            Me.setSelectedUnitId(null)
                         } else {
-                            CastleWindow.show(CommonMe.getCastle(castleId))
+                            CastleWindow.show(Me.getCastle(castleId))
                         }
                     } else {
                         dragStart = PickerGame.getPoint(event)
@@ -49,7 +49,7 @@ var PickerGame = new function () {
         handleMove = function (event) {
             PickerCommon.intersect(event)
             if (PickerCommon.intersects()) {
-                // if (AStar.cursorPosition(PickerCommon.convertX(), PickerCommon.convertZ()) && CommonMe.getSelectedArmyId()) {
+                // if (AStar.cursorPosition(PickerCommon.convertX(), PickerCommon.convertZ()) && Me.getSelectedArmyId()) {
                 //     AStar.showPath()
                 // }
 
@@ -71,17 +71,17 @@ var PickerGame = new function () {
                             break
                         }
 
-                        if (CommonMe.getSelectedArmyId()) {
+                        if (Me.getSelectedArmyId()) {
 // selected
                             if (hasArmy) {
 // armies
                                 for (var armyId in armies) {
-                                    if (CommonMe.getSelectedArmyId() == armyId) {
+                                    if (Me.getSelectedArmyId() == armyId) {
 // split my army
                                         PickerCommon.cursor('split')
                                         return
                                     }
-                                    if (CommonMe.colorEquals(armies[armyId])) {
+                                    if (Me.colorEquals(armies[armyId])) {
 // join my army
                                         PickerCommon.cursor('join')
                                         return
@@ -91,7 +91,7 @@ var PickerGame = new function () {
                                 PickerCommon.cursor('attack')
                             } else if (castleColor) {
 // castle
-                                if (CommonMe.colorEquals(castleColor)) {
+                                if (Me.colorEquals(castleColor)) {
 // enter my castle
                                     PickerCommon.cursor('enter')
                                 } else {
@@ -100,10 +100,10 @@ var PickerGame = new function () {
                                 }
                             } else {
 // map
-                                if (CommonMe.getSelectedArmy().canFly()) {
+                                if (Me.getSelectedArmy().canFly()) {
 // fly
                                     PickerCommon.cursor('fly')
-                                } else if (CommonMe.getSelectedArmy().canSwim()) {
+                                } else if (Me.getSelectedArmy().canSwim()) {
                                     if (field.getType() == 'w') {
 // swim
                                         PickerCommon.cursor('swim')
@@ -125,7 +125,7 @@ var PickerGame = new function () {
 // not selected
                             if (hasArmy) {
                                 for (var armyId in armies) {
-                                    if (CommonMe.colorEquals(armies[armyId])) {
+                                    if (Me.colorEquals(armies[armyId])) {
 // select my army
                                         PickerCommon.cursor('select')
                                         return
@@ -133,7 +133,7 @@ var PickerGame = new function () {
                                 }
 // grab map
                                 PickerCommon.cursor('grab')
-                            } else if (castleColor && CommonMe.colorEquals(castleColor)) {
+                            } else if (castleColor && Me.colorEquals(castleColor)) {
 // open my castle
                                 PickerCommon.cursor('open')
                             } else {
@@ -164,7 +164,7 @@ var PickerGame = new function () {
                 break
 
             case 2:
-                CommonMe.deselectArmy()
+                Me.deselectArmy()
                 break
         }
     }
