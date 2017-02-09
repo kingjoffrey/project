@@ -190,7 +190,7 @@ var Models = new function () {
             }
         },
         initPathCircle = function () {
-            var radius = 0.8,
+            var radius = 0.7,
                 segments = 64,
                 opacity = 0.7
 

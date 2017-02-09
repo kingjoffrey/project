@@ -228,20 +228,23 @@ var AStar = new function () {
         nr = 0
         GameModels.clearPathCircles()
 
-        var moves = army.getMoves()
+        var moves = army.getMoves(),
+            startX = army.getX(),
+            startY = army.getY()
 
         destX = army.getX() + moves
         destY = army.getY() + moves
 
-        var startX = army.getX(),
-            startY = army.getY(),
-            key = destX + '_' + destY
+        var key = destX + '_' + destY
 
         open[startX + '_' + startY] = new node(startX, startY, destX, destY, 0)
         aStar()
 
         for (var i in close) {
             if (close[i].G <= army.getMoves()) {
+                if (close[i].x == startX && close[i].y == startY) {
+                    continue
+                }
                 GameModels.addPathCircle(close[i].x, close[i].y, 'green', close[i].tt)
             }
         }
