@@ -135,8 +135,7 @@ var Me = new function () {
         this.removeFromSkipped(armyId)
         this.deleteQuited(armyId)
 
-        $('#deselectArmy').removeClass('buttonOff');
-        $('#armyStatus').removeClass('buttonOff');
+        $('#armyStatus').removeClass('buttonOff')
 
         if (notSet(center)) {
             GameScene.centerOn(army.getX(), army.getY(), function () {
@@ -145,6 +144,7 @@ var Me = new function () {
         } else {
             selectedArmyId = armyId
         }
+        AStar.showRange(army)
     }
     this.deselectArmy = function (skipJoin) {
         if (notSet(skipJoin) && parentArmyId && selectedArmyId) {

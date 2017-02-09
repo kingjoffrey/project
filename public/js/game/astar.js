@@ -8,82 +8,8 @@ var AStar = new function () {
         army,
         myCastleId = {},
         movementType,
-        element,
         showCoordinates = 0,
         coordinates = ''
-
-    this.init = function () {
-        element = $('#terrain')
-    }
-    this.getX = function () {
-        return destX
-    }
-    this.getY = function () {
-        return destY
-    }
-    this.cursorPosition = function (x, y) {
-        if (destX == x && destY == y) {
-            return
-        }
-        destX = x
-        destY = y
-        field = Fields.get(destX, destY)
-        
-        if (showCoordinates) {            
-            coordinates = ' ' + destX + 'x' + destY
-        }
-        
-        if (field.getCastleId()) {
-            element.html(Players.get(field.getCastleColor()).getCastles().get(field.getCastleId()).getName() + coordinates)
-        } else if (field.getTowerId()) {
-            element.html(translations.tower + coordinates)
-        } else if (field.getRuinId()) {
-            element.html(translations.ruin + coordinates)
-        } else if (field.hasArmies()) {
-            element.html(translations.army + coordinates)
-        } else {
-            element.html(Terrain.getName(field.getType()) + coordinates)
-        }
-        return 1
-    }
-    this.showPath = function () {
-        army = Me.getSelectedArmy()
-        movementType = army.getMovementType()
-        if (getG(field.getType()) > 6 && !field.hasArmies() && !field.getCastleId()) {
-            return
-        }
-        open = {}
-        close = {}
-        nr = 0
-        GameModels.clearPathCircles()
-        var startX = army.getX(),
-            startY = army.getY(),
-            key = destX + '_' + destY
-
-        open[startX + '_' + startY] = new node(startX, startY, destX, destY, 0)
-        aStar()
-
-        if (notSet(close[key])) {
-            return
-        }
-
-        army.resetPathMoves()
-
-        var path = getPath(key),
-            movesEnd = false
-
-        for (var i in path) {
-            if (army.pathStep(path[i].tt, movementType)) {
-                movesEnd = true
-            }
-
-            if (movesEnd) {
-                GameModels.addPathCircle(path[i].x, path[i].y, 'white', path[i].tt)
-            } else {
-                GameModels.addPathCircle(path[i].x, path[i].y, 'green', path[i].tt)
-            }
-        }
-    }
 
     var getPath = function (key) {
             var path = [],
@@ -215,15 +141,109 @@ var AStar = new function () {
                 return;
             }
             aStar()
+        },
+        node = function (x, y, destX, destY, g, parent, tt) {
+            this.x = x
+            this.y = y
+            this.G = g
+            this.H = Math.sqrt(Math.pow(destX - x, 2) + Math.pow(y - destY, 2))
+            this.F = this.H + this.G
+            this.parent = parent
+            this.tt = tt
         }
-}
 
-function node(x, y, destX, destY, g, parent, tt) {
-    this.x = x
-    this.y = y
-    this.G = g
-    this.H = Math.sqrt(Math.pow(destX - x, 2) + Math.pow(y - destY, 2))
-    this.F = this.H + this.G
-    this.parent = parent
-    this.tt = tt
+    this.getX = function () {
+        return destX
+    }
+    this.getY = function () {
+        return destY
+    }
+    this.cursorPosition = function (x, y) {
+        if (destX == x && destY == y) {
+            return
+        }
+        destX = x
+        destY = y
+        field = Fields.get(destX, destY)
+
+        if (showCoordinates) {
+            coordinates = ' ' + destX + 'x' + destY
+        }
+
+        if (field.getCastleId()) {
+            $('#terrain').html(Players.get(field.getCastleColor()).getCastles().get(field.getCastleId()).getName() + coordinates)
+        } else if (field.getTowerId()) {
+            $('#terrain').html(translations.tower + coordinates)
+        } else if (field.getRuinId()) {
+            $('#terrain').html(translations.ruin + coordinates)
+        } else if (field.hasArmies()) {
+            $('#terrain').html(translations.army + coordinates)
+        } else {
+            $('#terrain').html(Terrain.getName(field.getType()) + coordinates)
+        }
+        return 1
+    }
+    this.showPath = function () {
+        army = Me.getSelectedArmy()
+        movementType = army.getMovementType()
+        if (getG(field.getType()) > 6 && !field.hasArmies() && !field.getCastleId()) {
+            return
+        }
+        open = {}
+        close = {}
+        nr = 0
+        GameModels.clearPathCircles()
+        var startX = army.getX(),
+            startY = army.getY(),
+            key = destX + '_' + destY
+
+        open[startX + '_' + startY] = new node(startX, startY, destX, destY, 0)
+        aStar()
+
+        if (notSet(close[key])) {
+            return
+        }
+
+        army.resetPathMoves()
+
+        var path = getPath(key),
+            movesEnd = false
+
+        for (var i in path) {
+            if (army.pathStep(path[i].tt, movementType)) {
+                movesEnd = true
+            }
+
+            if (movesEnd) {
+                GameModels.addPathCircle(path[i].x, path[i].y, 'white', path[i].tt)
+            } else {
+                GameModels.addPathCircle(path[i].x, path[i].y, 'green', path[i].tt)
+            }
+        }
+    }
+    this.showRange = function (army) {
+        movementType = army.getMovementType()
+        open = {}
+        close = {}
+        nr = 0
+        GameModels.clearPathCircles()
+
+        var moves = army.getMoves()
+
+        destX = army.getX() + moves
+        destY = army.getY() + moves
+
+        var startX = army.getX(),
+            startY = army.getY(),
+            key = destX + '_' + destY
+
+        open[startX + '_' + startY] = new node(startX, startY, destX, destY, 0)
+        aStar()
+
+        for (var i in close) {
+            if (close[i].G <= army.getMoves()) {
+                GameModels.addPathCircle(close[i].x, close[i].y, 'green', close[i].tt)
+            }
+        }
+    }
 }

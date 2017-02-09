@@ -6,7 +6,6 @@ var Models = new function () {
         castleModels = [],
         flagModels = [],
         treeModel,
-        shadows = 1,
         roadTexture,
         swampTexture,
         loader = new THREE.JSONLoader(),
@@ -16,7 +15,6 @@ var Models = new function () {
         pathMaterialRed,
         pathMaterialWhite,
         pathGeometry,
-        font,
         initRoadTexture = function () {
             roadTexture = {}
             tl.load('/img/game/road/road_c.png', function (tex) {
@@ -131,7 +129,7 @@ var Models = new function () {
             for (var i = 2; i <= defense; i++) {
                 var m = getCastleModel(i)
 
-                if (shadows) {
+                if (Page.getShadows()) {
                     m.castShadow = true
                     m.receiveShadow = true
                 }
@@ -192,7 +190,7 @@ var Models = new function () {
             }
         },
         initPathCircle = function () {
-            var radius = 1,
+            var radius = 0.8,
                 segments = 64,
                 opacity = 0.7
 
@@ -227,7 +225,7 @@ var Models = new function () {
                 return new THREE.Mesh(pathGeometry, pathMaterialWhite)
         }
     }
-    this.getArmyCircle = function () {
+    this.getArmyCircle = function (color) {
         var radius = 1,
             segments = 64,
             material1 = new THREE.MeshBasicMaterial({
@@ -237,7 +235,7 @@ var Models = new function () {
                 side: THREE.DoubleSide
             }),
             material2 = new THREE.MeshBasicMaterial({
-                color: 0xffffff,
+                color: color,
                 transparent: true,
                 opacity: 0.7,
                 side: THREE.DoubleSide
@@ -253,7 +251,7 @@ var Models = new function () {
             color: color,
             side: THREE.DoubleSide
         }))
-        if (shadows) {
+        if (Page.getShadows()) {
             mesh.castShadow = true
             mesh.receiveShadow = true
         }
@@ -268,7 +266,7 @@ var Models = new function () {
                 color: color,
                 side: THREE.DoubleSide
             }))
-        if (shadows) {
+        if (Page.getShadows()) {
             mesh.castShadow = true
             mesh.receiveShadow = true
             flagMesh.castShadow = true
@@ -287,7 +285,7 @@ var Models = new function () {
                 color: color,
                 side: THREE.DoubleSide
             }))
-        if (shadows) {
+        if (Page.getShadows()) {
             mesh.castShadow = true
             mesh.receiveShadow = true
             flagMesh.castShadow = true

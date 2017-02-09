@@ -30,7 +30,6 @@ var Game = new function () {
         if (loading) {
             loading = 0
             Execute.setExecuting(0)
-            AStar.init()
             GameScene.init($(window).innerWidth(), $(window).innerHeight())
             Units.init(game.units)
             Terrain.init(game.terrain)

@@ -178,6 +178,11 @@ var GameModels = new function () {
 
         var circle = Models.getPathCircle(color)
 
+        if (Page.getShadows()) {
+            circle.castShadow = true
+            circle.receiveShadow = false
+        }
+
         circle.position.set(x * 2 + 1, height, y * 2 + 1)
         circle.rotation.x = Math.PI / 2
 
@@ -185,7 +190,7 @@ var GameModels = new function () {
         pathCircles.push(circle)
     }
     this.addArmyCircle = function (x, y, color) {
-        var meshes = Models.getArmyCircle()
+        var meshes = Models.getArmyCircle(color)
         switch (Fields.get(x, y).getType()) {
             case 'm':
                 var height = Ground.getMountainLevel() + 0.01
@@ -199,10 +204,9 @@ var GameModels = new function () {
         }
 
         meshes.cylinder.position.set(x * 2 + 1, 4 + height, y * 2 + 1)
-        //cylinder.rotation.x = Math.PI / 2
+
         GameScene.add(meshes.cylinder)
         armyCircles.push(meshes.cylinder)
-
 
         meshes.circle.position.set(x * 2 + 1, height, y * 2 + 1)
         meshes.circle.rotation.x = Math.PI / 2
