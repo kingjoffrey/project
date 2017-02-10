@@ -93,5 +93,39 @@ class Application_Model_MapFields extends Coret_Db_Table_Abstract
 
         return $mirrorMapFields;
     }
+
+    public function mirrorRight()
+    {
+        $mapFields = $this->getMapFields();
+
+        foreach ($mapFields as $y => $row) {
+            $mirrorMapFields[$y] = array_reverse($row);
+        }
+
+        foreach ($mapFields as $y => $row) {
+            foreach ($mirrorMapFields[$y] as $type) {
+                $mapFields[$y][] = $type;
+            }
+        }
+
+        return $mapFields;
+    }
+
+    public function mirrorLeft()
+    {
+        $mapFields = $this->getMapFields();
+
+        foreach ($mapFields as $y => $row) {
+            $mirrorMapFields[$y] = array_reverse($row);
+        }
+
+        foreach ($mapFields as $y => $row) {
+            foreach ($mapFields[$y] as $type) {
+                $mirrorMapFields[$y][] = $type;
+            }
+        }
+
+        return $mirrorMapFields;
+    }
 }
 

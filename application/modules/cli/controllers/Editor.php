@@ -73,14 +73,16 @@ class EditorController
                 $fields = $mapFields->mirrorTop();
                 break;
             case 1:
-return;
+                $mapFields = new Application_Model_MapFields($oldMap['mapId'], $db);
+                $fields = $mapFields->mirrorRight();
                 break;
             case 2:
                 $mapFields = new Application_Model_MapFields($oldMap['mapId'], $db);
                 $fields = $mapFields->mirrorBottom();
                 break;
             default:
-return;
+                $mapFields = new Application_Model_MapFields($oldMap['mapId'], $db);
+                $fields = $mapFields->mirrorLeft();
                 break;
         }
 
