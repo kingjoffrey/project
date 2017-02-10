@@ -1,14 +1,18 @@
 "use strict"
 var Main = new function () {
     var init = 0,
+        env,
         click = function (controller) {
             return function () {
                 Sound.play('click')
                 WebSocketSendMain.controller(controller)
             }
         }
-    this.init = function () {
-        WebSocketMain.init()
+    this.setEnv = function (val) {
+        env = val
+    }
+    this.getEnv = function () {
+        return env
     }
     this.createMenu = function (menu) {
         if (init) {
@@ -44,5 +48,8 @@ var Main = new function () {
         $('#menu a').each(function () {
             $(this).click(click($(this).attr('id')))
         })
+    }
+    this.init = function () {
+        WebSocketMain.init()
     }
 }

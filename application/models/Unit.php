@@ -26,7 +26,7 @@ class Application_Model_Unit extends Coret_Db_Table_Abstract
             ->where('id_lang = ?', Zend_Registry::get('config')->id_lang)
             ->order(array('attackPoints', 'defensePoints', 'numberOfMoves'));
 
-        foreach ($this->selectAll($select) as $unit) {
+        foreach ($this->selectAll($select) as $key => $unit) {
             $select = $this->_db->select()
                 ->from('unit_Lang', 'name')
                 ->where('id_lang = ?', Zend_Registry::get('id_lang'))
@@ -34,7 +34,7 @@ class Application_Model_Unit extends Coret_Db_Table_Abstract
 
             $unit['name_lang'] = $this->selectOne($select);
 
-            $units[$unit['unitId']] = $unit;
+            $units[$key] = $unit;
         }
 
         return $units;

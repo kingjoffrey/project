@@ -18,17 +18,24 @@ var GameRenderer = new function () {
         if (stop) {
             return
         }
-        // console.log(1)
-        if (TWEEN.update()) {
-            requestAnimationFrame(GameRenderer.animate)
-        } else {
-            setTimeout(function () {
+
+        if (timeOut) {
+            if (TWEEN.update()) {
                 requestAnimationFrame(GameRenderer.animate)
-            }, timeOut)
+            } else {
+                setTimeout(function () {
+                    requestAnimationFrame(GameRenderer.animate)
+                }, timeOut)
+            }
+        } else {
+            if (TWEEN.update()) {
+                requestAnimationFrame(GameRenderer.animate)
+            } else {
+                requestAnimationFrame(GameRenderer.animate)
+            }
         }
 
         render()
-        // stats.update();
     }
     this.stop = function () {
         stop = 1
@@ -40,13 +47,15 @@ var GameRenderer = new function () {
     this.init = function (id, Scene) {
         stop = 0
         renderer = Renderer.get()
-        if(Page.getShadows()){
+        if (Page.getShadows()) {
             renderer.shadowMap.enabled = true
             renderer.shadowMapSoft = false
         }
         scene = Scene.get()
         camera = Scene.getCamera()
         $('#' + id).append(renderer.domElement)
-        // renderer.autoClear = false
+        if (Main.getEnv() != 'development') {
+            timeOut = 0
+        }
     }
 }

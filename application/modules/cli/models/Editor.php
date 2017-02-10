@@ -28,8 +28,8 @@ class Cli_Model_Editor
     private function initUnits(Zend_Db_Adapter_Pdo_Pgsql $db)
     {
         $mUnit = new Application_Model_Unit($db);
-        foreach ($mUnit->getUnits() as $unitId => $unit) {
-            $this->_Units->add($unitId, new Cli_Model_Unit($unit));
+        foreach ($mUnit->getUnits() as $unit) {
+            $this->_Units->add($unit['unitId'], new Cli_Model_Unit($unit));
         }
     }
 

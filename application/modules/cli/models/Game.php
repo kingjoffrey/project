@@ -78,8 +78,8 @@ class Cli_Model_Game
 
         $mUnit = new Application_Model_Unit($db);
         $this->_Units = new Cli_Model_Units();
-        foreach ($mUnit->getUnits() as $unitId => $unit) {
-            $this->_Units->add($unitId, new Cli_Model_Unit($unit));
+        foreach ($mUnit->getUnits() as $unit) {
+            $this->_Units->add($unit['unitId'], new Cli_Model_Unit($unit));
         }
         Zend_Registry::set('units', $this->_Units);
 

@@ -363,7 +363,7 @@ var Me = new function () {
         battleSequence['defense'] = bSequence
     }
     this.disband = function () {
-        var id = Message.show(translations.disbandArmy, $('<div>').html(translations.areYouSure))
+        var id = Message.show(translations.Disbandarmy, $('<div>').html(translations.areYouSure))
         Message.ok(id, WebSocketSendGame.disband)
         Message.cancel(id)
     }

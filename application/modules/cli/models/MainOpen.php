@@ -43,7 +43,8 @@ class Cli_Model_MainOpen
                 'contact' => $adapter->translate('Contact'),
                 'help' => $adapter->translate('Help'),
                 'editor' => $adapter->translate('Map editor'),
-            )
+            ),
+            'env' => APPLICATION_ENV
         );
 
         $handler->sendToUser($user, $token);

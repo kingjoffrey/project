@@ -74,7 +74,7 @@ var StatusWindow = new function () {
                             .append($('<div>'))
                             .attr({
                                 id: 'disbandArmy',
-                                title: 'Disband army'
+                                title: translations.disbandArmy
                             })
                     )
                     .append(
@@ -88,7 +88,7 @@ var StatusWindow = new function () {
                             .append($('<div>'))
                             .attr({
                                 id: 'showCastle',
-                                title: 'Show castle (c)'
+                                title: translations.showCastle + ' (c)'
                             })
                     )
                     .append(
@@ -99,7 +99,7 @@ var StatusWindow = new function () {
                             .append($('<div>'))
                             .attr({
                                 id: 'buildCastleDefense',
-                                title: 'Build defense (b)'
+                                title: translations.buildCastleDefense + ' (b)'
                             })
                     )
                     .append(
@@ -111,7 +111,7 @@ var StatusWindow = new function () {
                             .append($('<div>'))
                             .attr({
                                 id: 'razeCastle',
-                                title: 'Raze castle'
+                                title: translations.razeCastle
                             })
                     )
                     .append(
@@ -123,7 +123,7 @@ var StatusWindow = new function () {
                             .append($('<div>'))
                             .attr({
                                 id: 'searchRuins',
-                                title: 'Search ruins (r)'
+                                title: translations.searchRuins + ' (r)'
                             })
                     )
                     .append(
@@ -141,7 +141,7 @@ var StatusWindow = new function () {
                             .append($('<div>'))
                             .attr({
                                 id: 'splitArmy',
-                                title: 'Split army'
+                                title: translations.splitArmy
                             })
                     )
                     .append(
@@ -153,7 +153,7 @@ var StatusWindow = new function () {
                             .append($('<div>'))
                             .attr({
                                 id: 'quitArmy',
-                                title: 'Fortify army (f)'
+                                title: translations.quitArmy + ' (f)'
                             })
                     )
                     .append(
@@ -165,7 +165,7 @@ var StatusWindow = new function () {
                             .append($('<div>'))
                             .attr({
                                 id: 'skipArmy',
-                                title: 'Skip army (space)'
+                                title: translations.skipArmy + ' (space)'
                             })
                     )
             )
