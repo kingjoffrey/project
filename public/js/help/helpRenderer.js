@@ -2,7 +2,7 @@ var HelpRenderer = new function () {
     var renderer,
         scene,
         camera,
-        timeOut = 1000,
+        timeOut = 100,
         stop,
         render = function () {
             renderer.render(scene, camera)
