@@ -1,15 +1,14 @@
 var EditorCastleWindow = new function () {
     this.form = function (id) {
+
         var selectColor = $('<select>').attr('name', 'color'),
             selectDefence = $('<select>').attr('name', 'defence'),
             selectProductionUnit0 = $('<select>').attr('name', 'unitId0').append($('<option>').attr('value', 0)),
             selectProductionUnit1 = $('<select>').attr('name', 'unitId1').append($('<option>').attr('value', 0)),
             selectProductionUnit2 = $('<select>').attr('name', 'unitId2').append($('<option>').attr('value', 0)),
-            selectProductionUnit3 = $('<select>').attr('name', 'unitId3').append($('<option>').attr('value', 0)),
             selectProductionTime0 = $('<select>').attr('name', 'time0').append($('<option>').attr('value', 0)),
             selectProductionTime1 = $('<select>').attr('name', 'time1').append($('<option>').attr('value', 0)),
-            selectProductionTime2 = $('<select>').attr('name', 'time2').append($('<option>').attr('value', 0)),
-            selectProductionTime3 = $('<select>').attr('name', 'time3').append($('<option>').attr('value', 0))
+            selectProductionTime2 = $('<select>').attr('name', 'time2').append($('<option>').attr('value', 0))
 
         for (var color in Players.toArray()) {
             if (Players.get(color).getCastles().has(id)) {
@@ -54,14 +53,6 @@ var EditorCastleWindow = new function () {
                     } else {
                         selectProductionUnit2.append($('<option>').attr('value', unitId).html(unit.name_lang))
                     }
-                    if (castle.getProduction()[3] && castle.getProduction()[3]['unitId'] == unitId) {
-                        selectProductionUnit3.append($('<option>').attr({
-                            'value': unitId,
-                            'selected': 'selected'
-                        }).html(unit.name_lang))
-                    } else {
-                        selectProductionUnit3.append($('<option>').attr('value', unitId).html(unit.name_lang))
-                    }
                 }
 
                 for (var time = 1; time <= 20; time++) {
@@ -89,17 +80,14 @@ var EditorCastleWindow = new function () {
                     } else {
                         selectProductionTime2.append($('<option>').attr('value', time).html(time))
                     }
-                    if (castle.getProduction()[3] && castle.getProduction()[3]['time'] == time) {
-                        selectProductionTime3.append($('<option>').attr({
-                            'value': time,
-                            'selected': 'selected'
-                        }).html(time))
-                    } else {
-                        selectProductionTime3.append($('<option>').attr('value', time).html(time))
-                    }
                 }
-            } else {
-                selectColor.append($('<option>').attr('value', color).html(color))
+                if (!castle.getDefense()) {
+                    castle.setDefense(1)
+                }
+                var income = castle.getIncome()
+                if (notSet(income)) {
+                    income = 0
+                }
             }
         }
 
@@ -108,9 +96,9 @@ var EditorCastleWindow = new function () {
                 'name': 'name',
                 'value': castle.getName()
             })))
-            .append($('<div>').append('Income:').append($('<input>').attr({
+            .append($('<div>').append('Income (x' + castle.getDefense() + '):').append($('<input>').attr({
                 'name': 'income',
-                'value': castle.getIncome()
+                'value': income / castle.getDefense()
             })))
             .append($('<div>').append('Color:').append(selectColor))
             .append($('<div>').append('Defence:').append(selectDefence))
@@ -121,7 +109,6 @@ var EditorCastleWindow = new function () {
             .append($('<div>').append('Production unit 1:').append(selectProductionUnit0).append('Production time 1:').append(selectProductionTime0))
             .append($('<div>').append('Production unit 2:').append(selectProductionUnit1).append('Production time 2:').append(selectProductionTime1))
             .append($('<div>').append('Production unit 3:').append(selectProductionUnit2).append('Production time 3:').append(selectProductionTime2))
-            .append($('<div>').append('Production unit 4:').append(selectProductionUnit3).append('Production time 4:').append(selectProductionTime3))
             .append($('<div>').append('Enclave number:').append($('<input>').attr({
                 'name': 'enclaveNumber',
                 'value': castle.getEnclaveNumber()

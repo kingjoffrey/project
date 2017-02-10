@@ -1,8 +1,7 @@
 var EditorMessage = new function () {
     var max = false,
         maxHeight,
-        maxWidth,
-        element = '#mainMenu'
+        maxWidth
 
     this.remove = function (id) {
         if (isSet(id)) {
@@ -16,11 +15,11 @@ var EditorMessage = new function () {
     this.show = function (title, txt) {
         this.remove()
         var id = makeId(10)
-        $(element).after(
+        $('#game').after(
             $('<div>')
                 .addClass('message')
                 .attr('id', id)
-                .append($('<div>').attr('id', 'content')
+                .append($('<div>').addClass('content')
                     .append($('<div>').append($('<h3>').html(title)).addClass('msgTitle'))
                     .append($(txt).addClass('overflow'))
                 )
