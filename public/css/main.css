@@ -225,6 +225,7 @@ div.table table {
 
 #versionNumber {
     font-style: italic;
+    float: right;
 }
 
 #logout {

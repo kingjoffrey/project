@@ -124,8 +124,8 @@ var AStar = new function () {
         aStar = function () {
             nr++
             if (nr > 7000) {
-                console.log('>' + nr);
-                return
+                console.log('>' + nr)
+                dupa()
             }
             var f = findSmallestF(),
                 currX = open[f].x,
@@ -228,17 +228,36 @@ var AStar = new function () {
         nr = 0
         GameModels.clearPathCircles()
 
-        var moves = army.getMoves(),
+        var range = army.getMoves(),
             startX = army.getX(),
-            startY = army.getY()
+            startY = army.getY(),
+            key = '',
+            maxFieldsX = Fields.getMaxX() - 1,
+            maxFieldsY = Fields.getMaxY() - 1,
+            maxX = startX + range,
+            maxY = startY + range,
+            minX = startX - range,
+            minY = startY - range
 
-        destX = army.getX() + moves
-        destY = army.getY() + moves
+        if (maxX > maxFieldsX) {
+            maxX = maxFieldsX
+        }
+        if (maxY > maxFieldsY) {
+            maxY = maxFieldsY
+        }
+        if (minX < 0) {
+            minX = 0
+        }
+        if (minY < 0) {
+            minY = 0
+        }
 
-        var key = destX + '_' + destY
-
-        open[startX + '_' + startY] = new node(startX, startY, destX, destY, 0)
-        aStar()
+        for (destX = minX; destX <= maxX; destX++) {
+            for (destY = minY; destY <= maxY; destY++) {
+                open[startX + '_' + startY] = new node(startX, startY, destX, destY, 0)
+                aStar()
+            }
+        }
 
         for (var i in close) {
             if (close[i].G <= army.getMoves()) {
