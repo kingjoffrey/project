@@ -73,6 +73,12 @@ class EditorController
 
         $mMap = new Application_Model_Map ($dataIn['id'], $db);
         $oldMap = $mMap->get();
+        $mCastles = new Application_Model_MapCastles($dataIn['id'], $db);
+        $oldCastles = $mCastles->getMapCastles();
+        $mTowers = new Application_Model_MapTowers($dataIn['id'], $db);
+        $oldTowers = $mTowers->getMapTowers();
+        $mRuins = new Application_Model_MapRuins($dataIn['id'], $db);
+        $oldRuins = $mRuins->getMapRuins();
 
         switch ($dataIn['mirror']) {
             case 0:
@@ -106,6 +112,60 @@ class EditorController
                     $mapFields->add($x, $y, $type);
                 }
             }
+
+            $maxY = count($fields) / 2;
+
+            $mCastles = new Application_Model_MapCastles($mapId, $db);
+            foreach ($oldCastles as $castleId => $castle) {
+                $mCastles->add($castle['x'], $castle['y'], $castle);
+                switch ($dataIn['mirror']) {
+                    case 0:
+                        break;
+                    case 1:
+                        break;
+                    case 2:
+                        $y = ($maxY - ($castle['y'] + 1)) + $maxY - 1;
+                        $mCastles->add($castle['x'], $y, $castle);
+                        break;
+                    case 3:
+                        break;
+                }
+            }
+
+            $mTowers = new Application_Model_MapTowers($mapId, $db);
+            foreach ($oldTowers as $towerId => $tower) {
+                $mTowers->add($tower['x'], $tower['y']);
+                switch ($dataIn['mirror']) {
+                    case 0:
+                        break;
+                    case 1:
+                        break;
+                    case 2:
+                        $y = ($maxY - ($tower['y'] + 1)) + $maxY;
+                        $mTowers->add($tower['x'], $y);
+                        break;
+                    case 3:
+                        break;
+                }
+            }
+
+            $mRuins = new Application_Model_MapRuins($mapId, $db);
+            foreach ($oldRuins as $ruinId => $ruin) {
+                $mRuins->add($ruin['x'], $ruin['y']);
+                switch ($dataIn['mirror']) {
+                    case 0:
+                        break;
+                    case 1:
+                        break;
+                    case 2:
+                        $y = ($maxY - ($ruin['y'] + 1)) + $maxY;
+                        $mRuins->add($ruin['x'], $y);
+                        break;
+                    case 3:
+                        break;
+                }
+            }
+
             $token = array(
                 'type' => 'editor',
                 'action' => 'add',
@@ -129,7 +189,7 @@ class EditorController
 
         $db = $handler->getDb();
 
-        $mMap = new Application_Model_Map ($dataIn['id'], $db);
+        $mMap = new Application_Model_Map($dataIn['id'], $db);
 
         if ($mMap->deleteNotPublished($user->parameters['playerId'])) {
             $token = array(

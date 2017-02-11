@@ -67,13 +67,21 @@ class Application_Model_MapCastles extends Coret_Db_Table_Abstract
         return $startPositions;
     }
 
-    public function add($x, $y)
+    public function add($x, $y, $castle = null)
     {
         $data = array(
             'mapId' => $this->_mapId,
             'x' => $x,
             'y' => $y
         );
+
+        if ($castle) {
+            $data['defense'] = $castle['defense'];
+            $data['capital'] = $this->parseBool($castle['capital']);
+            $data['name'] = $castle['name'];
+            $data['income'] = $castle['income'];
+            $data['enclaveNumber'] = $castle['enclaveNumber'];
+        }
 
         return $this->insert($data);
     }

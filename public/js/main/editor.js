@@ -3,7 +3,7 @@ var EditorController = new function () {
     var mapId,
         addRow = function (map) {
             $('table').append(
-                $('<tr>').attr('id', map.mapId).addClass('trlink')
+                $('<tr>').attr('id', map.mapId)
                     .append($('<td>').html(map.name))
                     .append($('<td>').html(map.maxPlayers))
                     .append($('<td>').html(map.date))
@@ -64,7 +64,7 @@ var EditorController = new function () {
         })
     }
     this.delete = function (r) {
-        $('#' + r.id + '.trlink').remove()
+        $('tr#' + r.id).remove()
     }
     this.create = function (r) {
         $('#content').html(r.data)

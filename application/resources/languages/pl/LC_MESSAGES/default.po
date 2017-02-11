@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: WOF\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-02-10 10:05+0100\n"
-"PO-Revision-Date: 2017-02-10 10:06+0100\n"
+"POT-Creation-Date: 2017-02-11 10:16+0100\n"
+"PO-Revision-Date: 2017-02-11 10:17+0100\n"
 "Last-Translator: Bartosz Krzeszewski <bartek@core-t.pl>\n"
 "Language-Team: \n"
 "Language: pl\n"
@@ -843,6 +843,19 @@ msgstr "Woda"
 msgid "Swamp"
 msgstr "Bagno"
 
+#: application/views/helpers/Translations.php:164
+msgid "Edit"
+msgstr "Edycja"
+
+#: application/views/helpers/Translations.php:165
+msgid "Test"
+msgstr "Test"
+
+#: application/views/helpers/Translations.php:166
+#: application/views/scripts/editor/index.phtml:7
+msgid "Actions"
+msgstr "Akcje"
+
 #: application/views/helpers/Version.php:6
 msgid "Version number"
 msgstr "Numer wersji"
@@ -953,15 +966,15 @@ msgstr "Maksimum graczy"
 msgid "Creation date"
 msgstr "Data utworzenia"
 
-#: application/views/scripts/editor/index.phtml:7
+#: application/views/scripts/editor/index.phtml:8
 msgid "Mirror"
 msgstr "Odbij"
 
-#: application/views/scripts/editor/index.phtml:8
+#: application/views/scripts/editor/index.phtml:9
 msgid "Delete"
 msgstr "Usuń"
 
-#: application/views/scripts/editor/index.phtml:39
+#: application/views/scripts/editor/index.phtml:12
 msgid "Create"
 msgstr "Utwórz"
 
