@@ -45,6 +45,9 @@ var GameRenderer = new function () {
         this.animate()
     }
     this.init = function (id, Scene) {
+        if (Main.getEnv() != 'development') {
+            timeOut = 0
+        }
         stop = 0
         renderer = Renderer.get()
         if (Page.getShadows()) {
@@ -54,8 +57,5 @@ var GameRenderer = new function () {
         scene = Scene.get()
         camera = Scene.getCamera()
         $('#' + id).append(renderer.domElement)
-        if (Main.getEnv() != 'development') {
-            timeOut = 0
-        }
     }
 }

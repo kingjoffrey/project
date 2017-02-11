@@ -124,6 +124,9 @@ class EditorController
                         $mCastles->add($castle['x'], $y, $castle);
                         break;
                     case 1:
+                        $mCastles->add($castle['x'], $castle['y'], $castle);
+                        $x = count($fields[0]) - ($castle['x'] + 1) - 1;
+                        $mCastles->add($x, $castle['y'], $castle);
                         break;
                     case 2:
                         $mCastles->add($castle['x'], $castle['y'], $castle);
@@ -144,6 +147,9 @@ class EditorController
                         $mTowers->add($tower['x'], $y);
                         break;
                     case 1:
+                        $mTowers->add($tower['x'], $tower['y']);
+                        $x = count($fields[0]) - ($tower['x'] + 1);
+                        $mTowers->add($x, $tower['y']);
                         break;
                     case 2:
                         $mTowers->add($tower['x'], $tower['y']);
@@ -164,6 +170,9 @@ class EditorController
                         $mRuins->add($ruin['x'], $y);
                         break;
                     case 1:
+                        $mRuins->add($ruin['x'], $ruin['y']);
+                        $x = count($fields[0]) - ($ruin['x'] + 1);
+                        $mRuins->add($x, $ruin['y']);
                         break;
                     case 2:
                         $mRuins->add($ruin['x'], $ruin['y']);
