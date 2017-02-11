@@ -117,13 +117,16 @@ class EditorController
 
             $mCastles = new Application_Model_MapCastles($mapId, $db);
             foreach ($oldCastles as $castleId => $castle) {
-                $mCastles->add($castle['x'], $castle['y'], $castle);
                 switch ($dataIn['mirror']) {
                     case 0:
+                        $mCastles->add($castle['x'], $castle['y'] + $maxY, $castle);
+                        $y = ($maxY - ($castle['y'] * 2 + 1)) + $castle['y'] - 1;
+                        $mCastles->add($castle['x'], $y, $castle);
                         break;
                     case 1:
                         break;
                     case 2:
+                        $mCastles->add($castle['x'], $castle['y'], $castle);
                         $y = ($maxY - ($castle['y'] + 1)) + $maxY - 1;
                         $mCastles->add($castle['x'], $y, $castle);
                         break;
@@ -134,13 +137,16 @@ class EditorController
 
             $mTowers = new Application_Model_MapTowers($mapId, $db);
             foreach ($oldTowers as $towerId => $tower) {
-                $mTowers->add($tower['x'], $tower['y']);
                 switch ($dataIn['mirror']) {
                     case 0:
+                        $mTowers->add($tower['x'], $tower['y'] + $maxY);
+                        $y = ($maxY - ($tower['y'] * 2 + 1)) + $tower['y'];
+                        $mTowers->add($tower['x'], $y);
                         break;
                     case 1:
                         break;
                     case 2:
+                        $mTowers->add($tower['x'], $tower['y']);
                         $y = ($maxY - ($tower['y'] + 1)) + $maxY;
                         $mTowers->add($tower['x'], $y);
                         break;
@@ -151,13 +157,16 @@ class EditorController
 
             $mRuins = new Application_Model_MapRuins($mapId, $db);
             foreach ($oldRuins as $ruinId => $ruin) {
-                $mRuins->add($ruin['x'], $ruin['y']);
                 switch ($dataIn['mirror']) {
                     case 0:
+                        $mRuins->add($ruin['x'], $ruin['y'] + $maxY);
+                        $y = ($maxY - ($ruin['y'] * 2 + 1)) + $ruin['y'];
+                        $mRuins->add($ruin['x'], $y);
                         break;
                     case 1:
                         break;
                     case 2:
+                        $mRuins->add($ruin['x'], $ruin['y']);
                         $y = ($maxY - ($ruin['y'] + 1)) + $maxY;
                         $mRuins->add($ruin['x'], $y);
                         break;
