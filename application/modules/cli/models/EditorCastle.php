@@ -69,11 +69,10 @@ class Cli_Model_EditorCastle extends Cli_Model_Castle
                 }
 
             } else {
-                if (!$slot['unitId']) {
-                    continue;
+                if (isset($slot['unitId']) && $slot['unitId']) {
+                    $mMapCastleProduction->addCastleProduction($this->_id, $slot);
+                    $this->_production[$i] = $slot;
                 }
-                $mMapCastleProduction->addCastleProduction($this->_id, $slot);
-                $this->_production[$i] = $slot;
             }
         }
     }
@@ -100,7 +99,7 @@ class Cli_Model_EditorCastle extends Cli_Model_Castle
             'y' => $this->_y,
             'defense' => $this->_defense,
             'name' => $this->_name,
-            'income' => $this->_income,
+            'income' => intval($this->_income),
             'capital' => $this->_capital,
             'enclaveNumber' => $this->_enclaveNumber,
             'production' => $this->_production

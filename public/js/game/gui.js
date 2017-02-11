@@ -13,7 +13,7 @@ var GameGui = new function () {
             var key = event.keyCode || event.charCode;
             switch (key) {
                 case 27: //ESC
-                    Message.remove();
+                    Message.remove()
                     Me.deselectArmy()
                     break;
                 case 32: //SPACE

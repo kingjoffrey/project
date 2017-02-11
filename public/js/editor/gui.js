@@ -1,10 +1,13 @@
 var EditorGui = new function () {
     var doKey = function (event) {
-            if ($(event.target).attr('id') == 'msg') {
-                return;
-            }
             var key = event.keyCode || event.charCode;
+            if ($('#game').length == 0) {
+                return
+            }
             switch (key) {
+                case 27: //ESC
+                    Message.remove()
+                    break;
                 case 37://left
                     GameScene.moveCameraLeft()
                     break;
