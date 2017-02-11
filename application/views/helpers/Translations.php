@@ -161,6 +161,9 @@ class Zend_View_Helper_Translations extends Zend_View_Helper_Abstract
                 'Mountain' => $this->view->translate('Mountain'),
                 'Water' => $this->view->translate('Water'),
                 'Swamp' => $this->view->translate('Swamp'),
+                'Edit' => $this->view->translate('Edit'),
+                'Test' => $this->view->translate('Test'),
+                'Actions' => $this->view->translate('Actions'),
                 '' => $this->view->translate(''),
             )));
     }

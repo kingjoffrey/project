@@ -8,14 +8,21 @@ class EditorController
         $db = $handler->getDb();
         $mMap = new Application_Model_Map (0, $db);
 
+        $list = array();
+
+        foreach ($mMap->getPlayerMapList($user->parameters['playerId']) as $map) {
+            $map['date'] = Coret_View_Helper_Formatuj::date($map['date']);
+            $list[] = $map;
+        }
+
         $view = new Zend_View();
-        $view->mapList = $mMap->getPlayerMapList($user->parameters['playerId']);
         $view->addScriptPath(APPLICATION_PATH . '/views/scripts');
 
         $token = array(
             'type' => 'editor',
             'action' => 'index',
-            'data' => $view->render('editor/index.phtml')
+            'data' => $view->render('editor/index.phtml'),
+            'list' => $list
         );
 
         $handler->sendToUser($user, $token);
@@ -99,6 +106,18 @@ class EditorController
                     $mapFields->add($x, $y, $type);
                 }
             }
+            $token = array(
+                'type' => 'editor',
+                'action' => 'add',
+                'map' => array(
+                    'mapId' => $mapId,
+                    'name' => $oldMap['name'] . ' mirror',
+                    'maxPlayers' => $oldMap['maxPlayers'],
+                    'date' => Coret_View_Helper_Formatuj::date(time())
+                )
+            );
+
+            $handler->sendToUser($user, $token);
         }
     }
 
@@ -122,15 +141,4 @@ class EditorController
             $handler->sendToUser($user, $token);
         }
     }
-
-//    function aaa(WebSocketTransportInterface $user, Cli_MainHandler $handler, $dataIn)
-//    {
-//        $db = $handler->getDb();
-//        $mapFields = new Application_Model_MapFields($dataIn['id'], $db);
-//        foreach ($dataIn['f'] as $y => $row) {
-//            foreach ($row as $x => $type) {
-//                $mapFields->add($x, $y, $type);
-//            }
-//        }
-//    }
 }
