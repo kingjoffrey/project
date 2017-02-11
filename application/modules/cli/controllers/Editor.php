@@ -114,6 +114,8 @@ class EditorController
             }
 
             $maxY = count($fields) / 2;
+            $maxX = count($fields[0]);
+            $maxX2 = $maxX / 2;
 
             $mCastles = new Application_Model_MapCastles($mapId, $db);
             foreach ($oldCastles as $castleId => $castle) {
@@ -125,7 +127,7 @@ class EditorController
                         break;
                     case 1:
                         $mCastles->add($castle['x'], $castle['y'], $castle);
-                        $x = count($fields[0]) - ($castle['x'] + 1) - 1;
+                        $x = $maxX - ($castle['x'] + 1) - 1;
                         $mCastles->add($x, $castle['y'], $castle);
                         break;
                     case 2:
@@ -134,6 +136,9 @@ class EditorController
                         $mCastles->add($castle['x'], $y, $castle);
                         break;
                     case 3:
+                        $mCastles->add($castle['x'] + $maxX2, $castle['y'], $castle);
+                        $x = $maxX2 - ($castle['x'] * 2 + 1) + $castle['x'] - 1;
+                        $mCastles->add($x, $castle['y'], $castle);
                         break;
                 }
             }
@@ -148,7 +153,7 @@ class EditorController
                         break;
                     case 1:
                         $mTowers->add($tower['x'], $tower['y']);
-                        $x = count($fields[0]) - ($tower['x'] + 1);
+                        $x = $maxX - ($tower['x'] + 1);
                         $mTowers->add($x, $tower['y']);
                         break;
                     case 2:
@@ -157,6 +162,9 @@ class EditorController
                         $mTowers->add($tower['x'], $y);
                         break;
                     case 3:
+                        $mTowers->add($tower['x'] + $maxX2, $tower['y']);
+                        $x = $maxX2 - ($tower['x'] * 2 + 1) + $tower['x'];
+                        $mTowers->add($x, $tower['y']);
                         break;
                 }
             }
@@ -171,7 +179,7 @@ class EditorController
                         break;
                     case 1:
                         $mRuins->add($ruin['x'], $ruin['y']);
-                        $x = count($fields[0]) - ($ruin['x'] + 1);
+                        $x = $maxX - ($ruin['x'] + 1);
                         $mRuins->add($x, $ruin['y']);
                         break;
                     case 2:
@@ -180,6 +188,9 @@ class EditorController
                         $mRuins->add($ruin['x'], $y);
                         break;
                     case 3:
+                        $mRuins->add($ruin['x'] + $maxX2, $ruin['y']);
+                        $x = $maxX2 - ($ruin['x'] * 2 + 1) + $ruin['x'];
+                        $mRuins->add($x, $ruin['y']);
                         break;
                 }
             }
