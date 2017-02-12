@@ -3,22 +3,35 @@ var EditorController = new function () {
     var mapId,
         addRow = function (map) {
             $('table').append(
-                $('<tr>').attr('id', map.mapId)
-                    .append($('<td>').html(map.name))
-                    .append($('<td>').html(map.maxPlayers))
+                $('<tr>').attr('id', map.mapId).addClass('trlink')
+                    .append($('<td>').html($('<input>').val(map.name).addClass('name').change(function () {
+                        $(this).parent().parent().find('#save').css('display', 'inline-block')
+                    })))
+                    .append($('<td>').html($('<input>').val(map.maxPlayers).addClass('max').change(function () {
+                        $(this).parent().parent().find('#save').css('display', 'inline-block')
+                    })))
                     .append($('<td>').html(map.date))
                     .append($('<td>')
                         .append(
-                            $('<div>').addClass('button buttonColors').attr('id', 0).html(translations.Edit).click(function () {
+                            $('<div>').addClass('button buttonColors').html(translations.Edit).click(function () {
                                 mapId = $(this).parent().parent().attr('id')
                                 EditorController.edit()
                             })
                         )
                         .append(
-                            $('<div>').addClass('button buttonColors').attr('id', 0).html(translations.Test).click(function () {
+                            $('<div>').addClass('button buttonColors').html(translations.Test).click(function () {
                                 WebSocketSendMain.controller('single', 'index', {
                                     'mapId': $(this).parent().parent().attr('id'),
                                     'test': 1
+                                })
+                            })
+                        )
+                        .append(
+                            $('<div>').addClass('button buttonColors').attr('id', 'save').html(translations.Save).click(function () {
+                                WebSocketSendMain.controller('editor', 'save', {
+                                    'id': $(this).parent().parent().attr('id'),
+                                    'name': $(this).parent().parent().find('.name').val(),
+                                    'max': $(this).parent().parent().find('.max').val()
                                 })
                             })
                         )
@@ -43,6 +56,7 @@ var EditorController = new function () {
                         })
                     ))
             )
+            $('.trlink').css('cursor', 'default')
         },
         mirrorClick = function () {
             return function (e) {
@@ -83,6 +97,9 @@ var EditorController = new function () {
     }
     this.add = function (r) {
         addRow(r.map)
+    }
+    this.save = function (r) {
+        $('#' + r.id + ' #save').hide()
     }
     this.edit = function () {
         $('#bg').hide()

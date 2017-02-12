@@ -117,5 +117,20 @@ class Application_Model_Map extends Coret_Db_Table_Abstract
         );
         return $this->delete($where);
     }
+
+    public function changeNameAndMaxPlayers($data, $playerId)
+    {
+        $data = array(
+            'name' => $data['name'],
+            'maxPlayers' => $data['max']
+        );
+
+        $where = array(
+            $this->_db->quoteInto($this->_db->quoteIdentifier('playerId') . ' = ?', $playerId),
+            $this->_db->quoteInto($this->_db->quoteIdentifier($this->_primary) . ' = ?', $this->_mapId)
+        );
+
+        return $this->update($data, $where);
+    }
 }
 

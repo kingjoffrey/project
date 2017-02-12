@@ -237,4 +237,25 @@ class EditorController
             $handler->sendToUser($user, $token);
         }
     }
+
+    function save(WebSocketTransportInterface $user, Cli_MainHandler $handler, $dataIn)
+    {
+        if (!isset($dataIn['id'])) {
+            return;
+        }
+
+        $db = $handler->getDb();
+
+        $mMap = new Application_Model_Map($dataIn['id'], $db);
+
+        if ($mMap->changeNameAndMaxPlayers($dataIn, $user->parameters['playerId'])) {
+            $token = array(
+                'type' => 'editor',
+                'action' => 'save',
+                'id' => $dataIn['id']
+            );
+
+            $handler->sendToUser($user, $token);
+        }
+    }
 }

@@ -1165,3 +1165,11 @@ td .mirror2 {
 td .mirror3 {
     background: url('/img/editor/mirror3.png') center center no-repeat !important;
 }
+
+input.max {
+    width: 2vw;
+}
+
+#save {
+    display: none;
+}
