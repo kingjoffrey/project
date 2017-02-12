@@ -88,6 +88,8 @@ var EditorCastleWindow = new function () {
                 if (notSet(income)) {
                     income = 0
                 }
+            } else {
+                selectColor.append($('<option>').attr('value', color).html(color))
             }
         }
 

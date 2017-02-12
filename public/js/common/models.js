@@ -308,16 +308,16 @@ var Models = new function () {
             f1, f2, f3, f4
 
         if (y - 1 >= 0) {
-            f1 = Fields.get(x, y - 1).getType()
+            f1 = Fields.get(x, y - 1, 1).getType()
         }
         if (x + 1 <= Fields.getMaxY()) {
-            f2 = Fields.get(x + 1, y).getType()
+            f2 = Fields.get(x + 1, y, 1).getType()
         }
         if (y + 1 <= Fields.getMaxX()) {
-            f3 = Fields.get(x, y + 1).getType()
+            f3 = Fields.get(x, y + 1, 1).getType()
         }
         if (x - 1 >= 0) {
-            f4 = Fields.get(x - 1, y).getType()
+            f4 = Fields.get(x - 1, y, 1).getType()
         }
 
         if (!isRoad(f1) && !isRoad(f2) && !isRoad(f3) && !isRoad(f4)) { // point

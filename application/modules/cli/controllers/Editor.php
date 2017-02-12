@@ -75,6 +75,7 @@ class EditorController
         $oldMap = $mMap->get();
         $mCastles = new Application_Model_MapCastles($dataIn['id'], $db);
         $oldCastles = $mCastles->getMapCastles();
+        $mCastlesProduction = new Application_Model_MapCastleProduction($db);
         $mTowers = new Application_Model_MapTowers($dataIn['id'], $db);
         $oldTowers = $mTowers->getMapTowers();
         $mRuins = new Application_Model_MapRuins($dataIn['id'], $db);
@@ -121,26 +122,32 @@ class EditorController
             foreach ($oldCastles as $castleId => $castle) {
                 switch ($dataIn['mirror']) {
                     case 0:
-                        $mCastles->add($castle['x'], $castle['y'] + $maxY, $castle);
+                        $id1 = $mCastles->add($castle['x'], $castle['y'] + $maxY, $castle);
                         $y = ($maxY - ($castle['y'] * 2 + 1)) + $castle['y'] - 1;
-                        $mCastles->add($castle['x'], $y, $castle);
+                        $id2 = $mCastles->add($castle['x'], $y, $castle);
                         break;
                     case 1:
-                        $mCastles->add($castle['x'], $castle['y'], $castle);
+                        $id1 = $mCastles->add($castle['x'], $castle['y'], $castle);
                         $x = $maxX - ($castle['x'] + 1) - 1;
-                        $mCastles->add($x, $castle['y'], $castle);
+                        $id2 = $mCastles->add($x, $castle['y'], $castle);
                         break;
                     case 2:
-                        $mCastles->add($castle['x'], $castle['y'], $castle);
+                        $id1 = $mCastles->add($castle['x'], $castle['y'], $castle);
                         $y = ($maxY - ($castle['y'] + 1)) + $maxY - 1;
-                        $mCastles->add($castle['x'], $y, $castle);
+                        $id2 = $mCastles->add($castle['x'], $y, $castle);
                         break;
                     case 3:
-                        $mCastles->add($castle['x'] + $maxX2, $castle['y'], $castle);
+                        $id1 = $mCastles->add($castle['x'] + $maxX2, $castle['y'], $castle);
                         $x = $maxX2 - ($castle['x'] * 2 + 1) + $castle['x'] - 1;
-                        $mCastles->add($x, $castle['y'], $castle);
+                        $id2 = $mCastles->add($x, $castle['y'], $castle);
                         break;
                 }
+                $production = $mCastlesProduction->getCastleProduction($castleId);
+                foreach ($production as $slot) {
+                    $mCastlesProduction->addCastleProduction($id1, $slot);
+                    $mCastlesProduction->addCastleProduction($id2, $slot);
+                }
+
             }
 
             $mTowers = new Application_Model_MapTowers($mapId, $db);
