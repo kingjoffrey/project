@@ -36,8 +36,6 @@ class Cli_Model_Game
 
     public function __construct($gameId, Zend_Db_Adapter_Pdo_Pgsql $db)
     {
-        $this->_l = new Coret_Model_Logger('Cli_Model_Game.' . $gameId . '_');
-
         $this->_id = $gameId;
 
         $sides = array();
