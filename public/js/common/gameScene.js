@@ -8,7 +8,6 @@ var GameScene = new function () {
         camera,
         sun,
         cameraY = 24,
-        a = 0,
         initCamera = function (w, h) {
             var viewAngle = 22,
                 near = 1,
@@ -57,11 +56,7 @@ var GameScene = new function () {
     this.getCameraY = function () {
         return cameraY
     }
-    this.setA = function () {
-        a = 1
-    }
     this.centerOn = function (x, y, func) {
-        console.log('centerOn')
         var yOffset = camera.position.y - cameraY,
             startPosition = {
                 x: camera.position.x,
@@ -89,21 +84,29 @@ var GameScene = new function () {
             zSign
 
         if (y >= -x && y >= x) {
-            xSign = -1
-            zSign = 1
+            xSign = -2
+            zSign = 2
         } else if (y > -x && y < x) {
             xSign = 1
             zSign = 1
         } else if (y <= -x && y <= x) {
-            xSign = 1
-            zSign = -1
+            xSign = 2
+            zSign = -2
         } else if (y < -x && y > x) {
             xSign = -1
             zSign = -1
         }
 
-        camera.position.x += xSign * (Math.abs(x) + Math.abs(y)) / 50
-        camera.position.z += zSign * (Math.abs(x) + Math.abs(y)) / 50
+        var c = (Math.abs(x) + Math.abs(y) + camera.position.y / 5) / 100
+
+        var a = xSign * c
+        var b = zSign * c
+
+        console.log(x + ' ' + y)
+        console.log(a + ' ' + b)
+
+        camera.position.x += a
+        camera.position.z += b
     }
     this.moveCameraLeft = function () {
         camera.position.x += -2
