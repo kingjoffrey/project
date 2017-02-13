@@ -17,6 +17,51 @@ var Fields = new function () {
                 }
             }
         },
+        paintRoad = function (tmpTextureContext, x, y) {
+            var x = x * 1,
+                y = y * 1,
+                f1, f2, f3, f4,
+                marginSmall = textureMultiplier / 8,
+                marginBig = textureMultiplier / 2 + 1,
+                width = textureMultiplier - (marginSmall + marginBig)
+
+            f1 = isRoad(Fields.get(x, y - 1, 1).getType())
+            f2 = isRoad(Fields.get(x + 1, y, 1).getType())
+            f3 = isRoad(Fields.get(x, y + 1, 1).getType())
+            f4 = isRoad(Fields.get(x - 1, y, 1).getType())
+
+            tmpTextureContext.fillStyle = '#000000'
+
+            // center square
+            tmpTextureContext.fillRect(x * textureMultiplier + marginSmall, y * textureMultiplier + marginBig, width, width)
+
+            // top rect BIG
+            if (f1) {
+                tmpTextureContext.fillRect(x * textureMultiplier + marginSmall, y * textureMultiplier, width, marginBig)
+            }
+
+            // right rect BIG
+            if (f2) {
+                tmpTextureContext.fillRect(x * textureMultiplier + marginSmall + width, y * textureMultiplier + marginBig, marginBig, width)
+            }
+
+            // bottom rect SMALL
+            if (f3) {
+                tmpTextureContext.fillRect(x * textureMultiplier + marginSmall, y * textureMultiplier + marginBig + width, width, marginSmall)
+            }
+
+            // left rect SMALL
+            if (f4) {
+                tmpTextureContext.fillRect(x * textureMultiplier, y * textureMultiplier + marginBig, marginSmall, width)
+            }
+        },
+        isRoad = function (type) {
+            if (type == 'r' || type == 'b') {
+                return 1
+            } else {
+                return 0
+            }
+        },
         paintTextureField = function (tmpTextureContext, x, y, color1, color2, percent) {
             var howManyTimes = textureMultiplier * textureMultiplier * (percent / 100)
 
@@ -193,10 +238,12 @@ var Fields = new function () {
                     case 'r':
                         paintTextureField(tmpTextureContext, x, y, '#3c963c', '#c4c720', 0)
                         paintWaterTextureField(tmpWaterTextureContext, x, y, '#365294', '#526daa', 0)
+                        paintRoad(tmpTextureContext, x, y)
                         break
                     case 'b':
                         paintTextureField(tmpTextureContext, x, y, '#3c963c', '#ffff7f', 10)
                         paintWaterTextureField(tmpWaterTextureContext, x, y, '#365294', '#526daa', 1)
+                        paintRoad(tmpTextureContext, x, y)
                         break
                     case 's':
                         paintTextureField(tmpTextureContext, x, y, '#3c963c', '#828396', 60)
@@ -224,6 +271,5 @@ var Fields = new function () {
 
         this.createTextures()
         Ground.init(maxX, maxY, textureCanvas, waterTextureCanvas)
-        initRoads()
     }
 }

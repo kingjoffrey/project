@@ -6,8 +6,6 @@ var Models = new function () {
         castleModels = [],
         flagModels = [],
         treeModel,
-        roadTexture,
-        swampTexture,
         loader = new THREE.JSONLoader(),
         tl = new THREE.TextureLoader(),
         loading = 0,
@@ -15,80 +13,6 @@ var Models = new function () {
         pathMaterialRed,
         pathMaterialWhite,
         pathGeometry,
-        initRoadTexture = function () {
-            roadTexture = {}
-            tl.load('/img/game/road/road_c.png', function (tex) {
-                roadTexture.c = tex
-                loading++
-            })
-            tl.load('/img/game/road/road_d1.png', function (tex) {
-                roadTexture.d1 = tex
-                loading++
-            })
-            tl.load('/img/game/road/road_d3.png', function (tex) {
-                roadTexture.d3 = tex
-                loading++
-            })
-            tl.load('/img/game/road/road_h.png', function (tex) {
-                roadTexture.h = tex
-                loading++
-            })
-            tl.load('/img/game/road/road_l1.png', function (tex) {
-                roadTexture.l1 = tex
-                loading++
-            })
-            tl.load('/img/game/road/road_l3.png', function (tex) {
-                roadTexture.l3 = tex
-                loading++
-            })
-            tl.load('/img/game/road/road_ld.png', function (tex) {
-                roadTexture.ld = tex
-                loading++
-            })
-            tl.load('/img/game/road/road_lu.png', function (tex) {
-                roadTexture.lu = tex
-                loading++
-            })
-            tl.load('/img/game/road/road_p.png', function (tex) {
-                roadTexture.p = tex
-                loading++
-            })
-            tl.load('/img/game/road/road_r1.png', function (tex) {
-                roadTexture.r1 = tex
-                loading++
-            })
-            tl.load('/img/game/road/road_r3.png', function (tex) {
-                roadTexture.r3 = tex
-                loading++
-            })
-            tl.load('/img/game/road/road_rd.png', function (tex) {
-                roadTexture.rd = tex
-                loading++
-            })
-            tl.load('/img/game/road/road_ru.png', function (tex) {
-                roadTexture.ru = tex
-                loading++
-            })
-            tl.load('/img/game/road/road_u1.png', function (tex) {
-                roadTexture.u1 = tex
-                loading++
-            })
-            tl.load('/img/game/road/road_u3.png', function (tex) {
-                roadTexture.u3 = tex
-                loading++
-            })
-            tl.load('/img/game/road/road_v.png', function (tex) {
-                roadTexture.v = tex
-                loading++
-            })
-        },
-        initSwampTexture = function () {
-            swampTexture
-            tl.load('/img/game/swamp.png', function (tex) {
-                swampTexture = tex
-                loading++
-            })
-        },
         initRuin = function () {
             ruinModel = loader.parse(ruin)
         },
@@ -181,13 +105,6 @@ var Models = new function () {
         initTree = function () {
             treeModel = loader.parse(tree)
             treeModel.material = new THREE.MeshLambertMaterial({color: '#003300', side: THREE.DoubleSide})
-        },
-        isRoad = function (type) {
-            if (type == 'r' || type == 'b') {
-                return 1
-            } else {
-                return 0
-            }
         },
         initPathCircle = function () {
             var radius = 0.7,
@@ -307,50 +224,42 @@ var Models = new function () {
             y = y * 1,
             f1, f2, f3, f4
 
-        if (y - 1 >= 0) {
-            f1 = Fields.get(x, y - 1, 1).getType()
-        }
-        if (x + 1 <= Fields.getMaxY()) {
-            f2 = Fields.get(x + 1, y, 1).getType()
-        }
-        if (y + 1 <= Fields.getMaxX()) {
-            f3 = Fields.get(x, y + 1, 1).getType()
-        }
-        if (x - 1 >= 0) {
-            f4 = Fields.get(x - 1, y, 1).getType()
-        }
+        f1 = isRoad(Fields.get(x, y - 1, 1).getType())
+        f2 = isRoad(Fields.get(x + 1, y, 1).getType())
+        f3 = isRoad(Fields.get(x, y + 1, 1).getType())
+        f4 = isRoad(Fields.get(x - 1, y, 1).getType())
 
-        if (!isRoad(f1) && !isRoad(f2) && !isRoad(f3) && !isRoad(f4)) { // point
+        if (!f1 && !f2 && !f3 && !f4) { // point
             var map = roadTexture.p
-        } else if (isRoad(f1) && !isRoad(f2) && !isRoad(f3) && !isRoad(f4)) { // 3
+        } else if (f1 && !f2 && !f3 && !f4) { // crossing 3
             var map = roadTexture.u3
-        } else if (!isRoad(f1) && isRoad(f2) && !isRoad(f3) && !isRoad(f4)) { // 3
+        } else if (!f1 && f2 && !f3 && !f4) { // crossing 3
             var map = roadTexture.l3
-        } else if (!isRoad(f1) && !isRoad(f2) && isRoad(f3) && !isRoad(f4)) { // 3
+        } else if (!f1 && !f2 && f3 && !f4) { // crossing 3
             var map = roadTexture.d3
-        } else if (!isRoad(f1) && !isRoad(f2) && !isRoad(f3) && isRoad(f4)) { // 3
+        } else if (!f1 && !f2 && !f3 && f4) { // crossing 3
             var map = roadTexture.r3
-        } else if (isRoad(f1) && !isRoad(f2) && isRoad(f3) && !isRoad(f4)) { // vertical
+        } else if (f1 && !f2 && f3 && !f4) { // vertical line
             var map = roadTexture.v
-        } else if (!isRoad(f1) && isRoad(f2) && !isRoad(f3) && isRoad(f4)) { // horizontal
+        } else if (!f1 && f2 && !f3 && f4) { // horizontal line
             var map = roadTexture.h
-        } else if (isRoad(f1) && isRoad(f2) && isRoad(f3) && isRoad(f4)) { // center
+        } else if (f1 && f2 && f3 && f4) { // crossing 4
             var map = roadTexture.c
-        } else if (!isRoad(f1) && isRoad(f2) && isRoad(f3) && !isRoad(f4)) {
+        } else if (!f1 && f2 && f3 && !f4) { // bend left-down
             var map = roadTexture.ld
-        } else if (!isRoad(f1) && !isRoad(f2) && isRoad(f3) && isRoad(f4)) {
+        } else if (!f1 && !f2 && f3 && f4) { // bend right-down
             var map = roadTexture.rd
-        } else if (isRoad(f1) && isRoad(f2) && !isRoad(f3) && !isRoad(f4)) {
+        } else if (f1 && f2 && !f3 && !f4) { // bend left-up
             var map = roadTexture.lu
-        } else if (isRoad(f1) && !isRoad(f2) && !isRoad(f3) && isRoad(f4)) {
+        } else if (f1 && !f2 && !f3 && f4) { // bend right-up
             var map = roadTexture.ru
-        } else if (isRoad(f1) && isRoad(f2) && !isRoad(f3) && isRoad(f4)) { // 1
+        } else if (f1 && f2 && !f3 && f4) { // start up
             var map = roadTexture.u1
-        } else if (isRoad(f1) && isRoad(f2) && isRoad(f3) && !isRoad(f4)) { // 1
+        } else if (f1 && f2 && f3 && !f4) { // start left
             var map = roadTexture.l1
-        } else if (!isRoad(f1) && isRoad(f2) && isRoad(f3) && isRoad(f4)) { // 1
+        } else if (!f1 && f2 && f3 && f4) { // start down
             var map = roadTexture.d1
-        } else if (isRoad(f1) && !isRoad(f2) && isRoad(f3) && isRoad(f4)) { // 1
+        } else if (f1 && !f2 && f3 && f4) { // start right
             var map = roadTexture.r1
         }
 
