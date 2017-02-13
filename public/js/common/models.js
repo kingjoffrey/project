@@ -219,69 +219,6 @@ var Models = new function () {
     this.getTree = function (x, y) {
         return new THREE.Mesh(treeModel.geometry, treeModel.material)
     }
-    this.getRoad = function (x, y) {
-        var x = x * 1,
-            y = y * 1,
-            f1, f2, f3, f4
-
-        f1 = isRoad(Fields.get(x, y - 1, 1).getType())
-        f2 = isRoad(Fields.get(x + 1, y, 1).getType())
-        f3 = isRoad(Fields.get(x, y + 1, 1).getType())
-        f4 = isRoad(Fields.get(x - 1, y, 1).getType())
-
-        if (!f1 && !f2 && !f3 && !f4) { // point
-            var map = roadTexture.p
-        } else if (f1 && !f2 && !f3 && !f4) { // crossing 3
-            var map = roadTexture.u3
-        } else if (!f1 && f2 && !f3 && !f4) { // crossing 3
-            var map = roadTexture.l3
-        } else if (!f1 && !f2 && f3 && !f4) { // crossing 3
-            var map = roadTexture.d3
-        } else if (!f1 && !f2 && !f3 && f4) { // crossing 3
-            var map = roadTexture.r3
-        } else if (f1 && !f2 && f3 && !f4) { // vertical line
-            var map = roadTexture.v
-        } else if (!f1 && f2 && !f3 && f4) { // horizontal line
-            var map = roadTexture.h
-        } else if (f1 && f2 && f3 && f4) { // crossing 4
-            var map = roadTexture.c
-        } else if (!f1 && f2 && f3 && !f4) { // bend left-down
-            var map = roadTexture.ld
-        } else if (!f1 && !f2 && f3 && f4) { // bend right-down
-            var map = roadTexture.rd
-        } else if (f1 && f2 && !f3 && !f4) { // bend left-up
-            var map = roadTexture.lu
-        } else if (f1 && !f2 && !f3 && f4) { // bend right-up
-            var map = roadTexture.ru
-        } else if (f1 && f2 && !f3 && f4) { // start up
-            var map = roadTexture.u1
-        } else if (f1 && f2 && f3 && !f4) { // start left
-            var map = roadTexture.l1
-        } else if (!f1 && f2 && f3 && f4) { // start down
-            var map = roadTexture.d1
-        } else if (f1 && !f2 && f3 && f4) { // start right
-            var map = roadTexture.r1
-        }
-
-        var roadMaterial = new THREE.MeshLambertMaterial({
-                map: map,
-                side: THREE.DoubleSide,
-                transparent: true,
-                opacity: 0.7
-            }),
-            mesh = new THREE.Mesh(new THREE.PlaneGeometry(2, 2), roadMaterial)
-        return mesh
-    }
-    this.getSwamp = function (x, y) {
-        var swampMaterial = new THREE.MeshLambertMaterial({
-                map: swampTexture,
-                side: THREE.DoubleSide,
-                transparent: true,
-                opacity: 0.5
-            }),
-            mesh = new THREE.Mesh(new THREE.PlaneGeometry(2, 2), swampMaterial)
-        return mesh
-    }
     this.getHero = function (color) {
         return new THREE.Mesh(window['heroModel'].geometry, new THREE.MeshLambertMaterial({
             color: color,
@@ -320,18 +257,10 @@ var Models = new function () {
     this.getTreeModel = function () {
         return treeModel
     }
-    this.getRoadTexture = function () {
-        return roadTexture
-    }
-    this.getSwampTexture = function () {
-        return swampTexture
-    }
     this.getLoading = function () {
         return loading
     }
     this.init = function () {
-        initRoadTexture()
-        initSwampTexture()
         initRuin()
         initTower()
         initArmy()

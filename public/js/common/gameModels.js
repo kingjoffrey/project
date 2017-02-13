@@ -149,16 +149,6 @@ var GameModels = new function () {
         }
         GameScene.add(mesh)
     }
-    this.addRoad = function (x, y) {
-        var mesh = Models.getRoad(x, y)
-        mesh.rotation.x = Math.PI / 2
-        mesh.position.set(x * 2 + 1, 0.0001, y * 2 + 1)
-
-        if (Page.getShadows()) {
-            mesh.receiveShadow = true
-        }
-        GameScene.add(mesh)
-    }
     this.addPathCircle = function (x, y, color, t) {
         switch (t) {
             case 'm':
