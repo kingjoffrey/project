@@ -61,7 +61,7 @@ class Zend_View_Helper_Translations extends Zend_View_Helper_Abstract
                 'relocatingTo' => $this->view->translate('Relocating to'),
                 'relocatingFrom' => $this->view->translate('Relocating from'),
                 'nextTurn' => $this->view->translate('Next turn'),
-                'disbandArmy' => $this->view->translate('Disband army'),
+                'Disbandarmy' => $this->view->translate('Disband army'),
                 'showCastle' => $this->view->translate('Show castle'),
                 'razeCastle' => $this->view->translate('Raze castle'),
                 'searchRuins' => $this->view->translate('Search ruins'),

@@ -8,6 +8,7 @@ var GameScene = new function () {
         camera,
         sun,
         cameraY = 24,
+        a = 0,
         initCamera = function (w, h) {
             var viewAngle = 22,
                 near = 1,
@@ -50,13 +51,18 @@ var GameScene = new function () {
         return sun
     }
     this.setCameraPosition = function (x, z) {
-        camera.position.set(parseFloat(x), cameraY, parseFloat(z))
+        camera.position.x = parseFloat(x)
+        camera.position.z = parseFloat(z)
     }
     this.getCameraY = function () {
         return cameraY
     }
+    this.setA = function () {
+        a = 1
+    }
     this.centerOn = function (x, y, func) {
-        var yOffset = camera.position.y - GameScene.getCameraY(),
+        console.log('centerOn')
+        var yOffset = camera.position.y - cameraY,
             startPosition = {
                 x: camera.position.x,
                 z: camera.position.z

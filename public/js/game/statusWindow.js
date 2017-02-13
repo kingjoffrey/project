@@ -74,7 +74,7 @@ var StatusWindow = new function () {
                             .append($('<div>'))
                             .attr({
                                 id: 'disbandArmy',
-                                title: translations.disbandArmy
+                                title: translations.Disbandarmy
                             })
                     )
                     .append(
