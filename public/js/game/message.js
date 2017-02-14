@@ -7,11 +7,11 @@ var Message = new function () {
             .append($('<div>').html(description.description.replace("\n", '<br><br>')).addClass('description'))
 
         var id = this.show(title, html, 1)
-        this.close(id)
+        this.addButton(id, 'close')
     }
     this.simple = function (title, message) {
         var id = this.show(title, $('<div>').html(message).addClass('simple'))
-        this.close(id)
+        this.addButton(id, 'close')
         return id
     }
     this.error = function (message) {

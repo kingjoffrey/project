@@ -285,7 +285,7 @@ var Me = new function () {
                 CastleWindow.show(this.getCastle(this.getFirsCastleId()))
             } else {
                 var id = Message.simple(translations.yourTurn, translations.thisIsYourTurnNow)
-                Message.addButton(id, 'nextArmy', Me.findFirst)
+                Message.addButton(id, 'Findarmy', Me.findFirst)
             }
         }
         GameGui.unlock()

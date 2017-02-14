@@ -80,25 +80,25 @@ var GameScene = new function () {
         }
     }
     this.moveCamera = function (x, y) {
-        // if (x != 0 && y == 0) {
-        //     var move = x / 1000 * camera.position.y
-        //
-        //     camera.position.x += move
-        //     camera.position.z += move
-        // }
+        if (x != 0 && y == 0) {
+            var move = x / 1000 * camera.position.y
 
-        if (x > 0 && y > 0) {
-            console.log(x + ' ' + y)
-
-
+            camera.position.x += move
+            camera.position.z += move
         }
 
-        // if (x == 0 && y != 0) {
-        //     var move = y / 500 * camera.position.y
+        // if (x > 0 && y > 0) {
+        //     console.log(x + ' ' + y)
         //
-        //     camera.position.x += -move
-        //     camera.position.z += +move
+        //
         // }
+
+        if (x == 0 && y != 0) {
+            var move = y / 500 * camera.position.y
+
+            camera.position.x += -move
+            camera.position.z += +move
+        }
     }
     this.moveCameraLeft = function () {
         camera.position.x += -2

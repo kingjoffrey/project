@@ -166,6 +166,7 @@ class Zend_View_Helper_Translations extends Zend_View_Helper_Abstract
                 'Actions' => $this->view->translate('Actions'),
                 'Save' => $this->view->translate('Save'),
                 'Yes' => $this->view->translate('Yes'),
+                'Findarmy' => $this->view->translate('Find army'),
                 '' => $this->view->translate(''),
             )));
     }
