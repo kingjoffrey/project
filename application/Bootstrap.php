@@ -105,16 +105,6 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
         $router->addRoute('adminRoute', $adminRoute);
     }
 
-//    protected function _initTranslate()
-//    {
-//        $translate = new Zend_Translate('gettext',
-//            APPLICATION_PATH . "/resources/languages/",
-//            null,
-//            array('scan' => Zend_Translate::LOCALE_DIRECTORY));
-//        $registry = Zend_Registry::getInstance();
-//        $registry->set('Zend_Translate', $translate);
-//    }
-
     protected function _initLanguage()
     {
         $front = Zend_Controller_Front::getInstance();

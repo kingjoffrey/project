@@ -1173,3 +1173,12 @@ input.max {
 #save {
     display: none;
 }
+
+#content .login {
+    background: url(/img/game/message_bg.png);
+}
+
+#content .login form {
+    display: inline-flex;
+    background: none;
+}

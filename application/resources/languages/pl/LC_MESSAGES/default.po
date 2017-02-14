@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: WOF\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-02-11 10:16+0100\n"
-"PO-Revision-Date: 2017-02-11 10:17+0100\n"
+"POT-Creation-Date: 2017-02-14 19:58+0100\n"
+"PO-Revision-Date: 2017-02-14 19:59+0100\n"
 "Last-Translator: Bartosz Krzeszewski <bartek@core-t.pl>\n"
 "Language-Team: \n"
 "Language: pl\n"
@@ -168,6 +168,7 @@ msgid "Deleting an item needs to be confirmed. Are you sure you want to delete i
 msgstr "Usunięcie elementu wymaga potwierdzenia. Czy na pewno chcesz go usunąć?"
 
 #: application/modules/admin/views/helpers/Delete.php:12
+#: application/views/helpers/Translations.php:168
 msgid "Yes"
 msgstr "Tak"
 
@@ -856,6 +857,14 @@ msgstr "Test"
 msgid "Actions"
 msgstr "Akcje"
 
+#: application/views/helpers/Translations.php:167
+msgid "Save"
+msgstr "Zapisz"
+
+#: application/views/helpers/Translations.php:169
+msgid "Find army"
+msgstr "Znajdź armię"
+
 #: application/views/helpers/Version.php:6
 msgid "Version number"
 msgstr "Numer wersji"
@@ -1278,9 +1287,6 @@ msgstr "Uruchom nową grę"
 
 #~ msgid "Generate"
 #~ msgstr "Generuj"
-
-#~ msgid "Save"
-#~ msgstr "Zapisz"
 
 #~ msgid "Bridge"
 #~ msgstr "Most"
