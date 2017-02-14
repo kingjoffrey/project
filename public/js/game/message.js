@@ -84,17 +84,17 @@ var Message = new function () {
             'height': messageContentHeight
         })
     }
-    this.ok = function (id, func) {
+    this.addButton = function (id, title, func) {
         if (!$('#' + id + ' #buttons').length) {
             $('#' + id + ' .content').append($('<div>').attr('id', 'buttons'))
         }
         $('#' + id + ' #buttons').append(
             $('<div>')
-                .addClass('button buttonColors go')
-                .html(translations.ok)
+                .addClass('button buttonColors')
+                .html(translations[title])
                 .click(function () {
                     if (isSet(func)) {
-                        func();
+                        func()
                     }
                     Message.remove(id)
                 })
@@ -104,41 +104,6 @@ var Message = new function () {
             Me.setIsSelected(0)
         }
 
-        this.adjust(id)
-    }
-    this.cancel = function (id, func) {
-        if (!$('#' + id + ' #buttons').length) {
-            $('#' + id + ' .content').append($('<div>').attr('id', 'buttons'))
-        }
-        $('#' + id + ' #buttons').append(
-            $('<div>')
-                .addClass('button buttonColors cancel')
-                .html(translations.cancel)
-                .click(function () {
-                    if (isSet(func)) {
-                        func()
-                    }
-                    Message.remove(id)
-                })
-        )
-        this.adjust(id)
-    }
-    this.close = function (id, func) {
-        if (!$('#' + id + ' #buttons').length) {
-            $('#' + id + ' .content').append($('<div>').attr('id', 'buttons'))
-        }
-        $('#' + id + ' #buttons').append(
-            $('<div>')
-                .addClass('button buttonColors')
-                .attr('id', 'close')
-                .html(translations.close)
-                .click(function () {
-                    if (isSet(func)) {
-                        func()
-                    }
-                    Message.remove(id)
-                })
-        )
         this.adjust(id)
     }
 }

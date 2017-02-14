@@ -236,8 +236,8 @@ var Me = new function () {
         if ($.isEmptyObject(nextArmies)) {
             Sound.play('error');
             var id = Message.show(translations.nextArmy, $('<div>').html(translations.thereIsNoFreeArmyWithSpareMovePoints))
-            Message.cancel(id)
-            Message.ok(id, function () {
+            Message.addButton(id, 'cancel')
+            Message.addButton(id, 'nextTurn', function () {
                 WebSocketSendGame.nextTurn()
             })
         } else {
@@ -280,11 +280,13 @@ var Me = new function () {
     }
     this.turnOn = function () {
         this.resetSkippedArmies()
-        if (Turn.isMy() && Turn.getNumber() == 1 && !this.getCastle(this.getFirsCastleId()).getProductionId()) {
-            CastleWindow.show(this.getCastle(this.getFirsCastleId()))
-        } else {
-            var id = Message.simple(translations.yourTurn, translations.thisIsYourTurnNow)
-            Message.ok(id, Me.findFirst)
+        if (!WebSocketTutorial.isOpen()) {
+            if (Turn.isMy() && Turn.getNumber() == 1 && !this.getCastle(this.getFirsCastleId()).getProductionId()) {
+                CastleWindow.show(this.getCastle(this.getFirsCastleId()))
+            } else {
+                var id = Message.simple(translations.yourTurn, translations.thisIsYourTurnNow)
+                Message.addButton(id, 'nextArmy', Me.findFirst)
+            }
         }
         GameGui.unlock()
         GameGui.titleBlink(translations.yourTurn)
@@ -364,8 +366,8 @@ var Me = new function () {
     }
     this.disband = function () {
         var id = Message.show(translations.Disbandarmy, $('<div>').html(translations.areYouSure))
-        Message.ok(id, WebSocketSendGame.disband)
-        Message.cancel(id)
+        Message.addButton(id, 'Disbandarmy', WebSocketSendGame.disband)
+        Message.addButton(id, 'cancel')
     }
     this.findHero = function () {
         for (var armyId in this.getArmies().toArray()) {

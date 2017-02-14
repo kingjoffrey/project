@@ -188,7 +188,7 @@ var Execute = new function () {
                         $('#gameMenu').hide()
                         Me.turnOff()
                         var id = Message.show(translations.gameOver, $('<div>').append($('<div>').html(translations.thisIsTheEnd)))
-                        Message.ok(id, GameGui.end)
+                        Message.addButton(id, 'ok', GameGui.end)
                     }
                     break;
 

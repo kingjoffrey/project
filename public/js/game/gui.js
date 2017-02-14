@@ -101,8 +101,8 @@ var GameGui = new function () {
             $('#surrender').click(function () {
                 Sound.play('click')
                 var id = Message.show(translations.surrender, $('<div>').html(translations.areYouSure))
-                Message.ok(id, WebSocketSendGame.surrender)
-                Message.cancel(id)
+                Message.addButton(id, 'surrender', WebSocketSendGame.surrender)
+                Message.addButton(id, 'cancel')
             });
 
             $('#statistics').click(function () {

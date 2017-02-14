@@ -71,7 +71,7 @@ var Castle = function (castle, bgC) {
                 Message.error(translations.noUnitSelected)
             } else {
                 var id = Message.simple(translations.relocation, translations.selectCastleToWhichYouWantToRelocateThisProduction)
-                Message.cancel(id, function () {
+                Message.addButton(id, 'cancel', function () {
                     Me.setSelectedCastleId(0)
                 })
                 Me.setSelectedCastleId(castle.id)

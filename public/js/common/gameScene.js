@@ -80,33 +80,25 @@ var GameScene = new function () {
         }
     }
     this.moveCamera = function (x, y) {
-        var xSign,
-            zSign
+        // if (x != 0 && y == 0) {
+        //     var move = x / 1000 * camera.position.y
+        //
+        //     camera.position.x += move
+        //     camera.position.z += move
+        // }
 
-        if (y >= -x && y >= x) {
-            xSign = -2
-            zSign = 2
-        } else if (y > -x && y < x) {
-            xSign = 1
-            zSign = 1
-        } else if (y <= -x && y <= x) {
-            xSign = 2
-            zSign = -2
-        } else if (y < -x && y > x) {
-            xSign = -1
-            zSign = -1
+        if (x > 0 && y > 0) {
+            console.log(x + ' ' + y)
+
+
         }
 
-        var c = (Math.abs(x) + Math.abs(y) + camera.position.y / 5) / 100
-
-        var a = xSign * c
-        var b = zSign * c
-
-        console.log(x + ' ' + y)
-        console.log(a + ' ' + b)
-
-        camera.position.x += a
-        camera.position.z += b
+        // if (x == 0 && y != 0) {
+        //     var move = y / 500 * camera.position.y
+        //
+        //     camera.position.x += -move
+        //     camera.position.z += +move
+        // }
     }
     this.moveCameraLeft = function () {
         camera.position.x += -2

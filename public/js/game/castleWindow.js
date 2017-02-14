@@ -172,15 +172,15 @@ var CastleWindow = new function () {
                 if (!Me.findHero() && Me.getGold() >= 100) {
                     resurrect.removeClass('buttonOff').click(function () {
                         var id = Message.show(translations.resurrectHero, $('<div>').append(translations.doYouWantToResurrectHeroFor100Gold))
-                        Message.ok(id, WebSocketSendGame.resurrection)
-                        Message.cancel(id)
+                        Message.addButton(id, 'resurrectHero', WebSocketSendGame.resurrection)
+                        Message.addButton(id, 'cancel')
                     })
                 } else if (Me.getGold() >= 1000) {
                     hire.removeClass('buttonOff').click(function () {
                         Message.remove(messageId)
                         var id = Message.show(translations.hireHero, $('<div>').html(translations.doYouWantToHireNewHeroFor1000Gold))
-                        Message.ok(id, WebSocketSendGame.hire)
-                        Message.cancel(id)
+                        Message.addButton(id, 'hireHero', WebSocketSendGame.hire)
+                        Message.addButton(id, 'cancel')
                     })
                 }
             }
@@ -244,8 +244,8 @@ var CastleWindow = new function () {
             return;
         }
         var id = Message.show(translations.destroyCastle, $('<div>').html(translations.areYouSure))
-        Message.ok(id, WebSocketSendGame.raze);
-        Message.cancel(id)
+        Message.addButton(id, 'destroyCastle', WebSocketSendGame.raze);
+        Message.addButton(id, 'cancel')
     }
     this.build = function () {
         if (!Me.getSelectedArmyId()) {
@@ -273,8 +273,8 @@ var CastleWindow = new function () {
                 .append($('<div>').html(translations.newDefense + ': ' + newDefense))
                 .append($('<div>').html(translations.Cost + ': ' + costBuildDefense + ' ' + translations.gold))
             var id = Message.show(translations.buildCastleDefense, div);
-            Message.ok(id, WebSocketSendGame.defense);
+            Message.addButton(id, 'buildCastleDefense', WebSocketSendGame.defense);
         }
-        Message.cancel(id)
+        Message.addButton(id, 'cancel')
     }
 }

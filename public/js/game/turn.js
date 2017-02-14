@@ -25,7 +25,7 @@ var Turn = new function () {
     }
     this.next = function () {
         var id = Message.simple(translations.nextTurn, translations.areYouSure)
-        Message.ok(id, WebSocketSendGame.nextTurn)
+        Message.addButton(id, 'Yes', WebSocketSendGame.nextTurn)
     }
     this.init = function (c, n) {
         color = c

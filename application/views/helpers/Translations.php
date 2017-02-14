@@ -165,6 +165,7 @@ class Zend_View_Helper_Translations extends Zend_View_Helper_Abstract
                 'Test' => $this->view->translate('Test'),
                 'Actions' => $this->view->translate('Actions'),
                 'Save' => $this->view->translate('Save'),
+                'Yes' => $this->view->translate('Yes'),
                 '' => $this->view->translate(''),
             )));
     }

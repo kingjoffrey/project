@@ -122,7 +122,7 @@ var SplitWindow = new function () {
         }
 
         var id = Message.show(translations.splitArmy, div);
-        Message.cancel(id)
-        Message.ok(id, WebSocketSendGame.split)
+        Message.addButton(id, 'cancel')
+        Message.addButton(id, 'splitArmy', WebSocketSendGame.split)
     }
 }
