@@ -11,7 +11,7 @@ class LoginController extends Coret_Controller_AuthenticateFrontend
         $mLanguage = new Application_Model_Language();
 
         $this->view->langForm = new Application_Form_Language(array('langList' => $mLanguage->get()));
-        $this->view->authForm = new Application_Form_Auth();
+        $this->view->form = new Application_Form_Auth();
 
         parent::indexAction();
 

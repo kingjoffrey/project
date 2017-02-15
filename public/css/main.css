@@ -119,42 +119,6 @@ input, select {
     display: inline-block;
 }
 
-#content #title {
-    margin: 0 auto;
-    width: 760px;
-    height: 192px;
-    background: url('/img/logo_bg.png') no-repeat;
-}
-
-#content #title div {
-    position: relative;
-    width: 760px;
-    height: 192px;
-    text-shadow: 2px 1px 1px #000;
-    background: url("/img/sword.png") no-repeat;
-}
-
-#content #title h1 {
-    font-size: 60px;
-    line-height: 60px;
-    font-family: "Alpine", Verdana, Tahoma;
-    color: red;
-    position: absolute;
-    top: 5px;
-    left: 20px;
-    letter-spacing: 2px;
-}
-
-#content #title p {
-    font-size: 20px;
-    font-family: "Alpine", Verdana, Tahoma;
-    position: absolute;
-    top: 113px;
-    left: 121px;
-    color: #fff;
-    letter-spacing: 14px;
-}
-
 h2 {
     padding: 0.7vw 0 1.4vw 1.4vw;
     letter-spacing: 0.3vw;
@@ -256,7 +220,10 @@ div.table table {
 }
 
 #content form label {
-    color: #999;
+    /*color: #999;*/
+    color: #00ed00;
+    margin: 0.7vw;
+    display: flex;
 }
 
 #content form#search {
@@ -1181,4 +1148,16 @@ input.max {
 #content .login form {
     display: inline-flex;
     background: none;
+}
+
+#logo1 {
+    position: absolute;
+    right: 0px;
+    width: 40vw;
+}
+
+#logo2 {
+    width: 80vw;
+    margin: 0 auto;
+    display: block;
 }
