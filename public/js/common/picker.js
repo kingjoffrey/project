@@ -55,6 +55,10 @@ var PickerCommon = new function () {
         return isSet(intersects[0])
     }
     this.cursor = function (type) {
-        $('body #main #game canvas').css('cursor', 'url(/img/game/cursors/' + type + '.png), auto')
+        if (type) {
+            $('body #main #game canvas').css('cursor', 'url(/img/game/cursors/' + type + '.png), auto')
+        } else {
+            $('body #main #game canvas').css('cursor', 'default')
+        }
     }
 }

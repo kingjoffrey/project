@@ -8,6 +8,10 @@ var GameScene = new function () {
         camera,
         sun,
         cameraY = 24,
+        radiansX = 2 * Math.PI + Math.atan(-1 / Math.sqrt(2)),
+        radiansY = 2 * Math.PI - Math.PI / 4,
+        degreesX = radiansX * (180 / Math.PI),
+        degreesY = radiansY * (180 / Math.PI),
         initCamera = function (w, h) {
             var viewAngle = 22,
                 near = 1,
@@ -15,8 +19,8 @@ var GameScene = new function () {
 
             camera = new THREE.PerspectiveCamera(viewAngle, w / h, near, far)
             camera.rotation.order = 'YXZ'
-            camera.rotation.y = -Math.PI / 4
-            camera.rotation.x = Math.atan(-1 / Math.sqrt(2))
+            camera.rotation.y = radiansY
+            camera.rotation.x = radiansX
             camera.position.y = cameraY
             camera.scale.addScalar(1)
             scene.add(camera)
@@ -80,25 +84,34 @@ var GameScene = new function () {
         }
     }
     this.moveCamera = function (x, y) {
-        if (x != 0 && y == 0) {
-            var move = x / 1000 * camera.position.y
+        x = -x
+        y = -y * 2
 
-            camera.position.x += move
-            camera.position.z += move
-        }
+        var vector = new THREE.Vector3(x, 0, y),
+            mRx = new THREE.Matrix3(),
+            mRy = new THREE.Matrix3(),
+            cosX = Math.cos(degreesX),
+            sinX = Math.sin(degreesX),
+            cosY = Math.cos(degreesY),
+            sinY = Math.sin(degreesY)
 
-        // if (x > 0 && y > 0) {
-        //     console.log(x + ' ' + y)
-        //
-        //
-        // }
+        mRx.set(
+            1, 0, 0,
+            0, cosX, -sinX,
+            0, sinX, cosX
+        )
 
-        if (x == 0 && y != 0) {
-            var move = y / 500 * camera.position.y
+        mRy.set(
+            cosY, 0, sinY,
+            0, 1, 0,
+            -sinY, 0, cosY
+        )
 
-            camera.position.x += -move
-            camera.position.z += +move
-        }
+        vector.applyMatrix3(mRx)
+        vector.applyMatrix3(mRy)
+
+        camera.position.x -= vector.x * camera.position.y / 1000
+        camera.position.z += vector.z * camera.position.y / 1000
     }
     this.moveCameraLeft = function () {
         camera.position.x += -2

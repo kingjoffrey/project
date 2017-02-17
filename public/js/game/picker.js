@@ -146,6 +146,8 @@ var PickerGame = new function () {
                         PickerCommon.cursor('wait')
                     }
                 }
+            } else {
+                PickerCommon.cursor()
             }
         }
 

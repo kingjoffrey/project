@@ -16,7 +16,7 @@ class IndexController extends Coret_Controller_Authorized
         $this->view->jquery();
         $this->view->headScript()->appendFile('/js/jquery.mousewheel.min.js');
         $this->view->headScript()->appendFile('/js/Tween.js');
-        $this->view->headScript()->appendFile('/js/three/three.js');
+        $this->view->headScript()->appendFile('/js/three/three.min.js');
         $this->view->headScript()->appendFile('/js/three/Detector.js');
 
         $this->view->headScript()->appendFile('/js/default.js?v=' . $version);

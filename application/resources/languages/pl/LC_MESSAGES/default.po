@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: WOF\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-02-14 19:58+0100\n"
-"PO-Revision-Date: 2017-02-14 19:59+0100\n"
+"POT-Creation-Date: 2017-02-15 15:08+0100\n"
+"PO-Revision-Date: 2017-02-15 15:09+0100\n"
 "Last-Translator: Bartosz Krzeszewski <bartek@core-t.pl>\n"
 "Language-Team: \n"
 "Language: pl\n"
@@ -16,7 +16,7 @@ msgstr ""
 "X-Generator: Poedit 1.8.5\n"
 "X-Poedit-SearchPath-0: application\n"
 
-#: application/controllers/LoginController.php:85
+#: application/controllers/LoginController.php:95
 msgid "Incorrect login details"
 msgstr "Nieprawidłowy e-mail lub hasło!"
 
@@ -73,6 +73,10 @@ msgstr "E-mail"
 #: application/forms/Player.php:28
 msgid "Submit"
 msgstr "Potwierdź"
+
+#: application/forms/Language.php:11
+msgid "Select language"
+msgstr "Wybierz język"
 
 #: application/forms/Password.php:23 application/forms/Registration.php:53
 msgid "Repeat password"
