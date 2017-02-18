@@ -7,14 +7,115 @@ var Fields = new function () {
         textureMultiplier = 16,
         textureCanvas,
         waterTextureCanvas,
-        initRoads = function () {
-            for (var y = 0; y < maxY; y++) {
-                for (var x = 0; x < maxX; x++) {
-                    var type = Fields.get(x, y, 1).getType()
-                    if (type == 'r' || type == 'b') {
-                        GameModels.addRoad(x, y)
+        paintMountain = function (tmpTextureContext, x, y) {
+            var x = x * 1,
+                y = y * 1,
+                color1 = '#ededed',
+                color2 = '#131313',
+                color3 = '#0b7e22',
+                f0, f1, f2, f3, f4, f5, f6, f7,
+                newX = x * textureMultiplier,
+                newY = y * textureMultiplier,
+                half = textureMultiplier / 2,
+                halfPlus = textureMultiplier + half
+
+            paintTextureField(tmpTextureContext, x, y, color1, color2, 1)
+
+            // f2 = isMountain(Fields.get(x + 1, y - 1, 1).getType())
+            // f6 = isMountain(Fields.get(x - 1, y + 1, 1).getType())
+
+            if (isTopLeft(x, y, 'm')) {
+                tmpTextureContext.fillStyle = color3
+
+                for (var i = 0; i < textureMultiplier; i++) {
+                    for (var j = 0; j < textureMultiplier; j++) {
+                        if (i + j < half) {
+                            tmpTextureContext.fillRect(newX + i, newY + j, 1, 1)
+                        }
                     }
                 }
+            }
+
+            if (ifBottomRight(x, y, 'm')) {
+                tmpTextureContext.fillStyle = color3
+
+                for (var i = 0; i < textureMultiplier; i++) {
+                    for (var j = 0; j < textureMultiplier; j++) {
+                        if (i + j > halfPlus) {
+                            tmpTextureContext.fillRect(newX + i, newY + j, 1, 1)
+                        }
+                    }
+                }
+            }
+        },
+        paintHill = function (tmpTextureContext, x, y) {
+            var x = x * 1,
+                y = y * 1,
+                color1 = '#0b7e22',
+                color2 = '#3c963c',
+                color3 = '#3c963c',
+                f0, f1, f2, f3, f4, f5, f6, f7,
+                newX = x * textureMultiplier,
+                newY = y * textureMultiplier,
+                half = textureMultiplier / 2,
+                halfPlus = textureMultiplier + half
+
+            paintTextureField(tmpTextureContext, x, y, color1, color2, 1)
+
+            // f2 = isMountain(Fields.get(x + 1, y - 1, 1).getType())
+            // f6 = isMountain(Fields.get(x - 1, y + 1, 1).getType())
+
+            if (isTopLeft(x, y, 'h')) {
+                tmpTextureContext.fillStyle = color3
+
+                for (var i = 0; i < textureMultiplier; i++) {
+                    for (var j = 0; j < textureMultiplier; j++) {
+                        if (i + j < half) {
+                            tmpTextureContext.fillRect(newX + i, newY + j, 1, 1)
+                        }
+                    }
+                }
+            }
+
+            if (ifBottomRight(x, y, 'h')) {
+                tmpTextureContext.fillStyle = color3
+
+                for (var i = 0; i < textureMultiplier; i++) {
+                    for (var j = 0; j < textureMultiplier; j++) {
+                        if (i + j > halfPlus) {
+                            tmpTextureContext.fillRect(newX + i, newY + j, 1, 1)
+                        }
+                    }
+                }
+            }
+        },
+        isTopLeft = function (x, y, type) {
+            var f0 = isType(Fields.get(x - 1, y - 1, 1).getType(), type),
+                f1 = isType(Fields.get(x, y - 1, 1).getType(), type),
+                f7 = isType(Fields.get(x - 1, y, 1).getType(), type)
+
+            if (!f7 && !f0 && !f1) {
+                return 1
+            } else {
+                return 0
+            }
+        },
+        ifBottomRight = function (x, y, type) {
+            var f3 = isType(Fields.get(x + 1, y, 1).getType(), type),
+                f4 = isType(Fields.get(x + 1, y + 1, 1).getType(), type),
+                f5 = isType(Fields.get(x, y + 1, 1).getType(), type)
+
+            if (!f3 && !f4 && !f5) {
+                return 1
+            } else {
+                return 0
+            }
+        },
+        isType = function (type1, type2) {
+            if (type1 == type2) {
+                return 1
+            } else {
+                return 0
             }
         },
         paintRoad = function (tmpTextureContext, x, y) {
@@ -216,38 +317,39 @@ var Fields = new function () {
                 switch (this.get(x, y).getType()) {
                     case 'g':
                         paintTextureField(tmpTextureContext, x, y, '#3c963c', '#3fa342', 5)
-                        paintWaterTextureField(tmpWaterTextureContext, x, y, '#365294', '#526daa', 0)
+                        paintWaterTextureField(tmpWaterTextureContext, x, y, '#ffff7f', '#3c963c', 15)
                         break
                     case 'f':
                         paintTextureField(tmpTextureContext, x, y, '#3c963c', '#0b7e22', 5)
-                        paintWaterTextureField(tmpWaterTextureContext, x, y, '#365294', '#526daa', 0)
+                        paintWaterTextureField(tmpWaterTextureContext, x, y, '#ffff7f', '#3c963c', 15)
                         GameModels.addTree(x, y)
                         break
                     case 'w':
-                        paintTextureField(tmpTextureContext, x, y, '#3c963c', '#ffff7f', 10)
+                        // paintTextureField(tmpTextureContext, x, y, '#3c963c', '#ffff7f', 10)
+                        paintTextureField(tmpTextureContext, x, y, '#ffff7f', '#3c963c', 15)
                         paintWaterTextureField(tmpWaterTextureContext, x, y, '#365294', '#526daa', 1)
                         break
                     case 'h':
-                        paintTextureField(tmpTextureContext, x, y, '#0b7e22', '#3c963c', 1)
-                        paintWaterTextureField(tmpWaterTextureContext, x, y, '#365294', '#526daa', 0)
+                        paintHill(tmpTextureContext, x, y)
+                        paintWaterTextureField(tmpWaterTextureContext, x, y, '#ffff7f', '#3c963c', 15)
                         break
                     case 'm':
-                        paintTextureField(tmpTextureContext, x, y, '#ededed', '#131313', 1)
-                        paintWaterTextureField(tmpWaterTextureContext, x, y, '#365294', '#526daa', 0)
+                        paintMountain(tmpTextureContext, x, y)
+                        paintWaterTextureField(tmpWaterTextureContext, x, y, '#ffff7f', '#3c963c', 15)
                         break
                     case 'r':
-                        paintTextureField(tmpTextureContext, x, y, '#3c963c', '#c4c720', 0)
-                        paintWaterTextureField(tmpWaterTextureContext, x, y, '#365294', '#526daa', 0)
+                        paintTextureField(tmpTextureContext, x, y, '#3c963c', '#3c963c', 0)
+                        paintWaterTextureField(tmpWaterTextureContext, x, y, '#ffff7f', '#3c963c', 15)
                         paintRoad(tmpTextureContext, x, y)
                         break
                     case 'b':
-                        paintTextureField(tmpTextureContext, x, y, '#3c963c', '#ffff7f', 10)
+                        paintTextureField(tmpTextureContext, x, y, '#ffff7f', '#3c963c', 15)
                         paintWaterTextureField(tmpWaterTextureContext, x, y, '#365294', '#526daa', 1)
                         paintRoad(tmpTextureContext, x, y)
                         break
                     case 's':
                         paintTextureField(tmpTextureContext, x, y, '#3c963c', '#828396', 60)
-                        paintWaterTextureField(tmpWaterTextureContext, x, y, '#365294', '#526daa', 0)
+                        paintWaterTextureField(tmpWaterTextureContext, x, y, '#ffff7f', '#3c963c', 15)
                         break
                 }
             }

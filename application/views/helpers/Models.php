@@ -31,9 +31,9 @@ class Zend_View_Helper_Models extends Zend_View_Helper_Abstract
                 }
 
 
-                if ($file_parts['extension'] == 'json') {
+                if ($file_parts['extension'] == 'json' || $file_parts['extension'] == 'js') {
                     $this->view->placeholder('models')->append('');
-                    $this->view->headScript()->appendFile('/models/' . $file_parts['filename'] . '.json?v=' . Zend_Registry::get('config')->version);
+                    $this->view->headScript()->appendFile('/models/' . $file_parts['filename'] . '.' . $file_parts['extension'] . '?v=' . Zend_Registry::get('config')->version);
                 }
 
             }

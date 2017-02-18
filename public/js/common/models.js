@@ -7,6 +7,7 @@ var Models = new function () {
         flagModels = [],
         treeModel,
         loader = new THREE.JSONLoader(),
+        objectLoader=new THREE.ObjectLoader(),
         tl = new THREE.TextureLoader(),
         loading = 0,
         pathMaterialGreen,
@@ -20,12 +21,17 @@ var Models = new function () {
             towerModel = loader.parse(tower)
         },
         initCastle = function () {
+            // console.log(castle_1)
             castleModels = [
                 loader.parse(castle_1),
+                // objectLoader.parse(castle_1),
                 loader.parse(castle_2),
+                // loader.parse(aaa),
                 loader.parse(castle_3),
+                // objectLoader.parse(castle_3),
                 loader.parse(castle_4)
             ]
+            // console.log(castleModels)
         },
         initFlag = function () {
             flagModel = loader.parse(flag)

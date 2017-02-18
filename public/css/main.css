@@ -221,9 +221,11 @@ div.table table {
 
 #content form label {
     /*color: #999;*/
-    color: #00ed00;
+    /*color: #00ed00;*/
+    color: red;
     margin: 0.7vw;
     display: flex;
+    font-weight: bold;
 }
 
 #content form#search {

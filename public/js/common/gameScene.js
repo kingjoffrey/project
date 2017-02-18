@@ -7,17 +7,19 @@ var GameScene = new function () {
     var scene,
         camera,
         sun,
-        cameraY = 24,
+        cameraY = 40,
         radiansX = 2 * Math.PI + Math.atan(-1 / Math.sqrt(2)),
+        // radiansX = 2 * Math.PI - (Math.PI / 4 - Math.PI / 32),
+        // radiansX = 2 * Math.PI - Math.PI / 2,
         radiansY = 2 * Math.PI - Math.PI / 4,
         degreesX = radiansX * (180 / Math.PI),
         degreesY = radiansY * (180 / Math.PI),
         initCamera = function (w, h) {
-            var viewAngle = 22,
-                near = 1,
+            var fov = 20,
+                near = 0.1,
                 far = 1000
 
-            camera = new THREE.PerspectiveCamera(viewAngle, w / h, near, far)
+            camera = new THREE.PerspectiveCamera(fov, w / h, near, far)
             camera.rotation.order = 'YXZ'
             camera.rotation.y = radiansY
             camera.rotation.x = radiansX
