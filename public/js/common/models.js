@@ -21,17 +21,12 @@ var Models = new function () {
             towerModel = loader.parse(tower)
         },
         initCastle = function () {
-            // console.log(castle_1)
             castleModels = [
                 loader.parse(castle_1),
-                // objectLoader.parse(castle_1),
                 loader.parse(castle_2),
-                // loader.parse(aaa),
                 loader.parse(castle_3),
-                // objectLoader.parse(castle_3),
                 loader.parse(castle_4)
             ]
-            // console.log(castleModels)
         },
         initFlag = function () {
             flagModel = loader.parse(flag)
@@ -45,7 +40,7 @@ var Models = new function () {
                     }))
                 case 3:
                     return new THREE.Mesh(castleModels[2].geometry, new THREE.MeshPhongMaterial({
-                        color: '#0054C4',
+                        color: '#6B6B6B',
                         side: THREE.DoubleSide
                     }))
                 case 4:
