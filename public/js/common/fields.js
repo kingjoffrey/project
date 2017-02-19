@@ -7,25 +7,29 @@ var Fields = new function () {
         textureMultiplier = 16,
         textureCanvas,
         waterTextureCanvas,
+        hillColor1 = '#0c7521',
+        hillColor2 = '#003600',
+        roadColor1 = '#aaaa00',
+        mountainColor1 = '#dbd9ee',
+        mountainColor2 = '#000000',
+        grassColor1 = '#3c963c',
+        grassColor2 = '#3fa342',
+        waterColor1 = '#00557f',
         paintMountain = function (tmpTextureContext, x, y) {
             var x = x * 1,
                 y = y * 1,
-                color1 = '#ededed',
-                color2 = '#131313',
-                color3 = '#0b7e22',
-                f0, f1, f2, f3, f4, f5, f6, f7,
                 newX = x * textureMultiplier,
                 newY = y * textureMultiplier,
                 half = textureMultiplier / 2,
                 halfPlus = textureMultiplier + half
 
-            paintTextureField(tmpTextureContext, x, y, color1, color2, 1)
+            paintTextureField(tmpTextureContext, x, y, mountainColor1, mountainColor2, 2, 2)
 
             // f2 = isMountain(Fields.get(x + 1, y - 1, 1).getType())
             // f6 = isMountain(Fields.get(x - 1, y + 1, 1).getType())
 
             if (isTopLeft(x, y, 'm')) {
-                tmpTextureContext.fillStyle = color3
+                tmpTextureContext.fillStyle = hillColor1
 
                 for (var i = 0; i < textureMultiplier; i++) {
                     for (var j = 0; j < textureMultiplier; j++) {
@@ -37,7 +41,7 @@ var Fields = new function () {
             }
 
             if (ifBottomRight(x, y, 'm')) {
-                tmpTextureContext.fillStyle = color3
+                tmpTextureContext.fillStyle = hillColor1
 
                 for (var i = 0; i < textureMultiplier; i++) {
                     for (var j = 0; j < textureMultiplier; j++) {
@@ -51,22 +55,39 @@ var Fields = new function () {
         paintHill = function (tmpTextureContext, x, y) {
             var x = x * 1,
                 y = y * 1,
-                color1 = '#0b7e22',
-                color2 = '#3c963c',
-                color3 = '#3c963c',
-                f0, f1, f2, f3, f4, f5, f6, f7,
                 newX = x * textureMultiplier,
                 newY = y * textureMultiplier,
                 half = textureMultiplier / 2,
                 halfPlus = textureMultiplier + half
 
-            paintTextureField(tmpTextureContext, x, y, color1, color2, 1)
+            paintTextureField(tmpTextureContext, x, y, hillColor1, grassColor1, 1)
 
-            // f2 = isMountain(Fields.get(x + 1, y - 1, 1).getType())
-            // f6 = isMountain(Fields.get(x - 1, y + 1, 1).getType())
+            tmpTextureContext.fillStyle = hillColor2
+            tmpTextureContext.fillRect(newX, newY + textureMultiplier - 1, 1, 1)
+            tmpTextureContext.fillRect(newX + 1, newY + textureMultiplier - 2, 1, 1)
+            tmpTextureContext.fillRect(newX + 2, newY + textureMultiplier - 3, 1, 1)
+            tmpTextureContext.fillRect(newX + 3, newY + textureMultiplier - 4, 1, 1)
+            tmpTextureContext.fillRect(newX + 4, newY + textureMultiplier - 5, 1, 1)
+            tmpTextureContext.fillRect(newX + 5, newY + textureMultiplier - 6, 1, 1)
+            tmpTextureContext.fillRect(newX + 6, newY + textureMultiplier - 7, 1, 1)
+            tmpTextureContext.fillRect(newX + 7, newY + textureMultiplier - 8, 1, 1)
+            tmpTextureContext.fillRect(newX + 8, newY + textureMultiplier - 8, 1, 1)
+            tmpTextureContext.fillRect(newX + 9, newY + textureMultiplier - 7, 1, 1)
+            tmpTextureContext.fillRect(newX + 10, newY + textureMultiplier - 7, 1, 1)
+            tmpTextureContext.fillRect(newX + 11, newY + textureMultiplier - 6, 1, 1)
+            tmpTextureContext.fillRect(newX + 12, newY + textureMultiplier - 6, 1, 1)
+            tmpTextureContext.fillRect(newX + 13, newY + textureMultiplier - 5, 1, 1)
+            tmpTextureContext.fillRect(newX + 14, newY + textureMultiplier - 5, 1, 1)
+            tmpTextureContext.fillRect(newX + 15, newY + textureMultiplier - 4, 1, 1)
+            tmpTextureContext.fillRect(newX + 16, newY + textureMultiplier - 4, 1, 1)
+            tmpTextureContext.fillRect(newX, newY + textureMultiplier - 4, 1, 1)
 
             if (isTopLeft(x, y, 'h')) {
-                tmpTextureContext.fillStyle = color3
+                if (isType(Fields.get(x - 1, y - 1, 1).getType(), 'm')) {
+                    tmpTextureContext.fillStyle = hillColor1
+                } else {
+                    tmpTextureContext.fillStyle = grassColor1
+                }
 
                 for (var i = 0; i < textureMultiplier; i++) {
                     for (var j = 0; j < textureMultiplier; j++) {
@@ -78,7 +99,11 @@ var Fields = new function () {
             }
 
             if (ifBottomRight(x, y, 'h')) {
-                tmpTextureContext.fillStyle = color3
+                if (isType(Fields.get(x + 1, y + 1, 1).getType(), 'm')) {
+                    tmpTextureContext.fillStyle = hillColor1
+                } else {
+                    tmpTextureContext.fillStyle = grassColor1
+                }
 
                 for (var i = 0; i < textureMultiplier; i++) {
                     for (var j = 0; j < textureMultiplier; j++) {
@@ -131,7 +156,7 @@ var Fields = new function () {
             f3 = isRoad(Fields.get(x, y + 1, 1).getType())
             f4 = isRoad(Fields.get(x - 1, y, 1).getType())
 
-            tmpTextureContext.fillStyle = '#000000'
+            tmpTextureContext.fillStyle = roadColor1
 
             // center square
             tmpTextureContext.fillRect(x * textureMultiplier + marginSmall, y * textureMultiplier + marginBig, width, width)
@@ -163,8 +188,14 @@ var Fields = new function () {
                 return 0
             }
         },
-        paintTextureField = function (tmpTextureContext, x, y, color1, color2, percent) {
+        paintTextureField = function (tmpTextureContext, x, y, color1, color2, percent, size) {
             var howManyTimes = textureMultiplier * textureMultiplier * (percent / 100)
+
+            if (isSet(size)) {
+                var s = size
+            } else {
+                var s = 1
+            }
 
             tmpTextureContext.fillStyle = color1
             tmpTextureContext.fillRect(x * textureMultiplier, y * textureMultiplier, textureMultiplier, textureMultiplier)
@@ -174,7 +205,7 @@ var Fields = new function () {
                 var valueX = Math.floor((Math.random() * textureMultiplier)),
                     valueY = Math.floor((Math.random() * textureMultiplier))
 
-                tmpTextureContext.fillRect(x * textureMultiplier + valueX, y * textureMultiplier + valueY, 1, 1)
+                tmpTextureContext.fillRect(x * textureMultiplier + valueX, y * textureMultiplier + valueY, s, s)
             }
         },
         paintWaterTextureField = function (tmpWaterTextureContext, x, y, color1, color2, percent) {
@@ -316,40 +347,40 @@ var Fields = new function () {
             for (var x in fields[y]) {
                 switch (this.get(x, y).getType()) {
                     case 'g':
-                        paintTextureField(tmpTextureContext, x, y, '#3c963c', '#3fa342', 5)
-                        paintWaterTextureField(tmpWaterTextureContext, x, y, '#ffff7f', '#3c963c', 15)
+                        paintTextureField(tmpTextureContext, x, y, grassColor1, grassColor2, 5)
+                        paintWaterTextureField(tmpWaterTextureContext, x, y, '#ffff7f', grassColor1, 15)
                         break
                     case 'f':
-                        paintTextureField(tmpTextureContext, x, y, '#3c963c', '#0b7e22', 5)
-                        paintWaterTextureField(tmpWaterTextureContext, x, y, '#ffff7f', '#3c963c', 15)
+                        paintTextureField(tmpTextureContext, x, y, grassColor1, '#0b7e22', 5)
+                        paintWaterTextureField(tmpWaterTextureContext, x, y, '#ffff7f', grassColor1, 15)
                         GameModels.addTree(x, y)
                         break
                     case 'w':
-                        // paintTextureField(tmpTextureContext, x, y, '#3c963c', '#ffff7f', 10)
-                        paintTextureField(tmpTextureContext, x, y, '#ffff7f', '#3c963c', 15)
+                        // paintTextureField(tmpTextureContext, x, y, grassColor1, '#ffff7f', 10)
+                        paintTextureField(tmpTextureContext, x, y, '#ffff7f', grassColor1, 15)
                         paintWaterTextureField(tmpWaterTextureContext, x, y, '#365294', '#526daa', 1)
                         break
                     case 'h':
                         paintHill(tmpTextureContext, x, y)
-                        paintWaterTextureField(tmpWaterTextureContext, x, y, '#ffff7f', '#3c963c', 15)
+                        paintWaterTextureField(tmpWaterTextureContext, x, y, '#ffff7f', grassColor1, 15)
                         break
                     case 'm':
                         paintMountain(tmpTextureContext, x, y)
-                        paintWaterTextureField(tmpWaterTextureContext, x, y, '#ffff7f', '#3c963c', 15)
+                        paintWaterTextureField(tmpWaterTextureContext, x, y, '#ffff7f', grassColor1, 15)
                         break
                     case 'r':
-                        paintTextureField(tmpTextureContext, x, y, '#3c963c', '#3c963c', 0)
-                        paintWaterTextureField(tmpWaterTextureContext, x, y, '#ffff7f', '#3c963c', 15)
+                        paintTextureField(tmpTextureContext, x, y, grassColor1, grassColor1, 0)
+                        paintWaterTextureField(tmpWaterTextureContext, x, y, '#ffff7f', grassColor1, 15)
                         paintRoad(tmpTextureContext, x, y)
                         break
                     case 'b':
-                        paintTextureField(tmpTextureContext, x, y, '#ffff7f', '#3c963c', 15)
-                        paintWaterTextureField(tmpWaterTextureContext, x, y, '#365294', '#526daa', 1)
+                        paintTextureField(tmpTextureContext, x, y, '#ffff7f', grassColor1, 15)
+                        paintWaterTextureField(tmpWaterTextureContext, x, y, waterColor1, '#526daa', 1)
                         paintRoad(tmpTextureContext, x, y)
                         break
                     case 's':
-                        paintTextureField(tmpTextureContext, x, y, '#3c963c', '#828396', 60)
-                        paintWaterTextureField(tmpWaterTextureContext, x, y, '#ffff7f', '#3c963c', 15)
+                        paintTextureField(tmpTextureContext, x, y, grassColor1, '#828396', 60)
+                        paintWaterTextureField(tmpWaterTextureContext, x, y, '#ffff7f', grassColor1, 15)
                         break
                 }
             }
