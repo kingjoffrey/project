@@ -8,6 +8,7 @@ class Cli_Model_NameGenerator
 
     private $_firstNameLength;
     private $_secondNameLength;
+    private $_heroNamesLength;
 
     public function __construct()
     {

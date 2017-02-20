@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: WOF\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-02-15 15:08+0100\n"
-"PO-Revision-Date: 2017-02-15 15:09+0100\n"
+"POT-Creation-Date: 2017-02-20 03:51+0100\n"
+"PO-Revision-Date: 2017-02-20 03:51+0100\n"
 "Last-Translator: Bartosz Krzeszewski <bartek@core-t.pl>\n"
 "Language-Team: \n"
 "Language: pl\n"
@@ -866,8 +866,16 @@ msgid "Save"
 msgstr "Zapisz"
 
 #: application/views/helpers/Translations.php:169
+msgid "No"
+msgstr "Nie"
+
+#: application/views/helpers/Translations.php:170
 msgid "Find army"
 msgstr "Znajdź armię"
+
+#: application/views/helpers/Translations.php:171
+msgid "Switch to FullScreen?"
+msgstr "Przełączyć się na pełen ekran?"
 
 #: application/views/helpers/Version.php:6
 msgid "Version number"
@@ -1175,6 +1183,9 @@ msgstr "Niezdecydowani"
 msgid "Start new game"
 msgstr "Uruchom nową grę"
 
+#~ msgid "Switch to FullScreen"
+#~ msgstr "Przełączyć się na pełen ekran?"
+
 #~ msgid "Chat"
 #~ msgstr "Czat"
 
@@ -1264,9 +1275,6 @@ msgstr "Uruchom nową grę"
 
 #~ msgid "Can fly"
 #~ msgstr "Może latać"
-
-#~ msgid "No"
-#~ msgstr "Nie"
 
 #~ msgid "Can swim"
 #~ msgstr "Pływa"

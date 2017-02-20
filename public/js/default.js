@@ -18,7 +18,18 @@ var Page = new function () {
     this.hasTouch = function () {
         return touch
     }
-
+    this.fullScreen = function () {
+        var elem = document.getElementById('main');
+        if (elem.requestFullscreen) {
+            elem.requestFullscreen()
+        } else if (elem.msRequestFullscreen) {
+            elem.msRequestFullscreen()
+        } else if (elem.mozRequestFullScreen) {
+            elem.mozRequestFullScreen()
+        } else if (elem.webkitRequestFullscreen) {
+            elem.webkitRequestFullscreen()
+        }
+    }
 
     this.init = function () {
         $('#bg').scroll(function () {
@@ -34,5 +45,21 @@ var Page = new function () {
             touch = 'ontouchstart' in document.documentElement
             shadows = 0
         }
+
+        $('#menuBox').append($('<div>').addClass('askFullScreen')
+            .append($('<div>').html(translations.SwitchtoFullScreen).addClass('question'))
+            .append(
+                $('<div>')
+                    .append($('<div>').addClass('button buttonColors').html(translations.No).click(function () {
+                        Sound.play('click')
+                        $('.askFullScreen').remove()
+                    }))
+                    .append($('<div>').addClass('button buttonColors').html(translations.Yes).click(function () {
+                        Sound.play('click')
+                        Page.fullScreen()
+                        $('.askFullScreen').remove()
+                    }))
+            )
+        )
     }
 }

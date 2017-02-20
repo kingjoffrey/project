@@ -132,7 +132,7 @@ var GameGui = new function () {
                 if (!Me.getSelectedArmyId()) {
                     return;
                 }
-
+                Sound.play('click')
                 Me.deselectArmy()
             })
 
@@ -156,22 +156,15 @@ var GameGui = new function () {
             })
             $('#fullScreen').click(function () {
                 Sound.play('click')
-                var elem = document.getElementById('main');
-                if (elem.requestFullscreen) {
-                    elem.requestFullscreen()
-                } else if (elem.msRequestFullscreen) {
-                    elem.msRequestFullscreen()
-                } else if (elem.mozRequestFullScreen) {
-                    elem.mozRequestFullScreen()
-                } else if (elem.webkitRequestFullscreen) {
-                    elem.webkitRequestFullscreen()
-                }
+                Page.fullScreen()
             })
             $('#showMenu').click(function () {
+                Sound.play('click')
                 GameRenderer.stop()
                 $('#gameMenu').show()
             })
             $('#close').click(function () {
+                Sound.play('click')
                 GameRenderer.start()
                 $('#gameMenu').hide()
             })
