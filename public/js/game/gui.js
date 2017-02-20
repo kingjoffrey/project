@@ -181,7 +181,6 @@ var GameGui = new function () {
         }
     this.adjust = function () {
         GameScene.resize($(window).innerWidth(), $(window).innerHeight())
-        BattleScene.resize($(window).innerWidth(), $(window).innerHeight())
         GameRenderer.setSize($(window).innerWidth(), $(window).innerHeight())
 
         var goldButtonLeft = $(window).innerWidth() / 2 - $('#gold').outerWidth() / 2

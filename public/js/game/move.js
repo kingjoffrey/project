@@ -75,7 +75,9 @@ var Move = new function () {
             if (isTruthful(r.battle) && (!player.isComputer() || GameGui.getShow())) {
                 Sound.play('fight')
                 GameScene.centerOn(r.path[step].x, r.path[step].y, function () {
-                    BattleWindow.battle(r, ii)
+                    setTimeout(function () {
+                        Move.end(r, ii)
+                    }, stepTime)
                 })
             } else {
                 Move.end(r, ii)

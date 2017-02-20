@@ -41,8 +41,6 @@ var Game = new function () {
             GameRenderer.init('game', GameScene)
             GameScene.initSun(Fields.getMaxY())
             GameRenderer.animate()
-            BattleScene.init($(window).innerWidth(), $(window).innerHeight())
-            BattleScene.initSun(Fields.getMaxY())
             GameGui.init()
             PickerCommon.init(PickerGame)
 
