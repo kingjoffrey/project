@@ -14,12 +14,10 @@ class TutorialController
             $handler->addTutorial($tutorial);
         }
 
-        $playerId = $user->parameters['playerId'];
-
         $mGame = new Application_Model_Game(0, $db);
-        $gameId = $mGame->getMyTutorial($playerId);
+        $gameId = $mGame->getMyTutorial($user->parameters['playerId']);
         if (!$gameId) {
-            $mTutorial = new Application_Model_TutorialProgress($playerId, $db);
+            $mTutorial = new Application_Model_TutorialProgress($user->parameters['playerId'], $db);
             $number = $mTutorial->getNumber();
             switch ($number) {
                 case 0:
@@ -37,7 +35,7 @@ class TutorialController
             $gameId = $mGame->createGame(array(
                 'numberOfPlayers' => 2,
                 'mapId' => $mapId
-            ), $playerId);
+            ), $user->parameters['playerId']);
 
             $mPlayersInGame = new Application_Model_PlayersInGame($gameId, $db);
             $mMapPlayers = new Application_Model_MapPlayers($mapId, $db);
@@ -46,14 +44,13 @@ class TutorialController
             $mCastlesInGame = new Application_Model_CastlesInGame($gameId, $db);
             $first = true;
             $startPositions = $mMapCastles->getDefaultStartPositions();
+
+            $playerId = $user->parameters['playerId'];
             foreach ($mMapPlayers->getAll() as $mapPlayerId => $mapPlayer) {
                 if (!$playerId) {
                     $playerId = $mPlayersInGame->getComputerPlayerId();
-                    if (!$playerId) {
-                        $modelPlayer = new Application_Model_Player($db);
-                        $playerId = $modelPlayer->createComputerPlayer();
-                        $modelHero = new Application_Model_Hero($playerId, $db);
-                        $modelHero->createHero();
+                    if (empty($playerId)) {
+                        throw new Exception('kamieni kupa2!');
                     }
                 }
 
@@ -68,15 +65,11 @@ class TutorialController
                 }
 
                 $mHero = new Application_Model_Hero($playerId, $db);
-                $playerHeroes = $mHero->getHeroes();
-                if (empty($playerHeroes)) {
-                    $mHero->createHero();
-                    $playerHeroes = $mHero->getHeroes($playerId);
-                }
                 $mArmy = new Application_Model_Army($gameId, $db);
                 $armyId = $mArmy->createArmy($startPositions[$mapPlayer['mapPlayerId']], $playerId);
-                $mHeroesInGame->add($armyId, $playerHeroes[0]['heroId']);
+                $mHeroesInGame->add($armyId, $mHero->getFirstHero());
                 $mCastlesInGame->addCastle($startPositions[$mapPlayer['mapPlayerId']]['mapCastleId'], $playerId);
+
                 $playerId = 0;
             }
         }

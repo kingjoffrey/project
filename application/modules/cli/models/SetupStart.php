@@ -60,17 +60,12 @@ class Cli_Model_SetupStart
             $mPlayersInGame->setTeam($playerId, $mapPlayerId);
 
             $mHero = new Application_Model_Hero($playerId, $db);
-            $playerHeroes = $mHero->getHeroes();
-            if (empty($playerHeroes)) {
-                $mHero->createHero();
-                $playerHeroes = $mHero->getHeroes($playerId, $db);
-            }
             $mArmy = new Application_Model_Army($setup->getGameId(), $db);
 
             $armyId = $mArmy->createArmy($startPositions[$mapPlayer['mapPlayerId']], $playerId);
 
             $mHeroesInGame = new Application_Model_HeroesInGame($setup->getGameId(), $db);
-            $mHeroesInGame->add($armyId, $playerHeroes[0]['heroId']);
+            $mHeroesInGame->add($armyId, $mHero->getFirstHero());
 
             $mCastlesInGame = new Application_Model_CastlesInGame($setup->getGameId(), $db);
             $mCastlesInGame->addCastle($startPositions[$mapPlayer['mapPlayerId']]['mapCastleId'], $playerId);

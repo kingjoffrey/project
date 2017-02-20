@@ -1,8 +1,9 @@
 <?php
+use Devristo\Phpws\Protocol\WebSocketTransportInterface;
 
 class Cli_Model_HeroHire
 {
-    public function __construct(Devristo\Phpws\Protocol\WebSocketTransportInterface $user, $handler)
+    public function __construct(WebSocketTransportInterface $user, $handler)
     {
         $game = Cli_CommonHandler::getGameFromUser($user);
         $gameId = $game->getId();

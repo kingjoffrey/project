@@ -47,17 +47,23 @@ class LoginController extends Coret_Controller_AuthenticateFrontend
                     'login' => $this->_request->getParam('login'),
                     'password' => md5($this->_request->getParam('password'))
                 );
+
                 $mPlayer = new Application_Model_Player();
                 if ($playerId = $mPlayer->createPlayer($data)) {
-                    $modelHero = new Application_Model_Hero($playerId);
-                    $modelHero->createHero();
+                    $mHero = new Application_Model_Hero($playerId);
+                    $mNG = new Cli_Model_NameGenerator();
+                    $mHero->createHero($mNG->generateHeroName());
+
                     $this->_authAdapter = $this->getAuthAdapter($form->getValues());
                     $this->_auth->authenticate($this->_authAdapter);
                     $this->handleAuthenticated();
                 }
+            } else {
+                $this->view->form = $form;
             }
+        } else {
+            $this->view->form = $form;
         }
-        $this->view->form = $form;
     }
 
     protected function handleFacebookUser($userProfile)
@@ -85,8 +91,10 @@ class LoginController extends Coret_Controller_AuthenticateFrontend
 
             $mPlayer = new Application_Model_Player();
             if ($playerId = $mPlayer->createPlayer($data)) {
-                $modelHero = new Application_Model_Hero($playerId);
-                $modelHero->createHero();
+                $mHero = new Application_Model_Hero($playerId);
+                $mNG = new Cli_Model_NameGenerator();
+                $mHero->createHero($mNG->generateHeroName());
+
                 $this->_authAdapter = $this->getAuthAdapterFacebook($facebookId);
                 $this->_auth->authenticate($this->_authAdapter);
                 $this->handleAuthenticated();

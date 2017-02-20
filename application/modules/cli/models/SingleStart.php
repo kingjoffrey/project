@@ -44,17 +44,12 @@ class Cli_Model_SingleStart
             $mPlayersInGame->setTeam($playerId, $mapPlayerId);
 
             $mHero = new Application_Model_Hero($playerId, $db);
-            $playerHeroes = $mHero->getHeroes();
-            if (empty($playerHeroes)) {
-                $mHero->createHero();
-                $playerHeroes = $mHero->getHeroes($playerId, $db);
-            }
             $mArmy = new Application_Model_Army($gameId, $db);
 
             $armyId = $mArmy->createArmy($startPositions[$mapPlayer['mapPlayerId']], $playerId);
 
             $mHeroesInGame = new Application_Model_HeroesInGame($gameId, $db);
-            $mHeroesInGame->add($armyId, $playerHeroes[0]['heroId']);
+            $mHeroesInGame->add($armyId, $mHero->getFirstHero());
 
             $mCastlesInGame = new Application_Model_CastlesInGame($gameId, $db);
             $mCastlesInGame->addCastle($startPositions[$mapPlayer['mapPlayerId']]['mapCastleId'], $playerId);

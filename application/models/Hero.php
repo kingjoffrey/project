@@ -17,10 +17,11 @@ class Application_Model_Hero extends Coret_Db_Table_Abstract
         }
     }
 
-    public function createHero()
+    public function createHero($name)
     {
         $data = array(
-            'playerId' => $this->_playerId
+            'playerId' => $this->_playerId,
+            'name' => $name
         );
 
         $this->insert($data);
@@ -31,10 +32,26 @@ class Application_Model_Hero extends Coret_Db_Table_Abstract
     public function getHeroes()
     {
         $select = $this->_db->select()
-            ->from($this->_name)
+            ->from($this->_name, array('heroId', 'numberOfMoves', 'attackPoints', 'defensePoints', 'experience', 'name'))
             ->where('"playerId" = ?', $this->_playerId);
 
         return $this->selectAll($select);
+    }
+
+    public function getFirstHero()
+    {
+        $playerId = $this->_db->quoteIdentifier('playerId');
+        $heroId = $this->_db->quoteIdentifier('heroId');
+
+        $subSelect = $this->_db->select()
+            ->from($this->_name, 'min(' . $heroId . ')')
+            ->where($playerId . ' = ?', $this->_playerId);
+
+        $select = $this->_db->select()
+            ->from($this->_name, array('heroId', 'numberOfMoves', 'attackPoints', 'defensePoints', 'experience', 'name'))
+            ->where($heroId . ' = (?)', new Zend_Db_Expr($subSelect->__toString()));
+
+        return $this->selectRow($select);
     }
 
     public function changeHeroName($heroId, $name)
