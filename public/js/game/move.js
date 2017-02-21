@@ -16,7 +16,7 @@ var Move = new function () {
         player = Players.get(r.color)
         army = player.getArmies().get(r.army.id)
 
-        Fields.get(army.x, army.y).removeArmyId(army.getArmyId())
+        Fields.get(army.getX(), army.getY()).removeArmyId(r.army.id)
 
         switch (army.getMovementType()) {
             case 'fly':

@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: WOF\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-02-21 02:50+0100\n"
-"PO-Revision-Date: 2017-02-21 02:52+0100\n"
+"POT-Creation-Date: 2017-02-21 04:30+0100\n"
+"PO-Revision-Date: 2017-02-21 04:32+0100\n"
 "Last-Translator: Bartosz Krzeszewski <bartek@core-t.pl>\n"
 "Language-Team: \n"
 "Language: pl\n"
@@ -888,6 +888,10 @@ msgstr "Tylko Herosi mogą przeszukiwać ruiny!"
 #: application/views/helpers/Translations.php:174
 msgid "The ruins are already searched"
 msgstr "Ruiny są już przeszukane"
+
+#: application/views/helpers/Translations.php:175
+msgid "Waiting for:"
+msgstr "Czekam na:"
 
 #: application/views/helpers/Version.php:6
 msgid "Version number"

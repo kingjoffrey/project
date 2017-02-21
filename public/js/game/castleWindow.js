@@ -95,17 +95,17 @@ var CastleWindow = new function () {
                                         castle.handle($(this).parent().parent().parent().attr('id'))
                                         Message.remove(messageId)
                                     }))
-                        unitElement.find('.buttons')
-                            .append(
-                                $('<div>') // relokacja
-                                    .html(translations.relocation)
-                                    .addClass('button buttonColors')
-                                    .attr('id', 'relocation')
-                                    .click(function () {
-                                        castle.handle($(this).parent().parent().parent().attr('id'), 0, 1)
-                                        Message.remove(messageId)
-                                    }))
                     }
+                    unitElement.find('.buttons')
+                        .append(
+                            $('<div>') // relokacja
+                                .html(translations.relocation)
+                                .addClass('button buttonColors')
+                                .attr('id', 'relocation')
+                                .click(function () {
+                                    castle.handle($(this).parent().parent().parent().attr('id'), 0, 1)
+                                    Message.remove(messageId)
+                                }))
                     array.append(unitElement)
                 }
                 return array
