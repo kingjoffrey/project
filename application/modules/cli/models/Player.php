@@ -140,11 +140,6 @@ class Cli_Model_Player extends Cli_Model_DefaultPlayer
         return $this->_gold;
     }
 
-    public function subtractGold($gold)
-    {
-        $this->_gold -= $gold;
-    }
-
     public function addGold($gold)
     {
         $this->_gold += $gold;

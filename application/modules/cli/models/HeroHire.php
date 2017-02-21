@@ -41,7 +41,7 @@ class Cli_Model_HeroHire
         $army->addHero($heroId, new Cli_Model_Hero($mHeroesInGame->getHero($heroId)), $gameId, $db);
         $army->getHeroes()->getHero($heroId)->zeroMovesLeft($gameId, $db);
 
-        $player->subtractGold($this->_price);
+        $player->addGold(-$this->_price);
         $player->saveGold($gameId, $db);
 
         $token = array(

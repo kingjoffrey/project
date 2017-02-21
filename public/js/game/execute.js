@@ -147,7 +147,7 @@ var Execute = new function () {
                     if (Turn.isMy()) {
                         Sound.play('gold1');
                         Message.remove()
-                        Me.setGold(r.gold)
+                        Me.goldIncrement(r.gold)
                     } else {
                         Sound.play('raze');
                     }

@@ -44,13 +44,15 @@ class Cli_Model_HeroResurrection
         $army->addHero($hero['heroId'], new Cli_Model_Hero($hero), $gameId, $db);
         $army->getHeroes()->getHero($hero['heroId'])->zeroMovesLeft($gameId, $db);
 
-        $player->subtractGold(100);
+        $gold = 100;
+
+        $player->addGold(-$gold);
         $player->saveGold($gameId, $db);
 
         $token = array(
             'type' => 'resurrection',
             'army' => $army->toArray(),
-            'gold' => $player->getGold(),
+            'gold' => $gold,
             'color' => $color
         );
         $handler->sendToChannel($token);

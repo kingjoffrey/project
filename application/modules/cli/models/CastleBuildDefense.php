@@ -45,6 +45,7 @@ class Cli_Model_CastleBuildDefense
         $db = $handler->getDb();
         $castle->increaseDefenceMod($playerId, $gameId, $db);
         $player->addGold(-$costs);
+        $player->saveGold($gameId, $db);
 
         $token = array(
             'type' => 'defense',

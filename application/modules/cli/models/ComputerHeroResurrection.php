@@ -37,13 +37,13 @@ class Cli_Model_ComputerHeroResurrection
         $l = new Coret_Model_Logger();
         $l->log('WSKRZESZAM HEROSA id = ' . $hero['heroId']);
 
-        $player->subtractGold(100);
+
+        $player->addGold(-100);
         $player->saveGold($gameId, $db);
 
         $token = array(
             'type' => 'resurrection',
             'army' => $army->toArray(),
-            'gold' => $player->getGold(),
             'color' => $color
         );
 

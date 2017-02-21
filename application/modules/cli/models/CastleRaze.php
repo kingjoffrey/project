@@ -42,12 +42,14 @@ class Cli_Model_CastleRaze
 
         $db = $handler->getDb();
         $castles->razeCastle($castleId, $playerId, $game, $db);
-        $player->addGold($defense * 200);
+        $gold = $defense * 200;
+        $player->addGold($gold);
+        $player->saveGold($game->getId(), $db);
 
         $token = array(
             'type' => 'raze',
             'color' => $color,
-            'gold' => $player->getGold(),
+            'gold' => $gold,
             'castleId' => $castleId
         );
 
