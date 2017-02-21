@@ -10,8 +10,10 @@ var Turn = new function () {
         number++
         if (Turn.isMy()) {
             Me.turnOn()
-            WebSocketSendGame.startMyTurn();
+            WebSocketSendGame.startMyTurn()
+            $('#turnInfo').hide()
         } else {
+            $('#turnInfo').html(translations.Waitingfor + ' ' + Players.get(color).getLongName()).show()
             Me.turnOff()
         }
     }
@@ -28,7 +30,7 @@ var Turn = new function () {
         Message.addButton(id, 'Yes', WebSocketSendGame.nextTurn)
     }
     this.init = function (c, n) {
-        color = c
-        number = n
+        number = n - 1
+        this.change(c)
     }
 }

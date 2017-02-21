@@ -3,15 +3,16 @@ use Devristo\Phpws\Protocol\WebSocketTransportInterface;
 
 class Cli_Model_HeroHire
 {
+    private $_price = 1000;
+
     public function __construct(WebSocketTransportInterface $user, $handler)
     {
         $game = Cli_CommonHandler::getGameFromUser($user);
         $gameId = $game->getId();
         $color = $user->parameters['me']->getColor();
-        $playerId = $user->parameters['me']->getId();
         $player = $game->getPlayers()->getPlayer($color);
 
-        if ($player->getGold() < 1000) {
+        if ($player->getGold() < $this->_price) {
             $l = new Coret_Model_Logger('Cli_Model_HeroHire');
             $l->log('Za mało złota!');
             $handler->sendError($user, 'Error 1008');
@@ -26,8 +27,8 @@ class Cli_Model_HeroHire
         }
 
         $db = $handler->getDb();
-        $mHero = new Application_Model_Hero($playerId, $db);
-        $heroId = $mHero->createHero();
+
+        $heroId = $player->getAllHeroes()->hire($player->getArmies(), $db);
 
         if (!$armyId = $player->getArmies()->getArmyIdFromField($game->getFields()->getField($capital->getX(), $capital->getY()))) {
             $armyId = $player->getArmies()->create($capital->getX(), $capital->getY(), $color, $game, $db);
@@ -40,13 +41,13 @@ class Cli_Model_HeroHire
         $army->addHero($heroId, new Cli_Model_Hero($mHeroesInGame->getHero($heroId)), $gameId, $db);
         $army->getHeroes()->getHero($heroId)->zeroMovesLeft($gameId, $db);
 
-        $player->subtractGold(1000);
+        $player->subtractGold($this->_price);
         $player->saveGold($gameId, $db);
 
         $token = array(
             'type' => 'resurrection',
             'army' => $army->toArray(),
-            'gold' => 1000,
+            'gold' => $this->_price,
             'color' => $color
         );
 

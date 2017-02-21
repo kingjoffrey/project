@@ -134,7 +134,7 @@ var Execute = new function () {
                             Players.get(r.color).getArmies().handle(r.army)
                             if (Turn.isMy()) {
                                 Message.remove()
-                                Me.setGold(r.gold)
+                                Me.goldIncrement(r.gold)
                             }
                             Execute.setExecuting(0)
                         })

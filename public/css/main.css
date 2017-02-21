@@ -781,10 +781,6 @@ div.table table.unitTable td:first {
     background: none;
 }
 
-#battle {
-    display: none;
-}
-
 .font-gold {
     color: gold;
 }
@@ -1170,4 +1166,23 @@ input.max {
 
 .askFullScreen .question {
     padding: 1.4vw;
+}
+
+#gameMenu .settings {
+    text-align: center;
+}
+
+#turnInfo {
+    position: absolute;
+    top: 10vh;
+    z-index: 999;
+    background: gold;
+    border-top: 1px solid #000;
+    border-bottom: 1px solid #000;
+    width: 100vw;
+    text-align: center;
+    padding: 3.2vw;
+    color: green;
+    text-shadow: none;
+    display: none;
 }

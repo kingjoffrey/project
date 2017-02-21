@@ -14,6 +14,8 @@ abstract class Cli_Model_DefaultPlayer
     protected $_castles;
     protected $_towers;
 
+    protected $_allHeroes;
+
     public function hasTower($towerId)
     {
         return isset($this->_towers[$towerId]);
@@ -61,5 +63,10 @@ abstract class Cli_Model_DefaultPlayer
     public function getId()
     {
         return $this->_id;
+    }
+
+    public function getAllHeroes()
+    {
+        return $this->_allHeroes;
     }
 }

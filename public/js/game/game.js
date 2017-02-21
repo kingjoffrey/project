@@ -34,8 +34,8 @@ var Game = new function () {
             Units.init(game.units)
             Terrain.init(game.terrain)
             Fields.init(game.fields)
-            Turn.init(game.turnColor, game.turnNumber)
             Players.init(game.players)
+            Turn.init(game.turnColor, game.turnNumber)
             Ruins.init(game.ruins)
             Me.init(game.color, game.gold, game.bSequence, game.capitals)
             GameRenderer.init('game', GameScene)
@@ -49,16 +49,11 @@ var Game = new function () {
             $('.game').show()
         }
 
-        if (Turn.isMy()) {
-            Me.turnOn()
-            if (!Me.getTurnActive()) {
-                WebSocketSendGame.startMyTurn()
-            }
-        } else {
-            Me.turnOff()
+        if (Turn.isMy() && !Me.getTurnActive()) {
+            WebSocketSendGame.startMyTurn()
         }
-        Players.showFirst(Turn.getColor())
 
+        Players.showFirst(Turn.getColor())
         Sound.play('gamestart')
     }
 }

@@ -153,7 +153,7 @@ var CastleWindow = new function () {
                         }))
                     .append(next)
             )
-            .append($('<div>').addClass('production').append($('<div>').html(translations.availableUnits).addClass('title')).append(createProductionTD()).attr('id', castle.getCastleId()))
+            .append($('<div>').addClass('production').append(createProductionTD()).attr('id', castle.getCastleId()))
 
         if (castle.getCastleId() == Me.getCapitalId()) {
             var resurrect = $('<div>').addClass('button buttonColors buttonOff').attr('id', 'heroResurrection')

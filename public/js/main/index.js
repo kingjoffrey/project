@@ -28,6 +28,7 @@ var IndexController = new function () {
 
         $('.message').remove()
 
+        $('#turnInfo').hide()
         $('#game').hide()
         $('#gameMenu').hide()
 

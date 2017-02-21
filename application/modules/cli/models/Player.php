@@ -28,6 +28,8 @@ class Cli_Model_Player extends Cli_Model_DefaultPlayer
         $this->_backgroundColor = $player['backgroundColor'];
         $this->_textColor = $player['textColor'];
 
+        $this->_longName = $player['firstName'] . ' ' . $player['lastName'];
+
         $this->_team = $team;
         $this->_color = $player['color'];
 
@@ -38,6 +40,8 @@ class Cli_Model_Player extends Cli_Model_DefaultPlayer
         if ($this->_lost) {
             return;
         }
+
+        $this->_allHeroes = new Cli_Model_AllHeroes($this->_id, $db);
 
         $this->initArmies($gameId, $db);
         $this->initCastles($gameId, $mapCastles, $db);
@@ -119,7 +123,8 @@ class Cli_Model_Player extends Cli_Model_DefaultPlayer
             'team' => $this->_team,
             'armies' => $this->_armies->toArray(),
             'castles' => $this->_castles->toArray(),
-            'towers' => $this->_towers->toArray()
+            'towers' => $this->_towers->toArray(),
+            'longName' => $this->_longName
         );
     }
 

@@ -18,7 +18,35 @@ var WebSocketSendGame = new function () {
         if (!Turn.isMy()) {
             return
         }
+
         if (!Me.getSelectedArmyId()) {
+            return
+        }
+
+        var army = Me.getSelectedArmy()
+
+        if (Ruins.get(Fields.get(army.x, army.y).getRuinId()).isEmpty()) {
+            Message.error(translations.Theruinsarealreadysearched)
+            return
+        }
+
+        var heroId = 0,
+            movesLeftOk = 0
+
+        for (heroId in army.getHeroes()) {
+            if (army.getHeroes()[heroId].movesLeft > 0) {
+                movesLeftOk = 1
+                break
+            }
+        }
+
+        if (!heroId) {
+            Message.error(translations.OnlyHeroescansearchtheruins)
+            return
+        }
+
+        if (!movesLeftOk) {
+            Message.error(translations.Heroshasnotenoughmoves)
             return
         }
 
@@ -201,9 +229,9 @@ var WebSocketSendGame = new function () {
             return;
         }
 
-        //if (!Turn.isMy()) {
-        //    return;
-        //}
+        // if (!Turn.isMy()) {
+        //     return
+        // }
 
         //if (Me.findHero()) {
         //    return;
@@ -240,7 +268,7 @@ var WebSocketSendGame = new function () {
     this.raze = function () {
         if (closed) {
             Message.error(translations.sorryServerIsDisconnected)
-            return;
+            return
         }
 
         var army = Me.getArmy(Me.getSelectedArmyId())

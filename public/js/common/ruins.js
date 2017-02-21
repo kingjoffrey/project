@@ -14,6 +14,11 @@ var Ruins = new function () {
             Fields.get(ruin.x, ruin.y).setRuinId(ruinId)
         }
     }
+    /**
+     *
+     * @param ruinId
+     * @returns {Ruin}
+     */
     this.get = function (ruinId) {
         return ruins[ruinId]
     }

@@ -19,5 +19,8 @@ var Ruin = function (ruin) {
     this.getMesh = function () {
         return mesh
     }
+    this.isEmpty = function () {
+        return ruin.empty
+    }
     var mesh = GameModels.addRuin(ruin.x, ruin.y, this.getColor())
 }

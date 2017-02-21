@@ -169,6 +169,10 @@ class Zend_View_Helper_Translations extends Zend_View_Helper_Abstract
                 'No' => $this->view->translate('No'),
                 'Findarmy' => $this->view->translate('Find army'),
                 'SwitchtoFullScreen' => $this->view->translate('Switch to FullScreen?'),
+                'Heroshasnotenoughmoves' => $this->view->translate('Heros has not enough moves!'),
+                'OnlyHeroescansearchtheruins' => $this->view->translate('Only Heroes can search the ruins!'),
+                'Theruinsarealreadysearched' => $this->view->translate('The ruins are already searched'),
+                'Waitingfor' => $this->view->translate('Waiting for:'),
                 '' => $this->view->translate(''),
             )));
     }
