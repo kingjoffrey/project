@@ -61,9 +61,6 @@ var CastleWindow = new function () {
                                 .append($('<div>').addClass('attributes')
                                     .append($('<div>').html(translations.productionTime + ': ' + time + '<span>' + castle.getProduction()[unitId].time + '</span>'))
                                     .append($('<div>').html(translations.costOfLiving + ': ' + '<span>' + unit.cost + '</span>'))
-                                    .append($('<div>').html(translations.movementPoints + ': ' + '<span>' + unit.moves + '</span>'))
-                                    .append($('<div>').html(translations.attackPoints + ': ' + '<span>' + unit.a + '</span>'))
-                                    .append($('<div>').html(translations.defencePoints + ': ' + '<span>' + unit.d + '</span>'))
                                 )
                         )
 

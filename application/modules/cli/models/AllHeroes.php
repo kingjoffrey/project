@@ -26,9 +26,9 @@ class Cli_Model_AllHeroes
 
     public function hire(Cli_Model_Armies $armies, Zend_Db_Adapter_Pdo_Pgsql $db)
     {
-        $find = 0;
-
         foreach ($this->_heroes as $hero) {
+            $find = 0;
+
             foreach ($armies->getKeys() as $armyId) {
                 if ($armies->getArmy($armyId)->getHeroes()->hasHero($hero['heroId'])) {
                     $find = 1;
