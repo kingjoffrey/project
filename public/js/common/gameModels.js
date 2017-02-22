@@ -10,9 +10,8 @@ var GameModels = new function () {
     this.addCastle = function (castle, color) {
         var mesh = Models.getCastle(castle, color)
 
-        // mesh.rotation.y = Math.PI / 2 + Math.PI / 4
-
         mesh.position.set(castle.x * 2 + 2, 0, castle.y * 2 + 2)
+        mesh.children[0].rotation.y = Math.PI / 4
 
         mesh.scale.x = 0.2
         mesh.scale.y = 0.2
@@ -24,7 +23,6 @@ var GameModels = new function () {
 
         if (Page.getShadows()) {
             mesh.castShadow = true
-            mesh.receiveShadow = true
             mesh.children[0].castShadow = true
         }
 
@@ -35,6 +33,8 @@ var GameModels = new function () {
         var mesh = Models.getArmy(color, number, modelName)
 
         mesh.rotation.y = Math.PI / 2 + Math.PI / 4
+        mesh.children[0].rotation.y = Math.PI / 4
+
         mesh.scale.x = 0.1
         mesh.scale.y = 0.1
         mesh.scale.z = 0.1
@@ -45,7 +45,6 @@ var GameModels = new function () {
 
         if (Page.getShadows()) {
             mesh.castShadow = true
-            mesh.receiveShadow = true
             mesh.children[0].castShadow = true
         }
         this.setArmyPosition(mesh, x, y)
@@ -85,7 +84,6 @@ var GameModels = new function () {
 
         if (Page.getShadows()) {
             mesh.castShadow = true
-            mesh.receiveShadow = true
         }
 
         GameScene.add(mesh)
@@ -94,6 +92,7 @@ var GameModels = new function () {
     this.addTower = function (x, y, color) {
         var mesh = Models.getTower(color)
         mesh.position.set(x * 2 + 0.5, 0, y * 2 + 0.5)
+        mesh.children[0].rotation.y = Math.PI / 4
 
         mesh.scale.x = 0.3
         mesh.scale.y = 0.3
@@ -105,7 +104,6 @@ var GameModels = new function () {
 
         if (Page.getShadows()) {
             mesh.castShadow = true
-            mesh.receiveShadow = true
             mesh.children[0].castShadow = true
         }
 
@@ -133,21 +131,9 @@ var GameModels = new function () {
 
             if (Page.getShadows()) {
                 mesh.castShadow = true
-                mesh.receiveShadow = true
             }
             GameScene.add(mesh)
         }
-    }
-    this.addSwamp = function (x, y) {
-        var mesh = Models.getSwamp(x, y)
-
-        mesh.rotation.x = Math.PI / 2
-        mesh.position.set(x * 2 + 1, 0.0001, y * 2 + 1)
-
-        if (Page.getShadows()) {
-            mesh.receiveShadow = true
-        }
-        GameScene.add(mesh)
     }
     this.addPathCircle = function (x, y, color, t) {
         switch (t) {
@@ -170,7 +156,6 @@ var GameModels = new function () {
 
         if (Page.getShadows()) {
             circle.castShadow = true
-            circle.receiveShadow = false
         }
 
         circle.position.set(x * 2 + 1, height, y * 2 + 1)
@@ -202,6 +187,7 @@ var GameModels = new function () {
         meshes.circle.rotation.x = Math.PI / 2
         if (Page.getShadows()) {
             meshes.circle.castShadow = true
+            meshes.cylinder.castShadow = true
         }
         GameScene.add(meshes.circle)
         armyCircles.push(meshes.circle)
