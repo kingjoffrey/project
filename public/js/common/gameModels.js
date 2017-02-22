@@ -11,7 +11,8 @@ var GameModels = new function () {
         var mesh = Models.getCastle(castle, color)
 
         mesh.position.set(castle.x * 2 + 2, 0, castle.y * 2 + 2)
-        mesh.children[0].rotation.y = Math.PI / 4
+
+        mesh.children[0].rotation.y = Math.PI + Math.PI / 4
 
         mesh.scale.x = 0.2
         mesh.scale.y = 0.2
@@ -33,7 +34,7 @@ var GameModels = new function () {
         var mesh = Models.getArmy(color, number, modelName)
 
         mesh.rotation.y = Math.PI / 2 + Math.PI / 4
-        mesh.children[0].rotation.y = Math.PI / 4
+        mesh.children[0].rotation.y = Math.PI + Math.PI / 4
 
         mesh.scale.x = 0.1
         mesh.scale.y = 0.1
@@ -42,6 +43,8 @@ var GameModels = new function () {
         mesh.children[0].scale.x = 2
         mesh.children[0].scale.y = 2
         mesh.children[0].scale.z = 2
+
+        mesh.children[0].position.set(-16, 0, 4)
 
         if (Page.getShadows()) {
             mesh.castShadow = true
@@ -92,7 +95,8 @@ var GameModels = new function () {
     this.addTower = function (x, y, color) {
         var mesh = Models.getTower(color)
         mesh.position.set(x * 2 + 0.5, 0, y * 2 + 0.5)
-        mesh.children[0].rotation.y = Math.PI / 4
+
+        mesh.children[0].rotation.y = Math.PI + Math.PI / 4
 
         mesh.scale.x = 0.3
         mesh.scale.y = 0.3

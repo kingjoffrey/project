@@ -40,8 +40,7 @@ var Models = new function () {
                     }))
                 case 3:
                     return new THREE.Mesh(castleModels[2].geometry, new THREE.MeshPhongMaterial({
-                        color: '#6B6B6B',
-                        side: THREE.DoubleSide
+                        color: '#6B6B6B'
                     }))
                 case 4:
                     return new THREE.Mesh(castleModels[3].geometry, new THREE.MeshLambertMaterial({
@@ -181,8 +180,7 @@ var Models = new function () {
                 side: THREE.DoubleSide
             })),
             flagMesh = new THREE.Mesh(flagModel.geometry, new THREE.MeshLambertMaterial({
-                color: color,
-                side: THREE.DoubleSide
+                color: color
             }))
         if (Page.getShadows()) {
             mesh.castShadow = true
@@ -200,8 +198,7 @@ var Models = new function () {
                 side: THREE.DoubleSide
             })),
             flagMesh = new THREE.Mesh(flagModel.geometry, new THREE.MeshLambertMaterial({
-                color: color,
-                side: THREE.DoubleSide
+                color: color
             }))
         if (Page.getShadows()) {
             mesh.castShadow = true
