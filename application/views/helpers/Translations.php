@@ -173,6 +173,7 @@ class Zend_View_Helper_Translations extends Zend_View_Helper_Abstract
                 'OnlyHeroescansearchtheruins' => $this->view->translate('Only Heroes can search the ruins!'),
                 'Theruinsarealreadysearched' => $this->view->translate('The ruins are already searched'),
                 'Waitingfor' => $this->view->translate('Waiting for:'),
+                'Therearenogamestoload' => $this->view->translate('There are no games to load'),
                 '' => $this->view->translate(''),
             )));
     }

@@ -1,6 +1,6 @@
 <div class="table">
     <h2><?php echo $this->translate('Games list') ?></h2>
-    <table>
+    <table id="gameList">
         <tr>
             <th>
                 <div class="padding"><?php echo $this->translate('Game master') ?></div>
@@ -20,47 +20,5 @@
                 <div class="padding"><?php echo $this->translate('Pause date') ?></div>
             </th>
         </tr>
-        <?php if (count($this->myGames)): ?>
-            <?php foreach ($this->myGames as $game): ?>
-                <tr id="<?php echo $game['gameId'] ?>" class="trlink">
-                    <td>
-                        <div class="padding">
-                            <?php echo $game['players'][$game['gameMasterId']]['firstName'] . ' ' . $game['players'][$game['gameMasterId']]['lastName'] ?>
-                        </div>
-                        <div class="padding"><?php echo Coret_View_Helper_Formatuj::date($game['begin'], 'Y.m.d H:i') ?></div>
-                    </td>
-                    <td>
-                        <div><?php echo $game['name'] ?></div>
-                    </td>
-                    <td>
-                        <?php foreach ($game['players'] as $v): ?>
-                            <div>
-                                <div class="playersName">
-                                    <?php echo $v['firstName'] . ' ' . $v['lastName'] ?>
-                                </div>
-                                <div class="playersColors">
-                                    <div class="colorBox"
-                                         style="background: <?php echo $v['backgroundColor'] ?>">&nbsp;</div>
-                                    <div class="colorBox"
-                                         style="background: <?php echo $game['teams'][$v['team']] ?>">&nbsp;</div>
-                                </div>
-                            </div>
-                        <?php endforeach ?>
-                    </td>
-                    <td>
-                        <div class="padding"><?php echo $game['turnNumber'] ?></div>
-                        <div class="padding">
-                            <?php echo $game['playerTurn']['firstName'] . ' ' . $game['playerTurn']['lastName'] ?>
-                        </div>
-                        <div class="padding">
-                            <?php echo Coret_View_Helper_Formatuj::date($game['end'], 'Y.m.d H:i') ?>
-                        </div>
-                    </td>
-                </tr>
-            <?php endforeach ?>
-        <?php endif ?>
     </table>
-    <?php if (!count($this->myGames)): ?>
-        <p id="info"><?php echo $this->translate('There are no games to load') ?></p>
-    <?php endif ?>
 </div>

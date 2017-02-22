@@ -36,7 +36,8 @@ var GameScene = new function () {
         if (Page.getShadows()) {
             sun.castShadow = true
 
-            var mapSize = 4096
+            var mapSize = 8192
+            // var mapSize = 4096
             // var mapSize=2048
 
             sun.shadow.mapSize.width = mapSize
