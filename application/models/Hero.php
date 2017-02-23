@@ -51,20 +51,16 @@ class Application_Model_Hero extends Coret_Db_Table_Abstract
         return $this->selectRow($select);
     }
 
-    public function getFirstHero()
+    public function getFirstHeroId()
     {
         $playerId = $this->_db->quoteIdentifier('playerId');
         $heroId = $this->_db->quoteIdentifier('heroId');
 
-        $subSelect = $this->_db->select()
+        $select = $this->_db->select()
             ->from($this->_name, 'min(' . $heroId . ')')
             ->where($playerId . ' = ?', $this->_playerId);
 
-        $select = $this->_db->select()
-            ->from($this->_name, array('heroId', 'numberOfMoves', 'attackPoints', 'defensePoints', 'experience', 'name'))
-            ->where($heroId . ' = (?)', new Zend_Db_Expr($subSelect->__toString()));
-
-        return $this->selectRow($select);
+        return $this->selectOne($select);
     }
 
     public function changeHeroName($heroId, $name)

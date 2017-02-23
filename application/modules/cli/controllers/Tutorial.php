@@ -67,7 +67,7 @@ class TutorialController
                 $mHero = new Application_Model_Hero($playerId, $db);
                 $mArmy = new Application_Model_Army($gameId, $db);
                 $armyId = $mArmy->createArmy($startPositions[$mapPlayer['mapPlayerId']], $playerId);
-                $mHeroesInGame->add($armyId, $mHero->getFirstHero());
+                $mHeroesInGame->add($armyId, $mHero->getFirstHeroId());
                 $mCastlesInGame->addCastle($startPositions[$mapPlayer['mapPlayerId']]['mapCastleId'], $playerId);
 
                 $playerId = 0;

@@ -221,7 +221,7 @@ var StatusWindow = new function () {
             table.append(
                 $('<tr>')
                     .addClass('row')
-                    .append($('<td>').addClass('name').html(translations.hero))
+                    .append($('<td>').addClass('name').html(hero.name))
                     .append($('<td>')
                         .append($('<div>')
                             .append($('<div>').addClass('attr').html(translations.Moves + ': '))

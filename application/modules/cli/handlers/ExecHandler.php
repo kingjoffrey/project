@@ -143,6 +143,26 @@ class Cli_ExecHandler extends WebSocketUriHandler
                 $execPort = $this->_mainPort + $port;
                 $gameId = (int)$dataIn['gameId'];
 
+                if ($gameId != $dataIn['gameId'] * 1) {
+                    echo 'GAME ID PROBLEM 1: gameId=' . $dataIn['gameId'] . "\n";
+
+                    if ($Game = $this->findGame($user->parameters['gameId'])) {
+                        $this->removeGame($Game);
+                    }
+
+                    return;
+                }
+
+                if (!$gameId) {
+                    echo 'GAME ID PROBLEM 2: gameId=' . $dataIn['gameId'] . "\n";
+
+                    if ($Game = $this->findGame($user->parameters['gameId'])) {
+                        $this->removeGame($Game);
+                    }
+
+                    return;
+                }
+
                 exec('ps -eo pid,command|grep gameWSServer', $exec);
 
                 foreach ($exec as $line) {

@@ -44,9 +44,10 @@ var LoadController = new function () {
                             .append($('<div>').addClass('padding').html(game.playerTurn.firstName + ' ' + game.playerTurn.lastName))
                             .append($('<div>').addClass('padding').html(game.end))
                     )
-            ).click(function () {
-                GameController.index({'gameId': $(this).attr('id')})
-            })
+                    .click(function () {
+                        GameController.index({'gameId': $(this).attr('id')})
+                    })
+            )
         }
 
         if (notSet(i)) {

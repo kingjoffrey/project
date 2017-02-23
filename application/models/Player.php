@@ -122,5 +122,13 @@ class Application_Model_Player extends Coret_Db_Table_Abstract
 
         return $array;
     }
+
+    public function getPlayers()
+    {
+        $select = $this->_db->select()
+            ->from($this->_name, 'playerId');
+
+        return $this->selectAll($select);
+    }
 }
 

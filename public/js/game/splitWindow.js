@@ -101,7 +101,7 @@ var SplitWindow = new function () {
             div.append(
                 $('<div>')
                     .addClass('row')
-                    .append($('<div>').addClass('nr').html(translations.hero))
+                    .append($('<div>').addClass('nr').html(heroes[heroId].name))
                     .append($('<span>').html(' : ' + heroes[heroId].movesLeft + '/' + heroes[heroId].moves))
                     .append($('<div>').addClass('right').html($('<input>').css('display', 'none').attr({
                         type: 'checkbox',
