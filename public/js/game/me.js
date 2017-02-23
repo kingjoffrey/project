@@ -407,19 +407,39 @@ var Me = new function () {
         return capitalId
     }
     this.init = function (c, g, bSequence, capitals) {
+        selectedArmyId = null
+        deselectedArmyId = null
+        nextArmies = {}
+        skippedArmies = {}
+        quitedArmies = {}
+        isSelected = 0
+        parentArmyId = null
+        nextArmyId = null
+        isNextSelected = null
+        selectedCastleId = null
+        selectedUnitId = null
+        battleSequence = []
+
         color = c
         me = Players.get(color)
         capitalId = capitals[color]
 
+        gold = 0
+        upkeep = 0
+        income = 0
+
         this.setBattleSequence(bSequence)
         this.setGold(g)
+
         for (var armyId in Players.get(color).getArmies().toArray()) {
             var army = Players.get(color).getArmies().get(armyId)
             if (army.getFortified()) {
                 this.addQuited(armyId)
             }
         }
+
         var armies = this.getArmies()
+
         for (var armyId in armies.toArray()) {
             var army = armies.get(armyId)
             for (var soldierId in army.getWalkingSoldiers()) {
@@ -432,11 +452,15 @@ var Me = new function () {
                 this.upkeepIncrement(Units.get(army.getSwimmingSoldier(soldierId).unitId).cost)
             }
         }
+
         var castles = this.getCastles()
+
         for (var castleId in castles.toArray()) {
             this.incomeIncrement(castles.get(castleId).getIncome())
         }
+
         this.incomeIncrement(this.getTowers().count() * 5)
+
         updateGold()
         updateUpkeep()
         updateIncome()
