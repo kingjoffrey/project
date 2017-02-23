@@ -20,6 +20,7 @@ var EditorController = new function () {
                         )
                         .append(
                             $('<div>').addClass('button buttonColors').html(translations.Test).click(function () {
+
                                 WebSocketSendMain.controller('single', 'index', {
                                     'mapId': $(this).parent().parent().attr('id'),
                                     'test': 1

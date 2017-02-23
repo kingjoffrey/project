@@ -44,22 +44,25 @@ var PickerGame = new function () {
                         dragStart = PickerGame.getPoint(event)
                     }
                 }
+            } else {
+                dragStart = PickerGame.getPoint(event)
             }
         },
         handleMove = function (event) {
             PickerCommon.intersect(event)
-            if (PickerCommon.intersects()) {
-                // if (AStar.cursorPosition(PickerCommon.convertX(), PickerCommon.convertZ()) && Me.getSelectedArmyId()) {
-                //     AStar.showPath()
-                // }
+            // if (AStar.cursorPosition(PickerCommon.convertX(), PickerCommon.convertZ()) && Me.getSelectedArmyId()) {
+            //     AStar.showPath()
+            // }
 
-                if (dragStart) {
+            if (dragStart) {
 // drag
-                    var dragEnd = PickerGame.getPoint(event)
-                    GameScene.moveCamera(dragStart.x - dragEnd.x, dragStart.y - dragEnd.y)
-                    dragStart = dragEnd
-                    PickerCommon.cursor('move')
-                } else {
+                var dragEnd = PickerGame.getPoint(event)
+                GameScene.moveCamera(dragStart.x - dragEnd.x, dragStart.y - dragEnd.y)
+                dragStart = dragEnd
+                PickerCommon.cursor('move')
+            } else {
+                if (PickerCommon.intersects()) {
+                    AStar.cursorPosition(PickerCommon.convertX(), PickerCommon.convertZ())
 // turn
                     if (Turn.isMy()) {
                         var field = PickerCommon.getField(),
@@ -145,9 +148,9 @@ var PickerGame = new function () {
 // wait
                         PickerCommon.cursor('wait')
                     }
+                } else {
+                    PickerCommon.cursor()
                 }
-            } else {
-                PickerCommon.cursor()
             }
         }
 

@@ -60,7 +60,7 @@ class Application_Model_Map extends Coret_Db_Table_Abstract
     public function getAllMapsList()
     {
         $select = $this->_db->select()
-            ->from($this->_name)
+            ->from($this->_name, array('mapId', 'name'))
             ->order('mapId');
 
         $list = $this->selectAll($select);
@@ -77,7 +77,7 @@ class Application_Model_Map extends Coret_Db_Table_Abstract
     public function getAllMultiMapsList()
     {
         $select = $this->_db->select()
-            ->from($this->_name)
+            ->from($this->_name, array('mapId', 'name'))
             ->where('tutorial = false')
             ->where('publish = true')
             ->order('mapId');
@@ -91,6 +91,19 @@ class Application_Model_Map extends Coret_Db_Table_Abstract
         }
 
         return $maps;
+    }
+
+    public function getTestMap($mapId)
+    {
+        $select = $this->_db->select()
+            ->from($this->_name, 'name')
+            ->where($this->_db->quoteIdentifier($this->_primary) . ' = ?', $mapId);
+
+        $list = $this->selectAll($select);
+
+        return array(
+            $mapId => $list[0]['name']
+        );
     }
 
     public function getMinMapId()

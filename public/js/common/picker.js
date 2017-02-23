@@ -10,16 +10,34 @@ var PickerCommon = new function () {
         camera = GameScene.getCamera()
         container = GameRenderer.getDomElement()
 
-        container.addEventListener('mousedown', picker.onContainerMouseDown, false)
-        container.addEventListener('mousemove', picker.onContainerMouseMove, false)
-        container.addEventListener('mouseup', picker.onContainerMouseUp, false)
-        container.addEventListener('mouseout', picker.onContainerMouseOut, false)
+        $('canvas').off()
 
-
-        container.addEventListener('touchstart', picker.onContainerTouchStart, true)
-        container.addEventListener('touchmove', picker.onContainerTouchMove, true)
-        container.addEventListener('touchend', picker.onContainerTouchEnd, true)
-        container.addEventListener('touchcancel', picker.onContainerTouchEnd, true)
+        $('canvas')
+            .mousewheel(function (event) {
+                if (event.deltaY > 0) {
+                    if (GameScene.getCamera().position.y > 12) {
+                        GameScene.moveCameraClose()
+                    }
+                } else {
+                    if (GameScene.getCamera().position.y < 230) {
+                        GameScene.moveCameraAway()
+                    }
+                }
+            })
+            .on('mousedown', picker.onContainerMouseDown)
+            .on('mousemove', picker.onContainerMouseMove)
+            .on('mouseup', picker.onContainerMouseUp)
+            .on('mouseout', picker.onContainerMouseOut)
+            .on('touchstart', picker.onContainerTouchStart)
+            .on('touchmove', picker.onContainerTouchMove)
+            .on('touchend', picker.onContainerTouchEnd)
+            .on('touchcancel', picker.onContainerTouchEnd)
+            .on('contextmenu', function () {
+                return false
+            })
+            .on('dragstart', function () {
+                return false
+            })
     }
     this.intersect = function (event) {
         var x = event.offsetX == undefined ? event.layerX : event.offsetX,

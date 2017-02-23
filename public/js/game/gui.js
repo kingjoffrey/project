@@ -223,7 +223,7 @@ var GameGui = new function () {
             }
         }, 1000)
 
-        $(document).bind("mousemove keypress", function () {
+        $(document).on('mousemove keypress', function () {
             clearInterval(timeoutId)
             document.title = GameGui.getDocumentTitle()
             window.onmousemove = null
@@ -236,28 +236,10 @@ var GameGui = new function () {
 
         documentTitle = document.title
 
-        $('body')
-            .keydown(function (event) {
-                doKey(event)
-            })
-            .on('contextmenu', function () {
-                return false
-            })
-            .on('dragstart', function () {
-                return false
-            })
-
-        $('#game canvas').mousewheel(function (event) {
-            if (event.deltaY > 0) {
-                if (GameScene.getCamera().position.y > 12) {
-                    GameScene.moveCameraClose()
-                }
-            } else {
-                if (GameScene.getCamera().position.y < 230) {
-                    GameScene.moveCameraAway()
-                }
-            }
+        $(document).keydown(function (event) {
+            doKey(event)
         })
+
 
         prepareButtons()
         this.adjust()

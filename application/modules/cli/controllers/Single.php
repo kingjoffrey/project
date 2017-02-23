@@ -18,9 +18,15 @@ class SingleController
         $mMapPlayers = new Application_Model_MapPlayers($mapId, $db);
         $numberOfPlayers = $mMapPlayers->getNumberOfPlayersForNewGame();
 
+        if (isset($dataIn['test'])) {
+            $mapList = $mMap->getTestMap($mapId);
+        } else {
+            $mapList = $mMap->getAllMultiMapsList();
+        }
+
         $view->form = new Application_Form_Creategame(array(
             'mapId' => $mapId,
-            'mapsList' => $mMap->getAllMultiMapsList()
+            'mapsList' => $mapList
         ));
         $dataIn['numberOfPlayers'] = $numberOfPlayers;
 
