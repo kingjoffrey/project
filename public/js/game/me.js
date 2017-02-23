@@ -312,12 +312,6 @@ var Me = new function () {
             }
         }
     }
-    this.getSelectedHeroSplitKey = function () {
-        return this.getArmy(this.getSelectedArmyId()).getHeroSplitKey()
-    }
-    this.getSelectedSoldierSplitKey = function () {
-        return this.getArmy(this.getSelectedArmyId()).getSoldierSplitKey()
-    }
     /**
      *
      * @returns {*|Armies}
@@ -408,9 +402,6 @@ var Me = new function () {
                 start = true
             }
         }
-    }
-    this.setCapitalId = function (id) {
-        capitalId = id
     }
     this.getCapitalId = function () {
         return capitalId

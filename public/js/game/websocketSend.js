@@ -25,7 +25,7 @@ var WebSocketSendGame = new function () {
 
         var army = Me.getSelectedArmy()
 
-        if (Ruins.get(Fields.get(army.x, army.y).getRuinId()).isEmpty()) {
+        if (Ruins.get(Fields.get(army.getX(), army.getY()).getRuinId()).isEmpty()) {
             Message.error(translations.Theruinsarealreadysearched)
             return
         }
