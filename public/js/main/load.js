@@ -12,15 +12,18 @@ var LoadController = new function () {
                 var player = game.players[j]
                 players
                     .append(
-                        $('<div>').addClass('playersName').html(player.firstName + ' ' + player.lastName)
-                    )
-                    .append(
-                        $('<div>').addClass('playersColors')
+                        $('<div>')
                             .append(
-                                $('<div>').addClass('colorBox').css('background', player.backgroundColor).html('&nbsp;')
+                                $('<div>').addClass('playersName').html(player.firstName + ' ' + player.lastName)
                             )
                             .append(
-                                $('<div>').addClass('colorBox').css('background', game.teams[player.team]).html('&nbsp;')
+                                $('<div>').addClass('playersColors')
+                                    .append(
+                                        $('<div>').addClass('colorBox').css('background', player.backgroundColor).html('&nbsp;')
+                                    )
+                                    .append(
+                                        $('<div>').addClass('colorBox').css('background', game.teams[player.team]).html('&nbsp;')
+                                    )
                             )
                     )
             }
@@ -44,6 +47,16 @@ var LoadController = new function () {
                             .append($('<div>').addClass('padding').html(game.playerTurn.firstName + ' ' + game.playerTurn.lastName))
                             .append($('<div>').addClass('padding').html(game.end))
                     )
+                    .append(
+                        $('<td>')
+                            .append($('<div>').addClass('iconButton buttonColors').html($('<div>').addClass('trash'))
+                                .click(function (e) {
+                                    e.preventDefault()
+                                    e.stopPropagation()
+                                    WebSocketSendMain.controller('load', 'delete', {'id': $(this).parent().parent().attr('id')})
+                                })
+                            )
+                    )
                     .click(function () {
                         GameController.index({'gameId': $(this).attr('id')})
                     })
@@ -59,5 +72,8 @@ var LoadController = new function () {
                         )
                 )
         }
+    }
+    this.delete = function (r) {
+        WebSocketSendMain.controller('over', 'index', {'id': r.id})
     }
 }

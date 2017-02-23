@@ -6,6 +6,9 @@ use Devristo\Phpws\Server\UriHandler\WebSocketUriHandler;
 
 class Cli_CommonHandler extends WebSocketUriHandler
 {
+    /**
+     * @Cli_Model_Game
+     */
     protected $_game;
     protected $_db;
 
@@ -25,6 +28,9 @@ class Cli_CommonHandler extends WebSocketUriHandler
         return $this->_db;
     }
 
+    /**
+     * @return Cli_Model_Game
+     */
     public function getGame()
     {
         return $this->_game;
@@ -46,7 +52,7 @@ class Cli_CommonHandler extends WebSocketUriHandler
         $dataIn = Zend_Json::decode($msg->getData());
 
         if ($config->debug) {
-            echo ('Cli_CommonHandler ZAPYTANIE ');
+            echo('Cli_CommonHandler ZAPYTANIE ');
             print_r($dataIn);
         }
 
@@ -70,14 +76,10 @@ class Cli_CommonHandler extends WebSocketUriHandler
             return;
         }
 
-        if ($dataIn['type'] == 'chat') {
-            new Cli_Model_GameChat($dataIn['msg'], $user, $this);
-            return;
-        }
-
         if ($timeLimit = $this->_game->getTimeLimit()) {
             if (time() - $this->_game->getBegin() > $timeLimit * 600) {
-                new Cli_Model_SaveResults($this->_game, $this);
+                $mSR = new Cli_Model_SaveResults($this->_game, $this->_db);
+                $mSR->sendToken($this);
                 return;
             }
         }

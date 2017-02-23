@@ -1,9 +1,10 @@
 <?php
+use Devristo\Phpws\Protocol\WebSocketTransportInterface;
 
 class Cli_Model_Surrender
 {
 
-    public function __construct(Devristo\Phpws\Protocol\WebSocketTransportInterface $user, $handler)
+    public function __construct(WebSocketTransportInterface $user, $handler)
     {
         $playerId = $user->parameters['me']->getId();
         $game = Cli_CommonHandler::getGameFromUser($user);

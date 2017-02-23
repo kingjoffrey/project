@@ -2,18 +2,13 @@
 
 class Cli_Model_SaveResults
 {
-    public function __construct(Cli_Model_Game $game, $handler)
+    public function __construct($game, Zend_Db_Adapter_Pdo_Pgsql $db)
     {
-        $db = $handler->getDb();
         $mGame = new Application_Model_Game($game->getId(), $db);
         $mGame->endGame(); // koniec gry
 
         $mGameScore = new Application_Model_GameScore($db);
         if ($mGameScore->gameScoreExists($game->getId())) {
-            $token = array(
-                'type' => 'end'
-            );
-            $handler->sendToChannel($token);
             return;
         }
 
@@ -159,7 +154,10 @@ class Cli_Model_SaveResults
                 $mPlayer->addScore($playerId, $sumPoints);
             }
         }
+    }
 
+    public function sendToken($handler)
+    {
         $token = array(
             'type' => 'end'
         );

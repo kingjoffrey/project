@@ -12,7 +12,8 @@ class Cli_Model_NextTurn
         while (true) {
             $nextPlayerId = $this->getExpectedNextTurnPlayer($game, $handler);
             if (!$nextPlayerId) {
-                new Cli_Model_SaveResults($game, $handler);
+                $mSR = new Cli_Model_SaveResults($game, $db);
+                $mSR->sendToken($handler);
                 return;
             }
             $nextPlayerColor = $game->getPlayerColor($nextPlayerId);
@@ -24,7 +25,8 @@ class Cli_Model_NextTurn
                 $turnsLimit = $game->getTurnsLimit();
 
                 if ($turnsLimit && $turnNumber > $turnsLimit) {
-                    new Cli_Model_SaveResults($game, $handler);
+                    $mSR = new Cli_Model_SaveResults($game, $db);
+                    $mSR->sendToken($handler);
                     return;
                 }
 

@@ -1,8 +1,9 @@
 <?php
+use Devristo\Phpws\Protocol\WebSocketTransportInterface;
 
 class LoadController
 {
-    function index(Devristo\Phpws\Protocol\WebSocketTransportInterface $user, Cli_MainHandler $handler, $dataIn)
+    function index(WebSocketTransportInterface $user, Cli_MainHandler $handler, $dataIn)
     {
         $view = new Zend_View();
         $db = $handler->getDb();
@@ -30,6 +31,25 @@ class LoadController
             'data' => $view->render('load/index.phtml'),
             'games' => $myGames
         );
+        $handler->sendToUser($user, $token);
+    }
+
+    function delete(WebSocketTransportInterface $user, Cli_MainHandler $handler, $dataIn)
+    {
+        if (!isset($dataIn['id'])) {
+            return;
+        }
+
+        $db = $handler->getDb();
+
+        new Cli_Model_SaveResults(new Cli_Model_Game($dataIn['id'], $db), $db);
+
+        $token = array(
+            'type' => 'load',
+            'action' => 'delete',
+            'id' => $dataIn['id']
+        );
+
         $handler->sendToUser($user, $token);
     }
 }
