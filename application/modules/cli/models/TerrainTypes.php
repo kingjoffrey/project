@@ -14,8 +14,9 @@ class Cli_Model_TerrainTypes
     public function toArray()
     {
         $types = array();
-        foreach ($this->_movingTypes as $movingType => $terrainType) {
-            $types[$movingType] = $terrainType->toArray();
+        foreach (array_keys($this->_movingTypes) as $movingType) {
+            $costs = $this->getTerrainType($movingType);
+            $types[$movingType] = $costs->toArray();
         }
         return $types;
     }

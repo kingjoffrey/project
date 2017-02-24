@@ -757,6 +757,10 @@ div.table table.unitTable td:first {
     left: 0.7vw;
 }
 
+#terrain.editor {
+    left: 10.5vw
+}
+
 .relocatedProduction table {
     width: 100%;
 }

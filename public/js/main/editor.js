@@ -103,9 +103,6 @@ var EditorController = new function () {
         $('#' + r.id + ' #save').hide()
     }
     this.edit = function () {
-        $('#bg').hide()
-        $('.game').hide()
-        $('#loading').show()
         WebSocketEditor.init()
     }
     this.getMapId = function () {

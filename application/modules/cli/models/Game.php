@@ -160,7 +160,6 @@ class Cli_Model_Game
             'units' => $this->_Units->toArray(),
             'firstUnitId' => $this->_firstUnitId,
             'fields' => $this->_Fields->toArray(),
-            'terrain' => $this->_Terrain->toArray(),
             'capitals' => $this->_capitals,
             'turnColor' => $this->getPlayerColor($this->_turnPlayerId),
             'turnNumber' => $this->_turnNumber,

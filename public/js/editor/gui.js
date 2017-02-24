@@ -1,26 +1,23 @@
 var EditorGui = new function () {
     var doKey = function (event) {
             var key = event.keyCode || event.charCode;
-            if ($('#game').length == 0) {
-                return
-            }
             switch (key) {
                 case 27: //ESC
                     Message.remove()
-                    break;
+                    break
                 case 37://left
                     GameScene.moveCameraLeft()
-                    break;
+                    break
                 case 38://up
                     GameScene.moveCameraUp()
-                    break;
+                    break
                 case 39://right
                     GameScene.moveCameraRight()
-                    break;
+                    break
                 case 40://down
                     GameScene.moveCameraDown()
-                    break;
-//            default:
+                    break
+//            default
 //                console.log(key)
             }
         },
@@ -71,26 +68,15 @@ var EditorGui = new function () {
         $(window).resize(function () {
             EditorGui.adjust()
         })
-        $('body')
-            .keydown(function (event) {
-                doKey(event)
-            })
-            .on('contextmenu', function () {
-                return false
-            })
-            .on('dragstart', function () {
-                return false
-            })
-        $('#game canvas').mousewheel(function (event) {
-            if (event.deltaY > 0) {
-                if (GameScene.getCameraY() < 230) {
-                    GameScene.moveCameraAway()
-                }
-            } else {
-                if (GameScene.getCameraY() > 22) {
-                    GameScene.moveCameraClose()
-                }
-            }
+
+        $('#bg').hide()
+        $('.game').hide()
+        $('#loading').show()
+
+        $('#terrain').removeClass('game').addClass('editor')
+
+        $(document).keydown(function (event) {
+            doKey(event)
         })
 
         activateButtons()
