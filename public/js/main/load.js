@@ -68,7 +68,7 @@ var LoadController = new function () {
                 .append(
                     $('<tr>')
                         .append(
-                            $('<td colspan="4">').addClass('after').html(translations.Therearenogamestoload)
+                            $('<td colspan="5">').addClass('after').html(translations.Therearenogamestoload)
                         )
                 )
         }

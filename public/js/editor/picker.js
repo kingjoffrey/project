@@ -75,7 +75,6 @@ var PickerEditor = new function () {
     this.onContainerMouseMove = function (event) {
         PickerCommon.intersect(event)
         if (dragStart) {
-// drag
             var dragEnd = PickerGame.getPoint(event)
             GameScene.moveCamera(dragStart.x - dragEnd.x, dragStart.y - dragEnd.y)
             dragStart = dragEnd
@@ -90,12 +89,10 @@ var PickerEditor = new function () {
                     if (newX != oldX) {
                         oldX = newX
                         draggedMesh.position.x = newX * 2 + draggedMesh.plus
-                        //console.log(oldX + '-' + oldZ)
                     }
                     if (newZ != oldZ) {
                         oldZ = newZ
                         draggedMesh.position.z = newZ * 2 + draggedMesh.plus
-                        //console.log(oldX + '-' + oldZ)
                     }
                 } else {
                     PickerCommon.cursor('grab')

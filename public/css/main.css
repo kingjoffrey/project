@@ -457,7 +457,6 @@ div.table table.unitTable td:first {
 }
 
 #menuBox #menu {
-    max-width: 90vw;
     text-align: center;
     margin: 1.4vw 0;
 }
