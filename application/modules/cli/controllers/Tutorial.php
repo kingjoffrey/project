@@ -37,6 +37,7 @@ class TutorialController
                 'mapId' => $mapId
             ), $user->parameters['playerId']);
 
+            $mPlayer = new Application_Model_Player($db);
             $mPlayersInGame = new Application_Model_PlayersInGame($gameId, $db);
             $mMapPlayers = new Application_Model_MapPlayers($mapId, $db);
             $mMapCastles = new Application_Model_MapCastles($mapId, $db);
@@ -50,15 +51,14 @@ class TutorialController
                 if ($playerId) {
                     $teamId = 1;
                 } else {
-                    $playerId = $mPlayersInGame->getComputerPlayerId();
+                    $playerId = $mPlayer->getComputerPlayerId($mPlayersInGame->getOtherComputerPlayerIdSelect());
                     $teamId = 2;
                     if (empty($playerId)) {
                         throw new Exception('kamieni kupa2!');
                     }
                 }
 
-                $mPlayersInGame->joinGame($playerId, $mapPlayerId);
-                $mPlayersInGame->setTeam($playerId, $teamId);
+                $mPlayersInGame->joinGame($playerId, $mapPlayerId, $teamId);
 
                 if ($first) {
                     $mTurn = new Application_Model_TurnHistory($gameId, $db);

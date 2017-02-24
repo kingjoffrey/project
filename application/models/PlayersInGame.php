@@ -16,37 +16,20 @@ class Application_Model_PlayersInGame extends Coret_Db_Table_Abstract
         }
     }
 
-    public function joinGame($playerId, $mapPlayerId)
+    public function joinGame($playerId, $mapPlayerId, $teamId)
     {
         $data = array(
             'gameId' => $this->_gameId,
             'playerId' => $playerId,
-            'mapPlayerId' => $mapPlayerId
+            'mapPlayerId' => $mapPlayerId,
+            'teamId' => $teamId
         );
 
         $this->insert($data);
     }
 
-    public function getComputerPlayerId()
+    public function getOtherComputerPlayerIdSelect()
     {
-        $select = $this->_db->select()
-            ->from(array('a' => $this->_name), 'min(b."playerId")')
-            ->join(array('b' => 'player'), 'a."playerId" = b."playerId"', null)
-            ->where($this->_db->quoteIdentifier('gameId') . ' != ?', $this->_gameId)
-            ->where($this->_db->quoteIdentifier('mapPlayerId') . ' IS NOT NULL')
-            ->where('computer = true');
-
-        $ids = $this->getComputerPlayersIds();
-        if ($ids) {
-            $select->where('a."playerId" NOT IN (?)', new Zend_Db_Expr($ids));
-        }
-
-        return $this->selectOne($select);
-    }
-
-    private function getComputerPlayersIds()
-    {
-        $ids = '';
         $select = $this->_db->select()
             ->from(array('a' => $this->_name), 'playerId')
             ->join(array('b' => 'player'), 'a."playerId" = b."playerId"', null)
@@ -54,14 +37,7 @@ class Application_Model_PlayersInGame extends Coret_Db_Table_Abstract
             ->where($this->_db->quoteIdentifier('mapPlayerId') . ' IS NOT NULL')
             ->where('computer = true');
 
-        foreach ($this->selectAll($select) as $row) {
-            if ($ids) {
-                $ids .= ',';
-            }
-            $ids .= $row['playerId'];
-        }
-
-        return $ids;
+        return $select;
     }
 
     public function getGoldForAllPlayers()
@@ -121,20 +97,6 @@ class Application_Model_PlayersInGame extends Coret_Db_Table_Abstract
         $where = array(
             $this->_db->quoteInto($this->_db->quoteIdentifier('gameId') . ' = ?', $this->_gameId),
             $this->_db->quoteInto($this->_db->quoteIdentifier('playerId') . ' = ?', $playerId)
-        );
-
-        $this->update($data, $where);
-    }
-
-    public function setTeam($playerId, $teamId)
-    {
-        $data = array(
-            'teamId' => $teamId
-        );
-
-        $where = array(
-            $this->_db->quoteInto($this->_db->quoteIdentifier('playerId') . ' = ?', $playerId),
-            $this->_db->quoteInto($this->_db->quoteIdentifier('gameId') . ' = ?', $this->_gameId)
         );
 
         $this->update($data, $where);

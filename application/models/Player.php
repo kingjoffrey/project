@@ -130,5 +130,15 @@ class Application_Model_Player extends Coret_Db_Table_Abstract
 
         return $this->selectAll($select);
     }
+
+    public function getComputerPlayerId($subSelect)
+    {
+        $select = $this->_db->select()
+            ->from($this->_name, 'min("playerId")')
+            ->where('computer = true')
+            ->where('"playerId" NOT IN (?)', new Zend_Db_Expr($subSelect->__toString()));
+
+        return $this->selectOne($select);
+    }
 }
 

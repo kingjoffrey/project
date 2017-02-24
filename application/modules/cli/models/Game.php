@@ -38,13 +38,10 @@ class Cli_Model_Game
     {
         $this->_id = $gameId;
 
-        $sides = array();
-
         $mPlayersInGame = new Application_Model_PlayersInGame($this->_id, $db);
         $players = $mPlayersInGame->getGamePlayers();
         foreach ($players as $playerId => $player) {
             $this->_playersColors[$playerId] = $player['color'];
-            $sides[$player['mapPlayerId']] = $player['color'];
         }
 
         $mGame = new Application_Model_Game($this->_id, $db);
@@ -86,11 +83,11 @@ class Cli_Model_Game
         $this->updateNumberOfNeutralGarrisonUnits();
         $this->updateNumberOfComputerArmyUnits();
 
-        $this->initPlayers($players, $sides, $db);
+        $this->initPlayers($players, $db);
         $this->initRuins($db);
     }
 
-    private function initPlayers($players, $sides, Zend_Db_Adapter_Pdo_Pgsql $db)
+    private function initPlayers($players, Zend_Db_Adapter_Pdo_Pgsql $db)
     {
         $mMapPlayers = new Application_Model_MapPlayers($this->_mapId, $db);
         $mMapCastles = new Application_Model_MapCastles($this->_mapId, $db);
@@ -101,7 +98,7 @@ class Cli_Model_Game
         $playersTowers = $mTowersInGame->getTowers();
 
         foreach ($this->_playersColors as $playerId => $color) {
-            $player = new Cli_Model_Player($players[$playerId], $sides[$players[$playerId]['teamId']], $this->_id, $mapCastles, $mapTowers, $playersTowers, $mMapPlayers, $db);
+            $player = new Cli_Model_Player($players[$playerId], $this->_id, $mapCastles, $mapTowers, $playersTowers, $mMapPlayers, $db);
             $this->_Players->addPlayer($color, $player);
             if (!$player->getComputer()) {
                 $this->updateOnline($color, 0);
