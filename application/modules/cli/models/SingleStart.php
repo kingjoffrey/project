@@ -29,12 +29,6 @@ class Cli_Model_SingleStart
         $i = 0;
 
         foreach ($mMapPlayers->getAll() as $mapPlayerId => $mapPlayer) {
-            $i++;
-            if ($teamMaxPlayers > $i) {
-                $teamId = 1;
-            } else {
-                $teamId = 2;
-            }
             if ($first) {
                 $playerId = $user->parameters['playerId'];
                 $mTurn = new Application_Model_TurnHistory($gameId, $db);
@@ -48,6 +42,12 @@ class Cli_Model_SingleStart
                 }
             }
 
+            $i++;
+            if ($teamMaxPlayers >= $i) {
+                $teamId = 1;
+            } else {
+                $teamId = 2;
+            }
             $mPlayersInGame->joinGame($playerId, $mapPlayerId, $teamId);
 
             $mHero = new Application_Model_Hero($playerId, $db);

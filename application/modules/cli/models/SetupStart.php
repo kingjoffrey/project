@@ -32,16 +32,18 @@ class Cli_Model_SetupStart
         $setup->setIsOpen(false);
         $db = $handler->getDb();
         $mPlayersInGame = new Application_Model_PlayersInGame($setup->getGameId(), $db);
-
         $mGame = new Application_Model_Game($setup->getGameId(), $db);
+
         $mapId = $mGame->getMapId();
 
+        $mMap = new Application_Model_Map($mapId, $db);
         $mMapCastles = new Application_Model_MapCastles($mapId, $db);
-        $startPositions = $mMapCastles->getDefaultStartPositions();
-
         $mMapPlayers = new Application_Model_MapPlayers($mapId, $db);
 
+        $teamMaxPlayers = $mMap->getMaxPlayers() / 2;
+        $startPositions = $mMapCastles->getDefaultStartPositions();
         $first = true;
+        $i = 0;
 
         foreach ($mMapPlayers->getAll() as $mapPlayerId => $mapPlayer) {
             $playerId = $setup->getPlayerIdByMapPlayerId($mapPlayerId);
@@ -56,8 +58,13 @@ class Cli_Model_SetupStart
                 $first = false;
             }
 
-            $mPlayersInGame->joinGame($playerId, $mapPlayerId);
-            $mPlayersInGame->setTeam($playerId, $mapPlayerId);
+            $i++;
+            if ($teamMaxPlayers >= $i) {
+                $teamId = 1;
+            } else {
+                $teamId = 2;
+            }
+            $mPlayersInGame->joinGame($playerId, $mapPlayerId, $teamId);
 
             $mHero = new Application_Model_Hero($playerId, $db);
             $mArmy = new Application_Model_Army($setup->getGameId(), $db);

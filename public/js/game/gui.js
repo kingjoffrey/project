@@ -137,18 +137,18 @@ var GameGui = new function () {
                 Sound.play('click')
                 GameGui.setShow(!GameGui.getShow())
                 if (GameGui.getShow()) {
-                    $(this).children().attr('src', '/img/game/show.png')
+                    $(this).removeClass('off')
                 } else {
-                    $(this).children().attr('src', '/img/game/show_off.png')
+                    $(this).addClass('off')
                 }
             })
             $('#sound').click(function () {
                 Sound.play('click')
-                Sound.mute = !Sound.mute
-                if (Sound.mute) {
-                    $(this).children().attr('src', '/img/game/sound_off.png')
+                Sound.setMute(!Sound.getMute())
+                if (Sound.getMute()) {
+                    $(this).addClass('off')
                 } else {
-                    $(this).children().attr('src', '/img/game/sound_on.png')
+                    $(this).removeClass('off')
                 }
             })
             $('#fullScreen').click(function () {

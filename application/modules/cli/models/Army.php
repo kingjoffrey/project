@@ -111,8 +111,6 @@ class Cli_Model_Army
             return;
         }
 
-        $end = false;
-
         $db = $handler->getDb();
 
         $players = $game->getPlayers();

@@ -123,8 +123,8 @@ h2 {
     padding: 0.7vw 0 1.4vw 1.4vw;
     letter-spacing: 0.3vw;
     text-align: left;
-    color: #000;
-    text-shadow: none;
+    color: green;
+    /*text-shadow: 0 0 1.4vw #fff;*/
 }
 
 .left {
@@ -953,7 +953,7 @@ div.table table.unitTable td:first {
     background: url(/img/game/buttons/show.png) center center no-repeat !important;
 }
 
-#show .buttonOff div {
+#show.off div {
     background: url(/img/game/buttons/show_off.png) center center no-repeat !important;
 }
 
@@ -961,7 +961,7 @@ div.table table.unitTable td:first {
     background: url(/img/game/buttons/sound_on.png) center center no-repeat !important;
 }
 
-#sound .buttonOff div {
+#sound.off div {
     background: url(/img/game/buttons/sound_off.png) center center no-repeat !important;
 }
 
