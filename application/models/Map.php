@@ -57,6 +57,15 @@ class Application_Model_Map extends Coret_Db_Table_Abstract
         return $this->selectOne($select);
     }
 
+    public function getMaxPlayers()
+    {
+        $select = $this->_db->select()
+            ->from($this->_name, 'maxPlayers')
+            ->where($this->_db->quoteIdentifier($this->_primary) . ' = ?', $this->_mapId);
+
+        return $this->selectOne($select);
+    }
+
     public function getAllMapsList()
     {
         $select = $this->_db->select()
