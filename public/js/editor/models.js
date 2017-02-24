@@ -30,10 +30,8 @@ var EditorModels = new function () {
                 break
             case 'road':
                 var mesh = new THREE.Mesh(new THREE.PlaneGeometry(2, 2), new THREE.MeshLambertMaterial({
-                    map: Models.getRoadTexture().p,
-                    side: THREE.DoubleSide,
-                    transparent: true,
-                    opacity: 0.5
+                    color: '#000000',
+                    side: THREE.DoubleSide
                 }))
                 mesh.rotation.x = Math.PI / 2
                 mesh.position.y = 0.02
@@ -46,10 +44,8 @@ var EditorModels = new function () {
                 break
             case 'swamp':
                 var mesh = new THREE.Mesh(new THREE.PlaneGeometry(2, 2), new THREE.MeshLambertMaterial({
-                    map: Models.getSwampTexture(),
-                    side: THREE.DoubleSide,
-                    transparent: true,
-                    opacity: 0.5
+                    color: '#4f4224',
+                    side: THREE.DoubleSide
                 }))
                 mesh.rotation.x = Math.PI / 2
                 mesh.position.y = 0.02

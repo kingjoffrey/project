@@ -68,20 +68,17 @@ var WebSocketMessageEditor = new function () {
                 }
                 break
             case 's':
-                Fields.get(r.x, r.y).setType(r.type)
-                GameModels.addSwamp(r.x, r.y)
+                Ground.change(r.x, r.y, r.type)
                 break
             case 'f':
                 Fields.get(r.x, r.y).setType(r.type)
                 GameModels.addTree(r.x, r.y)
                 break
             case 'r':
-                Fields.get(r.x, r.y).setType(r.type)
-                GameModels.addRoad(r.x, r.y)
+                Ground.change(r.x, r.y, r.type)
                 break
             case 'b':
-                Fields.get(r.x, r.y).setType(r.type)
-                GameModels.addRoad(r.x, r.y)
+                Ground.change(r.x, r.y, r.type)
                 break
             case 'g':
                 Ground.change(r.x, r.y, r.type)

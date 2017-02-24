@@ -10,6 +10,7 @@ class Cli_CommonHandler extends WebSocketUriHandler
      * @Cli_Model_Game
      */
     protected $_game;
+    protected $_Terrain;
     protected $_db;
 
     public function open($dataIn, WebSocketTransportInterface $user)
@@ -20,6 +21,10 @@ class Cli_CommonHandler extends WebSocketUriHandler
     public function __construct($logger)
     {
         $this->_db = Cli_Model_Database::getDb();
+
+        $mTerrain = new Application_Model_Terrain($this->_db);
+        $this->_Terrain = new Cli_Model_TerrainTypes($mTerrain->getTerrain());
+
         parent::__construct($logger);
     }
 
@@ -38,7 +43,7 @@ class Cli_CommonHandler extends WebSocketUriHandler
 
     public function initGame($gameId)
     {
-        $this->_game = new Cli_Model_Game($gameId, $this->_db);
+        $this->_game = new Cli_Model_Game($gameId, $this->_db, $this->_Terrain);
     }
 
     public function ruin($armyId, WebSocketTransportInterface $user)

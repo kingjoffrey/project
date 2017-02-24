@@ -3,7 +3,8 @@ var PickerEditor = new function () {
         oldX = 0,
         oldZ = 0,
         draggedMeshX,
-        draggedMeshZ
+        draggedMeshZ,
+        dragStart = 0
 
     this.addDraggedMesh = function (mesh) {
         draggedMesh = mesh
@@ -50,6 +51,8 @@ var PickerEditor = new function () {
                     } else {
                         if (castleId = field.getCastleId()) {
                             Message.show('Castle', EditorCastleWindow.form(castleId))
+                        } else {
+                            dragStart = PickerGame.getPoint(event)
                         }
                     }
                     break
@@ -71,25 +74,39 @@ var PickerEditor = new function () {
     }
     this.onContainerMouseMove = function (event) {
         PickerCommon.intersect(event)
-        if (PickerCommon.intersects()) {
-            if (draggedMesh) {
-                var newX = PickerCommon.convertX(),
-                    newZ = PickerCommon.convertZ()
+        if (dragStart) {
+// drag
+            var dragEnd = PickerGame.getPoint(event)
+            GameScene.moveCamera(dragStart.x - dragEnd.x, dragStart.y - dragEnd.y)
+            dragStart = dragEnd
+            PickerCommon.cursor('move')
+        } else {
+            if (PickerCommon.intersects()) {
+                AStar.cursorPosition(PickerCommon.convertX(), PickerCommon.convertZ())
+                if (draggedMesh) {
+                    var newX = PickerCommon.convertX(),
+                        newZ = PickerCommon.convertZ()
 
-                if (newX != oldX) {
-                    oldX = newX
-                    draggedMesh.position.x = newX * 2 + draggedMesh.plus
-                    //console.log(oldX + '-' + oldZ)
+                    if (newX != oldX) {
+                        oldX = newX
+                        draggedMesh.position.x = newX * 2 + draggedMesh.plus
+                        //console.log(oldX + '-' + oldZ)
+                    }
+                    if (newZ != oldZ) {
+                        oldZ = newZ
+                        draggedMesh.position.z = newZ * 2 + draggedMesh.plus
+                        //console.log(oldX + '-' + oldZ)
+                    }
+                } else {
+                    PickerCommon.cursor('grab')
                 }
-                if (newZ != oldZ) {
-                    oldZ = newZ
-                    draggedMesh.position.z = newZ * 2 + draggedMesh.plus
-                    //console.log(oldX + '-' + oldZ)
-                }
+            } else {
+                PickerCommon.cursor('grab')
             }
         }
     }
     this.onContainerMouseUp = function (event) {
-        event.preventDefault();
+        event.preventDefault()
+        dragStart = 0
     }
 }

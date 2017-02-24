@@ -7,9 +7,6 @@ var GameGui = new function () {
         friendsShow = false,
         init = 0,
         doKey = function (event) {
-            if ($('#game').length == 0) {
-                return
-            }
             var key = event.keyCode || event.charCode;
             switch (key) {
                 case 27: //ESC

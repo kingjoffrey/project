@@ -32,7 +32,6 @@ var Game = new function () {
             Execute.setExecuting(0)
             GameScene.init($(window).innerWidth(), $(window).innerHeight())
             Units.init(game.units)
-            Terrain.init(game.terrain)
             Fields.init(game.fields)
             Players.init(game.players)
             Me.init(game.color, game.gold, game.bSequence, game.capitals)

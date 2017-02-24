@@ -126,6 +126,7 @@ class IndexController extends Coret_Controller_Authorized
         $this->view->sound();
         $this->view->title();
         $this->view->models();
+        $this->view->terrain();
         $this->view->translations();
         $this->view->Version();
         $this->view->Websocket($identity);

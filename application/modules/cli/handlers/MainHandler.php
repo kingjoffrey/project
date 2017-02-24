@@ -25,6 +25,7 @@ class Cli_MainHandler extends WebSocketUriHandler
     private $_db;
     private $_help;
     private $_tutorial;
+    private $_Terrain;
 
     public function __construct($logger)
     {

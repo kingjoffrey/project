@@ -1,6 +1,7 @@
 "use strict"
 var Fields = new function () {
-    var fields,
+    var init,
+        fields,
         grassField,
         maxX,
         maxY,
@@ -353,10 +354,11 @@ var Fields = new function () {
                     case 'f':
                         paintTextureField(tmpTextureContext, x, y, grassColor1, '#0b7e22', 5)
                         paintWaterTextureField(tmpWaterTextureContext, x, y, '#ffff7f', grassColor1, 15)
-                        GameModels.addTree(x, y)
+                        if (!init) {
+                            GameModels.addTree(x, y)
+                        }
                         break
                     case 'w':
-                        // paintTextureField(tmpTextureContext, x, y, grassColor1, '#ffff7f', 10)
                         paintTextureField(tmpTextureContext, x, y, '#ffff7f', grassColor1, 15)
                         paintWaterTextureField(tmpWaterTextureContext, x, y, '#365294', '#526daa', 1)
                         break
@@ -390,6 +392,8 @@ var Fields = new function () {
         waterTextureContext.drawImage(tmpWaterTextureCanvas, 0, 0, maxX * textureMultiplier, maxY * textureMultiplier, 0, 0, maxX * textureMultiplier, maxY * textureMultiplier)
     }
     this.init = function (f) {
+        init = 0
+
         grassField = new Field('g')
         fields = []
 
@@ -404,5 +408,7 @@ var Fields = new function () {
 
         this.createTextures()
         Ground.init(maxX, maxY, textureCanvas, waterTextureCanvas)
+
+        init = 1
     }
 }

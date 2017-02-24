@@ -42,7 +42,7 @@ class LoadController
 
         $db = $handler->getDb();
 
-        new Cli_Model_SaveResults(new Cli_Model_Game($dataIn['id'], $db), $db);
+        new Cli_Model_SaveResults(new Cli_Model_Game($dataIn['id'], $db), $db, new Cli_Model_TerrainTypes(array()));
 
         $token = array(
             'type' => 'load',

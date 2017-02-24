@@ -34,7 +34,7 @@ class Cli_Model_Game
     private $_Players;
     private $_Ruins;
 
-    public function __construct($gameId, Zend_Db_Adapter_Pdo_Pgsql $db)
+    public function __construct($gameId, Zend_Db_Adapter_Pdo_Pgsql $db, Cli_Model_TerrainTypes $Terrain)
     {
         $this->_id = $gameId;
 
@@ -71,8 +71,7 @@ class Cli_Model_Game
         $mMapFields = new Application_Model_MapFields($this->_mapId, $db);
         $this->_Fields = new Cli_Model_Fields($mMapFields->getMapFields());
 
-        $mTerrain = new Application_Model_Terrain($db);
-        $this->_Terrain = new Cli_Model_TerrainTypes($mTerrain->getTerrain());
+        $this->_Terrain = $Terrain;
 
         $mUnit = new Application_Model_Unit($db);
         $this->_Units = new Cli_Model_Units();
