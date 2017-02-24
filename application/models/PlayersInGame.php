@@ -129,7 +129,7 @@ class Application_Model_PlayersInGame extends Coret_Db_Table_Abstract
     public function setTeam($playerId, $teamId)
     {
         $data = array(
-            'team' => $teamId
+            'teamId' => $teamId
         );
 
         $where = array(
@@ -152,7 +152,7 @@ class Application_Model_PlayersInGame extends Coret_Db_Table_Abstract
     public function getGamePlayers()
     {
         $select = $this->_db->select()
-            ->from(array('b' => $this->_name), array('playerId', 'team', 'turnActive', 'lost', 'gold'))
+            ->from(array('b' => $this->_name), array('playerId', 'teamId', 'turnActive', 'lost', 'gold'))
             ->join(array('a' => 'player'), 'a."playerId" = b."playerId"', array('firstName', 'lastName', 'computer'))
             ->join(array('c' => 'mapplayers'), 'b . "mapPlayerId" = c . "mapPlayerId"', 'mapPlayerId')
             ->join(array('d' => 'side'), 'c . "sideId" = d . "sideId"', array('color' => 'shortName', 'longName', 'backgroundColor', 'textColor', 'minimapColor'))

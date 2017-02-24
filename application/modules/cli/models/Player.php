@@ -16,7 +16,7 @@ class Cli_Model_Player extends Cli_Model_DefaultPlayer
 
     private $_capitalId;
 
-    public function __construct($player, $team, $gameId, $mapCastles, $mapTowers, $playersTowers, Application_Model_MapPlayers $mMapPlayers, Zend_Db_Adapter_Pdo_Pgsql $db)
+    public function __construct($player, $teamId, $gameId, $mapCastles, $mapTowers, $playersTowers, Application_Model_MapPlayers $mMapPlayers, Zend_Db_Adapter_Pdo_Pgsql $db)
     {
         $this->_id = $player['playerId'];
         $this->_lost = $player['lost'];
@@ -30,7 +30,7 @@ class Cli_Model_Player extends Cli_Model_DefaultPlayer
 
         $this->_longName = $player['firstName'] . ' ' . $player['lastName'];
 
-        $this->_team = $team;
+        $this->_teamId = $teamId;
         $this->_color = $player['color'];
 
         $this->_armies = new Cli_Model_Armies();
@@ -120,7 +120,7 @@ class Cli_Model_Player extends Cli_Model_DefaultPlayer
             'miniMapColor' => $this->_miniMapColor,
             'backgroundColor' => $this->_backgroundColor,
             'textColor' => $this->_textColor,
-            'team' => $this->_team,
+            'teamId' => $this->_teamId,
             'armies' => $this->_armies->toArray(),
             'castles' => $this->_castles->toArray(),
             'towers' => $this->_towers->toArray(),

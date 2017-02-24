@@ -15,7 +15,7 @@ class Cli_Model_TowerHandler
         $players = $game->getPlayers();
         $playerColor = $game->getPlayerColor($playerId);
         $player = $players->getPlayer($playerColor);
-        $playerTeam = $player->getTeam();
+        $playerTeam = $player->getTeamId();
         $db = $handler->getDb();
 
         foreach ($current as $step) {
@@ -33,7 +33,7 @@ class Cli_Model_TowerHandler
                         }
 
                         $oldOwner = $players->getPlayer($towerColor);
-                        if ($playerTeam == $oldOwner->getTeam()) {
+                        if ($playerTeam == $oldOwner->getTeamId()) {
                             continue;
                         }
 

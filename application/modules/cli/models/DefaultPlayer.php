@@ -5,7 +5,7 @@ abstract class Cli_Model_DefaultPlayer
     protected $_id;
 
     protected $_color;
-    protected $_team;
+    protected $_teamId;
 
     protected $_longName;
     protected $_backgroundColor;
@@ -55,9 +55,9 @@ abstract class Cli_Model_DefaultPlayer
         return $this->_armies;
     }
 
-    public function getTeam()
+    public function getTeamId()
     {
-        return $this->_team;
+        return $this->_teamId;
     }
 
     public function getId()

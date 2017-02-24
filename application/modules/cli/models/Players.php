@@ -46,15 +46,15 @@ class Cli_Model_Players
         if ($color1 == $color2) {
             return true;
         }
-        return $this->getPlayer($color1)->getTeam() == $this->getPlayer($color2)->getTeam();
+        return $this->getPlayer($color1)->getTeamId() == $this->getPlayer($color2)->getTeamId();
     }
 
     public function noEnemyCastles($playerColor)
     {
-        $playerTeam = $this->getPlayer($playerColor)->getTeam();
+        $playerTeam = $this->getPlayer($playerColor)->getTeamId();
         foreach ($this->getKeys() as $color) {
             $player = $this->getPlayer($color);
-            if ($color == $playerColor || $playerTeam == $player->getTeam()) {
+            if ($color == $playerColor || $playerTeam == $player->getTeamId()) {
                 continue;
             }
             if ($player->getCastles()->castlesExists()) {
@@ -67,10 +67,10 @@ class Cli_Model_Players
 
     public function allEnemiesAreDead($playerColor)
     {
-        $playerTeam = $this->getPlayer($playerColor)->getTeam();
+        $playerTeam = $this->getPlayer($playerColor)->getTeamId();
         foreach ($this->getKeys() as $color) {
             $player = $this->getPlayer($color);
-            if ($color == $playerColor || $playerTeam == $player->getTeam()) {
+            if ($color == $playerColor || $playerTeam == $player->getTeamId()) {
                 continue;
             }
             if ($player->getCastles()->castlesExists() || $player->getArmies()->exists()) {
@@ -82,14 +82,14 @@ class Cli_Model_Players
 
     public function getEnemies($playerColor)
     {
-        $playerTeam = $this->getPlayer($playerColor)->getTeam();
+        $playerTeam = $this->getPlayer($playerColor)->getTeamId();
         $enemies = array();
         foreach ($this->getKeys() as $color) {
             if ($color == 'neutral') {
                 continue;
             }
             $player = $this->getPlayer($color);
-            if ($color == $playerColor || $playerTeam == $player->getTeam()) {
+            if ($color == $playerColor || $playerTeam == $player->getTeamId()) {
                 continue;
             }
             $enemies = array_merge($enemies, $player->getArmies()->getArray());

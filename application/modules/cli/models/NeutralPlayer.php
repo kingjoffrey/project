@@ -7,7 +7,7 @@ class Cli_Model_NeutralPlayer extends Cli_Model_DefaultPlayer
         $this->_id = 0;
 
         $this->_color = 'neutral';
-        $this->_team = 'neutral';
+        $this->_teamId = 'neutral';
 
         $this->_longName = 'Shadow';
         $this->_backgroundColor = '#808080';
@@ -85,7 +85,7 @@ class Cli_Model_NeutralPlayer extends Cli_Model_DefaultPlayer
     {
         return array(
             'longName' => $this->_longName,
-            'team' => $this->_team,
+            'team' => $this->_teamId,
             'backgroundColor' => $this->_backgroundColor,
             'miniMapColor' => $this->_backgroundColor,
             'armies' => $this->_armies->toArray(),

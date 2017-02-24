@@ -47,15 +47,18 @@ class TutorialController
 
             $playerId = $user->parameters['playerId'];
             foreach ($mMapPlayers->getAll() as $mapPlayerId => $mapPlayer) {
-                if (!$playerId) {
+                if ($playerId) {
+                    $teamId = 1;
+                } else {
                     $playerId = $mPlayersInGame->getComputerPlayerId();
+                    $teamId = 2;
                     if (empty($playerId)) {
                         throw new Exception('kamieni kupa2!');
                     }
                 }
 
                 $mPlayersInGame->joinGame($playerId, $mapPlayerId);
-                $mPlayersInGame->setTeam($playerId, $mapPlayerId);
+                $mPlayersInGame->setTeam($playerId, $teamId);
 
                 if ($first) {
                     $mTurn = new Application_Model_TurnHistory($gameId, $db);
