@@ -10,20 +10,20 @@ var WebSocketMessageNew = new function () {
             case 'update':
                 if (notSet(r.close)) {
                     Setup.removePlayer(r.player.playerId)
-                    if (r.player.mapPlayerId) {
-                        $('#' + r.player.mapPlayerId + ' .td3').html(r.player.firstName + ' ' + r.player.lastName)
+                    if (r.player.sideId) {
+                        $('tr#' + r.player.sideId + ' .td3').html(r.player.firstName + ' ' + r.player.lastName)
 
                         if (r.player.playerId == id) {
-                            $('#' + r.player.mapPlayerId + ' .td2 a').html(translations.deselect)
-                            $('#' + r.player.mapPlayerId).addClass('selected')
+                            $('tr#' + r.player.sideId + ' .td2 a').html(translations.deselect)
+                            $('tr#' + r.player.sideId + ' .td2').parent().addClass('selected')
                         } else {
                             if (Setup.getGameMasterId() == id) {
-                                $('#' + r.player.mapPlayerId + ' .td2 a').html(translations.deselect);
+                                $('tr#' + r.player.sideId + ' .td2 a').html(translations.deselect);
                             } else {
-                                $('#' + r.player.mapPlayerId + ' .td2 a').remove();
+                                $('tr#' + r.player.sideId + ' .td2 a').addClass('buttonOff');
                             }
                         }
-                        $('#' + r.player.mapPlayerId + ' .td1').attr('id', r.player.playerId)
+                        $('tr#' + r.player.sideId + ' .td1').attr('id', r.player.playerId)
                     } else {
                         $('#playersout').append(
                             $('<tr>')

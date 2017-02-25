@@ -45,12 +45,12 @@ var Setup = new function () {
         numberOfSelectedPlayers = 0
     }
     this.removePlayer = function (playerId) {
-        var tr = $('#' + playerId + '.td1').parent()
+        var tr = $('tr #' + playerId + '.td1').parent()
         if (tr.length) {
             tr.removeClass('selected')
-            $('#' + tr.attr('id') + ' .td2 a').html(translations.select)
+            $('tr#' + tr.attr('id') + ' .td2 a').html(translations.select).removeClass('buttonOff');
             tr.find('.td3').html('')
-            $('#' + playerId + '.td1').attr('id', '')
+            $('tr #' + playerId + '.td1').attr('id', '')
         }
         $('#playersout').find('#' + playerId).remove()
     }

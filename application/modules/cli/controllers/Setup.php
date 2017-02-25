@@ -14,10 +14,28 @@ class SetupController
         $db = $handler->getDb();
 
         $mGame = new Application_Model_Game($dataIn['gameId'], $db);
+
         $game = $mGame->getGame();
 
         $mMap = new Application_Model_Map($game['mapId'], $db);
         $mSide = new Application_Model_Side(0, $db);
+
+        $maxPlayers = $mMap->getMaxPlayers();
+        $teamMaxPlayers = $maxPlayers / 2;
+        $sides = $mSide->getWithLimit($maxPlayers);
+        $i = 0;
+        $teams = array();
+
+        foreach ($sides as $row) {
+            $i++;
+            if ($teamMaxPlayers >= $i) {
+                $teamId = 1;
+            } else {
+                $teamId = 2;
+            }
+
+            $teams[$teamId]['sides'][] = $row;
+        }
 
         $view->addScriptPath(APPLICATION_PATH . '/views/scripts');
 
@@ -25,7 +43,7 @@ class SetupController
             'type' => 'setup',
             'action' => 'index',
             'data' => $view->render('setup/index.phtml'),
-            'sides' => $mSide->getWithLimit($mMap->getMaxPlayers()),
+            'teams' => $teams,
             'gameId' => $game['gameId'],
             'mapName' => $mMap->getName(),
             'gameMasterId' => $game['gameMasterId']

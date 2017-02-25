@@ -38,7 +38,7 @@ var WebSocketSendNew = new function () {
 
         var token = {
             'type': 'change',
-            'mapPlayerId': id
+            'sideId': id
         }
 
         ws.send(JSON.stringify(token))

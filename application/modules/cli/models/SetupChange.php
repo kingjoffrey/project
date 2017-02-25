@@ -1,15 +1,16 @@
 <?php
+use Devristo\Phpws\Protocol\WebSocketTransportInterface;
 
 class Cli_Model_SetupChange
 {
     /**
      * Cli_Model_SetupChange constructor.
      * @param $dataIn
-     * @param \Devristo\Phpws\Protocol\WebSocketTransportInterface $user
+     * @param WebSocketTransportInterface $user
      * @param Cli_NewHandler $handler
      * @throws Exception
      */
-    public function __construct($dataIn, Devristo\Phpws\Protocol\WebSocketTransportInterface $user, Cli_NewHandler $handler)
+    public function __construct($dataIn, WebSocketTransportInterface $user, Cli_NewHandler $handler)
     {
         $sideId = $dataIn['sideId'];
 
@@ -19,6 +20,11 @@ class Cli_Model_SetupChange
         }
 
         $setup = SetupGame::getSetup($user);
+
+        if (empty($setup)) {
+            return;
+        }
+
         $playerId = $setup->getPlayerIdBySideId($sideId);
 
         if ($user->parameters['playerId'] == $playerId) { // unselect
@@ -31,7 +37,8 @@ class Cli_Model_SetupChange
             $setup->updatePlayerReady($playerId, null);
             $setup->update($playerId, $handler);
         } else {
-            throw new Exception('Błąd!');
+            $l = new Coret_Model_Logger('Cli_Model_SetupChange');
+            $l->log('Błąd!');
         }
     }
 }

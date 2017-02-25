@@ -1110,8 +1110,20 @@ div.table table.unitTable td:first {
     padding: 1.4vw;
 }
 
-#playersingame {
+.playersingame {
     padding-bottom: 1.4vw;
+}
+
+#content .playersingame td {
+    height: 6.2vw;
+}
+
+.playersingame .td1 {
+    width: 3.2vw;
+}
+
+.playersingame .td2 {
+    width: 14vw;
 }
 
 td .trash {
@@ -1189,3 +1201,4 @@ input.max {
     text-shadow: none;
     display: none;
 }
+
