@@ -4,7 +4,7 @@ var Ground = new function () {
         bottomLevel = 2,
         waterLevel = 0.1,
         cloudsLevel = -30,
-        grassGeometry = new THREE.BufferGeometry(),
+        grassGeometry,
         grassMesh,
         grassMaterial,
         tl = new THREE.TextureLoader(),
@@ -329,6 +329,8 @@ var Ground = new function () {
         createGround(Fields.getMaxX(), Fields.getMaxY(), Fields.getCanvas())
     }
     this.init = function (maxX, maxY, groundCanvas, waterCanvas) {
+        grassGeometry = new THREE.BufferGeometry()
+
         createGround(maxX, maxY, groundCanvas)
         createWater(maxX, maxY, waterCanvas)
     }

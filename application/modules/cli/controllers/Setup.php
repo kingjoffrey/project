@@ -16,8 +16,8 @@ class SetupController
         $mGame = new Application_Model_Game($dataIn['gameId'], $db);
         $game = $mGame->getGame();
 
-        $mMapPlayers = new Application_Model_MapPlayers($game['mapId'], $db);
         $mMap = new Application_Model_Map($game['mapId'], $db);
+        $mSide = new Application_Model_Side(0, $db);
 
         $view->addScriptPath(APPLICATION_PATH . '/views/scripts');
 
@@ -25,7 +25,7 @@ class SetupController
             'type' => 'setup',
             'action' => 'index',
             'data' => $view->render('setup/index.phtml'),
-            'mapPlayers' => $mMapPlayers->getAll(),
+            'sides' => $mSide->getWithLimit($mMap->getMaxPlayers()),
             'gameId' => $game['gameId'],
             'mapName' => $mMap->getName(),
             'gameMasterId' => $game['gameMasterId']

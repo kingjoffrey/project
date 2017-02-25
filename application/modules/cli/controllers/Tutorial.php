@@ -39,7 +39,6 @@ class TutorialController
 
             $mPlayer = new Application_Model_Player($db);
             $mPlayersInGame = new Application_Model_PlayersInGame($gameId, $db);
-            $mMapPlayers = new Application_Model_MapPlayers($mapId, $db);
             $mMapCastles = new Application_Model_MapCastles($mapId, $db);
             $mHeroesInGame = new Application_Model_HeroesInGame($gameId, $db);
             $mCastlesInGame = new Application_Model_CastlesInGame($gameId, $db);
@@ -47,7 +46,7 @@ class TutorialController
             $startPositions = $mMapCastles->getDefaultStartPositions();
 
             $playerId = $user->parameters['playerId'];
-            foreach ($mMapPlayers->getAll() as $mapPlayerId => $mapPlayer) {
+            foreach (array_keys($startPositions) as $sideId) {
                 if ($playerId) {
                     $teamId = 1;
                 } else {
@@ -58,7 +57,7 @@ class TutorialController
                     }
                 }
 
-                $mPlayersInGame->joinGame($playerId, $mapPlayerId, $teamId);
+                $mPlayersInGame->joinGame($playerId, $sideId, $teamId);
 
                 if ($first) {
                     $mTurn = new Application_Model_TurnHistory($gameId, $db);
@@ -69,9 +68,9 @@ class TutorialController
 
                 $mHero = new Application_Model_Hero($playerId, $db);
                 $mArmy = new Application_Model_Army($gameId, $db);
-                $armyId = $mArmy->createArmy($startPositions[$mapPlayer['mapPlayerId']], $playerId);
+                $armyId = $mArmy->createArmy($startPositions[$sideId], $playerId);
                 $mHeroesInGame->add($armyId, $mHero->getFirstHeroId());
-                $mCastlesInGame->addCastle($startPositions[$mapPlayer['mapPlayerId']]['mapCastleId'], $playerId);
+                $mCastlesInGame->addCastle($startPositions[$sideId]['mapCastleId'], $playerId);
 
                 $playerId = 0;
             }

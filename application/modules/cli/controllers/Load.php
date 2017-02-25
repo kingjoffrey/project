@@ -17,8 +17,6 @@ class LoadController
             $mPlayersInGame = new Application_Model_PlayersInGame($game['gameId'], $db);
             $game['players'] = $mPlayersInGame->getGamePlayers();
             $game['playerTurn'] = $mPlayer->getPlayer($game['turnPlayerId']);
-            $mMapPlayers = new Application_Model_MapPlayers($game['mapId'], $db);
-            $game['teams'] = $mMapPlayers->getMapPlayerIdToBackgroundColorRelations();
             $game['begin'] = Coret_View_Helper_Formatuj::date($game['begin'], 'Y.m.d H:i');
             $game['end'] = Coret_View_Helper_Formatuj::date($game['end'], 'Y.m.d H:i');
         }

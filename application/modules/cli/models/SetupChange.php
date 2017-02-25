@@ -11,21 +11,21 @@ class Cli_Model_SetupChange
      */
     public function __construct($dataIn, Devristo\Phpws\Protocol\WebSocketTransportInterface $user, Cli_NewHandler $handler)
     {
-        $mapPlayerId = $dataIn['mapPlayerId'];
+        $sideId = $dataIn['sideId'];
 
-        if (empty($mapPlayerId)) {
-            echo('Brak mapPlayerId!');
+        if (empty($sideId)) {
+            echo('Brak sideId!');
             return;
         }
 
         $setup = SetupGame::getSetup($user);
-        $playerId = $setup->getPlayerIdByMapPlayerId($mapPlayerId);
+        $playerId = $setup->getPlayerIdBySideId($sideId);
 
         if ($user->parameters['playerId'] == $playerId) { // unselect
             $setup->updatePlayerReady($user->parameters['playerId'], null);
             $setup->update($user->parameters['playerId'], $handler);
-        } elseif (!$setup->isPlayer($mapPlayerId)) { // select
-            $setup->updatePlayerReady($user->parameters['playerId'], $mapPlayerId);
+        } elseif (!$setup->isPlayer($sideId)) { // select
+            $setup->updatePlayerReady($user->parameters['playerId'], $sideId);
             $setup->update($user->parameters['playerId'], $handler);
         } elseif ($setup->isGameMaster($user->parameters['playerId'])) { // kick
             $setup->updatePlayerReady($playerId, null);

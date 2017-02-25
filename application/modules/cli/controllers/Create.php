@@ -15,16 +15,15 @@ class CreateController
             $mapId = $dataIn['mapId'];
         }
 
-        $mMapPlayers = new Application_Model_MapPlayers($mapId, $db);
-        $numberOfPlayers = $mMapPlayers->getNumberOfPlayersForNewGame();
-
         $view->form = new Application_Form_Creategame(array(
             'mapId' => $mapId,
             'mapsList' => $mMap->getAllMultiMapsList()
         ));
-        $dataIn['numberOfPlayers'] = $numberOfPlayers;
 
         if (isset($dataIn['mapId']) && $view->form->isValid($dataIn)) {
+            $mMap = new Application_Model_Map($mapId, $db);
+            $dataIn['numberOfPlayers'] = $mMap->getMaxPlayers();
+
             $mGame = new Application_Model_Game (0, $db);
             $gameId = $mGame->createGame($dataIn, $user->parameters['playerId']);
 
@@ -50,12 +49,12 @@ class CreateController
         }
         $db = $handler->getDb();
 
-        $mMapPlayers = new Application_Model_MapPlayers($dataIn['mapId'], $db);
+        $mMap=new Application_Model_Map($dataIn['mapId'], $db);
         $mMapFields = new Application_Model_MapFields($dataIn['mapId'], $db);
         $token = array(
             'type' => 'create',
             'action' => 'map',
-            'number' => $mMapPlayers->getNumberOfPlayersForNewGame(),
+            'number' => $mMap->getMaxPlayers(),
             'fields' => $mMapFields->getMapFields()
         );
         $handler->sendToUser($user, $token);

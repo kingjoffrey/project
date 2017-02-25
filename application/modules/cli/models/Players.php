@@ -21,7 +21,7 @@ class Cli_Model_Players
 
     /**
      * @param $color
-     * @return Cli_Model_Player
+     * @return Cli_Model_Player|Cli_Model_EditorPlayer
      */
     public function getPlayer($color)
     {

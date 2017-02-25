@@ -89,7 +89,6 @@ class Cli_Model_Game
 
     private function initPlayers($players, Zend_Db_Adapter_Pdo_Pgsql $db)
     {
-        $mMapPlayers = new Application_Model_MapPlayers($this->_mapId, $db);
         $mMapCastles = new Application_Model_MapCastles($this->_mapId, $db);
         $mapCastles = $mMapCastles->getMapCastles();
         $mMapTowers = new Application_Model_MapTowers($this->_mapId, $db);
@@ -98,7 +97,7 @@ class Cli_Model_Game
         $playersTowers = $mTowersInGame->getTowers();
 
         foreach ($this->_playersColors as $playerId => $color) {
-            $player = new Cli_Model_Player($players[$playerId], $this->_id, $mapCastles, $mapTowers, $playersTowers, $mMapPlayers, $db);
+            $player = new Cli_Model_Player($players[$playerId], $this->_id, $mapCastles, $mapTowers, $playersTowers, $db);
             $this->_Players->addPlayer($color, $player);
             if (!$player->getComputer()) {
                 $this->updateOnline($color, 0);

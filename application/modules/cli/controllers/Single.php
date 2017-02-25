@@ -15,9 +15,6 @@ class SingleController
             $mapId = $dataIn['mapId'];
         }
 
-        $mMapPlayers = new Application_Model_MapPlayers($mapId, $db);
-        $numberOfPlayers = $mMapPlayers->getNumberOfPlayersForNewGame();
-
         if (isset($dataIn['test'])) {
             $mapList = $mMap->getTestMap($mapId);
         } else {
@@ -28,9 +25,11 @@ class SingleController
             'mapId' => $mapId,
             'mapsList' => $mapList
         ));
-        $dataIn['numberOfPlayers'] = $numberOfPlayers;
 
         if (isset($dataIn['mapId']) && $view->form->isValid($dataIn)) {
+            $mMap = new Application_Model_Map($mapId, $db);
+            $dataIn['numberOfPlayers'] = $mMap->getMaxPlayers();
+
             $mGame = new Application_Model_Game (0, $db);
             $gameId = $mGame->createGame($dataIn, $user->parameters['playerId']);
 

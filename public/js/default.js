@@ -6,7 +6,7 @@ $(document).ready(function () {
 var Page = new function () {
     var index = '',
         touch = 0,
-        shadows = 1
+        shadows = 0
 
 
     this.getIndex = function () {
@@ -14,6 +14,9 @@ var Page = new function () {
     }
     this.getShadows = function () {
         return shadows
+    }
+    this.setShadows = function (s) {
+        shadows = s
     }
     this.hasTouch = function () {
         return touch

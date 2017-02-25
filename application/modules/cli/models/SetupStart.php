@@ -20,7 +20,7 @@ class Cli_Model_SetupStart
         $players = $setup->getPlayers();
         $inGame = false;
         foreach ($players as $player) {
-            if ($player['mapPlayerId']) {
+            if ($player['sideId']) {
                 $inGame = true;
             }
         }
@@ -38,15 +38,14 @@ class Cli_Model_SetupStart
 
         $mMap = new Application_Model_Map($mapId, $db);
         $mMapCastles = new Application_Model_MapCastles($mapId, $db);
-        $mMapPlayers = new Application_Model_MapPlayers($mapId, $db);
 
         $teamMaxPlayers = $mMap->getMaxPlayers() / 2;
         $startPositions = $mMapCastles->getDefaultStartPositions();
         $first = true;
         $i = 0;
 
-        foreach ($mMapPlayers->getAll() as $mapPlayerId => $mapPlayer) {
-            $playerId = $setup->getPlayerIdByMapPlayerId($mapPlayerId);
+        foreach (array_keys($startPositions) as $sideId) {
+            $playerId = $setup->getPlayerIdBySideId($sideId);
             if (empty($playerId)) {
                 echo('brak wszystkich graczy' . "\n");
                 return;
@@ -64,18 +63,18 @@ class Cli_Model_SetupStart
             } else {
                 $teamId = 2;
             }
-            $mPlayersInGame->joinGame($playerId, $mapPlayerId, $teamId);
+            $mPlayersInGame->joinGame($playerId, $sideId, $teamId);
 
             $mHero = new Application_Model_Hero($playerId, $db);
             $mArmy = new Application_Model_Army($setup->getGameId(), $db);
 
-            $armyId = $mArmy->createArmy($startPositions[$mapPlayer['mapPlayerId']], $playerId);
+            $armyId = $mArmy->createArmy($startPositions[$sideId], $playerId);
 
             $mHeroesInGame = new Application_Model_HeroesInGame($setup->getGameId(), $db);
             $mHeroesInGame->add($armyId, $mHero->getFirstHeroId());
 
             $mCastlesInGame = new Application_Model_CastlesInGame($setup->getGameId(), $db);
-            $mCastlesInGame->addCastle($startPositions[$mapPlayer['mapPlayerId']]['mapCastleId'], $playerId);
+            $mCastlesInGame->addCastle($startPositions[$sideId]['mapCastleId'], $playerId);
         }
 
         $token = array('type' => 'start');

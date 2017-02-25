@@ -21,14 +21,14 @@ class Cli_Model_SingleStart
 
         $mMap = new Application_Model_Map($mapId, $db);
         $mMapCastles = new Application_Model_MapCastles($mapId, $db);
-        $mMapPlayers = new Application_Model_MapPlayers($mapId, $db);
 
-        $teamMaxPlayers = $mMap->getMaxPlayers() / 2;
+        $maxPlayers = $mMap->getMaxPlayers();
+        $teamMaxPlayers = $maxPlayers / 2;
         $startPositions = $mMapCastles->getDefaultStartPositions();
         $first = true;
         $i = 0;
 
-        foreach ($mMapPlayers->getAll() as $mapPlayerId => $mapPlayer) {
+        foreach (array_keys($startPositions) as $sideId) {
             if ($first) {
                 $playerId = $user->parameters['playerId'];
                 $mTurn = new Application_Model_TurnHistory($gameId, $db);
@@ -48,18 +48,18 @@ class Cli_Model_SingleStart
             } else {
                 $teamId = 2;
             }
-            $mPlayersInGame->joinGame($playerId, $mapPlayerId, $teamId);
+            $mPlayersInGame->joinGame($playerId, $sideId, $teamId);
 
             $mHero = new Application_Model_Hero($playerId, $db);
             $mArmy = new Application_Model_Army($gameId, $db);
 
-            $armyId = $mArmy->createArmy($startPositions[$mapPlayer['mapPlayerId']], $playerId);
+            $armyId = $mArmy->createArmy($startPositions[$sideId], $playerId);
 
             $mHeroesInGame = new Application_Model_HeroesInGame($gameId, $db);
             $mHeroesInGame->add($armyId, $mHero->getFirstHeroId());
 
             $mCastlesInGame = new Application_Model_CastlesInGame($gameId, $db);
-            $mCastlesInGame->addCastle($startPositions[$mapPlayer['mapPlayerId']]['mapCastleId'], $playerId);
+            $mCastlesInGame->addCastle($startPositions[$sideId]['mapCastleId'], $playerId);
         }
 
 

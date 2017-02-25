@@ -164,33 +164,33 @@ class SetupGame
         $handler->sendToChannel($handler->getSetupGame($this->_gameId), $token);
     }
 
-    public function getPlayerIdByMapPlayerId($mapPlayerId)
+    public function getPlayerIdBySideId($sideId)
     {
         foreach ($this->_players as $playerId => $player) {
-            if (isset($player['mapPlayerId']) && $player['mapPlayerId'] == $mapPlayerId) {
+            if (isset($player['sideId']) && $player['sideId'] == $sideId) {
                 return $playerId;
             }
         }
     }
 
-    public function updatePlayerReady($playerId, $mapPlayerId)
+    public function updatePlayerReady($playerId, $sideId)
     {
-        $this->_players[$playerId]['mapPlayerId'] = $mapPlayerId;
+        $this->_players[$playerId]['sideId'] = $sideId;
     }
 
-    public function isNoComputerColorInGame($mapPlayerId)
+    public function isNoComputerColorInGame($sideId)
     {
         foreach ($this->_players as $playerId => $player) {
-            if ($player['mapPlayerId'] == $mapPlayerId && $player['computer'] == false) {
+            if ($player['sideId'] == $sideId && $player['computer'] == false) {
                 return true;
             }
         }
     }
 
-    public function isPlayer($mapPlayerId)
+    public function isPlayer($sideId)
     {
         foreach ($this->_players as $playerId => $player) {
-            if (isset($player['mapPlayerId']) && $player['mapPlayerId'] == $mapPlayerId) {
+            if (isset($player['sideId']) && $player['sideId'] == $sideId) {
                 return true;
             }
         }
@@ -217,7 +217,7 @@ class SetupGame
         $player = $mPlayer->getPlayer($playerId);
         $this->_players[$playerId] = array(
             'playerId' => $player['playerId'],
-//            'mapPlayerId' => $player['mapPlayerId'],
+//            'sideId' => $player['sideId'],
             'firstName' => $player['firstName'],
             'lastName' => $player['lastName']
         );

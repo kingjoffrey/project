@@ -1,19 +1,20 @@
 var Castles = function () {
-    var castles = {},
+    var castles,
         bgColor,
         miniMapColor,
         textColor,
         color
 
-    this.init = function (castles, bgC, miniMapC, textC, c) {
+    this.init = function (c1, bgC, miniMapC, textC, c2) {
+        castles = {}
 
         bgColor = bgC
         miniMapColor = miniMapC
         textColor = textC
-        color = c
+        color = c2
 
-        for (var castleId in castles) {
-            this.add(castleId, castles[castleId])
+        for (var castleId in c1) {
+            this.add(castleId, c1[castleId])
         }
     }
     this.add = function (castleId, castle) {

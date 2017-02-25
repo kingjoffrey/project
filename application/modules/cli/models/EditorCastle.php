@@ -42,7 +42,7 @@ class Cli_Model_EditorCastle extends Cli_Model_Castle
 //        $this->_enclaveNumber = $mapCastle['enclaveNumber'];
     }
 
-    public function edit($mapId, $data, Zend_Db_Adapter_Pdo_Pgsql $db, $mapPlayerId = 0)
+    public function edit($mapId, $data, Zend_Db_Adapter_Pdo_Pgsql $db, $sideId = 0)
     {
         $this->_defense = $data['defense'];
         $this->_name = $data['name'];
@@ -51,7 +51,7 @@ class Cli_Model_EditorCastle extends Cli_Model_Castle
         $this->_enclaveNumber = $data['enclaveNumber'];
 
         $mMapCastles = new Application_Model_MapCastles($mapId, $db);
-        $mMapCastles->edit($this->arrayForDb($mapPlayerId), $this->_id);
+        $mMapCastles->edit($this->arrayForDb($sideId), $this->_id);
 
         $mMapCastleProduction = new Application_Model_MapCastleProduction($db);
 
@@ -77,7 +77,7 @@ class Cli_Model_EditorCastle extends Cli_Model_Castle
         }
     }
 
-    private function arrayForDb($mapPlayerId)
+    private function arrayForDb($sideId)
     {
         return array(
             'x' => $this->_x,
@@ -86,7 +86,7 @@ class Cli_Model_EditorCastle extends Cli_Model_Castle
             'name' => $this->_name,
             'income' => intval($this->_income),
             'capital' => intval($this->_capital),
-            'mapPlayerId' => $mapPlayerId,
+            'sideId' => $sideId,
             'enclaveNumber' => intval($this->_enclaveNumber),
         );
     }

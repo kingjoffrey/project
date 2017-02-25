@@ -35,19 +35,18 @@ class Cli_Model_Editor
 
     private function initPlayers(Zend_Db_Adapter_Pdo_Pgsql $db)
     {
-        $mMapPlayers = new Application_Model_MapPlayers($this->_mapId, $db);
-        $mapPlayers = $mMapPlayers->getAll();
-
         $mMapCastles = new Application_Model_MapCastles($this->_mapId, $db);
         $mapCastles = $mMapCastles->getMapCastles();
 
-        $mMapTowers = new Application_Model_MapTowers($this->_mapId, $db);
-        $mapTowers = $mMapTowers->getMapTowers();
+        $mSide = new Application_Model_Side(0, $db);
+        $mMap = new Application_Model_Map($this->_mapId, $db);
 
-        foreach ($mapPlayers as $id => $player) {
-            $this->_Players->addPlayer($player['shortName'], new Cli_Model_EditorPlayer($player, $mapCastles, $mapTowers, $db));
+        $mMapTowers = new Application_Model_MapTowers($this->_mapId, $db);
+
+        foreach ($mSide->getWithLimit($mMap->getMaxPlayers()) as $player) {
+            $this->_Players->addPlayer($player['shortName'], new Cli_Model_EditorPlayer($player, $mapCastles, $db));
         }
-        $this->_Players->addPlayer('neutral', new Cli_Model_EditorNeutralPlayer($mapCastles, $mapTowers, $db));
+        $this->_Players->addPlayer('neutral', new Cli_Model_EditorNeutralPlayer($mapCastles, $mMapTowers->getMapTowers(), $db));
         $this->_Players->initFields($this->_Fields);
     }
 

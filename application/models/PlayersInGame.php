@@ -3,7 +3,6 @@
 class Application_Model_PlayersInGame extends Coret_Db_Table_Abstract
 {
     protected $_name = 'playersingame';
-//    protected $_primary = 'mapPlayerId';
     protected $_gameId;
 
     public function __construct($gameId, Zend_Db_Adapter_Pdo_Pgsql $db = null)
@@ -16,12 +15,12 @@ class Application_Model_PlayersInGame extends Coret_Db_Table_Abstract
         }
     }
 
-    public function joinGame($playerId, $mapPlayerId, $teamId)
+    public function joinGame($playerId, $sideId, $teamId)
     {
         $data = array(
             'gameId' => $this->_gameId,
             'playerId' => $playerId,
-            'mapPlayerId' => $mapPlayerId,
+            'sideId' => $sideId,
             'teamId' => $teamId
         );
 
@@ -34,7 +33,7 @@ class Application_Model_PlayersInGame extends Coret_Db_Table_Abstract
             ->from(array('a' => $this->_name), 'playerId')
             ->join(array('b' => 'player'), 'a."playerId" = b."playerId"', null)
             ->where($this->_db->quoteIdentifier('gameId') . ' = ?', $this->_gameId)
-            ->where($this->_db->quoteIdentifier('mapPlayerId') . ' IS NOT NULL')
+            ->where($this->_db->quoteIdentifier('sideId') . ' IS NOT NULL')
             ->where('computer = true');
 
         return $select;
@@ -106,21 +105,24 @@ class Application_Model_PlayersInGame extends Coret_Db_Table_Abstract
     {
         return $this->_db->select()
             ->from($this->_name, 'gameId')
-            ->where($this->_db->quoteIdentifier('mapPlayerId') . ' is not null')
+            ->where($this->_db->quoteIdentifier('sideId') . ' is not null')
             ->where('lost = false')
             ->where($this->_db->quoteIdentifier('playerId') . ' = ?', $playerId);
     }
 
     public function getGamePlayers()
     {
+        $sideId = $this->_db->quoteIdentifier('sideId');
+        $gameId = $this->_db->quoteIdentifier('gameId');
+        $playerId = $this->_db->quoteIdentifier('playerId');
+
         $select = $this->_db->select()
             ->from(array('b' => $this->_name), array('playerId', 'teamId', 'turnActive', 'lost', 'gold'))
-            ->join(array('a' => 'player'), 'a."playerId" = b."playerId"', array('firstName', 'lastName', 'computer'))
-            ->join(array('c' => 'mapplayers'), 'b . "mapPlayerId" = c . "mapPlayerId"', 'mapPlayerId')
-            ->join(array('d' => 'side'), 'c . "sideId" = d . "sideId"', array('color' => 'shortName', 'longName', 'backgroundColor', 'textColor', 'minimapColor'))
-            ->where($this->_db->quoteIdentifier('gameId') . ' = ?', $this->_gameId)
-            ->where('b . ' . $this->_db->quoteIdentifier('mapPlayerId') . ' is not null')
-            ->order('startOrder');
+            ->join(array('a' => 'player'), 'a.' . $playerId . ' = b.' . $playerId, array('firstName', 'lastName', 'computer'))
+            ->join(array('c' => 'side'), 'b . ' . $sideId . ' = c . ' . $sideId, array('color' => 'shortName', 'longName', 'backgroundColor', 'textColor', 'minimapColor'))
+            ->where($gameId . ' = ?', $this->_gameId)
+            ->where('b . ' . $sideId . ' is not null')
+            ->order('b.sideId');
 
         $players = array();
 

@@ -1,10 +1,11 @@
 var Towers = function () {
-    var towers = {}, bgColor, color
-    this.init = function (towers, bgC, c) {
+    var towers, bgColor, color
+    this.init = function (t, bgC, c) {
+        towers = {}
         bgColor = bgC
         color = c
-        for (var towerId in towers) {
-            this.add(towerId, towers[towerId])
+        for (var towerId in t) {
+            this.add(towerId, t[towerId])
         }
     }
     this.add = function (towerId, tower) {

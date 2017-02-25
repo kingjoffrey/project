@@ -1,9 +1,11 @@
 var Players = new function () {
-    var players = {}
+    var players
 
-    this.init = function (players) {
-        for (var color in players) {
-            this.add(color, players[color])
+    this.init = function (p) {
+        players = {}
+
+        for (var color in p) {
+            this.add(color, p[color])
         }
     }
     this.add = function (color, player) {

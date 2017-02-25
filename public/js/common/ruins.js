@@ -1,8 +1,11 @@
 var Ruins = new function () {
-    var ruins = {}
-    this.init = function (ruins) {
-        for (var ruinId in ruins) {
-            this.add(ruinId, new Ruin(ruins[ruinId]))
+    var ruins
+
+    this.init = function (r) {
+        ruins = {}
+
+        for (var ruinId in r) {
+            this.add(ruinId, new Ruin(r[ruinId]))
         }
     }
     this.add = function (ruinId, ruin) {

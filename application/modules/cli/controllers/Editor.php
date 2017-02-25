@@ -40,11 +40,6 @@ class EditorController
             $mMap = new Application_Model_Map (0, $db);
             $mapId = $mMap->create($view->formCreate->getValues(), $user->parameters['playerId']);
 
-            $mSide = new Application_Model_Side(0, $db);
-
-            $mMapPlayers = new Application_Model_MapPlayers($mapId, $db);
-            $mMapPlayers->create($mSide->getWithLimit($dataIn['maxPlayers']));
-
             $token = array(
                 'type' => 'editor',
                 'action' => 'generate',
@@ -101,11 +96,6 @@ class EditorController
         }
 
         if ($mapId = $mMap->create(array('maxPlayers' => $oldMap['maxPlayers'], 'name' => $oldMap['name'] . ' mirror'), $user->parameters['playerId'])) {
-
-            $mSide = new Application_Model_Side(0, $db);
-
-            $mMapPlayers = new Application_Model_MapPlayers($mapId, $db);
-            $mMapPlayers->create($mSide->getWithLimit($oldMap['maxPlayers']));
 
             $mapFields = new Application_Model_MapFields($mapId, $db);
             foreach ($fields as $y => $row) {
@@ -209,7 +199,7 @@ class EditorController
                     'mapId' => $mapId,
                     'name' => $oldMap['name'] . ' mirror',
                     'maxPlayers' => $oldMap['maxPlayers'],
-                    'date' => Coret_View_Helper_Formatuj::date(time())
+                    'date' => Coret_View_Helper_Formatuj::date(date('YmdHis', time()))
                 )
             );
 
