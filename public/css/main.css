@@ -326,7 +326,7 @@ tr.trlink:hover td {
 
 .colorBox {
     width: 2.1vw;
-    height: 2.1vw;
+    line-height: 2.1vw;
     box-shadow: 0 0 5px #fff;
     display: inline-block;
     margin: 0.7vw;

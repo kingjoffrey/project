@@ -13,7 +13,13 @@ var Turn = new function () {
             WebSocketSendGame.startMyTurn()
             $('#turnInfo').hide()
         } else {
-            $('#turnInfo').html(translations.Waitingfor + ' ' + Players.get(color).getLongName()).show()
+            $('#turnInfo')
+                .html(translations.Waitingfor + ' ' + Players.get(color).getLongName())
+                .css({
+                    'background': Players.get(color).getBackgroundColor(),
+                    'color': Players.get(color).getTextColor()
+                })
+                .show()
             Me.turnOff()
         }
     }

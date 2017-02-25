@@ -13,6 +13,9 @@ var Player = function (player, color) {
     this.getBackgroundColor = function () {
         return player.backgroundColor
     }
+    this.getTextColor = function () {
+        return player.textColor
+    }
     /**
      *
      * @returns {Armies}

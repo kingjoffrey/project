@@ -3,6 +3,11 @@ var LoadController = new function () {
     this.index = function (r) {
         $('#content').html(r.data)
 
+        var teams = {
+            1: 'A',
+            2: 'B'
+        }
+
         for (var i in r.games) {
             var game = r.games[i]
 
@@ -22,7 +27,7 @@ var LoadController = new function () {
                                         $('<div>').addClass('colorBox').css('background', player.backgroundColor).html('&nbsp;')
                                     )
                                     .append(
-                                        $('<div>').addClass('colorBox').css('background', game.teams[player.team]).html('&nbsp;')
+                                        $('<div>').addClass('colorBox').html(teams[player.teamId])
                                     )
                             )
                     )
