@@ -115,29 +115,31 @@ var GameModels = new function () {
         return mesh
     }
     this.addTree = function (x, y) {
-        if (Page.hasTouch()) {
-            var maxI = 1
-        } else {
-            var maxI = Math.floor((Math.random() * 5))
-        }
+        // if (Page.hasTouch()) {
+        //     var maxI = 1
+        // } else {
+        //     var maxI = Math.floor((Math.random() * 5))
+        // }
 
-        for (var i = 0; i < maxI + 2; i++) {
-            var mesh = Models.getTree(x, y),
-                randomX = Math.floor((Math.random() * 2)),
-                randomY = Math.floor((Math.random() * 2))
+        // for (var i = 0; i < maxI + 2; i++) {
+        var mesh = Models.getTree(x, y),
+            randomX = Math.floor((Math.random() * 2)),
+            randomY = Math.floor((Math.random() * 2))
 
-            mesh.position.set(x * 2 + randomX, 0, y * 2 + randomY)
-            mesh.rotation.y = 2 * Math.PI * Math.random()
+        // console.log(randomX + ' ' + randomY)
 
-            mesh.scale.x = 0.15
-            mesh.scale.y = 0.15
-            mesh.scale.z = 0.15
+        mesh.position.set(x * 2 + randomX, 0, y * 2 + randomY)
+        mesh.rotation.y = 2 * Math.PI * Math.random()
 
-            if (Page.getShadows()) {
-                mesh.castShadow = true
-            }
-            GameScene.add(mesh)
-        }
+        mesh.scale.x = 0.15
+        mesh.scale.y = 0.15
+        mesh.scale.z = 0.15
+
+        // if (Page.getShadows()) {
+        //     mesh.castShadow = true
+        // }
+        GameScene.add(mesh)
+        // }
     }
     this.addPathCircle = function (x, y, color, t) {
         switch (t) {

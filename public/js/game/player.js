@@ -8,7 +8,7 @@ var Player = function (player, color) {
     towers.init(player.towers, player.backgroundColor, color)
 
     this.getTeam = function () {
-        return player.team
+        return player.teamId
     }
     this.getBackgroundColor = function () {
         return player.backgroundColor

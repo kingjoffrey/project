@@ -1,5 +1,6 @@
 var Editor = new function () {
     this.init = function (r) {
+        PickerCommon.reset()
         GameScene.init($(window).innerWidth(), $(window).innerHeight())
         Units.init(r.units)
         Fields.init(r.fields, EditorController.getMapId())

@@ -29,6 +29,7 @@ var Game = new function () {
         game = g
         if (loading) {
             loading = 0
+            PickerCommon.reset()
             Execute.setExecuting(0)
             GameScene.init($(window).innerWidth(), $(window).innerHeight())
             Units.init(game.units)

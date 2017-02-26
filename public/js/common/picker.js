@@ -1,11 +1,16 @@
 var PickerCommon = new function () {
-    var raycaster = new THREE.Raycaster(),
-        objects = [],
-        intersects = [],
+    var rayCaster,
+        objects,
+        intersects,
         camera,
         container,
         vector
 
+    this.reset = function () {
+        rayCaster = new THREE.Raycaster()
+        objects = []
+        intersects = []
+    }
     this.init = function (picker) {
         camera = GameScene.getCamera()
         container = GameRenderer.getDomElement()
@@ -15,11 +20,11 @@ var PickerCommon = new function () {
         $('canvas')
             .mousewheel(function (event) {
                 if (event.deltaY > 0) {
-                    if (GameScene.getCamera().position.y > 12) {
+                    if (camera.position.y > 12) {
                         GameScene.moveCameraClose()
                     }
                 } else {
-                    if (GameScene.getCamera().position.y < 230) {
+                    if (camera.position.y < 230) {
                         GameScene.moveCameraAway()
                     }
                 }
@@ -45,8 +50,8 @@ var PickerCommon = new function () {
 
         vector = new THREE.Vector3(( x / container.width ) * 2 - 1, -( y / container.height ) * 2 + 1, 1)
         vector.unproject(camera)
-        raycaster.set(camera.position, vector.sub(camera.position).normalize())
-        intersects = raycaster.intersectObjects(objects, false)
+        rayCaster.set(camera.position, vector.sub(camera.position).normalize())
+        intersects = rayCaster.intersectObjects(objects, false)
     }
     this.convertX = function () {
         return Math.floor(parseInt(intersects[0].point.x) / 2)
@@ -78,5 +83,14 @@ var PickerCommon = new function () {
         } else {
             $('body #main #game canvas').css('cursor', 'default')
         }
+    }
+    /**
+     *
+     * @returns {{x: Number, y: Number}}
+     */
+    this.getPoint = function (event) {
+        var x = event.offsetX == undefined ? event.layerX : event.offsetX,
+            y = event.offsetY == undefined ? event.layerY : event.offsetY
+        return {x: x, y: y}
     }
 }

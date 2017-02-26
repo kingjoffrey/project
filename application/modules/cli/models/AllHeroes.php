@@ -16,8 +16,8 @@ class Cli_Model_AllHeroes
     public function add(Zend_Db_Adapter_Pdo_Pgsql $db)
     {
         $mHero = new Application_Model_Hero($this->_playerId, $db);
-        $mNG = new Cli_Model_NameGenerator();
-        $heroId = $mHero->createHero($mNG->generateHeroName());
+        $mHNG = new Cli_Model_HeroNameGenerator();
+        $heroId = $mHero->createHero($mHNG->generateHeroName());
 
         $this->_heroes[] = $mHero->getHero($heroId);
 

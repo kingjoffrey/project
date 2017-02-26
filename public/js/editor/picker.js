@@ -52,7 +52,7 @@ var PickerEditor = new function () {
                         if (castleId = field.getCastleId()) {
                             Message.show('Castle', EditorCastleWindow.form(castleId))
                         } else {
-                            dragStart = PickerGame.getPoint(event)
+                            dragStart = PickerCommon.getPoint(event)
                         }
                     }
                     break
@@ -75,7 +75,7 @@ var PickerEditor = new function () {
     this.onContainerMouseMove = function (event) {
         PickerCommon.intersect(event)
         if (dragStart) {
-            var dragEnd = PickerGame.getPoint(event)
+            var dragEnd = PickerCommon.getPoint(event)
             GameScene.moveCamera(dragStart.x - dragEnd.x, dragStart.y - dragEnd.y)
             dragStart = dragEnd
             PickerCommon.cursor('move')

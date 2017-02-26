@@ -51,8 +51,8 @@ class LoginController extends Coret_Controller_AuthenticateFrontend
                 $mPlayer = new Application_Model_Player();
                 if ($playerId = $mPlayer->createPlayer($data)) {
                     $mHero = new Application_Model_Hero($playerId);
-                    $mNG = new Cli_Model_NameGenerator();
-                    $mHero->createHero($mNG->generateHeroName());
+                    $mHNG = new Cli_Model_HeroNameGenerator();
+                    $mHero->createHero($mHNG->generateHeroName());
 
                     $this->_authAdapter = $this->getAuthAdapter($form->getValues());
                     $this->_auth->authenticate($this->_authAdapter);
@@ -92,8 +92,8 @@ class LoginController extends Coret_Controller_AuthenticateFrontend
             $mPlayer = new Application_Model_Player();
             if ($playerId = $mPlayer->createPlayer($data)) {
                 $mHero = new Application_Model_Hero($playerId);
-                $mNG = new Cli_Model_NameGenerator();
-                $mHero->createHero($mNG->generateHeroName());
+                $mHNG = new Cli_Model_HeroNameGenerator();
+                $mHero->createHero($mHNG->generateHeroName());
 
                 $this->_authAdapter = $this->getAuthAdapterFacebook($facebookId);
                 $this->_auth->authenticate($this->_authAdapter);

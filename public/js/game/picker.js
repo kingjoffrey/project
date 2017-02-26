@@ -18,7 +18,7 @@ var PickerGame = new function () {
                         AStar.cursorPosition(x, y)
                         AStar.showPath()
                     }
-                    dragStart = PickerGame.getPoint(event)
+                    dragStart = PickerCommon.getPoint(event)
                 } else {
                     clickStart = 0
                     var field = PickerCommon.getField()
@@ -41,11 +41,33 @@ var PickerGame = new function () {
                             CastleWindow.show(Me.getCastle(castleId))
                         }
                     } else {
-                        dragStart = PickerGame.getPoint(event)
+                        dragStart = PickerCommon.getPoint(event)
                     }
                 }
             } else {
-                dragStart = PickerGame.getPoint(event)
+                dragStart = PickerCommon.getPoint(event)
+            }
+        },
+        changeCursorArmyMove = function (field) {
+            if (Me.getSelectedArmy().canFly()) {
+// fly
+                PickerCommon.cursor('fly')
+            } else if (Me.getSelectedArmy().canSwim()) {
+                if (field.getType() == 'w') {
+// swim
+                    PickerCommon.cursor('swim')
+                } else {
+// can't swim
+                    PickerCommon.cursor('impenetrable')
+                }
+            } else {
+                if (field.getType() == 'w' || field.getType() == 'm') {
+// can't walk
+                    PickerCommon.cursor('impenetrable')
+                } else {
+// walk
+                    PickerCommon.cursor('walk')
+                }
             }
         },
         handleMove = function (event) {
@@ -56,7 +78,7 @@ var PickerGame = new function () {
 
             if (dragStart) {
 // drag
-                var dragEnd = PickerGame.getPoint(event)
+                var dragEnd = PickerCommon.getPoint(event)
                 GameScene.moveCamera(dragStart.x - dragEnd.x, dragStart.y - dragEnd.y)
                 dragStart = dragEnd
                 PickerCommon.cursor('move')
@@ -89,6 +111,11 @@ var PickerGame = new function () {
                                         PickerCommon.cursor('join')
                                         return
                                     }
+                                    if (Me.sameTeam(armies[armyId])) {
+// army same team
+                                        changeCursorArmyMove(field)
+                                        return
+                                    }
                                 }
 // attack enemy army
                                 PickerCommon.cursor('attack')
@@ -97,32 +124,16 @@ var PickerGame = new function () {
                                 if (Me.colorEquals(castleColor)) {
 // enter my castle
                                     PickerCommon.cursor('enter')
+                                } else if (Me.sameTeam(castleColor)) {
+// castle same team
+                                    changeCursorArmyMove(field)
                                 } else {
 // attack enemy castle
                                     PickerCommon.cursor('attack')
                                 }
                             } else {
 // map
-                                if (Me.getSelectedArmy().canFly()) {
-// fly
-                                    PickerCommon.cursor('fly')
-                                } else if (Me.getSelectedArmy().canSwim()) {
-                                    if (field.getType() == 'w') {
-// swim
-                                        PickerCommon.cursor('swim')
-                                    } else {
-// can't swim
-                                        PickerCommon.cursor('impenetrable')
-                                    }
-                                } else {
-                                    if (field.getType() == 'w' || field.getType() == 'm') {
-// can't walk
-                                        PickerCommon.cursor('impenetrable')
-                                    } else {
-// walk
-                                        PickerCommon.cursor('walk')
-                                    }
-                                }
+                                changeCursorArmyMove(field)
                             }
                         } else {
 // not selected
@@ -206,14 +217,5 @@ var PickerGame = new function () {
     this.onContainerTouchEnd = function (event) {
         //console.log('touchEnd')
         dragStart = 0
-    }
-    /**
-     *
-     * @returns {{x: Number, y: Number}}
-     */
-    this.getPoint = function (event) {
-        var x = event.offsetX == undefined ? event.layerX : event.offsetX,
-            y = event.offsetY == undefined ? event.layerY : event.offsetY
-        return {x: x, y: y}
     }
 }

@@ -258,14 +258,14 @@ var PickerGame = new function () {
         handleDownStart = function (event) {
             PickerCommon.intersect(event)
             if (PickerCommon.intersects()) {
-                dragStart = PickerGame.getPoint(event)
+                dragStart = PickerCommon.getPoint(event)
             }
         },
         handleMove = function (event) {
             PickerCommon.intersect(event)
             if (PickerCommon.intersects()) {
                 if (dragStart) {
-                    var dragEnd = PickerGame.getPoint(event)
+                    var dragEnd = PickerCommon.getPoint(event)
                     GameScene.moveCamera(dragStart.x - dragEnd.x, dragStart.y - dragEnd.y)
                     dragStart = dragEnd
                 }
