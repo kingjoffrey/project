@@ -5,20 +5,13 @@ class TestController extends Zend_Controller_Action
     public function indexAction()
     {
         $this->_helper->layout->setLayout('login');
-//        $this->view->jquery();
-//        $this->view->headScript()->appendFile('/js/three/three.js');
-//        $this->view->headScript()->appendFile('/js/test.js');
+        $this->view->jquery();
+        $this->view->headScript()->appendFile('/js/three/three.js');
+        $this->view->headScript()->appendFile('/js/test.js?=1');
 
-//        $mNG = new Cli_Model_NameGenerator();
-//
-//        $mPlayer = new Application_Model_Player();
-//        foreach ($mPlayer->getPlayers() as $row) {
-//            $mHero = new Application_Model_Hero($row['playerId']);
-//            foreach ($mHero->getHeroes() as $row2) {
-//                if (!$row2['name']) {
-//                    $mHero->changeHeroName($row2['heroId'], $mNG->generateHeroName());
-//                }
-//            }
+//        $mNG = new Cli_Model_CastleNameGenerator();
+//        for ($i = 0; $i <= 10; $i++) {
+//            echo $mNG->generateCastleName() . "\n";
 //        }
     }
 }

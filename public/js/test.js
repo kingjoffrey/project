@@ -1,3 +1,4 @@
+"use strict"
 var GameScene = new function () {
     var scene,
         camera,
@@ -17,96 +18,16 @@ var GameScene = new function () {
             camera.rotation.y = radiansY
             camera.rotation.x = radiansX
 
-            console.log(degreesX)
-            console.log(degreesY)
-
             camera.position.y = cameraY
             camera.scale.addScalar(1)
             scene.add(camera)
             scene.add(new THREE.AmbientLight(0x777777))
         }
-    // initCamera = function (w, h) {
-    //     var viewAngle = 75,
-    //         near = 0.1,
-    //         far = 1000
-    //
-    //     camera = new THREE.PerspectiveCamera(viewAngle, w / h, near, far)
-    //
-    //     scene.add(camera)
-    //     scene.add(new THREE.AmbientLight(0x777777))
-    // }
 
     this.initSun = function (size) {
         sun = new THREE.DirectionalLight(0xdfebff, 0.75)
         sun.position.set(100, 200, 150)
         scene.add(sun)
-    }
-    this.getSun = function () {
-        return sun
-    }
-    this.setCameraPosition = function (x, z) {
-        camera.position.x = parseFloat(x)
-        camera.position.z = parseFloat(z)
-    }
-    this.getCameraY = function () {
-        return cameraY
-    }
-    this.centerOn = function (x, y, func) {
-        var yOffset = camera.position.y - cameraY,
-            startPosition = {
-                x: camera.position.x,
-                z: camera.position.z
-            },
-            endPosition = {
-                x: x * 2 - cameraY - yOffset,
-                z: y * 2 + cameraY + yOffset
-            },
-            tween = new TWEEN.Tween(startPosition)
-                .to(endPosition, Math.sqrt(Math.pow(endPosition.x - startPosition.x, 2) + Math.pow(startPosition.z - endPosition.z, 2)) * 5)
-                .onUpdate(function () {
-                    GameScene.setCameraPosition(endPosition.x, endPosition.z)
-                })
-                .start()
-
-        if (isSet(func)) {
-            tween.onComplete(function () {
-                func()
-            })
-        }
-    }
-    this.moveCamera = function (x, y) {
-        x = -x
-        y = -y * 2
-
-        var angleX = degreesX,
-            angleY = degreesY
-
-
-        var vector = new THREE.Vector3(x, 0, y),
-            mRx = new THREE.Matrix3(),
-            mRy = new THREE.Matrix3(),
-            cosX = Math.cos(angleX),
-            sinX = Math.sin(angleX),
-            cosY = Math.cos(angleY),
-            sinY = Math.sin(angleY)
-
-        mRx.set(
-            1, 0, 0,
-            0, cosX, -sinX,
-            0, sinX, cosX
-        )
-
-        mRy.set(
-            cosY, 0, sinY,
-            0, 1, 0,
-            -sinY, 0, cosY
-        )
-
-        vector.applyMatrix3(mRx)
-        vector.applyMatrix3(mRy)
-
-        camera.position.x -= vector.x * camera.position.y / 1000
-        camera.position.z += vector.z * camera.position.y / 1000
     }
     this.moveCameraLeft = function () {
         camera.position.x += -2
@@ -173,138 +94,15 @@ var GameRenderer = new function () {
     this.setSize = function (w, h) {
         renderer.setSize(w, h)
     }
-    this.getDomElement = function () {
-        return renderer.domElement
-    }
     this.animate = function () {
         requestAnimationFrame(GameRenderer.animate)
         render()
-    }
-    this.stop = function () {
-        stop = 1
-    }
-    this.start = function () {
-        stop = 0
-        this.animate()
     }
     this.init = function (id, Scene) {
         renderer = Renderer.get()
         scene = Scene.get()
         camera = Scene.getCamera()
         $('#' + id).append(renderer.domElement)
-    }
-}
-
-var PickerCommon = new function () {
-    var raycaster = new THREE.Raycaster(),
-        objects = [],
-        intersects = [],
-        camera,
-        container,
-        vector
-
-    this.init = function (picker) {
-        camera = GameScene.getCamera()
-        container = GameRenderer.getDomElement()
-
-        container.addEventListener('mousedown', picker.onContainerMouseDown, false)
-        container.addEventListener('mousemove', picker.onContainerMouseMove, false)
-        container.addEventListener('mouseup', picker.onContainerMouseUp, false)
-        container.addEventListener('mouseout', picker.onContainerMouseOut, false)
-
-
-        container.addEventListener('touchstart', picker.onContainerTouchStart, true)
-        container.addEventListener('touchmove', picker.onContainerTouchMove, true)
-        container.addEventListener('touchend', picker.onContainerTouchEnd, true)
-        container.addEventListener('touchcancel', picker.onContainerTouchEnd, true)
-    }
-    this.intersect = function (event) {
-        var x = event.offsetX == undefined ? event.layerX : event.offsetX,
-            y = event.offsetY == undefined ? event.layerY : event.offsetY
-
-        vector = new THREE.Vector3(( x / container.width ) * 2 - 1, -( y / container.height ) * 2 + 1, 1)
-        vector.unproject(camera)
-        raycaster.set(camera.position, vector.sub(camera.position).normalize())
-        intersects = raycaster.intersectObjects(objects, false)
-    }
-    this.convertX = function () {
-        return Math.floor(parseInt(intersects[0].point.x) / 2)
-    }
-    this.convertZ = function () {
-        return Math.floor(parseInt(intersects[0].point.z) / 2)
-    }
-    this.attach = function (object) {
-        if (object instanceof THREE.Mesh) {
-            objects.push(object);
-        }
-    }
-    this.detach = function (object) {
-        objects.splice(objects.indexOf(object), 1);
-    }
-    /**
-     *
-     * @returns {Field}
-     */
-    this.getField = function () {
-        return Fields.get(PickerCommon.convertX(), PickerCommon.convertZ())
-    }
-    this.intersects = function () {
-        return isSet(intersects[0])
-    }
-}
-
-var PickerGame = new function () {
-    var dragStart = 0,
-        handleDownStart = function (event) {
-            PickerCommon.intersect(event)
-            if (PickerCommon.intersects()) {
-                dragStart = PickerCommon.getPoint(event)
-            }
-        },
-        handleMove = function (event) {
-            PickerCommon.intersect(event)
-            if (PickerCommon.intersects()) {
-                if (dragStart) {
-                    var dragEnd = PickerCommon.getPoint(event)
-                    GameScene.moveCamera(dragStart.x - dragEnd.x, dragStart.y - dragEnd.y)
-                    dragStart = dragEnd
-                }
-            }
-        }
-
-    this.onContainerMouseDown = function (event) {
-        switch (event.button) {
-            case 0:
-                handleDownStart(event)
-                break
-
-            case 1:
-                // middle button
-                break
-
-            case 2:
-                break
-        }
-    }
-    this.onContainerMouseMove = function (event) {
-        handleMove(event)
-    }
-    this.onContainerMouseUp = function (event) {
-        event.preventDefault()
-        dragStart = 0
-    }
-    this.onContainerMouseOut = function (event) {
-        event.preventDefault()
-        dragStart = 0
-    }
-    /**
-     *
-     * @returns {{x: Number, y: Number}}
-     */
-    this.getPoint = function (event) {
-        var x = event.offsetX == undefined ? event.layerX : event.offsetX,
-            y = event.offsetY == undefined ? event.layerY : event.offsetY
-        return {x: x, y: y}
     }
 }
 
@@ -316,33 +114,396 @@ function isSet(val) {
     }
 }
 
-$(document).ready(function () {
-    $('#bg').hide()
+var doKey = function (event) {
+    var key = event.keyCode || event.charCode;
+    switch (key) {
+        case 37://left
+            GameScene.moveCameraLeft()
+            break
+        case 38://up
+            GameScene.moveCameraUp()
+            break
+        case 39://right
+            GameScene.moveCameraRight()
+            break
+        case 40://down
+            GameScene.moveCameraDown()
+            break
+    }
+}
 
-    var size = 32
+$(document)
+    .keydown(function (event) {
+        doKey(event)
+    })
+    .ready(function () {
+        $('#bg').hide()
+        $('body').css('margin', 0)
 
-    GameScene.init($(window).innerWidth(), $(window).innerHeight())
-    GameScene.resize($(window).innerWidth(), $(window).innerHeight())
-    GameRenderer.init('main', GameScene)
-    GameRenderer.setSize($(window).innerWidth(), $(window).innerHeight())
-    GameScene.initSun(size)
-    GameRenderer.animate()
-    PickerCommon.init(PickerGame)
+        var size = 32
 
-    var mesh = new THREE.Mesh(new THREE.PlaneBufferGeometry(size, size), new THREE.MeshLambertMaterial({
-        color: '#65402C',
-        side: THREE.DoubleSide
-    }))
+        GameScene.init($(window).innerWidth(), $(window).innerHeight())
+        GameScene.resize($(window).innerWidth(), $(window).innerHeight())
+        GameRenderer.init('main', GameScene)
+        GameRenderer.setSize($(window).innerWidth(), $(window).innerHeight())
+        GameScene.initSun(size)
+        GameRenderer.animate()
 
-    mesh.rotation.x = Math.PI / 2
-    mesh.position.set(size / 2, 0, size / 2)
+        GameScene.getCamera().position.x = -50
+        GameScene.getCamera().position.y = 50
+        GameScene.getCamera().position.z = 50
 
-    GameScene.add(mesh)
-    PickerCommon.attach(mesh)
+        Fields.init()
+    })
 
-    GameScene.getCamera().position.x = -50
-    GameScene.getCamera().position.y = 50
-    GameScene.getCamera().position.z = 50
+var Fields = new function () {
+    var fields,
+        grassField
 
-    $('body').css('margin', 0)
-})
+    this.add = function (x, y, type) {
+        if (typeof fields[y] == 'undefined') {
+            fields[y] = []
+        }
+        fields[y][x] = new Field(type)
+    }
+    /**
+     *
+     * @param x
+     * @param y
+     * @param grass
+     * @returns {Field}
+     */
+    this.get = function (x, y, grass) {
+        if (isSet(fields[y]) && isSet(fields[y][x])) {
+            return fields[y][x]
+        } else {
+            if (isSet(grass)) {
+                return grassField
+            } else {
+                console.log('no field at x=' + x + ' y=' + y)
+            }
+        }
+    }
+    this.init = function () {
+
+        var f = [
+            ['g', 'g', 'g'],
+            ['g', 'w', 'g'],
+            ['g', 'g', 'g']
+        ]
+
+        grassField = new Field('g')
+        fields = []
+
+        for (var y in f) {
+            for (var x in f[y]) {
+                this.add(x, y, f[y][x])
+            }
+        }
+
+        var maxX = fields[0].length,
+            maxY = fields.length
+
+        Ground.init(maxX, maxY)
+    }
+}
+var Field = function (type) {
+    var field = {
+        'type': type
+    }
+    this.getType = function () {
+        return field.type
+    }
+    this.getTypeWithoutBridge = function () {
+        if (field.type == 'b') {
+            return 'w'
+        }
+        return field.type
+    }
+}
+var Ground = new function () {
+    var mountainLevel = 1.95,
+        hillLevel = 0.9,
+        bottomLevel = 2,
+        waterLevel = 0.1,
+        createUVS = function (uvs, maxX, maxY) {
+            var uv = []
+            for (var u = 0; u < maxX; u++) {
+                uv[u] = []
+                for (var v = 0; v < maxY; v++) {
+                    uv[u][v] = []
+                    uv[u][v][0] = [u / maxX, v / maxY]
+                    uv[u][v][1] = [(u + 1) / maxX, v / maxY]
+                    uv[u][v][2] = [u / maxX, (v + 1) / maxY]
+                    uv[u][v][3] = [(u + 1) / maxX, (v + 1) / maxY]
+                }
+            }
+
+            var k = 0
+            for (var u = 0; u < maxX; u++) {
+                for (var v = 0; v < maxY; v++) {
+                    // first triangle
+                    uvs[0 + k] = uv[u][v][0][0]
+                    uvs[1 + k] = uv[u][v][0][1]
+                    uvs[2 + k] = uv[u][v][1][0]
+                    uvs[3 + k] = uv[u][v][1][1]
+                    uvs[4 + k] = uv[u][v][2][0]
+                    uvs[5 + k] = uv[u][v][2][1]
+                    // second triangle
+                    uvs[6 + k] = uv[u][v][3][0]
+                    uvs[7 + k] = uv[u][v][3][1]
+                    uvs[8 + k] = uv[u][v][2][0]
+                    uvs[9 + k] = uv[u][v][2][1]
+                    uvs[10 + k] = uv[u][v][1][0]
+                    uvs[11 + k] = uv[u][v][1][1]
+                    k += 12
+                }
+            }
+
+            return uvs
+        },
+        createVertexPositions = function (maxX, maxY) {
+            var xy = []
+            for (var i = 0; i < maxX; i++) {
+                for (var j = 0; j < maxY; j++) {
+                    xy.push([i, j])
+                }
+            }
+
+            var vertexPositions = [],
+                maxI = maxX * maxY * 6
+            for (var i = 0; i < xy.length; i++) {
+                vertexPositions.push([xy[i][0], xy[i][1], 0])           //
+                vertexPositions.push([xy[i][0] + 1, xy[i][1], 0])       //  FIRST TRIANGLE
+                vertexPositions.push([xy[i][0], xy[i][1] + 1, 0])       //
+
+                vertexPositions.push([xy[i][0] + 1, xy[i][1] + 1, 0])   //
+                vertexPositions.push([xy[i][0], xy[i][1] + 1, 0])       //  SECOND TRIANGLE
+                vertexPositions.push([xy[i][0] + 1, xy[i][1], 0])       //
+            }
+            for (var i = 0; i < vertexPositions.length; i++) {
+                if (vertexPositions[i][0] == 0) {
+                    vertexPositions[i][2] = waterLevel - 0.01
+                }
+                if (vertexPositions[i][0] == maxX) {
+                    vertexPositions[i][2] = waterLevel - 0.01
+                }
+                if (vertexPositions[i][1] == 0) {
+                    vertexPositions[i][2] = waterLevel - 0.01
+                }
+                if (vertexPositions[i][1] == maxY) {
+                    vertexPositions[i][2] = waterLevel - 0.01
+                }
+                // every field?
+                if (vertexPositions[i][0] % 2 == 0 && vertexPositions[i][1] % 2 == 0) {
+                    var type = Fields.get(vertexPositions[i][0] / 2, vertexPositions[i][1] / 2, 1).getTypeWithoutBridge()
+                    switch (type) {
+                        case 'w':
+                            vertexPositions = changeGroundLevel(vertexPositions, maxX, maxY, maxI, i, bottomLevel, type)
+                            break
+                        case 'm':
+                            vertexPositions = changeGroundLevel(vertexPositions, maxX, maxY, maxI, i, -mountainLevel, type)
+                            break
+                        case 'h':
+                            vertexPositions = changeGroundLevel(vertexPositions, maxX, maxY, maxI, i, -hillLevel, type)
+                            break
+                    }
+                }
+            }
+            vertexPositions = adjustMountainLevels(vertexPositions, maxX, maxY)
+
+            return vertexPositions
+        },
+        createGeometry = function (x, y) {
+            var maxX = x * 2,
+                maxY = y * 2,
+                geometry = new THREE.BufferGeometry()
+
+            var vertexPositions = createVertexPositions(maxX, maxY)
+
+            var vertices = new Float32Array(vertexPositions.length * 3),
+                normals = new Float32Array(vertexPositions.length * 3),
+                uvs = new Float32Array(vertexPositions.length * 2)
+
+            for (var i = 0; i < vertexPositions.length; i++) {
+                var index = 3 * i
+                vertices[index + 0] = vertexPositions[i][0]
+                vertices[index + 1] = vertexPositions[i][1]
+                vertices[index + 2] = vertexPositions[i][2]
+            }
+
+            geometry.addAttribute('position', new THREE.BufferAttribute(vertices, 3))
+            geometry.addAttribute('normal', new THREE.BufferAttribute(normals, 3))
+            geometry.addAttribute('uv', createUVS(new THREE.BufferAttribute(uvs, 2), maxX, maxY))
+
+            geometry.computeVertexNormals()
+
+            return geometry
+        },
+        createMesh = function (x, y) {
+            var material = new THREE.MeshLambertMaterial({
+                color: '#ffffff',
+                side: THREE.DoubleSide
+            })
+            var geometry = createGeometry(x, y)
+            var mesh = new THREE.Mesh(geometry, material)
+            mesh.rotation.x = Math.PI / 2
+            GameScene.add(mesh)
+
+
+            var geo = new THREE.WireframeGeometry(mesh.geometry)
+            var mat = new THREE.LineBasicMaterial({color: 0x000000, linewidth: 1})
+            var wireframe = new THREE.LineSegments(geo, mat)
+
+            mesh.add(wireframe)
+        },
+        adjustMountainLevels = function (verPos, maxX, maxY) {
+            for (var i = 0; i < verPos.length; i++) {
+                if (verPos[i][0] == 0) {
+                    continue
+                }
+                if (verPos[i][0] == maxX) {
+                    continue
+                }
+                if (verPos[i][1] == 0) {
+                    continue
+                }
+                if (verPos[i][1] == maxY) {
+                    continue
+                }
+                if (verPos[i][0] % 2 != 0 || verPos[i][1] % 2 != 0) {
+                    continue
+                }
+                if (i % 12 != 0) {
+                    continue
+                }
+                if (Fields.get(verPos[i][0] / 2, verPos[i][1] / 2, 1).getType() == 'm') {
+                    var between = maxY * 6
+                    if (verPos[i][2] == 0) {
+                        verPos[i][2] = -hillLevel
+                        verPos[i - 2][2] = -hillLevel
+                        verPos[i - 4][2] = -hillLevel
+                        verPos[i - between - 3][2] = -hillLevel                //
+                        verPos[i - between + 1][2] = -hillLevel                //
+                        verPos[i - between + 5][2] = -hillLevel               //
+                    }
+
+                    if (verPos[i + 2][2] == 0) {
+                        verPos[i + 2][2] = -hillLevel
+                        verPos[i + 4][2] = -hillLevel
+                        verPos[i + 6][2] = -hillLevel
+                        verPos[i - between + 3][2] = -hillLevel  //
+                        verPos[i - between + 7][2] = -hillLevel  //
+                        verPos[i - between + 11][2] = -hillLevel //
+                    }
+
+                    if (verPos[i + 8][2] == 0) {
+                        verPos[i + 8][2] = -hillLevel
+                        verPos[i + 10][2] = -hillLevel
+                        verPos[i + 12][2] = -hillLevel
+                        verPos[i - between + 9][2] = -hillLevel  //
+                        verPos[i - between + 13][2] = -hillLevel  //
+                        verPos[i - between + 17][2] = -hillLevel //
+                    }
+
+                    if (verPos[i + 1][2] == 0) {
+                        verPos[i - 3][2] = -hillLevel  //
+                        verPos[i + 1][2] = -hillLevel  //
+                        verPos[i + 5][2] = -hillLevel  //
+                        verPos[i + between][2] = -hillLevel  //
+                        verPos[i + between - 2][2] = -hillLevel
+                        verPos[i + between - 4][2] = -hillLevel
+                    }
+
+                    if (verPos[i + 9][2] == 0) {
+                        verPos[i + 9][2] = -hillLevel  //
+                        verPos[i + 13][2] = -hillLevel  //
+                        verPos[i + 17][2] = -hillLevel  //
+                        verPos[i + between + 8][2] = -hillLevel  //
+                        verPos[i + between + 10][2] = -hillLevel
+                        verPos[i + between + 12][2] = -hillLevel
+                    }
+
+                    var between2 = 2 * between
+                    if (verPos[i + between + 1][2] == 0) {
+                        verPos[i + between - 3][2] = -hillLevel  //
+                        verPos[i + between + 1][2] = -hillLevel  //
+                        verPos[i + between + 5][2] = -hillLevel  //
+                        verPos[i + between2][2] = -hillLevel  //
+                        verPos[i + between2 - 2][2] = -hillLevel
+                        verPos[i + between2 - 4][2] = -hillLevel
+                    }
+
+                    if (verPos[i + between + 3][2] == 0) {
+                        verPos[i + between + 3][2] = -hillLevel  //
+                        verPos[i + between + 7][2] = -hillLevel  //
+                        verPos[i + between + 11][2] = -hillLevel  //
+                        verPos[i + between2 + 2][2] = -hillLevel  //
+                        verPos[i + between2 + 4][2] = -hillLevel
+                        verPos[i + between2 + 6][2] = -hillLevel
+                    }
+
+                    if (verPos[i + between + 9][2] == 0) {
+                        verPos[i + between + 9][2] = -hillLevel  //
+                        verPos[i + between + 13][2] = -hillLevel  //
+                        verPos[i + between + 17][2] = -hillLevel  //
+                        verPos[i + between2 + 8][2] = -hillLevel  //
+                        verPos[i + between2 + 10][2] = -hillLevel
+                        verPos[i + between2 + 12][2] = -hillLevel
+                    }
+                }
+            }
+            return verPos
+        },
+        changeGroundLevel = function (verPos, maxX, maxY, maxI, i, level, type) {
+            if (i % 12 == 0) {
+                verPos[i + 3][2] = level                //
+                verPos[i + 7][2] = level                //
+                verPos[i + 11][2] = level               //
+                var between = maxY * 6 + 6                                   //
+                if (i + between < maxI) {                                    // center vertex of the field
+                    verPos[i + between][2] = level      //
+                    verPos[i + between - 2][2] = level  //
+                    verPos[i + between - 4][2] = level  //
+                }
+
+                if ((i + 12) % (maxY * 6) != 0 && Fields.get(verPos[i + 12][0] / 2, verPos[i + 12][1] / 2, 1).getTypeWithoutBridge() == type) {
+                    verPos[i + 9][2] = level                //
+                    verPos[i + 13][2] = level               //
+                    verPos[i + 17][2] = level               //
+                    var between = maxY * 6 + 12                                  //
+                    if (i + between < maxI) {                                        // vertex between two centers od the field on Y axis
+                        verPos[i + between][2] = level      //
+                        verPos[i - 2 + between][2] = level  //
+                        verPos[i - 4 + between][2] = level  //
+                    }                                                            //
+                }
+
+                var nextRow = maxY * 2 * 6
+                if (i + nextRow < maxI && Fields.get(verPos[i + nextRow][0] / 2, verPos[i + nextRow][1] / 2, 1).getTypeWithoutBridge() == type) {
+                    verPos[i + nextRow + 6][2] = level  //
+                    verPos[i + nextRow + 4][2] = level  //
+                    verPos[i + nextRow + 2][2] = level  //
+                    var between = maxY * 6                                   //
+                    verPos[i + between + 3][2] = level  // vertex between two centers od the field on X axis
+                    verPos[i + between + 7][2] = level  //
+                    verPos[i + between + 11][2] = level //
+                }                                                            //
+
+                var nextVertex = nextRow + 12
+                if (i + nextVertex < maxI && (i + nextVertex) % (maxY * 6) != 0 && Fields.get(verPos[i + nextVertex][0] / 2, verPos[i + nextVertex][1] / 2, 1).getTypeWithoutBridge() == type) {
+                    verPos[i + nextVertex][2] = level       //
+                    verPos[i + nextVertex - 2][2] = level   //
+                    verPos[i + nextVertex - 4][2] = level   //
+                    var between = maxY * 6                                       //
+                    verPos[i + between + 9][2] = level      // vertex between two centers od the field on X and Y axis
+                    verPos[i + between + 13][2] = level     //
+                    verPos[i + between + 17][2] = level     //
+                }                                                                //
+            }
+            return verPos
+        }
+    this.init = function (x, y) {
+        createMesh(x, y)
+    }
+}
