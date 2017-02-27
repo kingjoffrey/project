@@ -187,9 +187,13 @@ var Fields = new function () {
     this.init = function () {
 
         var f = [
-            ['g', 'g', 'g'],
-            ['g', 'w', 'g'],
-            ['g', 'g', 'g']
+            ['g', 'g', 'g', 'g', 'g', 'g', 'g'],
+            ['g', 'g', 'g', 'w', 'g', 'g', 'g'],
+            ['g', 'g', 'w', 'w', 'w', 'g', 'g'],
+            ['g', 'w', 'w', 'w', 'w', 'w', 'g'],
+            ['g', 'g', 'w', 'w', 'w', 'g', 'g'],
+            ['g', 'g', 'g', 'w', 'g', 'g', 'g'],
+            ['g', 'g', 'g', 'g', 'g', 'g', 'g']
         ]
 
         grassField = new Field('g')
@@ -219,6 +223,13 @@ var Field = function (type) {
             return 'w'
         }
         return field.type
+    }
+    this.getGrassOrWater = function () {
+        if (field.type == 'b' || field.type == 'w') {
+            return 'w'
+        } else {
+            return 'g'
+        }
     }
 }
 var Ground = new function () {
@@ -262,64 +273,59 @@ var Ground = new function () {
 
             return uvs
         },
-        createVertexPositions = function (maxX, maxY) {
-            var xy = []
-            for (var i = 0; i < maxX; i++) {
-                for (var j = 0; j < maxY; j++) {
-                    xy.push([i, j])
-                }
-            }
+        field = function (x, y, z) {
+            return [
+                {'x': x, 'y': y, 'z': z},
+                {'x': x + 1, 'y': y, 'z': z},
+                {'x': x + 2, 'y': y, 'z': z},
+                {'x': x, 'y': y + 1, 'z': z},
+                {'x': x + 1, 'y': y + 1, 'z': z},
+                {'x': x + 2, 'y': y + 1, 'z': z},
+                {'x': x, 'y': y + 2, 'z': z},
+                {'x': x + 1, 'y': y + 2, 'z': z},
+                {'x': x + 2, 'y': y + 2, 'z': z}
+            ]
 
-            var vertexPositions = [],
-                maxI = maxX * maxY * 6
-            for (var i = 0; i < xy.length; i++) {
-                vertexPositions.push([xy[i][0], xy[i][1], 0])           //
-                vertexPositions.push([xy[i][0] + 1, xy[i][1], 0])       //  FIRST TRIANGLE
-                vertexPositions.push([xy[i][0], xy[i][1] + 1, 0])       //
+        },
 
-                vertexPositions.push([xy[i][0] + 1, xy[i][1] + 1, 0])   //
-                vertexPositions.push([xy[i][0], xy[i][1] + 1, 0])       //  SECOND TRIANGLE
-                vertexPositions.push([xy[i][0] + 1, xy[i][1], 0])       //
-            }
-            for (var i = 0; i < vertexPositions.length; i++) {
-                if (vertexPositions[i][0] == 0) {
-                    vertexPositions[i][2] = waterLevel - 0.01
-                }
-                if (vertexPositions[i][0] == maxX) {
-                    vertexPositions[i][2] = waterLevel - 0.01
-                }
-                if (vertexPositions[i][1] == 0) {
-                    vertexPositions[i][2] = waterLevel - 0.01
-                }
-                if (vertexPositions[i][1] == maxY) {
-                    vertexPositions[i][2] = waterLevel - 0.01
-                }
-                // every field?
-                if (vertexPositions[i][0] % 2 == 0 && vertexPositions[i][1] % 2 == 0) {
-                    var type = Fields.get(vertexPositions[i][0] / 2, vertexPositions[i][1] / 2, 1).getTypeWithoutBridge()
-                    switch (type) {
-                        case 'w':
-                            vertexPositions = changeGroundLevel(vertexPositions, maxX, maxY, maxI, i, bottomLevel, type)
-                            break
-                        case 'm':
-                            vertexPositions = changeGroundLevel(vertexPositions, maxX, maxY, maxI, i, -mountainLevel, type)
-                            break
-                        case 'h':
-                            vertexPositions = changeGroundLevel(vertexPositions, maxX, maxY, maxI, i, -hillLevel, type)
-                            break
+
+        createVertexPositions = function (x, y) {
+            var fields = {}
+
+            for (var yy = 0; yy < y; yy++) {
+                fields[yy] = {}
+                var newY = yy * 2
+
+                for (var xx = 0; xx < x; xx++) {
+
+                    if (Fields.get(xx, yy, 1).getGrassOrWater() == 'g') {
+                        var z = 0
+                    } else {
+                        var z = bottomLevel
                     }
+
+                    var newX = xx * 2
+
+                    fields[yy][xx] = field(newX, newY, z)
                 }
             }
-            vertexPositions = adjustMountainLevels(vertexPositions, maxX, maxY)
+
+            console.log(fields)
+
+            var vertexPositions = []
 
             return vertexPositions
         },
+
+
         createGeometry = function (x, y) {
             var maxX = x * 2,
                 maxY = y * 2,
                 geometry = new THREE.BufferGeometry()
 
-            var vertexPositions = createVertexPositions(maxX, maxY)
+            var vertexPositions = createVertexPositions(x, y)
+
+            return
 
             var vertices = new Float32Array(vertexPositions.length * 3),
                 normals = new Float32Array(vertexPositions.length * 3),
@@ -346,6 +352,11 @@ var Ground = new function () {
                 side: THREE.DoubleSide
             })
             var geometry = createGeometry(x, y)
+
+            if (!geometry) {
+                return
+            }
+
             var mesh = new THREE.Mesh(geometry, material)
             mesh.rotation.x = Math.PI / 2
             GameScene.add(mesh)
@@ -356,152 +367,6 @@ var Ground = new function () {
             var wireframe = new THREE.LineSegments(geo, mat)
 
             mesh.add(wireframe)
-        },
-        adjustMountainLevels = function (verPos, maxX, maxY) {
-            for (var i = 0; i < verPos.length; i++) {
-                if (verPos[i][0] == 0) {
-                    continue
-                }
-                if (verPos[i][0] == maxX) {
-                    continue
-                }
-                if (verPos[i][1] == 0) {
-                    continue
-                }
-                if (verPos[i][1] == maxY) {
-                    continue
-                }
-                if (verPos[i][0] % 2 != 0 || verPos[i][1] % 2 != 0) {
-                    continue
-                }
-                if (i % 12 != 0) {
-                    continue
-                }
-                if (Fields.get(verPos[i][0] / 2, verPos[i][1] / 2, 1).getType() == 'm') {
-                    var between = maxY * 6
-                    if (verPos[i][2] == 0) {
-                        verPos[i][2] = -hillLevel
-                        verPos[i - 2][2] = -hillLevel
-                        verPos[i - 4][2] = -hillLevel
-                        verPos[i - between - 3][2] = -hillLevel                //
-                        verPos[i - between + 1][2] = -hillLevel                //
-                        verPos[i - between + 5][2] = -hillLevel               //
-                    }
-
-                    if (verPos[i + 2][2] == 0) {
-                        verPos[i + 2][2] = -hillLevel
-                        verPos[i + 4][2] = -hillLevel
-                        verPos[i + 6][2] = -hillLevel
-                        verPos[i - between + 3][2] = -hillLevel  //
-                        verPos[i - between + 7][2] = -hillLevel  //
-                        verPos[i - between + 11][2] = -hillLevel //
-                    }
-
-                    if (verPos[i + 8][2] == 0) {
-                        verPos[i + 8][2] = -hillLevel
-                        verPos[i + 10][2] = -hillLevel
-                        verPos[i + 12][2] = -hillLevel
-                        verPos[i - between + 9][2] = -hillLevel  //
-                        verPos[i - between + 13][2] = -hillLevel  //
-                        verPos[i - between + 17][2] = -hillLevel //
-                    }
-
-                    if (verPos[i + 1][2] == 0) {
-                        verPos[i - 3][2] = -hillLevel  //
-                        verPos[i + 1][2] = -hillLevel  //
-                        verPos[i + 5][2] = -hillLevel  //
-                        verPos[i + between][2] = -hillLevel  //
-                        verPos[i + between - 2][2] = -hillLevel
-                        verPos[i + between - 4][2] = -hillLevel
-                    }
-
-                    if (verPos[i + 9][2] == 0) {
-                        verPos[i + 9][2] = -hillLevel  //
-                        verPos[i + 13][2] = -hillLevel  //
-                        verPos[i + 17][2] = -hillLevel  //
-                        verPos[i + between + 8][2] = -hillLevel  //
-                        verPos[i + between + 10][2] = -hillLevel
-                        verPos[i + between + 12][2] = -hillLevel
-                    }
-
-                    var between2 = 2 * between
-                    if (verPos[i + between + 1][2] == 0) {
-                        verPos[i + between - 3][2] = -hillLevel  //
-                        verPos[i + between + 1][2] = -hillLevel  //
-                        verPos[i + between + 5][2] = -hillLevel  //
-                        verPos[i + between2][2] = -hillLevel  //
-                        verPos[i + between2 - 2][2] = -hillLevel
-                        verPos[i + between2 - 4][2] = -hillLevel
-                    }
-
-                    if (verPos[i + between + 3][2] == 0) {
-                        verPos[i + between + 3][2] = -hillLevel  //
-                        verPos[i + between + 7][2] = -hillLevel  //
-                        verPos[i + between + 11][2] = -hillLevel  //
-                        verPos[i + between2 + 2][2] = -hillLevel  //
-                        verPos[i + between2 + 4][2] = -hillLevel
-                        verPos[i + between2 + 6][2] = -hillLevel
-                    }
-
-                    if (verPos[i + between + 9][2] == 0) {
-                        verPos[i + between + 9][2] = -hillLevel  //
-                        verPos[i + between + 13][2] = -hillLevel  //
-                        verPos[i + between + 17][2] = -hillLevel  //
-                        verPos[i + between2 + 8][2] = -hillLevel  //
-                        verPos[i + between2 + 10][2] = -hillLevel
-                        verPos[i + between2 + 12][2] = -hillLevel
-                    }
-                }
-            }
-            return verPos
-        },
-        changeGroundLevel = function (verPos, maxX, maxY, maxI, i, level, type) {
-            if (i % 12 == 0) {
-                verPos[i + 3][2] = level                //
-                verPos[i + 7][2] = level                //
-                verPos[i + 11][2] = level               //
-                var between = maxY * 6 + 6                                   //
-                if (i + between < maxI) {                                    // center vertex of the field
-                    verPos[i + between][2] = level      //
-                    verPos[i + between - 2][2] = level  //
-                    verPos[i + between - 4][2] = level  //
-                }
-
-                if ((i + 12) % (maxY * 6) != 0 && Fields.get(verPos[i + 12][0] / 2, verPos[i + 12][1] / 2, 1).getTypeWithoutBridge() == type) {
-                    verPos[i + 9][2] = level                //
-                    verPos[i + 13][2] = level               //
-                    verPos[i + 17][2] = level               //
-                    var between = maxY * 6 + 12                                  //
-                    if (i + between < maxI) {                                        // vertex between two centers od the field on Y axis
-                        verPos[i + between][2] = level      //
-                        verPos[i - 2 + between][2] = level  //
-                        verPos[i - 4 + between][2] = level  //
-                    }                                                            //
-                }
-
-                var nextRow = maxY * 2 * 6
-                if (i + nextRow < maxI && Fields.get(verPos[i + nextRow][0] / 2, verPos[i + nextRow][1] / 2, 1).getTypeWithoutBridge() == type) {
-                    verPos[i + nextRow + 6][2] = level  //
-                    verPos[i + nextRow + 4][2] = level  //
-                    verPos[i + nextRow + 2][2] = level  //
-                    var between = maxY * 6                                   //
-                    verPos[i + between + 3][2] = level  // vertex between two centers od the field on X axis
-                    verPos[i + between + 7][2] = level  //
-                    verPos[i + between + 11][2] = level //
-                }                                                            //
-
-                var nextVertex = nextRow + 12
-                if (i + nextVertex < maxI && (i + nextVertex) % (maxY * 6) != 0 && Fields.get(verPos[i + nextVertex][0] / 2, verPos[i + nextVertex][1] / 2, 1).getTypeWithoutBridge() == type) {
-                    verPos[i + nextVertex][2] = level       //
-                    verPos[i + nextVertex - 2][2] = level   //
-                    verPos[i + nextVertex - 4][2] = level   //
-                    var between = maxY * 6                                       //
-                    verPos[i + between + 9][2] = level      // vertex between two centers od the field on X and Y axis
-                    verPos[i + between + 13][2] = level     //
-                    verPos[i + between + 17][2] = level     //
-                }                                                                //
-            }
-            return verPos
         }
     this.init = function (x, y) {
         createMesh(x, y)
