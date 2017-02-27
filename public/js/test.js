@@ -289,30 +289,55 @@ var Ground = new function () {
         },
 
 
-        createVertexPositions = function (x, y) {
+        createGrass = function (x, y) {
             var fields = {}
 
             for (var yy = 0; yy < y; yy++) {
-                fields[yy] = {}
-                var newY = yy * 2
+
+                var stripes = new Stripes(),
+                    start = 0,
+                    end = 0
 
                 for (var xx = 0; xx < x; xx++) {
 
-                    if (Fields.get(xx, yy, 1).getGrassOrWater() == 'g') {
-                        var z = 0
+                    if (Fields.get(xx, yy).getGrassOrWater() == 'g') {
+                        if (!start) {
+                            var startX = xx
+
+                            start = 1
+                            end = 0
+                        }
                     } else {
-                        var z = bottomLevel
+                        if (!end) {
+                            stripes.add(startX, xx - 1)
+                            start = 0
+                            end = 1
+                        }
                     }
-
-                    var newX = xx * 2
-
-                    fields[yy][xx] = field(newX, newY, z)
                 }
+
+                if (start && !end) {
+                    stripes.add(startX, xx - 1)
+                }
+
+                fields[yy] = stripes
             }
 
-            console.log(fields)
-
+            return fields
+        },
+        createVertexPositions = function (fields) {
             var vertexPositions = []
+
+            for (var yyy in fields) {
+                var field = fields[yyy].get()
+                vertexPositions.push([field.start, yyy, 0])           //
+                vertexPositions.push([field.end, yyy, 0])             //  FIRST TRIANGLE
+                vertexPositions.push([field.start, yyy + 1, 0])       //
+
+                vertexPositions.push([field.end, yyy + 1, 0])         //
+                vertexPositions.push([field.start, yyy + 1, 0])       //  SECOND TRIANGLE
+                vertexPositions.push([field.end, yyy, 0])             //
+            }
 
             return vertexPositions
         },
@@ -370,5 +395,17 @@ var Ground = new function () {
         }
     this.init = function (x, y) {
         createMesh(x, y)
+    }
+}
+
+var Stripes = function () {
+    var stripes = []
+
+    this.add = function (startX, endX) {
+        stripes.push({'start': startX, 'end': endX})
+    }
+
+    this.get = function () {
+        return stripes
     }
 }
