@@ -204,9 +204,6 @@ var GameGui = new function () {
     this.getShow = function () {
         return show
     }
-    this.moveChatBox = function (func) {
-        $('#chatBox').removeClass('mini')
-    }
     this.titleBlink = function (msg) {
         if (timeoutId) {
             clearInterval(timeoutId);
@@ -239,10 +236,9 @@ var GameGui = new function () {
 
         documentTitle = document.title
 
-        $(document).keydown(function (event) {
+        $(document).on('keydown', function (event) {
             doKey(event)
         })
-
 
         prepareButtons()
         this.adjust()

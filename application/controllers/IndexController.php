@@ -13,7 +13,7 @@ class IndexController extends Coret_Controller_Authorized
 
         $this->view->headLink()->prependStylesheet('/css/main.css?v=' . $version);
 
-        $this->view->jquery();
+        $this->view->headScript()->prependFile('/js/jquery-3.1.1.min.js');
         $this->view->headScript()->appendFile('/js/jquery.mousewheel.min.js');
         $this->view->headScript()->appendFile('/js/Tween.js');
         $this->view->headScript()->appendFile('/js/three/three.min.js');

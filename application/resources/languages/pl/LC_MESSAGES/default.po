@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: WOF\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-02-21 04:30+0100\n"
-"PO-Revision-Date: 2017-02-21 04:32+0100\n"
+"POT-Creation-Date: 2017-02-28 11:36+0100\n"
+"PO-Revision-Date: 2017-02-28 11:37+0100\n"
 "Last-Translator: Bartosz Krzeszewski <bartek@core-t.pl>\n"
 "Language-Team: \n"
 "Language: pl\n"
@@ -223,47 +223,39 @@ msgid "Castles held"
 msgstr "Zamki w posiadaniu"
 
 #: application/views/helpers/Translations.php:11
-#: application/views/scripts/over/index.phtml:7
 msgid "Castles conquered"
 msgstr "Podbite zamki"
 
 #: application/views/helpers/Translations.php:12
-#: application/views/scripts/over/index.phtml:8
 msgid "Castles lost"
 msgstr "Utracone zamki"
 
 #: application/views/helpers/Translations.php:13
-#: application/views/scripts/over/index.phtml:9
 msgid "Castles razed"
 msgstr "Zburzone zamki"
 
 #: application/views/helpers/Translations.php:14
-#: application/views/scripts/over/index.phtml:10
 msgid "Units created"
 msgstr "Utworzonych jednostek"
 
 #: application/views/helpers/Translations.php:15
-#: application/views/scripts/over/index.phtml:11
 msgid "Units killed"
 msgstr "Zabitych jednostek"
 
 #: application/views/helpers/Translations.php:16
-#: application/views/scripts/over/index.phtml:12
 msgid "Units lost"
 msgstr "Stracone jednostki"
 
 #: application/views/helpers/Translations.php:17
-#: application/views/scripts/over/index.phtml:13
 msgid "Heroes killed"
 msgstr "Pokonanych herosów"
 
 #: application/views/helpers/Translations.php:18
-#: application/views/scripts/over/index.phtml:14
 msgid "Heroes lost"
 msgstr "Utraconych herosów"
 
 #: application/views/helpers/Translations.php:19
-#: application/layouts/scripts/default.phtml:95
+#: application/layouts/scripts/default.phtml:94
 msgid "Statistics"
 msgstr "Statystyki"
 
@@ -349,8 +341,8 @@ msgid "Error"
 msgstr "Błąd"
 
 #: application/views/helpers/Translations.php:40
-#: application/layouts/scripts/default.phtml:87
-#: application/layouts/scripts/default.phtml:89
+#: application/layouts/scripts/default.phtml:86
+#: application/layouts/scripts/default.phtml:88
 msgid "Surrender"
 msgstr "Poddaj się"
 
@@ -675,7 +667,7 @@ msgstr "Rozpocznij produkcję"
 
 #: application/views/helpers/Translations.php:121
 #: application/views/helpers/Translations.php:129
-#: application/layouts/scripts/default.phtml:117
+#: application/layouts/scripts/default.phtml:116
 msgid "Close"
 msgstr "Zamknij"
 
@@ -893,12 +885,15 @@ msgstr "Ruiny są już przeszukane"
 msgid "Waiting for:"
 msgstr "Czekam na:"
 
+#: application/views/helpers/Translations.php:176
+msgid "There are no games to load"
+msgstr "Brak gry do załadowania"
+
 #: application/views/helpers/Version.php:6
 msgid "Version number"
 msgstr "Numer wersji"
 
 #: application/layouts/scripts/default.phtml:34
-#: application/views/scripts/over/index.phtml:15
 msgid "Gold"
 msgstr "Złoto"
 
@@ -930,40 +925,40 @@ msgstr "Opuść edytor"
 msgid "Publish"
 msgstr "Publikuj"
 
-#: application/layouts/scripts/default.phtml:77
+#: application/layouts/scripts/default.phtml:76
 msgid "Loading"
 msgstr "Wczytywanie"
 
-#: application/layouts/scripts/default.phtml:81
-#: application/layouts/scripts/default.phtml:83
+#: application/layouts/scripts/default.phtml:80
+#: application/layouts/scripts/default.phtml:82
 msgid "Exit game"
 msgstr "Opuść grę"
 
-#: application/layouts/scripts/default.phtml:93
+#: application/layouts/scripts/default.phtml:92
 msgid "Show statistics"
 msgstr "Pokaż statystyki"
 
-#: application/layouts/scripts/default.phtml:99
+#: application/layouts/scripts/default.phtml:98
 msgid "Show other players moves"
 msgstr "Pokazuj ruchy innych graczy"
 
-#: application/layouts/scripts/default.phtml:101
+#: application/layouts/scripts/default.phtml:100
 msgid "Show others"
 msgstr "Pokaż innych"
 
-#: application/layouts/scripts/default.phtml:105
+#: application/layouts/scripts/default.phtml:104
 msgid "Turn sound on/off"
 msgstr "Włącz/wyłącz dźwięk"
 
-#: application/layouts/scripts/default.phtml:107
+#: application/layouts/scripts/default.phtml:106
 msgid "Sound"
 msgstr "Dźwięk"
 
-#: application/layouts/scripts/default.phtml:111
+#: application/layouts/scripts/default.phtml:110
 msgid "Toggle full screen"
 msgstr "Przełącz na pełen ekran"
 
-#: application/layouts/scripts/default.phtml:113
+#: application/layouts/scripts/default.phtml:112
 msgid "Full screen"
 msgstr "Pełen ekran"
 
@@ -1008,6 +1003,7 @@ msgid "Mirror"
 msgstr "Odbij"
 
 #: application/views/scripts/editor/index.phtml:9
+#: application/views/scripts/load/index.phtml:22
 msgid "Delete"
 msgstr "Usuń"
 
@@ -1082,13 +1078,16 @@ msgid "Start date"
 msgstr "Data rozpoczęcia"
 
 #: application/views/scripts/load/index.phtml:14
-#: application/views/scripts/setup/index.phtml:5
+#: application/views/scripts/setup/index.phtml:6
+#: application/views/scripts/setup/index.phtml:14
 msgid "Player color"
 msgstr "Kolor gracza"
 
 #: application/views/scripts/load/index.phtml:15
-msgid "Team color"
-msgstr "Kolor drużyny"
+#: application/views/scripts/setup/index.phtml:3
+#: application/views/scripts/setup/index.phtml:11
+msgid "Team"
+msgstr "Drużyna"
 
 #: application/views/scripts/load/index.phtml:18
 msgid "Turn nr"
@@ -1102,10 +1101,6 @@ msgstr "Tura gracza"
 msgid "Pause date"
 msgstr "Data wstrzymania"
 
-#: application/views/scripts/load/index.phtml:64
-msgid "There are no games to load"
-msgstr "Brak gry do załadowania"
-
 #: application/views/scripts/messages/index.phtml:2
 msgid "Conversations"
 msgstr "Konwersacje"
@@ -1115,8 +1110,8 @@ msgid "Messages"
 msgstr "Wiadomości"
 
 #: application/views/scripts/over/index.phtml:2
-msgid "Game score"
-msgstr "Punktacja gry"
+msgid "Your score"
+msgstr "Twój wynik"
 
 #: application/views/scripts/play/index.phtml:4
 msgid "Continue tutorial"
@@ -1183,21 +1178,24 @@ msgstr "Ilość rund"
 msgid "Select your color and team"
 msgstr "Wybierz swój kolor i drużynę"
 
-#: application/views/scripts/setup/index.phtml:6
+#: application/views/scripts/setup/index.phtml:7
+#: application/views/scripts/setup/index.phtml:15
 msgid "Select your color"
 msgstr "Wybierz swój kolor"
 
-#: application/views/scripts/setup/index.phtml:8
-msgid "Team"
-msgstr "Drużyna"
-
-#: application/views/scripts/setup/index.phtml:11
+#: application/views/scripts/setup/index.phtml:19
 msgid "Undecided"
 msgstr "Niezdecydowani"
 
 #: application/views/scripts/single/index.phtml:2
 msgid "Start new game"
 msgstr "Uruchom nową grę"
+
+#~ msgid "Team color"
+#~ msgstr "Kolor drużyny"
+
+#~ msgid "Game score"
+#~ msgstr "Punktacja gry"
 
 #~ msgid "Switch to FullScreen"
 #~ msgstr "Przełączyć się na pełen ekran?"

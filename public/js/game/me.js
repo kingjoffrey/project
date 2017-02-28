@@ -124,8 +124,9 @@ var Me = new function () {
             i = 0
 
         GameModels.addArmyCircle(army.getX(), army.getY(), army.getBackgroundColor())
-        if (army.getHeroKey()) {
-            $('#terrain').html(army.getHero(army.getHeroKey()).name)
+        var heroId = army.getHeroKey()
+        if (heroId) {
+            $('#terrain').html(army.getHero(heroId).name)
         }
         Message.remove()
 
@@ -225,7 +226,7 @@ var Me = new function () {
             if (isTruthful(nextArmies[armyId])) {
                 continue
             }
-console.log(armyId)
+            console.log(armyId)
             //reset = false
             nextArmies[armyId] = true
             this.selectArmy(armyId)

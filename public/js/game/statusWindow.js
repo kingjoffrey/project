@@ -42,57 +42,62 @@ var StatusWindow = new function () {
                 )
         },
         buttons = function (field, castleDefense, army) {
-            var showCastle = 'buttonOff',
-                buildCastleDefense = 'buttonOff',
-                searchRuins = 'buttonOff',
-                splitArmy = 'buttonOff'
+            var html = $('<div>')
+                .append(
+                    $('<div>').addClass('iconButton buttonColors')
+                        .click(function () {
+                            Me.disband()
+                        })
+                        .append($('<div>'))
+                        .attr({
+                            id: 'disbandArmy',
+                            title: translations.Disbandarmy
+                        })
+                )
+                .append(
+                    $('<div>')
+                        .addClass('iconButton buttonColors')
+                        .click(function () {
+                            WebSocketSendGame.fortify()
+                        })
+                        .append($('<div>'))
+                        .attr({
+                            id: 'quitArmy',
+                            title: translations.quitArmy + ' (f)'
+                        })
+                )
+                .append(
+                    $('<div>')
+                        .addClass('iconButton buttonColors')
+                        .click(function () {
+                            Me.skip()
+                        })
+                        .append($('<div>'))
+                        .attr({
+                            id: 'skipArmy',
+                            title: translations.skipArmy + ' (space)'
+                        })
+                )
 
-            if (field.getRuinId()) {
-                searchRuins = ''
+            if (field.getRuinId() && army.getHeroKey()) {
+                html.append(
+                    $('<div>')
+                        .addClass('iconButton buttonColors')
+                        .click(function () {
+                            WebSocketSendGame.ruin()
+                        })
+                        .append($('<div>'))
+                        .attr({
+                            id: 'searchRuins',
+                            title: translations.searchRuins + ' (r)'
+                        })
+                )
             }
+
             if (castleDefense) {
-                showCastle = ''
                 if (castleDefense < 4) {
-                    buildCastleDefense = ''
-                }
-                if (castleDefense < 4) {
-                    buildCastleDefense = ''
-                }
-            }
-
-            if (army.getNumberOfUnits() > 1) {
-                splitArmy = ''
-            }
-
-            return $('<div>').addClass('status').append(
-                $('<div>')
-                    .append(
+                    html.append(
                         $('<div>').addClass('iconButton buttonColors')
-                            .click(function () {
-                                Me.disband()
-                            })
-                            .append($('<div>'))
-                            .attr({
-                                id: 'disbandArmy',
-                                title: translations.Disbandarmy
-                            })
-                    )
-                    .append(
-                        $('<div>').addClass('iconButton buttonColors ' + showCastle)
-                            .click(function () {
-                                var castle = Me.getCastle(field.getCastleId())
-                                if (isSet(castle)) {
-                                    CastleWindow.show(castle)
-                                }
-                            })
-                            .append($('<div>'))
-                            .attr({
-                                id: 'showCastle',
-                                title: translations.showCastle + ' (c)'
-                            })
-                    )
-                    .append(
-                        $('<div>').addClass('iconButton buttonColors ' + buildCastleDefense)
                             .click(function () {
                                 CastleWindow.build()
                             })
@@ -102,73 +107,23 @@ var StatusWindow = new function () {
                                 title: translations.buildCastleDefense + ' (b)'
                             })
                     )
-                    .append(
-                        $('<div>')
-                            .addClass('iconButton buttonColors ' + showCastle)
-                            .click(function () {
-                                CastleWindow.raze()
-                            })
-                            .append($('<div>'))
-                            .attr({
-                                id: 'razeCastle',
-                                title: translations.razeCastle
-                            })
-                    )
-                    .append(
-                        $('<div>')
-                            .addClass('iconButton buttonColors ' + searchRuins)
-                            .click(function () {
-                                WebSocketSendGame.ruin()
-                            })
-                            .append($('<div>'))
-                            .attr({
-                                id: 'searchRuins',
-                                title: translations.searchRuins + ' (r)'
-                            })
-                    )
-                    .append(
-                        $('<div>')
-                            .addClass('iconButton buttonColors ' + splitArmy)
-                            .click(function () {
-                                if (!Me.getSelectedArmyId()) {
-                                    return
-                                }
-                                if (splitArmy) {
-                                    return
-                                }
-                                SplitWindow.show()
-                            })
-                            .append($('<div>'))
-                            .attr({
-                                id: 'splitArmy',
-                                title: translations.splitArmy
-                            })
-                    )
-                    .append(
-                        $('<div>')
-                            .addClass('iconButton buttonColors')
-                            .click(function () {
-                                WebSocketSendGame.fortify()
-                            })
-                            .append($('<div>'))
-                            .attr({
-                                id: 'quitArmy',
-                                title: translations.quitArmy + ' (f)'
-                            })
-                    )
-                    .append(
-                        $('<div>')
-                            .addClass('iconButton buttonColors')
-                            .click(function () {
-                                Me.skip()
-                            })
-                            .append($('<div>'))
-                            .attr({
-                                id: 'skipArmy',
-                                title: translations.skipArmy + ' (space)'
-                            })
-                    )
-            )
+                }
+
+                html.append(
+                    $('<div>')
+                        .addClass('iconButton buttonColors')
+                        .click(function () {
+                            CastleWindow.raze()
+                        })
+                        .append($('<div>'))
+                        .attr({
+                            id: 'razeCastle',
+                            title: translations.razeCastle
+                        })
+                )
+            }
+
+            return $('<div>').addClass('status').append(html)
         }
 
     this.show = function () {

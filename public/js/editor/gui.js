@@ -75,7 +75,7 @@ var EditorGui = new function () {
 
         $('#terrain').removeClass('game').addClass('editor')
 
-        $(document).keydown(function (event) {
+        $(document).on('keydown', function (event) {
             doKey(event)
         })
 

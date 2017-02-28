@@ -25,6 +25,7 @@ var IndexController = new function () {
         }
 
         $(window).off('resize')
+        $(document).off('keydown')
 
         $('.message').remove()
 
