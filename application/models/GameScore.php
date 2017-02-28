@@ -48,27 +48,32 @@ class Application_Model_GameScore extends Coret_Db_Table_Abstract
 
     public function getPlayerScores($playerId)
     {
-        $gameId = $this->_db->quoteIdentifier('gameId');
-        $mapId = $this->_db->quoteIdentifier('mapId');
+        $gId = $this->_db->quoteIdentifier('gameId');
+        $pId = $this->_db->quoteIdentifier('playerId');
+        $mId = $this->_db->quoteIdentifier('mapId');
 
         $select = $this->_db->select()
             ->from(array('a' => $this->_name), 'score')
-            ->join(array('b' => 'game'), 'a.' . $gameId . ' = b.' . $gameId, array('gameId', 'begin', 'end', 'turnNumber', 'numberOfPlayers'))
-            ->join(array('c' => 'map'), 'b.' . $mapId . ' = c.' . $mapId, array('name'))
-            ->where('a.' . $this->_db->quoteIdentifier('playerId') . ' = ?', $playerId)
+            ->join(array('b' => 'game'), 'a.' . $gId . ' = b.' . $gId, array('gameId', 'begin', 'end', 'turnNumber', 'numberOfPlayers'))
+            ->join(array('c' => 'map'), 'b.' . $mId . ' = c.' . $mId, array('name'))
+            ->where('a.' . $pId . ' = ?', $playerId)
             ->where('tutorial = ?', $this->parseBool(false));
 
         return $this->selectAll($select);
     }
 
-    public function get($gameId)
+    public function getYourScore($gameId, $playerId)
     {
-        $select = $this->_db->select()
-            ->from($this->_name)
-            ->where($this->_db->quoteIdentifier('gameId') . ' = ?', $gameId)
-            ->order('score desc');
+        $gId = $this->_db->quoteIdentifier('gameId');
+        $pId = $this->_db->quoteIdentifier('playerId');
 
-        return $this->selectAll($select);
+        $select = $this->_db->select()
+            ->from(array('a' => $this->_name), 'score')
+            ->join(array('b' => 'game'), 'a.' . $gId . ' = b.' . $gId, null)
+            ->where('a.' . $gId . ' = ?', $gameId)
+            ->where('a.' . $pId . ' = ?', $playerId);
+
+        return $this->selectOne($select);
     }
 }
 

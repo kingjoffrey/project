@@ -20,7 +20,7 @@
         </tr>
         <?php if (count($this->playerScores)): ?>
             <?php foreach ($this->playerScores as $row): ?>
-                <tr class="trlink" id="<?php echo $row['gameId'] ?>">
+                <tr>
                     <td><?php echo $row['name'] ?></td>
                     <td><?php echo $row['numberOfPlayers'] ?></td>
                     <td><?php echo Coret_View_Helper_Formatuj::shortDate($row['begin']) ?> - <?php echo Coret_View_Helper_Formatuj::shortDate($row['end']) ?></td>

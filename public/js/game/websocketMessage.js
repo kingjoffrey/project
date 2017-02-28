@@ -24,60 +24,48 @@ var WebSocketMessageGame = new function () {
                 break
 
             case 'update':
-                Me.setSelectedCastleId(0)
-                Me.resetSkippedArmies()
-
-                var castles = Me.getCastles()
-                for (var castleId in r.productionTurns) {
-                    castles.get(castleId).setProductionTurn(r.productionTurns[castleId])
-                }
-                Sound.play('startturn')
-
-                Me.setUpkeep(r.upkeep)
-                Me.setGold(r.gold)
-                Me.setIncome(r.income)
-                GameGui.unlock()
+                Execute.addQueue(r)
                 break
 
             case 'nextTurn':
                 Execute.addQueue(r)
-                break;
+                break
 
             case 'neutral':
                 Execute.addQueue(r)
-                break;
+                break
 
             case 'startTurn':
                 Execute.addQueue(r)
-                break;
+                break
 
             case 'ruin':
                 Execute.addQueue(r)
-                break;
+                break
 
             case 'split':
                 Execute.addQueue(r)
-                break;
+                break
 
             case 'join':
                 Execute.addQueue(r)
-                break;
+                break
 
             case 'disband':
                 Execute.addQueue(r)
-                break;
+                break
 
             case 'resurrection':
                 Execute.addQueue(r)
-                break;
+                break
 
             case 'raze':
                 Execute.addQueue(r)
-                break;
+                break
 
             case 'defense':
                 Execute.addQueue(r)
-                break;
+                break
 
             case 'surrender':
                 Execute.addQueue(r)
@@ -85,20 +73,20 @@ var WebSocketMessageGame = new function () {
 
             case 'end':
                 Execute.addQueue(r)
-                break;
+                break
 
             case 'dead':
                 Execute.addQueue(r)
-                break;
+                break
 
             case 'error':
                 Message.error(r.msg);
                 GameGui.unlock();
-                break;
+                break
 
             case 'open':
                 GameInit.init(r)
-                break;
+                break
 
             case 'production':
                 var castle = Me.getCastle(r.castleId)
@@ -118,7 +106,7 @@ var WebSocketMessageGame = new function () {
 
             case 'statistics':
                 StatisticsWindow.show(r)
-                break;
+                break
 
             case 'bSequence':
                 if (r.attack == 'true') {
@@ -131,7 +119,7 @@ var WebSocketMessageGame = new function () {
                 break
 
             default:
-                console.log(r);
+                console.log(r)
         }
     }
 }

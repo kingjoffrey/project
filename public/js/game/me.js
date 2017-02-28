@@ -109,9 +109,6 @@ var Me = new function () {
     this.getSelectedUnitId = function () {
         return selectedUnitId
     }
-    this.resetSkippedArmies = function () {
-        skippedArmies = {}
-    }
     this.getSelectedArmyId = function () {
         return selectedArmyId
     }
@@ -193,7 +190,7 @@ var Me = new function () {
             this.findNext()
         }
     }
-    this.findNext = function () {
+    this.findNext = function (quiet) {
         if (!Turn.isMy()) {
             return
         }
@@ -203,11 +200,13 @@ var Me = new function () {
         }
 
         var armyId = this.getSelectedArmyId()
+        console.log(armyId)
         if (armyId) {
             nextArmies[armyId] = true
         }
 
         this.deselectArmy()
+
         var armies = me.getArmies().toArray()
 
         for (var armyId in armies) {
@@ -226,24 +225,27 @@ var Me = new function () {
             if (isTruthful(nextArmies[armyId])) {
                 continue
             }
-
+console.log(armyId)
             //reset = false
             nextArmies[armyId] = true
             this.selectArmy(armyId)
-            return
+
+            return armyId
         }
 
         if ($.isEmptyObject(nextArmies)) {
-            Sound.play('error');
-            var id = Message.show(translations.nextArmy, $('<div>').html(translations.thereIsNoFreeArmyWithSpareMovePoints))
-            Message.addButton(id, 'cancel')
-            Message.addButton(id, 'nextTurn', function () {
-                WebSocketSendGame.nextTurn()
-            })
+            if (notSet(quiet)) {
+                Sound.play('error')
+                var id = Message.show(translations.nextArmy, $('<div>').html(translations.thereIsNoFreeArmyWithSpareMovePoints))
+                Message.addButton(id, 'cancel')
+                Message.addButton(id, 'nextTurn', function () {
+                    WebSocketSendGame.nextTurn()
+                })
+            }
         } else {
             this.deselectArmy()
             nextArmies = {}
-            this.findNext()
+            this.findNext(quiet)
         }
     }
     this.addQuited = function (armyId) {
@@ -273,21 +275,12 @@ var Me = new function () {
         Sound.play('slash')
         this.selectArmy(armyId, 0)
     }
-    this.findFirst = function () {
-        if (Me.getArmies().count()) {
-            Me.findNext()
-        }
-    }
     this.turnOn = function () {
-        this.resetSkippedArmies()
-        if (!WebSocketTutorial.isOpen()) {
-            if (Turn.isMy() && Turn.getNumber() == 1 && !this.getCastle(this.getFirsCastleId()).getProductionId()) {
-                CastleWindow.show(this.getCastle(this.getFirsCastleId()))
-            } else {
-                var id = Message.simple(translations.yourTurn, translations.thisIsYourTurnNow)
-                Message.addButton(id, 'Findarmy', Me.findFirst)
-            }
-        }
+        $('#turnInfo').hide()
+
+        skippedArmies = {}
+        nextArmies = {}
+
         GameGui.unlock()
         GameGui.titleBlink(translations.yourTurn)
     }
@@ -295,7 +288,6 @@ var Me = new function () {
         this.deselectArmy()
         $('#nextTurn').addClass('buttonOff')
         $('#nextArmy').addClass('buttonOff')
-        //makeMyCursorLock();
     }
     this.getTurnActive = function () {
         return me.getTurnActive()

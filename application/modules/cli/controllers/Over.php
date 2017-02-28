@@ -15,9 +15,7 @@ class OverController
         }
 
         $mGameScore = new Application_Model_GameScore($db);
-        $mPlayersInGame = new Application_Model_PlayersInGame($gameId, $db);
-        $view->score = $mGameScore->get($gameId);
-        $view->players = $mPlayersInGame->getGamePlayers();
+        $view->score = $mGameScore->getYourScore($gameId, $user->parameters['playerId']);
 
         $view->addScriptPath(APPLICATION_PATH . '/views/scripts');
 

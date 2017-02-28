@@ -1202,3 +1202,8 @@ input.max {
     display: none;
 }
 
+#score {
+    text-align: center;
+    font-size: 20vw;
+    color: red;
+}

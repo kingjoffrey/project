@@ -28,15 +28,7 @@ var ProfileController = new function () {
         })
     }
     this.show = function (r) {
-        var content = $('#content'),
-            data = r.data
-
-        content.html(data)
-
-        $('.trlink').click(function () {
-            var id = $(this).attr('id')
-            WebSocketSendMain.controller('over', 'index', {'id': id})
-        })
+        $('#content').html(r.data)
     }
     this.ok = function (r) {
         var content = $('#content'),

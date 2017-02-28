@@ -2,10 +2,7 @@
 var HalloffameController = new function () {
     var playerId
     this.index = function (r) {
-        var content = $('#content'),
-            data = r.data
-
-        content.html(data)
+        $('#content').html(r.data)
 
         $('.trlink').click(function () {
             playerId = $(this).attr('id')

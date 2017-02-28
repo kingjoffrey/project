@@ -5,7 +5,7 @@ var Execute = new function () {
         i = 0,
         execute = function (r) {
             executing = 1
-            //console.log(r)
+            // console.log(r)
             switch (r.type) {
                 case 'move':
                     Move.start(r, i)
@@ -13,33 +13,43 @@ var Execute = new function () {
 
                 case 'nextTurn':
                     Turn.change(r.color, r.nr)
-                    if (Players.get(r.color).isComputer()) {
-                        WebSocketSendGame.computer()
+                    break
+
+                case 'update':
+                    Me.setSelectedCastleId(0)
+
+                    var castles = Me.getCastles()
+                    for (var castleId in r.productionTurns) {
+                        castles.get(castleId).setProductionTurn(r.productionTurns[castleId])
                     }
-                    if (Players.get(r.color).isComputer() && !GameGui.getShow()) {
-                        Execute.setExecuting(0)
-                    } else {
-                        Players.showFirst(r.color, function () {
-                            Execute.setExecuting(0)
-                        })
-                    }
-                    break;
+                    Sound.play('startturn')
+
+                    Me.setUpkeep(r.upkeep)
+                    Me.setGold(r.gold)
+                    Me.setIncome(r.income)
+                    GameGui.unlock()
+
+                    Execute.setExecuting(0)
+                    break
 
                 case 'neutral':
                     var armies = Players.get('neutral').getArmies()
                     for (var armyId in r.armies) {
                         armies.handle(r.armies[armyId])
                     }
+
                     Execute.setExecuting(0)
-                    break;
+                    break
 
                 case 'startTurn':
                     var armies = Players.get(r.color).getArmies()
                     for (var armyId in r.armies) {
                         armies.handle(r.armies[armyId])
                     }
-                    Execute.setExecuting(0)
-                    break;
+
+                    Turn.start(r.color)
+
+                    break
 
                 case 'ruin':
                     if (Players.get(r.color).isComputer() && !GameGui.getShow()) {
@@ -186,6 +196,7 @@ var Execute = new function () {
                     } else {
                         GameRenderer.start()
                         $('#gameMenu').hide()
+                        $('#turnInfo').hide()
                         Me.turnOff()
                         var id = Message.show(translations.gameOver, $('<div>').append($('<div>').html(translations.thisIsTheEnd)))
                         Message.addButton(id, 'ok', GameGui.end)
@@ -193,6 +204,7 @@ var Execute = new function () {
                     break;
 
                 case 'dead':
+                    console.log(r)
                     Execute.setExecuting(0)
                     break;
             }

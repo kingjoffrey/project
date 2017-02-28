@@ -5,22 +5,62 @@ var Turn = new function () {
     this.getColor = function () {
         return color
     }
-    this.change = function (c) {
+    this.change = function (c, n) {
         color = c
-        number++
+        number = n
+
         if (Turn.isMy()) {
             Me.turnOn()
             WebSocketSendGame.startMyTurn()
-            $('#turnInfo').hide()
+            Execute.setExecuting(0)
         } else {
+            Me.turnOff()
+            var player = Players.get(color)
             $('#turnInfo')
-                .html(translations.Waitingfor + ' ' + Players.get(color).getLongName())
+                .html(translations.Waitingfor + ' ' + player.getLongName())
                 .css({
-                    'background': Players.get(color).getBackgroundColor(),
-                    'color': Players.get(color).getTextColor()
+                    'background': player.getBackgroundColor(),
+                    'color': player.getTextColor()
                 })
                 .show()
-            Me.turnOff()
+
+            if (Players.get(color).isComputer()) {
+                WebSocketSendGame.computer()
+            }
+
+            if (Players.get(color).isComputer() && !GameGui.getShow()) {
+                Execute.setExecuting(0)
+            } else {
+                Players.showFirst(color, function () {
+                    setTimeout(function () {
+                        Execute.setExecuting(0)
+                    }, 500)
+                })
+            }
+        }
+    }
+    this.start = function (color) {
+        if (Turn.isMy()) {
+            if (!WebSocketTutorial.isOpen() && Turn.getNumber() == 1 && !Me.getCastle(Me.getFirsCastleId()).getProductionId()) {
+                CastleWindow.show(Me.getCastle(Me.getFirsCastleId()))
+                Players.showFirst(color, function () {
+                    Execute.setExecuting(0)
+                })
+            } else if (Me.getArmies().count()) {
+                if (!Me.findNext(1)) {
+                    Players.showFirst(color, function () {
+                        Execute.setExecuting(0)
+                    })
+                } else {
+                    Execute.setExecuting(0)
+                }
+            } else {
+                Players.showFirst(color, function () {
+                    Execute.setExecuting(0)
+                })
+            }
+        } else {
+            Execute.setExecuting(0)
         }
     }
     this.isMy = function () {
@@ -34,9 +74,5 @@ var Turn = new function () {
     this.next = function () {
         var id = Message.simple(translations.nextTurn, translations.areYouSure)
         Message.addButton(id, 'Yes', WebSocketSendGame.nextTurn)
-    }
-    this.init = function (c, n) {
-        number = n - 1
-        this.change(c)
     }
 }
