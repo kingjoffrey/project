@@ -13,10 +13,17 @@ class LoadController
 
         $mPlayer = new Application_Model_Player($db);
 
+
         foreach ($myGames as &$game) {
             $mPlayersInGame = new Application_Model_PlayersInGame($game['gameId'], $db);
             $game['players'] = $mPlayersInGame->getGamePlayers();
-            $game['playerTurn'] = $mPlayer->getPlayer($game['turnPlayerId']);
+
+            $player = $mPlayer->getPlayer($game['turnPlayerId']);
+            $player['name'] = trim($player['firstName'] . ' ' . $player['lastName']);
+            unset($player['firstName']);
+            unset($player['lastName']);
+
+            $game['playerTurn'] = $player;
             $game['begin'] = Coret_View_Helper_Formatuj::date($game['begin'], 'Y.m.d H:i');
             $game['end'] = Coret_View_Helper_Formatuj::date($game['end'], 'Y.m.d H:i');
         }

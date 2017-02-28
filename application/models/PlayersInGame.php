@@ -127,6 +127,9 @@ class Application_Model_PlayersInGame extends Coret_Db_Table_Abstract
         $players = array();
 
         foreach ($this->selectAll($select) as $v) {
+            $v['name'] = trim($v['firstName'] . ' ' . $v['lastName']);
+            unset($v['firstName']);
+            unset($v['lastName']);
             $players[$v['playerId']] = $v;
         }
 

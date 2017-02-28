@@ -11,7 +11,7 @@ var WebSocketMessageNew = new function () {
                 if (notSet(r.close)) {
                     Setup.removePlayer(r.player.playerId)
                     if (r.player.sideId) {
-                        $('tr#' + r.player.sideId + ' .td3').html(r.player.firstName + ' ' + r.player.lastName)
+                        $('tr#' + r.player.sideId + ' .td3').html(r.player.name)
 
                         if (r.player.playerId == id) {
                             $('tr#' + r.player.sideId + ' .td2 a').html(translations.deselect)
@@ -27,7 +27,7 @@ var WebSocketMessageNew = new function () {
                     } else {
                         $('#playersout').append(
                             $('<tr>')
-                                .html($('<td>').html(r.player.firstName + ' ' + r.player.lastName))
+                                .html($('<td>').html(r.player.name))
                                 .attr('id', r.player.playerId)
                         )
                     }

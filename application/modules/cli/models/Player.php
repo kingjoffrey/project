@@ -28,7 +28,7 @@ class Cli_Model_Player extends Cli_Model_DefaultPlayer
         $this->_backgroundColor = $player['backgroundColor'];
         $this->_textColor = $player['textColor'];
 
-        $this->_longName = $player['firstName'] . ' ' . $player['lastName'];
+        $this->_longName = $player['name'];
 
         $this->_teamId = $player['teamId'];
         $this->_color = $player['color'];

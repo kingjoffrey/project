@@ -215,11 +215,12 @@ class SetupGame
     {
         $mPlayer = new Application_Model_Player($db);
         $player = $mPlayer->getPlayer($playerId);
+
+        $name = trim($player['firstName'] . ' ' . $player['lastName']);
+
         $this->_players[$playerId] = array(
             'playerId' => $player['playerId'],
-//            'sideId' => $player['sideId'],
-            'firstName' => $player['firstName'],
-            'lastName' => $player['lastName']
+            'name' => $name
         );
         $this->_users[$playerId] = $user;
     }

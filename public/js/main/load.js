@@ -19,7 +19,7 @@ var LoadController = new function () {
                     .append(
                         $('<div>')
                             .append(
-                                $('<div>').addClass('playersName').html(player.firstName + ' ' + player.lastName)
+                                $('<div>').addClass('playersName').html(player.name)
                             )
                             .append(
                                 $('<div>').addClass('playersColors')
@@ -38,7 +38,7 @@ var LoadController = new function () {
                     .append(
                         $('<td>')
                             .append(
-                                $('<div>').addClass('padding').html(game.players[game.gameMasterId].firstName + ' ' + game.players[game.gameMasterId].lastName)
+                                $('<div>').addClass('padding').html(game.players[game.gameMasterId].name)
                             )
                             .append(
                                 $('<div>').addClass('padding').html(game.begin)
@@ -49,7 +49,7 @@ var LoadController = new function () {
                     .append(
                         $('<td>')
                             .append($('<div>').addClass('padding').html(game.turnNumber))
-                            .append($('<div>').addClass('padding').html(game.playerTurn.firstName + ' ' + game.playerTurn.lastName))
+                            .append($('<div>').addClass('padding').html(game.playerTurn.name))
                             .append($('<div>').addClass('padding').html(game.end))
                     )
                     .append(
