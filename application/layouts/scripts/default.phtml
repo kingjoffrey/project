@@ -29,9 +29,14 @@
     <div id="game">
         <div id="terrain"></div>
         <div id="tutorial" class="game"></div>
-        <div id="gold" class="button buttonColors game">
-            <div id="value">0</div>
-            <div id="description"><?php echo $this->translate('Gold') ?></div>
+        <div id="goldAndStats" class=" game">
+            <div id="gold" class="iconButton buttonColors">
+                <div id="value" class="varchar">0</div>
+                <div id="description" class="varchar"><?php echo $this->translate('Gold') ?></div>
+            </div>
+            <div id="statistics" class="iconButton buttonColors">
+                <div title="<?php echo $this->translate('Statistics') ?>">&nbsp;</div>
+            </div>
         </div>
 
         <div id="menuButtons" class="game">
@@ -86,12 +91,6 @@
                 <div class="description"><?php echo $this->translate('Surrender') ?></div>
                 <div id="surrender" class="iconButton buttonColors">
                     <div title="<?php echo $this->translate('Surrender') ?>">&nbsp;</div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="description"><?php echo $this->translate('Show statistics') ?></div>
-                <div id="statistics" class="iconButton buttonColors">
-                    <div title="<?php echo $this->translate('Statistics') ?>">&nbsp;</div>
                 </div>
             </div>
             <div class="row">

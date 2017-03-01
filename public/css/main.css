@@ -740,10 +740,9 @@ div.table table.unitTable td:first {
     padding: 1px;
 }
 
-#gold {
+#goldAndStats {
     text-shadow: none;
     position: absolute;
-    margin: 0.7vw;
 }
 
 #gold #value {

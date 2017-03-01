@@ -171,8 +171,8 @@ var GameGui = new function () {
         GameScene.resize($(window).innerWidth(), $(window).innerHeight())
         GameRenderer.setSize($(window).innerWidth(), $(window).innerHeight())
 
-        var goldButtonLeft = $(window).innerWidth() / 2 - $('#gold').outerWidth() / 2
-        $('#gold').css({
+        var goldButtonLeft = $(window).innerWidth() / 2 - $('#goldAndStats').outerWidth() / 2
+        $('#goldAndStats').css({
             'left': goldButtonLeft + 'px'
         })
 
