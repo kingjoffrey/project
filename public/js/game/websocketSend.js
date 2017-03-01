@@ -81,7 +81,9 @@ var WebSocketSendGame = new function () {
 
         Me.addQuited(armyId)
         Me.deselectArmy()
-        Me.findNext()
+        if (!Page.hasTouch()) {
+            Me.findNext()
+        }
 
         var token = {
             'type': 'fortify',

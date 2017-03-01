@@ -57,7 +57,8 @@ class Application_Model_GameScore extends Coret_Db_Table_Abstract
             ->join(array('b' => 'game'), 'a.' . $gId . ' = b.' . $gId, array('gameId', 'begin', 'end', 'turnNumber', 'numberOfPlayers'))
             ->join(array('c' => 'map'), 'b.' . $mId . ' = c.' . $mId, array('name'))
             ->where('a.' . $pId . ' = ?', $playerId)
-            ->where('tutorial = ?', $this->parseBool(false));
+            ->where('tutorial = ?', $this->parseBool(false))
+            ->order('end DESC');
 
         return $this->selectAll($select);
     }
