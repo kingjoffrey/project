@@ -119,14 +119,6 @@ var GameGui = new function () {
                 Me.findNext()
             })
 
-            $('#armyStatus').click(function () {
-                if (!Me.getSelectedArmyId()) {
-                    return
-                }
-                Sound.play('click')
-                StatusWindow.show()
-            })
-
             $('#deselectArmy').click(function () {
                 if (!Me.getSelectedArmyId()) {
                     return;

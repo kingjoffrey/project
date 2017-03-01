@@ -79,18 +79,6 @@ var StatusWindow = new function () {
                             title: translations.quitArmy + ' (f)'
                         })
                 )
-                .append(
-                    $('<div>')
-                        .addClass('iconButton buttonColors')
-                        .click(function () {
-                            Me.skip()
-                        })
-                        .append($('<div>'))
-                        .attr({
-                            id: 'skipArmy',
-                            title: translations.skipArmy + ' (space)'
-                        })
-                )
 
             if (field.getRuinId() && army.getHeroKey()) {
                 html.append(

@@ -133,7 +133,9 @@ var Me = new function () {
         this.removeFromSkipped(armyId)
         this.deleteQuited(armyId)
 
-        $('#armyStatus').removeClass('buttonOff')
+        $('#skipArmy').removeClass('buttonOff').click(function () {
+            Me.skip()
+        })
 
         if (notSet(center)) {
             GameScene.centerOn(army.getX(), army.getY(), function () {
@@ -165,9 +167,8 @@ var Me = new function () {
             deselectedArmyId = selectedArmyId
         }
         selectedArmyId = null
-        $('.path').remove();
-        $('#deselectArmy').addClass('buttonOff');
-        $('#armyStatus').addClass('buttonOff');
+        $('.path').remove()
+        $('#skipArmy').addClass('buttonOff').off()
     }
     this.removeFromSkipped = function (armyId) {
         if (isTruthful(skippedArmies[armyId])) {

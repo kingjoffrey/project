@@ -236,8 +236,6 @@ div.table table {
 }
 
 #content form label {
-    /*color: #999;*/
-    /*color: #00ed00;*/
     color: red;
     margin: 0.7vw;
     display: flex;
@@ -247,10 +245,6 @@ div.table table {
 #content form#search {
     background: none;
     border: none;
-}
-
-dl {
-    width: 30vw;
 }
 
 dt {
