@@ -1,14 +1,10 @@
 var StatusWindow = new function () {
     var statusRowContent = function (id, soldier, attackFlyBonus, attackHeroBonus, defenseFlyBonus, defenseHeroBonus, defenseTowerBonus, defenseCastleBonus) {
-            return $('<tr>').addClass('row')
+            return $('<tr>').addClass('row').css('cursor', 'pointer')
                 .append($('<td>').addClass('name').html(Units.get(soldier.unitId).name_lang))
                 .append($('<td>')
                     .append($('<div>')
-                        .append($('<div>').addClass('attr').html(translations.Moves + ': '))
-                        .append($('<div>').addClass('attr value').html(soldier.movesLeft + '/' + Units.get(soldier.unitId).moves))
-                    )
-                    .append($('<div>')
-                        .append($('<div>').addClass('attr').html(translations.attackPoints + ': '))
+                        .append($('<div>').addClass('attr').html(translations.Attack + ': '))
                         .append($('<div>').addClass('attr value')
                             .append($('<div>').html(Units.get(soldier.unitId).a))
                             .append(attackFlyBonus.clone())
@@ -16,7 +12,7 @@ var StatusWindow = new function () {
                         )
                     )
                     .append($('<div>')
-                        .append($('<div>').addClass('attr').html(translations.defencePoints + ': '))
+                        .append($('<div>').addClass('attr').html(translations.Defence + ': '))
                         .append($('<div>').addClass('attr value')
                             .append($('<div>').html(Units.get(soldier.unitId).d))
                             .append(defenseFlyBonus.clone())
@@ -28,18 +24,29 @@ var StatusWindow = new function () {
                 )
                 .append($('<td>')
                     .append($('<div>')
-                        .append($('<div>').addClass('attr').html(translations.Forest + ': '))
-                        .append($('<div>').addClass('attr value').html(Units.get(soldier.unitId).f))
+                        .append($('<div>').addClass('attr').html(translations.Moves + ': '))
+                        .append($('<div>').addClass('attr value').html(soldier.movesLeft + '/' + Units.get(soldier.unitId).moves))
                     )
                     .append($('<div>')
-                        .append($('<div>').addClass('attr').html(translations.Swamp + ': '))
-                        .append($('<div>').addClass('attr value').html(Units.get(soldier.unitId).s))
+                        .append($('<div>').addClass('attr').html(translations.Cost + ': '))
+                        .append($('<div>').addClass('attr value').html(Units.get(soldier.unitId).cost))
                     )
-                    .append($('<div>')
-                        .append($('<div>').addClass('attr').html(translations.Hills + ': '))
-                        .append($('<div>').addClass('attr value').html(Units.get(soldier.unitId).h))
-                    )
+                    .append($('<input>').hide().attr({
+                        type: 'checkbox',
+                        name: 'soldierId',
+                        value: id
+                    }))
                 )
+                .click(function () {
+                    var input = $(this).find('input')
+                    if (input.prop('checked')) {
+                        input.prop('checked', false)
+                        $(this).removeClass('selected')
+                    } else {
+                        input.prop('checked', true)
+                        $(this).addClass('selected')
+                    }
+                })
         },
         buttons = function (field, castleDefense, army) {
             var html = $('<div>')
@@ -175,15 +182,11 @@ var StatusWindow = new function () {
             var hero = army.getHero(heroId)
             table.append(
                 $('<tr>')
-                    .addClass('row')
+                    .addClass('row').css('cursor', 'pointer')
                     .append($('<td>').addClass('name').html(hero.name))
                     .append($('<td>')
                         .append($('<div>')
-                            .append($('<div>').addClass('attr').html(translations.Moves + ': '))
-                            .append($('<div>').addClass('attr value').html(hero.movesLeft + '/' + hero.moves))
-                        )
-                        .append($('<div>')
-                            .append($('<div>').addClass('attr').html(translations.attackPoints + ': '))
+                            .append($('<div>').addClass('attr').html(translations.Attack + ': '))
                             .append($('<div>').addClass('attr value')
                                     .append($('<div>').html(hero.attack))
                                     .append(attackFlyBonus.clone())
@@ -191,7 +194,7 @@ var StatusWindow = new function () {
                             )
                         )
                         .append($('<div>')
-                            .append($('<div>').addClass('attr').html(translations.defencePoints + ': '))
+                            .append($('<div>').addClass('attr').html(translations.Defence + ': '))
                             .append($('<div>').addClass('attr value')
                                 .append($('<div>').html(hero.defense))
                                 .append(defenseFlyBonus.clone())
@@ -203,25 +206,34 @@ var StatusWindow = new function () {
                     )
                     .append($('<td>')
                         .append($('<div>')
-                            .append($('<div>').addClass('attr').html(translations.Forest + ': '))
-                            .append($('<div>').addClass('attr value').html(3))
+                            .append($('<div>').addClass('attr').html(translations.Moves + ': '))
+                            .append($('<div>').addClass('attr value').html(hero.movesLeft + '/' + hero.moves))
                         )
                         .append($('<div>')
-                            .append($('<div>').addClass('attr').html(translations.Swamp + ': '))
-                            .append($('<div>').addClass('attr value').html(4))
+                            .append($('<div>').addClass('attr').html(translations.Cost + ': '))
+                            .append($('<div>').addClass('attr value').html('0'))
                         )
-                        .append($('<div>')
-                            .append($('<div>').addClass('attr').html(translations.Hills + ': '))
-                            .append($('<div>').addClass('attr value').html(5))
-                        )
+                        .append($('<input>').hide().attr({
+                            type: 'checkbox',
+                            name: 'heroId',
+                            value: heroId
+                        }))
                     )
+                    .click(function () {
+                        var input = $(this).find('input')
+                        if (input.prop('checked')) {
+                            input.prop('checked', false)
+                            $(this).removeClass('selected')
+                        } else {
+                            input.prop('checked', true)
+                            $(this).addClass('selected')
+                        }
+                    })
             )
         }
 
-        var id = Message.simple(translations.armyStatus, div.append(table))
-
-        // for (var soldierId in army.getWalkingSoldiers()) {
-        //     $('soldier' + soldierId).html(Unit.getName(army.getWalkingSoldier(soldierId).unitId))
-        // }
+        var id = Message.show(translations.armyStatus, div.append(table))
+        Message.addButton(id, 'cancel')
+        Message.addButton(id, 'splitArmy', WebSocketSendGame.split)
     }
 }

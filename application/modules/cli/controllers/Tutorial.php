@@ -34,6 +34,7 @@ class TutorialController
             }
             $gameId = $mGame->createGame(array(
                 'numberOfPlayers' => 2,
+                'type' => 0,
                 'mapId' => $mapId
             ), $user->parameters['playerId']);
 

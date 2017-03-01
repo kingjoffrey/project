@@ -14,12 +14,16 @@ html {
 
 body {
     color: #fff;
-    text-shadow: 0.1vw 0.1vw 0 #000;
+    text-shadow: 1px 1px 0 #000;
     overflow-y: hidden;
 }
 
+.touchscreen input, .touchscreen select, .touchscreen body {
+    font-size: 2.8vw;
+}
+
 input, select, body {
-    font-size: 1.4vw;
+    font-size: 0.7vw;
     font-family: Impact, Charcoal, sans-serif;
     letter-spacing: 0.2vw;
 }
@@ -31,9 +35,13 @@ input, select, body {
     overflow: auto;
 }
 
+.touchscreen #page {
+    width: 95vw;
+}
+
 #page {
     margin: 0 auto;
-    width: 95vw;
+    width: 1000px;
     height: 100vh;
 }
 
@@ -62,8 +70,12 @@ input, select {
     background: #373737;
 }
 
+.touchscreen .iconButton div, .touchscreen .button, .touchscreen #submit, .touchscreen .bigLink a, .touchscreen input, .touchscreen select {
+    padding: 2.8vw;
+}
+
 .iconButton div, .button, #submit, .bigLink a, input, select {
-    padding: 1.4vw;
+    padding: 0.7vw;
 }
 
 .button:hover, #submit:hover, .iconButton:hover {
@@ -165,6 +177,10 @@ div.table table {
     background: #fff;
     text-shadow: none;
     border-top: 1px solid #000;
+}
+
+#content .contact td {
+    border: none;
 }
 
 #content td {
@@ -1059,10 +1075,16 @@ div.table table.unitTable td:first {
     background: none;
 }
 
-.bigLink {
-    text-align: center;
+.touchscreen .bigLink {
     font-size: 3vw;
     margin: 0.9vw 3vw 3vw 3vw;
+    cursor: pointer;
+}
+
+.bigLink {
+    text-align: center;
+    font-size: 2vw;
+    margin: 0.7vw 2vw 1vw 2vw;
     cursor: pointer;
 }
 
@@ -1169,8 +1191,12 @@ input.max {
     width: 40vw;
 }
 
-#logo2 {
+.touchscreen #logo2 {
     width: 80vw;
+}
+
+#logo2 {
+    width: 900px;
     margin: 0 auto;
     display: block;
 }
@@ -1194,9 +1220,10 @@ input.max {
     background: gold;
     border-top: 1px solid #000;
     border-bottom: 1px solid #000;
-    width: 100vw;
+    width: 93.6vw;
     text-align: center;
     padding: 3.2vw;
+    font-size: 2.1vw;
     color: green;
     text-shadow: none;
     display: none;
@@ -1206,4 +1233,8 @@ input.max {
     text-align: center;
     font-size: 20vw;
     color: red;
+}
+
+#points {
+    text-align: right;
 }

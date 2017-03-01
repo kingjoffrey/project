@@ -96,7 +96,11 @@ var GameGui = new function () {
             $('#surrender').click(function () {
                 Sound.play('click')
                 var id = Message.show(translations.surrender, $('<div>').html(translations.areYouSure))
-                Message.addButton(id, 'surrender', WebSocketSendGame.surrender)
+                Message.addButton(id, 'surrender', function () {
+                    WebSocketSendGame.surrender()
+                    GameRenderer.start()
+                    $('#gameMenu').hide()
+                })
                 Message.addButton(id, 'cancel')
             });
 

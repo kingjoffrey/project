@@ -45,6 +45,7 @@ var Page = new function () {
         }
 
         if (isSet(window.orientation)) {
+            $('body').addClass('touchscreen')
             touch = 'ontouchstart' in document.documentElement
             shadows = 0
         }

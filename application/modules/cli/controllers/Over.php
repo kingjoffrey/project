@@ -15,7 +15,11 @@ class OverController
         }
 
         $mGameScore = new Application_Model_GameScore($db);
-        $view->score = $mGameScore->getYourScore($gameId, $user->parameters['playerId']);
+        $score = $mGameScore->getYourScore($gameId, $user->parameters['playerId']);
+
+        $view->mapName = $score['name'];
+        $view->time = round((strtotime($score['end']) - strtotime($score['begin'])) / 60, 1);
+        $view->points = $score['score'];
 
         $view->addScriptPath(APPLICATION_PATH . '/views/scripts');
 

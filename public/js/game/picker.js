@@ -8,7 +8,7 @@ var PickerGame = new function () {
                     var x = PickerCommon.convertX(),
                         y = PickerCommon.convertZ()
                     if (Me.getSelectedArmy().getX() == x && Me.getSelectedArmy().getY() == y) {
-                        SplitWindow.show()
+                        StatusWindow.show()
                     } else if (clickStart && clickStart.x == x && clickStart.y == y) {
                         clickStart = 0
                         AStar.cursorPosition(x, y)

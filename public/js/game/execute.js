@@ -178,17 +178,21 @@ var Execute = new function () {
                     Me.deselectArmy()
                     var armies = Players.get(r.color).getArmies(),
                         castles = Players.get(r.color).getCastles()
+
                     for (var armyId in armies.toArray()) {
                         armies.destroy(armyId)
                     }
+
                     for (var castleId in castles.toArray()) {
                         castles.raze(castleId)
                     }
+
                     if (Turn.getColor() == r.color) {
                         WebSocketSendGame.nextTurn()
                     }
+
                     Execute.setExecuting(0)
-                    break;
+                    break
 
                 case 'end':
                     if (Game.getLoading()) {
@@ -201,12 +205,12 @@ var Execute = new function () {
                         var id = Message.show(translations.gameOver, $('<div>').append($('<div>').html(translations.thisIsTheEnd)))
                         Message.addButton(id, 'ok', GameGui.end)
                     }
-                    break;
+                    break
 
                 case 'dead':
                     console.log(r)
                     Execute.setExecuting(0)
-                    break;
+                    break
             }
         }
     this.addQueue = function (r) {

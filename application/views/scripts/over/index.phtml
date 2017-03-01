@@ -1,4 +1,5 @@
 <div class="table">
-    <h2><?php echo $this->translate('Your score') ?></h2>
-        <div id="score"><?php echo $this->score ?></div>
+    <h2><?php echo $this->translate('Your have finished'); ?> "<?php echo $this->mapName; ?>" <?php echo $this->translate('in') ?> <?php echo $this->time; ?> <?php echo $this->translate('minutes with score'); ?></h2>
+    <div id="score"><?php echo $this->points ?></div>
+    <h2 id="points"><?php echo $this->translate('points') ?></h2>
 </div>

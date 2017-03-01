@@ -66,14 +66,16 @@ class Application_Model_GameScore extends Coret_Db_Table_Abstract
     {
         $gId = $this->_db->quoteIdentifier('gameId');
         $pId = $this->_db->quoteIdentifier('playerId');
+        $mId = $this->_db->quoteIdentifier('mapId');
 
         $select = $this->_db->select()
             ->from(array('a' => $this->_name), 'score')
-            ->join(array('b' => 'game'), 'a.' . $gId . ' = b.' . $gId, null)
+            ->join(array('b' => 'game'), 'a.' . $gId . ' = b.' . $gId, array('begin', 'end'))
+            ->join(array('c' => 'map'), 'b.' . $mId . ' = c.' . $mId, array('name'))
             ->where('a.' . $gId . ' = ?', $gameId)
             ->where('a.' . $pId . ' = ?', $playerId);
 
-        return $this->selectOne($select);
+        return $this->selectRow($select);
     }
 }
 

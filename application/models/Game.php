@@ -37,6 +37,7 @@ class Application_Model_Game extends Coret_Db_Table_Abstract
             'turnsLimit' => $params['turnsLimit'],
             'turnTimeLimit' => $params['turnTimeLimit'],
             'timeLimit' => $params['timeLimit'],
+            'type' => $params['type']
         );
 
         $this->_db->insert($this->_name, $data);

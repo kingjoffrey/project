@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: WOF\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-02-28 11:36+0100\n"
-"PO-Revision-Date: 2017-02-28 11:37+0100\n"
+"POT-Creation-Date: 2017-03-01 10:28+0100\n"
+"PO-Revision-Date: 2017-03-01 10:29+0100\n"
 "Last-Translator: Bartosz Krzeszewski <bartek@core-t.pl>\n"
 "Language-Team: \n"
 "Language: pl\n"
@@ -490,6 +490,7 @@ msgid "Skip army"
 msgstr "Pomiń armię"
 
 #: application/views/helpers/Translations.php:76
+#: application/views/helpers/Translations.php:83
 msgid "Attack"
 msgstr "Atak"
 
@@ -514,15 +515,8 @@ msgid "Start game"
 msgstr "Rozpocznij grę"
 
 #: application/views/helpers/Translations.php:82
-#: application/views/helpers/Translations.php:118
-msgid "Defence points"
-msgstr "Punkty obrony"
-
-#: application/views/helpers/Translations.php:83
-#: application/views/helpers/Translations.php:117
-#: application/views/scripts/hero/index.phtml:6
-msgid "Attack points"
-msgstr "Punkty ataku"
+msgid "Defence"
+msgstr "Obrona"
 
 #: application/views/helpers/Translations.php:84
 msgid "Default moves"
@@ -656,6 +650,15 @@ msgstr "Koszt utrzymania"
 #: application/views/helpers/Translations.php:116
 msgid "Movement points"
 msgstr "Punkty ruchu"
+
+#: application/views/helpers/Translations.php:117
+#: application/views/scripts/hero/index.phtml:6
+msgid "Attack points"
+msgstr "Punkty ataku"
+
+#: application/views/helpers/Translations.php:118
+msgid "Defence points"
+msgstr "Punkty obrony"
 
 #: application/views/helpers/Translations.php:119
 msgid "Start"
@@ -1110,8 +1113,20 @@ msgid "Messages"
 msgstr "Wiadomości"
 
 #: application/views/scripts/over/index.phtml:2
-msgid "Your score"
-msgstr "Twój wynik"
+msgid "Your have finished"
+msgstr "Zakończyłeś"
+
+#: application/views/scripts/over/index.phtml:2
+msgid "in"
+msgstr "w czasie"
+
+#: application/views/scripts/over/index.phtml:2
+msgid "minutes with score"
+msgstr "minut z wynikiem"
+
+#: application/views/scripts/over/index.phtml:4
+msgid "points"
+msgstr "punktów"
 
 #: application/views/scripts/play/index.phtml:4
 msgid "Continue tutorial"
@@ -1191,6 +1206,9 @@ msgstr "Niezdecydowani"
 msgid "Start new game"
 msgstr "Uruchom nową grę"
 
+#~ msgid "Your score"
+#~ msgstr "Twój wynik"
+
 #~ msgid "Team color"
 #~ msgstr "Kolor drużyny"
 
@@ -1202,9 +1220,6 @@ msgstr "Uruchom nową grę"
 
 #~ msgid "Chat"
 #~ msgstr "Czat"
-
-#~ msgid "Defence"
-#~ msgstr "Obrona"
 
 #~ msgid "Terrain"
 #~ msgstr "Teren"
