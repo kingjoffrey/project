@@ -50,6 +50,10 @@ var Page = new function () {
             shadows = 0
         }
 
+        if ($(window).innerWidth() < $(window).innerHeight()) {
+            $('body').addClass('vertical')
+        }
+
         $('#menuBox').append($('<div>').addClass('askFullScreen')
             .append($('<div>').html(translations.SwitchtoFullScreen).addClass('question'))
             .append(

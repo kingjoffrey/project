@@ -237,7 +237,7 @@ var Ground = new function () {
         hillLevel = 0.9,
         bottomLevel = 2,
         waterLevel = 0.1,
-        createUVS = function (uvs, maxX, maxY) {
+        createUVSaaa = function (uvs, maxX, maxY) {
             var uv = []
             for (var u = 0; u < maxX; u++) {
                 uv[u] = []
@@ -273,24 +273,66 @@ var Ground = new function () {
 
             return uvs
         },
-        field = function (x, y, z) {
-            return [
-                {'x': x, 'y': y, 'z': z},
-                {'x': x + 1, 'y': y, 'z': z},
-                {'x': x + 2, 'y': y, 'z': z},
-                {'x': x, 'y': y + 1, 'z': z},
-                {'x': x + 1, 'y': y + 1, 'z': z},
-                {'x': x + 2, 'y': y + 1, 'z': z},
-                {'x': x, 'y': y + 2, 'z': z},
-                {'x': x + 1, 'y': y + 2, 'z': z},
-                {'x': x + 2, 'y': y + 2, 'z': z}
-            ]
+        createUVS = function (uvs, stripesArray, x, y) {
+            var uv = [],
+                k = 0
 
+            for (var yyy in stripesArray) {
+                var stripes = stripesArray[yyy].get()
+
+                for (var i in stripes) {
+                    var field = stripes[i]
+
+                    uv[0] = [field.start / x, yyy / y]
+                    uv[1] = [field.end / x, yyy / y]
+                    uv[2] = [field.start / x, (yyy * 1 + 1) / y]
+                    uv[3] = [field.end / x, (yyy * 1 + 1) / y]
+
+
+                    // first triangle
+                    uvs[0 + k] = uv[0][0]
+                    uvs[1 + k] = uv[0][1]
+                    uvs[2 + k] = uv[1][0]
+                    uvs[3 + k] = uv[1][1]
+                    uvs[4 + k] = uv[2][0]
+                    uvs[5 + k] = uv[2][1]
+                    // second triangle
+                    uvs[6 + k] = uv[3][0]
+                    uvs[7 + k] = uv[3][1]
+                    uvs[8 + k] = uv[2][0]
+                    uvs[9 + k] = uv[2][1]
+                    uvs[10 + k] = uv[1][0]
+                    uvs[11 + k] = uv[1][1]
+                    k += 12
+                }
+            }
+
+            return uvs
         },
+        createVertexPositions = function (stripesArray) {
+            var vertexPositions = []
+
+            for (var yyy in stripesArray) {
+                var stripes = stripesArray[yyy].get()
+
+                for (var i in stripes) {
+                    var field = stripes[i]
 
 
-        createGrass = function (x, y) {
-            var fields = {}
+                    vertexPositions.push([field.start, yyy * 1, 0])           //
+                    vertexPositions.push([field.end, yyy * 1, 0])             //  FIRST TRIANGLE
+                    vertexPositions.push([field.start, yyy * 1 + 1, 0])       //
+
+                    vertexPositions.push([field.end, yyy * 1 + 1, 0])         //
+                    vertexPositions.push([field.start, yyy * 1 + 1, 0])       //  SECOND TRIANGLE
+                    vertexPositions.push([field.end, yyy * 1, 0])             //
+                }
+            }
+
+            return vertexPositions
+        },
+        createGrassStripes = function (x, y) {
+            var stripesArray = {}
 
             for (var yy = 0; yy < y; yy++) {
 
@@ -309,7 +351,7 @@ var Ground = new function () {
                         }
                     } else {
                         if (!end) {
-                            stripes.add(startX, xx - 1)
+                            stripes.add(startX, xx)
                             start = 0
                             end = 1
                         }
@@ -317,40 +359,21 @@ var Ground = new function () {
                 }
 
                 if (start && !end) {
-                    stripes.add(startX, xx - 1)
+                    stripes.add(startX, xx)
                 }
 
-                fields[yy] = stripes
+                stripesArray[yy] = stripes
             }
 
-            return fields
+            return stripesArray
         },
-        createVertexPositions = function (fields) {
-            var vertexPositions = []
-
-            for (var yyy in fields) {
-                var field = fields[yyy].get()
-                vertexPositions.push([field.start, yyy, 0])           //
-                vertexPositions.push([field.end, yyy, 0])             //  FIRST TRIANGLE
-                vertexPositions.push([field.start, yyy + 1, 0])       //
-
-                vertexPositions.push([field.end, yyy + 1, 0])         //
-                vertexPositions.push([field.start, yyy + 1, 0])       //  SECOND TRIANGLE
-                vertexPositions.push([field.end, yyy, 0])             //
-            }
-
-            return vertexPositions
-        },
-
-
         createGeometry = function (x, y) {
             var maxX = x * 2,
                 maxY = y * 2,
-                geometry = new THREE.BufferGeometry()
+                geometry = new THREE.BufferGeometry(),
+                stripesArray = createGrassStripes(x, y)
 
-            var vertexPositions = createVertexPositions(x, y)
-
-            return
+            var vertexPositions = createVertexPositions(stripesArray)
 
             var vertices = new Float32Array(vertexPositions.length * 3),
                 normals = new Float32Array(vertexPositions.length * 3),
@@ -365,7 +388,10 @@ var Ground = new function () {
 
             geometry.addAttribute('position', new THREE.BufferAttribute(vertices, 3))
             geometry.addAttribute('normal', new THREE.BufferAttribute(normals, 3))
-            geometry.addAttribute('uv', createUVS(new THREE.BufferAttribute(uvs, 2), maxX, maxY))
+
+            console.log(createUVS(uvs, stripesArray, x, y))
+
+            // geometry.addAttribute('uv', createUVS(uvs, stripesArray, x, y))
 
             geometry.computeVertexNormals()
 
@@ -387,10 +413,9 @@ var Ground = new function () {
             GameScene.add(mesh)
 
 
-            var geo = new THREE.WireframeGeometry(mesh.geometry)
-            var mat = new THREE.LineBasicMaterial({color: 0x000000, linewidth: 1})
-            var wireframe = new THREE.LineSegments(geo, mat)
-
+            var geo = new THREE.WireframeGeometry(mesh.geometry),
+                mat = new THREE.LineBasicMaterial({color: 0x00ff00, linewidth: 1}),
+                wireframe = new THREE.LineSegments(geo, mat)
             mesh.add(wireframe)
         }
     this.init = function (x, y) {

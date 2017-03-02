@@ -10,4 +10,19 @@ $(document).ready(function () {
             $(this).attr('selected', '')
         }
     })
+
+    if (isSet(window.orientation)) {
+        $('body').addClass('touchscreen')
+    }
+
+    if ($(window).innerWidth() < $(window).innerHeight()) {
+        $('body').addClass('vertical')
+    }
+})
+$(window).resize(function () {
+    if ($(window).innerWidth() < $(window).innerHeight()) {
+        $('body').addClass('vertical')
+    } else {
+        $('body').removeClass('vertical')
+    }
 })

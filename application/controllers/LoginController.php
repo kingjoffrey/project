@@ -21,7 +21,8 @@ class LoginController extends Coret_Controller_AuthenticateFrontend
 
         $this->view->jquery();
         $this->view->headLink()->prependStylesheet($this->view->baseUrl() . '/css/main.css?v=' . $version);
-        $this->view->headScript()->appendFile('/js/login.js');
+        $this->view->headScript()->appendFile('/js/login.js?v=' . $version);
+        $this->view->headScript()->appendFile('/js/libs.js?v=' . $version);
 
         $this->view->title();
         $this->view->Version();

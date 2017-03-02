@@ -6,8 +6,8 @@ class TestController extends Zend_Controller_Action
     {
         $this->_helper->layout->setLayout('login');
         $this->view->jquery();
-        $this->view->headScript()->appendFile('/js/three/three.js');
-        $this->view->headScript()->appendFile('/js/test.js?=1');
+        $this->view->headScript()->appendFile('/js/three/three.min.js');
+        $this->view->headScript()->appendFile('/js/test.js?=2');
 
 //        $mNG = new Cli_Model_CastleNameGenerator();
 //        for ($i = 0; $i <= 10; $i++) {
