@@ -337,9 +337,9 @@ var Ground = new function () {
         },
         createWaterVertexPositions = function (stripesArray) {
             var vertexPositions = []
-
             for (var yyy in stripesArray) {
                 var stripes = stripesArray[yyy].get()
+                console.log(stripes)
 
                 for (var i in stripes) {
                     var field = stripes[i]
@@ -369,24 +369,24 @@ var Ground = new function () {
                         continue
                     }
 
-                    if (checkInnerTR(xx, yy)) {
-                        stripes.add(startX, xx)
-                    } else if (checkInnerBR(xx, yy)) {
-                        stripes.add(startX, xx)
-                    } else if (checkOuterBR(xx, yy)) {
-                        stripes.add(startX, xx)
-                    } else if (checkOuterTR(xx, yy)) {
-                        stripes.add(startX, xx)
-                    }
-
                     if (checkInnerTL(xx, yy)) {
                         var startX = xx
-                    } else if (checkInnerBL(xx, yy)) {
-                        var startX = xx
-                    } else if (checkOuterBL(xx, yy)) {
-                        var startX = xx
+                    // } else if (checkInnerBL(xx, yy)) {
+                    //     var startX = xx
+                    // } else if (checkOuterBL(xx, yy)) {
+                    //     var startX = xx
                     } else if (checkOuterTL(xx, yy)) {
                         var startX = xx
+                    }
+
+                    if (checkInnerTR(xx, yy)) {
+                        stripes.add(startX, xx)
+                    // } else if (checkInnerBR(xx, yy)) {
+                    //     stripes.add(startX, xx)
+                    // } else if (checkOuterBR(xx, yy)) {
+                    //     stripes.add(startX, xx)
+                    } else if (checkOuterTR(xx, yy)) {
+                        stripes.add(startX, xx)
                     }
                 }
 
@@ -475,16 +475,14 @@ var Ground = new function () {
             mesh.add(wireframe)
         }
     this.init = function (x, y) {
-        var stripesArray = createGrassStripes(x, y),
-            vertexPositions = createGrassVertexPositions(stripesArray),
-            uvs = createUVS(new Float32Array(vertexPositions.length * 2), stripesArray, x, y)
-
-        createMesh(createGeometry(vertexPositions, uvs))
+        // var stripesArray = createGrassStripes(x, y),
+        //     vertexPositions = createGrassVertexPositions(stripesArray),
+        //     uvs = createUVS(new Float32Array(vertexPositions.length * 2), stripesArray, x, y)
+        // createMesh(createGeometry(vertexPositions, uvs))
 
         var stripesArray = createWaterStripes(x, y),
             vertexPositions = createWaterVertexPositions(stripesArray),
             uvs = createUVS(new Float32Array(vertexPositions.length * 2), stripesArray, x, y)
-
         createMesh(createGeometry(vertexPositions, uvs))
     }
 }
