@@ -237,23 +237,43 @@ var Ground = new function () {
         hillLevel = 0.9,
         bottomLevel = 2,
         waterLevel = 0.1,
-        checkTL = function (x, y) {
+        checkInnerTL = function (x, y) {
             if (Fields.get(x, y + 1, 1).getGrassOrWater() == 'g' && Fields.get(x - 1, y, 1).getGrassOrWater() == 'g') {
                 return 1
             }
         },
-        checkTR = function (x, y) {
+        checkInnerTR = function (x, y) {
             if (Fields.get(x, y + 1, 1).getGrassOrWater() == 'g' && Fields.get(x + 1, y, 1).getGrassOrWater() == 'g') {
                 return 1
             }
         },
-        checkBR = function (x, y) {
+        checkInnerBR = function (x, y) {
             if (Fields.get(x, y - 1, 1).getGrassOrWater() == 'g' && Fields.get(x + 1, y, 1).getGrassOrWater() == 'g') {
                 return 1
             }
         },
-        checkBL = function (x, y) {
+        checkInnerBL = function (x, y) {
             if (Fields.get(x, y - 1, 1).getGrassOrWater() == 'g' && Fields.get(x - 1, y, 1).getGrassOrWater() == 'g') {
+                return 1
+            }
+        },
+        checkOuterTL = function (x, y) {
+            if (Fields.get(x, y + 1, 1).getGrassOrWater() == 'w' && Fields.get(x + 1, y, 1).getGrassOrWater() == 'w' && Fields.get(x + 1, y + 1, 1).getGrassOrWater() == 'g') {
+                return 1
+            }
+        },
+        checkOuterTR = function (x, y) {
+            if (Fields.get(x, y + 1, 1).getGrassOrWater() == 'w' && Fields.get(x - 1, y, 1).getGrassOrWater() == 'w' && Fields.get(x - 1, y + 1, 1).getGrassOrWater() == 'g') {
+                return 1
+            }
+        },
+        checkOuterBR = function (x, y) {
+            if (Fields.get(x, y - 1, 1).getGrassOrWater() == 'w' && Fields.get(x - 1, y, 1).getGrassOrWater() == 'w' && Fields.get(x - 1, y - 1, 1).getGrassOrWater() == 'g') {
+                return 1
+            }
+        },
+        checkOuterBL = function (x, y) {
+            if (Fields.get(x, y - 1, 1).getGrassOrWater() == 'w' && Fields.get(x + 1, y, 1).getGrassOrWater() == 'w' && Fields.get(x + 1, y - 1, 1).getGrassOrWater() == 'g') {
                 return 1
             }
         },
@@ -342,22 +362,35 @@ var Ground = new function () {
 
             for (var yy = 0; yy < y; yy++) {
 
-                var stripes = new Stripes(),
-                    start = 0,
-                    end = 0
+                var stripes = new Stripes()
 
                 for (var xx = 0; xx < x; xx++) {
-                    if (checkTL(xx, yy)) {
+                    if (Fields.get(xx, yy).getGrassOrWater() == 'g') {
+                        continue
+                    }
+
+                    if (checkInnerTR(xx, yy)) {
+                        stripes.add(startX, xx)
+                    } else if (checkInnerBR(xx, yy)) {
+                        stripes.add(startX, xx)
+                    } else if (checkOuterBR(xx, yy)) {
+                        stripes.add(startX, xx)
+                    } else if (checkOuterTR(xx, yy)) {
+                        stripes.add(startX, xx)
+                    }
+
+                    if (checkInnerTL(xx, yy)) {
                         var startX = xx
-                    } else if (checkTR(xx, yy)) {
-                        stripes.add(startX, xx)
-                    } else if (checkBR(xx, yy)) {
-                        stripes.add(startX, xx)
-                    } else if (checkBL(xx, yy)) {
+                    } else if (checkInnerBL(xx, yy)) {
+                        var startX = xx
+                    } else if (checkOuterBL(xx, yy)) {
+                        var startX = xx
+                    } else if (checkOuterTL(xx, yy)) {
                         var startX = xx
                     }
                 }
 
+                stripesArray[yy] = stripes
             }
 
 
@@ -399,14 +432,12 @@ var Ground = new function () {
 
             return stripesArray
         },
-        createGeometry = function (stripesArray, x, y) {
+        createGeometry = function (vertexPositions, uvs) {
             var geometry = new THREE.BufferGeometry()
 
-            var vertexPositions = createGrassVertexPositions(stripesArray)
 
             var vertices = new Float32Array(vertexPositions.length * 3),
-                normals = new Float32Array(vertexPositions.length * 3),
-                uvs = new Float32Array(vertexPositions.length * 2)
+                normals = new Float32Array(vertexPositions.length * 3)
 
             for (var i = 0; i < vertexPositions.length; i++) {
                 var index = 3 * i
@@ -417,7 +448,7 @@ var Ground = new function () {
 
             geometry.addAttribute('position', new THREE.BufferAttribute(vertices, 3))
             geometry.addAttribute('normal', new THREE.BufferAttribute(normals, 3))
-            geometry.addAttribute('uv', new THREE.BufferAttribute(createUVS(uvs, stripesArray, x, y), 2))
+            geometry.addAttribute('uv', new THREE.BufferAttribute(uvs, 2))
 
             geometry.computeVertexNormals()
 
@@ -444,8 +475,17 @@ var Ground = new function () {
             mesh.add(wireframe)
         }
     this.init = function (x, y) {
-        // createMesh(createGeometry(createGrassStripes(x, y), x, y))
-        createMesh(createGeometry(createWaterStripes(x, y), x, y))
+        var stripesArray = createGrassStripes(x, y),
+            vertexPositions = createGrassVertexPositions(stripesArray),
+            uvs = createUVS(new Float32Array(vertexPositions.length * 2), stripesArray, x, y)
+
+        createMesh(createGeometry(vertexPositions, uvs))
+
+        var stripesArray = createWaterStripes(x, y),
+            vertexPositions = createWaterVertexPositions(stripesArray),
+            uvs = createUVS(new Float32Array(vertexPositions.length * 2), stripesArray, x, y)
+
+        createMesh(createGeometry(vertexPositions, uvs))
     }
 }
 
