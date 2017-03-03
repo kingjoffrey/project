@@ -27,6 +27,36 @@ var Ground = new function () {
                 mesh.receiveShadow = true
             }
         },
+        createUVS = function (uvs, maxX, maxY) {
+            var k = 0
+            for (var u = 0; u < maxX; u++) {
+                for (var v = 0; v < maxY; v++) {
+                    uv = []
+                    uv[0] = [u / maxX, v / maxY]
+                    uv[1] = [(u + 1) / maxX, v / maxY]
+                    uv[2] = [u / maxX, (v + 1) / maxY]
+                    uv[3] = [(u + 1) / maxX, (v + 1) / maxY]
+
+                    // first triangle
+                    uvs[0 + k] = uv[0][0]
+                    uvs[1 + k] = uv[0][1]
+                    uvs[2 + k] = uv[1][0]
+                    uvs[3 + k] = uv[1][1]
+                    uvs[4 + k] = uv[2][0]
+                    uvs[5 + k] = uv[2][1]
+                    // second triangle
+                    uvs[6 + k] = uv[3][0]
+                    uvs[7 + k] = uv[3][1]
+                    uvs[8 + k] = uv[2][0]
+                    uvs[9 + k] = uv[2][1]
+                    uvs[10 + k] = uv[1][0]
+                    uvs[11 + k] = uv[1][1]
+                    k += 12
+                }
+            }
+
+            return uvs
+        },
         createGround = function (x, y, canvas) {
             var maxX = x * 2,
                 maxY = y * 2,
@@ -34,17 +64,6 @@ var Ground = new function () {
                 uv = [],
                 maxI = maxX * maxY * 6,
                 grassVertexPositions = []
-
-            for (var u = 0; u < maxX; u++) {
-                uv[u] = []
-                for (var v = 0; v < maxY; v++) {
-                    uv[u][v] = []
-                    uv[u][v][0] = [u / maxX, v / maxY]
-                    uv[u][v][1] = [(u + 1) / maxX, v / maxY]
-                    uv[u][v][2] = [u / maxX, (v + 1) / maxY]
-                    uv[u][v][3] = [(u + 1) / maxX, (v + 1) / maxY]
-                }
-            }
 
             for (var i = 0; i < maxX; i++) {
                 for (var j = 0; j < maxY; j++) {
@@ -107,31 +126,10 @@ var Ground = new function () {
                 grassVertices[index + 2] = grassVertexPositions[i][2]
             }
 
-            var k = 0
-            for (var u = 0; u < maxX; u++) {
-                for (var v = 0; v < maxY; v++) {
-                    // first triangle
-                    uvs[0 + k] = uv[u][v][0][0]
-                    uvs[1 + k] = uv[u][v][0][1]
-                    uvs[2 + k] = uv[u][v][1][0]
-                    uvs[3 + k] = uv[u][v][1][1]
-                    uvs[4 + k] = uv[u][v][2][0]
-                    uvs[5 + k] = uv[u][v][2][1]
-                    // second triangle
-                    uvs[6 + k] = uv[u][v][3][0]
-                    uvs[7 + k] = uv[u][v][3][1]
-                    uvs[8 + k] = uv[u][v][2][0]
-                    uvs[9 + k] = uv[u][v][2][1]
-                    uvs[10 + k] = uv[u][v][1][0]
-                    uvs[11 + k] = uv[u][v][1][1]
-                    k += 12
-                }
-            }
-
             grassGeometry.addAttribute('position', new THREE.BufferAttribute(grassVertices, 3))
             grassGeometry.addAttribute('normal', new THREE.BufferAttribute(normals, 3))
             //grassGeometry.addAttribute('color', new THREE.BufferAttribute(colors, 3))
-            grassGeometry.addAttribute('uv', new THREE.BufferAttribute(uvs, 2))
+            grassGeometry.addAttribute('uv', new THREE.BufferAttribute(createUVS(uvs, maxX, maxY), 2))
 
             grassGeometry.computeVertexNormals()
 

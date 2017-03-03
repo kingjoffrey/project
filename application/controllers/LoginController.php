@@ -6,6 +6,20 @@ class LoginController extends Coret_Controller_AuthenticateFrontend
     protected $_identityArray = array('login', 'firstName', 'lastName', 'playerId');
     protected $_facebookDatabaseName = 'fbId';
 
+    private function html()
+    {
+        $this->_helper->layout->setLayout('login');
+
+        $version = Zend_Registry::get('config')->version;
+
+        $this->view->headLink()->prependStylesheet($this->view->baseUrl() . '/css/main.css?v=' . $version);
+        $this->view->headScript()->appendFile('/js/login.js?v=' . $version);
+        $this->view->headScript()->appendFile('/js/libs.js?v=' . $version);
+
+        $this->view->title();
+        $this->view->Version();
+    }
+
     public function indexAction()
     {
         $mLanguage = new Application_Model_Language();
@@ -15,29 +29,12 @@ class LoginController extends Coret_Controller_AuthenticateFrontend
 
         parent::indexAction();
 
-        $this->_helper->layout->setLayout('login');
-
-        $version = Zend_Registry::get('config')->version;
-
-        $this->view->jquery();
-        $this->view->headLink()->prependStylesheet($this->view->baseUrl() . '/css/main.css?v=' . $version);
-        $this->view->headScript()->appendFile('/js/login.js?v=' . $version);
-        $this->view->headScript()->appendFile('/js/libs.js?v=' . $version);
-
-        $this->view->title();
-        $this->view->Version();
+        $this->html();
     }
 
     public function registrationAction()
     {
-        $this->_helper->layout->setLayout('login');
-
-        $version = Zend_Registry::get('config')->version;
-
-        $this->view->headLink()->prependStylesheet($this->view->baseUrl() . '/css/main.css?v=' . $version);
-
-        $this->view->title();
-        $this->view->Version();
+        $this->html();
 
         $form = new Application_Form_Registration();
         if ($this->_request->isPost()) {

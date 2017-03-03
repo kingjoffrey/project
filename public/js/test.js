@@ -237,41 +237,25 @@ var Ground = new function () {
         hillLevel = 0.9,
         bottomLevel = 2,
         waterLevel = 0.1,
-        createUVSaaa = function (uvs, maxX, maxY) {
-            var uv = []
-            for (var u = 0; u < maxX; u++) {
-                uv[u] = []
-                for (var v = 0; v < maxY; v++) {
-                    uv[u][v] = []
-                    uv[u][v][0] = [u / maxX, v / maxY]
-                    uv[u][v][1] = [(u + 1) / maxX, v / maxY]
-                    uv[u][v][2] = [u / maxX, (v + 1) / maxY]
-                    uv[u][v][3] = [(u + 1) / maxX, (v + 1) / maxY]
-                }
+        checkTL = function (x, y) {
+            if (Fields.get(x, y + 1, 1).getGrassOrWater() == 'g' && Fields.get(x - 1, y, 1).getGrassOrWater() == 'g') {
+                return 1
             }
-
-            var k = 0
-            for (var u = 0; u < maxX; u++) {
-                for (var v = 0; v < maxY; v++) {
-                    // first triangle
-                    uvs[0 + k] = uv[u][v][0][0]
-                    uvs[1 + k] = uv[u][v][0][1]
-                    uvs[2 + k] = uv[u][v][1][0]
-                    uvs[3 + k] = uv[u][v][1][1]
-                    uvs[4 + k] = uv[u][v][2][0]
-                    uvs[5 + k] = uv[u][v][2][1]
-                    // second triangle
-                    uvs[6 + k] = uv[u][v][3][0]
-                    uvs[7 + k] = uv[u][v][3][1]
-                    uvs[8 + k] = uv[u][v][2][0]
-                    uvs[9 + k] = uv[u][v][2][1]
-                    uvs[10 + k] = uv[u][v][1][0]
-                    uvs[11 + k] = uv[u][v][1][1]
-                    k += 12
-                }
+        },
+        checkTR = function (x, y) {
+            if (Fields.get(x, y + 1, 1).getGrassOrWater() == 'g' && Fields.get(x + 1, y, 1).getGrassOrWater() == 'g') {
+                return 1
             }
-
-            return uvs
+        },
+        checkBR = function (x, y) {
+            if (Fields.get(x, y - 1, 1).getGrassOrWater() == 'g' && Fields.get(x + 1, y, 1).getGrassOrWater() == 'g') {
+                return 1
+            }
+        },
+        checkBL = function (x, y) {
+            if (Fields.get(x, y - 1, 1).getGrassOrWater() == 'g' && Fields.get(x - 1, y, 1).getGrassOrWater() == 'g') {
+                return 1
+            }
         },
         createUVS = function (uvs, stripesArray, x, y) {
             var uv = [],
@@ -309,7 +293,7 @@ var Ground = new function () {
 
             return uvs
         },
-        createVertexPositions = function (stripesArray) {
+        createGrassVertexPositions = function (stripesArray) {
             var vertexPositions = []
 
             for (var yyy in stripesArray) {
@@ -330,6 +314,54 @@ var Ground = new function () {
             }
 
             return vertexPositions
+        },
+        createWaterVertexPositions = function (stripesArray) {
+            var vertexPositions = []
+
+            for (var yyy in stripesArray) {
+                var stripes = stripesArray[yyy].get()
+
+                for (var i in stripes) {
+                    var field = stripes[i]
+
+
+                    vertexPositions.push([field.start, yyy * 1, 0])           //
+                    vertexPositions.push([field.end, yyy * 1, 0])             //  FIRST TRIANGLE
+                    vertexPositions.push([field.start, yyy * 1 + 1, 0])       //
+
+                    vertexPositions.push([field.end, yyy * 1 + 1, 0])         //
+                    vertexPositions.push([field.start, yyy * 1 + 1, 0])       //  SECOND TRIANGLE
+                    vertexPositions.push([field.end, yyy * 1, 0])             //
+                }
+            }
+
+            return vertexPositions
+        },
+        createWaterStripes = function (x, y) {
+            var stripesArray = {}
+
+            for (var yy = 0; yy < y; yy++) {
+
+                var stripes = new Stripes(),
+                    start = 0,
+                    end = 0
+
+                for (var xx = 0; xx < x; xx++) {
+                    if (checkTL(xx, yy)) {
+                        var startX = xx
+                    } else if (checkTR(xx, yy)) {
+                        stripes.add(startX, xx)
+                    } else if (checkBR(xx, yy)) {
+                        stripes.add(startX, xx)
+                    } else if (checkBL(xx, yy)) {
+                        var startX = xx
+                    }
+                }
+
+            }
+
+
+            return stripesArray
         },
         createGrassStripes = function (x, y) {
             var stripesArray = {}
@@ -367,13 +399,10 @@ var Ground = new function () {
 
             return stripesArray
         },
-        createGeometry = function (x, y) {
-            var maxX = x * 2,
-                maxY = y * 2,
-                geometry = new THREE.BufferGeometry(),
-                stripesArray = createGrassStripes(x, y)
+        createGeometry = function (stripesArray, x, y) {
+            var geometry = new THREE.BufferGeometry()
 
-            var vertexPositions = createVertexPositions(stripesArray)
+            var vertexPositions = createGrassVertexPositions(stripesArray)
 
             var vertices = new Float32Array(vertexPositions.length * 3),
                 normals = new Float32Array(vertexPositions.length * 3),
@@ -388,21 +417,17 @@ var Ground = new function () {
 
             geometry.addAttribute('position', new THREE.BufferAttribute(vertices, 3))
             geometry.addAttribute('normal', new THREE.BufferAttribute(normals, 3))
-
-            console.log(createUVS(uvs, stripesArray, x, y))
-
-            // geometry.addAttribute('uv', createUVS(uvs, stripesArray, x, y))
+            geometry.addAttribute('uv', new THREE.BufferAttribute(createUVS(uvs, stripesArray, x, y), 2))
 
             geometry.computeVertexNormals()
 
             return geometry
         },
-        createMesh = function (x, y) {
+        createMesh = function (geometry) {
             var material = new THREE.MeshLambertMaterial({
                 color: '#ffffff',
                 side: THREE.DoubleSide
             })
-            var geometry = createGeometry(x, y)
 
             if (!geometry) {
                 return
@@ -419,7 +444,8 @@ var Ground = new function () {
             mesh.add(wireframe)
         }
     this.init = function (x, y) {
-        createMesh(x, y)
+        // createMesh(createGeometry(createGrassStripes(x, y), x, y))
+        createMesh(createGeometry(createWaterStripes(x, y), x, y))
     }
 }
 

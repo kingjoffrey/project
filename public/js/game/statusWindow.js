@@ -228,10 +228,12 @@ var StatusWindow = new function () {
             )
         }
 
-        var id = Message.show(translations.armyStatus, div.append(table))
-        Message.addButton(id, 'cancel')
-        if (number > 1) {
-            Message.addButton(id, 'splitArmy', WebSocketSendGame.split)
-        }
+        setTimeout(function () {
+            var id = Message.show(translations.armyStatus, div.append(table))
+            Message.addButton(id, 'cancel')
+            if (number > 1) {
+                Message.addButton(id, 'splitArmy', WebSocketSendGame.split)
+            }
+        }, 300)
     }
 }

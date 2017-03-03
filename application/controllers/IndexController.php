@@ -8,7 +8,6 @@ class IndexController extends Coret_Controller_Authorized
 
     public function indexAction()
     {
-        $identity = $this->_auth->getIdentity();
         $version = Zend_Registry::get('config')->version;
 
         $this->view->headLink()->prependStylesheet('/css/main.css?v=' . $version);
@@ -128,7 +127,7 @@ class IndexController extends Coret_Controller_Authorized
         $this->view->terrain();
         $this->view->translations();
         $this->view->Version();
-        $this->view->Websocket($identity);
+        $this->view->Websocket($this->_auth->getIdentity());
     }
 
     protected function authorized()
