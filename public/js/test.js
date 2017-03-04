@@ -189,9 +189,9 @@ var Fields = new function () {
         var f = [
             ['g', 'g', 'g', 'g', 'g', 'g', 'g'],
             ['g', 'g', 'g', 'w', 'g', 'g', 'g'],
-            ['g', 'g', 'w', 'w', 'w', 'g', 'g'],
             ['g', 'w', 'w', 'w', 'w', 'w', 'g'],
-            ['g', 'g', 'w', 'w', 'w', 'g', 'g'],
+            ['g', 'w', 'w', 'w', 'w', 'w', 'g'],
+            ['g', 'w', 'w', 'w', 'w', 'w', 'g'],
             ['g', 'g', 'g', 'w', 'g', 'g', 'g'],
             ['g', 'g', 'g', 'g', 'g', 'g', 'g']
         ]
@@ -235,45 +235,26 @@ var Field = function (type) {
 var Ground = new function () {
     var mountainLevel = 1.95,
         hillLevel = 0.9,
-        bottomLevel = 2,
+        // bottomLevel = 2,
+        bottomLevel = 0,
         waterLevel = 0.1,
-        checkInnerTL = function (x, y) {
-            if (Fields.get(x, y + 1, 1).getGrassOrWater() == 'g' && Fields.get(x - 1, y, 1).getGrassOrWater() == 'g') {
+        checkUp = function (x, y) {
+            if (Fields.get(x, y + 1, 1).getGrassOrWater() == 'g') {
                 return 1
             }
         },
-        checkInnerTR = function (x, y) {
-            if (Fields.get(x, y + 1, 1).getGrassOrWater() == 'g' && Fields.get(x + 1, y, 1).getGrassOrWater() == 'g') {
+        checkDown = function (x, y) {
+            if (Fields.get(x, y - 1, 1).getGrassOrWater() == 'g') {
                 return 1
             }
         },
-        checkInnerBR = function (x, y) {
-            if (Fields.get(x, y - 1, 1).getGrassOrWater() == 'g' && Fields.get(x + 1, y, 1).getGrassOrWater() == 'g') {
+        checkLeft = function (x, y) {
+            if (Fields.get(x + 1, y, 1).getGrassOrWater() == 'g') {
                 return 1
             }
         },
-        checkInnerBL = function (x, y) {
-            if (Fields.get(x, y - 1, 1).getGrassOrWater() == 'g' && Fields.get(x - 1, y, 1).getGrassOrWater() == 'g') {
-                return 1
-            }
-        },
-        checkOuterTL = function (x, y) {
-            if (Fields.get(x, y + 1, 1).getGrassOrWater() == 'w' && Fields.get(x + 1, y, 1).getGrassOrWater() == 'w' && Fields.get(x + 1, y + 1, 1).getGrassOrWater() == 'g') {
-                return 1
-            }
-        },
-        checkOuterTR = function (x, y) {
-            if (Fields.get(x, y + 1, 1).getGrassOrWater() == 'w' && Fields.get(x - 1, y, 1).getGrassOrWater() == 'w' && Fields.get(x - 1, y + 1, 1).getGrassOrWater() == 'g') {
-                return 1
-            }
-        },
-        checkOuterBR = function (x, y) {
-            if (Fields.get(x, y - 1, 1).getGrassOrWater() == 'w' && Fields.get(x - 1, y, 1).getGrassOrWater() == 'w' && Fields.get(x - 1, y - 1, 1).getGrassOrWater() == 'g') {
-                return 1
-            }
-        },
-        checkOuterBL = function (x, y) {
-            if (Fields.get(x, y - 1, 1).getGrassOrWater() == 'w' && Fields.get(x + 1, y, 1).getGrassOrWater() == 'w' && Fields.get(x + 1, y - 1, 1).getGrassOrWater() == 'g') {
+        checkRight = function (x, y) {
+            if (Fields.get(x - 1, y, 1).getGrassOrWater() == 'g') {
                 return 1
             }
         },
@@ -313,29 +294,85 @@ var Ground = new function () {
 
             return uvs
         },
-        createGrassVertexPositions = function (stripesArray) {
+        createWaterVertexPositionsUp = function (stripes) {
             var vertexPositions = []
 
-            for (var yyy in stripesArray) {
-                var stripes = stripesArray[yyy].get()
-
-                for (var i in stripes) {
-                    var field = stripes[i]
+            for (var i in stripes) {
+                var x = stripes[i][0],
+                    y = stripes[i][1]
 
 
-                    vertexPositions.push([field.start, yyy * 1, 0])           //
-                    vertexPositions.push([field.end, yyy * 1, 0])             //  FIRST TRIANGLE
-                    vertexPositions.push([field.start, yyy * 1 + 1, 0])       //
-
-                    vertexPositions.push([field.end, yyy * 1 + 1, 0])         //
-                    vertexPositions.push([field.start, yyy * 1 + 1, 0])       //  SECOND TRIANGLE
-                    vertexPositions.push([field.end, yyy * 1, 0])             //
+                if (Fields.get(x - 1, y, 1).getGrassOrWater() == 'w') {
+                    if (Fields.get(x - 1, y + 1, 1).getGrassOrWater() == 'g') {
+                        var x1 = x
+                    } else {
+                        var x1 = x - 0.3
+                    }
+                } else {
+                    var x1 = x + 0.3
                 }
+
+                if (Fields.get(x + 1, y, 1).getGrassOrWater() == 'w') {
+                    if (Fields.get(x + 1, y + 1, 1).getGrassOrWater() == 'g') {
+                        var x2 = x + 1
+                    } else {
+                        var x2 = x + 1.3
+                    }
+                } else {
+                    var x2 = x + 0.7
+                }
+
+                vertexPositions.push([x1, y + 0.7, bottomLevel])       //
+                vertexPositions.push([x2, y + 0.7, bottomLevel])       //  FIRST TRIANGLE
+                vertexPositions.push([x, y + 1, 0])                    //
+
+                vertexPositions.push([x + 1, y + 1, 0])                //
+                vertexPositions.push([x, y + 1, 0])                    //  SECOND TRIANGLE
+                vertexPositions.push([x2, y + 0.7, bottomLevel])       //
             }
 
             return vertexPositions
         },
-        createWaterVertexPositions = function (stripesArray) {
+        createWaterVertexPositionsDown = function (stripes) {
+            var vertexPositions = []
+
+            for (var i in stripes) {
+                var x = stripes[i][0],
+                    y = stripes[i][1]
+
+
+                if (Fields.get(x - 1, y, 1).getGrassOrWater() == 'w') {
+                    if (Fields.get(x - 1, y - 1, 1).getGrassOrWater() == 'g') {
+                        var x1 = x
+                    } else {
+                        var x1 = x - 0.3
+                    }
+                } else {
+                    var x1 = x + 0.3
+                }
+
+                if (Fields.get(x + 1, y, 1).getGrassOrWater() == 'w') {
+                    if (Fields.get(x + 1, y - 1, 1).getGrassOrWater() == 'g') {
+                        var x2 = x + 1
+                    } else {
+                        var x2 = x + 1.3
+                    }
+                } else {
+                    var x2 = x + 0.7
+                }
+
+                vertexPositions.push([x, y, 0])                        //
+                vertexPositions.push([x + 1, y, 0])                    //  FIRST TRIANGLE
+                vertexPositions.push([x1, y + 0.3, bottomLevel])       //
+
+                vertexPositions.push([x2, y + 0.3, bottomLevel])       //
+                vertexPositions.push([x1, y + 0.3, bottomLevel])       //  SECOND TRIANGLE
+                vertexPositions.push([x + 1, y, 0])                    //
+            }
+
+            return vertexPositions
+        },
+        createGrassVertexPositions = function (stripesArray) {
             var vertexPositions = []
             for (var yyy in stripesArray) {
                 var stripes = stripesArray[yyy].get()
@@ -358,43 +395,30 @@ var Ground = new function () {
             return vertexPositions
         },
         createWaterStripes = function (x, y) {
-            var stripesArray = {}
+            var stripes = new WaterStripes()
 
             for (var yy = 0; yy < y; yy++) {
-
-                var stripes = new Stripes()
-
                 for (var xx = 0; xx < x; xx++) {
                     if (Fields.get(xx, yy).getGrassOrWater() == 'g') {
                         continue
                     }
 
-                    if (checkInnerTL(xx, yy)) {
-                        var startX = xx
-                    // } else if (checkInnerBL(xx, yy)) {
-                    //     var startX = xx
-                    // } else if (checkOuterBL(xx, yy)) {
-                    //     var startX = xx
-                    } else if (checkOuterTL(xx, yy)) {
-                        var startX = xx
+                    if (checkDown(xx, yy)) {
+                        stripes.addDown(xx, yy)
                     }
-
-                    if (checkInnerTR(xx, yy)) {
-                        stripes.add(startX, xx)
-                    // } else if (checkInnerBR(xx, yy)) {
-                    //     stripes.add(startX, xx)
-                    // } else if (checkOuterBR(xx, yy)) {
-                    //     stripes.add(startX, xx)
-                    } else if (checkOuterTR(xx, yy)) {
-                        stripes.add(startX, xx)
+                    if (checkUp(xx, yy)) {
+                        stripes.addUp(xx, yy)
+                    }
+                    if (checkLeft(xx, yy)) {
+                        stripes.addLeft(xx, yy)
+                    }
+                    if (checkRight(xx, yy)) {
+                        stripes.addRight(xx, yy)
                     }
                 }
-
-                stripesArray[yy] = stripes
             }
 
-
-            return stripesArray
+            return stripes
         },
         createGrassStripes = function (x, y) {
             var stripesArray = {}
@@ -448,7 +472,9 @@ var Ground = new function () {
 
             geometry.addAttribute('position', new THREE.BufferAttribute(vertices, 3))
             geometry.addAttribute('normal', new THREE.BufferAttribute(normals, 3))
-            geometry.addAttribute('uv', new THREE.BufferAttribute(uvs, 2))
+            if (isSet(uvs)) {
+                geometry.addAttribute('uv', new THREE.BufferAttribute(uvs, 2))
+            }
 
             geometry.computeVertexNormals()
 
@@ -475,15 +501,43 @@ var Ground = new function () {
             mesh.add(wireframe)
         }
     this.init = function (x, y) {
-        // var stripesArray = createGrassStripes(x, y),
-        //     vertexPositions = createGrassVertexPositions(stripesArray),
-        //     uvs = createUVS(new Float32Array(vertexPositions.length * 2), stripesArray, x, y)
-        // createMesh(createGeometry(vertexPositions, uvs))
-
-        var stripesArray = createWaterStripes(x, y),
-            vertexPositions = createWaterVertexPositions(stripesArray),
+        var stripesArray = createGrassStripes(x, y),
+            vertexPositions = createGrassVertexPositions(stripesArray),
             uvs = createUVS(new Float32Array(vertexPositions.length * 2), stripesArray, x, y)
         createMesh(createGeometry(vertexPositions, uvs))
+
+        var stripes = createWaterStripes(x, y),
+            vertexPositionsUp = createWaterVertexPositionsUp(stripes.getUp()),
+            vertexPositionsDown = createWaterVertexPositionsDown(stripes.getDown())
+        createMesh(createGeometry(vertexPositionsUp))
+        createMesh(createGeometry(vertexPositionsDown))
+    }
+}
+
+var WaterStripes = function () {
+    var leftStripes = [],
+        rightStripes = [],
+        upStripes = [],
+        downStripes = []
+
+    this.addLeft = function (x, y) {
+        leftStripes.push([x, y])
+    }
+    this.addRight = function (x, y) {
+        rightStripes.push([x, y])
+    }
+    this.addUp = function (x, y) {
+        upStripes.push([x, y])
+    }
+    this.addDown = function (x, y) {
+        downStripes.push([x, y])
+    }
+
+    this.getUp = function () {
+        return upStripes
+    }
+    this.getDown = function () {
+        return downStripes
     }
 }
 
