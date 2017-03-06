@@ -13,6 +13,8 @@ class LoginController extends Coret_Controller_AuthenticateFrontend
         $version = Zend_Registry::get('config')->version;
 
         $this->view->headLink()->prependStylesheet($this->view->baseUrl() . '/css/main.css?v=' . $version);
+
+        $this->view->jquery();
         $this->view->headScript()->appendFile('/js/login.js?v=' . $version);
         $this->view->headScript()->appendFile('/js/libs.js?v=' . $version);
 

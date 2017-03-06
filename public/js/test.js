@@ -149,9 +149,9 @@ $(document)
         GameScene.initSun(size)
         GameRenderer.animate()
 
-        GameScene.getCamera().position.x = -50
-        GameScene.getCamera().position.y = 50
-        GameScene.getCamera().position.z = 50
+        GameScene.getCamera().position.x = -16
+        GameScene.getCamera().position.y = 20
+        GameScene.getCamera().position.z = 24
 
         Fields.init()
     })
@@ -187,13 +187,13 @@ var Fields = new function () {
     this.init = function () {
 
         var f = [
-            ['g', 'g', 'g', 'g', 'g', 'g', 'g'],
-            ['g', 'g', 'g', 'w', 'g', 'g', 'g'],
-            ['g', 'w', 'w', 'w', 'w', 'w', 'g'],
-            ['g', 'w', 'w', 'w', 'w', 'w', 'g'],
-            ['g', 'w', 'w', 'w', 'w', 'w', 'g'],
-            ['g', 'g', 'g', 'w', 'g', 'g', 'g'],
-            ['g', 'g', 'g', 'g', 'g', 'g', 'g']
+            ['g', 'g', 'g', 'g', 'g', 'g', 'g', 'g', 'g', 'g'],
+            ['g', 'g', 'g', 'w', 'g', 'h', 'g', 'g', 'h', 'g'],
+            ['g', 'w', 'w', 'w', 'w', 'g', 'g', 'h', 'h', 'g'],
+            ['g', 'w', 'w', 'w', 'w', 'w', 'g', 'h', 'h', 'h'],
+            ['g', 'w', 'w', 'w', 'w', 'g', 'h', 'h', 'h', 'g'],
+            ['g', 'g', 'g', 'w', 'g', 'g', 'g', 'g', 'h', 'g'],
+            ['g', 'g', 'g', 'g', 'g', 'g', 'g', 'g', 'g', 'g']
         ]
 
         grassField = new Field('g')
@@ -231,13 +231,49 @@ var Field = function (type) {
             return 'g'
         }
     }
+    this.getHill = function () {
+        if (field.type == 'h') {
+            return 1
+        } else {
+            return 0
+        }
+    }
 }
 var Ground = new function () {
     var mountainLevel = 1.95,
-        hillLevel = 0.9,
-        // bottomLevel = 2,
-        bottomLevel = 0,
+        hillLevel = -0.9,
+        // hillLevel = 0,
+        bottomLevel = 2,
+        // bottomLevel = 0,
         waterLevel = 0.1,
+        checkHillUp = function (x, y) {
+            if (Fields.get(x, y + 1, 1).getHill()) {
+                return 0
+            } else {
+                return 1
+            }
+        },
+        checkHillDown = function (x, y) {
+            if (Fields.get(x, y - 1, 1).getHill()) {
+                return 0
+            } else {
+                return 1
+            }
+        },
+        checkHillLeft = function (x, y) {
+            if (Fields.get(x + 1, y, 1).getHill()) {
+                return 0
+            } else {
+                return 1
+            }
+        },
+        checkHillRight = function (x, y) {
+            if (Fields.get(x - 1, y, 1).getHill()) {
+                return 0
+            } else {
+                return 1
+            }
+        },
         checkUp = function (x, y) {
             if (Fields.get(x, y + 1, 1).getGrassOrWater() == 'g') {
                 return 1
@@ -372,11 +408,348 @@ var Ground = new function () {
 
             return vertexPositions
         },
+        createWaterVertexPositionsLeft = function (stripes) {
+            var vertexPositions = []
+
+            for (var i in stripes) {
+                var x = stripes[i][0],
+                    y = stripes[i][1]
+
+
+                if (Fields.get(x, y - 1, 1).getGrassOrWater() == 'w') {
+                    if (Fields.get(x + 1, y - 1, 1).getGrassOrWater() == 'g') {
+                        var y1 = y
+                    } else {
+                        var y1 = y - 0.3
+                    }
+                } else {
+                    var y1 = y + 0.3
+                }
+
+                if (Fields.get(x, y + 1, 1).getGrassOrWater() == 'w') {
+                    if (Fields.get(x + 1, y + 1, 1).getGrassOrWater() == 'g') { // w|g
+                        var y2 = y + 1
+                    } else {                                                    // w|w
+                        var y2 = y + 1.3
+                    }
+                } else {                                                        // g
+                    var y2 = y + 0.7
+                }
+
+                vertexPositions.push([x + 0.7, y1, bottomLevel])       //
+                vertexPositions.push([x + 1, y, 0])                    //  FIRST TRIANGLE
+                vertexPositions.push([x + 0.7, y2, bottomLevel])       //
+
+                vertexPositions.push([x + 1, y + 1, 0])                //
+                vertexPositions.push([x + 0.7, y2, bottomLevel])       //  SECOND TRIANGLE
+                vertexPositions.push([x + 1, y, 0])                    //
+            }
+
+            return vertexPositions
+        },
+        createWaterVertexPositionsRight = function (stripes) {
+            var vertexPositions = []
+
+            for (var i in stripes) {
+                var x = stripes[i][0],
+                    y = stripes[i][1]
+
+
+                if (Fields.get(x, y - 1, 1).getGrassOrWater() == 'w') {
+                    if (Fields.get(x - 1, y - 1, 1).getGrassOrWater() == 'g') {  // g|w
+                        var y1 = y
+                    } else {                                                     // w|w
+                        var y1 = y - 0.3
+                    }
+                } else {                                                         // g
+                    var y1 = y + 0.3
+                }
+
+                if (Fields.get(x, y + 1, 1).getGrassOrWater() == 'w') {
+                    if (Fields.get(x - 1, y + 1, 1).getGrassOrWater() == 'g') { // g|w
+                        var y2 = y + 1
+                    } else {                                                    // w|w
+                        var y2 = y + 1.3
+                    }
+                } else {                                                        // g
+                    var y2 = y + 0.7
+                }
+
+                vertexPositions.push([x + 0.3, y1, bottomLevel])       //
+                vertexPositions.push([x, y, 0])                        //  FIRST TRIANGLE
+                vertexPositions.push([x + 0.3, y2, bottomLevel])       //
+
+                vertexPositions.push([x, y + 1, 0])                    //
+                vertexPositions.push([x + 0.3, y2, bottomLevel])       //  SECOND TRIANGLE
+                vertexPositions.push([x, y, 0])                        //
+            }
+
+            return vertexPositions
+        },
+        createHillVertexPositionsUp = function (stripes) {
+            var vertexPositions = []
+
+            for (var i in stripes) {
+                var x = stripes[i][0],
+                    y = stripes[i][1]
+
+
+                if (Fields.get(x - 1, y, 1).getHill()) {
+                    if (!Fields.get(x - 1, y + 1, 1).getHill()) {
+                        var x1 = x
+                    } else {
+                        var x1 = x - 0.3
+                    }
+                } else {
+                    var x1 = x + 0.3
+                }
+
+                if (Fields.get(x + 1, y, 1).getHill()) {
+                    if (!Fields.get(x + 1, y + 1, 1).getHill()) {
+                        var x2 = x + 1
+                    } else {
+                        var x2 = x + 1.3
+                    }
+                } else {
+                    var x2 = x + 0.7
+                }
+
+                vertexPositions.push([x1, y + 0.7, hillLevel])       //
+                vertexPositions.push([x2, y + 0.7, hillLevel])       //  FIRST TRIANGLE
+                vertexPositions.push([x, y + 1, 0])                    //
+
+                vertexPositions.push([x + 1, y + 1, 0])                //
+                vertexPositions.push([x, y + 1, 0])                    //  SECOND TRIANGLE
+                vertexPositions.push([x2, y + 0.7, hillLevel])       //
+            }
+
+            return vertexPositions
+        },
+        createHillVertexPositionsDown = function (stripes) {
+            var vertexPositions = []
+
+            for (var i in stripes) {
+                var x = stripes[i][0],
+                    y = stripes[i][1]
+
+
+                if (Fields.get(x - 1, y, 1).getHill()) {
+                    if (!Fields.get(x - 1, y - 1, 1).getHill()) {
+                        var x1 = x
+                    } else {
+                        var x1 = x - 0.3
+                    }
+                } else {
+                    var x1 = x + 0.3
+                }
+
+                if (Fields.get(x + 1, y, 1).getHill()) {
+                    if (!Fields.get(x + 1, y - 1, 1).getHill()) {
+                        var x2 = x + 1
+                    } else {
+                        var x2 = x + 1.3
+                    }
+                } else {
+                    var x2 = x + 0.7
+                }
+
+                vertexPositions.push([x, y, 0])                        //
+                vertexPositions.push([x + 1, y, 0])                    //  FIRST TRIANGLE
+                vertexPositions.push([x1, y + 0.3, hillLevel])       //
+
+                vertexPositions.push([x2, y + 0.3, hillLevel])       //
+                vertexPositions.push([x1, y + 0.3, hillLevel])       //  SECOND TRIANGLE
+                vertexPositions.push([x + 1, y, 0])                    //
+            }
+
+            return vertexPositions
+        },
+        createHillVertexPositionsLeft = function (stripes) {
+            var vertexPositions = []
+
+            for (var i in stripes) {
+                var x = stripes[i][0],
+                    y = stripes[i][1]
+
+
+                if (Fields.get(x, y - 1, 1).getHill()) {
+                    if (!Fields.get(x + 1, y - 1, 1).getHill()) {
+                        var y1 = y
+                    } else {
+                        var y1 = y - 0.3
+                    }
+                } else {
+                    var y1 = y + 0.3
+                }
+
+                if (Fields.get(x, y + 1, 1).getHill()) {
+                    if (!Fields.get(x + 1, y + 1, 1).getHill()) { // w|g
+                        var y2 = y + 1
+                    } else {                                                    // w|w
+                        var y2 = y + 1.3
+                    }
+                } else {                                                        // g
+                    var y2 = y + 0.7
+                }
+
+                vertexPositions.push([x + 0.7, y1, hillLevel])       //
+                vertexPositions.push([x + 1, y, 0])                    //  FIRST TRIANGLE
+                vertexPositions.push([x + 0.7, y2, hillLevel])       //
+
+                vertexPositions.push([x + 1, y + 1, 0])                //
+                vertexPositions.push([x + 0.7, y2, hillLevel])       //  SECOND TRIANGLE
+                vertexPositions.push([x + 1, y, 0])                    //
+            }
+
+            return vertexPositions
+        },
+        createHillVertexPositionsRight = function (stripes) {
+            var vertexPositions = []
+
+            for (var i in stripes) {
+                var x = stripes[i][0],
+                    y = stripes[i][1]
+
+
+                if (Fields.get(x, y - 1, 1).getHill()) {
+                    if (!Fields.get(x - 1, y - 1, 1).getHill()) {  // g|w
+                        var y1 = y
+                    } else {                                                     // w|w
+                        var y1 = y - 0.3
+                    }
+                } else {                                                         // g
+                    var y1 = y + 0.3
+                }
+
+                if (Fields.get(x, y + 1, 1).getHill()) {
+                    if (!Fields.get(x - 1, y + 1, 1).getHill()) { // g|w
+                        var y2 = y + 1
+                    } else {                                                    // w|w
+                        var y2 = y + 1.3
+                    }
+                } else {                                                        // g
+                    var y2 = y + 0.7
+                }
+
+                vertexPositions.push([x + 0.3, y1, hillLevel])       //
+                vertexPositions.push([x, y, 0])                        //  FIRST TRIANGLE
+                vertexPositions.push([x + 0.3, y2, hillLevel])       //
+
+                vertexPositions.push([x, y + 1, 0])                    //
+                vertexPositions.push([x + 0.3, y2, hillLevel])       //  SECOND TRIANGLE
+                vertexPositions.push([x, y, 0])                        //
+            }
+
+            return vertexPositions
+        },
+        createHillVertexPositions = function (x, y) {
+            var vertexPositions = []
+
+            for (var yy = 0; yy < y; yy++) {
+                for (var xx = 0; xx < x; xx++) {
+                    if (!Fields.get(xx, yy).getHill()) {
+                        continue
+                    }
+
+                    var x1 = xx,
+                        x2 = xx + 1,
+                        x3 = xx,
+                        x4 = xx + 1,
+                        y1 = yy,
+                        y2 = yy,
+                        y3 = yy + 1,
+                        y4 = yy + 1
+
+                    if (!Fields.get(xx, yy - 1, 1).getHill()) { // above
+                        y1 = y1 + 0.3
+                        y2 = y2 + 0.3
+                    }
+                    if (!Fields.get(xx, yy + 1, 1).getHill()) { // under
+                        y3 = y3 - 0.3
+                        y4 = y4 - 0.3
+                    }
+                    if (!Fields.get(xx - 1, yy, 1).getHill()) { // left
+                        x1 = x1 + 0.3
+                        x3 = x3 + 0.3
+                    }
+                    if (!Fields.get(xx + 1, yy, 1).getHill()) { // right
+                        x2 = x2 - 0.3
+                        x4 = x4 - 0.3
+                    }
+
+
+                    if (!Fields.get(xx, yy - 1, 1).getHill() && Fields.get(xx + 1, yy, 1).getHill() && Fields.get(xx + 1, yy - 1, 1).getHill()) { // corner 1
+                        x2 = x2 + 0.3
+                    }
+                    if (!Fields.get(xx - 1, yy - 1, 1).getHill() && Fields.get(xx, yy - 1, 1).getHill() && Fields.get(xx - 1, yy, 1).getHill()) { // corner 2
+                        x1 = x1 + 0.3
+                        y1 = y1 + 0.3
+                    }
+                    if (!Fields.get(xx - 1, yy, 1).getHill() && Fields.get(xx, yy + 1, 1).getHill() && Fields.get(xx - 1, yy + 1, 1).getHill()) { // corner 3
+                        y3 = y3 + 0.3
+                    }
+
+                    if (!Fields.get(xx - 1, yy + 1, 1).getHill() && Fields.get(xx, yy + 1, 1).getHill() && Fields.get(xx - 1, yy, 1).getHill()) { // corner 4
+                        x3 = x3 + 0.3
+                        y3 = y3 - 0.3
+                    }
+                    if (!Fields.get(xx, yy + 1, 1).getHill() && Fields.get(xx + 1, yy + 1, 1).getHill() && Fields.get(xx + 1, yy, 1).getHill()) { // corner 5
+                        x4 = x4 + 0.3
+                    }
+                    if (!Fields.get(xx - 1, yy, 1).getHill() && Fields.get(xx, yy - 1, 1).getHill() && Fields.get(xx - 1, yy - 1, 1).getHill()) { // corner 6
+                        y1 = y1 - 0.3
+                    }
+
+                    if (!Fields.get(xx + 1, yy + 1, 1).getHill() && Fields.get(xx, yy + 1, 1).getHill() && Fields.get(xx + 1, yy, 1).getHill()) { // corner 7
+                        x4 = x4 - 0.3
+                        y4 = y4 - 0.3
+                    }
+                    if (!Fields.get(xx + 1, yy, 1).getHill() && Fields.get(xx - 1, yy, 1).getHill() && Fields.get(xx + 1, yy - 1, 1).getHill()) { // corner 8
+                        y2 = y2 - 0.3
+                    }
+                    if (!Fields.get(xx, yy + 1, 1).getHill() && Fields.get(xx - 1, yy + 1, 1).getHill() && Fields.get(xx - 1, yy, 1).getHill()) { // corner 9
+                        x3 = x3 - 0.3
+                    }
+
+                    if (!Fields.get(xx + 1, yy - 1, 1).getHill() && Fields.get(xx, yy - 1, 1).getHill() && Fields.get(xx + 1, yy, 1).getHill()) { // corner 10
+                        x2 = x2 - 0.3
+                        y2 = y2 + 0.3
+                    }
+                    if (!Fields.get(xx + 1, yy, 1).getHill() && Fields.get(xx, yy + 1, 1).getHill() && Fields.get(xx + 1, yy + 1, 1).getHill()) { // corner 11
+                        y4 = y4 + 0.3
+                    }
+                    if (!Fields.get(xx, yy - 1, 1).getHill() && Fields.get(xx - 1, yy - 1, 1).getHill() && Fields.get(xx - 1, yy, 1).getHill()) { // corner 12
+                        x1 = x1 - 0.3
+                    }
+
+                    //  FIRST TRIANGLE
+                    vertexPositions.push([x1, y1, hillLevel])         // I
+                    vertexPositions.push([x2, y2, hillLevel])         // II
+                    vertexPositions.push([x3, y3, hillLevel])         // III
+
+                    // SECOND TRIANGLE
+                    vertexPositions.push([x4, y4, hillLevel])         // IV
+                    vertexPositions.push([x3, y3, hillLevel])         // III
+                    vertexPositions.push([x2, y2, hillLevel])         // II
+
+                    if (xx == 7 && yy == 4) {
+                        console.log(!Fields.get(xx - 1, yy - 1, 1).getHill())
+                        console.log(Fields.get(xx, yy - 1, 1).getHill())
+                        console.log(Fields.get(xx - 1, yy, 1).getHill())
+
+                        console.log([[x1, y1], [x2, y2], [x3, y3], [x4, y4]])
+                    }
+
+                }
+            }
+
+            return vertexPositions
+        },
         createGrassVertexPositions = function (stripesArray) {
             var vertexPositions = []
             for (var yyy in stripesArray) {
                 var stripes = stripesArray[yyy].get()
-                console.log(stripes)
+                // console.log(stripes)
 
                 for (var i in stripes) {
                     var field = stripes[i]
@@ -413,6 +786,32 @@ var Ground = new function () {
                         stripes.addLeft(xx, yy)
                     }
                     if (checkRight(xx, yy)) {
+                        stripes.addRight(xx, yy)
+                    }
+                }
+            }
+
+            return stripes
+        },
+        createHillStripes = function (x, y) {
+            var stripes = new HillStripes()
+
+            for (var yy = 0; yy < y; yy++) {
+                for (var xx = 0; xx < x; xx++) {
+                    if (!Fields.get(xx, yy).getHill()) {
+                        continue
+                    }
+
+                    if (checkHillDown(xx, yy)) {
+                        stripes.addDown(xx, yy)
+                    }
+                    if (checkHillUp(xx, yy)) {
+                        stripes.addUp(xx, yy)
+                    }
+                    if (checkHillLeft(xx, yy)) {
+                        stripes.addLeft(xx, yy)
+                    }
+                    if (checkHillRight(xx, yy)) {
                         stripes.addRight(xx, yy)
                     }
                 }
@@ -508,9 +907,27 @@ var Ground = new function () {
 
         var stripes = createWaterStripes(x, y),
             vertexPositionsUp = createWaterVertexPositionsUp(stripes.getUp()),
-            vertexPositionsDown = createWaterVertexPositionsDown(stripes.getDown())
+            vertexPositionsDown = createWaterVertexPositionsDown(stripes.getDown()),
+            vertexPositionsLeft = createWaterVertexPositionsLeft(stripes.getLeft()),
+            vertexPositionsRight = createWaterVertexPositionsRight(stripes.getRight())
+
         createMesh(createGeometry(vertexPositionsUp))
         createMesh(createGeometry(vertexPositionsDown))
+        createMesh(createGeometry(vertexPositionsLeft))
+        createMesh(createGeometry(vertexPositionsRight))
+
+        var stripes = createHillStripes(x, y),
+            vertexPositionsUp = createHillVertexPositionsUp(stripes.getUp()),
+            vertexPositionsDown = createHillVertexPositionsDown(stripes.getDown()),
+            vertexPositionsLeft = createHillVertexPositionsLeft(stripes.getLeft()),
+            vertexPositionsRight = createHillVertexPositionsRight(stripes.getRight())
+
+        createMesh(createGeometry(vertexPositionsUp))
+        createMesh(createGeometry(vertexPositionsDown))
+        createMesh(createGeometry(vertexPositionsLeft))
+        createMesh(createGeometry(vertexPositionsRight))
+
+        createMesh(createGeometry(createHillVertexPositions(x, y)))
     }
 }
 
@@ -538,6 +955,45 @@ var WaterStripes = function () {
     }
     this.getDown = function () {
         return downStripes
+    }
+    this.getLeft = function () {
+        return leftStripes
+    }
+    this.getRight = function () {
+        return rightStripes
+    }
+}
+
+var HillStripes = function () {
+    var leftStripes = [],
+        rightStripes = [],
+        upStripes = [],
+        downStripes = []
+
+    this.addLeft = function (x, y) {
+        leftStripes.push([x, y])
+    }
+    this.addRight = function (x, y) {
+        rightStripes.push([x, y])
+    }
+    this.addUp = function (x, y) {
+        upStripes.push([x, y])
+    }
+    this.addDown = function (x, y) {
+        downStripes.push([x, y])
+    }
+
+    this.getUp = function () {
+        return upStripes
+    }
+    this.getDown = function () {
+        return downStripes
+    }
+    this.getLeft = function () {
+        return leftStripes
+    }
+    this.getRight = function () {
+        return rightStripes
     }
 }
 
