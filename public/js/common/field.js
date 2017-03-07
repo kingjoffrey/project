@@ -15,18 +15,41 @@ var Field = function (type) {
     this.getRuinId = function () {
         return field.ruinId
     }
+
     this.setTowerId = function (towerId) {
         field.towerId = towerId
+    }
+    this.setTowerColor = function (color) {
+        field.towerColor = color
+    }
+    this.setTower = function (towerId, color) {
+        field.towerId = towerId
+        field.towerColor = color
     }
     this.getTowerId = function () {
         return field.towerId
     }
+    this.getTowerColor = function () {
+        return field.towerColor
+    }
+
     this.setCastleId = function (castleId) {
         field.castleId = castleId
+    }
+    this.setCastleColor = function (color) {
+        field.castleColor = color
+    }
+    this.setCastle = function (castleId, color) {
+        field.castleId = castleId
+        field.castleColor = color
     }
     this.getCastleId = function () {
         return field.castleId
     }
+    this.getCastleColor = function () {
+        return field.castleColor
+    }
+
     this.removeArmyId = function (armyId) {
         delete field.armies[armyId]
         //console.log(field.armies)
@@ -43,17 +66,12 @@ var Field = function (type) {
             return armyId
         }
     }
-    this.getTowerColor = function () {
-        return field.towerColor
+
+    this.setType = function (type) {
+        field.type = type
     }
-    this.setTowerColor = function (color) {
-        field.towerColor = color
-    }
-    this.getCastleColor = function () {
-        return field.castleColor
-    }
-    this.setCastleColor = function (color) {
-        field.castleColor = color
+    this.getType = function () {
+        return field.type
     }
     this.getTypeWithoutBridge = function () {
         if (field.type == 'b') {
@@ -61,18 +79,25 @@ var Field = function (type) {
         }
         return field.type
     }
-    this.getType = function () {
-        return field.type
+    this.getGrassOrWater = function () {
+        if (field.type == 'b' || field.type == 'w') {
+            return 'w'
+        } else {
+            return 'g'
+        }
     }
-    this.setType = function (type) {
-        field.type = type
+    this.getHill = function () {
+        if (field.type == 'h' || field.type == 'm') {
+            return 1
+        } else {
+            return 0
+        }
     }
-    this.setCastle = function (castleId, color) {
-        field.castleId = castleId
-        field.castleColor = color
-    }
-    this.setTower = function (towerId, color) {
-        field.towerId = towerId
-        field.towerColor = color
+    this.getMountain = function () {
+        if (field.type == 'm') {
+            return 1
+        } else {
+            return 0
+        }
     }
 }
