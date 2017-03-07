@@ -29,29 +29,29 @@ var Fields = new function () {
             // f2 = isMountain(Fields.get(x + 1, y - 1, 1).getType())
             // f6 = isMountain(Fields.get(x - 1, y + 1, 1).getType())
 
-            if (isTopLeft(x, y, 'm')) {
-                tmpTextureContext.fillStyle = hillColor1
-
-                for (var i = 0; i < textureMultiplier; i++) {
-                    for (var j = 0; j < textureMultiplier; j++) {
-                        if (i + j < half) {
-                            tmpTextureContext.fillRect(newX + i, newY + j, 1, 1)
-                        }
-                    }
-                }
-            }
-
-            if (ifBottomRight(x, y, 'm')) {
-                tmpTextureContext.fillStyle = hillColor1
-
-                for (var i = 0; i < textureMultiplier; i++) {
-                    for (var j = 0; j < textureMultiplier; j++) {
-                        if (i + j > halfPlus) {
-                            tmpTextureContext.fillRect(newX + i, newY + j, 1, 1)
-                        }
-                    }
-                }
-            }
+            // if (isTopLeft(x, y, 'm')) {
+            //     tmpTextureContext.fillStyle = hillColor1
+            //
+            //     for (var i = 0; i < textureMultiplier; i++) {
+            //         for (var j = 0; j < textureMultiplier; j++) {
+            //             if (i + j < half) {
+            //                 tmpTextureContext.fillRect(newX + i, newY + j, 1, 1)
+            //             }
+            //         }
+            //     }
+            // }
+            //
+            // if (ifBottomRight(x, y, 'm')) {
+            //     tmpTextureContext.fillStyle = hillColor1
+            //
+            //     for (var i = 0; i < textureMultiplier; i++) {
+            //         for (var j = 0; j < textureMultiplier; j++) {
+            //             if (i + j > halfPlus) {
+            //                 tmpTextureContext.fillRect(newX + i, newY + j, 1, 1)
+            //             }
+            //         }
+            //     }
+            // }
         },
         paintHill = function (tmpTextureContext, x, y) {
             var x = x * 1,
@@ -83,37 +83,37 @@ var Fields = new function () {
             tmpTextureContext.fillRect(newX + 16, newY + textureMultiplier - 4, 1, 1)
             tmpTextureContext.fillRect(newX, newY + textureMultiplier - 4, 1, 1)
 
-            if (isTopLeft(x, y, 'h')) {
-                if (isType(Fields.get(x - 1, y - 1, 1).getType(), 'm')) {
-                    tmpTextureContext.fillStyle = hillColor1
-                } else {
-                    tmpTextureContext.fillStyle = grassColor1
-                }
-
-                for (var i = 0; i < textureMultiplier; i++) {
-                    for (var j = 0; j < textureMultiplier; j++) {
-                        if (i + j < half) {
-                            tmpTextureContext.fillRect(newX + i, newY + j, 1, 1)
-                        }
-                    }
-                }
-            }
-
-            if (ifBottomRight(x, y, 'h')) {
-                if (isType(Fields.get(x + 1, y + 1, 1).getType(), 'm')) {
-                    tmpTextureContext.fillStyle = hillColor1
-                } else {
-                    tmpTextureContext.fillStyle = grassColor1
-                }
-
-                for (var i = 0; i < textureMultiplier; i++) {
-                    for (var j = 0; j < textureMultiplier; j++) {
-                        if (i + j > halfPlus) {
-                            tmpTextureContext.fillRect(newX + i, newY + j, 1, 1)
-                        }
-                    }
-                }
-            }
+            // if (isTopLeft(x, y, 'h')) {
+            //     if (isType(Fields.get(x - 1, y - 1, 1).getType(), 'm')) {
+            //         tmpTextureContext.fillStyle = hillColor1
+            //     } else {
+            //         tmpTextureContext.fillStyle = grassColor1
+            //     }
+            //
+            //     for (var i = 0; i < textureMultiplier; i++) {
+            //         for (var j = 0; j < textureMultiplier; j++) {
+            //             if (i + j < half) {
+            //                 tmpTextureContext.fillRect(newX + i, newY + j, 1, 1)
+            //             }
+            //         }
+            //     }
+            // }
+            //
+            // if (ifBottomRight(x, y, 'h')) {
+            //     if (isType(Fields.get(x + 1, y + 1, 1).getType(), 'm')) {
+            //         tmpTextureContext.fillStyle = hillColor1
+            //     } else {
+            //         tmpTextureContext.fillStyle = grassColor1
+            //     }
+            //
+            //     for (var i = 0; i < textureMultiplier; i++) {
+            //         for (var j = 0; j < textureMultiplier; j++) {
+            //             if (i + j > halfPlus) {
+            //                 tmpTextureContext.fillRect(newX + i, newY + j, 1, 1)
+            //             }
+            //         }
+            //     }
+            // }
         },
         isTopLeft = function (x, y, type) {
             var f0 = isType(Fields.get(x - 1, y - 1, 1).getType(), type),

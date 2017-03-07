@@ -138,6 +138,42 @@ var Ground = new function () {
 
             return uvs
         },
+        createNewUVS = function (vertexPositions, x, y) {
+            var uv = [],
+                k = 0,
+                uvs = new Float32Array(vertexPositions.length * 2)
+
+            for (var i = 0; i < vertexPositions.length; i = i + 6) {
+                var vertex1 = vertexPositions[i],
+                    vertex2 = vertexPositions[i + 1],
+                    vertex3 = vertexPositions[i + 2],
+                    vertex4 = vertexPositions[i + 3]
+
+                uv[0] = [vertex1[0] / m / x, vertex1[1] / m / y]
+                uv[1] = [vertex2[0] / m / x, vertex2[1] / m / y]
+                uv[2] = [vertex3[0] / m / x, vertex3[1] / m / y]
+                uv[3] = [vertex4[0] / m / x, vertex4[1] / m / y]
+
+
+                // first triangle
+                uvs[0 + k] = uv[0][0]
+                uvs[1 + k] = uv[0][1]
+                uvs[2 + k] = uv[1][0]
+                uvs[3 + k] = uv[1][1]
+                uvs[4 + k] = uv[2][0]
+                uvs[5 + k] = uv[2][1]
+                // second triangle
+                uvs[6 + k] = uv[3][0]
+                uvs[7 + k] = uv[3][1]
+                uvs[8 + k] = uv[2][0]
+                uvs[9 + k] = uv[2][1]
+                uvs[10 + k] = uv[1][0]
+                uvs[11 + k] = uv[1][1]
+                k += 12
+            }
+
+            return uvs
+        },
         createWaterVertexPositionsUp = function (stripes) {
             var vertexPositions = []
 
@@ -178,7 +214,7 @@ var Ground = new function () {
                 vertexPositions.push([x3, y3, 0])                   //  SECOND TRIANGLE
                 vertexPositions.push([x2, y2 + 0.7 * m, bottomLevel])       //
             }
-
+            console.log(vertexPositions)
             return vertexPositions
         },
         createWaterVertexPositionsDown = function (stripes) {
@@ -1071,36 +1107,38 @@ var Ground = new function () {
             vertexPositionsLeft = createWaterVertexPositionsLeft(stripes.getLeft()),
             vertexPositionsRight = createWaterVertexPositionsRight(stripes.getRight())
 
-        createMesh(createGeometry(vertexPositionsUp))
-        createMesh(createGeometry(vertexPositionsDown))
-        createMesh(createGeometry(vertexPositionsLeft))
-        createMesh(createGeometry(vertexPositionsRight))
+        createMesh(createGeometry(vertexPositionsUp, createNewUVS(vertexPositionsUp, x, y)), textureCanvas)
+        createMesh(createGeometry(vertexPositionsDown, createNewUVS(vertexPositionsDown, x, y)), textureCanvas)
+        createMesh(createGeometry(vertexPositionsLeft, createNewUVS(vertexPositionsLeft, x, y)), textureCanvas)
+        createMesh(createGeometry(vertexPositionsRight, createNewUVS(vertexPositionsRight, x, y)), textureCanvas)
 
         var stripes = createHillStripes(x, y),
             vertexPositionsUp = createHillVertexPositionsUp(stripes.getUp()),
             vertexPositionsDown = createHillVertexPositionsDown(stripes.getDown()),
             vertexPositionsLeft = createHillVertexPositionsLeft(stripes.getLeft()),
-            vertexPositionsRight = createHillVertexPositionsRight(stripes.getRight())
+            vertexPositionsRight = createHillVertexPositionsRight(stripes.getRight()),
+            vertexPositions = createHillVertexPositions(x, y)
 
-        createMesh(createGeometry(vertexPositionsUp))
-        createMesh(createGeometry(vertexPositionsDown))
-        createMesh(createGeometry(vertexPositionsLeft))
-        createMesh(createGeometry(vertexPositionsRight))
+        createMesh(createGeometry(vertexPositionsUp, createNewUVS(vertexPositionsUp, x, y)), textureCanvas)
+        createMesh(createGeometry(vertexPositionsDown, createNewUVS(vertexPositionsDown, x, y)), textureCanvas)
+        createMesh(createGeometry(vertexPositionsLeft, createNewUVS(vertexPositionsLeft, x, y)), textureCanvas)
+        createMesh(createGeometry(vertexPositionsRight, createNewUVS(vertexPositionsRight, x, y)), textureCanvas)
 
-        createMesh(createGeometry(createHillVertexPositions(x, y)))
+        createMesh(createGeometry(vertexPositions, createNewUVS(vertexPositions, x, y)), textureCanvas)
 
         var stripes = createMountainStripes(x, y),
             vertexPositionsUp = createMountainVertexPositionsUp(stripes.getUp()),
             vertexPositionsDown = createMountainVertexPositionsDown(stripes.getDown()),
             vertexPositionsLeft = createMountainVertexPositionsLeft(stripes.getLeft()),
-            vertexPositionsRight = createMountainVertexPositionsRight(stripes.getRight())
+            vertexPositionsRight = createMountainVertexPositionsRight(stripes.getRight()),
+            vertexPositions = createMountainVertexPositions(x, y)
 
-        createMesh(createGeometry(vertexPositionsUp))
-        createMesh(createGeometry(vertexPositionsDown))
-        createMesh(createGeometry(vertexPositionsLeft))
-        createMesh(createGeometry(vertexPositionsRight))
+        createMesh(createGeometry(vertexPositionsUp, createNewUVS(vertexPositionsUp, x, y)), textureCanvas)
+        createMesh(createGeometry(vertexPositionsDown, createNewUVS(vertexPositionsDown, x, y)), textureCanvas)
+        createMesh(createGeometry(vertexPositionsLeft, createNewUVS(vertexPositionsLeft, x, y)), textureCanvas)
+        createMesh(createGeometry(vertexPositionsRight, createNewUVS(vertexPositionsRight, x, y)), textureCanvas)
 
-        createMesh(createGeometry(createMountainVertexPositions(x, y)))
+        createMesh(createGeometry(vertexPositions, createNewUVS(vertexPositions, x, y)), textureCanvas)
     }
 }
 

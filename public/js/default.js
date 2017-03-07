@@ -6,7 +6,7 @@ $(document).ready(function () {
 var Page = new function () {
     var index = '',
         touch = 0,
-        shadows = 0
+        shadows = 1
 
 
     this.getIndex = function () {
