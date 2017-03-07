@@ -1,12 +1,31 @@
 var Ground = new function () {
     var mountainLevel = -1.95,
-    // var mountainLevel = 0,
+        // var mountainLevel = 0,
         hillLevel = -0.9,
         // hillLevel = 0,
         bottomLevel = 2,
         // bottomLevel = 0,
         waterLevel = 0.1,
         m = 2,
+        createWater = function (x, y, canvas) {
+            var maxX = x * 2,
+                maxY = y * 2
+
+            var texture = new THREE.Texture(canvas)
+            texture.needsUpdate = true
+
+            var mesh = new THREE.Mesh(new THREE.PlaneBufferGeometry(maxX, maxY), new THREE.MeshLambertMaterial({
+                map: texture,
+                side: THREE.DoubleSide
+            }))
+            mesh.rotation.x = Math.PI / 2
+            mesh.position.set(maxX / 2, -waterLevel, maxY / 2)
+            GameScene.add(mesh)
+            PickerCommon.attach(mesh)
+            if (Page.getShadows()) {
+                mesh.receiveShadow = true
+            }
+        },
         checkMountainUp = function (x, y) {
             if (Fields.get(x, y + 1, 1).getMountain()) {
                 return 0
@@ -988,17 +1007,27 @@ var Ground = new function () {
 
             return geometry
         },
-        createMesh = function (geometry) {
-            var material = new THREE.MeshLambertMaterial({
-                color: '#ffffff',
-                side: THREE.DoubleSide
-            })
-
+        createMesh = function (geometry, canvas) {
             if (!geometry) {
                 return
             }
 
-            var mesh = new THREE.Mesh(geometry, material)
+            if (isSet(canvas)) {
+                var texture = new THREE.Texture(canvas)
+                texture.needsUpdate = true
+
+                var mesh = new THREE.Mesh(geometry, new THREE.MeshLambertMaterial({
+                    map: texture,
+                    side: THREE.DoubleSide
+                }))
+            } else {
+                var mesh = new THREE.Mesh(geometry, new THREE.MeshLambertMaterial({
+                    color: '#ffffff',
+                    side: THREE.DoubleSide
+                }))
+            }
+
+
             mesh.rotation.x = Math.PI / 2
             GameScene.add(mesh)
 
@@ -1027,11 +1056,14 @@ var Ground = new function () {
     //     Fields.createTextures()
     //     createGround(Fields.getMaxX(), Fields.getMaxY(), Fields.getCanvas())
     // }
-    this.init = function (x, y) {
+    this.init = function (x, y, textureCanvas, waterTextureCanvas) {
+
+        createWater(x, y, waterTextureCanvas)
+
         var stripesArray = createGrassStripes(x, y),
             vertexPositions = createGrassVertexPositions(stripesArray),
             uvs = createUVS(new Float32Array(vertexPositions.length * 2), stripesArray, x, y)
-        createMesh(createGeometry(vertexPositions, uvs))
+        createMesh(createGeometry(vertexPositions, uvs), textureCanvas)
 
         var stripes = createWaterStripes(x, y),
             vertexPositionsUp = createWaterVertexPositionsUp(stripes.getUp()),
