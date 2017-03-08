@@ -144,10 +144,10 @@ var GameModels = new function () {
     this.addPathCircle = function (x, y, color, t) {
         switch (t) {
             case 'm':
-                var height = Ground.getMountainLevel() + 0.01
+                var height = -Ground.getMountainLevel() + 0.01
                 break
             case 'h':
-                var height = Ground.getHillLevel() + 0.01
+                var height = -Ground.getHillLevel() + 0.01
                 break
             case 'E':
                 this.addPathCircle(x, y, 'red', Fields.get(x, y).getType())
@@ -174,10 +174,10 @@ var GameModels = new function () {
         var meshes = Models.getArmyCircle(color)
         switch (Fields.get(x, y).getType()) {
             case 'm':
-                var height = Ground.getMountainLevel() + 0.01
+                var height = -Ground.getMountainLevel() + 0.01
                 break
             case 'h':
-                var height = Ground.getHillLevel() + 0.01
+                var height = -Ground.getHillLevel() + 0.01
                 break
             default :
                 var height = 0.01

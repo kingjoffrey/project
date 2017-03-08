@@ -7,25 +7,6 @@ var Ground = new function () {
         // bottomLevel = 0,
         waterLevel = 0.1,
         m = 2,
-        createWater = function (x, y, canvas) {
-            var maxX = x * 2,
-                maxY = y * 2
-
-            var texture = new THREE.Texture(canvas)
-            texture.needsUpdate = true
-
-            var mesh = new THREE.Mesh(new THREE.PlaneBufferGeometry(maxX, maxY), new THREE.MeshLambertMaterial({
-                map: texture,
-                side: THREE.DoubleSide
-            }))
-            mesh.rotation.x = Math.PI / 2
-            mesh.position.set(maxX / 2, -waterLevel, maxY / 2)
-            GameScene.add(mesh)
-            PickerCommon.attach(mesh)
-            if (Page.getShadows()) {
-                mesh.receiveShadow = true
-            }
-        },
         checkMountainUp = function (x, y) {
             if (Fields.get(x, y + 1, 1).getMountain()) {
                 return 0
@@ -214,7 +195,7 @@ var Ground = new function () {
                 vertexPositions.push([x3, y3, 0])                   //  SECOND TRIANGLE
                 vertexPositions.push([x2, y2 + 0.7 * m, bottomLevel])       //
             }
-            console.log(vertexPositions)
+
             return vertexPositions
         },
         createWaterVertexPositionsDown = function (stripes) {
@@ -1066,12 +1047,38 @@ var Ground = new function () {
 
             mesh.rotation.x = Math.PI / 2
             GameScene.add(mesh)
+            if (Page.getShadows()) {
+                mesh.receiveShadow = true
+            }
 
 
             // var geo = new THREE.WireframeGeometry(mesh.geometry),
             //     mat = new THREE.LineBasicMaterial({color: 0x00ff00, linewidth: 1}),
             //     wireframe = new THREE.LineSegments(geo, mat)
             // mesh.add(wireframe)
+
+            return mesh
+        },
+        createWater = function (x, y, canvas) {
+            var maxX = x * 2,
+                maxY = y * 2
+
+            var texture = new THREE.Texture(canvas)
+            texture.needsUpdate = true
+
+            var mesh = new THREE.Mesh(new THREE.PlaneBufferGeometry(maxX, maxY), new THREE.MeshLambertMaterial({
+                map: texture,
+                side: THREE.DoubleSide
+            }))
+            mesh.rotation.x = Math.PI / 2
+            mesh.position.set(maxX / 2, -waterLevel, maxY / 2)
+            GameScene.add(mesh)
+
+            if (Page.getShadows()) {
+                mesh.receiveShadow = true
+            }
+
+            return mesh
         }
 
     this.getMountainLevel = function () {
@@ -1093,13 +1100,14 @@ var Ground = new function () {
     //     createGround(Fields.getMaxX(), Fields.getMaxY(), Fields.getCanvas())
     // }
     this.init = function (x, y, textureCanvas, waterTextureCanvas) {
-
-        createWater(x, y, waterTextureCanvas)
+        var mesh = createWater(x, y, waterTextureCanvas)
+        PickerCommon.attach(mesh)
 
         var stripesArray = createGrassStripes(x, y),
             vertexPositions = createGrassVertexPositions(stripesArray),
             uvs = createUVS(new Float32Array(vertexPositions.length * 2), stripesArray, x, y)
-        createMesh(createGeometry(vertexPositions, uvs), textureCanvas)
+        mesh = createMesh(createGeometry(vertexPositions, uvs), textureCanvas)
+        PickerCommon.attach(mesh)
 
         var stripes = createWaterStripes(x, y),
             vertexPositionsUp = createWaterVertexPositionsUp(stripes.getUp()),
@@ -1119,12 +1127,16 @@ var Ground = new function () {
             vertexPositionsRight = createHillVertexPositionsRight(stripes.getRight()),
             vertexPositions = createHillVertexPositions(x, y)
 
-        createMesh(createGeometry(vertexPositionsUp, createNewUVS(vertexPositionsUp, x, y)), textureCanvas)
-        createMesh(createGeometry(vertexPositionsDown, createNewUVS(vertexPositionsDown, x, y)), textureCanvas)
-        createMesh(createGeometry(vertexPositionsLeft, createNewUVS(vertexPositionsLeft, x, y)), textureCanvas)
-        createMesh(createGeometry(vertexPositionsRight, createNewUVS(vertexPositionsRight, x, y)), textureCanvas)
-
-        createMesh(createGeometry(vertexPositions, createNewUVS(vertexPositions, x, y)), textureCanvas)
+        mesh = createMesh(createGeometry(vertexPositionsUp, createNewUVS(vertexPositionsUp, x, y)), textureCanvas)
+        PickerCommon.attach(mesh)
+        mesh = createMesh(createGeometry(vertexPositionsDown, createNewUVS(vertexPositionsDown, x, y)), textureCanvas)
+        PickerCommon.attach(mesh)
+        mesh = createMesh(createGeometry(vertexPositionsLeft, createNewUVS(vertexPositionsLeft, x, y)), textureCanvas)
+        PickerCommon.attach(mesh)
+        mesh = createMesh(createGeometry(vertexPositionsRight, createNewUVS(vertexPositionsRight, x, y)), textureCanvas)
+        PickerCommon.attach(mesh)
+        mesh = createMesh(createGeometry(vertexPositions, createNewUVS(vertexPositions, x, y)), textureCanvas)
+        PickerCommon.attach(mesh)
 
         var stripes = createMountainStripes(x, y),
             vertexPositionsUp = createMountainVertexPositionsUp(stripes.getUp()),
@@ -1133,12 +1145,16 @@ var Ground = new function () {
             vertexPositionsRight = createMountainVertexPositionsRight(stripes.getRight()),
             vertexPositions = createMountainVertexPositions(x, y)
 
-        createMesh(createGeometry(vertexPositionsUp, createNewUVS(vertexPositionsUp, x, y)), textureCanvas)
-        createMesh(createGeometry(vertexPositionsDown, createNewUVS(vertexPositionsDown, x, y)), textureCanvas)
-        createMesh(createGeometry(vertexPositionsLeft, createNewUVS(vertexPositionsLeft, x, y)), textureCanvas)
-        createMesh(createGeometry(vertexPositionsRight, createNewUVS(vertexPositionsRight, x, y)), textureCanvas)
-
-        createMesh(createGeometry(vertexPositions, createNewUVS(vertexPositions, x, y)), textureCanvas)
+        mesh = createMesh(createGeometry(vertexPositionsUp, createNewUVS(vertexPositionsUp, x, y)), textureCanvas)
+        PickerCommon.attach(mesh)
+        mesh = createMesh(createGeometry(vertexPositionsDown, createNewUVS(vertexPositionsDown, x, y)), textureCanvas)
+        PickerCommon.attach(mesh)
+        mesh = createMesh(createGeometry(vertexPositionsLeft, createNewUVS(vertexPositionsLeft, x, y)), textureCanvas)
+        PickerCommon.attach(mesh)
+        mesh = createMesh(createGeometry(vertexPositionsRight, createNewUVS(vertexPositionsRight, x, y)), textureCanvas)
+        PickerCommon.attach(mesh)
+        mesh = createMesh(createGeometry(vertexPositions, createNewUVS(vertexPositions, x, y)), textureCanvas)
+        PickerCommon.attach(mesh)
     }
 }
 
