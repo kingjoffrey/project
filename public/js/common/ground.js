@@ -1091,7 +1091,7 @@ var Ground = new function () {
             mesh.position.set(maxX / 2, -0.5, maxY)
             GameScene.add(mesh)
 
-            var mesh = new THREE.Mesh(new THREE.PlaneBufferGeometry(maxX, 1), new THREE.MeshLambertMaterial({
+            var mesh = new THREE.Mesh(new THREE.PlaneBufferGeometry(maxY, 1), new THREE.MeshLambertMaterial({
                 color: Fields.getGrassColor(),
                 side: THREE.DoubleSide
             }))

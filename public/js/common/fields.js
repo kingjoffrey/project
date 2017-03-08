@@ -17,6 +17,7 @@ var Fields = new function () {
         grassColor1 = '#3c963c',
         grassColor2 = '#3fa342',
         waterColor1 = '#00557f',
+        waterColor2 = '#526daa',
         paintMountain = function (tmpTextureContext, x, y) {
             var x = x * 1,
                 y = y * 1,
@@ -77,18 +78,18 @@ var Fields = new function () {
 
             paintTextureField(tmpTextureContext, x, y, hillColor1, grassColor1, 1)
 
-            if (isType(Fields.get(x, y + 1, 1).getType(), 'h')
-                && isType(Fields.get(x, y - 1, 1).getType(), 'h')
-                && isType(Fields.get(x + 1, y, 1).getType(), 'h')
-                && isType(Fields.get(x - 1, y, 1).getType(), 'h')
-                && isType(Fields.get(x - 1, y - 1, 1).getType(), 'h')
-                && isType(Fields.get(x - 1, y + 1, 1).getType(), 'h')
-                && isType(Fields.get(x + 1, y + 1, 1).getType(), 'h')
-                && isType(Fields.get(x + 1, y - 1, 1).getType(), 'h')
-            ) {
+            // if (isType(Fields.get(x, y + 1, 1).getType(), 'h')
+            //     && isType(Fields.get(x, y - 1, 1).getType(), 'h')
+            //     && isType(Fields.get(x + 1, y, 1).getType(), 'h')
+            //     && isType(Fields.get(x - 1, y, 1).getType(), 'h')
+            //     && isType(Fields.get(x - 1, y - 1, 1).getType(), 'h')
+            //     && isType(Fields.get(x - 1, y + 1, 1).getType(), 'h')
+            //     && isType(Fields.get(x + 1, y + 1, 1).getType(), 'h')
+            //     && isType(Fields.get(x + 1, y - 1, 1).getType(), 'h')
+            // ) {
                 tmpTextureContext.fillStyle = hillColor2
-                tmpTextureContext.fillRect(newX + 4, newY + 8, 6, 1)
-            }
+                tmpTextureContext.fillRect(newX + 5, newY + 8, 6, 1)
+            // }
 
             if (notType(Fields.get(x, y + 1, 1).getType(), 'h') && notType(Fields.get(x, y + 1, 1).getType(), 'm')) {
                 tmpTextureContext.fillStyle = hillColor2
@@ -360,12 +361,12 @@ var Fields = new function () {
                         }
                         break
                     case 'w':
-                        paintTextureField(tmpTextureContext, x, y, '#fff499', grassColor1, 0)
-                        paintWaterTextureField(tmpWaterTextureContext, x, y, '#365294', '#526daa', 1)
+                        paintTextureField(tmpTextureContext, x, y, roadColor1, grassColor1, 0)
+                        paintWaterTextureField(tmpWaterTextureContext, x, y, '#365294', waterColor2, 1)
                         break
                     case 'b':
-                        paintTextureField(tmpTextureContext, x, y, '#fff499', grassColor1, 0)
-                        paintWaterTextureField(tmpWaterTextureContext, x, y, waterColor1, '#526daa', 1)
+                        paintTextureField(tmpTextureContext, x, y, roadColor1, grassColor1, 0)
+                        paintWaterTextureField(tmpWaterTextureContext, x, y, waterColor1, waterColor2, 1)
                         paintRoad(tmpTextureContext, x, y)
                         break
                     case 'h':
@@ -384,6 +385,7 @@ var Fields = new function () {
                     case 's':
                         // paintTextureField(tmpTextureContext, x, y, grassColor1, '#828396', 60)
                         paintTextureField(tmpTextureContext, x, y, grassColor1, waterColor1, 60)
+                        // paintTextureField(tmpTextureContext, x, y, roadColor1, waterColor1, 60)
                         // paintWaterTextureField(tmpWaterTextureContext, x, y, '#ffff7f', grassColor1, 15)
                         break
                 }

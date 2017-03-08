@@ -1,7 +1,8 @@
 var GameModels = new function () {
     var pathCircles = [],
         moveCircles = [],
-        armyCircles = []
+        armyCircles = [],
+        hover = 0.1
 
     this.init = function () {
         Models.init()
@@ -144,17 +145,17 @@ var GameModels = new function () {
     this.addPathCircle = function (x, y, color, t) {
         switch (t) {
             case 'm':
-                var height = -Ground.getMountainLevel() + 0.01
+                var height = -Ground.getMountainLevel() + hover
                 break
             case 'h':
-                var height = -Ground.getHillLevel() + 0.01
+                var height = -Ground.getHillLevel() + hover
                 break
             case 'E':
                 this.addPathCircle(x, y, 'red', Fields.get(x, y).getType())
                 return
                 break
             default :
-                var height = 0.01
+                var height = hover
                 break
         }
 
@@ -174,13 +175,13 @@ var GameModels = new function () {
         var meshes = Models.getArmyCircle(color)
         switch (Fields.get(x, y).getType()) {
             case 'm':
-                var height = -Ground.getMountainLevel() + 0.01
+                var height = -Ground.getMountainLevel() + hover
                 break
             case 'h':
-                var height = -Ground.getHillLevel() + 0.01
+                var height = -Ground.getHillLevel() + hover
                 break
             default :
-                var height = 0.01
+                var height = hover
                 break
         }
 
