@@ -1,3 +1,7 @@
+function isTouchDevice() {
+    return true == ("ontouchstart" in window || window.DocumentTouch && document instanceof DocumentTouch);
+}
+
 function makeTime() {
     var d = new Date();
     var minutes = d.getMinutes();

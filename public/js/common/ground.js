@@ -1096,7 +1096,7 @@ var Ground = new function () {
                 side: THREE.DoubleSide
             }))
             mesh.rotation.y = Math.PI / 2
-            mesh.position.set(maxX / 2, -0.5, maxY)
+            mesh.position.set(0, -0.5, maxY / 2)
             GameScene.add(mesh)
         }
 

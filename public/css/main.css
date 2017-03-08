@@ -28,6 +28,7 @@ input, select, body {
     width: 100vw;
     height: 100vh;
     background: #000 url('/img/login_bg.jpg') no-repeat top center;
+    background-size: cover;
     overflow: auto;
 }
 
@@ -68,6 +69,10 @@ input, select {
 
 .touchscreen .iconButton div, .touchscreen .button, .touchscreen #submit, .touchscreen .bigLink a, .touchscreen input, .touchscreen select {
     padding: 2.8vw;
+}
+
+.touchscreen .trlink input {
+    width: 11vw;
 }
 
 .iconButton div, .button, #submit, .bigLink a, input, select {
@@ -122,8 +127,12 @@ input, select {
     height: 23px;
 }
 
+.touchscreen .iconButton {
+    margin: 0.7vw;
+}
+
 .iconButton {
-    margin: 0.1vw;
+    margin: 1px;
     display: inline-block;
 }
 
@@ -131,8 +140,9 @@ h2 {
     padding: 0.7vw 0 1.4vw 1.4vw;
     letter-spacing: 0.3vw;
     text-align: left;
-    color: green;
-    /*text-shadow: 0 0 1.4vw #fff;*/
+    /*color: green;*/
+    /*color: lightgreen;*/
+    color: lightblue;
 }
 
 .left {
@@ -1177,7 +1187,7 @@ input.max {
 #logo1 {
     position: absolute;
     right: 0px;
-    width: 40vw;
+    width: 34vw;
 }
 
 .touchscreen #logo2 {

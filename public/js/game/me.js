@@ -189,7 +189,7 @@ var Me = new function () {
             Sound.play('skip')
             skippedArmies[armyId] = 1
             this.deselectArmy()
-            if (!Page.hasTouch()) {
+            if (!isTouchDevice()) {
                 this.findNext()
             }
         }

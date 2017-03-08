@@ -166,7 +166,7 @@ var PickerGame = new function () {
         }
 
     this.onContainerMouseDown = function (event) {
-        if (Page.hasTouch()) {
+        if (isTouchDevice()) {
             return
         }
         //console.log('down')
@@ -191,7 +191,7 @@ var PickerGame = new function () {
         handleDownStart(event)
     }
     this.onContainerMouseMove = function (event) {
-        if (Page.hasTouch()) {
+        if (isTouchDevice()) {
             return
         }
         handleMove(event)
@@ -203,7 +203,7 @@ var PickerGame = new function () {
         handleMove(event)
     }
     this.onContainerMouseUp = function (event) {
-        if (Page.hasTouch()) {
+        if (isTouchDevice()) {
             return
         }
         //console.log('up')

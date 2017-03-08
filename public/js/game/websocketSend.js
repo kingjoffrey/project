@@ -81,7 +81,7 @@ var WebSocketSendGame = new function () {
 
         Me.addQuited(armyId)
         Me.deselectArmy()
-        if (!Page.hasTouch()) {
+        if (!isTouchDevice()) {
             Me.findNext()
         }
 

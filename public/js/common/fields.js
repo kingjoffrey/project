@@ -30,21 +30,21 @@ var Fields = new function () {
             if (notType(Fields.get(x, y + 1, 1).getType(), 'm')) {
                 tmpTextureContext.fillStyle = mountainColor2
                 tmpTextureContext.fillRect(newX, newY + textureMultiplier - 1, 1, 2)
-                tmpTextureContext.fillRect(newX + 1, newY + textureMultiplier - 2, 1, 1)
+                tmpTextureContext.fillRect(newX + 1, newY + textureMultiplier - 2, 1, 2)
                 tmpTextureContext.fillRect(newX + 2, newY + textureMultiplier - 1, 1, 1)
-                tmpTextureContext.fillRect(newX + 3, newY + textureMultiplier - 2, 1, 1)
+                tmpTextureContext.fillRect(newX + 3, newY + textureMultiplier - 2, 1, 2)
                 tmpTextureContext.fillRect(newX + 4, newY + textureMultiplier - 1, 1, 1)
-                tmpTextureContext.fillRect(newX + 5, newY + textureMultiplier - 2, 1, 1)
+                tmpTextureContext.fillRect(newX + 5, newY + textureMultiplier - 2, 1, 2)
                 tmpTextureContext.fillRect(newX + 6, newY + textureMultiplier - 1, 1, 1)
-                tmpTextureContext.fillRect(newX + 7, newY + textureMultiplier - 2, 1, 1)
+                tmpTextureContext.fillRect(newX + 7, newY + textureMultiplier - 2, 1, 2)
                 tmpTextureContext.fillRect(newX + 8, newY + textureMultiplier - 1, 1, 1)
-                tmpTextureContext.fillRect(newX + 9, newY + textureMultiplier - 2, 1, 1)
+                tmpTextureContext.fillRect(newX + 9, newY + textureMultiplier - 2, 1, 2)
                 tmpTextureContext.fillRect(newX + 10, newY + textureMultiplier - 1, 1, 1)
-                tmpTextureContext.fillRect(newX + 11, newY + textureMultiplier - 2, 1, 1)
+                tmpTextureContext.fillRect(newX + 11, newY + textureMultiplier - 2, 1, 2)
                 tmpTextureContext.fillRect(newX + 12, newY + textureMultiplier - 1, 1, 1)
-                tmpTextureContext.fillRect(newX + 13, newY + textureMultiplier - 2, 1, 1)
+                tmpTextureContext.fillRect(newX + 13, newY + textureMultiplier - 2, 1, 2)
                 tmpTextureContext.fillRect(newX + 14, newY + textureMultiplier - 1, 1, 1)
-                tmpTextureContext.fillRect(newX + 15, newY + textureMultiplier - 2, 1, 1)
+                tmpTextureContext.fillRect(newX + 15, newY + textureMultiplier - 2, 1, 2)
             }
 
             if (notType(Fields.get(x - 1, y, 1).getType(), 'm')) {
@@ -87,10 +87,10 @@ var Fields = new function () {
                 && isType(Fields.get(x + 1, y - 1, 1).getType(), 'h')
             ) {
                 tmpTextureContext.fillStyle = hillColor2
-                tmpTextureContext.fillRect(newX + 6, newY + 8, 4, 1)
+                tmpTextureContext.fillRect(newX + 4, newY + 8, 6, 1)
             }
 
-            if (notType(Fields.get(x, y + 1, 1).getType(), 'h')) {
+            if (notType(Fields.get(x, y + 1, 1).getType(), 'h') && notType(Fields.get(x, y + 1, 1).getType(), 'm')) {
                 tmpTextureContext.fillStyle = hillColor2
                 tmpTextureContext.fillRect(newX, newY + textureMultiplier - 1, 1, 2)
                 tmpTextureContext.fillRect(newX + 1, newY + textureMultiplier - 2, 1, 2)
@@ -110,7 +110,7 @@ var Fields = new function () {
                 tmpTextureContext.fillRect(newX + 15, newY + textureMultiplier - 2, 1, 2)
             }
 
-            if (notType(Fields.get(x - 1, y, 1).getType(), 'h')) {
+            if (notType(Fields.get(x - 1, y, 1).getType(), 'h') && notType(Fields.get(x - 1, y, 1).getType(), 'm')) {
                 tmpTextureContext.fillStyle = hillColor2
                 tmpTextureContext.fillRect(newX, newY, 1, 1)
                 tmpTextureContext.fillRect(newX, newY + 1, 2, 1)
@@ -370,20 +370,21 @@ var Fields = new function () {
                         break
                     case 'h':
                         paintHill(tmpTextureContext, x, y)
-                        paintWaterTextureField(tmpWaterTextureContext, x, y, '#ffff7f', grassColor1, 15)
+                        // paintWaterTextureField(tmpWaterTextureContext, x, y, '#ffff7f', grassColor1, 15)
                         break
                     case 'm':
                         paintMountain(tmpTextureContext, x, y)
-                        paintWaterTextureField(tmpWaterTextureContext, x, y, '#ffff7f', grassColor1, 15)
+                        // paintWaterTextureField(tmpWaterTextureContext, x, y, '#ffff7f', grassColor1, 15)
                         break
                     case 'r':
                         paintTextureField(tmpTextureContext, x, y, grassColor1, grassColor1, 0)
-                        paintWaterTextureField(tmpWaterTextureContext, x, y, '#ffff7f', grassColor1, 15)
+                        // paintWaterTextureField(tmpWaterTextureContext, x, y, '#ffff7f', grassColor1, 15)
                         paintRoad(tmpTextureContext, x, y)
                         break
                     case 's':
-                        paintTextureField(tmpTextureContext, x, y, grassColor1, '#828396', 60)
-                        paintWaterTextureField(tmpWaterTextureContext, x, y, '#ffff7f', grassColor1, 15)
+                        // paintTextureField(tmpTextureContext, x, y, grassColor1, '#828396', 60)
+                        paintTextureField(tmpTextureContext, x, y, grassColor1, waterColor1, 60)
+                        // paintWaterTextureField(tmpWaterTextureContext, x, y, '#ffff7f', grassColor1, 15)
                         break
                 }
             }

@@ -1,11 +1,16 @@
 $(document).ready(function () {
     Page.init()
-    Chat.init()
+})
+$(window).resize(function () {
+    if ($(window).innerWidth() < $(window).innerHeight()) {
+        $('body').addClass('vertical')
+    } else {
+        $('body').removeClass('vertical')
+    }
 })
 
 var Page = new function () {
     var index = '',
-        touch = 0,
         shadows = 1
 
 
@@ -17,9 +22,6 @@ var Page = new function () {
     }
     this.setShadows = function (s) {
         shadows = s
-    }
-    this.hasTouch = function () {
-        return touch
     }
     this.fullScreen = function () {
         var elem = document.getElementById('main');
@@ -35,6 +37,18 @@ var Page = new function () {
     }
 
     this.init = function () {
+        $('#lang').change(function () {
+            window.location = '/' + $(this).val() + '/login'
+        })
+
+        var url_parts = window.location.pathname.split('/')
+
+        $('#lang option').each(function () {
+            if (url_parts[1] == $(this).val()) {
+                $(this).attr('selected', '')
+            }
+        })
+
         $('#bg').scroll(function () {
             var x = $(this).scrollTop();
             $(this).css('background-position', '0% ' + parseInt(-x / 10) + 'px');
@@ -44,9 +58,11 @@ var Page = new function () {
             index = $('#content').html()
         }
 
-        if (isSet(window.orientation)) {
+        // console.log(window.orientation)
+        // console.log(isTouchDevice())
+
+        if (isTouchDevice()) {
             $('body').addClass('touchscreen')
-            touch = 'ontouchstart' in document.documentElement
             shadows = 0
         }
 
@@ -54,20 +70,23 @@ var Page = new function () {
             $('body').addClass('vertical')
         }
 
-        $('#menuBox').append($('<div>').addClass('askFullScreen')
-            .append($('<div>').html(translations.SwitchtoFullScreen).addClass('question'))
-            .append(
-                $('<div>')
-                    .append($('<div>').addClass('button buttonColors').html(translations.No).click(function () {
-                        Sound.play('click')
-                        $('.askFullScreen').remove()
-                    }))
-                    .append($('<div>').addClass('button buttonColors').html(translations.Yes).click(function () {
-                        Sound.play('click')
-                        Page.fullScreen()
-                        $('.askFullScreen').remove()
-                    }))
+        if ($('#menuBox').length) {
+            Chat.init()
+            $('#menuBox').append($('<div>').addClass('askFullScreen')
+                .append($('<div>').html(translations.SwitchtoFullScreen).addClass('question'))
+                .append(
+                    $('<div>')
+                        .append($('<div>').addClass('button buttonColors').html(translations.No).click(function () {
+                            Sound.play('click')
+                            $('.askFullScreen').remove()
+                        }))
+                        .append($('<div>').addClass('button buttonColors').html(translations.Yes).click(function () {
+                            Sound.play('click')
+                            Page.fullScreen()
+                            $('.askFullScreen').remove()
+                        }))
+                )
             )
-        )
+        }
     }
 }
