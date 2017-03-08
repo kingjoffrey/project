@@ -27,7 +27,7 @@ input, select, body {
 #bg {
     width: 100vw;
     height: 100vh;
-    background: #000 url('/img/login_bg.jpg') no-repeat fixed 0 0;
+    background: #000 url('/img/login_bg.jpg') no-repeat top center;
     overflow: auto;
 }
 

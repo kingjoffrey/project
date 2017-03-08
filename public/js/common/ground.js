@@ -3,7 +3,7 @@ var Ground = new function () {
         // var mountainLevel = 0,
         hillLevel = -0.9,
         // hillLevel = 0,
-        bottomLevel = 2,
+        bottomLevel = 0.3,
         // bottomLevel = 0,
         waterLevel = 0.1,
         m = 2,
@@ -1079,6 +1079,25 @@ var Ground = new function () {
             }
 
             return mesh
+        },
+        createBorder = function (x, y) {
+            var maxX = x * 2,
+                maxY = y * 2
+
+            var mesh = new THREE.Mesh(new THREE.PlaneBufferGeometry(maxX, 1), new THREE.MeshLambertMaterial({
+                color: Fields.getGrassColor(),
+                side: THREE.DoubleSide
+            }))
+            mesh.position.set(maxX / 2, -0.5, maxY)
+            GameScene.add(mesh)
+
+            var mesh = new THREE.Mesh(new THREE.PlaneBufferGeometry(maxX, 1), new THREE.MeshLambertMaterial({
+                color: Fields.getGrassColor(),
+                side: THREE.DoubleSide
+            }))
+            mesh.rotation.y = Math.PI / 2
+            mesh.position.set(maxX / 2, -0.5, maxY)
+            GameScene.add(mesh)
         }
 
     this.getMountainLevel = function () {
@@ -1155,6 +1174,8 @@ var Ground = new function () {
         PickerCommon.attach(mesh)
         mesh = createMesh(createGeometry(vertexPositions, createNewUVS(vertexPositions, x, y)), textureCanvas)
         PickerCommon.attach(mesh)
+
+        createBorder(x, y)
     }
 }
 
