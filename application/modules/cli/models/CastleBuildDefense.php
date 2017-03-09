@@ -1,14 +1,18 @@
 <?php
+use Devristo\Phpws\Protocol\WebSocketTransportInterface;
 
 class Cli_Model_CastleBuildDefense
 {
+    private $_price = 100;
+
     /**
      * Cli_Model_CastleBuildDefense constructor.
+     * @param $playerId
      * @param $castleId
-     * @param \Devristo\Phpws\Protocol\WebSocketTransportInterface $user
+     * @param WebSocketTransportInterface $user
      * @param $handler
      */
-    public function __construct($castleId, Devristo\Phpws\Protocol\WebSocketTransportInterface $user, $handler)
+    public function __construct($playerId, $castleId, WebSocketTransportInterface $user, $handler)
     {
         if ($castleId == null) {
             $l = new Coret_Model_Logger('Cli_Model_CastleBuildDefense');
@@ -16,8 +20,6 @@ class Cli_Model_CastleBuildDefense
             return;
         }
 
-
-        $playerId = $user->parameters['me']->getId();
         $game = Cli_CommonHandler::getGameFromUser($user);
         $color = $game->getPlayerColor($playerId);
         $player = $game->getPlayers()->getPlayer($color);
@@ -26,18 +28,23 @@ class Cli_Model_CastleBuildDefense
         if (!$castle) {
             $l = new Coret_Model_Logger('Cli_Model_CastleBuildDefense');
             $l->log('To nie jest Twój zamek.');
-            $handler->sendError($user, 'Error 1001');
+            if (!$player->getComputer()) {
+                $handler->sendError($user, 'Error 1001');
+            }
             return;
         }
 
         $costs = 0;
         for ($i = 1; $i <= $castle->getDefense(); $i++) {
-            $costs += $i * 100;
+            $costs += $i * $this->_price;
         }
+
         if ($player->getGold() < $costs) {
             $l = new Coret_Model_Logger('Cli_Model_CastleBuildDefense');
             $l->log('Za mało złota!');
-            $handler->sendError($user, 'Error 1002');
+            if (!$player->getComputer()) {
+                $handler->sendError($user, 'Error 1002');
+            }
             return;
         }
 
@@ -50,7 +57,7 @@ class Cli_Model_CastleBuildDefense
         $token = array(
             'type' => 'defense',
             'color' => $color,
-            'gold' => $player->getGold(),
+            'gold' => $costs,
             'defense' => $castle->getDefense(),
             'castleId' => $castleId
         );

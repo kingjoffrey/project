@@ -1,8 +1,11 @@
 <?php
+use Devristo\Phpws\Protocol\WebSocketTransportInterface;
 
 class Cli_Model_ComputerHeroResurrection
 {
-    public function __construct($playerId, Devristo\Phpws\Protocol\WebSocketTransportInterface $user, $handler)
+    private $_ressurrected = 0;
+
+    public function __construct($playerId, WebSocketTransportInterface $user, $handler)
     {
         $game = Cli_CommonHandler::getGameFromUser($user);
         $gameId = $game->getId();
@@ -48,5 +51,12 @@ class Cli_Model_ComputerHeroResurrection
         );
 
         $handler->sendToChannel($token);
+
+        $this->_ressurrected = 1;
+    }
+
+    public function justRessurected()
+    {
+        return $this->_ressurrected;
     }
 }

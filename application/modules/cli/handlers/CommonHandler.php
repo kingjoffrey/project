@@ -160,7 +160,7 @@ class Cli_CommonHandler extends WebSocketUriHandler
                 break;
 
             case 'hire':
-                new Cli_Model_HeroHire($user, $this);
+                new Cli_Model_HeroHire($playerId, $user, $this);
                 break;
 
             case 'ruin':
@@ -180,7 +180,7 @@ class Cli_CommonHandler extends WebSocketUriHandler
                 break;
 
             case 'defense':
-                new Cli_Model_CastleBuildDefense($dataIn['castleId'], $user, $this);
+                new Cli_Model_CastleBuildDefense($playerId, $dataIn['castleId'], $user, $this);
                 break;
 
             case 'inventoryDel':

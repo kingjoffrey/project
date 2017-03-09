@@ -1,5 +1,6 @@
 <?php
 use Devristo\Phpws\Protocol\WebSocketTransportInterface;
+
 class Cli_Model_StartTurn
 {
 
@@ -37,6 +38,10 @@ class Cli_Model_StartTurn
         $income = $towers->count() * 5;
         foreach ($castles->getKeys() as $castleId) {
             $income += $castles->getCastle($castleId)->getIncome();
+        }
+
+        if ($isComputer) {
+            $income += $income;
         }
 
         $player->addGold(-$upkeep);

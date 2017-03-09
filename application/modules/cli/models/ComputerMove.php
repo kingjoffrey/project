@@ -36,6 +36,11 @@ class Cli_Model_ComputerMove extends Cli_Model_ComputerMethods
         $this->_l->log('W ZAMKU');
         $this->_inCastle = true;
         $myCastle = $this->_player->getCastles()->getCastle($castleId);
+
+        if ($this->_player->getGold() > 100 && $myCastle->getDefense() < 2) {
+            new Cli_Model_CastleBuildDefense($this->_playerId, $castleId, $this->_user, $this->_handler);
+        }
+
         if ($this->_game->getNumberOfGarrisonUnits()) {
             $garrison = new Cli_Model_Garrison($myCastle->getX(), $myCastle->getY(), $this->_color, $this->_player->getArmies(), $this->_game, $this->_handler);
             if ($armyId = $garrison->getNewArmyId()) {
@@ -152,7 +157,7 @@ class Cli_Model_ComputerMove extends Cli_Model_ComputerMethods
             return;
         } else {
             $this->_l->log('WRÓG JEST SILNIEJSZY');
-            if($this->_inCastle){
+            if ($this->_inCastle) {
                 $this->_army->setFortified(true);
                 $this->next();
                 return;

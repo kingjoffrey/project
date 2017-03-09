@@ -142,7 +142,7 @@ var Execute = new function () {
                     } else {
                         GameScene.centerOn(r.army.x, r.army.y, function () {
                             Players.get(r.color).getArmies().handle(r.army)
-                            if (Turn.isMy()) {
+                            if (Me.colorEquals(r.color)) {
                                 Message.remove()
                                 Me.goldIncrement(-r.gold)
                             }
@@ -152,27 +152,44 @@ var Execute = new function () {
                     break
 
                 case 'raze':
-                    $('#razeCastle').addClass('buttonOff');
                     Players.get(r.color).getCastles().raze(r.castleId)
-                    if (Turn.isMy()) {
+                    if (Me.colorEquals(r.color)) {
                         Sound.play('gold1');
                         Message.remove()
                         Me.goldIncrement(r.gold)
+                        Execute.setExecuting(0)
                     } else {
-                        Sound.play('raze');
+                        if (Players.get(Turn.getColor()).isComputer() && !GameGui.getShow()) {
+                            Execute.setExecuting(0)
+                        } else {
+                            Sound.play('raze');
+                            var castle = Players.get(r.color).getCastles().get(r.castleId)
+                            GameScene.centerOn(castle.getX(), castle.getY(), function () {
+                                Execute.setExecuting(0)
+                            })
+
+                        }
                     }
-                    Execute.setExecuting(0)
-                    break;
+                    break
 
                 case 'defense':
-                    Players.get(r.color).getCastles().get(r.castleId).setDefense(r.defense)
-                    if (Turn.isMy()) {
+                    var castle = Players.get(r.color).getCastles().get(r.castleId)
+                    castle.setDefense(r.defense)
+                    if (Me.colorEquals(r.color)) {
                         Message.remove()
-                        Me.setGold(r.gold)
+                        Me.goldIncrement(-r.gold)
                         Me.incomeIncrement(Me.getCastle(r.castleId).getIncome() / r.defense)
+                        Execute.setExecuting(0)
+                    } else {
+                        if (Players.get(Turn.getColor()).isComputer() && !GameGui.getShow()) {
+                            Execute.setExecuting(0)
+                        } else {
+                            GameScene.centerOn(castle.getX(), castle.getY(), function () {
+                                Execute.setExecuting(0)
+                            })
+                        }
                     }
-                    Execute.setExecuting(0)
-                    break;
+                    break
 
                 case 'surrender':
                     Me.deselectArmy()

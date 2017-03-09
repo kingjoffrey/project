@@ -5,24 +5,28 @@ class Cli_Model_HeroHire
 {
     private $_price = 1000;
 
-    public function __construct(WebSocketTransportInterface $user, $handler)
+    public function __construct($playerId, WebSocketTransportInterface $user, $handler)
     {
         $game = Cli_CommonHandler::getGameFromUser($user);
         $gameId = $game->getId();
-        $color = $user->parameters['me']->getColor();
+        $color = $game->getPlayerColor($playerId);
         $player = $game->getPlayers()->getPlayer($color);
 
         if ($player->getGold() < $this->_price) {
             $l = new Coret_Model_Logger('Cli_Model_HeroHire');
             $l->log('Za mało złota!');
-            $handler->sendError($user, 'Error 1008');
+            if (!$player->getComputer()) {
+                $handler->sendError($user, 'Error 1008');
+            }
             return;
         }
 
         if (!$capital = $player->getCastles()->getCastle($player->getCapitalId())) {
             $l = new Coret_Model_Logger('Cli_Model_HeroHire');
             $l->log('Aby wynająć herosa musisz posiadać stolicę!');
-            $handler->sendError($user, 'Error 1009');
+            if (!$player->getComputer()) {
+                $handler->sendError($user, 'Error 1009');
+            }
             return;
         }
 
