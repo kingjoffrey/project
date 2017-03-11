@@ -123,6 +123,8 @@ var Me = new function () {
             number,
             i = 0
 
+        GameRenderer.shadowsInfo()
+
         GameModels.addArmyCircle(army.getX(), army.getY(), army.getBackgroundColor())
         var heroId = army.getHeroKey()
         if (heroId) {

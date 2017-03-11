@@ -7,8 +7,8 @@ var Models = new function () {
         flagModels = [],
         treeModel,
         loader = new THREE.JSONLoader(),
-        objectLoader=new THREE.ObjectLoader(),
-        tl = new THREE.TextureLoader(),
+        // objectLoader=new THREE.ObjectLoader(),
+        // textureLoader = new THREE.TextureLoader(),
         loading = 0,
         pathMaterialGreen,
         pathMaterialRed,
@@ -107,7 +107,7 @@ var Models = new function () {
             treeModel.material = new THREE.MeshLambertMaterial({color: '#003300', side: THREE.DoubleSide})
         },
         initPathCircle = function () {
-            var radius = 0.7,
+            var radius = 0.5,
                 segments = 64,
                 opacity = 0.7
 

@@ -174,6 +174,8 @@ class Zend_View_Helper_Translations extends Zend_View_Helper_Abstract
                 'Theruinsarealreadysearched' => $this->view->translate('The ruins are already searched'),
                 'Waitingfor' => $this->view->translate('Waiting for:'),
                 'Therearenogamestoload' => $this->view->translate('There are no games to load'),
+                'Game' => $this->view->translate('Game'),
+                'Terrain' => $this->view->translate('Terrain'),
                 '' => $this->view->translate(''),
             )));
     }

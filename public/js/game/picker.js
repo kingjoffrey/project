@@ -1,7 +1,11 @@
 var PickerGame = new function () {
     var dragStart = 0,
         clickStart = 0,
+        move = 0,
+        elseClickStart = 0,
         handleDownStart = function (event) {
+            move = 0
+            elseClickStart = 0
             PickerCommon.intersect(event)
             if (PickerCommon.intersects()) {
                 if (Me.getSelectedArmyId()) {
@@ -14,11 +18,9 @@ var PickerGame = new function () {
                         AStar.cursorPosition(x, y)
                         WebSocketSendGame.move()
                     } else {
-                        clickStart = {x: x, y: y}
-                        AStar.cursorPosition(x, y)
-                        AStar.showPath()
+                        elseClickStart = 1
+                        dragStart = PickerCommon.getPoint(event)
                     }
-                    dragStart = PickerCommon.getPoint(event)
                 } else {
                     clickStart = 0
                     var field = PickerCommon.getField()
@@ -71,6 +73,7 @@ var PickerGame = new function () {
             }
         },
         handleMove = function (event) {
+            move = 1
             PickerCommon.intersect(event)
             // if (AStar.cursorPosition(PickerCommon.convertX(), PickerCommon.convertZ()) && Me.getSelectedArmyId()) {
             //     AStar.showPath()
@@ -78,7 +81,6 @@ var PickerGame = new function () {
 
             if (dragStart) {
 // drag
-                GameRenderer.shadowsOff()
                 var dragEnd = PickerCommon.getPoint(event)
                 GameScene.moveCamera(dragStart.x - dragEnd.x, dragStart.y - dragEnd.y)
                 dragStart = dragEnd
@@ -164,6 +166,19 @@ var PickerGame = new function () {
                     PickerCommon.cursor()
                 }
             }
+        },
+        handleUp = function (event) {
+            if (!move && PickerCommon.intersects()) {
+                if (elseClickStart) {
+                    var x = PickerCommon.convertX(),
+                        y = PickerCommon.convertZ()
+
+                    clickStart = {x: x, y: y}
+                    AStar.cursorPosition(x, y)
+                    AStar.showPath()
+                }
+            }
+            dragStart = 0
         }
 
     this.onContainerMouseDown = function (event) {
@@ -209,17 +224,14 @@ var PickerGame = new function () {
         }
         //console.log('up')
         event.preventDefault()
-        dragStart = 0
-        GameRenderer.shadowsOn()
+        handleUp(event)
     }
     this.onContainerMouseOut = function (event) {
         event.preventDefault()
-        dragStart = 0
-        GameRenderer.shadowsOn()
+        handleUp(event)
     }
     this.onContainerTouchEnd = function (event) {
         //console.log('touchEnd')
-        dragStart = 0
-        GameRenderer.shadowsOn()
+        handleUp(event)
     }
 }

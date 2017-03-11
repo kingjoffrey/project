@@ -160,6 +160,16 @@ var GameScene = new function () {
         camera.aspect = w / h
         camera.updateProjectionMatrix()
     }
+    this.clear = function () {
+        scene.children.forEach(function (object) {
+            // scene.remove(object)
+            if (object.type == 'Mesh') {
+                scene.remove(object)
+            } else {
+                console.log(object)
+            }
+        })
+    }
     this.init = function () {
         scene = new THREE.Scene()
         initCamera(1, 1)

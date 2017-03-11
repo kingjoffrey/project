@@ -34,6 +34,8 @@ var Move = new function () {
             Message.remove()
         }
 
+        GameRenderer.shadowsOn()
+
         if (player.isComputer() && !GameGui.getShow()) {
             stepLoop(r, ii)
         } else {
@@ -228,5 +230,6 @@ var Move = new function () {
         }
 
         GameModels.clearMoveCircles()
+        GameRenderer.shadowsOff()
     }
 }

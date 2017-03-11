@@ -29,7 +29,10 @@ var Game = new function () {
         game = g
         if (loading) {
             loading = 0
+
             PickerCommon.reset()
+            GameScene.clear()
+
             Execute.setExecuting(0)
             Units.init(game.units)
             Fields.init(game.fields)

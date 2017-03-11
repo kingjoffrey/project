@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: WOF\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-03-02 20:08+0100\n"
-"PO-Revision-Date: 2017-03-02 20:09+0100\n"
+"POT-Creation-Date: 2017-03-11 06:02+0100\n"
+"PO-Revision-Date: 2017-03-11 06:03+0100\n"
 "Last-Translator: Bartosz Krzeszewski <bartek@core-t.pl>\n"
 "Language-Team: \n"
 "Language: pl\n"
@@ -16,7 +16,7 @@ msgstr ""
 "X-Generator: Poedit 1.8.5\n"
 "X-Poedit-SearchPath-0: application\n"
 
-#: application/controllers/LoginController.php:104
+#: application/controllers/LoginController.php:103
 msgid "Incorrect login details"
 msgstr "Nieprawidłowy e-mail lub hasło!"
 
@@ -892,6 +892,14 @@ msgstr "Czekam na:"
 msgid "There are no games to load"
 msgstr "Brak gry do załadowania"
 
+#: application/views/helpers/Translations.php:177
+msgid "Game"
+msgstr "Gra"
+
+#: application/views/helpers/Translations.php:178
+msgid "Terrain"
+msgstr "Teren"
+
 #: application/views/helpers/Version.php:6
 msgid "Version number"
 msgstr "Numer wersji"
@@ -1224,9 +1232,6 @@ msgstr "Uruchom nową grę"
 #~ msgid "Chat"
 #~ msgstr "Czat"
 
-#~ msgid "Terrain"
-#~ msgstr "Teren"
-
 #~ msgid "Time limit"
 #~ msgstr "Limit czasu"
 
@@ -1313,9 +1318,6 @@ msgstr "Uruchom nową grę"
 
 #~ msgid "Turn"
 #~ msgstr "Tura"
-
-#~ msgid "Game"
-#~ msgstr "Gra"
 
 #~ msgid "Battle attack sequence"
 #~ msgstr "Sekwencja walki podczas ataku"
