@@ -1,6 +1,10 @@
 var Editor = new function () {
     this.init = function (r) {
+
         PickerCommon.reset()
+        GameScene.clear()
+        GameRenderer.clear()
+
         Units.init(r.units)
         Fields.init(r.fields, EditorController.getMapId())
         Ruins.init(r.ruins)

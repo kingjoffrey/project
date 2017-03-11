@@ -49,15 +49,20 @@ var GameRenderer = new function () {
     }
     this.shadowsOff = function () {
         renderer.shadowMapAutoUpdate = false
-        console.log(renderer.shadowMapAutoUpdate)
+        // console.log(renderer.shadowMapAutoUpdate)
         // renderer.clearTarget(light.shadowMap)
     }
     this.shadowsOn = function () {
         renderer.shadowMapAutoUpdate = true
-        console.log(renderer.shadowMapAutoUpdate)
+        // console.log(renderer.shadowMapAutoUpdate)
     }
     this.shadowsInfo = function () {
         console.log(renderer.shadowMapAutoUpdate)
+    }
+    this.clear = function () {
+        while (renderer.domElement.lastChild) {
+            renderer.domElement.removeChild(renderer.domElement.lastChild)
+        }
     }
     this.init = function () {
         if (Main.getEnv() != 'development') {

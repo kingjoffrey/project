@@ -161,14 +161,14 @@ var GameScene = new function () {
         camera.updateProjectionMatrix()
     }
     this.clear = function () {
-        scene.children.forEach(function (object) {
-            // scene.remove(object)
-            if (object.type == 'Mesh') {
+        for (var i = scene.children.length - 1; i >= 0; i--) {
+            var object = scene.children[i]
+            if (object instanceof THREE.Mesh) {
+                object.material.dispose()
+                object.geometry.dispose()
                 scene.remove(object)
-            } else {
-                console.log(object)
             }
-        })
+        }
     }
     this.init = function () {
         scene = new THREE.Scene()
