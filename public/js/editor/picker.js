@@ -75,6 +75,7 @@ var PickerEditor = new function () {
     this.onContainerMouseMove = function (event) {
         PickerCommon.intersect(event)
         if (dragStart) {
+            GameRenderer.shadowsOff()
             var dragEnd = PickerCommon.getPoint(event)
             GameScene.moveCamera(dragStart.x - dragEnd.x, dragStart.y - dragEnd.y)
             dragStart = dragEnd
@@ -105,5 +106,6 @@ var PickerEditor = new function () {
     this.onContainerMouseUp = function (event) {
         event.preventDefault()
         dragStart = 0
+        GameRenderer.shadowsOn()
     }
 }

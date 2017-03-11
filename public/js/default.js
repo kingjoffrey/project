@@ -1,14 +1,3 @@
-$(document).ready(function () {
-    Page.init()
-})
-$(window).resize(function () {
-    if ($(window).innerWidth() < $(window).innerHeight()) {
-        $('body').addClass('vertical')
-    } else {
-        $('body').removeClass('vertical')
-    }
-})
-
 var Page = new function () {
     var index = '',
         shadows = 1
@@ -88,5 +77,19 @@ var Page = new function () {
                 )
             )
         }
+
+        GameScene.init()
+        GameRenderer.init()
     }
 }
+
+$(document).ready(function () {
+    Page.init()
+})
+$(window).resize(function () {
+    if ($(window).innerWidth() < $(window).innerHeight()) {
+        $('body').addClass('vertical')
+    } else {
+        $('body').removeClass('vertical')
+    }
+})

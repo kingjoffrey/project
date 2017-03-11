@@ -78,6 +78,7 @@ var PickerGame = new function () {
 
             if (dragStart) {
 // drag
+                GameRenderer.shadowsOff()
                 var dragEnd = PickerCommon.getPoint(event)
                 GameScene.moveCamera(dragStart.x - dragEnd.x, dragStart.y - dragEnd.y)
                 dragStart = dragEnd
@@ -209,13 +210,16 @@ var PickerGame = new function () {
         //console.log('up')
         event.preventDefault()
         dragStart = 0
+        GameRenderer.shadowsOn()
     }
     this.onContainerMouseOut = function (event) {
         event.preventDefault()
         dragStart = 0
+        GameRenderer.shadowsOn()
     }
     this.onContainerTouchEnd = function (event) {
         //console.log('touchEnd')
         dragStart = 0
+        GameRenderer.shadowsOn()
     }
 }

@@ -629,10 +629,10 @@ var Ground = new function () {
 
                 vertexPositions.push([x1, y1, mountainLevel])       //
                 vertexPositions.push([x2, y2, mountainLevel])       //  FIRST TRIANGLE
-                vertexPositions.push([x3, y3, hillLevel])                    //
+                vertexPositions.push([x3, y3, 0])                    //
 
-                vertexPositions.push([x4, y4, hillLevel])                //
-                vertexPositions.push([x3, y3, hillLevel])                    //  SECOND TRIANGLE
+                vertexPositions.push([x4, y4, 0])                //
+                vertexPositions.push([x3, y3, 0])                    //  SECOND TRIANGLE
                 vertexPositions.push([x2, y2, mountainLevel])       //
             }
 
@@ -670,13 +670,13 @@ var Ground = new function () {
                     var x4 = x4 - 0.3 * m
                 }
 
-                vertexPositions.push([x1, y1, hillLevel])                        //
-                vertexPositions.push([x2, y2, hillLevel])                    //  FIRST TRIANGLE
+                vertexPositions.push([x1, y1, 0])                        //
+                vertexPositions.push([x2, y2, 0])                    //  FIRST TRIANGLE
                 vertexPositions.push([x3, y3, mountainLevel])       //
 
                 vertexPositions.push([x4, y4, mountainLevel])       //
                 vertexPositions.push([x3, y3, mountainLevel])       //  SECOND TRIANGLE
-                vertexPositions.push([x2, y2, hillLevel])                    //
+                vertexPositions.push([x2, y2, 0])                    //
             }
 
             return vertexPositions
@@ -714,12 +714,12 @@ var Ground = new function () {
                 }
 
                 vertexPositions.push([x1, y1, mountainLevel])       //
-                vertexPositions.push([x2, y2, hillLevel])                    //  FIRST TRIANGLE
+                vertexPositions.push([x2, y2, 0])                    //  FIRST TRIANGLE
                 vertexPositions.push([x3, y3, mountainLevel])       //
 
-                vertexPositions.push([x4, y4, hillLevel])                //
+                vertexPositions.push([x4, y4, 0])                //
                 vertexPositions.push([x3, y3, mountainLevel])       //  SECOND TRIANGLE
-                vertexPositions.push([x2, y2, hillLevel])                    //
+                vertexPositions.push([x2, y2, 0])                    //
             }
 
             return vertexPositions
@@ -756,12 +756,12 @@ var Ground = new function () {
                     var y4 = y4 - 0.3 * m
                 }
 
-                vertexPositions.push([x1, y1, hillLevel])       //
+                vertexPositions.push([x1, y1, 0])       //
                 vertexPositions.push([x2, y2, mountainLevel])                        //  FIRST TRIANGLE
-                vertexPositions.push([x3, y3, hillLevel])       //
+                vertexPositions.push([x3, y3, 0])       //
 
                 vertexPositions.push([x4, y4, mountainLevel])                    //
-                vertexPositions.push([x3, y3, hillLevel])       //  SECOND TRIANGLE
+                vertexPositions.push([x3, y3, 0])       //  SECOND TRIANGLE
                 vertexPositions.push([x2, y2, mountainLevel])                        //
             }
 

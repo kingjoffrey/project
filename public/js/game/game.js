@@ -31,17 +31,17 @@ var Game = new function () {
             loading = 0
             PickerCommon.reset()
             Execute.setExecuting(0)
-            GameScene.init($(window).innerWidth(), $(window).innerHeight())
             Units.init(game.units)
             Fields.init(game.fields)
             Players.init(game.players)
             Me.init(game.color, game.gold, game.bSequence, game.capitals)
             Turn.change(game.turnColor, game.turnNumber)
             Ruins.init(game.ruins)
-            GameRenderer.init('game', GameScene)
-            GameScene.initSun(Fields.getMaxY())
-            GameRenderer.animate()
+
             GameGui.init()
+            GameScene.initSun(Fields.getMaxY())
+            GameRenderer.start()
+
             PickerCommon.init(PickerGame)
 
             $('#loading').hide()

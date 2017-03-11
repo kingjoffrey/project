@@ -2,8 +2,8 @@ var GameRenderer = new function () {
     var renderer,
         scene,
         camera,
-        timeOut = 100,
-        stop,
+        timeOut = 0,
+        stop = 1,
         render = function () {
             renderer.render(scene, camera)
         }
@@ -17,7 +17,6 @@ var GameRenderer = new function () {
         if (stop) {
             return
         }
-
         if (timeOut) {
             if (TWEEN.update()) {
                 requestAnimationFrame(GameRenderer.animate)
@@ -33,7 +32,11 @@ var GameRenderer = new function () {
                 requestAnimationFrame(GameRenderer.animate)
             }
         }
-
+        // console.log(renderer)
+        // console.log(scene)
+        // console.log(camera)
+        // stop = 1
+        // console.log(stop)
         render()
     }
     this.stop = function () {
@@ -43,7 +46,14 @@ var GameRenderer = new function () {
         stop = 0
         this.animate()
     }
-    this.init = function (id, Scene) {
+    this.shadowsOff = function () {
+        renderer.shadowMapAutoUpdate = false
+        // renderer.clearTarget(light.shadowMap)
+    }
+    this.shadowsOn = function () {
+        renderer.shadowMapAutoUpdate = true
+    }
+    this.init = function () {
         if (Main.getEnv() != 'development') {
             timeOut = 0
         }
@@ -53,8 +63,8 @@ var GameRenderer = new function () {
             renderer.shadowMap.enabled = true
             renderer.shadowMapSoft = false
         }
-        scene = Scene.get()
-        camera = Scene.getCamera()
-        $('#' + id).append(renderer.domElement)
+        scene = GameScene.get()
+        camera = GameScene.getCamera()
+        $('#game').append(renderer.domElement)
     }
 }

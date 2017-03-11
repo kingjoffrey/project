@@ -7,6 +7,7 @@ var GameScene = new function () {
     var scene,
         camera,
         sun,
+        mapSize = [8192, 4096, 2048],
         cameraY = 40,
         radiansX = 2 * Math.PI + Math.atan(-1 / Math.sqrt(2)),
         // radiansX = 2 * Math.PI - (Math.PI / 4 - Math.PI / 32),
@@ -26,22 +27,21 @@ var GameScene = new function () {
             camera.position.y = cameraY
             camera.scale.addScalar(1)
             scene.add(camera)
+
             scene.add(new THREE.AmbientLight(0x777777))
             //camera.add(new THREE.PointLight(0xffffff, 0.7))
+
+            sun = new THREE.DirectionalLight(0xdfebff, 0.75)
+            sun.position.set(100, 200, 150)
+            scene.add(sun)
         }
 
     this.initSun = function (size) {
-        sun = new THREE.DirectionalLight(0xdfebff, 0.75)
-        sun.position.set(100, 200, 150)
         if (Page.getShadows()) {
             sun.castShadow = true
 
-            var mapSize = 8192
-            // var mapSize = 4096
-            // var mapSize=2048
-
-            sun.shadow.mapSize.width = mapSize
-            sun.shadow.mapSize.height = mapSize
+            sun.shadow.mapSize.width = mapSize[0]
+            sun.shadow.mapSize.height = mapSize[0]
 
             var d = 2.1 * size
 
@@ -54,7 +54,6 @@ var GameScene = new function () {
             //var helper = new THREE.CameraHelper(sun.shadow.camera)
             //scene.add(helper)
         }
-        scene.add(sun)
     }
     this.getSun = function () {
         return sun
@@ -161,8 +160,8 @@ var GameScene = new function () {
         camera.aspect = w / h
         camera.updateProjectionMatrix()
     }
-    this.init = function (w, h) {
+    this.init = function () {
         scene = new THREE.Scene()
-        initCamera(w, h)
+        initCamera(1, 1)
     }
 }
