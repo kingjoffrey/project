@@ -2,7 +2,8 @@ var GameModels = new function () {
     var pathCircles = [],
         moveCircles = [],
         armyCircles = [],
-        hover = 0.1
+        hover = 0.1,
+        bridgeLevel = 0.3
 
     this.init = function () {
         Models.init()
@@ -31,7 +32,7 @@ var GameModels = new function () {
         GameScene.add(mesh)
         return mesh
     }
-    this.addArmy = function (x, y, color, number, modelName) {
+    this.addArmy = function (x, y, color, number, modelName, canSwim) {
         var mesh = Models.getArmy(color, number, modelName)
 
         mesh.rotation.y = Math.PI / 2 + Math.PI / 4
@@ -51,11 +52,11 @@ var GameModels = new function () {
             mesh.castShadow = true
             mesh.children[0].castShadow = true
         }
-        this.setArmyPosition(mesh, x, y)
+        this.setArmyPosition(mesh, x, y, canSwim)
         GameScene.add(mesh)
         return mesh
     }
-    this.setArmyPosition = function (mesh, x, y) {
+    this.setArmyPosition = function (mesh, x, y, canSwim) {
         switch (Fields.get(x, y).getType()) {
             case 'm':
                 var height = Ground.getMountainLevel()
@@ -67,7 +68,11 @@ var GameModels = new function () {
                 var height = Ground.getWaterLevel()
                 break
             case 'b':
-                var height = Ground.getWaterLevel()
+                if (canSwim) {
+                    var height = 0
+                } else {
+                    var height = bridgeLevel
+                }
                 break
             default :
                 var height = 0
@@ -93,17 +98,18 @@ var GameModels = new function () {
         GameScene.add(mesh)
         return mesh
     }
-    this.addBridge = function (x, y) {
+    this.addBridge = function (x, y, rotate) {
         var mesh = Models.getBridge()
 
-        // mesh.scale.x = 0.5
-        // mesh.scale.y = 0.5
-        // mesh.scale.z = 0.5
+        mesh.position.set(x * 2 + 1, 0, y * 2 + 1)
 
-        mesh.position.set(x * 2 + 0.5, 0, y * 2 + 0.5)
+        if (rotate) {
+            mesh.rotation.y = Math.PI / 2
+        }
 
         if (Page.getShadows()) {
             mesh.castShadow = true
+            mesh.receiveShadow = true
         }
 
         GameScene.add(mesh)
@@ -152,9 +158,9 @@ var GameModels = new function () {
         mesh.scale.y = 0.15
         mesh.scale.z = 0.15
 
-        // if (Page.getShadows()) {
-        //     mesh.castShadow = true
-        // }
+        if (Page.getShadows()) {
+            mesh.castShadow = true
+        }
         GameScene.add(mesh)
         // }
     }
@@ -169,6 +175,9 @@ var GameModels = new function () {
             case 'E':
                 this.addPathCircle(x, y, 'red', Fields.get(x, y).getType())
                 return
+                break
+            case 'b':
+                var height = bridgeLevel + hover
                 break
             default :
                 var height = hover
@@ -195,6 +204,9 @@ var GameModels = new function () {
                 break
             case 'h':
                 var height = -Ground.getHillLevel() + hover
+                break
+            case 'b':
+                var height = bridgeLevel + hover
                 break
             default :
                 var height = hover

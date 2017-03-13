@@ -365,7 +365,12 @@ var Fields = new function () {
                     case 'b':
                         paintTextureField(tmpTextureContext, x, y, roadColor1, grassColor1, 0)
                         paintWaterTextureField(tmpWaterTextureContext, x, y, waterColor1, waterColor2, 1)
-                        GameModels.addBridge(x, y)
+                        if (this.get(x, y - 1, 1).getGrassOrWater() == 'g' || this.get(x, y + 1, 1).getGrassOrWater() == 'g') {
+                            var rotate = 1
+                        } else {
+                            var rotate = 0
+                        }
+                        GameModels.addBridge(x, y, rotate)
                         break
                     case 'h':
                         paintHill(tmpTextureContext, x, y)

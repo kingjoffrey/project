@@ -60,7 +60,7 @@ var Army = function (army, bgColor, miniMapColor, textColor, color) {
             army[key] = a[key]
         }
         Fields.get(army.x, army.y).addArmyId(army.id, color)
-        army.mesh = GameModels.addArmy(army.x, army.y, bgColor, numberOfUnits, this.getModelName())
+        army.mesh = GameModels.addArmy(army.x, army.y, bgColor, numberOfUnits, this.getModelName(), this.canSwim())
     }
     this.toArray = function () {
         return army
@@ -335,7 +335,7 @@ var Army = function (army, bgColor, miniMapColor, textColor, color) {
     }
 
     this.setNumberOfUnits(army)
-    army.mesh = GameModels.addArmy(army.x, army.y, bgColor, numberOfUnits, this.getModelName())
+    army.mesh = GameModels.addArmy(army.x, army.y, bgColor, numberOfUnits, this.getModelName(), this.canSwim())
 
     Fields.get(army.x, army.y).addArmyId(army.id, color)
 }
