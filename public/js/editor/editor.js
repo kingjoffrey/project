@@ -6,7 +6,12 @@ var Editor = new function () {
         GameRenderer.clear()
 
         Units.init(r.units)
+
         Fields.init(r.fields, EditorController.getMapId())
+        Fields.createTextures()
+
+
+
         Ruins.init(r.ruins)
         Players.init(r.players)
 

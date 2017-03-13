@@ -93,6 +93,22 @@ var GameModels = new function () {
         GameScene.add(mesh)
         return mesh
     }
+    this.addBridge = function (x, y) {
+        var mesh = Models.getBridge()
+
+        // mesh.scale.x = 0.5
+        // mesh.scale.y = 0.5
+        // mesh.scale.z = 0.5
+
+        mesh.position.set(x * 2 + 0.5, 0, y * 2 + 0.5)
+
+        if (Page.getShadows()) {
+            mesh.castShadow = true
+        }
+
+        GameScene.add(mesh)
+        return mesh
+    }
     this.addTower = function (x, y, color) {
         var mesh = Models.getTower(color)
         mesh.position.set(x * 2 + 0.5, 0, y * 2 + 0.5)
@@ -123,7 +139,7 @@ var GameModels = new function () {
         // }
 
         // for (var i = 0; i < maxI + 2; i++) {
-        var mesh = Models.getTree(x, y),
+        var mesh = Models.getTree(),
             randomX = Math.floor((Math.random() * 2)),
             randomY = Math.floor((Math.random() * 2))
 

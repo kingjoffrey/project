@@ -48,12 +48,12 @@ var GameRenderer = new function () {
         this.shadowsOff()
     }
     this.shadowsOff = function () {
-        renderer.shadowMapAutoUpdate = false
+        // renderer.shadowMapAutoUpdate = false
         // console.log(renderer.shadowMapAutoUpdate)
         // renderer.clearTarget(light.shadowMap)
     }
     this.shadowsOn = function () {
-        renderer.shadowMapAutoUpdate = true
+        // renderer.shadowMapAutoUpdate = true
         // console.log(renderer.shadowMapAutoUpdate)
     }
     this.shadowsInfo = function () {

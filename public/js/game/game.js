@@ -36,7 +36,11 @@ var Game = new function () {
 
             Execute.setExecuting(0)
             Units.init(game.units)
+
             Fields.init(game.fields)
+            Fields.createTextures()
+            Ground.init(Fields.getMaxX(), Fields.getMaxY(), Fields.getTextureCanvas(), Fields.getWaterTextureCanvas())
+
             Players.init(game.players)
             Me.init(game.color, game.gold, game.bSequence, game.capitals)
             Turn.change(game.turnColor, game.turnNumber)

@@ -11,19 +11,13 @@ var EditorModels = new function () {
                 mesh.scale.z = 0.2
                 break
             case 'ruin':
-                var mesh = new THREE.Mesh(Models.getRuinModel().geometry, new THREE.MeshPhongMaterial({
-                    color: '#FFD700',
-                    side: THREE.DoubleSide
-                }))
+                var mesh = Models.getRuin('#FFD700')
                 mesh.scale.x = 0.05
                 mesh.scale.y = 0.05
                 mesh.scale.z = 0.05
                 break
             case 'tower':
-                var mesh = new THREE.Mesh(Models.getTowerModel().geometry, new THREE.MeshLambertMaterial({
-                    color: '#6B6B6B',
-                    side: THREE.DoubleSide
-                }))
+                var mesh = Models.getTower('#6B6B6B')
                 mesh.scale.x = 0.3
                 mesh.scale.y = 0.3
                 mesh.scale.z = 0.3
@@ -37,7 +31,7 @@ var EditorModels = new function () {
                 mesh.position.y = 0.02
                 break
             case 'forest':
-                var mesh = new THREE.Mesh(Models.getTreeModel().geometry, Models.getTreeModel().material)
+                var mesh = Models.getTree()
                 mesh.scale.x = 0.3
                 mesh.scale.y = 0.3
                 mesh.scale.z = 0.3

@@ -1,5 +1,6 @@
 var Models = new function () {
     var ruinModel,
+        bridgeModel,
         towerModel,
         flagModel,
         armyModels = {},
@@ -9,7 +10,6 @@ var Models = new function () {
         loader = new THREE.JSONLoader(),
         // objectLoader=new THREE.ObjectLoader(),
         // textureLoader = new THREE.TextureLoader(),
-        loading = 0,
         pathMaterialGreen,
         pathMaterialRed,
         pathMaterialWhite,
@@ -17,8 +17,13 @@ var Models = new function () {
         initRuin = function () {
             ruinModel = loader.parse(ruin)
         },
+        initBridge = function () {
+            bridgeModel = loader.parse(bridge)
+            bridgeModel.material = new THREE.MeshLambertMaterial({color: '#6B6B6B', side: THREE.DoubleSide})
+        },
         initTower = function () {
             towerModel = loader.parse(tower)
+            towerModel.material = new THREE.MeshLambertMaterial({color: '#6B6B6B', side: THREE.DoubleSide})
         },
         initCastle = function () {
             castleModels = [
@@ -164,31 +169,22 @@ var Models = new function () {
         return {cylinder: new THREE.Mesh(geometry1, material1), circle: new THREE.Mesh(geometry2, material2)}
     }
     this.getRuin = function (color) {
-        var mesh = new THREE.Mesh(ruinModel.geometry, new THREE.MeshPhongMaterial({
+        return new THREE.Mesh(ruinModel.geometry, new THREE.MeshPhongMaterial({
             color: color,
             side: THREE.DoubleSide
         }))
-        if (Page.getShadows()) {
-            mesh.castShadow = true
-            mesh.receiveShadow = true
-        }
-        return mesh
+    }
+    this.getTree = function () {
+        return new THREE.Mesh(treeModel.geometry, treeModel.material)
+    }
+    this.getBridge = function () {
+        return new THREE.Mesh(bridgeModel.geometry, bridgeModel.material)
     }
     this.getTower = function (color) {
-        var mesh = new THREE.Mesh(towerModel.geometry, new THREE.MeshLambertMaterial({
-                color: '#6B6B6B',
-                side: THREE.DoubleSide
-            })),
+        var mesh = new THREE.Mesh(towerModel.geometry, towerModel.material),
             flagMesh = new THREE.Mesh(flagModel.geometry, new THREE.MeshLambertMaterial({
                 color: color
             }))
-        if (Page.getShadows()) {
-            mesh.castShadow = true
-            mesh.receiveShadow = true
-            flagMesh.castShadow = true
-            flagMesh.receiveShadow = true
-        }
-
         mesh.add(flagMesh)
         return mesh
     }
@@ -200,12 +196,6 @@ var Models = new function () {
             flagMesh = new THREE.Mesh(flagModel.geometry, new THREE.MeshLambertMaterial({
                 color: color
             }))
-        if (Page.getShadows()) {
-            mesh.castShadow = true
-            mesh.receiveShadow = true
-            flagMesh.castShadow = true
-            flagMesh.receiveShadow = true
-        }
         mesh.add(flagMesh)
         updateCastleModel(mesh, castle.defense)
         return mesh
@@ -213,9 +203,6 @@ var Models = new function () {
     this.castleChangeDefense = function (mesh, defense) {
         mesh.children.splice(1, 3) // usuń 3 elementy począwszy od indexu 1
         updateCastleModel(mesh, defense)
-    }
-    this.getTree = function (x, y) {
-        return new THREE.Mesh(treeModel.geometry, treeModel.material)
     }
     this.getHero = function (color) {
         return new THREE.Mesh(window['heroModel'].geometry, new THREE.MeshLambertMaterial({
@@ -246,20 +233,9 @@ var Models = new function () {
     this.getCastleModels = function () {
         return castleModels
     }
-    this.getRuinModel = function () {
-        return ruinModel
-    }
-    this.getTowerModel = function () {
-        return towerModel
-    }
-    this.getTreeModel = function () {
-        return treeModel
-    }
-    this.getLoading = function () {
-        return loading
-    }
     this.init = function () {
         initRuin()
+        initBridge()
         initTower()
         initArmy()
         initCastle()

@@ -7,7 +7,7 @@ var GameScene = new function () {
     var scene,
         camera,
         sun,
-        mapSize = [8192, 4096, 2048],
+        mapSize = [1024, 2048, 4096, 8192],
         cameraY = 40,
         radiansX = 2 * Math.PI + Math.atan(-1 / Math.sqrt(2)),
         // radiansX = 2 * Math.PI - (Math.PI / 4 - Math.PI / 32),

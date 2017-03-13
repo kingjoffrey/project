@@ -49,6 +49,7 @@ var WebSocketMessageEditor = new function () {
                 break
             case 'grass':
                 Fields.get(r.x, r.y).setType('g')
+                Fields.paint(r.x, r.y)
                 var children = GameScene.get().children
                 for (var i in children) {
                     if (children[i].position.x - 1 == 2 * r.x && children[i].position.z - 1 == 2 * r.y) {

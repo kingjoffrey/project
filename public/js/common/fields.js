@@ -1,7 +1,6 @@
 "use strict"
 var Fields = new function () {
-    var init,
-        fields,
+    var fields,
         grassField,
         maxX,
         maxY,
@@ -87,8 +86,8 @@ var Fields = new function () {
             //     && isType(Fields.get(x + 1, y + 1, 1).getType(), 'h')
             //     && isType(Fields.get(x + 1, y - 1, 1).getType(), 'h')
             // ) {
-                tmpTextureContext.fillStyle = hillColor2
-                tmpTextureContext.fillRect(newX + 5, newY + 8, 6, 1)
+            tmpTextureContext.fillStyle = hillColor2
+            tmpTextureContext.fillRect(newX + 5, newY + 8, 6, 1)
             // }
 
             if (notType(Fields.get(x, y + 1, 1).getType(), 'h') && notType(Fields.get(x, y + 1, 1).getType(), 'm')) {
@@ -239,8 +238,11 @@ var Fields = new function () {
     this.getMaxY = function () {
         return maxY
     }
-    this.getCanvas = function () {
+    this.getTextureCanvas = function () {
         return textureCanvas
+    }
+    this.getWaterTextureCanvas = function () {
+        return waterTextureCanvas
     }
     this.add = function (x, y, type) {
         if (typeof fields[y] == 'undefined') {
@@ -351,14 +353,10 @@ var Fields = new function () {
                 switch (this.get(x, y).getType()) {
                     case 'g':
                         paintTextureField(tmpTextureContext, x, y, grassColor1, grassColor2, 5)
-                        paintWaterTextureField(tmpWaterTextureContext, x, y, '#ffff7f', grassColor1, 15)
                         break
                     case 'f':
                         paintTextureField(tmpTextureContext, x, y, grassColor1, '#0b7e22', 5)
-                        paintWaterTextureField(tmpWaterTextureContext, x, y, '#ffff7f', grassColor1, 15)
-                        if (!init) {
-                            GameModels.addTree(x, y)
-                        }
+                        GameModels.addTree(x, y)
                         break
                     case 'w':
                         paintTextureField(tmpTextureContext, x, y, roadColor1, grassColor1, 0)
@@ -367,26 +365,20 @@ var Fields = new function () {
                     case 'b':
                         paintTextureField(tmpTextureContext, x, y, roadColor1, grassColor1, 0)
                         paintWaterTextureField(tmpWaterTextureContext, x, y, waterColor1, waterColor2, 1)
-                        paintRoad(tmpTextureContext, x, y)
+                        GameModels.addBridge(x, y)
                         break
                     case 'h':
                         paintHill(tmpTextureContext, x, y)
-                        // paintWaterTextureField(tmpWaterTextureContext, x, y, '#ffff7f', grassColor1, 15)
                         break
                     case 'm':
                         paintMountain(tmpTextureContext, x, y)
-                        // paintWaterTextureField(tmpWaterTextureContext, x, y, '#ffff7f', grassColor1, 15)
                         break
                     case 'r':
                         paintTextureField(tmpTextureContext, x, y, grassColor1, grassColor1, 0)
-                        // paintWaterTextureField(tmpWaterTextureContext, x, y, '#ffff7f', grassColor1, 15)
                         paintRoad(tmpTextureContext, x, y)
                         break
                     case 's':
-                        // paintTextureField(tmpTextureContext, x, y, grassColor1, '#828396', 60)
-                        paintTextureField(tmpTextureContext, x, y, grassColor1, waterColor1, 60)
-                        // paintTextureField(tmpTextureContext, x, y, roadColor1, waterColor1, 60)
-                        // paintWaterTextureField(tmpWaterTextureContext, x, y, '#ffff7f', grassColor1, 15)
+                        paintTextureField(tmpTextureContext, x, y, grassColor1, waterColor1, 30)
                         break
                 }
             }
@@ -395,12 +387,13 @@ var Fields = new function () {
         textureContext.drawImage(tmpTextureCanvas, 0, 0, maxX * textureMultiplier, maxY * textureMultiplier, 0, 0, maxX * textureMultiplier, maxY * textureMultiplier)
         waterTextureContext.drawImage(tmpWaterTextureCanvas, 0, 0, maxX * textureMultiplier, maxY * textureMultiplier, 0, 0, maxX * textureMultiplier, maxY * textureMultiplier)
     }
+    this.paint = function (x, y) {
+
+    }
     this.getGrassColor = function () {
         return grassColor1;
     }
     this.init = function (f) {
-        init = 0
-
         grassField = new Field('g')
         fields = []
 
@@ -412,10 +405,5 @@ var Fields = new function () {
 
         maxX = fields[0].length
         maxY = fields.length
-
-        this.createTextures()
-        Ground.init(maxX, maxY, textureCanvas, waterTextureCanvas)
-
-        init = 1
     }
 }
