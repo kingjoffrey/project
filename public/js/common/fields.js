@@ -392,6 +392,56 @@ var Fields = new function () {
         textureContext.drawImage(tmpTextureCanvas, 0, 0, maxX * textureMultiplier, maxY * textureMultiplier, 0, 0, maxX * textureMultiplier, maxY * textureMultiplier)
         waterTextureContext.drawImage(tmpWaterTextureCanvas, 0, 0, maxX * textureMultiplier, maxY * textureMultiplier, 0, 0, maxX * textureMultiplier, maxY * textureMultiplier)
     }
+    this.createEditorTextures = function () {
+        textureCanvas = document.createElement('canvas')
+
+        var tmpTextureCanvas = document.createElement('canvas'),
+            tmpTextureContext = tmpTextureCanvas.getContext('2d'),
+            textureContext = textureCanvas.getContext('2d')
+
+        tmpTextureCanvas.width = maxX * textureMultiplier
+        tmpTextureCanvas.height = maxY * textureMultiplier
+        textureCanvas.width = maxX * textureMultiplier
+        textureCanvas.height = maxY * textureMultiplier
+
+        textureContext.translate(0, maxY * textureMultiplier)
+        textureContext.scale(1, -1)
+
+        for (var y in fields) {
+            for (var x in fields[y]) {
+                switch (this.get(x, y).getType()) {
+                    case 'g':
+                        paintTextureField(tmpTextureContext, x, y, grassColor1, grassColor2, 5)
+                        break
+                    case 'f':
+                        paintTextureField(tmpTextureContext, x, y, grassColor1, '#0b7e22', 50)
+                        break
+                    case 'w':
+                        paintTextureField(tmpTextureContext, x, y, waterColor1, waterColor2, 0)
+                        break
+                    case 'b':
+                        paintTextureField(tmpTextureContext, x, y, waterColor1, waterColor2, 0)
+                        paintRoad(tmpTextureContext, x, y)
+                        break
+                    case 'h':
+                        paintHill(tmpTextureContext, x, y)
+                        break
+                    case 'm':
+                        paintMountain(tmpTextureContext, x, y)
+                        break
+                    case 'r':
+                        paintTextureField(tmpTextureContext, x, y, grassColor1, grassColor1, 0)
+                        paintRoad(tmpTextureContext, x, y)
+                        break
+                    case 's':
+                        paintTextureField(tmpTextureContext, x, y, grassColor1, waterColor1, 30)
+                        break
+                }
+            }
+        }
+
+        textureContext.drawImage(tmpTextureCanvas, 0, 0, maxX * textureMultiplier, maxY * textureMultiplier, 0, 0, maxX * textureMultiplier, maxY * textureMultiplier)
+    }
     this.paint = function (x, y) {
 
     }

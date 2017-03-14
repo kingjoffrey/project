@@ -8,8 +8,8 @@ var Editor = new function () {
         Units.init(r.units)
 
         Fields.init(r.fields, EditorController.getMapId())
-        Fields.createTextures()
-
+        Fields.createEditorTextures()
+        EditorGround.init(Fields.getMaxX(), Fields.getMaxY(), Fields.getTextureCanvas())
 
 
         Ruins.init(r.ruins)

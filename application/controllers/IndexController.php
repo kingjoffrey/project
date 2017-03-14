@@ -68,6 +68,7 @@ class IndexController extends Coret_Controller_Authorized
 
         $this->view->headScript()->appendFile('/js/editor/castleWindow.js?v=' . $version);
         $this->view->headScript()->appendFile('/js/editor/editor.js?v=' . $version);
+        $this->view->headScript()->appendFile('/js/editor/editorGround.js?v=' . $version);
         $this->view->headScript()->appendFile('/js/editor/models.js?v=' . $version);
         $this->view->headScript()->appendFile('/js/editor/websocket.js?v=' . $version);
         $this->view->headScript()->appendFile('/js/editor/gui.js?v=' . $version);
