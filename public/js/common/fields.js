@@ -145,6 +145,20 @@ var Fields = new function () {
                 return 0
             }
         },
+        paintBridge = function (tmpTextureContext, tmpWaterTextureContext, x, y) {
+            var x = x * 1,
+                y = y * 1
+
+            paintTextureField(tmpTextureContext, x, y, roadColor1, grassColor1, 0)
+            paintWaterTextureField(tmpWaterTextureContext, x, y, waterColor1, waterColor2, 1)
+
+            if (Fields.get(x, y - 1, 1).getGrassOrWater() == 'g' || Fields.get(x, y + 1, 1).getGrassOrWater() == 'g') {
+                var rotate = 1
+            } else {
+                var rotate = 0
+            }
+            GameModels.addBridge(x, y, rotate)
+        },
         paintRoad = function (tmpTextureContext, x, y) {
             var x = x * 1,
                 y = y * 1,
@@ -363,14 +377,7 @@ var Fields = new function () {
                         paintWaterTextureField(tmpWaterTextureContext, x, y, '#365294', waterColor2, 1)
                         break
                     case 'b':
-                        paintTextureField(tmpTextureContext, x, y, roadColor1, grassColor1, 0)
-                        paintWaterTextureField(tmpWaterTextureContext, x, y, waterColor1, waterColor2, 1)
-                        if (this.get(x, y - 1, 1).getGrassOrWater() == 'g' || this.get(x, y + 1, 1).getGrassOrWater() == 'g') {
-                            var rotate = 1
-                        } else {
-                            var rotate = 0
-                        }
-                        GameModels.addBridge(x, y, rotate)
+                        paintBridge(tmpTextureContext, tmpWaterTextureContext, x, y)
                         break
                     case 'h':
                         paintHill(tmpTextureContext, x, y)
