@@ -16,11 +16,21 @@ var EditorGround = new function () {
             groundMesh.position.set(maxX / 2, 0, maxY / 2)
 
             GameScene.add(groundMesh)
-
-            return groundMesh
         }
 
+    this.change = function (x, y, type) {
+        Fields.get(x, y).setType(type)
+
+        Fields.createEditorTextures()
+
+        var texture = new THREE.Texture(Fields.getTextureCanvas())
+        texture.needsUpdate = true
+
+        groundMesh.material.map = texture
+        groundMesh.material.needsUpdate = true
+    }
     this.init = function (x, y, canvas) {
         createGround(x, y, canvas)
+        PickerCommon.attach(groundMesh)
     }
 }

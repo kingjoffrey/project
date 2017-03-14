@@ -48,50 +48,34 @@ var WebSocketMessageEditor = new function () {
                 }
                 break
             case 'grass':
-                Fields.get(r.x, r.y).setType('g')
-                Fields.paint(r.x, r.y)
-                var children = GameScene.get().children
-                for (var i in children) {
-                    if (children[i].position.x - 1 == 2 * r.x && children[i].position.z - 1 == 2 * r.y) {
-                        GameScene.remove(children[i])
-                        break
-                    }
-                }
+                EditorGround.change(r.x, r.y, 'g')
                 break
             case 'water':
-                Fields.get(r.x, r.y).setType('w')
-                var children = GameScene.get().children
-                for (var i in children) {
-                    if (children[i].position.x - 1 == 2 * r.x && children[i].position.z - 1 == 2 * r.y) {
-                        GameScene.remove(children[i])
-                        break
-                    }
-                }
+                EditorGround.change(r.x, r.y, 'w')
                 break
             case 's':
-                Ground.change(r.x, r.y, r.type)
+                EditorGround.change(r.x, r.y, r.type)
                 break
             case 'f':
-                Fields.get(r.x, r.y).setType(r.type)
-                GameModels.addTree(r.x, r.y)
+                EditorGround.change(r.x, r.y, r.type)
                 break
             case 'r':
-                Ground.change(r.x, r.y, r.type)
+                EditorGround.change(r.x, r.y, r.type)
                 break
             case 'b':
-                Ground.change(r.x, r.y, r.type)
+                EditorGround.change(r.x, r.y, r.type)
                 break
             case 'g':
-                Ground.change(r.x, r.y, r.type)
+                EditorGround.change(r.x, r.y, r.type)
                 break
             case 'h':
-                Ground.change(r.x, r.y, r.type)
+                EditorGround.change(r.x, r.y, r.type)
                 break
             case 'm':
-                Ground.change(r.x, r.y, r.type)
+                EditorGround.change(r.x, r.y, r.type)
                 break
             case 'w':
-                Ground.change(r.x, r.y, r.type)
+                EditorGround.change(r.x, r.y, r.type)
                 break
         }
     }

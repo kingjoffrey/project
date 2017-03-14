@@ -409,41 +409,41 @@ var Fields = new function () {
 
         for (var y in fields) {
             for (var x in fields[y]) {
-                switch (this.get(x, y).getType()) {
-                    case 'g':
-                        paintTextureField(tmpTextureContext, x, y, grassColor1, grassColor2, 5)
-                        break
-                    case 'f':
-                        paintTextureField(tmpTextureContext, x, y, grassColor1, '#0b7e22', 50)
-                        break
-                    case 'w':
-                        paintTextureField(tmpTextureContext, x, y, waterColor1, waterColor2, 0)
-                        break
-                    case 'b':
-                        paintTextureField(tmpTextureContext, x, y, waterColor1, waterColor2, 0)
-                        paintRoad(tmpTextureContext, x, y)
-                        break
-                    case 'h':
-                        paintHill(tmpTextureContext, x, y)
-                        break
-                    case 'm':
-                        paintMountain(tmpTextureContext, x, y)
-                        break
-                    case 'r':
-                        paintTextureField(tmpTextureContext, x, y, grassColor1, grassColor1, 0)
-                        paintRoad(tmpTextureContext, x, y)
-                        break
-                    case 's':
-                        paintTextureField(tmpTextureContext, x, y, grassColor1, waterColor1, 30)
-                        break
-                }
+                this.paint(x, y, tmpTextureContext)
             }
         }
 
         textureContext.drawImage(tmpTextureCanvas, 0, 0, maxX * textureMultiplier, maxY * textureMultiplier, 0, 0, maxX * textureMultiplier, maxY * textureMultiplier)
     }
-    this.paint = function (x, y) {
-
+    this.paint = function (x, y, context) {
+        switch (this.get(x, y).getType()) {
+            case 'g':
+                paintTextureField(context, x, y, grassColor1, grassColor2, 5)
+                break
+            case 'f':
+                paintTextureField(context, x, y, grassColor1, '#0b7e22', 50)
+                break
+            case 'w':
+                paintTextureField(context, x, y, waterColor1, waterColor2, 0)
+                break
+            case 'b':
+                paintTextureField(context, x, y, waterColor1, waterColor2, 0)
+                paintRoad(context, x, y)
+                break
+            case 'h':
+                paintHill(context, x, y)
+                break
+            case 'm':
+                paintMountain(context, x, y)
+                break
+            case 'r':
+                paintTextureField(context, x, y, grassColor1, grassColor1, 0)
+                paintRoad(context, x, y)
+                break
+            case 's':
+                paintTextureField(context, x, y, grassColor1, waterColor1, 30)
+                break
+        }
     }
     this.getGrassColor = function () {
         return grassColor1;
