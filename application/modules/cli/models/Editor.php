@@ -223,15 +223,18 @@ class Cli_Model_Editor
             foreach ($this->_Players->getPlayer($color)->getCastles()->getKeys() as $castleId) {
                 if ($dataIn['castleId'] == $castleId) {
                     $castle = $this->_Players->getPlayer($color)->getCastles()->getCastle($castleId);
+
                     if ($dataIn['color'] != $color) {
                         $this->_Players->getPlayer($color)->getCastles()->removeCastle($castleId);
                         $this->_Players->getPlayer($dataIn['color'])->getCastles()->addCastle($castleId, $castle);
                         $this->_Fields->initCastle($castle->getX(), $castle->getY(), $castleId, $dataIn['color']);
                     }
+
                     $castle->edit($this->_mapId, $dataIn, $db, $this->_Players->getPlayer($dataIn['color'])->getId());
+
                     return array(
                         'type' => 'edit',
-                        'castleId' => $dataIn['castleId'],
+                        'castle' => $castle->toArray(),
                         'color' => $dataIn['color']
                     );
                 }

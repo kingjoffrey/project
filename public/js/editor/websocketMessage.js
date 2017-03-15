@@ -16,17 +16,16 @@ var WebSocketMessageEditor = new function () {
                 Ruins.add(r.value, new Ruin({x: PickerEditor.getX(), y: PickerEditor.getZ(), empty: 0}))
                 break
             case 'edit':
+                var castleId = r.castle.id
                 Message.remove()
                 for (var color in Players.toArray()) {
-                    if (Players.get(color).getCastles().has(r.castleId)) {
-                        var castle = Players.get(color).getCastles().get(r.castleId)
-                        Players.get(color).getCastles().clear(r.castleId)
+                    if (Players.get(color).getCastles().has(castleId)) {
+                        Players.get(color).getCastles().clear(castleId)
                         break
                     }
                 }
-                castle.token.x = castle.getX()
-                castle.token.y = castle.getY()
-                Players.get(r.color).getCastles().add(r.castleId, castle.token)
+
+                Players.get(r.color).getCastles().add(castleId, r.castle)
                 break
             case 'remove':
                 var field = Fields.get(r.x, r.y)
