@@ -73,7 +73,7 @@ class Cli_Model_Castles
         return count($this->_castles);
     }
 
-    public function initFields($fields, $color)
+    public function initFields(Cli_Model_Fields $fields, $color)
     {
         foreach ($this->_castles as $castleId => $castle) {
             $fields->initCastle($castle->getX(), $castle->getY(), $castleId, $color);

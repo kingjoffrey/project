@@ -140,14 +140,12 @@ class Cli_Model_Editor
                         $mMapCastles = new Application_Model_MapCastles($this->_mapId, $db);
                         $mCNG = new Cli_Model_CastleNameGenerator();
 
-                        $castleId = $mMapCastles->add($dataIn['x'], $dataIn['y'], array('name', $mCNG->generateCastleName()));
+                        $castleId = $mMapCastles->add($dataIn['x'], $dataIn['y'], array('name' => $mCNG->generateCastleName()));
 
-                        $mapCastle = $mMapCastles->getCastle($castleId);
-
-                        $castle = new Cli_Model_EditorCastle(null, $mapCastle);
+                        $castle = new Cli_Model_EditorCastle(null, $mMapCastles->getCastle($castleId));
 
                         $this->_Players->getPlayer('neutral')->getCastles()->addCastle($castle->getId(), $castle);
-                        $this->_Fields->initCastle($dataIn['x'], $dataIn['y'], $castle->getId(), 'neutral');
+                        $this->_Fields->initCastle($castle->getX(), $castle->getY(), $castle->getId(), 'neutral');
 
                         return array(
                             'type' => 'castle',
@@ -257,10 +255,13 @@ class Cli_Model_Editor
                 return $this->water($dataIn['mapId'], $dataIn['x'], $dataIn['y'], $field, $db);
             case 'g':
                 if ($castleId = $field->getCastleId()) {
+                    $castleColor = $field->getCastleColor();
                     $mMapCastles = new Application_Model_MapCastles($dataIn['mapId'], $db);
                     $mMapCastles->remove($castleId);
-                    $this->_Players->getPlayer($field->getCastleColor())->getCastles()->removeCastle($castleId);
-                    $this->_Fields->initCastle($dataIn['x'], $dataIn['y'], null, null);
+
+                    $castle = $this->_Players->getPlayer($castleColor)->getCastles()->getCastle($castleId);
+                    $this->_Players->getPlayer($castleColor)->getCastles()->removeCastle($castleId);
+                    $this->_Fields->razeCastle($castle->getX(), $castle->getY());
                     return array(
                         'type' => 'remove',
                         'x' => $dataIn['x'],

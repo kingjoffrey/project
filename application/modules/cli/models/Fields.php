@@ -26,11 +26,7 @@ class Cli_Model_Fields
 
     public function razeCastle($x, $y)
     {
-        for ($i = $y; $i <= $y + 1; $i++) {
-            for ($j = $x; $j <= $x + 1; $j++) {
-                $this->_fields[$i][$j]->setCastle(null, null);
-            }
-        }
+        $this->initCastle($x, $y, null, null);
     }
 
     public function isPlayerArmy($x, $y, $playerColor)

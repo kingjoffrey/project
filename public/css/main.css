@@ -1238,3 +1238,7 @@ input.max {
 #points {
     text-align: right;
 }
+
+.editorCastleWindow div {
+    padding: 0.7vw;
+}

@@ -1,14 +1,15 @@
 <?php
+use Devristo\Phpws\Protocol\WebSocketTransportInterface;
 
 class Cli_Model_CastleRaze
 {
     /**
      * Cli_Model_CastleRaze constructor.
      * @param $armyId
-     * @param \Devristo\Phpws\Protocol\WebSocketTransportInterface $user
+     * @param WebSocketTransportInterface $user
      * @param $handler
      */
-    public function __construct($armyId, Devristo\Phpws\Protocol\WebSocketTransportInterface $user, $handler)
+    public function __construct($armyId, WebSocketTransportInterface $user, $handler)
     {
         if ($armyId == null) {
             $l = new Coret_Model_Logger('Cli_Model_CastleRaze');
@@ -24,12 +25,14 @@ class Cli_Model_CastleRaze
         $army = $player->getArmies()->getArmy($armyId);
         $field = $game->getFields()->getField($army->getX(), $army->getY());
         $castleId = $field->getCastleId();
+
         if (!$castleId) {
             $l = new Coret_Model_Logger('Cli_Model_CastleRaze');
             $l->log('Brak zamku!');
             $handler->sendError($user, 'Error 1004');
             return;
         }
+
         if ($field->getCastleColor() != $color) {
             $l = new Coret_Model_Logger('Cli_Model_CastleRaze');
             $l->log('To nie jest twój zamek!');
@@ -38,12 +41,17 @@ class Cli_Model_CastleRaze
         }
 
         $castles = $player->getCastles();
-        $defense = $castles->getCastle($castleId)->getDefense();
+        $castle = $castles->getCastle($castleId);
+        $gold = $castle->getDefense() * 200;
+
+        $player->addGold($gold);
+
+        $game->getFields()->razeCastle($castle->getX(), $castle->getY());
 
         $db = $handler->getDb();
+
         $castles->razeCastle($castleId, $playerId, $game, $db);
-        $gold = $defense * 200;
-        $player->addGold($gold);
+
         $player->saveGold($game->getId(), $db);
 
         $token = array(

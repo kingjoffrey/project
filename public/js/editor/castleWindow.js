@@ -93,18 +93,18 @@ var EditorCastleWindow = new function () {
             }
         }
 
-        var html = $('<div>')
+        var html = $('<div>').addClass('editorCastleWindow')
             .append($('<div>').append('Name: ' + castle.getName()))
             .append($('<div>').append('Income: ' + income))
-            .append($('<div>').append('Color:').append(selectColor))
-            .append($('<div>').append('Defence:').append(selectDefence))
-            .append($('<div>').append('Capital:').append($('<input>').attr({
+            .append($('<div>').append('Color: ').append(selectColor))
+            .append($('<div>').append('Defence: ').append(selectDefence))
+            .append($('<div>').append('Capital: ').append($('<input>').attr({
                 'name': 'capital',
                 'type': 'checkbox'
             }).prop('checked', castle.getCapital())))
-            .append($('<div>').append('Production unit 1:').append(selectProductionUnit0).append('Production time 1:').append(selectProductionTime0))
-            .append($('<div>').append('Production unit 2:').append(selectProductionUnit1).append('Production time 2:').append(selectProductionTime1))
-            .append($('<div>').append('Production unit 3:').append(selectProductionUnit2).append('Production time 3:').append(selectProductionTime2))
+            .append($('<div>').append('Production unit 1: ').append(selectProductionUnit0).append(' Production time 1: ').append(selectProductionTime0))
+            .append($('<div>').append('Production unit 2: ').append(selectProductionUnit1).append(' Production time 2: ').append(selectProductionTime1))
+            .append($('<div>').append('Production unit 3: ').append(selectProductionUnit2).append(' Production time 3: ').append(selectProductionTime2))
             .append($('<div>').append('Enclave number:').append($('<input>').attr({
                 'name': 'enclaveNumber',
                 'value': castle.getEnclaveNumber()
