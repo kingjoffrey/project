@@ -60,7 +60,16 @@ var Models = new function () {
                     }))
             }
         },
-        updateCastleModel = function (mesh, defense) {
+        updateCastleModel = function (mesh, defense, capital) {
+            if (capital) {
+                var m = getCastleModel(5)
+
+                if (Page.getShadows()) {
+                    m.castShadow = true
+                    m.receiveShadow = true
+                }
+                mesh.add(m)
+            }
             for (var i = 2; i <= defense; i++) {
                 var m = getCastleModel(i)
 
@@ -203,12 +212,12 @@ var Models = new function () {
                 color: color
             }))
         mesh.add(flagMesh)
-        updateCastleModel(mesh, castle.defense)
+        updateCastleModel(mesh, castle.defense, castle.capital)
         return mesh
     }
-    this.castleChangeDefense = function (mesh, defense) {
+    this.castleChangeDefense = function (mesh, defense, capital) {
         mesh.children.splice(1, 4) // usuń 4 elementy począwszy od indexu 1
-        updateCastleModel(mesh, defense)
+        updateCastleModel(mesh, defense, capital)
     }
     this.getHero = function (color) {
         return new THREE.Mesh(window['heroModel'].geometry, new THREE.MeshLambertMaterial({

@@ -164,12 +164,7 @@ class Cli_Model_Castle extends Cli_Model_Entity
 
     public function getDefense()
     {
-        if ($this->_capital) {
-            return $this->_defense + $this->_defenseMod + 1;
-        } else {
-            return $this->_defense + $this->_defenseMod;
-        }
-
+        return $this->_defense + $this->_defenseMod;
     }
 
     public function getDefenseMod()

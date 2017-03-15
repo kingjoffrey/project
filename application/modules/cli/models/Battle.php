@@ -68,7 +68,8 @@ class Cli_Model_Battle
         }
 
         if ($this->_castleId) {
-            $this->_externalDefenceModifier = $this->_players->getPlayer($this->_castleColor)->getCastles()->getCastle($this->_castleId)->getDefense();
+            $castle = $this->_players->getPlayer($this->_castleColor)->getCastles()->getCastle($this->_castleId);
+            $this->_externalDefenceModifier = $castle->getDefense() + $castle->isCapital();
         } elseif ($this->_towerId = $this->_fields->getField($defender->getX(), $defender->getY())->getTowerId()) {
             $this->_towerColor = $this->_fields->getField($defender->getX(), $defender->getY())->getTowerColor();
             $this->_externalDefenceModifier = 1;

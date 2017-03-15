@@ -63,7 +63,7 @@ var Castle = function (castle, bgC) {
     }
     this.setDefense = function (defense) {
         castle.defense = defense
-        Models.castleChangeDefense(mesh, defense)
+        Models.castleChangeDefense(mesh, defense, castle.capital)
     }
     this.handle = function (unitId, stop, relocation) {
         if (relocation) {
