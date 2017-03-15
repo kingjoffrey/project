@@ -27,8 +27,7 @@ class Cli_Model_EditorPlayer extends Cli_Model_DefaultPlayer
         $mCastleProduction = new Application_Model_MapCastleProduction($db);
         foreach ($mapCastles as $castleId => $c) {
             if ($c['sideId'] == $this->_id) {
-                $castle = new Cli_Model_EditorCastle();
-                $castle->init($c);
+                $castle = new Cli_Model_EditorCastle(null, $c);
                 $castle->initProduction($mCastleProduction->getCastleProduction($castleId));
                 $this->_castles->addCastle($castleId, $castle);
             }

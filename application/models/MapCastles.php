@@ -33,6 +33,15 @@ class Application_Model_MapCastles extends Coret_Db_Table_Abstract
         return $mapCastles;
     }
 
+    public function getCastle($castleId)
+    {
+        $select = $this->_db->select()
+            ->from($this->_name, array('x', 'y', 'enclaveNumber', 'mapCastleId', 'name', 'income', 'capital', 'defense', 'sideId'))
+            ->where($this->_db->quoteIdentifier('mapCastleId') . ' = ?', $castleId);
+
+        return $this->selectRow($select);
+    }
+
     public function getMapCastlesIds()
     {
         $select = $this->_db->select()
@@ -76,11 +85,21 @@ class Application_Model_MapCastles extends Coret_Db_Table_Abstract
         );
 
         if ($castle) {
-            $data['defense'] = $castle['defense'];
-            $data['capital'] = $this->parseBool($castle['capital']);
-            $data['name'] = $castle['name'];
-            $data['income'] = $castle['income'];
-            $data['enclaveNumber'] = $castle['enclaveNumber'];
+            if (isset($castle['defense'])) {
+                $data['defense'] = $castle['defense'];
+            }
+            if (isset($castle['capital'])) {
+                $data['capital'] = $this->parseBool($castle['capital']);
+            }
+            if (isset($castle['name'])) {
+                $data['name'] = $castle['name'];
+            }
+            if (isset($castle['income'])) {
+                $data['income'] = $castle['income'];
+            }
+            if (isset($castle['enclaveNumber'])) {
+                $data['enclaveNumber'] = $castle['enclaveNumber'];
+            }
         }
 
         return $this->insert($data);

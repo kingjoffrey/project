@@ -137,13 +137,21 @@ class Cli_Model_Editor
                         if ($field->getCastleId()) {
                             break;
                         }
-                        $castle = new Cli_Model_EditorCastle();
-                        $castle->create($this->_mapId, $dataIn['x'], $dataIn['y'], $db);
+                        $mMapCastles = new Application_Model_MapCastles($this->_mapId, $db);
+                        $mCNG = new Cli_Model_CastleNameGenerator();
+
+                        $castleId = $mMapCastles->add($dataIn['x'], $dataIn['y'], array('name', $mCNG->generateCastleName()));
+
+                        $mapCastle = $mMapCastles->getCastle($castleId);
+
+                        $castle = new Cli_Model_EditorCastle(null, $mapCastle);
+
                         $this->_Players->getPlayer('neutral')->getCastles()->addCastle($castle->getId(), $castle);
                         $this->_Fields->initCastle($dataIn['x'], $dataIn['y'], $castle->getId(), 'neutral');
+
                         return array(
-                            'type' => 'castleId',
-                            'value' => $castle->getId()
+                            'type' => 'castle',
+                            'value' => $castle->toArray()
                         );
                     case 'tower':
                         $tower = new Cli_Model_EditorTower($dataIn['x'], $dataIn['y']);

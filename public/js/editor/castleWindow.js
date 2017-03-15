@@ -94,14 +94,8 @@ var EditorCastleWindow = new function () {
         }
 
         var html = $('<div>')
-            .append($('<div>').append('Name:').append($('<input>').attr({
-                'name': 'name',
-                'value': castle.getName()
-            })))
-            .append($('<div>').append('Income (x' + castle.getDefense() + '):').append($('<input>').attr({
-                'name': 'income',
-                'value': income / castle.getDefense()
-            })))
+            .append($('<div>').append('Name: ' + castle.getName()))
+            .append($('<div>').append('Income: ' + income))
             .append($('<div>').append('Color:').append(selectColor))
             .append($('<div>').append('Defence:').append(selectDefence))
             .append($('<div>').append('Capital:').append($('<input>').attr({

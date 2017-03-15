@@ -2,23 +2,6 @@
 
 class Cli_Model_EditorCastle extends Cli_Model_Castle
 {
-    public function __construct()
-    {
-        $this->_capital = false;
-    }
-
-    public function init($castle)
-    {
-        $this->_x = $castle['x'];
-        $this->_y = $castle['y'];
-        $this->_id = $castle['mapCastleId'];
-        $this->_defense = $castle['defense'];
-        $this->_name = $castle['name'];
-        $this->_income = $castle['income'];
-        $this->_capital = $castle['capital'];
-        $this->_enclaveNumber = $castle['enclaveNumber'];
-    }
-
     public function initProduction($production)
     {
         foreach ($production as $unitId => $row) {
@@ -26,27 +9,11 @@ class Cli_Model_EditorCastle extends Cli_Model_Castle
         }
     }
 
-    public function create($mapId, $x, $y, Zend_Db_Adapter_Pdo_Pgsql $db)
-    {
-        $this->_x = $x;
-        $this->_y = $y;
-
-        $mMapCastles = new Application_Model_MapCastles($mapId, $db);
-        $this->_id = $mMapCastles->add($this->_x, $this->_y);
-
-//        $mapCastle = $mMapCastles->get();
-//        $this->_defense = $mapCastle['defense'];
-//        $this->_name = $mapCastle['name'];
-//        $this->_income = $mapCastle['income'];
-//        $this->_capital = $mapCastle['capital'];
-//        $this->_enclaveNumber = $mapCastle['enclaveNumber'];
-    }
-
     public function edit($mapId, $data, Zend_Db_Adapter_Pdo_Pgsql $db, $sideId = 0)
     {
         $this->_defense = $data['defense'];
-        $this->_name = $data['name'];
-        $this->_income = $data['income'];
+//        $this->_name = $data['name'];
+//        $this->_income = $data['income'];
         $this->_capital = $data['capital'];
         $this->_enclaveNumber = $data['enclaveNumber'];
 
@@ -83,8 +50,8 @@ class Cli_Model_EditorCastle extends Cli_Model_Castle
             'x' => $this->_x,
             'y' => $this->_y,
             'defense' => intval($this->_defense),
-            'name' => $this->_name,
-            'income' => intval($this->_income),
+//            'name' => $this->_name,
+//            'income' => intval($this->_income),
             'capital' => intval($this->_capital),
             'sideId' => $sideId,
             'enclaveNumber' => intval($this->_enclaveNumber),
@@ -97,7 +64,7 @@ class Cli_Model_EditorCastle extends Cli_Model_Castle
             'id' => $this->_id,
             'x' => $this->_x,
             'y' => $this->_y,
-            'defense' => $this->_defense,
+            'defense' => $this->getDefense(),
             'name' => $this->_name,
             'income' => intval($this->_income),
             'capital' => $this->_capital,

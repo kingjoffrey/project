@@ -6,14 +6,8 @@ var WebSocketMessageEditor = new function () {
             case 'open':
                 Editor.init(r)
                 break
-            case 'castleId':
-                Players.get('neutral').getCastles().add(r.value, {
-                    x: PickerEditor.getX(),
-                    y: PickerEditor.getZ(),
-                    name: 'Unknown',
-                    defense: 1,
-                    production: [null, null, null, null]
-                })
+            case 'castle':
+                Players.get('neutral').getCastles().add(r.value.id, r.value)
                 break
             case 'towerId':
                 Players.get('neutral').getTowers().add(r.value, {x: PickerEditor.getX(), y: PickerEditor.getZ()})
