@@ -15,6 +15,8 @@ class Cli_Model_Castle extends Cli_Model_Entity
 
     protected $_production = array();
 
+    private $_maxDefense = 4;
+
     public function __construct($playerCastle, $mapCastle)
     {
         $this->_x = $mapCastle['x'];
@@ -24,6 +26,10 @@ class Cli_Model_Castle extends Cli_Model_Entity
         $this->_income = $mapCastle['income'];
         $this->_capital = $mapCastle['capital'];
         $this->_enclaveNumber = $mapCastle['enclaveNumber'];
+
+        if ($this->_capital) {
+            $this->_maxDefense = 5;
+        }
 
         if (empty($playerCastle)) {
             $this->_id = $mapCastle['mapCastleId'];
@@ -158,7 +164,12 @@ class Cli_Model_Castle extends Cli_Model_Entity
 
     public function getDefense()
     {
-        return $this->_defense + $this->_defenseMod;
+        if ($this->_capital) {
+            return $this->_defense + $this->_defenseMod + 1;
+        } else {
+            return $this->_defense + $this->_defenseMod;
+        }
+
     }
 
     public function getDefenseMod()
@@ -176,7 +187,7 @@ class Cli_Model_Castle extends Cli_Model_Entity
 
     public function increaseDefenceMod($playerId, $gameId, $db)
     {
-        if ($this->getDefense() < 4) {
+        if ($this->getDefense() < $this->_maxDefense) {
             $this->_defenseMod++;
             $this->saveDefenceMod($playerId, $gameId, $db);
         }

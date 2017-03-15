@@ -30,7 +30,8 @@ var Models = new function () {
                 loader.parse(castle_1),
                 loader.parse(castle_2),
                 loader.parse(castle_3),
-                loader.parse(castle_4)
+                loader.parse(castle_4),
+                loader.parse(castle_5)
             ]
         },
         initFlag = function () {
@@ -49,6 +50,11 @@ var Models = new function () {
                     }))
                 case 4:
                     return new THREE.Mesh(castleModels[3].geometry, new THREE.MeshLambertMaterial({
+                        color: '#6B6B6B',
+                        side: THREE.DoubleSide
+                    }))
+                case 5:
+                    return new THREE.Mesh(castleModels[4].geometry, new THREE.MeshLambertMaterial({
                         color: '#6B6B6B',
                         side: THREE.DoubleSide
                     }))
@@ -201,7 +207,7 @@ var Models = new function () {
         return mesh
     }
     this.castleChangeDefense = function (mesh, defense) {
-        mesh.children.splice(1, 3) // usuń 3 elementy począwszy od indexu 1
+        mesh.children.splice(1, 4) // usuń 4 elementy począwszy od indexu 1
         updateCastleModel(mesh, defense)
     }
     this.getHero = function (color) {
