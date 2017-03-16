@@ -9,8 +9,8 @@ var Editor = new function () {
 
         Fields.init(r.fields, EditorController.getMapId())
         Fields.createEditorTextures()
-        EditorGround.init(Fields.getMaxX(), Fields.getMaxY(), Fields.getTextureCanvas())
-
+        var waterMesh = EditorGround.init(Fields.getMaxX(), Fields.getMaxY(), Fields.getTextureCanvas())
+        GameScene.add(waterMesh)
 
         Ruins.init(r.ruins)
         Players.init(r.players)
