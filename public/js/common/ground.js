@@ -1045,8 +1045,8 @@ var Ground = new function () {
             }
 
 
-            mesh.rotation.x = Math.PI / 2
-            GameScene.add(mesh)
+            // mesh.rotation.x = Math.PI / 2
+
             if (Page.getShadows()) {
                 mesh.receiveShadow = true
             }
@@ -1072,7 +1072,6 @@ var Ground = new function () {
             }))
             mesh.rotation.x = Math.PI / 2
             mesh.position.set(maxX / 2, -waterLevel, maxY / 2)
-            GameScene.add(mesh)
 
             if (Page.getShadows()) {
                 mesh.receiveShadow = true
@@ -1080,24 +1079,37 @@ var Ground = new function () {
 
             return mesh
         },
-        createBorder = function (x, y) {
+        createBorder1 = function (x, y) {
             var maxX = x * 2,
                 maxY = y * 2
 
             var mesh = new THREE.Mesh(new THREE.PlaneBufferGeometry(maxX, 1), new THREE.MeshLambertMaterial({
-                color: Fields.getGrassColor(),
+                color: '#34220c',
                 side: THREE.DoubleSide
             }))
-            mesh.position.set(maxX / 2, -0.5, maxY)
-            GameScene.add(mesh)
+
+            mesh.position.y = y
+            mesh.position.z = 0.5 - waterLevel
+
+            mesh.rotation.x = Math.PI / 2
+
+            return mesh
+        },
+        createBorder2 = function (x, y) {
+            var maxX = x * 2,
+                maxY = y * 2
 
             var mesh = new THREE.Mesh(new THREE.PlaneBufferGeometry(maxY, 1), new THREE.MeshLambertMaterial({
-                color: Fields.getGrassColor(),
+                color: '#34220c',
                 side: THREE.DoubleSide
             }))
             mesh.rotation.y = Math.PI / 2
-            mesh.position.set(0, -0.5, maxY / 2)
-            GameScene.add(mesh)
+            mesh.rotation.z = Math.PI / 2
+
+            mesh.position.x = -x
+            mesh.position.z = 0.5 - waterLevel
+
+            return mesh
         }
 
     this.getMountainLevel = function () {
@@ -1119,14 +1131,18 @@ var Ground = new function () {
     //     createGround(Fields.getMaxX(), Fields.getMaxY(), Fields.getCanvas())
     // }
     this.init = function (x, y, textureCanvas, waterTextureCanvas) {
-        var mesh = createWater(x, y, waterTextureCanvas)
-        PickerCommon.attach(mesh)
+        var waterMesh = createWater(x, y, waterTextureCanvas)
 
         var stripesArray = createGrassStripes(x, y),
             vertexPositions = createGrassVertexPositions(stripesArray),
             uvs = createUVS(new Float32Array(vertexPositions.length * 2), stripesArray, x, y)
-        mesh = createMesh(createGeometry(vertexPositions, uvs), textureCanvas)
-        PickerCommon.attach(mesh)
+
+        var mesh = createMesh(createGeometry(vertexPositions, uvs), textureCanvas)
+        mesh.position.x = -x
+        mesh.position.y = -y
+        mesh.position.z = -waterLevel
+
+        waterMesh.add(mesh)
 
         var stripes = createWaterStripes(x, y),
             vertexPositionsUp = createWaterVertexPositionsUp(stripes.getUp()),
@@ -1134,10 +1150,31 @@ var Ground = new function () {
             vertexPositionsLeft = createWaterVertexPositionsLeft(stripes.getLeft()),
             vertexPositionsRight = createWaterVertexPositionsRight(stripes.getRight())
 
-        createMesh(createGeometry(vertexPositionsUp, createNewUVS(vertexPositionsUp, x, y)), textureCanvas)
-        createMesh(createGeometry(vertexPositionsDown, createNewUVS(vertexPositionsDown, x, y)), textureCanvas)
-        createMesh(createGeometry(vertexPositionsLeft, createNewUVS(vertexPositionsLeft, x, y)), textureCanvas)
-        createMesh(createGeometry(vertexPositionsRight, createNewUVS(vertexPositionsRight, x, y)), textureCanvas)
+        mesh = createMesh(createGeometry(vertexPositionsUp, createNewUVS(vertexPositionsUp, x, y)), textureCanvas)
+        mesh.position.x = -x
+        mesh.position.y = -y
+        mesh.position.z = -waterLevel
+
+        waterMesh.add(mesh)
+
+        mesh = createMesh(createGeometry(vertexPositionsDown, createNewUVS(vertexPositionsDown, x, y)), textureCanvas)
+        mesh.position.x = -x
+        mesh.position.y = -y
+        mesh.position.z = -waterLevel
+
+        waterMesh.add(mesh)
+
+        mesh = createMesh(createGeometry(vertexPositionsLeft, createNewUVS(vertexPositionsLeft, x, y)), textureCanvas)
+        mesh.position.x = -x
+        mesh.position.y = -y
+        mesh.position.z = -waterLevel
+
+        waterMesh.add(mesh)
+
+        mesh = createMesh(createGeometry(vertexPositionsRight, createNewUVS(vertexPositionsRight, x, y)), textureCanvas)
+        mesh.position.x = -x
+        mesh.position.y = -y
+        mesh.position.z = -waterLevel
 
         var stripes = createHillStripes(x, y),
             vertexPositionsUp = createHillVertexPositionsUp(stripes.getUp()),
@@ -1147,15 +1184,30 @@ var Ground = new function () {
             vertexPositions = createHillVertexPositions(x, y)
 
         mesh = createMesh(createGeometry(vertexPositionsUp, createNewUVS(vertexPositionsUp, x, y)), textureCanvas)
-        PickerCommon.attach(mesh)
+        mesh.position.x = -x
+        mesh.position.y = -y
+        mesh.position.z = -waterLevel
+        waterMesh.add(mesh)
         mesh = createMesh(createGeometry(vertexPositionsDown, createNewUVS(vertexPositionsDown, x, y)), textureCanvas)
-        PickerCommon.attach(mesh)
+        mesh.position.x = -x
+        mesh.position.y = -y
+        mesh.position.z = -waterLevel
+        waterMesh.add(mesh)
         mesh = createMesh(createGeometry(vertexPositionsLeft, createNewUVS(vertexPositionsLeft, x, y)), textureCanvas)
-        PickerCommon.attach(mesh)
+        mesh.position.x = -x
+        mesh.position.y = -y
+        mesh.position.z = -waterLevel
+        waterMesh.add(mesh)
         mesh = createMesh(createGeometry(vertexPositionsRight, createNewUVS(vertexPositionsRight, x, y)), textureCanvas)
-        PickerCommon.attach(mesh)
+        mesh.position.x = -x
+        mesh.position.y = -y
+        mesh.position.z = -waterLevel
+        waterMesh.add(mesh)
         mesh = createMesh(createGeometry(vertexPositions, createNewUVS(vertexPositions, x, y)), textureCanvas)
-        PickerCommon.attach(mesh)
+        mesh.position.x = -x
+        mesh.position.y = -y
+        mesh.position.z = -waterLevel
+        waterMesh.add(mesh)
 
         var stripes = createMountainStripes(x, y),
             vertexPositionsUp = createMountainVertexPositionsUp(stripes.getUp()),
@@ -1165,17 +1217,37 @@ var Ground = new function () {
             vertexPositions = createMountainVertexPositions(x, y)
 
         mesh = createMesh(createGeometry(vertexPositionsUp, createNewUVS(vertexPositionsUp, x, y)), textureCanvas)
-        PickerCommon.attach(mesh)
+        mesh.position.x = -x
+        mesh.position.y = -y
+        mesh.position.z = -waterLevel
+        waterMesh.add(mesh)
         mesh = createMesh(createGeometry(vertexPositionsDown, createNewUVS(vertexPositionsDown, x, y)), textureCanvas)
-        PickerCommon.attach(mesh)
+        mesh.position.x = -x
+        mesh.position.y = -y
+        mesh.position.z = -waterLevel
+        waterMesh.add(mesh)
         mesh = createMesh(createGeometry(vertexPositionsLeft, createNewUVS(vertexPositionsLeft, x, y)), textureCanvas)
-        PickerCommon.attach(mesh)
+        mesh.position.x = -x
+        mesh.position.y = -y
+        mesh.position.z = -waterLevel
+        waterMesh.add(mesh)
         mesh = createMesh(createGeometry(vertexPositionsRight, createNewUVS(vertexPositionsRight, x, y)), textureCanvas)
-        PickerCommon.attach(mesh)
+        mesh.position.x = -x
+        mesh.position.y = -y
+        mesh.position.z = -waterLevel
+        waterMesh.add(mesh)
         mesh = createMesh(createGeometry(vertexPositions, createNewUVS(vertexPositions, x, y)), textureCanvas)
-        PickerCommon.attach(mesh)
+        mesh.position.x = -x
+        mesh.position.y = -y
+        mesh.position.z = -waterLevel
+        waterMesh.add(mesh)
 
-        createBorder(x, y)
+        mesh = createBorder1(x, y)
+        waterMesh.add(mesh)
+        mesh = createBorder2(x, y)
+        waterMesh.add(mesh)
+
+        return waterMesh
     }
 }
 

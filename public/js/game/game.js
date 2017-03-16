@@ -39,7 +39,9 @@ var Game = new function () {
 
             Fields.init(game.fields)
             Fields.createTextures()
-            Ground.init(Fields.getMaxX(), Fields.getMaxY(), Fields.getTextureCanvas(), Fields.getWaterTextureCanvas())
+            var waterMesh = Ground.init(Fields.getMaxX(), Fields.getMaxY(), Fields.getTextureCanvas(), Fields.getWaterTextureCanvas())
+            PickerCommon.attach(waterMesh)
+            GameScene.add(waterMesh)
 
             Players.init(game.players)
             Me.init(game.color, game.gold, game.bSequence, game.capitals)

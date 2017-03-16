@@ -8,7 +8,7 @@ var HelpModels = new function () {
             side: THREE.DoubleSide
         }))
         mesh.rotation.x = Math.PI / 2
-        // mesh.position.set(0, -30, 0)
+        mesh.position.y = -0.1
         if (Page.getShadows()) {
             mesh.receiveShadow = true
         }
@@ -16,8 +16,13 @@ var HelpModels = new function () {
         HelpScene.add(mesh)
     }
 
-    this.addCastle = function () {
-        var mesh = Models.getCastle({defense: 4, name: 'Castle'}, 'orange')
+    this.addCastle = function (defense) {
+        if (defense == 5) {
+            var capital = 1
+        } else {
+            var capital = 0
+        }
+        var mesh = Models.getCastle({'defense': defense, 'capital': capital}, 'orange')
 
         mesh.rotation.y = Math.PI / 16
 
@@ -136,5 +141,16 @@ var HelpModels = new function () {
 
         HelpScene.add(mesh)
         return mesh
+    }
+    this.addTerrain = function (matrix) {
+        Fields.init(matrix)
+        Fields.createTextures()
+        var waterMesh = Ground.init(Fields.getMaxX(), Fields.getMaxY(), Fields.getTextureCanvas(), Fields.getWaterTextureCanvas())
+
+        waterMesh.position.set(25, 0, -25)
+
+        HelpScene.add(waterMesh)
+
+        return waterMesh
     }
 }

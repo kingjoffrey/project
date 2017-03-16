@@ -3,6 +3,59 @@ var Help = new function () {
     var help,
         mesh = 0,
         currentUnitId = 0,
+        currentCastleId = 0,
+        currentTerrainId = 'g',
+        castles = [1, 2, 3, 4, 5],
+        terrainMatrix = {
+            'g': [
+                ['g', 'g', 'g', 'g'],
+                ['g', 'g', 'g', 'g'],
+                ['g', 'g', 'g', 'g'],
+                ['g', 'g', 'g', 'g']
+            ],
+            'r': [
+                ['g', 'r', 'g', 'g'],
+                ['g', 'r', 'g', 'g'],
+                ['r', 'r', 'r', 'r'],
+                ['g', 'r', 'g', 'r']
+            ],
+            'f': [
+                ['f', 'f', 'f', 'f'],
+                ['f', 'f', 'f', 'f'],
+                ['f', 'f', 'f', 'f'],
+                ['f', 'f', 'f', 'f']
+            ],
+            's': [
+                ['s', 's', 's', 's'],
+                ['s', 's', 's', 's'],
+                ['s', 's', 's', 's'],
+                ['s', 's', 's', 's']
+            ],
+            'h': [
+                ['h', 'h', 'h', 'h'],
+                ['h', 'h', 'h', 'h'],
+                ['h', 'h', 'h', 'h'],
+                ['h', 'h', 'h', 'h']
+            ],
+            'm': [
+                ['m', 'm', 'm', 'm'],
+                ['m', 'm', 'm', 'm'],
+                ['m', 'm', 'm', 'm'],
+                ['m', 'm', 'm', 'm']
+            ],
+            'w': [
+                ['w', 'w', 'w', 'w'],
+                ['w', 'w', 'w', 'w'],
+                ['w', 'w', 'w', 'w'],
+                ['w', 'w', 'w', 'w']
+            ],
+            'b': [
+                ['g', 'r', 'g', 'w'],
+                ['g', 'r', 'g', 'w'],
+                ['w', 'b', 'w', 'w'],
+                ['g', 'r', 'g', 'w']
+            ],
+        },
         unitProperties = function (unit) {
             $('#unit').remove()
             if (unit.canFly) {
@@ -190,11 +243,11 @@ var Help = new function () {
                 HelpScene.remove(mesh)
             }
             var stop = 0,
-                lastUnitId = 0
+                lastId = 0
 
             for (var unitId in help.list) {
                 if (stop) {
-                    lastUnitId = unitId
+                    lastId = unitId
                     break
                 }
                 if (unitId == currentUnitId) {
@@ -203,14 +256,100 @@ var Help = new function () {
                         break
                     }
                 }
-                lastUnitId = unitId
+                lastId = unitId
             }
-            if (!lastUnitId) {
-                lastUnitId = unitId
+            if (!lastId) {
+                lastId = unitId
             }
-            mesh = HelpModels.addUnit(help.list[lastUnitId].name.replace(' ', '_').toLowerCase())
-            $('#text').prepend(unitProperties(help.list[lastUnitId]))
-            currentUnitId = lastUnitId
+            mesh = HelpModels.addUnit(help.list[lastId].name.replace(' ', '_').toLowerCase())
+            $('#text').prepend(unitProperties(help.list[lastId]))
+            currentUnitId = lastId
+        },
+        changeCastle = function (direction) {
+            if (mesh) {
+                HelpScene.remove(mesh)
+            }
+            var stop = 0,
+                lastId = 0
+
+            for (var id in castles) {
+                if (stop) {
+                    lastId = id
+                    break
+                }
+                if (id == currentCastleId) {
+                    stop = 1
+                    if (direction == '-') {
+                        break
+                    }
+                }
+                lastId = id
+            }
+            if (!lastId) {
+                lastId = id
+            }
+
+            currentCastleId = lastId
+
+            handleCastle()
+        },
+        changeTerrain = function (direction) {
+            if (mesh) {
+                HelpScene.remove(mesh)
+            }
+            var stop = 0,
+                lastId = 0
+
+            for (var id in terrainMatrix) {
+                if (stop) {
+                    lastId = id
+                    break
+                }
+                if (id == currentTerrainId) {
+                    stop = 1
+                    if (direction == '-') {
+                        break
+                    }
+                }
+                lastId = id
+            }
+            if (!lastId) {
+                lastId = id
+            }
+
+            currentTerrainId = lastId
+
+            handleTerrain()
+        },
+        handleCastle = function () {
+            mesh = HelpModels.addCastle(castles[currentCastleId])
+            $('#castle').remove()
+            $('#text').prepend($('<div>')
+                .attr('id', 'castle')
+                .append($('<h3>')
+                    .append($('<span>').html('<<').addClass('button buttonColors').click(function () {
+                        changeCastle('-')
+                    }))
+                    .append($('<span>').html(translations.Defense + ' ' + castles[currentCastleId]).addClass('unitName'))
+                    .append($('<span>').html('>>').addClass('button buttonColors').click(function () {
+                        changeCastle('+')
+                    }))
+                ))
+        },
+        handleTerrain = function () {
+            mesh = HelpModels.addTerrain(terrainMatrix[currentTerrainId])
+            $('#Terrain').remove()
+            $('#text').prepend($('<div>')
+                .attr('id', 'Terrain')
+                .append($('<h3>')
+                    .append($('<span>').html('<<').addClass('button buttonColors').click(function () {
+                        changeTerrain('-')
+                    }))
+                    .append($('<span>').html(terrain[currentTerrainId].name).addClass('unitName'))
+                    .append($('<span>').html('>>').addClass('button buttonColors').click(function () {
+                        changeTerrain('+')
+                    }))
+                ))
         }
 
     this.fillText = function (id) {
@@ -237,7 +376,7 @@ var Help = new function () {
                 mesh = HelpModels.addArmy()
                 break
             case 'castle':
-                mesh = HelpModels.addCastle()
+                handleCastle()
                 break
             case 'hero':
                 mesh = HelpModels.addHero()
@@ -256,6 +395,9 @@ var Help = new function () {
                     break
                 }
                 break
+            case 'terrain':
+                handleTerrain()
+                break;
         }
         if (mesh) {
             $('#graphics').css('display', 'block')
