@@ -145,19 +145,21 @@ var Fields = new function () {
                 return 0
             }
         },
-        paintBridge = function (tmpTextureContext, tmpWaterTextureContext, x, y) {
+        paintBridge = function (tmpTextureContext, tmpWaterTextureContext, x, y, noModels) {
             var x = x * 1,
                 y = y * 1
 
             paintTextureField(tmpTextureContext, x, y, roadColor1, grassColor1, 0)
             paintWaterTextureField(tmpWaterTextureContext, x, y, waterColor1, waterColor2, 1)
 
-            if (Fields.get(x, y - 1, 1).getGrassOrWater() == 'g' || Fields.get(x, y + 1, 1).getGrassOrWater() == 'g') {
-                var rotate = 1
-            } else {
-                var rotate = 0
+            if (notSet(noModels)) {
+                if (Fields.get(x, y - 1, 1).getGrassOrWater() == 'g' || Fields.get(x, y + 1, 1).getGrassOrWater() == 'g') {
+                    var rotate = 1
+                } else {
+                    var rotate = 0
+                }
+                GameModels.addBridge(x, y, rotate)
             }
-            GameModels.addBridge(x, y, rotate)
         },
         paintRoad = function (tmpTextureContext, x, y) {
             var x = x * 1,
@@ -335,7 +337,7 @@ var Fields = new function () {
             }
         }
     }
-    this.createTextures = function () {
+    this.createTextures = function (noModels) {
         textureCanvas = document.createElement('canvas')
         waterTextureCanvas = document.createElement('canvas')
 
@@ -370,14 +372,16 @@ var Fields = new function () {
                         break
                     case 'f':
                         paintTextureField(tmpTextureContext, x, y, grassColor1, '#0b7e22', 5)
-                        GameModels.addTree(x, y)
+                        if (notSet(noModels)) {
+                            GameModels.addTree(x, y)
+                        }
                         break
                     case 'w':
                         paintTextureField(tmpTextureContext, x, y, roadColor1, grassColor1, 0)
                         paintWaterTextureField(tmpWaterTextureContext, x, y, '#365294', waterColor2, 1)
                         break
                     case 'b':
-                        paintBridge(tmpTextureContext, tmpWaterTextureContext, x, y)
+                        paintBridge(tmpTextureContext, tmpWaterTextureContext, x, y, noModels)
                         break
                     case 'h':
                         paintHill(tmpTextureContext, x, y)

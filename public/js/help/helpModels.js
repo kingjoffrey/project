@@ -1,5 +1,35 @@
 var HelpModels = new function () {
+    var addTree = function (x, y, maxX, maxY) {
+            var mesh = Models.getTree()
 
+            mesh.position.set(2 * x - maxX + 1, 2 * y - maxY + 1, 0)
+            mesh.rotation.x = -Math.PI / 2
+
+            mesh.scale.x = 0.15
+            mesh.scale.y = 0.15
+            mesh.scale.z = 0.15
+
+            if (Page.getShadows()) {
+                mesh.castShadow = true
+            }
+
+            return mesh
+        },
+        addBridge = function (x, y, maxX, maxY) {
+            var mesh = Models.getBridge()
+
+            mesh.position.set(2 * x - maxX + 1, 2 * y - maxY + 1, 0)
+            mesh.rotation.x = -Math.PI / 2
+
+            mesh.rotation.y = Math.PI / 2
+
+            if (Page.getShadows()) {
+                mesh.castShadow = true
+                mesh.receiveShadow = true
+            }
+
+            return mesh
+        }
     this.init = function () {
         Models.init()
 
@@ -144,10 +174,26 @@ var HelpModels = new function () {
     }
     this.addTerrain = function (matrix) {
         Fields.init(matrix)
-        Fields.createTextures()
+        Fields.createTextures(1)
         var waterMesh = Ground.init(Fields.getMaxX(), Fields.getMaxY(), Fields.getTextureCanvas(), Fields.getWaterTextureCanvas())
 
         waterMesh.position.set(25, 0, -25)
+
+        for (var y in matrix) {
+            for (var x in matrix[y]) {
+                switch (matrix[y][x]) {
+                    case 'f':
+                        var mesh = addTree(x, y, Fields.getMaxX(), Fields.getMaxY())
+                        waterMesh.add(mesh)
+                        break
+                    case 'b':
+                        var mesh = addBridge(x, y, Fields.getMaxX(), Fields.getMaxY())
+                        waterMesh.add(mesh)
+                        break
+                }
+            }
+        }
+
 
         HelpScene.add(waterMesh)
 

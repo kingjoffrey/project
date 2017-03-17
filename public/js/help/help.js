@@ -50,10 +50,10 @@ var Help = new function () {
                 ['w', 'w', 'w', 'w']
             ],
             'b': [
-                ['g', 'r', 'g', 'w'],
-                ['g', 'r', 'g', 'w'],
+                ['g', 'r', 'g', 'g'],
+                ['g', 'r', 'g', 'g'],
                 ['w', 'b', 'w', 'w'],
-                ['g', 'r', 'g', 'w']
+                ['g', 'r', 'g', 'g']
             ],
         },
         unitProperties = function (unit) {
