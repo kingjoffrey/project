@@ -25,6 +25,7 @@ var GameModels = new function () {
         mesh.children[0].scale.z = 7
 
         if (Page.getShadows()) {
+            mesh.receiveShadow = true
             mesh.castShadow = true
             mesh.children[0].castShadow = true
         }
@@ -59,10 +60,10 @@ var GameModels = new function () {
     this.setArmyPosition = function (mesh, x, y, canSwim) {
         switch (Fields.get(x, y).getType()) {
             case 'm':
-                var height = Ground.getMountainLevel()
+                var height = -Ground.getMountainLevel()
                 break
             case 'h':
-                var height = Ground.getHillLevel()
+                var height = -Ground.getHillLevel()
                 break
             case 'w':
                 var height = Ground.getWaterLevel()
@@ -138,31 +139,31 @@ var GameModels = new function () {
         return mesh
     }
     this.addTree = function (x, y) {
-        // if (Page.hasTouch()) {
-        //     var maxI = 1
-        // } else {
-        //     var maxI = Math.floor((Math.random() * 5))
-        // }
-
-        // for (var i = 0; i < maxI + 2; i++) {
-        var mesh = Models.getTree(),
-            randomX = Math.floor((Math.random() * 2)),
-            randomY = Math.floor((Math.random() * 2))
-
-        // console.log(randomX + ' ' + randomY)
-
-        mesh.position.set(x * 2 + randomX, 0, y * 2 + randomY)
-        mesh.rotation.y = 2 * Math.PI * Math.random()
-
-        mesh.scale.x = 0.15
-        mesh.scale.y = 0.15
-        mesh.scale.z = 0.15
-
-        if (Page.getShadows()) {
-            mesh.castShadow = true
+        if (isTouchDevice()) {
+            var maxI = 1
+        } else {
+            var maxI = Math.ceil(Math.random() * 3)
         }
-        GameScene.add(mesh)
-        // }
+
+        for (var i = 0; i < maxI; i++) {
+            var mesh = Models.getTree(),
+                randomX = Math.random() * 2,
+                randomY = Math.random() * 2
+
+            // console.log(randomX + ' ' + randomY)
+
+            mesh.position.set(x * 2 + randomX, 0, y * 2 + randomY)
+            mesh.rotation.y = 2 * Math.PI * Math.random()
+
+            mesh.scale.x = 0.15
+            mesh.scale.y = 0.15
+            mesh.scale.z = 0.15
+
+            if (Page.getShadows()) {
+                mesh.castShadow = true
+            }
+            GameScene.add(mesh)
+        }
     }
     this.addPathCircle = function (x, y, color, t) {
         switch (t) {

@@ -1176,6 +1176,8 @@ var Ground = new function () {
         mesh.position.y = -y
         mesh.position.z = -waterLevel
 
+        waterMesh.add(mesh)
+
         var stripes = createHillStripes(x, y),
             vertexPositionsUp = createHillVertexPositionsUp(stripes.getUp()),
             vertexPositionsDown = createHillVertexPositionsDown(stripes.getDown()),

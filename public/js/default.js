@@ -59,25 +59,26 @@ var Page = new function () {
             $('body').addClass('vertical')
         }
 
-        if ($('#menuBox').length) {
-            Chat.init()
-            $('#menuBox').append($('<div>').addClass('askFullScreen')
-                .append($('<div>').html(translations.SwitchtoFullScreen).addClass('question'))
-                .append(
-                    $('<div>')
-                        .append($('<div>').addClass('button buttonColors').html(translations.No).click(function () {
-                            Sound.play('click')
-                            $('.askFullScreen').remove()
-                        }))
-                        .append($('<div>').addClass('button buttonColors').html(translations.Yes).click(function () {
-                            Sound.play('click')
-                            Page.fullScreen()
-                            $('.askFullScreen').remove()
-                        }))
-                )
-            )
+        if (!$('#menuBox').length) {
+            return
         }
 
+        Chat.init()
+        $('#menuBox').append($('<div>').addClass('askFullScreen')
+            .append($('<div>').html(translations.SwitchtoFullScreen).addClass('question'))
+            .append(
+                $('<div>')
+                    .append($('<div>').addClass('button buttonColors').html(translations.No).click(function () {
+                        Sound.play('click')
+                        $('.askFullScreen').remove()
+                    }))
+                    .append($('<div>').addClass('button buttonColors').html(translations.Yes).click(function () {
+                        Sound.play('click')
+                        Page.fullScreen()
+                        $('.askFullScreen').remove()
+                    }))
+            )
+        )
         GameScene.init()
         GameRenderer.init()
     }

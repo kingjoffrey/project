@@ -1093,6 +1093,7 @@ div.table table.unitTable td:first {
     display: block;
     border: 1px solid white;
     border-radius: 0.7vw;
+    box-shadow: 0 0 5px #000;
 }
 
 .bigLink a:hover {

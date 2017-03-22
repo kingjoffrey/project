@@ -9,7 +9,7 @@ var Models = new function () {
         treeModel,
         loader = new THREE.JSONLoader(),
         // objectLoader=new THREE.ObjectLoader(),
-        // textureLoader = new THREE.TextureLoader(),
+        textureLoader = new THREE.TextureLoader(),
         pathMaterialGreen,
         pathMaterialRed,
         pathMaterialWhite,
@@ -23,7 +23,13 @@ var Models = new function () {
         },
         initTower = function () {
             towerModel = loader.parse(tower)
-            towerModel.material = new THREE.MeshLambertMaterial({color: '#6B6B6B', side: THREE.DoubleSide})
+            // towerModel.material = new THREE.MeshLambertMaterial({color: '#6B6B6B', side: THREE.DoubleSide})
+            textureLoader.load('/img/modelMaps/tower.png', function (texture) {
+                towerModel.material = new THREE.MeshLambertMaterial({
+                    map: texture,
+                    side: THREE.DoubleSide
+                })
+            })
         },
         initCastle = function () {
             castleModels = [
@@ -33,6 +39,19 @@ var Models = new function () {
                 loader.parse(castle_4),
                 loader.parse(castle_5)
             ]
+
+            textureLoader.load('/img/modelMaps/castle_3.png', function (texture) {
+                castleModels[2].material = new THREE.MeshLambertMaterial({
+                    map: texture,
+                    side: THREE.DoubleSide
+                })
+            })
+            textureLoader.load('/img/modelMaps/castle_5.png', function (texture) {
+                castleModels[4].material = new THREE.MeshLambertMaterial({
+                    map: texture,
+                    side: THREE.DoubleSide
+                })
+            })
         },
         initFlag = function () {
             flagModel = loader.parse(flag)
@@ -45,19 +64,14 @@ var Models = new function () {
                         side: THREE.DoubleSide
                     }))
                 case 3:
-                    return new THREE.Mesh(castleModels[2].geometry, new THREE.MeshPhongMaterial({
-                        color: '#6B6B6B'
-                    }))
+                    return new THREE.Mesh(castleModels[2].geometry, castleModels[2].material)
                 case 4:
                     return new THREE.Mesh(castleModels[3].geometry, new THREE.MeshLambertMaterial({
                         color: '#6B6B6B',
                         side: THREE.DoubleSide
                     }))
                 case 5:
-                    return new THREE.Mesh(castleModels[4].geometry, new THREE.MeshLambertMaterial({
-                        color: '#6B6B6B',
-                        side: THREE.DoubleSide
-                    }))
+                    return new THREE.Mesh(castleModels[4].geometry, castleModels[4].material)
             }
         },
         updateCastleModel = function (mesh, defense, capital) {
