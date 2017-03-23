@@ -19,7 +19,13 @@ var Models = new function () {
         },
         initBridge = function () {
             bridgeModel = loader.parse(bridge)
-            bridgeModel.material = new THREE.MeshLambertMaterial({color: '#6B6B6B', side: THREE.DoubleSide})
+            // bridgeModel.material = new THREE.MeshLambertMaterial({color: '#6B6B6B', side: THREE.DoubleSide})
+            textureLoader.load('/img/modelMaps/bridge.png', function (texture) {
+                bridgeModel.material = new THREE.MeshLambertMaterial({
+                    map: texture,
+                    side: THREE.DoubleSide
+                })
+            })
         },
         initTower = function () {
             towerModel = loader.parse(tower)
@@ -46,6 +52,12 @@ var Models = new function () {
                     side: THREE.DoubleSide
                 })
             })
+            textureLoader.load('/img/modelMaps/castle_4.png', function (texture) {
+                castleModels[3].material = new THREE.MeshLambertMaterial({
+                    map: texture,
+                    side: THREE.DoubleSide
+                })
+            })
             textureLoader.load('/img/modelMaps/castle_5.png', function (texture) {
                 castleModels[4].material = new THREE.MeshLambertMaterial({
                     map: texture,
@@ -66,10 +78,7 @@ var Models = new function () {
                 case 3:
                     return new THREE.Mesh(castleModels[2].geometry, castleModels[2].material)
                 case 4:
-                    return new THREE.Mesh(castleModels[3].geometry, new THREE.MeshLambertMaterial({
-                        color: '#6B6B6B',
-                        side: THREE.DoubleSide
-                    }))
+                    return new THREE.Mesh(castleModels[3].geometry, castleModels[3].material)
                 case 5:
                     return new THREE.Mesh(castleModels[4].geometry, castleModels[4].material)
             }
@@ -85,12 +94,28 @@ var Models = new function () {
                 mesh.add(m)
             }
             for (var i = 2; i <= defense; i++) {
-                var m = getCastleModel(i)
+                if (i == 4) {
+                    var m = getCastleModel(i)
+                    m.position.set(7, 0, 7)
+
+                    var m1 = getCastleModel(i)
+                    m1.position.set(-14, 0, -14)
+                    m.add(m1)
+                    var m2 = getCastleModel(i)
+                    m2.position.set(-14, 0, 0)
+                    m.add(m2)
+                    var m3 = getCastleModel(i)
+                    m3.position.set(0, 0, -14)
+                    m.add(m3)
+                } else {
+                    var m = getCastleModel(i)
+                }
 
                 if (Page.getShadows()) {
                     m.castShadow = true
                     m.receiveShadow = true
                 }
+
                 mesh.add(m)
             }
         },
