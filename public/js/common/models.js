@@ -1,86 +1,98 @@
 var Models = new function () {
-    var ruinModel,
-        bridgeModel,
-        towerModel,
-        flagModel,
-        armyModels = {},
+    var armyModels = {},
         castleModels = [],
         flagModels = [],
-        treeModel,
-        loader = new THREE.JSONLoader(),
-        // objectLoader=new THREE.ObjectLoader(),
+        models = {},
+        JSONLoader = new THREE.JSONLoader(),
+        objectLoader = new THREE.ObjectLoader(),
         textureLoader = new THREE.TextureLoader(),
         pathMaterialGreen,
         pathMaterialRed,
         pathMaterialWhite,
         pathGeometry,
+        initModelAndTexture = function (id) {
+            JSONLoader.load('/models/' + id + '.json', function (geometry, materials) {
+                models[id] = geometry
+                textureLoader.load('/img/modelMaps/' + id + '.png', function (texture) {
+                    models[id].material = new THREE.MeshLambertMaterial({
+                        map: texture,
+                        side: THREE.DoubleSide
+                    })
+                })
+            })
+        },
+        initModel = function (id, material) {
+            JSONLoader.load('/models/' + id + '.json', function (geometry, materials) {
+                models[id] = geometry
+                if (isSet(material)) {
+                    models[id].material = material
+                }
+            })
+        },
         initRuin = function () {
-            ruinModel = loader.parse(ruin)
+            // ruinModel = JSONLoader.parse(ruin)
+            initModel('ruin')
+        },
+        initTree = function () {
+            initModel('tree', new THREE.MeshLambertMaterial({color: '#003300', side: THREE.DoubleSide}))
         },
         initBridge = function () {
-            bridgeModel = loader.parse(bridge)
-            // bridgeModel.material = new THREE.MeshLambertMaterial({color: '#6B6B6B', side: THREE.DoubleSide})
-            textureLoader.load('/img/modelMaps/bridge.png', function (texture) {
-                bridgeModel.material = new THREE.MeshLambertMaterial({
-                    map: texture,
-                    side: THREE.DoubleSide
-                })
-            })
+            initModelAndTexture('bridge')
         },
         initTower = function () {
-            towerModel = loader.parse(tower)
-            // towerModel.material = new THREE.MeshLambertMaterial({color: '#6B6B6B', side: THREE.DoubleSide})
-            textureLoader.load('/img/modelMaps/tower.png', function (texture) {
-                towerModel.material = new THREE.MeshLambertMaterial({
-                    map: texture,
-                    side: THREE.DoubleSide
-                })
-            })
+            initModelAndTexture('tower')
         },
         initCastle = function () {
-            castleModels = [
-                loader.parse(castle_1),
-                loader.parse(castle_2),
-                loader.parse(castle_3),
-                loader.parse(castle_4),
-                loader.parse(castle_5)
-            ]
-
-            textureLoader.load('/img/modelMaps/castle_3.png', function (texture) {
-                castleModels[2].material = new THREE.MeshLambertMaterial({
-                    map: texture,
-                    side: THREE.DoubleSide
+            JSONLoader.load('/models/castle_1.json', function (geometry, materials) {
+                castleModels[0] = geometry
+            })
+            JSONLoader.load('/models/castle_2.json', function (geometry, materials) {
+                castleModels[1] = geometry
+            })
+            JSONLoader.load('/models/castle_3.json', function (geometry, materials) {
+                castleModels[2] = geometry
+                textureLoader.load('/img/modelMaps/castle_3.png', function (texture) {
+                    castleModels[2].material = new THREE.MeshLambertMaterial({
+                        map: texture,
+                        side: THREE.DoubleSide
+                    })
                 })
             })
-            textureLoader.load('/img/modelMaps/castle_4.png', function (texture) {
-                castleModels[3].material = new THREE.MeshLambertMaterial({
-                    map: texture,
-                    side: THREE.DoubleSide
+            JSONLoader.load('/models/castle_4.json', function (geometry, materials) {
+                castleModels[3] = geometry
+                textureLoader.load('/img/modelMaps/castle_4.png', function (texture) {
+                    castleModels[3].material = new THREE.MeshLambertMaterial({
+                        map: texture,
+                        side: THREE.DoubleSide
+                    })
                 })
             })
-            textureLoader.load('/img/modelMaps/castle_5.png', function (texture) {
-                castleModels[4].material = new THREE.MeshLambertMaterial({
-                    map: texture,
-                    side: THREE.DoubleSide
+            JSONLoader.load('/models/castle_5.json', function (geometry, materials) {
+                castleModels[4] = geometry
+                textureLoader.load('/img/modelMaps/castle_5.png', function (texture) {
+                    castleModels[4].material = new THREE.MeshLambertMaterial({
+                        map: texture,
+                        side: THREE.DoubleSide
+                    })
                 })
             })
         },
         initFlag = function () {
-            flagModel = loader.parse(flag)
+            initModel('flag')
         },
         getCastleModel = function (defense) {
             switch (defense) {
                 case 2:
-                    return new THREE.Mesh(castleModels[1].geometry, new THREE.MeshLambertMaterial({
+                    return new THREE.Mesh(castleModels[1], new THREE.MeshLambertMaterial({
                         color: '#65402C',
                         side: THREE.DoubleSide
                     }))
                 case 3:
-                    return new THREE.Mesh(castleModels[2].geometry, castleModels[2].material)
+                    return new THREE.Mesh(castleModels[2], castleModels[2].material)
                 case 4:
-                    return new THREE.Mesh(castleModels[3].geometry, castleModels[3].material)
+                    return new THREE.Mesh(castleModels[3], castleModels[3].material)
                 case 5:
-                    return new THREE.Mesh(castleModels[4].geometry, castleModels[4].material)
+                    return new THREE.Mesh(castleModels[4], castleModels[4].material)
             }
         },
         updateCastleModel = function (mesh, defense, capital) {
@@ -119,51 +131,63 @@ var Models = new function () {
                 mesh.add(m)
             }
         },
-        initArmy = function () {
-            armyModels = {
-                'archers': archers,
-                'hero': hero,
-                'light_infantry': light_infantry,
-                'heavy_infantry': heavy_infantry,
-                'dragon': dragon,
-                'cavalry': cavalry,
-                'navy': navy,
-                'undead': undead,
-                'wizard': wizard,
-                'demon': demon
+        load = function (id) {
+            return function (geometry, materials) {
+                armyModels[id] = geometry
+
+                textureLoader.load('/img/modelMaps/' + id + '.png', function (texture) {
+                    armyModels[id].material = new THREE.MeshLambertMaterial({
+                        map: texture,
+                        side: THREE.DoubleSide
+                    })
+                })
             }
-            for (var i in armyModels) {
-                window[i + 'Model'] = loader.parse(armyModels[i])
-                // if (i == 'hero') {
-                //     tl.load(window.location.origin + '/img/modelMaps/hero.png', function (texture) {
-                //         window['heroModel'].material = new THREE.MeshLambertMaterial({
-                //             map: texture,
-                //             side: THREE.DoubleSide
-                //         })
-                //     })
-                // }
+        },
+        initArmy = function () {
+            var models = [
+                // 'archers': archers,
+                'hero',
+                'light_infantry'
+                // ,
+                // 'heavy_infantry': heavy_infantry,
+                // 'dragon': dragon,
+                // 'cavalry': cavalry,
+                // 'navy': navy,
+                // 'undead': undead,
+                // 'wizard': wizard,
+                // 'demon': demon
+            ]
+            for (var i in models) {
+                var id = models[i]
+                JSONLoader.load('/models/' + id + '.json', load(id))
+
+                // armyModels[i] = loader.parse(models[i])
             }
 
-            flag_1.scale = 2.5
-            flagModels[0] = loader.parse(flag_1)
-            flag_2.scale = 2.5
-            flagModels[1] = loader.parse(flag_2)
-            flag_3.scale = 2.5
-            flagModels[2] = loader.parse(flag_3)
-            flag_4.scale = 2.5
-            flagModels[3] = loader.parse(flag_4)
-            flag_5.scale = 2.5
-            flagModels[4] = loader.parse(flag_5)
-            flag_6.scale = 2.5
-            flagModels[5] = loader.parse(flag_6)
-            flag_7.scale = 2.5
-            flagModels[6] = loader.parse(flag_7)
-            flag_8.scale = 2.5
-            flagModels[7] = loader.parse(flag_8)
-        },
-        initTree = function () {
-            treeModel = loader.parse(tree)
-            treeModel.material = new THREE.MeshLambertMaterial({color: '#003300', side: THREE.DoubleSide})
+            JSONLoader.load('/models/flag_1.json', function (geometry, materials) {
+                flagModels[0] = geometry
+            })
+            JSONLoader.load('/models/flag_2.json', function (geometry, materials) {
+                flagModels[1] = geometry
+            })
+            JSONLoader.load('/models/flag_3.json', function (geometry, materials) {
+                flagModels[2] = geometry
+            })
+            JSONLoader.load('/models/flag_4.json', function (geometry, materials) {
+                flagModels[3] = geometry
+            })
+            JSONLoader.load('/models/flag_5.json', function (geometry, materials) {
+                flagModels[4] = geometry
+            })
+            JSONLoader.load('/models/flag_6.json', function (geometry, materials) {
+                flagModels[5] = geometry
+            })
+            JSONLoader.load('/models/flag_7.json', function (geometry, materials) {
+                flagModels[6] = geometry
+            })
+            JSONLoader.load('/models/flag_8.json', function (geometry, materials) {
+                flagModels[7] = geometry
+            })
         },
         initPathCircle = function () {
             var radius = 0.5,
@@ -207,13 +231,13 @@ var Models = new function () {
             material1 = new THREE.MeshBasicMaterial({
                 color: 'gold',
                 transparent: true,
-                opacity: 0.5,
+                opacity: 0.3,
                 side: THREE.DoubleSide
             }),
             material2 = new THREE.MeshBasicMaterial({
                 color: color,
                 transparent: true,
-                opacity: 0.7,
+                opacity: 0.3,
                 side: THREE.DoubleSide
             }),
             geometry1 = new THREE.CylinderGeometry(0.5, 0, 2, segments, segments, 1),
@@ -223,31 +247,31 @@ var Models = new function () {
         return {cylinder: new THREE.Mesh(geometry1, material1), circle: new THREE.Mesh(geometry2, material2)}
     }
     this.getRuin = function (color) {
-        return new THREE.Mesh(ruinModel.geometry, new THREE.MeshPhongMaterial({
+        return new THREE.Mesh(models['ruin'], new THREE.MeshPhongMaterial({
             color: color,
             side: THREE.DoubleSide
         }))
     }
     this.getTree = function () {
-        return new THREE.Mesh(treeModel.geometry, treeModel.material)
+        return new THREE.Mesh(models['tree'], models['tree'].material)
     }
     this.getBridge = function () {
-        return new THREE.Mesh(bridgeModel.geometry, bridgeModel.material)
+        return new THREE.Mesh(models['bridge'], models['bridge'].material)
     }
     this.getTower = function (color) {
-        var mesh = new THREE.Mesh(towerModel.geometry, towerModel.material),
-            flagMesh = new THREE.Mesh(flagModel.geometry, new THREE.MeshLambertMaterial({
+        var mesh = new THREE.Mesh(models['tower'], models['tower'].material),
+            flagMesh = new THREE.Mesh(models['flag'], new THREE.MeshLambertMaterial({
                 color: color
             }))
         mesh.add(flagMesh)
         return mesh
     }
     this.getCastle = function (castle, color) {
-        var mesh = new THREE.Mesh(castleModels[0].geometry, new THREE.MeshLambertMaterial({
+        var mesh = new THREE.Mesh(castleModels[0], new THREE.MeshLambertMaterial({
                 color: '#3B3028',
                 side: THREE.DoubleSide
             })),
-            flagMesh = new THREE.Mesh(flagModel.geometry, new THREE.MeshLambertMaterial({
+            flagMesh = new THREE.Mesh(models['flag'], new THREE.MeshLambertMaterial({
                 color: color
             }))
         mesh.add(flagMesh)
@@ -259,26 +283,17 @@ var Models = new function () {
         updateCastleModel(mesh, defense, capital)
     }
     this.getHero = function (color) {
-        return new THREE.Mesh(window['heroModel'].geometry, new THREE.MeshLambertMaterial({
-            color: color,
-            side: THREE.DoubleSide
-        }))
+        return new THREE.Mesh(armyModels.hero, armyModels.hero.material)
     }
     this.getUnit = function (color, modelName) {
-        return new THREE.Mesh(window[modelName + 'Model'].geometry, new THREE.MeshLambertMaterial({
-            color: color,
-            side: THREE.DoubleSide
-        }))
+        return new THREE.Mesh(armyModels[modelName], armyModels[modelName].material)
     }
     this.getArmy = function (color, number, modelName) {
-        var flagMesh = new THREE.Mesh(flagModels[number - 1].geometry, new THREE.MeshLambertMaterial({
+        var flagMesh = new THREE.Mesh(flagModels[number - 1], new THREE.MeshLambertMaterial({
                 color: color,
                 side: THREE.DoubleSide
             })),
-            mesh = new THREE.Mesh(window[modelName + 'Model'].geometry, new THREE.MeshLambertMaterial({
-                color: color,
-                side: THREE.DoubleSide
-            }))
+            mesh = new THREE.Mesh(armyModels[modelName], armyModels[modelName].material)
 
         flagMesh.position.set(-10, 0, 2)
         mesh.add(flagMesh)
