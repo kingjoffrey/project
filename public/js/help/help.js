@@ -261,6 +261,7 @@ var Help = new function () {
             if (!lastId) {
                 lastId = unitId
             }
+
             mesh = HelpModels.addUnit(help.list[lastId].name.replace(' ', '_').toLowerCase())
             $('#text').prepend(unitProperties(help.list[lastId]))
             currentUnitId = lastId

@@ -81,6 +81,10 @@ var Page = new function () {
         )
         GameScene.init()
         GameRenderer.init()
+
+        HelpScene.init()
+        HelpRenderer.init()
+        HelpModels.init()
     }
 }
 

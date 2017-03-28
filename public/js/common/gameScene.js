@@ -1,10 +1,5 @@
-if (!Detector.webgl) {
-    Detector.addGetWebGLMessage();
-    document.getElementById('container').innerHTML = "";
-}
-
 var GameScene = new function () {
-    var scene,
+    var scene = new THREE.Scene(),
         camera,
         sun,
         mapSize = [1024, 2048, 4096, 8192],
@@ -171,7 +166,6 @@ var GameScene = new function () {
         }
     }
     this.init = function () {
-        scene = new THREE.Scene()
         initCamera(1, 1)
     }
 }

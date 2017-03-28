@@ -32,11 +32,6 @@ var GameRenderer = new function () {
                 requestAnimationFrame(GameRenderer.animate)
             }
         }
-        // console.log(renderer)
-        // console.log(scene)
-        // console.log(camera)
-        // stop = 1
-        // console.log(stop)
         render()
     }
     this.stop = function () {

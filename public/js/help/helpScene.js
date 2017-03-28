@@ -1,19 +1,14 @@
-if (!Detector.webgl) {
-    Detector.addGetWebGLMessage();
-    document.getElementById('container').innerHTML = "";
-}
-
 var HelpScene = new function () {
-    var scene,
+    var scene = new THREE.Scene(),
         camera,
         sun,
         cameraY = 24,
-        initCamera = function (w, h) {
+        initCamera = function () {
             var viewAngle = 22,
                 near = 1,
                 far = 1000
 
-            camera = new THREE.PerspectiveCamera(viewAngle, w / h, near, far)
+            camera = new THREE.PerspectiveCamera(viewAngle, 1, near, far)
             camera.rotation.order = 'YXZ'
             camera.rotation.y = -Math.PI / 4
             camera.rotation.x = Math.atan(-1 / Math.sqrt(2))
@@ -31,8 +26,10 @@ var HelpScene = new function () {
         if (Page.getShadows()) {
             sun.castShadow = true
 
-            sun.shadow.mapSize.width = 2048
-            sun.shadow.mapSize.height = 2048
+            // sun.shadow.mapSize.width = 2048
+            // sun.shadow.mapSize.height = 2048
+            sun.shadow.mapSize.width = 8192
+            sun.shadow.mapSize.height = 8192
 
             sun.shadow.camera.right = 80
             sun.shadow.camera.left = 0
@@ -40,8 +37,8 @@ var HelpScene = new function () {
             sun.shadow.camera.bottom = -30
             sun.shadow.camera.far = 290
 
-            var helper = new THREE.CameraHelper(sun.shadow.camera)
-            scene.add(helper)
+            // var helper = new THREE.CameraHelper(sun.shadow.camera)
+            // scene.add(helper)
         }
         scene.add(sun)
     }
@@ -66,12 +63,10 @@ var HelpScene = new function () {
     this.getCamera = function () {
         return camera
     }
-    this.resize = function (w, h) {
-        camera.aspect = w / h
+    this.resize = function (w) {
         camera.updateProjectionMatrix()
     }
-    this.init = function (w, h) {
-        scene = new THREE.Scene()
-        initCamera(w, h)
+    this.init = function () {
+        initCamera()
     }
 }

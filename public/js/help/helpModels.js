@@ -30,22 +30,6 @@ var HelpModels = new function () {
 
             return mesh
         }
-    this.init = function () {
-        Models.init()
-
-        var mesh = new THREE.Mesh(new THREE.PlaneBufferGeometry(200, 200), new THREE.MeshLambertMaterial({
-            color: 0xffffff,
-            side: THREE.DoubleSide
-        }))
-        mesh.rotation.x = Math.PI / 2
-        mesh.position.y = -0.1
-        if (Page.getShadows()) {
-            mesh.receiveShadow = true
-        }
-
-        HelpScene.add(mesh)
-    }
-
     this.addCastle = function (defense) {
         if (defense == 5) {
             var capital = 1
@@ -198,5 +182,18 @@ var HelpModels = new function () {
         HelpScene.add(waterMesh)
 
         return waterMesh
+    }
+    this.init = function () {
+        var mesh = new THREE.Mesh(new THREE.PlaneBufferGeometry(200, 200), new THREE.MeshLambertMaterial({
+            color: 0xffffff,
+            side: THREE.DoubleSide
+        }))
+        mesh.rotation.x = Math.PI / 2
+        mesh.position.y = -0.1
+        if (Page.getShadows()) {
+            mesh.receiveShadow = true
+        }
+
+        HelpScene.add(mesh)
     }
 }

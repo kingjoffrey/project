@@ -145,17 +145,16 @@ var Models = new function () {
         },
         initArmy = function () {
             var models = [
-                // 'archers': archers,
+                'archers',
                 'hero',
-                'light_infantry'
-                // ,
-                // 'heavy_infantry': heavy_infantry,
-                // 'dragon': dragon,
-                // 'cavalry': cavalry,
-                // 'navy': navy,
-                // 'undead': undead,
-                // 'wizard': wizard,
-                // 'demon': demon
+                'light_infantry',
+                'heavy_infantry',
+                'dragon',
+                'cavalry',
+                'navy',
+                'undead',
+                'wizard',
+                'demon'
             ]
             for (var i in models) {
                 var id = models[i]
