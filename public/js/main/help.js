@@ -3,6 +3,10 @@ var HelpController = new function () {
     this.index = function (r) {
         $('#content').html(r.data)
 
+        $('.table').css({
+            'padding': 0
+        })
+
         HelpRenderer.clear()
 
         Help.init(r)

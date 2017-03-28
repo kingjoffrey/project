@@ -423,6 +423,7 @@ tr.trlink:hover td {
     padding: 2.1vw;
     display: inline-block;
     color: springgreen;
+    width: 9.5vw;
 }
 
 div.table table.unitTable {
