@@ -7,7 +7,7 @@ var HelpController = new function () {
             'padding': 0
         })
 
-        HelpRenderer.clear()
+        Renderer.clear()
 
         Help.init(r)
 

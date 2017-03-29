@@ -32,7 +32,7 @@ var Game = new function () {
 
             PickerCommon.reset()
             GameScene.clear()
-            GameRenderer.clear()
+            Renderer.clear()
 
             Execute.setExecuting(0)
             Units.init(game.units)

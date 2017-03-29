@@ -3,10 +3,11 @@ var GameRenderer = new function () {
         scene,
         camera,
         timeOut = 1000,
-        stop = 1,
+        stop,
         render = function () {
             renderer.render(scene, camera)
         }
+
     this.setSize = function (w, h) {
         renderer.setSize(w, h)
     }
@@ -17,6 +18,9 @@ var GameRenderer = new function () {
         if (stop) {
             return
         }
+
+        render()
+
         if (timeOut) {
             if (TWEEN.update()) {
                 requestAnimationFrame(GameRenderer.animate)
@@ -32,15 +36,14 @@ var GameRenderer = new function () {
                 requestAnimationFrame(GameRenderer.animate)
             }
         }
-        render()
     }
     this.stop = function () {
         stop = 1
     }
     this.start = function () {
         stop = 0
+        $('#game').append(renderer.domElement)
         this.animate()
-        this.shadowsOff()
     }
     this.shadowsOff = function () {
         // renderer.shadowMapAutoUpdate = false
@@ -54,11 +57,6 @@ var GameRenderer = new function () {
     this.shadowsInfo = function () {
         console.log(renderer.shadowMapAutoUpdate)
     }
-    this.clear = function () {
-        while (renderer.domElement.lastChild) {
-            renderer.domElement.removeChild(renderer.domElement.lastChild)
-        }
-    }
     this.init = function () {
         if (Main.getEnv() != 'development') {
             timeOut = 0
@@ -71,6 +69,5 @@ var GameRenderer = new function () {
         }
         scene = GameScene.get()
         camera = GameScene.getCamera()
-        $('#game').append(renderer.domElement)
     }
 }

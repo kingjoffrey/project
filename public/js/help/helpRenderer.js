@@ -14,7 +14,9 @@ var HelpRenderer = new function () {
             renderer.render(scene, camera)
         }
 
-
+    this.resize = function (w) {
+        renderer.setSize(w, w)
+    }
     this.animate = function () {
         if (stop) {
             return
@@ -22,9 +24,13 @@ var HelpRenderer = new function () {
 
         render()
 
-        setTimeout(function () {
+        if (timeOut) {
+            setTimeout(function () {
+                requestAnimationFrame(HelpRenderer.animate)
+            }, timeOut)
+        } else {
             requestAnimationFrame(HelpRenderer.animate)
-        }, timeOut)
+        }
     }
     this.stop = function () {
         stop = 1
@@ -34,18 +40,13 @@ var HelpRenderer = new function () {
         $('#graphics').append(renderer.domElement)
         this.animate()
     }
-    this.clear = function () {
-        while (renderer.domElement.lastChild) {
-            renderer.domElement.removeChild(renderer.domElement.lastChild)
-        }
-    }
     this.isRunning = function () {
         return !stop
     }
-    this.resize = function (w) {
-        renderer.setSize(w, w)
-    }
     this.init = function () {
+        if (Main.getEnv() != 'development') {
+            timeOut = 0
+        }
         stop = 0
         renderer = Renderer.get()
         if (Page.getShadows()) {
