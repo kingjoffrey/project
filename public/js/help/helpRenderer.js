@@ -5,6 +5,12 @@ var HelpRenderer = new function () {
         timeOut = 100,
         stop,
         render = function () {
+            var mesh = Help.getMesh()
+
+            if (mesh) {
+                Animation.rotate(mesh)
+            }
+
             renderer.render(scene, camera)
         }
 
