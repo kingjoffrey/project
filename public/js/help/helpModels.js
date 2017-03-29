@@ -29,6 +29,38 @@ var HelpModels = new function () {
             }
 
             return mesh
+        },
+        addFooting = function () {
+            var radius = 10,
+                segments = 64,
+                material1 = new THREE.MeshBasicMaterial({
+                    color: 'gold',
+                    side: THREE.DoubleSide
+                }),
+                material2 = new THREE.MeshBasicMaterial({
+                    color: 'green',
+                    side: THREE.DoubleSide
+                }),
+                geometry1 = new THREE.CylinderGeometry(radius, radius, 1, segments, 1, 0),
+                geometry2 = new THREE.CircleGeometry(radius, segments)
+
+            var circle = new THREE.Mesh(geometry2, material2)
+
+            circle.rotateX(Math.PI / 2)
+
+            circle.position.y = 0.5
+
+            var mesh = new THREE.Mesh(geometry1, material1)
+
+            mesh.add(circle)
+
+            mesh.position.y = 10
+
+            if (Page.getShadows()) {
+                mesh.receiveShadow = true
+            }
+
+            HelpScene.add(mesh)
         }
     this.addCastle = function (defense) {
         if (defense == 5) {
@@ -83,17 +115,21 @@ var HelpModels = new function () {
     }
     this.addUnit = function (modelName) {
         var mesh = Models.getUnit('orange', modelName)
-        //mesh.rotation.y = Math.PI / 2 + Math.PI / 4
         mesh.rotation.y = Math.PI / 2
         mesh.scale.x = 0.5
         mesh.scale.y = 0.5
         mesh.scale.z = 0.5
+
         mesh.position.set(20, 0, -20)
 
         if (Page.getShadows()) {
             mesh.castShadow = true
-            mesh.receiveShadow = true
+            // mesh.receiveShadow = true
         }
+
+        mesh.position.y = 1
+
+        addFooting()
 
         HelpScene.add(mesh)
         return mesh
@@ -185,7 +221,7 @@ var HelpModels = new function () {
     }
     this.init = function () {
         var mesh = new THREE.Mesh(new THREE.PlaneBufferGeometry(200, 200), new THREE.MeshLambertMaterial({
-            color: 0xffffff,
+            color: 0x296a00,
             side: THREE.DoubleSide
         }))
         mesh.rotation.x = Math.PI / 2

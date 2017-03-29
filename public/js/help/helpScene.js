@@ -14,9 +14,11 @@ var HelpScene = new function () {
             camera.rotation.x = Math.atan(-1 / Math.sqrt(2))
             camera.position.y = cameraY
             camera.scale.addScalar(1)
+
             scene.add(camera)
             scene.add(new THREE.AmbientLight(0x777777))
-            //camera.add(new THREE.PointLight(0xffffff, 0.7))
+
+            camera.add(new THREE.PointLight(0xffffff, 0.1))
         }
 
     this.initSun = function () {

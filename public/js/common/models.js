@@ -119,14 +119,25 @@ var Models = new function () {
                     var m3 = getCastleModel(i)
                     m3.position.set(0, 0, -14)
                     m.add(m3)
+
+                    if (Page.getShadows()) {
+                        m.castShadow = true
+                        m.receiveShadow = true
+                        m1.castShadow = true
+                        m1.receiveShadow = true
+                        m2.castShadow = true
+                        m2.receiveShadow = true
+                        m3.castShadow = true
+                        m3.receiveShadow = true
+                    }
                 } else {
                     var m = getCastleModel(i)
+                    if (Page.getShadows()) {
+                        m.castShadow = true
+                        m.receiveShadow = true
+                    }
                 }
 
-                if (Page.getShadows()) {
-                    m.castShadow = true
-                    m.receiveShadow = true
-                }
 
                 mesh.add(m)
             }

@@ -406,7 +406,6 @@ tr.trlink:hover td {
 }
 
 .table #graphics {
-    border: 1px solid #000;
     float: left;
     margin-right: 0.7vw;
 }
