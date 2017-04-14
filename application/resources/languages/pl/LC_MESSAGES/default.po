@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: WOF\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-03-11 06:02+0100\n"
-"PO-Revision-Date: 2017-03-11 06:03+0100\n"
+"POT-Creation-Date: 2017-04-14 15:59+0200\n"
+"PO-Revision-Date: 2017-04-14 15:59+0200\n"
 "Last-Translator: Bartosz Krzeszewski <bartek@core-t.pl>\n"
 "Language-Team: \n"
 "Language: pl\n"
@@ -52,6 +52,7 @@ msgstr "Utwórz grę"
 #: application/views/scripts/join/index.phtml:4
 #: application/views/scripts/load/index.phtml:10
 #: application/views/scripts/profile/show.phtml:6
+#: application/views/scripts/tournament/index.phtml:9
 msgid "Map name"
 msgstr "Nazwa mapy"
 
@@ -181,36 +182,41 @@ msgid "Play"
 msgstr "Graj"
 
 #: application/modules/cli/models/MainOpen.php:38
+#: application/views/scripts/tournament/index.phtml:2
+msgid "Tournament"
+msgstr "Turniej"
+
+#: application/modules/cli/models/MainOpen.php:39
 msgid "Load game"
 msgstr "Wczytaj grę"
 
-#: application/modules/cli/models/MainOpen.php:39
+#: application/modules/cli/models/MainOpen.php:40
 msgid "Hall of Fame"
 msgstr "Sala sław"
 
-#: application/modules/cli/models/MainOpen.php:40
+#: application/modules/cli/models/MainOpen.php:41
 msgid "Players"
 msgstr "Gracze"
 
-#: application/modules/cli/models/MainOpen.php:41
+#: application/modules/cli/models/MainOpen.php:42
 #: application/views/scripts/friends/index.phtml:2
 msgid "Friends"
 msgstr "Znajomi"
 
-#: application/modules/cli/models/MainOpen.php:42
+#: application/modules/cli/models/MainOpen.php:43
 msgid "Profile"
 msgstr "Profil"
 
-#: application/modules/cli/models/MainOpen.php:43
+#: application/modules/cli/models/MainOpen.php:44
 #: application/views/scripts/contact/index.phtml:2
 msgid "Contact"
 msgstr "Kontakt"
 
-#: application/modules/cli/models/MainOpen.php:44
+#: application/modules/cli/models/MainOpen.php:45
 msgid "Help"
 msgstr "Pomoc"
 
-#: application/modules/cli/models/MainOpen.php:45
+#: application/modules/cli/models/MainOpen.php:46
 msgid "Map editor"
 msgstr "Edytor map"
 
@@ -255,7 +261,7 @@ msgid "Heroes lost"
 msgstr "Utraconych herosów"
 
 #: application/views/helpers/Translations.php:19
-#: application/layouts/scripts/default.phtml:38
+#: application/layouts/scripts/default.phtml:39
 msgid "Statistics"
 msgstr "Statystyki"
 
@@ -272,7 +278,7 @@ msgid "towers"
 msgstr "wieże"
 
 #: application/views/helpers/Translations.php:23
-#: application/layouts/scripts/default.phtml:63
+#: application/layouts/scripts/default.phtml:64
 msgid "Tower"
 msgstr "Wieża"
 
@@ -341,8 +347,8 @@ msgid "Error"
 msgstr "Błąd"
 
 #: application/views/helpers/Translations.php:40
-#: application/layouts/scripts/default.phtml:91
-#: application/layouts/scripts/default.phtml:93
+#: application/layouts/scripts/default.phtml:92
+#: application/layouts/scripts/default.phtml:94
 msgid "Surrender"
 msgstr "Poddaj się"
 
@@ -435,7 +441,7 @@ msgid "Relocating from"
 msgstr "Relokacja z"
 
 #: application/views/helpers/Translations.php:63
-#: application/layouts/scripts/default.phtml:44
+#: application/layouts/scripts/default.phtml:45
 msgid "Next turn"
 msgstr "Następna tura"
 
@@ -485,7 +491,7 @@ msgid "Fortify army"
 msgstr "Fortyfikuj armię"
 
 #: application/views/helpers/Translations.php:75
-#: application/layouts/scripts/default.phtml:56
+#: application/layouts/scripts/default.phtml:57
 msgid "Skip army"
 msgstr "Pomiń armię"
 
@@ -547,7 +553,7 @@ msgid "Ruins"
 msgstr "Ruiny"
 
 #: application/views/helpers/Translations.php:91
-#: application/layouts/scripts/default.phtml:62
+#: application/layouts/scripts/default.phtml:63
 msgid "Ruin"
 msgstr "Ruiny"
 
@@ -670,12 +676,12 @@ msgstr "Rozpocznij produkcję"
 
 #: application/views/helpers/Translations.php:121
 #: application/views/helpers/Translations.php:129
-#: application/layouts/scripts/default.phtml:115
+#: application/layouts/scripts/default.phtml:116
 msgid "Close"
 msgstr "Zamknij"
 
 #: application/views/helpers/Translations.php:122
-#: application/layouts/scripts/default.phtml:61
+#: application/layouts/scripts/default.phtml:62
 msgid "Castle"
 msgstr "Zamek"
 
@@ -809,7 +815,7 @@ msgid "Walk"
 msgstr "Chodzi"
 
 #: application/views/helpers/Translations.php:156
-#: application/layouts/scripts/default.phtml:64
+#: application/layouts/scripts/default.phtml:65
 msgid "Road"
 msgstr "Droga"
 
@@ -818,7 +824,7 @@ msgid "Grass"
 msgstr "Łąka"
 
 #: application/views/helpers/Translations.php:158
-#: application/layouts/scripts/default.phtml:65
+#: application/layouts/scripts/default.phtml:66
 msgid "Forest"
 msgstr "Las"
 
@@ -839,7 +845,7 @@ msgid "Water"
 msgstr "Woda"
 
 #: application/views/helpers/Translations.php:163
-#: application/layouts/scripts/default.phtml:66
+#: application/layouts/scripts/default.phtml:67
 msgid "Swamp"
 msgstr "Bagno"
 
@@ -900,72 +906,76 @@ msgstr "Gra"
 msgid "Terrain"
 msgstr "Teren"
 
+#: application/views/helpers/Translations.php:179
+msgid "Nothing to show"
+msgstr "Nic do pokazania"
+
 #: application/views/helpers/Version.php:6
 msgid "Version number"
 msgstr "Numer wersji"
 
-#: application/layouts/scripts/default.phtml:35
+#: application/layouts/scripts/default.phtml:36
 msgid "Gold"
 msgstr "Złoto"
 
-#: application/layouts/scripts/default.phtml:47
+#: application/layouts/scripts/default.phtml:48
 msgid "Show menu"
 msgstr "Pokaż menu"
 
-#: application/layouts/scripts/default.phtml:53
+#: application/layouts/scripts/default.phtml:54
 msgid "Find next army"
 msgstr "Znajdź następną armię"
 
-#: application/layouts/scripts/default.phtml:67
+#: application/layouts/scripts/default.phtml:68
 msgid "Eraser"
 msgstr "Gumka"
 
-#: application/layouts/scripts/default.phtml:68
+#: application/layouts/scripts/default.phtml:69
 msgid "Up"
 msgstr "Góra"
 
-#: application/layouts/scripts/default.phtml:69
+#: application/layouts/scripts/default.phtml:70
 msgid "Down"
 msgstr "Dół"
 
-#: application/layouts/scripts/default.phtml:73
+#: application/layouts/scripts/default.phtml:74
 msgid "Exit editor"
 msgstr "Opuść edytor"
 
-#: application/layouts/scripts/default.phtml:76
+#: application/layouts/scripts/default.phtml:77
 msgid "Publish"
 msgstr "Publikuj"
 
-#: application/layouts/scripts/default.phtml:81
+#: application/layouts/scripts/default.phtml:82
 msgid "Loading"
 msgstr "Wczytywanie"
 
-#: application/layouts/scripts/default.phtml:85
-#: application/layouts/scripts/default.phtml:87
+#: application/layouts/scripts/default.phtml:86
+#: application/layouts/scripts/default.phtml:88
 msgid "Exit game"
 msgstr "Opuść grę"
 
-#: application/layouts/scripts/default.phtml:97
+#: application/layouts/scripts/default.phtml:98
 msgid "Show other players moves"
 msgstr "Pokazuj ruchy innych graczy"
 
-#: application/layouts/scripts/default.phtml:99
+#: application/layouts/scripts/default.phtml:100
 msgid "Show others"
 msgstr "Pokaż innych"
 
-#: application/layouts/scripts/default.phtml:103
+#: application/layouts/scripts/default.phtml:104
 msgid "Turn sound on/off"
 msgstr "Włącz/wyłącz dźwięk"
 
-#: application/layouts/scripts/default.phtml:105
+#: application/layouts/scripts/default.phtml:106
 msgid "Sound"
 msgstr "Dźwięk"
 
-#: application/layouts/scripts/default.phtml:109
+#: application/layouts/scripts/default.phtml:110
 msgid "Toggle full screen"
 msgstr "Przełącz na pełen ekran"
 
-#: application/layouts/scripts/default.phtml:111
+#: application/layouts/scripts/default.phtml:112
 msgid "Full screen"
 msgstr "Pełen ekran"
 
@@ -1081,6 +1091,7 @@ msgid "Games list"
 msgstr "Lista gier"
 
 #: application/views/scripts/load/index.phtml:7
+#: application/views/scripts/tournament/index.phtml:6
 msgid "Start date"
 msgstr "Data rozpoczęcia"
 
@@ -1213,6 +1224,13 @@ msgstr "Niezdecydowani"
 #: application/views/scripts/single/index.phtml:2
 msgid "Start new game"
 msgstr "Uruchom nową grę"
+
+#: application/views/scripts/tournament/index.phtml:12
+msgid "Final"
+msgstr "Finał"
+
+#~ msgid "Final date"
+#~ msgstr "Data finału"
 
 #~ msgid "Show statistics"
 #~ msgstr "Pokaż statystyki"

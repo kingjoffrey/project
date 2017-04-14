@@ -35,6 +35,7 @@ class Cli_Model_MainOpen
             'type' => 'open',
             'menu' => array(
                 'play' => $adapter->translate('Play'),
+                'tournament' => $adapter->translate('Tournament'),
                 'load' => $adapter->translate('Load game'),
                 'halloffame' => $adapter->translate('Hall of Fame'),
                 'players' => $adapter->translate('Players'),

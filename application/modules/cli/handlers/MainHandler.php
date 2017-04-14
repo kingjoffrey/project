@@ -15,6 +15,7 @@ include_once(APPLICATION_PATH . '/modules/cli/controllers/Join.php');
 include_once(APPLICATION_PATH . '/modules/cli/controllers/Setup.php');
 include_once(APPLICATION_PATH . '/modules/cli/controllers/Single.php');
 include_once(APPLICATION_PATH . '/modules/cli/controllers/Tutorial.php');
+include_once(APPLICATION_PATH . '/modules/cli/controllers/Tournament.php');
 include_once(APPLICATION_PATH . '/modules/cli/controllers/Over.php');
 include_once(APPLICATION_PATH . '/modules/cli/controllers/Play.php');
 include_once(APPLICATION_PATH . '/modules/cli/controllers/Players.php');
@@ -25,7 +26,6 @@ class Cli_MainHandler extends WebSocketUriHandler
     private $_db;
     private $_help;
     private $_tutorial;
-    private $_Terrain;
 
     public function __construct($logger)
     {
