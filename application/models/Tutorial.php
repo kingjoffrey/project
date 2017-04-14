@@ -4,7 +4,7 @@ class Application_Model_Tutorial extends Coret_Db_Table_Abstract
 {
     protected $_name = 'tutorial';
     protected $_primary = 'tutorialId';
-    protected $_sequence = 'tutorial_tutorialId_seq1';
+    protected $_sequence = 'tutorial_tutorialId_seq';
 
     public function __construct(Zend_Db_Adapter_Pdo_Pgsql $db = null)
     {
