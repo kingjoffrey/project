@@ -4,7 +4,7 @@ class Admin_Model_Tutorial extends Coret_Model_ParentDb
 {
     protected $_name = 'tutorial';
     protected $_primary = 'tutorialId';
-    protected $_sequence = 'tutorial_tutorialId_seq1';
+    protected $_sequence = 'tutorial_tutorialId_seq';
 
     protected $_columns = array(
         'tutorialId' => array('label' => 'ID', 'type' => 'number', 'active' => array('db' => false, 'form' => false)),
