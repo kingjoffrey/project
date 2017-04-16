@@ -1,13 +1,7 @@
 {
-    "autoload": {
-        "psr-0": {
-            "GameServer": "src"
-        }
-    },
     "require": {
-        "cboden/ratchet": "0.3.*",
-        "react/zmq": "0.2.*|0.3.*",
-        "devristo/phpws": "dev-master"
+        "devristo/phpws": "dev-master",
+        "paypal/rest-api-sdk-php": "*"
     },
     "repositories": [
         {
