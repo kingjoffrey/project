@@ -59,7 +59,7 @@ var Page = new function () {
             $('body').addClass('vertical')
         }
 
-        if (!$('#menuBox').length) {
+        if (!$('#menuBox #menu').length) {
             return
         }
 
