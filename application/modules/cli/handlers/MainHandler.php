@@ -74,11 +74,6 @@ class Cli_MainHandler extends WebSocketUriHandler
             print_r($dataIn);
         }
 
-        if (Zend_Registry::get('config')->debug) {
-            print_r('Cli_MainHandler ZAPYTANIE ');
-            print_r($dataIn);
-        }
-
         if ($dataIn['type'] == 'open') {
             new Cli_Model_MainOpen($dataIn, $user, $this);
             return;
