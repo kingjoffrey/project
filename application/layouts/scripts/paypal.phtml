@@ -1,0 +1,22 @@
+<?php echo $this->doctype() ?>
+<html>
+<head>
+    <?php
+    echo $this->headMeta() . "\n";
+    echo $this->headTitle() . "\n";
+    echo $this->headScript() . "\n";
+    echo $this->headLink() . "\n";
+    ?>
+</head>
+<body>
+<div id="main">
+    <div id="bg">
+        <div id="page">
+            <div id="content">
+                <?php echo $this->layout()->content ?>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

@@ -1,9 +1,6 @@
 <?php
 use Devristo\Phpws\Protocol\WebSocketTransportInterface;
 
-use PayPal\Api\ExecutePayment;
-use PayPal\Api\PaymentExecution;
-
 use PayPal\Api\Amount;
 use PayPal\Api\Details;
 use PayPal\Api\Item;
@@ -87,12 +84,12 @@ class TournamentController
         $transaction = new Transaction();
         $transaction->setAmount($amount)
             ->setItemList($itemList)
-            ->setDescription("Payment description")
+            ->setDescription('Tournament ticket')
             ->setInvoiceNumber(uniqid());
 
         $redirectUrls = new RedirectUrls();
-        $redirectUrls->setReturnUrl($dataIn['url'] . "paypal/execute")
-            ->setCancelUrl($dataIn['url'] . "paypal/execute");
+        $redirectUrls->setReturnUrl($dataIn['url'] . 'paypal')
+            ->setCancelUrl($dataIn['url'] . 'paypal');
 
         $payment = new Payment();
         $payment->setIntent("sale")
