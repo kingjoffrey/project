@@ -47,8 +47,18 @@ class TournamentController
 
         $token = array(
             'type' => 'tournament',
-            'id' => $tournamentId,
         );
+
+        $mTournamentGames = new Application_Model_TournamentGames($db);
+        if ($gameId = $mTournamentGames->getGameId($tournamentId, $user->parameters['playerId'])) {
+            $token['data'] = $view->render('tournament/play.phtml');
+            $token['action'] = 'play';
+            $token['id'] = $gameId;
+
+            $handler->sendToUser($user, $token);
+
+            return;
+        }
 
         if ($mTournamentPlayers->checkPlayer($tournamentId, $user->parameters['playerId'])) {
             $token['data'] = $view->render('tournament/list.phtml');
@@ -57,16 +67,25 @@ class TournamentController
             $mPlayer = new Application_Model_Player($db);
 
             $token['list'] = $mPlayer->getPlayersNames($mTournamentPlayers->getPlayersSelect($tournamentId, 1), true);
-        } else {
-            $mTournament = new Application_Model_Tournament($db);
-            if ($mTournament->getLimit($tournamentId) >= $mTournamentPlayers->countPlayers($tournamentId)) {
-                $token['data'] = $view->render('tournament/full.phtml');
-                $token['action'] = 'full';
-            } else {
-                $token['data'] = $view->render('tournament/paypal.phtml');
-                $token['action'] = 'paypal';
-            }
+
+            $handler->sendToUser($user, $token);
+
+            return;
         }
+
+        $mTournament = new Application_Model_Tournament($db);
+        if ($mTournament->getLimit($tournamentId) >= $mTournamentPlayers->countPlayers($tournamentId)) {
+            $token['data'] = $view->render('tournament/full.phtml');
+            $token['action'] = 'full';
+
+            $handler->sendToUser($user, $token);
+
+            return;
+        }
+
+        $token['data'] = $view->render('tournament/paypal.phtml');
+        $token['action'] = 'paypal';
+        $token['id'] = $tournamentId;
 
         $handler->sendToUser($user, $token);
     }

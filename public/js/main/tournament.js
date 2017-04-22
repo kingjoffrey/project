@@ -33,7 +33,7 @@ var TournamentController = new function () {
 
         $('#paypal').click(function () {
             WebSocketSendMain.controller('tournament', 'create', {
-                'id': 1,
+                'id': r.id,
                 'name': 'Tournament',
                 'url': window.location.href
             })
@@ -41,6 +41,13 @@ var TournamentController = new function () {
     }
     this.full = function (r) {
         $('#content').html(r.data)
+    }
+    this.play = function (r) {
+        $('#content').html(r.data)
+
+        $('#playTournament').click(function () {
+            GameController.index({'gameId': r.id})
+        })
     }
     this.list = function (r) {
         $('#content').html(r.data)
