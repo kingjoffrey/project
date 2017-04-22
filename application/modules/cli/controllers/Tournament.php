@@ -51,15 +51,21 @@ class TournamentController
         );
 
         if ($mTournamentPlayers->checkPlayer($tournamentId, $user->parameters['playerId'])) {
-            $token['data'] = $view->render('tournament/show.phtml');
-            $token['action'] = 'show';
+            $token['data'] = $view->render('tournament/list.phtml');
+            $token['action'] = 'list';
 
             $mPlayer = new Application_Model_Player($db);
 
-            $token['list'] = $mPlayer->getPlayersNames($mTournamentPlayers->getPlayersSelect($tournamentId));
+            $token['list'] = $mPlayer->getPlayersNames($mTournamentPlayers->getPlayersSelect($tournamentId, 1), true);
         } else {
-            $token['data'] = $view->render('tournament/paypal.phtml');
-            $token['action'] = 'paypal';
+            $mTournament = new Application_Model_Tournament($db);
+            if ($mTournament->getLimit($tournamentId) >= $mTournamentPlayers->countPlayers($tournamentId)) {
+                $token['data'] = $view->render('tournament/full.phtml');
+                $token['action'] = 'full';
+            } else {
+                $token['data'] = $view->render('tournament/paypal.phtml');
+                $token['action'] = 'paypal';
+            }
         }
 
         $handler->sendToUser($user, $token);

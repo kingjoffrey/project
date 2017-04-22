@@ -109,15 +109,26 @@ class Application_Model_Player extends Coret_Db_Table_Abstract
         return $paginator;
     }
 
-    public function getPlayersNames($ids)
+    public function getPlayersNames($in, $a = false)
     {
         $select = $this->_db->select()
             ->from($this->_name, array('firstName', 'lastName', 'playerId'))
-            ->where($this->_db->quoteIdentifier('playerId') . ' IN (?)', new Zend_Db_Expr($ids));
+            ->where($this->_db->quoteIdentifier('playerId') . ' IN (?)', new Zend_Db_Expr($in))
+            ->order(array('firstName', 'lastName'));
 
         $array = array();
-        foreach ($this->selectAll($select) as $row) {
-            $array[$row['playerId']] = $row['firstName'] . ' ' . $row['lastName'];
+
+        if ($a) {
+            foreach ($this->selectAll($select) as $row) {
+                $array[] = array(
+                    'name' => $row['firstName'] . ' ' . $row['lastName'],
+                    'id' => $row['playerId']
+                );
+            }
+        } else {
+            foreach ($this->selectAll($select) as $row) {
+                $array[$row['playerId']] = $row['firstName'] . ' ' . $row['lastName'];
+            }
         }
 
         return $array;

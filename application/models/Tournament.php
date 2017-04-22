@@ -23,5 +23,23 @@ class Application_Model_Tournament extends Coret_Db_Table_Abstract
 
         return $this->selectAll($select);
     }
+
+    public function getCurrent()
+    {
+        $select = $this->_db->select()
+            ->from($this->_name, 'tournamentId')
+            ->where($this->_db->quoteIdentifier('end') . ' IS NOT NULL');
+
+        return $this->selectOne($select);
+    }
+
+    public function getLimit()
+    {
+        $select = $this->_db->select()
+            ->from($this->_name, 'limit')
+            ->where($this->_db->quoteIdentifier('end') . ' IS NULL');
+
+        return $this->selectOne($select);
+    }
 }
 

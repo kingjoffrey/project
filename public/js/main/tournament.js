@@ -39,24 +39,28 @@ var TournamentController = new function () {
             })
         })
     }
-    this.show = function (r) {
+    this.full = function (r) {
         $('#content').html(r.data)
-        var j = 0
+    }
+    this.list = function (r) {
+        $('#content').html(r.data)
 
-        for (var id in r.list) {
-            j++
+        for (var i in r.list) {
+            var player = r.list[i],
+                j = i * 1 + 1
+
 
             $('#playerList').append(
-                $('<tr>').addClass('trlink').attr('id', id)
+                $('<tr>').addClass('trlink').attr('id', player.id)
                     .append($('<td>').html(j + '.'))
-                    .append($('<td>').html(r.list[id]))
+                    .append($('<td>').html(player.name))
                     .click(function () {
                         WebSocketSendMain.controller('profile', 'show', {'id': $(this).attr('id')})
                     })
             )
         }
 
-        if (notSet(id)) {
+        if (notSet(i)) {
             $('#playerList')
                 .append(
                     $('<tr>')
