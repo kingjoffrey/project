@@ -67,9 +67,9 @@ class Application_Model_TournamentPlayers extends Coret_Db_Table_Abstract
             ->distinct('playerId');
     }
 
-    public function getPlayers($tournamentId, $stage)
+    public function getPlayersId($tournamentId, $stage)
     {
-        return $this->selectOne($this->getPlayersSelect($tournamentId, $stage));
+        return $this->selectAll($this->getPlayersSelect($tournamentId, $stage));
     }
 
     public function countPlayers($tournamentId)

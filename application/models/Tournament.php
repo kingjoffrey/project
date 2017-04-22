@@ -28,7 +28,7 @@ class Application_Model_Tournament extends Coret_Db_Table_Abstract
     {
         $select = $this->_db->select()
             ->from($this->_name, 'tournamentId')
-            ->where($this->_db->quoteIdentifier('end') . ' IS NOT NULL');
+            ->where($this->_db->quoteIdentifier('end') . ' IS NULL');
 
         return $this->selectOne($select);
     }
