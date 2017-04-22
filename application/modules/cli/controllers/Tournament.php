@@ -35,25 +35,39 @@ class TournamentController
     function show(WebSocketTransportInterface $user, Cli_MainHandler $handler, $dataIn)
     {
         if (!$tournamentId = $dataIn['id']) {
+            echo ('No tournamentId (show)') . "\n";
             return;
         }
-
-
-        $db = $handler->getDb();
 
         $view = new Zend_View();
         $view->addScriptPath(APPLICATION_PATH . '/views/scripts');
 
+        $db = $handler->getDb();
+        $mTournamentPlayers = new Application_Model_TournamentPlayers($db);
+        if ($mTournamentPlayers->checkPlayer($tournamentId, $user->parameters['playerId'])) {
+            $data = $view->render('tournament/show.phtml');
+            $action = 'show';
+        } else {
+            $data = $view->render('tournament/paypal.phtml');
+            $action = 'paypal';
+        }
+
         $token = array(
             'type' => 'tournament',
-            'action' => 'show',
-            'data' => $view->render('tournament/show.phtml'),
+            'action' => $action,
+            'id' => $tournamentId,
+            'data' => $data,
         );
         $handler->sendToUser($user, $token);
     }
 
     public function create(WebSocketTransportInterface $user, Cli_MainHandler $handler, $dataIn)
     {
+        if (!$tournamentId = $dataIn['id']) {
+            echo ('No tournamentId (create)') . "\n";
+            return;
+        }
+
         $payPalConfig = Zend_Registry::get('config')->paypal;
 
         $apiContext = $this->getApiContext($payPalConfig->clientId, $payPalConfig->clientSecret);
@@ -84,19 +98,18 @@ class TournamentController
         $transaction = new Transaction();
         $transaction->setAmount($amount)
             ->setItemList($itemList)
-            ->setDescription('Tournament ticket')
+            ->setDescription('Tournament entry fee')
             ->setInvoiceNumber(uniqid());
 
         $redirectUrls = new RedirectUrls();
-        $redirectUrls->setReturnUrl($dataIn['url'] . 'paypal')
-            ->setCancelUrl($dataIn['url'] . 'paypal');
+        $redirectUrls->setReturnUrl($dataIn['url'] . 'paypal/id/' . $tournamentId . '/')
+            ->setCancelUrl($dataIn['url'] . 'paypal/id/' . $tournamentId . '/');
 
         $payment = new Payment();
-        $payment->setIntent("sale")
+        $payment->setIntent('sale')
             ->setPayer($payer)
             ->setRedirectUrls($redirectUrls)
             ->setTransactions(array($transaction));
-
 
         try {
             $payment->create($apiContext);
@@ -104,6 +117,16 @@ class TournamentController
             echo 'PayPal create failed.' . "\n";
             return;
         }
+
+        $db = $handler->getDb();
+
+        $paymentId = $payment->getId();
+
+        $mPayPal = new Application_Model_PayPal($db);
+        $mPayPal->addPayment($paymentId, $user->parameters['playerId']);
+
+        $mTournamentPlayers = new Application_Model_TournamentPlayers($db);
+        $mTournamentPlayers->addPlayer($tournamentId, $user->parameters['playerId']);
 
         $token = array(
             'type' => 'tournament',

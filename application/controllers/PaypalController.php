@@ -25,6 +25,8 @@ class PaypalController extends Coret_Controller_Authorized
         $paymentId = $this->_request->getParam('paymentId');
         $PayerID = $this->_request->getParam('PayerID');
 
+        $playerId = $this->_auth->getIdentity()->playerId;
+
         if ($paymentId && $PayerID) {
 
             $payPalConfig = Zend_Registry::get('config')->paypal;
@@ -50,8 +52,18 @@ class PaypalController extends Coret_Controller_Authorized
                 return;
             }
 
-            $this->view->result = $this->view->translate('We got your Payment');
+            $mPayPal = new Application_Model_PayPal();
+            if ($mPayPal->checkPayment($paymentId, $playerId)) {
+                $mTournamentPlayers = new Application_Model_TournamentPlayers();
+                $mTournamentPlayers->updateStage(1, $this->_request->getParam('id'), $playerId);
+
+                $this->view->result = $this->view->translate('We got your Payment');
+            } else {
+                $this->view->result = $this->view->translate('Transaction ended with error') . ': PP03';
+            }
         } else {
+            $mTournamentPlayers = new Application_Model_TournamentPlayers();
+            $mTournamentPlayers->removePlayer($this->_request->getParam('id'), $playerId);
             $this->view->result = $this->view->translate('User Cancelled the Approval');
         }
     }
