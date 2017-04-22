@@ -28,7 +28,7 @@ var TournamentController = new function () {
                 )
         }
     }
-    this.show = function (r) {
+    this.paypal = function (r) {
         $('#content').html(r.data)
 
         $('#paypal').click(function () {
@@ -38,6 +38,33 @@ var TournamentController = new function () {
                 'url': window.location.href
             })
         })
+    }
+    this.show = function (r) {
+        $('#content').html(r.data)
+        var j = 0
+
+        for (var id in r.list) {
+            j++
+
+            $('#playerList').append(
+                $('<tr>').addClass('trlink').attr('id', id)
+                    .append($('<td>').html(j + '.'))
+                    .append($('<td>').html(r.list[id]))
+                    .click(function () {
+                        WebSocketSendMain.controller('profile', 'show', {'id': $(this).attr('id')})
+                    })
+            )
+        }
+
+        if (notSet(id)) {
+            $('#playerList')
+                .append(
+                    $('<tr>')
+                        .append(
+                            $('<td colspan="2">').addClass('after').html(translations.Nothingtoshow)
+                        )
+                )
+        }
     }
     this.create = function (r) {
         window.location.href = r.url

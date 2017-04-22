@@ -13,6 +13,20 @@ class Application_Model_TournamentPlayers extends Coret_Db_Table_Abstract
         }
     }
 
+    public function updateStage($stage, $tournamentId, $playerId)
+    {
+        $data = array(
+            'stage' => $stage
+        );
+
+        $where = array(
+            $this->_db->quoteInto($this->_db->quoteIdentifier('tournamentId') . ' = ?', $tournamentId),
+            $this->_db->quoteInto($this->_db->quoteIdentifier('playerId') . ' = ?', $playerId),
+        );
+
+        return $this->update($data, $where);
+    }
+
     public function addPlayer($tournamentId, $playerId)
     {
         $data = array(
@@ -33,18 +47,23 @@ class Application_Model_TournamentPlayers extends Coret_Db_Table_Abstract
         return $this->delete($where);
     }
 
-    public function updateStage($stage, $tournamentId, $playerId)
+    public function checkPlayer($tournamentId, $playerId)
     {
-        $data = array(
-            'stage' => $stage
-        );
+        $select = $this->_db->select()
+            ->from($this->_name, 'playerId')
+            ->where($this->_db->quoteIdentifier('tournamentId') . ' = ?', $tournamentId)
+            ->where($this->_db->quoteIdentifier('playerId') . ' = ?', $playerId)
+            ->where('stage = 1');
 
-        $where = array(
-            $this->_db->quoteInto($this->_db->quoteIdentifier('tournamentId') . ' = ?', $tournamentId),
-            $this->_db->quoteInto($this->_db->quoteIdentifier('playerId') . ' = ?', $playerId),
-        );
+        return $this->selectOne($select);
+    }
 
-        return $this->update($data, $where);
+    public function getPlayersSelect($tournamentId)
+    {
+        return $this->_db->select()
+            ->from($this->_name, 'playerId')
+            ->where($this->_db->quoteIdentifier('tournamentId') . ' = ?', $tournamentId)
+            ->where('stage = 1');
     }
 }
 

@@ -44,20 +44,24 @@ class TournamentController
 
         $db = $handler->getDb();
         $mTournamentPlayers = new Application_Model_TournamentPlayers($db);
-        if ($mTournamentPlayers->checkPlayer($tournamentId, $user->parameters['playerId'])) {
-            $data = $view->render('tournament/show.phtml');
-            $action = 'show';
-        } else {
-            $data = $view->render('tournament/paypal.phtml');
-            $action = 'paypal';
-        }
 
         $token = array(
             'type' => 'tournament',
-            'action' => $action,
             'id' => $tournamentId,
-            'data' => $data,
         );
+
+        if ($mTournamentPlayers->checkPlayer($tournamentId, $user->parameters['playerId'])) {
+            $token['data'] = $view->render('tournament/show.phtml');
+            $token['action'] = 'show';
+
+            $mPlayer = new Application_Model_Player($db);
+
+            $token['list'] = $mPlayer->getPlayersNames($mTournamentPlayers->getPlayersSelect($tournamentId));
+        } else {
+            $token['data'] = $view->render('tournament/paypal.phtml');
+            $token['action'] = 'paypal';
+        }
+
         $handler->sendToUser($user, $token);
     }
 
@@ -102,8 +106,8 @@ class TournamentController
             ->setInvoiceNumber(uniqid());
 
         $redirectUrls = new RedirectUrls();
-        $redirectUrls->setReturnUrl($dataIn['url'] . 'paypal/id/' . $tournamentId . '/')
-            ->setCancelUrl($dataIn['url'] . 'paypal/id/' . $tournamentId . '/');
+        $redirectUrls->setReturnUrl($dataIn['url'] . 'paypal/index/id/' . $tournamentId . '/')
+            ->setCancelUrl($dataIn['url'] . 'paypal/index/id/' . $tournamentId . '/');
 
         $payment = new Payment();
         $payment->setIntent('sale')
