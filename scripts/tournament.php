@@ -36,10 +36,8 @@ class Tournament
         $playersId = $mTournamentPlayers->getPlayersId($tournamentId, 1);
 
         while ($playersId) {
-            print_r($playersId);
-
             $playerId = $this->getPlayerId($playersId);
-            print_r($playersId);
+
             $gameId = $mGame->createGame(array(
                 'numberOfPlayers' => 2,
                 'mapId' => $mapId,
@@ -62,7 +60,7 @@ class Tournament
                     $teamId = 1;
                 } else {
                     $playerId = $this->getPlayerId($playersId);
-                    print_r($playersId);
+
                     $teamId = 2;
                     if (empty($playerId)) {
                         throw new Exception('kamieni kupa3!');

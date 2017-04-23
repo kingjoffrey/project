@@ -55,7 +55,7 @@ class PaypalController extends Coret_Controller_Authorized
             $mPayPal = new Application_Model_PayPal();
             if ($mPayPal->checkPayment($paymentId, $playerId)) {
                 $mTournamentPlayers = new Application_Model_TournamentPlayers();
-                $mTournamentPlayers->updateStage(1, $this->_request->getParam('id'), $playerId);
+                $mTournamentPlayers->updateStage($this->_request->getParam('id'), $playerId, 1);
 
                 $this->view->result = $this->view->translate('We got your Payment');
             } else {

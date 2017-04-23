@@ -161,7 +161,7 @@ class Cli_Model_SaveResults
             }
             $teamScores[$teamId] += $sumPoints;
 
-            if (!$mGame->isTutorial()) {
+            if ($game->getType() == 3) {
                 $mPlayer->addScore($playerId, $sumPoints);
             }
         }
@@ -176,10 +176,19 @@ class Cli_Model_SaveResults
             }
         }
 
+        if ($game->getType() == 3) {
+            $mTournamentPlayers = new Application_Model_TournamentPlayers($db);
+            $mTournamentGames = new Application_Model_TournamentGames($db);
+        }
+
+
         foreach ($playersInGameColors as $playerId => $shortName) {
             $player = $game->getPlayers()->getPlayer($shortName);
             if ($player->getTeamId() != $winners) {
                 $mPlayersInGame->setLost($playerId);
+            } else {
+                $tournamentId = $mTournamentGames->getTournamentId($game->getId());
+                $mTournamentPlayers->updateStage($tournamentId, $playerId);
             }
         }
     }

@@ -19,6 +19,9 @@ class Cli_Model_Game
 
     private $_isActive;
     private $_begin;
+
+    private $_type;
+
     private $_turnsLimit;
     private $_turnTimeLimit;
     private $_timeLimit;
@@ -47,6 +50,7 @@ class Cli_Model_Game
         $mGame = new Application_Model_Game($this->_id, $db);
         $game = $mGame->getGame();
 
+        $this->_type = $game['type'];
         $this->_isActive = $game['isActive'];
         if (!$this->_isActive) {
             return;
@@ -340,5 +344,10 @@ class Cli_Model_Game
     public function getTerrain()
     {
         return $this->_Terrain;
+    }
+
+    public function getType()
+    {
+        return $this->_type;
     }
 }

@@ -25,15 +25,28 @@ class Application_Model_TournamentGames extends Coret_Db_Table_Abstract
 
     public function getGameId($tournamentId, $playerId)
     {
-        $gId = $this->_db->quoteIdentifier('gameId');
-        $pId = $this->_db->quoteIdentifier('playerId');
-        $tId = $this->_db->quoteIdentifier('tournamentId');
+        $gameIden = $this->_db->quoteIdentifier('gameId');
+        $playerIden = $this->_db->quoteIdentifier('playerId');
+        $tournamentIden = $this->_db->quoteIdentifier('tournamentId');
 
         $select = $this->_db->select()
             ->from(array('a' => $this->_name), 'gameId')
-            ->join(array('b' => 'playersingame'), 'a.' . $gId . ' = b.' . $gId, null)
-            ->where('b.' . $pId . ' = ?', $playerId)
-            ->where($tId . ' = ?', $tournamentId);
+            ->join(array('b' => 'playersingame'), 'a.' . $gameIden . ' = b.' . $gameIden, null)
+            ->join(array('c' => 'game'), 'a.' . $gameIden . ' = c.' . $gameIden, null)
+            ->where('b.' . $playerIden . ' = ?', $playerId)
+            ->where($this->_db->quoteIdentifier('end') . ' IS NULL')
+            ->where($tournamentIden . ' = ?', $tournamentId);
+
+        return $this->selectOne($select);
+    }
+
+    public function getTournamentId($gameId)
+    {
+        $gameIden = $this->_db->quoteIdentifier('gameId');
+
+        $select = $this->_db->select()
+            ->from($this->_name, 'tournamentId')
+            ->where($gameIden . ' = ?', $gameId);
 
         return $this->selectOne($select);
     }

@@ -13,11 +13,17 @@ class Application_Model_TournamentPlayers extends Coret_Db_Table_Abstract
         }
     }
 
-    public function updateStage($stage, $tournamentId, $playerId)
+    public function updateStage($tournamentId, $playerId, $stage = null)
     {
-        $data = array(
-            'stage' => $stage
-        );
+        if ($stage === null) {
+            $data = array(
+                'stage' => new Zend_Db_Expr('stage + 1')
+            );
+        } else {
+            $data = array(
+                'stage' => $stage
+            );
+        }
 
         $where = array(
             $this->_db->quoteInto($this->_db->quoteIdentifier('tournamentId') . ' = ?', $tournamentId),
@@ -58,18 +64,22 @@ class Application_Model_TournamentPlayers extends Coret_Db_Table_Abstract
         return $this->selectOne($select);
     }
 
-    public function getPlayersSelect($tournamentId, $stage)
+    public function getPlayersSelect($tournamentId)
     {
+        $subSelect = $this->_db->select()
+            ->from($this->_name, 'max(stage)')
+            ->where($this->_db->quoteIdentifier('tournamentId') . ' = ?', $tournamentId);
+
         return $this->_db->select()
             ->from($this->_name, 'playerId')
             ->where($this->_db->quoteIdentifier('tournamentId') . ' = ?', $tournamentId)
-            ->where('stage = ?', $stage)
+            ->where('stage = (?)', new Zend_Db_Expr($subSelect))
             ->distinct('playerId');
     }
 
-    public function getPlayersId($tournamentId, $stage)
+    public function getPlayersId($tournamentId)
     {
-        return $this->selectAll($this->getPlayersSelect($tournamentId, $stage));
+        return $this->selectAll($this->getPlayersSelect($tournamentId));
     }
 
     public function countPlayers($tournamentId)

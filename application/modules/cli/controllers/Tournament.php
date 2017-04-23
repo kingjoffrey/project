@@ -54,7 +54,7 @@ class TournamentController
 
             $mPlayer = new Application_Model_Player($db);
 
-            $token['list'] = $mPlayer->getPlayersNames($mTournamentPlayers->getPlayersSelect($tournamentId, 1), true);
+            $token['list'] = $mPlayer->getPlayersNames($mTournamentPlayers->getPlayersSelect($tournamentId), true);
 
             $handler->sendToUser($user, $token);
 
