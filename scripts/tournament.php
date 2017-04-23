@@ -24,30 +24,46 @@ class Tournament
     public function startStage()
     {
         $db = Cli_Model_Database::getDb();
-        $mapId = 311;
 
         $mTournament = new Application_Model_Tournament($db);
         $mTournamentPlayers = new Application_Model_TournamentPlayers($db);
         $mTournamentGames = new Application_Model_TournamentGames($db);
         $mGame = new Application_Model_Game (0, $db);
 
-        $tournamentId = $mTournament->getCurrent();
+        $tournament = $mTournament->getCurrent();
 
-        $playersId = $mTournamentPlayers->getPlayersId($tournamentId);
-print_r($playersId);
+        if (empty($tournament)) {
+            echo 'Brak turnieju' . "\n";
+            return;
+        }
+
+        $playersId = $mTournamentPlayers->getPlayersId($tournament['tournamentId']);
+        print_r($playersId);
+
+        $playersLeft = count($playersId);
+
+        if ($playersLeft <= 2) {
+            $mTournament->end($tournament['tournamentId']);
+        }
+
+        if ($playersLeft <= 1) {
+            echo 'Mamy zwycięzcę' . "\n";
+            return;
+        }
+
         while ($playersId) {
             $playerId = $this->getPlayerId($playersId);
 
             $gameId = $mGame->createGame(array(
                 'numberOfPlayers' => 2,
-                'mapId' => $mapId,
+                'mapId' => $tournament['mapId'],
                 'type' => 3
             ), $playerId);
 
-            $mTournamentGames->addGame($tournamentId, $gameId);
+            $mTournamentGames->addGame($tournament['tournamentId'], $gameId);
 
             $mPlayersInGame = new Application_Model_PlayersInGame($gameId, $db);
-            $mMapCastles = new Application_Model_MapCastles($mapId, $db);
+            $mMapCastles = new Application_Model_MapCastles($tournament['mapId'], $db);
             $mHeroesInGame = new Application_Model_HeroesInGame($gameId, $db);
             $mCastlesInGame = new Application_Model_CastlesInGame($gameId, $db);
 
