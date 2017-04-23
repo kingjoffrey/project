@@ -178,6 +178,7 @@ class Zend_View_Helper_Translations extends Zend_View_Helper_Abstract
                 'Terrain' => $this->view->translate('Terrain'),
                 'Nothingtoshow' => $this->view->translate('Nothing to show'),
                 'Stage' => $this->view->translate('Stage'),
+                'Playername' => $this->view->translate('Player name'),
                 '' => $this->view->translate(''),
             )));
     }

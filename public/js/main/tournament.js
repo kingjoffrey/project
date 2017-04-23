@@ -66,10 +66,15 @@ var TournamentController = new function () {
 
             if (notSet(stagesList[player.stage])) {
                 stagesList[player.stage] = 1
-                $('#playerList').append(
-                    $('<tr>').attr('id', 'stage' + player.stage)
-                        .append($('<td colspan="2">').addClass('stage').html(translations.Stage + ' ' + player.stage))
-                )
+                $('#playerList')
+                    .append(
+                        $('<tr>').attr('id', 'stage' + player.stage)
+                            .append($('<th colspan="2">').addClass('stage').html(translations.Stage + ' ' + player.stage))
+                    )
+                    // .append($('<tr>')
+                    //     .append($('<th>'))
+                    //     .append($('<th>').html(translations.Playername))
+                    // )
             }
 
             $('#stage' + player.stage).after(
