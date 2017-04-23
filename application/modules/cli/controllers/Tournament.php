@@ -52,9 +52,7 @@ class TournamentController
             $token['data'] = $view->render('tournament/list.phtml');
             $token['action'] = 'list';
 
-            $mPlayer = new Application_Model_Player($db);
-
-            $token['list'] = $mPlayer->getPlayersNames($mTournamentPlayers->getPlayersSelect($tournamentId), true);
+            $token['list'] = $mTournamentPlayers->getPlayersNames($tournamentId);
 
             $handler->sendToUser($user, $token);
 

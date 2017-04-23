@@ -1132,6 +1132,10 @@ div.table table.unitTable td:first {
     padding: 1.4vw;
 }
 
+#content td.stage {
+    background: darkcyan;
+}
+
 .playersingame {
     padding-bottom: 1.4vw;
 }

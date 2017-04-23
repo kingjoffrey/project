@@ -118,17 +118,8 @@ class Application_Model_Player extends Coret_Db_Table_Abstract
 
         $array = array();
 
-        if ($a) {
-            foreach ($this->selectAll($select) as $row) {
-                $array[] = array(
-                    'name' => $row['firstName'] . ' ' . $row['lastName'],
-                    'id' => $row['playerId']
-                );
-            }
-        } else {
-            foreach ($this->selectAll($select) as $row) {
-                $array[$row['playerId']] = $row['firstName'] . ' ' . $row['lastName'];
-            }
+        foreach ($this->selectAll($select) as $row) {
+            $array[$row['playerId']] = $row['firstName'] . ' ' . $row['lastName'];
         }
 
         return $array;

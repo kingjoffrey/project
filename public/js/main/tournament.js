@@ -58,12 +58,21 @@ var TournamentController = new function () {
     this.list = function (r) {
         $('#content').html(r.data)
 
+        var stagesList = {}
+
         for (var i in r.list) {
             var player = r.list[i],
                 j = i * 1 + 1
 
+            if (notSet(stagesList[player.stage])) {
+                stagesList[player.stage] = 1
+                $('#playerList').append(
+                    $('<tr>').attr('id', 'stage' + player.stage)
+                        .append($('<td colspan="2">').addClass('stage').html(translations.Stage + ' ' + player.stage))
+                )
+            }
 
-            $('#playerList').append(
+            $('#stage' + player.stage).after(
                 $('<tr>').addClass('trlink').attr('id', player.id)
                     .append($('<td>').html(j + '.'))
                     .append($('<td>').html(player.name))
@@ -74,13 +83,10 @@ var TournamentController = new function () {
         }
 
         if (notSet(i)) {
-            $('#playerList')
-                .append(
-                    $('<tr>')
-                        .append(
-                            $('<td colspan="2">').addClass('after').html(translations.Nothingtoshow)
-                        )
-                )
+            $('#playerList').append(
+                $('<tr>')
+                    .append($('<td colspan="2">').addClass('after').html(translations.Nothingtoshow))
+            )
         }
     }
     this.create = function (r) {

@@ -189,7 +189,7 @@ class Cli_TutorialHandler extends Cli_CommonHandler
 
     /**
      * @param WebSocketTransportInterface $user
-     * @return Cli_Model_TutorialMe
+     * @return Cli_Model_TutorialProgressMe
      */
     static public function getMeFromUser(WebSocketTransportInterface $user)
     {
