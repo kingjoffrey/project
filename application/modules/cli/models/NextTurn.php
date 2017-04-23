@@ -41,12 +41,17 @@ class Cli_Model_NextTurn
                 $handler->sendToChannel($token);
                 return;
             } else {
-                $players->getPlayer($nextPlayerColor)->setLost($game->getId(), $db);
-                $token = array(
-                    'type' => 'dead',
-                    'color' => $nextPlayerColor
-                );
-                $handler->sendToChannel($token);
+//                $players->getPlayer($nextPlayerColor)->setLost($game->getId(), $db);
+
+                echo 'Jeśli to widzisz to sprawdź to koniecznie, teoretycznie nie powinno to działać i jest niepotrzebne. (20170423)' . "\n";
+                echo 'Jeśli to widzisz to sprawdź to koniecznie, teoretycznie nie powinno to działać i jest niepotrzebne. (20170423)' . "\n";
+                echo 'Jeśli to widzisz to sprawdź to koniecznie, teoretycznie nie powinno to działać i jest niepotrzebne. (20170423)' . "\n";
+
+//                $token = array(
+//                    'type' => 'dead',
+//                    'color' => $nextPlayerColor
+//                );
+//                $handler->sendToChannel($token);
             }
         }
     }

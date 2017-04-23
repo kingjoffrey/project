@@ -32,7 +32,7 @@ var TournamentController = new function () {
         $('#content').html(r.data)
 
         $('#paypal').click(function () {
-            WebSocketSendMain.controller('tournament', 'create', {
+            WebSocketSendMain.controller('paypal', 'create', {
                 'id': r.id,
                 'name': 'Tournament',
                 'url': window.location.href

@@ -2,7 +2,7 @@
 
 class Cli_Model_SaveResults
 {
-    public function __construct($game, Zend_Db_Adapter_Pdo_Pgsql $db)
+    public function __construct(Cli_Model_Game $game, Zend_Db_Adapter_Pdo_Pgsql $db)
     {
         $mGame = new Application_Model_Game($game->getId(), $db);
         $mGame->endGame(); // koniec gry
@@ -11,6 +11,8 @@ class Cli_Model_SaveResults
         if ($mGameScore->gameScoreExists($game->getId())) {
             return;
         }
+
+        $teamScores = array();
 
         $mGameResults = new Application_Model_GameAchievements($game->getId(), $db);
         $mPlayer = new Application_Model_Player($db);
@@ -21,9 +23,6 @@ class Cli_Model_SaveResults
         $mSoldiersKilled = new Application_Model_SoldiersKilled($game->getId(), $db);
         $mSoldiersCreated = new Application_Model_SoldiersCreated($game->getId(), $db);
         $mPlayersInGame = new Application_Model_PlayersInGame($game->getId(), $db);
-//        $mUnitsInGame = new Application_Model_UnitsInGame($game->getId(), $db);
-//        $mHeroesInGame = new Application_Model_HeroesInGame($game->getId(), $db);
-//        $mCastlesInGame = new Application_Model_CastlesInGame($game->getId(), $db);
 
         $playersInGameColors = $game->getPlayersColors();
         $units = Zend_Registry::get('units');
@@ -42,11 +41,10 @@ class Cli_Model_SaveResults
 
         $castlesDestroyed = $mCastlesDestroyed->countAll($playersInGameColors);
 
-        $playersGold = $mPlayersInGame->getGoldForAllPlayers();
-
         foreach ($playersInGameColors as $playerId => $shortName) {
             $points = array();
             $sumPoints = 0;
+            $player = $game->getPlayers()->getPlayer($shortName);
 
             if (isset($castlesConquered[$shortName])) {
                 $playerCastlesConquered = $castlesConquered[$shortName] - 1;
@@ -122,9 +120,8 @@ class Cli_Model_SaveResults
             $points['heroesLost'] = -($playerHeroesLost * 10);
             $sumPoints += $points['heroesLost'];
 
-            $points['gold'] = $playersGold[$playerId];
+            $points['gold'] = $player->getGold();
             $sumPoints += $points['gold'];
-            $points['score'] = $sumPoints;
 
             $mGameResults->add(
                 $playerId,
@@ -138,9 +135,11 @@ class Cli_Model_SaveResults
                 $playerHeroesLost
             );
 
-            $armies = $game->getPlayers()->getPlayer($shortName)->getArmies();
+            $armies = $player->getArmies();
+
             $points['heroes'] = 0;
             $points['soldiers'] = 0;
+
             foreach ($armies->getKeys() as $armyId) {
                 $army = $armies->getArmy($armyId);
                 $points['heroes'] += $army->getHeroes()->count() * 100;
@@ -149,9 +148,38 @@ class Cli_Model_SaveResults
                 $points['soldiers'] += $army->getWalkingSoldiers()->getCosts();
             }
 
+            $sumPoints += $points['heroes'];
+            $sumPoints += $points['soldiers'];
+
+            $points['score'] = $sumPoints;
+
             $mGameScore->add($game->getId(), $playerId, $points);
+
+            $teamId = $player->getTeamId();
+            if (!isset($teamScores[$teamId])) {
+                $teamScores[$teamId] = 0;
+            }
+            $teamScores[$teamId] += $sumPoints;
+
             if (!$mGame->isTutorial()) {
                 $mPlayer->addScore($playerId, $sumPoints);
+            }
+        }
+
+        $winners = null;
+        $bestScore = 0;
+
+        foreach ($teamScores as $teamId => $score) {
+            if ($score > $bestScore) {
+                $bestScore = $score;
+                $winners = $teamId;
+            }
+        }
+
+        foreach ($playersInGameColors as $playerId => $shortName) {
+            $player = $game->getPlayers()->getPlayer($shortName);
+            if ($player->getTeamId() != $winners) {
+                $mPlayersInGame->setLost($playerId);
             }
         }
     }

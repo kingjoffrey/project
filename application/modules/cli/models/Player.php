@@ -4,7 +4,7 @@ class Cli_Model_Player extends Cli_Model_DefaultPlayer
 {
     private $_turnActive;
     private $_computer;
-    private $_lost;
+//    private $_lost;
 
     private $_gold;
 
@@ -19,7 +19,7 @@ class Cli_Model_Player extends Cli_Model_DefaultPlayer
     public function __construct($player, $gameId, $mapCastles, $mapTowers, $playersTowers, Zend_Db_Adapter_Pdo_Pgsql $db)
     {
         $this->_id = $player['playerId'];
-        $this->_lost = $player['lost'];
+//        $this->_lost = $player['lost'];
 
         $this->_turnActive = $player['turnActive'];
         $this->_computer = $player['computer'];
@@ -37,9 +37,9 @@ class Cli_Model_Player extends Cli_Model_DefaultPlayer
         $this->_castles = new Cli_Model_Castles();
         $this->_towers = new Cli_Model_Towers();
 
-        if ($this->_lost) {
-            return;
-        }
+//        if ($this->_lost) {
+//            return;
+//        }
 
         $this->_allHeroes = new Cli_Model_AllHeroes($this->_id, $db);
 
@@ -116,7 +116,7 @@ class Cli_Model_Player extends Cli_Model_DefaultPlayer
         return array(
             'turnActive' => $this->_turnActive,
             'computer' => $this->_computer,
-            'lost' => $this->_lost,
+//            'lost' => $this->_lost,
             'miniMapColor' => $this->_miniMapColor,
             'backgroundColor' => $this->_backgroundColor,
             'textColor' => $this->_textColor,
@@ -128,12 +128,12 @@ class Cli_Model_Player extends Cli_Model_DefaultPlayer
         );
     }
 
-    public function setLost($gameId, $db)
-    {
-        $mPlayersInGame = new Application_Model_PlayersInGame($gameId, $db);
-        $mPlayersInGame->setPlayerLostGame($this->_id);
-        $this->_lost = true;
-    }
+//    public function setLost($gameId, $db)
+//    {
+//        $mPlayersInGame = new Application_Model_PlayersInGame($gameId, $db);
+//        $mPlayersInGame->setPlayerLostGame($this->_id);
+//        $this->_lost = true;
+//    }
 
     public function getGold()
     {

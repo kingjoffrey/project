@@ -89,7 +89,7 @@ class Application_Model_PlayersInGame extends Coret_Db_Table_Abstract
         $this->update($data, $where);
     }
 
-    public function setPlayerLostGame($playerId)
+    public function setLost($playerId)
     {
         $data['lost'] = 'true';
 
