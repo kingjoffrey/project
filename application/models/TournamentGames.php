@@ -34,7 +34,7 @@ class Application_Model_TournamentGames extends Coret_Db_Table_Abstract
             ->join(array('b' => 'playersingame'), 'a.' . $gameIden . ' = b.' . $gameIden, null)
             ->join(array('c' => 'game'), 'a.' . $gameIden . ' = c.' . $gameIden, null)
             ->where('b.' . $playerIden . ' = ?', $playerId)
-            ->where($this->_db->quoteIdentifier('end') . ' IS NULL')
+            ->where($this->_db->quoteIdentifier('isActive') . ' = true')
             ->where($tournamentIden . ' = ?', $tournamentId);
 
         return $this->selectOne($select);

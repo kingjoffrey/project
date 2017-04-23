@@ -33,8 +33,8 @@ class Tournament
 
         $tournamentId = $mTournament->getCurrent();
 
-        $playersId = $mTournamentPlayers->getPlayersId($tournamentId, 1);
-
+        $playersId = $mTournamentPlayers->getPlayersId($tournamentId);
+print_r($playersId);
         while ($playersId) {
             $playerId = $this->getPlayerId($playersId);
 

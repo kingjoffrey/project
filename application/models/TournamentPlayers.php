@@ -53,13 +53,13 @@ class Application_Model_TournamentPlayers extends Coret_Db_Table_Abstract
         return $this->delete($where);
     }
 
-    public function checkPlayer($tournamentId, $playerId)
+    public function playerPayment($tournamentId, $playerId)
     {
         $select = $this->_db->select()
             ->from($this->_name, 'playerId')
             ->where($this->_db->quoteIdentifier('tournamentId') . ' = ?', $tournamentId)
             ->where($this->_db->quoteIdentifier('playerId') . ' = ?', $playerId)
-            ->where('stage = 1');
+            ->where('stage > 0');
 
         return $this->selectOne($select);
     }

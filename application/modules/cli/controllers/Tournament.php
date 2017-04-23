@@ -48,7 +48,7 @@ class TournamentController
             return;
         }
 
-        if ($mTournamentPlayers->checkPlayer($tournamentId, $user->parameters['playerId'])) {
+        if ($mTournamentPlayers->playerPayment($tournamentId, $user->parameters['playerId'])) {
             $token['data'] = $view->render('tournament/list.phtml');
             $token['action'] = 'list';
 
