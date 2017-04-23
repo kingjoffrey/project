@@ -17,8 +17,11 @@ class Application_Model_Tournament extends Coret_Db_Table_Abstract
 
     public function getList()
     {
+        $mapIden = $this->_db->quoteIdentifier('mapId');
+
         $select = $this->_db->select()
-            ->from($this->_name, array('tournamentId', 'start', 'limit'))
+            ->from(array('a' => $this->_name), array('tournamentId', 'start', 'limit', 'finished'))
+            ->join(array('b' => 'map'), 'a.' . $mapIden . ' = b.' . $mapIden, 'name')
             ->order('start');
 
         return $this->selectAll($select);
@@ -27,8 +30,8 @@ class Application_Model_Tournament extends Coret_Db_Table_Abstract
     public function getCurrent()
     {
         $select = $this->_db->select()
-            ->from($this->_name, array('mapId','tournamentId'))
-            ->where($this->_db->quoteIdentifier('end') . ' IS NULL');
+            ->from($this->_name, array('mapId', 'tournamentId'))
+            ->where($this->_db->quoteIdentifier('finished') . ' = false');
 
         return $this->selectRow($select);
     }
@@ -37,7 +40,7 @@ class Application_Model_Tournament extends Coret_Db_Table_Abstract
     {
         $select = $this->_db->select()
             ->from($this->_name, 'limit')
-            ->where($this->_db->quoteIdentifier('end') . ' IS NULL');
+            ->where($this->_db->quoteIdentifier('finished') . ' = false');
 
         return $this->selectOne($select);
     }
@@ -45,7 +48,7 @@ class Application_Model_Tournament extends Coret_Db_Table_Abstract
     public function end($tournamentId)
     {
         $data = array(
-            'end' => new Zend_Db_Expr('now()')
+            'finished' => 'true'
         );
 
         $where = array(

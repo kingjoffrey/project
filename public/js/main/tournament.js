@@ -6,12 +6,18 @@ var TournamentController = new function () {
         for (var i in r.list) {
             var tournament = r.list[i]
 
+            if (tournament.finished) {
+                var finished = translations.Yes
+            } else {
+                var finished = translations.No
+            }
 
             $('#tournamentList').append(
                 $('<tr>').addClass('trlink').attr('id', tournament.tournamentId)
                     .append($('<td>').html(tournament.start))
-                    .append($('<td>').html(tournament.start))
+                    .append($('<td>').html(tournament.name))
                     .append($('<td>').html(tournament.limit))
+                    .append($('<td>').html(finished))
                     .click(function () {
                         WebSocketSendMain.controller('tournament', 'show', {'id': $(this).attr('id')})
                     })
