@@ -22,7 +22,7 @@ class Application_Model_Tournament extends Coret_Db_Table_Abstract
         $select = $this->_db->select()
             ->from(array('a' => $this->_name), array('tournamentId', 'start', 'limit', 'finished'))
             ->join(array('b' => 'map'), 'a.' . $mapIden . ' = b.' . $mapIden, 'name')
-            ->order('start');
+            ->order('start DESC');
 
         return $this->selectAll($select);
     }
@@ -36,11 +36,21 @@ class Application_Model_Tournament extends Coret_Db_Table_Abstract
         return $this->selectRow($select);
     }
 
-    public function getLimit()
+    public function checkLimit($tournamentId)
     {
         $select = $this->_db->select()
             ->from($this->_name, 'limit')
+            ->where($this->_db->quoteIdentifier('tournamentId') . ' = ?', $tournamentId)
             ->where($this->_db->quoteIdentifier('finished') . ' = false');
+
+        return $this->selectOne($select);
+    }
+
+    public function getFee($tournamentId)
+    {
+        $select = $this->_db->select()
+            ->from($this->_name, 'fee')
+            ->where($this->_db->quoteIdentifier('tournamentId') . ' = ?', $tournamentId);
 
         return $this->selectOne($select);
     }

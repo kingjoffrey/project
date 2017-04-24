@@ -1,6 +1,18 @@
 <div class="table">
     <h2>PayPal</h2>
-    <div><?php echo $this->result ?></div>
-    <a href="<?php echo $this->url(array('controller' => 'index', 'action' => null, 'id' => null)) ?>"
-       class="button buttonColors"><?php echo $this->translate('Back to WotH') ?></a>
+    <table id="tournamentParticipation">
+        <tr>
+            <th>
+                <div class="padding"><?php echo $this->result ?></div>
+            </th>
+            <th>
+                <div class="padding">
+                    <a href="<?php echo $this->url(array('controller' => 'index', 'action' => null, 'id' => null)) ?>"
+                       class="button buttonColors">
+                        <?php echo $this->translate('Back to WotH') ?>
+                    </a>
+                </div>
+            </th>
+        </tr>
+    </table>
 </div>

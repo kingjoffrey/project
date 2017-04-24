@@ -61,7 +61,7 @@ class TournamentController
 
         $mTournament = new Application_Model_Tournament($db);
 
-        if ($mTournament->getLimit($tournamentId) <= $mTournamentPlayers->countPlayers($tournamentId)) {
+        if ($mTournament->checkLimit($tournamentId) <= $mTournamentPlayers->countPlayers($tournamentId)) {
             $token['data'] = $view->render('tournament/full.phtml');
             $token['action'] = 'full';
 
@@ -69,6 +69,8 @@ class TournamentController
 
             return;
         }
+
+        $view->fee = $mTournament->getFee($tournamentId);
 
         $token['data'] = $view->render('tournament/paypal.phtml');
         $token['action'] = 'paypal';

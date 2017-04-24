@@ -1,5 +1,21 @@
 <div class="table">
-    <h2>Countdown...</h2>
-    <div id="paypal" class="button buttonColors">PayPal</div>
+    <h2><?php echo $this->translate('Registration to the tournament') ?></h2>
+    <table id="tournamentParticipation">
+        <tr>
+            <th>
+                <div class="padding"><?php echo $this->translate('Participation fee') ?></div>
+            </th>
+            <th>
+                <div class="padding"><?php echo $this->fee ?></div>
+            </th>
+            <th>
+                <div class="padding">USD</div>
+            </th>
+            <th>
+                <div class="padding">
+                    <div id="paypal" class="button buttonColors"><?php echo $this->translate('Pay with PayPal') ?></div>
+                </div>
+            </th>
+        </tr>
+    </table>
 </div>
-
