@@ -1035,20 +1035,30 @@ div.table table.unitTable td:first {
     cursor: pointer;
     bottom: 0.7vw;
     left: 0.7vw;
-    text-decoration: underline;
+    color: black;
+    box-shadow: 0 0 0.7vw #fff;
+    background: #fff;
+    text-shadow: none;
+    padding: 2px;
+
 }
 
 #game #tutorial:hover {
-    color: gray;
-    text-decoration: none;
+    color: white;
+    box-shadow: 0 0 0.7vw #f00;
+    background: #f00;
 }
 
 #game #tutorial.blink {
-    color: gray;
+    color: white;
+    box-shadow: 0 0 0.7vw #f00;
+    background: #f00;
 }
 
 #game #tutorial.blink:hover {
-    color: gray;
+    color: white;
+    box-shadow: 0 0 0.7vw #f00;
+    background: #f00;
 }
 
 .showCastle .relocatingTo {

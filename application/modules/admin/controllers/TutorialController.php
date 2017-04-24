@@ -8,6 +8,5 @@ class Admin_TutorialController extends Coret_Controller_Backend
         $this->view->title = 'Tutorial';
         parent::init();
     }
-
 }
 
