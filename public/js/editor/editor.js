@@ -3,14 +3,13 @@ var Editor = new function () {
 
         PickerCommon.reset()
         GameScene.clear()
-        GameRenderer.clear()
+        Renderer.clear()
 
         Units.init(r.units)
 
         Fields.init(r.fields, EditorController.getMapId())
         Fields.createEditorTextures()
-        var waterMesh = EditorGround.init(Fields.getMaxX(), Fields.getMaxY(), Fields.getTextureCanvas())
-        GameScene.add(waterMesh)
+        EditorGround.init(Fields.getMaxX(), Fields.getMaxY(), Fields.getTextureCanvas())
 
         Ruins.init(r.ruins)
         Players.init(r.players)

@@ -79,7 +79,7 @@ var TournamentController = new function () {
 
             $('#stage' + player.stage).after(
                 $('<tr>').addClass('trlink').attr('id', player.id)
-                    .append($('<td>').html(j + '.'))
+                    .append($('<td>').html(j))
                     .append($('<td>').html(player.name))
                     .click(function () {
                         WebSocketSendMain.controller('profile', 'show', {'id': $(this).attr('id')})
