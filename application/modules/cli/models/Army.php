@@ -125,6 +125,12 @@ class Cli_Model_Army
             $battle->fight();
             $battleResult = $battle->getResult();
             if ($battleResult->getVictory()) {
+                if ($this->getHeroes()) {
+                    $mHero = new Application_Model_Hero(null, $db);
+                    foreach ($this->getHeroes()->getKeys() as $heroId) {
+                        $mHero->addExperience($heroId, 1);
+                    }
+                }
                 $this->updateArmyPosition($game, $path, $db);
 //                if ($battleResult->getCastleId() && $game->playerHasMoreThanFiftyPercentOfCastles($this->_color)) {
 //                    $end = true;

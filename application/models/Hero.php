@@ -79,5 +79,12 @@ class Application_Model_Hero extends Coret_Db_Table_Abstract
 
         return $this->selectOne($select);
     }
+
+    public function addExperience($heroId, $points)
+    {
+        $data['experience'] = new Zend_Db_Expr('experience + ' . intval($points));
+        $where = $this->_db->quoteInto('"' . $this->_primary . '" = ?', $heroId);
+        return $this->update($data, $where);
+    }
 }
 

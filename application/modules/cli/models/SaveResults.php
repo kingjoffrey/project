@@ -181,14 +181,12 @@ class Cli_Model_SaveResults
             $mTournamentGames = new Application_Model_TournamentGames($db);
         }
 
-
         foreach ($playersInGameColors as $playerId => $shortName) {
             $player = $game->getPlayers()->getPlayer($shortName);
             if ($player->getTeamId() != $winners) {
                 $mPlayersInGame->setLost($playerId);
-            } else {
-                $tournamentId = $mTournamentGames->getTournamentId($game->getId());
-                $mTournamentPlayers->updateStage($tournamentId, $playerId);
+            } elseif ($game->getType() == 3) {
+                $mTournamentPlayers->updateStage($mTournamentGames->getTournamentId($game->getId()), $playerId);
             }
         }
     }
