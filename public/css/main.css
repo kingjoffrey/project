@@ -1244,14 +1244,16 @@ input.max {
     display: none;
 }
 
-#score {
+#lost {
     text-align: center;
-    font-size: 20vw;
     color: red;
+    font-size: 20vw;
 }
 
-#points {
-    text-align: right;
+#score {
+    text-align: center;
+    color: red;
+    font-size: 5vw;
 }
 
 .editorCastleWindow div {

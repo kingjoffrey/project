@@ -37,6 +37,7 @@ class Cli_Model_MainOpen
                 'play' => $adapter->translate('Play'),
                 'tournament' => $adapter->translate('Tournament'),
                 'load' => $adapter->translate('Load game'),
+                'heroes' => $adapter->translate('Heroes'),
                 'halloffame' => $adapter->translate('Hall of Fame'),
                 'players' => $adapter->translate('Players'),
                 'friends' => $adapter->translate('Friends'),

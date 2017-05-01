@@ -57,8 +57,9 @@ class Cli_CommonHandler extends WebSocketUriHandler
         $dataIn = Zend_Json::decode($msg->getData());
 
         if ($config->debug) {
-            echo('Cli_CommonHandler ZAPYTANIE ');
+            echo('Cli_CommonHandler ZAPYTANIE' . "\n");
             print_r($dataIn);
+            echo("\n");
         }
 
         $l = new Coret_Model_Logger('Cli_CommonHandler');

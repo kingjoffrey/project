@@ -20,10 +20,11 @@ class OverController
         $view->mapName = $score['name'];
         $view->time = round((strtotime($score['end']) - strtotime($score['begin'])) / 60, 1);
         $view->points = $score['score'];
+
         if ($score['lost']) {
-            $view->lost = 'You win';
-        } else {
             $view->lost = 'GAME OVER';
+        } else {
+            $view->lost = 'You win';
         }
 
         $view->addScriptPath(APPLICATION_PATH . '/views/scripts');

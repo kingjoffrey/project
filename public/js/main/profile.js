@@ -1,10 +1,7 @@
 "use strict"
 var ProfileController = new function () {
     this.index = function (r) {
-        var content = $('#content'),
-            data = r.data
-
-        content.html(data)
+        $('#content').html(r.data)
 
         $('form#player').submit(function (e) {
             e.preventDefault()
@@ -31,9 +28,7 @@ var ProfileController = new function () {
         $('#content').html(r.data)
     }
     this.ok = function (r) {
-        var content = $('#content'),
-            data = r.data
+        $('#content').html(r.data)
 
-        content.html(data)
     }
 }

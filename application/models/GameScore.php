@@ -73,7 +73,7 @@ class Application_Model_GameScore extends Coret_Db_Table_Abstract
             ->from(array('a' => $this->_name), 'score')
             ->join(array('b' => 'game'), 'a.' . $gId . ' = b.' . $gId, array('begin', 'end'))
             ->join(array('c' => 'map'), 'b.' . $mId . ' = c.' . $mId, array('name'))
-            ->join(array('d' => 'playersingame'), 'a.' . $pId . ' = d.' . $pId, array('lost'))
+            ->join(array('d' => 'playersingame'), 'a.' . $pId . ' = d.' . $pId.' AND a.' . $gId . ' = d.' . $gId, array('lost'))
             ->where('a.' . $gId . ' = ?', $gameId)
             ->where('a.' . $pId . ' = ?', $playerId);
 
