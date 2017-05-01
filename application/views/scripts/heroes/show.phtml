@@ -1,0 +1,33 @@
+<div class="table">
+    <h2><?php echo $this->translate('Hero') ?></h2>
+    <table id="hero1">
+        <tr>
+            <td colspan="3"><?php echo $this->name ?></td>
+        </tr>
+        </tr>
+    </table>
+    <br/>
+    <table id="hero2">
+        <tr>
+            <td><?php echo $this->translate('Attack') ?></td>
+            <td><?php echo $this->translate('Defense') ?></td>
+            <td><?php echo $this->translate('Moves') ?></td>
+        </tr>
+        <tr>
+            <td><?php echo $this->attack ?></td>
+            <td><?php echo $this->defense ?></td>
+            <td><?php echo $this->moves ?></td>
+        </tr>
+        </tr>
+    </table>
+    <br/>
+    <table id="hero3">
+        <tr>
+            <td colspan="2"><?php echo $this->translate('Experience') ?></td>
+            <td>
+                <div><?php echo $this->translate('Level') ?>: <?php echo $this->level ?></div>
+                <div><?php echo $this->experience ?></div>
+            </td>
+        </tr>
+    </table>
+</div>

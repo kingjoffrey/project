@@ -1,16 +1,9 @@
-<?php if (isset($this->heroes[0])): ?>
-    <div class="table">
-        <h2><?php echo $this->translate('Hero statistics') ?>:</h2>
-
-        <div class="box">
-            <?php echo $this->translate('Attack points') ?>: <?php echo $this->heroes[0]['attackPoints'] ?></br>
-            <?php echo $this->translate('Defense points') ?>: <?php echo $this->heroes[0]['defensePoints'] ?></br>
-            <?php echo $this->translate('Number of moves') ?>: <?php echo $this->heroes[0]['numberOfMoves'] ?></br>
-        </div>
-    </div>
-    <br/>
-<?php endif ?>
-<!--<div class="table">-->
-<!--    <h2>--><?php //echo $this->translate('Change name') ?><!--:</h2>-->
-<!--    --><?php //echo $this->form ?>
-<!--</div>-->
+<div class="table">
+    <h2><?php echo $this->translate('List of Heroes') ?></h2>
+    <table id="heroesList">
+        <tr>
+            <th><?php echo $this->translate('Hero name') ?></th>
+            <th><?php echo $this->translate('Experience') ?></th>
+        </tr>
+    </table>
+</div>

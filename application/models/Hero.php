@@ -38,6 +38,15 @@ class Application_Model_Hero extends Coret_Db_Table_Abstract
         return $this->selectAll($select);
     }
 
+    public function getHeroesNameExp()
+    {
+        $select = $this->_db->select()
+            ->from($this->_name, array('heroId', 'experience', 'name'))
+            ->where('"playerId" = ?', $this->_playerId);
+
+        return $this->selectAll($select);
+    }
+
     public function getHero($id)
     {
         $playerId = $this->_db->quoteIdentifier('playerId');
