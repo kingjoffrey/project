@@ -54,5 +54,10 @@ class Cli_Model_SearchRuinHandler
         } else {
             $ruin->search($game, $army, $heroId, $playerId, $handler);
         }
+
+        if ($army->getHeroes()->hasHero($heroId)) {
+            $mHero = new Application_Model_Hero(null, $handler->getDb());
+            $mHero->addExperience($heroId, 1);
+        }
     }
 }

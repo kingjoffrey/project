@@ -3,6 +3,7 @@ use Devristo\Phpws\Protocol\WebSocketTransportInterface;
 
 class HeroesController
 {
+    private $_ext2level = array(0, 10, 20, 40, 80, 160, 320, 640, 1280, 2560, 5120);
 
     public function index(WebSocketTransportInterface $user, Cli_MainHandler $handler, $dataIn)
     {
@@ -45,6 +46,13 @@ class HeroesController
         $view->attack = $hero['attackPoints'];
         $view->defense = $hero['defensePoints'];
         $view->experience = $hero['experience'];
+        foreach ($this->_ext2level as $level => $exp) {
+            if ($hero['experience'] < $exp) {
+                $view->level = $level - 1;
+                break;
+            }
+        }
+
 
         $token = array(
             'type' => 'heroes',

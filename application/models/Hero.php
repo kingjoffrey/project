@@ -42,7 +42,8 @@ class Application_Model_Hero extends Coret_Db_Table_Abstract
     {
         $select = $this->_db->select()
             ->from($this->_name, array('heroId', 'experience', 'name'))
-            ->where('"playerId" = ?', $this->_playerId);
+            ->where('"playerId" = ?', $this->_playerId)
+            ->order('experience DESC');
 
         return $this->selectAll($select);
     }

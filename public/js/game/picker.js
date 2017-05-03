@@ -55,7 +55,7 @@ var PickerGame = new function () {
 // fly
                 PickerCommon.cursor('fly')
             } else if (Me.getSelectedArmy().canSwim()) {
-                if (field.getType() == 'w') {
+                if (field.getType() == 'w' || field.getType() == 'b') {
 // swim
                     PickerCommon.cursor('swim')
                 } else {
