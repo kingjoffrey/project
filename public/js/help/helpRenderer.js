@@ -3,12 +3,13 @@ var HelpRenderer = new function () {
         scene,
         camera,
         timeOut = 100,
-        stop,
+        stop = 1,
+        mesh = 0,
+        angle = Math.PI / 180,
         render = function () {
-            var mesh = Help.getMesh()
-
             if (mesh) {
-                Animation.rotate(mesh)
+                // Animation.rotate(mesh)
+                mesh.rotateY(angle)
             }
 
             renderer.render(scene, camera)
@@ -36,6 +37,9 @@ var HelpRenderer = new function () {
         stop = 1
     }
     this.start = function () {
+        if (Main.getEnv() != 'development') {
+            timeOut = 0
+        }
         stop = 0
         $('#graphics').append(renderer.domElement)
         this.animate()
@@ -43,11 +47,10 @@ var HelpRenderer = new function () {
     this.isRunning = function () {
         return !stop
     }
+    this.setMesh = function (m) {
+        mesh = m
+    }
     this.init = function () {
-        if (Main.getEnv() != 'development') {
-            timeOut = 0
-        }
-        stop = 0
         renderer = Renderer.get()
         if (Page.getShadows()) {
             renderer.shadowMap.enabled = true

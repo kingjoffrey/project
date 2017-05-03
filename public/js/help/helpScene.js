@@ -19,34 +19,31 @@ var HelpScene = new function () {
             scene.add(new THREE.AmbientLight(0x777777))
 
             camera.add(new THREE.PointLight(0xffffff, 0.1))
+        },
+        initSun = function () {
+            sun = new THREE.DirectionalLight(0xdfebff, 0.75)
+            sun.position.set(100, 200, 160)
+            sun.target.position.set(0, 0, 0)
+            if (Page.getShadows()) {
+                sun.castShadow = true
+
+                // sun.shadow.mapSize.width = 2048
+                // sun.shadow.mapSize.height = 2048
+                sun.shadow.mapSize.width = 8192
+                sun.shadow.mapSize.height = 8192
+
+                sun.shadow.camera.right = 80
+                sun.shadow.camera.left = 0
+                sun.shadow.camera.top = 50
+                sun.shadow.camera.bottom = -30
+                sun.shadow.camera.far = 290
+
+                // var helper = new THREE.CameraHelper(sun.shadow.camera)
+                // scene.add(helper)
+            }
+            scene.add(sun)
         }
 
-    this.initSun = function () {
-        sun = new THREE.DirectionalLight(0xdfebff, 0.75)
-        sun.position.set(100, 200, 160)
-        sun.target.position.set(0, 0, 0)
-        if (Page.getShadows()) {
-            sun.castShadow = true
-
-            // sun.shadow.mapSize.width = 2048
-            // sun.shadow.mapSize.height = 2048
-            sun.shadow.mapSize.width = 8192
-            sun.shadow.mapSize.height = 8192
-
-            sun.shadow.camera.right = 80
-            sun.shadow.camera.left = 0
-            sun.shadow.camera.top = 50
-            sun.shadow.camera.bottom = -30
-            sun.shadow.camera.far = 290
-
-            // var helper = new THREE.CameraHelper(sun.shadow.camera)
-            // scene.add(helper)
-        }
-        scene.add(sun)
-    }
-    this.getSun = function () {
-        return sun
-    }
     this.setCameraPosition = function (x, z) {
         camera.position.set(parseFloat(x), cameraY, parseFloat(z))
     }
@@ -70,5 +67,6 @@ var HelpScene = new function () {
     }
     this.init = function () {
         initCamera()
+        initSun(40)
     }
 }

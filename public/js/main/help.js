@@ -34,9 +34,6 @@ var HelpController = new function () {
         Help.fillText('game')
         $('.table').css({'min-height': '30vw'})
 
-        HelpScene.initSun(40)
-        HelpRenderer.start()
-
         HelpScene.resize()
         HelpRenderer.resize(width)
 

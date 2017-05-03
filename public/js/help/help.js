@@ -400,7 +400,12 @@ var Help = new function () {
                 handleTerrain()
                 break;
         }
+
         if (mesh) {
+            HelpRenderer.setMesh(mesh)
+            if (!HelpRenderer.isRunning()) {
+                HelpRenderer.start()
+            }
             $('#graphics').css('display', 'block')
         } else {
             $('#graphics').css('display', 'none')
@@ -410,10 +415,10 @@ var Help = new function () {
     this.getMesh = function () {
         return mesh
     }
-    this.nl2br = function (str, is_xhtml) {
-        var breakTag = (is_xhtml || typeof is_xhtml === 'undefined') ? '<br />' : '<br>';
-        return (str + '').replace(/([^>\r\n]?)(\r\n|\n\r|\r|\n)/g, '$1' + breakTag + '$2');
-    }
+    // this.nl2br = function (str, is_xhtml) {
+    //     var breakTag = (is_xhtml || typeof is_xhtml === 'undefined') ? '<br />' : '<br>';
+    //     return (str + '').replace(/([^>\r\n]?)(\r\n|\n\r|\r|\n)/g, '$1' + breakTag + '$2');
+    // }
     this.init = function (r) {
         help = r
     }

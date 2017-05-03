@@ -2,8 +2,8 @@ var GameRenderer = new function () {
     var renderer,
         scene,
         camera,
-        timeOut = 1000,
-        stop,
+        timeOut = 100,
+        stop = 1,
         render = function () {
             renderer.render(scene, camera)
         }
@@ -41,6 +41,9 @@ var GameRenderer = new function () {
         stop = 1
     }
     this.start = function () {
+        if (Main.getEnv() != 'development') {
+            timeOut = 0
+        }
         stop = 0
         $('#game').append(renderer.domElement)
         this.animate()
@@ -58,10 +61,6 @@ var GameRenderer = new function () {
         console.log(renderer.shadowMapAutoUpdate)
     }
     this.init = function () {
-        if (Main.getEnv() != 'development') {
-            timeOut = 0
-        }
-        stop = 0
         renderer = Renderer.get()
         if (Page.getShadows()) {
             renderer.shadowMap.enabled = true
