@@ -3,6 +3,7 @@ var PickerGame = new function () {
         clickStart = 0,
         move = 0,
         elseClickStart = 0,
+        cursorMesh = 0,
         handleDownStart = function (event) {
             move = 0
             elseClickStart = 0
@@ -87,12 +88,19 @@ var PickerGame = new function () {
                 PickerCommon.cursor('move')
             } else {
                 if (PickerCommon.intersects()) {
-                    AStar.cursorPosition(PickerCommon.convertX(), PickerCommon.convertZ())
+                    var x = PickerCommon.convertX(), y = PickerCommon.convertZ()
+                    AStar.cursorPosition(x, y)
 // turn
                     if (Turn.isMy()) {
                         var field = PickerCommon.getField(),
                             castleColor = field.getCastleColor(),
                             armies = field.getArmies()
+
+                        if (!cursorMesh) {
+                            cursorMesh = GameModels.addCursor()
+                        }
+
+                        GameModels.cursorPosition(x, y, field.getType(), cursorMesh)
 
                         for (var armyId in armies) {
                             var hasArmy = 1

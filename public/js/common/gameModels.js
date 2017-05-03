@@ -165,6 +165,37 @@ var GameModels = new function () {
             GameScene.add(mesh)
         }
     }
+    this.cursorPosition = function (x, y, t, cursor) {
+        switch (t) {
+            case 'm':
+                var height = -Ground.getMountainLevel() + hover
+                break
+            case 'h':
+                var height = -Ground.getHillLevel() + hover
+                break
+            case 'b':
+                var height = bridgeLevel + hover
+                break
+            default :
+                var height = hover
+                break
+        }
+
+        cursor.position.set(x * 2, height, y * 2)
+    }
+    this.addCursor = function () {
+        var mesh = Models.getCursorModel()
+
+        if (Page.getShadows()) {
+            mesh.castShadow = true
+        }
+
+        mesh.rotation.x = Math.PI / 2
+
+        GameScene.add(mesh)
+
+        return mesh
+    }
     this.addPathCircle = function (x, y, color, t) {
         switch (t) {
             case 'm':

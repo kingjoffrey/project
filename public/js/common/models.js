@@ -10,6 +10,7 @@ var Models = new function () {
         pathMaterialRed,
         pathMaterialWhite,
         pathGeometry,
+        cursorGeometry = new THREE.Geometry(),
         initModelAndTexture = function (id) {
             JSONLoader.load('/models/' + id + '.json', function (geometry, materials) {
                 models[id] = geometry
@@ -223,8 +224,22 @@ var Models = new function () {
                 side: THREE.DoubleSide
             })
             pathGeometry = new THREE.CircleGeometry(radius, segments)
+        },
+        initCursorModel = function () {
+            cursorGeometry.vertices.push(new THREE.Vector3(0, 0, 0))
+            cursorGeometry.vertices.push(new THREE.Vector3(0, 2, 0))
+            cursorGeometry.vertices.push(new THREE.Vector3(2, 2, 0))
+            cursorGeometry.vertices.push(new THREE.Vector3(2, 0, 0))
+
+            cursorGeometry.vertices.push(new THREE.Vector3(0, 0, 0))
+
+            cursorGeometry.faces.push(new THREE.Face3(0, 1, 2))
+            cursorGeometry.faces.push(new THREE.Face3(0, 3, 2))
         }
 
+    this.getCursorModel = function () {
+        return new THREE.Line(cursorGeometry, new THREE.LineBasicMaterial({color: 0xffffff, opacity: 0.5}))
+    }
     this.getPathCircle = function (color) {
         switch (color) {
             case 'green':
@@ -321,5 +336,6 @@ var Models = new function () {
         initFlag()
         initTree()
         initPathCircle()
+        initCursorModel()
     }
 }
