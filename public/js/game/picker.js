@@ -8,70 +8,74 @@ var PickerGame = new function () {
             move = 0
             elseClickStart = 0
             PickerCommon.intersect(event)
+
             if (PickerCommon.intersects()) {
+// Armia jest zaznaczona
                 if (Me.getSelectedArmyId()) {
                     var x = PickerCommon.convertX(),
                         y = PickerCommon.convertZ()
+// Klik na armię
                     if (Me.getSelectedArmy().getX() == x && Me.getSelectedArmy().getY() == y) {
                         StatusWindow.show()
+// Move
                     } else if (clickStart && clickStart.x == x && clickStart.y == y) {
                         clickStart = 0
                         AStar.cursorPosition(x, y)
                         WebSocketSendGame.move()
+// click & drag START
                     } else {
                         elseClickStart = 1
                         dragStart = PickerCommon.getPoint(event)
                     }
+// Brak zaznaczonej armii
                 } else {
                     clickStart = 0
                     var field = PickerCommon.getField()
+// Są armie na polu
                     if (field.hasArmies()) {
                         var armies = field.getArmies()
                         for (var armyId in armies) {
                             if (Me.colorEquals(armies[armyId])) {
+// Zaznacz moją armię
                                 Me.armyClick(armyId)
                             }
                         }
+// Jest mój zamek na polu
                     } else if (Me.colorEquals(field.getCastleColor())) {
                         var castleId = field.getCastleId()
                         if (Me.getSelectedCastleId()) {
+// Rolokuj produkcję
                             if (Me.getSelectedCastleId() != castleId) {
                                 WebSocketSendGame.production(Me.getSelectedCastleId(), Me.getSelectedUnitId(), castleId)
                             }
                             Me.setSelectedCastleId(null)
                             Me.setSelectedUnitId(null)
+// Pokaż mój zamek
                         } else {
                             CastleWindow.show(Me.getCastle(castleId))
                         }
+// drag START
                     } else {
                         dragStart = PickerCommon.getPoint(event)
                     }
                 }
+// drag START
             } else {
                 dragStart = PickerCommon.getPoint(event)
             }
         },
-        changeCursorArmyMove = function (field) {
-            if (Me.getSelectedArmy().canFly()) {
-// fly
-                PickerCommon.cursor('fly')
-            } else if (Me.getSelectedArmy().canSwim()) {
-                if (field.getType() == 'w' || field.getType() == 'b') {
-// swim
-                    PickerCommon.cursor('swim')
-                } else {
-// can't swim
-                    PickerCommon.cursor('impenetrable')
-                }
-            } else {
-                if (field.getType() == 'w' || field.getType() == 'm') {
-// can't walk
-                    PickerCommon.cursor('impenetrable')
-                } else {
-// walk
-                    PickerCommon.cursor('walk')
+        handleUp = function (event) {
+            if (!move && PickerCommon.intersects()) {
+                if (elseClickStart) {
+                    var x = PickerCommon.convertX(),
+                        y = PickerCommon.convertZ()
+
+                    clickStart = {x: x, y: y}
+                    AStar.cursorPosition(x, y)
+                    AStar.showPath()
                 }
             }
+            dragStart = 0
         },
         handleMove = function (event) {
             move = 1
@@ -175,18 +179,27 @@ var PickerGame = new function () {
                 }
             }
         },
-        handleUp = function (event) {
-            if (!move && PickerCommon.intersects()) {
-                if (elseClickStart) {
-                    var x = PickerCommon.convertX(),
-                        y = PickerCommon.convertZ()
-
-                    clickStart = {x: x, y: y}
-                    AStar.cursorPosition(x, y)
-                    AStar.showPath()
+        changeCursorArmyMove = function (field) {
+            if (Me.getSelectedArmy().canFly()) {
+// fly
+                PickerCommon.cursor('fly')
+            } else if (Me.getSelectedArmy().canSwim()) {
+                if (field.getType() == 'w' || field.getType() == 'b') {
+// swim
+                    PickerCommon.cursor('swim')
+                } else {
+// can't swim
+                    PickerCommon.cursor('impenetrable')
+                }
+            } else {
+                if (field.getType() == 'w' || field.getType() == 'm') {
+// can't walk
+                    PickerCommon.cursor('impenetrable')
+                } else {
+// walk
+                    PickerCommon.cursor('walk')
                 }
             }
-            dragStart = 0
         }
 
     this.onContainerMouseDown = function (event) {
