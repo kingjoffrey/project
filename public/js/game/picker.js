@@ -2,15 +2,21 @@ var PickerGame = new function () {
     var dragStart = 0,
         clickStart = 0,
         move = 0,
-        elseClickStart = 0,
         cursorMesh = 0,
+        rightClick = 0,
         handleDownStart = function (event) {
+            rightClick = 1
             move = 0
-            elseClickStart = 0
+            dragStart = PickerCommon.getPoint(event)
             PickerCommon.intersect(event)
-
-            if (PickerCommon.intersects()) {
-// Armia jest zaznaczona
+        },
+        handleUp = function (event) {
+            dragStart = 0
+            if (!rightClick) {
+                return
+            }
+            if (!move && PickerCommon.intersects()) {
+                // Armia jest zaznaczona
                 if (Me.getSelectedArmyId()) {
                     var x = PickerCommon.convertX(),
                         y = PickerCommon.convertZ()
@@ -24,8 +30,12 @@ var PickerGame = new function () {
                         WebSocketSendGame.move()
 // click & drag START
                     } else {
-                        elseClickStart = 1
-                        dragStart = PickerCommon.getPoint(event)
+                        var x = PickerCommon.convertX(),
+                            y = PickerCommon.convertZ()
+
+                        clickStart = {x: x, y: y}
+                        AStar.cursorPosition(x, y)
+                        AStar.showPath()
                     }
 // Brak zaznaczonej armii
                 } else {
@@ -54,43 +64,27 @@ var PickerGame = new function () {
                         } else {
                             CastleWindow.show(Me.getCastle(castleId))
                         }
-// drag START
-                    } else {
-                        dragStart = PickerCommon.getPoint(event)
                     }
                 }
-// drag START
-            } else {
-                dragStart = PickerCommon.getPoint(event)
             }
-        },
-        handleUp = function (event) {
-            if (!move && PickerCommon.intersects()) {
-                if (elseClickStart) {
-                    var x = PickerCommon.convertX(),
-                        y = PickerCommon.convertZ()
-
-                    clickStart = {x: x, y: y}
-                    AStar.cursorPosition(x, y)
-                    AStar.showPath()
-                }
-            }
-            dragStart = 0
         },
         handleMove = function (event) {
-            move = 1
             PickerCommon.intersect(event)
             // if (AStar.cursorPosition(PickerCommon.convertX(), PickerCommon.convertZ()) && Me.getSelectedArmyId()) {
             //     AStar.showPath()
             // }
 
             if (dragStart) {
-// drag
                 var dragEnd = PickerCommon.getPoint(event)
-                GameScene.moveCamera(dragStart.x - dragEnd.x, dragStart.y - dragEnd.y)
-                dragStart = dragEnd
-                PickerCommon.cursor('move')
+                if (!PickerCommon.checkOffset(dragStart, dragEnd)) {
+// drag
+                    move = 1
+                    GameScene.moveCamera(dragStart.x - dragEnd.x, dragStart.y - dragEnd.y)
+                    dragStart = dragEnd
+                    PickerCommon.cursor('move')
+                }
             } else {
+// Zmiana kursora
                 if (PickerCommon.intersects()) {
                     var x = PickerCommon.convertX(), y = PickerCommon.convertZ()
                     AStar.cursorPosition(x, y)
@@ -217,6 +211,7 @@ var PickerGame = new function () {
                 break
 
             case 2:
+                rightClick = 0
                 Me.deselectArmy()
                 break
         }

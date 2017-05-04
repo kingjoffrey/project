@@ -93,4 +93,13 @@ var PickerCommon = new function () {
             y = event.offsetY == undefined ? event.layerY : event.offsetY
         return {x: x, y: y}
     }
+    this.checkOffset = function(point1, point2)
+    {
+        if (point1.x >= point2.x - 1 && point1.x <= point2.x + 1) {
+            if (point1.y >= point2.y - 1 && point1.y <= point2.y + 1) {
+                return 1
+            }
+        }
+        return 0
+    }
 }
