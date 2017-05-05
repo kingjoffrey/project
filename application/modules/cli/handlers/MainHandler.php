@@ -53,17 +53,20 @@ class Cli_MainHandler extends WebSocketUriHandler
         return $this->_tutorial;
     }
 
-    public function addHelp(Cli_Model_Help $help)
+    public function addHelp($id_lang, Cli_Model_Help $help)
     {
-        $this->_help = $help;
+        $this->_help[$id_lang] = $help;
     }
 
     /**
+     * @param $id_lang
      * @return Cli_Model_Help
      */
-    public function getHelp()
+    public function getHelp($id_lang)
     {
-        return $this->_help;
+        if (isset($this->_help[$id_lang])) {
+            return $this->_help[$id_lang];
+        }
     }
 
     public function onMessage(WebSocketTransportInterface $user, WebSocketMessageInterface $msg)

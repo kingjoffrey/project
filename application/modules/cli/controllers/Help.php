@@ -1,14 +1,17 @@
 <?php
 use Devristo\Phpws\Protocol\WebSocketTransportInterface;
+
 class HelpController
 {
-    function index(WebSocketTransportInterface $user, Cli_MainHandler $handler)
+    function index(WebSocketTransportInterface $user, Cli_MainHandler $handler, $dataIn)
     {
+        $id_lang = Zend_Registry::get('id_lang');
+
         $db = $handler->getDb();
-        if (!$help = $handler->getHelp()) {
+        if (!$help = $handler->getHelp($id_lang)) {
             echo 'not set' . "\n";
             $help = new Cli_Model_Help($db);
-            $handler->addHelp($help);
+            $handler->addHelp($id_lang, $help);
         }
 
         $view = new Zend_View();

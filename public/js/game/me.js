@@ -206,7 +206,7 @@ var Me = new function () {
         }
 
         var armyId = this.getSelectedArmyId()
-        console.log(armyId)
+        console.log(nextArmies)
         if (armyId) {
             nextArmies[armyId] = true
         }
@@ -214,6 +214,8 @@ var Me = new function () {
         this.deselectArmy()
 
         var armies = me.getArmies().toArray()
+
+        console.log(armies)
 
         for (var armyId in armies) {
             if (armies[armyId].getMoves() == 0) {

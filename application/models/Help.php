@@ -17,11 +17,13 @@ class Application_Model_Help extends Coret_Db_Table_Abstract
 
     public function get()
     {
+        $primary = $this->_db->quoteIdentifier($this->_primary);
+
         $select = $this->_db->select()
-            ->from($this->_name, array('menu'))
+            ->from(array('a' => $this->_name), array('menu'))
             ->where('id_lang = ?', Zend_Registry::get('id_lang'))
-            ->join($this->_name . '_Lang', $this->_name . ' . ' . $this->_db->quoteIdentifier($this->_primary) . ' = ' . $this->_db->quoteIdentifier($this->_name . '_Lang') . ' . ' . $this->_db->quoteIdentifier($this->_primary), array('content'))
-            ->order($this->_name . '.' . $this->_primary);
+            ->join($this->_name . '_Lang', 'a.' . $primary . ' = ' . $this->_db->quoteIdentifier($this->_name . '_Lang') . ' . ' . $primary, array('content'))
+            ->order('a.' . $this->_primary);
 
         return $this->selectAll($select);
     }

@@ -3,20 +3,20 @@ var PickerGame = new function () {
         clickStart = 0,
         move = 0,
         cursorMesh = 0,
-        rightClick = 0,
+        leftClick = 0,
         handleDownStart = function (event) {
-            rightClick = 1
+            leftClick = 1
             move = 0
             dragStart = PickerCommon.getPoint(event)
             PickerCommon.intersect(event)
         },
         handleUp = function (event) {
             dragStart = 0
-            if (!rightClick) {
+            if (!leftClick) {
                 return
             }
             if (!move && PickerCommon.intersects()) {
-                // Armia jest zaznaczona
+// Armia jest zaznaczona
                 if (Me.getSelectedArmyId()) {
                     var x = PickerCommon.convertX(),
                         y = PickerCommon.convertZ()
@@ -211,7 +211,7 @@ var PickerGame = new function () {
                 break
 
             case 2:
-                rightClick = 0
+                leftClick = 0
                 Me.deselectArmy()
                 break
         }
@@ -244,7 +244,7 @@ var PickerGame = new function () {
     }
     this.onContainerMouseOut = function (event) {
         event.preventDefault()
-        handleUp(event)
+        // handleUp(event)
     }
     this.onContainerTouchEnd = function (event) {
         //console.log('touchEnd')
