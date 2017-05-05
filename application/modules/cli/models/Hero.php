@@ -17,6 +17,20 @@ class Cli_Model_Hero extends Cli_Model_Being
         $this->_defense = $hero['defensePoints'];
         $this->_name = $hero['name'];
         $this->_movesLeft = $hero['movesLeft'];
+
+        foreach ($hero['bonus'] as $key => $row) {
+            switch ($row['bId']) {
+                case 1:
+                    $this->_attack++;
+                    break;
+                case 2:
+                    $this->_defense++;
+                    break;
+                case 3:
+                    $this->_moves++;
+                    break;
+            }
+        }
     }
 
     public function toArray()

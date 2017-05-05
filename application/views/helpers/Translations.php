@@ -73,7 +73,6 @@ class Zend_View_Helper_Translations extends Zend_View_Helper_Abstract
                 'splitArmy' => $this->view->translate('Split army'),
                 'quitArmy' => $this->view->translate('Fortify army'),
                 'skipArmy' => $this->view->translate('Skip army'),
-                'Attack' => $this->view->translate('Attack'),
                 'human' => $this->view->translate('Human'),
                 'select' => $this->view->translate('Select'),
                 'deselect' => $this->view->translate('Deselect'),
@@ -179,6 +178,8 @@ class Zend_View_Helper_Translations extends Zend_View_Helper_Abstract
                 'Nothingtoshow' => $this->view->translate('Nothing to show'),
                 'Stage' => $this->view->translate('Stage'),
                 'Playername' => $this->view->translate('Player name'),
+                'Experience' => $this->view->translate('Experience'),
+                'Level' => $this->view->translate('Level'),
                 '' => $this->view->translate(''),
             )));
     }

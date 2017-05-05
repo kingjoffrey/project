@@ -40,6 +40,9 @@ class Cli_Model_HeroResurrection
             $armyId = $player->getArmies()->create($capital->getX(), $capital->getY(), $color, $game, $db);
         }
 
+        $mHeroSkills = new Application_Model_Heroskills($db);
+        $hero['bonus'] = $mHeroSkills->getBonuses($hero['heroId']);
+
         $army = $player->getArmies()->getArmy($armyId);
         $army->addHero($hero['heroId'], new Cli_Model_Hero($hero), $gameId, $db);
         $army->getHeroes()->getHero($hero['heroId'])->zeroMovesLeft($gameId, $db);

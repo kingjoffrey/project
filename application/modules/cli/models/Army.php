@@ -423,9 +423,10 @@ class Cli_Model_Army
         }
     }
 
-    public function initHeroes($heroes)
+    public function initHeroes($heroes, Application_Model_Heroskills $mHeroSkills)
     {
         foreach ($heroes as $hero) {
+            $hero['bonus'] = $mHeroSkills->getBonuses($hero['heroId']);
             $this->_Heroes->add($hero['heroId'], new Cli_Model_Hero($hero));
             $hero = $this->_Heroes->getHero($hero['heroId']);
 
