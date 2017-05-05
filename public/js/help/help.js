@@ -324,9 +324,9 @@ var Help = new function () {
         },
         handleCastle = function () {
             mesh = HelpModels.addCastle(castles[currentCastleId])
-            $('#castle').remove()
+            $('#Castle').remove()
             $('#text').prepend($('<div>')
-                .attr('id', 'castle')
+                .attr('id', 'Castle')
                 .append($('<h3>')
                     .append($('<span>').html('<<').addClass('button buttonColors').click(function () {
                         changeCastle('-')
