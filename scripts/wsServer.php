@@ -38,8 +38,16 @@ $logger->addWriter($writer);
 
 // Create a WebSocket server
 $configWS = Zend_Registry::get('config')->websockets;
-$address = 'tcp://' . $configWS->aHost . ':' . $configWS->aPort;
+$address = $configWS->aSchema . '://' . $configWS->aHost . ':' . $configWS->aPort;
 $server = new WebSocketServer($address, $loop, $logger);
+
+if ($configWS->aSchema == 'wss') {
+    $context = stream_context_create();
+    foreach (Zend_Registry::get('config')->ssl as $key => $val) {
+        stream_context_set_option($context, 'ssl', $key, $val);
+    }
+    $server->setStreamContext($context);
+}
 
 // Create a router which transfers all connections to the suitable Handler class
 $router = new \Devristo\Phpws\Server\UriHandler\ClientRouter($server, $logger);

@@ -7,4 +7,5 @@ Zend
 */maps/*.png
 public/img/maps/*
 .idea
+ssl
 vendor
