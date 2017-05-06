@@ -44,6 +44,7 @@ $server = new WebSocketServer($address, $loop, $logger);
 if ($configWS->aSchema == 'wss') {
     $context = stream_context_create();
     foreach (Zend_Registry::get('config')->ssl as $key => $val) {
+//        echo $key . '=>' . $val . "\n";
         stream_context_set_option($context, 'ssl', $key, $val);
     }
     $server->setStreamContext($context);
