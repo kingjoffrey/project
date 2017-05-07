@@ -17,6 +17,11 @@ body {
     font-size: 2.8vw;
 }
 
+input[type="checkbox"] {
+    width: 1vw;
+    height: 1vw;
+}
+
 input, select, body {
     font-size: 0.7vw;
     /*font-family: Impact, Charcoal, sans-serif;*/
@@ -38,7 +43,7 @@ input, select, body {
 
 #page {
     margin: 0 auto;
-    width: 1000px;
+    width: 66vw;
     height: 100vh;
 }
 
@@ -325,17 +330,6 @@ tr.trlink:hover td {
     margin: 0.7vw;
 }
 
-#friendsList span {
-    line-height: 25px;
-    padding: 0 5px 0 35px;
-    border-radius: 2px;
-    cursor: pointer;
-}
-
-#friendsList span:hover {
-    background: #fff;
-}
-
 .i {
     font-style: italic;
 }
@@ -346,18 +340,6 @@ tr.trlink:hover td {
     box-shadow: 0 0 5px #fff;
     display: inline-block;
     margin: 0.7vw;
-}
-
-#findFriends {
-    color: #fff;
-    text-decoration: underline;
-    cursor: pointer;
-    display: inline;
-}
-
-#findFriends:hover {
-    color: gray;
-    text-decoration: none;
 }
 
 #main {
@@ -1201,8 +1183,13 @@ input.max {
 
 #logo1 {
     position: absolute;
-    right: 0px;
+    right: 26vw;
+    top: 13vw;
     width: 34vw;
+}
+
+#loginMenu {
+    margin-bottom: 0.7vw;
 }
 
 .touchscreen #logo2 {

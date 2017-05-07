@@ -10,7 +10,7 @@ var ProfileController = new function () {
                 'lastName': $('input#lastName').val()
             })
         })
-        $('form#email').submit(function (e) {
+        $('form#login').submit(function (e) {
             e.preventDefault()
             WebSocketSendMain.controller('profile', 'index', {
                 'login': $('input#login').val()
@@ -30,5 +30,8 @@ var ProfileController = new function () {
     this.ok = function (r) {
         $('#content').html(r.data)
 
+        $('#bProfile').click(function () {
+            WebSocketSendMain.controller('profile', 'index')
+        })
     }
 }

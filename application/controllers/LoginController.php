@@ -34,6 +34,38 @@ class LoginController extends Coret_Controller_AuthenticateFrontend
         $this->html();
     }
 
+    public function anonymousAction()
+    {
+        $mHNG = new Cli_Model_HeroNameGenerator();
+        $heroName = $mHNG->generateHeroName();
+
+        $playerName = explode(' ', $heroName);
+
+        $anonymous = array(
+            'login' => md5($heroName . rand()),
+            'password' => 'abc' . rand()
+        );
+
+        $data = array(
+            'firstName' => $playerName[0],
+            'lastName' => $playerName[1],
+            'login' => $anonymous['login'],
+            'password' => md5($anonymous['password'])
+        );
+
+        $mPlayer = new Application_Model_Player();
+        if ($playerId = $mPlayer->createPlayer($data)) {
+            $mHero = new Application_Model_Hero($playerId);
+            $mHero->createHero($heroName);
+
+            $this->_authAdapter = $this->getAuthAdapter($anonymous);
+            $this->_auth->authenticate($this->_authAdapter);
+            $this->handleAuthenticated();
+
+            Zend_Session::rememberMe(Zend_Registry::get('config')->rememberMeTime);
+        }
+    }
+
     public function registrationAction()
     {
         $this->html();
@@ -41,9 +73,15 @@ class LoginController extends Coret_Controller_AuthenticateFrontend
         $form = new Application_Form_Registration();
         if ($this->_request->isPost()) {
             if ($form->isValid($this->_request->getPost())) {
+                $mHNG = new Cli_Model_HeroNameGenerator();
+
+                $heroName = $mHNG->generateHeroName();
+
+                $playerName = explode(' ', $heroName);
+
                 $data = array(
-                    'firstName' => $this->_request->getParam('firstName'),
-                    'lastName' => $this->_request->getParam('lastName'),
+                    'firstName' => $playerName[0],
+                    'lastName' => $playerName[1],
                     'login' => $this->_request->getParam('login'),
                     'password' => md5($this->_request->getParam('password'))
                 );
@@ -51,8 +89,7 @@ class LoginController extends Coret_Controller_AuthenticateFrontend
                 $mPlayer = new Application_Model_Player();
                 if ($playerId = $mPlayer->createPlayer($data)) {
                     $mHero = new Application_Model_Hero($playerId);
-                    $mHNG = new Cli_Model_HeroNameGenerator();
-                    $mHero->createHero($mHNG->generateHeroName());
+                    $mHero->createHero($heroName);
 
                     $this->_authAdapter = $this->getAuthAdapter($form->getValues());
                     $this->_auth->authenticate($this->_authAdapter);

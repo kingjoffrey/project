@@ -14,8 +14,8 @@ var FriendsController = new function () {
                     $('<tr>')
                         .append(
                             $('<td colspan="4">').addClass('after')
-                                .append(translations.YouDontHaveFriends + ': ')
-                                .append($('<span>').attr('id', 'findFriends').html(translations.findSomeFriends))
+                                .append(translations.YouDontHaveFriends)
+                                .append($('<span>').attr('id', 'findFriends').html(translations.findSomeFriends).addClass('button buttonColors'))
                         )
                 )
                 .click(function () {

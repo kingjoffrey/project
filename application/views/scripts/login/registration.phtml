@@ -1,7 +1,7 @@
-<div id="view-content">
-    <p>
-        <a href="<?php echo $this->url(array('controller' => 'login', 'action' => null));?>"
-          class="button buttonColors"><?php echo $this->translate('Sign in');?></a>
-    </p>
+<div id="loginMenu">
+    <a href="<?php echo $this->url(array('controller' => 'login', 'action' => null)); ?>"
+       class="button buttonColors"><?php echo $this->translate('Sign in'); ?></a>
 </div>
-<?php echo $this->form; ?>
+<div class="login">
+    <?php echo $this->form; ?>
+</div>

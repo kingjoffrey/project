@@ -1,9 +1,10 @@
-<div id="view-content">
-    <p>
-        <a href="<?php echo $this->url(array('action' => 'registration')) ?>"
-           class="button buttonColors"><?php echo $this->translate('Register') ?></a>
-        <a href="<?php echo $this->loginUrl ?>" class="button buttonColors"><?php echo $this->translate('Facebook login') ?></a>
-    </p>
+<div id="loginMenu">
+    <a href="<?php echo $this->url(array('action' => 'registration')) ?>"
+       class="button buttonColors"><?php echo $this->translate('Register') ?></a>
+    <a href="<?php echo $this->url(array('action' => 'anonymous')) ?>"
+       class="button buttonColors"><?php echo $this->translate('Anonymous login') ?></a>
+    <a href="<?php echo $this->loginUrl ?>"
+       class="button buttonColors"><?php echo $this->translate('Facebook login') ?></a>
 </div>
 <div class="login">
     <?php

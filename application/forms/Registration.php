@@ -7,25 +7,8 @@ class Application_Form_Registration extends Zend_Form
     {
         $this->setMethod('post');
 
-        $f = new Coret_Form_Varchar(
-            array(
-                'label' => $this->getView()->translate('First name') . ' (' . $this->getView()->translate('imaginary') . ')',
-                'name' => 'firstName',
-                'required' => true,
-            )
-        );
-        $this->addElements($f->getElements());
-        $f = new Coret_Form_Varchar(
-            array(
-                'label' => $this->getView()->translate('Last name') . ' (' . $this->getView()->translate('imaginary') . ')',
-                'name' => 'lastName',
-                'required' => true,
-            )
-        );
-        $this->addElements($f->getElements());
-
         $this->addElement('text', 'login', array(
-                'label' => $this->getView()->translate('Email'),
+                'label' => $this->getView()->translate('Login'),
                 'required' => true,
                 'filters' => array('StringTrim'),
                 'validators' => array(

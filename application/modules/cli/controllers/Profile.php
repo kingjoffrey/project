@@ -16,9 +16,9 @@ class ProfileController
         $view->formPlayer->populate($player);
         $view->formPlayer->setView($view);
 
-        $view->formEmail = new Application_Form_Email();
-        $view->formEmail->populate($player);
-        $view->formEmail->setView($view);
+        $view->formLogin = new Application_Form_Login();
+        $view->formLogin->populate($player);
+        $view->formLogin->setView($view);
 
         $view->formPassword = new Application_Form_Password();
         $view->formPassword->setView($view);
@@ -42,7 +42,7 @@ class ProfileController
                 $dataIn['password'] = md5($dataIn['password']);
             }
             if (isset($dataIn['login']) && $dataIn['login']) {
-                if (!$view->formEmail->isValid($dataIn)) {
+                if (!$view->formLogin->isValid($dataIn)) {
                     $valid = false;
                 }
             }
