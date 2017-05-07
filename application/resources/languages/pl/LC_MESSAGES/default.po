@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: WOF\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-05-05 17:05+0200\n"
-"PO-Revision-Date: 2017-05-05 17:06+0200\n"
+"POT-Creation-Date: 2017-05-07 18:51+0200\n"
+"PO-Revision-Date: 2017-05-07 18:52+0200\n"
 "Last-Translator: Bartosz Krzeszewski <bartek@core-t.pl>\n"
 "Language-Team: \n"
 "Language: pl\n"
@@ -16,7 +16,7 @@ msgstr ""
 "X-Generator: Poedit 1.8.5\n"
 "X-Poedit-SearchPath-0: application\n"
 
-#: application/controllers/LoginController.php:103
+#: application/controllers/LoginController.php:140
 msgid "Incorrect login details"
 msgstr "Nieprawidłowy e-mail lub hasło!"
 
@@ -34,12 +34,13 @@ msgstr "Dostaliśmy Twoją zapłatę"
 msgid "User Cancelled the Approval"
 msgstr "Użytkownik anulował transakcję "
 
-#: application/forms/Auth.php:9 application/forms/Registration.php:28
-msgid "Email"
-msgstr "Email"
+#: application/forms/Auth.php:9 application/forms/Login.php:15
+#: application/forms/Registration.php:11
+msgid "Login"
+msgstr "Login"
 
 #: application/forms/Auth.php:14 application/forms/Password.php:15
-#: application/forms/Registration.php:45
+#: application/forms/Registration.php:28
 msgid "Password"
 msgstr "Hasło"
 
@@ -48,7 +49,7 @@ msgid "Remember me"
 msgstr "Zapamiętaj mnie"
 
 #: application/forms/Auth.php:22
-#: application/views/scripts/login/registration.phtml:4
+#: application/views/scripts/login/registration.phtml:3
 msgid "Sign in"
 msgstr "Zaloguj się"
 
@@ -84,8 +85,8 @@ msgstr "Utwórz mapę"
 msgid "E-mail"
 msgstr "E-mail"
 
-#: application/forms/Email.php:21 application/forms/Password.php:33
-#: application/forms/Player.php:28
+#: application/forms/Email.php:21 application/forms/Login.php:21
+#: application/forms/Password.php:33 application/forms/Player.php:28
 msgid "Submit"
 msgstr "Potwierdź"
 
@@ -93,25 +94,24 @@ msgstr "Potwierdź"
 msgid "Select language"
 msgstr "Wybierz język"
 
-#: application/forms/Password.php:23 application/forms/Registration.php:53
+#: application/forms/Password.php:23 application/forms/Registration.php:36
 msgid "Repeat password"
 msgstr "Powtórz hasło"
 
-#: application/forms/Player.php:14 application/forms/Registration.php:12
+#: application/forms/Player.php:14
 msgid "First name"
 msgstr "Imię"
 
 #: application/forms/Player.php:14 application/forms/Player.php:22
-#: application/forms/Registration.php:12 application/forms/Registration.php:20
 msgid "imaginary"
 msgstr "zmyślone"
 
-#: application/forms/Player.php:22 application/forms/Registration.php:20
+#: application/forms/Player.php:22
 msgid "Last name"
 msgstr "Nazwisko"
 
-#: application/forms/Registration.php:63
-#: application/views/scripts/login/index.phtml:4
+#: application/forms/Registration.php:46
+#: application/views/scripts/login/index.phtml:3
 msgid "Register"
 msgstr "Rejestracja"
 
@@ -212,6 +212,7 @@ msgid "Heroes"
 msgstr "Herosi"
 
 #: application/modules/cli/models/MainOpen.php:41
+#: application/views/scripts/halloffame/index.phtml:2
 msgid "Hall of Fame"
 msgstr "Sala sław"
 
@@ -1077,10 +1078,6 @@ msgstr "Imię znajomego"
 msgid "Delete friend"
 msgstr "Usuń znajomego"
 
-#: application/views/scripts/halloffame/index.phtml:2
-msgid "Players list"
-msgstr "Lista graczy"
-
 #: application/views/scripts/halloffame/index.phtml:5
 msgid "Place"
 msgstr "Miejsce"
@@ -1146,6 +1143,10 @@ msgid "Pause date"
 msgstr "Data wstrzymania"
 
 #: application/views/scripts/login/index.phtml:5
+msgid "Anonymous login"
+msgstr "Anonimowe logowanie"
+
+#: application/views/scripts/login/index.phtml:7
 msgid "Facebook login"
 msgstr "Zaloguj przez Facebook"
 
@@ -1215,8 +1216,8 @@ msgid "Change your data"
 msgstr "Zmień swoje dane"
 
 #: application/views/scripts/profile/index.phtml:7
-msgid "Change your e-mail"
-msgstr "Zmień swój e-mail"
+msgid "Change your login"
+msgstr "Zmień swój login"
 
 #: application/views/scripts/profile/index.phtml:12
 msgid "Change your password"
@@ -1225,6 +1226,10 @@ msgstr "Zmień swoje hasło"
 #: application/views/scripts/profile/ok.phtml:2
 msgid "Success"
 msgstr "Sukces"
+
+#: application/views/scripts/profile/ok.phtml:3
+msgid "Back to profile"
+msgstr "Powrót do profilu"
 
 #: application/views/scripts/profile/show.phtml:12
 msgid "Begin"
@@ -1294,6 +1299,15 @@ msgstr "Zapłać za pomocą PayPal"
 #: application/views/scripts/tournament/play.phtml:2
 msgid "Tournament stage"
 msgstr "Etap turnieju"
+
+#~ msgid "Email"
+#~ msgstr "Email"
+
+#~ msgid "Players list"
+#~ msgstr "Lista graczy"
+
+#~ msgid "Change your e-mail"
+#~ msgstr "Zmień swój e-mail"
 
 #~ msgid "Hero statistics"
 #~ msgstr "Statystyki bohatera"
@@ -1504,6 +1518,3 @@ msgstr "Etap turnieju"
 
 #~ msgid "Show artifacts"
 #~ msgstr "Pokaż artefakty"
-
-#~ msgid "Login"
-#~ msgstr "Login"
