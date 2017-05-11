@@ -5,9 +5,6 @@ use PayPal\Api\PaymentExecution;
 
 use PayPal\Api\Payment;
 
-use PayPal\Auth\OAuthTokenCredential;
-use PayPal\Rest\ApiContext;
-
 class PaypalController extends Coret_Controller_Authorized
 {
     public function indexAction()

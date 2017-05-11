@@ -10,9 +10,6 @@ use PayPal\Api\Payment;
 use PayPal\Api\RedirectUrls;
 use PayPal\Api\Transaction;
 
-use PayPal\Auth\OAuthTokenCredential;
-use PayPal\Rest\ApiContext;
-
 class PaypalController
 {
     public function create(WebSocketTransportInterface $user, Cli_MainHandler $handler, $dataIn)
@@ -21,6 +18,9 @@ class PaypalController
             echo ('No tournamentId (create)') . "\n";
             return;
         }
+
+        $translator = Zend_Registry::get('Zend_Translate');
+        $adapter = $translator->getAdapter();
 
         $apiContext = Coret_Model_PayPalApiContext::get();
 
@@ -50,7 +50,7 @@ class PaypalController
         $transaction = new Transaction();
         $transaction->setAmount($amount)
             ->setItemList($itemList)
-            ->setDescription('Tournament entry fee')
+            ->setDescription($adapter->translate('Tournament entry fee'))
             ->setInvoiceNumber(uniqid());
 
         $redirectUrls = new RedirectUrls();

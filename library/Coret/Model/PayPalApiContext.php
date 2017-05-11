@@ -1,4 +1,6 @@
 <?php
+use PayPal\Auth\OAuthTokenCredential;
+use PayPal\Rest\ApiContext;
 
 class Coret_Model_PayPalApiContext extends Coret_Db_Table_Abstract
 {
