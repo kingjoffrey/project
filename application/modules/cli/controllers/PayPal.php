@@ -22,7 +22,7 @@ class PaypalController
         $translator = Zend_Registry::get('Zend_Translate');
         $adapter = $translator->getAdapter();
 
-        $apiContext = Coret_Model_PayPalApiContext::get();
+        $apiContext = Coret_Model_PayPalApiContext::get('cli');
 
         $payer = new Payer();
         $payer->setPaymentMethod('paypal');

@@ -4,7 +4,7 @@ use PayPal\Rest\ApiContext;
 
 class Coret_Model_PayPalApiContext extends Coret_Db_Table_Abstract
 {
-    static public function get()
+    static public function get($logType = 'cli')
     {
         $payPalConfig = Zend_Registry::get('config')->paypal;
 
@@ -19,7 +19,7 @@ class Coret_Model_PayPalApiContext extends Coret_Db_Table_Abstract
             array(
                 'mode' => $payPalConfig->mode,
                 'log.LogEnabled' => true,
-                'log.FileName' => APPLICATION_PATH . '/../log/' . date('Ymd') . '_PayPal.log',
+                'log.FileName' => APPLICATION_PATH . '/../log/' . date('Ymd') . '_PayPal_' . $logType . '.log',
                 'log.LogLevel' => 'DEBUG', // PLEASE USE `INFO` LEVEL FOR LOGGING IN LIVE ENVIRONMENTS
                 'cache.enabled' => false,
             )

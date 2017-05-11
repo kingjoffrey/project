@@ -26,7 +26,7 @@ class PaypalController extends Coret_Controller_Authorized
 
         if ($paymentId && $PayerID) {
 
-            $apiContext = Coret_Model_PayPalApiContext::get();
+            $apiContext = Coret_Model_PayPalApiContext::get('www');
 
             $payment = Payment::get($paymentId, $apiContext);
 
