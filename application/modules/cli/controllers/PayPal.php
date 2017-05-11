@@ -22,9 +22,7 @@ class PaypalController
             return;
         }
 
-        $payPalConfig = Zend_Registry::get('config')->paypal;
-
-        $apiContext = $this->getApiContext($payPalConfig->clientId, $payPalConfig->clientSecret);
+        $apiContext = Coret_Model_PayPalApiContext::get();
 
         $payer = new Payer();
         $payer->setPaymentMethod('paypal');
@@ -88,27 +86,5 @@ class PaypalController
             'url' => $payment->getApprovalLink(),
         );
         $handler->sendToUser($user, $token);
-    }
-
-    private function getApiContext($clientId, $clientSecret)
-    {
-        $apiContext = new ApiContext(
-            new OAuthTokenCredential(
-                $clientId,
-                $clientSecret
-            )
-        );
-
-        $apiContext->setConfig(
-            array(
-                'mode' => 'sandbox',
-                'log.LogEnabled' => true,
-                'log.FileName' => APPLICATION_PATH . '/../log/PayPal_CLI.log',
-                'log.LogLevel' => 'DEBUG', // PLEASE USE `INFO` LEVEL FOR LOGGING IN LIVE ENVIRONMENTS
-                'cache.enabled' => false,
-            )
-        );
-
-        return $apiContext;
     }
 }

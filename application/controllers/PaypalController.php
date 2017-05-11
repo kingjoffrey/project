@@ -29,9 +29,7 @@ class PaypalController extends Coret_Controller_Authorized
 
         if ($paymentId && $PayerID) {
 
-            $payPalConfig = Zend_Registry::get('config')->paypal;
-
-            $apiContext = $this->getApiContext($payPalConfig->clientId, $payPalConfig->clientSecret);
+            $apiContext = Coret_Model_PayPalApiContext::get();
 
             $payment = Payment::get($paymentId, $apiContext);
 
@@ -66,28 +64,5 @@ class PaypalController extends Coret_Controller_Authorized
             $mTournamentPlayers->removePlayer($this->_request->getParam('id'), $playerId);
             $this->view->result = $this->view->translate('User Cancelled the Approval');
         }
-    }
-
-    private function getApiContext($clientId, $clientSecret)
-    {
-
-        $apiContext = new ApiContext(
-            new OAuthTokenCredential(
-                $clientId,
-                $clientSecret
-            )
-        );
-
-        $apiContext->setConfig(
-            array(
-                'mode' => 'sandbox',
-                'log.LogEnabled' => true,
-                'log.FileName' => APPLICATION_PATH . '/../log/PayPal_WWW.log',
-                'log.LogLevel' => 'DEBUG', // PLEASE USE `INFO` LEVEL FOR LOGGING IN LIVE ENVIRONMENTS
-                'cache.enabled' => false,
-            )
-        );
-
-        return $apiContext;
     }
 }
