@@ -20,7 +20,7 @@ $application = new Zend_Application(
     APPLICATION_PATH . '/configs/application.ini'
 );
 
-$application->getBootstrap()->bootstrap(array('date', 'config', 'modules','language'));
+$application->getBootstrap()->bootstrap(array('date', 'config', 'modules', 'language'));
 
 include_once(APPLICATION_PATH . '/modules/cli/handlers/PrivateChatHandler.php');
 include_once(APPLICATION_PATH . '/modules/cli/handlers/NewHandler.php');

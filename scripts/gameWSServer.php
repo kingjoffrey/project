@@ -34,7 +34,8 @@ $writer = new Zend\Log\Writer\Stream("php://output");
 $logger->addWriter($writer);
 
 // Create a WebSocket server
-$address = $configWS->aSchema . '://' . Zend_Registry::get('config')->websockets->aHost . ':' . $argv[2];
+$configWS = Zend_Registry::get('config')->websockets;
+$address = $configWS->aSchema . '://' . $configWS->aHost . ':' . $argv[2];
 $server = new WebSocketServer($address, $loop, $logger);
 
 if ($configWS->aSchema == 'wss') {
