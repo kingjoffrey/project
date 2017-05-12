@@ -55,14 +55,15 @@ class LoginController extends Coret_Controller_AuthenticateFrontend
 
         $mPlayer = new Application_Model_Player();
         if ($playerId = $mPlayer->createPlayer($data)) {
+            $this->_request->setParam('rememberMe', 1);
+
+
             $mHero = new Application_Model_Hero($playerId);
             $mHero->createHero($heroName);
 
             $this->_authAdapter = $this->getAuthAdapter($anonymous);
             $this->_auth->authenticate($this->_authAdapter);
             $this->handleAuthenticated();
-
-            Zend_Session::rememberMe(Zend_Registry::get('config')->rememberMeTime);
         }
     }
 
