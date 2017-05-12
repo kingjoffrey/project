@@ -6,12 +6,14 @@ class TutorialController
 {
     function index(WebSocketTransportInterface $user, Cli_MainHandler $handler)
     {
+        $id_lang = Zend_Registry::get('id_lang');
+
         $db = $handler->getDb();
 
-        if (!$tutorial = $handler->getTutorial()) {
+        if (!$tutorial = $handler->getTutorial($id_lang)) {
             echo 'not set' . "\n";
             $tutorial = new Cli_Model_Tutorial($db);
-            $handler->addTutorial($tutorial);
+            $handler->addTutorial($id_lang, $tutorial);
         }
 
         $mGame = new Application_Model_Game(0, $db);

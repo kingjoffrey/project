@@ -40,17 +40,20 @@ class Cli_MainHandler extends WebSocketUriHandler
         return $this->_db;
     }
 
-    public function addTutorial(Cli_Model_Tutorial $tutorial)
+    public function addTutorial($id_lang, Cli_Model_Tutorial $tutorial)
     {
-        $this->_tutorial = $tutorial;
+        $this->_tutorial[$id_lang] = $tutorial;
     }
 
     /**
+     * @param $id_lang
      * @return Cli_Model_Tutorial
      */
-    public function getTutorial()
+    public function getTutorial($id_lang)
     {
-        return $this->_tutorial;
+        if (isset($this->_tutorial[$id_lang])) {
+            return $this->_tutorial[$id_lang];
+        }
     }
 
     public function addHelp($id_lang, Cli_Model_Help $help)

@@ -8,6 +8,7 @@ class HelpController
         $id_lang = Zend_Registry::get('id_lang');
 
         $db = $handler->getDb();
+
         if (!$help = $handler->getHelp($id_lang)) {
             echo 'not set' . "\n";
             $help = new Cli_Model_Help($db);
