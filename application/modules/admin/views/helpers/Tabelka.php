@@ -24,7 +24,9 @@ class Admin_View_Helper_Tabelka extends Zend_View_Helper_Abstract
         if (count($this->view->paginator)) {
             foreach ($this->view->paginator as $row) {
                 $table .= $this->createTableContent($row, $columns);
-                $table .= $this->createButtons($controller, $row[$primary], $row);
+                if ($primary) {
+                    $table .= $this->createButtons($controller, $row[$primary], $row);
+                }
                 $table .= '</tr>';
             }
         } else {
