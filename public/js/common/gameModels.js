@@ -139,31 +139,34 @@ var GameModels = new function () {
         return mesh
     }
     this.addTree = function (x, y) {
-        if (isTouchDevice()) {
-            var maxI = 1
-        } else {
-            var maxI = Math.ceil(Math.random() * 3)
+        // if (isTouchDevice()) {
+        var maxI = 1
+        // } else {
+        //     var maxI = Math.ceil(Math.random() * 3)
+        // }
+
+        // for (var i = 0; i < maxI; i++) {
+        //     var mesh = Models.getTree(),
+        //         randomX = Math.random() * 2,
+        //         randomY = Math.random() * 2
+        //
+        //     console.log(randomX + ' ' + randomY)
+
+        // mesh.position.set(x * 2 + randomX, 0, y * 2 + randomY)
+
+        var mesh = Models.getTree()
+        mesh.position.set(x * 2 + 1, 0, y * 2 + 1)
+        mesh.rotation.y = 2 * Math.PI * Math.random()
+
+        mesh.scale.x = 0.2
+        mesh.scale.y = 0.2
+        mesh.scale.z = 0.2
+
+        if (Page.getShadows()) {
+            mesh.castShadow = true
         }
-
-        for (var i = 0; i < maxI; i++) {
-            var mesh = Models.getTree(),
-                randomX = Math.random() * 2,
-                randomY = Math.random() * 2
-
-            // console.log(randomX + ' ' + randomY)
-
-            mesh.position.set(x * 2 + randomX, 0, y * 2 + randomY)
-            mesh.rotation.y = 2 * Math.PI * Math.random()
-
-            mesh.scale.x = 0.15
-            mesh.scale.y = 0.15
-            mesh.scale.z = 0.15
-
-            if (Page.getShadows()) {
-                mesh.castShadow = true
-            }
-            GameScene.add(mesh)
-        }
+        GameScene.add(mesh)
+        // }
     }
     this.cursorPosition = function (x, y, t, cursor) {
         switch (t) {

@@ -7,14 +7,21 @@ var Fields = new function () {
         textureMultiplier = 16,
         textureCanvas,
         waterTextureCanvas,
-        hillColor1 = '#0c7521',
-        hillColor2 = '#003600',
+        // hillColor1 = '#0c7521',
+        // hillColor1 = '#096b1e',
+        // hillColor2 = '#0a6f20',
+        hillColor1 = '#484a4d',
+        hillColor2 = '#3b3c3f',
         roadColor1 = '#aaaa00',
-        mountainColor1 = '#dbd9ee',
-        mountainColor2 = '#000000',
-        mountainColor3 = '#ffffff',
+        mountainColor1 = '#adb1b8',
+        mountainColor2 = '#c0c5ce',
+        // mountainColor1 = '#dbd9ee',
+        // mountainColor2 = '#d1d5f3',
+        // mountainColor2 = '#555555',
+        // mountainColor3 = '#ffffff',
         grassColor1 = '#3c963c',
         grassColor2 = '#3fa342',
+        forestColor1 = '#0b7e22',
         waterColor1 = '#00557f',
         waterColor2 = '#526daa',
         paintMountain = function (tmpTextureContext, x, y) {
@@ -23,49 +30,188 @@ var Fields = new function () {
                 newX = x * textureMultiplier,
                 newY = y * textureMultiplier,
                 half = textureMultiplier / 2,
-                halfPlus = textureMultiplier + half
+                halfPlus = textureMultiplier + half,
+                m1, m2, m3, m4
 
-            paintTextureField(tmpTextureContext, x, y, mountainColor1, mountainColor3, 2, 2)
+            // m1 = notType(Fields.get(x, y - 1, 1).getType(), 'm')
+            // m2 = notType(Fields.get(x + 1, y, 1).getType(), 'm')
+            m3 = notType(Fields.get(x, y + 1, 1).getType(), 'm')
+            m4 = notType(Fields.get(x - 1, y, 1).getType(), 'm')
 
-            if (notType(Fields.get(x, y + 1, 1).getType(), 'm')) {
-                tmpTextureContext.fillStyle = mountainColor2
-                tmpTextureContext.fillRect(newX, newY + textureMultiplier - 1, 1, 2)
-                tmpTextureContext.fillRect(newX + 1, newY + textureMultiplier - 2, 1, 2)
-                tmpTextureContext.fillRect(newX + 2, newY + textureMultiplier - 1, 1, 1)
-                tmpTextureContext.fillRect(newX + 3, newY + textureMultiplier - 2, 1, 2)
-                tmpTextureContext.fillRect(newX + 4, newY + textureMultiplier - 1, 1, 1)
-                tmpTextureContext.fillRect(newX + 5, newY + textureMultiplier - 2, 1, 2)
-                tmpTextureContext.fillRect(newX + 6, newY + textureMultiplier - 1, 1, 1)
-                tmpTextureContext.fillRect(newX + 7, newY + textureMultiplier - 2, 1, 2)
-                tmpTextureContext.fillRect(newX + 8, newY + textureMultiplier - 1, 1, 1)
-                tmpTextureContext.fillRect(newX + 9, newY + textureMultiplier - 2, 1, 2)
-                tmpTextureContext.fillRect(newX + 10, newY + textureMultiplier - 1, 1, 1)
-                tmpTextureContext.fillRect(newX + 11, newY + textureMultiplier - 2, 1, 2)
-                tmpTextureContext.fillRect(newX + 12, newY + textureMultiplier - 1, 1, 1)
-                tmpTextureContext.fillRect(newX + 13, newY + textureMultiplier - 2, 1, 2)
-                tmpTextureContext.fillRect(newX + 14, newY + textureMultiplier - 1, 1, 1)
-                tmpTextureContext.fillRect(newX + 15, newY + textureMultiplier - 2, 1, 2)
-            }
+            // if (m1) {
+            //     tmpTextureContext.fillStyle = mountainColor2
+            //     tmpTextureContext.fillRect(newX, newY, textureMultiplier, 2)
+            // }
+            // if (m3) {
+            // tmpTextureContext.fillStyle = mountainColor2
+            // tmpTextureContext.fillRect(newX + 1, newY + textureMultiplier - 2, textureMultiplier - 2, 1)
+            // tmpTextureContext.fillRect(newX + 2, newY + textureMultiplier - 3, textureMultiplier - 4, 1)
+            // tmpTextureContext.fillRect(newX + 3, newY + textureMultiplier - 4, textureMultiplier - 6, 1)
+            // tmpTextureContext.fillRect(newX + 4, newY + textureMultiplier - 5, textureMultiplier - 8, 1)
+            // tmpTextureContext.fillStyle = '#000000'
+            // tmpTextureContext.fillRect(newX, newY + textureMultiplier - 1, textureMultiplier, 1)
+            // }
+            // if (m4) {
+            // tmpTextureContext.fillStyle = mountainColor2
+            // tmpTextureContext.fillRect(newX + 1, newY + 1, 1, textureMultiplier - 2)
+            // tmpTextureContext.fillRect(newX + 2, newY + 2, 1, textureMultiplier - 4)
+            // tmpTextureContext.fillRect(newX + 3, newY + 3, 1, textureMultiplier - 6)
+            // tmpTextureContext.fillRect(newX + 4, newY + 4, 1, textureMultiplier - 8)
+            // tmpTextureContext.fillStyle = '#000000'
+            // tmpTextureContext.fillRect(newX, newY, 1, textureMultiplier)
+            // }
 
-            if (notType(Fields.get(x - 1, y, 1).getType(), 'm')) {
-                tmpTextureContext.fillStyle = mountainColor2
-                tmpTextureContext.fillRect(newX, newY, 1, 1)
-                tmpTextureContext.fillRect(newX, newY + 1, 2, 1)
-                tmpTextureContext.fillRect(newX, newY + 2, 1, 1)
-                tmpTextureContext.fillRect(newX, newY + 3, 2, 1)
-                tmpTextureContext.fillRect(newX, newY + 4, 1, 1)
-                tmpTextureContext.fillRect(newX, newY + 5, 2, 1)
-                tmpTextureContext.fillRect(newX, newY + 6, 1, 1)
-                tmpTextureContext.fillRect(newX, newY + 7, 2, 1)
-                tmpTextureContext.fillRect(newX, newY + 8, 1, 1)
-                tmpTextureContext.fillRect(newX, newY + 9, 2, 1)
-                tmpTextureContext.fillRect(newX, newY + 10, 1, 1)
-                tmpTextureContext.fillRect(newX, newY + 11, 2, 1)
-                tmpTextureContext.fillRect(newX, newY + 12, 1, 1)
-                tmpTextureContext.fillRect(newX, newY + 13, 2, 1)
-                tmpTextureContext.fillRect(newX, newY + 14, 1, 1)
-                tmpTextureContext.fillRect(newX, newY + 15, 2, 1)
-            }
+            // if (notType(Fields.get(x, y + 1, 1).getType(), 'm')) {
+            //     tmpTextureContext.fillStyle = '#000000'
+            // if (Math.random() > 0.5) {
+            //     if (Math.random() > 0.5) {
+            //         var dot = 2
+            //     } else {
+            //         var dot = 1
+            //     }
+            //     tmpTextureContext.fillRect(newX, newY + textureMultiplier - 1, 1, dot)
+            // }
+            // if (Math.random() > 0.5) {
+            //     if (Math.random() > 0.5) {
+            //         var dot = 2
+            //     } else {
+            //         var dot = 1
+            //     }
+            //     tmpTextureContext.fillRect(newX + 1, newY + textureMultiplier - 2, 1, dot)
+            // }
+            // if (Math.random() > 0.5) {
+            //     if (Math.random() > 0.5) {
+            //         var dot = 2
+            //     } else {
+            //         var dot = 1
+            //     }
+            //     tmpTextureContext.fillRect(newX + 2, newY + textureMultiplier - 1, 1, dot)
+            // }
+            // if (Math.random() > 0.5) {
+            //     if (Math.random() > 0.5) {
+            //         var dot = 2
+            //     } else {
+            //         var dot = 1
+            //     }
+            //     tmpTextureContext.fillRect(newX + 3, newY + textureMultiplier - 2, 1, dot)
+            // }
+            // if (Math.random() > 0.5) {
+            //     if (Math.random() > 0.5) {
+            //         var dot = 2
+            //     } else {
+            //         var dot = 1
+            //     }
+            //     tmpTextureContext.fillRect(newX + 4, newY + textureMultiplier - 1, 1, dot)
+            // }
+            // if (Math.random() > 0.5) {
+            //     if (Math.random() > 0.5) {
+            //         var dot = 2
+            //     } else {
+            //         var dot = 1
+            //     }
+            //     tmpTextureContext.fillRect(newX + 5, newY + textureMultiplier - 2, 1, dot)
+            // }
+            // if (Math.random() > 0.5) {
+            //     if (Math.random() > 0.5) {
+            //         var dot = 2
+            //     } else {
+            //         var dot = 1
+            //     }
+            //     tmpTextureContext.fillRect(newX + 6, newY + textureMultiplier - 1, 1, dot)
+            // }
+            // if (Math.random() > 0.5) {
+            //     if (Math.random() > 0.5) {
+            //         var dot = 2
+            //     } else {
+            //         var dot = 1
+            //     }
+            //     tmpTextureContext.fillRect(newX + 7, newY + textureMultiplier - 2, 1, dot)
+            // }
+            // if (Math.random() > 0.5) {
+            //     if (Math.random() > 0.5) {
+            //         var dot = 2
+            //     } else {
+            //         var dot = 1
+            //     }
+            //     tmpTextureContext.fillRect(newX + 8, newY + textureMultiplier - 1, 1, dot)
+            // }
+            // if (Math.random() > 0.5) {
+            //     if (Math.random() > 0.5) {
+            //         var dot = 2
+            //     } else {
+            //         var dot = 1
+            //     }
+            //     tmpTextureContext.fillRect(newX + 9, newY + textureMultiplier - 2, 1, dot)
+            // }
+            // if (Math.random() > 0.5) {
+            //     if (Math.random() > 0.5) {
+            //         var dot = 2
+            //     } else {
+            //         var dot = 1
+            //     }
+            //     tmpTextureContext.fillRect(newX + 10, newY + textureMultiplier - 1, 1, dot)
+            // }
+            // if (Math.random() > 0.5) {
+            //     if (Math.random() > 0.5) {
+            //         var dot = 2
+            //     } else {
+            //         var dot = 1
+            //     }
+            //     tmpTextureContext.fillRect(newX + 11, newY + textureMultiplier - 2, 1, dot)
+            // }
+            // if (Math.random() > 0.5) {
+            //     if (Math.random() > 0.5) {
+            //         var dot = 2
+            //     } else {
+            //         var dot = 1
+            //     }
+            //     tmpTextureContext.fillRect(newX + 12, newY + textureMultiplier - 1, 1, dot)
+            // }
+            // if (Math.random() > 0.5) {
+            //     if (Math.random() > 0.5) {
+            //         var dot = 2
+            //     } else {
+            //         var dot = 1
+            //     }
+            //     tmpTextureContext.fillRect(newX + 13, newY + textureMultiplier - 2, 1, dot)
+            // }
+            // if (Math.random() > 0.5) {
+            //     if (Math.random() > 0.5) {
+            //         var dot = 2
+            //     } else {
+            //         var dot = 1
+            //     }
+            //     tmpTextureContext.fillRect(newX + 14, newY + textureMultiplier - 1, 1, dot)
+            // }
+            // if (Math.random() > 0.5) {
+            //     if (Math.random() > 0.5) {
+            //         var dot = 2
+            //     } else {
+            //         var dot = 1
+            //     }
+            //     tmpTextureContext.fillRect(newX + 15, newY + textureMultiplier - 2, 1, 2)
+            // }
+            // }
+
+            // if (notType(Fields.get(x - 1, y, 1).getType(), 'm')) {
+            //     tmpTextureContext.fillStyle = hillColor2
+            //     tmpTextureContext.fillRect(newX, newY, 1, 1)
+            //     tmpTextureContext.fillRect(newX, newY + 1, 2, 1)
+            //     tmpTextureContext.fillRect(newX, newY + 2, 1, 1)
+            //     tmpTextureContext.fillRect(newX, newY + 3, 2, 1)
+            //     tmpTextureContext.fillRect(newX, newY + 4, 1, 1)
+            //     tmpTextureContext.fillRect(newX, newY + 5, 2, 1)
+            //     tmpTextureContext.fillRect(newX, newY + 6, 1, 1)
+            //     tmpTextureContext.fillRect(newX, newY + 7, 2, 1)
+            //     tmpTextureContext.fillRect(newX, newY + 8, 1, 1)
+            //     tmpTextureContext.fillRect(newX, newY + 9, 2, 1)
+            //     tmpTextureContext.fillRect(newX, newY + 10, 1, 1)
+            //     tmpTextureContext.fillRect(newX, newY + 11, 2, 1)
+            //     tmpTextureContext.fillRect(newX, newY + 12, 1, 1)
+            //     tmpTextureContext.fillRect(newX, newY + 13, 2, 1)
+            //     tmpTextureContext.fillRect(newX, newY + 14, 1, 1)
+            //     tmpTextureContext.fillRect(newX, newY + 15, 2, 1)
+            // }
         },
         paintHill = function (tmpTextureContext, x, y) {
             var x = x * 1,
@@ -75,7 +221,7 @@ var Fields = new function () {
                 half = textureMultiplier / 2,
                 halfPlus = textureMultiplier + half
 
-            paintTextureField(tmpTextureContext, x, y, hillColor1, grassColor1, 1)
+            // paintTextureField(tmpTextureContext, x, y, hillColor1, grassColor1, 1)
 
             // if (isType(Fields.get(x, y + 1, 1).getType(), 'h')
             //     && isType(Fields.get(x, y - 1, 1).getType(), 'h')
@@ -206,8 +352,10 @@ var Fields = new function () {
                 return 0
             }
         },
-        paintTextureField = function (tmpTextureContext, x, y, color1, color2, percent, size) {
+        addDots = function (tmpTextureContext, x, y, odd, color, percent, size) {
             var howManyTimes = textureMultiplier * textureMultiplier * (percent / 100)
+
+            tmpTextureContext.fillStyle = color
 
             if (isSet(size)) {
                 var s = size
@@ -215,15 +363,37 @@ var Fields = new function () {
                 var s = 1
             }
 
-            tmpTextureContext.fillStyle = color1
-            tmpTextureContext.fillRect(x * textureMultiplier, y * textureMultiplier, textureMultiplier, textureMultiplier)
-            tmpTextureContext.fillStyle = color2
-
             for (var i = 0; i < howManyTimes; i++) {
                 var valueX = Math.floor((Math.random() * textureMultiplier)),
                     valueY = Math.floor((Math.random() * textureMultiplier))
 
                 tmpTextureContext.fillRect(x * textureMultiplier + valueX, y * textureMultiplier + valueY, s, s)
+            }
+        },
+        paintTextureField = function (tmpTextureContext, x, y, color1, color2) {
+            var color
+
+            if (x % 2) {
+                if (y % 2) {
+                    color = color1
+                } else {
+                    color = color2
+                }
+            } else {
+                if (y % 2) {
+                    color = color2
+                } else {
+                    color = color1
+                }
+            }
+
+            tmpTextureContext.fillStyle = color
+            tmpTextureContext.fillRect(x * textureMultiplier, y * textureMultiplier, textureMultiplier, textureMultiplier)
+
+            if (color == color1) {
+                return 1
+            } else {
+                return 0
             }
         },
         paintWaterTextureField = function (tmpWaterTextureContext, x, y, color1, color2, percent) {
@@ -371,30 +541,34 @@ var Fields = new function () {
                         paintTextureField(tmpTextureContext, x, y, grassColor1, grassColor2, 5)
                         break
                     case 'f':
-                        paintTextureField(tmpTextureContext, x, y, grassColor1, '#0b7e22', 5)
+                        var odd = paintTextureField(tmpTextureContext, x, y, grassColor1, grassColor2)
+                        addDots(tmpTextureContext, x, y, odd, forestColor1, 5)
                         if (notSet(noModels)) {
                             GameModels.addTree(x, y)
                         }
                         break
                     case 'w':
-                        paintTextureField(tmpTextureContext, x, y, roadColor1, grassColor1, 0)
+                        paintTextureField(tmpTextureContext, x, y, grassColor1, grassColor2)
                         paintWaterTextureField(tmpWaterTextureContext, x, y, '#365294', waterColor2, 1)
                         break
                     case 'b':
                         paintBridge(tmpTextureContext, tmpWaterTextureContext, x, y, noModels)
                         break
                     case 'h':
-                        paintHill(tmpTextureContext, x, y)
+                        paintTextureField(tmpTextureContext, x, y, hillColor1, hillColor2)
+                        // paintHill(tmpTextureContext, x, y, 1)
                         break
                     case 'm':
-                        paintMountain(tmpTextureContext, x, y)
+                        paintTextureField(tmpTextureContext, x, y, mountainColor1, mountainColor2)
+                        // paintMountain(tmpTextureContext, x, y)
                         break
                     case 'r':
-                        paintTextureField(tmpTextureContext, x, y, grassColor1, grassColor1, 0)
+                        paintTextureField(tmpTextureContext, x, y, grassColor1, grassColor2)
                         paintRoad(tmpTextureContext, x, y)
                         break
                     case 's':
-                        paintTextureField(tmpTextureContext, x, y, grassColor1, waterColor1, 30)
+                        var odd = paintTextureField(tmpTextureContext, x, y, grassColor1, grassColor2, 30)
+                        addDots(tmpTextureContext, x, y, odd, waterColor1, 30)
                         break
                 }
             }
@@ -432,7 +606,8 @@ var Fields = new function () {
                 paintTextureField(context, x, y, grassColor1, grassColor2, 5)
                 break
             case 'f':
-                paintTextureField(context, x, y, grassColor1, '#0b7e22', 50)
+                paintTextureField(context, x, y, grassColor1, grassColor2)
+                addDots(context, x, y, 0, forestColor1, 5)
                 break
             case 'w':
                 paintTextureField(context, x, y, waterColor1, waterColor2, 0)
@@ -442,17 +617,20 @@ var Fields = new function () {
                 paintRoad(context, x, y)
                 break
             case 'h':
-                paintHill(context, x, y)
+                paintTextureField(context, x, y, hillColor1, hillColor2)
+                // paintHill(context, x, y)
                 break
             case 'm':
-                paintMountain(context, x, y)
+                paintTextureField(context, x, y, mountainColor1, mountainColor2)
+                // paintMountain(context, x, y)
                 break
             case 'r':
-                paintTextureField(context, x, y, grassColor1, grassColor1, 0)
+                paintTextureField(context, x, y, grassColor1, grassColor1)
                 paintRoad(context, x, y)
                 break
             case 's':
-                paintTextureField(context, x, y, grassColor1, waterColor1, 30)
+                paintTextureField(context, x, y, grassColor1, grassColor2)
+                addDots(context, x, y, 0, waterColor1, 30)
                 break
         }
     }

@@ -1186,6 +1186,10 @@ input.max {
     background: none;
 }
 
+#content .login form .hint {
+    position: absolute;
+}
+
 .touchscreen.vertical #logo1 {
     right: 0vw;
     top: 54vw;
@@ -1234,18 +1238,19 @@ input.max {
 
 #turnInfo {
     position: absolute;
-    top: 10vh;
+    top: 13vh;
     z-index: 999;
     background: gold;
     border-top: 1px solid #000;
     border-bottom: 1px solid #000;
-    width: 93.6vw;
+    width: 97.6vw;
     text-align: center;
-    padding: 3.2vw;
+    padding: 1.2vw;
     font-size: 2.1vw;
     color: green;
     text-shadow: none;
     display: none;
+    box-shadow: 0 0 5px #000;
 }
 
 #lost {

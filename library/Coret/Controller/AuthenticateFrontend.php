@@ -70,9 +70,12 @@ abstract class Coret_Controller_AuthenticateFrontend extends Coret_Controller_Au
                 $response = $request->execute();
                 $this->handleFacebookUser($response->getGraphObject(Facebook\GraphUser::className()));
             } catch (FacebookRequestException $e) {
-                echo "Exception occured, code: " . $e->getCode();
-                echo " with message: " . $e->getMessage();
+                $l = new Coret_Model_Logger('www');
+                $l->log('Exception occured, code: ' . $e->getCode());
+                $l->log(' with message: ' . $e->getMessage());
             }
+        } else {
+            $this->redirect($this->view->url(array('controller' => 'login', 'action' => null)));
         }
     }
 

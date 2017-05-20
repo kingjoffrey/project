@@ -1,10 +1,15 @@
 var Sound = new function () {
-    var mute = false
+    var mute = false,
+        volume = .5
     this.play = function (name) {
         if (mute) {
             return
         }
-        $('#' + name).get(0).play()
+
+        var sound = $('#' + name).get(0)
+
+        sound.volume = volume
+        sound.play()
     }
     this.isPlaying = function (name) {
         return !$('#' + name).get(0).paused
@@ -14,5 +19,8 @@ var Sound = new function () {
     }
     this.getMute = function () {
         return mute
+    }
+    this.setVolume = function (v) {
+        volume = v
     }
 }
