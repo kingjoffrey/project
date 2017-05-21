@@ -262,9 +262,9 @@ var Help = new function () {
                 lastId = unitId
             }
 
-            mesh = HelpModels.addUnit(help.list[lastId].name.replace(' ', '_').toLowerCase())
-            $('#text').prepend(unitProperties(help.list[lastId]))
             currentUnitId = lastId
+
+            handleUnit()
         },
         changeCastle = function (direction) {
             if (mesh) {
@@ -322,8 +322,14 @@ var Help = new function () {
 
             handleTerrain()
         },
+        handleUnit = function () {
+            mesh = HelpModels.addUnit(help.list[currentUnitId].name.replace(' ', '_').toLowerCase())
+            HelpRenderer.setMesh(mesh)
+            $('#text').prepend(unitProperties(help.list[currentUnitId]))
+        },
         handleCastle = function () {
             mesh = HelpModels.addCastle(castles[currentCastleId])
+            HelpRenderer.setMesh(mesh)
             $('#Castle').remove()
             $('#text').prepend($('<div>')
                 .attr('id', 'Castle')
@@ -353,7 +359,7 @@ var Help = new function () {
                 ))
         }
 
-    this.fillText = function (id) {
+    this.fillHtml = function (id) {
         var element = help[id]
         $('#helpMenu div').removeClass('off')
         $('#helpMenu #' + id).addClass('off')
@@ -390,9 +396,8 @@ var Help = new function () {
                 break
             case 'units':
                 for (var unitId in help.list) {
-                    mesh = HelpModels.addUnit(help.list[unitId].name.replace(' ', '_').toLowerCase())
-                    $('#text').prepend(unitProperties(help.list[unitId]))
                     currentUnitId = unitId
+                    handleUnit()
                     break
                 }
                 break

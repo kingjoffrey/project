@@ -26,12 +26,12 @@ var HelpController = new function () {
                 })
 
                 $('#helpMenu div#' + id).addClass('active')
-                Help.fillText(id.substring(4))
+                Help.fillHtml(id.substring(4))
             }))
         }
 
         $('#helpMenu div').first().addClass('active')
-        Help.fillText('game')
+        Help.fillHtml('game')
         $('.table').css({'min-height': '30vw'})
 
         HelpScene.resize()
