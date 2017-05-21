@@ -5,7 +5,36 @@ var Setup = new function () {
         gameMasterId,
         numberOfMapPlayers
 
+    this.update = function (r) {
+        if (notSet(r.close)) {
+            Setup.removePlayer(r.player.playerId)
+            if (r.player.sideId) {
+                $('tr#' + r.player.sideId + ' .td3').html(r.player.name)
 
+                if (r.player.playerId == id) {
+                    $('tr#' + r.player.sideId + ' .td2 a').html(translations.deselect)
+                    $('tr#' + r.player.sideId + ' .td2').parent().addClass('selected')
+                } else {
+                    if (Setup.getGameMasterId() == id) {
+                        $('tr#' + r.player.sideId + ' .td2 a').html(translations.deselect);
+                    } else {
+                        $('tr#' + r.player.sideId + ' .td2 a').addClass('buttonOff');
+                    }
+                }
+                $('tr#' + r.player.sideId + ' .td1').attr('id', r.player.playerId)
+            } else {
+                $('#playersout').append(
+                    $('<tr>')
+                        .html($('<td>').html(r.player.name))
+                        .attr('id', r.player.playerId)
+                )
+            }
+            Setup.updateStartButton()
+        } else {
+            WebSocketSendMain.controller('new', 'index')
+        }
+
+    }
     this.updateStartButton = function () {
         $('.td3').each(function () {
             if ($(this).html()) {

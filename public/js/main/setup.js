@@ -14,7 +14,7 @@ var SetupController = new function () {
                 numberOfMapPlayers++
 
                 $('#' + i + '.playersingame').append($('<tr>').attr('id', side.sideId)
-                    .append($('<td>').addClass('td1').html($('<div>').addClass('colorBox').css('background', side.backgroundColor)))
+                    .append($('<td>').addClass('td1').html($('<div>').addClass('colorBox').css('background', side.backgroundColor).html('&nbsp;')))
                     .append($('<td>').addClass('td2')
                         .append($('<a>').addClass('button buttonColors').html(translations.select).attr('id', side.sideId).click(function () {
                             if ($(this).hasClass('buttonOff')) {
