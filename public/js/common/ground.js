@@ -1095,12 +1095,12 @@ var Ground = new function () {
 
                 var mesh = new THREE.Mesh(geometry, new THREE.MeshLambertMaterial({
                     map: texture,
-                    side: THREE.DoubleSide
+                    side: THREE.BackSide
                 }))
             } else {
                 var mesh = new THREE.Mesh(geometry, new THREE.MeshLambertMaterial({
                     color: '#ffffff',
-                    side: THREE.DoubleSide
+                    side: THREE.BackSide
                 }))
             }
 
@@ -1113,10 +1113,10 @@ var Ground = new function () {
             }
 
 
-            var geo = new THREE.WireframeGeometry(mesh.geometry),
-                mat = new THREE.LineBasicMaterial({color: 0x00ff00, linewidth: 1}),
-                wireframe = new THREE.LineSegments(geo, mat)
-            mesh.add(wireframe)
+            // var geo = new THREE.WireframeGeometry(mesh.geometry),
+            //     mat = new THREE.LineBasicMaterial({color: 0x00ff00, linewidth: 1}),
+            //     wireframe = new THREE.LineSegments(geo, mat)
+            // mesh.add(wireframe)
 
             return mesh
         },
@@ -1127,9 +1127,9 @@ var Ground = new function () {
             var texture = new THREE.Texture(canvas)
             texture.needsUpdate = true
 
-            var mesh = new THREE.Mesh(new THREE.PlaneBufferGeometry(maxX, maxY), new THREE.MeshLambertMaterial({
+            var mesh = new THREE.Mesh(new THREE.PlaneBufferGeometry(maxX, maxY), new THREE.MeshPhongMaterial({
                 map: texture,
-                side: THREE.DoubleSide
+                side: THREE.BackSide
             }))
             mesh.rotation.x = Math.PI / 2
             mesh.position.set(maxX / 2, -waterLevel, maxY / 2)
@@ -1146,7 +1146,7 @@ var Ground = new function () {
 
             var mesh = new THREE.Mesh(new THREE.PlaneBufferGeometry(maxX, 1), new THREE.MeshLambertMaterial({
                 color: '#34220c',
-                side: THREE.DoubleSide
+                side: THREE.BackSide
             }))
 
             mesh.position.y = y
@@ -1162,7 +1162,7 @@ var Ground = new function () {
 
             var mesh = new THREE.Mesh(new THREE.PlaneBufferGeometry(maxY, 1), new THREE.MeshLambertMaterial({
                 color: '#34220c',
-                side: THREE.DoubleSide
+                side: THREE.BackSide
             }))
             mesh.rotation.y = Math.PI / 2
             mesh.rotation.z = Math.PI / 2

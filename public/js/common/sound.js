@@ -1,6 +1,6 @@
 var Sound = new function () {
     var mute = false,
-        volume = .5
+        volume = .1
     this.play = function (name) {
         if (mute) {
             return
