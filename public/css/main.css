@@ -219,6 +219,12 @@ div.table table {
     background: url("/img/game/message_bg.png");
 }
 
+#main #versionNumber {
+    position: fixed;
+    bottom: 0;
+    right: 0;
+}
+
 #versionNumber {
     font-style: italic;
     float: right;
