@@ -170,24 +170,24 @@ class EditorController
             foreach ($oldRuins as $ruinId => $ruin) {
                 switch ($dataIn['mirror']) {
                     case 0:
-                        $mRuins->add($ruin['x'], $ruin['y'] + $maxY);
+                        $mRuins->add($ruin['x'], $ruin['y'] + $maxY, $ruin['ruinId']);
                         $y = ($maxY - ($ruin['y'] * 2 + 1)) + $ruin['y'];
-                        $mRuins->add($ruin['x'], $y);
+                        $mRuins->add($ruin['x'], $y, $ruin['ruinId']);
                         break;
                     case 1:
-                        $mRuins->add($ruin['x'], $ruin['y']);
+                        $mRuins->add($ruin['x'], $ruin['y'], $ruin['ruinId']);
                         $x = $maxX - ($ruin['x'] + 1);
-                        $mRuins->add($x, $ruin['y']);
+                        $mRuins->add($x, $ruin['y'], $ruin['ruinId']);
                         break;
                     case 2:
-                        $mRuins->add($ruin['x'], $ruin['y']);
+                        $mRuins->add($ruin['x'], $ruin['y'], $ruin['ruinId']);
                         $y = ($maxY - ($ruin['y'] + 1)) + $maxY;
-                        $mRuins->add($ruin['x'], $y);
+                        $mRuins->add($ruin['x'], $y, $ruin['ruinId']);
                         break;
                     case 3:
-                        $mRuins->add($ruin['x'] + $maxX2, $ruin['y']);
+                        $mRuins->add($ruin['x'] + $maxX2, $ruin['y'], $ruin['ruinId']);
                         $x = $maxX2 - ($ruin['x'] * 2 + 1) + $ruin['x'];
-                        $mRuins->add($x, $ruin['y']);
+                        $mRuins->add($x, $ruin['y'], $ruin['ruinId']);
                         break;
                 }
             }

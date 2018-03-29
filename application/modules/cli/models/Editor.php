@@ -53,9 +53,9 @@ class Cli_Model_Editor
     private function initRuins(Zend_Db_Adapter_Pdo_Pgsql $db)
     {
         $mMapRuins = new Application_Model_MapRuins($this->_mapId, $db);
-        foreach ($mMapRuins->getMapRuins() as $ruinId => $position) {
-            $this->_Ruins->editorAdd($ruinId, new Cli_Model_EditorRuin($position['x'], $position['y']));
-            $this->_Fields->getField($position['x'], $position['y'])->setRuin($ruinId);
+        foreach ($mMapRuins->getMapRuins() as $ruinId => $mapRuin) {
+            $this->_Ruins->editorAdd($ruinId, new Cli_Model_EditorRuin($mapRuin['x'], $mapRuin['y'], $mapRuin['ruinId']));
+            $this->_Fields->getField($mapRuin['x'], $mapRuin['y'])->setRuin($ruinId);
         }
     }
 
@@ -162,7 +162,7 @@ class Cli_Model_Editor
                             'value' => $tower->getId()
                         );
                     case 'ruin':
-                        $ruin = new Cli_Model_EditorRuin($dataIn['x'], $dataIn['y']);
+                        $ruin = new Cli_Model_EditorRuin($dataIn['x'], $dataIn['y'], $dataIn['ruinId']);
                         $ruin->create($this->_mapId, $db);
                         $this->_Ruins->editorAdd($ruin->getId(), $ruin);
                         $this->_Fields->getField($dataIn['x'], $dataIn['y'])->setRuin($ruin->getId());

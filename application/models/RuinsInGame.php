@@ -5,7 +5,7 @@ class Application_Model_RuinsInGame extends Coret_Db_Table_Abstract
 
     protected $_name = 'ruinsingame';
     protected $_foreign_1 = 'gameId';
-    protected $_foreign_2 = 'ruinId';
+    protected $_foreign_2 = 'mapRuinId';
 
     public function __construct($gameId, Zend_Db_Adapter_Pdo_Pgsql $db = null)
     {
@@ -34,10 +34,10 @@ class Application_Model_RuinsInGame extends Coret_Db_Table_Abstract
         return $array;
     }
 
-    public function add($ruinId)
+    public function add($mapRuinId)
     {
         $data = array(
-            $this->_foreign_2 => $ruinId,
+            $this->_foreign_2 => $mapRuinId,
             $this->_foreign_1 => $this->_gameId
         );
 
