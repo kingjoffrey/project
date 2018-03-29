@@ -143,7 +143,7 @@ var Models = new function () {
                 mesh.add(m)
             }
         },
-        load = function (id) {
+        armyLoadCallback = function (id) {
             return function (geometry, materials) {
                 armyModels[id] = geometry
 
@@ -170,7 +170,7 @@ var Models = new function () {
             ]
             for (var i in models) {
                 var id = models[i]
-                JSONLoader.load('/models/' + id + '.json', load(id))
+                JSONLoader.load('/models/' + id + '.json', armyLoadCallback(id))
 
                 // armyModels[i] = loader.parse(models[i])
             }

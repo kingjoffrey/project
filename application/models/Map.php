@@ -72,11 +72,9 @@ class Application_Model_Map extends Coret_Db_Table_Abstract
             ->from($this->_name, array('mapId', 'name'))
             ->order('mapId');
 
-        $list = $this->selectAll($select);
-
         $maps = array();
 
-        foreach ($list as $map) {
+        foreach ($this->selectAll($select) as $map) {
             $maps[$map['mapId']] = $map['name'];
         }
 
