@@ -4,7 +4,8 @@ var PickerCommon = new function () {
         intersects,
         camera,
         container,
-        vector
+        vector,
+        cursorLock = 0
 
     this.reset = function () {
         rayCaster = new THREE.Raycaster()
@@ -78,11 +79,18 @@ var PickerCommon = new function () {
         return isSet(intersects[0])
     }
     this.cursor = function (type) {
-        if (type) {
-            $('body #main #game canvas').css('cursor', 'url(/img/game/cursors/' + type + '.png), auto')
+        if (cursorLock) {
+            $('body #main #game canvas').css('cursor', 'url(/img/game/cursors/wait.png), auto')
         } else {
-            $('body #main #game canvas').css('cursor', 'default')
+            if (type) {
+                $('body #main #game canvas').css('cursor', 'url(/img/game/cursors/' + type + '.png), auto')
+            } else {
+                $('body #main #game canvas').css('cursor', 'default')
+            }
         }
+    }
+    this.setCursorLock = function (a) {
+        cursorLock = a
     }
     /**
      *
@@ -93,8 +101,7 @@ var PickerCommon = new function () {
             y = event.offsetY == undefined ? event.layerY : event.offsetY
         return {x: x, y: y}
     }
-    this.checkOffset = function(point1, point2)
-    {
+    this.checkOffset = function (point1, point2) {
         if (point1.x >= point2.x - 1 && point1.x <= point2.x + 1) {
             if (point1.y >= point2.y - 1 && point1.y <= point2.y + 1) {
                 return 1

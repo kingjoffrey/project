@@ -2,6 +2,7 @@ var Ground = new function () {
     var mountainLevel = -0.9,
         // var mountainLevel = 0,
         hillLevel = -0.2,
+        hillShift = 0.1,
         // hillLevel = 0,
         bottomLevel = 0.3,
         // bottomLevel = 0,
@@ -344,18 +345,18 @@ var Ground = new function () {
 
                 if (Fields.get(x - 1, y, 1).getHill()) {
                     if (Fields.get(x - 1, y + 1, 1).getHill()) {
-                        var x1 = x1 - 0.3 * m
+                        var x1 = x1 - hillShift * m
                     }
                 } else {
-                    var x1 = x1 + 0.3 * m
+                    var x1 = x1 + hillShift * m
                 }
 
                 if (Fields.get(x + 1, y, 1).getHill()) {
                     if (Fields.get(x + 1, y + 1, 1).getHill()) {
-                        var x2 = x2 + 0.3 * m
+                        var x2 = x2 + hillShift * m
                     }
                 } else {
-                    var x2 = x2 - 0.3 * m
+                    var x2 = x2 - hillShift * m
                 }
 
                 vertexPositions.push([x1, y1 + 0.7 * m, hillLevel])       //
@@ -381,24 +382,24 @@ var Ground = new function () {
                     x4 = x * m + 1 * m,
                     y1 = y * m,
                     y2 = y * m,
-                    y3 = y * m + 0.3 * m,
-                    y4 = y * m + 0.3 * m
+                    y3 = y * m + hillShift * m,
+                    y4 = y * m + hillShift * m
 
 
                 if (Fields.get(x - 1, y, 1).getHill()) {
                     if (Fields.get(x - 1, y - 1, 1).getHill()) {
-                        var x3 = x3 - 0.3 * m
+                        var x3 = x3 - hillShift * m
                     }
                 } else {
-                    var x3 = x3 + 0.3 * m
+                    var x3 = x3 + hillShift * m
                 }
 
                 if (Fields.get(x + 1, y, 1).getHill()) {
                     if (Fields.get(x + 1, y - 1, 1).getHill()) {
-                        var x4 = x4 + 0.3 * m
+                        var x4 = x4 + hillShift * m
                     }
                 } else {
-                    var x4 = x4 - 0.3 * m
+                    var x4 = x4 - hillShift * m
                 }
 
                 vertexPositions.push([x1, y1, 0])               //
@@ -430,18 +431,18 @@ var Ground = new function () {
 
                 if (Fields.get(x, y - 1, 1).getHill()) {
                     if (Fields.get(x + 1, y - 1, 1).getHill()) {
-                        var y1 = y1 - 0.3 * m
+                        var y1 = y1 - hillShift * m
                     }
                 } else {
-                    var y1 = y1 + 0.3 * m
+                    var y1 = y1 + hillShift * m
                 }
 
                 if (Fields.get(x, y + 1, 1).getHill()) {
                     if (Fields.get(x + 1, y + 1, 1).getHill()) { // w|g
-                        var y3 = y3 + 0.3 * m
+                        var y3 = y3 + hillShift * m
                     }
                 } else {                                                        // g
-                    var y3 = y3 - 0.3 * m
+                    var y3 = y3 - hillShift * m
                 }
 
                 vertexPositions.push([x1 + 0.7 * m, y1, hillLevel])       //
@@ -462,9 +463,9 @@ var Ground = new function () {
                 var x = stripes[i][0],
                     y = stripes[i][1],
                     x1 = x * m,
-                    x2 = x * m + 0.3 * m,
+                    x2 = x * m + hillShift * m,
                     x3 = x * m,
-                    x4 = x * m + 0.3 * m,
+                    x4 = x * m + hillShift * m,
                     y1 = y * m,
                     y2 = y * m,
                     y3 = y * m + 1 * m,
@@ -473,18 +474,18 @@ var Ground = new function () {
 
                 if (Fields.get(x, y - 1, 1).getHill()) {
                     if (Fields.get(x - 1, y - 1, 1).getHill()) {  // g|w
-                        var y2 = y2 - 0.3 * m
+                        var y2 = y2 - hillShift * m
                     }
                 } else {                                                         // g
-                    var y2 = y2 + 0.3 * m
+                    var y2 = y2 + hillShift * m
                 }
 
                 if (Fields.get(x, y + 1, 1).getHill()) {
                     if (Fields.get(x - 1, y + 1, 1).getHill()) { // g|w
-                        var y4 = y4 + 0.3 * m
+                        var y4 = y4 + hillShift * m
                     }
                 } else {                                                        // g
-                    var y4 = y4 - 0.3 * m
+                    var y4 = y4 - hillShift * m
                 }
 
                 vertexPositions.push([x1, y1, 0])       //
@@ -548,65 +549,65 @@ var Ground = new function () {
                             y4 = yy * m + 1 * m
 
                         if (!Fields.get(xx, yy - 1, 1).getHill()) { // above
-                            y1 = y1 + 0.3 * m
-                            y2 = y2 + 0.3 * m
+                            y1 = y1 + hillShift * m
+                            y2 = y2 + hillShift * m
                         }
                         if (!Fields.get(xx, yy + 1, 1).getHill()) { // under
-                            y3 = y3 - 0.3 * m
-                            y4 = y4 - 0.3 * m
+                            y3 = y3 - hillShift * m
+                            y4 = y4 - hillShift * m
                         }
                         if (!Fields.get(xx - 1, yy, 1).getHill()) { // left
-                            x1 = x1 + 0.3 * m
-                            x3 = x3 + 0.3 * m
+                            x1 = x1 + hillShift * m
+                            x3 = x3 + hillShift * m
                         }
                         if (!Fields.get(xx + 1, yy, 1).getHill()) { // right
-                            x2 = x2 - 0.3 * m
-                            x4 = x4 - 0.3 * m
+                            x2 = x2 - hillShift * m
+                            x4 = x4 - hillShift * m
                         }
 
 
                         if (!Fields.get(xx, yy - 1, 1).getHill() && Fields.get(xx + 1, yy, 1).getHill() && Fields.get(xx + 1, yy - 1, 1).getHill()) { // corner 1
-                            x2 = x2 + 0.3 * m
+                            x2 = x2 + hillShift * m
                         }
                         if (!Fields.get(xx - 1, yy - 1, 1).getHill() && Fields.get(xx, yy - 1, 1).getHill() && Fields.get(xx - 1, yy, 1).getHill()) { // corner 2
-                            x1 = x1 + 0.3 * m
-                            y1 = y1 + 0.3 * m
+                            x1 = x1 + hillShift * m
+                            y1 = y1 + hillShift * m
                         }
                         if (!Fields.get(xx - 1, yy, 1).getHill() && Fields.get(xx, yy + 1, 1).getHill() && Fields.get(xx - 1, yy + 1, 1).getHill()) { // corner 3
-                            y3 = y3 + 0.3 * m
+                            y3 = y3 + hillShift * m
                         }
 
                         if (!Fields.get(xx - 1, yy + 1, 1).getHill() && Fields.get(xx, yy + 1, 1).getHill() && Fields.get(xx - 1, yy, 1).getHill()) { // corner 4
-                            x3 = x3 + 0.3 * m
-                            y3 = y3 - 0.3 * m
+                            x3 = x3 + hillShift * m
+                            y3 = y3 - hillShift * m
                         }
                         if (!Fields.get(xx, yy + 1, 1).getHill() && Fields.get(xx + 1, yy + 1, 1).getHill() && Fields.get(xx + 1, yy, 1).getHill()) { // corner 5
-                            x4 = x4 + 0.3 * m
+                            x4 = x4 + hillShift * m
                         }
                         if (!Fields.get(xx - 1, yy, 1).getHill() && Fields.get(xx, yy - 1, 1).getHill() && Fields.get(xx - 1, yy - 1, 1).getHill()) { // corner 6
-                            y1 = y1 - 0.3 * m
+                            y1 = y1 - hillShift * m
                         }
 
                         if (!Fields.get(xx + 1, yy + 1, 1).getHill() && Fields.get(xx, yy + 1, 1).getHill() && Fields.get(xx + 1, yy, 1).getHill()) { // corner 7
-                            x4 = x4 - 0.3 * m
-                            y4 = y4 - 0.3 * m
+                            x4 = x4 - hillShift * m
+                            y4 = y4 - hillShift * m
                         }
                         if (!Fields.get(xx + 1, yy, 1).getHill() && Fields.get(xx, yy - 1, 1).getHill() && Fields.get(xx + 1, yy - 1, 1).getHill()) { // corner 8
-                            y2 = y2 - 0.3 * m
+                            y2 = y2 - hillShift * m
                         }
                         if (!Fields.get(xx, yy + 1, 1).getHill() && Fields.get(xx - 1, yy + 1, 1).getHill() && Fields.get(xx - 1, yy, 1).getHill()) { // corner 9
-                            x3 = x3 - 0.3 * m
+                            x3 = x3 - hillShift * m
                         }
 
                         if (!Fields.get(xx + 1, yy - 1, 1).getHill() && Fields.get(xx, yy - 1, 1).getHill() && Fields.get(xx + 1, yy, 1).getHill()) { // corner 10
-                            x2 = x2 - 0.3 * m
-                            y2 = y2 + 0.3 * m
+                            x2 = x2 - hillShift * m
+                            y2 = y2 + hillShift * m
                         }
                         if (!Fields.get(xx + 1, yy, 1).getHill() && Fields.get(xx, yy + 1, 1).getHill() && Fields.get(xx + 1, yy + 1, 1).getHill()) { // corner 11
-                            y4 = y4 + 0.3 * m
+                            y4 = y4 + hillShift * m
                         }
                         if (!Fields.get(xx, yy - 1, 1).getHill() && Fields.get(xx - 1, yy - 1, 1).getHill() && Fields.get(xx - 1, yy, 1).getHill()) { // corner 12
-                            x1 = x1 - 0.3 * m
+                            x1 = x1 - hillShift * m
                         }
 
                         //  FIRST TRIANGLE
@@ -1230,47 +1231,47 @@ var Ground = new function () {
 
         waterMesh.add(mesh)
 
-        var stripes = createHillStripes(x, y),
-            vertexPositionsUp = createHillVertexPositionsUp(stripes.getUp()),
-            vertexPositionsDown = createHillVertexPositionsDown(stripes.getDown()),
-            vertexPositionsLeft = createHillVertexPositionsLeft(stripes.getLeft()),
-            vertexPositionsRight = createHillVertexPositionsRight(stripes.getRight()),
-            hillsTopArray = createHillVertexPositions(x, y)
+        // var stripes = createHillStripes(x, y),
+            // vertexPositionsUp = createHillVertexPositionsUp(stripes.getUp()),
+            // vertexPositionsDown = createHillVertexPositionsDown(stripes.getDown()),
+            // vertexPositionsLeft = createHillVertexPositionsLeft(stripes.getLeft()),
+            // vertexPositionsRight = createHillVertexPositionsRight(stripes.getRight()),
+            // hillsTopArray = createHillVertexPositions(x, y)
 
-        mesh = createMesh(createGeometry(vertexPositionsUp, createNewUVS(vertexPositionsUp, x, y)), textureCanvas)
-        mesh.position.x = -x
-        mesh.position.y = -y
-        mesh.position.z = -waterLevel
-        waterMesh.add(mesh)
-        mesh = createMesh(createGeometry(vertexPositionsDown, createNewUVS(vertexPositionsDown, x, y)), textureCanvas)
-        mesh.position.x = -x
-        mesh.position.y = -y
-        mesh.position.z = -waterLevel
-        waterMesh.add(mesh)
-        mesh = createMesh(createGeometry(vertexPositionsLeft, createNewUVS(vertexPositionsLeft, x, y)), textureCanvas)
-        mesh.position.x = -x
-        mesh.position.y = -y
-        mesh.position.z = -waterLevel
-        waterMesh.add(mesh)
-        mesh = createMesh(createGeometry(vertexPositionsRight, createNewUVS(vertexPositionsRight, x, y)), textureCanvas)
-        mesh.position.x = -x
-        mesh.position.y = -y
-        mesh.position.z = -waterLevel
-        waterMesh.add(mesh)
-        mesh = createMesh(createGeometry(hillsTopArray.vertexPositions, createNewUVS(hillsTopArray.vertexPositions, x, y)), textureCanvas)
-        mesh.position.x = -x
-        mesh.position.y = -y
-        mesh.position.z = -waterLevel
-        waterMesh.add(mesh)
+        // mesh = createMesh(createGeometry(vertexPositionsUp, createNewUVS(vertexPositionsUp, x, y)), textureCanvas)
+        // mesh.position.x = -x
+        // mesh.position.y = -y
+        // mesh.position.z = -waterLevel
+        // waterMesh.add(mesh)
+        // mesh = createMesh(createGeometry(vertexPositionsDown, createNewUVS(vertexPositionsDown, x, y)), textureCanvas)
+        // mesh.position.x = -x
+        // mesh.position.y = -y
+        // mesh.position.z = -waterLevel
+        // waterMesh.add(mesh)
+        // mesh = createMesh(createGeometry(vertexPositionsLeft, createNewUVS(vertexPositionsLeft, x, y)), textureCanvas)
+        // mesh.position.x = -x
+        // mesh.position.y = -y
+        // mesh.position.z = -waterLevel
+        // waterMesh.add(mesh)
+        // mesh = createMesh(createGeometry(vertexPositionsRight, createNewUVS(vertexPositionsRight, x, y)), textureCanvas)
+        // mesh.position.x = -x
+        // mesh.position.y = -y
+        // mesh.position.z = -waterLevel
+        // waterMesh.add(mesh)
+        // mesh = createMesh(createGeometry(hillsTopArray.vertexPositions, createNewUVS(hillsTopArray.vertexPositions, x, y)), textureCanvas)
+        // mesh.position.x = -x
+        // mesh.position.y = -y
+        // mesh.position.z = -waterLevel
+        // waterMesh.add(mesh)
 
-        var vertexPositionsTopCenter = createVertexPositionsFromStripesArray(hillsTopArray.stripesArray, hillLevel),
-            uvs = createUVS(new Float32Array(vertexPositionsTopCenter.length * 2), hillsTopArray.stripesArray, x, y)
+        // var vertexPositionsTopCenter = createVertexPositionsFromStripesArray(hillsTopArray.stripesArray, hillLevel),
+        //     uvs = createUVS(new Float32Array(vertexPositionsTopCenter.length * 2), hillsTopArray.stripesArray, x, y)
 
-        var mesh = createMesh(createGeometry(vertexPositionsTopCenter, uvs), textureCanvas)
-        mesh.position.x = -x
-        mesh.position.y = -y
-        mesh.position.z = -waterLevel
-        waterMesh.add(mesh)
+        // var mesh = createMesh(createGeometry(vertexPositionsTopCenter, uvs), textureCanvas)
+        // mesh.position.x = -x
+        // mesh.position.y = -y
+        // mesh.position.z = -waterLevel
+        // waterMesh.add(mesh)
 
         var stripes = createMountainStripes(x, y),
             vertexPositionsUp = createMountainVertexPositionsUp(stripes.getUp()),

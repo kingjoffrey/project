@@ -10,7 +10,7 @@ var Models = new function () {
         pathMaterialRed,
         pathMaterialWhite,
         pathGeometry,
-        cursorGeometry = new THREE.Geometry(),
+        cursorGeometry,
         initModelAndTexture = function (id) {
             JSONLoader.load('/models/' + id + '.json', function (geometry, materials) {
                 models[id] = geometry
@@ -200,10 +200,10 @@ var Models = new function () {
                 flagModels[7] = geometry
             })
         },
-        initPathCircle = function () {
-            var radius = 0.5,
+        initPath = function () {
+            var radius = 0.7,
                 segments = 64,
-                opacity = 0.7
+                opacity = 0.2
 
             pathMaterialGreen = new THREE.MeshBasicMaterial({
                 color: 'green',
@@ -223,32 +223,95 @@ var Models = new function () {
                 opacity: opacity,
                 side: THREE.DoubleSide
             })
-            pathGeometry = new THREE.CircleGeometry(radius, segments)
+            pathCircleMaterialGreen = new THREE.MeshBasicMaterial({
+                color: 'green',
+                side: THREE.DoubleSide
+            })
+            pathCircleMaterialWhite = new THREE.MeshBasicMaterial({
+                color: 'white',
+                side: THREE.DoubleSide
+            })
+            pathCircleMaterialRed = new THREE.MeshBasicMaterial({
+                color: 'red',
+                side: THREE.DoubleSide
+            })
+            pathGeometryRectangle = new THREE.PlaneGeometry(1.9, 1.9)
+            pathGeometryCircle = new THREE.CircleGeometry(radius, segments)
         },
         initCursorModel = function () {
-            cursorGeometry.vertices.push(new THREE.Vector3(0, 0, 0))
-            cursorGeometry.vertices.push(new THREE.Vector3(0, 2, 0))
-            cursorGeometry.vertices.push(new THREE.Vector3(2, 2, 0))
-            cursorGeometry.vertices.push(new THREE.Vector3(2, 0, 0))
-
-            cursorGeometry.vertices.push(new THREE.Vector3(0, 0, 0))
-
-            cursorGeometry.faces.push(new THREE.Face3(0, 1, 2))
-            cursorGeometry.faces.push(new THREE.Face3(0, 3, 2))
+            // cursorGeometry = new THREE.BoxGeometry(2, 2, 2)
+            cursorGeometry = new THREE.PlaneGeometry(2, 2)
         }
 
     this.getCursorModel = function () {
-        return new THREE.Line(cursorGeometry, new THREE.LineBasicMaterial({color: 0xffffff, opacity: 0.5}))
+        return new THREE.Mesh(cursorGeometry, pathCircleMaterialWhite)
+    }
+    this.getPathRectangle = function (color) {
+        switch (color) {
+            case 'green':
+                return new THREE.Mesh(pathGeometryRectangle, pathMaterialGreen)
+            case 'red':
+                return new THREE.Mesh(pathGeometryRectangle, pathMaterialRed)
+            case 'white':
+                return new THREE.Mesh(pathGeometryRectangle, pathMaterialWhite)
+        }
     }
     this.getPathCircle = function (color) {
         switch (color) {
             case 'green':
-                return new THREE.Mesh(pathGeometry, pathMaterialGreen)
+                return new THREE.Mesh(pathGeometryCircle, pathCircleMaterialGreen)
             case 'red':
-                return new THREE.Mesh(pathGeometry, pathMaterialRed)
+                return new THREE.Mesh(pathGeometryCircle, pathCircleMaterialRed)
             case 'white':
-                return new THREE.Mesh(pathGeometry, pathMaterialWhite)
+                return new THREE.Mesh(pathGeometryCircle, pathCircleMaterialWhite)
         }
+    }
+    this.getArmyBox = function (color) {
+        var material1 = new THREE.MeshBasicMaterial({
+                color: 'gold',
+                transparent: true,
+                opacity: 0.1,
+                side: THREE.DoubleSide
+            }),
+            // geometry1 = new THREE.BoxGeometry(1.9, 1.9, 10)
+            geometry1 = new THREE.PlaneGeometry(2, 10)
+
+        var mesh = new THREE.Mesh(geometry1, material1)
+
+        mesh.add(new THREE.Mesh(geometry1, material1))
+        mesh.children[0].position.z = 2
+
+        mesh.add(new THREE.Mesh(geometry1, material1))
+        mesh.children[1].position.x = -1
+        mesh.children[1].rotation.y = Math.PI / 2
+        mesh.children[1].position.z = 1
+
+        mesh.add(new THREE.Mesh(geometry1, material1))
+        mesh.children[2].position.x = 1
+        mesh.children[2].rotation.y = Math.PI / 2
+        mesh.children[2].position.z = 1
+
+        return mesh
+    }
+    this.getArmyRectangle = function (color) {
+        var radius = 1,
+            segments = 64,
+            material1 = new THREE.MeshBasicMaterial({
+                color: 'gold',
+                transparent: true,
+                opacity: 0.9,
+                side: THREE.DoubleSide
+            }),
+            material2 = new THREE.MeshBasicMaterial({
+                color: color,
+                transparent: true,
+                opacity: 0.9,
+                side: THREE.DoubleSide
+            }),
+            geometry1 = new THREE.CylinderGeometry(0.5, 0, 2, segments, segments, 1),
+            geometry2 = new THREE.PlaneGeometry(1.9, 1.9)
+
+        return {cylinder: new THREE.Mesh(geometry1, material1), circle: new THREE.Mesh(geometry2, material2)}
     }
     this.getArmyCircle = function (color) {
         var radius = 1,
@@ -256,13 +319,13 @@ var Models = new function () {
             material1 = new THREE.MeshBasicMaterial({
                 color: 'gold',
                 transparent: true,
-                opacity: 0.3,
+                opacity: 0.9,
                 side: THREE.DoubleSide
             }),
             material2 = new THREE.MeshBasicMaterial({
                 color: color,
                 transparent: true,
-                opacity: 0.3,
+                opacity: 0.9,
                 side: THREE.DoubleSide
             }),
             geometry1 = new THREE.CylinderGeometry(0.5, 0, 2, segments, segments, 1),
@@ -335,7 +398,7 @@ var Models = new function () {
         initCastle()
         initFlag()
         initTree()
-        initPathCircle()
+        initPath()
         initCursorModel()
     }
 }

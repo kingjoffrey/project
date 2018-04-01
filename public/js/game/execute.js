@@ -4,7 +4,8 @@ var Execute = new function () {
         executing = 0,
         i = 0,
         execute = function (r) {
-            executing = 1
+            Execute.setExecuting(1)
+
             // console.log(r)
             switch (r.type) {
                 case 'move':
@@ -248,5 +249,8 @@ var Execute = new function () {
     }
     this.setExecuting = function (value) {
         executing = value
+
+        PickerCommon.setCursorLock(executing)
+        PickerCommon.cursor(0)
     }
 }

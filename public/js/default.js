@@ -1,6 +1,6 @@
 var Page = new function () {
     var index = '',
-        shadows = 1
+        shadows = 0
 
 
     this.getIndex = function () {

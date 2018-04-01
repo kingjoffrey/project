@@ -65,11 +65,6 @@ var CastleWindow = new function () {
                         )
 
                     if (checked) { // jest produkcja
-                        if (castle.getRelocationCastleId() && Me.getCastles().has(castle.getRelocationCastleId())) {
-                            unitElement.append($('<div>').addClass('relocatingTo').html(translations.relocatingTo + ' ' + Me.getCastle(castle.getRelocationCastleId()).getName()))
-                        } else {
-                            unitElement.append($('<div>').addClass('relocatingTo').html(translations.production))
-                        }
 
                         unitElement.find('.buttons')
                             .append(
@@ -93,16 +88,6 @@ var CastleWindow = new function () {
                                         Message.remove(messageId)
                                     }))
                     }
-                    unitElement.find('.buttons')
-                        .append(
-                            $('<div>') // relokacja
-                                .html(translations.relocation)
-                                .addClass('button buttonColors')
-                                .attr('id', 'relocation')
-                                .click(function () {
-                                    castle.handle($(this).parent().parent().parent().attr('id'), 0, 1)
-                                    Message.remove(messageId)
-                                }))
                     array.append(unitElement)
                 }
                 return array
@@ -185,43 +170,6 @@ var CastleWindow = new function () {
             castleWindow
                 .append(resurrect)
                 .append(hire)
-        }
-
-        // relocation from
-
-        var relocatedProduction = Me.getCastles().getRelocatedProduction(castle.getCastleId())
-        if (relocatedProduction.length) {
-            var relocatingFrom = $('<table>')
-
-            for (var i in relocatedProduction) {
-                var castleIdFrom = relocatedProduction[i],
-                    castleFrom = Me.getCastle(castleIdFrom),
-                    productionId = castleFrom.getProductionId()
-
-                relocatingFrom.append(
-                    $('<tr>')
-                        .append($('<td>').html(Units.get(productionId).name_lang))
-                        .append($('<td>')
-                            .html(castleFrom.getProductionTurn() + '/' + castleFrom.getProduction()[productionId].time))
-                        .append($('<td>').append($('<div>').html(castleFrom.getName())
-                            .addClass('button buttonColors')
-                            .click(click(castleIdFrom, messageId)))
-                        )
-                        .append(
-                            $('<td>')
-                                .append(
-                                    $('<div>')
-                                        .append(
-                                            $('<img>').attr('src', '/img/game/center.png')
-                                                .addClass('iconButton buttonColors')
-                                                .click(center(castleIdFrom))
-                                        )
-                                )
-                        )
-                )
-            }
-            castleWindow
-                .append($('<div>').addClass('relocatedProduction').append($('<div>').html(translations.relocatingFrom).addClass('title')).append(relocatingFrom))
         }
 
         if (castle.getCastleId() == Me.getCapitalId()) {

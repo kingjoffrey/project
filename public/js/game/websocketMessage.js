@@ -92,15 +92,11 @@ var WebSocketMessageGame = new function () {
                 var castle = Me.getCastle(r.castleId)
                 castle.setProductionId(r.unitId)
                 castle.setProductionTurn(0)
-                castle.setRelocationCastleId(r.relocationToCastleId)
-                if (isTruthful(r.relocationToCastleId)) {
-                    Message.simple(translations.production, translations.productionRelocated)
+
+                if (r.unitId === null) {
+                    Message.simple(translations.production, translations.productionStopped)
                 } else {
-                    if (r.unitId === null) {
-                        Message.simple(translations.production, translations.productionStopped)
-                    } else {
-                        Message.simple(translations.production, translations.productionSet)
-                    }
+                    Message.simple(translations.production, translations.productionSet)
                 }
                 break
 

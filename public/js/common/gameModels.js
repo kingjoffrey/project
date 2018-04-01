@@ -2,7 +2,7 @@ var GameModels = new function () {
     var pathCircles = [],
         moveCircles = [],
         armyCircles = [],
-        hover = 0.1,
+        hover = 0.01,
         bridgeLevel = 0.3
 
     this.init = function () {
@@ -14,7 +14,7 @@ var GameModels = new function () {
 
         mesh.position.set(castle.x * 2 + 2, 0, castle.y * 2 + 2)
 
-        mesh.children[0].rotation.y = Math.PI + Math.PI / 4
+        // mesh.children[0].rotation.y = Math.PI + Math.PI / 4
 
         mesh.scale.x = 0.2
         mesh.scale.y = 0.2
@@ -37,7 +37,7 @@ var GameModels = new function () {
         var mesh = Models.getArmy(color, number, modelName)
 
         mesh.rotation.y = Math.PI / 2 + Math.PI / 4
-        mesh.children[0].rotation.y = Math.PI + Math.PI / 4
+        // mesh.children[0].rotation.y = Math.PI + Math.PI / 4
 
         mesh.scale.x = 0.1
         mesh.scale.y = 0.1
@@ -63,7 +63,7 @@ var GameModels = new function () {
                 var height = -Ground.getMountainLevel()
                 break
             case 'h':
-                var height = -Ground.getHillLevel()
+                var height = Fields.get(x, y).getLevel() * 0.05
                 break
             case 'w':
                 var height = Ground.getWaterLevel()
@@ -120,7 +120,7 @@ var GameModels = new function () {
         var mesh = Models.getTower(color)
         mesh.position.set(x * 2 + 0.5, 0, y * 2 + 0.5)
 
-        mesh.children[0].rotation.y = Math.PI + Math.PI / 4
+        // mesh.children[0].rotation.y = Math.PI + Math.PI / 4
 
         mesh.scale.x = 0.3
         mesh.scale.y = 0.3
@@ -174,7 +174,7 @@ var GameModels = new function () {
                 var height = -Ground.getMountainLevel() + hover
                 break
             case 'h':
-                var height = -Ground.getHillLevel() + hover
+                var height = Fields.get(x, y).getLevel() * 0.05
                 break
             case 'b':
                 var height = bridgeLevel + hover
@@ -184,7 +184,7 @@ var GameModels = new function () {
                 break
         }
 
-        cursor.position.set(x * 2, height, y * 2)
+        cursor.position.set(x * 2 + 1, height, y * 2 + 1)
     }
     this.addCursor = function () {
         var mesh = Models.getCursorModel()
@@ -199,13 +199,45 @@ var GameModels = new function () {
 
         return mesh
     }
+    this.addPathRectangle = function (x, y, color, t) {
+        switch (t) {
+            case 'm':
+                var height = -Ground.getMountainLevel() + hover
+                break
+            case 'h':
+                var height = Fields.get(x, y).getLevel() * 0.05
+                break
+            case 'E':
+                this.addPathRectangle(x, y, 'red', Fields.get(x, y).getType())
+                return
+                break
+            case 'b':
+                var height = bridgeLevel + hover
+                break
+            default :
+                var height = hover
+                break
+        }
+
+        var circle = Models.getPathRectangle(color)
+
+        if (Page.getShadows()) {
+            circle.castShadow = true
+        }
+
+        circle.position.set(x * 2 + 1, height, y * 2 + 1)
+        circle.rotation.x = Math.PI / 2
+
+        GameScene.add(circle)
+        pathCircles.push(circle)
+    }
     this.addPathCircle = function (x, y, color, t) {
         switch (t) {
             case 'm':
                 var height = -Ground.getMountainLevel() + hover
                 break
             case 'h':
-                var height = -Ground.getHillLevel() + hover
+                var height = Fields.get(x, y).getLevel() * 0.05
                 break
             case 'E':
                 this.addPathCircle(x, y, 'red', Fields.get(x, y).getType())
@@ -231,36 +263,31 @@ var GameModels = new function () {
         GameScene.add(circle)
         pathCircles.push(circle)
     }
-    this.addArmyCircle = function (x, y, color) {
-        var meshes = Models.getArmyCircle(color)
+    this.addArmyBox = function (x, y, color) {
+        var mesh = Models.getArmyBox(color)
         switch (Fields.get(x, y).getType()) {
             case 'm':
-                var height = -Ground.getMountainLevel() + hover
+                var height = 0
                 break
             case 'h':
-                var height = -Ground.getHillLevel() + hover
+                var height = 0
                 break
             case 'b':
-                var height = bridgeLevel + hover
+                var height = 0
                 break
             default :
-                var height = hover
+                var height = 0
                 break
         }
 
-        meshes.cylinder.position.set(x * 2 + 1, 4 + height, y * 2 + 1)
+        GameScene.add(mesh)
+        armyCircles.push(mesh)
 
-        GameScene.add(meshes.cylinder)
-        armyCircles.push(meshes.cylinder)
+        mesh.position.set(x * 2 + 1, height, y * 2)
 
-        meshes.circle.position.set(x * 2 + 1, height, y * 2 + 1)
-        meshes.circle.rotation.x = Math.PI / 2
         if (Page.getShadows()) {
-            meshes.circle.castShadow = true
-            meshes.cylinder.castShadow = true
+            mesh.castShadow = true
         }
-        GameScene.add(meshes.circle)
-        armyCircles.push(meshes.circle)
     }
     this.movePathCircles = function () {
         for (var i in pathCircles) {

@@ -119,13 +119,16 @@ var Me = new function () {
         parentArmyId = armyId
     }
     this.selectArmy = function (armyId, center) {
+        PickerCommon.setCursorLock(1)
+        PickerCommon.cursor(0)
+
         var army = this.getArmy(armyId),
             number,
             i = 0
 
         // GameRenderer.shadowsInfo()
 
-        GameModels.addArmyCircle(army.getX(), army.getY(), army.getBackgroundColor())
+        GameModels.addArmyBox(army.getX(), army.getY(), army.getBackgroundColor())
         var heroId = army.getHeroKey()
         if (heroId) {
             $('#terrain').html(army.getHero(heroId).name)
@@ -147,6 +150,8 @@ var Me = new function () {
             selectedArmyId = armyId
         }
         AStar.showRange(army)
+        PickerCommon.setCursorLock(0)
+        PickerGame.cursorChange()
     }
     this.deselectArmy = function (skipJoin) {
         if (notSet(skipJoin) && parentArmyId && selectedArmyId) {

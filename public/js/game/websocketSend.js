@@ -394,7 +394,7 @@ var WebSocketSendGame = new function () {
         ws.send(JSON.stringify(token))
     }
 
-    this.production = function (castleId, unitId, relocationToCastleId) {
+    this.production = function (castleId, unitId) {
         if (closed) {
             Message.error(translations.sorryServerIsDisconnected)
             return
@@ -408,8 +408,7 @@ var WebSocketSendGame = new function () {
         var token = {
             'type': 'production',
             'castleId': castleId,
-            'unitId': unitId,
-            'relocationToCastleId': relocationToCastleId
+            'unitId': unitId
         };
 
         ws.send(JSON.stringify(token))

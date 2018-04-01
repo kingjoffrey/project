@@ -64,5 +64,6 @@ var Game = new function () {
         }
 
         Sound.play('gamestart')
+        GameRenderer.animate()
     }
 }

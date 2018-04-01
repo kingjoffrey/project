@@ -23,12 +23,19 @@ var GameScene = new function () {
             camera.scale.addScalar(1)
             scene.add(camera)
 
-            scene.add(new THREE.AmbientLight(0x777777))
+            scene.add(new THREE.AmbientLight(0xefefff, 0.2))
             //camera.add(new THREE.PointLight(0xffffff, 0.7))
 
-            sun = new THREE.DirectionalLight(0xdfebff, 0.75)
-            sun.position.set(100, 200, 150)
+            sun = new THREE.DirectionalLight(0xefefff, 1.5)
+            sun.position.set(10, 10, 20).normalize()
             scene.add(sun)
+
+            // var helper = new THREE.DirectionalLightHelper(sun);
+            // scene.add(helper)
+
+            // var light = new THREE.DirectionalLight(0xffefef, 1.5)
+            // light.position.set(-1, -1, -1).normalize()
+            // scene.add(light)
         }
 
     this.initSun = function (size) {

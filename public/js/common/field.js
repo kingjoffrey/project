@@ -7,7 +7,11 @@ var Field = function (type) {
         'castleId': 0,
         'towerColor': 0,
         'castleColor': 0,
-        'type': type
+        'type': type,
+        'level': 0
+    }
+    this.setLevel = function (level) {
+        field.level = level
     }
     this.setRuinId = function (ruinId) {
         field.ruinId = ruinId
@@ -72,6 +76,9 @@ var Field = function (type) {
     }
     this.getType = function () {
         return field.type
+    }
+    this.getLevel = function () {
+        return field.level
     }
     this.getTypeWithoutBridge = function () {
         if (field.type == 'b') {

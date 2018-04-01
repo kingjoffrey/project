@@ -2,7 +2,7 @@ var GameRenderer = new function () {
     var renderer,
         scene,
         camera,
-        timeOut = 1000,
+        timeOut = 10000,
         stop = 1,
         render = function () {
             renderer.render(scene, camera)
@@ -21,7 +21,6 @@ var GameRenderer = new function () {
 console.log('render')
         render()
 
-        if (timeOut) {
             if (TWEEN.update()) {
                 requestAnimationFrame(GameRenderer.animate)
             } else {
@@ -29,13 +28,6 @@ console.log('render')
                     requestAnimationFrame(GameRenderer.animate)
                 }, timeOut)
             }
-        } else {
-            if (TWEEN.update()) {
-                requestAnimationFrame(GameRenderer.animate)
-            } else {
-                requestAnimationFrame(GameRenderer.animate)
-            }
-        }
     }
     this.stop = function () {
         stop = 1
@@ -46,7 +38,7 @@ console.log('render')
         }
         stop = 0
         $('#game').append(renderer.domElement)
-        this.animate()
+        // this.animate()
     }
     this.shadowsOff = function () {
         // renderer.shadowMapAutoUpdate = false

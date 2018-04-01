@@ -53,17 +53,7 @@ var PickerGame = new function () {
 // Jest mój zamek na polu
                     } else if (Me.colorEquals(field.getCastleColor())) {
                         var castleId = field.getCastleId()
-                        if (Me.getSelectedCastleId()) {
-// Rolokuj produkcję
-                            if (Me.getSelectedCastleId() != castleId) {
-                                WebSocketSendGame.production(Me.getSelectedCastleId(), Me.getSelectedUnitId(), castleId)
-                            }
-                            Me.setSelectedCastleId(null)
-                            Me.setSelectedUnitId(null)
-// Pokaż mój zamek
-                        } else {
-                            CastleWindow.show(Me.getCastle(castleId))
-                        }
+                        CastleWindow.show(Me.getCastle(castleId))
                     }
                 }
             }
@@ -85,92 +75,7 @@ var PickerGame = new function () {
                 }
             } else {
 // Zmiana kursora
-                if (PickerCommon.intersects()) {
-                    var x = PickerCommon.convertX(), y = PickerCommon.convertZ()
-                    AStar.cursorPosition(x, y)
-// turn
-                    if (Turn.isMy()) {
-                        var field = PickerCommon.getField(),
-                            castleColor = field.getCastleColor(),
-                            armies = field.getArmies()
-
-                        if (!cursorMesh) {
-                            cursorMesh = GameModels.addCursor()
-                        }
-
-                        GameModels.cursorPosition(x, y, field.getType(), cursorMesh)
-
-                        for (var armyId in armies) {
-                            var hasArmy = 1
-                            break
-                        }
-
-                        if (Me.getSelectedArmyId()) {
-// selected
-                            if (hasArmy) {
-// armies
-                                for (var armyId in armies) {
-                                    if (Me.getSelectedArmyId() == armyId) {
-// split my army
-                                        PickerCommon.cursor('split')
-                                        return
-                                    }
-                                    if (Me.colorEquals(armies[armyId])) {
-// join my army
-                                        PickerCommon.cursor('join')
-                                        return
-                                    }
-                                    if (Me.sameTeam(armies[armyId])) {
-// army same team
-                                        changeCursorArmyMove(field)
-                                        return
-                                    }
-                                }
-// attack enemy army
-                                PickerCommon.cursor('attack')
-                            } else if (castleColor) {
-// castle
-                                if (Me.colorEquals(castleColor)) {
-// enter my castle
-                                    PickerCommon.cursor('enter')
-                                } else if (Me.sameTeam(castleColor)) {
-// castle same team
-                                    changeCursorArmyMove(field)
-                                } else {
-// attack enemy castle
-                                    PickerCommon.cursor('attack')
-                                }
-                            } else {
-// map
-                                changeCursorArmyMove(field)
-                            }
-                        } else {
-// not selected
-                            if (hasArmy) {
-                                for (var armyId in armies) {
-                                    if (Me.colorEquals(armies[armyId])) {
-// select my army
-                                        PickerCommon.cursor('select')
-                                        return
-                                    }
-                                }
-// grab map
-                                PickerCommon.cursor('grab')
-                            } else if (castleColor && Me.colorEquals(castleColor)) {
-// open my castle
-                                PickerCommon.cursor('open')
-                            } else {
-// grab map
-                                PickerCommon.cursor('grab')
-                            }
-                        }
-                    } else {
-// wait
-                        PickerCommon.cursor('wait')
-                    }
-                } else {
-                    PickerCommon.cursor()
-                }
+                PickerGame.cursorChange()
             }
         },
         changeCursorArmyMove = function (field) {
@@ -195,6 +100,95 @@ var PickerGame = new function () {
                 }
             }
         }
+
+    this.cursorChange = function () {
+        if (PickerCommon.intersects()) {
+            var x = PickerCommon.convertX(), y = PickerCommon.convertZ()
+            AStar.cursorPosition(x, y)
+// turn
+            if (Turn.isMy()) {
+                var field = PickerCommon.getField(),
+                    castleColor = field.getCastleColor(),
+                    armies = field.getArmies()
+
+                if (!cursorMesh) {
+                    cursorMesh = GameModels.addCursor()
+                }
+
+                GameModels.cursorPosition(x, y, field.getType(), cursorMesh)
+
+                for (var armyId in armies) {
+                    var hasArmy = 1
+                    break
+                }
+
+                if (Me.getSelectedArmyId()) {
+// selected
+                    if (hasArmy) {
+// armies
+                        for (var armyId in armies) {
+                            if (Me.getSelectedArmyId() == armyId) {
+// split my army
+                                PickerCommon.cursor('split')
+                                return
+                            }
+                            if (Me.colorEquals(armies[armyId])) {
+// join my army
+                                PickerCommon.cursor('join')
+                                return
+                            }
+                            if (Me.sameTeam(armies[armyId])) {
+// army same team
+                                changeCursorArmyMove(field)
+                                return
+                            }
+                        }
+// attack enemy army
+                        PickerCommon.cursor('attack')
+                    } else if (castleColor) {
+// castle
+                        if (Me.colorEquals(castleColor)) {
+// enter my castle
+                            PickerCommon.cursor('enter')
+                        } else if (Me.sameTeam(castleColor)) {
+// castle same team
+                            changeCursorArmyMove(field)
+                        } else {
+// attack enemy castle
+                            PickerCommon.cursor('attack')
+                        }
+                    } else {
+// map
+                        changeCursorArmyMove(field)
+                    }
+                } else {
+// not selected
+                    if (hasArmy) {
+                        for (var armyId in armies) {
+                            if (Me.colorEquals(armies[armyId])) {
+// select my army
+                                PickerCommon.cursor('select')
+                                return
+                            }
+                        }
+// grab map
+                        PickerCommon.cursor('grab')
+                    } else if (castleColor && Me.colorEquals(castleColor)) {
+// open my castle
+                        PickerCommon.cursor('open')
+                    } else {
+// grab map
+                        PickerCommon.cursor('grab')
+                    }
+                }
+            } else {
+// wait
+                PickerCommon.cursor('wait')
+            }
+        } else {
+            PickerCommon.cursor(0)
+        }
+    }
 
     this.onContainerMouseDown = function (event) {
         if (isTouchDevice()) {

@@ -539,7 +539,7 @@ div.table table.unitTable td:first {
 }
 
 .message .content {
-    border: 1px solid green;
+    border: 1px solid #000;
     border-radius: 0px !important;
     box-shadow: 0 0 2.1vw #000;
     pointer-events: auto;
@@ -565,16 +565,16 @@ div.table table.unitTable td:first {
 
 .message .msgTitle {
     text-align: center;
-    border-bottom: 1px solid green;
+    /*border-bottom: 1px solid green;*/
 }
 
 .message .msgTitle h3 {
     text-align: center;
     margin: 0 auto;
     padding: 0.7vw;
-    color: #000;
+    color: #fff;
     border: none;
-    background: #fff;
+    background: #000;
     text-shadow: none;
 }
 

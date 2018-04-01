@@ -264,7 +264,7 @@ var AStar = new function () {
                 if (close[i].x == startX && close[i].y == startY) {
                     continue
                 }
-                GameModels.addPathCircle(close[i].x, close[i].y, 'green', close[i].tt)
+                GameModels.addPathRectangle(close[i].x, close[i].y, 'white', close[i].tt)
             }
         }
     }
