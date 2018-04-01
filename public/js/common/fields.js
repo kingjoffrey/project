@@ -322,12 +322,11 @@ var Fields = new function () {
                         for (var jj = y * 1 - 1; jj <= y * 1 + 1; jj++) {
                             for (var ii = x * 1 - 1; ii <= x * 1 + 1; ii++) {
                                 var f = this.get(ii, jj, 1)
-                                if (f.getType() == 'm' || (f.getType() == 'h' && f.getLevel() == 9)) {
+                                if (f.getType() == 'm' || (f.getType() == 'h' && f.getLevel() >= 9)) {
                                     h++
                                 }
                             }
                         }
-                        // console.log('h=' + h)
                         var level = this.get(x, y).getLevel()
                         if (h == 9) {
                             level++
@@ -404,8 +403,62 @@ var Fields = new function () {
                         // paintHill(tmpTextureContext, x, y, 1)
                         break
                     case 'm':
-                        paintTextureField(tmpTextureContext, x, y, mountainColor1, mountainColor2)
-                        // paintMountain(tmpTextureContext, x, y)
+                        var h = 0,
+                            color
+
+                        if (x % 2) {
+                            if (y % 2) {
+                                color = 0x3c963c
+                            } else {
+                                color = 0x3fa342
+                            }
+                        } else {
+                            if (y % 2) {
+                                color = 0x3fa342
+                            } else {
+                                color = 0x3c963c
+                            }
+                        }
+
+                        paintTextureField(tmpTextureContext, x, y, hillColor1, hillColor2)
+
+                        for (var jj = y * 1 - 1; jj <= y * 1 + 1; jj++) {
+                            for (var ii = x * 1 - 1; ii <= x * 1 + 1; ii++) {
+                                var f = this.get(ii, jj, 1)
+                                if (f.getType() == 'm' && f.getLevel() == 9) {
+                                    h++
+                                }
+                            }
+                        }
+
+                        if (h == 9) {
+                            this.get(x, y).setLevel(10)
+
+                            var geometry = new THREE.ConeGeometry(1, 1, 4);
+                            var material = new THREE.MeshLambertMaterial({
+                                color: 0xadb1b8,
+                                side: THREE.DoubleSide
+                            });
+                            var cone = new THREE.Mesh(geometry, material);
+
+                            cone.position.set(x * 2 + 1, 1.5, y * 2 + 1)
+                            cone.rotation.y = Math.PI / 4
+
+                            GameScene.add(cone)
+                        } else if (this.get(x, y).getLevel() == 9) {
+                            var geometry = new THREE.ConeGeometry(0.5, 0.5, 4);
+                            var material = new THREE.MeshLambertMaterial({
+                                color: 0xc0c5ce,
+                                side: THREE.DoubleSide
+                            });
+                            var cone = new THREE.Mesh(geometry, material);
+
+                            cone.position.set(x * 2 + 1, 1.25, y * 2 + 1)
+                            cone.rotation.y = Math.PI / 4
+
+                            GameScene.add(cone)
+                        }
+
                         break
                     case 'r':
                         paintTextureField(tmpTextureContext, x, y, grassColor1, grassColor2)
@@ -498,17 +551,28 @@ var Fields = new function () {
         for (var y in f) {
             for (var x in f[y]) {
                 var level = 0
-                for (var jj = y * 1 - 1; jj <= y * 1 + 1; jj++) {
-                    for (var ii = x * 1 - 1; ii <= x * 1 + 1; ii++) {
-                        switch (this.get(x, y, 1).getType()) {
-                            case 'h':
+                switch (this.get(x, y, 1).getType()) {
+                    case 'h':
+                        for (var jj = y * 1 - 1; jj <= y * 1 + 1; jj++) {
+                            for (var ii = x * 1 - 1; ii <= x * 1 + 1; ii++) {
                                 if (this.get(ii, jj, 1).getHill()) {
                                     level++
                                 }
+                            }
                         }
-                    }
+                        this.get(x, y).setLevel(level)
+                        break
+                    case 'm':
+                        for (var jj = y * 1 - 1; jj <= y * 1 + 1; jj++) {
+                            for (var ii = x * 1 - 1; ii <= x * 1 + 1; ii++) {
+                                if (this.get(ii, jj, 1).getMountain()) {
+                                    level++
+                                }
+                            }
+                        }
+                        this.get(x, y).setLevel(level)
+                        break
                 }
-                this.get(x, y).setLevel(level)
             }
         }
     }

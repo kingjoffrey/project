@@ -1,5 +1,5 @@
 var Ground = new function () {
-    var mountainLevel = -0.9,
+    var mountainLevel = -1.1,
         // var mountainLevel = 0,
         hillLevel = -0.2,
         hillShift = 0.1,
