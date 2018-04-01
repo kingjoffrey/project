@@ -10,18 +10,6 @@ class Cli_Model_Production
         $gameId = $game->getId();
         $playerId = $user->parameters['me']->getId();
 
-        if (isset($dataIn['relocationToCastleId'])) {
-            if ($dataIn['relocationToCastleId'] == $castleId) {
-                $l = new Coret_Model_Logger('Cli_Model_Production');
-                $l->log('Can not relocate production to the same castle!');
-                $handler->sendError($user, 'Error 1022');
-                return;
-            }
-            $relocationToCastleId = $dataIn['relocationToCastleId'];
-        } else {
-            $relocationToCastleId = null;
-        }
-
         if ($castleId === null) {
             $l = new Coret_Model_Logger('Cli_Model_Production');
             $l->log('No "castleId"!');
@@ -47,15 +35,6 @@ class Cli_Model_Production
             return;
         }
 
-        $relocationToCastle = $game->getPlayers()->getPlayer($color)->getCastles()->getCastle($relocationToCastleId);
-
-        if ($relocationToCastleId && !$relocationToCastle) {
-            $l = new Coret_Model_Logger('Cli_Model_Production');
-            $l->log('To nie jest Twój zamek!!');
-            $handler->sendError($user, 'Error 1026');
-            return;
-        }
-
         if ($unitId != -1) {
             if (!$castle->canProduceThisUnit($unitId)) {
                 $l = new Coret_Model_Logger('Cli_Model_Production');
@@ -67,13 +46,13 @@ class Cli_Model_Production
             $unitId = null;
         }
 
-        if (empty($relocationToCastleId) && $castle->getProductionId() == $unitId) {
+        if ($castle->getProductionId() == $unitId) {
             return;
         }
 
         try {
             $db = $handler->getDb();
-            $castle->setProductionId($unitId, $relocationToCastleId, $playerId, $gameId, $db);
+            $castle->setProductionId($unitId, $playerId, $gameId, $db);
         } catch (Exception $e) {
             $l = new Coret_Model_Logger('Cli_Model_Production');
             $l->log('Set castle production error!');
@@ -84,8 +63,7 @@ class Cli_Model_Production
         $token = array(
             'type' => $dataIn['type'],
             'unitId' => $unitId,
-            'castleId' => $castleId,
-            'relocationToCastleId' => $relocationToCastleId
+            'castleId' => $castleId
         );
 
         $handler->sendToUser($user, $token);

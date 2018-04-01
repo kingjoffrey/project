@@ -11,7 +11,6 @@ class Cli_Model_Castle extends Cli_Model_Entity
     private $_productionId;
     private $_productionTurn;
     private $_defenseMod = 0;
-    private $_relocationCastleId;
 
     protected $_production = array();
 
@@ -38,7 +37,6 @@ class Cli_Model_Castle extends Cli_Model_Entity
             $this->_productionId = $playerCastle['productionId'];
             $this->_productionTurn = $playerCastle['productionTurn'];
             $this->_defenseMod = $playerCastle['defenseMod'];
-            $this->_relocationCastleId = $playerCastle['relocationCastleId'];
         }
     }
 
@@ -65,7 +63,6 @@ class Cli_Model_Castle extends Cli_Model_Entity
             'y' => $this->_y,
             'productionId' => $this->_productionId,
             'productionTurn' => $this->_productionTurn,
-            'relocationCastleId' => $this->_relocationCastleId,
             'defense' => $this->getDefense(),
             'name' => $this->_name,
             'income' => $this->_income,
@@ -95,15 +92,14 @@ class Cli_Model_Castle extends Cli_Model_Entity
         return $this->_productionTurn++;
     }
 
-    public function setProductionId($unitId = null, $relocationToCastleId = null, $playerId = null, $gameId = null, Zend_Db_Adapter_Pdo_Pgsql $db = null)
+    public function setProductionId($unitId = null, $playerId = null, $gameId = null, Zend_Db_Adapter_Pdo_Pgsql $db = null)
     {
         if ($db) {
             $mCastlesInGame = new Application_Model_CastlesInGame($gameId, $db);
-            $mCastlesInGame->setProduction($playerId, $this->_id, $unitId, $relocationToCastleId);
+            $mCastlesInGame->setProduction($playerId, $this->_id, $unitId);
         }
         $this->_productionId = $unitId;
         $this->_productionTurn = 0;
-        $this->_relocationCastleId = $relocationToCastleId;
     }
 
     public function getIncome()
@@ -116,13 +112,6 @@ class Cli_Model_Castle extends Cli_Model_Entity
         $this->_productionTurn = 0;
         $mCastlesInGame = new Application_Model_CastlesInGame($gameId, $db);
         $mCastlesInGame->resetProductionTurn($this->_id);
-    }
-
-    public function cancelProductionRelocation($gameId, Zend_Db_Adapter_Pdo_Pgsql $db)
-    {
-        $this->_relocationCastleId = null;
-        $mCastlesInGame = new Application_Model_CastlesInGame($gameId, $db);
-        $mCastlesInGame->cancelProductionRelocation($this->_id);
     }
 
     static public function countUnitValue(Cli_Model_Unit $unit, $productionTime)
@@ -192,11 +181,6 @@ class Cli_Model_Castle extends Cli_Model_Entity
     {
         $mCastlesInGame = new Application_Model_CastlesInGame($gameId, $db);
         $mCastlesInGame->buildDefense($this->_id, $playerId, $this->_defenseMod);
-    }
-
-    public function getRelocationCastleId()
-    {
-        return $this->_relocationCastleId;
     }
 
     public function getEnclaveNumber()

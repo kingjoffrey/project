@@ -17,21 +17,7 @@ class Application_Model_CastlesInGame extends Coret_Db_Table_Abstract
         }
     }
 
-    public function cancelProductionRelocation($castleId)
-    {
-        $where = array(
-            $this->_db->quoteInto('"gameId" = ?', $this->_gameId),
-            $this->_db->quoteInto('"castleId" = ?', $castleId)
-        );
-
-        $data = array(
-            'relocationCastleId' => null
-        );
-
-        return $this->update($data, $where);
-    }
-
-    public function setProduction($playerId, $castleId, $unitId, $relocationToCastleId = null)
+    public function setProduction($playerId, $castleId, $unitId)
     {
         $where = array(
             $this->_db->quoteInto('"gameId" = ?', $this->_gameId),
@@ -41,8 +27,7 @@ class Application_Model_CastlesInGame extends Coret_Db_Table_Abstract
 
         $data = array(
             'productionId' => $unitId,
-            'productionTurn' => 0,
-            'relocationCastleId' => $relocationToCastleId
+            'productionTurn' => 0
         );
 
         return $this->update($data, $where);
@@ -73,7 +58,7 @@ class Application_Model_CastlesInGame extends Coret_Db_Table_Abstract
         $playersCastles = array();
 
         $select = $this->_db->select()
-            ->from($this->_name, array('productionId', 'productionTurn', 'defenseMod', 'castleId', 'relocationCastleId'))
+            ->from($this->_name, array('productionId', 'productionTurn', 'defenseMod', 'castleId'))
             ->where('"playerId" = ?', $playerId)
             ->where('"gameId" = ?', $this->_gameId)
             ->where('razed = false');

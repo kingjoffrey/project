@@ -58,8 +58,7 @@ class Cli_Model_StartTurn
                     $unitId = $castle->findBestCastleProduction();
                 }
                 if ($unitId != $castle->getProductionId()) {
-                    $relocationToCastleId = null;
-                    $castle->setProductionId($unitId, $relocationToCastleId, $playerId, $gameId, $db);
+                    $castle->setProductionId($unitId, $playerId, $gameId, $db);
                 }
             } else {
                 $unitId = $castle->getProductionId();
@@ -68,16 +67,6 @@ class Cli_Model_StartTurn
             if ($unitId && $production[$unitId]['time'] <= $castle->getProductionTurn() && $player->getGold() > 0) {
                 $castle->resetProductionTurn($gameId, $db);
                 $unitCastleId = null;
-
-                if ($relocationCastleId = $castle->getRelocationCastleId()) {
-                    if ($castles->hasCastle($relocationCastleId)) {
-                        $unitCastleId = $relocationCastleId;
-                    }
-
-                    if (!$unitCastleId) {
-                        $castle->cancelProductionRelocation($gameId, $db);
-                    }
-                }
 
                 if (!$unitCastleId) {
                     $unitCastleId = $castleId;
