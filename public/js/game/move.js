@@ -200,8 +200,8 @@ var Move = new function () {
                                 defenderArmy.deleteHero(heroId)
                             }
                         }
-                        defenderArmy.setNumberOfUnits(defenderArmy.toArray())
-                        if (defenderArmy.getNumberOfUnits()) {
+                        var numberOfUnits = Unit.countNumberOfUnits(defenderArmy.toArray())
+                        if (numberOfUnits) {
                             defenderArmy.update(defenderArmy.toArray())
                         } else {
                             defenderArmies.destroy(armyId)
@@ -214,7 +214,7 @@ var Move = new function () {
             }
             Execute.setExecuting(0)
         } else if (Me.colorEquals(r.color)) {
-            if (army.getNumberOfUnits()) {
+            if (Unit.countNumberOfUnits(army)) {
                 if (army.getMoves() > 0) {
                     Me.selectArmy(r.army.id)
                 }
