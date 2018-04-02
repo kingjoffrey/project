@@ -18,17 +18,29 @@ class Application_Model_UnitsInGame extends Coret_Db_Table_Abstract
         }
     }
 
-    public function add($armyId, $unitId, $numberOfMoves)
+    public function add($armyId, $unitId, $numberOfMoves, $remainingLife)
     {
         $data = array(
             'armyId' => $armyId,
             'gameId' => $this->_gameId,
             'unitId' => $unitId,
-            'movesLeft' => $numberOfMoves
+            'movesLeft' => $numberOfMoves,
+            'remainingLife' => $remainingLife
         );
 
         $this->insert($data);
         return $this->_db->lastSequenceId($this->_sequence);
+    }
+
+    public function updateRemainingLife($remainingLife, $soldierId)
+    {
+        $data = array(
+            'remainingLife' => $remainingLife
+        );
+
+        $where = $this->_db->quoteInto('"soldierId" = ?', $soldierId);
+
+        $this->update($data, $where);
     }
 
     public function updateMovesLeft($movesLeft, $soldierId)

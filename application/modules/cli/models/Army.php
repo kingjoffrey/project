@@ -343,7 +343,7 @@ class Cli_Model_Army
         $units = Zend_Registry::get('units');
         $mSoldier = new Application_Model_UnitsInGame($gameId, $db);
         $unit = $units->getUnit($unitId);
-        $soldierId = $mSoldier->add($this->_id, $unitId, $unit->getNumberOfMoves());
+        $soldierId = $mSoldier->add($this->_id, $unitId, $unit->getNumberOfMoves(), $unit->getLifePoints());
 
         $soldier = new Cli_Model_Soldier(array('unitId' => $unitId, 'soldierId' => $soldierId), $unit);
         if ($unit->canSwim()) {
@@ -603,5 +603,13 @@ class Cli_Model_Army
             throw new Exception('wtf!');
         }
         $this->_movesLeft = $movesLeft;
+    }
+
+    private function setRemainingLife($remainingLife)
+    {
+        if ($remainingLife === null) {
+            throw new Exception('wtf2!');
+        }
+        $this->_remainingLife = $remainingLife;
     }
 }

@@ -180,6 +180,8 @@ class Zend_View_Helper_Translations extends Zend_View_Helper_Abstract
                 'Playername' => $this->view->translate('Player name'),
                 'Experience' => $this->view->translate('Experience'),
                 'Level' => $this->view->translate('Level'),
+                'Life' => $this->view->translate('Life'),
+                'RegenerationSpeed' => $this->view->translate('Regeneration speed'),
                 '' => $this->view->translate(''),
             )));
     }

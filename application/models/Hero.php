@@ -32,7 +32,7 @@ class Application_Model_Hero extends Coret_Db_Table_Abstract
     public function getHeroes()
     {
         $select = $this->_db->select()
-            ->from($this->_name, array('heroId', 'numberOfMoves', 'attackPoints', 'defensePoints', 'experience', 'name'))
+            ->from($this->_name, array('heroId', 'numberOfMoves', 'attackPoints', 'defensePoints', 'lifePoints', 'regenerationSpeed', 'experience', 'name'))
             ->where('"playerId" = ?', $this->_playerId);
 
         return $this->selectAll($select);
@@ -54,7 +54,7 @@ class Application_Model_Hero extends Coret_Db_Table_Abstract
         $heroId = $this->_db->quoteIdentifier('heroId');
 
         $select = $this->_db->select()
-            ->from($this->_name, array('heroId', 'numberOfMoves', 'attackPoints', 'defensePoints', 'experience', 'name'))
+            ->from($this->_name, array('heroId', 'numberOfMoves', 'attackPoints', 'defensePoints', 'lifePoints', 'regenerationSpeed', 'experience', 'name'))
             ->where($heroId . ' = ?', $id)
             ->where($playerId . ' = ?', $this->_playerId);
 

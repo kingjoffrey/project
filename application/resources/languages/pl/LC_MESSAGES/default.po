@@ -2,35 +2,31 @@ msgid ""
 msgstr ""
 "Project-Id-Version: WOF\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-05-07 18:51+0200\n"
-"PO-Revision-Date: 2017-05-07 18:52+0200\n"
+"POT-Creation-Date: 2018-04-02 04:17+0200\n"
+"PO-Revision-Date: 2018-04-02 04:17+0200\n"
 "Last-Translator: Bartosz Krzeszewski <bartek@core-t.pl>\n"
 "Language-Team: \n"
-"Language: pl\n"
+"Language: en\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "X-Poedit-KeywordsList: _;translate\n"
 "X-Poedit-Basepath: /home/idea/WOF\n"
-"X-Poedit-SourceCharset: utf-8\n"
-"X-Generator: Poedit 1.8.5\n"
+"X-Poedit-SourceCharset: UTF-8\n"
+"X-Generator: Poedit 2.0.6\n"
 "X-Poedit-SearchPath-0: application\n"
 
-#: application/controllers/LoginController.php:140
-msgid "Incorrect login details"
-msgstr "Nieprawidłowy e-mail lub hasło!"
-
-#: application/controllers/PaypalController.php:47
-#: application/controllers/PaypalController.php:51
-#: application/controllers/PaypalController.php:62
+#: application/controllers/PaypalController.php:42
+#: application/controllers/PaypalController.php:46
+#: application/controllers/PaypalController.php:57
 msgid "Transaction ended with error"
 msgstr "Transakcja zakończyła się z błędem"
 
-#: application/controllers/PaypalController.php:60
+#: application/controllers/PaypalController.php:55
 msgid "We got your Payment"
 msgstr "Dostaliśmy Twoją zapłatę"
 
-#: application/controllers/PaypalController.php:67
+#: application/controllers/PaypalController.php:62
 msgid "User Cancelled the Approval"
 msgstr "Użytkownik anulował transakcję "
 
@@ -193,6 +189,11 @@ msgstr ""
 msgid "Yes"
 msgstr "Tak"
 
+#: application/modules/cli/controllers/PayPal.php:53
+#, fuzzy
+msgid "Tournament entry fee"
+msgstr "Opłata wstępu na turniej"
+
 #: application/modules/cli/models/MainOpen.php:37
 #: application/views/scripts/tournament/play.phtml:4
 msgid "Play"
@@ -283,7 +284,7 @@ msgid "Heroes lost"
 msgstr "Utraconych herosów"
 
 #: application/views/helpers/Translations.php:19
-#: application/layouts/scripts/default.phtml:38
+#: application/layouts/scripts/default.phtml:39
 msgid "Statistics"
 msgstr "Statystyki"
 
@@ -300,7 +301,7 @@ msgid "towers"
 msgstr "wieże"
 
 #: application/views/helpers/Translations.php:23
-#: application/layouts/scripts/default.phtml:63
+#: application/layouts/scripts/default.phtml:64
 msgid "Tower"
 msgstr "Wieża"
 
@@ -369,8 +370,8 @@ msgid "Error"
 msgstr "Błąd"
 
 #: application/views/helpers/Translations.php:40
-#: application/layouts/scripts/default.phtml:91
-#: application/layouts/scripts/default.phtml:93
+#: application/layouts/scripts/default.phtml:92
+#: application/layouts/scripts/default.phtml:94
 msgid "Surrender"
 msgstr "Poddaj się"
 
@@ -463,7 +464,7 @@ msgid "Relocating from"
 msgstr "Relokacja z"
 
 #: application/views/helpers/Translations.php:63
-#: application/layouts/scripts/default.phtml:44
+#: application/layouts/scripts/default.phtml:45
 msgid "Next turn"
 msgstr "Następna tura"
 
@@ -513,7 +514,7 @@ msgid "Fortify army"
 msgstr "Fortyfikuj armię"
 
 #: application/views/helpers/Translations.php:75
-#: application/layouts/scripts/default.phtml:56
+#: application/layouts/scripts/default.phtml:57
 msgid "Skip army"
 msgstr "Pomiń armię"
 
@@ -574,7 +575,7 @@ msgid "Ruins"
 msgstr "Ruiny"
 
 #: application/views/helpers/Translations.php:90
-#: application/layouts/scripts/default.phtml:62
+#: application/layouts/scripts/default.phtml:63
 msgid "Ruin"
 msgstr "Ruiny"
 
@@ -696,12 +697,12 @@ msgstr "Rozpocznij produkcję"
 
 #: application/views/helpers/Translations.php:120
 #: application/views/helpers/Translations.php:128
-#: application/layouts/scripts/default.phtml:115
+#: application/layouts/scripts/default.phtml:116
 msgid "Close"
 msgstr "Zamknij"
 
 #: application/views/helpers/Translations.php:121
-#: application/layouts/scripts/default.phtml:61
+#: application/layouts/scripts/default.phtml:62
 msgid "Castle"
 msgstr "Zamek"
 
@@ -836,7 +837,7 @@ msgid "Walk"
 msgstr "Chodzi"
 
 #: application/views/helpers/Translations.php:155
-#: application/layouts/scripts/default.phtml:64
+#: application/layouts/scripts/default.phtml:65
 msgid "Road"
 msgstr "Droga"
 
@@ -845,7 +846,7 @@ msgid "Grass"
 msgstr "Łąka"
 
 #: application/views/helpers/Translations.php:157
-#: application/layouts/scripts/default.phtml:65
+#: application/layouts/scripts/default.phtml:66
 msgid "Forest"
 msgstr "Las"
 
@@ -866,7 +867,7 @@ msgid "Water"
 msgstr "Woda"
 
 #: application/views/helpers/Translations.php:162
-#: application/layouts/scripts/default.phtml:66
+#: application/layouts/scripts/default.phtml:67
 msgid "Swamp"
 msgstr "Bagno"
 
@@ -952,72 +953,76 @@ msgstr "Doświadczenie"
 msgid "Level"
 msgstr "Poziom"
 
-#: application/views/helpers/Version.php:6
-msgid "Version number"
-msgstr "Numer wersji"
+#: application/views/helpers/Translations.php:183
+msgid "Life"
+msgstr "Życie"
 
-#: application/layouts/scripts/default.phtml:35
+#: application/views/helpers/Translations.php:184
+msgid "Regeneration speed"
+msgstr "Prędkość regeneracji"
+
+#: application/layouts/scripts/default.phtml:36
 msgid "Gold"
 msgstr "Złoto"
 
-#: application/layouts/scripts/default.phtml:47
+#: application/layouts/scripts/default.phtml:48
 msgid "Show menu"
 msgstr "Pokaż menu"
 
-#: application/layouts/scripts/default.phtml:53
+#: application/layouts/scripts/default.phtml:54
 msgid "Find next army"
 msgstr "Znajdź następną armię"
 
-#: application/layouts/scripts/default.phtml:67
+#: application/layouts/scripts/default.phtml:68
 msgid "Eraser"
 msgstr "Gumka"
 
-#: application/layouts/scripts/default.phtml:68
+#: application/layouts/scripts/default.phtml:69
 msgid "Up"
 msgstr "Góra"
 
-#: application/layouts/scripts/default.phtml:69
+#: application/layouts/scripts/default.phtml:70
 msgid "Down"
 msgstr "Dół"
 
-#: application/layouts/scripts/default.phtml:73
+#: application/layouts/scripts/default.phtml:74
 msgid "Exit editor"
 msgstr "Opuść edytor"
 
-#: application/layouts/scripts/default.phtml:76
+#: application/layouts/scripts/default.phtml:77
 msgid "Publish"
 msgstr "Publikuj"
 
-#: application/layouts/scripts/default.phtml:81
+#: application/layouts/scripts/default.phtml:82
 msgid "Loading"
 msgstr "Wczytywanie"
 
-#: application/layouts/scripts/default.phtml:85
-#: application/layouts/scripts/default.phtml:87
+#: application/layouts/scripts/default.phtml:86
+#: application/layouts/scripts/default.phtml:88
 msgid "Exit game"
 msgstr "Opuść grę"
 
-#: application/layouts/scripts/default.phtml:97
+#: application/layouts/scripts/default.phtml:98
 msgid "Show other players moves"
 msgstr "Pokazuj ruchy innych graczy"
 
-#: application/layouts/scripts/default.phtml:99
+#: application/layouts/scripts/default.phtml:100
 msgid "Show others"
 msgstr "Pokaż innych"
 
-#: application/layouts/scripts/default.phtml:103
+#: application/layouts/scripts/default.phtml:104
 msgid "Turn sound on/off"
 msgstr "Włącz/wyłącz dźwięk"
 
-#: application/layouts/scripts/default.phtml:105
+#: application/layouts/scripts/default.phtml:106
 msgid "Sound"
 msgstr "Dźwięk"
 
-#: application/layouts/scripts/default.phtml:109
+#: application/layouts/scripts/default.phtml:110
 msgid "Toggle full screen"
 msgstr "Przełącz na pełen ekran"
 
-#: application/layouts/scripts/default.phtml:111
+#: application/layouts/scripts/default.phtml:112
 msgid "Full screen"
 msgstr "Pełen ekran"
 
@@ -1035,7 +1040,7 @@ msgstr "Adres email"
 
 #: application/views/scripts/contact/index.phtml:13
 msgid "Mobile number"
-msgstr "Telefon kom."
+msgstr "Telefon komórkowy"
 
 #: application/views/scripts/create/index.phtml:2
 msgid "Create new game"
@@ -1145,10 +1150,6 @@ msgstr "Data wstrzymania"
 #: application/views/scripts/login/index.phtml:5
 msgid "Anonymous login"
 msgstr "Anonimowe logowanie"
-
-#: application/views/scripts/login/index.phtml:7
-msgid "Facebook login"
-msgstr "Zaloguj przez Facebook"
 
 #: application/views/scripts/messages/index.phtml:2
 msgid "Conversations"
@@ -1299,6 +1300,15 @@ msgstr "Zapłać za pomocą PayPal"
 #: application/views/scripts/tournament/play.phtml:2
 msgid "Tournament stage"
 msgstr "Etap turnieju"
+
+#~ msgid "Incorrect login details"
+#~ msgstr "Nieprawidłowy e-mail lub hasło!"
+
+#~ msgid "Version number"
+#~ msgstr "Numer wersji"
+
+#~ msgid "Facebook login"
+#~ msgstr "Zaloguj przez Facebook"
 
 #~ msgid "Email"
 #~ msgstr "Email"

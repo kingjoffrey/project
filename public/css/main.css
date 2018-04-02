@@ -213,9 +213,9 @@ div.table table {
 }
 
 #content td {
-    height: 4.2vw;
+    /*height: 4.2vw;*/
     text-align: center;
-    padding: 0.2vw;
+    padding: 1vw;
     background: url("/img/game/message_bg.png");
 }
 
@@ -408,7 +408,9 @@ tr.trlink:hover td {
 }
 
 #text #unit table {
-    padding: 0.7vw 0;
+    padding: 0.5vw;
+    border-spacing: 0.1vw;
+    border-collapse: separate;
 }
 
 #text #unit .unitName {

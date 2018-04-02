@@ -11,6 +11,8 @@ class Admin_Model_Unit extends Coret_Model_ParentDb
         'numberOfMoves' => array('label' => 'Ilość ruchów', 'type' => 'number'),
         'attackPoints' => array('label' => 'Punkty ataku', 'type' => 'number'),
         'defensePoints' => array('label' => 'Punkty obrony', 'type' => 'number'),
+        'lifePoints' => array('label' => 'Punkty życia', 'type' => 'number'),
+        'regenerationSpeed' => array('label' => 'Szybkość regeneracji', 'type' => 'number'),
         'canFly' => array('label' => 'Lata', 'type' => 'checkbox'),
         'canSwim' => array('label' => 'Pływa', 'type' => 'checkbox'),
         'modMovesForest' => array('label' => 'Ruchy po lesie', 'type' => 'number'),
