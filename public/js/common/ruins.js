@@ -9,13 +9,8 @@ var Ruins = new function () {
         }
     }
     this.add = function (ruinId, ruin) {
-        if (ruin instanceof Ruin) {
-            ruins[ruinId] = ruin
-            Fields.get(ruin.getX(), ruin.getY()).setRuinId(ruinId)
-        } else {
-            ruins[ruinId] = new Ruin(ruin)
-            Fields.get(ruin.x, ruin.y).setRuinId(ruinId)
-        }
+        ruins[ruinId] = ruin
+        Fields.get(ruin.getX(), ruin.getY()).setRuinId(ruinId)
     }
     /**
      *

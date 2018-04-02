@@ -3,6 +3,7 @@
 class Cli_Model_Ruin extends Cli_Model_Entity
 {
     private $_empty;
+    private $_type;
 
     public function __construct($ruin, $empty)
     {
@@ -10,6 +11,7 @@ class Cli_Model_Ruin extends Cli_Model_Entity
         $this->_x = $ruin['x'];
         $this->_y = $ruin['y'];
         $this->_empty = $empty;
+        $this->_type = $ruin['type'];
     }
 
     public function toArray()
@@ -18,6 +20,7 @@ class Cli_Model_Ruin extends Cli_Model_Entity
             'empty' => $this->_empty,
             'x' => $this->_x,
             'y' => $this->_y,
+            'type' => $this->_type
         );
     }
 

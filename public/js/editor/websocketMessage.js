@@ -13,7 +13,7 @@ var WebSocketMessageEditor = new function () {
                 Players.get('neutral').getTowers().add(r.value, {x: PickerEditor.getX(), y: PickerEditor.getZ()})
                 break
             case 'ruinId':
-                Ruins.add(r.value, new Ruin({x: PickerEditor.getX(), y: PickerEditor.getZ(), empty: 0}))
+                Ruins.add(r.value, new Ruin({x: PickerEditor.getX(), y: PickerEditor.getZ(), empty: 0, type: 3}))
                 break
             case 'edit':
                 var castleId = r.castle.id
