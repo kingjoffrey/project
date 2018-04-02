@@ -6,8 +6,6 @@
  */
 class Cli_Model_Soldier extends Cli_Model_Being
 {
-    protected $_type;
-
     private $_forest;
     private $_hills;
     private $_swamp;
@@ -31,6 +29,12 @@ class Cli_Model_Soldier extends Cli_Model_Being
             $this->setMovesLeft($unit->getNumberOfMoves());
         }
 
+        if (isset($soldier['remainingLife'])) {
+            $this->setRemainingLife($soldier['remainingLife']);
+        } else {
+            $this->setRemainingLife($unit->getLifePoints());
+        }
+
         $this->_forest = $unit->getModMovesForest();
         $this->_hills = $unit->getModMovesHills();
         $this->_swamp = $unit->getModMovesSwamp();
@@ -44,7 +48,8 @@ class Cli_Model_Soldier extends Cli_Model_Being
     {
         return array(
             'unitId' => $this->_unitId,
-            'movesLeft' => $this->_movesLeft
+            'movesLeft' => $this->_movesLeft,
+            'remainingLife' => $this->_remainingLife
         );
     }
 

@@ -4,6 +4,8 @@ class Cli_Model_Unit
 {
     private $_attackPoints;
     private $_defensePoints;
+    private $_lifePoints;
+    private $_regenerationSpeed;
     private $_canFly;
     private $_canSwim;
     private $_cost;
@@ -21,6 +23,8 @@ class Cli_Model_Unit
         $this->_id = $unit['unitId'];
         $this->_attackPoints = $unit['attackPoints'];
         $this->_defensePoints = $unit['defensePoints'];
+        $this->_lifePoints = $unit['lifePoints'];
+        $this->_regenerationSpeed = $unit['regenerationSpeed'];
         $this->_canFly = $unit['canFly'];
         $this->_canSwim = $unit['canSwim'];
         $this->_cost = $unit['cost'];
@@ -39,6 +43,8 @@ class Cli_Model_Unit
             'id' => $this->_id,
             'a' => $this->_attackPoints,
             'd' => $this->_defensePoints,
+            'l' => $this->_lifePoints,
+            'rs' => $this->_regenerationSpeed,
             'canFly' => $this->_canFly,
             'canSwim' => $this->_canSwim,
             'cost' => $this->_cost,
@@ -100,6 +106,11 @@ class Cli_Model_Unit
     public function getNumberOfMoves()
     {
         return $this->_numberOfMoves;
+    }
+
+    public function getLifePoints()
+    {
+        return $this->_lifePoints;
     }
 
     public function getId()

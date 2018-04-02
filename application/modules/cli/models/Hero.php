@@ -17,6 +17,7 @@ class Cli_Model_Hero extends Cli_Model_Being
         $this->_defense = $hero['defensePoints'];
         $this->_name = $hero['name'];
         $this->_movesLeft = $hero['movesLeft'];
+        $this->_remainingLife = $hero['remainingLife'];
 
         foreach ($hero['bonus'] as $key => $row) {
             switch ($row['bId']) {
@@ -40,7 +41,8 @@ class Cli_Model_Hero extends Cli_Model_Being
             'attack' => $this->_attack,
             'defense' => $this->_defense,
             'name' => $this->_name,
-            'movesLeft' => $this->_movesLeft
+            'movesLeft' => $this->_movesLeft,
+            'remainingLife' => $this->_remainingLife
         );
     }
 

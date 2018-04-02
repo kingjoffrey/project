@@ -4,12 +4,15 @@ class Cli_Model_Being
 {
     protected $_id;
     protected $_movesLeft;
+    protected $_remainingLife;
 
     protected $_type;
 
     protected $_attack;
     protected $_defense;
     protected $_moves;
+    protected $_lifePoints;
+    protected $_regenerationSpeed;
 
     public function setMovesLeft($movesLeft)
     {
@@ -19,6 +22,16 @@ class Cli_Model_Being
     public function getMovesLeft()
     {
         return $this->_movesLeft;
+    }
+
+    public function setRemainingLife($remainingLife)
+    {
+        $this->_remainingLife = $remainingLife;
+    }
+
+    public function getRemainingLife()
+    {
+        return $this->_remainingLife;
     }
 
     public function getAttackPoints()

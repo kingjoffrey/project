@@ -21,7 +21,7 @@ class Application_Model_Unit extends Coret_Db_Table_Abstract
 //        $units = array(null);
 
         $select = $this->_db->select()
-            ->from(array('a' => $this->_name), array('attackPoints', 'defensePoints', 'canFly', 'canSwim', 'cost', 'modMovesForest', 'modMovesHills', 'modMovesSwamp', 'numberOfMoves', 'unitId', 'special'))
+            ->from(array('a' => $this->_name), array('attackPoints', 'defensePoints', 'lifePoints', 'regenerationSpeed', 'canFly', 'canSwim', 'cost', 'modMovesForest', 'modMovesHills', 'modMovesSwamp', 'numberOfMoves', 'unitId', 'special'))
             ->join(array('b' => 'unit_Lang'), 'b.' . $this->_db->quoteIdentifier('unitId') . ' = a.' . $this->_db->quoteIdentifier('unitId'), 'name')
             ->where('id_lang = ?', Zend_Registry::get('config')->id_lang)
             ->order(array('attackPoints', 'defensePoints', 'numberOfMoves'));
