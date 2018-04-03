@@ -114,7 +114,7 @@ class Cli_Model_Soldiers
                 }
             }
 
-            $soldier->updateMovesLeft($soldierId, $movesSpend, $mSoldier);
+            $soldier->updateMovesLeft($movesSpend, $mSoldier);
 
             if ($movesLeft > $soldier->getMovesLeft()) {
                 $movesLeft = $soldier->getMovesLeft();

@@ -46,6 +46,14 @@ class Cli_Model_Hero extends Cli_Model_Being
         );
     }
 
+    public function updateRemainingLife($remainingLife, $gameId, Zend_Db_Adapter_Pdo_Pgsql $db)
+    {
+        $this->setRemainingLife($remainingLife);
+
+        $mHeroesInGame = new Application_Model_HeroesInGame($gameId, $db);
+        $mHeroesInGame->updateRemainingLife($remainingLife, $this->_id);
+    }
+
     public function updateMovesLeft($movesSpend, Application_Model_HeroesInGame $mHeroesInGame)
     {
         $this->_movesLeft -= $movesSpend;

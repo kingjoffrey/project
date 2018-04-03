@@ -382,14 +382,14 @@ class Cli_Model_Battle
 
     private function combat()
     {
-        $attackLives = $this->_attackingFighter->getRemainingLife();
-        $defenseLives = $this->_defendingFighter->getRemainingLife();
+        $attackingFighterLife = $this->_attackingFighter->getRemainingLife();
+        $defendingFighterLife = $this->_defendingFighter->getRemainingLife();
 
         $attackPoints = $this->_attackingFighter->getAttackPoints() + $this->_attackModifier;
         $defencePoints = $this->_defendingFighter->getDefensePoints() + $this->_defenceModifier + $this->_externalDefenceModifier;
 
         $maxDie = $attackPoints + $defencePoints;
-        while ($attackLives AND $defenseLives) {
+        while ($attackingFighterLife AND $defendingFighterLife) {
             $dieAttacking = $this->rollDie($maxDie);
             $dieDefending = $this->rollDie($maxDie);
 
@@ -399,20 +399,17 @@ class Cli_Model_Battle
 //            echo '$dieAttacking=' . $dieAttacking . "\n\n";
 
             if ($attackPoints > $dieDefending AND $defencePoints <= $dieAttacking) {
-                $defenseLives--;
+                $defendingFighterLife--;
             } elseif ($attackPoints <= $dieDefending AND $defencePoints > $dieAttacking) {
-                $attackLives--;
+                $attackingFighterLife--;
             }
         }
 
         $this->_succession++;
 
         if ($this->_db) {
-            if ($attackLives) {
-                $this->_attackingFighter->setRemainingLife($attackLives);
-
-                $mUnitsInGame = new Application_Model_UnitsInGame($this->_gameId, $this->_db);
-                $mUnitsInGame->updateMovesLeft($attackLives, $this->_attackingFighter->getId());
+            if ($attackingFighterLife) {
+                $this->_attackingFighter->updateRemainingLife($attackingFighterLife, $this->_gameId, $this->_db);
 
                 $id = $this->_defendingFighter->getId();
                 $this->_result->getDefending($this->_defenderColor, $this->_defenderArmyId, $this->_defendingFighter->getType())->addSuccession($id, $this->_succession);
@@ -435,10 +432,7 @@ class Cli_Model_Battle
                 }
             } else {
                 if ($this->_defenderId) {
-                    $this->_defendingFighter->setRemainingLife($defenseLives);
-
-                    $mUnitsInGame = new Application_Model_UnitsInGame($this->_gameId, $this->_db);
-                    $mUnitsInGame->updateMovesLeft($defenseLives, $this->_defenderId);
+                    $this->_defendingFighter->updateRemainingLife($defendingFighterLife, $this->_gameId, $this->_db);
                 }
                 $id = $this->_attackingFighter->getId();
                 $this->_result->getAttacking($this->_attackingFighter->getType())->addSuccession($id, $this->_succession);

@@ -16,7 +16,7 @@ var Army = function (army, bgColor, miniMapColor, textColor, color) {
         army = a
 
         Fields.get(army.x, army.y).addArmyId(army.id, color)
-        army.mesh = GameModels.addArmy(army.x, army.y, bgColor, numberOfUnits, this.getModelName(), this.canSwim())
+        army.mesh = GameModels.addArmy(army.x, army.y, bgColor, numberOfUnits, this.getModelName(), this.canSwim(), this.countLife())
     }
     this.toArray = function () {
         return army
@@ -99,18 +99,6 @@ var Army = function (army, bgColor, miniMapColor, textColor, color) {
         } else {
             return false
         }
-    }
-    this.setHeroSplitKey = function (value) {
-        heroSplitKey = value
-    }
-    this.setSoldierSplitKey = function (value) {
-        soldierSplitKey = value
-    }
-    this.getHeroSplitKey = function () {
-        return heroSplitKey
-    }
-    this.getSoldierSplitKey = function () {
-        return soldierSplitKey
     }
     this.getHeroes = function () {
         return army.heroes
@@ -278,8 +266,33 @@ var Army = function (army, bgColor, miniMapColor, textColor, color) {
     this.getBackgroundColor = function () {
         return bgColor
     }
+    this.countLife = function () {
+        var remainingLife = 0,
+            defaultLife = 0
+        for (var i in army.heroes) {
+            remainingLife += army.heroes[i].remainingLife
+            defaultLife += 10
+        }
+        for (var i in army.fly) {
+            remainingLife += army.fly[i].remainingLife
+            defaultLife += Units.get(army.fly[i].unitId).l
+        }
+        for (var i in army.swim) {
+            remainingLife += army.swim[i].remainingLife
+            defaultLife += Units.get(army.swim[i].unitId).l
+        }
+        for (var i in army.walk) {
+            remainingLife += army.walk[i].remainingLife
+            defaultLife += Units.get(army.walk[i].unitId).l
+        }
 
-    army.mesh = GameModels.addArmy(army.x, army.y, bgColor, Unit.countNumberOfUnits(army), this.getModelName(), this.canSwim())
+        console.log(remainingLife)
+        console.log(defaultLife)
+
+        return remainingLife / defaultLife
+    }
+
+    army.mesh = GameModels.addArmy(army.x, army.y, bgColor, Unit.countNumberOfUnits(army), this.getModelName(), this.canSwim(), this.countLife())
 
     Fields.get(army.x, army.y).addArmyId(army.id, color)
 }

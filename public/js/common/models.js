@@ -376,6 +376,17 @@ var Models = new function () {
     this.getUnit = function (color, modelName) {
         return new THREE.Mesh(armyModels[modelName], armyModels[modelName].material)
     }
+    this.getLifeBar = function (life) {
+        var lifeMesh = new THREE.Mesh(new THREE.BoxGeometry(0.5, 2, 28 * life), new THREE.MeshLambertMaterial({
+            color: 0x00ff00,
+            side: THREE.DoubleSide
+        }))
+        lifeMesh.position.x = -7
+        lifeMesh.position.y = 30
+        lifeMesh.rotation.y = Math.PI / 2
+
+        return lifeMesh
+    }
     this.getArmy = function (color, number, modelName) {
         var flagMesh = new THREE.Mesh(flagModels[number - 1], new THREE.MeshLambertMaterial({
                 color: color,

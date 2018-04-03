@@ -33,8 +33,11 @@ var GameModels = new function () {
         GameScene.add(mesh)
         return mesh
     }
-    this.addArmy = function (x, y, color, number, modelName, canSwim) {
-        var mesh = Models.getArmy(color, number, modelName)
+    this.addArmy = function (x, y, color, number, modelName, canSwim, life) {
+        var mesh = Models.getArmy(color, number, modelName),
+            lifeMesh = Models.getLifeBar(life)
+
+        mesh.add(lifeMesh)
 
         mesh.rotation.y = Math.PI / 2 + Math.PI / 4
         // mesh.children[0].rotation.y = Math.PI + Math.PI / 4
