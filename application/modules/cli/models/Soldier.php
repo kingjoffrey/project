@@ -53,7 +53,7 @@ class Cli_Model_Soldier extends Cli_Model_Being
         );
     }
 
-    public function updateMovesLeft($soldierId, $movesSpend, Application_Model_UnitsInGame $mSoldier)
+    public function updateMovesLeft($soldierId, $movesSpend, Application_Model_UnitsInGame $mUnitsInGame)
     {
         $this->_movesLeft -= $movesSpend;
         if ($this->_movesLeft < 0) {
@@ -62,7 +62,7 @@ class Cli_Model_Soldier extends Cli_Model_Being
             throw new Exception('movesLeft < 0');
         }
 
-        $mSoldier->updateMovesLeft($this->_movesLeft, $soldierId);
+        $mUnitsInGame->updateMovesLeft($this->_movesLeft, $soldierId);
     }
 
     public function resetMovesLeft($gameId, Zend_Db_Adapter_Pdo_Pgsql $db)

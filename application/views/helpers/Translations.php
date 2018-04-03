@@ -182,6 +182,11 @@ class Zend_View_Helper_Translations extends Zend_View_Helper_Abstract
                 'Level' => $this->view->translate('Level'),
                 'Life' => $this->view->translate('Life'),
                 'RegenerationSpeed' => $this->view->translate('Regeneration speed'),
+                'DefaultAttackPoints' => $this->view->translate('Default attack points'),
+                'DefaultDefensePoints' => $this->view->translate('Default defense points'),
+                'DefaultLifePoints' => $this->view->translate('Default life points'),
+                'DefaultNumberOfMoves' => $this->view->translate('Default number of moves'),
+                'CostOfLiving' => $this->view->translate('Cost of living'),
                 '' => $this->view->translate(''),
             )));
     }

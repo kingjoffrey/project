@@ -2,11 +2,11 @@ msgid ""
 msgstr ""
 "Project-Id-Version: WOF\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-04-02 04:17+0200\n"
-"PO-Revision-Date: 2018-04-02 04:17+0200\n"
+"POT-Creation-Date: 2018-04-02 05:58+0200\n"
+"PO-Revision-Date: 2018-04-02 06:00+0200\n"
 "Last-Translator: Bartosz Krzeszewski <bartek@core-t.pl>\n"
 "Language-Team: \n"
-"Language: en\n"
+"Language: pl_PL\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -190,9 +190,8 @@ msgid "Yes"
 msgstr "Tak"
 
 #: application/modules/cli/controllers/PayPal.php:53
-#, fuzzy
 msgid "Tournament entry fee"
-msgstr "Opłata wstępu na turniej"
+msgstr "Opłata za uczestnictwo w turnieju"
 
 #: application/modules/cli/models/MainOpen.php:37
 #: application/views/scripts/tournament/play.phtml:4
@@ -672,6 +671,7 @@ msgid "Production time"
 msgstr "Czas produkcji"
 
 #: application/views/helpers/Translations.php:114
+#: application/views/helpers/Translations.php:189
 msgid "Cost of living"
 msgstr "Koszt utrzymania"
 
@@ -960,6 +960,22 @@ msgstr "Życie"
 #: application/views/helpers/Translations.php:184
 msgid "Regeneration speed"
 msgstr "Prędkość regeneracji"
+
+#: application/views/helpers/Translations.php:185
+msgid "Default attack points"
+msgstr "Podstawowe punkty ataku"
+
+#: application/views/helpers/Translations.php:186
+msgid "Default defense points"
+msgstr "Podstawowe punkty obrony"
+
+#: application/views/helpers/Translations.php:187
+msgid "Default life points"
+msgstr "Podstawowe punkty życia"
+
+#: application/views/helpers/Translations.php:188
+msgid "Default number of moves"
+msgstr "Podstawowa ilość ruchów"
 
 #: application/layouts/scripts/default.phtml:36
 msgid "Gold"

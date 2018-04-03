@@ -340,7 +340,7 @@ var Fields = new function () {
                                     segments = 5
                                 break;
                             case 2:
-                                var radius = 5.5,
+                                var radius = 0.6,
                                     height = 0.35,
                                     segments = 5
                                 break;
