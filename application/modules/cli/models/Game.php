@@ -122,15 +122,15 @@ class Cli_Model_Game
         $emptyRuins = $mRuinsInGame->getVisited();
 
         $mMapRuins = new Application_Model_MapRuins($this->_mapId, $db);
-        foreach ($mMapRuins->getMapRuins() as $ruinId => $position) {
-            if (isset($emptyRuins[$ruinId])) {
+        foreach ($mMapRuins->getMapRuins() as $mapRuinId => $ruin) {
+            if (isset($emptyRuins[$mapRuinId])) {
                 $empty = true;
             } else {
                 $empty = false;
             }
-            $position['ruinId'] = $ruinId;
-            $this->_Ruins->add($ruinId, new Cli_Model_Ruin($position, $empty));
-            $this->_Fields->getField($position['x'], $position['y'])->setRuin($ruinId);
+            $ruin['mapRuinId'] = $mapRuinId;
+            $this->_Ruins->add($mapRuinId, new Cli_Model_Ruin($ruin, $empty));
+            $this->_Fields->getField($ruin['x'], $ruin['y'])->setRuin($mapRuinId);
         }
     }
 

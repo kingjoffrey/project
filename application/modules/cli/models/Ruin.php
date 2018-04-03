@@ -7,11 +7,11 @@ class Cli_Model_Ruin extends Cli_Model_Entity
 
     public function __construct($ruin, $empty)
     {
-        $this->_id = $ruin['ruinId'];
+        $this->_id = $ruin['mapRuinId'];
         $this->_x = $ruin['x'];
         $this->_y = $ruin['y'];
         $this->_empty = $empty;
-        $this->_type = $ruin['type'];
+        $this->_type = $ruin['ruinId'];
     }
 
     public function toArray()

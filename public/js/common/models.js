@@ -266,9 +266,9 @@ var Models = new function () {
                 return new THREE.Mesh(pathGeometryCircle, pathCircleMaterialWhite)
         }
     }
-    this.getArmyBox = function (color) {
+    this.getArmyBox = function () {
         var material1 = new THREE.MeshBasicMaterial({
-                color: 'gold',
+                color: 0xffffff,
                 transparent: true,
                 opacity: 0.1,
                 side: THREE.DoubleSide

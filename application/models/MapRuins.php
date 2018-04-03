@@ -29,7 +29,7 @@ class Application_Model_MapRuins extends Coret_Db_Table_Abstract
             $ret[$val[$this->_primary]] = array(
                 'x' => $val['x'],
                 'y' => $val['y'],
-                'ruinId'=> $val['ruinId']
+                'ruinId' => $val['ruinId']
             );
         }
 

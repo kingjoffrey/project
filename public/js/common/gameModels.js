@@ -174,16 +174,16 @@ var GameModels = new function () {
     this.cursorPosition = function (x, y, t, cursor) {
         switch (t) {
             case 'm':
-                var height = -Ground.getMountainLevel() + hover
+                var height = -Ground.getMountainLevel() + hover / 2
                 break
             case 'h':
-                var height = Fields.get(x, y).getLevel() * 0.05
+                var height = Fields.get(x, y).getLevel() * 0.05 + hover / 2
                 break
             case 'b':
-                var height = bridgeLevel + hover
+                var height = bridgeLevel + hover / 2
                 break
             default :
-                var height = hover
+                var height = hover / 2
                 break
         }
 
@@ -208,7 +208,7 @@ var GameModels = new function () {
                 var height = -Ground.getMountainLevel() + hover
                 break
             case 'h':
-                var height = Fields.get(x, y).getLevel() * 0.05
+                var height = Fields.get(x, y).getLevel() * 0.05 + hover
                 break
             case 'E':
                 this.addPathRectangle(x, y, 'red', Fields.get(x, y).getType())

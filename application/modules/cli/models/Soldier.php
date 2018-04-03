@@ -53,12 +53,14 @@ class Cli_Model_Soldier extends Cli_Model_Being
         );
     }
 
-    public function updateRemainingLife($remainingLife, $gameId, Zend_Db_Adapter_Pdo_Pgsql $db)
+    public function updateRemainingLife($remainingLife, $gameId = null, Zend_Db_Adapter_Pdo_Pgsql $db = null)
     {
         $this->setRemainingLife($remainingLife);
 
-        $mUnitsInGame = new Application_Model_UnitsInGame($gameId, $db);
-        $mUnitsInGame->updateRemainingLife($remainingLife, $this->_id);
+        if ($gameId) {
+            $mUnitsInGame = new Application_Model_UnitsInGame($gameId, $db);
+            $mUnitsInGame->updateRemainingLife($remainingLife, $this->_id);
+        }
     }
 
     public function updateMovesLeft($movesSpend, Application_Model_UnitsInGame $mUnitsInGame)

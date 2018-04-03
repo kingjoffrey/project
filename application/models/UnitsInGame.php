@@ -57,7 +57,7 @@ class Application_Model_UnitsInGame extends Coret_Db_Table_Abstract
     public function getForMove($armyId)
     {
         $select = $this->_db->select()
-            ->from(array('a' => $this->_name), array('movesLeft', 'soldierId', 'unitId'))
+            ->from(array('a' => $this->_name), array('movesLeft', 'remainingLife', 'soldierId', 'unitId'))
             ->join(array('b' => $this->_unit), 'a."unitId" = b."unitId"', null)
             ->where('"gameId" = ?', $this->_gameId)
             ->where('"armyId" = ?', $armyId)
