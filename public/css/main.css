@@ -632,7 +632,7 @@ div.table table.unitTable td:first {
 
 .message .production .unit .name {
     text-shadow: none;
-    background: #fff !important;
+    background: #ff0 !important;
     color: #000 !important;
 }
 
@@ -1264,7 +1264,7 @@ input.max {
 #lost {
     text-align: center;
     color: red;
-    font-size: 20vw;
+    font-size: 14vw;
 }
 
 #score {

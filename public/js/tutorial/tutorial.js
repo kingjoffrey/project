@@ -20,7 +20,7 @@ var Tutorial = new function () {
         )
 
         clearInterval(timeoutId)
-        $('#game #tutorial').css('color', '#fff')
+        $('#game #tutorial').removeClass('blink')
     }
     this.changeStep = function (s) {
         step = s

@@ -27,6 +27,10 @@ var StatusWindow = new function () {
                             .append(defenseCastleBonus.clone())
                         )
                     )
+                    .append($('<div>')
+                        .append($('<div>').addClass('attr').html(translations.Cost + ': '))
+                        .append($('<div>').addClass('attr value').html(Units.get(soldier.unitId).cost))
+                    )
                 )
                 .append($('<td>')
                     .append($('<div>')
@@ -34,8 +38,8 @@ var StatusWindow = new function () {
                         .append($('<div>').addClass('attr value').html(soldier.movesLeft + '/' + Units.get(soldier.unitId).moves))
                     )
                     .append($('<div>')
-                        .append($('<div>').addClass('attr').html(translations.Cost + ': '))
-                        .append($('<div>').addClass('attr value').html(Units.get(soldier.unitId).cost))
+                        .append($('<div>').addClass('attr').html(translations.Life + ': '))
+                        .append($('<div>').addClass('attr value').html(soldier.remainingLife + '/' + Units.get(soldier.unitId).l))
                     )
                     .append($('<input>').hide().attr({
                         type: 'checkbox',
@@ -199,6 +203,10 @@ var StatusWindow = new function () {
                                 .append(defenseCastleBonus.clone())
                             )
                         )
+                        .append($('<div>')
+                            .append($('<div>').addClass('attr').html(translations.Cost + ': '))
+                            .append($('<div>').addClass('attr value').html('0'))
+                        )
                     )
                     .append($('<td>')
                         .append($('<div>')
@@ -206,8 +214,8 @@ var StatusWindow = new function () {
                             .append($('<div>').addClass('attr value').html(hero.movesLeft + '/' + hero.moves))
                         )
                         .append($('<div>')
-                            .append($('<div>').addClass('attr').html(translations.Cost + ': '))
-                            .append($('<div>').addClass('attr value').html('0'))
+                            .append($('<div>').addClass('attr').html(translations.Life + ': '))
+                            .append($('<div>').addClass('attr value').html(hero.remainingLife + '/' + 10))
                         )
                         .append($('<input>').hide().attr({
                             type: 'checkbox',
