@@ -85,7 +85,7 @@ input, select {
     width: 11vw;
 }
 
-.iconButton div, .button, #submit, .bigLink a, input, select {
+.iconButton > div, .button, #submit, .bigLink a, input, select {
     padding: 0.7vw;
 }
 
@@ -143,7 +143,7 @@ input, select {
 
 .iconButton {
     margin: 1px;
-    display: inline-block;
+    display: inline-flex;
 }
 
 h2 {
@@ -688,13 +688,23 @@ div.table table.unitTable td:first {
     text-shadow: none;
 }
 
+.message .mygold h3 {
+    text-align: left;
+    line-height: 2vw;
+    margin: 0 0.5vw;
+}
+
 .message table.treasury {
     border: 1px solid #fff !important;
     min-width: 30vw;
+    margin: 0 0.5vw;
 }
 
 .message table.treasury td {
     background: gold;
+    color: #C00000;
+    padding: 0.5vw;
+    text-shadow: none;
 }
 
 .message .status table {
@@ -746,9 +756,21 @@ div.table table.unitTable td:first {
     position: absolute;
 }
 
-#gold #value {
+#gold #counter {
     display: inline-block;
     color: gold;
+    height: auto;
+    width: auto;
+    padding: 8px
+;
+}
+
+#gold #counter div {
+    line-height: 12px;
+}
+
+#gold #counter #value1, #gold #counter #value2 {
+    text-align: right;
 }
 
 #gold #description {
@@ -1034,7 +1056,7 @@ div.table table.unitTable td:first {
     box-shadow: 0 0 0.7vw #fff;
     background: #fff;
     text-shadow: none;
-    padding: 2px;
+    padding: 0.5vw;
 
 }
 

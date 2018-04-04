@@ -79,6 +79,30 @@ var StatusWindow = new function () {
                         })
                         .append($('<div>'))
                         .attr({
+                            id: 'nextArmy',
+                            title: translations.nextArmy + ' (n)'
+                        })
+                )
+                .append(
+                    $('<div>')
+                        .addClass('iconButton buttonColors')
+                        .click(function () {
+                            WebSocketSendGame.fortify()
+                        })
+                        .append($('<div>'))
+                        .attr({
+                            id: 'skipArmy',
+                            title: translations.skipArmy + ' (space)'
+                        })
+                )
+                .append(
+                    $('<div>')
+                        .addClass('iconButton buttonColors')
+                        .click(function () {
+                            WebSocketSendGame.fortify()
+                        })
+                        .append($('<div>'))
+                        .attr({
                             id: 'quitArmy',
                             title: translations.quitArmy + ' (f)'
                         })

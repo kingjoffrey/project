@@ -18,9 +18,9 @@ var Me = new function () {
         battleSequence = [],
         capitalId = null,
         updateGold = function () {
-            $('#gold #value').fadeOut(300, function () {
-                $('#gold #value').html(gold)
-                $('#gold #value').fadeIn()
+            $('#gold #value1').fadeOut(300, function () {
+                $('#gold #value1').html(gold)
+                $('#gold #value1').fadeIn()
                 if (gold > 1000) {
                     $('#heroHire').removeClass('buttonOff')
                 } else {
@@ -34,11 +34,23 @@ var Me = new function () {
                 $('#costs #value').html(upkeep)
                 $('#costs #value').fadeIn(300)
             })
+
         },
         updateIncome = function () {
             $('#income #value').fadeOut(300, function () {
                 $('#income #value').html(income)
                 $('#income #value').fadeIn(300)
+            })
+        },
+        updateProfit = function () {
+            var profit = income + upkeep
+            if (profit > 0) {
+                console.log(profit)
+                profit = '+' + profit
+            }
+            $('#gold #value2').fadeOut(300, function () {
+                $('#gold #value2').html(income)
+                $('#gold #value2').fadeIn(300)
             })
         }
 
@@ -54,11 +66,11 @@ var Me = new function () {
     }
     this.setIncome = function (value) {
         income = value
-        updateIncome()
+        updateProfit()
     }
     this.setUpkeep = function (value) {
         upkeep = value
-        updateUpkeep()
+        updateProfit()
     }
     this.goldIncrement = function (value) {
         gold += value
@@ -69,11 +81,11 @@ var Me = new function () {
         if (upkeep < 0) {
             upkeep = 0
         }
-        updateUpkeep()
+        updateProfit()
     }
     this.incomeIncrement = function (value) {
         income += value
-        updateIncome()
+        updateProfit()
     }
     this.getGold = function () {
         return gold
@@ -141,6 +153,9 @@ var Me = new function () {
         $('#skipArmy').removeClass('buttonOff').click(function () {
             Me.skip()
         })
+        $('#quitArmy').removeClass('buttonOff').click(function () {
+            Me.skip()
+        })
 
         if (notSet(center)) {
             GameScene.centerOn(army.getX(), army.getY(), function () {
@@ -168,6 +183,7 @@ var Me = new function () {
         GameModels.clearPathCircles()
         this.setIsSelected(0)
         this.armyButtonsOff()
+        PickerGame.cursorChange()
     }
     this.armyButtonsOff = function () {
         if (selectedArmyId) {
@@ -176,6 +192,7 @@ var Me = new function () {
         selectedArmyId = null
         $('.path').remove()
         $('#skipArmy').addClass('buttonOff').off()
+        $('#quitArmy').addClass('buttonOff').off()
     }
     this.removeFromSkipped = function (armyId) {
         if (isTruthful(skippedArmies[armyId])) {
@@ -467,7 +484,8 @@ var Me = new function () {
         this.incomeIncrement(this.getTowers().count() * 5)
 
         updateGold()
-        updateUpkeep()
-        updateIncome()
+        // updateProfit()
+        // updateUpkeep()
+        // updateIncome()
     }
 }

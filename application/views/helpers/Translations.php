@@ -187,6 +187,7 @@ class Zend_View_Helper_Translations extends Zend_View_Helper_Abstract
                 'DefaultLifePoints' => $this->view->translate('Default life points'),
                 'DefaultNumberOfMoves' => $this->view->translate('Default number of moves'),
                 'CostOfLiving' => $this->view->translate('Cost of living'),
+                'soldiers' => $this->view->translate('soldiers'),
                 '' => $this->view->translate(''),
             )));
     }
