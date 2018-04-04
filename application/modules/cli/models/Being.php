@@ -34,6 +34,21 @@ class Cli_Model_Being
         return $this->_remainingLife;
     }
 
+    public function getLifePoints()
+    {
+        return $this->_lifePoints;
+    }
+
+    public function setRegenerationSpeed($regenerationSpeed)
+    {
+        $this->_regenerationSpeed = $regenerationSpeed;
+    }
+
+    public function getRegenerationSpeed()
+    {
+        return $this->_regenerationSpeed;
+    }
+
     public function getAttackPoints()
     {
         return $this->_attack;

@@ -32,7 +32,9 @@ class Cli_Model_StartTurn
 
         $upkeep = 0;
         foreach ($armies->getKeys() as $armyId) {
-            $upkeep += $armies->getArmy($armyId)->getCosts();
+            $army = $armies->getArmy($armyId);
+            $upkeep += $army->getCosts();
+            $army->regenerateLife($gameId, $db);
         }
 
         $income = $towers->count() * 5;

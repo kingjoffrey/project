@@ -113,6 +113,11 @@ class Cli_Model_Unit
         return $this->_lifePoints;
     }
 
+    public function getRegenerationSpeed()
+    {
+        return $this->_regenerationSpeed;
+    }
+
     public function getId()
     {
         return $this->_id;

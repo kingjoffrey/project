@@ -2,7 +2,7 @@ var HelpRenderer = new function () {
     var renderer,
         scene,
         camera,
-        timeOut = 100,
+        timeOut = 1000,
         stop = 1,
         mesh = 0,
         angle = Math.PI / 180,
@@ -37,7 +37,7 @@ var HelpRenderer = new function () {
         stop = 1
     }
     this.start = function () {
-        if (Main.getEnv() != 'development') {
+        if (!Main.getEnv()) {
             timeOut = 0
         }
         stop = 0

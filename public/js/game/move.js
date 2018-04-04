@@ -34,14 +34,12 @@ var Move = new function () {
             Message.remove()
         }
 
-        GameRenderer.shadowsOn()
+        // GameRenderer.shadowsOn()
 
         if (player.isComputer() && !GameGui.getShow()) {
             stepLoop(r, ii)
         } else {
-            GameScene.centerOn(r.path[0].x, r.path[0].y, function () {
-                Move.startStepLoop(r, ii)
-            })
+            Move.startStepLoop(r, ii)
         }
     }
     this.startStepLoop = function (r, ii) {
@@ -56,16 +54,7 @@ var Move = new function () {
         }
 
         if (isSet(r.path[step].c)) {
-            //console.log(step)
-            //console.log(r.path[step])
             if (!player.isComputer() || GameGui.getShow()) {
-                //zoomer.setCenterIfOutOfScreen(r.path[step].x * 40, r.path[step].y * 40);
-
-                if (typeof r.path[step] == 'undefined') {
-                    console.log('step: ' + step)
-                    console.log('path: ' + r.path)
-                    dupa.blada()
-                }
                 GameModels.setArmyPosition(army.getMesh(), r.path[step].x, r.path[step].y)
                 delete r.path[step].c
                 setTimeout(function () {
@@ -90,7 +79,6 @@ var Move = new function () {
     }
     this.end = function (r, ii) {
         army.update(r.army)
-        //MiniMap.centerOn(army.getX(), army.getY())
 
         if (r.battle) {
             if (player.isComputer() && !GameGui.getShow()) {
@@ -200,8 +188,8 @@ var Move = new function () {
                                 defenderArmy.deleteHero(heroId)
                             }
                         }
-                        var numberOfUnits = Unit.countNumberOfUnits(defenderArmy.toArray())
-                        if (numberOfUnits) {
+
+                        if (Unit.countNumberOfUnits(defenderArmy.toArray())) {
                             defenderArmy.update(defenderArmy.toArray())
                         } else {
                             defenderArmies.destroy(armyId)
@@ -230,6 +218,5 @@ var Move = new function () {
         }
 
         GameModels.clearMoveCircles()
-        GameRenderer.shadowsOff()
     }
 }

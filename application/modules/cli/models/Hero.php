@@ -15,6 +15,8 @@ class Cli_Model_Hero extends Cli_Model_Being
         $this->_moves = $hero['numberOfMoves'];
         $this->_attack = $hero['attackPoints'];
         $this->_defense = $hero['defensePoints'];
+        $this->_lifePoints = $hero['lifePoints'];
+        $this->_regenerationSpeed = $hero['regenerationSpeed'];
         $this->_name = $hero['name'];
         $this->_movesLeft = $hero['movesLeft'];
         $this->_remainingLife = $hero['remainingLife'];
@@ -53,6 +55,17 @@ class Cli_Model_Hero extends Cli_Model_Being
         if ($gameId) {
             $mHeroesInGame = new Application_Model_HeroesInGame($gameId, $db);
             $mHeroesInGame->updateRemainingLife($remainingLife, $this->_id);
+        }
+    }
+
+    public function regenerateLife(Application_Model_HeroesInGame $mHeroesInGame)
+    {
+        if ($this->_remainingLife < $this->_lifePoints) {
+            $this->_remainingLife += $this->_regenerationSpeed;
+            if ($this->_remainingLife > $this->_lifePoints) {
+                $this->setRemainingLife($this->_lifePoints);
+            }
+            $mHeroesInGame->updateRemainingLife($this->_remainingLife, $this->_id);
         }
     }
 

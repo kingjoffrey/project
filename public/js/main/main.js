@@ -1,7 +1,7 @@
 "use strict"
 var Main = new function () {
     var init = 0,
-        env,
+        development = 0,
         click = function (controller) {
             return function () {
                 Sound.play('click')
@@ -9,10 +9,12 @@ var Main = new function () {
             }
         }
     this.setEnv = function (val) {
-        env = val
+        if (val == 'development') {
+            development = 1
+        }
     }
     this.getEnv = function () {
-        return env
+        return development
     }
     this.createMenu = function (menu) {
         if (init) {

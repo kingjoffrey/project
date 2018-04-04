@@ -42,6 +42,8 @@ class Cli_Model_Soldier extends Cli_Model_Being
         $this->_attack = $unit->getAttackPoints();
         $this->_defense = $unit->getDefensePoints();
         $this->_moves = $unit->getNumberOfMoves();
+        $this->_lifePoints = $unit->getLifePoints();
+        $this->_regenerationSpeed = $unit->getRegenerationSpeed();
     }
 
     public function toArray()
@@ -60,6 +62,17 @@ class Cli_Model_Soldier extends Cli_Model_Being
         if ($gameId) {
             $mUnitsInGame = new Application_Model_UnitsInGame($gameId, $db);
             $mUnitsInGame->updateRemainingLife($remainingLife, $this->_id);
+        }
+    }
+
+    public function regenerateLife(Application_Model_UnitsInGame $mUnitsInGame)
+    {
+        if ($this->_remainingLife < $this->_lifePoints) {
+            $this->_remainingLife += $this->_regenerationSpeed;
+            if ($this->_remainingLife > $this->_lifePoints) {
+                $this->setRemainingLife($this->_lifePoints);
+            }
+            $mUnitsInGame->updateRemainingLife($this->_remainingLife, $this->_id);
         }
     }
 

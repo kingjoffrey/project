@@ -605,11 +605,35 @@ class Cli_Model_Army
         $this->_movesLeft = $movesLeft;
     }
 
-    private function setRemainingLife($remainingLife)
+    public function regenerateLife($gameId, Zend_Db_Adapter_Pdo_Pgsql $db)
     {
-        if ($remainingLife === null) {
-            throw new Exception('wtf2!');
+        $mHeroesInGame = null;
+        $mUnitsInGame = null;
+
+        foreach ($this->_Heroes->getKeys() as $heroId) {
+            if (!$mHeroesInGame) {
+                $mHeroesInGame = new Application_Model_HeroesInGame($gameId, $db);
+            }
+            $this->_Heroes->getHero($heroId)->regenerateLife($mHeroesInGame);
         }
-        $this->_remainingLife = $remainingLife;
+
+        foreach ($this->_WalkingSoldiers->getKeys() as $soldierId) {
+            if (!$mUnitsInGame) {
+                $mUnitsInGame = new Application_Model_UnitsInGame($gameId, $db);
+            }
+            $this->_WalkingSoldiers->getSoldier($soldierId)->regenerateLife($mUnitsInGame);
+        }
+        foreach ($this->_SwimmingSoldiers->getKeys() as $soldierId) {
+            if (!$mUnitsInGame) {
+                $mUnitsInGame = new Application_Model_UnitsInGame($gameId, $db);
+            }
+            $this->_SwimmingSoldiers->getSoldier($soldierId)->regenerateLife($mUnitsInGame);
+        }
+        foreach ($this->_FlyingSoldiers->getKeys() as $soldierId) {
+            if (!$mUnitsInGame) {
+                $mUnitsInGame = new Application_Model_UnitsInGame($gameId, $db);
+            }
+            $this->_FlyingSoldiers->getSoldier($soldierId)->regenerateLife($mUnitsInGame);
+        }
     }
 }

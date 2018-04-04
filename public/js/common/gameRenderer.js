@@ -18,9 +18,10 @@ var GameRenderer = new function () {
         if (stop) {
             return
         }
-console.log('render')
+
         render()
 
+        if (timeOut) {
             if (TWEEN.update()) {
                 requestAnimationFrame(GameRenderer.animate)
             } else {
@@ -28,26 +29,23 @@ console.log('render')
                     requestAnimationFrame(GameRenderer.animate)
                 }, timeOut)
             }
+        } else {
+            if (TWEEN.update()) {
+                requestAnimationFrame(GameRenderer.animate)
+            } else {
+                requestAnimationFrame(GameRenderer.animate)
+            }
+        }
     }
     this.stop = function () {
         stop = 1
     }
     this.start = function () {
-        if (Main.getEnv() != 'development') {
+        if (!Main.getEnv()) {
             timeOut = 0
         }
         stop = 0
         $('#game').append(renderer.domElement)
-        // this.animate()
-    }
-    this.shadowsOff = function () {
-        // renderer.shadowMapAutoUpdate = false
-        // console.log(renderer.shadowMapAutoUpdate)
-        // renderer.clearTarget(light.shadowMap)
-    }
-    this.shadowsOn = function () {
-        // renderer.shadowMapAutoUpdate = true
-        // console.log(renderer.shadowMapAutoUpdate)
     }
     this.shadowsInfo = function () {
         console.log(renderer.shadowMapAutoUpdate)
