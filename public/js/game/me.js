@@ -43,9 +43,9 @@ var Me = new function () {
             })
         },
         updateProfit = function () {
-            var profit = income + upkeep
+            var profit = income - upkeep
             $('#gold #value2').fadeOut(300, function () {
-                $('#gold #value2').html(income)
+                $('#gold #value2').html(profit)
                 $('#gold #value2').fadeIn(300)
             })
         }
@@ -58,6 +58,7 @@ var Me = new function () {
     }
     this.setGold = function (value) {
         gold = value
+        updateGold()
     }
     this.setIncome = function (value) {
         income = value
