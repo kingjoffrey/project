@@ -44,10 +44,6 @@ var Me = new function () {
         },
         updateProfit = function () {
             var profit = income + upkeep
-            if (profit > 0) {
-                console.log(profit)
-                profit = '+' + profit
-            }
             $('#gold #value2').fadeOut(300, function () {
                 $('#gold #value2').html(income)
                 $('#gold #value2').fadeIn(300)
@@ -62,7 +58,6 @@ var Me = new function () {
     }
     this.setGold = function (value) {
         gold = value
-        updateGold()
     }
     this.setIncome = function (value) {
         income = value
@@ -484,8 +479,5 @@ var Me = new function () {
         this.incomeIncrement(this.getTowers().count() * 5)
 
         updateGold()
-        // updateProfit()
-        // updateUpkeep()
-        // updateIncome()
     }
 }

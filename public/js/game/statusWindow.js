@@ -61,17 +61,6 @@ var StatusWindow = new function () {
         buttons = function (field, castleDefense, army) {
             var html = $('<div>')
                 .append(
-                    $('<div>').addClass('iconButton buttonColors')
-                        .click(function () {
-                            Me.disband()
-                        })
-                        .append($('<div>'))
-                        .attr({
-                            id: 'disbandArmy',
-                            title: translations.Disbandarmy
-                        })
-                )
-                .append(
                     $('<div>')
                         .addClass('iconButton buttonColors')
                         .click(function () {
@@ -107,6 +96,17 @@ var StatusWindow = new function () {
                             title: translations.quitArmy + ' (f)'
                         })
                 )
+                .append(
+                    $('<div>').addClass('iconButton buttonColors')
+                        .click(function () {
+                            Me.disband()
+                        })
+                        .append($('<div>'))
+                        .attr({
+                            id: 'disbandArmy',
+                            title: translations.Disbandarmy
+                        })
+                )
 
             if (field.getRuinId() && army.getHeroKey()) {
                 html.append(
@@ -125,17 +125,28 @@ var StatusWindow = new function () {
 
             if (castleDefense) {
                 if (castleDefense < 4) {
-                    html.append(
-                        $('<div>').addClass('iconButton buttonColors')
-                            .click(function () {
-                                CastleWindow.build()
-                            })
-                            .append($('<div>'))
-                            .attr({
-                                id: 'buildCastleDefense',
-                                title: translations.buildCastleDefense + ' (b)'
-                            })
-                    )
+                    if (CastleWindow.calculateBuildCost(castleDefense) > Me.getGold()) {
+                        html.append(
+                            $('<div>').addClass('iconButton buttonColors buttonOff')
+                                .append($('<div>'))
+                                .attr({
+                                    id: 'buildCastleDefense',
+                                    title: translations.buildCastleDefense + ' (b)'
+                                })
+                        )
+                    } else {
+                        html.append(
+                            $('<div>').addClass('iconButton buttonColors')
+                                .click(function () {
+                                    CastleWindow.build()
+                                })
+                                .append($('<div>'))
+                                .attr({
+                                    id: 'buildCastleDefense',
+                                    title: translations.buildCastleDefense + ' (b)'
+                                })
+                        )
+                    }
                 }
 
                 html.append(

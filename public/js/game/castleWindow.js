@@ -206,11 +206,8 @@ var CastleWindow = new function () {
                 .append($('<div>').html(translations.currentDefense + ': ' + castle.getDefense()))
             var id = Message.show(translations.buildCastleDefense, div);
         } else {
-            var costBuildDefense = 0;
-            for (i = 1; i <= castle.getDefense(); i++) {
-                costBuildDefense += i * 100;
-            }
-            var newDefense = castle.getDefense() + 1;
+            var costBuildDefense = this.calculateBuildCost(castle.getDefense()),
+                newDefense = castle.getDefense() + 1;
 
             var div = $('<div>')
                 .append($('<h3>').html(translations.doYouWantToBuildCastleDefense))
@@ -221,5 +218,12 @@ var CastleWindow = new function () {
             Message.addButton(id, 'buildCastleDefense', WebSocketSendGame.defense);
         }
         Message.addButton(id, 'cancel')
+    }
+    this.calculateBuildCost = function (defense) {
+        var costBuildDefense = 0;
+        for (i = 1; i <= defense; i++) {
+            costBuildDefense += i * 100;
+        }
+        return costBuildDefense
     }
 }
