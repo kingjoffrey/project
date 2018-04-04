@@ -224,6 +224,36 @@ abstract class Coret_Model_ParentDb extends Coret_Db_Table_Abstract
         return $this->_select;
     }
 
+    public function getList4FormSelect($columnName)
+    {
+        if (is_array($columnName)) {
+            $array = $columnName;
+            $array[] = $this->_primary;
+            $this->prepareSelect($array);
+        } else {
+            $this->prepareSelect(array($this->_primary, $columnName));
+        }
+
+        $selectOptions = array();
+
+        foreach ($this->selectAll($this->_select) as $row) {
+            if (is_array($columnName)) {
+                $name = '';
+                foreach ($columnName as $val) {
+                    if ($name) {
+                        $name .= ' ';
+                    }
+                    $name .= $row[$val];
+                }
+                $selectOptions[$row[$this->_primary]] = $name;
+            } else {
+                $selectOptions[$row[$this->_primary]] = $row[$columnName];
+            }
+        }
+
+        return $selectOptions;
+    }
+
     /**
      * @param array $columns
      * @param array $columns_lang

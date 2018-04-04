@@ -286,9 +286,6 @@ var Army = function (army, bgColor, miniMapColor, textColor, color) {
             defaultLife += Units.get(army.walk[i].unitId).l
         }
 
-        console.log(remainingLife)
-        console.log(defaultLife)
-
         return remainingLife / defaultLife
     }
 

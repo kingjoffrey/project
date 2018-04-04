@@ -11,6 +11,5 @@ class Admin_Model_Mapcastleproduction extends Coret_Model_ParentDb
         'unitId' => array('label' => 'Unit ID', 'type' => 'select'),
         'time' => array('label' => 'Czas', 'type' => 'number'),
     );
-
 }
 

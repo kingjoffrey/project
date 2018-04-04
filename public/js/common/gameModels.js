@@ -87,13 +87,13 @@ var GameModels = new function () {
     this.addRuin = function (x, y, color) {
         var mesh = Models.getRuin(color)
 
-        mesh.scale.x = 0.05
-        mesh.scale.y = 0.05
-        mesh.scale.z = 0.05
+        mesh.scale.x = 0.1
+        mesh.scale.y = 0.1
+        mesh.scale.z = 0.1
 
-        mesh.position.set(x * 2 + 0.5, 0, y * 2 + 0.5)
+        mesh.position.set(x * 2 + 1, 0, y * 2 + 1)
 
-        mesh.rotation.y = 2 * Math.PI * Math.random()
+        // mesh.rotation.y = 2 * Math.PI * Math.random()
 
         if (Page.getShadows()) {
             mesh.castShadow = true
@@ -161,9 +161,9 @@ var GameModels = new function () {
         mesh.position.set(x * 2 + 1, 0, y * 2 + 1)
         mesh.rotation.y = 2 * Math.PI * Math.random()
 
-        mesh.scale.x = 0.2
-        mesh.scale.y = 0.2
-        mesh.scale.z = 0.2
+        mesh.scale.x = 0.15
+        mesh.scale.y = 0.15
+        mesh.scale.z = 0.15
 
         if (Page.getShadows()) {
             mesh.castShadow = true

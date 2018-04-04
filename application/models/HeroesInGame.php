@@ -44,7 +44,7 @@ class Application_Model_HeroesInGame extends Coret_Db_Table_Abstract
     {
         $select = $this->_db->select()
             ->from(array('a' => 'hero'), array('numberOfMoves', 'attackPoints', 'defensePoints', 'lifePoints', 'regenerationSpeed', 'name'))
-            ->join(array('b' => $this->_name), 'a."heroId" = b."heroId"', array('heroId', 'movesLeft', 'remainingLife'))
+            ->join(array('b' => $this->_name), 'a."heroId" = b."heroId"', array('heroId', 'movesLeft', 'remainingLife', 'attackBonus', 'defenseBonus'))
             ->where($this->_db->quoteIdentifier('gameId') . ' = ?', $this->_gameId)
             ->where($this->_db->quoteIdentifier('armyId') . ' = ?', $armyId)
             ->order('attackPoints DESC', 'defensePoints DESC', 'numberOfMoves DESC');
@@ -125,7 +125,7 @@ class Application_Model_HeroesInGame extends Coret_Db_Table_Abstract
 
         $select = $this->_db->select()
             ->from(array('a' => 'hero'), array('numberOfMoves', 'attackPoints', 'defensePoints', 'lifePoints', 'regenerationSpeed', 'name'))
-            ->join(array('b' => $this->_name), 'a."heroId" = b."heroId"', array('heroId', 'movesLeft', 'remainingLife'))
+            ->join(array('b' => $this->_name), 'a."heroId" = b."heroId"', array('heroId', 'movesLeft', 'remainingLife', 'attackBonus', 'defenseBonus'))
             ->where($this->_db->quoteIdentifier('gameId') . ' = ?', $this->_gameId)
             ->where($this->_db->quoteIdentifier('playerId') . ' = ?', $playerId);
         return $this->selectRow($select);
@@ -135,7 +135,7 @@ class Application_Model_HeroesInGame extends Coret_Db_Table_Abstract
     {
         $select = $this->_db->select()
             ->from(array('a' => 'hero'), array('numberOfMoves', 'attackPoints', 'defensePoints', 'lifePoints', 'regenerationSpeed', 'name'))
-            ->join(array('b' => $this->_name), 'a."heroId" = b."heroId"', array('heroId', 'movesLeft', 'remainingLife'))
+            ->join(array('b' => $this->_name), 'a."heroId" = b."heroId"', array('heroId', 'movesLeft', 'remainingLife', 'attackBonus', 'defenseBonus'))
             ->where($this->_db->quoteIdentifier('gameId') . ' = ?', $this->_gameId)
             ->where('a."heroId" = ?', $heroId);
         return $this->selectRow($select);

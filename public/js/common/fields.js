@@ -335,22 +335,22 @@ var Fields = new function () {
 
                         switch (level) {
                             case 1:
-                                var radius = 0.6,
+                                var radius = 0.7,
                                     height = 0.3,
                                     segments = 5
                                 break;
                             case 2:
-                                var radius = 0.6,
+                                var radius = 0.7,
                                     height = 0.35,
                                     segments = 5
                                 break;
                             case 3:
-                                var radius = 0.6,
+                                var radius = 0.7,
                                     height = 0.4,
                                     segments = 5
                                 break;
                             case 4:
-                                var radius = 0.65,
+                                var radius = 0.7,
                                     height = 0.45,
                                     segments = 5
                                 break;

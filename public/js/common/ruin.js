@@ -7,7 +7,17 @@ var Ruin = function (ruin) {
         if (ruin.empty) {
             return '#8080a0'
         } else {
-            return '#FFD700'
+            switch (ruin.type){
+                case 1:
+                    return '#FF0000'
+                    break
+                case 2:
+                    return '#0000FF'
+                    break
+                case 3:
+                    return '#FFD700'
+                    break
+            }
         }
     }
     this.getX = function () {

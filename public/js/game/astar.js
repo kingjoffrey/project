@@ -8,7 +8,7 @@ var AStar = new function () {
         army,
         myCastleId = {},
         movementType,
-        showCoordinates = 0,
+        showCoordinates = 1,
         coordinates = ''
 
     var getPath = function (key) {
