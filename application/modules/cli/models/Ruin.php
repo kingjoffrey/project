@@ -24,6 +24,11 @@ class Cli_Model_Ruin extends Cli_Model_Entity
         );
     }
 
+    public function getType()
+    {
+        return $this->_type;
+    }
+
     public function getEmpty()
     {
         return $this->_empty;

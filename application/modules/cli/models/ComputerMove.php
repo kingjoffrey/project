@@ -197,7 +197,16 @@ class Cli_Model_ComputerMove extends Cli_Model_ComputerMethods
         if ($ruinId = $this->_fields->getField($this->_armyX, $this->_armyY)->getRuinId()) {
             if (!$this->_game->getRuins()->getRuin($ruinId)->getEmpty()) {
                 $this->_l->log('PRZESZUKUJĘ RUINY');
-                $this->_game->getRuins()->getRuin($ruinId)->search($this->_game, $this->_army, $heroId, $this->_playerId, $this->_handler);
+                $ruin = $this->_game->getRuins()->getRuin($ruinId);
+                switch ($ruin->getType()) {
+                    case 1:
+                        break;
+                    case 2:
+                        break;
+                    case 3:
+                        $ruin->search($this->_game, $this->_army, $heroId, $this->_playerId, $this->_handler);
+                        break;
+                }
                 $this->_searchRuin = false;
                 $this->next();
                 return;

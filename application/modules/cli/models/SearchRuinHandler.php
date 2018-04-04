@@ -52,7 +52,15 @@ class Cli_Model_SearchRuinHandler
         if ($giveMeDragons) {
             $ruin->giveMeDragons($game, $army, $heroId, $playerId, $handler);
         } else {
-            $ruin->search($game, $army, $heroId, $playerId, $handler);
+            switch ($ruin->getType()) {
+                case 1:
+                    break;
+                case 2:
+                    break;
+                case 3:
+                    $ruin->search($game, $army, $heroId, $playerId, $handler);
+                    break;
+            }
         }
 
         if ($army->getHeroes()->hasHero($heroId)) {
