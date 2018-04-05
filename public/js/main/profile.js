@@ -3,20 +3,20 @@ var ProfileController = new function () {
     this.index = function (r) {
         $('#content').html(r.data)
 
-        $('form#player').submit(function (e) {
+        $('form#playerForm').submit(function (e) {
             e.preventDefault()
             WebSocketSendMain.controller('profile', 'index', {
                 'firstName': $('input#firstName').val(),
                 'lastName': $('input#lastName').val()
             })
         })
-        $('form#login').submit(function (e) {
+        $('form#loginForm').submit(function (e) {
             e.preventDefault()
             WebSocketSendMain.controller('profile', 'index', {
                 'login': $('input#login').val()
             })
         })
-        $('form#password').submit(function (e) {
+        $('form#passwordForm').submit(function (e) {
             e.preventDefault()
             WebSocketSendMain.controller('profile', 'index', {
                 'password': $('input#password').val(),

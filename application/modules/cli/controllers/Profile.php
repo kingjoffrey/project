@@ -16,7 +16,7 @@ class ProfileController
         $view->formPlayer->populate($player);
         $view->formPlayer->setView($view);
 
-        $view->formLogin = new Application_Form_Login();
+        $view->formLogin = new Application_Form_Login($db);
         $view->formLogin->populate($player);
         $view->formLogin->setView($view);
 

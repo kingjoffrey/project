@@ -4,7 +4,7 @@ class Application_Form_Player extends Zend_Form
 {
     public function init()
     {
-        $this->setAttrib('id', 'player');
+        $this->setAttrib('id', 'playerForm');
 
         $translator = Zend_Registry::get('Zend_Translate');
         $adapter = $translator->getAdapter();
@@ -25,7 +25,7 @@ class Application_Form_Player extends Zend_Form
             )
         );
         $this->addElements($f->getElements());
-        $f = new Coret_Form_Submit(array('label' => $adapter->translate('Submit')));
+        $f = new Coret_Form_Submit(array('label' => $adapter->translate('Submit'), 'id' => 'submit1'));
         $this->addElements($f->getElements());
     }
 }

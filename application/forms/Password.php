@@ -5,7 +5,7 @@ class Application_Form_Password extends Zend_Form
 
     public function init()
     {
-        $this->setAttrib('id', 'password');
+        $this->setAttrib('id', 'passwordForm');
 
         $translator = Zend_Registry::get('Zend_Translate');
         $adapter = $translator->getAdapter();
@@ -30,7 +30,7 @@ class Application_Form_Password extends Zend_Form
         );
         $this->addElements($f->getElements());
 
-        $f = new Coret_Form_Submit(array('label' => $adapter->translate('Submit')));
+        $f = new Coret_Form_Submit(array('label' => $adapter->translate('Submit'), 'id' => 'submit3'));
         $this->addElements($f->getElements());
     }
 }
