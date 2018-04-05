@@ -1,9 +1,10 @@
 <?php
+use Devristo\Phpws\Protocol\WebSocketTransportInterface;
 
 class Cli_Model_JoinArmy
 {
 
-    public function __construct($armyId, Devristo\Phpws\Protocol\WebSocketTransportInterface $user, $handler)
+    public function __construct($armyId, WebSocketTransportInterface $user, $handler)
     {
         if (empty($armyId)) {
             $l = new Coret_Model_Logger('Cli_Model_JoinArmy');

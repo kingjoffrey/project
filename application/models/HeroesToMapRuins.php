@@ -30,8 +30,7 @@ class Application_Model_HeroesToMapRuins extends Coret_Db_Table_Abstract
             ->from(array('a' => $this->_name), '')
             ->join(array('b' => 'mapruins'), 'a."mapRuinId" = b."mapRuinId"', array('mapRuinId'))
             ->join(array('c' => 'ruin'), 'b."ruinId" = c."ruinId"', array('ruinId'))
-            ->where($this->_db->quoteIdentifier('heroId') . ' = ?', $heroId)
-            ->order('attackPoints DESC', 'defensePoints DESC', 'numberOfMoves DESC');
+            ->where($this->_db->quoteIdentifier('heroId') . ' = ?', $heroId);
 
         $array = array();
 

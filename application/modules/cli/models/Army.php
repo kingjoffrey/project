@@ -1,4 +1,5 @@
 <?php
+use Devristo\Phpws\Protocol\WebSocketTransportInterface;
 
 class Cli_Model_Army
 {
