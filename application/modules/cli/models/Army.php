@@ -423,15 +423,17 @@ class Cli_Model_Army
         }
     }
 
-    public function initHeroes($heroes, Application_Model_Heroskills $mHeroSkills)
+    public function initHeroes($heroes, Application_Model_Heroskills $mHeroSkills, Application_Model_HeroesToMapRuins $mHeroesToMapRuins)
     {
         foreach ($heroes as $hero) {
-            $hero['bonus'] = $mHeroSkills->getBonuses($hero['heroId']);
-            $this->_Heroes->add($hero['heroId'], new Cli_Model_Hero($hero));
-            $hero = $this->_Heroes->getHero($hero['heroId']);
+            $this->_Heroes->add(
+                $hero['heroId'], new Cli_Model_Hero($hero),
+                $mHeroSkills->getBonuses($hero['heroId']),
+                $mHeroesToMapRuins->getHeroMapRuins($hero['heroId'])
+            );
 
-            if ($this->_movesLeft > $hero->getMovesLeft()) {
-                $this->setMovesLeft($hero->getMovesLeft());
+            if ($this->_movesLeft > $hero['movesLeft']) {
+                $this->setMovesLeft($hero['movesLeft']);
             }
         }
     }

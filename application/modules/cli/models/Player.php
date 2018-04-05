@@ -77,11 +77,12 @@ class Cli_Model_Player extends Cli_Model_DefaultPlayer
         $mSoldier = new Application_Model_UnitsInGame($gameId, $db);
         $mHeroesInGame = new Application_Model_HeroesInGame($gameId, $db);
         $mHeroSkills = new Application_Model_Heroskills($db);
+        $mHeroesToMapRuins = new Application_Model_HeroesToMapRuins($db);
 
         foreach ($mArmy->getPlayerArmies($this->_id) as $a) {
             $this->_armies->addArmy($a['armyId'], new Cli_Model_Army($a, $this->_color));
             $army = $this->_armies->getArmy($a['armyId']);
-            $army->initHeroes($mHeroesInGame->getForMove($a['armyId']),$mHeroSkills);
+            $army->initHeroes($mHeroesInGame->getForMove($a['armyId']), $mHeroSkills, $mHeroesToMapRuins);
             $army->initSoldiers($mSoldier->getForMove($a['armyId']));
         }
     }

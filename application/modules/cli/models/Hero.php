@@ -8,8 +8,9 @@ class Cli_Model_Hero extends Cli_Model_Being
 {
     protected $_type = 'hero';
     private $_name;
+    private $_mapRuins;
 
-    public function __construct($hero)
+    public function __construct($hero, $bonus, $mapRuins)
     {
         $this->_id = $hero['heroId'];
         $this->_moves = $hero['numberOfMoves'];
@@ -21,7 +22,20 @@ class Cli_Model_Hero extends Cli_Model_Being
         $this->_movesLeft = $hero['movesLeft'];
         $this->_remainingLife = $hero['remainingLife'];
 
-        foreach ($hero['bonus'] as $key => $row) {
+        $this->_mapRuins = $mapRuins;
+
+        foreach ($mapRuins as $mapRuinId => $type) {
+            switch ($type) {
+                case 1:
+                    $this->_attack++;
+                    break;
+                case 2:
+                    $this->_defense++;
+                    break;
+            }
+        }
+
+        foreach ($bonus as $key => $row) {
             switch ($row['bId']) {
                 case 1:
                     $this->_attack++;
