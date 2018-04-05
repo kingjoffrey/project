@@ -41,10 +41,14 @@ class Cli_Model_HeroResurrection
         }
 
         $mHeroSkills = new Application_Model_Heroskills($db);
-        $hero['bonus'] = $mHeroSkills->getBonuses($hero['heroId']);
+        $mHeroesToMapRuins = new Application_Model_HeroesToMapRuins($db);
 
         $army = $player->getArmies()->getArmy($armyId);
-        $army->addHero($hero['heroId'], new Cli_Model_Hero($hero), $gameId, $db);
+        $army->addHero($hero['heroId'], new Cli_Model_Hero(
+            $hero,
+            $mHeroSkills->getBonuses($hero['heroId']),
+            $mHeroesToMapRuins->getHeroMapRuins($hero['heroId'])
+        ), $gameId, $db);
         $army->getHeroes()->getHero($hero['heroId'])->zeroMovesLeft($gameId, $db);
 
         $gold = 100;

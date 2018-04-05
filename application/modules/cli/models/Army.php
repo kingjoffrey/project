@@ -98,7 +98,7 @@ class Cli_Model_Army
         }
     }
 
-    public function move(Cli_Model_Game $game, Cli_Model_Path $path, $handler)
+    public function move(Cli_Model_Game $game, Cli_Model_Path $path, WebSocketTransportInterface $user, $handler)
     {
         if (!$path->exists()) {
             echo 'PATH NOT EXISTS' . "\n";
@@ -155,6 +155,8 @@ class Cli_Model_Army
         );
 
         $handler->sendToChannel($token);
+
+        new Cli_Model_RuinHandler($path->getX(), $path->getY(), $this->getHeroes(), $game, $user, $handler);
 
 //        if ($end) {
 //            new Cli_Model_SaveResults($game, $handler);
@@ -426,10 +428,12 @@ class Cli_Model_Army
     public function initHeroes($heroes, Application_Model_Heroskills $mHeroSkills, Application_Model_HeroesToMapRuins $mHeroesToMapRuins)
     {
         foreach ($heroes as $hero) {
-            $this->_Heroes->add(
-                $hero['heroId'], new Cli_Model_Hero($hero),
-                $mHeroSkills->getBonuses($hero['heroId']),
-                $mHeroesToMapRuins->getHeroMapRuins($hero['heroId'])
+            $this->_Heroes->add($hero['heroId'],
+                new Cli_Model_Hero(
+                    $hero,
+                    $mHeroSkills->getBonuses($hero['heroId']),
+                    $mHeroesToMapRuins->getHeroMapRuins($hero['heroId'])
+                )
             );
 
             if ($this->_movesLeft > $hero['movesLeft']) {

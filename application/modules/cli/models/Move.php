@@ -96,6 +96,6 @@ class Cli_Model_Move
             return;
         }
 
-        $army->move($game, $path, $handler);
+        $army->move($game, $path, $user, $handler);
     }
 }

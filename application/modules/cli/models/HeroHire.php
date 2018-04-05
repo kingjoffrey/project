@@ -46,9 +46,13 @@ class Cli_Model_HeroHire
         $hero = $mHeroesInGame->getHero($heroId);
 
         $mHeroSkills = new Application_Model_Heroskills($db);
-        $hero['bonus'] = $mHeroSkills->getBonuses($hero['heroId']);
+        $mHeroesToMapRuins = new Application_Model_HeroesToMapRuins($db);
 
-        $army->addHero($heroId, new Cli_Model_Hero($hero), $gameId, $db);
+        $army->addHero($heroId, new Cli_Model_Hero(
+            $hero,
+            $mHeroSkills->getBonuses($hero['heroId']),
+            $mHeroesToMapRuins->getHeroMapRuins($hero['heroId'])
+        ), $gameId, $db);
         $army->getHeroes()->getHero($heroId)->zeroMovesLeft($gameId, $db);
 
         $player->addGold(-$this->_price);
