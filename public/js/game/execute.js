@@ -53,14 +53,27 @@ var Execute = new function () {
                     break
 
                 case 'ruin':
-                    if (Players.get(r.color).isComputer() && !GameGui.getShow()) {
-                        Ruins.handle(r)
+                    if (isSet(r.bonus)) {
+                        switch (r.bonus) {
+                            case 1:
+                                var title = translations.attack
+                                break
+                            case 2:
+                                var title = translations.defense
+                                break
+                        }
+                        Message.simple(title, '+1')
                         Execute.setExecuting(0)
                     } else {
-                        GameScene.centerOn(r.army.x, r.army.y, function () {
+                        if (Players.get(r.color).isComputer() && !GameGui.getShow()) {
                             Ruins.handle(r)
                             Execute.setExecuting(0)
-                        })
+                        } else {
+                            GameScene.centerOn(r.army.x, r.army.y, function () {
+                                Ruins.handle(r)
+                                Execute.setExecuting(0)
+                            })
+                        }
                     }
                     break;
 

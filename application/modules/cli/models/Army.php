@@ -151,6 +151,7 @@ class Cli_Model_Army
         }
 
         new Cli_Model_TowerHandler($player->getId(), $path, $game, $handler);
+        $ruinHandler = new Cli_Model_RuinHandler($path->getX(), $path->getY(), $this->getHeroes(), $game, $db);
 
         $token = array(
             'color' => $this->_color,
@@ -163,7 +164,9 @@ class Cli_Model_Army
 
         $handler->sendToChannel($token);
 
-        new Cli_Model_RuinHandler($path->getX(), $path->getY(), $this->getHeroes(), $game, $handler, $user);
+        if ($user && $ruinHandler->hasBonus()) {
+            $ruinHandler->sendBonus($user, $handler);
+        }
 
 //        if ($end) {
 //            new Cli_Model_SaveResults($game, $handler);

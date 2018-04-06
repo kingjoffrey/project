@@ -57,7 +57,7 @@ class Cli_Model_Hero extends Cli_Model_Being
 
     public function hasMapRuinBonus($mapRuinId)
     {
-        return $this->_mapRuinsBonus[$mapRuinId];
+        return isset($this->_mapRuinsBonus[$mapRuinId]);
     }
 
     public function addMapRuinBonus($mapRuin, $gameId, Zend_Db_Adapter_Pdo_Pgsql $db)
