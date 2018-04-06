@@ -1,9 +1,16 @@
 <?php
+use Devristo\Phpws\Protocol\WebSocketTransportInterface;
 
 class Cli_Model_SearchRuinHandler
 {
 
-    public function __construct($armyId, Devristo\Phpws\Protocol\WebSocketTransportInterface $user, $handler, $giveMeDragons = false)
+    /**
+     * @param int $armyId
+     * @param WebSocketTransportInterface $user
+     * @param Cli_CommonHandler $handler
+     * @param boolean $giveMeDragons
+     */
+    public function __construct($armyId, WebSocketTransportInterface $user, $handler, $giveMeDragons = false)
     {
         if (!Zend_Validate::is($armyId, 'Digits')) {
             $l = new Coret_Model_Logger('Cli_Model_SearchRuinHandler');

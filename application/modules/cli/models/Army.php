@@ -99,7 +99,13 @@ class Cli_Model_Army
         }
     }
 
-    public function move(Cli_Model_Game $game, Cli_Model_Path $path, WebSocketTransportInterface $user, $handler)
+    /**
+     * @param Cli_Model_Game $game
+     * @param Cli_Model_Path $path
+     * @param Cli_CommonHandler $handler
+     * @param WebSocketTransportInterface $user
+     */
+    public function move(Cli_Model_Game $game, Cli_Model_Path $path, $handler, WebSocketTransportInterface $user = null)
     {
         if (!$path->exists()) {
             echo 'PATH NOT EXISTS' . "\n";
@@ -157,7 +163,7 @@ class Cli_Model_Army
 
         $handler->sendToChannel($token);
 
-        new Cli_Model_RuinHandler($path->getX(), $path->getY(), $this->getHeroes(), $game, $user, $handler);
+        new Cli_Model_RuinHandler($path->getX(), $path->getY(), $this->getHeroes(), $game, $handler, $user);
 
 //        if ($end) {
 //            new Cli_Model_SaveResults($game, $handler);

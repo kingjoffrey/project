@@ -408,10 +408,9 @@ class Cli_Model_Battle
         $this->_succession++;
 
         if ($this->_db) {
-            echo 'f' . "\n";
             if ($attackingFighterLife) {
-                echo 'att' . "\n";
-                echo $this->_attackingFighter->getId() . ' life ' . $attackingFighterLife . "\n";
+//                echo 'att' . "\n";
+//                echo $this->_attackingFighter->getId() . ' life ' . $attackingFighterLife . "\n";
                 $this->_attackingFighter->updateRemainingLife($attackingFighterLife, $this->_gameId, $this->_db);
                 $this->_defendingFighter->updateRemainingLife($defendingFighterLife);
 
@@ -435,8 +434,8 @@ class Cli_Model_Battle
                     }
                 }
             } else {
-                echo 'def' . "\n";
-                echo $this->_defendingFighter->getId() . ' life ' . $defendingFighterLife . "\n";
+//                echo 'def' . "\n";
+//                echo $this->_defendingFighter->getId() . ' life ' . $defendingFighterLife . "\n";
                 $this->_attackingFighter->updateRemainingLife($attackingFighterLife);
                 if ($this->_defenderId) {
                     $this->_defendingFighter->updateRemainingLife($defendingFighterLife, $this->_gameId, $this->_db);

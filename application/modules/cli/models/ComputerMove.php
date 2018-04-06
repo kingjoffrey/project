@@ -1,11 +1,17 @@
 <?php
+use Devristo\Phpws\Protocol\WebSocketTransportInterface;
 
 class Cli_Model_ComputerMove extends Cli_Model_ComputerMethods
 {
     private $_searchRuin = false;
     private $_inCastle = false;
 
-    public function __construct(Cli_Model_Army $army, Devristo\Phpws\Protocol\WebSocketTransportInterface $user, $handler)
+    /**
+     * @param Cli_Model_Army $army
+     * @param WebSocketTransportInterface $user
+     * @param Cli_CommonHandler $handler
+     */
+    public function __construct(Cli_Model_Army $army, WebSocketTransportInterface $user, $handler)
     {
         parent::__construct($army, $user, $handler);
         $this->_l = new Coret_Model_Logger();

@@ -3,7 +3,7 @@ use Devristo\Phpws\Protocol\WebSocketTransportInterface;
 
 class Cli_Model_RuinHandler
 {
-    public function __construct($x, $y, Cli_Model_Heroes $heroes, Cli_Model_Game $game, WebSocketTransportInterface $user, $handler)
+    public function __construct($x, $y, Cli_Model_Heroes $heroes, Cli_Model_Game $game, $handler, WebSocketTransportInterface $user = null)
     {
         if (!$heroes->exists()) {
             return;
@@ -27,7 +27,7 @@ class Cli_Model_RuinHandler
                 }
             }
 
-            if ($bonus) {
+            if ($user && $bonus) {
                 $token = array(
                     'type' => 'ruin',
                     'bonus' => $array['ruinId']

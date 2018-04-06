@@ -3,6 +3,11 @@ use Devristo\Phpws\Protocol\WebSocketTransportInterface;
 
 class Cli_Model_Move
 {
+    /**
+     * @param array $dataIn
+     * @param WebSocketTransportInterface $user
+     * @param Cli_CommonHandler $handler
+     */
     public function __construct($dataIn, WebSocketTransportInterface $user, $handler)
     {
         if (!isset($dataIn['armyId'])) {
@@ -96,6 +101,6 @@ class Cli_Model_Move
             return;
         }
 
-        $army->move($game, $path, $user, $handler);
+        $army->move($game, $path, $handler, $user);
     }
 }
