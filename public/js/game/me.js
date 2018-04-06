@@ -7,7 +7,6 @@ var Me = new function () {
         deselectedArmyId = null,
         nextArmies = {},
         skippedArmies = {},
-        quitedArmies = {},
         isSelected = 0,
         parentArmyId = null,
         nextArmyId = null,
@@ -144,13 +143,13 @@ var Me = new function () {
         Message.remove()
 
         this.removeFromSkipped(armyId)
-        this.deleteQuited(armyId)
+        WebSocketSendGame.unfortify(armyId)
 
         $('#skipArmy').removeClass('buttonOff').click(function () {
             Me.skip()
         })
         $('#quitArmy').removeClass('buttonOff').click(function () {
-            Me.skip()
+            WebSocketSendGame.fortify()
         })
 
         if (notSet(center)) {
@@ -224,7 +223,6 @@ var Me = new function () {
         }
 
         var armyId = this.getSelectedArmyId()
-        console.log(nextArmies)
         if (armyId) {
             nextArmies[armyId] = true
         }
@@ -232,8 +230,6 @@ var Me = new function () {
         this.deselectArmy()
 
         var armies = me.getArmies().toArray()
-
-        console.log(armies)
 
         for (var armyId in armies) {
             if (armies[armyId].getMoves() == 0) {
@@ -244,14 +240,13 @@ var Me = new function () {
                 continue
             }
 
-            if (isTruthful(quitedArmies[armyId])) {
+            if (armies[armyId].getFortified()) {
                 continue
             }
 
             if (isTruthful(nextArmies[armyId])) {
                 continue
             }
-            console.log(armyId)
             //reset = false
             nextArmies[armyId] = true
             this.selectArmy(armyId)
@@ -274,14 +269,8 @@ var Me = new function () {
             this.findNext(quiet)
         }
     }
-    this.addQuited = function (armyId) {
-        quitedArmies[armyId] = 1
-    }
-    this.deleteQuited = function (armyId) {
-        if (isTruthful(quitedArmies[armyId])) {
-            WebSocketSendGame.unfortify(armyId, 0)
-            delete quitedArmies[armyId]
-        }
+    this.setFortified = function (armyId, f) {
+        this.getArmy(armyId).setFortified(f)
     }
     this.isSelected = function () {
         return isSelected
@@ -429,7 +418,6 @@ var Me = new function () {
         deselectedArmyId = null
         nextArmies = {}
         skippedArmies = {}
-        quitedArmies = {}
         isSelected = 0
         parentArmyId = null
         nextArmyId = null

@@ -145,6 +145,9 @@ var Army = function (army, bgColor, miniMapColor, textColor, color) {
     this.getFortified = function () {
         return army.fortified
     }
+    this.setFortified = function (f) {
+        army.fortified = f
+    }
     this.getModelName = function () {
         var attack = 0,
             name = null

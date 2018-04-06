@@ -20,6 +20,10 @@ class Cli_Model_RuinHandler
             $mapRuin = $game->getRuins()->getRuin($mapRuinId);
             $array = array('mapRuinId' => $mapRuin->getId(), 'ruinId' => $mapRuin->getType());
 
+            if ($array['ruinId'] == 3) {
+                return;
+            }
+
             foreach ($heroes->getKeys() as $heroId) {
                 $hero = $heroes->getHero($heroId);
                 if (!$hero->hasMapRuinBonus($mapRuinId)) {

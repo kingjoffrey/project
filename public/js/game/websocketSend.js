@@ -79,7 +79,7 @@ var WebSocketSendGame = new function () {
             return
         }
 
-        Me.addQuited(armyId)
+        Me.setFortified(armyId, true)
         Me.deselectArmy()
         if (!isTouchDevice()) {
             Me.findNext()
@@ -106,6 +106,8 @@ var WebSocketSendGame = new function () {
         if (GameGui.lock) {
             return
         }
+
+        Me.setFortified(armyId, false)
 
         var token = {
             'type': 'fortify',
@@ -325,6 +327,8 @@ var WebSocketSendGame = new function () {
     }
 
     this.nextTurn = function () {
+        Me.print()
+
         if (closed) {
             Message.error(translations.sorryServerIsDisconnected)
             return
