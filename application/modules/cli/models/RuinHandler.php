@@ -20,7 +20,7 @@ class Cli_Model_RuinHandler
             $mapRuin = $game->getRuins()->getRuin($mapRuinId);
             $array = array('mapRuinId' => $mapRuin->getId(), 'ruinId' => $mapRuin->getType());
 
-            if ($array['ruinId'] == 3) {
+            if ($array['ruinId'] == 4) {
                 return;
             }
 

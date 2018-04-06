@@ -15,6 +15,9 @@ var Ruin = function (ruin) {
                     return '#0000FF'
                     break
                 case 3:
+                    return '#00ff00'
+                    break
+                case 4:
                     return '#FFD700'
                     break
             }

@@ -52,6 +52,9 @@ class Cli_Model_Hero extends Cli_Model_Being
             case 2:
                 $this->_defense++;
                 break;
+            case 3:
+                $this->_moves++;
+                break;
         }
     }
 

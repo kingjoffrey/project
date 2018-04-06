@@ -437,13 +437,6 @@ var Me = new function () {
         this.setBattleSequence(bSequence)
         this.setGold(g)
 
-        for (var armyId in Players.get(color).getArmies().toArray()) {
-            var army = Players.get(color).getArmies().get(armyId)
-            if (army.getFortified()) {
-                this.addQuited(armyId)
-            }
-        }
-
         var armies = this.getArmies()
 
         for (var armyId in armies.toArray()) {
@@ -466,7 +459,5 @@ var Me = new function () {
         }
 
         this.incomeIncrement(this.getTowers().count() * 5)
-
-        updateGold()
     }
 }

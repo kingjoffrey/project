@@ -33,6 +33,13 @@ class Cli_Model_SearchRuinHandler
 
         $ruin = $game->getRuins()->getRuin($ruinId);
 
+        if ($ruin->getType() != 4) {
+            $l = new Coret_Model_Logger('Cli_Model_SearchRuinHandler');
+            $l->log('Tych ruin nie da się przeszukać.');
+            $handler->sendError($user, 'Error 10311');
+            return;
+        }
+
         if ($ruin->getEmpty()) {
             $l = new Coret_Model_Logger('Cli_Model_SearchRuinHandler');
             $l->log('Ruiny są już przeszukane.');
@@ -59,9 +66,7 @@ class Cli_Model_SearchRuinHandler
         if ($giveMeDragons) {
             $ruin->giveMeDragons($game, $army, $heroId, $playerId, $handler);
         } else {
-            if ($ruin->getType() == 3) {
-                $ruin->search($game, $army, $heroId, $playerId, $handler);
-            }
+            $ruin->search($game, $army, $heroId, $playerId, $handler);
         }
 
         if ($army->getHeroes()->hasHero($heroId)) {

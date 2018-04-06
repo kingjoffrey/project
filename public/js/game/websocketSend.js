@@ -327,8 +327,6 @@ var WebSocketSendGame = new function () {
     }
 
     this.nextTurn = function () {
-        Me.print()
-
         if (closed) {
             Message.error(translations.sorryServerIsDisconnected)
             return
