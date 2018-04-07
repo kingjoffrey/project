@@ -35,36 +35,40 @@ var Army = function (army, bgColor, miniMapColor, textColor, color) {
     }
     this.getMoves = function () {
         var moves
-        for (var i in  army.walk) {
-            if (notSet(moves)) {
-                moves = army.walk[i].movesLeft
+        if (this.canSwim()) {
+            for (var i in  army.swim) {
+                if (notSet(moves)) {
+                    moves = army.swim[i].movesLeft
+                }
+                if (moves > army.swim[i].movesLeft) {
+                    moves = army.swim[i].movesLeft
+                }
             }
-            if (moves > army.walk[i].movesLeft) {
-                moves = army.walk[i].movesLeft
+        } else if (this.canFly()) {
+            for (var i in  army.fly) {
+                if (notSet(moves)) {
+                    moves = army.fly[i].movesLeft
+                }
+                if (moves > army.fly[i].movesLeft) {
+                    moves = army.fly[i].movesLeft
+                }
             }
-        }
-        for (var i in  army.swim) {
-            if (notSet(moves)) {
-                moves = army.swim[i].movesLeft
+        } else {
+            for (var i in  army.walk) {
+                if (notSet(moves)) {
+                    moves = army.walk[i].movesLeft
+                }
+                if (moves > army.walk[i].movesLeft) {
+                    moves = army.walk[i].movesLeft
+                }
             }
-            if (moves > army.swim[i].movesLeft) {
-                moves = army.swim[i].movesLeft
-            }
-        }
-        for (var i in  army.fly) {
-            if (notSet(moves)) {
-                moves = army.fly[i].movesLeft
-            }
-            if (moves > army.fly[i].movesLeft) {
-                moves = army.fly[i].movesLeft
-            }
-        }
-        for (var i in army.heroes) {
-            if (notSet(moves)) {
-                moves = army.heroes[i].movesLeft
-            }
-            if (moves > army.heroes[i].movesLeft) {
-                moves = army.heroes[i].movesLeft
+            for (var i in army.heroes) {
+                if (notSet(moves)) {
+                    moves = army.heroes[i].movesLeft
+                }
+                if (moves > army.heroes[i].movesLeft) {
+                    moves = army.heroes[i].movesLeft
+                }
             }
         }
         return moves
@@ -216,15 +220,6 @@ var Army = function (army, bgColor, miniMapColor, textColor, color) {
                         return true
                     } else {
                         soldier.pathMoves -= Terrain.get(t)[movementType]
-                    }
-                }
-                for (var i in  army.heroes) {
-                    var hero = army.heroes[i]
-
-                    if (hero.pathMoves - Terrain.get(t)[movementType] < 0) {
-                        return true
-                    } else {
-                        hero.pathMoves -= Terrain.get(t)[movementType]
                     }
                 }
                 break;

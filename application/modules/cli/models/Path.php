@@ -41,95 +41,122 @@ class Cli_Model_Path
                 continue;
             }
 
-            foreach ($army->getWalkingSoldiers()->getKeys() as $soldierId) {
-                $soldier = $army->getWalkingSoldiers()->getSoldier($soldierId);
-                if (!isset($soldiersMovesLeft[$soldierId])) {
-                    $soldiersMovesLeft[$soldierId] = $soldier->getMovesLeft();
-//                    echo 'FIRST             $soldiersMovesLeft=    ' . $soldiersMovesLeft[$soldierId] . "\n";
-                }
-
-                $soldiersMovesLeft[$soldierId] -= $soldier->getStepCost($terrain, $step['t'], $type);
-//                echo '$soldiersMovesLeft= ' . $soldiersMovesLeft[$soldierId] . "\n";
-//                echo "\n";
-
-                if ($soldiersMovesLeft[$soldierId] < 0) {
-                    if ($skip === null) {
-                        $skip = $key;
-                    }
-                }
-
-                if ($soldiersMovesLeft[$soldierId] <= 0) {
-                    if ($stop === null) {
-                        $stop = $key;
-                    }
-                }
-            }
-
-            foreach ($army->getSwimmingSoldiers()->getKeys() as $soldierId) {
-                $soldier = $army->getSwimmingSoldiers()->getSoldier($soldierId);
-                if (!isset($soldiersMovesLeft[$soldierId])) {
-                    $soldiersMovesLeft[$soldierId] = $soldier->getMovesLeft();
+            if ($army->canFly()) {
+                foreach ($army->getFlyingSoldiers()->getKeys() as $soldierId) {
+                    $soldier = $army->getFlyingSoldiers()->getSoldier($soldierId);
+                    if (!isset($soldiersMovesLeft[$soldierId])) {
+                        $soldiersMovesLeft[$soldierId] = $soldier->getMovesLeft();
 //                    echo 'FIRST             ship MovesLeft=    ' . $soldiersMovesLeft[$soldierId] . "\n";
-                }
-
-                $soldiersMovesLeft[$soldierId] -= $soldier->getStepCost($terrain, $step['t'], $type);
-//                echo 'ship MovesLeft= ' . $soldiersMovesLeft[$soldierId] . "\n";
-//                echo "\n";
-
-                if ($soldiersMovesLeft[$soldierId] < 0) {
-                    if ($skip === null) {
-                        $skip = $key;
                     }
-                }
 
-                if ($soldiersMovesLeft[$soldierId] <= 0) {
-                    if ($stop === null) {
-                        $stop = $key;
-                    }
-                }
-            }
-
-            foreach ($army->getFlyingSoldiers()->getKeys() as $soldierId) {
-                $soldier = $army->getFlyingSoldiers()->getSoldier($soldierId);
-                if (!isset($soldiersMovesLeft[$soldierId])) {
-                    $soldiersMovesLeft[$soldierId] = $soldier->getMovesLeft();
-//                    echo 'FIRST             ship MovesLeft=    ' . $soldiersMovesLeft[$soldierId] . "\n";
-                }
-
-                $soldiersMovesLeft[$soldierId] -= $soldier->getStepCost($terrain, $step['t'], $type);
+                    $soldiersMovesLeft[$soldierId] -= $soldier->getStepCost($terrain, $step['t'], $type);
 //                echo 'fly MovesLeft= ' . $soldiersMovesLeft[$soldierId] . "\n";
 //                echo "\n";
 
-                if ($soldiersMovesLeft[$soldierId] < 0) {
-                    if ($skip === null) {
-                        $skip = $key;
+                    if ($soldiersMovesLeft[$soldierId] < 0) {
+                        if ($skip === null) {
+                            $skip = $key;
+                        }
+                    }
+
+                    if ($soldiersMovesLeft[$soldierId] <= 0) {
+                        if ($stop === null) {
+                            $stop = $key;
+                        }
                     }
                 }
 
-                if ($soldiersMovesLeft[$soldierId] <= 0) {
-                    if ($stop === null) {
-                        $stop = $key;
+            } elseif ($army->canSwim()) {
+                foreach ($army->getSwimmingSoldiers()->getKeys() as $soldierId) {
+                    $soldier = $army->getSwimmingSoldiers()->getSoldier($soldierId);
+                    if (!isset($soldiersMovesLeft[$soldierId])) {
+                        $soldiersMovesLeft[$soldierId] = $soldier->getMovesLeft();
+//                    echo 'FIRST             ship MovesLeft=    ' . $soldiersMovesLeft[$soldierId] . "\n";
+                    }
+
+                    $soldiersMovesLeft[$soldierId] -= $soldier->getStepCost($terrain, $step['t'], $type);
+//                echo 'ship MovesLeft= ' . $soldiersMovesLeft[$soldierId] . "\n";
+//                echo "\n";
+
+                    if ($soldiersMovesLeft[$soldierId] < 0) {
+                        if ($skip === null) {
+                            $skip = $key;
+                        }
+                    }
+
+                    if ($soldiersMovesLeft[$soldierId] <= 0) {
+                        if ($stop === null) {
+                            $stop = $key;
+                        }
                     }
                 }
-            }
+            } else {
+                foreach ($army->getFlyingSoldiers()->getKeys() as $soldierId) {
+                    $soldier = $army->getFlyingSoldiers()->getSoldier($soldierId);
+                    if (!isset($soldiersMovesLeft[$soldierId])) {
+                        $soldiersMovesLeft[$soldierId] = $soldier->getMovesLeft();
+//                    echo 'FIRST             ship MovesLeft=    ' . $soldiersMovesLeft[$soldierId] . "\n";
+                    }
 
-            foreach ($army->getHeroes()->getKeys() as $heroId) {
-                $hero = $army->getHeroes()->getHero($heroId);
-                if (!isset($heroesMovesLeft[$heroId])) {
-                    $heroesMovesLeft[$heroId] = $hero->getMovesLeft();
-                }
+                    $soldiersMovesLeft[$soldierId] -= $soldier->getStepCost($terrain, $step['t'], $type);
+//                echo 'fly MovesLeft= ' . $soldiersMovesLeft[$soldierId] . "\n";
+//                echo "\n";
 
-                $heroesMovesLeft[$heroId] -= $hero->getStepCost($terrain, $step['t'], $type);
+                    if ($soldiersMovesLeft[$soldierId] < 0) {
+                        if ($skip === null) {
+                            $skip = $key;
+                        }
+                    }
 
-                if ($heroesMovesLeft[$heroId] < 0) {
-                    if ($skip === null || $key < $skip) {
-                        $skip = $key;
+                    if ($soldiersMovesLeft[$soldierId] <= 0) {
+                        if ($stop === null) {
+                            $stop = $key;
+                        }
                     }
                 }
 
-                if ($heroesMovesLeft[$heroId] <= 0) {
-                    if ($stop === null || $key < $stop) {
-                        $stop = $key;
+                foreach ($army->getWalkingSoldiers()->getKeys() as $soldierId) {
+                    $soldier = $army->getWalkingSoldiers()->getSoldier($soldierId);
+                    if (!isset($soldiersMovesLeft[$soldierId])) {
+                        $soldiersMovesLeft[$soldierId] = $soldier->getMovesLeft();
+//                    echo 'FIRST             $soldiersMovesLeft=    ' . $soldiersMovesLeft[$soldierId] . "\n";
+                    }
+
+                    $soldiersMovesLeft[$soldierId] -= $soldier->getStepCost($terrain, $step['t'], $type);
+//                echo '$soldiersMovesLeft= ' . $soldiersMovesLeft[$soldierId] . "\n";
+//                echo "\n";
+
+                    if ($soldiersMovesLeft[$soldierId] < 0) {
+                        if ($skip === null) {
+                            $skip = $key;
+                        }
+                    }
+
+                    if ($soldiersMovesLeft[$soldierId] <= 0) {
+                        if ($stop === null) {
+                            $stop = $key;
+                        }
+                    }
+                }
+
+                foreach ($army->getHeroes()->getKeys() as $heroId) {
+                    $hero = $army->getHeroes()->getHero($heroId);
+                    if (!isset($heroesMovesLeft[$heroId])) {
+                        $heroesMovesLeft[$heroId] = $hero->getMovesLeft();
+                    }
+
+                    $heroesMovesLeft[$heroId] -= $hero->getStepCost($terrain, $step['t'], $type);
+
+                    if ($heroesMovesLeft[$heroId] < 0) {
+                        if ($skip === null || $key < $skip) {
+                            $skip = $key;
+                        }
+                    }
+
+                    if ($heroesMovesLeft[$heroId] <= 0) {
+                        if ($stop === null || $key < $stop) {
+                            $stop = $key;
+                        }
                     }
                 }
             }

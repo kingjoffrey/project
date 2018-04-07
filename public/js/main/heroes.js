@@ -26,7 +26,7 @@ var HeroesController = new function () {
         createList(r.list)
     }
     this.show = function (r) {
-        var bonusSize = Object.size(r.bonus)
+        var bonusSize = countProperties(r.bonus)
         if (isSet(r.data)) {
             $('#content').html(r.data)
 

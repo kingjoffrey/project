@@ -149,6 +149,8 @@ class Cli_Model_Hero extends Cli_Model_Being
     {
         if ($movementType == 'swim') {
             return 0;
+        } elseif ($movementType == 'fly') {
+            return 0;
         } else {
             return $terrain->getTerrainType($terrainType)->getCost($movementType);
         }

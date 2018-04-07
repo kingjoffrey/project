@@ -41,11 +41,9 @@ var Ruins = new function () {
             case 'death':
                 var army = Players.get(r.color).getArmies().get(r.army.id)
                 var numberOfUnits = Unit.countNumberOfUnits(r.army)
-                if (numberOfUnits > 1) {
-                    console.log(numberOfUnits)
+                if (numberOfUnits > 0) {
                     army.update(r.army)
                 } else {
-                    console.log('dupa')
                     Players.get(r.color).getArmies().destroy(r.army.id)
                 }
                 if (Me.colorEquals(r.color)) {

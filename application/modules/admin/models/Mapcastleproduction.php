@@ -11,5 +11,18 @@ class Admin_Model_Mapcastleproduction extends Coret_Model_ParentDb
         'unitId' => array('label' => 'Unit ID', 'type' => 'select'),
         'time' => array('label' => 'Czas', 'type' => 'number'),
     );
+
+
+    static public function getCastleIdArray()
+    {
+        $m = new Admin_Model_Mapcastles();
+        return $m->getList4FormSelect('name');
+    }
+
+    static public function getUnitIdArray()
+    {
+        $m = new Admin_Model_Unit();
+        return $m->getList4FormSelect('unitId');
+    }
 }
 

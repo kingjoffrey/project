@@ -264,6 +264,6 @@ var Execute = new function () {
         executing = value
 
         PickerCommon.setCursorLock(executing)
-        PickerCommon.cursor(0)
+        Picker.cursorChange()
     }
 }

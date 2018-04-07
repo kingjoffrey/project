@@ -20,7 +20,7 @@ var Players = new function () {
         return players[color]
     }
     this.count = function () {
-        return Object.size(players) - 1
+        return countProperties(players) - 1
     }
     this.countHumanss = function () {
         var numberOfHumans = 0

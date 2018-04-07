@@ -109,12 +109,25 @@ var StatusWindow = new function () {
                 )
 
             if (field.getRuinId() && army.getHeroKey()) {
+                var searchRuinButton = $('<div>'),
+                    searchRuins = false
+                for (var i in army.getHeroes()) {
+                    if (army.getHero(i).movesLeft > 0) {
+                        searchRuins = true
+                    }
+                }
+
+                if (!searchRuins) {
+                    searchRuinButton.addClass('buttonOff')
+                } else {
+                    searchRuinButton.click(function () {
+                        WebSocketSendGame.ruin()
+                    })
+                }
+
                 html.append(
-                    $('<div>')
+                    searchRuinButton
                         .addClass('iconButton buttonColors')
-                        .click(function () {
-                            WebSocketSendGame.ruin()
-                        })
                         .append($('<div>'))
                         .attr({
                             id: 'searchRuins',

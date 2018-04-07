@@ -268,13 +268,13 @@ var Models = new function () {
     }
     this.getArmyBox = function () {
         var material1 = new THREE.MeshBasicMaterial({
-                color: 0xffffff,
+                color: 0xff00ff,
                 transparent: true,
-                opacity: 0.1,
+                opacity: 0.9,
                 side: THREE.DoubleSide
             }),
             // geometry1 = new THREE.BoxGeometry(1.9, 1.9, 10)
-            geometry1 = new THREE.PlaneGeometry(2, 10)
+            geometry1 = new THREE.PlaneGeometry(2, 0.1)
 
         var mesh = new THREE.Mesh(geometry1, material1)
 

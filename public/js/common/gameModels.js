@@ -267,7 +267,9 @@ var GameModels = new function () {
         pathCircles.push(circle)
     }
     this.addArmyBox = function (x, y, color) {
-        var mesh = Models.getArmyBox(color)
+        var mesh1 = Models.getArmyBox(color),
+            mesh2 = Models.getArmyBox(color),
+            mesh3 = Models.getArmyBox(color)
         switch (Fields.get(x, y).getType()) {
             case 'm':
                 var height = 0
@@ -283,13 +285,22 @@ var GameModels = new function () {
                 break
         }
 
-        GameScene.add(mesh)
-        armyCircles.push(mesh)
+        GameScene.add(mesh1)
+        armyCircles.push(mesh1)
+        mesh1.position.set(x * 2 + 1, 0.25 + height, y * 2)
 
-        mesh.position.set(x * 2 + 1, height, y * 2)
+        GameScene.add(mesh2)
+        armyCircles.push(mesh2)
+        mesh2.position.set(x * 2 + 1, 0.75 + height, y * 2)
+
+        GameScene.add(mesh3)
+        armyCircles.push(mesh3)
+        mesh3.position.set(x * 2 + 1, 1.25 + height, y * 2)
 
         if (Page.getShadows()) {
-            mesh.castShadow = true
+            mesh1.castShadow = true
+            mesh2.castShadow = true
+            mesh3.castShadow = true
         }
     }
     this.movePathCircles = function () {

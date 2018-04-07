@@ -4,23 +4,23 @@ var Ruin = function (ruin) {
         mesh.material.color.set(this.getColor())
     }
     this.getColor = function () {
-        if (ruin.empty) {
-            return '#8080a0'
-        } else {
-            switch (ruin.type){
-                case 1:
-                    return '#FF0000'
-                    break
-                case 2:
-                    return '#0000FF'
-                    break
-                case 3:
-                    return '#00ff00'
-                    break
-                case 4:
+        switch (ruin.type) {
+            case 1:
+                return '#FF0000'
+                break
+            case 2:
+                return '#0000FF'
+                break
+            case 3:
+                return '#00ff00'
+                break
+            case 4:
+                if (ruin.empty) {
+                    return '#8080a0'
+                } else {
                     return '#FFD700'
-                    break
-            }
+                }
+                break
         }
     }
     this.getX = function () {
