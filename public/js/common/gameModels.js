@@ -272,13 +272,13 @@ var GameModels = new function () {
             mesh3 = Models.getArmyBox(color)
         switch (Fields.get(x, y).getType()) {
             case 'm':
-                var height = 0
+                var height = -Ground.getMountainLevel()
                 break
             case 'h':
-                var height = 0
+                var height = Fields.get(x, y).getLevel() * 0.05
                 break
             case 'b':
-                var height = 0
+                var height = bridgeLevel
                 break
             default :
                 var height = 0

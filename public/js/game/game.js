@@ -34,7 +34,6 @@ var Game = new function () {
             GameScene.clear()
             Renderer.clear()
 
-            Execute.setExecuting(0)
             Units.init(game.units)
 
             Fields.init(game.fields)
@@ -45,7 +44,6 @@ var Game = new function () {
 
             Players.init(game.players)
             Me.init(game.color, game.gold, game.bSequence, game.capitals)
-            Turn.change(game.turnColor, game.turnNumber)
             Ruins.init(game.ruins)
 
             GameGui.init()
@@ -53,6 +51,8 @@ var Game = new function () {
             GameRenderer.start()
 
             PickerCommon.init(PickerGame)
+
+            Turn.change(game.turnColor, game.turnNumber)
 
             $('#loading').hide()
             $('#game').show()
