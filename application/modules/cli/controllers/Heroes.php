@@ -38,7 +38,6 @@ class HeroesController
         $hero = $mHero->getHero($heroId);
 
         $mHeroSkills = new Application_Model_Heroskills($db);
-        $levelBonuses = $mHeroSkills->getBonuses($heroId);
 
         $token = array(
             'type' => 'heroes',
@@ -49,16 +48,11 @@ class HeroesController
             'attack' => $hero['attackPoints'] + 1,
             'defense' => $hero['defensePoints'] + 1,
             'experience' => $hero['experience'],
-            'bonus' => $levelBonuses,
+            'bonus' => $mHeroSkills->getBonuses($heroId),
             'id' => $heroId
         );
 
-        foreach ($this->_exp_2_level as $level => $exp) {
-            if ($hero['experience'] < $exp) {
-                $token['level'] = $level - 1;
-                break;
-            }
-        }
+        $token['level'] = $this->getCurrentLevel($hero['experience']);
 
         $handler->sendToUser($user, $token);
     }
@@ -75,29 +69,41 @@ class HeroesController
 
         $db = $handler->getDb();
         $mHero = new Application_Model_Hero($user->parameters['playerId'], $db);
-        $mHeroSkills = new Application_Model_Heroskills($db);
 
         if ($hero = $mHero->getHero($heroId)) {
+            $mHeroSkills = new Application_Model_Heroskills($db);
 
-            $currentLevel = $mHeroSkills->getLevel($heroId);
+            $bonuses = $mHeroSkills->getBonuses($heroId);
+            $level = $this->getCurrentLevel($hero['experience']);
 
-            foreach ($this->_exp_2_level as $level => $exp) {
-                if ($hero['experience'] < $exp) {
-                    $nextLevel = $level - 1;
-                    if ($nextLevel > $currentLevel) {
-                        if ($mHeroSkills->up($heroId, $nextLevel, $levelBonusId)) {
-                            $token = array(
-                                'type' => 'heroes',
-                                'action' => 'show',
-                                'bonus' => $mHeroSkills->getBonuses($heroId)
-                            );
-                            $handler->sendToUser($user, $token);
-                        }
-                    }
-                    break;
-                }
+            if (count($bonuses) >= $level) {
+                return;
+            }
+
+            $bonuses[] = $levelBonusId;
+
+            if ($mHeroSkills->up($heroId, $levelBonusId)) {
+                $token = array(
+                    'type' => 'heroes',
+                    'action' => 'show',
+                    'level' => $level,
+                    'bonus' => $bonuses
+                );
+                $handler->sendToUser($user, $token);
             }
         }
+    }
+
+    private function getCurrentLevel($experience)
+    {
+        foreach ($this->_exp_2_level as $key => $val) {
+            if ($experience < $val) {
+                $level = $key - 1;
+                break;
+            }
+        }
+
+        return $level;
     }
 
     public function chest()

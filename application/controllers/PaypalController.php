@@ -5,7 +5,7 @@ use PayPal\Api\PaymentExecution;
 
 use PayPal\Api\Payment;
 
-class PaypalController extends Coret_Controller_Authorized
+class PaypalController extends Coret_Controller_AuthorizedFrontend
 {
     public function indexAction()
     {

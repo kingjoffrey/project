@@ -89,7 +89,10 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
 
     protected function _initSession()
     {
-        Zend_Session::start();
+        Zend_Session::rememberMe(31556940);
+        if (!Zend_Session::sessionExists()) {
+            Zend_Session::start();
+        }
     }
 
     protected function _initConfig()

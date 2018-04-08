@@ -34,9 +34,7 @@ abstract class Coret_Controller_Authenticate extends Zend_Controller_Action
 
     protected function handleAuthenticated()
     {
-        if ($this->_request->getParam('rememberMe')) {
-            Zend_Session::rememberMe(Zend_Registry::get('config')->rememberMeTime);
-        } else {
+        if (!$this->_request->getParam('rememberMe')) {
             Zend_Session::forgetMe();
         }
 

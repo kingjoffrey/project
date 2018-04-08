@@ -41,7 +41,7 @@ class Cli_Model_HeroResurrection
         }
 
         $mHeroSkills = new Application_Model_Heroskills($db);
-        $mHeroesToMapRuins = new Application_Model_HeroesToMapRuins($db);
+        $mHeroesToMapRuins = new Application_Model_HeroesToMapRuins($gameId, $db);
 
         $army = $player->getArmies()->getArmy($armyId);
         $army->addHero($hero['heroId'], new Cli_Model_Hero(

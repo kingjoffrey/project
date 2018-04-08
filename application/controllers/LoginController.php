@@ -4,7 +4,6 @@ class LoginController extends Coret_Controller_AuthenticateFrontend
 {
     protected $_authTableName = 'player';
     protected $_identityArray = array('login', 'firstName', 'lastName', 'playerId');
-//    protected $_facebookDatabaseName = 'fbId';
 
     private function html()
     {
@@ -103,45 +102,6 @@ class LoginController extends Coret_Controller_AuthenticateFrontend
             $this->view->form = $form;
         }
     }
-
-//    protected function handleFacebookUser($userProfile)
-//    {
-//        $facebookId = $userProfile->getId();
-//
-//        $this->_authAdapter = $this->getAuthAdapterFacebook($facebookId);
-//        $result = $this->_auth->authenticate($this->_authAdapter);
-//
-//        if ($result->isValid()) {
-//            $this->handleAuthenticated();
-//        } elseif ($facebookId) {
-//            if ($firstName = $userProfile->getFirstName() || $lastName = $userProfile->getLastName()) {
-//                $data = array(
-//                    'fbId' => $facebookId,
-//                    'firstName' => $firstName,
-//                    'lastName' => $lastName,
-//                );
-//            } else {
-//                $data = array(
-//                    'fbId' => $facebookId,
-//                    'firstName' => $userProfile->getName()
-//                );
-//            }
-//
-//            $mPlayer = new Application_Model_Player();
-//            if ($playerId = $mPlayer->createPlayer($data)) {
-//                $mHero = new Application_Model_Hero($playerId);
-//                $mHNG = new Cli_Model_HeroNameGenerator();
-//                $mHero->createHero($mHNG->generateHeroName());
-//
-//                $this->_authAdapter = $this->getAuthAdapterFacebook($facebookId);
-//                $this->_auth->authenticate($this->_authAdapter);
-//                $this->handleAuthenticated();
-//            }
-//        } else {
-//            $this->view->form->setDescription($this->view->translate('Incorrect login details'));
-//        }
-//    }
-
 
     protected function writeIdentity()
     {

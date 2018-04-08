@@ -46,7 +46,7 @@ class Cli_Model_HeroHire
         $hero = $mHeroesInGame->getHero($heroId);
 
         $mHeroSkills = new Application_Model_Heroskills($db);
-        $mHeroesToMapRuins = new Application_Model_HeroesToMapRuins($db);
+        $mHeroesToMapRuins = new Application_Model_HeroesToMapRuins($gameId, $db);
 
         $army->addHero($heroId, new Cli_Model_Hero(
             $hero,

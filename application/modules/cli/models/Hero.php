@@ -10,7 +10,7 @@ class Cli_Model_Hero extends Cli_Model_Being
     private $_name;
     private $_mapRuinsBonus;
 
-    public function __construct($hero, $bonus, $mapRuinsBonus)
+    public function __construct($hero, $levelBonus, $mapRuinsBonus)
     {
         $this->_id = $hero['heroId'];
         $this->_moves = $hero['numberOfMoves'];
@@ -24,26 +24,16 @@ class Cli_Model_Hero extends Cli_Model_Being
 
         $this->_mapRuinsBonus = $mapRuinsBonus;
 
-        foreach ($mapRuinsBonus as $mapRuinId => $type) {
-            $this->handleMapRuinBonus($type);
+        foreach ($mapRuinsBonus as $type) {
+            $this->handleBonus($type);
         }
 
-        foreach ($bonus as $key => $row) {
-            switch ($row['bId']) {
-                case 1:
-                    $this->_attack++;
-                    break;
-                case 2:
-                    $this->_defense++;
-                    break;
-                case 3:
-                    $this->_moves++;
-                    break;
-            }
+        foreach ($levelBonus as $type) {
+            $this->handleBonus($type);
         }
     }
 
-    private function handleMapRuinBonus($type)
+    private function handleBonus($type)
     {
         switch ($type) {
             case 1:
@@ -66,10 +56,10 @@ class Cli_Model_Hero extends Cli_Model_Being
     public function addMapRuinBonus($mapRuin, $gameId, Zend_Db_Adapter_Pdo_Pgsql $db)
     {
         $this->_mapRuinsBonus[$mapRuin['mapRuinId']] = $mapRuin['ruinId'];
-        $this->handleMapRuinBonus($mapRuin['ruinId']);
+        $this->handleBonus($mapRuin['ruinId']);
 
-        $mHeroesToMapRuins = new Application_Model_HeroesToMapRuins($db);
-        $mHeroesToMapRuins->add($this->_id, $mapRuin['mapRuinId'], $gameId);
+        $mHeroesToMapRuins = new Application_Model_HeroesToMapRuins($gameId, $db);
+        $mHeroesToMapRuins->add($this->_id, $mapRuin['mapRuinId']);
     }
 
     public function toArray()

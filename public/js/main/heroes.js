@@ -26,7 +26,9 @@ var HeroesController = new function () {
         createList(r.list)
     }
     this.show = function (r) {
+console.log(r)
         var bonusSize = countProperties(r.bonus)
+
         if (isSet(r.data)) {
             $('#content').html(r.data)
 
@@ -61,9 +63,7 @@ var HeroesController = new function () {
             $('.table h2').after(hero3).after(hero2).after(hero1)
 
             for (var i in r.bonus) {
-                var bonus = r.bonus[i].bId
-
-                switch (bonus) {
+                switch (r.bonus[i]) {
                     case 1:
                         var val = $('#sAttack span').html() * 1 + 1
                         $('#sAttack span').html(val)
@@ -79,7 +79,7 @@ var HeroesController = new function () {
                 }
             }
 
-            if (bonusSize > r.level) {
+            if (bonusSize < r.level) {
                 $('#sAttack').append(
                     $('<div>').addClass('button buttonColors').html('+').click(function () {
                         WebSocketSendMain.controller('heroes', 'up', {'hId': r.id, 'lbId': 1})
@@ -96,7 +96,7 @@ var HeroesController = new function () {
                     })
                 )
             }
-        } else if (bonusSize <= r.level) {
+        } else if (bonusSize >= r.level) {
             $('#sAttack div').hide()
             $('#sDefense div').hide()
             $('#sMoves div').hide()

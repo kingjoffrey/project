@@ -13,32 +13,27 @@ class Application_Model_Heroskills extends Coret_Db_Table_Abstract
         }
     }
 
-    public function up($heroId, $level, $levelbonusId)
+    public function up($heroId, $levelBonusId)
     {
         $data = array(
             'heroId' => $heroId,
-            'level' => $level,
-            'levelbonusId' => $levelbonusId
+            'levelbonusId' => $levelBonusId
         );
 
         return $this->insert($data);
     }
 
-    public function getLevel($heroId)
-    {
-        $select = $this->_db->select()
-            ->from($this->_name, 'max(level)')
-            ->where($heroId . ' = ?', $heroId);
-
-        return $this->selectOne($select);
-    }
-
     public function getBonuses($heroId)
     {
         $select = $this->_db->select()
-            ->from($this->_name, array('bId' => 'levelbonusId'))
-            ->where($heroId . ' = ?', $heroId);
+            ->from($this->_name, 'levelbonusId')
+            ->where($this->_db->quoteIdentifier('heroId') . ' = ?', $heroId);
 
-        return $this->selectAll($select);
+        $bonus = array();
+
+        foreach ($this->selectAll($select) as $row) {
+            $bonus[] = $row['levelbonusId'];
+        }
+        return $bonus;
     }
 }

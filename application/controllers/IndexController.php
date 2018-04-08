@@ -1,6 +1,6 @@
 <?php
 
-class IndexController extends Coret_Controller_Authorized
+class IndexController extends Coret_Controller_AuthorizedFrontend
 {
     protected $_redirectNotAuthorized = 'login';
     protected $_playerId;
