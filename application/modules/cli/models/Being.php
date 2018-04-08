@@ -5,6 +5,7 @@ class Cli_Model_Being
     protected $_id;
     protected $_movesLeft;
     protected $_remainingLife;
+    protected $_tmpLife;
 
     protected $_type;
 
@@ -29,9 +30,24 @@ class Cli_Model_Being
         $this->_remainingLife = $remainingLife;
     }
 
+    public function setTmpLife($remainingLife)
+    {
+        $this->_tmpLife = $remainingLife;
+    }
+
+    public function resetTmpLife()
+    {
+        $this->_tmpLife = $this->_remainingLife;
+    }
+
     public function getRemainingLife()
     {
         return $this->_remainingLife;
+    }
+
+    public function getTmpLife()
+    {
+        return $this->_tmpLife;
     }
 
     public function getLifePoints()

@@ -16,7 +16,7 @@ class Cli_Model_Battle
     private $_players;
 
     private $_attackerId;
-    private $_defenderId;
+    private $_defendingPlayerId;
 
     private $_gameId;
     private $_db;
@@ -50,12 +50,14 @@ class Cli_Model_Battle
         if (!$this->_defenders) {
             return;
         }
+
         $attackerBattleSequence = $this->_players->getPlayer($this->_attacker->getColor())->getAttackSequence();
         if (empty($attackerBattleSequence)) {
             $units = Zend_Registry::get('units');
             $attackerBattleSequence = $units->getKeys();
         }
         $this->_attacker->setAttackBattleSequence($attackerBattleSequence);
+
         foreach ($this->_defenders as $defender) {
             $defenderBattleSequence = $this->_players->getPlayer($defender->getColor())->getDefenceSequence();
             if (empty($defenderBattleSequence)) {
@@ -77,55 +79,6 @@ class Cli_Model_Battle
         $this->_attackModifier = $this->_attacker->getAttackModifier();
     }
 
-    private function attackerVictory()
-    {
-        foreach ($this->_attacker->getHeroes()->getKeys() as $heroId) {
-            if (!$this->_result->getAttacking('hero')->isDead($heroId)) {
-                return true;
-            }
-        }
-        foreach ($this->_attacker->getWalkingSoldiers()->getKeys() as $soldierId) {
-            if (!$this->_result->getAttacking('walk')->isDead($soldierId)) {
-                return true;
-            }
-        }
-        foreach ($this->_attacker->getSwimmingSoldiers()->getKeys() as $soldierId) {
-            if (!$this->_result->getAttacking('swim')->isDead($soldierId)) {
-                return true;
-            }
-        }
-        foreach ($this->_attacker->getFlyingSoldiers()->getKeys() as $soldierId) {
-            if (!$this->_result->getAttacking('fly')->isDead($soldierId)) {
-                return true;
-            }
-        }
-    }
-
-    private function defenderVictory(Cli_Model_Army $defender, $color)
-    {
-        $armyId = $defender->getId();
-        foreach ($defender->getHeroes()->getKeys() as $heroId) {
-            if (!$this->_result->getDefending($color, $armyId, 'hero')->isDead($heroId)) {
-                return true;
-            }
-        }
-        foreach ($defender->getWalkingSoldiers()->getKeys() as $soldierId) {
-            if (!$this->_result->getDefending($color, $armyId, 'walk')->isDead($soldierId)) {
-                return true;
-            }
-        }
-        foreach ($defender->getSwimmingSoldiers()->getKeys() as $soldierId) {
-            if (!$this->_result->getDefending($color, $armyId, 'swim')->isDead($soldierId)) {
-                return true;
-            }
-        }
-        foreach ($defender->getFlyingSoldiers()->getKeys() as $soldierId) {
-            if (!$this->_result->getDefending($color, $armyId, 'fly')->isDead($soldierId)) {
-                return true;
-            }
-        }
-    }
-
     public function fight()
     {
         $attack = $this->_attacker->getAttackBattleSequence();
@@ -135,13 +88,13 @@ class Cli_Model_Battle
             $this->_defenceModifier = $this->_defender->getDefenseModifier();
             $this->_defenderColor = $this->_defender->getColor();
             $this->_defenderArmyId = $this->_defender->getId();
-            $this->_defenderId = $this->_players->getPlayer($this->_defenderColor)->getId();
+            $this->_defendingPlayerId = $this->_players->getPlayer($this->_defenderColor)->getId();
             $defence = $this->_defender->getDefenceBattleSequence();
 
             foreach ($attack['walk'] as $a => $this->_attackingFighter) {
                 foreach ($defence['walk'] as $d => $this->_defendingFighter) {
                     $this->combat();
-                    if ($this->_attackingFighter->getRemainingLife() > $this->_defendingFighter->getRemainingLife()) {
+                    if ($this->_attackingFighter->getTmpRemainingLife() > $this->_defendingFighter->getTmpRemainingLife()) {
                         unset($defence['walk'][$d]);
                     } else {
                         unset($attack['walk'][$a]);
@@ -152,7 +105,7 @@ class Cli_Model_Battle
             foreach ($attack['walk'] as $a => $this->_attackingFighter) {
                 foreach ($defence['heroes'] as $d => $this->_defendingFighter) {
                     $this->combat();
-                    if ($this->_attackingFighter->getRemainingLife() > $this->_defendingFighter->getRemainingLife()) {
+                    if ($this->_attackingFighter->getTmpRemainingLife() > $this->_defendingFighter->getTmpRemainingLife()) {
                         unset($defence['heroes'][$d]);
                     } else {
                         unset($attack['walk'][$a]);
@@ -163,7 +116,7 @@ class Cli_Model_Battle
             foreach ($attack['walk'] as $a => $this->_attackingFighter) {
                 foreach ($defence['fly'] as $d => $this->_defendingFighter) {
                     $this->combat();
-                    if ($this->_attackingFighter->getRemainingLife() > $this->_defendingFighter->getRemainingLife()) {
+                    if ($this->_attackingFighter->getTmpRemainingLife() > $this->_defendingFighter->getTmpRemainingLife()) {
                         unset($defence['fly'][$d]);
                     } else {
                         unset($attack['walk'][$a]);
@@ -174,7 +127,7 @@ class Cli_Model_Battle
             foreach ($attack['walk'] as $a => $this->_attackingFighter) {
                 foreach ($defence['swim'] as $d => $this->_defendingFighter) {
                     $this->combat();
-                    if ($this->_attackingFighter->getRemainingLife() > $this->_defendingFighter->getRemainingLife()) {
+                    if ($this->_attackingFighter->getTmpRemainingLife() > $this->_defendingFighter->getTmpRemainingLife()) {
                         unset($defence['swim'][$d]);
                     } else {
                         unset($attack['walk'][$a]);
@@ -185,7 +138,7 @@ class Cli_Model_Battle
             foreach ($attack['fly'] as $a => $this->_attackingFighter) {
                 foreach ($defence['walk'] as $d => $this->_defendingFighter) {
                     $this->combat();
-                    if ($this->_attackingFighter->getRemainingLife() > $this->_defendingFighter->getRemainingLife()) {
+                    if ($this->_attackingFighter->getTmpRemainingLife() > $this->_defendingFighter->getTmpRemainingLife()) {
                         unset($defence['walk'][$d]);
                     } else {
                         unset($attack['fly'][$a]);
@@ -196,7 +149,7 @@ class Cli_Model_Battle
             foreach ($attack['fly'] as $a => $this->_attackingFighter) {
                 foreach ($defence['heroes'] as $d => $this->_defendingFighter) {
                     $this->combat();
-                    if ($this->_attackingFighter->getRemainingLife() > $this->_defendingFighter->getRemainingLife()) {
+                    if ($this->_attackingFighter->getTmpRemainingLife() > $this->_defendingFighter->getTmpRemainingLife()) {
                         unset($defence['heroes'][$d]);
                     } else {
                         unset($attack['fly'][$a]);
@@ -207,7 +160,7 @@ class Cli_Model_Battle
             foreach ($attack['fly'] as $a => $this->_attackingFighter) {
                 foreach ($defence['fly'] as $d => $this->_defendingFighter) {
                     $this->combat();
-                    if ($this->_attackingFighter->getRemainingLife() > $this->_defendingFighter->getRemainingLife()) {
+                    if ($this->_attackingFighter->getTmpRemainingLife() > $this->_defendingFighter->getTmpRemainingLife()) {
                         unset($defence['fly'][$d]);
                     } else {
                         unset($attack['fly'][$a]);
@@ -218,7 +171,7 @@ class Cli_Model_Battle
             foreach ($attack['fly'] as $a => $this->_attackingFighter) {
                 foreach ($defence['swim'] as $d => $this->_defendingFighter) {
                     $this->combat();
-                    if ($this->_attackingFighter->getRemainingLife() > $this->_defendingFighter->getRemainingLife()) {
+                    if ($this->_attackingFighter->getTmpRemainingLife() > $this->_defendingFighter->getTmpRemainingLife()) {
                         unset($defence['swim'][$d]);
                     } else {
                         unset($attack['fly'][$a]);
@@ -229,7 +182,7 @@ class Cli_Model_Battle
             foreach ($attack['heroes'] as $a => $this->_attackingFighter) {
                 foreach ($defence['walk'] as $d => $this->_defendingFighter) {
                     $this->combat();
-                    if ($this->_attackingFighter->getRemainingLife() > $this->_defendingFighter->getRemainingLife()) {
+                    if ($this->_attackingFighter->getTmpRemainingLife() > $this->_defendingFighter->getTmpRemainingLife()) {
                         unset($defence['walk'][$d]);
                     } else {
                         unset($attack['heroes'][$a]);
@@ -240,7 +193,7 @@ class Cli_Model_Battle
             foreach ($attack['heroes'] as $a => $this->_attackingFighter) {
                 foreach ($defence['fly'] as $d => $this->_defendingFighter) {
                     $this->combat();
-                    if ($this->_attackingFighter->getRemainingLife() > $this->_defendingFighter->getRemainingLife()) {
+                    if ($this->_attackingFighter->getTmpRemainingLife() > $this->_defendingFighter->getTmpRemainingLife()) {
                         unset($defence['fly'][$d]);
                     } else {
                         unset($attack['heroes'][$a]);
@@ -251,7 +204,7 @@ class Cli_Model_Battle
             foreach ($attack['heroes'] as $a => $this->_attackingFighter) {
                 foreach ($defence['heroes'] as $d => $this->_defendingFighter) {
                     $this->combat();
-                    if ($this->_attackingFighter->getRemainingLife() > $this->_defendingFighter->getRemainingLife()) {
+                    if ($this->_attackingFighter->getTmpRemainingLife() > $this->_defendingFighter->getTmpRemainingLife()) {
                         unset($defence['heroes'][$d]);
                     } else {
                         unset($attack['heroes'][$a]);
@@ -262,7 +215,7 @@ class Cli_Model_Battle
             foreach ($attack['heroes'] as $a => $this->_attackingFighter) {
                 foreach ($defence['swim'] as $d => $this->_defendingFighter) {
                     $this->combat();
-                    if ($this->_attackingFighter->getRemainingLife() > $this->_defendingFighter->getRemainingLife()) {
+                    if ($this->_attackingFighter->getTmpRemainingLife() > $this->_defendingFighter->getTmpRemainingLife()) {
                         unset($defence['swim'][$d]);
                     } else {
                         unset($attack['heroes'][$a]);
@@ -273,7 +226,7 @@ class Cli_Model_Battle
             foreach ($attack['swim'] as $a => $this->_attackingFighter) {
                 foreach ($defence['walk'] as $d => $this->_defendingFighter) {
                     $this->combat();
-                    if ($this->_attackingFighter->getRemainingLife() > $this->_defendingFighter->getRemainingLife()) {
+                    if ($this->_attackingFighter->getTmpRemainingLife() > $this->_defendingFighter->getTmpRemainingLife()) {
                         unset($defence['walk'][$d]);
                     } else {
                         unset($attack['swim'][$a]);
@@ -284,7 +237,7 @@ class Cli_Model_Battle
             foreach ($attack['swim'] as $a => $this->_attackingFighter) {
                 foreach ($defence['heroes'] as $d => $this->_defendingFighter) {
                     $this->combat();
-                    if ($this->_attackingFighter->getRemainingLife() > $this->_defendingFighter->getRemainingLife()) {
+                    if ($this->_attackingFighter->getTmpRemainingLife() > $this->_defendingFighter->getTmpRemainingLife()) {
                         unset($defence['heroes'][$d]);
                     } else {
                         unset($attack['swim'][$a]);
@@ -295,7 +248,7 @@ class Cli_Model_Battle
             foreach ($attack['swim'] as $a => $this->_attackingFighter) {
                 foreach ($defence['fly'] as $d => $this->_defendingFighter) {
                     $this->combat();
-                    if ($this->_attackingFighter->getRemainingLife() > $this->_defendingFighter->getRemainingLife()) {
+                    if ($this->_attackingFighter->getTmpRemainingLife() > $this->_defendingFighter->getTmpRemainingLife()) {
                         unset($defence['fly'][$d]);
                     } else {
                         unset($attack['swim'][$a]);
@@ -306,7 +259,7 @@ class Cli_Model_Battle
             foreach ($attack['swim'] as $a => $this->_attackingFighter) {
                 foreach ($defence['swim'] as $d => $this->_defendingFighter) {
                     $this->combat();
-                    if ($this->_attackingFighter->getRemainingLife() > $this->_defendingFighter->getRemainingLife()) {
+                    if ($this->_attackingFighter->getTmpRemainingLife() > $this->_defendingFighter->getTmpRemainingLife()) {
                         unset($defence['swim'][$d]);
                     } else {
                         unset($attack['swim'][$a]);
@@ -319,7 +272,71 @@ class Cli_Model_Battle
         if ($this->_db) {
             $this->saveFight();
         } else {
+            $this->resetLife();
             return count($attack['swim']) || count($attack['heroes']) || count($attack['walk']) || count($attack['fly']);
+        }
+    }
+
+    private function resetLife()
+    {
+        $this->_attacker->resetTmpLife();
+        foreach ($this->_defenders as $defenderArmy) {
+            $this->getDefender($defenderArmy)->resetTmpLife();
+        }
+    }
+
+    private function combat()
+    {
+        $attackingFighterLife = $this->_attackingFighter->getTmpRemainingLife();
+        $defendingFighterLife = $this->_defendingFighter->getTmpRemainingLife();
+
+        $attackPoints = $this->_attackingFighter->getAttackPoints() + $this->_attackModifier;
+        $defencePoints = $this->_defendingFighter->getDefensePoints() + $this->_defenceModifier + $this->_externalDefenceModifier;
+
+        $maxDie = $attackPoints + $defencePoints;
+        while ($attackingFighterLife AND $defendingFighterLife) {
+            $dieAttacking = $this->rollDie($maxDie);
+            $dieDefending = $this->rollDie($maxDie);
+
+            if ($attackPoints > $dieDefending AND $defencePoints <= $dieAttacking) {
+                $defendingFighterLife--;
+            } elseif ($attackPoints <= $dieDefending AND $defencePoints > $dieAttacking) {
+                $attackingFighterLife--;
+            }
+        }
+
+        $this->_succession++;
+
+        if ($attackingFighterLife) {
+            $this->_result->getDefending($this->_defenderColor, $this->_defenderArmyId, $this->_defendingFighter->getType())->addSuccession($this->_defendingFighter->getId(), $this->_succession);
+        } else {
+            $this->_result->getAttacking($this->_attackingFighter->getType())->addSuccession($this->_attackingFighter->getId(), $this->_succession);
+        }
+
+        if ($this->_db) {
+            if ($attackingFighterLife) {
+                $this->removeFighter($this->_defendingFighter->getType(), $this->_defendingFighter->getId(), $this->_attackerId, $this->_defendingPlayerId, $this->_gameId, $this->_db);
+            } else {
+                $this->removeFighter($this->_attackingFighter->getType(), $this->_attackingFighter->getId(), $this->_defendingPlayerId, $this->_attackerId, $this->_gameId, $this->_db);
+            }
+        }
+    }
+
+    private function removeFighter($type, $id, $winnerId, $loserId, $gameId, Zend_Db_Adapter_Pdo_Pgsql $db)
+    {
+        switch ($type) {
+            case 'hero':
+                $this->_attacker->removeHero($id, $winnerId, $loserId, $gameId, $db);
+                break;
+            case 'swim':
+                $this->_attacker->removeSwimmingSoldier($id, $winnerId, $loserId, $gameId, $db);
+                break;
+            case 'fly':
+                $this->_attacker->removeFlyingSoldier($id, $winnerId, $loserId, $gameId, $db);
+                break;
+            case 'walk':
+                $this->_attacker->removeWalkingSoldier($id, $winnerId, $loserId, $gameId, $db);
+                break;
         }
     }
 
@@ -356,11 +373,13 @@ class Cli_Model_Battle
                 $this->_players->getPlayer($this->_attacker->getColor())->addTower($this->_towerId, $towerOwner->getTowers()->getTower($this->_towerId), $this->_towerColor, $this->_fields, $this->_gameId, $this->_db);
                 $towerOwner->getTowers()->removeTower($this->_towerId);
             }
+
             $this->_attacker->resetAttributes();
 
         } else {
             $this->_players->getPlayer($this->_attacker->getColor())->getArmies()->removeArmy($this->_attacker->getId(), $this->_game, $this->_db);
         }
+
         foreach ($this->_defenders as $defender) {
             $color = $defender->getColor();
             if ($this->defenderVictory($defender, $color)) {
@@ -380,87 +399,85 @@ class Cli_Model_Battle
         $this->_result->setTowerId($this->_towerId);
     }
 
-    private function combat()
+    private function attackerVictory()
     {
-        $attackingFighterLife = $this->_attackingFighter->getRemainingLife();
-        $defendingFighterLife = $this->_defendingFighter->getRemainingLife();
+        $victory = false;
 
-        $attackPoints = $this->_attackingFighter->getAttackPoints() + $this->_attackModifier;
-        $defencePoints = $this->_defendingFighter->getDefensePoints() + $this->_defenceModifier + $this->_externalDefenceModifier;
-
-        $maxDie = $attackPoints + $defencePoints;
-        while ($attackingFighterLife AND $defendingFighterLife) {
-            $dieAttacking = $this->rollDie($maxDie);
-            $dieDefending = $this->rollDie($maxDie);
-
-//            echo '$unitAttacking[\'attackPoints\']=' . $unitAttacking['attackPoints'] . "\n";
-//            echo '$dieDefending=' . $dieDefending . "\n";
-//            echo '$unitDefending[\'defensePoints\']=' . $unitDefending['defensePoints'] . "\n";
-//            echo '$dieAttacking=' . $dieAttacking . "\n\n";
-
-            if ($attackPoints > $dieDefending AND $defencePoints <= $dieAttacking) {
-                $defendingFighterLife--;
-            } elseif ($attackPoints <= $dieDefending AND $defencePoints > $dieAttacking) {
-                $attackingFighterLife--;
+        $heroes = $this->_attacker->getHeroes();
+        foreach ($heroes->getKeys() as $heroId) {
+            if (!$this->_result->getAttacking('hero')->isDead($heroId)) {
+                $heroes->getHero($heroId)->updateRemainingLife($this->_gameId, $this->_db);
+                $victory = true;
             }
         }
 
-        $this->_succession++;
-
-        if ($this->_db) {
-            if ($attackingFighterLife) {
-//                echo 'att' . "\n";
-//                echo $this->_attackingFighter->getId() . ' life ' . $attackingFighterLife . "\n";
-                $this->_attackingFighter->updateRemainingLife($attackingFighterLife, $this->_gameId, $this->_db);
-                $this->_defendingFighter->updateRemainingLife($defendingFighterLife);
-
-                $id = $this->_defendingFighter->getId();
-                $this->_result->getDefending($this->_defenderColor, $this->_defenderArmyId, $this->_defendingFighter->getType())->addSuccession($id, $this->_succession);
-
-                if ($this->_defenderId) {
-                    switch ($this->_defendingFighter->getType()) {
-                        case 'hero':
-                            $this->_defender->removeHero($id, $this->_attackerId, $this->_defenderId, $this->_gameId, $this->_db);
-                            break;
-                        case 'swim':
-                            $this->_defender->removeSwimmingSoldier($id, $this->_attackerId, $this->_defenderId, $this->_gameId, $this->_db);
-                            break;
-                        case 'fly':
-                            $this->_defender->removeFlyingSoldier($id, $this->_attackerId, $this->_defenderId, $this->_gameId, $this->_db);
-                            break;
-                        case 'walk':
-                            $this->_defender->removeWalkingSoldier($id, $this->_attackerId, $this->_defenderId, $this->_gameId, $this->_db);
-                            break;
-                    }
-                }
-            } else {
-//                echo 'def' . "\n";
-//                echo $this->_defendingFighter->getId() . ' life ' . $defendingFighterLife . "\n";
-                $this->_attackingFighter->updateRemainingLife($attackingFighterLife);
-                if ($this->_defenderId) {
-                    $this->_defendingFighter->updateRemainingLife($defendingFighterLife, $this->_gameId, $this->_db);
-                } else {
-                    $this->_defendingFighter->updateRemainingLife($defendingFighterLife);
-                }
-                $id = $this->_attackingFighter->getId();
-                $this->_result->getAttacking($this->_attackingFighter->getType())->addSuccession($id, $this->_succession);
-
-                switch ($this->_attackingFighter->getType()) {
-                    case 'hero':
-                        $this->_attacker->removeHero($id, $this->_defenderId, $this->_attackerId, $this->_gameId, $this->_db);
-                        break;
-                    case 'swim':
-                        $this->_attacker->removeSwimmingSoldier($id, $this->_defenderId, $this->_attackerId, $this->_gameId, $this->_db);
-                        break;
-                    case 'fly':
-                        $this->_attacker->removeFlyingSoldier($id, $this->_defenderId, $this->_attackerId, $this->_gameId, $this->_db);
-                        break;
-                    case 'walk':
-                        $this->_attacker->removeWalkingSoldier($id, $this->_defenderId, $this->_attackerId, $this->_gameId, $this->_db);
-                        break;
-                }
+        $walking = $this->_attacker->getWalkingSoldiers();
+        foreach ($walking->getKeys() as $soldierId) {
+            if (!$this->_result->getAttacking('walk')->isDead($soldierId)) {
+                $walking->getSoldier($soldierId)->updateRemainingLife($this->_gameId, $this->_db);
+                $victory = true;
             }
         }
+
+        $swimming = $this->_attacker->getSwimmingSoldiers();
+        foreach ($swimming->getKeys() as $soldierId) {
+            if (!$this->_result->getAttacking('swim')->isDead($soldierId)) {
+                $swimming->getSoldier($soldierId)->updateRemainingLife($this->_gameId, $this->_db);
+                $victory = true;
+            }
+        }
+
+        $flying = $this->_attacker->getFlyingSoldiers();
+        foreach ($flying->getKeys() as $soldierId) {
+            if (!$this->_result->getAttacking('fly')->isDead($soldierId)) {
+                $flying->getSoldier($soldierId)->updateRemainingLife($this->_gameId, $this->_db);
+                $victory = true;
+            }
+        }
+
+        return $victory;
+    }
+
+    private function defenderVictory(Cli_Model_Army $defender, $color)
+    {
+        $victory = false;
+        $armyId = $defender->getId();
+
+        $heroes = $defender->getHeroes();
+        foreach ($heroes->getKeys() as $heroId) {
+            if (!$this->_result->getDefending($color, $armyId, 'hero')->isDead($heroId)) {
+                $heroes->getHero($heroId)->updateRemainingLife($this->_gameId, $this->_db);
+                $victory = true;
+            }
+        }
+
+        $walking = $defender->getWalkingSoldiers();
+        foreach ($walking->getKeys() as $soldierId) {
+            if (!$this->_result->getDefending($color, $armyId, 'walk')->isDead($soldierId)) {
+                if ($color != 'neutral') {
+                    $walking->getSoldier($soldierId)->updateRemainingLife($this->_gameId, $this->_db);
+                }
+                $victory = true;
+            }
+        }
+
+        $swimming = $defender->getSwimmingSoldiers();
+        foreach ($swimming->getKeys() as $soldierId) {
+            if (!$this->_result->getDefending($color, $armyId, 'swim')->isDead($soldierId)) {
+                $swimming->getSoldier($soldierId)->updateRemainingLife($this->_gameId, $this->_db);
+                $victory = true;
+            }
+        }
+
+        $flying = $defender->getFlyingSoldiers();
+        foreach ($flying->getKeys() as $soldierId) {
+            if (!$this->_result->getDefending($color, $armyId, 'fly')->isDead($soldierId)) {
+                $flying->getSoldier($soldierId)->updateRemainingLife($this->_gameId, $this->_db);
+                $victory = true;
+            }
+        }
+
+        return $victory;
     }
 
     private function rollDie($maxDie)

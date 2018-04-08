@@ -14,9 +14,9 @@ class Cli_Model_Enemies
             $castleColor = $fields->getField($x, $y)->getCastleColor();
             if ($players->sameTeam($castleColor, $playerColor)) {
                 return;
-            } else {
-                $this->handleCastleGarrison($players->getPlayer($castleColor)->getCastles()->getCastle($castleId), $fields, $players);
             }
+
+            $this->handleCastleGarrison($players->getPlayer($castleColor)->getCastles()->getCastle($castleId), $fields, $players);
             $this->_castleId = $castleId;
             $this->_castleColor = $castleColor;
         } elseif ($armies = $fields->getField($x, $y)->getArmies()) {

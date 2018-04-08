@@ -35,6 +35,8 @@ class Cli_Model_Soldier extends Cli_Model_Being
             $this->setRemainingLife($unit->getLifePoints());
         }
 
+        $this->_tmpLife = $this->_remainingLife;
+
         $this->_forest = $unit->getModMovesForest();
         $this->_hills = $unit->getModMovesHills();
         $this->_swamp = $unit->getModMovesSwamp();
@@ -55,14 +57,16 @@ class Cli_Model_Soldier extends Cli_Model_Being
         );
     }
 
-    public function updateRemainingLife($remainingLife, $gameId = null, Zend_Db_Adapter_Pdo_Pgsql $db = null)
+    public function updateRemainingLife($gameId, Zend_Db_Adapter_Pdo_Pgsql $db)
     {
-        $this->setRemainingLife($remainingLife);
-
-        if ($gameId) {
-            $mUnitsInGame = new Application_Model_UnitsInGame($gameId, $db);
-            $mUnitsInGame->updateRemainingLife($remainingLife, $this->_id);
+        if ($this->_tmpLife == $this->_remainingLife) {
+            return;
         }
+
+        $this->setRemainingLife($this->_tmpLife);
+
+        $mUnitsInGame = new Application_Model_UnitsInGame($gameId, $db);
+        $mUnitsInGame->updateRemainingLife($this->_tmpLife, $this->_id);
     }
 
     public function regenerateLife(Application_Model_UnitsInGame $mUnitsInGame)

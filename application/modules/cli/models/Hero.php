@@ -22,6 +22,8 @@ class Cli_Model_Hero extends Cli_Model_Being
         $this->_movesLeft = $hero['movesLeft'];
         $this->_remainingLife = $hero['remainingLife'];
 
+        $this->_tmpLife = $this->_remainingLife;
+
         $this->_mapRuinsBonus = $mapRuinsBonus;
 
         foreach ($mapRuinsBonus as $type) {
@@ -74,14 +76,16 @@ class Cli_Model_Hero extends Cli_Model_Being
         );
     }
 
-    public function updateRemainingLife($remainingLife, $gameId = null, Zend_Db_Adapter_Pdo_Pgsql $db = null)
+    public function updateRemainingLife($gameId, Zend_Db_Adapter_Pdo_Pgsql $db)
     {
-        $this->setRemainingLife($remainingLife);
-
-        if ($gameId) {
-            $mHeroesInGame = new Application_Model_HeroesInGame($gameId, $db);
-            $mHeroesInGame->updateRemainingLife($remainingLife, $this->_id);
+        if ($this->_tmpLife == $this->_remainingLife) {
+            return;
         }
+
+        $this->setRemainingLife($this->_tmpLife);
+
+        $mHeroesInGame = new Application_Model_HeroesInGame($gameId, $db);
+        $mHeroesInGame->updateRemainingLife($this->_tmpLife, $this->_id);
     }
 
     public function regenerateLife(Application_Model_HeroesInGame $mHeroesInGame)

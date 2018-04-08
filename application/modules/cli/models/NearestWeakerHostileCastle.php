@@ -14,9 +14,7 @@ class Cli_Model_NearestWeakerHostileCastle
         $players = $game->getPlayers();
         $this->initHeuristics($players, $playerColor, $army->getX(), $army->getY(), $game);
 
-        $castleId = $this->getCastleId($game, $playerColor, $army);
-
-        if (!$castleId) {
+        if (!$castleId = $this->getCastleId($game, $playerColor, $army)) {
             return;
         }
 
@@ -46,6 +44,7 @@ class Cli_Model_NearestWeakerHostileCastle
 
             $castles = $players->getPlayer($color)->getCastles();
             foreach ($castles->getKeys() as $castleId) {
+                $this->_l->log('a');
                 $castle = $castles->getCastle($castleId);
                 if ($castle->getEnclaveNumber()) {
                     continue;
@@ -53,6 +52,7 @@ class Cli_Model_NearestWeakerHostileCastle
                 $mHeuristics = new Cli_Model_Heuristics($castle->getX(), $castle->getY());
                 $this->_heuristics[$castleId] = $mHeuristics->calculateWithFieldsCosts($armyX, $armyY, $game->getFields(), $game->getTerrain());
                 $this->_castles[$castleId] = $castle;
+                $this->_l->log('b');
             }
         }
 
@@ -61,7 +61,7 @@ class Cli_Model_NearestWeakerHostileCastle
         $this->_heuristics = array_keys($this->_heuristics);
     }
 
-    private function getCastleId(Cli_Model_Game $game, $playerColor, $army)
+    private function getCastleId(Cli_Model_Game $game, $playerColor, Cli_Model_Army $army)
     {
         $this->_l->logMethodName();
         foreach ($this->_heuristics as $k => $castleId) {

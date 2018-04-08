@@ -496,7 +496,7 @@ class Cli_Model_Army
         }
     }
 
-    public function removeHero($heroId, $winnerId, $loserId, $gameId, $db)
+    public function removeHero($heroId, $winnerId, $loserId, $gameId, Zend_Db_Adapter_Pdo_Pgsql $db)
     {
         $hero = $this->_Heroes->getHero($heroId);
         $hero->death($gameId, $db, $winnerId, $loserId);
@@ -650,6 +650,22 @@ class Cli_Model_Army
                 $mUnitsInGame = new Application_Model_UnitsInGame($gameId, $db);
             }
             $this->_FlyingSoldiers->getSoldier($soldierId)->regenerateLife($mUnitsInGame);
+        }
+    }
+
+    public function resetTmpLife()
+    {
+        foreach ($this->_Heroes->getKeys() as $heroId) {
+            $this->_Heroes->getHero($heroId)->resetTmpLife();
+        }
+        foreach ($this->_WalkingSoldiers->getKeys() as $soldierId) {
+            $this->_WalkingSoldiers->getSoldier($soldierId)->resetTmpLife();
+        }
+        foreach ($this->_SwimmingSoldiers->getKeys() as $soldierId) {
+            $this->_SwimmingSoldiers->getSoldier($soldierId)->resetTmpLife();
+        }
+        foreach ($this->_FlyingSoldiers->getKeys() as $soldierId) {
+            $this->_FlyingSoldiers->getSoldier($soldierId)->resetTmpLife();
         }
     }
 }
