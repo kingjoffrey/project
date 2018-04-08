@@ -27,11 +27,18 @@ class Coret_Form_Checkbox extends Zend_Form
             }
         }
 
+        if ($this->_attribs['value']) {
+            $value = $this->_attribs['value'];
+        } else {
+            $value = 0;
+        }
+
         $this->addElement('checkbox', $name, array(
                 'label' => $label,
                 'required' => $required,
 //                'filters' => array('StringTrim'),
-                'validators' => $validators
+                'validators' => $validators,
+                'value' => $value
             )
         );
     }

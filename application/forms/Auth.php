@@ -1,8 +1,10 @@
 <?php
 
-class Application_Form_Auth extends Zend_Form {
+class Application_Form_Auth extends Zend_Form
+{
 
-    public function init() {
+    public function init()
+    {
         $this->setMethod('post');
 
         $this->addElement('text', 'login', array(
@@ -16,7 +18,7 @@ class Application_Form_Auth extends Zend_Form {
             'filters' => array('StringTrim')
         ));
 
-        $f = new Coret_Form_Checkbox(array('name' => 'rememberMe', 'label' => $this->getView()->translate('Remember me')));
+        $f = new Coret_Form_Checkbox(array('name' => 'rememberMe', 'label' => $this->getView()->translate('Remember me'), 'value' => 1));
         $this->addElements($f->getElements());
 
         $this->addElement('submit', 'submit', array('label' => $this->getView()->translate('Sign in')));

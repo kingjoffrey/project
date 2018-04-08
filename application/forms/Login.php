@@ -27,7 +27,7 @@ class Application_Form_Login extends Zend_Form
                         'table' => 'player',
                         'field' => 'login',
                         'messages' => array(
-                            'recordFound' => 'This login is already registered'
+                            'recordFound' => $adapter->translate('This login is already registered')
                         ),
                         'adapter' => $this->_db
                     ))
