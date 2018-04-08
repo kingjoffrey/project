@@ -30,9 +30,9 @@ class Cli_Model_Being
         $this->_remainingLife = $remainingLife;
     }
 
-    public function setTmpLife($remainingLife)
+    public function setTmpLife($tmpLife)
     {
-        $this->_tmpLife = $remainingLife;
+        $this->_tmpLife = $tmpLife;
     }
 
     public function resetTmpLife()
