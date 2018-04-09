@@ -505,8 +505,7 @@ class Cli_Model_Army
 
     public function removeWalkingSoldier($soldierId, $winnerId, $loserId, $gameId, Zend_Db_Adapter_Pdo_Pgsql $db)
     {
-        $soldier = $this->_WalkingSoldiers->getSoldier($soldierId);
-        $soldier->death($gameId, $db, $winnerId, $loserId);
+        $this->_WalkingSoldiers->getSoldier($soldierId)->death($gameId, $db, $winnerId, $loserId);
         $this->_WalkingSoldiers->remove($soldierId);
     }
 

@@ -316,31 +316,50 @@ class Cli_Model_Battle
             if ($attackingFighterLife) {
                 $id = $this->_defendingFighter->getId();
                 $this->_result->getDefending($this->_defenderColor, $this->_defenderArmyId, $this->_defendingFighter->getType())->addSuccession($id, $this->_succession);
-                $this->removeFighter($this->_defendingFighter->getType(), $id, $this->_attackerId, $this->_defendingPlayerId, $this->_gameId, $this->_db);
+
+                if ($this->_defenderColor == 'neutral') {
+                    return;
+                }
+
+                switch ($this->_defendingFighter->getType()) {
+                    case 'hero':
+                        $this->_defender->removeHero($id, $this->_attackerId, $this->_defendingPlayerId, $this->_gameId, $this->_db);
+                        break;
+                    case 'swim':
+                        $this->_defender->removeSwimmingSoldier($id, $this->_attackerId, $this->_defendingPlayerId, $this->_gameId, $this->_db);
+                        break;
+                    case 'fly':
+                        $this->_defender->removeFlyingSoldier($id, $this->_attackerId, $this->_defendingPlayerId, $this->_gameId, $this->_db);
+                        break;
+                    case 'walk':
+                        $this->_defender->removeWalkingSoldier($id, $this->_attackerId, $this->_defendingPlayerId, $this->_gameId, $this->_db);
+                        break;
+                }
             } else {
                 $id = $this->_attackingFighter->getId();
                 $this->_result->getAttacking($this->_attackingFighter->getType())->addSuccession($id, $this->_succession);
-                $this->removeFighter($this->_attackingFighter->getType(), $id, $this->_defendingPlayerId, $this->_attackerId, $this->_gameId, $this->_db);
+
+                switch ($this->_attackingFighter->getType()) {
+                    case 'hero':
+                        $this->_attacker->removeHero($id, $this->_defendingPlayerId, $this->_attackerId, $this->_gameId, $this->_db);
+                        break;
+                    case 'swim':
+                        $this->_attacker->removeSwimmingSoldier($id, $this->_defendingPlayerId, $this->_attackerId, $this->_gameId, $this->_db);
+                        break;
+                    case 'fly':
+                        $this->_attacker->removeFlyingSoldier($id, $this->_defendingPlayerId, $this->_attackerId, $this->_gameId, $this->_db);
+                        break;
+                    case 'walk':
+                        $this->_attacker->removeWalkingSoldier($id, $this->_defendingPlayerId, $this->_attackerId, $this->_gameId, $this->_db);
+                        break;
+                }
             }
         }
     }
 
     private function removeFighter($type, $id, $winnerId, $loserId, $gameId, Zend_Db_Adapter_Pdo_Pgsql $db)
     {
-        switch ($type) {
-            case 'hero':
-                $this->_attacker->removeHero($id, $winnerId, $loserId, $gameId, $db);
-                break;
-            case 'swim':
-                $this->_attacker->removeSwimmingSoldier($id, $winnerId, $loserId, $gameId, $db);
-                break;
-            case 'fly':
-                $this->_attacker->removeFlyingSoldier($id, $winnerId, $loserId, $gameId, $db);
-                break;
-            case 'walk':
-                $this->_attacker->removeWalkingSoldier($id, $winnerId, $loserId, $gameId, $db);
-                break;
-        }
+
     }
 
     private function saveFight()

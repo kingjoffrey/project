@@ -21,7 +21,7 @@ class Cli_Model_Soldiers
     public function getSoldier($soldierId)
     {
         if (!isset($this->_soldiers[$soldierId])) {
-            throw new Exception('');
+            throw new Exception('kurwa debilu');
         }
         return $this->_soldiers[$soldierId];
     }
