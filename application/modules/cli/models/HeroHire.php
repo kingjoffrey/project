@@ -31,28 +31,30 @@ class Cli_Model_HeroHire
         }
 
         $db = $handler->getDb();
+        $mHeroesInGame = new Application_Model_HeroesInGame($gameId, $db);
+        $mHeroSkills = new Application_Model_Heroskills($db);
+        $mHeroesToMapRuins = new Application_Model_HeroesToMapRuins($gameId, $db);
 
         $heroId = $player->getAllHeroes()->hire($player->getArmies(), $db);
 
+        // jeśli nie ma armii na spawnie w stolicy to stwórz ją
         if (!$armyId = $player->getArmies()->getArmyIdFromField($game->getFields()->getField($capital->getX(), $capital->getY()))) {
             $armyId = $player->getArmies()->create($capital->getX(), $capital->getY(), $color, $game, $db);
         }
 
-        $mHeroesInGame = new Application_Model_HeroesInGame($gameId, $db);
-        $mHeroesInGame->add($armyId, $heroId);
+        if(!$hero = $mHeroesInGame->getHero($heroId)){
+            $mHeroesInGame->add($armyId, $heroId);
+            $hero = $mHeroesInGame->getHero($heroId);
+        }
 
         $army = $player->getArmies()->getArmy($armyId);
-
-        $hero = $mHeroesInGame->getHero($heroId);
-
-        $mHeroSkills = new Application_Model_Heroskills($db);
-        $mHeroesToMapRuins = new Application_Model_HeroesToMapRuins($gameId, $db);
 
         $army->addHero($heroId, new Cli_Model_Hero(
             $hero,
             $mHeroSkills->getBonuses($hero['heroId']),
             $mHeroesToMapRuins->getHeroMapRuins($hero['heroId'])
         ), $gameId, $db);
+
         $army->getHeroes()->getHero($heroId)->zeroMovesLeft($gameId, $db);
 
         $player->addGold(-$this->_price);

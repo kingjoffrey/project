@@ -158,10 +158,12 @@ var Execute = new function () {
                             Players.get(r.color).getArmies().handle(r.army)
                             if (Me.colorEquals(r.color)) {
                                 Message.remove()
-                                Me.goldIncrement(-r.gold)
                             }
                             Execute.setExecuting(0)
                         })
+                    }
+                    if (Me.colorEquals(r.color)) {
+                        Me.goldIncrement(-r.gold)
                     }
                     break
 
