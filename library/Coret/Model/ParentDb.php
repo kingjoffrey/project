@@ -566,6 +566,14 @@ abstract class Coret_Model_ParentDb extends Coret_Db_Table_Abstract
     /**
      * @return array
      */
+    public function getColumns()
+    {
+        return $this->_columns;
+    }
+
+    /**
+     * @return array
+     */
     public function getColumnsAll()
     {
         if (isset($this->_columns_lang) && $this->_columns_lang) {
@@ -576,7 +584,7 @@ abstract class Coret_Model_ParentDb extends Coret_Db_Table_Abstract
 
     /**
      *
-     * @return type
+     * @return array
      */
     public function getColumnsLang()
     {

@@ -17,12 +17,12 @@ abstract class Coret_Controller_Backend extends Zend_Controller_Action
 
         $this->_helper->layout->setLayout('admin');
 
-        $this->view->headLink()->prependStylesheet($this->view->baseUrl('/css/core-t_admin.css'));
+        $this->view->headLink()->prependStylesheet($this->view->baseUrl('/css/admin/core-t.css'));
 //        $this->view->headLink()->prependStylesheet($this->view->baseUrl('/css/sceditor/themes/default.min.css'));
 
         $this->view->jquery();
 
-        $this->view->headScript()->appendFile($this->view->baseUrl('/js/core-t_admin.js'));
+        $this->view->headScript()->appendFile($this->view->baseUrl('/js/admin/core-t.js'));
 //        $this->view->headScript()->appendFile($this->view->baseUrl('/js/jquery.sceditor.min.js'));
 
         $this->view->headMeta()->appendHttpEquiv('Content-Language', 'pl');
@@ -30,7 +30,7 @@ abstract class Coret_Controller_Backend extends Zend_Controller_Action
         $this->view->menu();
         $this->view->copyright();
 
-        $this->view->controllerName = $this->slugify(strtolower(str_replace(' ', '', $this->view->title)));
+//        $this->view->controllerName = $this->slugify(strtolower(str_replace(' ', '', $this->view->title)));
     }
 
     public function __construct(Zend_Controller_Request_Abstract $request, Zend_Controller_Response_Abstract $response, array $invokeArgs = array())
@@ -40,22 +40,32 @@ abstract class Coret_Controller_Backend extends Zend_Controller_Action
 
     public function indexAction()
     {
-        $this->view->headScript()->appendFile($this->view->baseUrl('/js/adminajax.js'));
+//        $this->view->headScript()->appendFile($this->view->baseUrl('/js/adminajax.js'));
         $this->view->headScript()->appendScript('var controller = "' . $this->view->controllerName . '"');
 
-        $className = 'Admin_Model_' . ucfirst($this->view->controllerName);
-        $this->indexEnding($className);
+        $this->indexEnding('Admin_Model_' . ucfirst($this->view->controllerName));
     }
 
     protected function indexEnding($className)
     {
         $this->params['id_lang'] = Zend_Registry::get('config')->id_lang;
-        $m = new $className($this->params);
+        $this->view->m = new $className($this->params);
 
-        $this->view->kolumny = $m->getColumnsAll();
-        $this->view->primary = $m->getPrimary();
+        $columns = array();
+        $columnsLang = array();
 
-        $this->view->paginator = new Zend_Paginator($m->getPagination());
+        $c = $this->view->m->getColumns();
+        foreach (array_keys($c) as $columnName) {
+            $columns[] = $columnName;
+        }
+
+        $c = $this->view->m->getColumns();
+        foreach (array_keys($c) as $columnName) {
+            $columnsLang[] = $columnName;
+        }
+
+        $this->view->paginator = new Zend_Paginator($this->view->m->getPagination($columns, $columnsLang));
+//        $this->view->paginator = new Zend_Paginator($this->view->m->getPagination());
         $this->view->paginator->setCurrentPageNumber($this->_request->getParam('page'));
         $this->view->paginator->setItemCountPerPage($this->itemCountPerPage);
     }
@@ -77,7 +87,7 @@ abstract class Coret_Controller_Backend extends Zend_Controller_Action
             if ($this->view->form->isValid($this->_request->getPost())) {
                 try {
                     $model->save($this->view->form->getValues());
-                    $this->_redirect($this->view->url());
+                    $this->redirect($this->view->url());
                 } catch (Exception $e) {
                     echo $e->getMessage();
                     exit;
@@ -102,7 +112,7 @@ abstract class Coret_Controller_Backend extends Zend_Controller_Action
             $model = new $className($this->params, $id);
             try {
                 $model->deleteElement();
-                $this->_redirect('/admin/' . $this->view->controllerName);
+                $this->myRedirect();
             } catch (Exception $e) {
                 echo $e->getMessage();
                 exit;
@@ -143,7 +153,7 @@ abstract class Coret_Controller_Backend extends Zend_Controller_Action
         if ($this->view->form->isValid($this->_request->getPost())) {
             try {
                 $model->save($this->view->form->getValues());
-                $this->_redirect('/admin/' . Zend_Controller_Front::getInstance()->getRequest()->getControllerName());
+                $this->myRedirect();
             } catch (Exception $e) {
                 echo $e->getMessage();
                 exit;
@@ -151,6 +161,11 @@ abstract class Coret_Controller_Backend extends Zend_Controller_Action
         } else {
             $this->view->form->addElement('submit', 'submit', array('label' => 'Popraw'));
         }
+    }
+
+    protected function myRedirect()
+    {
+        $this->redirect('/admin/' . Zend_Controller_Front::getInstance()->getRequest()->getControllerName());
     }
 
     protected function editHandleElse($id)

@@ -2,17 +2,22 @@
 
 class Admin_View_Helper_Tabelka extends Zend_View_Helper_Abstract
 {
-
     private $j = 0;
-    protected $_options = array();
 
-    public function tabelka(array $columns, $controller, $primary)
+    protected $_options = array();
+    protected $_m;
+
+    public function tabelka($m, $controller)
     {
-        return $this->create($columns, $controller, $primary);
+        $this->_m = $m;
+        return $this->create($controller);
     }
 
-    protected function create(array $columns, $controller, $primary)
+    protected function create($controller)
     {
+        $columns = $this->_m->getColumnsAll();
+        $primary = $this->_m->getPrimary();
+
         if (!is_array($columns)) {
             throw new Exception('$columns is not array type');
         }
@@ -110,6 +115,11 @@ class Admin_View_Helper_Tabelka extends Zend_View_Helper_Abstract
                     break;
                 case 'date':
                     $content .= '<td class="center' . $cssClass . '">' . Coret_View_Helper_Formatuj::date($row[$key]) . '</td>';
+                    break;
+                case 'select':
+                    $methodName = 'get' . ucfirst($key) . 'Array';
+                    $list = $this->_m->$methodName();
+                    $content .= '<td class="center' . $cssClass . '">' . $list[$row[$key]] . '</td>';
                     break;
                 default:
                     $content .= '<td class="left' . $cssClass . '">' . Coret_View_Helper_Formatuj::varchar($row[$key]) . '</td>';
