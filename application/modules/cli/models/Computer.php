@@ -11,6 +11,7 @@ class Cli_Model_Computer
 
         if (!$player->getTurnActive()) {
             $l = new Coret_Model_Logger();
+            $l->log('***');
             $l->log('START TURY');
             new Cli_Model_StartTurn($playerId, $user, $handler);
             return;
