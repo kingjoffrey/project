@@ -49,16 +49,16 @@ class Cli_Model_Battle
 
     private function init()
     {
-        if (!$this->_defenders) {
-            return;
-        }
-
         $attackerBattleSequence = $this->_players->getPlayer($this->_attacker->getColor())->getAttackSequence();
         if (empty($attackerBattleSequence)) {
             $units = Zend_Registry::get('units');
             $attackerBattleSequence = $units->getKeys();
         }
         $this->_attacker->setAttackBattleSequence($attackerBattleSequence);
+
+        if (!$this->_defenders) {
+            return;
+        }
 
         foreach ($this->_defenders as $defender) {
             $defenderBattleSequence = $this->_players->getPlayer($defender->getColor())->getDefenceSequence();
@@ -355,11 +355,6 @@ class Cli_Model_Battle
                 }
             }
         }
-    }
-
-    private function removeFighter($type, $id, $winnerId, $loserId, $gameId, Zend_Db_Adapter_Pdo_Pgsql $db)
-    {
-
     }
 
     private function saveFight()

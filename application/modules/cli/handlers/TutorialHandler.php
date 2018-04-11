@@ -16,7 +16,7 @@ class Cli_TutorialHandler extends Cli_CommonHandler
 
     public function handleTutorial($token, WebSocketTransportInterface $user)
     {
-        $me = $user->parameters['me'];
+        $me = Cli_TutorialHandler::getMeFromUser($user);
         switch ($me->getNumber()) {
             case 0:
                 $step = $me->getStep();
@@ -143,15 +143,6 @@ class Cli_TutorialHandler extends Cli_CommonHandler
                 $step = $me->getStep();
                 switch ($step) {
                     case 0:
-                        if ($token['type'] == 'defense' && $token['defense'] == 2) {
-                            $me->increaseStep($this->_db);
-                            $this->sendToUser($user, array(
-                                'type' => 'step',
-                                'step' => $step + 1
-                            ));
-                        }
-                        break;
-                    case 1:
                         if ($token['type'] == 'move') {
                             if ($this->_game->getPlayers()->getPlayer($me->getColor())->getTowers()->count() == 8) {
                                 $me->increaseStep($this->_db);
@@ -162,7 +153,25 @@ class Cli_TutorialHandler extends Cli_CommonHandler
                             }
                         }
                         break;
+                    case 1:
+                        if ($token['type'] == 'production') {
+                            $me->increaseStep($this->_db);
+                            $this->sendToUser($user, array(
+                                'type' => 'step',
+                                'step' => $step + 1
+                            ));
+                        }
+                        break;
                     case 2:
+                        if ($token['type'] == 'defense' && $token['defense'] == 2) {
+                            $me->increaseStep($this->_db);
+                            $this->sendToUser($user, array(
+                                'type' => 'step',
+                                'step' => $step + 1
+                            ));
+                        }
+                        break;
+                    case 3:
                         if ($token['type'] == 'end') {
                             $me->setStep(0, $this->_db);
                             $me->resetNumber($this->_db);

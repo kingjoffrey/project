@@ -74,7 +74,7 @@ class Cli_CommonHandler extends WebSocketUriHandler
         }
 
         $gameId = $this->_game->getId();
-        $playerId = $user->parameters['me']->getId();
+        $playerId = Cli_CommonHandler::getMeFromUser($user)->getId();
 
         // AUTHORIZATION
         if (!Zend_Validate::is($gameId, 'Digits') || !Zend_Validate::is($playerId, 'Digits')) {
@@ -197,7 +197,7 @@ class Cli_CommonHandler extends WebSocketUriHandler
     public function onDisconnect(WebSocketTransportInterface $user)
     {
         if ($this->_game) {
-            $playerId = $user->parameters['me']->getId();
+            $playerId = Cli_CommonHandler::getMeFromUser($user)->getId();
             $this->_game->removeUser($playerId, $this->_db);
 
             if ($this->_game->getUsers()) {
@@ -269,5 +269,14 @@ class Cli_CommonHandler extends WebSocketUriHandler
     static public function getGameFromUser($user)
     {
         return $user->parameters['game'];
+    }
+
+    /**
+     * @param WebSocketTransportInterface $user
+     * @return Cli_Model_Me
+     */
+    static public function getMeFromUser(WebSocketTransportInterface $user)
+    {
+        return $user->parameters['me'];
     }
 }

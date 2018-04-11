@@ -20,29 +20,19 @@ var Me = new function () {
             $('#gold #value1').fadeOut(300, function () {
                 $('#gold #value1').html(gold)
                 $('#gold #value1').fadeIn()
-                if (gold > 1000) {
-                    $('#heroHire').removeClass('buttonOff')
-                } else {
-                    $('#heroHire').addClass('buttonOff')
-                }
             })
 
-        },
-        updateUpkeep = function () {
-            $('#costs #value').fadeOut(300, function () {
-                $('#costs #value').html(upkeep)
-                $('#costs #value').fadeIn(300)
-            })
-
-        },
-        updateIncome = function () {
-            $('#income #value').fadeOut(300, function () {
-                $('#income #value').html(income)
-                $('#income #value').fadeIn(300)
-            })
+            if (gold > 1000) {
+                $('#heroHire').removeClass('buttonOff')
+            } else {
+                $('#heroHire').addClass('buttonOff')
+            }
         },
         updateProfit = function () {
+            console.log('income=' + income)
+            console.log('upkeep=' + upkeep)
             var profit = income - upkeep
+            console.log('profit=' + profit)
             $('#gold #value2').fadeOut(300, function () {
                 $('#gold #value2').html(profit)
                 $('#gold #value2').fadeIn(300)
@@ -73,9 +63,6 @@ var Me = new function () {
     }
     this.upkeepIncrement = function (value) {
         upkeep += value
-        if (upkeep < 0) {
-            upkeep = 0
-        }
         updateProfit()
     }
     this.incomeIncrement = function (value) {

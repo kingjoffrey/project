@@ -1,7 +1,131 @@
 var Move = new function () {
     var stepTime = 200,
         player,
-        army
+        army,
+        handleUpkeep = function (defenders) {
+            for (var color in defenders) {
+                if (Me.colorEquals(color)) {
+                    var defenderArmies = Me.getArmies(),
+                        upkeep = 0
+
+                    for (var armyId in defenders[color]) {
+                        var battleArmy = defenders[color][armyId],
+                            defenderArmy = defenderArmies.get(armyId)
+
+                        for (var soldierId in battleArmy.walk) {
+                            if (battleArmy.walk[soldierId]) {
+                                upkeep -= Units.get(defenderArmy.getWalkingSoldier(soldierId).unitId).cost
+                            }
+                        }
+                        for (var soldierId in battleArmy.swim) {
+                            if (battleArmy.swim[soldierId]) {
+                                upkeep -= Units.get(defenderArmy.getSwimmingSoldier(soldierId).unitId).cost
+                            }
+                        }
+                        for (var soldierId in battleArmy.fly) {
+                            if (battleArmy.fly[soldierId]) {
+                                upkeep -= Units.get(defenderArmy.getFlyingSoldier(soldierId).unitId).cost
+                            }
+                        }
+                    }
+                    Me.upkeepIncrement(upkeep)
+                    break
+                }
+            }
+        },
+        handleTowerId = function (id, color) {
+            if (id) {
+                var field = Fields.get(army.getX(), army.getY()),
+                    towerId = field.getTowerId(),
+                    oldTowerColor = field.getTowerColor(),
+                    towers = Players.get(oldTowerColor).getTowers(),
+                    tower = towers.get(towerId)
+                if (id != towerId) {
+                    console.log('błąd                           !!!')
+                }
+                Players.get(color).getTowers().add(towerId, tower)
+                towers.delete(towerId)
+
+                if (Me.colorEquals(color)) {
+                    Me.incomeIncrement(5)
+                } else if (Me.colorEquals(oldTowerColor)) {
+                    Me.incomeIncrement(-5)
+                }
+            }
+
+        },
+        handleCastleId = function (id, color) {
+            if (id) {
+                var oldCastleColor = Fields.get(army.getX(), army.getY()).getCastleColor()
+                var oldCastles = Players.get(oldCastleColor).getCastles(),
+                    newCastles = Players.get(color).getCastles()
+
+                newCastles.add(id, oldCastles.get(id))
+                oldCastles.delete(id)
+
+                if (oldCastleColor != 'neutral') {
+                    var castle = newCastles.get(id),
+                        defense = castle.getDefense()
+                    if (defense > 1) {
+                        defense--
+                        castle.setDefense(defense)
+                    }
+                }
+            }
+            if (Me.colorEquals(color)) {
+                Me.incomeIncrement(Me.getCastle(id).getIncome())
+            }
+        },
+        handleDefendersLost = function (defenders) {
+            for (var color in defenders) {
+                var armies = Players.get(color).getArmies()
+                for (var armyId in defenders[color]) {
+                    armies.destroy(armyId)
+                }
+            }
+        },
+        handleDefendersWon = function (defenders) {
+            for (var color in defenders) {
+                if (color == 'neutral') {
+                    return
+                }
+
+                var armies = Players.get(color).getArmies()
+
+                for (var armyId in defenders[color]) {
+                    var battleArmy = defenders[color][armyId],
+                        army = armies.get(armyId)
+
+                    for (var soldierId in battleArmy.walk) {
+                        if (battleArmy.walk[soldierId]) {
+                            army.deleteWalkingSoldier(soldierId)
+                        }
+                    }
+                    for (var soldierId in battleArmy.swim) {
+                        if (battleArmy.swim[soldierId]) {
+                            army.deleteSwimmingSoldier(soldierId)
+                        }
+                    }
+                    for (var soldierId in battleArmy.fly) {
+                        if (battleArmy.fly[soldierId]) {
+                            army.deleteFlyingSoldier(soldierId)
+                        }
+                    }
+                    for (var heroId in battleArmy.hero) {
+                        if (battleArmy.hero[heroId]) {
+                            army.deleteHero(heroId)
+                        }
+                    }
+
+                    if (Unit.countNumberOfUnits(army.toArray())) {
+                        army.update(army.toArray())
+                    } else {
+                        armies.destroy(armyId)
+                    }
+                }
+            }
+
+        }
 
     this.start = function (r, ii) {
         if (notSet(r.path)) {
@@ -78,79 +202,19 @@ var Move = new function () {
         }
     }
     this.end = function (r, ii) {
-        army.update(r.army)
-
         if (r.battle) {
-            if (player.isComputer() && !GameGui.getShow()) {
-                for (var color in r.battle.defenders) {
-                    if (Me.colorEquals(color)) {
-                        var defenderArmies = Me.getArmies(),
-                            upkeep = 0
+            handleUpkeep(r.battle.defenders)
 
-                        for (var armyId in r.battle.defenders[color]) {
-                            var battleArmy = r.battle.defenders[color][armyId],
-                                defenderArmy = defenderArmies.get(armyId)
-
-                            for (var soldierId in battleArmy.walk) {
-                                if (battleArmy.walk[soldierId]) {
-                                    upkeep -= Units.get(defenderArmy.getWalkingSoldier(soldierId).unitId).cost
-                                }
-                            }
-                            for (var soldierId in battleArmy.swim) {
-                                if (battleArmy.swim[soldierId]) {
-                                    upkeep -= Units.get(defenderArmy.getSwimmingSoldier(soldierId).unitId).cost
-                                }
-                            }
-                            for (var soldierId in battleArmy.fly) {
-                                if (battleArmy.fly[soldierId]) {
-                                    upkeep -= Units.get(defenderArmy.getFlyingSoldier(soldierId).unitId).cost
-                                }
-                            }
-                        }
-                        Me.upkeepIncrement(upkeep)
-                        break
-                    }
-                }
-            }
             if (r.battle.victory) {
-                for (var color in r.battle.defenders) {
-                    for (var armyId in r.battle.defenders[color]) {
-                        Players.get(color).getArmies().destroy(armyId)
-                    }
-                }
-                if (r.battle.towerId) {
-                    var field = Fields.get(army.getX(), army.getY()),
-                        towerId = field.getTowerId(),
-                        towerColor = field.getTowerColor(),
-                        towers = Players.get(towerColor).getTowers(),
-                        tower = towers.get(towerId)
-                    if (r.battle.towerId != towerId) {
-                        console.log('błąd                           !!!')
-                    }
-                    Players.get(r.color).getTowers().add(towerId, tower)
-                    towers.delete(towerId)
-                }
-                if (r.battle.castleId) {
-                    var castleColor = Fields.get(army.getX(), army.getY()).getCastleColor(),
-                        oldCastles = Players.get(castleColor).getCastles(),
-                        newCastles = Players.get(r.color).getCastles()
+                army.update(r.army)
 
-                    newCastles.add(r.battle.castleId, oldCastles.get(r.battle.castleId))
-                    oldCastles.delete(r.battle.castleId)
+                handleTowerId(r.battle.towerId, r.color)
+                handleCastleId(r.battle.castleId, r.color)
+                handleDefendersLost(r.battle.defenders)
 
-                    if (castleColor != 'neutral') {
-                        var castle = newCastles.get(r.battle.castleId),
-                            defense = castle.getDefense()
-                        if (defense > 1) {
-                            defense--
-                            castle.setDefense(defense)
-                        }
-                    }
-                }
                 if (Me.colorEquals(r.color)) {
                     if (r.battle.castleId) {
                         CastleWindow.show(Me.getCastle(r.battle.castleId))
-                        Me.incomeIncrement(Me.getCastle(r.battle.castleId).getIncome())
                     } else if (Me.getArmy(army.getArmyId()).getMoves()) {
                         Me.selectArmy(army.getArmyId())
                     }
@@ -158,50 +222,18 @@ var Move = new function () {
                 }
             } else {
                 Players.get(r.color).getArmies().destroy(army.getArmyId())
-                for (var color in r.battle.defenders) {
-                    if (color == 'neutral') {
-                        break
-                    }
 
-                    var defenderArmies = Players.get(color).getArmies()
-                    for (var armyId in r.battle.defenders[color]) {
-                        var battleArmy = r.battle.defenders[color][armyId],
-                            defenderArmy = defenderArmies.get(armyId)
+                handleDefendersWon(r.battle.defenders)
 
-                        for (var soldierId in battleArmy.walk) {
-                            if (battleArmy.walk[soldierId]) {
-                                defenderArmy.deleteWalkingSoldier(soldierId)
-                            }
-                        }
-                        for (var soldierId in battleArmy.swim) {
-                            if (battleArmy.swim[soldierId]) {
-                                defenderArmy.deleteSwimmingSoldier(soldierId)
-                            }
-                        }
-                        for (var soldierId in battleArmy.fly) {
-                            if (battleArmy.fly[soldierId]) {
-                                defenderArmy.deleteFlyingSoldier(soldierId)
-                            }
-                        }
-                        for (var heroId in battleArmy.hero) {
-                            if (battleArmy.hero[heroId]) {
-                                defenderArmy.deleteHero(heroId)
-                            }
-                        }
-
-                        if (Unit.countNumberOfUnits(defenderArmy.toArray())) {
-                            defenderArmy.update(defenderArmy.toArray())
-                        } else {
-                            defenderArmies.destroy(armyId)
-                        }
-                    }
-                }
                 if (Me.colorEquals(r.color)) {
+                    Message.simple('Battle', 'LOST')
                     GameGui.unlock()
                 }
             }
             Execute.setExecuting(0)
         } else if (Me.colorEquals(r.color)) {
+            army.update(r.army)
+
             if (Unit.countNumberOfUnits(army)) {
                 if (army.getMoves() > 0) {
                     Me.selectArmy(r.army.id)
@@ -210,6 +242,8 @@ var Move = new function () {
             GameGui.unlock()
             Execute.setExecuting(0)
         } else {
+            army.update(r.army)
+
             Execute.setExecuting(0)
         }
 
