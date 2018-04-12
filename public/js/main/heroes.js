@@ -1,6 +1,9 @@
 "use strict"
 var HeroesController = new function () {
-    var createList = function (list) {
+    var attack,
+        defense,
+        moves,
+        createList = function (list) {
             for (var id in list) {
                 addHero(list[id])
             }
@@ -22,33 +25,37 @@ var HeroesController = new function () {
             )
         },
         updateBonus = function (bonus) {
+            var a = 0, d = 0, m = 0
             for (var i in bonus) {
                 switch (bonus[i]) {
                     case 1:
-                        var val = $('#sAttack span').html() * 1 + 1
-                        $('#sAttack span').html(val)
+                        a++
                         break
                     case 2:
-                        var val = $('#sDefense span').html() * 1 + 1
-                        $('#sDefense span').html(val)
+                        d++
                         break
                     case 3:
-                        var val = $('#sMoves span').html() * 1 + 1
-                        $('#sMoves span').html(val)
+                        m++
                         break
                 }
             }
+            $('#sAttack span').html(a + attack)
+            $('#sDefense span').html(d + defense)
+            $('#sMoves span').html(m + moves)
         }
     this.index = function (r) {
         $('#content').html(r.data)
         createList(r.list)
     }
     this.show = function (r) {
-        console.log(r)
         var bonusSize = countProperties(r.bonus)
 
         if (isSet(r.data)) {
             $('#content').html(r.data)
+
+            attack = r.attack
+            defense = r.defense
+            moves = r.moves
 
             var hero1 = $('<table id="hero1">')
                     .append($('<tr>').append($('<td colspan="3">').html(r.name)))

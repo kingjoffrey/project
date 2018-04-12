@@ -28,8 +28,10 @@ var Move = new function () {
                             }
                         }
                     }
+
                     Me.upkeepIncrement(upkeep)
-                    break
+
+                    return
                 }
             }
         },
@@ -59,7 +61,7 @@ var Move = new function () {
         },
         handleTowerId = function (army, id, color) {
             if (id) {
-                var field = Fields.get(army.getX(), army.getY()),
+                var field = Fields.get(army.x, army.y),
                     towerId = field.getTowerId(),
                     oldTowerColor = field.getTowerColor(),
                     towers = Players.get(oldTowerColor).getTowers(),
@@ -80,7 +82,7 @@ var Move = new function () {
         },
         handleCastleId = function (army, id, color) {
             if (id) {
-                var oldCastleColor = Fields.get(army.getX(), army.getY()).getCastleColor()
+                var oldCastleColor = Fields.get(army.x, army.y).getCastleColor()
                 var oldCastles = Players.get(oldCastleColor).getCastles(),
                     newCastles = Players.get(color).getCastles()
 
@@ -259,7 +261,7 @@ var Move = new function () {
         } else if (Me.colorEquals(r.color)) {
             oldArmy.update(r.army)
 
-            if (Unit.countNumberOfUnits(oldArmy)) {
+            if (Unit.countNumberOfUnits(r.army)) {
                 if (oldArmy.getMoves() > 0) {
                     Me.selectArmy(r.army.id)
                 }
