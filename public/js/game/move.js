@@ -1,8 +1,8 @@
 var Move = new function () {
     var stepTime = 200,
         player,
-        army,
-        handleUpkeep = function (defenders) {
+        oldArmy,
+        handleMyUpkeepAsDefender = function (defenders) {
             for (var color in defenders) {
                 if (Me.colorEquals(color)) {
                     var defenderArmies = Me.getArmies(),
@@ -33,7 +33,31 @@ var Move = new function () {
                 }
             }
         },
-        handleTowerId = function (id, color) {
+        handleMyUpkeepAsAttacker = function (army, battleArmy, color) {
+            if (!Me.colorEquals(color)) {
+                return
+            }
+            var upkeep = 0
+
+            for (var soldierId in battleArmy.walk) {
+                if (battleArmy.walk[soldierId]) {
+                    upkeep -= Units.get(army.getWalkingSoldier(soldierId).unitId).cost
+                }
+            }
+            for (var soldierId in battleArmy.swim) {
+                if (battleArmy.swim[soldierId]) {
+                    upkeep -= Units.get(army.getSwimmingSoldier(soldierId).unitId).cost
+                }
+            }
+            for (var soldierId in battleArmy.fly) {
+                if (battleArmy.fly[soldierId]) {
+                    upkeep -= Units.get(army.getFlyingSoldier(soldierId).unitId).cost
+                }
+            }
+
+            Me.upkeepIncrement(upkeep)
+        },
+        handleTowerId = function (army, id, color) {
             if (id) {
                 var field = Fields.get(army.getX(), army.getY()),
                     towerId = field.getTowerId(),
@@ -54,7 +78,7 @@ var Move = new function () {
             }
 
         },
-        handleCastleId = function (id, color) {
+        handleCastleId = function (army, id, color) {
             if (id) {
                 var oldCastleColor = Fields.get(army.getX(), army.getY()).getCastleColor()
                 var oldCastles = Players.get(oldCastleColor).getCastles(),
@@ -71,9 +95,9 @@ var Move = new function () {
                         castle.setDefense(defense)
                     }
                 }
-            }
-            if (Me.colorEquals(color)) {
-                Me.incomeIncrement(Me.getCastle(id).getIncome())
+                if (Me.colorEquals(color)) {
+                    Me.incomeIncrement(Me.getCastle(id).getIncome())
+                }
             }
         },
         handleDefendersLost = function (defenders) {
@@ -138,11 +162,11 @@ var Move = new function () {
             return
         }
         player = Players.get(r.color)
-        army = player.getArmies().get(r.army.id)
+        oldArmy = player.getArmies().get(r.army.id)
 
-        Fields.get(army.getX(), army.getY()).removeArmyId(r.army.id)
+        Fields.get(oldArmy.getX(), oldArmy.getY()).removeArmyId(r.army.id)
 
-        switch (army.getMovementType()) {
+        switch (oldArmy.getMovementType()) {
             case 'fly':
                 Sound.play('fly');
                 break;
@@ -179,7 +203,7 @@ var Move = new function () {
 
         if (isSet(r.path[step].c)) {
             if (!player.isComputer() || GameGui.getShow()) {
-                GameModels.setArmyPosition(army.getMesh(), r.path[step].x, r.path[step].y)
+                GameModels.setArmyPosition(oldArmy.getMesh(), r.path[step].x, r.path[step].y)
                 delete r.path[step].c
                 setTimeout(function () {
                     stepLoop(r, ii)
@@ -203,46 +227,47 @@ var Move = new function () {
     }
     this.end = function (r, ii) {
         if (r.battle) {
-            handleUpkeep(r.battle.defenders)
+            handleMyUpkeepAsDefender(r.battle.defenders)
+            handleMyUpkeepAsAttacker(oldArmy, r.battle.attack, r.color)
 
             if (r.battle.victory) {
-                army.update(r.army)
-
-                handleTowerId(r.battle.towerId, r.color)
-                handleCastleId(r.battle.castleId, r.color)
+                handleTowerId(r.army, r.battle.towerId, r.color)
+                handleCastleId(r.army, r.battle.castleId, r.color)
                 handleDefendersLost(r.battle.defenders)
+
+                oldArmy.update(r.army)
 
                 if (Me.colorEquals(r.color)) {
                     if (r.battle.castleId) {
                         CastleWindow.show(Me.getCastle(r.battle.castleId))
-                    } else if (Me.getArmy(army.getArmyId()).getMoves()) {
-                        Me.selectArmy(army.getArmyId())
+                    } else if (Me.getArmy(oldArmy.getArmyId()).getMoves()) {
+                        Me.selectArmy(oldArmy.getArmyId())
                     }
                     GameGui.unlock()
                 }
             } else {
-                Players.get(r.color).getArmies().destroy(army.getArmyId())
-
                 handleDefendersWon(r.battle.defenders)
 
                 if (Me.colorEquals(r.color)) {
                     Message.simple('Battle', 'LOST')
                     GameGui.unlock()
                 }
+
+                Players.get(r.color).getArmies().destroy(oldArmy.getArmyId())
             }
             Execute.setExecuting(0)
         } else if (Me.colorEquals(r.color)) {
-            army.update(r.army)
+            oldArmy.update(r.army)
 
-            if (Unit.countNumberOfUnits(army)) {
-                if (army.getMoves() > 0) {
+            if (Unit.countNumberOfUnits(oldArmy)) {
+                if (oldArmy.getMoves() > 0) {
                     Me.selectArmy(r.army.id)
                 }
             }
             GameGui.unlock()
             Execute.setExecuting(0)
         } else {
-            army.update(r.army)
+            oldArmy.update(r.army)
 
             Execute.setExecuting(0)
         }

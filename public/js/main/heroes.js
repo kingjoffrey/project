@@ -20,13 +20,31 @@ var HeroesController = new function () {
                     WebSocketSendMain.controller('heroes', 'show', {'id': $(this).attr('id')})
                 })
             )
+        },
+        updateBonus = function (bonus) {
+            for (var i in bonus) {
+                switch (bonus[i]) {
+                    case 1:
+                        var val = $('#sAttack span').html() * 1 + 1
+                        $('#sAttack span').html(val)
+                        break
+                    case 2:
+                        var val = $('#sDefense span').html() * 1 + 1
+                        $('#sDefense span').html(val)
+                        break
+                    case 3:
+                        var val = $('#sMoves span').html() * 1 + 1
+                        $('#sMoves span').html(val)
+                        break
+                }
+            }
         }
     this.index = function (r) {
         $('#content').html(r.data)
         createList(r.list)
     }
     this.show = function (r) {
-console.log(r)
+        console.log(r)
         var bonusSize = countProperties(r.bonus)
 
         if (isSet(r.data)) {
@@ -62,22 +80,7 @@ console.log(r)
                     )
             $('.table h2').after(hero3).after(hero2).after(hero1)
 
-            for (var i in r.bonus) {
-                switch (r.bonus[i]) {
-                    case 1:
-                        var val = $('#sAttack span').html() * 1 + 1
-                        $('#sAttack span').html(val)
-                        break
-                    case 2:
-                        var val = $('#sDefense span').html() * 1 + 1
-                        $('#sDefense span').html(val)
-                        break
-                    case 3:
-                        var val = $('#sMoves span').html() * 1 + 1
-                        $('#sMoves span').html(val)
-                        break
-                }
-            }
+            updateBonus(r.bonus)
 
             if (bonusSize < r.level) {
                 $('#sAttack').append(
@@ -96,10 +99,15 @@ console.log(r)
                     })
                 )
             }
-        } else if (bonusSize >= r.level) {
-            $('#sAttack div').hide()
-            $('#sDefense div').hide()
-            $('#sMoves div').hide()
+        } else {
+            updateBonus(r.bonus)
+
+            if (bonusSize >= r.level) {
+
+                $('#sAttack div').hide()
+                $('#sDefense div').hide()
+                $('#sMoves div').hide()
+            }
         }
     }
     this.ok = function (r) {
