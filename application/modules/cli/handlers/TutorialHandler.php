@@ -94,9 +94,19 @@ class Cli_TutorialHandler extends Cli_CommonHandler
                                 'step' => $step + 1
                             ));
                         }
-
                         break;
                     case 2:
+                        if ($token['type'] == 'production') {
+                            if (empty($token['unitId'])) {
+                                $me->increaseStep($this->_db);
+                                $this->sendToUser($user, array(
+                                    'type' => 'step',
+                                    'step' => $step + 1
+                                ));
+                            }
+                        }
+                        break;
+                    case 3:
                         if ($token['type'] == 'move' && !$token['army']['swim'] && $token['army']['heroes']) {
                             $me->increaseStep($this->_db);
                             $field = $this->_game->getFields()->getField($token['army']['x'], $token['army']['y']);
@@ -110,7 +120,7 @@ class Cli_TutorialHandler extends Cli_CommonHandler
                             ));
                         }
                         break;
-                    case 3:
+                    case 4:
                         if ($token['type'] == 'move' && $token['army']['heroes']) {
                             $field = $this->_game->getFields()->getField($token['army']['x'], $token['army']['y']);
                             if ($field->getRuinId()) {
@@ -122,7 +132,7 @@ class Cli_TutorialHandler extends Cli_CommonHandler
                             }
                         }
                         break;
-                    case 4:
+                    case 5:
                         if ($token['type'] == 'ruin') {
                             $me->increaseStep($this->_db);
                             $this->sendToUser($user, array(
@@ -131,7 +141,7 @@ class Cli_TutorialHandler extends Cli_CommonHandler
                             ));
                         }
                         break;
-                    case 5:
+                    case 6:
                         if ($token['type'] == 'end') {
                             $me->setStep(0, $this->_db);
                             $me->increaseNumber($this->_db);
