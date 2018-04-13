@@ -286,6 +286,21 @@ var Army = function (army, bgColor, miniMapColor, textColor, color) {
 
         return remainingLife / defaultLife
     }
+    this.countUpkeep = function () {
+        var upkeep = 0
+
+        for (var i in army.walk) {
+            upkeep += Units.get(army.walk[i].unitId).cost
+        }
+        for (var i in army.swim) {
+            upkeep += Units.get(army.swim[i].unitId).cost
+        }
+        for (var i in army.fly) {
+            upkeep += Units.get(army.fly[i].unitId).cost
+        }
+
+        return upkeep
+    }
 
     army.mesh = GameModels.addArmy(army.x, army.y, bgColor, Unit.countNumberOfUnits(army), this.getModelName(), this.canSwim(), this.countLife())
 

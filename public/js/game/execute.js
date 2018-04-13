@@ -130,19 +130,7 @@ var Execute = new function () {
                 case 'disband':
                     if (Turn.isMy()) {
                         Message.remove()
-                        var upkeep = 0,
-                            army = Me.getArmies().get(r.id)
-
-                        for (var i in army.getWalkingSoldiers()) {
-                            upkeep += Units.get(army.getWalkingSoldier(i).unitId).cost
-                        }
-                        for (var i in army.getSwimmingSoldiers()) {
-                            upkeep += Units.get(army.getSwimmingSoldier(i).unitId).cost
-                        }
-                        for (var i in army.getFlyingSoldiers()) {
-                            upkeep += Units.get(army.getFlyingSoldier(i).unitId).cost
-                        }
-                        Me.upkeepIncrement(-upkeep)
+                        Me.upkeepIncrement(-Me.getArmies().get(r.id).countUpkeep())
                     }
                     Players.get(r.color).getArmies().destroy(r.id)
                     Execute.setExecuting(0)

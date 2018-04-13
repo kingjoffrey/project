@@ -5,12 +5,11 @@ var Move = new function () {
         handleMyUpkeepAsDefender = function (defenders) {
             for (var color in defenders) {
                 if (Me.colorEquals(color)) {
-                    var defenderArmies = Me.getArmies(),
-                        upkeep = 0
+                    var upkeep = 0
 
                     for (var armyId in defenders[color]) {
                         var battleArmy = defenders[color][armyId],
-                            defenderArmy = defenderArmies.get(armyId)
+                            defenderArmy = Me.getArmy(armyId)
 
                         for (var soldierId in battleArmy.walk) {
                             if (battleArmy.walk[soldierId]) {
@@ -29,7 +28,9 @@ var Move = new function () {
                         }
                     }
 
-                    Me.upkeepIncrement(upkeep)
+                    if (upkeep) {
+                        Me.upkeepIncrement(upkeep)
+                    }
 
                     return
                 }
@@ -57,7 +58,9 @@ var Move = new function () {
                 }
             }
 
-            Me.upkeepIncrement(upkeep)
+            if (upkeep) {
+                Me.upkeepIncrement(upkeep)
+            }
         },
         handleTowerId = function (army, id, color) {
             if (id) {
@@ -72,9 +75,9 @@ var Move = new function () {
                 Players.get(color).getTowers().add(towerId, tower)
                 towers.delete(towerId)
 
-                if (Me.colorEquals(color)) {
+                if (Me.colorEquals(color)) { // zdobyłem wieże
                     Me.incomeIncrement(5)
-                } else if (Me.colorEquals(oldTowerColor)) {
+                } else if (Me.colorEquals(oldTowerColor)) { // straciłem wieże
                     Me.incomeIncrement(-5)
                 }
             }
@@ -87,7 +90,6 @@ var Move = new function () {
                     newCastles = Players.get(color).getCastles()
 
                 newCastles.add(id, oldCastles.get(id))
-                oldCastles.delete(id)
 
                 if (oldCastleColor != 'neutral') {
                     var castle = newCastles.get(id),
@@ -97,9 +99,14 @@ var Move = new function () {
                         castle.setDefense(defense)
                     }
                 }
-                if (Me.colorEquals(color)) {
-                    Me.incomeIncrement(Me.getCastle(id).getIncome())
+
+                if (Me.colorEquals(color)) { // zdobyłem zamek
+                    Me.incomeIncrement(newCastles.get(id).getIncome())
+                } else if (Me.colorEquals(oldCastleColor)) { // straciłem zamek
+                    Me.incomeIncrement(-oldCastles.get(id).getIncome())
                 }
+
+                oldCastles.delete(id)
             }
         },
         handleDefendersLost = function (defenders) {
@@ -150,7 +157,6 @@ var Move = new function () {
                     }
                 }
             }
-
         }
 
     this.start = function (r, ii) {
@@ -228,11 +234,11 @@ var Move = new function () {
         }
     }
     this.end = function (r, ii) {
-        if (r.battle) {
+        if (r.battle) { // była walka
             handleMyUpkeepAsDefender(r.battle.defenders)
             handleMyUpkeepAsAttacker(oldArmy, r.battle.attack, r.color)
 
-            if (r.battle.victory) {
+            if (r.battle.victory) { // ATAKUJĄCY wygrał
                 handleTowerId(r.army, r.battle.towerId, r.color)
                 handleCastleId(r.army, r.battle.castleId, r.color)
                 handleDefendersLost(r.battle.defenders)
@@ -247,7 +253,7 @@ var Move = new function () {
                     }
                     GameGui.unlock()
                 }
-            } else {
+            } else { // ATAKUJĄCY przegrał
                 handleDefendersWon(r.battle.defenders)
 
                 if (Me.colorEquals(r.color)) {
@@ -258,19 +264,16 @@ var Move = new function () {
                 Players.get(r.color).getArmies().destroy(oldArmy.getArmyId())
             }
             Execute.setExecuting(0)
-        } else if (Me.colorEquals(r.color)) {
+        } else { // nie było walki
             oldArmy.update(r.army)
-
-            if (Unit.countNumberOfUnits(r.army)) {
-                if (oldArmy.getMoves() > 0) {
-                    Me.selectArmy(r.army.id)
+            if (Me.colorEquals(r.color)) { // mój ruch bez walki
+                if (Unit.countNumberOfUnits(r.army)) {
+                    if (oldArmy.getMoves() > 0) {
+                        Me.selectArmy(r.army.id)
+                    }
                 }
+                GameGui.unlock()
             }
-            GameGui.unlock()
-            Execute.setExecuting(0)
-        } else {
-            oldArmy.update(r.army)
-
             Execute.setExecuting(0)
         }
 
