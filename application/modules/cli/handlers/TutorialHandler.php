@@ -154,7 +154,7 @@ class Cli_TutorialHandler extends Cli_CommonHandler
                 switch ($step) {
                     case 0:
                         if ($token['type'] == 'move') {
-                            if ($this->_game->getPlayers()->getPlayer($me->getColor())->getTowers()->count() == 8) {
+                            if ($this->_game->getPlayers()->getPlayer($me->getColor())->getTowers()->count() >= 6) {
                                 $me->increaseStep($this->_db);
                                 $this->sendToUser($user, array(
                                     'type' => 'step',
@@ -182,6 +182,17 @@ class Cli_TutorialHandler extends Cli_CommonHandler
                         }
                         break;
                     case 3:
+                        if ($token['type'] == 'move') {
+                            if ($this->_game->getPlayers()->getPlayer($me->getColor())->getTowers()->count() == 8) {
+                                $me->increaseStep($this->_db);
+                                $this->sendToUser($user, array(
+                                    'type' => 'step',
+                                    'step' => $step + 1
+                                ));
+                            }
+                        }
+                        break;
+                    case 4:
                         if ($token['type'] == 'end') {
                             $me->setStep(0, $this->_db);
                             $me->resetNumber($this->_db);

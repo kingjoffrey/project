@@ -182,7 +182,7 @@ class Cli_ExecHandler extends WebSocketUriHandler
                     }
                 }
 
-                exec('/usr/bin/php ~/' . $this->_projectDirName . '/scripts/gameWSServer.php ' . $gameId . ' ' . $execPort . ' >>~/' . $this->_projectDirName . '/log/' . $gameId . '_' . date('Ymd') . '.log 2>&1 &');
+                exec('/usr/bin/php ~/' . $this->_projectDirName . '/scripts/gameWSServer.php ' . $gameId . ' ' . $execPort . ' >>~/' . $this->_projectDirName . '/log/' . date('Ymd') . '_' . $gameId . '_gameWSServer.log 2>&1 &');
 
                 $this->addGame($dataIn['gameId'], $user->getId(), $port);
 

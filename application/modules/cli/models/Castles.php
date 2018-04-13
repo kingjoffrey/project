@@ -20,9 +20,11 @@ class Cli_Model_Castles
         if ($db) {
             $mCastlesInGame = new Application_Model_CastlesInGame($gameId, $db);
             if ($oldColor == 'neutral') {
+                echo 'oldColor == neutral' . "\n";
                 $mCastlesInGame->addCastle($castleId, $playerId);
             } else {
                 $castle->decreaseDefenceMod($playerId, $gameId, $db);
+                echo 'getDefenseMod=' . $castle->getDefenseMod() . "\n";
                 $mCastlesInGame->changeOwner($castle, $playerId);
             }
         }
