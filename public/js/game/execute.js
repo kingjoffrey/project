@@ -56,13 +56,16 @@ var Execute = new function () {
                     if (isSet(r.bonus)) {
                         switch (r.bonus) {
                             case 1:
-                                var title = translations.attack
+                                var txt = translations.attack
                                 break
                             case 2:
-                                var title = translations.defense
+                                var txt = translations.defense
+                                break
+                            case 3:
+                                var txt = translations.move
                                 break
                         }
-                        Message.simple(title, '+1')
+                        Message.simple(translations.Bonus, txt + ' +1')
                         Execute.setExecuting(0)
                     } else {
                         if (Players.get(r.color).isComputer() && !GameGui.getShow()) {

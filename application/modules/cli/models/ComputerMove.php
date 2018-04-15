@@ -213,7 +213,6 @@ class Cli_Model_ComputerMove extends Cli_Model_ComputerMethods
                     foreach ($this->_army->getHeroes()->getKeys() as $heroId) {
                         $hero = $this->_army->getHeroes()->getHero($heroId);
                         if (!$hero->hasMapRuinBonus($mapRuinId)) {
-                            $this->_bonus = $array['ruinId'];
                             $hero->addMapRuinBonus($array, $this->_gameId, $this->_db);
                         }
                     }
