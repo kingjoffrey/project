@@ -10,14 +10,27 @@ class Cli_Model_PathToNearestRuin
         $armyX = $army->getX();
         $armyY = $army->getY();
         $movesLeft = $army->getMovesLeft();
-        foreach ($game->getRuins()->getKeys() as $ruinId) {
-            $ruin = $game->getRuins()->getRuin($ruinId);
-            if ($ruin->getEmpty()) {
-                continue;
+        foreach ($game->getRuins()->getKeys() as $mapRuinId) {
+            $mapRuin = $game->getRuins()->getRuin($mapRuinId);
+
+            $array = array('mapRuinId' => $mapRuin->getId(), 'ruinId' => $mapRuin->getType());
+
+            if ($array['ruinId'] == 4) {
+                if ($mapRuin->getEmpty()) {
+                    continue;
+                }
+            } else {
+                foreach ($army->getHeroes()->getKeys() as $heroId) {
+                    $hero = $army->getHeroes()->getHero($heroId);
+                    if ($hero->hasMapRuinBonus($mapRuinId)) {
+                        continue;
+                    }
+                }
             }
 
-            $ruinX = $ruin->getX();
-            $ruinY = $ruin->getY();
+
+            $ruinX = $mapRuin->getX();
+            $ruinY = $mapRuin->getY();
 
             $mHeuristics = new Cli_Model_Heuristics($armyX, $armyY);
             $h = $mHeuristics->calculateH($ruinX, $ruinY);
@@ -31,7 +44,7 @@ class Cli_Model_PathToNearestRuin
                 }
                 $this->_path = $aStar->path();
                 if ($this->_path->targetWithin()) {
-                    $this->_ruinId = $ruinId;
+                    $this->_ruinId = $mapRuinId;
                     return;
                 }
             }

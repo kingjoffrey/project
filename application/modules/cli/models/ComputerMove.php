@@ -3,7 +3,7 @@ use Devristo\Phpws\Protocol\WebSocketTransportInterface;
 
 class Cli_Model_ComputerMove extends Cli_Model_ComputerMethods
 {
-    private $_searchRuin = false;
+    private $_onMyWayToSearchRuin = false;
     private $_inCastle = false;
 
     /**
@@ -200,14 +200,26 @@ class Cli_Model_ComputerMove extends Cli_Model_ComputerMethods
         }
 
         $this->_l->log('JEST HEROS');
-        if ($ruinId = $this->_fields->getField($this->_armyX, $this->_armyY)->getRuinId()) {
-            if (!$this->_game->getRuins()->getRuin($ruinId)->getEmpty()) {
+        if ($mapRuinId = $this->_fields->getField($this->_armyX, $this->_armyY)->getRuinId()) {
+            if (!$this->_game->getRuins()->getRuin($mapRuinId)->getEmpty()) {
                 $this->_l->log('PRZESZUKUJĘ RUINY');
-                $ruin = $this->_game->getRuins()->getRuin($ruinId);
-                if ($ruin->getType() == 3) {
-                    $ruin->search($this->_game, $this->_army, $heroId, $this->_playerId, $this->_handler);
+                $mapRuin = $this->_game->getRuins()->getRuin($mapRuinId);
+
+                $array = array('mapRuinId' => $mapRuin->getId(), 'ruinId' => $mapRuin->getType());
+
+                if ($array['ruinId'] == 4) {
+                    $mapRuin->search($this->_game, $this->_army, $heroId, $this->_playerId, $this->_handler);
+                } else {
+                    foreach ($this->_army->getHeroes()->getKeys() as $heroId) {
+                        $hero = $this->_army->getHeroes()->getHero($heroId);
+                        if (!$hero->hasMapRuinBonus($mapRuinId)) {
+                            $this->_bonus = $array['ruinId'];
+                            $hero->addMapRuinBonus($array, $this->_gameId, $this->_db);
+                        }
+                    }
+
                 }
-                $this->_searchRuin = false;
+                $this->_onMyWayToSearchRuin = false;
                 $this->next();
                 return;
             }
@@ -216,7 +228,7 @@ class Cli_Model_ComputerMove extends Cli_Model_ComputerMethods
         $ptnr = new Cli_Model_PathToNearestRuin($this->_game, $this->_army);
         if ($ruinId = $ptnr->getRuinId()) {
             $this->_l->log('IDĘ DO RUIN');
-            $this->_searchRuin = true;
+            $this->_onMyWayToSearchRuin = true;
             $this->move($ptnr->getPath());
         } else {
             $this->_l->log('BRAK RUIN');
@@ -313,7 +325,7 @@ class Cli_Model_ComputerMove extends Cli_Model_ComputerMethods
             $this->_movesLeft = $this->_army->getMovesLeft();
             if ($this->_army->hasOldPath()) {
                 $this->goByThePath();
-            } elseif ($this->_searchRuin) {
+            } elseif ($this->_onMyWayToSearchRuin) {
                 $this->ruinBlock();
             } else {
                 $this->findPath();
