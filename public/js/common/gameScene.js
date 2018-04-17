@@ -27,7 +27,7 @@ var GameScene = new function () {
             //camera.add(new THREE.PointLight(0xffffff, 0.7))
 
             sun = new THREE.DirectionalLight(0xefefff, 1.5)
-            sun.position.set(10, 10, 20).normalize()
+            sun.position.set(1, 1, 2).normalize()
             scene.add(sun)
 
             // var helper = new THREE.DirectionalLightHelper(sun);
@@ -47,14 +47,20 @@ var GameScene = new function () {
 
             var d = 2.1 * size
 
-            sun.shadow.camera.left = -d / 1.93
-            sun.shadow.camera.right = d / 1.29
-            sun.shadow.camera.top = 0
+            sun.shadow.camera.right = d
+            sun.shadow.camera.top = d
             sun.shadow.camera.bottom = -d
+            sun.shadow.camera.left = -d
+
+            sun.shadow.camera.near = 0
             sun.shadow.camera.far = 300
 
-            //var helper = new THREE.CameraHelper(sun.shadow.camera)
-            //scene.add(helper)
+
+            console.log(sun.shadow.camera)
+            // sun.shadow.camera.rotation.x = 2 * Math.PI
+
+            var helper = new THREE.CameraHelper(sun.shadow.camera)
+            scene.add(helper)
         }
     }
     this.getSun = function () {

@@ -2,12 +2,13 @@ var GameRenderer = new function () {
     var renderer,
         scene,
         camera,
-        timeOut = 2000,
+        timeout = 100,
         stop = 1,
         render = function () {
             renderer.render(scene, camera)
         }
 
+        this.setTimeout
     this.setSize = function (w, h) {
         renderer.setSize(w, h)
     }
@@ -21,13 +22,13 @@ var GameRenderer = new function () {
 
         render()
 
-        if (timeOut) {
+        if (timeout) {
             if (TWEEN.update()) {
                 requestAnimationFrame(GameRenderer.animate)
             } else {
                 setTimeout(function () {
                     requestAnimationFrame(GameRenderer.animate)
-                }, timeOut)
+                }, timeout)
             }
         } else {
             if (TWEEN.update()) {
@@ -42,7 +43,7 @@ var GameRenderer = new function () {
     }
     this.start = function () {
         if (!Main.getEnv()) {
-            timeOut = 0
+            timeout = 0
         }
         stop = 0
         $('#game').append(renderer.domElement)
@@ -54,7 +55,7 @@ var GameRenderer = new function () {
         renderer = Renderer.get()
         if (Page.getShadows()) {
             renderer.shadowMap.enabled = true
-            renderer.shadowMapSoft = false
+            renderer.shadowMap.type = THREE.PCFSoftShadowMap
         }
         scene = GameScene.get()
         camera = GameScene.getCamera()

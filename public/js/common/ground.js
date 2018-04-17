@@ -1231,48 +1231,6 @@ var Ground = new function () {
 
         waterMesh.add(mesh)
 
-        // var stripes = createHillStripes(x, y),
-            // vertexPositionsUp = createHillVertexPositionsUp(stripes.getUp()),
-            // vertexPositionsDown = createHillVertexPositionsDown(stripes.getDown()),
-            // vertexPositionsLeft = createHillVertexPositionsLeft(stripes.getLeft()),
-            // vertexPositionsRight = createHillVertexPositionsRight(stripes.getRight()),
-            // hillsTopArray = createHillVertexPositions(x, y)
-
-        // mesh = createMesh(createGeometry(vertexPositionsUp, createNewUVS(vertexPositionsUp, x, y)), textureCanvas)
-        // mesh.position.x = -x
-        // mesh.position.y = -y
-        // mesh.position.z = -waterLevel
-        // waterMesh.add(mesh)
-        // mesh = createMesh(createGeometry(vertexPositionsDown, createNewUVS(vertexPositionsDown, x, y)), textureCanvas)
-        // mesh.position.x = -x
-        // mesh.position.y = -y
-        // mesh.position.z = -waterLevel
-        // waterMesh.add(mesh)
-        // mesh = createMesh(createGeometry(vertexPositionsLeft, createNewUVS(vertexPositionsLeft, x, y)), textureCanvas)
-        // mesh.position.x = -x
-        // mesh.position.y = -y
-        // mesh.position.z = -waterLevel
-        // waterMesh.add(mesh)
-        // mesh = createMesh(createGeometry(vertexPositionsRight, createNewUVS(vertexPositionsRight, x, y)), textureCanvas)
-        // mesh.position.x = -x
-        // mesh.position.y = -y
-        // mesh.position.z = -waterLevel
-        // waterMesh.add(mesh)
-        // mesh = createMesh(createGeometry(hillsTopArray.vertexPositions, createNewUVS(hillsTopArray.vertexPositions, x, y)), textureCanvas)
-        // mesh.position.x = -x
-        // mesh.position.y = -y
-        // mesh.position.z = -waterLevel
-        // waterMesh.add(mesh)
-
-        // var vertexPositionsTopCenter = createVertexPositionsFromStripesArray(hillsTopArray.stripesArray, hillLevel),
-        //     uvs = createUVS(new Float32Array(vertexPositionsTopCenter.length * 2), hillsTopArray.stripesArray, x, y)
-
-        // var mesh = createMesh(createGeometry(vertexPositionsTopCenter, uvs), textureCanvas)
-        // mesh.position.x = -x
-        // mesh.position.y = -y
-        // mesh.position.z = -waterLevel
-        // waterMesh.add(mesh)
-
         var stripes = createMountainStripes(x, y),
             vertexPositionsUp = createMountainVertexPositionsUp(stripes.getUp()),
             vertexPositionsDown = createMountainVertexPositionsDown(stripes.getDown()),
