@@ -57,7 +57,7 @@ class Cli_Model_Game
         }
 
         $this->_Players = new Cli_Model_Players();
-        $this->_Ruins = new Cli_Model_Ruins();
+        $this->_Ruins = new Cli_Model_GameRuins();
 
         $this->_begin = $game['begin'];
         $this->_turnsLimit = $game['turnsLimit'];
@@ -122,15 +122,15 @@ class Cli_Model_Game
         $emptyRuins = $mRuinsInGame->getVisited();
 
         $mMapRuins = new Application_Model_MapRuins($this->_mapId, $db);
-        foreach ($mMapRuins->getMapRuins() as $mapRuinId => $ruin) {
+        foreach ($mMapRuins->getMapRuins() as $mapRuinId => $mapRuin) {
             if (isset($emptyRuins[$mapRuinId])) {
                 $empty = true;
             } else {
                 $empty = false;
             }
-            $ruin['mapRuinId'] = $mapRuinId;
-            $this->_Ruins->add($mapRuinId, new Cli_Model_Ruin($ruin, $empty));
-            $this->_Fields->getField($ruin['x'], $ruin['y'])->setRuin($mapRuinId);
+            $mapRuin['mapRuinId'] = $mapRuinId;
+            $this->_Ruins->add($mapRuinId, new Cli_Model_GameRuin($mapRuin, $empty));
+            $this->_Fields->getField($mapRuin['x'], $mapRuin['y'])->setRuin($mapRuinId);
         }
     }
 

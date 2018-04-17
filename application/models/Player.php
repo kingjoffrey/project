@@ -17,15 +17,6 @@ class Application_Model_Player extends Coret_Db_Table_Abstract
         }
     }
 
-    public function hasFacebookId($facebookId)
-    {
-        $select = $this->_db->select()
-            ->from($this->_name, $this->_primary)
-            ->where('"fbId" = ?', $facebookId);
-
-        return $this->selectOne($select);
-    }
-
     public function createPlayer($data)
     {
         $this->insert($data);

@@ -2,7 +2,7 @@
 
 class Cli_Model_EditorRuins extends Cli_Model_Ruins
 {
-    public function editorAdd($ruinId, Cli_Model_EditorRuin $ruin)
+    public function add($ruinId, Cli_Model_EditorRuin $ruin)
     {
         $this->_ruins[$ruinId] = $ruin;
     }
@@ -13,7 +13,7 @@ class Cli_Model_EditorRuins extends Cli_Model_Ruins
      */
     public function getRuin($ruinId)
     {
-        self::getRuin($ruinId);
+        return $this->_ruins[$ruinId];
     }
 
     public function remove($ruinId)
