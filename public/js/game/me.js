@@ -29,10 +29,10 @@ var Me = new function () {
             }
         },
         updateProfit = function () {
-            console.log('income=' + income)
-            console.log('upkeep=' + upkeep)
+            // console.log('income=' + income)
+            // console.log('upkeep=' + upkeep)
             var profit = income - upkeep
-            console.log('profit=' + profit)
+            // console.log('profit=' + profit)
             $('#gold #value2').fadeOut(300, function () {
                 $('#gold #value2').html(profit)
                 $('#gold #value2').fadeIn(300)
@@ -112,7 +112,7 @@ var Me = new function () {
     this.setParentArmyId = function (armyId) {
         parentArmyId = armyId
     }
-    this.selectArmy = function (armyId, center) {
+    this.selectArmy = function (armyId) {
         PickerCommon.setCursorLock(1)
         PickerCommon.cursor(0)
 
@@ -139,16 +139,14 @@ var Me = new function () {
             WebSocketSendGame.fortify()
         })
 
-        if (notSet(center)) {
-            GameScene.centerOn(army.getX(), army.getY(), function () {
-                selectedArmyId = armyId
-            })
-        } else {
-            selectedArmyId = armyId
-        }
+        selectedArmyId = armyId
+
         AStar.showRange(army)
         PickerCommon.setCursorLock(0)
         PickerGame.cursorChange()
+    }
+    this.setSelectedArmyId = function (armyId) {
+        selectedArmyId = armyId
     }
     this.deselectArmy = function (skipJoin) {
         if (notSet(skipJoin) && parentArmyId && selectedArmyId) {
@@ -236,7 +234,8 @@ var Me = new function () {
             }
             //reset = false
             nextArmies[armyId] = true
-            this.selectArmy(armyId)
+            Me.selectArmy(armyId)
+            GameScene.centerOn(Me.getSelectedArmy().getX(), Me.getSelectedArmy().getY())
 
             return armyId
         }
@@ -275,7 +274,8 @@ var Me = new function () {
         }
 
         Sound.play('slash')
-        this.selectArmy(armyId, 0)
+
+        this.selectArmy(armyId)
     }
     this.turnOn = function () {
         $('#turnInfo').hide()

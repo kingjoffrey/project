@@ -2,7 +2,7 @@ var GameRenderer = new function () {
     var renderer,
         scene,
         camera,
-        timeOut = 0,
+        timeOut = 2000,
         stop = 1,
         render = function () {
             renderer.render(scene, camera)

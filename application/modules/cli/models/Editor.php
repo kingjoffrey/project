@@ -132,6 +132,23 @@ class Cli_Model_Editor
         $type = $field->getType();
 
         switch ($type) {
+            case 'r':
+                switch ($dataIn['itemName']) {
+                    case 'tower':
+                        $tower = new Cli_Model_EditorTower($dataIn['x'], $dataIn['y']);
+                        $tower->create($this->_mapId, $db);
+                        $this->_Players->getPlayer('neutral')->getTowers()->add($tower->getId(), $tower);
+                        $field = $this->_Fields->getField($dataIn['x'], $dataIn['y']);
+                        $field->setTower($tower->getId(), 'neutral');
+                        return array(
+                            'type' => 'towerId',
+                            'value' => $tower->getId()
+                        );
+                        break;
+                    case 'ruin':
+                        break;
+                }
+                break;
             case 'g':
                 switch ($dataIn['itemName']) {
                     case 'castle':

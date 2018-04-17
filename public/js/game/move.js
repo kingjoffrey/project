@@ -21,8 +21,7 @@ var Move = new function () {
 
             for (var i in oldArmy.getHeroes()) {
                 if (oldArmy.getHero(i).movesLeft > 0) {
-                    var id = Message.show(translations.Ruins, $('<div>').append($('<div>').html(translations.DoYouWantToSearchInRuins)))
-                    Message.addButton(id, 'ok', WebSocketSendGame.ruin())
+                    WebSocketSendGame.ruin()
                     return
                 }
             }
@@ -275,6 +274,7 @@ var Move = new function () {
                         CastleWindow.show(Me.getCastle(r.battle.castleId))
                     } else if (Me.getArmy(oldArmy.getArmyId()).getMoves()) {
                         Me.selectArmy(oldArmy.getArmyId())
+                        GameScene.centerOn(Me.getSelectedArmy().getX(), Me.getSelectedArmy().getY())
                     }
                     GameGui.unlock()
                 }
@@ -294,14 +294,12 @@ var Move = new function () {
             if (Me.colorEquals(r.color)) { // mój ruch bez walki
                 if (oldArmy.getMoves() > 0) {
                     Me.selectArmy(r.army.id)
-
                     handleMyRuins()
                 }
                 GameGui.unlock()
             }
             Execute.setExecuting(0)
         }
-
         for (var i in r.deletedIds) {
             Players.get(r.color).getArmies().destroy(r.deletedIds[i])
         }

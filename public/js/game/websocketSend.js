@@ -20,6 +20,7 @@ var WebSocketSendGame = new function () {
         }
 
         if (!Me.getSelectedArmyId()) {
+            console.log('b')
             return
         }
 

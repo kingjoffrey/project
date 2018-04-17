@@ -72,10 +72,10 @@ var Execute = new function () {
                             Ruins.handle(r)
                             Execute.setExecuting(0)
                         } else {
-                            GameScene.centerOn(r.army.x, r.army.y, function () {
+                            GameScene.centerOn(r.army.x, r.army.y, setTimeout(function () {
                                 Ruins.handle(r)
                                 Execute.setExecuting(0)
-                            })
+                            }, 2000))
                         }
                     }
                     break;
