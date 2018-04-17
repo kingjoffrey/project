@@ -108,12 +108,18 @@ var StatusWindow = new function () {
                         })
                 )
 
-            if (field.getRuinId() && army.getHeroKey()) {
+            var ruinId = field.getRuinId()
+
+            if (ruinId && army.getHeroKey()) {
                 var searchRuinButton = $('<div>'),
                     searchRuins = false
-                for (var i in army.getHeroes()) {
-                    if (army.getHero(i).movesLeft > 0) {
-                        searchRuins = true
+
+
+                if (!Ruins.get(ruinId).isEmpty() && Ruins.get(ruinId).isRandom()) {
+                    for (var i in army.getHeroes()) {
+                        if (army.getHero(i).movesLeft > 0) {
+                            searchRuins = true
+                        }
                     }
                 }
 

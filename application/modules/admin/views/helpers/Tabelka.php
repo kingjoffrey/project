@@ -119,7 +119,11 @@ class Admin_View_Helper_Tabelka extends Zend_View_Helper_Abstract
                 case 'select':
                     $methodName = 'get' . ucfirst($key) . 'Array';
                     $list = $this->_m->$methodName();
-                    $content .= '<td class="center' . $cssClass . '">' . $list[$row[$key]] . '</td>';
+                    if ($row[$key]) {
+                        $content .= '<td class="center' . $cssClass . '">' . $list[$row[$key]] . '</td>';
+                    }else{
+                        $content .= '<td class="center' . $cssClass . '"></td>';
+                    }
                     break;
                 default:
                     $content .= '<td class="left' . $cssClass . '">' . Coret_View_Helper_Formatuj::varchar($row[$key]) . '</td>';

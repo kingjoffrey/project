@@ -12,8 +12,15 @@ class Admin_Model_Map extends Coret_Model_ParentDb
         'maxPlayers' => array('label' => 'Maksymalna ilość graczy', 'type' => 'number'),
         'tutorial' => array('label' => 'Tutorial', 'type' => 'checkbox'),
         'publish' => array('label' => 'Publish', 'type' => 'checkbox'),
+        'playerId' => array('label' => 'Author', 'type' => 'select'),
         'date' => array('label' => 'Data', 'type' => 'date', 'active' => array('db' => false, 'form' => false)),
     );
+
+    static public function getPlayerIdArray()
+    {
+        $m = new Admin_Model_Player();
+        return $m->getList4FormSelect(array('firstName', 'lastName'));
+    }
 
     public function fields($mapId)
     {
