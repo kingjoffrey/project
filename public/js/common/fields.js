@@ -46,10 +46,10 @@ var Fields = new function () {
             paintWaterTextureField(tmpWaterTextureContext, x, y, waterColor1, waterColor2, 1)
 
             if (notSet(noModels)) {
-                if (Fields.get(x, y - 1, 1).getGrassOrWater() == 'g' || Fields.get(x, y + 1, 1).getGrassOrWater() == 'g') {
-                    var rotate = 1
-                } else {
+                if (Fields.get(x, y - 1, 1).getSwampAndWater() || Fields.get(x, y + 1, 1).getSwampAndWater()) {
                     var rotate = 0
+                } else {
+                    var rotate = 1
                 }
                 GameModels.addBridge(x, y, rotate)
             }

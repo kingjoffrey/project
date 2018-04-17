@@ -93,6 +93,13 @@ var Field = function (type) {
             return 'g'
         }
     }
+    this.getSwampAndWater = function () {
+        if (field.type == 'b' || field.type == 'w' || field.type == 's') {
+            return 1
+        } else {
+            return 0
+        }
+    }
     this.getHill = function () {
         if (field.type == 'h' || field.type == 'm') {
             return 1
