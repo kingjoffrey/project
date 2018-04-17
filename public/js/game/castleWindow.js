@@ -125,7 +125,7 @@ var CastleWindow = new function () {
         castleWindow
             .append($('<div>').html(translations.incomeFromCastle + ': ' + castle.getIncome() + ' ' + translations.gold_turn))
             .append(
-                $('<div>').addClass('text-right')
+                $('<div>').addClass('text-center')
                     .append(previous)
                     .append($('<div>')
                         .addClass('button buttonColors')

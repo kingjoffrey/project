@@ -761,8 +761,7 @@ div.table table.unitTable td:first {
     color: gold;
     height: auto;
     width: auto;
-    padding: 8px
-;
+    padding: 8px;
 }
 
 #gold #counter div {
@@ -779,6 +778,10 @@ div.table table.unitTable td:first {
 
 .text-right {
     text-align: right;
+}
+
+.text-center {
+    text-align: center;
 }
 
 #terrain {
