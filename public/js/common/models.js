@@ -272,7 +272,7 @@ var Models = new function () {
         var material1 = new THREE.MeshBasicMaterial({
                 color: 0xff00ff,
                 transparent: true,
-                opacity: 0.9,
+                opacity: 0.5,
                 side: THREE.DoubleSide
             }),
             // geometry1 = new THREE.BoxGeometry(1.9, 1.9, 10)
