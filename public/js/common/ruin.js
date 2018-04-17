@@ -32,6 +32,13 @@ var Ruin = function (ruin) {
     this.getMesh = function () {
         return mesh
     }
+    this.isRandom = function () {
+        if (ruin.type == 4) {
+            return 1
+        } else {
+            return 0
+        }
+    }
     this.isEmpty = function () {
         return ruin.empty
     }

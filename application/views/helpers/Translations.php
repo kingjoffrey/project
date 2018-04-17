@@ -189,6 +189,7 @@ class Zend_View_Helper_Translations extends Zend_View_Helper_Abstract
                 'CostOfLiving' => $this->view->translate('Cost of living'),
                 'soldiers' => $this->view->translate('soldiers'),
                 'Bonus' => $this->view->translate('Bonus'),
+                'DoYouWantToSearchInRuins' => $this->view->translate('Do you want to search in ruins?'),
                 '' => $this->view->translate(''),
             )));
     }

@@ -1,7 +1,32 @@
 var Move = new function () {
-    var stepTime = 200,
+    var stepTime = 50,
+        battleTime = 1000,
         player,
         oldArmy,
+        handleMyRuins = function () {
+            var field = Fields.get(oldArmy.getX(), oldArmy.getY()),
+                ruinId = field.getRuinId()
+
+            if (!ruinId) {
+                return
+            }
+
+            if (Ruins.get(ruinId).isEmpty()) {
+                return
+            }
+
+            if (!Ruins.get(ruinId).isRandom()) {
+                return
+            }
+
+            for (var i in oldArmy.getHeroes()) {
+                if (oldArmy.getHero(i).movesLeft > 0) {
+                    var id = Message.show(translations.Ruins, $('<div>').append($('<div>').html(translations.DoYouWantToSearchInRuins)))
+                    Message.addButton(id, 'ok', WebSocketSendGame.ruin())
+                    return
+                }
+            }
+        },
         handleMyUpkeepAsDefender = function (defenders) {
             for (var color in defenders) {
                 if (Me.colorEquals(color)) {
@@ -226,7 +251,7 @@ var Move = new function () {
                 GameScene.centerOn(r.path[step].x, r.path[step].y, function () {
                     setTimeout(function () {
                         Move.end(r, ii)
-                    }, stepTime)
+                    }, battleTime)
                 })
             } else {
                 Move.end(r, ii)
@@ -267,10 +292,10 @@ var Move = new function () {
         } else { // nie było walki
             oldArmy.update(r.army)
             if (Me.colorEquals(r.color)) { // mój ruch bez walki
-                if (Unit.countNumberOfUnits(r.army)) {
-                    if (oldArmy.getMoves() > 0) {
-                        Me.selectArmy(r.army.id)
-                    }
+                if (oldArmy.getMoves() > 0) {
+                    Me.selectArmy(r.army.id)
+
+                    handleMyRuins()
                 }
                 GameGui.unlock()
             }

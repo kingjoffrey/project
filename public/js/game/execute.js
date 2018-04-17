@@ -56,13 +56,13 @@ var Execute = new function () {
                     if (isSet(r.bonus)) {
                         switch (r.bonus) {
                             case 1:
-                                var txt = translations.attack
+                                var txt = translations.Attack
                                 break
                             case 2:
-                                var txt = translations.defense
+                                var txt = translations.Defense
                                 break
                             case 3:
-                                var txt = translations.move
+                                var txt = translations.Moves
                                 break
                         }
                         Message.simple(translations.Bonus, txt + ' +1')

@@ -27,7 +27,7 @@ class Coret_Form_Checkbox extends Zend_Form
             }
         }
 
-        if ($this->_attribs['value']) {
+        if (isset($this->_attribs['value']) && $this->_attribs['value']) {
             $value = $this->_attribs['value'];
         } else {
             $value = 0;
