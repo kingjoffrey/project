@@ -24,5 +24,7 @@ var Editor = new function () {
         $('#loading').hide()
         $('#game').show()
         $('.editor').show()
+
+        GameRenderer.animate()
     }
 }

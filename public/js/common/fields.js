@@ -515,7 +515,7 @@ var Fields = new function () {
                 paintRoad(context, x, y)
                 break
             case 'h':
-                paintTextureField(context, x, y, grassColor1, grassColor2, 5)
+                paintTextureField(context, x, y, hillColor1, hillColor2, 5)
                 // paintHill(context, x, y)
                 break
             case 'm':
