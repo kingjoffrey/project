@@ -141,6 +141,17 @@ var Execute = new function () {
                     Execute.setExecuting(0)
                     break;
 
+                case 'bulbul':
+                    if (Turn.isMy()) {
+                        Message.remove()
+                        Me.upkeepIncrement(-Me.getArmies().get(r.id).countUpkeep())
+                        Message.simple(translations.Moves, translations.Yourshipsank)
+                        GameGui.unlock()
+                    }
+                    Players.get(r.color).getArmies().destroy(r.id)
+                    Execute.setExecuting(0)
+                    break;
+
                 case 'resurrection':
                     Sound.play('resurrection');
                     if (Players.get(Turn.getColor()).isComputer() && !GameGui.getShow()) {

@@ -56,6 +56,10 @@ var WebSocketMessageGame = new function () {
                     Execute.addQueue(r)
                     break
 
+                case 'bulbul':
+                    Execute.addQueue(r)
+                    break
+
                 case 'resurrection':
                     Execute.addQueue(r)
                     break

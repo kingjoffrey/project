@@ -57,6 +57,24 @@ class Cli_Model_Move
             return;
         }
 
+        if ($army->canSwim()) {
+            $random = rand(1, 10);
+
+            if ($random == 10) {
+                $db = $handler->getDb();
+                $player->getArmies()->removeArmy($attackerArmyId, $game, $db);
+
+                $token = array(
+                    'color' => $attackerColor,
+                    'id' => $attackerArmyId,
+                    'type' => 'bulbul'
+                );
+                $handler->sendToChannel($token);
+
+                return;
+            }
+        }
+
         $fields = $game->getFields();
 
         $armyX = $army->getX();

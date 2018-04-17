@@ -237,6 +237,8 @@ var Models = new function () {
             })
             pathGeometryRectangle = new THREE.PlaneGeometry(1.9, 1.9)
             pathGeometryCircle = new THREE.CircleGeometry(radius, segments)
+
+            pathGeometryRing = new THREE.RingGeometry( 0.7, 0.9, 32 );
         },
         initCursorModel = function () {
             // cursorGeometry = new THREE.BoxGeometry(2, 2, 2)
@@ -259,11 +261,11 @@ var Models = new function () {
     this.getPathCircle = function (color) {
         switch (color) {
             case 'green':
-                return new THREE.Mesh(pathGeometryCircle, pathCircleMaterialGreen)
+                return new THREE.Mesh(pathGeometryCircle, pathCircleMaterialWhite)
             case 'red':
                 return new THREE.Mesh(pathGeometryCircle, pathCircleMaterialRed)
             case 'white':
-                return new THREE.Mesh(pathGeometryCircle, pathCircleMaterialWhite)
+                return new THREE.Mesh(pathGeometryRing, pathCircleMaterialWhite)
         }
     }
     this.getArmyBox = function () {
