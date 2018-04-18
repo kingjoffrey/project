@@ -21,7 +21,10 @@ var Editor = new function () {
 
         PickerCommon.init(PickerEditor)
 
+
+        $('#bg').hide()
         $('#loading').hide()
+        $('#tutorial').hide()
         $('#game').show()
         $('.editor').show()
 

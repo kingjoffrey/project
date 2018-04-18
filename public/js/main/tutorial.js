@@ -4,7 +4,6 @@ var TutorialController = new function () {
         $('#bg').hide()
         $('.editor').hide()
         $('#loading').show()
-
         Game.setGameId(r.gameId)
         Tutorial.initSteps(r.steps)
 

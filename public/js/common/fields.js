@@ -397,6 +397,11 @@ var Fields = new function () {
                         cone.position.set(x * 2 + 1, height / 2, y * 2 + 1)
                         // cone.rotation.y = Math.PI / 4
 
+                        if (Page.getShadows()) {
+                            cone.castShadow = true
+                            // cone.receiveShadow = true
+                        }
+
                         GameScene.add(cone)
 
                         paintTextureField(tmpTextureContext, x, y, grassColor1, grassColor2)

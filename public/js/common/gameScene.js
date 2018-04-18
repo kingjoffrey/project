@@ -45,17 +45,19 @@ var GameScene = new function () {
             sun.shadow.mapSize.width = mapSize[0]
             sun.shadow.mapSize.height = mapSize[0]
 
-            sun.shadow.camera.right = size
-            sun.shadow.camera.top = size
-            sun.shadow.camera.bottom = -size
-            sun.shadow.camera.left = -size
+            sun.shadow.camera.right = 2 * size
+            sun.shadow.camera.top = 2 * size
+            sun.shadow.camera.bottom = -size * 2
+            sun.shadow.camera.left = -size * 2
 
             sun.shadow.camera.near = -200
             sun.shadow.camera.far = 0
 
-            // var helper = new THREE.CameraHelper(sun.shadow.camera)
-            // scene.add(helper)
         }
+    }
+    this.shadowCameraHelper = function () {
+        var helper = new THREE.CameraHelper(sun.shadow.camera)
+        scene.add(helper)
     }
     this.getSun = function () {
         return sun

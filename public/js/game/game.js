@@ -57,6 +57,12 @@ var Game = new function () {
             $('#loading').hide()
             $('#game').show()
             $('.game').show()
+
+            if (isSet(g.tutorial)) {
+                $('#tutorial').show()
+            } else {
+                $('#tutorial').hide()
+            }
         }
 
         if (Turn.isMy() && Me.getTurnActive()) {

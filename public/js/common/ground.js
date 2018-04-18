@@ -1242,26 +1242,55 @@ var Ground = new function () {
         mesh.position.x = -x
         mesh.position.y = -y
         mesh.position.z = -waterLevel
+
+        if (Page.getShadows()) {
+            mesh.castShadow = true
+            // mesh.receiveShadow = true
+        }
+
         waterMesh.add(mesh)
         mesh = createMesh(createGeometry(vertexPositionsDown, createNewUVS(vertexPositionsDown, x, y)), textureCanvas)
         mesh.position.x = -x
         mesh.position.y = -y
         mesh.position.z = -waterLevel
+
+        if (Page.getShadows()) {
+            mesh.castShadow = true
+            // mesh.receiveShadow = true
+        }
+
         waterMesh.add(mesh)
         mesh = createMesh(createGeometry(vertexPositionsLeft, createNewUVS(vertexPositionsLeft, x, y)), textureCanvas)
         mesh.position.x = -x
         mesh.position.y = -y
         mesh.position.z = -waterLevel
+
+        if (Page.getShadows()) {
+            mesh.castShadow = true
+            // mesh.receiveShadow = true
+        }
+
         waterMesh.add(mesh)
         mesh = createMesh(createGeometry(vertexPositionsRight, createNewUVS(vertexPositionsRight, x, y)), textureCanvas)
         mesh.position.x = -x
         mesh.position.y = -y
         mesh.position.z = -waterLevel
+
+        if (Page.getShadows()) {
+            mesh.castShadow = true
+            // mesh.receiveShadow = true
+        }
+
         waterMesh.add(mesh)
         mesh = createMesh(createGeometry(mountainsTopArray.vertexPositions, createNewUVS(mountainsTopArray.vertexPositions, x, y)), textureCanvas)
         mesh.position.x = -x
         mesh.position.y = -y
         mesh.position.z = -waterLevel
+
+        if (Page.getShadows()) {
+            mesh.castShadow = true
+            // mesh.receiveShadow = true
+        }
         waterMesh.add(mesh)
 
         var vertexPositionsTopCenter = createVertexPositionsFromStripesArray(mountainsTopArray.stripesArray, mountainLevel),
