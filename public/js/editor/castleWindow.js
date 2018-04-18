@@ -110,7 +110,7 @@ var EditorCastleWindow = new function () {
                 'value': castle.getEnclaveNumber()
             })))
             .append($('<div>').append($('<input>').attr({'value': 'Ok', 'type': 'submit'}).click(function () {
-                WebSocketSendEditor.edit(id)
+                WebSocketSendEditor.editCastle(id)
             })))
 
         return html

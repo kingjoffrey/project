@@ -49,8 +49,11 @@ var PickerEditor = new function () {
                                 WebSocketSendEditor.add(draggedMesh.itemName, draggedMeshX, draggedMeshZ)
                         }
                     } else {
-                        if (castleId = field.getCastleId()) {
-                            Message.show('Castle', EditorCastleWindow.form(castleId))
+                        var id = 0
+                        if (id = field.getCastleId()) {
+                            Message.show('Castle', EditorCastleWindow.form(id))
+                        } else if (id = field.getRuinId()) {
+                            Message.show('Ruin', EditorRuinWindow.form(id))
                         } else {
                             dragStart = PickerCommon.getPoint(event)
                         }

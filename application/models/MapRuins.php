@@ -56,5 +56,19 @@ class Application_Model_MapRuins extends Coret_Db_Table_Abstract
 
         $this->delete($where);
     }
+
+    public function setRuinId($id, $ruinId)
+    {
+        $data = array(
+            'ruinId' => $ruinId
+        );
+
+        $where = array(
+            $this->_db->quoteInto($this->_db->quoteIdentifier('mapId') . ' = ?', $this->_mapId),
+            $this->_db->quoteInto($this->_db->quoteIdentifier($this->_primary) . ' = ?', $id)
+        );
+
+        return $this->update($data, $where);
+    }
 }
 

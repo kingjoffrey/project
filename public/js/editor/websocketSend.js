@@ -68,7 +68,24 @@ var WebSocketSendEditor = new function () {
 
         ws.send(JSON.stringify(token))
     }
-    this.edit = function (castleId) {
+    this.editRuin = function (mapRuinId) {
+        if (closed) {
+            console.log(translations.sorryServerIsDisconnected)
+            return;
+        }
+
+        var token = {
+            type: 'editRuin',
+            mapId: EditorController.getMapId(),
+            mapRuinId: mapRuinId,
+            ruinId: $('select[name=type]').val(),
+        }
+
+        castle.token = token
+
+        ws.send(JSON.stringify(token))
+    }
+    this.editCastle = function (castleId) {
         if (closed) {
             console.log(translations.sorryServerIsDisconnected)
             return;
@@ -80,7 +97,7 @@ var WebSocketSendEditor = new function () {
             }
         }
         var token = {
-            type: 'edit',
+            type: 'editCastle',
             mapId: EditorController.getMapId(),
             castleId: castleId,
             name: $('input[name=name]').val(),

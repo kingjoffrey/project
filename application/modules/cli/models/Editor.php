@@ -180,10 +180,10 @@ class Cli_Model_Editor
                             'value' => $tower->getId()
                         );
                     case 'ruin':
-//                        $ruin = new Cli_Model_EditorRuin($dataIn);
-//                        $ruin->create($this->_mapId, $db);
-//                        $this->_Ruins->editorAdd($ruin->getId(), $ruin);
-//                        $this->_Fields->getField($dataIn['x'], $dataIn['y'])->setRuin($ruin->getId());
+                        $ruin = new Cli_Model_EditorRuin($dataIn);
+                        $ruin->create($this->_mapId, $db);
+                        $this->_Ruins->add($ruin->getId(), $ruin);
+                        $this->_Fields->getField($dataIn['x'], $dataIn['y'])->setRuin($ruin->getId());
                         return array(
                             'type' => 'ruinId',
                             'value' => $ruin->getId()
@@ -235,7 +235,20 @@ class Cli_Model_Editor
         $mMapFields->edit($x, $y, $type);
     }
 
-    public function edit($dataIn, Zend_Db_Adapter_Pdo_Pgsql $db)
+    public function editRuin($dataIn, Zend_Db_Adapter_Pdo_Pgsql $db)
+    {
+        if ($this->_Ruins->getRuin($dataIn['mapRuinId'])->getId()) {
+
+
+            return array(
+                'type' => 'editRuin',
+                'mapRuinId' => $dataIn['mapRuinId'],
+                'ruinId' => $dataIn['ruinId']
+            );
+        }
+    }
+
+    public function editCastle($dataIn, Zend_Db_Adapter_Pdo_Pgsql $db)
     {
         foreach ($this->_Players->getKeys() as $color) {
             foreach ($this->_Players->getPlayer($color)->getCastles()->getKeys() as $castleId) {
