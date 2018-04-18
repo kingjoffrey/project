@@ -4,6 +4,7 @@ var Ruin = function (ruin) {
         mesh.material.color.set(this.getColor())
     }
     this.getColor = function () {
+        ruin.type = ruin.type * 1
         switch (ruin.type) {
             case 1:
                 return '#FF0000'
@@ -12,7 +13,7 @@ var Ruin = function (ruin) {
                 return '#0000FF'
                 break
             case 3:
-                return '#00ff00'
+                return '#089000'
                 break
             case 4:
                 if (ruin.empty) {
@@ -21,6 +22,10 @@ var Ruin = function (ruin) {
                     return '#FFD700'
                 }
                 break
+            default:
+                console.log('dupa bladaa')
+                console.log(ruin.type)
+                return '#8080a0'
         }
     }
     this.getX = function () {
@@ -42,5 +47,15 @@ var Ruin = function (ruin) {
     this.isEmpty = function () {
         return ruin.empty
     }
+    this.setType = function (type) {
+        if (ruin.type != type) {
+            ruin.type = type
+            mesh.material.color.set(this.getColor())
+        }
+    }
+    this.getType = function () {
+        return ruin.type
+    }
+
     var mesh = GameModels.addRuin(ruin.x, ruin.y, this.getColor())
 }

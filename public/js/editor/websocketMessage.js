@@ -12,10 +12,16 @@ var WebSocketMessageEditor = new function () {
             case 'towerId':
                 Players.get('neutral').getTowers().add(r.value, {x: PickerEditor.getX(), y: PickerEditor.getZ()})
                 break
-            case 'ruinId':
-                Ruins.add(r.value, new Ruin({x: PickerEditor.getX(), y: PickerEditor.getZ(), empty: 0, type: 3}))
+            case 'ruinAdd':
+                Ruins.add(r.id, new Ruin({x: PickerEditor.getX(), y: PickerEditor.getZ(), empty: 0, type: 4}))
                 break
-            case 'edit':
+            case 'editRuin':
+                var ruin = Ruins.get(r.id)
+                if (ruin) {
+                    ruin.setType(r.ruinId)
+                }
+                break
+            case 'editCastle':
                 var castleId = r.castle.id
                 Message.remove()
                 for (var color in Players.toArray()) {

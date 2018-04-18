@@ -185,8 +185,8 @@ class Cli_Model_Editor
                         $this->_Ruins->add($ruin->getId(), $ruin);
                         $this->_Fields->getField($dataIn['x'], $dataIn['y'])->setRuin($ruin->getId());
                         return array(
-                            'type' => 'ruinId',
-                            'value' => $ruin->getId()
+                            'type' => 'ruinAdd',
+                            'id' => $ruin->getId()
                         );
                     case 'forest':
                         $this->editTerrainType($dataIn['x'], $dataIn['y'], 'f', $db);
@@ -237,12 +237,12 @@ class Cli_Model_Editor
 
     public function editRuin($dataIn, Zend_Db_Adapter_Pdo_Pgsql $db)
     {
-        if ($this->_Ruins->getRuin($dataIn['mapRuinId'])->getId()) {
-
+        if ($ruin = $this->_Ruins->getRuin($dataIn['mapRuinId'])) {
+            $ruin->setType($dataIn['ruinId'], $this->_mapId, $db);
 
             return array(
                 'type' => 'editRuin',
-                'mapRuinId' => $dataIn['mapRuinId'],
+                'id' => $dataIn['mapRuinId'],
                 'ruinId' => $dataIn['ruinId']
             );
         }
@@ -264,7 +264,7 @@ class Cli_Model_Editor
                     $castle->edit($this->_mapId, $dataIn, $db, $this->_Players->getPlayer($dataIn['color'])->getId());
 
                     return array(
-                        'type' => 'edit',
+                        'type' => 'editCastle',
                         'castle' => $castle->toArray(),
                         'color' => $dataIn['color']
                     );
