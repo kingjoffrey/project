@@ -190,6 +190,7 @@ class Zend_View_Helper_Translations extends Zend_View_Helper_Abstract
                 'soldiers' => $this->view->translate('soldiers'),
                 'Bonus' => $this->view->translate('Bonus'),
                 'Yourshipsank' => $this->view->translate('Your ship sank'),
+                'Mainmenu' => $this->view->translate('Main menu'),
                 '' => $this->view->translate(''),
             )));
     }

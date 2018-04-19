@@ -2,7 +2,6 @@ var Page = new function () {
     var index = '',
         shadows = 1
 
-
     this.getIndex = function () {
         return index
     }
@@ -79,12 +78,6 @@ var Page = new function () {
                     }))
             )
         )
-        HelpScene.init()
-        HelpRenderer.init()
-        HelpModels.init()
-        GameScene.init()
-        GameRenderer.init()
-
     }
 }
 

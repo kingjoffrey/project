@@ -269,7 +269,9 @@ var Execute = new function () {
     this.setExecuting = function (value) {
         executing = value
 
-        PickerCommon.setCursorLock(executing)
-        PickerGame.cursorChange()
+        if (Turn.isMy()) {
+            PickerCommon.setCursorLock(executing)
+            PickerGame.cursorChange()
+        }
     }
 }

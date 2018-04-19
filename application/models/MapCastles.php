@@ -66,7 +66,7 @@ class Application_Model_MapCastles extends Coret_Db_Table_Abstract
             ->from(array('a' => $this->_name), array('x', 'y', 'sideId', 'mapCastleId'))
             ->where($this->_db->quoteIdentifier('mapId') . ' = ?', $this->_mapId)
             ->where('capital = true')
-            ->order('mapCastleId');
+            ->order('sideId');
 
         $startPositions = array();
 
