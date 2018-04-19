@@ -2,10 +2,7 @@ var EditorModels = new function () {
     this.createMesh = function (type) {
         switch (type) {
             case 'castle':
-                var mesh = new THREE.Mesh(Models.getCastleModels()[0].geometry, new THREE.MeshLambertMaterial({
-                    color: '#3B3028',
-                    side: THREE.DoubleSide
-                }))
+                var mesh = Models.getCastle({'defense': 1, 'capital': 0}, '#3B3028')
                 mesh.scale.x = 0.2
                 mesh.scale.y = 0.2
                 mesh.scale.z = 0.2

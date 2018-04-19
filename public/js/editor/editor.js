@@ -16,15 +16,15 @@ var Editor = new function () {
 
         EditorGui.init()
         GameScene.initSun(Fields.getMaxY())
-        GameScene.setCameraPosition(0, Fields.getMaxY())
+        GameScene.setCameraPosition(0, Fields.getMaxY() * 2)
         GameRenderer.start()
 
         PickerCommon.init(PickerEditor)
 
-
         $('#bg').hide()
         $('#loading').hide()
         $('#tutorial').hide()
+        $('.game').hide()
         $('#game').show()
         $('.editor').show()
 

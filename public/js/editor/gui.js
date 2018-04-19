@@ -69,10 +69,6 @@ var EditorGui = new function () {
             EditorGui.adjust()
         })
 
-        $('#bg').hide()
-        $('.game').hide()
-        $('#loading').show()
-
         $('#terrain').removeClass('game').addClass('editor')
 
         $(document).on('keydown', function (event) {

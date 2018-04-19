@@ -226,10 +226,6 @@ var GameGui = new function () {
             GameGui.adjust()
         })
 
-        $('#bg').hide()
-        $('.editor').hide()
-        $('#loading').show()
-
         $('#terrain').removeClass('editor').addClass('game')
 
         documentTitle = document.title
