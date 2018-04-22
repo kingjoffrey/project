@@ -202,14 +202,21 @@ class Cli_Model_ComputerMove extends Cli_Model_ComputerMethods
         $this->_l->log('JEST HEROS');
         if ($mapRuinId = $this->_fields->getField($this->_armyX, $this->_armyY)->getRuinId()) {
             if (!$this->_game->getRuins()->getRuin($mapRuinId)->getEmpty()) {
-                $this->_l->log('PRZESZUKUJĘ RUINY');
+                $this->_onMyWayToSearchRuin = false;
+
+                $this->_l->log('STOJĘ W RUINACH');
                 $mapRuin = $this->_game->getRuins()->getRuin($mapRuinId);
 
                 $array = array('mapRuinId' => $mapRuin->getId(), 'ruinId' => $mapRuin->getType());
 
                 if ($array['ruinId'] == 4) {
+                    $this->_l->log('PRZESZUKUJĘ RUINY');
                     $mapRuin->search($this->_game, $this->_army, $heroId, $this->_playerId, $this->_handler);
+
+                    $this->next();
+                    return;
                 } else {
+                    $this->_l->log('BIORĘ BONUS Z RUIN i IDĘ DALEJ');
                     foreach ($this->_army->getHeroes()->getKeys() as $heroId) {
                         $hero = $this->_army->getHeroes()->getHero($heroId);
                         if (!$hero->hasMapRuinBonus($mapRuinId)) {
@@ -217,18 +224,17 @@ class Cli_Model_ComputerMove extends Cli_Model_ComputerMethods
                         }
                     }
 
+                    $this->firstBlock();
+                    return;
                 }
-                $this->_onMyWayToSearchRuin = false;
-                $this->next();
-                return;
             }
         }
 
-        $ptnr = new Cli_Model_PathToNearestRuin($this->_game, $this->_army);
-        if ($ruinId = $ptnr->getRuinId()) {
+        $pathToNearestRuin = new Cli_Model_PathToNearestRuin($this->_game, $this->_army);
+        if ($ruinId = $pathToNearestRuin->getRuinId()) {
             $this->_l->log('IDĘ DO RUIN');
             $this->_onMyWayToSearchRuin = true;
-            $this->move($ptnr->getPath());
+            $this->move($pathToNearestRuin->getPath());
         } else {
             $this->_l->log('BRAK RUIN');
             $this->firstBlock();
