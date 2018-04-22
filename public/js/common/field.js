@@ -94,7 +94,7 @@ var Field = function (type) {
         }
     }
     this.getSwampAndWater = function () {
-        if (field.type == 'b' || field.type == 'w' || field.type == 's') {
+        if (field.type == 'w' || field.type == 's') {
             return 1
         } else {
             return 0

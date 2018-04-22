@@ -351,6 +351,8 @@ var WebSocketSendGame = new function () {
             return
         }
 
+        GameGui.lock()
+
         var token = {
             'type': 'nextTurn'
         }
