@@ -101,7 +101,7 @@ var PickerCommon = new function () {
                 $('body #main #game canvas').css('cursor', 'url(/img/game/cursors/move.png) 11 11, auto')
                 break
             case 'open':
-                $('body #main #game canvas').css('cursor', 'url(/img/game/cursors/open.png), auto')
+                $('body #main #game canvas').css('cursor', 'url(/img/game/cursors/open.png) 11 11, auto')
                 break
             case 'select':
                 $('body #main #game canvas').css('cursor', 'url(/img/game/cursors/select.png) 11 11, auto')

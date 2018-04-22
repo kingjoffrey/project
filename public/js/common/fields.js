@@ -441,12 +441,12 @@ var Fields = new function () {
 
                             var geometry = new THREE.ConeGeometry(1, 1, 4);
                             var material = new THREE.MeshLambertMaterial({
-                                color: 0xadb1b8,
+                                color: 0xc0c5ce,
                                 side: THREE.DoubleSide
                             });
                             var cone = new THREE.Mesh(geometry, material);
 
-                            cone.position.set(x * 2 + 1, 1.5, y * 2 + 1)
+                            cone.position.set(x * 2 + 1, 1.25, y * 2 + 1)
                             cone.rotation.y = Math.PI / 4
 
                             GameScene.add(cone)

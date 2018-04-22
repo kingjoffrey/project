@@ -23,12 +23,10 @@ var Execute = new function () {
                     for (var castleId in r.productionTurns) {
                         castles.get(castleId).setProductionTurn(r.productionTurns[castleId])
                     }
-                    Sound.play('startturn')
 
                     Me.setUpkeep(r.upkeep)
                     Me.setGold(r.gold)
                     Me.setIncome(r.income)
-                    GameGui.unlock()
 
                     Execute.setExecuting(0)
                     break
@@ -49,7 +47,6 @@ var Execute = new function () {
                     }
 
                     Turn.start(r.color)
-
                     break
 
                 case 'ruin':
