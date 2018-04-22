@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: WOF\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-04-04 21:55+0200\n"
-"PO-Revision-Date: 2018-04-04 21:56+0200\n"
+"POT-Creation-Date: 2018-04-22 16:04+0200\n"
+"PO-Revision-Date: 2018-04-22 16:05+0200\n"
 "Last-Translator: Bartosz Krzeszewski <bartek@core-t.pl>\n"
 "Language-Team: \n"
 "Language: pl_PL\n"
@@ -30,21 +30,21 @@ msgstr "Dostaliśmy Twoją zapłatę"
 msgid "User Cancelled the Approval"
 msgstr "Użytkownik anulował transakcję "
 
-#: application/forms/Auth.php:9 application/forms/Login.php:15
+#: application/forms/Auth.php:11 application/forms/Login.php:22
 #: application/forms/Registration.php:11
 msgid "Login"
 msgstr "Login"
 
-#: application/forms/Auth.php:14 application/forms/Password.php:15
+#: application/forms/Auth.php:16 application/forms/Password.php:15
 #: application/forms/Registration.php:28
 msgid "Password"
 msgstr "Hasło"
 
-#: application/forms/Auth.php:19
+#: application/forms/Auth.php:21
 msgid "Remember me"
 msgstr "Zapamiętaj mnie"
 
-#: application/forms/Auth.php:22
+#: application/forms/Auth.php:24
 #: application/views/scripts/login/registration.phtml:3
 msgid "Sign in"
 msgstr "Zaloguj się"
@@ -81,7 +81,7 @@ msgstr "Utwórz mapę"
 msgid "E-mail"
 msgstr "E-mail"
 
-#: application/forms/Email.php:21 application/forms/Login.php:21
+#: application/forms/Email.php:21 application/forms/Login.php:40
 #: application/forms/Password.php:33 application/forms/Player.php:28
 msgid "Submit"
 msgstr "Potwierdź"
@@ -89,6 +89,10 @@ msgstr "Potwierdź"
 #: application/forms/Language.php:11
 msgid "Select language"
 msgstr "Wybierz język"
+
+#: application/forms/Login.php:30
+msgid "This login is already registered"
+msgstr "Ten login jest już zarejestrowany"
 
 #: application/forms/Password.php:23 application/forms/Registration.php:36
 msgid "Repeat password"
@@ -283,7 +287,7 @@ msgid "Heroes lost"
 msgstr "Utraconych herosów"
 
 #: application/views/helpers/Translations.php:19
-#: application/layouts/scripts/default.phtml:39
+#: application/layouts/scripts/default.phtml:35
 msgid "Statistics"
 msgstr "Statystyki"
 
@@ -300,7 +304,7 @@ msgid "towers"
 msgstr "wieże"
 
 #: application/views/helpers/Translations.php:23
-#: application/layouts/scripts/default.phtml:67
+#: application/layouts/scripts/default.phtml:73
 msgid "Tower"
 msgstr "Wieża"
 
@@ -369,8 +373,8 @@ msgid "Error"
 msgstr "Błąd"
 
 #: application/views/helpers/Translations.php:40
-#: application/layouts/scripts/default.phtml:95
-#: application/layouts/scripts/default.phtml:97
+#: application/layouts/scripts/default.phtml:101
+#: application/layouts/scripts/default.phtml:103
 msgid "Surrender"
 msgstr "Poddaj się"
 
@@ -463,7 +467,7 @@ msgid "Relocating from"
 msgstr "Relokacja z"
 
 #: application/views/helpers/Translations.php:63
-#: application/layouts/scripts/default.phtml:45
+#: application/layouts/scripts/default.phtml:51
 msgid "Next turn"
 msgstr "Następna tura"
 
@@ -513,7 +517,7 @@ msgid "Fortify army"
 msgstr "Fortyfikuj armię"
 
 #: application/views/helpers/Translations.php:75
-#: application/layouts/scripts/default.phtml:57
+#: application/layouts/scripts/default.phtml:63
 msgid "Skip army"
 msgstr "Pomiń armię"
 
@@ -574,7 +578,7 @@ msgid "Ruins"
 msgstr "Ruiny"
 
 #: application/views/helpers/Translations.php:90
-#: application/layouts/scripts/default.phtml:66
+#: application/layouts/scripts/default.phtml:72
 msgid "Ruin"
 msgstr "Ruiny"
 
@@ -697,12 +701,12 @@ msgstr "Rozpocznij produkcję"
 
 #: application/views/helpers/Translations.php:120
 #: application/views/helpers/Translations.php:128
-#: application/layouts/scripts/default.phtml:119
+#: application/layouts/scripts/default.phtml:125
 msgid "Close"
 msgstr "Zamknij"
 
 #: application/views/helpers/Translations.php:121
-#: application/layouts/scripts/default.phtml:65
+#: application/layouts/scripts/default.phtml:71
 msgid "Castle"
 msgstr "Zamek"
 
@@ -715,10 +719,12 @@ msgid "Maximum castle defence reached"
 msgstr "Osiągnięto maksymalną obronę zamku"
 
 #: application/views/helpers/Translations.php:124
+#: application/layouts/scripts/default.phtml:39
 msgid "Treasury"
 msgstr "Skarbiec"
 
 #: application/views/helpers/Translations.php:125
+#: application/layouts/scripts/default.phtml:40
 msgid "Profit"
 msgstr "Zysk"
 
@@ -837,7 +843,7 @@ msgid "Walk"
 msgstr "Chodzi"
 
 #: application/views/helpers/Translations.php:155
-#: application/layouts/scripts/default.phtml:68
+#: application/layouts/scripts/default.phtml:74
 msgid "Road"
 msgstr "Droga"
 
@@ -846,7 +852,7 @@ msgid "Grass"
 msgstr "Łąka"
 
 #: application/views/helpers/Translations.php:157
-#: application/layouts/scripts/default.phtml:69
+#: application/layouts/scripts/default.phtml:75
 msgid "Forest"
 msgstr "Las"
 
@@ -867,7 +873,7 @@ msgid "Water"
 msgstr "Woda"
 
 #: application/views/helpers/Translations.php:162
-#: application/layouts/scripts/default.phtml:70
+#: application/layouts/scripts/default.phtml:76
 msgid "Swamp"
 msgstr "Bagno"
 
@@ -981,72 +987,80 @@ msgstr "Podstawowa ilość ruchów"
 msgid "soldiers"
 msgstr "żołnierze"
 
-#: application/layouts/scripts/default.phtml:36
-msgid "Gold"
-msgstr "Złoto"
+#: application/views/helpers/Translations.php:191
+msgid "Bonus"
+msgstr "Bonus"
 
-#: application/layouts/scripts/default.phtml:48
+#: application/views/helpers/Translations.php:192
+msgid "Your ship sank"
+msgstr "Twój statek zatonął"
+
+#: application/views/helpers/Translations.php:193
+msgid "Main menu"
+msgstr "Menu główne"
+
+#: application/layouts/scripts/default.phtml:54
 msgid "Show menu"
 msgstr "Pokaż menu"
 
-#: application/layouts/scripts/default.phtml:54
+#: application/layouts/scripts/default.phtml:60
 msgid "Find next army"
 msgstr "Znajdź następną armię"
 
-#: application/layouts/scripts/default.phtml:60
+#: application/layouts/scripts/default.phtml:66
 msgid "Quit army"
 msgstr "Zastopuj armię"
 
-#: application/layouts/scripts/default.phtml:71
+#: application/layouts/scripts/default.phtml:77
 msgid "Eraser"
 msgstr "Gumka"
 
-#: application/layouts/scripts/default.phtml:72
+#: application/layouts/scripts/default.phtml:78
 msgid "Up"
 msgstr "Góra"
 
-#: application/layouts/scripts/default.phtml:73
+#: application/layouts/scripts/default.phtml:79
 msgid "Down"
 msgstr "Dół"
 
-#: application/layouts/scripts/default.phtml:77
+#: application/layouts/scripts/default.phtml:83
 msgid "Exit editor"
 msgstr "Opuść edytor"
 
-#: application/layouts/scripts/default.phtml:80
+#: application/layouts/scripts/default.phtml:86
 msgid "Publish"
 msgstr "Publikuj"
 
-#: application/layouts/scripts/default.phtml:85
+#: application/layouts/scripts/default.phtml:91
 msgid "Loading"
 msgstr "Wczytywanie"
 
-#: application/layouts/scripts/default.phtml:89
-#: application/layouts/scripts/default.phtml:91
+#: application/layouts/scripts/default.phtml:95
+#: application/layouts/scripts/default.phtml:97
 msgid "Exit game"
 msgstr "Opuść grę"
 
-#: application/layouts/scripts/default.phtml:101
+#: application/layouts/scripts/default.phtml:107
 msgid "Show other players moves"
 msgstr "Pokazuj ruchy innych graczy"
 
-#: application/layouts/scripts/default.phtml:103
+#: application/layouts/scripts/default.phtml:109
 msgid "Show others"
 msgstr "Pokaż innych"
 
-#: application/layouts/scripts/default.phtml:107
+#: application/layouts/scripts/default.phtml:113
 msgid "Turn sound on/off"
 msgstr "Włącz/wyłącz dźwięk"
 
-#: application/layouts/scripts/default.phtml:109
+#: application/layouts/scripts/default.phtml:115
 msgid "Sound"
 msgstr "Dźwięk"
 
-#: application/layouts/scripts/default.phtml:113
+#: application/layouts/scripts/default.phtml:119
 msgid "Toggle full screen"
 msgstr "Przełącz na pełen ekran"
 
-#: application/layouts/scripts/default.phtml:115
+#: application/layouts/scripts/default.phtml:121
 msgid "Full screen"
 msgstr "Pełen ekran"
 
@@ -1324,6 +1338,9 @@ msgstr "Zapłać za pomocą PayPal"
 #: application/views/scripts/tournament/play.phtml:2
 msgid "Tournament stage"
 msgstr "Etap turnieju"
+
+#~ msgid "Gold"
+#~ msgstr "Złoto"
 
 #~ msgid "Incorrect login details"
 #~ msgstr "Nieprawidłowy e-mail lub hasło!"

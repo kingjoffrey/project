@@ -12,7 +12,7 @@ else
     export APPLICATION_ENV=cli
 
     echo "Starting..."
-    /bin/cp $path/../log/1_.log $path/../log/$data-$czas.1_.log
+    /bin/cp $path/../log/1_.log $path/../log/$data-$czas.wsServer.log
     
     cd $path
     
