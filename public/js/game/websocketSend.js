@@ -72,7 +72,7 @@ var WebSocketSendGame = new function () {
         if (!Turn.isMy()) {
             return
         }
-        if (GameGui.lock) {
+        if (GameGui.getLock()) {
             return
         }
 
@@ -106,7 +106,7 @@ var WebSocketSendGame = new function () {
         if (!Turn.isMy()) {
             return
         }
-        if (GameGui.lock) {
+        if (GameGui.getLock()) {
             return
         }
 

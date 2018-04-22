@@ -258,18 +258,18 @@ var Move = new function () {
         }
     }
     this.end = function (r, ii) {
-        if (r.battle) { // była walka
+        if (r.battle) {                                                                        // "A" była walka
             handleMyUpkeepAsDefender(r.battle.defenders)
             handleMyUpkeepAsAttacker(oldArmy, r.battle.attack, r.color)
 
-            if (r.battle.victory) { // ATAKUJĄCY wygrał
+            if (r.battle.victory) {                                                        // "Aa" ATAKUJĄCY wygrał
                 handleTowerId(r.army, r.battle.towerId, r.color)
                 handleCastleId(r.army, r.battle.castleId, r.color)
                 handleDefendersLost(r.battle.defenders)
 
                 oldArmy.update(r.army)
 
-                if (Me.colorEquals(r.color)) {
+                if (Me.colorEquals(r.color)) {                                                 // wygrałem
                     if (r.battle.castleId) {
                         CastleWindow.show(Me.getCastle(r.battle.castleId))
                     } else if (Me.getArmy(oldArmy.getArmyId()).getMoves()) {
@@ -278,10 +278,10 @@ var Move = new function () {
                     }
                     GameGui.unlock()
                 }
-            } else { // ATAKUJĄCY przegrał
+            } else {                                                                       // "Ab" ATAKUJĄCY przegrał
                 handleDefendersWon(r.battle.defenders)
 
-                if (Me.colorEquals(r.color)) {
+                if (Me.colorEquals(r.color)) { // przegrałem
                     Message.simple('Battle', 'LOST')
                     GameGui.unlock()
                 }
@@ -289,9 +289,9 @@ var Move = new function () {
                 Players.get(r.color).getArmies().destroy(oldArmy.getArmyId())
             }
             Execute.setExecuting(0)
-        } else { // nie było walki
+        } else {                                                                            // "B" nie było walki
             oldArmy.update(r.army)
-            if (Me.colorEquals(r.color)) { // mój ruch bez walki
+            if (Me.colorEquals(r.color)) {                                                  // mój ruch bez walki
                 if (oldArmy.getMoves() > 0) {
                     Me.selectArmy(r.army.id)
                     handleMyRuins()
@@ -300,6 +300,7 @@ var Move = new function () {
             }
             Execute.setExecuting(0)
         }
+
         for (var i in r.deletedIds) {
             Players.get(r.color).getArmies().destroy(r.deletedIds[i])
         }

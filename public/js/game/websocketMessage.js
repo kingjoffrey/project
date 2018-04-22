@@ -85,8 +85,10 @@ var WebSocketMessageGame = new function () {
                     break
 
                 case 'error':
-                    Message.error(r.msg);
-                    GameGui.unlock();
+                    Message.error(r.msg)
+                    if (Turn.isMy()) {
+                        GameGui.unlock()
+                    }
                     break
 
                 case 'open':
@@ -99,6 +101,10 @@ var WebSocketMessageGame = new function () {
                     castle.setProductionTurn(0)
 
                     CastleWindow.show(castle)
+
+                    if (Turn.isMy()) {
+                        GameGui.unlock()
+                    }
                     break
 
                 case 'statistics':

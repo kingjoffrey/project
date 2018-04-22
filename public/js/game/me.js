@@ -182,7 +182,7 @@ var Me = new function () {
             return
         }
 
-        if (GameGui.lock) {
+        if (GameGui.getLock()) {
             return
         }
 
@@ -201,7 +201,7 @@ var Me = new function () {
             return
         }
 
-        if (GameGui.lock) {
+        if (GameGui.getLock()) {
             return
         }
 
@@ -263,7 +263,7 @@ var Me = new function () {
         isSelected = value
     }
     this.armyClick = function (armyId) {
-        if (GameGui.lock) {
+        if (GameGui.getLock()) {
             return
         }
 

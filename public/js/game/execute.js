@@ -71,11 +71,17 @@ var Execute = new function () {
                         if (Players.get(r.color).isComputer() && !GameGui.getShow()) {
                             Ruins.handle(r)
                             Execute.setExecuting(0)
+                            if (Turn.isMy()) {
+                                GameGui.unlock()
+                            }
                         } else {
                             GameScene.centerOn(r.army.x, r.army.y, function () {
                                 setTimeout(function () {
                                     Ruins.handle(r)
                                     Execute.setExecuting(0)
+                                    if (Turn.isMy()) {
+                                        GameGui.unlock()
+                                    }
                                 }, 2000)
                             })
                         }
@@ -91,6 +97,7 @@ var Execute = new function () {
                         Me.setParentArmyId(r.parentArmy.id)
                         Me.selectArmy(r.childArmy.id)
                         Execute.setExecuting(0)
+                        GameGui.unlock()
                     } else if (Players.get(r.color).isComputer() && !GameGui.getShow()) {
                         //zoomer.setCenterIfOutOfScreen(r.parentArmy.x * 40, r.parentArmy.y * 40);
                         var armies = Players.get(r.color).getArmies()
@@ -111,6 +118,7 @@ var Execute = new function () {
                 case 'join':
                     if (Turn.isMy()) {
                         Message.remove()
+                        GameGui.unlock()
                     }
                     //zoomer.setCenterIfOutOfScreen(r.army.x * 40, r.army.y * 40);
                     if (Players.get(r.color).isComputer() && !GameGui.getShow()) {
@@ -135,6 +143,7 @@ var Execute = new function () {
                 case 'disband':
                     if (Turn.isMy()) {
                         Message.remove()
+                        GameGui.unlock()
                         Me.upkeepIncrement(-Me.getArmies().get(r.id).countUpkeep())
                     }
                     Players.get(r.color).getArmies().destroy(r.id)
@@ -144,9 +153,9 @@ var Execute = new function () {
                 case 'bulbul':
                     if (Turn.isMy()) {
                         Message.remove()
+                        GameGui.unlock()
                         Me.upkeepIncrement(-Me.getArmies().get(r.id).countUpkeep())
                         Message.simple(translations.Moves, translations.Yourshipsank)
-                        GameGui.unlock()
                     }
                     Players.get(r.color).getArmies().destroy(r.id)
                     Execute.setExecuting(0)
@@ -162,6 +171,7 @@ var Execute = new function () {
                             Players.get(r.color).getArmies().handle(r.army)
                             if (Me.colorEquals(r.color)) {
                                 Message.remove()
+                                GameGui.unlock()
                             }
                             Execute.setExecuting(0)
                         })
@@ -176,6 +186,7 @@ var Execute = new function () {
                     if (Me.colorEquals(r.color)) {
                         Sound.play('gold1');
                         Message.remove()
+                        GameGui.unlock()
                         Me.goldIncrement(r.gold)
                         Execute.setExecuting(0)
                     } else {
@@ -197,6 +208,7 @@ var Execute = new function () {
                     castle.setDefense(r.defense)
                     if (Me.colorEquals(r.color)) {
                         Message.remove()
+                        GameGui.unlock()
                         Me.goldIncrement(-r.gold)
                         Me.incomeIncrement(Me.getCastle(r.castleId).getIncome() / r.defense)
                         Execute.setExecuting(0)

@@ -184,17 +184,16 @@ var GameGui = new function () {
         WebSocketSendMain.controller('over', 'index', {'id': Game.getGameId()})
     }
     this.unlock = function () {
-        PickerGame.cursorChange()
-
         lock = false;
         $('#nextTurn').removeClass('buttonOff');
         $('#nextArmy').removeClass('buttonOff');
+        PickerGame.cursorChange()
     }
     this.lock = function () {
-        PickerGame.cursorChange()
         lock = true
         $('#nextTurn').addClass('buttonOff');
         $('#nextArmy').addClass('buttonOff');
+        PickerGame.cursorChange()
     }
     this.getLock = function () {
         return lock

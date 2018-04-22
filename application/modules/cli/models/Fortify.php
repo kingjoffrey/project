@@ -13,9 +13,9 @@ class Cli_Model_Fortify
 
         $game = Cli_CommonHandler::getGameFromUser($user);
         $armies = $game->getPlayers()->getPlayer($user->parameters['me']->getColor())->getArmies();
-        if ($armies->hasArmy($armyId)) {
+//        if ($armies->hasArmy($armyId)) {
             $armies->getArmy($armyId)->setFortified($fortify, $game->getId(), $handler->getDb());
-        }
+//        }
     }
 
 }
