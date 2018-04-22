@@ -113,7 +113,6 @@ var Me = new function () {
         parentArmyId = armyId
     }
     this.selectArmy = function (armyId) {
-        PickerCommon.setCursorLock(1)
         PickerCommon.cursor(0)
 
         var army = this.getArmy(armyId),
@@ -142,12 +141,11 @@ var Me = new function () {
         selectedArmyId = armyId
 
         AStar.showRange(army)
-        PickerCommon.setCursorLock(0)
         PickerGame.cursorChange()
     }
-    this.setSelectedArmyId = function (armyId) {
-        selectedArmyId = armyId
-    }
+    // this.setSelectedArmyId = function (armyId) {
+    //     selectedArmyId = armyId
+    // }
     this.deselectArmy = function (skipJoin) {
         if (notSet(skipJoin) && parentArmyId && selectedArmyId) {
             var selectedArmy = this.getArmy(selectedArmyId),

@@ -4,8 +4,7 @@ var PickerCommon = new function () {
         intersects,
         camera,
         container,
-        vector,
-        cursorLock = 0
+        vector
 
     this.reset = function () {
         rayCaster = new THREE.Raycaster()
@@ -79,53 +78,49 @@ var PickerCommon = new function () {
         return isSet(intersects[0])
     }
     this.cursor = function (type) {
-        if (cursorLock) {
-            $('body #main #game canvas').css('cursor', 'url(/img/game/cursors/wait.png) 11 11, auto')
-        } else {
-            switch (type){
-                case 'attack':
-                    $('body #main #game canvas').css('cursor', 'url(/img/game/cursors/attack.png) 11 11, auto')
-                    break
-                case 'enter':
-                    $('body #main #game canvas').css('cursor', 'url(/img/game/cursors/enter.png) 11 11, auto')
-                    break
-                case 'fly':
-                    $('body #main #game canvas').css('cursor', 'url(/img/game/cursors/fly.png) 11 11, auto')
-                    break
-                case 'grab':
-                    $('body #main #game canvas').css('cursor', 'url(/img/game/cursors/grab.png) 11 11, auto')
-                    break
-                case 'impenetrable':
-                    $('body #main #game canvas').css('cursor', 'url(/img/game/cursors/impenetrable.png) 11 11, auto')
-                    break
-                case 'join':
-                    $('body #main #game canvas').css('cursor', 'url(/img/game/cursors/join.png) 11 11, auto')
-                    break
-                case 'move':
-                    $('body #main #game canvas').css('cursor', 'url(/img/game/cursors/move.png) 11 11, auto')
-                    break
-                case 'open':
-                    $('body #main #game canvas').css('cursor', 'url(/img/game/cursors/open.png), auto')
-                    break
-                case 'select':
-                    $('body #main #game canvas').css('cursor', 'url(/img/game/cursors/select.png) 11 11, auto')
-                    break
-                case 'split':
-                    $('body #main #game canvas').css('cursor', 'url(/img/game/cursors/split.png) 11 11, auto')
-                    break
-                case 'swim':
-                    $('body #main #game canvas').css('cursor', 'url(/img/game/cursors/swim.png) 11 11, auto')
-                    break
-                case 'walk':
-                    $('body #main #game canvas').css('cursor', 'url(/img/game/cursors/walk.png) 11 11, auto')
-                    break
-                default:
-                    $('body #main #game canvas').css('cursor', 'default')
-            }
+        switch (type) {
+            case 'attack':
+                $('body #main #game canvas').css('cursor', 'url(/img/game/cursors/attack.png) 11 11, auto')
+                break
+            case 'enter':
+                $('body #main #game canvas').css('cursor', 'url(/img/game/cursors/enter.png) 11 11, auto')
+                break
+            case 'fly':
+                $('body #main #game canvas').css('cursor', 'url(/img/game/cursors/fly.png) 11 11, auto')
+                break
+            case 'grab':
+                $('body #main #game canvas').css('cursor', 'url(/img/game/cursors/grab.png) 11 11, auto')
+                break
+            case 'impenetrable':
+                $('body #main #game canvas').css('cursor', 'url(/img/game/cursors/impenetrable.png) 11 11, auto')
+                break
+            case 'join':
+                $('body #main #game canvas').css('cursor', 'url(/img/game/cursors/join.png) 11 11, auto')
+                break
+            case 'move':
+                $('body #main #game canvas').css('cursor', 'url(/img/game/cursors/move.png) 11 11, auto')
+                break
+            case 'open':
+                $('body #main #game canvas').css('cursor', 'url(/img/game/cursors/open.png), auto')
+                break
+            case 'select':
+                $('body #main #game canvas').css('cursor', 'url(/img/game/cursors/select.png) 11 11, auto')
+                break
+            case 'split':
+                $('body #main #game canvas').css('cursor', 'url(/img/game/cursors/split.png) 11 11, auto')
+                break
+            case 'swim':
+                $('body #main #game canvas').css('cursor', 'url(/img/game/cursors/swim.png) 11 11, auto')
+                break
+            case 'wait':
+                $('body #main #game canvas').css('cursor', 'url(/img/game/cursors/wait.png) 11 11, auto')
+                break
+            case 'walk':
+                $('body #main #game canvas').css('cursor', 'url(/img/game/cursors/walk.png) 11 11, auto')
+                break
+            default:
+                $('body #main #game canvas').css('cursor', 'default')
         }
-    }
-    this.setCursorLock = function (a) {
-        cursorLock = a
     }
     /**
      *

@@ -3,7 +3,7 @@
 class Cli_Model_Fortify
 {
 
-    function  __construct($armyId, $fortify, Devristo\Phpws\Protocol\WebSocketTransportInterface $user, $handler)
+    function __construct($armyId, $fortify, Devristo\Phpws\Protocol\WebSocketTransportInterface $user, $handler)
     {
         if (empty($armyId)) {
             $l = new Coret_Model_Logger('Cli_Model_Fortify');
@@ -12,7 +12,10 @@ class Cli_Model_Fortify
         }
 
         $game = Cli_CommonHandler::getGameFromUser($user);
-        $game->getPlayers()->getPlayer($user->parameters['me']->getColor())->getArmies()->getArmy($armyId)->setFortified($fortify, $game->getId(), $handler->getDb());
+        $armies = $game->getPlayers()->getPlayer($user->parameters['me']->getColor())->getArmies();
+        if ($armies->hasArmy($armyId)) {
+            $armies->getArmy($armyId)->setFortified($fortify, $game->getId(), $handler->getDb());
+        }
     }
 
 }

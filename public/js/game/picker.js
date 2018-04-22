@@ -103,6 +103,11 @@ var PickerGame = new function () {
 
     this.cursorChange = function () {
         if (PickerCommon.intersects()) {
+            if (GameGui.getLock()) {
+                PickerCommon.cursor('wait')
+                return
+            }
+
             var x = PickerCommon.convertX(), y = PickerCommon.convertZ()
             AStar.cursorPosition(x, y)
 // turn
@@ -181,13 +186,13 @@ var PickerGame = new function () {
                         PickerCommon.cursor('grab')
                     }
                 }
-            } else {
-// wait
-                PickerCommon.cursor('wait')
             }
         } else {
             PickerCommon.cursor(0)
         }
+    }
+    this.cursorWait = function () {
+        PickerCommon.cursor('wait')
     }
 
     this.onContainerMouseDown = function (event) {

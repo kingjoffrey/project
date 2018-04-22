@@ -51,6 +51,8 @@ var WebSocketSendGame = new function () {
             return
         }
 
+        GameGui.lock()
+
         Me.deselectArmy()
 
         var token = {
@@ -129,6 +131,8 @@ var WebSocketSendGame = new function () {
             return
         }
 
+        GameGui.lock()
+
         Me.setParentArmyId(null)
         var token = {
             'type': 'join',
@@ -150,6 +154,9 @@ var WebSocketSendGame = new function () {
         if (!Me.getSelectedArmyId()) {
             return
         }
+
+        GameGui.lock()
+
         Me.deselectArmy(1)
 
         var token = {
@@ -173,7 +180,8 @@ var WebSocketSendGame = new function () {
 
         var armyId = Me.getSelectedArmyId()
 
-        GameGui.setLock()
+        GameGui.lock()
+
         GameModels.movePathCircles()
         Me.deselectArmy(1)
 
@@ -218,6 +226,8 @@ var WebSocketSendGame = new function () {
             return
         }
 
+        GameGui.lock()
+
         var token = {
             'type': 'split',
             'armyId': Me.getSelectedArmyId(),
@@ -234,13 +244,15 @@ var WebSocketSendGame = new function () {
             return;
         }
 
-        // if (!Turn.isMy()) {
-        //     return
-        // }
+        if (!Turn.isMy()) {
+            return
+        }
 
-        //if (Me.findHero()) {
-        //    return;
-        //}
+        if (Me.findHero()) {
+           return;
+        }
+
+        GameGui.lock()
 
         Me.deselectArmy()
 
@@ -260,6 +272,8 @@ var WebSocketSendGame = new function () {
         if (!Turn.isMy()) {
             return
         }
+
+        GameGui.lock()
 
         Me.deselectArmy()
 
@@ -284,6 +298,8 @@ var WebSocketSendGame = new function () {
             return;
         }
 
+        GameGui.lock()
+
         var token = {
             'type': 'raze',
             'armyId': Me.getSelectedArmyId()
@@ -305,6 +321,8 @@ var WebSocketSendGame = new function () {
             Message.error(translations.noCastleToBuildDefense);
             return;
         }
+
+        GameGui.lock()
 
         var token = {
             'type': 'defense',
@@ -408,6 +426,8 @@ var WebSocketSendGame = new function () {
             return
         }
 
+        GameGui.lock()
+
         var token = {
             'type': 'production',
             'castleId': castleId,
@@ -422,6 +442,8 @@ var WebSocketSendGame = new function () {
             Message.error(translations.sorryServerIsDisconnected)
             return
         }
+
+        GameGui.lock()
 
         var token = {
             'type': 'surrender'

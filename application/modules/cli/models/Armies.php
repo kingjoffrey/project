@@ -19,13 +19,18 @@ class Cli_Model_Armies
         $this->_armies[$armyId] = $army;
     }
 
+    public function hasArmy($armyId)
+    {
+        return isset($this->_armies[$armyId]);
+    }
+
     /**
      * @param $armyId
      * @return Cli_Model_Army
      */
     public function getArmy($armyId)
     {
-        if (!isset($this->_armies[$armyId])) {
+        if (!$this->hasArmy($armyId)) {
             Coret_Model_Logger::debug(debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 4));
             throw new Exception('No army with armyId=' . $armyId);
         }
