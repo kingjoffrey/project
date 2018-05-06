@@ -139,14 +139,18 @@ var GameScene = new function () {
         camera.position.z += 2
     }
     this.moveCameraAway = function () {
-        camera.position.y += 2
-        camera.position.x -= 2
-        camera.position.z += 2
+        if (camera.position.y < 230) {
+            camera.position.y += 2
+            camera.position.x -= 2
+            camera.position.z += 2
+        }
     }
     this.moveCameraClose = function () {
-        camera.position.y -= 2
-        camera.position.x += 2
-        camera.position.z -= 2
+        if (camera.position.y > 12) {
+            camera.position.y -= 2
+            camera.position.x += 2
+            camera.position.z -= 2
+        }
     }
     this.get = function () {
         return scene

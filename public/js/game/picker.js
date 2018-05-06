@@ -4,6 +4,8 @@ var PickerGame = new function () {
         move = 0,
         cursorMesh = 0,
         leftClick = 0,
+        scaling = false,
+        dist = 0,
         handleDownStart = function (event) {
             leftClick = 1
             move = 0
@@ -211,10 +213,15 @@ var PickerGame = new function () {
         }
     }
     this.onContainerTouchStart = function (event) {
-        event.offsetX = event.changedTouches[0].clientX
-        event.offsetY = event.changedTouches[0].clientY
-
-        handleDownStart(event)
+        if (event.touches.length === 2) {
+            scaling = true
+            dist = 0
+            dragStart = 0
+        } else {
+            event.offsetX = event.changedTouches[0].clientX
+            event.offsetY = event.changedTouches[0].clientY
+            handleDownStart(event)
+        }
     }
     this.onContainerMouseMove = function (event) {
         if (isTouchDevice()) {
@@ -223,10 +230,25 @@ var PickerGame = new function () {
         handleMove(event)
     }
     this.onContainerTouchMove = function (event) {
-        event.offsetX = event.changedTouches[0].clientX
-        event.offsetY = event.changedTouches[0].clientY
+        if (scaling) {
+            var tmp = Math.hypot(
+                event.touches[0].pageX - event.touches[1].pageX,
+                event.touches[0].pageY - event.touches[1].pageY
+            )
 
-        handleMove(event)
+            if (tmp > dist) {
+                GameScene.moveCameraAway()
+            } else {
+                GameScene.moveCameraClose()
+            }
+
+            dist = tmp
+        } else {
+            event.offsetX = event.changedTouches[0].clientX
+            event.offsetY = event.changedTouches[0].clientY
+
+            handleMove(event)
+        }
     }
     this.onContainerMouseUp = function (event) {
         if (isTouchDevice()) {
@@ -242,6 +264,10 @@ var PickerGame = new function () {
     }
     this.onContainerTouchEnd = function (event) {
         //console.log('touchEnd')
-        handleUp(event)
+        if (scaling) {
+            scaling = false
+        } else {
+            handleUp(event)
+        }
     }
 }

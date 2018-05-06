@@ -20,13 +20,9 @@ var PickerCommon = new function () {
         $('canvas')
             .mousewheel(function (event) {
                 if (event.deltaY > 0) {
-                    if (camera.position.y > 12) {
-                        GameScene.moveCameraClose()
-                    }
+                    GameScene.moveCameraClose()
                 } else {
-                    if (camera.position.y < 230) {
-                        GameScene.moveCameraAway()
-                    }
+                    GameScene.moveCameraAway()
                 }
             })
             .on('mousedown', picker.onContainerMouseDown)
