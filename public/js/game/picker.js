@@ -190,10 +190,6 @@ var PickerGame = new function () {
             PickerCommon.cursor(0)
         }
     }
-    this.cursorWait = function () {
-        PickerCommon.cursor('wait')
-    }
-
     this.onContainerMouseDown = function (event) {
         if (isTouchDevice()) {
             return
