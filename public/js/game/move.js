@@ -271,7 +271,9 @@ var Move = new function () {
 
                 if (Me.colorEquals(r.color)) {                                                 // wygrałem
                     if (r.battle.castleId) {
-                        CastleWindow.show(Me.getCastle(r.battle.castleId))
+                        setTimeout(function () {
+                            CastleWindow.show(Me.getCastle(r.battle.castleId))
+                        }, 500)
                     } else if (Me.getArmy(oldArmy.getArmyId()).getMoves()) {
                         Me.selectArmy(oldArmy.getArmyId())
                         GameScene.centerOn(Me.getSelectedArmy().getX(), Me.getSelectedArmy().getY())
