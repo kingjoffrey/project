@@ -23,14 +23,18 @@ class LoginController extends Coret_Controller_AuthenticateFrontend
 
     public function indexAction()
     {
-        $mLanguage = new Application_Model_Language();
+        if ($this->_auth->hasIdentity()) {
+            $this->redirect('/' . Zend_Registry::get('lang') . '/');
+        } else {
+            $mLanguage = new Application_Model_Language();
 
-        $this->view->langForm = new Application_Form_Language(array('langList' => $mLanguage->get()));
-        $this->view->form = new Application_Form_Auth();
+            $this->view->langForm = new Application_Form_Language(array('langList' => $mLanguage->get()));
+            $this->view->form = new Application_Form_Auth();
 
-        parent::indexAction();
+            parent::indexAction();
 
-        $this->html();
+            $this->html();
+        }
     }
 
     public function anonymousAction()
@@ -68,38 +72,42 @@ class LoginController extends Coret_Controller_AuthenticateFrontend
 
     public function registrationAction()
     {
-        $this->html();
+        if ($this->_auth->hasIdentity()) {
+            $this->redirect('/' . Zend_Registry::get('lang') . '/');
+        } else {
+            $this->html();
 
-        $form = new Application_Form_Registration();
-        if ($this->_request->isPost()) {
-            if ($form->isValid($this->_request->getPost())) {
-                $mHNG = new Cli_Model_HeroNameGenerator();
+            $form = new Application_Form_Registration();
+            if ($this->_request->isPost()) {
+                if ($form->isValid($this->_request->getPost())) {
+                    $mHNG = new Cli_Model_HeroNameGenerator();
 
-                $heroName = $mHNG->generateHeroName();
+                    $heroName = $mHNG->generateHeroName();
 
-                $playerName = explode(' ', $heroName);
+                    $playerName = explode(' ', $heroName);
 
-                $data = array(
-                    'firstName' => $playerName[0],
-                    'lastName' => $playerName[1],
-                    'login' => $this->_request->getParam('login'),
-                    'password' => md5($this->_request->getParam('password'))
-                );
+                    $data = array(
+                        'firstName' => $playerName[0],
+                        'lastName' => $playerName[1],
+                        'login' => $this->_request->getParam('login'),
+                        'password' => md5($this->_request->getParam('password'))
+                    );
 
-                $mPlayer = new Application_Model_Player();
-                if ($playerId = $mPlayer->createPlayer($data)) {
-                    $mHero = new Application_Model_Hero($playerId);
-                    $mHero->createHero($heroName);
+                    $mPlayer = new Application_Model_Player();
+                    if ($playerId = $mPlayer->createPlayer($data)) {
+                        $mHero = new Application_Model_Hero($playerId);
+                        $mHero->createHero($heroName);
 
-                    $this->_authAdapter = $this->getAuthAdapter($form->getValues());
-                    $this->_auth->authenticate($this->_authAdapter);
-                    $this->handleAuthenticated();
+                        $this->_authAdapter = $this->getAuthAdapter($form->getValues());
+                        $this->_auth->authenticate($this->_authAdapter);
+                        $this->handleAuthenticated();
+                    }
+                } else {
+                    $this->view->form = $form;
                 }
             } else {
                 $this->view->form = $form;
             }
-        } else {
-            $this->view->form = $form;
         }
     }
 
