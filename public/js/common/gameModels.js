@@ -308,8 +308,9 @@ var GameModels = new function () {
     this.clearMoveCircles = function () {
         for (var i in moveCircles) {
             GameScene.remove(moveCircles[i])
+            delete moveCircles[i]
         }
-        moveCircles = []
+        // moveCircles = []
     }
     this.clearPathCircles = function () {
         for (var i in pathCircles) {

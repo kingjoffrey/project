@@ -752,6 +752,7 @@ div.table table.unitTable td:first {
 }
 
 #goldAndStats {
+    z-index: 901;
     text-shadow: none;
     position: absolute;
 }
@@ -782,6 +783,17 @@ div.table table.unitTable td:first {
 
 .text-center {
     text-align: center;
+}
+
+#wait {
+    position: absolute;
+    z-index: 899;
+    width: 100vw;
+    height: 100vh;
+    display: none;
+    opacity: 0.5;
+    background: #000;
+    cursor: url(/img/game/cursors/wait.png) 11 11, auto;
 }
 
 #terrain {
@@ -829,6 +841,7 @@ div.table table.unitTable td:first {
 
 /* ----------------- */
 #armyButtons, #menuButtons {
+    z-index: 902;
     border: none;
     border-radius: 0px;
     background: none;
@@ -1016,6 +1029,7 @@ div.table table.unitTable td:first {
     z-index: 99999;
     margin: 2.1vw;
     display: none;
+    cursor: url(/img/game/cursors/wait.png) 11 11, auto;
 }
 
 #gameMenu .row {

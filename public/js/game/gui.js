@@ -185,15 +185,17 @@ var GameGui = new function () {
     }
     this.unlock = function () {
         lock = false;
-        $('#nextTurn').removeClass('buttonOff');
-        $('#nextArmy').removeClass('buttonOff');
+        $('#nextTurn').removeClass('buttonOff')
+        $('#nextArmy').removeClass('buttonOff')
         PickerGame.cursorChange()
+        $('#wait').hide()
     }
     this.lock = function () {
         lock = true
-        $('#nextTurn').addClass('buttonOff');
-        $('#nextArmy').addClass('buttonOff');
+        $('#nextTurn').addClass('buttonOff')
+        $('#nextArmy').addClass('buttonOff')
         PickerGame.cursorChange()
+        $('#wait').show()
     }
     this.getLock = function () {
         return lock
