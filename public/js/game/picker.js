@@ -104,7 +104,6 @@ var PickerGame = new function () {
     this.cursorChange = function () {
         if (PickerCommon.intersects()) {
             if (GameGui.getLock()) {
-                PickerCommon.cursor('wait')
                 return
             }
 

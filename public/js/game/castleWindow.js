@@ -179,10 +179,10 @@ var CastleWindow = new function () {
             var title = castle.getName()
         }
 
-        setTimeout(function () {
+        // setTimeout(function () {
             messageId = Message.show(title, castleWindow)
             Message.adjust(messageId)
-        }, 300)
+        // }, 300)
     }
     this.raze = function () {
         if (!Me.getSelectedArmyId()) {
