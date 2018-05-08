@@ -27,15 +27,15 @@ class Cli_Model_Path
 
         $this->_movementType = $this->_army->getMovementType();
 
-        $this->computeCurrentPath(false);
-    }
-
-    public function computeCurrentPath($pretend)
-    {
         $destination = end($this->_fullPath);
         $this->_fullDestinationX = $destination['x'];
         $this->_fullDestinationY = $destination['y'];
 
+        $this->computeCurrentPath(false);
+    }
+
+    public function computeCurrentPath($resetMovesLeft)
+    {
         $skip = null;
         $stop = null;
 
@@ -49,7 +49,7 @@ class Cli_Model_Path
                     foreach ($this->_army->getFlyingSoldiers()->getKeys() as $soldierId) {
                         $soldier = $this->_army->getFlyingSoldiers()->getSoldier($soldierId);
                         if (!isset($soldiersMovesLeft[$soldierId])) {
-                            if ($pretend) {
+                            if ($resetMovesLeft) {
                                 $soldiersMovesLeft[$soldierId] = $soldier->getMoves();
                             } else {
                                 $soldiersMovesLeft[$soldierId] = $soldier->getMovesLeft();
@@ -75,7 +75,7 @@ class Cli_Model_Path
                     foreach ($this->_army->getSwimmingSoldiers()->getKeys() as $soldierId) {
                         $soldier = $this->_army->getSwimmingSoldiers()->getSoldier($soldierId);
                         if (!isset($soldiersMovesLeft[$soldierId])) {
-                            if ($pretend) {
+                            if ($resetMovesLeft) {
                                 $soldiersMovesLeft[$soldierId] = $soldier->getMoves();
                             } else {
                                 $soldiersMovesLeft[$soldierId] = $soldier->getMovesLeft();
@@ -101,7 +101,7 @@ class Cli_Model_Path
                     foreach ($this->_army->getFlyingSoldiers()->getKeys() as $soldierId) {
                         $soldier = $this->_army->getFlyingSoldiers()->getSoldier($soldierId);
                         if (!isset($soldiersMovesLeft[$soldierId])) {
-                            if ($pretend) {
+                            if ($resetMovesLeft) {
                                 $soldiersMovesLeft[$soldierId] = $soldier->getMoves();
                             } else {
                                 $soldiersMovesLeft[$soldierId] = $soldier->getMovesLeft();
@@ -147,7 +147,7 @@ class Cli_Model_Path
                     foreach ($this->_army->getHeroes()->getKeys() as $heroId) {
                         $hero = $this->_army->getHeroes()->getHero($heroId);
                         if (!isset($heroesMovesLeft[$heroId])) {
-                            if ($pretend) {
+                            if ($resetMovesLeft) {
                                 $heroesMovesLeft[$heroId] = $hero->getMoves();
                             } else {
                                 $heroesMovesLeft[$heroId] = $hero->getMovesLeft();
@@ -255,7 +255,19 @@ class Cli_Model_Path
 
     public function cutCurrentPathFromFull()
     {
+        $newFullPath = array();
+        $start = false;
+        foreach ($this->_fullPath as $step) {
+            if ($step == $this->_currentPathEnd) {
+                $start = true;
+            }
 
+            if ($start) {
+                $newFullPath[] = $step;
+            }
+        }
+
+        $this->_fullPath = $newFullPath;
     }
 
     public function getFullPath()
