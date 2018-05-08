@@ -125,7 +125,7 @@ class Cli_Model_Army
 
         $joinIds = null;
         $battleResult = new Cli_Model_BattleResult();
-        $enemies = new Cli_Model_Enemies($game, $path->getX(), $path->getY(), $this->_color);
+        $enemies = new Cli_Model_Enemies($game, $path->getCurrentDestinationX(), $path->getCurrentDestinationY(), $this->_color);
 
         if ($enemies->hasEnemies()) {
             $battle = new Cli_Model_Battle($this, $enemies, $game, $db, $battleResult);
@@ -151,12 +151,12 @@ class Cli_Model_Army
         }
 
         new Cli_Model_TowerHandler($player->getId(), $path, $game, $handler);
-        $ruinHandler = new Cli_Model_RuinHandler($path->getX(), $path->getY(), $this->getHeroes(), $game, $db);
+        $ruinHandler = new Cli_Model_RuinHandler($path->getCurrentDestinationX(), $path->getCurrentDestinationY(), $this->getHeroes(), $game, $db);
 
         $token = array(
             'color' => $this->_color,
             'army' => $this->toArray(),
-            'path' => $path->getCurrent(),
+            'path' => $path->getCurrentPath(),
             'battle' => $battleResult->toArray(),
             'deletedIds' => $joinIds,
             'type' => 'move'
@@ -195,12 +195,12 @@ class Cli_Model_Army
         $this->setMovesLeft($this->_FlyingSoldiers->saveMove($this->_x, $this->_y, $this->_movesLeft, $type, $path, $terrain, $gameId, $db));
 
         $game->getFields()->getField($this->_x, $this->_y)->removeArmy($this->_id);
-        $this->_x = $path->getX();
-        $this->_y = $path->getY();
+        $this->_x = $path->getCurrentDestinationX();
+        $this->_y = $path->getCurrentDestinationY();
         $game->getFields()->getField($this->_x, $this->_y)->addArmy($this->_id, $this->_color);
 
         $mArmy = new Application_Model_Army($gameId, $db);
-        $mArmy->updateArmyPosition($path->getEnd(), $this->_id);
+        $mArmy->updateArmyPosition($path->getCurrentPathEnd(), $this->_id);
     }
 
     public function getX()
@@ -578,12 +578,12 @@ class Cli_Model_Army
     {
         $start = false;
         $this->resetOldPath();
-        if (!is_array($path->getFull())) {
+        if (!is_array($path->getFullPath())) {
             Coret_Model_Logger::debug(debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 2));
             throw new Exception('brak full path');
         }
-        foreach ($path->getFull() as $step) {
-            if ($path->getX() == $step['x'] && $path->getY() == $step['y']) {
+        foreach ($path->getFullPath() as $step) {
+            if ($path->getCurrentDestinationX() == $step['x'] && $path->getCurrentDestinationY() == $step['y']) {
                 $start = true;
             }
 

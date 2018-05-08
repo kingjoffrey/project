@@ -97,7 +97,7 @@ class Cli_Model_Soldiers
             return $movesLeft;
         }
 
-        $current = $path->getCurrent();
+        $current = $path->getCurrentPath();
         $mSoldier = new Application_Model_UnitsInGame($gameId, $db);
 
         foreach ($this->getKeys() as $soldierId) {

@@ -84,4 +84,9 @@ class Cli_Model_Being
     {
         return $this->_id;
     }
+
+    public function getMoves()
+    {
+        return $this->_moves;
+    }
 }

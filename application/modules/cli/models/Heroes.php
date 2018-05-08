@@ -68,7 +68,7 @@ class Cli_Model_Heroes
             return $movesLeft;
         }
 
-        $current = $path->getCurrent();
+        $current = $path->getCurrentPath();
         $mHeroesInGame = new Application_Model_HeroesInGame($gameId, $db);
 
         foreach ($this->getKeys() as $heroId) {

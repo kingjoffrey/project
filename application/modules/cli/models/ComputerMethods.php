@@ -188,8 +188,8 @@ abstract class Cli_Model_ComputerMethods
                     continue;
                 }
 
-                $es = new Cli_Model_EnemyStronger($this->_army, $this->_game, $enemyX, $enemyY, $this->_color);
-                if (!$es->stronger()) {
+                $model_StrengthOfMyEnemy = new Cli_Model_StrengthOfMyEnemy($this->_army, $this->_game, $enemyX, $enemyY, $this->_color);
+                if (!$model_StrengthOfMyEnemy->isStronger()) {
                     continue;
                 }
 
@@ -228,8 +228,8 @@ abstract class Cli_Model_ComputerMethods
                     continue;
                 }
 
-                $es = new Cli_Model_EnemyStronger($this->_army, $this->_game, $enemyX, $enemyY, $this->_color);
-                if ($es->stronger()) {
+                $model_StrengthOfMyEnemy = new Cli_Model_StrengthOfMyEnemy($this->_army, $this->_game, $enemyX, $enemyY, $this->_color);
+                if ($model_StrengthOfMyEnemy->isStronger()) {
                     continue;
                 }
 

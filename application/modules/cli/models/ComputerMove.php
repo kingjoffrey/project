@@ -83,7 +83,7 @@ class Cli_Model_ComputerMove extends Cli_Model_ComputerMethods
         }
 
         $this->_l->log('SĄ ZAMKI WROGA');
-        $nwhc = new Cli_Model_NearestWeakerHostileCastle($this->_game, $this->_color, $this->_army);
+        $nwhc = new Cli_Model_NearestWeakestHostileCastle($this->_game, $this->_color, $this->_army);
         $path = $nwhc->getPath();
         if (!$path || !$path->exists()) {
             $this->_l->log('BRAK SŁABSZYCH ZAMKÓW WROGA');
@@ -138,8 +138,8 @@ class Cli_Model_ComputerMove extends Cli_Model_ComputerMethods
                 // pomijam tych za daleko
                 continue;
             }
-            $es = new Cli_Model_EnemyStronger($this->_army, $this->_game, $e->getX(), $e->getY(), $this->_color);
-            if ($es->stronger()) {
+            $model_StrengthOfMyEnemy = new Cli_Model_StrengthOfMyEnemy($this->_army, $this->_game, $e->getX(), $e->getY(), $this->_color);
+            if ($model_StrengthOfMyEnemy->isStronger()) {
                 // pomijam silniejszych wrogów
                 continue;
             }
@@ -255,23 +255,23 @@ class Cli_Model_ComputerMove extends Cli_Model_ComputerMethods
         $this->_l->log($this->_armyId, 'armyId: ');
 
         $path = new Cli_Model_Path($this->_army->getOldPath(), $this->_army, $this->_game->getTerrain());
-        $field = $this->_fields->getField($path->getDestinationX(), $path->getDestinationY());
+        $field = $this->_fields->getField($path->getFullDestinationX(), $path->getFullDestinationY());
 
         if (!$field->getArmies() && !$field->getCastleId()) {
-            $this->_l->log('BRAK ARMI I BRAK ZAMKU');
+            $this->_l->log('NIE MA ARMII ORAZ ZAMKU NA KOŃCU ŚCIEŻKI');
             $this->_army->resetOldPath();
             $this->next();
             return;
         } else {
-            $this->_l->log('ARMIES:');
+            $this->_l->log('FULL PATH DESTINATION ARMIES:');
             $this->_l->log($field->getArmies());
-            $this->_l->log('CastleId:');
+            $this->_l->log('FULL PATH DESTINATION CastleId:');
             $this->_l->log($field->getCastleId());
         }
 
         $current = array();
 
-        foreach ($path->getCurrent() as $step) {
+        foreach ($path->getCurrentPath() as $step) {
             $current[] = $step;
             if ($step['x'] == $this->_armyX && $step['y'] == $this->_armyY) {
                 continue;
@@ -281,7 +281,7 @@ class Cli_Model_ComputerMove extends Cli_Model_ComputerMethods
                     if ($color == $this->_color) {
                         $this->_l->log('armyId=' . $armyId . 'NA ŚCIEŻCE JEST MOJA ARMIA - DOŁĄCZAM');
 
-                        $path->setCurrent($current);
+                        $path->setCurrentPath($current);
                         $this->_army->resetOldPath();
                         $this->move($path);
                         return;
@@ -292,14 +292,14 @@ class Cli_Model_ComputerMove extends Cli_Model_ComputerMethods
             if ($enemies->hasEnemies()) {
                 $this->_l->log('NA ŚCIEŻCE JEST WRÓG - ATAKUJĘ');
 
-                $path->setCurrent($current);
+                $path->setCurrentPath($current);
                 $this->_army->resetOldPath();
                 $this->move($path);
                 return;
             }
         }
 
-        if ($path->getDestinationX() == $path->getX() && $path->getDestinationY() == $path->getY()) {
+        if ($path->getFullDestinationX() == $path->getCurrentDestinationX() && $path->getFullDestinationY() == $path->getCurrentDestinationY()) {
             $this->_army->saveOldPath($path);
             $this->move($path);
         } else {
