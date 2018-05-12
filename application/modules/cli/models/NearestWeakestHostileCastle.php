@@ -6,7 +6,7 @@ class Cli_Model_NearestWeakestHostileCastle
 
     public function __construct(Cli_Model_Game $game, $playerColor, Cli_Model_Army $army)
     {
-        $this->_l = new Coret_Model_Logger('Cli_Model_NearestWeakestHostileCastle');
+//        $l = new Coret_Model_Logger('Cli_Model_NearestWeakestHostileCastle');
 
         $nearestWeakestHostileCastles = array();
 

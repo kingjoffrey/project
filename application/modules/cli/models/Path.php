@@ -44,9 +44,6 @@ class Cli_Model_Path
         $currentPath = array();
 
         if ($resetMovesLeft) {
-            if (!$this->_cutFullPath) {
-                $this->_cutFullPath = $this->_fullPath;
-            }
             $fullPath = $this->_cutFullPath;
         } else {
             $fullPath = $this->_fullPath;
@@ -293,6 +290,10 @@ class Cli_Model_Path
         $start = false;
         $currentDestinationX = $this->_tmpCurrentPathEnd['x'];
         $currentDestinationY = $this->_tmpCurrentPathEnd['y'];
+
+        if (!$this->_cutFullPath) {
+            $this->_cutFullPath = $this->_fullPath;
+        }
 
         foreach ($this->_cutFullPath as $step) {
             if ($start) {
