@@ -2,14 +2,16 @@
 
 class Cli_Model_Path
 {
-    private $_currentPath = array();
+    private $_currentPath;
     private $_currentPathEnd;
-    private $_currentDestinationX;
-    private $_currentDestinationY;
 
     private $_fullPath;
     private $_fullDestinationX;
     private $_fullDestinationY;
+
+    private $_cutFullPath = null;
+
+    private $_tmpCurrentPathEnd;
 
     private $_terrain;
     private $_army;
@@ -27,7 +29,7 @@ class Cli_Model_Path
 
         $this->_movementType = $this->_army->getMovementType();
 
-        $destination = end($this->_fullPath);
+        $destination = end($fullPath);
         $this->_fullDestinationX = $destination['x'];
         $this->_fullDestinationY = $destination['y'];
 
@@ -39,7 +41,19 @@ class Cli_Model_Path
         $skip = null;
         $stop = null;
 
-        foreach ($this->_fullPath as $key => $step) {
+        $currentPath = array();
+
+        if ($resetMovesLeft) {
+            if (!$this->_cutFullPath) {
+                $this->_cutFullPath = $this->_fullPath;
+            }
+            $fullPath = $this->_cutFullPath;
+        } else {
+            $fullPath = $this->_fullPath;
+        }
+
+
+        foreach ($fullPath as $key => $step) {
             if (isset($step['cc'])) {
                 continue;
             }
@@ -126,7 +140,11 @@ class Cli_Model_Path
                     foreach ($this->_army->getWalkingSoldiers()->getKeys() as $soldierId) {
                         $soldier = $this->_army->getWalkingSoldiers()->getSoldier($soldierId);
                         if (!isset($soldiersMovesLeft[$soldierId])) {
-                            $soldiersMovesLeft[$soldierId] = $soldier->getMovesLeft();
+                            if ($resetMovesLeft) {
+                                $soldiersMovesLeft[$soldierId] = $soldier->getMoves();
+                            } else {
+                                $soldiersMovesLeft[$soldierId] = $soldier->getMovesLeft();
+                            }
                         }
 
                         $soldiersMovesLeft[$soldierId] -= $soldier->getStepCost($this->_terrain, $step['t'], $this->_movementType);
@@ -174,9 +192,9 @@ class Cli_Model_Path
             }
         }
 
-        foreach ($this->_fullPath as $key => $step) {
+        foreach ($fullPath as $key => $step) {
             if (isset($step['cc'])) {
-                $this->_currentPath[] = array(
+                $currentPath[] = array(
                     'x' => $step['x'],
                     'y' => $step['y'],
                     't' => $step['t'],
@@ -189,7 +207,7 @@ class Cli_Model_Path
                 break;
             }
 
-            $this->_currentPath[] = array(
+            $currentPath[] = array(
                 'x' => $step['x'],
                 'y' => $step['y'],
                 't' => $step['t'],
@@ -205,19 +223,32 @@ class Cli_Model_Path
             }
         }
 
-        $this->_currentPathEnd = end($this->_currentPath);
-        $this->_currentDestinationX = $this->_currentPathEnd['x'];
-        $this->_currentDestinationY = $this->_currentPathEnd['y'];
+        $this->_tmpCurrentPathEnd = end($currentPath);
+
+        if (!$resetMovesLeft) {
+            $this->_currentPath = $currentPath;
+            $this->_currentPathEnd = $this->_tmpCurrentPathEnd;
+        }
+    }
+
+    public function getTmpCurrentDestinationX()
+    {
+        return $this->_tmpCurrentPathEnd['x'];
+    }
+
+    public function getTmpCurrentDestinationY()
+    {
+        return $this->_tmpCurrentPathEnd['y'];
     }
 
     public function getCurrentDestinationX()
     {
-        return $this->_currentDestinationX;
+        return $this->_currentPathEnd['x'];
     }
 
     public function getCurrentDestinationY()
     {
-        return $this->_currentDestinationY;
+        return $this->_currentPathEnd['y'];
     }
 
     public function getCurrentPath()
@@ -240,6 +271,11 @@ class Cli_Model_Path
         return $this->_currentPathEnd['t'] == 'E';
     }
 
+    public function enemyInTmpRange()
+    {
+        return $this->_tmpCurrentPathEnd['t'] == 'E';
+    }
+
     public function targetWithin()
     {
         return $this->exists() && count($this->_currentPath) == count($this->_fullPath);
@@ -248,26 +284,27 @@ class Cli_Model_Path
     public function setCurrentPath($current)
     {
         $this->_currentPath = $current;
-        $this->_currentPathEnd = end($this->_currentPath);
-        $this->_currentDestinationX = $this->_currentPathEnd['x'];
-        $this->_currentDestinationY = $this->_currentPathEnd['y'];
+        $this->_currentPathEnd = end($current);
     }
 
-    public function cutCurrentPathFromFull()
+    public function removeCurrentPathFromFull()
     {
-        $newFullPath = array();
+        $cutFullPath = array();
         $start = false;
-        foreach ($this->_fullPath as $step) {
-            if ($step == $this->_currentPathEnd) {
-                $start = true;
+        $currentDestinationX = $this->_tmpCurrentPathEnd['x'];
+        $currentDestinationY = $this->_tmpCurrentPathEnd['y'];
+
+        foreach ($this->_cutFullPath as $step) {
+            if ($start) {
+                $cutFullPath[] = $step;
             }
 
-            if ($start) {
-                $newFullPath[] = $step;
+            if ($step['x'] == $currentDestinationX && $step['y'] == $currentDestinationY) {
+                $start = true;
             }
         }
 
-        $this->_fullPath = $newFullPath;
+        $this->_cutFullPath = $cutFullPath;
     }
 
     public function getFullPath()

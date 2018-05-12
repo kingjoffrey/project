@@ -232,8 +232,8 @@ var Me = new function () {
             }
             //reset = false
             nextArmies[armyId] = true
-            Me.selectArmy(armyId)
-            GameScene.centerOn(Me.getSelectedArmy().getX(), Me.getSelectedArmy().getY())
+            this.selectArmy(armyId)
+            GameScene.centerOn(this.getSelectedArmy().getX(), this.getSelectedArmy().getY())
 
             return armyId
         }

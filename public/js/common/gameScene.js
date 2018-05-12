@@ -70,6 +70,7 @@ var GameScene = new function () {
         return cameraY
     }
     this.centerOn = function (x, y, func) {
+        console.log('centerOn')
         var yOffset = camera.position.y - cameraY,
             startPosition = {
                 x: camera.position.x,
