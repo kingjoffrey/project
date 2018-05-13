@@ -117,6 +117,7 @@ class Application_Model_HeroesInGame extends Coret_Db_Table_Abstract
             ->where('a.' . $this->_db->quoteIdentifier('armyId') . ' IS NOT NULL')
             ->where('destroyed = false')
             ->where('a.' . $this->_db->quoteIdentifier('gameId') . ' = ?', $this->_gameId)
+            ->where('c.' . $this->_db->quoteIdentifier('gameId') . ' = ?', $this->_gameId)
             ->where('b.' . $this->_db->quoteIdentifier('playerId') . ' = ?', $playerId);
 
         if ($this->selectOne($select)) {

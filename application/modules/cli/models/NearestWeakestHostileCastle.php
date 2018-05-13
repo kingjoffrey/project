@@ -6,7 +6,7 @@ class Cli_Model_NearestWeakestHostileCastle
 
     public function __construct(Cli_Model_Game $game, $playerColor, Cli_Model_Army $army)
     {
-//        $l = new Coret_Model_Logger('Cli_Model_NearestWeakestHostileCastle');
+//        $this->_l = new Coret_Model_Logger('Cli_Model_NearestWeakestHostileCastle');
 
         $nearestWeakestHostileCastles = array();
 
@@ -28,11 +28,14 @@ class Cli_Model_NearestWeakestHostileCastle
                 $model_StrengthOfMyEnemy = new Cli_Model_StrengthOfMyEnemy($army, $game, $castle->getX(), $castle->getY(), $playerColor, 10);
 
                 if ($model_StrengthOfMyEnemy->isStronger()) {
+//                    $this->_l->log('Stronger (enemy strength=' . $model_StrengthOfMyEnemy->getEnemyStrength() . ') (castleId=' . $castleId . ')');
                     continue;
                 }
+
                 $aStar = new Cli_Model_Astar($army, $castle->getX(), $castle->getY(), $game);
                 $mPath = $aStar->path();
                 if (!$mPath->exists()) {
+//                    $this->_l->log('No path (castleId=' . $castleId . ')');
                     continue;
                 }
 
@@ -42,6 +45,7 @@ class Cli_Model_NearestWeakestHostileCastle
 
                 if ($mPath->enemyInRange()) {
                     $nearestWeakestHostileCastles[$castleId]['score'] = $numberOfTurnsNeeded + $model_StrengthOfMyEnemy->getEnemyStrength() / 20;
+//                    $this->_l->log('In range (castleId=' . $castleId . ') (score=' . $nearestWeakestHostileCastles[$castleId]['score'] . ')');
                     continue;
                 }
 
@@ -53,11 +57,13 @@ class Cli_Model_NearestWeakestHostileCastle
 
                     if ($mPath->enemyInTmpRange()) {
                         $nearestWeakestHostileCastles[$castleId]['score'] = $numberOfTurnsNeeded + $model_StrengthOfMyEnemy->getEnemyStrength() / 20;
+//                        $this->_l->log('In TMP range (castleId=' . $castleId . ') (score=' . $nearestWeakestHostileCastles[$castleId]['score'] . ')');
                         break;
                     }
 
                     if ($mPath->getTmpCurrentDestinationX() == $mPath->getFullDestinationX() && $mPath->getTmpCurrentDestinationY() == $mPath->getFullDestinationY()) {
                         $nearestWeakestHostileCastles[$castleId]['score'] = $numberOfTurnsNeeded + $model_StrengthOfMyEnemy->getEnemyStrength() / 20;
+//                        $this->_l->log('End of path (castleId=' . $castleId . ') (score=' . $nearestWeakestHostileCastles[$castleId]['score'] . ')');
                         break;
                     }
 
@@ -71,41 +77,22 @@ class Cli_Model_NearestWeakestHostileCastle
             }
         }
 
-        $score = 10;
-
         reset($nearestWeakestHostileCastles);
-        $this->findTheWeakest($nearestWeakestHostileCastles, $score);
+        $this->findTheWeakest($nearestWeakestHostileCastles);
     }
 
-    private function findTheWeakest($nearestWeakestHostileCastles, $score)
+    private function findTheWeakest($nearestWeakestHostileCastles)
     {
-        $count = count($nearestWeakestHostileCastles);
-        if ($count == 1) {
-            $this->_path = end($nearestWeakestHostileCastles)['path'];
-            return;
-        } elseif ($count < 1) {
-            return;
+        $score = 10;
+
+        foreach ($nearestWeakestHostileCastles as $castleId => $castle) {
+            if ($castle['score'] < $score) {
+//                $this->_l->log('castleId=' . $castleId . ' score=' . $castle['score']);
+
+                $score = $castle['score'];
+                $this->_path = $castle['path'];
+            }
         }
-
-        $castleId = key($nearestWeakestHostileCastles);
-
-        if (!isset($nearestWeakestHostileCastles[$castleId])) {
-            print_r($nearestWeakestHostileCastles);
-            print_r($castleId);
-            throw new Exception('co jest do chuja pana');
-            exit;
-        }
-
-        next($nearestWeakestHostileCastles);
-
-        if ($nearestWeakestHostileCastles[$castleId]['score'] >= $score) {
-            unset($nearestWeakestHostileCastles[$castleId]);
-            $this->findTheWeakest($nearestWeakestHostileCastles, $score);
-        } else {
-            reset($nearestWeakestHostileCastles);
-            $this->findTheWeakest($nearestWeakestHostileCastles, $nearestWeakestHostileCastles[$castleId]['score']);
-        }
-
     }
 
     public function getPath()

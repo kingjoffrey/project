@@ -265,8 +265,7 @@ class Cli_Model_ComputerMove extends Cli_Model_ComputerMethods
         } else {
             $this->_l->log('FULL PATH DESTINATION ARMIES:');
             $this->_l->log($field->getArmies());
-            $this->_l->log('FULL PATH DESTINATION CastleId:');
-            $this->_l->log($field->getCastleId());
+            $this->_l->log('FULL PATH DESTINATION CastleId: ' . $field->getCastleId());
         }
 
         $current = array();
