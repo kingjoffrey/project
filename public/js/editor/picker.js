@@ -152,7 +152,7 @@ var PickerEditor = new function () {
                 event.touches[0].pageY - event.touches[1].pageY
             )
 
-            if (tmp > dist) {
+            if (tmp < dist) {
                 GameScene.moveCameraAway()
             } else {
                 GameScene.moveCameraClose()

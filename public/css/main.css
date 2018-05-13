@@ -153,7 +153,8 @@ input, select {
 }
 
 #menu .iconButton {
-    border-radius: 0.5vw;
+    border-radius: 0.3vw;
+    margin: 0.15vw  0.3vw;
 }
 
 h2 {
