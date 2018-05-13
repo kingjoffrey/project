@@ -28,7 +28,7 @@ input[type="checkbox"] {
 }
 
 input, select, body {
-    font-size: 0.7vw;
+    font-size: 1.7vw;
     /*font-family: Impact, Charcoal, sans-serif;*/
     font-family: Arial, Helvetica, sans-serif;
     letter-spacing: 0.2vw;
@@ -90,8 +90,13 @@ input, select {
 }
 
 .button:hover, #submit:hover, .iconButton:hover {
-    background: green;
+    background: darkgreen;
     color: #fff;
+}
+
+.message .button:hover, #submit:hover, .iconButton:hover {
+    background: white;
+    color: darkviolet;
 }
 
 .button.active {
@@ -126,8 +131,8 @@ input, select {
 }
 
 .buttonColors, #submit, input, select {
-    border: 1px solid #fff;
-    border-radius: 2px;
+    border: 1px solid darkmagenta;
+    border-radius: 1vw;
     color: #fff;
     text-align: center;
 }
@@ -144,6 +149,7 @@ input, select {
 .iconButton {
     margin: 1px;
     display: inline-flex;
+    border-radius: 0.5vw;
 }
 
 h2 {
@@ -753,7 +759,6 @@ div.table table.unitTable td:first {
 
 #goldAndStats {
     z-index: 901;
-    text-shadow: none;
     position: absolute;
 }
 
@@ -766,7 +771,7 @@ div.table table.unitTable td:first {
 }
 
 #gold #counter div {
-    line-height: 12px;
+    line-height: 2vw;
 }
 
 #gold #counter #value1, #gold #counter #value2 {
@@ -1025,11 +1030,22 @@ div.table table.unitTable td:first {
     color: #fff;
     width: 100%;
     height: 100%;
-    font-size: 50px;
-    z-index: 99999;
+    font-size: 6vw;
     margin: 2.1vw;
     display: none;
     cursor: url(/img/game/cursors/wait.png) 11 11, auto;
+}
+
+#loading1 {
+    color: blanchedalmond;
+}
+
+#loading2 {
+    color: white;
+}
+
+#loading3 {
+    color: red;
 }
 
 #gameMenu .row {

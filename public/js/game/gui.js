@@ -5,7 +5,7 @@ var GameGui = new function () {
         timeoutId = null,
         documentTitle,
         friendsShow = false,
-        init = 0,
+        afterInit = 0,
         doKey = function (event) {
             var key = event.keyCode || event.charCode;
             switch (key) {
@@ -72,7 +72,7 @@ var GameGui = new function () {
                 //     console.log(key)
             }
         },
-        prepareButtons = function () {
+        addButtonsClicks = function () {
             $('#gold').click(function () {
                 Sound.play('click')
                 TreasuryWindow.treasury()
@@ -155,8 +155,9 @@ var GameGui = new function () {
             })
             $('#close').click(function () {
                 Sound.play('click')
-                GameRenderer.start()
                 $('#gameMenu').hide()
+                GameRenderer.start()
+                GameRenderer.animate()
             })
             // $('#').click(function () {
             //
@@ -176,7 +177,7 @@ var GameGui = new function () {
             'left': goldButtonLeft + 'px'
         })
 
-        if (init) {
+        if (afterInit) {
             Message.adjust()
         }
     }
@@ -231,6 +232,11 @@ var GameGui = new function () {
             GameGui.adjust()
         })
 
+        // document.addEventListener('webkitfullscreenchange', GameGui.adjust(), false);
+        // document.addEventListener('mozfullscreenchange', GameGui.adjust(), false);
+        document.addEventListener('fullscreenchange', GameGui.adjust(), false)
+        // document.addEventListener('MSFullscreenChange', GameGui.adjust(), false);
+
         $('#terrain').removeClass('editor').addClass('game')
 
         documentTitle = document.title
@@ -239,8 +245,8 @@ var GameGui = new function () {
             doKey(event)
         })
 
-        prepareButtons()
+        addButtonsClicks()
         this.adjust()
-        init = 1
+        afterInit = 1
     }
 }

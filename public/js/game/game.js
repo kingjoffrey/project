@@ -30,6 +30,16 @@ var Game = new function () {
         if (loading) {
             loading = 0
 
+            GameGui.init()
+            $('#game').show()
+            $('.game').show()
+
+            if (isSet(g.tutorial)) {
+                $('#tutorial').show()
+            } else {
+                $('#tutorial').hide()
+            }
+
             PickerCommon.reset()
             GameScene.clear()
             Renderer.clear()
@@ -46,7 +56,6 @@ var Game = new function () {
             Me.init(game.color, game.gold, game.bSequence, game.capitals)
             Ruins.init(game.ruins)
 
-            GameGui.init()
             GameScene.initSun(Fields.getMaxY())
             GameRenderer.start()
 
@@ -57,14 +66,6 @@ var Game = new function () {
             Turn.change(game.turnColor, game.turnNumber)
 
             $('#loading').hide()
-            $('#game').show()
-            $('.game').show()
-
-            if (isSet(g.tutorial)) {
-                $('#tutorial').show()
-            } else {
-                $('#tutorial').hide()
-            }
         }
 
         if (Turn.isMy() && Me.getTurnActive()) {
