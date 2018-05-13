@@ -132,7 +132,7 @@ input, select {
 
 .buttonColors, #submit, input, select {
     border: 1px solid darkmagenta;
-    border-radius: 1vw;
+    border-radius: 0.5vw;
     color: #fff;
     text-align: center;
 }
@@ -149,6 +149,10 @@ input, select {
 .iconButton {
     margin: 1px;
     display: inline-flex;
+    border-radius: 1vw;
+}
+
+#menu .iconButton {
     border-radius: 0.5vw;
 }
 
@@ -762,6 +766,10 @@ div.table table.unitTable td:first {
     position: absolute;
 }
 
+#gold {
+    border-radius: 0.5vw;
+}
+
 #gold #counter {
     display: inline-block;
     color: gold;
@@ -854,13 +862,13 @@ div.table table.unitTable td:first {
 }
 
 #armyButtons {
-    right: 0;
-    bottom: 0;
+    right: 0.5vw;
+    bottom: 0.5vw;
 }
 
 #menuButtons {
-    right: 0;
-    top: 0;
+    right: 0.5vw;
+    top: 0.5vw;
 }
 
 #nextTurn {
