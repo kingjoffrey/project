@@ -81,6 +81,7 @@ var PickerGame = new function () {
             }
         },
         changeCursorArmyMove = function (field) {
+            GameModels.changeCursorColor('white')
             if (Me.getSelectedArmy().canFly()) {
 // fly
                 PickerCommon.cursor('fly')
@@ -117,11 +118,7 @@ var PickerGame = new function () {
                     castleColor = field.getCastleColor(),
                     armies = field.getArmies()
 
-                if (!cursorMesh) {
-                    cursorMesh = GameModels.addCursor()
-                }
-
-                GameModels.cursorPosition(x, y, field.getType(), cursorMesh)
+                GameModels.cursorPosition(x, y, field.getType())
 
                 for (var armyId in armies) {
                     var hasArmy = 1
@@ -136,11 +133,13 @@ var PickerGame = new function () {
                             if (Me.getSelectedArmyId() == armyId) {
 // split my army
                                 PickerCommon.cursor('split')
+                                GameModels.changeCursorColor('white')
                                 return
                             }
                             if (Me.colorEquals(armies[armyId])) {
 // join my army
                                 PickerCommon.cursor('join')
+                                GameModels.changeCursorColor('white')
                                 return
                             }
                             if (Me.sameTeam(armies[armyId])) {
@@ -151,17 +150,20 @@ var PickerGame = new function () {
                         }
 // attack enemy army
                         PickerCommon.cursor('attack')
+                        GameModels.changeCursorColor('red')
                     } else if (castleColor) {
 // castle
                         if (Me.colorEquals(castleColor)) {
 // enter my castle
                             PickerCommon.cursor('enter')
+                            GameModels.changeCursorColor('white')
                         } else if (Me.sameTeam(castleColor)) {
 // castle same team
                             changeCursorArmyMove(field)
                         } else {
 // attack enemy castle
                             PickerCommon.cursor('attack')
+                            GameModels.changeCursorColor('red')
                         }
                     } else {
 // map
@@ -174,17 +176,21 @@ var PickerGame = new function () {
                             if (Me.colorEquals(armies[armyId])) {
 // select my army
                                 PickerCommon.cursor('select')
+                                GameModels.changeCursorColor('white')
                                 return
                             }
                         }
 // grab map
                         PickerCommon.cursor('grab')
+                        GameModels.changeCursorColor('white')
                     } else if (castleColor && Me.colorEquals(castleColor)) {
 // open my castle
                         PickerCommon.cursor('open')
+                        GameModels.changeCursorColor('white')
                     } else {
 // grab map
                         PickerCommon.cursor('grab')
+                        GameModels.changeCursorColor('white')
                     }
                 }
             }

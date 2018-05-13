@@ -121,7 +121,7 @@ var Me = new function () {
 
         // GameRenderer.shadowsInfo()
 
-        GameModels.addArmyBox(army.getX(), army.getY(), army.getBackgroundColor())
+        GameModels.addArmySelectionBox(army.getX(), army.getY(), army.getBackgroundColor())
         var heroId = army.getHeroKey()
         if (heroId) {
             $('#terrain').html(army.getHero(heroId).name)
@@ -143,9 +143,6 @@ var Me = new function () {
         AStar.showRange(army)
         PickerGame.cursorChange()
     }
-    // this.setSelectedArmyId = function (armyId) {
-    //     selectedArmyId = armyId
-    // }
     this.deselectArmy = function (skipJoin) {
         if (notSet(skipJoin) && parentArmyId && selectedArmyId) {
             var selectedArmy = this.getArmy(selectedArmyId),
@@ -157,7 +154,7 @@ var Me = new function () {
         }
         parentArmyId = null
 
-        GameModels.clearArmyCircles()
+        GameModels.clearArmySelectionMeshes()
         GameModels.clearPathCircles()
         this.setIsSelected(0)
         this.armyButtonsOff()
@@ -233,6 +230,7 @@ var Me = new function () {
             //reset = false
             nextArmies[armyId] = true
             this.selectArmy(armyId)
+            console.log('aaa')
             GameScene.centerOn(this.getSelectedArmy().getX(), this.getSelectedArmy().getY())
 
             return armyId
@@ -250,6 +248,7 @@ var Me = new function () {
         } else {
             this.deselectArmy()
             nextArmies = {}
+            console.log('bbb')
             this.findNext(quiet)
         }
     }

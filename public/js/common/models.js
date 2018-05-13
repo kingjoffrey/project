@@ -9,8 +9,15 @@ var Models = new function () {
         pathMaterialGreen,
         pathMaterialRed,
         pathMaterialWhite,
+        pathCircleMaterialGreen,
+        pathCircleMaterialWhite,
+        pathCircleMaterialRed,
+        pathGeometryRectangle,
+        pathGeometryCircle,
+        pathGeometryRing,
         pathGeometry,
         cursorGeometry,
+        materialPurple,
         initModelAndTexture = function (id) {
             JSONLoader.load('/models/' + id + '.json', function (geometry, materials) {
                 models[id] = geometry
@@ -93,7 +100,11 @@ var Models = new function () {
                 case 4:
                     return new THREE.Mesh(castleModels[3], castleModels[3].material)
                 case 5:
-                    return new THREE.Mesh(castleModels[4], castleModels[4].material)
+                    var mesh = new THREE.Mesh(castleModels[4], castleModels[4].material)
+                    mesh.scale.x = 0.5
+                    // mesh.scale.y = 0.8
+                    mesh.scale.z = 0.5
+                    return mesh
             }
         },
         updateCastleModel = function (mesh, defense, capital) {
@@ -237,16 +248,18 @@ var Models = new function () {
             })
             pathGeometryRectangle = new THREE.PlaneGeometry(1.9, 1.9)
             pathGeometryCircle = new THREE.CircleGeometry(radius, segments)
+            pathGeometryRing = new THREE.RingGeometry(0.7, 0.9, 32)
 
-            pathGeometryRing = new THREE.RingGeometry( 0.7, 0.9, 32 );
-        },
-        initCursorModel = function () {
-            // cursorGeometry = new THREE.BoxGeometry(2, 2, 2)
-            cursorGeometry = new THREE.PlaneGeometry(2, 2)
+            materialPurple = new THREE.MeshBasicMaterial({
+                color: 0xff00ff,
+                transparent: true,
+                opacity: 0.5,
+                side: THREE.DoubleSide
+            })
         }
 
     this.getCursorModel = function () {
-        return new THREE.Mesh(cursorGeometry, pathCircleMaterialWhite)
+        return new THREE.Mesh(pathGeometryRectangle, pathCircleMaterialWhite)
     }
     this.getPathRectangle = function (color) {
         switch (color) {
@@ -268,27 +281,23 @@ var Models = new function () {
                 return new THREE.Mesh(pathGeometryRing, pathCircleMaterialWhite)
         }
     }
-    this.getArmyBox = function () {
-        var material1 = new THREE.MeshBasicMaterial({
-                color: 0xff00ff,
-                transparent: true,
-                opacity: 0.5,
-                side: THREE.DoubleSide
-            }),
-            // geometry1 = new THREE.BoxGeometry(1.9, 1.9, 10)
-            geometry1 = new THREE.PlaneGeometry(2, 0.1)
+    this.getArmyBoxBottom = function () {
+        return new THREE.Mesh(pathGeometryRectangle, materialPurple)
+    }
+    this.getArmyBoxRings = function () {
+        var geometry1 = new THREE.PlaneGeometry(2, 0.1)
 
-        var mesh = new THREE.Mesh(geometry1, material1)
+        var mesh = new THREE.Mesh(geometry1, materialPurple)
 
-        mesh.add(new THREE.Mesh(geometry1, material1))
+        mesh.add(new THREE.Mesh(geometry1, materialPurple))
         mesh.children[0].position.z = 2
 
-        mesh.add(new THREE.Mesh(geometry1, material1))
+        mesh.add(new THREE.Mesh(geometry1, materialPurple))
         mesh.children[1].position.x = -1
         mesh.children[1].rotation.y = Math.PI / 2
         mesh.children[1].position.z = 1
 
-        mesh.add(new THREE.Mesh(geometry1, material1))
+        mesh.add(new THREE.Mesh(geometry1, materialPurple))
         mesh.children[2].position.x = 1
         mesh.children[2].rotation.y = Math.PI / 2
         mesh.children[2].position.z = 1
@@ -412,6 +421,5 @@ var Models = new function () {
         initFlag()
         initTree()
         initPath()
-        initCursorModel()
     }
 }

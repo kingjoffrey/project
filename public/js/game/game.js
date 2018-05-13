@@ -52,6 +52,8 @@ var Game = new function () {
 
             PickerCommon.init(PickerGame)
 
+            GameModels.addCursor()
+
             Turn.change(game.turnColor, game.turnNumber)
 
             $('#loading').hide()

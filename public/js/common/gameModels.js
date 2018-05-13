@@ -1,9 +1,11 @@
 var GameModels = new function () {
     var pathCircles = [],
         moveCircles = [],
-        armyCircles = [],
+        armySelectionMeshes = [],
         hover = 0.01,
-        bridgeLevel = 0.3
+        bridgeLevel = 0.3,
+        cursorColor = 'white',
+        cursorMesh
 
     this.init = function () {
         Models.init()
@@ -171,7 +173,7 @@ var GameModels = new function () {
         GameScene.add(mesh)
         // }
     }
-    this.cursorPosition = function (x, y, t, cursor) {
+    this.cursorPosition = function (x, y, t) {
         switch (t) {
             case 'm':
                 var height = -Ground.getMountainLevel() + hover / 2
@@ -187,20 +189,34 @@ var GameModels = new function () {
                 break
         }
 
-        cursor.position.set(x * 2 + 1, height, y * 2 + 1)
+        cursorMesh.position.set(x * 2 + 1, height, y * 2 + 1)
     }
-    this.addCursor = function () {
-        var mesh = Models.getCursorModel()
-
-        if (Page.getShadows()) {
-            mesh.castShadow = true
+    this.changeCursorColor = function (color) {
+        if (cursorColor == color) {
+            return
         }
 
-        mesh.rotation.x = Math.PI / 2
+        cursorColor = color
 
-        GameScene.add(mesh)
+        switch (color) {
+            case 'white':
+                cursorMesh.material.color.setHex(0xffffff)
+                break
+            case 'red':
+                cursorMesh.material.color.setHex(0xff0000)
+                break
+        }
+    }
+    this.addCursor = function () {
+        cursorMesh = Models.getCursorModel()
 
-        return mesh
+        if (Page.getShadows()) {
+            cursorMesh.castShadow = true
+        }
+
+        cursorMesh.rotation.x = Math.PI / 2
+
+        GameScene.add(cursorMesh)
     }
     this.addPathRectangle = function (x, y, color, t) {
         switch (t) {
@@ -266,23 +282,45 @@ var GameModels = new function () {
         GameScene.add(circle)
         pathCircles.push(circle)
     }
-    this.addArmyBox = function (x, y, color) {
-        switch (Fields.get(x, y).getType()) {
+    this.addArmySelectionBox = function (x, y, color) {
+
+        var type = Fields.get(x, y).getType()
+
+        switch (type) {
             case 'm':
-                var height = -Ground.getMountainLevel()
+                var height = -Ground.getMountainLevel() + hover
                 break
             case 'h':
                 var height = Fields.get(x, y).getLevel() * 0.05
                 break
             case 'b':
-                var height = bridgeLevel
+                var height = bridgeLevel + hover
                 break
             default :
-                var height = 0
+                var height = hover
                 break
         }
 
-        var z = 0
+        var z = 0,
+            bottom1 = Models.getArmyBoxBottom(),
+            bottom2 = Models.getCursorModel()
+
+        if (Page.getShadows()) {
+            bottom1.castShadow = true
+            bottom2.castShadow = true
+        }
+
+        bottom1.position.set(x * 2 + 1, height, y * 2 + 1)
+        this.cursorPosition(x, y, type, bottom2)
+
+        bottom1.rotation.x = Math.PI / 2
+        bottom2.rotation.x = Math.PI / 2
+
+        GameScene.add(bottom1)
+        GameScene.add(bottom2)
+
+        armySelectionMeshes.push(bottom1)
+        armySelectionMeshes.push(bottom2)
 
         for (var i = 0; i < 10; i++) {
             if (z) {
@@ -290,12 +328,12 @@ var GameModels = new function () {
             } else {
                 z = 0.25
             }
-            var tmpMesh = Models.getArmyBox(color)
+            var tmpMesh = Models.getArmyBoxRings(color)
             if (Page.getShadows()) {
                 tmpMesh.castShadow = true
             }
             GameScene.add(tmpMesh)
-            armyCircles.push(tmpMesh)
+            armySelectionMeshes.push(tmpMesh)
             tmpMesh.position.set(x * 2 + 1, z + height, y * 2)
         }
     }
@@ -315,14 +353,15 @@ var GameModels = new function () {
     this.clearPathCircles = function () {
         for (var i in pathCircles) {
             GameScene.remove(pathCircles[i])
+            delete pathCircles[i]
         }
-        pathCircles = []
+        // pathCircles = []
     }
-    this.clearArmyCircles = function () {
-        for (var i in armyCircles) {
-            GameScene.remove(armyCircles[i])
+    this.clearArmySelectionMeshes = function () {
+        for (var i in armySelectionMeshes) {
+            GameScene.remove(armySelectionMeshes[i])
         }
-        armyCircles = []
+        armySelectionMeshes = []
     }
 
 }
