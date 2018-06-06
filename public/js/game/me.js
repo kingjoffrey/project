@@ -395,22 +395,5 @@ var Me = new function () {
 
         this.setBattleSequence(bSequence)
         this.setGold(g)
-
-        var armies = this.getArmies()
-
-        for (var armyId in armies.toArray()) {
-            var army = armies.get(armyId)
-            for (var soldierId in army.getWalkingSoldiers()) {
-                this.upkeepIncrement(Units.get(army.getWalkingSoldier(soldierId).unitId).cost)
-            }
-            for (var soldierId in army.getFlyingSoldiers()) {
-                this.upkeepIncrement(Units.get(army.getFlyingSoldier(soldierId).unitId).cost)
-            }
-            for (var soldierId in army.getSwimmingSoldiers()) {
-                this.upkeepIncrement(Units.get(army.getSwimmingSoldier(soldierId).unitId).cost)
-            }
-        }
-
-        var castles = this.getCastles()
     }
 }

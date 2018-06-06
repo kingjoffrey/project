@@ -53,16 +53,8 @@ var Ruins = new function () {
                 break
             case 'allies':
                 if (Me.colorEquals(r.color)) {
-                    var army = Me.getArmies().get(r.army.id),
-                        oldUpkeep = army.countUpkeep()
-
-                    console.log(oldUpkeep)
+                    var army = Me.getArmies().get(r.army.id)
                     army.update(r.army)
-
-                    var newUpkeep = army.countUpkeep()
-                    console.log(newUpkeep)
-
-                    Me.upkeepIncrement(newUpkeep - oldUpkeep)
 
                     Sound.play('allies');
                     Message.simple(translations.ruins, r.find[1] + ' ' + translations.alliesJoinedYourArmy);

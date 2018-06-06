@@ -99,9 +99,7 @@ class Cli_Model_StartTurn
         if ($me->getId() == $playerId) {
             $token = array(
                 'type' => 'update',
-                'upkeep' => $upkeep,
                 'gold' => $player->getGold(),
-                'income' => $income,
                 'productionTurns' => $castles->productionTurnsToArray()
             );
             $handler->sendToUser($user, $token);

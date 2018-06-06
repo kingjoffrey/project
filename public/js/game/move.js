@@ -26,66 +26,6 @@ var Move = new function () {
                 }
             }
         },
-        handleMyUpkeepAsDefender = function (defenders) {
-            for (var color in defenders) {
-                if (Me.colorEquals(color)) {
-                    var upkeep = 0
-
-                    for (var armyId in defenders[color]) {
-                        var battleArmy = defenders[color][armyId],
-                            defenderArmy = Me.getArmy(armyId)
-
-                        for (var soldierId in battleArmy.walk) {
-                            if (battleArmy.walk[soldierId]) {
-                                upkeep -= Units.get(defenderArmy.getWalkingSoldier(soldierId).unitId).cost
-                            }
-                        }
-                        for (var soldierId in battleArmy.swim) {
-                            if (battleArmy.swim[soldierId]) {
-                                upkeep -= Units.get(defenderArmy.getSwimmingSoldier(soldierId).unitId).cost
-                            }
-                        }
-                        for (var soldierId in battleArmy.fly) {
-                            if (battleArmy.fly[soldierId]) {
-                                upkeep -= Units.get(defenderArmy.getFlyingSoldier(soldierId).unitId).cost
-                            }
-                        }
-                    }
-
-                    if (upkeep) {
-                        Me.upkeepIncrement(upkeep)
-                    }
-
-                    return
-                }
-            }
-        },
-        handleMyUpkeepAsAttacker = function (army, battleArmy, color) {
-            if (!Me.colorEquals(color)) {
-                return
-            }
-            var upkeep = 0
-
-            for (var soldierId in battleArmy.walk) {
-                if (battleArmy.walk[soldierId]) {
-                    upkeep -= Units.get(army.getWalkingSoldier(soldierId).unitId).cost
-                }
-            }
-            for (var soldierId in battleArmy.swim) {
-                if (battleArmy.swim[soldierId]) {
-                    upkeep -= Units.get(army.getSwimmingSoldier(soldierId).unitId).cost
-                }
-            }
-            for (var soldierId in battleArmy.fly) {
-                if (battleArmy.fly[soldierId]) {
-                    upkeep -= Units.get(army.getFlyingSoldier(soldierId).unitId).cost
-                }
-            }
-
-            if (upkeep) {
-                Me.upkeepIncrement(upkeep)
-            }
-        },
         handleTowerId = function (army, id, color) {
             if (id) {
                 var field = Fields.get(army.x, army.y),
@@ -247,8 +187,6 @@ var Move = new function () {
     }
     this.end = function (r, ii) {
         if (r.battle) {                                                                        // "A" była walka
-            handleMyUpkeepAsDefender(r.battle.defenders)
-            handleMyUpkeepAsAttacker(oldArmy, r.battle.attack, r.color)
 
             if (r.battle.victory) {                                                        // "Aa" ATAKUJĄCY wygrał
                 handleTowerId(r.army, r.battle.towerId, r.color)

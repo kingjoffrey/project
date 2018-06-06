@@ -24,9 +24,7 @@ var Execute = new function () {
                         castles.get(castleId).setProductionTurn(r.productionTurns[castleId])
                     }
 
-                    Me.setUpkeep(r.upkeep)
                     Me.setGold(r.gold)
-                    Me.setIncome(r.income)
 
                     Execute.setExecuting(0)
                     break
@@ -141,7 +139,6 @@ var Execute = new function () {
                     if (Turn.isMy()) {
                         Message.remove()
                         GameGui.unlock()
-                        Me.upkeepIncrement(-Me.getArmies().get(r.id).countUpkeep())
                     }
                     Players.get(r.color).getArmies().destroy(r.id)
                     Execute.setExecuting(0)
@@ -151,7 +148,6 @@ var Execute = new function () {
                     if (Turn.isMy()) {
                         Message.remove()
                         GameGui.unlock()
-                        Me.upkeepIncrement(-Me.getArmies().get(r.id).countUpkeep())
                         Message.simple(translations.Moves, translations.Yourshipsank)
                     }
                     Players.get(r.color).getArmies().destroy(r.id)
