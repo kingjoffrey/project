@@ -6,71 +6,73 @@ var GameGui = new function () {
         documentTitle,
         friendsShow = false,
         afterInit = 0,
-        doKey = function (event) {
-            var key = event.keyCode || event.charCode;
-            switch (key) {
-                case 27: //ESC
-                    Message.remove()
-                    Me.deselectArmy()
-                    break;
-                case 32: //SPACE
-                    Me.skip()
-                    break;
-                case 37://left
-                    GameScene.moveCameraLeft()
-                    break;
-                case 38://up
-                    GameScene.moveCameraUp()
-                    break;
-                case 39://right
-                    GameScene.moveCameraRight()
-                    break;
-                case 40://down
-                    GameScene.moveCameraDown()
-                    break;
-                case 66: //b
-                    CastleWindow.build()
-                    break;
-                case 67: //c
-                    var army = Me.getSelectedArmy()
-                    if (!army) {
-                        return
-                    }
-                    var castle = Me.getCastle(Fields.get(army.getX(), army.getY()).getCastleId())
-                    if (isSet(castle)) {
-                        CastleWindow.show(castle)
-                    }
-                    break;
-                case 68: //d
-                    Me.disband()
-                    break;
-                case 69: //e
-                    Turn.next()
-                    break;
-                case 70: //f
-                    WebSocketSendGame.fortify()
-                    break;
-                case 78: //n
-                    Me.findNext()
-                    break;
-                case 79: //m
-                    menu()
-                    break;
-                case 13: //enter
-                    $('.message .go').click()
-                    break;
-                case 82: //r
-                    WebSocketSendGame.ruin()
-                    break;
-                case 83: //s
-                    StatusWindow.show()
-                    break;
-                case 84: //t
-                    Turn.next()
-                    break;
-                // default:
-                //     console.log(key)
-            }
+        doKey = function () {
+            $('#game').on('keydown', function (event) {
+                var key = event.keyCode || event.charCode;
+                switch (key) {
+                    case 27: //ESC
+                        Message.remove()
+                        Me.deselectArmy()
+                        break;
+                    case 32: //SPACE
+                        Me.skip()
+                        break;
+                    case 37://left
+                        GameScene.moveCameraLeft()
+                        break;
+                    case 38://up
+                        GameScene.moveCameraUp()
+                        break;
+                    case 39://right
+                        GameScene.moveCameraRight()
+                        break;
+                    case 40://down
+                        GameScene.moveCameraDown()
+                        break;
+                    case 66: //b
+                        CastleWindow.build()
+                        break;
+                    case 67: //c
+                        var army = Me.getSelectedArmy()
+                        if (!army) {
+                            return
+                        }
+                        var castle = Me.getCastle(Fields.get(army.getX(), army.getY()).getCastleId())
+                        if (isSet(castle)) {
+                            CastleWindow.show(castle)
+                        }
+                        break;
+                    case 68: //d
+                        Me.disband()
+                        break;
+                    case 69: //e
+                        Turn.next()
+                        break;
+                    case 70: //f
+                        WebSocketSendGame.fortify()
+                        break;
+                    case 78: //n
+                        Me.findNext()
+                        break;
+                    case 79: //m
+                        menu()
+                        break;
+                    case 13: //enter
+                        $('.message .go').click()
+                        break;
+                    case 82: //r
+                        WebSocketSendGame.ruin()
+                        break;
+                    case 83: //s
+                        StatusWindow.show()
+                        break;
+                    case 84: //t
+                        Turn.next()
+                        break;
+                    // default:
+                    //     console.log(key)
+                }
+            })
         },
         addButtonsClicks = function () {
             $('#gold').click(function () {
@@ -228,6 +230,8 @@ var GameGui = new function () {
         })
     }
     this.init = function () {
+        $('#game').off()
+
         $(window).resize(function () {
             GameGui.adjust()
         })
@@ -241,10 +245,7 @@ var GameGui = new function () {
 
         documentTitle = document.title
 
-        $(document).on('keydown', function (event) {
-            doKey(event)
-        })
-
+        doKey()
         addButtonsClicks()
         this.adjust()
         afterInit = 1

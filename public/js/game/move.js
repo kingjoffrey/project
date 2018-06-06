@@ -98,12 +98,6 @@ var Move = new function () {
                 }
                 Players.get(color).getTowers().add(towerId, tower)
                 towers.delete(towerId)
-
-                if (Me.colorEquals(color)) { // zdobyłem wieże
-                    Me.incomeIncrement(5)
-                } else if (Me.colorEquals(oldTowerColor)) { // straciłem wieże
-                    Me.incomeIncrement(-5)
-                }
             }
 
         },
@@ -122,12 +116,6 @@ var Move = new function () {
                         defense--
                         castle.setDefense(defense)
                     }
-                }
-
-                if (Me.colorEquals(color)) { // zdobyłem zamek
-                    Me.incomeIncrement(newCastles.get(id).getIncome())
-                } else if (Me.colorEquals(oldCastleColor)) { // straciłem zamek
-                    Me.incomeIncrement(-oldCastles.get(id).getIncome())
                 }
 
                 oldCastles.delete(id)

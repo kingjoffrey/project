@@ -16,12 +16,6 @@ var WebSocketMessageGame = new function () {
                         tower = towers.get(towerId)
                     Players.get(r.color).getTowers().add(towerId, tower)
                     towers.delete(towerId)
-                    if (Me.colorEquals(towerColor)) {
-                        Me.incomeIncrement(-5)
-                    }
-                    if (Me.colorEquals(r.color)) {
-                        Me.incomeIncrement(5)
-                    }
                     break
 
                 case 'update':

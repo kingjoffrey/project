@@ -207,7 +207,6 @@ var Execute = new function () {
                         Message.remove()
                         GameGui.unlock()
                         Me.goldIncrement(-r.gold)
-                        Me.incomeIncrement(Me.getCastle(r.castleId).getIncome() / r.defense)
                         Execute.setExecuting(0)
                     } else {
                         if (Players.get(Turn.getColor()).isComputer() && !GameGui.getShow()) {
