@@ -14,7 +14,7 @@ var CastleWindow = new function () {
             }
         }
 
-    this.aaa = function (castle) {
+    this.show = function (castle) {
         $('.buttonColors').fadeOut(300)
         GameScene.moveCameraVeryClose()
 
@@ -22,7 +22,7 @@ var CastleWindow = new function () {
         GameScene.centerOn(castle.getX() + 1, castle.getY() + 1)
     }
 
-    this.show = function (castle) {
+    this.aaa = function (castle) {
         var time = '',
             checked,
             messageId,

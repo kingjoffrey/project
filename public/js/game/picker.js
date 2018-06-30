@@ -57,7 +57,7 @@ var PickerGame = new function () {
                     } else if (Me.colorEquals(field.getCastleColor())) {
                         var castleId = field.getCastleId()
                         inCastle = true
-                        CastleWindow.aaa(Me.getCastle(castleId))
+                        CastleWindow.show(Me.getCastle(castleId))
                     }
                 }
             } else if (inCastle) {
