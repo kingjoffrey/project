@@ -138,8 +138,8 @@ input, select {
 }
 
 .iconButton div:not(.varchar) {
-    width: 23px;
-    height: 23px;
+    width: 3vw;
+    height: 2vw;
 }
 
 .touchscreen .iconButton {
@@ -765,30 +765,6 @@ div.table table.unitTable td:first {
 #goldAndStats {
     z-index: 901;
     position: absolute;
-}
-
-#gold {
-    border-radius: 0.5vw;
-}
-
-#gold #counter {
-    display: inline-block;
-    color: gold;
-    height: auto;
-    width: auto;
-    padding: 8px;
-}
-
-#gold #counter div {
-    line-height: 2vw;
-}
-
-#gold #counter #value1, #gold #counter #value2 {
-    text-align: right;
-}
-
-#gold #description {
-    display: inline-block;
 }
 
 .text-right {

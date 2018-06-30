@@ -17,9 +17,9 @@ var Me = new function () {
         battleSequence = [],
         capitalId = null,
         updateGold = function () {
-            $('#gold').fadeOut(300, function () {
-                $('#gold').html(gold)
-                $('#gold').fadeIn()
+            $('#gold div').fadeOut(300, function () {
+                $('#gold div').html(gold)
+                $('#gold div').fadeIn()
             })
 
             if (gold > 1000) {
