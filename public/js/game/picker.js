@@ -6,6 +6,7 @@ var PickerGame = new function () {
         leftClick = 0,
         scaling = false,
         dist = 0,
+        inCastle = false,
         handleDownStart = function (event) {
             leftClick = 1
             move = 0
@@ -17,7 +18,7 @@ var PickerGame = new function () {
             if (!leftClick) {
                 return
             }
-            if (!move && PickerCommon.intersects()) {
+            if (!inCastle && !move && PickerCommon.intersects()) {
 // Armia jest zaznaczona
                 if (Me.getSelectedArmyId()) {
                     var x = PickerCommon.convertX(),
@@ -52,12 +53,16 @@ var PickerGame = new function () {
                                 Me.armyClick(armyId)
                             }
                         }
-// Jest mój zamek na polu
+// Wejdź do zamku
                     } else if (Me.colorEquals(field.getCastleColor())) {
                         var castleId = field.getCastleId()
-                        CastleWindow.show(Me.getCastle(castleId))
+                        inCastle = true
+                        CastleWindow.aaa(Me.getCastle(castleId))
                     }
                 }
+            } else if (inCastle) {
+                PickerCommon.cursor('open')
+                console.log('iun castle')
             }
         },
         handleMove = function (event) {
@@ -66,18 +71,21 @@ var PickerGame = new function () {
             //     AStar.showPath()
             // }
 
-            if (dragStart) {
-                var dragEnd = PickerCommon.getPoint(event)
-                if (!PickerCommon.checkOffset(dragStart, dragEnd)) {
+// nie w zamku
+            if (!inCastle) {
+                if (dragStart) {
+                    var dragEnd = PickerCommon.getPoint(event)
+                    if (!PickerCommon.checkOffset(dragStart, dragEnd)) {
 // drag
-                    move = 1
-                    GameScene.moveCamera(dragStart.x - dragEnd.x, dragStart.y - dragEnd.y)
-                    dragStart = dragEnd
-                    PickerCommon.cursor('move')
-                }
-            } else {
+                        move = 1
+                        GameScene.moveCamera(dragStart.x - dragEnd.x, dragStart.y - dragEnd.y)
+                        dragStart = dragEnd
+                        PickerCommon.cursor('move')
+                    }
+                } else {
 // Zmiana kursora
-                PickerGame.cursorChange()
+                    PickerGame.cursorChange()
+                }
             }
         },
         changeCursorArmyMove = function (field) {

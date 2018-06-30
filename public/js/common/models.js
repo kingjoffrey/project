@@ -384,7 +384,7 @@ var Models = new function () {
     this.getHero = function (color) {
         return new THREE.Mesh(armyModels.hero, armyModels.hero.material)
     }
-    this.getUnit = function (color, modelName) {
+    this.getUnit = function (modelName) {
         return new THREE.Mesh(armyModels[modelName], armyModels[modelName].material)
     }
     this.getLifeBar = function (life) {

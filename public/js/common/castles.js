@@ -18,25 +18,25 @@ var Castles = function () {
         }
     }
     this.add = function (castleId, castle) {
-        if (castle instanceof Castle) {
-            for (var x = castle.getX(); x <= castle.getX() + 1; x++) {
-                for (var y = castle.getY(); y <= castle.getY() + 1; y++) {
-                    var field = Fields.get(x, y)
-                    field.setCastleColor(color)
-                }
-            }
-            castles[castleId] = castle
-            castle.update(bgColor)
-        } else {
-            castles[castleId] = new Castle(castle, bgColor)
-            for (var x = castle.x; x <= castle.x + 1; x++) {
-                for (var y = castle.y; y <= castle.y + 1; y++) {
-                    var field = Fields.get(x, y)
-                    field.setCastleColor(color)
+        var setCastleId = false
+        if (!(castle instanceof Castle)) {
+            castle = new Castle(castle, bgColor)
+            setCastleId = true
+        }
+
+        for (var x = castle.getX(); x <= castle.getX() + 1; x++) {
+            for (var y = castle.getY(); y <= castle.getY() + 1; y++) {
+                var field = Fields.get(x, y)
+                field.setCastleColor(color)
+                if (setCastleId) {
                     field.setCastleId(castleId)
                 }
             }
         }
+
+        castles[castleId] = castle
+
+        castle.update(bgColor)
     }
     this.raze = function (castleId) {
         var castle = this.get(castleId)

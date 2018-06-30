@@ -114,7 +114,7 @@ var HelpModels = new function () {
         return mesh
     }
     this.addUnit = function (modelName) {
-        var mesh = Models.getUnit('orange', modelName)
+        var mesh = Models.getUnit(modelName)
         mesh.rotation.y = Math.PI / 2
         mesh.scale.x = 0.5
         mesh.scale.y = 0.5

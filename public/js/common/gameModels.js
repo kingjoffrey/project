@@ -12,9 +12,13 @@ var GameModels = new function () {
     }
 
     this.addCastle = function (castle, color) {
-        var mesh = Models.getCastle(castle, color)
+        var mesh = Models.getCastle(castle.toArray(), color)
 
-        mesh.position.set(castle.x * 2 + 2, 0, castle.y * 2 + 2)
+        if (castle.getProductionId()) {
+            console.log(castle.getProductionId())
+        }
+
+        mesh.position.set(castle.getX() * 2 + 2, 0, castle.getY() * 2 + 2)
 
         // mesh.children[0].rotation.y = Math.PI + Math.PI / 4
 

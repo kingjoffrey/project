@@ -139,11 +139,22 @@ var GameScene = new function () {
         camera.position.x += -2
         camera.position.z += 2
     }
+
+    this.moveCameraVeryClose = function () {
+        while (GameScene.moveCameraClose()) {
+            console.log('e')
+        }
+    }
+
     this.moveCameraAway = function () {
         if (camera.position.y < 230) {
             camera.position.y += 2
             camera.position.x -= 2
             camera.position.z += 2
+
+            if (camera.position.y < 50) {
+                return true
+            }
         }
     }
     this.moveCameraClose = function () {
@@ -151,6 +162,8 @@ var GameScene = new function () {
             camera.position.y -= 2
             camera.position.x += 2
             camera.position.z -= 2
+
+            return true
         }
     }
     this.get = function () {

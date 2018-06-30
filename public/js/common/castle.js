@@ -1,5 +1,5 @@
 var Castle = function (castle, bgC) {
-    var mesh = GameModels.addCastle(castle, bgC),
+    var mesh,
         bgColor = bgC
 
     this.toArray = function () {
@@ -65,21 +65,7 @@ var Castle = function (castle, bgC) {
         castle.defense = defense
         Models.castleChangeDefense(mesh, defense, castle.capital)
     }
-    this.handle = function (unitId, stop, relocation) {
-        if (relocation) {
-            if (!unitId) {
-                Message.error(translations.noUnitSelected)
-            } else {
-                var id = Message.simple(translations.relocation, translations.selectCastleToWhichYouWantToRelocateThisProduction)
-                Message.addButton(id, 'cancel', function () {
-                    Me.setSelectedCastleId(0)
-                })
-                Me.setSelectedCastleId(castle.id)
-                Me.setSelectedUnitId(unitId)
-            }
-            return
-        }
-
+    this.handle = function (unitId, stop) {
         if (stop) {
             var unitId = -1
         }
@@ -88,4 +74,6 @@ var Castle = function (castle, bgC) {
             WebSocketSendGame.production(castle.id, unitId)
         }
     }
+
+    mesh = GameModels.addCastle(this, bgColor)
 }

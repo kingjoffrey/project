@@ -14,6 +14,13 @@ var CastleWindow = new function () {
             }
         }
 
+    this.aaa = function (castle) {
+        $('.buttonColors').fadeOut(300)
+        GameScene.moveCameraVeryClose()
+
+
+        GameScene.centerOn(castle.getX() + 1, castle.getY() + 1)
+    }
 
     this.show = function (castle) {
         var time = '',
