@@ -15,11 +15,25 @@ var CastleWindow = new function () {
         }
 
     this.show = function (castle) {
+        Players.hideArmies()
+
         $('.buttonColors').fadeOut(300)
         GameScene.moveCameraVeryClose()
-
-
         GameScene.centerOn(castle.getX() + 1, castle.getY() + 1)
+
+        var i = 0
+
+        for (var unitId in castle.getProduction()) {
+            var unit = Units.get(unitId)
+
+            if (unitId == castle.getProductionId()) {
+                time = castle.getProductionTurn() + '/';
+            }
+
+            GameModels.addUnit(castle.getX() + i, castle.getY() + i, Unit.convertName(unit.name))
+
+            i++
+        }
     }
 
     this.aaa = function (castle) {

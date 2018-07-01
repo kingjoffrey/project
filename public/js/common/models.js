@@ -210,6 +210,12 @@ var Models = new function () {
             JSONLoader.load('/models/flag_8.json', function (geometry, materials) {
                 flagModels[7] = geometry
             })
+            JSONLoader.load('/models/flag_9.json', function (geometry, materials) {
+                flagModels[8] = geometry
+            })
+            JSONLoader.load('/models/flag_10.json', function (geometry, materials) {
+                flagModels[9] = geometry
+            })
         },
         initPath = function () {
             var radius = 0.7,
@@ -381,7 +387,7 @@ var Models = new function () {
         mesh.children.splice(1, 4) // usuń 4 elementy począwszy od indexu 1
         updateCastleModel(mesh, defense, capital)
     }
-    this.getHero = function (color) {
+    this.getHero = function () {
         return new THREE.Mesh(armyModels.hero, armyModels.hero.material)
     }
     this.getUnit = function (modelName) {

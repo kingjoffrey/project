@@ -39,6 +39,19 @@ var GameModels = new function () {
         GameScene.add(mesh)
         return mesh
     }
+    this.addUnit = function (x, y, modelName) {
+        var mesh = Models.getUnit(modelName)
+
+        mesh.scale.x = 0.1
+        mesh.scale.y = 0.1
+        mesh.scale.z = 0.1
+
+        mesh.rotation.y = Math.PI / 2 + Math.PI / 4
+
+        mesh.position.set(x * 2 + 0.5, 2, y * 2 + 0.5)
+
+        GameScene.add(mesh)
+    }
     this.addArmy = function (x, y, color, number, modelName, canSwim, life) {
         var mesh = Models.getArmy(color, number, modelName),
             lifeMesh = Models.getLifeBar(life)

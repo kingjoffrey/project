@@ -181,7 +181,7 @@ var Army = function (army, bgColor, miniMapColor, textColor, color) {
         }
 
         if (name) {
-            return name.replace(' ', '_').toLowerCase()
+            return Unit.convertName(name)
         } else {
             kupa()
         }

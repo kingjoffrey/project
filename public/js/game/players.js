@@ -22,20 +22,6 @@ var Players = new function () {
     this.count = function () {
         return countProperties(players) - 1
     }
-    this.countHumanss = function () {
-        var numberOfHumans = 0
-        for (var color in players) {
-            if (color == 'neutral') {
-                continue
-            }
-            var player = this.get(color)
-            if (!player.isComputer()) {
-                console.log('a')
-                numberOfHumans++
-            }
-        }
-        return numberOfHumans
-    }
     this.toArray = function () {
         return players
     }
@@ -57,6 +43,16 @@ var Players = new function () {
                 var army = armies.get(armyId)
                 GameScene.centerOn(army.getX(), army.getY(), func)
                 break
+            }
+        }
+    }
+    this.hideArmies = function () {
+        for (var color in players) {
+            var player = players[color],
+                armies = player.getArmies()
+
+            for (var armyId in armies.toArray()) {
+                GameScene.remove(armies.get(armyId).getMesh())
             }
         }
     }

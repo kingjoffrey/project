@@ -175,7 +175,7 @@ var HelpModels = new function () {
         return mesh
     }
     this.addHero = function () {
-        var mesh = Models.getHero('orange')
+        var mesh = Models.getHero()
 
         mesh.rotation.y = Math.PI / 2
 

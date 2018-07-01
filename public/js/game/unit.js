@@ -5,9 +5,12 @@ var Unit = new function () {
     this.countNumberOfUnits = function (a) {
         var numberOfUnits = countProperties(a.heroes) + countProperties(a.walk) + countProperties(a.swim) + countProperties(a.fly)
 
-        if (numberOfUnits > 8) {
-            numberOfUnits = 8
+        if (numberOfUnits > 10) {
+            numberOfUnits = 10
         }
         return numberOfUnits
+    }
+    this.convertName = function (name) {
+        return name.replace(' ', '_').toLowerCase()
     }
 }
