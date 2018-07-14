@@ -89,6 +89,7 @@ abstract class Coret_Model_ParentDb extends Coret_Db_Table_Abstract
         } else {
             $dane['data'] = $this->addDataInsert($dane['data']);
             $id = $this->insertElement($dane['data']);
+
             if (!$id) {
                 throw new Exception('There is no ID');
             }
@@ -175,6 +176,7 @@ abstract class Coret_Model_ParentDb extends Coret_Db_Table_Abstract
             $this->_db->quoteInto($this->_db->quoteIdentifier($this->_primary) . ' = ?', $this->_id)
         );
         $where = $this->addWhere($where);
+
         return $this->update($dane, $where);
     }
 
@@ -213,7 +215,6 @@ abstract class Coret_Model_ParentDb extends Coret_Db_Table_Abstract
         $this->addSelectWhereLang();
         $this->addSelectWhere();
         $this->addSelectGroup();
-        $this->addSelectOrder();
     }
 
     /**
@@ -262,6 +263,7 @@ abstract class Coret_Model_ParentDb extends Coret_Db_Table_Abstract
     public function getList(array $columns = array(), array $columns_lang = array())
     {
         $this->prepareSelect($columns, $columns_lang);
+        $this->addSelectOrder();
         return $this->_db->fetchAll($this->_select);
     }
 
@@ -300,7 +302,13 @@ abstract class Coret_Model_ParentDb extends Coret_Db_Table_Abstract
     public function getPagination(array $columns = array(), array $columns_lang = array())
     {
         $this->prepareSelect($columns, $columns_lang);
-        return new Zend_Paginator_Adapter_DbSelect($this->_select);
+        $this->addSelectOrder();
+//        echo $this->_select->__toString();exit;
+        try {
+            return new Zend_Paginator_Adapter_DbSelect($this->_select);
+        } catch (Exception $e) {
+
+        }
     }
 
     /**
@@ -331,7 +339,7 @@ abstract class Coret_Model_ParentDb extends Coret_Db_Table_Abstract
         $this->addSelectWhereLang();
         $this->addSelectWhere();
         $this->addSelectJoin();
-        $result = $this->_db->fetchRow($this->_select);
+        $result = $this->selectRow($this->_select);
         if ($result) {
             if (isset($result['adminId'])) {
                 $adminClassName = Zend_Registry::get('config')->adminClassName;
@@ -462,7 +470,7 @@ abstract class Coret_Model_ParentDb extends Coret_Db_Table_Abstract
                 $this->_select->order($this->_sort);
             }
         } else {
-            $this->_select->order($this->_primary);
+            $this->_select->order($this->_name . '.' . $this->_primary);
         }
     }
 
@@ -494,7 +502,10 @@ abstract class Coret_Model_ParentDb extends Coret_Db_Table_Abstract
         $data_img = array();
 
         reset($this->_columns);
-        reset($this->_columns_lang);
+
+        if (isset($this->_columns_lang) && $this->_columns_lang) {
+            reset($this->_columns_lang);
+        }
 
         for ($i = 0; $i < count($this->_columns); $i++) {
             $column = key($this->_columns);
@@ -519,6 +530,10 @@ abstract class Coret_Model_ParentDb extends Coret_Db_Table_Abstract
                             $data[$column] = $post[$column];
                         }
                         break;
+                    case 'password':
+                        $data[$column] = md5($post[$column]);
+                        break;
+
                     default:
                         $data[$column] = $post[$column];
                 }

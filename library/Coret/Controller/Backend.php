@@ -30,7 +30,7 @@ abstract class Coret_Controller_Backend extends Zend_Controller_Action
         $this->view->menu();
         $this->view->copyright();
 
-//        $this->view->controllerName = $this->slugify(strtolower(str_replace(' ', '', $this->view->title)));
+        $this->view->controllerName = Zend_Controller_Front::getInstance()->getRequest()->getControllerName();
     }
 
     public function __construct(Zend_Controller_Request_Abstract $request, Zend_Controller_Response_Abstract $response, array $invokeArgs = array())
@@ -54,8 +54,8 @@ abstract class Coret_Controller_Backend extends Zend_Controller_Action
         $columns = array();
         $columnsLang = array();
 
-        $c = $this->view->m->getColumns();
-        foreach (array_keys($c) as $columnName) {
+        $allColumns = $this->view->m->getColumnsAll();
+        foreach (array_keys($allColumns) as $columnName) {
             $columns[] = $columnName;
         }
 
@@ -165,7 +165,7 @@ abstract class Coret_Controller_Backend extends Zend_Controller_Action
 
     protected function myRedirect()
     {
-        $this->redirect('/admin/' . Zend_Controller_Front::getInstance()->getRequest()->getControllerName());
+        $this->redirect('/admin/' . $this->view->controllerName);
     }
 
     protected function editHandleElse($id)
@@ -220,6 +220,11 @@ abstract class Coret_Controller_Backend extends Zend_Controller_Action
                 $methodName = 'get' . ucfirst($key) . 'Array';
                 $attributes['opt'] = $model->$methodName();
             }
+
+            if (isset($row['url'])) {
+                $attributes['url'] = $row['url'];
+            }
+
             $f = new $className($attributes);
             $this->view->form->addElements($f->getElements());
         }
