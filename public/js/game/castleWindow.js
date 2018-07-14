@@ -21,7 +21,8 @@ var CastleWindow = new function () {
         GameScene.moveCameraVeryClose()
         GameScene.centerOn(castle.getX() + 1, castle.getY() + 1)
 
-        var i = 0
+        var i = 0,
+            c = countProperties(castle.getProduction())
 
         for (var unitId in castle.getProduction()) {
             var unit = Units.get(unitId)
@@ -30,7 +31,7 @@ var CastleWindow = new function () {
                 time = castle.getProductionTurn() + '/';
             }
 
-            GameModels.addUnit(castle.getX() + i, castle.getY() + i, Unit.convertName(unit.name))
+            GameModels.addUnit(castle.getX() + i - c / 2 + 0.5, castle.getY() + i - c / 2 + 0.5, Unit.convertName(unit.name))
 
             i++
         }

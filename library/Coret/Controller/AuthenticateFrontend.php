@@ -9,7 +9,7 @@ abstract class Coret_Controller_AuthenticateFrontend extends Coret_Controller_Au
             $this->_authTableName,
             $this->_loginDatabaseName,
             $this->_passwordDatabaseName,
-            'MD5(?) AND active = 1'
+            $this->_credentialTreatment
         );
 
         $authAdapter->setIdentity($params[$this->_loginFormName]);

@@ -11,6 +11,7 @@ abstract class Coret_Controller_Authenticate extends Zend_Controller_Action
     protected $_passwordFormName = 'password';
     protected $_loginDatabaseName = 'login';
     protected $_passwordDatabaseName = 'password';
+    protected $_credentialTreatment = 'MD5(?) AND active = 1';
 
     public function init()
     {
