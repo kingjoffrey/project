@@ -54,14 +54,15 @@ abstract class Coret_Controller_Backend extends Zend_Controller_Action
         $columns = array();
         $columnsLang = array();
 
-        $allColumns = $this->view->m->getColumnsAll();
-        foreach (array_keys($allColumns) as $columnName) {
+        $c = $this->view->m->getColumns();
+        foreach (array_keys($c) as $columnName) {
             $columns[] = $columnName;
         }
 
-        $c = $this->view->m->getColumns();
-        foreach (array_keys($c) as $columnName) {
-            $columnsLang[] = $columnName;
+        if ($c = $this->view->m->getColumnsLang()) {
+            foreach (array_keys($c) as $columnName) {
+                $columnsLang[] = $columnName;
+            }
         }
 
         $this->view->paginator = new Zend_Paginator($this->view->m->getPagination($columns, $columnsLang));
