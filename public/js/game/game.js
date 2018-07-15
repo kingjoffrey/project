@@ -40,7 +40,7 @@ var Game = new function () {
                 $('#tutorial').hide()
             }
 
-            PickerCommon.reset()
+            // PickerCommon.reset()
             GameScene.clear()
             Renderer.clear()
 
@@ -49,7 +49,6 @@ var Game = new function () {
             Fields.init(game.fields)
             Fields.createTextures()
             var waterMesh = Ground.init(Fields.getMaxX(), Fields.getMaxY(), Fields.getTextureCanvas(), Fields.getWaterTextureCanvas())
-            PickerCommon.attach(waterMesh)
             GameScene.add(waterMesh)
 
             Players.init(game.players)
@@ -60,6 +59,7 @@ var Game = new function () {
             GameRenderer.start()
 
             PickerCommon.init(PickerGame)
+            PickerCommon.attach(waterMesh)
 
             GameModels.addCursor()
 

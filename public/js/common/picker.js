@@ -1,17 +1,15 @@
 var PickerCommon = new function () {
     var rayCaster,
         objects,
-        intersects,
+        intersects = [],
         camera,
         container,
-        vector
+        mouse = new THREE.Vector2(),
+        x, y
 
-    this.reset = function () {
+    this.init = function (picker) {
         rayCaster = new THREE.Raycaster()
         objects = []
-        intersects = []
-    }
-    this.init = function (picker) {
         camera = GameScene.getCamera()
         container = GameRenderer.getDomElement()
 
@@ -40,14 +38,19 @@ var PickerCommon = new function () {
                 return false
             })
     }
+    this.getObject = function () {
+        return intersects[0].object
+    }
     this.intersect = function (event) {
-        var x = event.offsetX == undefined ? event.layerX : event.offsetX,
-            y = event.offsetY == undefined ? event.layerY : event.offsetY
+        x = event.offsetX == undefined ? event.layerX : event.offsetX
+        y = event.offsetY == undefined ? event.layerY : event.offsetY
 
-        vector = new THREE.Vector3(( x / container.width ) * 2 - 1, -( y / container.height ) * 2 + 1, 1)
-        vector.unproject(camera)
-        rayCaster.set(camera.position, vector.sub(camera.position).normalize())
-        intersects = rayCaster.intersectObjects(objects, false)
+        mouse.x = ( x / container.width ) * 2 - 1
+        mouse.y = -( y / container.height ) * 2 + 1
+
+        rayCaster.setFromCamera(mouse, camera)
+
+        intersects = rayCaster.intersectObjects(objects)
     }
     this.convertX = function () {
         return Math.floor(parseInt(intersects[0].point.x) / 2)
@@ -63,6 +66,9 @@ var PickerCommon = new function () {
     this.detach = function (object) {
         objects.splice(objects.indexOf(object), 1);
     }
+    this.detachAll = function () {
+        objects = []
+    }
     /**
      *
      * @returns {Field}
@@ -71,7 +77,7 @@ var PickerCommon = new function () {
         return Fields.get(PickerCommon.convertX(), PickerCommon.convertZ())
     }
     this.intersects = function () {
-        return isSet(intersects[0])
+        return intersects.length > 0
     }
     this.cursor = function (type) {
         switch (type) {
@@ -122,10 +128,8 @@ var PickerCommon = new function () {
      *
      * @returns {{x: Number, y: Number}}
      */
-    this.getPoint = function (event) {
-        var x = event.offsetX == undefined ? event.layerX : event.offsetX,
-            y = event.offsetY == undefined ? event.layerY : event.offsetY
-        return {x: x, y: y}
+    this.getPoint = function () {
+        return {'x': x, 'y': y}
     }
     this.checkOffset = function (point1, point2) {
         if (point1.x >= point2.x - 1 && point1.x <= point2.x + 1) {

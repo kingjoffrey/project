@@ -112,6 +112,7 @@ var EditorController = new function () {
     this.edit = function () {
         $('#bg').hide()
         $('#loading').show()
+        $('#loading2').hide()
         WebSocketEditor.init()
     }
     this.getMapId = function () {

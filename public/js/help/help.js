@@ -353,6 +353,7 @@ var Help = new function () {
         },
         handleTerrain = function () {
             mesh = HelpModels.addTerrain(terrainMatrix[currentTerrainId])
+            HelpRenderer.setMesh(mesh)
             $('#Terrain').remove()
             $('#text').prepend($('<div>')
                 .attr('id', 'Terrain')

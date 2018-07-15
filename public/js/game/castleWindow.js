@@ -16,6 +16,7 @@ var CastleWindow = new function () {
 
     this.show = function (castle) {
         Players.hideArmies()
+        PickerCommon.detachAll()
 
         $('.buttonColors').fadeOut(300)
         GameScene.moveCameraVeryClose()
@@ -35,6 +36,8 @@ var CastleWindow = new function () {
 
             i++
         }
+
+        PickerGame.setInCastle(true)
     }
 
     this.aaa = function (castle) {

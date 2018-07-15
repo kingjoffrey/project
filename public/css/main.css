@@ -154,7 +154,7 @@ input, select {
 
 #menu .iconButton {
     border-radius: 0.3vw;
-    margin: 0.15vw  0.3vw;
+    margin: 0.15vw 0.3vw;
 }
 
 h2 {
@@ -414,21 +414,23 @@ tr.trlink:hover td {
     margin-right: 0.7vw;
 }
 
-#text #unit h3 {
+#text h3 {
     text-align: center;
 }
 
-#text #unit table {
+#text table {
     padding: 0.5vw;
     border-spacing: 0.1vw;
     border-collapse: separate;
 }
 
-#text #unit .unitName {
+#text .unitName {
     padding: 2.1vw;
     display: inline-block;
-    color: springgreen;
-    width: 9.5vw;
+    color: #000;
+    text-shadow: 0 0 1px darkmagenta;
+    width: 19vw;
+    background: #fff;
 }
 
 div.table table.unitTable {
@@ -1011,22 +1013,22 @@ div.table table.unitTable td:first {
     position: fixed;
     top: 0;
     left: 0;
-    background: #000;
-    color: #fff;
     width: 100%;
     height: 100%;
     font-size: 6vw;
-    margin: 2.1vw;
+    padding: 2.1vw;
     display: none;
     cursor: url(/img/game/cursors/wait.png) 11 11, auto;
+    background: #000 url('/img/login_bg.jpg') no-repeat top center;
+    background-size: cover;
 }
 
 #loading1 {
-    color: blanchedalmond;
+    color: darkmagenta;
 }
 
 #loading2 {
-    color: white;
+    color: darkmagenta;
 }
 
 #loading3 {
@@ -1316,4 +1318,11 @@ input.max {
 
 .editorCastleWindow div {
     padding: 0.7vw;
+}
+
+#info {
+    text-align: center;
+    color: darkmagenta;
+    text-shadow: none;
+    background: #fff;
 }

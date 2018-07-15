@@ -54,6 +54,7 @@ var Turn = new function () {
                     Players.showFirst(color, function () {
                         GameGui.unlock()
                         Execute.setExecuting(0)
+                        Me.deselectArmy()
                     })
                 } else {
                     GameGui.unlock()

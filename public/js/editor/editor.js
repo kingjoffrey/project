@@ -1,7 +1,7 @@
 var Editor = new function () {
     this.init = function (r) {
 
-        PickerCommon.reset()
+        // PickerCommon.reset()
         GameScene.clear()
         Renderer.clear()
 
@@ -9,7 +9,7 @@ var Editor = new function () {
 
         Fields.init(r.fields)
         Fields.createEditorTextures()
-        EditorGround.init(Fields.getMaxX(), Fields.getMaxY(), Fields.getTextureCanvas())
+        var groundMesh = EditorGround.init(Fields.getMaxX(), Fields.getMaxY(), Fields.getTextureCanvas())
 
         Ruins.init(r.ruins)
         Players.init(r.players)
@@ -20,6 +20,7 @@ var Editor = new function () {
         GameRenderer.start()
 
         PickerCommon.init(PickerEditor)
+        PickerCommon.attach(groundMesh)
 
         $('#bg').hide()
         $('#loading').hide()
@@ -29,5 +30,7 @@ var Editor = new function () {
         $('.editor').show()
 
         GameRenderer.animate()
+
+        GameScene.centerOn(0, 0)
     }
 }

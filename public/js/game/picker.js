@@ -7,11 +7,12 @@ var PickerGame = new function () {
         scaling = false,
         dist = 0,
         inCastle = false,
+        INTERSECTED,
         handleDownStart = function (event) {
             leftClick = 1
             move = 0
-            dragStart = PickerCommon.getPoint(event)
             PickerCommon.intersect(event)
+            dragStart = PickerCommon.getPoint()
         },
         handleUp = function (event) {
             dragStart = 0
@@ -55,14 +56,9 @@ var PickerGame = new function () {
                         }
 // Wejdź do zamku
                     } else if (Me.colorEquals(field.getCastleColor())) {
-                        var castleId = field.getCastleId()
-                        inCastle = true
-                        CastleWindow.show(Me.getCastle(castleId))
+                        CastleWindow.show(Me.getCastle(field.getCastleId()))
                     }
                 }
-            } else if (inCastle) {
-                PickerCommon.cursor('open')
-                console.log('iun castle')
             }
         },
         handleMove = function (event) {
@@ -71,21 +67,42 @@ var PickerGame = new function () {
             //     AStar.showPath()
             // }
 
-// nie w zamku
-            if (!inCastle) {
-                if (dragStart) {
-                    var dragEnd = PickerCommon.getPoint(event)
-                    if (!PickerCommon.checkOffset(dragStart, dragEnd)) {
-// drag
-                        move = 1
-                        GameScene.moveCamera(dragStart.x - dragEnd.x, dragStart.y - dragEnd.y)
-                        dragStart = dragEnd
-                        PickerCommon.cursor('move')
-                    }
+// w zamku
+            if (inCastle) {
+                if (changeIntersectingObjectColor()) {
+                    PickerCommon.cursor('grab')
                 } else {
-// Zmiana kursora
-                    PickerGame.cursorChange()
+                    PickerCommon.cursor('impenetrable')
                 }
+            } else if (dragStart) {
+// nie w zamku
+                var dragEnd = PickerCommon.getPoint()
+                if (!PickerCommon.checkOffset(dragStart, dragEnd)) {
+// drag
+                    move = 1
+                    GameScene.moveCamera(dragStart.x - dragEnd.x, dragStart.y - dragEnd.y)
+                    dragStart = dragEnd
+                    PickerCommon.cursor('move')
+                }
+            } else {
+// Zmiana kursora
+                PickerGame.cursorChange()
+            }
+        },
+        changeIntersectingObjectColor = function () {
+            if (PickerCommon.intersects()) {
+                var object = PickerCommon.getObject()
+                if (INTERSECTED != object) {
+                    if (INTERSECTED) INTERSECTED.material.emissive.setHex(INTERSECTED.currentHex)
+                    INTERSECTED = object
+                    INTERSECTED.currentHex = INTERSECTED.material.emissive.getHex()
+                    INTERSECTED.material.emissive.setHex(0xff0000)
+                }
+                return true
+            } else {
+                if (INTERSECTED) INTERSECTED.material.emissive.setHex(INTERSECTED.currentHex)
+                INTERSECTED = null
+                return false
             }
         },
         changeCursorArmyMove = function (field) {
@@ -112,6 +129,9 @@ var PickerGame = new function () {
             }
         }
 
+    this.setInCastle = function (val) {
+        inCastle = val
+    }
     this.cursorChange = function () {
         if (PickerCommon.intersects()) {
             if (GameGui.getLock()) {

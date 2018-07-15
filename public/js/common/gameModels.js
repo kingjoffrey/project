@@ -65,6 +65,7 @@ var GameModels = new function () {
         mesh.position.set(x * 2, 2, (y + 2) * 2)
 
         GameScene.add(mesh)
+        PickerCommon.attach(mesh)
     }
     this.addArmy = function (x, y, color, number, modelName, canSwim, life) {
         var mesh = Models.getArmy(color, number, modelName),
