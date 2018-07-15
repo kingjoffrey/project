@@ -30,11 +30,14 @@
     <div id="game">
         <div id="loading">
             <div id="loading1"><?php echo $this->translate('Loading') ?>...</div>
-            <div id="loading2"><br><?php echo $this->translate('Objective: ') ?>
+            <div id="loading2">
+                <br>
+                <?php echo $this->translate('Objective: ') ?>
                 <div id="loading3"><?php echo $this->translate('Conquare all castles!') ?></div>
             </div>
         </div>
         <div id="wait"></div>
+        <div id="turnInfo"></div>
         <div id="terrain"></div>
         <div id="tutorial" class="game"></div>
         <div id="goldAndStats" class="game">
@@ -87,7 +90,6 @@
             </div>
         </div>
     </div>
-    <div id="turnInfo"></div>
     <div id="gameMenu">
         <div class="settings">
             <div class="row">

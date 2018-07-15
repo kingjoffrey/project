@@ -1277,7 +1277,8 @@ input.max {
 
 .askFullScreen .question {
     padding: 1.4vw;
-    color: lightblue;
+    color: #000;
+    text-shadow: 0px 0px 1px darkmagenta;
 }
 
 #gameMenu .settings {

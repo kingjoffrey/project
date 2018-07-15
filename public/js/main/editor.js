@@ -85,6 +85,13 @@ var EditorController = new function () {
         $('#content').html(r.data)
 
         $('form').submit(function (e) {
+            $('#bg').hide()
+            $('#tutorial').hide()
+            $('.game').hide()
+
+            $('#loading').show()
+            $('#loading2').hide()
+
             e.preventDefault()
             WebSocketSendMain.controller('editor', 'create', {
                 'name': $('#name').val(),

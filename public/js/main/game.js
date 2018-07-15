@@ -4,6 +4,7 @@ var GameController = new function () {
         $('#bg').hide()
         $('.editor').hide()
         $('#loading').show()
+        $('#loading2').show()
         Game.setGameId(r.gameId)
         WebSocketExecGame.init()
     }
