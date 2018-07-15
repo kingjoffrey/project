@@ -1,6 +1,7 @@
 var Castle = function (castle, bgC) {
     var mesh,
-        bgColor = bgC
+        bgColor = bgC,
+        units = []
 
     this.toArray = function () {
         return castle
@@ -73,6 +74,18 @@ var Castle = function (castle, bgC) {
         if (unitId) {
             WebSocketSendGame.production(castle.id, unitId)
         }
+    }
+    this.addUnit = function (i, c, name) {
+        units.push(GameModels.addUnit(
+            this.getX() + i - c / 2 + 0.5,
+            this.getY() + i - c / 2 + 0.5,
+            name))
+    }
+    this.removeUnits = function () {
+        for (var i in units) {
+            GameScene.remove(units[i])
+        }
+        units = []
     }
 
     mesh = GameModels.addCastle(this, bgColor)

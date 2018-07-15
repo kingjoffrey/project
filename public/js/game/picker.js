@@ -6,7 +6,7 @@ var PickerGame = new function () {
         leftClick = 0,
         scaling = false,
         dist = 0,
-        inCastle = false,
+        castle = false,
         INTERSECTED,
         handleDownStart = function (event) {
             leftClick = 1
@@ -19,7 +19,7 @@ var PickerGame = new function () {
             if (!leftClick) {
                 return
             }
-            if (!inCastle && !move && PickerCommon.intersects()) {
+            if (!castle && !move && PickerCommon.intersects()) {
 // Armia jest zaznaczona
                 if (Me.getSelectedArmyId()) {
                     var x = PickerCommon.convertX(),
@@ -59,6 +59,12 @@ var PickerGame = new function () {
                         CastleWindow.show(Me.getCastle(field.getCastleId()))
                     }
                 }
+// w zamku
+            } else if (castle) {
+                if (PickerCommon.intersects()) {
+                    var mesh = PickerCommon.getMesh()
+                    castle.handle(Unit.getId(mesh.name))
+                }
             }
         },
         handleMove = function (event) {
@@ -68,7 +74,7 @@ var PickerGame = new function () {
             // }
 
 // w zamku
-            if (inCastle) {
+            if (castle) {
                 if (changeIntersectingObjectColor()) {
                     PickerCommon.cursor('grab')
                 } else {
@@ -91,10 +97,10 @@ var PickerGame = new function () {
         },
         changeIntersectingObjectColor = function () {
             if (PickerCommon.intersects()) {
-                var object = PickerCommon.getObject()
-                if (INTERSECTED != object) {
+                var mesh = PickerCommon.getMesh()
+                if (INTERSECTED != mesh) {
                     if (INTERSECTED) INTERSECTED.material.emissive.setHex(INTERSECTED.currentHex)
-                    INTERSECTED = object
+                    INTERSECTED = mesh
                     INTERSECTED.currentHex = INTERSECTED.material.emissive.getHex()
                     INTERSECTED.material.emissive.setHex(0xff0000)
                 }
@@ -129,8 +135,8 @@ var PickerGame = new function () {
             }
         }
 
-    this.setInCastle = function (val) {
-        inCastle = val
+    this.setCastle = function (val) {
+        castle = val
     }
     this.cursorChange = function () {
         if (PickerCommon.intersects()) {

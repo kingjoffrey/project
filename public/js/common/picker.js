@@ -38,7 +38,7 @@ var PickerCommon = new function () {
                 return false
             })
     }
-    this.getObject = function () {
+    this.getMesh = function () {
         return intersects[0].object
     }
     this.intersect = function (event) {
@@ -60,7 +60,7 @@ var PickerCommon = new function () {
     }
     this.attach = function (object) {
         if (object instanceof THREE.Mesh) {
-            objects.push(object);
+            objects.push(object)
         }
     }
     this.detach = function (object) {

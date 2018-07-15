@@ -15,6 +15,7 @@ var CastleWindow = new function () {
         }
 
     this.show = function (castle) {
+        castle.removeUnits()
         Players.hideArmies()
         PickerCommon.detachAll()
 
@@ -32,12 +33,12 @@ var CastleWindow = new function () {
                 time = castle.getProductionTurn() + '/';
             }
 
-            GameModels.addUnit(castle.getX() + i - c / 2 + 0.5, castle.getY() + i - c / 2 + 0.5, Unit.convertName(unit.name))
+            castle.addUnit(i, c, Unit.convertName(unit.name))
 
             i++
         }
 
-        PickerGame.setInCastle(true)
+        PickerGame.setCastle(castle)
     }
 
     this.aaa = function (castle) {

@@ -13,4 +13,11 @@ var Unit = new function () {
     this.convertName = function (name) {
         return name.replace(' ', '_').toLowerCase()
     }
+    this.getId = function (name) {
+        for (var unitId in Units.toArray()) {
+            if (Unit.getName(unitId) == name) {
+                return unitId
+            }
+        }
+    }
 }

@@ -26,17 +26,17 @@ var Players = new function () {
         return players
     }
     this.showFirst = function (color, func) {
-        var castleId = Game.getCapitalId(color),
+        var capitalId = Game.getCapitalId(color),
             firstCastleId,
             player = this.get(color),
             castles = player.getCastles()
 
-        if (castles.has(castleId)) {
-            var castle = castles.get(castleId)
-            GameScene.centerOn(castle.getX(), castle.getY(), func)
+        if (castles.has(capitalId)) {
+            var castle = castles.get(capitalId)
+            GameScene.centerOn(castle.getX() + 1, castle.getY() + 1, func)
         } else if (firstCastleId = castles.getFirsCastleId()) {
             var castle = castles.get(firstCastleId)
-            GameScene.centerOn(castle.getX(), castle.getY(), func)
+            GameScene.centerOn(castle.getX() + 1, castle.getY() + 1, func)
         } else {
             var armies = player.getArmies()
             for (var armyId in armies.toArray()) {
