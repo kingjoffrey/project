@@ -62,8 +62,14 @@ var PickerGame = new function () {
 // w zamku
             } else if (castle) {
                 if (PickerCommon.intersects()) {
-                    var mesh = PickerCommon.getMesh()
-                    castle.handle(Unit.getId(mesh.name))
+                    var mesh = PickerCommon.getMesh(),
+                        unitId = Unit.getId(mesh.name)
+
+                    if (castle.getProductionId() == unitId) {
+                        castle.handle(0, -1)
+                    } else {
+                        castle.handle(unitId)
+                    }
                 }
             }
         },
