@@ -36,7 +36,7 @@ var Castles = function () {
 
         castles[castleId] = castle
 
-        castle.update(bgColor)
+        // castle.update(bgColor)
     }
     this.raze = function (castleId) {
         var castle = this.get(castleId)

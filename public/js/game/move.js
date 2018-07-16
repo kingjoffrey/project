@@ -47,6 +47,7 @@ var Move = new function () {
                 var oldCastles = Players.get(oldCastleColor).getCastles(),
                     newCastles = Players.get(color).getCastles()
 
+                oldCastles.get(id).update(color)
                 newCastles.add(id, oldCastles.get(id))
 
                 if (oldCastleColor != 'neutral') {

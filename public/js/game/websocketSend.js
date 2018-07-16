@@ -424,7 +424,7 @@ var WebSocketSendGame = new function () {
         }
 
         if (!unitId) {
-            Message.error('Error');
+            Message.error('Error')
             return
         }
 
@@ -434,7 +434,7 @@ var WebSocketSendGame = new function () {
             'type': 'production',
             'castleId': castleId,
             'unitId': unitId
-        };
+        }
 
         ws.send(JSON.stringify(token))
     }
