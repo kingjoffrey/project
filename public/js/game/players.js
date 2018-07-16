@@ -56,4 +56,14 @@ var Players = new function () {
             }
         }
     }
+    this.showArmies = function () {
+        for (var color in players) {
+            var player = players[color],
+                armies = player.getArmies()
+
+            for (var armyId in armies.toArray()) {
+                GameScene.add(armies.get(armyId).getMesh())
+            }
+        }
+    }
 }

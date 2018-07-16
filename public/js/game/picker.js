@@ -138,6 +138,9 @@ var PickerGame = new function () {
     this.setCastle = function (val) {
         castle = val
     }
+    this.getCastle = function () {
+        return castle
+    }
     this.cursorChange = function () {
         if (PickerCommon.intersects()) {
             if (GameGui.getLock()) {

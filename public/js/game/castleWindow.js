@@ -19,7 +19,9 @@ var CastleWindow = new function () {
         Players.hideArmies()
         PickerCommon.detachAll()
 
-        $('.buttonColors').fadeOut(300)
+        $('.gameButtons').fadeOut(300)
+
+
         GameScene.moveCameraVeryClose()
         GameScene.centerOn(castle.getX() + 1, castle.getY() + 1)
 
@@ -39,6 +41,17 @@ var CastleWindow = new function () {
         }
 
         PickerGame.setCastle(castle)
+        $('#castleButtons').fadeIn(300)
+    }
+    this.hide = function () {
+        $('#castleButtons').fadeOut(300)
+
+        var castle = PickerGame.getCastle()
+        castle.removeUnits()
+        PickerCommon.detachAll()
+
+        PickerGame.setCastle(null)
+        $('.gameButtons').fadeIn(300)
     }
 
     this.aaa = function (castle) {

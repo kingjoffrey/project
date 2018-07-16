@@ -832,7 +832,7 @@ div.table table.unitTable td:first {
 }
 
 /* ----------------- */
-#armyButtons, #menuButtons {
+#armyButtons, #menuButtons, #heroButtons, #nextCastle, #previousCastle {
     z-index: 902;
     border: none;
     border-radius: 0px;
@@ -1325,4 +1325,46 @@ input.max {
     color: darkmagenta;
     text-shadow: none;
     background: #fff;
+}
+
+#castleButtons {
+    display: none;
+}
+
+#heroButtons {
+    bottom: 0.5vw;
+    margin: 0 auto;
+}
+
+#castleButtons #close {
+    position: absolute;
+    right: 0.5vw;
+    top: 0.5vw;
+}
+
+#heroResurrection, #heroHire {
+    display: inline-block;
+}
+
+#castleButtons #close div {
+    background: url(/img/game/buttons/close.png) center center no-repeat !important;
+}
+
+#nextCastle {
+    right: 0.5vw;
+    top: 50vh;
+
+}
+
+#nextCastle div {
+    background: url(/img/game/buttons/next.png) center center no-repeat !important;
+}
+
+#previousCastle {
+    left: 0.5vw;
+    top: 50vh;
+}
+
+#previousCastle div {
+    background: url(/img/game/buttons/previous.png) center center no-repeat !important;
 }

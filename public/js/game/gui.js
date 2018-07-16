@@ -89,7 +89,9 @@ var GameGui = new function () {
                 Sound.play('click')
                 TreasuryWindow.upkeep()
             })
-
+            $('#castleButtons #close').click(function () {
+                CastleWindow.hide()
+            })
             $('#gameMenu #exit').click(function () {
                 Sound.play('click')
                 IndexController.index()

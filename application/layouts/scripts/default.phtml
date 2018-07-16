@@ -40,7 +40,7 @@
         <div id="turnInfo"></div>
         <div id="terrain"></div>
         <div id="tutorial" class="game"></div>
-        <div id="goldAndStats" class="game">
+        <div id="goldAndStats" class="game gameButtons">
             <div id="statistics" class="iconButton buttonColors">
                 <div title="<?php echo $this->translate('Statistics') ?>">&nbsp;</div>
             </div>
@@ -49,7 +49,7 @@
             </div>
         </div>
 
-        <div id="menuButtons" class="game">
+        <div id="menuButtons" class="game gameButtons">
             <div id="nextTurn" class="iconButton buttonColors">
                 <div title="<?php echo $this->translate('Next turn') ?> (t) "></div>
             </div>
@@ -58,7 +58,7 @@
             </div>
         </div>
 
-        <div id="armyButtons" class="game">
+        <div id="armyButtons" class="game gameButtons">
             <div id="nextArmy" class="iconButton buttonColors buttonOff">
                 <div title="<?php echo $this->translate('Find next army') ?> (n) "></div>
             </div>
@@ -67,6 +67,27 @@
             </div>
             <div id="quitArmy" class="iconButton buttonColors buttonOff">
                 <div title="<?php echo $this->translate('Quit army') ?> (f) "></div>
+            </div>
+        </div>
+
+        <div id="castleButtons" class="game">
+            <div id="nextCastle" class="iconButton buttonColors buttonOff">
+                <div title="<?php echo $this->translate('Next castle') ?>"></div>
+            </div>
+            <div id="previousCastle" class="iconButton buttonColors buttonOff">
+                <div title="<?php echo $this->translate('Previous castle') ?>"></div>
+            </div>
+            <div id="heroButtons">
+                <div id="heroResurrection" class="buttonColors buttonOff">
+                    <div title="<?php echo $this->translate('Resurrect hero') ?>"><?php echo $this->translate('Resurrect hero') ?></div>
+                </div>
+                <div id="heroHire" class="buttonColors buttonOff">
+                    <div title="<?php echo $this->translate('Hire hero') ?>"><?php echo $this->translate('Hire hero') ?></div>
+                </div>
+
+            </div>
+            <div id="close" class="iconButton buttonColors">
+                <div title="<?php echo $this->translate('Close') ?>"></div>
             </div>
         </div>
 
