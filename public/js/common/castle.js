@@ -73,11 +73,11 @@ var Castle = function (castle, bgC) {
         }
     }
     this.changeProduction = function (unitId) {
-        if (this.getProductionId) {
+        if (this.getProductionId()) {
             mesh.children.splice(-1, 1)
         }
         this.setProductionId(unitId)
-        mesh.add(GameModels.addProduction(this.getX(), this.getY(), Unit.getName(unitId)))
+        mesh.add(GameModels.addProduction(Unit.getName(unitId)))
     }
     this.addUnit = function (i, name) {
         var c = countProperties(this.getProduction()) / 2
