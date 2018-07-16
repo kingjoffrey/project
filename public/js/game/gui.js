@@ -75,29 +75,29 @@ var GameGui = new function () {
             })
         },
         addButtonsClicks = function () {
-            $('#gold').click(function () {
+            $('#gold').off().click(function () {
                 Sound.play('click')
                 TreasuryWindow.treasury()
             })
 
-            $('#income').click(function () {
+            $('#income').off().click(function () {
                 Sound.play('click')
                 TreasuryWindow.income()
             })
 
-            $('#costs').click(function () {
+            $('#costs').off().click(function () {
                 Sound.play('click')
                 TreasuryWindow.upkeep()
             })
-            $('#castleButtons #close').click(function () {
+            $('#castleButtons #close').off().click(function () {
                 CastleWindow.hide()
             })
-            $('#gameMenu #exit').click(function () {
+            $('#gameMenu #exit').off().click(function () {
                 Sound.play('click')
                 IndexController.index()
             })
 
-            $('#surrender').click(function () {
+            $('#surrender').off().click(function () {
                 Sound.play('click')
                 var id = Message.show(translations.surrender, $('<div>').html(translations.areYouSure))
                 Message.addButton(id, 'surrender', function () {
@@ -108,22 +108,22 @@ var GameGui = new function () {
                 Message.addButton(id, 'cancel')
             });
 
-            $('#statistics').click(function () {
+            $('#statistics').off().click(function () {
                 Sound.play('click')
                 WebSocketSendGame.statistics();
             })
 
-            $('#nextTurn').click(function () {
+            $('#nextTurn').off().click(function () {
                 Sound.play('click')
                 Turn.next()
             })
 
-            $('#nextArmy').click(function () {
+            $('#nextArmy').off().click(function () {
                 Sound.play('click')
                 Me.findNext()
             })
 
-            $('#deselectArmy').click(function () {
+            $('#deselectArmy').off().click(function () {
                 if (!Me.getSelectedArmyId()) {
                     return;
                 }
@@ -131,7 +131,7 @@ var GameGui = new function () {
                 Me.deselectArmy()
             })
 
-            $('#show').click(function () {
+            $('#show').off().click(function () {
                 Sound.play('click')
                 GameGui.setShow(!GameGui.getShow())
                 if (GameGui.getShow()) {
@@ -140,7 +140,7 @@ var GameGui = new function () {
                     $(this).addClass('off')
                 }
             })
-            $('#sound').click(function () {
+            $('#sound').off().click(function () {
                 Sound.play('click')
                 Sound.setMute(!Sound.getMute())
                 if (Sound.getMute()) {
@@ -149,23 +149,20 @@ var GameGui = new function () {
                     $(this).removeClass('off')
                 }
             })
-            $('#fullScreen').click(function () {
+            $('#fullScreen').off().click(function () {
                 Sound.play('click')
                 Page.fullScreen()
             })
-            $('#showMenu').click(function () {
+            $('#showMenu').off().click(function () {
                 Sound.play('click')
                 menu()
             })
-            $('#close').click(function () {
+            $('#close').off().click(function () {
                 Sound.play('click')
                 $('#gameMenu').hide()
                 GameRenderer.start()
                 GameRenderer.animate()
             })
-            // $('#').click(function () {
-            //
-            // })
         },
         menu = function () {
             Message.remove()

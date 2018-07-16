@@ -6,12 +6,6 @@ var CastleWindow = new function () {
             return function () {
                 GameScene.centerOn(Me.getCastle(i).getX(), Me.getCastle(i).getY())
             }
-        },
-        click = function (i, id) {
-            return function () {
-                CastleWindow.show(Me.getCastle(i))
-                Message.remove(id)
-            }
         }
 
     this.show = function (castle) {
@@ -45,7 +39,8 @@ var CastleWindow = new function () {
             previousCastle = Me.findPreviousCastle(castle.getCastleId())
 
         if (nextCastle) {
-            $('#nextCastle').removeClass('buttonOff').click(function () {
+            $('#nextCastle').removeClass('buttonOff').off().click(function () {
+                PickerGame.getCastle().removeUnits()
                 CastleWindow.show(nextCastle)
             })
         } else {
@@ -53,7 +48,8 @@ var CastleWindow = new function () {
         }
 
         if (previousCastle) {
-            $('#previousCastle').removeClass('buttonOff').click(function () {
+            $('#previousCastle').removeClass('buttonOff').off().click(function () {
+                PickerGame.getCastle().removeUnits()
                 CastleWindow.show(previousCastle)
             })
         } else {
@@ -62,7 +58,7 @@ var CastleWindow = new function () {
 
         if (castle.getCastleId() == Me.getCapitalId()) {
             if (!Me.findHero() && Me.getGold() >= 100) {
-                $('#heroResurrection').removeClass('buttonOff').click(function () {
+                $('#heroResurrection').removeClass('buttonOff').off().click(function () {
                     var id = Message.show(translations.resurrectHero, $('<div>').append(translations.doYouWantToResurrectHeroFor100Gold))
                     Message.addButton(id, 'resurrectHero', WebSocketSendGame.resurrection)
                     Message.addButton(id, 'cancel')
@@ -71,7 +67,7 @@ var CastleWindow = new function () {
             } else {
                 $('#heroResurrection').addClass('buttonOff').off()
                 if (Me.getGold() >= 1000) {
-                    $('#heroHire').removeClass('buttonOff').click(function () {
+                    $('#heroHire').removeClass('buttonOff').off().click(function () {
                         Message.remove(messageId)
                         var id = Message.show(translations.hireHero, $('<div>').html(translations.doYouWantToHireNewHeroFor1000Gold))
                         Message.addButton(id, 'hireHero', WebSocketSendGame.hire)
@@ -93,8 +89,7 @@ var CastleWindow = new function () {
         PickerCommon.detachAll()
         $('#castleButtons').fadeOut(300)
 
-        var castle = PickerGame.getCastle()
-        castle.removeUnits()
+        PickerGame.getCastle().removeUnits()
         PickerGame.setCastle(null)
 
         GameScene.moveCameraAwayNormal()
@@ -181,83 +176,6 @@ var CastleWindow = new function () {
                 }
                 return array
             }
-
-        var next = $('<div>'),
-            previous = $('<div>'),
-            nextCastle = Me.findNextCastle(castle.getCastleId()),
-            previousCastle = Me.findPreviousCastle(castle.getCastleId())
-
-        if (nextCastle) {
-            next = $('<div>')
-                .attr('id', 'next')
-                .addClass('button buttonColors')
-                .html('>>')
-                .click(function () {
-                    CastleWindow.show(nextCastle)
-                    GameScene.centerOn(nextCastle.getX(), nextCastle.getY())
-                    Message.remove(messageId)
-                })
-        }
-
-        if (previousCastle) {
-            previous = $('<div>')
-                .attr('id', 'previous')
-                .addClass('button buttonColors')
-                .html('<<')
-                .click(function () {
-                    CastleWindow.show(previousCastle)
-                    GameScene.centerOn(previousCastle.getX(), previousCastle.getY())
-                    Message.remove(messageId)
-                })
-        }
-
-        castleWindow
-            .append($('<div>').html(translations.incomeFromCastle + ': ' + castle.getIncome() + ' ' + translations.gold_turn))
-            .append(
-                $('<div>').addClass('text-center')
-                    .append(previous)
-                    .append($('<div>')
-                        .addClass('button buttonColors')
-                        .html(translations.close)
-                        .click(function () {
-                            Message.remove(messageId)
-                        }))
-                    .append(next)
-            )
-            .append($('<div>').addClass('production').append(createProductionTD()).attr('id', castle.getCastleId()))
-
-        if (castle.getCastleId() == Me.getCapitalId()) {
-            var resurrect = $('<div>').addClass('button buttonColors buttonOff').attr('id', 'heroResurrection')
-                .html(translations.resurrectHero)
-                .click(function () {
-                    Message.remove(messageId)
-                })
-
-            var hire = $('<div>').addClass('button buttonColors buttonOff').attr('id', 'heroHire')
-                .html(translations.hireHero)
-                .click(function () {
-                    Message.remove(messageId)
-                })
-
-            if (!Me.findHero() && Me.getGold() >= 100) {
-                resurrect.removeClass('buttonOff').click(function () {
-                    var id = Message.show(translations.resurrectHero, $('<div>').append(translations.doYouWantToResurrectHeroFor100Gold))
-                    Message.addButton(id, 'resurrectHero', WebSocketSendGame.resurrection)
-                    Message.addButton(id, 'cancel')
-                })
-            } else if (Me.getGold() >= 1000) {
-                hire.removeClass('buttonOff').click(function () {
-                    Message.remove(messageId)
-                    var id = Message.show(translations.hireHero, $('<div>').html(translations.doYouWantToHireNewHeroFor1000Gold))
-                    Message.addButton(id, 'hireHero', WebSocketSendGame.hire)
-                    Message.addButton(id, 'cancel')
-                })
-            }
-
-            castleWindow
-                .append(resurrect)
-                .append(hire)
-        }
 
         if (castle.getCastleId() == Me.getCapitalId()) {
             var title = castle.getName() + '&nbsp;(' + translations.capitalCity + ')'

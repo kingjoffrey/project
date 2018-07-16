@@ -74,6 +74,7 @@ var Castle = function (castle, bgC) {
     }
     this.changeProduction = function (unitId) {
         if (this.getProductionId()) {
+            console.log(mesh.children)
             mesh.children.splice(-1, 1)
         }
 
