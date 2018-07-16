@@ -15,8 +15,7 @@ var GameModels = new function () {
         var mesh = Models.getCastle(castle.toArray(), color)
 
         if (castle.getProductionId()) {
-            var productionMesh = GameModels.addProduction(castle.getX(), castle.getY(), Unit.getName(castle.getProductionId()))
-            mesh.add(productionMesh)
+            mesh.add(GameModels.addProduction(castle.getX(), castle.getY(), Unit.getName(castle.getProductionId())))
         }
 
         mesh.position.set(castle.getX() * 2 + 2, 0, castle.getY() * 2 + 2)
@@ -56,13 +55,13 @@ var GameModels = new function () {
     this.addUnit = function (x, y, modelName) {
         var mesh = Models.getUnit(modelName)
 
-        mesh.scale.x = 0.12
-        mesh.scale.y = 0.12
-        mesh.scale.z = 0.12
+        mesh.scale.x = 0.08
+        mesh.scale.y = 0.08
+        mesh.scale.z = 0.08
 
         mesh.rotation.y = Math.PI / 2 + Math.PI / 4
 
-        mesh.position.set(x * 2, 2, (y + 2) * 2)
+        mesh.position.set(x * 2, 1.2, (y + 2) * 2)
 
         mesh.name = modelName
 

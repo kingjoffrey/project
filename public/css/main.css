@@ -132,7 +132,7 @@ input, select {
 
 .buttonColors, #submit, input, select {
     border: 1px solid darkmagenta;
-    border-radius: 0.5vw;
+    border-radius: 0;
     color: #fff;
     text-align: center;
 }
@@ -149,12 +149,12 @@ input, select {
 .iconButton {
     margin: 1px;
     display: inline-flex;
-    border-radius: 1vw;
+    border-radius: 0.5vw;
 }
 
 #menu .iconButton {
-    border-radius: 0.3vw;
-    margin: 0.15vw 0.3vw;
+    border-radius: 0;
+    margin: 0.15vw;
 }
 
 h2 {
@@ -832,7 +832,7 @@ div.table table.unitTable td:first {
 }
 
 /* ----------------- */
-#armyButtons, #menuButtons, #heroButtons, #nextCastle, #previousCastle {
+#armyButtons, #menuButtons, #heroButtons {
     z-index: 902;
     border: none;
     border-radius: 0px;
@@ -1348,6 +1348,11 @@ input.max {
 
 #castleButtons #close div {
     background: url(/img/game/buttons/close.png) center center no-repeat !important;
+}
+
+#nextCastle, #previousCastle {
+    z-index: 902;
+    position: absolute;
 }
 
 #nextCastle {

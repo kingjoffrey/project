@@ -91,7 +91,7 @@ var WebSocketMessageGame = new function () {
 
                 case 'production':
                     var castle = Me.getCastle(r.castleId)
-                    castle.setProductionId(r.unitId)
+                    castle.changeProduction(r.unitId)
                     castle.setProductionTurn(0)
 
                     CastleWindow.show(castle)

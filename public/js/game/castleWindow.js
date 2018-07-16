@@ -25,32 +25,82 @@ var CastleWindow = new function () {
         GameScene.moveCameraVeryClose()
         GameScene.centerOn(castle.getX() + 1, castle.getY() + 1)
 
-        var i = 0,
-            c = countProperties(castle.getProduction())
+        var i = 0
 
         for (var unitId in castle.getProduction()) {
             var unit = Units.get(unitId)
 
-            if (unitId == castle.getProductionId()) {
-                time = castle.getProductionTurn() + '/';
-            }
+            // if (unitId == castle.getProductionId()) {
+            //     time = castle.getProductionTurn() + '/';
+            // }
 
-            castle.addUnit(i, c, Unit.convertName(unit.name))
+            castle.addUnit(i, Unit.convertName(unit.name))
 
             i++
         }
 
         PickerGame.setCastle(castle)
+
+        var nextCastle = Me.findNextCastle(castle.getCastleId()),
+            previousCastle = Me.findPreviousCastle(castle.getCastleId())
+
+        if (nextCastle) {
+            $('#nextCastle').removeClass('buttonOff').click(function () {
+                CastleWindow.show(nextCastle)
+            })
+        } else {
+            $('#nextCastle').addClass('buttonOff').off()
+        }
+
+        if (previousCastle) {
+            $('#previousCastle').removeClass('buttonOff').click(function () {
+                CastleWindow.show(previousCastle)
+            })
+        } else {
+            $('#previousCastle').addClass('buttonOff').off()
+        }
+
+        if (castle.getCastleId() == Me.getCapitalId()) {
+            if (!Me.findHero() && Me.getGold() >= 100) {
+                $('#heroResurrection').removeClass('buttonOff').click(function () {
+                    var id = Message.show(translations.resurrectHero, $('<div>').append(translations.doYouWantToResurrectHeroFor100Gold))
+                    Message.addButton(id, 'resurrectHero', WebSocketSendGame.resurrection)
+                    Message.addButton(id, 'cancel')
+                })
+                $('#heroHire').addClass('buttonOff').off()
+            } else {
+                $('#heroResurrection').addClass('buttonOff').off()
+                if (Me.getGold() >= 1000) {
+                    $('#heroHire').removeClass('buttonOff').click(function () {
+                        Message.remove(messageId)
+                        var id = Message.show(translations.hireHero, $('<div>').html(translations.doYouWantToHireNewHeroFor1000Gold))
+                        Message.addButton(id, 'hireHero', WebSocketSendGame.hire)
+                        Message.addButton(id, 'cancel')
+                    })
+                } else {
+                    $('#heroHire').addClass('buttonOff').off()
+                }
+            }
+
+            $('#heroButtons').show()
+        } else {
+            $('#heroButtons').hide()
+        }
+
         $('#castleButtons').fadeIn(300)
     }
     this.hide = function () {
+        PickerCommon.detachAll()
         $('#castleButtons').fadeOut(300)
 
         var castle = PickerGame.getCastle()
         castle.removeUnits()
-        PickerCommon.detachAll()
-
         PickerGame.setCastle(null)
+
+        GameScene.moveCameraAwayNormal()
+        Players.showArmies()
+        PickerCommon.attach(Ground.getWaterMesh())
+
         $('.gameButtons').fadeIn(300)
     }
 
@@ -189,21 +239,19 @@ var CastleWindow = new function () {
                     Message.remove(messageId)
                 })
 
-            if (castle.getCastleId() == Me.getCapitalId()) {
-                if (!Me.findHero() && Me.getGold() >= 100) {
-                    resurrect.removeClass('buttonOff').click(function () {
-                        var id = Message.show(translations.resurrectHero, $('<div>').append(translations.doYouWantToResurrectHeroFor100Gold))
-                        Message.addButton(id, 'resurrectHero', WebSocketSendGame.resurrection)
-                        Message.addButton(id, 'cancel')
-                    })
-                } else if (Me.getGold() >= 1000) {
-                    hire.removeClass('buttonOff').click(function () {
-                        Message.remove(messageId)
-                        var id = Message.show(translations.hireHero, $('<div>').html(translations.doYouWantToHireNewHeroFor1000Gold))
-                        Message.addButton(id, 'hireHero', WebSocketSendGame.hire)
-                        Message.addButton(id, 'cancel')
-                    })
-                }
+            if (!Me.findHero() && Me.getGold() >= 100) {
+                resurrect.removeClass('buttonOff').click(function () {
+                    var id = Message.show(translations.resurrectHero, $('<div>').append(translations.doYouWantToResurrectHeroFor100Gold))
+                    Message.addButton(id, 'resurrectHero', WebSocketSendGame.resurrection)
+                    Message.addButton(id, 'cancel')
+                })
+            } else if (Me.getGold() >= 1000) {
+                hire.removeClass('buttonOff').click(function () {
+                    Message.remove(messageId)
+                    var id = Message.show(translations.hireHero, $('<div>').html(translations.doYouWantToHireNewHeroFor1000Gold))
+                    Message.addButton(id, 'hireHero', WebSocketSendGame.hire)
+                    Message.addButton(id, 'cancel')
+                })
             }
 
             castleWindow

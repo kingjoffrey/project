@@ -8,6 +8,7 @@ var Ground = new function () {
         // bottomLevel = 0,
         waterLevel = 0.05,
         m = 2,
+        waterMesh,
         checkMountainUp = function (x, y) {
             if (Fields.get(x, y + 1, 1).getMountain()) {
                 return 0
@@ -1184,7 +1185,7 @@ var Ground = new function () {
         return waterLevel
     }
     this.init = function (x, y, textureCanvas, waterTextureCanvas) {
-        var waterMesh = createWater(x, y, waterTextureCanvas)
+        waterMesh = createWater(x, y, waterTextureCanvas)
 
         var stripesArray = createGrassStripes(x, y),
             vertexPositions = createVertexPositionsFromStripesArray(stripesArray, 0),
@@ -1307,6 +1308,9 @@ var Ground = new function () {
         mesh = createBorder2(x, y)
         waterMesh.add(mesh)
 
+        return waterMesh
+    }
+    this.getWaterMesh = function () {
         return waterMesh
     }
 }

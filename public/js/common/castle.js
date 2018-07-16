@@ -12,14 +12,11 @@ var Castle = function (castle, bgC) {
     this.getMesh = function () {
         return mesh
     }
-    this.setProductionId = function (value) {
-        castle.productionId = value
+    this.setProductionId = function (unitId) {
+        castle.productionId = unitId
     }
     this.setProductionTurn = function (value) {
         castle.productionTurn = value
-    }
-    this.setRelocationCastleId = function (value) {
-        castle.relocationCastleId = value
     }
     this.getX = function () {
         return castle.x
@@ -75,10 +72,19 @@ var Castle = function (castle, bgC) {
             WebSocketSendGame.production(castle.id, unitId)
         }
     }
-    this.addUnit = function (i, c, name) {
+    this.changeProduction = function (unitId) {
+        if (this.getProductionId) {
+            mesh.children.splice(-1, 1)
+        }
+        this.setProductionId(unitId)
+        mesh.add(GameModels.addProduction(this.getX(), this.getY(), Unit.getName(unitId)))
+    }
+    this.addUnit = function (i, name) {
+        var c = countProperties(this.getProduction()) / 2
+
         units.push(GameModels.addUnit(
-            this.getX() + i - c / 2 + 0.5,
-            this.getY() + i - c / 2 + 0.5,
+            this.getX() + i - c + 0.5,
+            this.getY() + i - c + 0.5,
             name))
     }
     this.removeUnits = function () {
