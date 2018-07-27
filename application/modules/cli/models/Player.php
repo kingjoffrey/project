@@ -4,7 +4,6 @@ class Cli_Model_Player extends Cli_Model_DefaultPlayer
 {
     private $_turnActive;
     private $_computer;
-//    private $_lost;
 
     private $_gold;
 
@@ -14,13 +13,9 @@ class Cli_Model_Player extends Cli_Model_DefaultPlayer
     private $_attackSequence;
     private $_defenceSequence;
 
-    private $_capitalId;
-    private $_sideId;
-
     public function __construct($player, $gameId, $mapCastles, $mapTowers, $playersTowers, Zend_Db_Adapter_Pdo_Pgsql $db)
     {
         $this->_id = $player['playerId'];
-//        $this->_lost = $player['lost'];
 
         $this->_turnActive = $player['turnActive'];
         $this->_computer = $player['computer'];
@@ -32,21 +27,16 @@ class Cli_Model_Player extends Cli_Model_DefaultPlayer
         $this->_longName = $player['name'];
 
         $this->_teamId = $player['teamId'];
-        $this->_sideId = $player['sideId'];
         $this->_color = $player['color'];
 
         $this->_armies = new Cli_Model_Armies();
         $this->_castles = new Cli_Model_Castles();
         $this->_towers = new Cli_Model_Towers();
 
-//        if ($this->_lost) {
-//            return;
-//        }
-
         $this->_allHeroes = new Cli_Model_AllHeroes($this->_id, $db);
 
         $this->initArmies($gameId, $db);
-        $this->initCastles($gameId, $mapCastles, $db);
+        $this->initCastles($gameId, $mapCastles, $player['sideId'], $db);
         $this->initTowers($mapTowers, $playersTowers);
         $this->initBattleSequence($gameId, $db);
     }
@@ -89,7 +79,7 @@ class Cli_Model_Player extends Cli_Model_DefaultPlayer
         }
     }
 
-    private function initCastles($gameId, $mapCastles, Zend_Db_Adapter_Pdo_Pgsql $db)
+    private function initCastles($gameId, $mapCastles, $sideId, Zend_Db_Adapter_Pdo_Pgsql $db)
     {
         $mCastlesInGame = new Application_Model_CastlesInGame($gameId, $db);
         $mCastleProduction = new Application_Model_MapCastleProduction($db);
@@ -97,7 +87,7 @@ class Cli_Model_Player extends Cli_Model_DefaultPlayer
             $this->_castles->addCastle($castleId, new Cli_Model_Castle($c, $mapCastles[$castleId]));
             $castle = $this->_castles->getCastle($castleId);
             $castle->initProduction($mCastleProduction->getCastleProduction($castleId));
-            if ($mapCastles[$castleId]['capital'] && $mapCastles[$castleId]['sideId'] == $this->_sideId) {
+            if ($mapCastles[$castleId]['capital'] && $mapCastles[$castleId]['sideId'] == $sideId) {
                 $this->_capitalId = $castleId;
             }
         }
@@ -200,10 +190,5 @@ class Cli_Model_Player extends Cli_Model_DefaultPlayer
     public function getCapitalId()
     {
         return $this->_capitalId;
-    }
-
-    public function isCapital($castleId)
-    {
-        return $castleId == $this->_capitalId;
     }
 }

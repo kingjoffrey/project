@@ -28,8 +28,6 @@ var Game = new function () {
             loading = 0
 
             GameGui.init()
-            $('#game').show()
-            $('.game').show()
 
             if (isSet(g.tutorial)) {
                 $('#tutorial').show()

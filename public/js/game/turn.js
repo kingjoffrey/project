@@ -43,29 +43,10 @@ var Turn = new function () {
         if (Turn.isMy()) {
             Sound.play('startturn')
 
-            if (!WebSocketTutorial.isOpen() && Turn.getNumber() == 1 && !Me.getCastle(Me.getFirsCastleId()).getProductionId()) {
-                CastleWindow.show(Me.getCastle(Me.getFirsCastleId()))
-                Players.showFirst(color, function () {
-                    GameGui.unlock()
-                    Execute.setExecuting(0)
-                })
-            } else if (Me.getArmies().count()) {
-                if (!Me.findNext(1)) {
-                    Players.showFirst(color, function () {
-                        GameGui.unlock()
-                        Execute.setExecuting(0)
-                        Me.deselectArmy()
-                    })
-                } else {
-                    GameGui.unlock()
-                    Execute.setExecuting(0)
-                }
-            } else {
-                Players.showFirst(color, function () {
-                    GameGui.unlock()
-                    Execute.setExecuting(0)
-                })
-            }
+            Players.showFirst(color, function () {
+                GameGui.unlock()
+                Execute.setExecuting(0)
+            })
         } else {
             Execute.setExecuting(0)
         }

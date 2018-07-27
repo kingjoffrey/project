@@ -7,6 +7,8 @@ abstract class Cli_Model_DefaultPlayer
     protected $_color;
     protected $_teamId;
 
+    protected $_capitalId;
+
     protected $_longName;
     protected $_backgroundColor;
 
@@ -68,5 +70,10 @@ abstract class Cli_Model_DefaultPlayer
     public function getAllHeroes()
     {
         return $this->_allHeroes;
+    }
+
+    public function isCapital($castleId)
+    {
+        return $castleId == $this->_capitalId;
     }
 }

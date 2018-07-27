@@ -229,7 +229,9 @@ var GameGui = new function () {
         })
     }
     this.init = function () {
-        $('#game').off()
+        $('#game').show().off()
+        $('.game').show()
+        $('#castleButtons').hide()
 
         $(window).resize(function () {
             GameGui.adjust()
