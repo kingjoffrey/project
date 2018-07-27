@@ -15,7 +15,6 @@ var Me = new function () {
         selectedCastleId = null,
         selectedUnitId = null,
         battleSequence = [],
-        capitalId = null,
         updateGold = function () {
             $('#gold div').fadeOut(300, function () {
                 $('#gold div').html(gold)
@@ -370,9 +369,9 @@ var Me = new function () {
         }
     }
     this.getCapitalId = function () {
-        return capitalId
+        return me.getCapitalId()
     }
-    this.init = function (c, g, bSequence, capitals) {
+    this.init = function (c, g, bSequence) {
         selectedArmyId = null
         deselectedArmyId = null
         nextArmies = {}
@@ -387,7 +386,6 @@ var Me = new function () {
 
         color = c
         me = Players.get(color)
-        capitalId = capitals[color]
 
         gold = 0
         upkeep = 0

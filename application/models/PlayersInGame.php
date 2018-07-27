@@ -119,7 +119,7 @@ class Application_Model_PlayersInGame extends Coret_Db_Table_Abstract
         $select = $this->_db->select()
             ->from(array('b' => $this->_name), array('playerId', 'teamId', 'turnActive', 'lost', 'gold'))
             ->join(array('a' => 'player'), 'a.' . $playerId . ' = b.' . $playerId, array('firstName', 'lastName', 'computer'))
-            ->join(array('c' => 'side'), 'b . ' . $sideId . ' = c . ' . $sideId, array('color' => 'shortName', 'longName', 'backgroundColor', 'textColor', 'minimapColor'))
+            ->join(array('c' => 'side'), 'b . ' . $sideId . ' = c . ' . $sideId, array('color' => 'shortName', 'longName', 'backgroundColor', 'textColor', 'minimapColor', 'sideId'))
             ->where($gameId . ' = ?', $this->_gameId)
             ->where('b . ' . $sideId . ' is not null')
             ->order('b.sideId');

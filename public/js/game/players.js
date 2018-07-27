@@ -26,13 +26,12 @@ var Players = new function () {
         return players
     }
     this.showFirst = function (color, func) {
-        var capitalId = Game.getCapitalId(color),
-            firstCastleId,
+        var firstCastleId,
             player = this.get(color),
             castles = player.getCastles()
 
-        if (castles.has(capitalId)) {
-            var castle = castles.get(capitalId)
+        if (castles.has(player.getCapitalId())) {
+            var castle = castles.get(player.getCapitalId())
             GameScene.centerOn(castle.getX() + 1, castle.getY() + 1, func)
         } else if (firstCastleId = castles.getFirsCastleId()) {
             var castle = castles.get(firstCastleId)

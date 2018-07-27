@@ -47,7 +47,7 @@ var Move = new function () {
                 var oldCastles = Players.get(oldCastleColor).getCastles(),
                     newCastles = Players.get(color).getCastles()
 
-                oldCastles.get(id).update(color)
+                oldCastles.get(id).changeOwner(color)
                 newCastles.add(id, oldCastles.get(id))
 
                 if (oldCastleColor != 'neutral') {
@@ -56,6 +56,7 @@ var Move = new function () {
                     if (defense > 1) {
                         defense--
                         castle.setDefense(defense)
+                        castle.updateCapital(Players.get(color).isCapital(id))
                     }
                 }
 

@@ -157,7 +157,7 @@ var GameGui = new function () {
                 Sound.play('click')
                 menu()
             })
-            $('#close').off().click(function () {
+            $('#gameMenu #close').off().click(function () {
                 Sound.play('click')
                 $('#gameMenu').hide()
                 GameRenderer.start()

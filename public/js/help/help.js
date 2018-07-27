@@ -336,7 +336,7 @@ var Help = new function () {
             $('#text').prepend(unitProperties(help.list[currentUnitId]))
         },
         handleCastle = function () {
-            mesh = HelpModels.addCastle(castles[currentCastleId])
+            mesh = HelpModels.getCastle(castles[currentCastleId])
             HelpRenderer.setMesh(mesh)
             $('#Castle').remove()
             $('#text').prepend($('<div>')

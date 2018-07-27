@@ -1,13 +1,9 @@
-var Castle = function (castle, bgC) {
+var Castle = function (castle, color, isCapital) {
     var mesh,
-        bgColor = bgC,
         units = []
 
     this.toArray = function () {
         return castle
-    }
-    this.getBackgroundColor = function () {
-        return bgColor
     }
     this.getMesh = function () {
         return mesh
@@ -33,9 +29,6 @@ var Castle = function (castle, bgC) {
     this.getDefense = function () {
         return castle.defense
     }
-    this.getCapital = function () {
-        return castle.capital
-    }
     this.getProduction = function () {
         return castle.production
     }
@@ -45,23 +38,34 @@ var Castle = function (castle, bgC) {
     this.getProductionTurn = function () {
         return castle.productionTurn
     }
-    this.getRelocationCastleId = function () {
-        return castle.relocationCastleId
-    }
     this.getCastleId = function () {
         return castle.id
     }
     this.getEnclaveNumber = function () {
         return castle.enclaveNumber
     }
-    this.update = function (bgC) {
-        bgColor = bgC
+    this.changeOwner = function (color) {
         this.setProductionId(null)
-        mesh.children[0].material.color.set(bgColor)
+        mesh.children[0].material.color.set(color)
     }
     this.setDefense = function (defense) {
         castle.defense = defense
-        Models.castleChangeDefense(mesh, defense, castle.capital)
+        for (var i in mesh.children) {
+            if (mesh.children[i].name == 'def') {
+                mesh.remove(mesh.children[i])
+            }
+        }
+        Models.castleChangeDefense(mesh, defense)
+    }
+    this.updateCapital = function (isCapital) {
+        for (var i in mesh.children) {
+            if (mesh.children[i].name == 'capital') {
+                mesh.remove(mesh.children[i])
+            }
+        }
+        if (isCapital) {
+            mesh.add(Models.getCapital())
+        }
     }
     this.handle = function (unitId, stop) {
         if (stop) {
@@ -74,14 +78,17 @@ var Castle = function (castle, bgC) {
     }
     this.changeProduction = function (unitId) {
         if (this.getProductionId()) {
-            console.log(mesh.children)
-            mesh.children.splice(-1, 1)
+            for (var i in mesh.children) {
+                if (mesh.children[i].name == 'production') {
+                    mesh.remove(mesh.children[i])
+                }
+            }
         }
 
         this.setProductionId(unitId)
 
         if (unitId) {
-            mesh.add(GameModels.addProduction(Unit.getName(unitId)))
+            mesh.add(GameModels.getProduction(Unit.getName(unitId)))
         }
     }
     this.addUnit = function (i, name) {
@@ -99,5 +106,9 @@ var Castle = function (castle, bgC) {
         units = []
     }
 
-    mesh = GameModels.addCastle(this, bgColor)
+    mesh = GameModels.getCastle(this, color, isCapital)
+    if (this.getProductionId()) {
+        mesh.add(GameModels.getProduction(Unit.getName(this.getProductionId())))
+    }
+    GameScene.add(mesh)
 }

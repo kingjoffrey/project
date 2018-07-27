@@ -3,12 +3,13 @@
  */
 var CastleWindow = new function () {
     var center = function (i) {
-            return function () {
-                GameScene.centerOn(Me.getCastle(i).getX(), Me.getCastle(i).getY())
-            }
+        return function () {
+            GameScene.centerOn(Me.getCastle(i).getX(), Me.getCastle(i).getY())
         }
+    }
 
     this.show = function (castle) {
+        $('#terrain').hide()
         castle.removeUnits()
         Players.hideArmies()
         PickerCommon.detachAll()
@@ -18,6 +19,15 @@ var CastleWindow = new function () {
 
         GameScene.moveCameraVeryClose()
         GameScene.centerOn(castle.getX() + 1, castle.getY() + 1)
+
+        if (castle.getCastleId() == Me.getCapitalId()) {
+            $('#castleName').html(castle.getName() + '&nbsp;(' + translations.capitalCity + ')')
+        } else {
+            $('#castleName').html(castle.getName())
+        }
+
+        $('#castleDefense span').html(castle.getDefense())
+        $('#castleIncome span').html(castle.getIncome())
 
         var i = 0
 
@@ -86,6 +96,7 @@ var CastleWindow = new function () {
         $('#castleButtons').fadeIn(300)
     }
     this.hide = function () {
+        $('#terrain').show()
         PickerCommon.detachAll()
         $('#castleButtons').fadeOut(300)
 

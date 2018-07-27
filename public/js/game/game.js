@@ -10,9 +10,6 @@ var Game = new function () {
     this.getGameId = function () {
         return gameId
     }
-    this.getCapitalId = function (color) {
-        return game.capitals[color]
-    }
     this.getTurnsLimit = function () {
         return game.turnsLimit
     }
@@ -52,7 +49,7 @@ var Game = new function () {
             GameScene.add(waterMesh)
 
             Players.init(game.players)
-            Me.init(game.color, game.gold, game.bSequence, game.capitals)
+            Me.init(game.color, game.gold, game.bSequence)
             Ruins.init(game.ruins)
 
             GameScene.initSun(Fields.getMaxY())

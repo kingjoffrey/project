@@ -2,6 +2,8 @@
 
 class Cli_Model_EditorCastle extends Cli_Model_Castle
 {
+    protected $_capital;
+
     public function initProduction($production)
     {
         foreach ($production as $unitId => $row) {

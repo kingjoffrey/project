@@ -5,22 +5,19 @@ var Castles = function () {
         textColor,
         color
 
-    this.init = function (c1, bgC, miniMapC, textC, c2) {
+    this.init = function (bgC, miniMapC, textC, c) {
         castles = {}
 
         bgColor = bgC
         miniMapColor = miniMapC
         textColor = textC
-        color = c2
-
-        for (var castleId in c1) {
-            this.add(castleId, c1[castleId])
-        }
+        color = c
     }
-    this.add = function (castleId, castle) {
+    this.add = function (castleId, castle, isCapital) {
+        console.log(isCapital)
         var setCastleId = false
         if (!(castle instanceof Castle)) {
-            castle = new Castle(castle, bgColor)
+            castle = new Castle(castle, bgColor, isCapital)
             setCastleId = true
         }
 
@@ -75,19 +72,6 @@ var Castles = function () {
             i++
         }
         return i
-    }
-    this.getRelocatedProduction = function (castleId) {
-        var relocatedProduction = []
-        for (var id in castles) {
-            var castle = this.get(id)
-            if (castleId == castle.getCastleId) {
-                continue
-            }
-            if (castleId == castle.getRelocationCastleId()) {
-                relocatedProduction.push(castle.getCastleId())
-            }
-        }
-        return relocatedProduction
     }
     this.toArray = function () {
         return castles

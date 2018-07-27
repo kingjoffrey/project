@@ -1332,8 +1332,8 @@ input.max {
 }
 
 #heroButtons {
+    left: 0.5vw;
     bottom: 0.5vw;
-    margin: 0 auto;
 }
 
 #castleButtons #close {
@@ -1344,6 +1344,7 @@ input.max {
 
 #heroResurrection, #heroHire {
     display: inline-block;
+    padding: 1vw;
 }
 
 #castleButtons #close div {
@@ -1372,4 +1373,24 @@ input.max {
 
 #previousCastle div {
     background: url(/img/game/buttons/previous.png) center center no-repeat !important;
+}
+
+#castleInfo {
+    position: absolute;
+    left: 50vw;
+    background-color: rgb(0, 0, 0);
+    background-color: rgba(0, 0, 0, 0.4);
+    padding: 1vw;
+}
+
+#castleName {
+    color: gold;
+    text-transform: uppercase;
+    margin-bottom: 1vw;
+}
+
+#castleDefense {
+}
+
+#castleIncome {
 }

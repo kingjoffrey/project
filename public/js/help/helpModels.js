@@ -62,7 +62,7 @@ var HelpModels = new function () {
 
             HelpScene.add(mesh)
         }
-    this.addCastle = function (defense) {
+    this.getCastle = function (defense) {
         if (defense == 5) {
             var capital = 1
         } else {

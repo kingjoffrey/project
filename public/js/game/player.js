@@ -4,7 +4,7 @@ var Player = function (player, color) {
         towers = new Towers()
 
     armies.init(player.armies, player.backgroundColor, player.miniMapColor, player.textColor, color)
-    castles.init(player.castles, player.backgroundColor, player.miniMapColor, player.textColor, color)
+    castles.init(player.backgroundColor, player.miniMapColor, player.textColor, color)
     towers.init(player.towers, player.backgroundColor, color)
 
     this.getTeam = function () {
@@ -49,4 +49,15 @@ var Player = function (player, color) {
     this.getLost = function () {
         return player.lost
     }
+    this.isCapital = function (castleId) {
+        return (player.capitalId == castleId)
+    }
+    this.getCapitalId = function () {
+        return player.capitalId
+    }
+
+    for (var castleId in player.castles) {
+        castles.add(castleId, player.castles[castleId], this.isCapital(castleId))
+    }
+
 }

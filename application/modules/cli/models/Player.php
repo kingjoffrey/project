@@ -15,6 +15,7 @@ class Cli_Model_Player extends Cli_Model_DefaultPlayer
     private $_defenceSequence;
 
     private $_capitalId;
+    private $_sideId;
 
     public function __construct($player, $gameId, $mapCastles, $mapTowers, $playersTowers, Zend_Db_Adapter_Pdo_Pgsql $db)
     {
@@ -31,6 +32,7 @@ class Cli_Model_Player extends Cli_Model_DefaultPlayer
         $this->_longName = $player['name'];
 
         $this->_teamId = $player['teamId'];
+        $this->_sideId = $player['sideId'];
         $this->_color = $player['color'];
 
         $this->_armies = new Cli_Model_Armies();
@@ -95,7 +97,7 @@ class Cli_Model_Player extends Cli_Model_DefaultPlayer
             $this->_castles->addCastle($castleId, new Cli_Model_Castle($c, $mapCastles[$castleId]));
             $castle = $this->_castles->getCastle($castleId);
             $castle->initProduction($mCastleProduction->getCastleProduction($castleId));
-            if ($castle->isCapital()) {
+            if ($mapCastles[$castleId]['capital'] && $mapCastles[$castleId]['sideId'] == $this->_sideId) {
                 $this->_capitalId = $castleId;
             }
         }
@@ -126,7 +128,8 @@ class Cli_Model_Player extends Cli_Model_DefaultPlayer
             'armies' => $this->_armies->toArray(),
             'castles' => $this->_castles->toArray(),
             'towers' => $this->_towers->toArray(),
-            'longName' => $this->_longName
+            'longName' => $this->_longName,
+            'capitalId' => $this->_capitalId
         );
     }
 
@@ -197,5 +200,10 @@ class Cli_Model_Player extends Cli_Model_DefaultPlayer
     public function getCapitalId()
     {
         return $this->_capitalId;
+    }
+
+    public function isCapital($castleId)
+    {
+        return $castleId == $this->_capitalId;
     }
 }

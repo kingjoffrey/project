@@ -5,7 +5,6 @@ class Cli_Model_Castle extends Cli_Model_Entity
     protected $_defense;
     protected $_name;
     protected $_income;
-    protected $_capital;
     protected $_enclaveNumber;
 
     private $_productionId;
@@ -23,12 +22,7 @@ class Cli_Model_Castle extends Cli_Model_Entity
         $this->_defense = $mapCastle['defense'];
         $this->_name = $mapCastle['name'];
         $this->_income = $mapCastle['income'];
-        $this->_capital = $mapCastle['capital'];
         $this->_enclaveNumber = $mapCastle['enclaveNumber'];
-
-        if ($this->_capital) {
-            $this->_maxDefense = 5;
-        }
 
         if (empty($playerCastle)) {
             $this->_id = $mapCastle['mapCastleId'];
@@ -66,7 +60,6 @@ class Cli_Model_Castle extends Cli_Model_Entity
             'defense' => $this->getDefense(),
             'name' => $this->_name,
             'income' => $this->_income,
-            'capital' => $this->_capital,
 //            'enclaveNumber' => $this->_enclaveNumber,
             'production' => $this->_production
         );
@@ -186,10 +179,5 @@ class Cli_Model_Castle extends Cli_Model_Entity
     public function getEnclaveNumber()
     {
         return $this->_enclaveNumber;
-    }
-
-    public function isCapital()
-    {
-        return $this->_capital;
     }
 }

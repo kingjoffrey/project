@@ -1,0 +1,5 @@
+[user]
+        email = bartek@failpoint.pl
+        name = King Bartek
+[push]
+        default = simple

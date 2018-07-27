@@ -107,53 +107,6 @@ var Models = new function () {
                     return mesh
             }
         },
-        updateCastleModel = function (mesh, defense, capital) {
-            if (capital) {
-                var m = getCastleModel(5)
-
-                if (Page.getShadows()) {
-                    m.castShadow = true
-                    m.receiveShadow = true
-                }
-                mesh.add(m)
-            }
-            for (var i = 2; i <= defense; i++) {
-                if (i == 4) {
-                    var m = getCastleModel(i)
-                    m.position.set(7, 0, 7)
-
-                    var m1 = getCastleModel(i)
-                    m1.position.set(-14, 0, -14)
-                    m.add(m1)
-                    var m2 = getCastleModel(i)
-                    m2.position.set(-14, 0, 0)
-                    m.add(m2)
-                    var m3 = getCastleModel(i)
-                    m3.position.set(0, 0, -14)
-                    m.add(m3)
-
-                    if (Page.getShadows()) {
-                        m.castShadow = true
-                        m.receiveShadow = true
-                        m1.castShadow = true
-                        m1.receiveShadow = true
-                        m2.castShadow = true
-                        m2.receiveShadow = true
-                        m3.castShadow = true
-                        m3.receiveShadow = true
-                    }
-                } else {
-                    var m = getCastleModel(i)
-                    if (Page.getShadows()) {
-                        m.castShadow = true
-                        m.receiveShadow = true
-                    }
-                }
-
-
-                mesh.add(m)
-            }
-        },
         armyLoadCallback = function (id) {
             return function (geometry, materials) {
                 armyModels[id] = geometry
@@ -380,12 +333,60 @@ var Models = new function () {
                 color: color
             }))
         mesh.add(flagMesh)
-        updateCastleModel(mesh, castle.defense, castle.capital)
+
+        this.castleChangeDefense(mesh, castle.defense)
         return mesh
     }
-    this.castleChangeDefense = function (mesh, defense, capital) {
-        mesh.children.splice(1, 4) // usuń 4 elementy począwszy od indexu 1
-        updateCastleModel(mesh, defense, capital)
+    this.getCapital = function () {
+        var m = getCastleModel(5)
+
+        m.name = 'capital'
+
+        if (Page.getShadows()) {
+            m.castShadow = true
+            m.receiveShadow = true
+        }
+        return m
+    }
+    this.castleChangeDefense = function (mesh, defense) {
+        for (var i = 2; i <= defense; i++) {
+            if (i == 4) {
+                var m = getCastleModel(i)
+                m.position.set(7, 0, 7)
+
+                var m1 = getCastleModel(i)
+                m1.position.set(-14, 0, -14)
+                m.add(m1)
+
+                var m2 = getCastleModel(i)
+                m2.position.set(-14, 0, 0)
+                m.add(m2)
+
+                var m3 = getCastleModel(i)
+                m3.position.set(0, 0, -14)
+                m.add(m3)
+
+                if (Page.getShadows()) {
+                    m.castShadow = true
+                    m.receiveShadow = true
+                    m1.castShadow = true
+                    m1.receiveShadow = true
+                    m2.castShadow = true
+                    m2.receiveShadow = true
+                    m3.castShadow = true
+                    m3.receiveShadow = true
+                }
+            } else {
+                var m = getCastleModel(i)
+                if (Page.getShadows()) {
+                    m.castShadow = true
+                    m.receiveShadow = true
+                }
+            }
+
+            m.name = 'def'
+            mesh.add(m)
+        }
     }
     this.getHero = function () {
         return new THREE.Mesh(armyModels.hero, armyModels.hero.material)

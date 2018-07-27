@@ -6,7 +6,6 @@ class Cli_Model_Game
 
     private $_mapId;
 
-    private $_capitals = array();
     private $_playersColors;
 
     private $_users = array();
@@ -107,7 +106,6 @@ class Cli_Model_Game
                 $this->updateOnline($color, 0);
             }
             $this->_numberOfAllCastles += $player->getCastles()->count();
-            $this->_capitals[$color] = $player->getCapitalId();
         }
         $player = new Cli_Model_NeutralPlayer($this, $mapCastles, $mapTowers, $playersTowers, $db);
         $this->_Players->addPlayer('neutral', $player);
@@ -160,7 +158,6 @@ class Cli_Model_Game
             'units' => $this->_Units->toArray(),
             'firstUnitId' => $this->_firstUnitId,
             'fields' => $this->_Fields->toArray(),
-            'capitals' => $this->_capitals,
             'turnColor' => $this->getPlayerColor($this->_turnPlayerId),
             'turnNumber' => $this->_turnNumber,
             'players' => $this->_Players->toArray(),
