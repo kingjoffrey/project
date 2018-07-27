@@ -1009,6 +1009,10 @@ div.table table.unitTable td:first {
     background: url(/img/game/buttons/fullscreen.png) center center no-repeat !important;
 }
 
+#fullScreen div.full {
+    background: url(/img/game/buttons/fullscreen_off.png) center center no-repeat !important;
+}
+
 #loading {
     position: fixed;
     top: 0;

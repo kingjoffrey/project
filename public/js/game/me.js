@@ -20,12 +20,6 @@ var Me = new function () {
                 $('#gold div').html(gold)
                 $('#gold div').fadeIn()
             })
-
-            if (gold > 1000) {
-                $('#heroHire').removeClass('buttonOff')
-            } else {
-                $('#heroHire').addClass('buttonOff')
-            }
         }
 
     this.getColor = function () {

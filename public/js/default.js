@@ -19,6 +19,8 @@ var Page = new function () {
 
         var docElm = document.documentElement
         if (!isInFullScreen) {
+            $('#fullScreen div').addClass('full')
+
             if (docElm.requestFullscreen) {
                 docElm.requestFullscreen();
             } else if (docElm.mozRequestFullScreen) {
@@ -29,6 +31,8 @@ var Page = new function () {
                 docElm.msRequestFullscreen();
             }
         } else {
+            $('#fullScreen div.full').removeClass('full')
+
             if (document.exitFullscreen) {
                 document.exitFullscreen();
             } else if (document.webkitExitFullscreen) {

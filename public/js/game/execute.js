@@ -170,6 +170,7 @@ var Execute = new function () {
                         })
                     }
                     if (Me.colorEquals(r.color)) {
+                        CastleWindow.hide()
                         Me.goldIncrement(-r.gold)
                     }
                     break

@@ -42,6 +42,17 @@ var Main = new function () {
                     id: 'messages',
                     title: 'Messages'
                 })
+        ).append(
+            $('<div>').addClass('iconButton buttonColors')
+                .click(function () {
+                    Sound.play('click')
+                    Page.fullScreen()
+                })
+                .append($('<div>').html('&nbsp;&nbsp;&nbsp;').addClass('varchar'))
+                .attr({
+                    id: 'fullScreen',
+                    title: 'Full screen'
+                })
         )
     }
     this.createContent = function (r) {
