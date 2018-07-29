@@ -19,7 +19,7 @@ var Main = new function () {
             })
             $('#game #showMenu').off().click(function () {
                 Sound.play('click')
-                menu()
+                GameGui.menu()
             })
 
             $('#game #nextArmy').off().click(function () {
@@ -188,5 +188,6 @@ var Main = new function () {
     }
     this.init = function () {
         WebSocketMain.init()
+        addButtonsClicks()
     }
 }

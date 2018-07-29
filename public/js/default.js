@@ -1,6 +1,12 @@
 var Page = new function () {
     var index = '',
-        shadows = 1
+        shadows = 1,
+        isInFullScreen = function () {
+            return (document.fullscreenElement && document.fullscreenElement !== null) ||
+                (document.webkitFullscreenElement && document.webkitFullscreenElement !== null) ||
+                (document.mozFullScreenElement && document.mozFullScreenElement !== null) ||
+                (document.msFullscreenElement && document.msFullscreenElement !== null)
+        }
 
     this.getIndex = function () {
         return index
@@ -12,13 +18,9 @@ var Page = new function () {
         shadows = s
     }
     this.fullScreen = function () {
-        var isInFullScreen = (document.fullscreenElement && document.fullscreenElement !== null) ||
-            (document.webkitFullscreenElement && document.webkitFullscreenElement !== null) ||
-            (document.mozFullScreenElement && document.mozFullScreenElement !== null) ||
-            (document.msFullscreenElement && document.msFullscreenElement !== null);
-
         var docElm = document.documentElement
-        if (!isInFullScreen) {
+
+        if (!isInFullScreen()) {
             $('#fullScreen div').addClass('full')
 
             if (docElm.requestFullscreen) {
@@ -30,6 +32,9 @@ var Page = new function () {
             } else if (docElm.msRequestFullscreen) {
                 docElm.msRequestFullscreen();
             }
+
+            $('.askFullScreen').hide()
+
         } else {
             $('#fullScreen div.full').removeClass('full')
 
@@ -84,21 +89,24 @@ var Page = new function () {
         }
 
         Chat.init()
-        $('#menuBox').append($('<div>').addClass('askFullScreen')
-            .append($('<div>').html(translations.SwitchtoFullScreen).addClass('question'))
-            .append(
-                $('<div>')
-                    .append($('<div>').addClass('button buttonColors').html(translations.No).click(function () {
-                        Sound.play('click')
-                        $('.askFullScreen').remove()
-                    }))
-                    .append($('<div>').addClass('button buttonColors').html(translations.Yes).click(function () {
-                        Sound.play('click')
-                        Page.fullScreen()
-                        $('.askFullScreen').remove()
-                    }))
+
+        if (!isInFullScreen()) {
+            $('#menuBox').append($('<div>').addClass('askFullScreen')
+                .append($('<div>').html(translations.SwitchtoFullScreen).addClass('question'))
+                .append(
+                    $('<div>')
+                        .append($('<div>').addClass('button buttonColors').html(translations.No).click(function () {
+                            Sound.play('click')
+                            $('.askFullScreen').remove()
+                        }))
+                        .append($('<div>').addClass('button buttonColors').html(translations.Yes).click(function () {
+                            Sound.play('click')
+                            Page.fullScreen()
+                            $('.askFullScreen').remove()
+                        }))
+                )
             )
-        )
+        }
     }
 }
 

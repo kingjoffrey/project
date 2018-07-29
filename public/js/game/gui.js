@@ -55,7 +55,7 @@ var GameGui = new function () {
                         Me.findNext()
                         break;
                     case 79: //m
-                        menu()
+                        GameGui.menu()
                         break;
                     case 13: //enter
                         $('.message .go').click()
@@ -73,12 +73,12 @@ var GameGui = new function () {
                     //     console.log(key)
                 }
             })
-        },
-        menu = function () {
-            Message.remove()
-            GameRenderer.stop()
-            $('#gameMenu').show()
         }
+    this.menu = function () {
+        Message.remove()
+        GameRenderer.stop()
+        $('#gameMenu').show()
+    }
     this.adjust = function () {
         GameScene.resize($(window).innerWidth(), $(window).innerHeight())
         GameRenderer.setSize($(window).innerWidth(), $(window).innerHeight())
