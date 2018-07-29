@@ -1,0 +1,28 @@
+<?php echo $this->doctype() ?>
+<html>
+<head>
+    <?php
+    echo $this->headMeta() . "\n";
+    echo $this->headTitle() . "\n";
+    echo $this->headLink() . "\n";
+    echo $this->headScript() . "\n";
+    ?>
+</head>
+<body>
+<div id="main">
+    <div id="bg">
+        <div id="page">
+            <div id="content">
+                <div class="table">
+                    <img src="/img/logo.png" id="logo1"/>
+                    <?php echo $this->layout()->content; ?>
+                </div>
+            </div>
+            <div>
+                <?php echo $this->placeholder('version') ?>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

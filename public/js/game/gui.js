@@ -74,96 +74,6 @@ var GameGui = new function () {
                 }
             })
         },
-        addButtonsClicks = function () {
-            $('#gold').off().click(function () {
-                Sound.play('click')
-                TreasuryWindow.treasury()
-            })
-
-            $('#income').off().click(function () {
-                Sound.play('click')
-                TreasuryWindow.income()
-            })
-
-            $('#costs').off().click(function () {
-                Sound.play('click')
-                TreasuryWindow.upkeep()
-            })
-            $('#castleButtons #close').off().click(function () {
-                CastleWindow.hide()
-            })
-            $('#gameMenu #exit').off().click(function () {
-                Sound.play('click')
-                IndexController.index()
-            })
-
-            $('#surrender').off().click(function () {
-                Sound.play('click')
-                var id = Message.show(translations.surrender, $('<div>').html(translations.areYouSure))
-                Message.addButton(id, 'surrender', function () {
-                    WebSocketSendGame.surrender()
-                    GameRenderer.start()
-                    $('#gameMenu').hide()
-                })
-                Message.addButton(id, 'cancel')
-            });
-
-            $('#statistics').off().click(function () {
-                Sound.play('click')
-                WebSocketSendGame.statistics();
-            })
-
-            $('#nextTurn').off().click(function () {
-                Sound.play('click')
-                Turn.next()
-            })
-
-            $('#nextArmy').off().click(function () {
-                Sound.play('click')
-                Me.findNext()
-            })
-
-            $('#deselectArmy').off().click(function () {
-                if (!Me.getSelectedArmyId()) {
-                    return;
-                }
-                Sound.play('click')
-                Me.deselectArmy()
-            })
-
-            $('#show').off().click(function () {
-                Sound.play('click')
-                GameGui.setShow(!GameGui.getShow())
-                if (GameGui.getShow()) {
-                    $(this).removeClass('off')
-                } else {
-                    $(this).addClass('off')
-                }
-            })
-            $('#sound').off().click(function () {
-                Sound.play('click')
-                Sound.setMute(!Sound.getMute())
-                if (Sound.getMute()) {
-                    $(this).addClass('off')
-                } else {
-                    $(this).removeClass('off')
-                }
-            })
-            $('#fullScreen').off().click(function () {
-                Sound.play('click')
-                Page.fullScreen()
-            })
-            $('#showMenu').off().click(function () {
-                Sound.play('click')
-                menu()
-            })
-            $('#gameMenu #close').off().click(function () {
-                Sound.play('click')
-                $('#gameMenu').hide()
-                GameRenderer.start()
-                GameRenderer.animate()
-            })
-        },
         menu = function () {
             Message.remove()
             GameRenderer.stop()
@@ -247,7 +157,6 @@ var GameGui = new function () {
         documentTitle = document.title
 
         doKey()
-        addButtonsClicks()
         this.adjust()
         afterInit = 1
     }

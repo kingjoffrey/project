@@ -2,6 +2,78 @@
 var Main = new function () {
     var init = 0,
         development = 0,
+        addButtonsClicks = function () {
+            $('#game #gold').off().click(function () {
+                Sound.play('click')
+                TreasuryWindow.treasury()
+            })
+
+            $('#game #statistics').off().click(function () {
+                Sound.play('click')
+                WebSocketSendGame.statistics();
+            })
+
+            $('#game #nextTurn').off().click(function () {
+                Sound.play('click')
+                Turn.next()
+            })
+            $('#game #showMenu').off().click(function () {
+                Sound.play('click')
+                menu()
+            })
+
+            $('#game #nextArmy').off().click(function () {
+                Sound.play('click')
+                Me.findNext()
+            })
+
+            $('#castleButtons #close').off().click(function () {
+                CastleWindow.hide()
+            })
+
+            $('#gameMenu #exit').off().click(function () {
+                Sound.play('click')
+                IndexController.index()
+            })
+            $('#gameMenu #surrender').off().click(function () {
+                Sound.play('click')
+                var id = Message.show(translations.surrender, $('<div>').html(translations.areYouSure))
+                Message.addButton(id, 'surrender', function () {
+                    WebSocketSendGame.surrender()
+                    GameRenderer.start()
+                    $('#gameMenu').hide()
+                })
+                Message.addButton(id, 'cancel')
+            })
+            $('#gameMenu #show').off().click(function () {
+                Sound.play('click')
+                GameGui.setShow(!GameGui.getShow())
+                if (GameGui.getShow()) {
+                    $(this).removeClass('off')
+                } else {
+                    $(this).addClass('off')
+                }
+            })
+            $('#gameMenu #sound').off().click(function () {
+                Sound.play('click')
+                Sound.setMute(!Sound.getMute())
+                if (Sound.getMute()) {
+                    $(this).addClass('off')
+                } else {
+                    $(this).removeClass('off')
+                }
+            })
+            $('#gameMenu #fullScreen').off().click(function () {
+                Sound.play('click')
+                Page.fullScreen()
+            })
+            $('#gameMenu #close').off().click(function () {
+                Sound.play('click')
+                $('#gameMenu').hide()
+                GameRenderer.start()
+                GameRenderer.animate()
+            })
+        },
         click = function (controller) {
             return function () {
                 Sound.play('click')

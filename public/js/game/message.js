@@ -100,10 +100,6 @@ var Message = new function () {
                 })
         )
 
-        if (Me.isSelected()) {
-            Me.setIsSelected(0)
-        }
-
         this.adjust(id)
     }
 }

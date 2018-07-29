@@ -7,7 +7,6 @@ var Me = new function () {
         deselectedArmyId = null,
         nextArmies = {},
         skippedArmies = {},
-        isSelected = 0,
         parentArmyId = null,
         nextArmyId = null,
         isNextSelected = null,
@@ -98,10 +97,10 @@ var Me = new function () {
         this.removeFromSkipped(armyId)
         WebSocketSendGame.unfortify(armyId)
 
-        $('#skipArmy').removeClass('buttonOff').click(function () {
+        $('#skipArmy').removeClass('buttonOff').off().click(function () {
             Me.skip()
         })
-        $('#quitArmy').removeClass('buttonOff').click(function () {
+        $('#quitArmy').removeClass('buttonOff').off().click(function () {
             WebSocketSendGame.fortify()
         })
 
@@ -114,7 +113,7 @@ var Me = new function () {
         if (notSet(skipJoin) && parentArmyId && selectedArmyId) {
             var selectedArmy = this.getArmy(selectedArmyId),
                 parentArmy = this.getArmy(parentArmyId)
-            parentArmy.getX()
+
             if (selectedArmy.getX() == parentArmy.getX() && selectedArmy.getY() == parentArmy.getY()) {
                 WebSocketSendGame.join(selectedArmyId)
             }
@@ -123,18 +122,15 @@ var Me = new function () {
 
         GameModels.clearArmySelectionMeshes()
         GameModels.clearPathCircles()
-        this.setIsSelected(0)
-        this.armyButtonsOff()
-        PickerGame.cursorChange()
-    }
-    this.armyButtonsOff = function () {
+
         if (selectedArmyId) {
             deselectedArmyId = selectedArmyId
         }
+
         selectedArmyId = null
-        $('.path').remove()
         $('#skipArmy').addClass('buttonOff').off()
         $('#quitArmy').addClass('buttonOff').off()
+        PickerGame.cursorChange()
     }
     this.removeFromSkipped = function (armyId) {
         if (isTruthful(skippedArmies[armyId])) {
@@ -222,12 +218,6 @@ var Me = new function () {
     }
     this.setFortified = function (armyId, f) {
         this.getArmy(armyId).setFortified(f)
-    }
-    this.isSelected = function () {
-        return isSelected
-    }
-    this.setIsSelected = function (value) {
-        isSelected = value
     }
     this.armyClick = function (armyId) {
         if (GameGui.getLock()) {
@@ -370,7 +360,6 @@ var Me = new function () {
         deselectedArmyId = null
         nextArmies = {}
         skippedArmies = {}
-        isSelected = 0
         parentArmyId = null
         nextArmyId = null
         isNextSelected = null
