@@ -70,7 +70,6 @@ var GameScene = new function () {
         return cameraY
     }
     this.centerOn = function (x, y, func) {
-        console.log('centerOn')
         var yOffset = camera.position.y - cameraY,
             startPosition = {
                 x: camera.position.x,
@@ -142,12 +141,10 @@ var GameScene = new function () {
 
     this.moveCameraVeryClose = function () {
         while (GameScene.moveCameraClose()) {
-            console.log('c')
         }
     }
     this.moveCameraAwayNormal = function () {
         while (GameScene.moveCameraAway()) {
-            console.log('a')
         }
     }
 

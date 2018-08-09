@@ -201,57 +201,62 @@ var Fields = new function () {
         }
     }
     this.getAStarType = function (x, y, destX, destY) {
-        if (isSet(fields[y]) && isSet(fields[y][x])) {
-            var castleId,
-                field = fields[y][x],
-                armies
+        if (notSet(fields[y])) {
+            return 0
+        }
+        if (notSet(fields[y][x])) {
+            return 0
+        }
 
-            if (castleId = field.getCastleId()) {
-                if (Me.sameTeam(field.getCastleColor())) {
-                    return 'c'
+        var castleId,
+            field = fields[y][x],
+            armies
+
+        if (castleId = field.getCastleId()) {
+            if (Me.sameTeam(field.getCastleColor())) {
+                return 'c'
+            } else {
+                if (destX == x && destY == y) {
+                    return 'E'
+                } else if (castleId == this.get(destX, destY).getCastleId()) {
+                    return 'E'
+                } else {
+                    return 'e'
+                }
+            }
+        } else if (field.hasArmies()) {
+            armies = field.getArmies()
+            for (var armyId in armies) {
+                if (Me.sameTeam(armies[armyId])) {
+                    if (Me.colorEquals(armies[armyId]) && field.getType() == 'w' && Me.getArmy(armyId).canSwim()) {
+                        return 'S'
+                    } else {
+                        return field.getType()
+                    }
                 } else {
                     if (destX == x && destY == y) {
-                        return 'E'
-                    } else if (castleId == this.get(destX, destY).getCastleId()) {
-                        return 'E'
+                        if (field.getType() == 'w') {
+                            if (Me.getSelectedArmy().canSwim() || Me.getSelectedArmy().canFly()) {
+                                return 'E'
+                            } else {
+                                return 'e'
+                            }
+                        } else if (field.getType() == 'm') {
+                            if (Me.getSelectedArmy().canFly()) {
+                                return 'E'
+                            } else {
+                                return 'e'
+                            }
+                        } else {
+                            return 'E'
+                        }
                     } else {
                         return 'e'
                     }
                 }
-            } else if (field.hasArmies()) {
-                armies = field.getArmies()
-                for (var armyId in armies) {
-                    if (Me.sameTeam(armies[armyId])) {
-                        if (Me.colorEquals(armies[armyId]) && field.getType() == 'w' && Me.getArmy(armyId).canSwim()) {
-                            return 'S'
-                        } else {
-                            return field.getType()
-                        }
-                    } else {
-                        if (destX == x && destY == y) {
-                            if (field.getType() == 'w') {
-                                if (Me.getSelectedArmy().canSwim() || Me.getSelectedArmy().canFly()) {
-                                    return 'E'
-                                } else {
-                                    return 'e'
-                                }
-                            } else if (field.getType() == 'm') {
-                                if (Me.getSelectedArmy().canFly()) {
-                                    return 'E'
-                                } else {
-                                    return 'e'
-                                }
-                            } else {
-                                return 'E'
-                            }
-                        } else {
-                            return 'e'
-                        }
-                    }
-                }
-            } else {
-                return field.getType()
             }
+        } else {
+            return field.getType()
         }
     }
     this.createTextures = function (noModels) {

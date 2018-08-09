@@ -193,8 +193,6 @@ var Me = new function () {
             //reset = false
             nextArmies[armyId] = true
             this.selectArmy(armyId)
-            console.log('next army Id=' + armyId)
-            console.log('aaa')
             GameScene.centerOn(this.getSelectedArmy().getX(), this.getSelectedArmy().getY())
 
             return armyId
@@ -212,7 +210,6 @@ var Me = new function () {
         } else {
             this.deselectArmy()
             nextArmies = {}
-            console.log('bbb')
             this.findNext(quiet)
         }
     }

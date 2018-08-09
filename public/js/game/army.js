@@ -104,44 +104,6 @@ var Army = function (army, bgColor, miniMapColor, textColor, color) {
             return false
         }
     }
-    this.getTerrainToMoveCostMappings = function () {
-        var movementType = this.getMovementType(),
-            mappings = {}
-
-        for (var t in Terrain.toArray()) {
-            var moveCost = 0,
-                tmp
-
-            for (var i in  army.walk) {
-                var soldier = army.walk[i],
-                    unit = Units.get(soldier.unitId)
-                if (isSet(unit[t])) {
-                    tmp = unit[t]
-                } else {
-                    tmp = Terrain.get(t)[movementType]
-                }
-                if (tmp > moveCost) {
-                    moveCost = tmp
-                }
-            }
-            for (var i in  army.fly) {
-                tmp = Terrain.get(t)[movementType]
-                if (tmp > moveCost) {
-                    moveCost = tmp
-                }
-            }
-            for (var i in  army.heroes) {
-                tmp = Terrain.get(t)[movementType]
-                if (tmp > moveCost) {
-                    moveCost = tmp
-                }
-            }
-
-            mappings[t] = moveCost
-        }
-        console.log(mappings)
-        return mappings
-    }
     this.getHeroes = function () {
         return army.heroes
     }
@@ -298,6 +260,76 @@ var Army = function (army, bgColor, miniMapColor, textColor, color) {
             default :
                 throw 1
         }
+    }
+    this.getTerrainToMoveCostMappings = function () {
+        var movementType = this.getMovementType(),
+            mappings = {}
+
+        switch (movementType) {
+            case 'swim':
+                for (var t in Terrain.toArray()) {
+                    var moveCost = 0, tmp
+
+                    for (var i in  army.swim) {
+                        tmp = Terrain.get(t)[movementType]
+                        if (tmp > moveCost) {
+                            moveCost = tmp
+                        }
+                    }
+
+                    mappings[t] = moveCost
+                }
+                break
+            case 'fly':
+                for (var t in Terrain.toArray()) {
+                    var moveCost = 0, tmp
+                    for (var i in  army.fly) {
+                        tmp = Terrain.get(t)[movementType]
+                        if (tmp > moveCost) {
+                            moveCost = tmp
+                        }
+                    }
+
+                    mappings[t] = moveCost
+                }
+                break
+            case 'walk':
+                for (var t in Terrain.toArray()) {
+                    var moveCost = 0, tmp
+
+                    for (var i in  army.walk) {
+                        var soldier = army.walk[i],
+                            unit = Units.get(soldier.unitId)
+                        if (isSet(unit[t])) {
+                            tmp = unit[t]
+                        } else {
+                            tmp = Terrain.get(t)[movementType]
+                        }
+                        if (tmp > moveCost) {
+                            moveCost = tmp
+                        }
+                    }
+                    for (var i in  army.fly) {
+                        tmp = Terrain.get(t)[movementType]
+                        if (tmp > moveCost) {
+                            moveCost = tmp
+                        }
+                    }
+                    for (var i in  army.heroes) {
+                        tmp = Terrain.get(t)[movementType]
+                        if (tmp > moveCost) {
+                            moveCost = tmp
+                        }
+                    }
+
+                    mappings[t] = moveCost
+                }
+                break
+            default:
+                alert('Kurde balanse ale fajanse')
+        }
+
+        return mappings
     }
     this.getBackgroundColor = function () {
         return bgColor

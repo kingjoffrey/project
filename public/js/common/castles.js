@@ -14,7 +14,6 @@ var Castles = function () {
         color = c
     }
     this.add = function (castleId, castle, isCapital) {
-        console.log(isCapital)
         var setCastleId = false
         if (!(castle instanceof Castle)) {
             castle = new Castle(castle, bgColor, isCapital)

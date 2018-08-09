@@ -9,7 +9,8 @@ var AStar = new function () {
         myCastleId = {},
         movementType,
         showCoordinates = 1,
-        coordinates = ''
+        coordinates = '',
+        mappings
 
     var getPath = function (key) {
             var path = [],
@@ -88,7 +89,7 @@ var AStar = new function () {
             }
         },
         getG = function (terrainType) {
-            return Terrain.get(terrainType)[movementType]
+            return mappings[terrainType]
         },
         openIsEmpty = function () {
             for (var key in open) {
@@ -186,6 +187,9 @@ var AStar = new function () {
     this.showPath = function () {
         army = Me.getSelectedArmy()
         movementType = army.getMovementType()
+        mappings = army.getTerrainToMoveCostMappings()
+
+
         if (getG(field.getType()) > 6 && !field.hasArmies() && !field.getCastleId()) {
             return
         }
@@ -223,6 +227,7 @@ var AStar = new function () {
     }
     this.showRange = function (army) {
         movementType = army.getMovementType()
+        mappings = army.getTerrainToMoveCostMappings()
         open = {}
         close = {}
         nr = 0
