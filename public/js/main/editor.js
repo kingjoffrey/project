@@ -53,6 +53,7 @@ var EditorController = new function () {
                     )
                     .append($('<td>').append(
                         $('<div>').addClass('iconButton buttonColors').html($('<div>').addClass('trash')).click(function (e) {
+                            $('#wait').show()
                             WebSocketSendMain.controller('editor', 'delete', {'id': $(this).parent().parent().attr('id')})
                         })
                     ))
@@ -81,17 +82,13 @@ var EditorController = new function () {
     }
     this.delete = function (r) {
         $('tr#' + r.id).remove()
+        $('#wait').hide()
     }
     this.create = function (r) {
         $('#content').html(r.data)
 
         $('form').submit(function (e) {
-            $('#bg').hide()
-            $('#tutorial').hide()
-            $('.game').hide()
-
-            $('#loading').show()
-            $('#loading2').hide()
+            $('#wait').show()
 
             e.preventDefault()
             WebSocketSendMain.controller('editor', 'create', {

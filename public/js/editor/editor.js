@@ -22,7 +22,6 @@ var Editor = new function () {
         PickerCommon.init(PickerEditor)
         PickerCommon.attach(groundMesh)
 
-        $('#bg').hide()
         $('#loading').hide()
         $('#tutorial').hide()
         $('.game').hide()
