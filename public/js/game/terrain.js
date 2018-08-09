@@ -7,7 +7,7 @@ var Terrain = new function () {
         if (isSet(terrain[type])) {
             return terrain[type]
         } else {
-            console.log('Get terrain type                 ERROR: ' + type)
+            console.log('Get terrain type ERROR: ' + type)
         }
     }
     this.toArray = function () {
