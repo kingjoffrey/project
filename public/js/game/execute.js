@@ -155,7 +155,13 @@ var Execute = new function () {
                     break;
 
                 case 'resurrection':
-                    Sound.play('resurrection');
+                    Sound.play('resurrection')
+
+                    if (Me.colorEquals(r.color)) {
+                        CastleWindow.hide()
+                        Me.goldIncrement(-r.gold)
+                    }
+                    
                     if (Players.get(Turn.getColor()).isComputer() && !GameGui.getShow()) {
                         Players.get(r.color).getArmies().handle(r.army)
                         Execute.setExecuting(0)
@@ -168,10 +174,6 @@ var Execute = new function () {
                             }
                             Execute.setExecuting(0)
                         })
-                    }
-                    if (Me.colorEquals(r.color)) {
-                        CastleWindow.hide()
-                        Me.goldIncrement(-r.gold)
                     }
                     break
 
