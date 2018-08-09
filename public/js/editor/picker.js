@@ -5,9 +5,10 @@ var PickerEditor = new function () {
         draggedMeshX,
         draggedMeshZ,
         dragStart = 0,
-        clickStart = 0,
         move = 0,
         leftClick = 0,
+        scaling = false,
+        dist = 0,
         handleDownStart = function (event) {
             leftClick = 1
             move = 0
@@ -43,8 +44,6 @@ var PickerEditor = new function () {
                         Message.show('Castle', EditorCastleWindow.form(id))
                     } else if (id = field.getRuinId()) {
                         Message.show('Ruin', EditorRuinWindow.form(id))
-                    } else {
-                        dragStart = PickerCommon.getPoint(event)
                     }
                 }
             }

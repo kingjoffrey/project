@@ -77,5 +77,7 @@ var EditorGui = new function () {
 
         activateButtons()
         this.adjust()
+
+        $('#wait').hide()
     }
 }

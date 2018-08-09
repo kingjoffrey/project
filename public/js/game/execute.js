@@ -217,9 +217,13 @@ var Execute = new function () {
                     break
 
                 case 'surrender':
-                    Me.deselectArmy()
                     var armies = Players.get(r.color).getArmies(),
                         castles = Players.get(r.color).getCastles()
+
+                    if (Me.getColor() == r.color) {
+                        Me.deselectArmy()
+                        WebSocketSendGame.nextTurn()
+                    }
 
                     for (var armyId in armies.toArray()) {
                         armies.destroy(armyId)
@@ -227,10 +231,6 @@ var Execute = new function () {
 
                     for (var castleId in castles.toArray()) {
                         castles.raze(castleId)
-                    }
-
-                    if (Turn.getColor() == r.color) {
-                        WebSocketSendGame.nextTurn()
                     }
 
                     Execute.setExecuting(0)

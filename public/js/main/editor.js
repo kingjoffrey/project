@@ -61,6 +61,7 @@ var EditorController = new function () {
         },
         mirrorClick = function () {
             return function (e) {
+                $('#wait').show()
                 WebSocketSendMain.controller('editor', 'mirror', {
                     'id': $(this).parent().parent().attr('id'),
                     'mirror': $(this).attr('id')
@@ -105,6 +106,7 @@ var EditorController = new function () {
     }
     this.add = function (r) {
         addRow(r.map)
+        $('#wait').hide()
     }
     this.save = function (r) {
         $('#' + r.id + ' #save').hide()
