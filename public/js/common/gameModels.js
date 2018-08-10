@@ -253,6 +253,9 @@ var GameModels = new function () {
 
         GameScene.add(cursorMesh)
     }
+    this.removeCursor = function () {
+        GameScene.remove(cursorMesh)
+    }
     this.addPathRectangle = function (x, y, color, t) {
         switch (t) {
             case 'm':

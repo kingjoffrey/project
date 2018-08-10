@@ -13,6 +13,7 @@ var CastleWindow = new function () {
         castle.removeUnits()
         Players.hideArmies()
         PickerCommon.detachAll()
+        GameModels.removeCursor()
 
         $('.gameButtons').fadeOut(300)
 
@@ -106,6 +107,8 @@ var CastleWindow = new function () {
         GameScene.moveCameraAwayNormal()
         Players.showArmies()
         PickerCommon.attach(Ground.getWaterMesh())
+
+        GameModels.addCursor()
 
         $('.gameButtons').fadeIn(300)
     }
