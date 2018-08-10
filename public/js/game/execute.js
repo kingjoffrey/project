@@ -161,7 +161,7 @@ var Execute = new function () {
                         CastleWindow.hide()
                         Me.goldIncrement(-r.gold)
                     }
-                    
+
                     if (Players.get(Turn.getColor()).isComputer() && !GameGui.getShow()) {
                         Players.get(r.color).getArmies().handle(r.army)
                         Execute.setExecuting(0)

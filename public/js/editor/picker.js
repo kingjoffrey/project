@@ -12,8 +12,8 @@ var PickerEditor = new function () {
         handleDownStart = function (event) {
             leftClick = 1
             move = 0
-            dragStart = PickerCommon.getPoint(event)
             PickerCommon.intersect(event)
+            dragStart = PickerCommon.getPoint(event)
         },
         handleUp = function (event) {
             dragStart = 0

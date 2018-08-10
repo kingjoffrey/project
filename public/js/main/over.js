@@ -18,6 +18,7 @@ var OverController = new function () {
         $('#turnInfo').hide()
         $('#game').hide()
         $('#gameMenu').hide()
+        $('#wait').hide()
 
         $('#bg').show()
         $('#menuBox').show()
