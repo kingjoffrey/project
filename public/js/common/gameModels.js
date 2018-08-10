@@ -47,7 +47,7 @@ var GameModels = new function () {
 
         mesh.rotation.y = Math.PI / 2 + Math.PI / 4
 
-        mesh.position.set(-1, 13, 0)
+        mesh.position.set(-2, 13, -1)
         mesh.name = 'production'
 
         return mesh
@@ -326,19 +326,32 @@ var GameModels = new function () {
 
         switch (type) {
             case 'm':
-                var height = -Ground.getMountainLevel() + hover
+                var height1 = -Ground.getMountainLevel() + hover
                 break
             case 'h':
-                var height = Fields.get(x, y).getLevel() * 0.05
+                var height1 = Fields.get(x, y).getLevel() * 0.05
                 break
             case 'b':
-                var height = bridgeLevel + hover
+                var height1 = bridgeLevel + hover
                 break
             default :
-                var height = hover
+                var height1 = hover
                 break
         }
-
+        switch (type) {
+            case 'm':
+                var height2 = -Ground.getMountainLevel() + hover / 2
+                break
+            case 'h':
+                var height2 = Fields.get(x, y).getLevel() * 0.05 + hover / 2
+                break
+            case 'b':
+                var height2 = bridgeLevel + hover / 2
+                break
+            default :
+                var height2 = hover / 2
+                break
+        }
         var z = 0,
             bottom1 = Models.getArmyBoxBottom(),
             bottom2 = Models.getCursorModel()
@@ -348,8 +361,8 @@ var GameModels = new function () {
             bottom2.castShadow = true
         }
 
-        bottom1.position.set(x * 2 + 1, height, y * 2 + 1)
-        this.cursorPosition(x, y, type, bottom2)
+        bottom1.position.set(x * 2 + 1, height1, y * 2 + 1)
+        bottom2.position.set(x * 2 + 1, height2, y * 2 + 1)
 
         bottom1.rotation.x = Math.PI / 2
         bottom2.rotation.x = Math.PI / 2
@@ -372,7 +385,7 @@ var GameModels = new function () {
             }
             GameScene.add(tmpMesh)
             armySelectionMeshes.push(tmpMesh)
-            tmpMesh.position.set(x * 2 + 1, z + height, y * 2)
+            tmpMesh.position.set(x * 2 + 1, z + height1, y * 2)
         }
     }
     this.movePathCircles = function () {
