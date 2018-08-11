@@ -8,21 +8,27 @@ class IndexController extends Coret_Controller_AuthorizedFrontend
 
     public function indexAction()
     {
-        $version = Zend_Registry::get('config')->version;
+        if ($this->_request->getParam('version')) {
+            $version = Zend_Registry::get('config')->version;
 
-        $this->view->headLink()->prependStylesheet('/css/main.css?v=' . $version);
+            $this->view->headLink()->prependStylesheet('/css/main.css?v=' . $version);
 
-        $this->view->jquery();
+            $this->view->jquery();
 
-        $this->appendJavaScript(APPLICATION_PATH . '/../public/js/');
+            $this->appendJavaScript(APPLICATION_PATH . '/../public/js/');
 
-        $this->view->sound();
-        $this->view->title();
+            $this->view->sound();
+            $this->view->title();
 //        $this->view->models();
-        $this->view->terrain();
-        $this->view->translations();
-        $this->view->Version();
-        $this->view->Websocket($this->_auth->getIdentity());
+            $this->view->terrain();
+            $this->view->translations();
+            $this->view->Version();
+            $this->view->Websocket($this->_auth->getIdentity());
+
+        } else {
+            $this->redirect('/' . Zend_Registry::get('lang') . '/index/index/version/' . Zend_Registry::get('config')->version);
+//            echo '/' . Zend_Registry::get('lang') . '/index/index/version/' . Zend_Registry::get('config')->version;
+        }
     }
 
     protected function authorized()
