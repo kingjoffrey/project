@@ -13,118 +13,8 @@ class IndexController extends Coret_Controller_AuthorizedFrontend
         $this->view->headLink()->prependStylesheet('/css/main.css?v=' . $version);
 
         $this->view->jquery();
-        $this->view->headScript()->appendFile('/js/jquery.mousewheel.min.js');
-        $this->view->headScript()->appendFile('/js/Tween.js');
-        $this->view->headScript()->appendFile('/js/three/three.min.js');
-        $this->view->headScript()->appendFile('/js/three/Detector.js');
 
-        $this->view->headScript()->appendFile('/js/default.js?v=' . $version);
-        $this->view->headScript()->appendFile('/js/libs.js?v=' . $version);
-
-        $this->view->headScript()->appendFile('/js/chat/init.js?v=' . $version);
-        $this->view->headScript()->appendFile('/js/chat/websocket.js?v=' . $version);
-        $this->view->headScript()->appendFile('/js/chat/websocketMessage.js?v=' . $version);
-        $this->view->headScript()->appendFile('/js/chat/websocketSend.js?v=' . $version);
-
-        $this->view->headScript()->appendFile('/js/mapgenerator/mapgenerator.js?v=' . $version);
-        $this->view->headScript()->appendFile('/js/mapgenerator/websocket.js?v=' . $version);
-        $this->view->headScript()->appendFile('/js/mapgenerator/websocketMessage.js?v=' . $version);
-        $this->view->headScript()->appendFile('/js/mapgenerator/websocketSend.js?v=' . $version);
-
-        $this->view->headScript()->appendFile('/js/main/init.js?v=' . $version);
-        $this->view->headScript()->appendFile('/js/main/index.js?v=' . $version);
-        $this->view->headScript()->appendFile('/js/main/main.js?v=' . $version);
-        $this->view->headScript()->appendFile('/js/main/contact.js?v=' . $version);
-        $this->view->headScript()->appendFile('/js/main/create.js?v=' . $version);
-        $this->view->headScript()->appendFile('/js/main/editor.js?v=' . $version);
-        $this->view->headScript()->appendFile('/js/main/friends.js?v=' . $version);
-        $this->view->headScript()->appendFile('/js/main/game.js?v=' . $version);
-        $this->view->headScript()->appendFile('/js/main/over.js?v=' . $version);
-        $this->view->headScript()->appendFile('/js/main/join.js?v=' . $version);
-        $this->view->headScript()->appendFile('/js/main/messages.js?v=' . $version);
-        $this->view->headScript()->appendFile('/js/main/tutorial.js?v=' . $version);
-        $this->view->headScript()->appendFile('/js/main/tournament.js?v=' . $version);
-        $this->view->headScript()->appendFile('/js/main/load.js?v=' . $version);
-        $this->view->headScript()->appendFile('/js/main/halloffame.js?v=' . $version);
-        $this->view->headScript()->appendFile('/js/main/help.js?v=' . $version);
-        $this->view->headScript()->appendFile('/js/main/heroes.js?v=' . $version);
-        $this->view->headScript()->appendFile('/js/main/play.js?v=' . $version);
-        $this->view->headScript()->appendFile('/js/main/players.js?v=' . $version);
-        $this->view->headScript()->appendFile('/js/main/profile.js?v=' . $version);
-        $this->view->headScript()->appendFile('/js/main/setup.js?v=' . $version);
-        $this->view->headScript()->appendFile('/js/main/single.js?v=' . $version);
-        $this->view->headScript()->appendFile('/js/main/websocket.js?v=' . $version);
-        $this->view->headScript()->appendFile('/js/main/websocketMessage.js?v=' . $version);
-        $this->view->headScript()->appendFile('/js/main/websocketSend.js?v=' . $version);
-
-        $this->view->headScript()->appendFile('/js/new/join.js?v=' . $version);
-        $this->view->headScript()->appendFile('/js/new/setup.js?v=' . $version);
-        $this->view->headScript()->appendFile('/js/new/websocket.js?v=' . $version);
-        $this->view->headScript()->appendFile('/js/new/websocketMessage.js?v=' . $version);
-        $this->view->headScript()->appendFile('/js/new/websocketSend.js?v=' . $version);
-
-        $this->view->headScript()->appendFile('/js/help/animations.js?v=' . $version);
-        $this->view->headScript()->appendFile('/js/help/help.js?v=' . $version);
-        $this->view->headScript()->appendFile('/js/help/helpModels.js?v=' . $version);
-        $this->view->headScript()->appendFile('/js/help/helpScene.js?v=' . $version);
-        $this->view->headScript()->appendFile('/js/help/helpRenderer.js?v=' . $version);
-
-        $this->view->headScript()->appendFile('/js/editor/castleWindow.js?v=' . $version);
-        $this->view->headScript()->appendFile('/js/editor/ruinWindow.js?v=' . $version);
-        $this->view->headScript()->appendFile('/js/editor/editor.js?v=' . $version);
-        $this->view->headScript()->appendFile('/js/editor/editorGround.js?v=' . $version);
-        $this->view->headScript()->appendFile('/js/editor/models.js?v=' . $version);
-        $this->view->headScript()->appendFile('/js/editor/websocket.js?v=' . $version);
-        $this->view->headScript()->appendFile('/js/editor/gui.js?v=' . $version);
-        $this->view->headScript()->appendFile('/js/editor/picker.js?v=' . $version);
-        $this->view->headScript()->appendFile('/js/editor/websocketSend.js?v=' . $version);
-        $this->view->headScript()->appendFile('/js/editor/websocketMessage.js?v=' . $version);
-
-        $this->view->headScript()->appendFile('/js/game/execute.js?v=' . $version);
-        $this->view->headScript()->appendFile('/js/game/game.js?v=' . $version);
-        $this->view->headScript()->appendFile('/js/game/picker.js?v=' . $version);
-        $this->view->headScript()->appendFile('/js/game/unit.js?v=' . $version);
-        $this->view->headScript()->appendFile('/js/game/terrain.js?v=' . $version);
-        $this->view->headScript()->appendFile('/js/game/player.js?v=' . $version);
-        $this->view->headScript()->appendFile('/js/game/players.js?v=' . $version);
-        $this->view->headScript()->appendFile('/js/game/armies.js?v=' . $version);
-        $this->view->headScript()->appendFile('/js/game/army.js?v=' . $version);
-        $this->view->headScript()->appendFile('/js/game/init.js?v=' . $version);
-        $this->view->headScript()->appendFile('/js/game/me.js?v=' . $version);
-        $this->view->headScript()->appendFile('/js/game/message.js?v=' . $version);
-        $this->view->headScript()->appendFile('/js/game/astar.js?v=' . $version);
-        $this->view->headScript()->appendFile('/js/game/gui.js?v=' . $version);
-        $this->view->headScript()->appendFile('/js/game/move.js?v=' . $version);
-        $this->view->headScript()->appendFile('/js/game/turn.js?v=' . $version);
-        $this->view->headScript()->appendFile('/js/game/castleWindow.js?v=' . $version);
-        $this->view->headScript()->appendFile('/js/game/statusWindow.js?v=' . $version);
-        $this->view->headScript()->appendFile('/js/game/treasuryWindow.js?v=' . $version);
-        $this->view->headScript()->appendFile('/js/game/statisticsWindow.js?v=' . $version);
-        $this->view->headScript()->appendFile('/js/game/websocket.js?v=' . $version);
-        $this->view->headScript()->appendFile('/js/game/websocketMessage.js?v=' . $version);
-        $this->view->headScript()->appendFile('/js/game/websocketSend.js?v=' . $version);
-
-        $this->view->headScript()->appendFile('/js/common/castle.js?v=' . $version);
-        $this->view->headScript()->appendFile('/js/common/castles.js?v=' . $version);
-        $this->view->headScript()->appendFile('/js/common/renderer.js?v=' . $version);
-        $this->view->headScript()->appendFile('/js/common/ground.js?v=' . $version);
-        $this->view->headScript()->appendFile('/js/common/gameRenderer.js?v=' . $version);
-        $this->view->headScript()->appendFile('/js/common/gameScene.js?v=' . $version);
-        $this->view->headScript()->appendFile('/js/common/gameModels.js?v=' . $version);
-        $this->view->headScript()->appendFile('/js/common/models.js?v=' . $version);
-        $this->view->headScript()->appendFile('/js/common/field.js?v=' . $version);
-        $this->view->headScript()->appendFile('/js/common/fields.js?v=' . $version);
-        $this->view->headScript()->appendFile('/js/common/picker.js?v=' . $version);
-        $this->view->headScript()->appendFile('/js/common/ruin.js?v=' . $version);
-        $this->view->headScript()->appendFile('/js/common/ruins.js?v=' . $version);
-        $this->view->headScript()->appendFile('/js/common/sound.js?v=' . $version);
-        $this->view->headScript()->appendFile('/js/common/tower.js?v=' . $version);
-        $this->view->headScript()->appendFile('/js/common/towers.js?v=' . $version);
-        $this->view->headScript()->appendFile('/js/common/units.js?v=' . $version);
-
-        $this->view->headScript()->appendFile('/js/tutorial/tutorial.js?v=' . $version);
-        $this->view->headScript()->appendFile('/js/tutorial/websocket.js?v=' . $version);
-        $this->view->headScript()->appendFile('/js/tutorial/websocketMessage.js?v=' . $version);
+        $this->appendJavaScript(APPLICATION_PATH . '/../public/js/', $version);
 
         $this->view->sound();
         $this->view->title();
@@ -143,5 +33,34 @@ class IndexController extends Coret_Controller_AuthorizedFrontend
     public function unsupportedAction()
     {
 
+    }
+
+    protected function appendJavaScript($path, $version, $dirName = '')
+    {
+        if ($handle = opendir($path)) {
+
+            while (false !== ($entry = readdir($handle))) {
+                if ($entry != "." && $entry != "..") {
+                    $array[] = $entry;
+                }
+            }
+
+            asort($array);
+
+            foreach ($array as $k => $entry) {
+                if (is_dir($path . '/' . $entry)) {
+                    $this->appendJavaScript($path . '/' . $entry, $version, $entry);
+                } else {
+                    if ($dirName) {
+                        $this->view->headScript()->appendFile('/js/' . $dirName . '/' . $version . $entry);
+                    } else {
+                        $this->view->headScript()->appendFile('/js/' . $version . $entry);
+                    }
+                }
+            }
+
+
+            closedir($handle);
+        }
     }
 }
