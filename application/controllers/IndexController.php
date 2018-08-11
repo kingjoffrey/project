@@ -14,7 +14,7 @@ class IndexController extends Coret_Controller_AuthorizedFrontend
 
         $this->view->jquery();
 
-        $this->appendJavaScript(APPLICATION_PATH . '/../public/js/', $version);
+        $this->appendJavaScript(APPLICATION_PATH . '/../public/js/');
 
         $this->view->sound();
         $this->view->title();
@@ -35,7 +35,7 @@ class IndexController extends Coret_Controller_AuthorizedFrontend
 
     }
 
-    protected function appendJavaScript($path, $version, $dirName = '')
+    protected function appendJavaScript($path, $dirName = '')
     {
         if ($handle = opendir($path)) {
 
@@ -49,12 +49,12 @@ class IndexController extends Coret_Controller_AuthorizedFrontend
 
             foreach ($array as $k => $entry) {
                 if (is_dir($path . '/' . $entry)) {
-                    $this->appendJavaScript($path . '/' . $entry, $version, $entry);
+                    $this->appendJavaScript($path . '/' . $entry, $entry);
                 } else {
                     if ($dirName) {
-                        $this->view->headScript()->appendFile('/js/' . $dirName . '/' . $version . $entry);
+                        $this->view->headScript()->appendFile('/js/' . $dirName . '/' . $entry);
                     } else {
-                        $this->view->headScript()->appendFile('/js/' . $version . $entry);
+                        $this->view->headScript()->appendFile('/js/' . $entry);
                     }
                 }
             }

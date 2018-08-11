@@ -33,15 +33,15 @@ $application = new Zend_Application(
 $application->getBootstrap()->bootstrap(array('date', 'config', 'modules'));
 
 
-class javaScript
+class JavaScript
 {
 
     public function __construct()
     {
-        $this->appendJavaScript(APPLICATION_PATH . '/../public/js/', $version = Zend_Registry::get('config')->version);
+        $this->renameJavaScript(APPLICATION_PATH . '/../public/js/', $version = Zend_Registry::get('config')->version);
     }
 
-    public function appendJavaScript($path, $version)
+    public function renameJavaScript($path, $version)
     {
         if ($handle = opendir($path)) {
 
@@ -55,9 +55,9 @@ class javaScript
 
             foreach ($array as $k => $entry) {
                 if (is_dir($path . '/' . $entry)) {
-                    $this->appendJavaScript($path . '/' . $entry, $version);
+                    $this->renameJavaScript($path . '/' . $entry, $version);
                 } else {
-
+                    rename($path . '/' . $entry, $path . '/' . $version . $entry);
                 }
             }
 
@@ -66,3 +66,5 @@ class javaScript
         }
     }
 }
+
+new JavaScript();
