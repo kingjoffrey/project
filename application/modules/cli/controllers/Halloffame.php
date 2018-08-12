@@ -19,7 +19,7 @@ class HalloffameController
 //        $view->hallOfFame = $mPlayer->hallOfFame($dataIn['page']);
 
         $m = new Application_Model_GameScore($db);
-        $this->view->hallOfFame = $m->getHallOfFame($dataIn['m']);
+        $view->hallOfFame = $m->getHallOfFame($dataIn['m']);
 
         $view->addScriptPath(APPLICATION_PATH . '/views/scripts');
 
