@@ -8,7 +8,7 @@ var HalloffameController = new function () {
             $('#halloffameMenu')
                 .append($('<div>')
                     .attr('id', 'halloffame' + id)
-                    .html(menu[id])
+                    .html(translations[r.menu[id]])
                     .addClass('button buttonColors')
                     .click(function () {
                         Sound.play('click')
@@ -21,15 +21,17 @@ var HalloffameController = new function () {
 
                         $('#halloffameMenu div#' + id).addClass('active')
 
-
+                        WebSocketSendMain.controller('halloffame', 'content', {'m': id.substring(id.length - 1)})
                     })
                 )
         }
 
-        $('#helpMenu div').first().addClass('active')
+        // $('#helpMenu div').first().addClass('active')
     }
 
     this.content = function (r) {
+
+        console.log(r.data)
 
         $('.trlink').click(function () {
             playerId = $(this).attr('id')

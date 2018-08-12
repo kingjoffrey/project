@@ -191,6 +191,10 @@ class Zend_View_Helper_Translations extends Zend_View_Helper_Abstract
                 'Bonus' => $this->view->translate('Bonus'),
                 'Yourshipsank' => $this->view->translate('Your ship sank'),
                 'Mainmenu' => $this->view->translate('Main menu'),
+                'tutorial' => $this->view->translate('Tutorial'),
+                'singleplayer' => $this->view->translate('Single player'),
+                'multiplayer' => $this->view->translate('Multiplayer'),
+                'tournament' => $this->view->translate('Tournament'),
                 '' => $this->view->translate(''),
             )));
     }

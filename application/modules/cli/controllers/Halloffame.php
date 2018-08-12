@@ -9,16 +9,23 @@ class HalloffameController
 
         $view->addScriptPath(APPLICATION_PATH . '/views/scripts');
 
+        $menu = array();
+
+        foreach (Zend_Registry::get('config')->gameType as $key => $val) {
+            $menu[$val] = $key;
+        }
+
         $token = array(
             'type' => 'halloffame',
             'action' => 'index',
             'data' => $view->render('halloffame/index.phtml'),
-            'menu' => Zend_Registry::get('config')->gameType
+            'menu' => $menu
         );
         $handler->sendToUser($user, $token);
     }
 
-    public function getContent(WebSocketTransportInterface $user, Cli_MainHandler $handler, $dataIn){
+    public function content(WebSocketTransportInterface $user, Cli_MainHandler $handler, $dataIn)
+    {
         $db = $handler->getDb();
 
         if (!isset($dataIn['m'])) {
