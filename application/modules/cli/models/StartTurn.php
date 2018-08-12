@@ -103,14 +103,14 @@ class Cli_Model_StartTurn
                 'productionTurns' => $castles->productionTurnsToArray()
             );
 
-            if ($game->getTurnNumber() % 7) {
+            if ($game->getTurnNumber() % 7 == 0) {
                 $token['msg'] = 'Mamy poniedziałek';
             }
 
             $handler->sendToUser($user, $token);
         }
 
-        if ($game->getTurnNumber() % 7) {
+        if ($game->getTurnNumber() % 7 == 0) {
             $playersInGameColors = $game->getPlayersColors();
 
             reset($playersInGameColors);

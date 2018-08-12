@@ -30,19 +30,22 @@ var CastleWindow = new function () {
         $('#castleDefense span').html(castle.getDefense())
         $('#castleIncome span').html(castle.getIncome())
 
-        var i = 0
+        var i = 0, time = '0/0'
 
         for (var unitId in castle.getProduction()) {
             var unit = Units.get(unitId)
 
-            // if (unitId == castle.getProductionId()) {
-            //     time = castle.getProductionTurn() + '/';
-            // }
+            if (unitId == castle.getProductionId()) {
+                time = castle.getProductionTurn() + '/' + castle.getProduction()[unitId].time
+
+            }
 
             castle.addUnit(i, Unit.convertName(unit.name))
 
             i++
         }
+
+        $('#castleProduction span').html(time)
 
         PickerGame.setCastle(castle)
 
