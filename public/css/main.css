@@ -826,6 +826,10 @@ div.table table.unitTable td:first {
     background: none;
 }
 
+.statistics th.second {
+    letter-spacing: 0;
+}
+
 .font-gold {
     color: gold;
 }

@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: WOF\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-08-12 18:36+0200\n"
-"PO-Revision-Date: 2018-08-12 18:37+0200\n"
+"POT-Creation-Date: 2018-08-12 18:41+0200\n"
+"PO-Revision-Date: 2018-08-12 18:48+0200\n"
 "Last-Translator: Bartosz Krzeszewski <bartek@core-t.pl>\n"
 "Language-Team: \n"
 "Language: pl_PL\n"
@@ -244,14 +244,12 @@ msgid "Conquered"
 msgstr "Podbite"
 
 #: views/helpers/Translations.php:12
-#, fuzzy
-#| msgid "Lost"
 msgid "Lost1"
 msgstr "Utracone"
 
 #: views/helpers/Translations.php:13
 msgid "Lost2"
-msgstr "Utraconych"
+msgstr "Utraceni"
 
 #: views/helpers/Translations.php:14
 msgid "Razed"
@@ -267,7 +265,7 @@ msgstr "Pokonane"
 
 #: views/helpers/Translations.php:17
 msgid "Killed2"
-msgstr "Pokonanych"
+msgstr "Pokonani"
 
 #: views/helpers/Translations.php:18 layouts/scripts/default.phtml:45
 msgid "Statistics"
