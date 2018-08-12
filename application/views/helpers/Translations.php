@@ -197,6 +197,8 @@ class Zend_View_Helper_Translations extends Zend_View_Helper_Abstract
                 'multiplayer' => $this->view->translate('Multiplayer'),
                 'tournament' => $this->view->translate('Tournament'),
                 'Therearenoscorestoshow' => $this->view->translate('There are no scores to show'),
+                'ItisSunday' => $this->view->translate('It is Sunday'),
+                'Allruinsarefull' => $this->view->translate('All ruins are full'),
                 '' => $this->view->translate(''),
             )));
     }

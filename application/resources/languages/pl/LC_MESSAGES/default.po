@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: WOF\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-08-12 18:41+0200\n"
-"PO-Revision-Date: 2018-08-12 18:48+0200\n"
+"POT-Creation-Date: 2018-08-12 19:10+0200\n"
+"PO-Revision-Date: 2018-08-12 19:11+0200\n"
 "Last-Translator: Bartosz Krzeszewski <bartek@core-t.pl>\n"
 "Language-Team: \n"
 "Language: pl_PL\n"
@@ -980,6 +980,14 @@ msgstr "Rozgrywka wieloosobowa"
 #: views/helpers/Translations.php:199
 msgid "There are no scores to show"
 msgstr "Nie ma wyników do pokazania"
+
+#: views/helpers/Translations.php:200
+msgid "It is Sunday"
+msgstr "Nadszedł dzień Słońca"
+
+#: views/helpers/Translations.php:201
+msgid "All ruins are full"
+msgstr "Wszystkie ruiny są pełne"
 
 #: layouts/scripts/default.phtml:33
 msgid "Loading"

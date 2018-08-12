@@ -28,8 +28,11 @@ var Execute = new function () {
 
                     Execute.setExecuting(0)
 
-                    if (r.msg) {
-                        Message.simple('MOTD', r.msg)
+                    if (r.seven) {
+                        Message.simple(translations.ItisSunday, translations.Allruinsarefull)
+                        for(var ruinId in Ruins.toArray()){
+                            Ruins.get(ruinId).update(false)
+                        }
                     }
 
                     break

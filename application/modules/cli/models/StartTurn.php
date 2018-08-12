@@ -104,7 +104,7 @@ class Cli_Model_StartTurn
             );
 
             if ($game->getTurnNumber() % 7 == 0) {
-                $token['msg'] = 'Mamy poniedziałek';
+                $token['seven'] = 1;
             }
 
             $handler->sendToUser($user, $token);
