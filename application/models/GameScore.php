@@ -73,11 +73,29 @@ class Application_Model_GameScore extends Coret_Db_Table_Abstract
             ->from(array('a' => $this->_name), 'score')
             ->join(array('b' => 'game'), 'a.' . $gId . ' = b.' . $gId, array('begin', 'end'))
             ->join(array('c' => 'map'), 'b.' . $mId . ' = c.' . $mId, array('name'))
-            ->join(array('d' => 'playersingame'), 'a.' . $pId . ' = d.' . $pId.' AND a.' . $gId . ' = d.' . $gId, array('lost'))
+            ->join(array('d' => 'playersingame'), 'a.' . $pId . ' = d.' . $pId . ' AND a.' . $gId . ' = d.' . $gId, array('lost'))
             ->where('a.' . $gId . ' = ?', $gameId)
             ->where('a.' . $pId . ' = ?', $playerId);
 
         return $this->selectRow($select);
+    }
+
+    public function getHallOfFame($gameType)
+    {
+        $gId = $this->_db->quoteIdentifier('gameId');
+        $pId = $this->_db->quoteIdentifier('playerId');
+        $mId = $this->_db->quoteIdentifier('mapId');
+
+        $select = $this->_db->select()
+            ->from(array('a' => $this->_name), 'score')
+            ->join(array('b' => 'game'), 'a.' . $gId . ' = b.' . $gId, '')
+            ->join(array('c' => 'playersingame'), 'a.' . $pId . ' = c.' . $pId . ' AND a.' . $gId . ' = c.' . $gId, 'playerId')
+            ->join(array('d' => 'player'), 'c.' . $pId . ' = d.' . $pId, array('firstName', 'lastName'))
+            ->join(array('e' => 'map'), 'b.' . $mId . ' = e.' . $mId, array('name'))
+            ->where('type = ?', $gameType)
+            ->order('score DESC');
+
+        return $this->selectAll($select);
     }
 }
 

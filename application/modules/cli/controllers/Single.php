@@ -29,7 +29,7 @@ class SingleController
         if (isset($dataIn['mapId']) && $view->form->isValid($dataIn)) {
             $mMap = new Application_Model_Map($mapId, $db);
             $dataIn['numberOfPlayers'] = $mMap->getMaxPlayers();
-            $dataIn['type'] = Zend_Registry::get('config')->game->type->singleplayer;
+            $dataIn['type'] = Zend_Registry::get('config')->gameType->singleplayer;
 
             $mGame = new Application_Model_Game (0, $db);
             $gameId = $mGame->createGame($dataIn, $user->parameters['playerId']);

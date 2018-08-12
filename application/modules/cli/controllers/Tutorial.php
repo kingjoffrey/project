@@ -36,7 +36,7 @@ class TutorialController
             }
             $gameId = $mGame->createGame(array(
                 'numberOfPlayers' => 2,
-                'type' => Zend_Registry::get('config')->game->type->tutorial,
+                'type' => Zend_Registry::get('config')->gameType->tutorial,
                 'mapId' => $mapId
             ), $user->parameters['playerId']);
 

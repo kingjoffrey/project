@@ -43,7 +43,7 @@ class Admin_TournamentController extends Coret_Controller_Backend
             $gameId = $mGame->createGame(array(
                 'numberOfPlayers' => 2,
                 'mapId' => $tournament['mapId'],
-                'type' => Zend_Registry::get('config')->game->type->tournament
+                'type' => Zend_Registry::get('config')->gameType->tournament
             ), $playerId);
 
             $mTournamentGames->addGame($tournament['tournamentId'], $gameId);

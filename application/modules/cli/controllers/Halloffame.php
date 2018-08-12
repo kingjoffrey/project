@@ -11,15 +11,23 @@ class HalloffameController
             $dataIn['page'] = 1;
         }
 
-        $mPlayer = new Application_Model_Player($db);
-        $view->hallOfFame = $mPlayer->hallOfFame($dataIn['page']);
+        if (!isset($dataIn['m'])) {
+            $dataIn['m'] = 3;
+        }
+
+//        $mPlayer = new Application_Model_Player($db);
+//        $view->hallOfFame = $mPlayer->hallOfFame($dataIn['page']);
+
+        $m = new Application_Model_GameScore($db);
+        $this->view->hallOfFame = $m->getHallOfFame($dataIn['m']);
 
         $view->addScriptPath(APPLICATION_PATH . '/views/scripts');
 
         $token = array(
             'type' => 'halloffame',
             'action' => 'index',
-            'data' => $view->render('halloffame/index.phtml')
+            'data' => $view->render('halloffame/index.phtml'),
+            'menu' => Zend_Registry::get('config')->gameType
         );
         $handler->sendToUser($user, $token);
     }
