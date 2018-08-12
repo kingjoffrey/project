@@ -134,45 +134,19 @@ var Main = new function () {
             if (typeof window[className][methodName] === "function") {
                 window[className][methodName](r)
 
-                if ($('#back').length) {
-                    return
-                } else {
-                    $('#menuBox').hide()
-                    if (r.type == 'help') {
-                        $('#content')
-                            .append($('<div>')
-                                .append(
-                                    $('<div>').attr('id', 'back').addClass('button buttonColors').html(translations.Mainmenu).click(function () {
-                                        Sound.play('click')
-                                        IndexController.index()
-                                    })
-                                ).css({
-                                    'text-align': 'right'
+                $('#menuTop').hide()
+                if (r.type == 'help') {
+                    $('#content')
+                        .append($('<div>')
+                            .append(
+                                $('<div>').attr('id', 'back').addClass('button buttonColors').html(translations.Mainmenu).click(function () {
+                                    Sound.play('click')
+                                    IndexController.index()
                                 })
-                            )
-                    } else {
-                        $('#content')
-                            .prepend($('<div>')
-                                .append(
-                                    $('<div>').attr('id', 'back').addClass('button buttonColors').html(translations.Mainmenu).click(function () {
-                                        Sound.play('click')
-                                        IndexController.index()
-                                    })
-                                ).css({
-                                    'text-align': 'right'
-                                })
-                            )
-                            .append($('<div>')
-                                .append(
-                                    $('<div>').attr('id', 'back').addClass('button buttonColors').html(translations.Mainmenu).click(function () {
-                                        Sound.play('click')
-                                        IndexController.index()
-                                    })
-                                ).css({
-                                    'text-align': 'right'
-                                })
-                            )
-                    }
+                            ).css({
+                                'text-align': 'right'
+                            })
+                        )
                 }
             } else {
                 console.log('Method ' + methodName + ' in class ' + className + ' !exists')
