@@ -98,12 +98,34 @@ class Cli_Model_StartTurn
         $me = Cli_Model_Me::getMe($user);
         if ($me->getId() == $playerId) {
             $token = array(
-                'type' => 'update',
+                'type' => 'yourTurn',
                 'gold' => $player->getGold(),
                 'productionTurns' => $castles->productionTurnsToArray()
             );
+
+            if ($game->getTurnNumber() % 7) {
+                $token['msg'] = 'Mamy poniedziałek';
+            }
+
             $handler->sendToUser($user, $token);
         }
+
+        if ($game->getTurnNumber() % 7) {
+            $playersInGameColors = $game->getPlayersColors();
+
+            reset($playersInGameColors);
+            $firstColor = current($playersInGameColors);
+
+            if ($color == $firstColor) {
+                foreach ($game->getRuins()->getKeys() as $ruinId) {
+                    $ruin = $game->getRuins()->getRuin($ruinId);
+                    if ($ruin->getEmpty()) {
+                        $ruin->unsetEmpty($gameId, $db);
+                    }
+                }
+            }
+        }
+
 
         $token = array(
             'type' => 'startTurn',

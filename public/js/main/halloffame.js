@@ -1,7 +1,7 @@
 "use strict"
 var HalloffameController = new function () {
     var halloffameList = ''
-    
+
     this.index = function (r) {
         $('#content').html(r.data)
 

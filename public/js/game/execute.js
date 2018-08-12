@@ -16,7 +16,7 @@ var Execute = new function () {
                     Turn.change(r.color, r.nr)
                     break
 
-                case 'update':
+                case 'yourTurn':
                     Me.setSelectedCastleId(0)
 
                     var castles = Me.getCastles()
@@ -27,6 +27,11 @@ var Execute = new function () {
                     Me.setGold(r.gold)
 
                     Execute.setExecuting(0)
+
+                    if (r.msg) {
+                        Message.simple('MOTD', r.msg)
+                    }
+
                     break
 
                 case 'neutral':

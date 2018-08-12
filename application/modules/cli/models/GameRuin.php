@@ -19,6 +19,13 @@ class Cli_Model_GameRuin extends Cli_Model_Ruin
         $this->_empty = true;
     }
 
+    public function unsetEmpty($gameId, Zend_Db_Adapter_Pdo_Pgsql $db)
+    {
+        $mRuinsInGame = new Application_Model_RuinsInGame($gameId, $db);
+        $mRuinsInGame->remove($this->_id);
+        $this->_empty = false;
+    }
+
     public function search(Cli_Model_Game $game, Cli_Model_Army $army, $heroId, $playerId, $handler)
     {
         $random = rand(0, 100);

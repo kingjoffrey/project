@@ -18,7 +18,11 @@ var WebSocketMessageGame = new function () {
                     towers.delete(towerId)
                     break
 
-                case 'update':
+                case 'yourTurn':
+                    Execute.addQueue(r)
+                    break
+
+                case 'startTurn':
                     Execute.addQueue(r)
                     break
 
@@ -27,10 +31,6 @@ var WebSocketMessageGame = new function () {
                     break
 
                 case 'neutral':
-                    Execute.addQueue(r)
-                    break
-
-                case 'startTurn':
                     Execute.addQueue(r)
                     break
 

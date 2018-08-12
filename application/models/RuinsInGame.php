@@ -43,5 +43,15 @@ class Application_Model_RuinsInGame extends Coret_Db_Table_Abstract
 
         return $this->insert($data);
     }
+
+    public function remove($mapRuinId)
+    {
+        $where = array(
+            $this->_db->quoteInto($this->_db->quoteIdentifier($this->_foreign_2) . ' = ?', $mapRuinId),
+            $this->_db->quoteInto($this->_db->quoteIdentifier($this->_foreign_1) . ' = ?', $this->_gameId)
+        );
+
+        return $this->delete($where);
+    }
 }
 

@@ -174,7 +174,7 @@ class Cli_Model_Game
     }
 
     /**
-     * @return Cli_Model_Ruins
+     * @return Cli_Model_GameRuins
      */
     public function getRuins()
     {
