@@ -152,15 +152,22 @@ class Cli_Model_ComputerMove extends Cli_Model_ComputerMethods
             // ATAKUJ
             $this->_l->log('WRÓG JEST SŁABSZY');
             $path = $this->isEnemyArmyInRange($enemy);
-            if ($path && $path->enemyInRange()) {
-                $this->_l->log('SŁABSZY WRÓG W ZASIĘGU - ATAKUJ!');
-                $this->move($path);
+            if ($path) {
+                if ($path->enemyInRange()) {
+                    $this->_l->log('SŁABSZY WRÓG W ZASIĘGU - ATAKUJ!');
+                    $this->move($path);
+                    return;
+                }
+
+                $this->_l->log('SŁABSZY WRÓG POZA ZASIĘGIEM - IDŹ DO WROGA');
+                $this->savePathAndMove($path);
+                return;
+            } else {
+                $this->_l->log('WRÓG JEST NIEDOSTĘPNY - CZEKAJ');
+                $this->_army->setFortified(true);
+                $this->next();
                 return;
             }
-
-            $this->_l->log('SŁABSZY WRÓG POZA ZASIĘGIEM - IDŹ DO WROGA');
-            $this->savePathAndMove($path);
-            return;
         } else {
             $this->_l->log('WRÓG JEST SILNIEJSZY');
             if ($this->_inCastle) {
