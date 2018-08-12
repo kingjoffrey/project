@@ -13,10 +13,10 @@ var StatisticsWindow = new function () {
                 .append($('<th>').html(translations.Lost))
                 .append($('<th>').html(translations.Razed))
                 .append($('<th>').html(translations.Created))
-                .append($('<th>').html(translations.Killed))
-                .append($('<th>').html(translations.Lost))
-                .append($('<th>').html(translations.Killed))
-                .append($('<th>').html(translations.Lost))
+                .append($('<th>').html(translations.Killed1))
+                .append($('<th>').html(translations.Lost1))
+                .append($('<th>').html(translations.Killed2))
+                .append($('<th>').html(translations.Lost2))
             )
 
         for (var color in Players.toArray()) {
