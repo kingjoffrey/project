@@ -96,7 +96,7 @@ class Application_Model_GameScore extends Coret_Db_Table_Abstract
             ->order('score DESC')
             ->limit(10);
 
-        echo $select->__toString();
+//        echo $select->__toString();
 
         return $this->selectAll($select);
     }

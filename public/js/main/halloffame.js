@@ -1,13 +1,16 @@
 "use strict"
 var HalloffameController = new function () {
-    var playerId
+    var halloffameList = ''
+    
     this.index = function (r) {
         $('#content').html(r.data)
+
+        halloffameList = $('#halloffameList').html()
 
         for (var id in r.menu) {
             $('#halloffameMenu')
                 .append($('<div>')
-                    .attr('id', 'halloffame' + id)
+                    .attr('id', id)
                     .html(translations[r.menu[id]])
                     .addClass('button buttonColors')
                     .click(function () {
@@ -21,21 +24,43 @@ var HalloffameController = new function () {
 
                         $('#halloffameMenu div#' + id).addClass('active')
 
-                        WebSocketSendMain.controller('halloffame', 'content', {'m': id.substring(id.length - 1)})
+                        WebSocketSendMain.controller('halloffame', 'content', {'m': id})
                     })
                 )
         }
 
-        // $('#helpMenu div').first().addClass('active')
+        WebSocketSendMain.controller('halloffame', 'content', {'m': 3})
+
+        $('#halloffameMenu div#3').addClass('active')
     }
 
     this.content = function (r) {
+        $('#halloffameList').html(halloffameList)
 
-        console.log(r.data)
+        for (var i in r.data) {
 
-        $('.trlink').click(function () {
-            playerId = $(this).attr('id')
-            WebSocketSendMain.controller('profile', 'show', {'id': playerId})
-        })
+            var place = i * 1 + 1
+
+            $('#halloffameList').append(
+                $('<tr>').addClass('trlink').attr('id', r.data[i].playerId)
+                    .append($('<td>').html(place + '.'))
+                    .append($('<td>').html(r.data[i].firstName + ' ' + r.data[i].lastName))
+                    .append($('<td>').html(r.data[i].score))
+                    .append($('<td>').html(r.data[i].name))
+                    .click(function () {
+                        WebSocketSendMain.controller('profile', 'show', {'id': $(this).attr('id')})
+                    })
+            )
+        }
+
+        if (notSet(i)) {
+            $('#halloffameList')
+                .append(
+                    $('<tr>')
+                        .append(
+                            $('<td colspan="4">').addClass('after').html(translations.Therearenoscorestoshow)
+                        )
+                )
+        }
     }
 }

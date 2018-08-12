@@ -195,6 +195,7 @@ class Zend_View_Helper_Translations extends Zend_View_Helper_Abstract
                 'singleplayer' => $this->view->translate('Single player'),
                 'multiplayer' => $this->view->translate('Multiplayer'),
                 'tournament' => $this->view->translate('Tournament'),
+                'Therearenoscorestoshow' => $this->view->translate('There are no scores to show'),
                 '' => $this->view->translate(''),
             )));
     }

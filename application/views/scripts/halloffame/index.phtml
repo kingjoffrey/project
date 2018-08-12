@@ -1,20 +1,12 @@
 <div id="halloffameMenu"></div>
 <div class="table">
     <h2><?php echo $this->translate('Hall of Fame') ?></h2>
-    <table>
+    <table id="halloffameList">
         <tr>
             <th><?php echo $this->translate('Place') ?></th>
             <th><?php echo $this->translate('Player name') ?></th>
             <th><?php echo $this->translate('Score') ?></th>
+            <th><?php echo $this->translate('Map name') ?></th>
         </tr>
-        <?php if (count($this->hallOfFame)): ?>
-            <?php foreach ($this->hallOfFame as $key => $row): ?>
-                <tr class="trlink" id="<?php echo $row['playerId'] ?>">
-                    <td><?php echo $key + 1 ?></td>
-                    <td><?php echo $row['firstName'] . ' ' . $row['lastName'] ?></td>
-                    <td><?php echo $row['score'] ?></td>
-                </tr>
-            <?php endforeach ?>
-        <?php endif ?>
     </table>
 </div>
