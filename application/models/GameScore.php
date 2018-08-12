@@ -93,7 +93,8 @@ class Application_Model_GameScore extends Coret_Db_Table_Abstract
             ->join(array('d' => 'player'), 'c.' . $pId . ' = d.' . $pId, array('firstName', 'lastName'))
             ->join(array('e' => 'map'), 'b.' . $mId . ' = e.' . $mId, array('name'))
             ->where('b.type = ?', $gameType)
-            ->order('score DESC');
+            ->order('score DESC')
+            ->limit(10);
 
         echo $select->__toString();
 
