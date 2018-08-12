@@ -127,7 +127,7 @@ input, select {
     background: #000;
     cursor: pointer;
     text-decoration: none;
-    box-shadow: 0 0 1.4vw #000;
+    box-shadow: 0 0 1.4vw #444;
 }
 
 .buttonColors, #submit, input, select {
@@ -161,9 +161,7 @@ h2 {
     padding: 0.7vw 0 1.4vw 1.4vw;
     letter-spacing: 0.3vw;
     text-align: left;
-    /*color: green;*/
-    /*color: lightgreen;*/
-    color: lightblue;
+    color: skyblue;
 }
 
 .left {
@@ -465,11 +463,8 @@ div.table table.unitTable td:first {
     text-align: left;
 }
 
-#menuBox {
-    padding-top: 2.1vw;
-}
-
 #menuBox #menuTop {
+    margin-top: 2.1vw;
     padding: 1px;
     background: #fff;
     box-shadow: 0 0 1.4vw #fff;
@@ -487,6 +482,14 @@ div.table table.unitTable td:first {
 
 #menuBox #menu .button {
     margin: 1px;
+}
+
+#menuBox #menu .active {
+    background-color: green
+}
+
+#menuBox #menu .active:hover {
+    color: #FFFFFF;
 }
 
 * {

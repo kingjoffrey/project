@@ -135,6 +135,9 @@ var Main = new function () {
                 window[className][methodName](r)
 
                 $('#menuTop').hide()
+                $('#menu .active').removeClass('active')
+                $('#menu #' + r.type).addClass('active')
+
                 if (r.type == 'help') {
                     $('#content')
                         .append($('<div>')

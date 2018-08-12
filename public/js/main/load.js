@@ -35,13 +35,16 @@ var LoadController = new function () {
 
             $('#gameList').append(
                 $('<tr>').addClass('trlink').attr('id', game.gameId)
-                    .append($('<td>').html(game.name))
+                    .append(
+                        $('<td>')
+                            .append(game.name)
+                            .append($('<div>').addClass('padding').html(game.end))
+                    )
                     .append($('<td>').append(players))
                     .append(
                         $('<td>')
                             .append($('<div>').addClass('padding').html(game.turnNumber))
                             .append($('<div>').addClass('padding').html(game.playerTurn.name))
-                            .append($('<div>').addClass('padding').html(game.end))
                     )
                     .append(
                         $('<td>')
