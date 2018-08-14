@@ -34,9 +34,12 @@ var IndexController = new function () {
         $('#gameMenu').hide()
         $('#wait').hide()
 
+        $('#menu .active').removeClass('active')
+
         $('#content').html(Page.getIndex())
 
         $('#bg').show()
         $('#menuBox').show()
+        $('#menuTop').show()
     }
 }
