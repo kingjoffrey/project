@@ -158,10 +158,14 @@ input, select {
 }
 
 h2 {
-    padding: 0.7vw 0 1.4vw 1.4vw;
+    margin-top: 0.7vw;
+    margin-bottom: 1.4vw;
+    margin-left: 0.7vw;
     letter-spacing: 0.3vw;
     text-align: left;
     color: skyblue;
+    background: #fff;
+    display: inline-block;
 }
 
 .left {
@@ -828,6 +832,11 @@ div.table table.unitTable td:first {
 
 .statistics th.second {
     letter-spacing: 0;
+}
+
+.statistics td {
+    border: 1px solid;
+    border-left: 1vw solid;
 }
 
 .font-gold {

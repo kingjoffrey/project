@@ -32,6 +32,7 @@ var IndexController = new function () {
         $('#turnInfo').hide()
         $('#game').hide()
         $('#gameMenu').hide()
+        $('#wait').hide()
 
         $('#content').html(Page.getIndex())
 

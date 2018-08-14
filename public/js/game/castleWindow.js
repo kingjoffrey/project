@@ -82,7 +82,6 @@ var CastleWindow = new function () {
                 $('#heroResurrection').addClass('buttonOff').off()
                 if (Me.getGold() >= 1000) {
                     $('#heroHire').removeClass('buttonOff').off().click(function () {
-                        Message.remove(messageId)
                         var id = Message.show(translations.hireHero, $('<div>').html(translations.doYouWantToHireNewHeroFor1000Gold))
                         Message.addButton(id, 'hireHero', WebSocketSendGame.hire)
                         Message.addButton(id, 'cancel')

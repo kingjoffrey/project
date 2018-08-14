@@ -65,6 +65,8 @@ var Game = new function () {
 
         if (Turn.isMy() && Me.getTurnActive()) {
             Turn.start(game.color)
+        } else {
+            GameGui.lock()
         }
 
         Sound.play('gamestart')

@@ -29,7 +29,7 @@ var StatisticsWindow = new function () {
             var td = $('<td>').addClass('shortName');
 
             var td = $('<td>').css({
-                border: '1px solid ' + backgroundColor
+                'border-color': backgroundColor
             })
 
             if (numberOfCastlesHeld > 0) {
@@ -39,7 +39,7 @@ var StatisticsWindow = new function () {
             }
 
             var td = $('<td>').css({
-                border: '1px solid ' + backgroundColor
+                'border-color': backgroundColor
             })
             if (isSet(r.castlesConquered.winners[color])) {
                 tr.append(td.html(r.castlesConquered.winners[color]))
@@ -48,7 +48,7 @@ var StatisticsWindow = new function () {
             }
 
             var td = $('<td>').css({
-                border: '1px solid ' + backgroundColor
+                'border-color': backgroundColor
             })
             if (isSet(r.castlesConquered.losers[color])) {
                 tr.append(td.html(r.castlesConquered.losers[color]))
@@ -57,16 +57,16 @@ var StatisticsWindow = new function () {
             }
 
             var td = $('<td>').css({
-                border: '1px solid ' + backgroundColor
+                'border-color': backgroundColor
             })
             if (isSet(r.castlesDestroyed[color])) {
-                tr.append(td.html(r.castlesConquered[color]))
+                tr.append(td.html(r.castlesDestroyed[color]))
             } else {
                 tr.append(td.html('0'))
             }
 
             var td = $('<td>').css({
-                border: '1px solid ' + backgroundColor
+                'border-color': backgroundColor
             })
             if (isSet(r.soldiersCreated[color])) {
                 tr.append(td.html(r.soldiersCreated[color]))
@@ -75,7 +75,7 @@ var StatisticsWindow = new function () {
             }
 
             var td = $('<td>').css({
-                border: '1px solid ' + backgroundColor
+                'border-color': backgroundColor
             })
             if (isSet(r.soldiersKilled.winners[color])) {
                 tr.append(td.html(r.soldiersKilled.winners[color]))
@@ -84,7 +84,7 @@ var StatisticsWindow = new function () {
             }
 
             var td = $('<td>').css({
-                border: '1px solid ' + backgroundColor
+                'border-color': backgroundColor
             })
             if (isSet(r.soldiersKilled.losers[color])) {
                 tr.append(td.html(r.soldiersKilled.losers[color]))
@@ -93,7 +93,7 @@ var StatisticsWindow = new function () {
             }
 
             var td = $('<td>').css({
-                border: '1px solid ' + backgroundColor
+                'border-color': backgroundColor
             })
             if (isSet(r.heroesKilled.winners[color])) {
                 tr.append(td.html(r.heroesKilled.winners[color]))
@@ -102,7 +102,7 @@ var StatisticsWindow = new function () {
             }
 
             var td = $('<td>').css({
-                border: '1px solid ' + backgroundColor
+                'border-color': backgroundColor
             })
             if (isSet(r.heroesKilled.losers[color])) {
                 tr.append(td.html(r.heroesKilled.losers[color]))

@@ -8,7 +8,6 @@ var GameRenderer = new function () {
             renderer.render(scene, camera)
         }
 
-        this.setTimeout
     this.setSize = function (w, h) {
         renderer.setSize(w, h)
     }
