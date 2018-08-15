@@ -50,7 +50,7 @@ class Cli_GeneratorHandler extends WebSocketUriHandler
                 break;
             case 'create':
                 $g = new Cli_Model_Generator();
-                $this->sendToUser($user, $g->create($dataIn, $user->parameters['playerId']));
+                $this->sendToUser($user, $g->create($dataIn, $this->_db, $user->parameters['playerId']));
                 break;
             case 'mirror':
                 $this->sendToUser($user, $this->mirror($dataIn, $this->_db, $user->parameters['playerId']));
