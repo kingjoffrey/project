@@ -6,7 +6,7 @@ then
 else
     data=`date +%Y%m%d`
     czas=`date +%H.%M.%S`
-    path=$HOME"/htdocs/scripts"
+    path=`pwd`
 
 
     export APPLICATION_ENV=cli

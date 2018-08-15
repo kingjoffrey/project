@@ -201,7 +201,7 @@ div.table table {
 
 #content th {
     text-align: center;
-    padding: 0.7vw;
+    padding: 0.7vw 0;
     color: #000;
     background: #fff;
     text-shadow: none;
@@ -226,9 +226,8 @@ div.table table {
 }
 
 #content td {
-    /*height: 4.2vw;*/
     text-align: center;
-    padding: 1vw;
+    padding: 1vw 0;
     background: url("/img/game/message_bg.png");
 }
 
