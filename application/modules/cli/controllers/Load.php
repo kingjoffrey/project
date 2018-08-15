@@ -18,14 +18,20 @@ class LoadController
             $mPlayersInGame = new Application_Model_PlayersInGame($game['gameId'], $db);
             $game['players'] = $mPlayersInGame->getGamePlayers();
 
+            foreach (array_keys($game['players']) as $playerId) {
+                if ($playerId == $user->parameters['playerId']) {
+                    unset($game['players'][$playerId]);
+                    break;
+                }
+            }
+
             $player = $mPlayer->getPlayer($game['turnPlayerId']);
             $player['name'] = trim($player['firstName'] . ' ' . $player['lastName']);
             unset($player['firstName']);
             unset($player['lastName']);
 
             $game['playerTurn'] = $player;
-            $game['begin'] = Coret_View_Helper_Formatuj::date($game['begin'], 'Y.m.d H:i');
-            $game['end'] = Coret_View_Helper_Formatuj::date($game['end'], 'Y.m.d H:i');
+            $game['end'] = Coret_View_Helper_Formatuj::date($game['end'], 'Ymd H:i');
         }
 
         $view->addScriptPath(APPLICATION_PATH . '/views/scripts');

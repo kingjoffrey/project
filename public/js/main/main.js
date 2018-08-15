@@ -112,7 +112,7 @@ var Main = new function () {
             })
             $('.editor #exit').click(function () {
                 Sound.play('click')
-                WebSocketSendMain.controller('editor')
+                IndexController.index()
             })
             $('.editor #publish').click(function () {
                 if (!Editor.mapIsReady()) {
