@@ -14,6 +14,7 @@ $().ready(function () {
     Terrain.init(terrain)
 
     WebSocketChat.init()
+    WebSocketEditor.init()
     WebSocketMapgenerator.init()
 })
 $(window).resize(function () {

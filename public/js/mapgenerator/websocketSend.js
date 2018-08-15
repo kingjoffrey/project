@@ -1,7 +1,14 @@
 "use strict"
 var WebSocketSendMapgenerator = new function () {
-    var ws
+    var closed = true,
+        ws
 
+    this.setClosed = function (param) {
+        closed = param
+    }
+    this.isClosed = function () {
+        return closed
+    }
     this.open = function () {
         var token = {
             type: 'open',

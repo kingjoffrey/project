@@ -47,7 +47,8 @@ $logger->addWriter($writer);
 
 // Create a WebSocket server
 $configWS = Zend_Registry::get('config')->websockets;
-$address = $configWS->aSchema . '://' . $configWS->aHost . ':' . $configWS->aPort + 1;
+$port = $configWS->aPort + 1;
+$address = $configWS->aSchema . '://' . $configWS->aHost . ':' . $port;
 $server = new WebSocketServer($address, $loop, $logger);
 
 if ($configWS->aSchema == 'wss') {

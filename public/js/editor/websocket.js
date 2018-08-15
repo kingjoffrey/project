@@ -2,7 +2,8 @@
 var WebSocketEditor = new function () {
     var ws = 0
     this.init = function () {
-        ws = new WebSocket(wsURL + ':' + wsPort + '/editor')
+        var port = wsPort * 1 + 1
+        ws = new WebSocket(wsURL + ':' + port + '/editor')
 
         ws.onopen = function () {
             WebSocketSendEditor.setClosed(0)

@@ -28,6 +28,23 @@ class EditorController
         $handler->sendToUser($user, $token);
     }
 
+    function create(WebSocketTransportInterface $user, Cli_MainHandler $handler)
+    {
+        $view = new Zend_View();
+        $view->formCreate = new Application_Form_Createmap();
+        $view->formCreate->setView($view);
+
+        $view->addScriptPath(APPLICATION_PATH . '/views/scripts');
+
+        $token = array(
+            'type' => 'editor',
+            'action' => 'create',
+            'data' => $view->render('editor/create.phtml')
+        );
+
+        $handler->sendToUser($user, $token);
+    }
+
     function delete(WebSocketTransportInterface $user, Cli_MainHandler $handler, $dataIn)
     {
         if (!isset($dataIn['id'])) {

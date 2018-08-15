@@ -9,14 +9,12 @@ class Cli_Model_Generator
 
     function create($dataIn, Zend_Db_Adapter_Pdo_Pgsql $db, $playerId)
     {
-        $view = new Zend_View();
-        $view->formCreate = new Application_Form_Createmap();
-        $view->formCreate->setView($view);
+        $formCreate = new Application_Form_Createmap();
 
-        if (isset($dataIn['name']) && $view->formCreate->isValid($dataIn)) {
+        if (isset($dataIn['name']) && $formCreate->isValid($dataIn)) {
 
             $mMap = new Application_Model_Map (0, $db);
-            $mapId = $mMap->create($view->formCreate->getValues(), $playerId);
+            $mapId = $mMap->create($formCreate->getValues(), $playerId);
 
             $mapFields = new Application_Model_MapFields($mapId, $db);
             for ($y = 0; $y < $this->_mapSize; $y++) {
@@ -30,12 +28,7 @@ class Cli_Model_Generator
                 'mapId' => $mapId
             );
         } else {
-            $view->addScriptPath(APPLICATION_PATH . '/views/scripts');
-
-            return array(
-                'type' => 'create',
-                'data' => $view->render('editor/create.phtml')
-            );
+            echo 'zdddfff';
         }
     }
 

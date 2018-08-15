@@ -33,10 +33,14 @@ class Cli_GeneratorHandler extends WebSocketUriHandler
             print_r($dataIn);
         }
 
-        $mWebSocket = new Application_Model_Websocket($dataIn['playerId'], $db);
+        if ($dataIn['type'] == 'open') {
+            new Cli_Model_GeneratorOpen($dataIn, $user, $this);
+            return;
+        }
 
-        if (!$mWebSocket->checkAccessKey($dataIn['accessKey'], $db)) {
-            echo ('Brak uprawnień (playerId=' . $dataIn['playerId'] . ')') . "\n";
+        if (!Zend_Validate::is($user->parameters['playerId'], 'Digits')) {
+            $l = new Coret_Model_Logger('Cli_GeneratorHandler');
+            $l->log('Brak autoryzacji.');
             return;
         }
 
@@ -45,7 +49,8 @@ class Cli_GeneratorHandler extends WebSocketUriHandler
                 $this->sendToUser($user, $this->publish($dataIn, $this->_db));
                 break;
             case 'create':
-                $this->sendToUser($user, $this->create($dataIn, $user->parameters['playerId']));
+                $g = new Cli_Model_Generator();
+                $this->sendToUser($user, $g->create($dataIn, $user->parameters['playerId']));
                 break;
             case 'mirror':
                 $this->sendToUser($user, $this->mirror($dataIn, $this->_db, $user->parameters['playerId']));
