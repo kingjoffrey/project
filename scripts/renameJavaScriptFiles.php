@@ -38,7 +38,24 @@ class JavaScript
 
     public function __construct()
     {
-        $this->renameJavaScript(APPLICATION_PATH . '/../public/js/', $version = Zend_Registry::get('config')->version);
+        $path = APPLICATION_PATH . '/../public/js/';
+
+        if ($handle = opendir($path)) {
+
+            while (false !== ($entry = readdir($handle))) {
+                if ($entry != "." && $entry != "..") {
+                    $array[] = $entry;
+                }
+            }
+
+            asort($array);
+
+            foreach ($array as $k => $entry) {
+                $this->renameJavaScript($path . '/' . $entry, $version = Zend_Registry::get('config')->version);
+            }
+
+            closedir($handle);
+        }
     }
 
     public function renameJavaScript($path, $version)
@@ -54,11 +71,11 @@ class JavaScript
             asort($array);
 
             foreach ($array as $k => $entry) {
-                if (is_dir($path . '/' . $entry)) {
-                    $this->renameJavaScript($path . '/' . $entry, $version);
-                } else {
-                    rename($path . '/' . $entry, $path . '/' . $version . $entry);
-                }
+//                if (is_dir($path . '/' . $entry)) {
+//                    $this->renameJavaScript($path . '/' . $entry, $version);
+//                } else {
+                rename($path . '/' . $entry, $path . '/' . $version . $entry);
+//                }
             }
 
 

@@ -7,10 +7,9 @@ var HelpRenderer = new function () {
         mesh = 0,
         angle = Math.PI / 180,
         render = function () {
-            if (mesh) {
-                // Animation.rotate(mesh)
-                mesh.rotateY(angle)
-            }
+            // if (mesh) {
+            //     mesh.rotateY(angle)
+            // }
 
             renderer.render(scene, camera)
         }

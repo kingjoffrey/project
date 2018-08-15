@@ -1,5 +1,6 @@
 "use strict"
 $().ready(function () {
+    Page.init()
     Main.init()
 
     HelpScene.init()
@@ -11,4 +12,11 @@ $().ready(function () {
     GameModels.init()
 
     Terrain.init(terrain)
+})
+$(window).resize(function () {
+    if ($(window).innerWidth() < $(window).innerHeight()) {
+        $('body').addClass('vertical')
+    } else {
+        $('body').removeClass('vertical')
+    }
 })

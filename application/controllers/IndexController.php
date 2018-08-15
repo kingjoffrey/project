@@ -14,6 +14,8 @@ class IndexController extends Coret_Controller_AuthorizedFrontend
             $this->view->headLink()->prependStylesheet('/css/main.css?v=' . $version);
 
             $this->view->jquery();
+            $this->view->headScript()->appendFile('/js/jquery.mousewheel.min.js');
+            $this->view->headScript()->appendFile('/js/Tween.js');
 
             $this->appendJavaScript(APPLICATION_PATH . '/../public/js/');
 
