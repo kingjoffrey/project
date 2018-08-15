@@ -12,10 +12,13 @@ else
     export APPLICATION_ENV=cli
 
     echo "Starting..."
-    /bin/cp $path/../log/1_.log $path/../log/$data-$czas.wsServer.log
-    
+    /bin/cp $path/../log/1_main.log $path/../log/$data-$czas.wsMainServer.log
+    /bin/cp $path/../log/1_editor.log $path/../log/$data-$czas.wsEditorServer.log
+
     cd $path
     
-    /usr/bin/php -f ./wsServer.php &>$path/../log/1_.log &
-    #/usr/bin/php -c /etc/php-cli/ -f $path/wsServer.php &>$path/1_.log &
+    /usr/bin/php -f ./wsMainServer.php &>$path/../log/1_main.log &
+    /usr/bin/php -f ./wsEditorServer.php &>$path/../log/1_editor.log &
+
+    #/usr/bin/php -c /etc/php-cli/ -f $path/wsMainServer.php &>$path/1_.log &
 fi
