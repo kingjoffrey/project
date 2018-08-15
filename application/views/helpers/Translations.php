@@ -200,6 +200,8 @@ class Zend_View_Helper_Translations extends Zend_View_Helper_Abstract
                 'ItisSunday' => $this->view->translate('It is Sunday'),
                 'Allruinsarefull' => $this->view->translate('All ruins are full'),
                 'Publish' => $this->view->translate('Publish'),
+                'Mapnotready' => $this->view->translate('Map not ready'),
+                'Numberofplayershastomatchnumberofcapitals' => $this->view->translate('Number of players has to match number of capitals'),
                 '' => $this->view->translate(''),
             )));
     }

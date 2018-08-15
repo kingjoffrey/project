@@ -73,6 +73,55 @@ var Main = new function () {
                 GameRenderer.start()
                 GameRenderer.animate()
             })
+
+            $('.editor #castle').click(function () {
+                EditorModels.createMesh('castle')
+            })
+            $('.editor #ruin').click(function () {
+                EditorModels.createMesh('ruin')
+            })
+            $('.editor #tower').click(function () {
+                EditorModels.createMesh('tower')
+            })
+            $('.editor #road').click(function () {
+                EditorModels.createMesh('road')
+            })
+            $('.editor #forest').click(function () {
+                EditorModels.createMesh('forest')
+            })
+            $('.editor #swamp').click(function () {
+                EditorModels.createMesh('swamp')
+            })
+            $('.editor #eraser').click(function () {
+                EditorModels.createMesh('eraser')
+            })
+            $('.editor #up').click(function () {
+                EditorModels.createMesh('up')
+            })
+            $('.editor #down').click(function () {
+                EditorModels.createMesh('down')
+            })
+            $('.editor #exit').click(function () {
+                EditorController.index()
+            })
+            $('.editor #publish').click(function () {
+                if (!Editor.mapIsReady()) {
+                    Message.simple(translations.Mapnotready, translations.Numberofplayershastomatchnumberofcapitals)
+                    return
+                }
+                $('#wait').show()
+                WebSocketSendMapgenerator.publish(EditorController.getMapId())
+            })
+            $('.editor #test').click(function () {
+                if (!Editor.mapIsReady()) {
+                    Message.simple(translations.Mapnotready, translations.Numberofplayershastomatchnumberofcapitals)
+                    return
+                }
+                WebSocketSendMain.controller('single', 'index', {
+                    'mapId': EditorController.getMapId(),
+                    'test': 1
+                })
+            })
         },
         click = function (controller) {
             return function () {

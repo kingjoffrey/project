@@ -20,48 +20,6 @@ var EditorGui = new function () {
 //            default
 //                console.log(key)
             }
-        },
-        activateButtons = function () {
-            $('#castle').click(function () {
-                EditorModels.createMesh('castle')
-            })
-            $('#ruin').click(function () {
-                EditorModels.createMesh('ruin')
-            })
-            $('#tower').click(function () {
-                EditorModels.createMesh('tower')
-            })
-            $('#road').click(function () {
-                EditorModels.createMesh('road')
-            })
-            $('#forest').click(function () {
-                EditorModels.createMesh('forest')
-            })
-            $('#swamp').click(function () {
-                EditorModels.createMesh('swamp')
-            })
-            $('#eraser').click(function () {
-                EditorModels.createMesh('eraser')
-            })
-            $('#up').click(function () {
-                EditorModels.createMesh('up')
-            })
-            $('#down').click(function () {
-                EditorModels.createMesh('down')
-            })
-            $('#rightMenu #exit').click(function () {
-                EditorController.index()
-            })
-            $('#publish').click(function () {
-                $('#wait').show()
-                WebSocketSendMapgenerator.publish(EditorController.getMapId())
-            })
-            $('#test').click(function () {
-                WebSocketSendMain.controller('single', 'index', {
-                    'mapId': EditorController.getMapId(),
-                    'test': 1
-                })
-            })
         }
 
     this.unlock = function () {
@@ -89,7 +47,6 @@ var EditorGui = new function () {
             doKey(event)
         })
 
-        activateButtons()
         this.adjust()
 
         $('#wait').hide()

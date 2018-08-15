@@ -32,4 +32,27 @@ var Editor = new function () {
 
         GameScene.centerOn(0, 0)
     }
+
+    this.mapIsReady = function () {
+        var numberOfPlayers = 0,
+            numberOfCapitals = 0
+
+        for (var color in Players.toArray()) {
+            if (color == 'neutral') {
+                continue
+            }
+            numberOfPlayers++
+            for (var castleId in Players.get(color).getCastles().toArray()) {
+                if (Players.get(color).getCastles().get(castleId).getCapital()) {
+                    numberOfCapitals++
+                }
+            }
+        }
+
+        if (numberOfPlayers == numberOfCapitals) {
+            return true
+        } else {
+            return false
+        }
+    }
 }
