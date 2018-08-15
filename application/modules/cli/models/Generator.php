@@ -31,10 +31,67 @@ class Cli_Model_Generator
         }
     }
 
-    public function publish($dataIn, Zend_Db_Adapter_Pdo_Pgsql $db)
+    public function publish($dataIn, Zend_Db_Adapter_Pdo_Pgsql $db, $playerId)
     {
-        $mMap = new Application_Model_Map($dataIn['mapId'], $db);
-        $mMap->publish();
+        if (!isset($dataIn['mapId']) || empty($dataIn['mapId'])) {
+            echo('mirror: brak mapId' . "\n");
+            return;
+        }
+
+        $mMap = new Application_Model_Map ($dataIn['mapId'], $db);
+        $oldMap = $mMap->get();
+        $mCastles = new Application_Model_MapCastles($dataIn['mapId'], $db);
+        $oldCastles = $mCastles->getMapCastles();
+        $mCastlesProduction = new Application_Model_MapCastleProduction($db);
+        $mTowers = new Application_Model_MapTowers($dataIn['mapId'], $db);
+        $oldTowers = $mTowers->getMapTowers();
+        $mRuins = new Application_Model_MapRuins($dataIn['mapId'], $db);
+        $oldRuins = $mRuins->getMapRuins();
+        $mapFields = new Application_Model_MapFields($dataIn['mapId'], $db);
+        $fields = $mapFields->getMapFields();
+
+        if ($mapId = $mMap->create(array('maxPlayers' => $oldMap['maxPlayers'], 'name' => $oldMap['name']), $playerId)) {
+            $mapFields = new Application_Model_MapFields($mapId, $db);
+            foreach ($fields as $y => $row) {
+                foreach ($row as $x => $type) {
+                    $mapFields->add($x, $y, $type);
+                }
+            }
+
+            $mCastles = new Application_Model_MapCastles($mapId, $db);
+            foreach ($oldCastles as $castleId => $castle) {
+                $newCastleId = $mCastles->add($castle['x'], $castle['y'], $castle);
+                $production = $mCastlesProduction->getCastleProduction($castleId);
+
+                foreach ($production as $slot) {
+                    $mCastlesProduction->addCastleProduction($newCastleId, $slot);
+                }
+            }
+
+            $mTowers = new Application_Model_MapTowers($mapId, $db);
+            foreach ($oldTowers as $towerId => $tower) {
+                $mTowers->add($tower['x'], $tower['y']);
+            }
+
+            $mRuins = new Application_Model_MapRuins($mapId, $db);
+            foreach ($oldRuins as $ruinId => $ruin) {
+                $mRuins->add($ruin['x'], $ruin['y'], $ruin['ruinId']);
+            }
+
+            $mMap = new Application_Model_Map ($mapId, $db);
+            $mMap->publish();
+
+            return array(
+                'type' => 'publish',
+                'map' => array(
+                    'mapId' => $mapId,
+                    'name' => $oldMap['name'] . ' mirror',
+                    'maxPlayers' => $oldMap['maxPlayers'],
+                    'date' => Coret_View_Helper_Formatuj::date(date('YmdHis', time()))
+                )
+            );
+        }
+
     }
 
     function mirror($dataIn, Zend_Db_Adapter_Pdo_Pgsql $db, $playerId)

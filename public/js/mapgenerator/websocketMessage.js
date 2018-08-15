@@ -16,7 +16,7 @@ var WebSocketMessageMapgenerator = new function () {
                 break
 
             case 'publish':
-                
+                SingleController.index()
                 break
         }
     }

@@ -46,7 +46,8 @@ class Cli_GeneratorHandler extends WebSocketUriHandler
 
         switch ($dataIn['type']) {
             case 'publish':
-                $this->sendToUser($user, $this->publish($dataIn, $this->_db));
+                $g = new Cli_Model_Generator();
+                $this->sendToUser($user, $g->publish($dataIn, $this->_db, $user->parameters['playerId']));
                 break;
             case 'create':
                 $g = new Cli_Model_Generator();
