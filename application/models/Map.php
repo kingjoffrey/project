@@ -33,7 +33,7 @@ class Application_Model_Map extends Coret_Db_Table_Abstract
     public function getPlayerMapList($playerId)
     {
         $select = $this->_db->select()
-            ->from($this->_name)
+            ->from($this->_name, array('date', 'mapId', 'maxPlayers', 'name'))
             ->where('publish = false')
             ->where($this->_db->quoteIdentifier('playerId') . ' = ?', $playerId);
         return $this->selectAll($select);
@@ -42,7 +42,7 @@ class Application_Model_Map extends Coret_Db_Table_Abstract
     public function get()
     {
         $select = $this->_db->select()
-            ->from($this->_name)
+            ->from($this->_name, array('date', 'mapId', 'maxPlayers', 'name'))
             ->where($this->_db->quoteIdentifier($this->_primary) . ' = ?', $this->_mapId);
 
         return $this->selectRow($select);
