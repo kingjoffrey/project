@@ -92,6 +92,10 @@ var PickerEditor = new function () {
         }
 
     }
+    this.clearDraggedMesh = function () {
+        GameScene.remove(draggedMesh)
+        draggedMesh = 0
+    }
     this.getDraggedMesh = function () {
         return draggedMesh
     }
@@ -120,8 +124,7 @@ var PickerEditor = new function () {
                 // remove mesh
                 leftClick = 0
                 if (draggedMesh) {
-                    GameScene.remove(draggedMesh)
-                    draggedMesh = 0
+                    PickerEditor.clearDraggedMesh()
                 }
                 Message.remove()
                 break

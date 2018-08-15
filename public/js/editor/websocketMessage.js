@@ -8,21 +8,21 @@ var WebSocketMessageEditor = new function () {
                 break
 
             case 'castle':
-                EditorGui.unlock()
-                GameScene.remove(PickerEditor.getDraggedMesh())
+                PickerEditor.clearDraggedMesh()
                 Players.get('neutral').getCastles().add(r.value.id, r.value)
+                EditorGui.unlock()
                 break
 
             case 'towerId':
-                EditorGui.unlock()
-                GameScene.remove(PickerEditor.getDraggedMesh())
+                PickerEditor.clearDraggedMesh()
                 Players.get('neutral').getTowers().add(r.value, {x: PickerEditor.getX(), y: PickerEditor.getZ()})
+                EditorGui.unlock()
                 break
 
             case 'ruinAdd':
-                EditorGui.unlock()
-                GameScene.remove(PickerEditor.getDraggedMesh())
+                PickerEditor.clearDraggedMesh()
                 Ruins.add(r.id, new Ruin({x: PickerEditor.getX(), y: PickerEditor.getZ(), empty: 0, type: 4}))
+                EditorGui.unlock()
                 break
 
             case 'editRuin':
@@ -34,7 +34,6 @@ var WebSocketMessageEditor = new function () {
                 break
 
             case 'editCastle':
-                EditorGui.unlock()
                 var castleId = r.castle.id
                 Message.remove()
                 for (var color in Players.toArray()) {
@@ -45,6 +44,7 @@ var WebSocketMessageEditor = new function () {
                 }
 
                 Players.get(r.color).getCastles().add(castleId, r.castle)
+                EditorGui.unlock()
                 break
 
             case 'remove':
