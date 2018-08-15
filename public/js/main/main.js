@@ -75,40 +75,51 @@ var Main = new function () {
             })
 
             $('.editor #castle').click(function () {
+                Sound.play('click')
                 EditorModels.createMesh('castle')
             })
             $('.editor #ruin').click(function () {
+                Sound.play('click')
                 EditorModels.createMesh('ruin')
             })
             $('.editor #tower').click(function () {
+                Sound.play('click')
                 EditorModels.createMesh('tower')
             })
             $('.editor #road').click(function () {
+                Sound.play('click')
                 EditorModels.createMesh('road')
             })
             $('.editor #forest').click(function () {
+                Sound.play('click')
                 EditorModels.createMesh('forest')
             })
             $('.editor #swamp').click(function () {
+                Sound.play('click')
                 EditorModels.createMesh('swamp')
             })
             $('.editor #eraser').click(function () {
+                Sound.play('click')
                 EditorModels.createMesh('eraser')
             })
             $('.editor #up').click(function () {
+                Sound.play('click')
                 EditorModels.createMesh('up')
             })
             $('.editor #down').click(function () {
+                Sound.play('click')
                 EditorModels.createMesh('down')
             })
             $('.editor #exit').click(function () {
-                EditorController.index()
+                Sound.play('click')
+                WebSocketSendMain.controller('editor')
             })
             $('.editor #publish').click(function () {
                 if (!Editor.mapIsReady()) {
                     Message.simple(translations.Mapnotready, translations.Numberofplayershastomatchnumberofcapitals)
                     return
                 }
+                Sound.play('click')
                 $('#wait').show()
                 WebSocketSendMapgenerator.publish(EditorController.getMapId())
             })
@@ -117,6 +128,7 @@ var Main = new function () {
                     Message.simple(translations.Mapnotready, translations.Numberofplayershastomatchnumberofcapitals)
                     return
                 }
+                Sound.play('click')
                 WebSocketSendMain.controller('single', 'index', {
                     'mapId': EditorController.getMapId(),
                     'test': 1
