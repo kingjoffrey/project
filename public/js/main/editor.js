@@ -80,6 +80,7 @@ var EditorController = new function () {
         $('#create').click(function () {
             WebSocketSendMain.controller('editor', 'create')
         })
+        $('#wait').hide()
     }
     this.delete = function (r) {
         $('tr#' + r.id).remove()

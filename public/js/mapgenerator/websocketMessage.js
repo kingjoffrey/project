@@ -8,7 +8,7 @@ var WebSocketMessageMapgenerator = new function () {
                 break
 
             case 'generated':
-                EditorController.add(r)
+                WebSocketSendMain.controller('editor', 'index')
                 break
         }
     }
