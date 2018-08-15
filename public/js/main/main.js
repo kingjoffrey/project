@@ -95,6 +95,8 @@ var Main = new function () {
 
         init = 1
 
+        $('#menu').html('')
+
         for (var controller in menu) {
             $('#menu').append(
                 $('<div>').addClass('iconButton buttonColors')
