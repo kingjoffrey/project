@@ -23,6 +23,9 @@ var Castle = function (castle, color, isCapital) {
     this.getName = function () {
         return castle.name
     }
+    this.getCapital = function () {
+        return castle.capital
+    }
     this.getIncome = function () {
         return castle.income * castle.defense
     }

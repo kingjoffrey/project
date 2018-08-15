@@ -199,6 +199,7 @@ class Zend_View_Helper_Translations extends Zend_View_Helper_Abstract
                 'Therearenoscorestoshow' => $this->view->translate('There are no scores to show'),
                 'ItisSunday' => $this->view->translate('It is Sunday'),
                 'Allruinsarefull' => $this->view->translate('All ruins are full'),
+                'Publish' => $this->view->translate('Publish'),
                 '' => $this->view->translate(''),
             )));
     }

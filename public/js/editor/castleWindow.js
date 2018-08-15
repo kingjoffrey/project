@@ -14,6 +14,7 @@ var EditorCastleWindow = new function () {
             if (Players.get(color).getCastles().has(id)) {
                 selectColor.append($('<option>').attr({'value': color, 'selected': 'selected'}).html(color))
                 var castle = Players.get(color).getCastles().get(id)
+
                 for (var i = 1; i <= 4; i++) {
                     if (castle.getDefense() == i) {
                         selectDefence.append($('<option>').attr({'value': i, 'selected': 'selected'}).html(i))
