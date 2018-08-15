@@ -22,6 +22,8 @@ class Cli_Model_GeneratorOpen
             return;
         }
 
+        Zend_Registry::set('id_lang', $dataIn['langId']);
+
         $user->parameters['playerId'] = $dataIn['playerId'];
         $user->parameters['accessKey'] = $dataIn['accessKey'];
 
