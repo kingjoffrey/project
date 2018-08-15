@@ -261,8 +261,6 @@ var Page = new function () {
             return
         }
 
-        Chat.init()
-
         if (!isInFullScreen()) {
             $('#content').append($('<div>').addClass('askFullScreen')
                 .append($('<div>').html(translations.SwitchtoFullScreen).addClass('question'))

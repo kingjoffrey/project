@@ -92,12 +92,7 @@ var EditorController = new function () {
             $('#wait').show()
 
             e.preventDefault()
-            WebSocketSendEditor.controller('editor', 'create', {
-                'name': $('#name').val(),
-                'maxPlayers': $('#maxPlayers').val()
-            })
-
-            WebSocketSendMapgenerator.create($('#name').val(),$('#maxPlayers').val())
+            WebSocketSendMapgenerator.create($('#name').val(), $('#maxPlayers').val())
         })
     }
     this.add = function (r) {
