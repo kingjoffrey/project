@@ -10,6 +10,14 @@ var WebSocketMessageMapgenerator = new function () {
             case 'generated':
                 WebSocketSendMain.controller('editor', 'index')
                 break
+
+            case 'mirror':
+                EditorController.add(r)
+                break
+
+            case 'publish':
+                
+                break
         }
     }
 }
