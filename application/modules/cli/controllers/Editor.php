@@ -11,7 +11,7 @@ class EditorController
         $list = array();
 
         foreach ($mMap->getPlayerMapList($user->parameters['playerId']) as $map) {
-            $map['date'] = Coret_View_Helper_Formatuj::date($map['date']);
+            $map['date'] = Coret_View_Helper_Formatuj::date($map['date'], 'Y-m-d H:i:s');
             $list[] = $map;
         }
 

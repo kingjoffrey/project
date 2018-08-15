@@ -85,11 +85,15 @@ class Application_Model_Map extends Coret_Db_Table_Abstract
     {
         $select = $this->_db->select()
             ->from($this->_name, array('mapId', 'name'))
+            ->distinct()
             ->where('tutorial = false')
             ->where('publish = true')
-            ->order('name', 'date DESC')
-            ->distinct('name');
-echo $select->_toString();
+            ->order(array('name', 'mapId DESC'));
+
+        $select = $select->__toString();
+
+        $select = str_replace('DISTINCT', 'DISTINCT ON ("name")', $select);
+
         $list = $this->selectAll($select);
 
         $maps = array();
@@ -98,7 +102,7 @@ echo $select->_toString();
             $maps[$map['mapId']] = $map['name'];
         }
 
-        rsort($maps);
+//        rsort($maps);
 
         return $maps;
     }
