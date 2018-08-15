@@ -13,6 +13,7 @@ var WebSocketSendMapgenerator = new function () {
         var token = {
             type: 'open',
             playerId: id,
+            langId: langId,
             accessKey: accessKey
         }
 

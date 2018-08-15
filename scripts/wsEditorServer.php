@@ -33,7 +33,7 @@ $application = new Zend_Application(
     APPLICATION_PATH . '/configs/application.ini'
 );
 
-$application->getBootstrap()->bootstrap(array('date', 'config', 'modules', 'language'));
+$application->getBootstrap()->bootstrap(array('date', 'config', 'modules'));
 
 include_once(APPLICATION_PATH . '/modules/cli/handlers/EditorHandler.php');
 include_once(APPLICATION_PATH . '/modules/cli/handlers/GeneratorHandler.php');

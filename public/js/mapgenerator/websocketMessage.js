@@ -5,7 +5,11 @@ var WebSocketMessageMapgenerator = new function () {
         switch (r.type) {
             case 'open':
                 // WebSocketEditor.init()
-                break;
+                break
+
+            case 'generated':
+                EditorController.add(r)
+                break
         }
     }
 }

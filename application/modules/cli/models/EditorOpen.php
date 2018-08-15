@@ -27,7 +27,7 @@ class Cli_Model_EditorOpen
             return;
         }
 
-        Zend_Registry::set('id_lang', $dataIn['langId']);
+        new Cli_Model_Language($dataIn['langId'], $db);
 
         if (!($user->parameters['editor'] = $handler->getEditor($dataIn['mapId']))) {
             echo 'not set' . "\n";

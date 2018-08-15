@@ -23,10 +23,13 @@ class Cli_Model_Generator
                 }
             }
 
-            return array(
-                'type' => 'generated',
-                'mapId' => $mapId
-            );
+            $mMap = new Application_Model_Map ($mapId, $db);
+            $map = $mMap->get();
+            $map['date'] = Coret_View_Helper_Formatuj::date($map['date']);
+            $map['type'] = 'generated';
+
+
+            return $map;
         } else {
             echo 'zdddfff';
         }
