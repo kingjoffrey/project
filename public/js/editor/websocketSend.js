@@ -22,6 +22,18 @@ var WebSocketSendEditor = new function () {
 
         ws.send(JSON.stringify(token))
     }
+    this.create = function () {
+        if (closed) {
+            console.log(translations.sorryServerIsDisconnected)
+            return;
+        }
+
+        var token = {
+            type: 'create'
+        }
+
+        ws.send(JSON.stringify(token))
+    }
     this.add = function (itemName, x, y) {
         if (closed) {
             console.log(translations.sorryServerIsDisconnected)

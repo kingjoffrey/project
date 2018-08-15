@@ -70,33 +70,6 @@ class Cli_Model_Editor
         );
     }
 
-    function create($dataIn, Zend_Db_Adapter_Pdo_Pgsql $db, $playerId)
-    {
-        $view = new Zend_View();
-        $view->formCreate = new Application_Form_Createmap();
-        $view->formCreate->setView($view);
-
-        if (isset($dataIn['name']) && $view->formCreate->isValid($dataIn)) {
-
-            $mMap = new Application_Model_Map (0, $db);
-            $mapId = $mMap->create($view->formCreate->getValues(), $playerId);
-
-            return array(
-                'type' => 'editor',
-                'action' => 'generate',
-                'mapId' => $mapId
-            );
-        } else {
-            $view->addScriptPath(APPLICATION_PATH . '/views/scripts');
-
-            return array(
-                'type' => 'editor',
-                'action' => 'create',
-                'data' => $view->render('editor/create.phtml')
-            );
-        }
-    }
-
     public function publish(Zend_Db_Adapter_Pdo_Pgsql $db)
     {
         $mMap = new Application_Model_Map($this->_mapId, $db);

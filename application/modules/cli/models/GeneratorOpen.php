@@ -8,7 +8,7 @@ class Cli_Model_GeneratorOpen
     public function __construct($dataIn, WebSocketTransportInterface $user, Cli_GeneratorHandler $handler)
     {
         if (!isset($dataIn['playerId'])) {
-            $l = new Coret_Model_Logger('Cli_Model_ExecOpen');
+            $l = new Coret_Model_Logger('Cli_Model_GeneratorOpen');
             $l->log('Brak "playerId"');
             return;
         }

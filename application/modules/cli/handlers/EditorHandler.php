@@ -67,15 +67,6 @@ class Cli_EditorHandler extends WebSocketUriHandler
         }
 
         switch ($dataIn['type']) {
-            case 'publish':
-                $this->getEditor($dataIn['mapId'])->publish($this->_db);
-                break;
-            case 'create':
-                $this->sendToUser($user, $this->getEditor($dataIn['mapId'])->create($dataIn, $this->_db, $user->parameters['playerId']));
-                break;
-            case 'mirror':
-                $this->sendToUser($user, $this->getEditor($dataIn['mapId'])->mirror($dataIn, $this->_db, $user->parameters['playerId']));
-                break;
             case 'add':
                 $this->sendToUser($user, $this->getEditor($dataIn['mapId'])->add($dataIn, $this->_db));
                 break;

@@ -91,7 +91,7 @@ var EditorController = new function () {
             $('#wait').show()
 
             e.preventDefault()
-            WebSocketSendMain.controller('editor', 'create', {
+            WebSocketSendEditor.controller('editor', 'create', {
                 'name': $('#name').val(),
                 'maxPlayers': $('#maxPlayers').val()
             })

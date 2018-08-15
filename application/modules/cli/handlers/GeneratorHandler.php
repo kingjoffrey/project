@@ -36,6 +36,24 @@ class Cli_GeneratorHandler extends WebSocketUriHandler
         if ($dataIn['type'] == 'open') {
             new Cli_Model_GeneratorOpen($dataIn, $user, $this);
         }
+
+        if (!Zend_Validate::is($user->parameters['playerId'], 'Digits')) {
+            $l = new Coret_Model_Logger('Cli_EditorHandler');
+            $l->log('Brak autoryzacji.');
+            return;
+        }
+
+        switch ($dataIn['type']) {
+            case 'publish':
+                $this->sendToUser($user, $this->publish($dataIn, $this->_db));
+                break;
+            case 'create':
+                $this->sendToUser($user, $this->create($dataIn, $user->parameters['playerId']));
+                break;
+            case 'mirror':
+                $this->sendToUser($user, $this->mirror($dataIn, $this->_db, $user->parameters['playerId']));
+                break;
+        }
     }
 
     /**
