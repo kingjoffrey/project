@@ -87,9 +87,9 @@ class Application_Model_Map extends Coret_Db_Table_Abstract
             ->from($this->_name, array('mapId', 'name'))
             ->where('tutorial = false')
             ->where('publish = true')
-            ->order('mapId')
-            ->limit(1);
-
+            ->order('name', 'date DESC')
+            ->distinct('name');
+echo $select->_toString();
         $list = $this->selectAll($select);
 
         $maps = array();
