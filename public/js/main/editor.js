@@ -19,14 +19,6 @@ var EditorController = new function () {
                             })
                         )
                         .append(
-                            $('<div>').addClass('button buttonColors').html(translations.Test).click(function () {
-                                WebSocketSendMain.controller('single', 'index', {
-                                    'mapId': $(this).parent().parent().attr('id'),
-                                    'test': 1
-                                })
-                            })
-                        )
-                        .append(
                             $('<div>').addClass('button buttonColors').attr('id', 'save').html(translations.Save).click(function () {
                                 WebSocketSendMain.controller('editor', 'save', {
                                     'id': $(this).parent().parent().attr('id'),
@@ -36,9 +28,9 @@ var EditorController = new function () {
                             })
                         )
                         .append(
-                            $('<div>').addClass('button buttonColors').attr('id', 'publish').html(translations.Publish).click(function () {
+                            $('<div>').addClass('iconButton buttonColors').html($('<div>').addClass('trash')).click(function (e) {
                                 $('#wait').show()
-                                WebSocketSendMapgenerator.publish($(this).parent().parent().attr('id'))
+                                WebSocketSendMain.controller('editor', 'delete', {'id': $(this).parent().parent().attr('id')})
                             })
                         )
                     )
@@ -56,12 +48,6 @@ var EditorController = new function () {
                             $('<div>').addClass('iconButton buttonColors').attr('id', 3).html($('<div>').addClass('mirror mirror3')).click(mirrorClick())
                         )
                     )
-                    .append($('<td>').append(
-                        $('<div>').addClass('iconButton buttonColors').html($('<div>').addClass('trash')).click(function (e) {
-                            $('#wait').show()
-                            WebSocketSendMain.controller('editor', 'delete', {'id': $(this).parent().parent().attr('id')})
-                        })
-                    ))
             )
             $('.trlink').css('cursor', 'default')
         },

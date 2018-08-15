@@ -52,6 +52,16 @@ var EditorGui = new function () {
             $('#rightMenu #exit').click(function () {
                 EditorController.index()
             })
+            $('#publish').click(function () {
+                $('#wait').show()
+                WebSocketSendMapgenerator.publish(EditorController.getMapId())
+            })
+            $('#test').click(function () {
+                WebSocketSendMain.controller('single', 'index', {
+                    'mapId': EditorController.getMapId(),
+                    'test': 1
+                })
+            })
         }
 
     this.adjust = function () {
