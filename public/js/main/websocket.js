@@ -11,6 +11,7 @@ var WebSocketMain = new function () {
             WebSocketMessageMain.switch($.parseJSON(e.data))
         }
         ws.onclose = function () {
+            Main.serverDisconnect()
             WebSocketSendMain.setClosed(1)
             setTimeout('WebSocketMain.init()', 1000);
         }
