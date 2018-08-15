@@ -37,6 +37,7 @@ var EditorController = new function () {
                         )
                         .append(
                             $('<div>').addClass('button buttonColors').attr('id', 'publish').html(translations.Publish).click(function () {
+                                $('#wait').show()
                                 WebSocketSendMapgenerator.publish($(this).parent().parent().attr('id'))
                             })
                         )

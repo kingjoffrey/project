@@ -87,7 +87,8 @@ class Application_Model_Map extends Coret_Db_Table_Abstract
             ->from($this->_name, array('mapId', 'name'))
             ->where('tutorial = false')
             ->where('publish = true')
-            ->order('mapId');
+            ->order('mapId')
+            ->limit(1);
 
         $list = $this->selectAll($select);
 
@@ -96,6 +97,8 @@ class Application_Model_Map extends Coret_Db_Table_Abstract
         foreach ($list as $map) {
             $maps[$map['mapId']] = $map['name'];
         }
+
+        rsort($maps);
 
         return $maps;
     }

@@ -12,5 +12,7 @@ var SingleController = new function () {
         })
 
         WebSocketSendMain.controller('create', 'map', {'mapId': $('#mapId').val()})
+
+        $('#wait').hide()
     }
 }

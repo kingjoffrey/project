@@ -82,13 +82,7 @@ class Cli_Model_Generator
             $mMap->publish();
 
             return array(
-                'type' => 'publish',
-                'map' => array(
-                    'mapId' => $mapId,
-                    'name' => $oldMap['name'] . ' mirror',
-                    'maxPlayers' => $oldMap['maxPlayers'],
-                    'date' => Coret_View_Helper_Formatuj::date(date('YmdHis', time()))
-                )
+                'type' => 'publish'
             );
         }
 
