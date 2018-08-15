@@ -64,6 +64,14 @@ var EditorGui = new function () {
             })
         }
 
+    this.unlock = function () {
+        lock = false
+        $('#wait').hide()
+    }
+    this.lock = function () {
+        lock = true
+        $('#wait').show()
+    }
     this.adjust = function () {
         $('#mapBox').width($('#map canvas').width())
         $('#map').height($('#map canvas').height())

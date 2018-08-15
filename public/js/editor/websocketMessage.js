@@ -6,22 +6,35 @@ var WebSocketMessageEditor = new function () {
             case 'open':
                 Editor.init(r)
                 break
+
             case 'castle':
+                EditorGui.unlock()
+                GameScene.remove(PickerEditor.getDraggedMesh())
                 Players.get('neutral').getCastles().add(r.value.id, r.value)
                 break
+
             case 'towerId':
+                EditorGui.unlock()
+                GameScene.remove(PickerEditor.getDraggedMesh())
                 Players.get('neutral').getTowers().add(r.value, {x: PickerEditor.getX(), y: PickerEditor.getZ()})
                 break
+
             case 'ruinAdd':
+                EditorGui.unlock()
+                GameScene.remove(PickerEditor.getDraggedMesh())
                 Ruins.add(r.id, new Ruin({x: PickerEditor.getX(), y: PickerEditor.getZ(), empty: 0, type: 4}))
                 break
+
             case 'editRuin':
+                EditorGui.unlock()
                 var ruin = Ruins.get(r.id)
                 if (ruin) {
                     ruin.setType(r.ruinId)
                 }
                 break
+
             case 'editCastle':
+                EditorGui.unlock()
                 var castleId = r.castle.id
                 Message.remove()
                 for (var color in Players.toArray()) {
@@ -33,7 +46,9 @@ var WebSocketMessageEditor = new function () {
 
                 Players.get(r.color).getCastles().add(castleId, r.castle)
                 break
+
             case 'remove':
+                EditorGui.unlock()
                 var field = Fields.get(r.x, r.y)
                 if (field.getCastleId()) {
                     Players.get(field.getCastleColor()).getCastles().raze(field.getCastleId())
@@ -46,33 +61,43 @@ var WebSocketMessageEditor = new function () {
                 }
                 break
             case 'grass':
+                EditorGui.unlock()
                 EditorGround.change(r.x, r.y, 'g')
                 break
             case 'water':
+                EditorGui.unlock()
                 EditorGround.change(r.x, r.y, 'w')
                 break
             case 's':
+                EditorGui.unlock()
                 EditorGround.change(r.x, r.y, r.type)
                 break
             case 'f':
+                EditorGui.unlock()
                 EditorGround.change(r.x, r.y, r.type)
                 break
             case 'r':
+                EditorGui.unlock()
                 EditorGround.change(r.x, r.y, r.type)
                 break
             case 'b':
+                EditorGui.unlock()
                 EditorGround.change(r.x, r.y, r.type)
                 break
             case 'g':
+                EditorGui.unlock()
                 EditorGround.change(r.x, r.y, r.type)
                 break
             case 'h':
+                EditorGui.unlock()
                 EditorGround.change(r.x, r.y, r.type)
                 break
             case 'm':
+                EditorGui.unlock()
                 EditorGround.change(r.x, r.y, r.type)
                 break
             case 'w':
+                EditorGui.unlock()
                 EditorGround.change(r.x, r.y, r.type)
                 break
         }

@@ -15,6 +15,8 @@ var WebSocketSendEditor = new function () {
             return;
         }
 
+        EditorGui.lock()
+
         var token = {
             type: 'add',
             mapId: EditorController.getMapId(),
@@ -31,6 +33,8 @@ var WebSocketSendEditor = new function () {
             return;
         }
 
+        EditorGui.lock()
+
         var token = {
             type: 'up',
             mapId: EditorController.getMapId(),
@@ -46,6 +50,8 @@ var WebSocketSendEditor = new function () {
             return;
         }
 
+        EditorGui.lock()
+
         var token = {
             type: 'down',
             mapId: EditorController.getMapId(),
@@ -60,6 +66,8 @@ var WebSocketSendEditor = new function () {
             console.log(translations.sorryServerIsDisconnected)
             return;
         }
+
+        EditorGui.lock()
 
         var token = {
             type: 'editRuin',
@@ -77,6 +85,8 @@ var WebSocketSendEditor = new function () {
             console.log(translations.sorryServerIsDisconnected)
             return;
         }
+
+        EditorGui.lock()
 
         for (var color in Players.toArray()) {
             if (Players.get(color).getCastles().has(castleId)) {
@@ -110,6 +120,9 @@ var WebSocketSendEditor = new function () {
             console.log(translations.sorryServerIsDisconnected)
             return;
         }
+
+        EditorGui.lock()
+
         var token = {
             type: 'remove',
             mapId: EditorController.getMapId(),
