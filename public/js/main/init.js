@@ -12,6 +12,9 @@ $().ready(function () {
     GameModels.init()
 
     Terrain.init(terrain)
+
+    WebSocketChat.init()
+    WebSocketMapgenerator.init()
 })
 $(window).resize(function () {
     if ($(window).innerWidth() < $(window).innerHeight()) {

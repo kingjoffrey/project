@@ -1,11 +1,11 @@
 "use strict"
 var WebSocketMapgenerator = new function () {
     var ws = 0
-    this.init = function (mapSize) {
+    this.init = function () {
         ws = new WebSocket(wsURL + ':' + wsPort + '/generator')
 
         ws.onopen = function () {
-            WebSocketSendMapgenerator.open()
+
         }
         ws.onmessage = function (e) {
             WebSocketMessageMapgenerator.switch($.parseJSON(e.data))

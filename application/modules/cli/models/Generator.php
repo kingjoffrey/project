@@ -2,10 +2,10 @@
 
 class Cli_Model_Generator
 {
+    private $_mapSize = 32;
 //    public function __construct(Zend_Db_Adapter_Pdo_Pgsql $db)
 //    {
 //    }
-
 
     function create($dataIn, Zend_Db_Adapter_Pdo_Pgsql $db, $playerId)
     {
@@ -18,17 +18,22 @@ class Cli_Model_Generator
             $mMap = new Application_Model_Map (0, $db);
             $mapId = $mMap->create($view->formCreate->getValues(), $playerId);
 
+            $mapFields = new Application_Model_MapFields($mapId, $db);
+            for ($y = 0; $y < $this->_mapSize; $y++) {
+                for ($x = 0; $x < $this->_mapSize; $x++) {
+                    $mapFields->add($x, $y, 'g');
+                }
+            }
+
             return array(
-                'type' => 'editor',
-                'action' => 'generate',
+                'type' => 'generated',
                 'mapId' => $mapId
             );
         } else {
             $view->addScriptPath(APPLICATION_PATH . '/views/scripts');
 
             return array(
-                'type' => 'editor',
-                'action' => 'create',
+                'type' => 'create',
                 'data' => $view->render('editor/create.phtml')
             );
         }
@@ -42,19 +47,19 @@ class Cli_Model_Generator
 
     function mirror($dataIn, Zend_Db_Adapter_Pdo_Pgsql $db, $playerId)
     {
-        if (!isset($dataIn['id']) || empty($dataIn['id'])) {
+        if (!isset($dataIn['mapId']) || empty($dataIn['mapId'])) {
             echo('mirror: brak mapId' . "\n");
             return;
         }
 
-        $mMap = new Application_Model_Map ($dataIn['id'], $db);
+        $mMap = new Application_Model_Map ($dataIn['mapId'], $db);
         $oldMap = $mMap->get();
-        $mCastles = new Application_Model_MapCastles($dataIn['id'], $db);
+        $mCastles = new Application_Model_MapCastles($dataIn['mapId'], $db);
         $oldCastles = $mCastles->getMapCastles();
         $mCastlesProduction = new Application_Model_MapCastleProduction($db);
-        $mTowers = new Application_Model_MapTowers($dataIn['id'], $db);
+        $mTowers = new Application_Model_MapTowers($dataIn['mapId'], $db);
         $oldTowers = $mTowers->getMapTowers();
-        $mRuins = new Application_Model_MapRuins($dataIn['id'], $db);
+        $mRuins = new Application_Model_MapRuins($dataIn['mapId'], $db);
         $oldRuins = $mRuins->getMapRuins();
 
         switch ($dataIn['mirror']) {
@@ -174,8 +179,7 @@ class Cli_Model_Generator
             }
 
             return array(
-                'type' => 'editor',
-                'action' => 'add',
+                'type' => 'mirror',
                 'map' => array(
                     'mapId' => $mapId,
                     'name' => $oldMap['name'] . ' mirror',

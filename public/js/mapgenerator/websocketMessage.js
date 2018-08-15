@@ -4,7 +4,7 @@ var WebSocketMessageMapgenerator = new function () {
         console.log(r)
         switch (r.type) {
             case 'open':
-                WebSocketEditor.init()
+                // WebSocketEditor.init()
                 break;
         }
     }

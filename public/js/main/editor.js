@@ -20,7 +20,6 @@ var EditorController = new function () {
                         )
                         .append(
                             $('<div>').addClass('button buttonColors').html(translations.Test).click(function () {
-
                                 WebSocketSendMain.controller('single', 'index', {
                                     'mapId': $(this).parent().parent().attr('id'),
                                     'test': 1
@@ -34,6 +33,11 @@ var EditorController = new function () {
                                     'name': $(this).parent().parent().find('.name').val(),
                                     'max': $(this).parent().parent().find('.max').val()
                                 })
+                            })
+                        )
+                        .append(
+                            $('<div>').addClass('button buttonColors').attr('id', 'publish').html(translations.Publish).click(function () {
+                                WebSocketSendMapgenerator.publish($(this).parent().parent().attr('id'))
                             })
                         )
                     )
@@ -63,10 +67,7 @@ var EditorController = new function () {
         mirrorClick = function () {
             return function (e) {
                 $('#wait').show()
-                WebSocketSendMain.controller('editor', 'mirror', {
-                    'id': $(this).parent().parent().attr('id'),
-                    'mirror': $(this).attr('id')
-                })
+                WebSocketSendMapgenerator.mirror($(this).parent().parent().attr('id'), $(this).attr('id'))
             }
         }
     this.index = function (r) {
@@ -95,11 +96,9 @@ var EditorController = new function () {
                 'name': $('#name').val(),
                 'maxPlayers': $('#maxPlayers').val()
             })
+
+            WebSocketSendMapgenerator.create($('#name').val(),$('#maxPlayers').val())
         })
-    }
-    this.generate = function (r) {
-        mapId = r.mapId
-        MapGenerator.init()
     }
     this.add = function (r) {
         addRow(r.map)
