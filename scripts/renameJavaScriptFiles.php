@@ -38,11 +38,12 @@ class JavaScript
     public function __construct()
     {
         $path = APPLICATION_PATH . '/../public/js/';
+        $version = Zend_Registry::get('config')->version;
 
         if ($handle = opendir($path)) {
 
             while (false !== ($entry = readdir($handle))) {
-                if ($entry != "." && $entry != "..") {
+                if ($entry != "." && $entry != ".." && $entry != 'admin') {
                     $array[] = $entry;
                 }
             }
@@ -50,7 +51,9 @@ class JavaScript
             asort($array);
 
             foreach ($array as $k => $entry) {
-                $this->renameJavaScript($path . '/' . $entry, $version = Zend_Registry::get('config')->version);
+                if (is_dir($path . '/' . $entry)) {
+                    $this->renameJavaScript($path . '/' . $entry, $version);
+                }
             }
 
             closedir($handle);
@@ -64,7 +67,7 @@ class JavaScript
         if ($handle = opendir($path)) {
 
             while (false !== ($entry = readdir($handle))) {
-                if ($entry != "." && $entry != ".." && $entry != 'admin') {
+                if ($entry != "." && $entry != "..") {
                     $array[] = $entry;
                 }
             }
