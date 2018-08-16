@@ -9,13 +9,10 @@ class LoginController extends Coret_Controller_AuthenticateFrontend
     {
         $this->_helper->layout->setLayout('login');
 
-        $version = Zend_Registry::get('config')->version;
-
-        $this->view->headLink()->prependStylesheet($this->view->baseUrl() . '/css/main.css?v=' . $version);
+        $this->prependStylesheet(APPLICATION_PATH . '/../public/css/');
 
         $this->view->jquery();
-        $this->view->headScript()->appendFile('/js/default.js?v=' . $version);
-        $this->view->headScript()->appendFile('/js/libs.js?v=' . $version);
+        $this->appendJavaScript(APPLICATION_PATH . '/../public/js/page/');
 
         $this->view->title();
         $this->view->Version();
@@ -34,6 +31,34 @@ class LoginController extends Coret_Controller_AuthenticateFrontend
             parent::indexAction();
 
             $this->html();
+        }
+    }
+
+    protected function prependStylesheet($path)
+    {
+        if ($handle = opendir($path)) {
+
+            while (false !== ($entry = readdir($handle))) {
+                if ($entry != "." && $entry != ".." && $entry != 'admin') {
+                    $this->view->headLink()->prependStylesheet('/css/' . $entry);
+                }
+            }
+
+            closedir($handle);
+        }
+    }
+
+    protected function appendJavaScript($path)
+    {
+        if ($handle = opendir($path)) {
+
+            while (false !== ($entry = readdir($handle))) {
+                if ($entry == "." && $entry != "..") {
+                    $this->view->headScript()->appendFile($path . $entry);
+                }
+            }
+
+            closedir($handle);
         }
     }
 

@@ -13,11 +13,10 @@ class PaypalController extends Coret_Controller_AuthorizedFrontend
 
         $version = Zend_Registry::get('config')->version;
 
-        $this->view->headLink()->prependStylesheet('/css/main.css?v=' . $version);
+        $this->prependStylesheet(APPLICATION_PATH . '/../public/css/');
 
         $this->view->jquery();
-        $this->view->headScript()->appendFile('/js/default.js?v=' . $version);
-        $this->view->headScript()->appendFile('/js/libs.js?v=' . $version);
+        $this->appendJavaScript(APPLICATION_PATH . '/../public/js/page/');
 
         $paymentId = $this->_request->getParam('paymentId');
         $PayerID = $this->_request->getParam('PayerID');
@@ -60,6 +59,34 @@ class PaypalController extends Coret_Controller_AuthorizedFrontend
             $mTournamentPlayers = new Application_Model_TournamentPlayers();
             $mTournamentPlayers->removePlayer($this->_request->getParam('id'), $playerId);
             $this->view->result = $this->view->translate('User Cancelled the Approval');
+        }
+    }
+
+    protected function prependStylesheet($path)
+    {
+        if ($handle = opendir($path)) {
+
+            while (false !== ($entry = readdir($handle))) {
+                if ($entry != "." && $entry != ".." && $entry != 'admin') {
+                    $this->view->headLink()->prependStylesheet('/css/' . $entry);
+                }
+            }
+
+            closedir($handle);
+        }
+    }
+
+    protected function appendJavaScript($path)
+    {
+        if ($handle = opendir($path)) {
+
+            while (false !== ($entry = readdir($handle))) {
+                if ($entry == "." && $entry != "..") {
+                    $this->view->headScript()->appendFile($path . $entry);
+                }
+            }
+
+            closedir($handle);
         }
     }
 }
