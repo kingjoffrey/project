@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: WOF\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-08-12 19:10+0200\n"
-"PO-Revision-Date: 2018-08-12 19:11+0200\n"
+"POT-Creation-Date: 2018-08-16 21:15+0200\n"
+"PO-Revision-Date: 2018-08-16 21:17+0200\n"
 "Last-Translator: Bartosz Krzeszewski <bartek@core-t.pl>\n"
 "Language-Team: \n"
 "Language: pl_PL\n"
@@ -16,16 +16,16 @@ msgstr ""
 "X-Generator: Poedit 2.0.9\n"
 "X-Poedit-SearchPath-0: .\n"
 
-#: controllers/PaypalController.php:42 controllers/PaypalController.php:46
-#: controllers/PaypalController.php:57
+#: controllers/PaypalController.php:41 controllers/PaypalController.php:45
+#: controllers/PaypalController.php:56
 msgid "Transaction ended with error"
 msgstr "Transakcja zakończyła się z błędem"
 
-#: controllers/PaypalController.php:55
+#: controllers/PaypalController.php:54
 msgid "We got your Payment"
 msgstr "Dostaliśmy Twoją zapłatę"
 
-#: controllers/PaypalController.php:62
+#: controllers/PaypalController.php:61
 msgid "User Cancelled the Approval"
 msgstr "Użytkownik anulował transakcję "
 
@@ -355,8 +355,8 @@ msgstr "Anuluj"
 msgid "Error"
 msgstr "Błąd"
 
-#: views/helpers/Translations.php:41 layouts/scripts/default.phtml:132
-#: layouts/scripts/default.phtml:134
+#: views/helpers/Translations.php:41 layouts/scripts/default.phtml:135
+#: layouts/scripts/default.phtml:137
 msgid "Surrender"
 msgstr "Poddaj się"
 
@@ -677,7 +677,7 @@ msgid "Start production"
 msgstr "Rozpocznij produkcję"
 
 #: views/helpers/Translations.php:121 views/helpers/Translations.php:129
-#: layouts/scripts/default.phtml:90 layouts/scripts/default.phtml:157
+#: layouts/scripts/default.phtml:90 layouts/scripts/default.phtml:160
 msgid "Close"
 msgstr "Zamknij"
 
@@ -850,11 +850,11 @@ msgstr "Bagno"
 msgid "Edit"
 msgstr "Edycja"
 
-#: views/helpers/Translations.php:165
+#: views/helpers/Translations.php:165 layouts/scripts/default.phtml:122
 msgid "Test"
 msgstr "Test"
 
-#: views/helpers/Translations.php:166 views/scripts/editor/index.phtml:7
+#: views/helpers/Translations.php:166 views/scripts/editor/index.phtml:8
 msgid "Actions"
 msgstr "Akcje"
 
@@ -911,8 +911,7 @@ msgid "Stage"
 msgstr "Etap"
 
 #: views/helpers/Translations.php:181 views/scripts/halloffame/index.phtml:7
-#: views/scripts/load/index.phtml:10 views/scripts/messages/index.phtml:5
-#: views/scripts/players/index.phtml:8
+#: views/scripts/messages/index.phtml:5 views/scripts/players/index.phtml:8
 msgid "Player name"
 msgstr "Nazwa gracza"
 
@@ -989,6 +988,22 @@ msgstr "Nadszedł dzień Słońca"
 msgid "All ruins are full"
 msgstr "Wszystkie ruiny są pełne"
 
+#: views/helpers/Translations.php:202 layouts/scripts/default.phtml:119
+msgid "Publish"
+msgstr "Publikuj"
+
+#: views/helpers/Translations.php:203
+msgid "Map not ready"
+msgstr "Mapa nie jest gotowa"
+
+#: views/helpers/Translations.php:204
+msgid "Number of players has to match number of capitals"
+msgstr "Ilość graczy musi odpowiadać ilości stolic"
+
+#: layouts/scripts/default.phtml:23
+msgid "Server disconnected"
+msgstr "Serwer jest rozłączony"
+
 #: layouts/scripts/default.phtml:33
 msgid "Loading"
 msgstr "Wczytywanie"
@@ -1041,27 +1056,23 @@ msgstr "Dół"
 msgid "Exit editor"
 msgstr "Opuść edytor"
 
-#: layouts/scripts/default.phtml:119
-msgid "Publish"
-msgstr "Publikuj"
-
-#: layouts/scripts/default.phtml:126 layouts/scripts/default.phtml:128
+#: layouts/scripts/default.phtml:129 layouts/scripts/default.phtml:131
 msgid "Exit game"
 msgstr "Opuść grę"
 
-#: layouts/scripts/default.phtml:145
+#: layouts/scripts/default.phtml:148
 msgid "Turn sound on/off"
 msgstr "Włącz/wyłącz dźwięk"
 
-#: layouts/scripts/default.phtml:147
+#: layouts/scripts/default.phtml:150
 msgid "Sound"
 msgstr "Dźwięk"
 
-#: layouts/scripts/default.phtml:151
+#: layouts/scripts/default.phtml:154
 msgid "Toggle full screen"
 msgstr "Przełącz na pełen ekran"
 
-#: layouts/scripts/default.phtml:153
+#: layouts/scripts/default.phtml:156
 msgid "Full screen"
 msgstr "Pełen ekran"
 
@@ -1101,15 +1112,11 @@ msgstr "Maksimum graczy"
 msgid "Creation date"
 msgstr "Data utworzenia"
 
-#: views/scripts/editor/index.phtml:8
+#: views/scripts/editor/index.phtml:7
 msgid "Mirror"
 msgstr "Odbij"
 
-#: views/scripts/editor/index.phtml:9 views/scripts/load/index.phtml:18
-msgid "Delete"
-msgstr "Usuń"
-
-#: views/scripts/editor/index.phtml:12
+#: views/scripts/editor/index.phtml:11
 msgid "Create"
 msgstr "Utwórz"
 
@@ -1165,10 +1172,13 @@ msgstr "Lista gier"
 msgid "Pause date"
 msgstr "Data wstrzymania"
 
-#: views/scripts/load/index.phtml:11 views/scripts/setup/index.phtml:6
-#: views/scripts/setup/index.phtml:14
-msgid "Player color"
-msgstr "Kolor gracza"
+#: views/scripts/load/index.phtml:10
+msgid "Name"
+msgstr "Nazwa"
+
+#: views/scripts/load/index.phtml:11
+msgid "Color"
+msgstr "Kolor"
 
 #: views/scripts/load/index.phtml:12 views/scripts/setup/index.phtml:3
 #: views/scripts/setup/index.phtml:11
@@ -1182,6 +1192,10 @@ msgstr "Numer tury"
 #: views/scripts/load/index.phtml:16
 msgid "Player turn"
 msgstr "Tura gracza"
+
+#: views/scripts/load/index.phtml:18
+msgid "Delete"
+msgstr "Usuń"
 
 #: views/scripts/login/index.phtml:5
 msgid "Anonymous login"
@@ -1270,6 +1284,10 @@ msgstr "Ilość rund"
 #: views/scripts/setup/index.phtml:2
 msgid "Select your color and team"
 msgstr "Wybierz swój kolor i drużynę"
+
+#: views/scripts/setup/index.phtml:6 views/scripts/setup/index.phtml:14
+msgid "Player color"
+msgstr "Kolor gracza"
 
 #: views/scripts/setup/index.phtml:7 views/scripts/setup/index.phtml:15
 msgid "Select your color"
@@ -1547,9 +1565,6 @@ msgstr "Etap turnieju"
 #~ msgid "Waiting for other players"
 #~ msgstr "Czekam na innych graczy"
 
-#~ msgid "Color"
-#~ msgstr "Kolor"
-
 #~ msgid "Number"
 #~ msgstr "Numer"
 
@@ -1579,9 +1594,6 @@ msgstr "Etap turnieju"
 
 #~ msgid "Chest"
 #~ msgstr "Skrzynia"
-
-#~ msgid "Name"
-#~ msgstr "Nazwa"
 
 #~ msgid "Quantity"
 #~ msgstr "Ilość"

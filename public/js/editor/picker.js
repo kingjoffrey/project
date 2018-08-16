@@ -17,6 +17,7 @@ var PickerEditor = new function () {
         },
         handleUp = function (event) {
             dragStart = 0
+            PickerCommon.cursor('grab')
             if (!leftClick) {
                 return
             }
@@ -74,12 +75,9 @@ var PickerEditor = new function () {
                             oldZ = newZ
                             draggedMesh.position.z = newZ * 2 + draggedMesh.plus
                         }
-                    } else {
-                        PickerCommon.cursor('grab')
                     }
-                } else {
-                    PickerCommon.cursor('grab')
                 }
+                PickerCommon.cursor('grab')
             }
         }
 

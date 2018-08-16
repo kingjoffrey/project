@@ -12,7 +12,7 @@ class IndexController extends Coret_Controller_AuthorizedFrontend
             $this->redirect('/' . Zend_Registry::get('lang') . '/index/index/version/' . Zend_Registry::get('config')->version);
             return;
         }
-        
+
         $this->prependStylesheet(APPLICATION_PATH . '/../public/css/');
 
         $this->view->jquery();

@@ -100,6 +100,9 @@ var WebSocketMessageEditor = new function () {
                 EditorGui.unlock()
                 EditorGround.change(r.x, r.y, r.type)
                 break
+            case 0:
+                EditorGui.unlock()
+                break
         }
     }
 }

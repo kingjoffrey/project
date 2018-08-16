@@ -1174,7 +1174,7 @@ div.table table.unitTable td:first {
 }
 
 #leftMenu .button {
-    padding: 0;
+    margin: 1vw;
     display: block;
 }
 
