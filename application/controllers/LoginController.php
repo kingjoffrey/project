@@ -20,6 +20,11 @@ class LoginController extends Coret_Controller_AuthenticateFrontend
 
     public function indexAction()
     {
+        if (!$this->_request->getParam('version')) {
+            $this->redirect('/' . Zend_Registry::get('lang') . '/login/index/version/' . Zend_Registry::get('config')->version);
+            return;
+        }
+
         if ($this->_auth->hasIdentity()) {
             $this->redirect('/' . Zend_Registry::get('lang') . '/');
         } else {

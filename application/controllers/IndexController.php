@@ -8,26 +8,26 @@ class IndexController extends Coret_Controller_AuthorizedFrontend
 
     public function indexAction()
     {
-        if ($this->_request->getParam('version')) {
-            $this->prependStylesheet(APPLICATION_PATH . '/../public/css/');
-
-            $this->view->jquery();
-            $this->view->headScript()->appendFile('/js/jquery.mousewheel.min.js');
-            $this->view->headScript()->appendFile('/js/Tween.js');
-
-            $this->appendJavaScript(APPLICATION_PATH . '/../public/js/');
-
-            $this->view->sound();
-            $this->view->title();
-//        $this->view->models();
-            $this->view->terrain();
-            $this->view->translations();
-            $this->view->Version();
-            $this->view->Websocket($this->_auth->getIdentity());
-
-        } else {
+        if (!$this->_request->getParam('version')) {
             $this->redirect('/' . Zend_Registry::get('lang') . '/index/index/version/' . Zend_Registry::get('config')->version);
+            return;
         }
+        
+        $this->prependStylesheet(APPLICATION_PATH . '/../public/css/');
+
+        $this->view->jquery();
+        $this->view->headScript()->appendFile('/js/jquery.mousewheel.min.js');
+        $this->view->headScript()->appendFile('/js/Tween.js');
+
+        $this->appendJavaScript(APPLICATION_PATH . '/../public/js/');
+
+        $this->view->sound();
+        $this->view->title();
+//        $this->view->models();
+        $this->view->terrain();
+        $this->view->translations();
+        $this->view->Version();
+        $this->view->Websocket($this->_auth->getIdentity());
     }
 
     protected function authorized()
