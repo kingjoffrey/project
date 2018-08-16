@@ -163,7 +163,7 @@ class Cli_ExecHandler extends WebSocketUriHandler
                     return;
                 }
 
-                exec('ps -eo pid,command|grep gameWSServer', $exec);
+                exec('ps -eo pid,command|grep wsGameServer', $exec);
 
                 foreach ($exec as $line) {
                     if ($pos = strpos($line, 'grep')) {
@@ -182,7 +182,7 @@ class Cli_ExecHandler extends WebSocketUriHandler
                     }
                 }
 
-                exec('/usr/bin/php ~/' . $this->_projectDirName . '/scripts/gameWSServer.php ' . $gameId . ' ' . $execPort . ' >>~/' . $this->_projectDirName . '/log/' . date('Ymd') . '_' . $gameId . '_gameWSServer.log 2>&1 &');
+                exec('/usr/bin/php ~/' . $this->_projectDirName . '/scripts/wsGameServer.php ' . $gameId . ' ' . $execPort . ' >>~/' . $this->_projectDirName . '/log/' . date('Ymd') . '_' . $gameId . '_wsGameServer.log 2>&1 &');
 
                 $this->addGame($dataIn['gameId'], $user->getId(), $port);
 
