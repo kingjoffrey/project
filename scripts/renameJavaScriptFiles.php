@@ -3,7 +3,6 @@
 
 // Set timezone of script to UTC inorder to avoid DateTime warnings in
 // vendor/zendframework/zend-log/Zend/Log/Logger.php
-date_default_timezone_set('UTC');
 
 require_once("../vendor/autoload.php");
 
@@ -30,7 +29,7 @@ $application = new Zend_Application(
     APPLICATION_PATH . '/configs/application.ini'
 );
 
-$application->getBootstrap()->bootstrap(array('date', 'config', 'modules'));
+$application->getBootstrap()->bootstrap(array('date', 'config'));
 
 
 class JavaScript
@@ -56,6 +55,8 @@ class JavaScript
 
             closedir($handle);
         }
+
+        rename(APPLICATION_PATH . '/../public/css/main.css', APPLICATION_PATH . '/../public/css/' . $version . 'main.css');
     }
 
     public function renameJavaScript($path, $version)
@@ -63,7 +64,7 @@ class JavaScript
         if ($handle = opendir($path)) {
 
             while (false !== ($entry = readdir($handle))) {
-                if ($entry != "." && $entry != "..") {
+                if ($entry != "." && $entry != ".." && $entry != 'admin') {
                     $array[] = $entry;
                 }
             }
@@ -71,11 +72,7 @@ class JavaScript
             asort($array);
 
             foreach ($array as $k => $entry) {
-//                if (is_dir($path . '/' . $entry)) {
-//                    $this->renameJavaScript($path . '/' . $entry, $version);
-//                } else {
                 rename($path . '/' . $entry, $path . '/' . $version . $entry);
-//                }
             }
 
 

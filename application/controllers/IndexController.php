@@ -9,9 +9,7 @@ class IndexController extends Coret_Controller_AuthorizedFrontend
     public function indexAction()
     {
         if ($this->_request->getParam('version')) {
-            $version = Zend_Registry::get('config')->version;
-
-            $this->view->headLink()->prependStylesheet('/css/main.css?v=' . $version);
+            $this->prependStylesheet(APPLICATION_PATH . '/../public/css/');
 
             $this->view->jquery();
             $this->view->headScript()->appendFile('/js/jquery.mousewheel.min.js');
@@ -29,7 +27,6 @@ class IndexController extends Coret_Controller_AuthorizedFrontend
 
         } else {
             $this->redirect('/' . Zend_Registry::get('lang') . '/index/index/version/' . Zend_Registry::get('config')->version);
-//            echo '/' . Zend_Registry::get('lang') . '/index/index/version/' . Zend_Registry::get('config')->version;
         }
     }
 
@@ -43,12 +40,26 @@ class IndexController extends Coret_Controller_AuthorizedFrontend
 
     }
 
+    protected function prependStylesheet($path)
+    {
+        if ($handle = opendir($path)) {
+
+            while (false !== ($entry = readdir($handle))) {
+                if ($entry != "." && $entry != ".." && $entry != 'admin') {
+                    $this->view->headLink()->prependStylesheet('/css/' . $entry);
+                }
+            }
+
+            closedir($handle);
+        }
+    }
+
     protected function appendJavaScript($path, $dirName = '')
     {
         if ($handle = opendir($path)) {
 
             while (false !== ($entry = readdir($handle))) {
-                if ($entry != "." && $entry != "..") {
+                if ($entry != "." && $entry != ".." && $entry != 'admin') {
                     $array[] = $entry;
                 }
             }
@@ -61,12 +72,9 @@ class IndexController extends Coret_Controller_AuthorizedFrontend
                 } else {
                     if ($dirName) {
                         $this->view->headScript()->appendFile('/js/' . $dirName . '/' . $entry);
-                    } else {
-                        $this->view->headScript()->appendFile('/js/' . $entry);
                     }
                 }
             }
-
 
             closedir($handle);
         }
