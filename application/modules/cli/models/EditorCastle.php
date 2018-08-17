@@ -81,7 +81,7 @@ class Cli_Model_EditorCastle extends Cli_Model_Castle
             'defense' => $this->getDefense(),
             'name' => $this->_name,
             'income' => intval($this->_income),
-//            'capital' => $this->_capital,
+            'capital' => $this->_capital,
             'enclaveNumber' => $this->_enclaveNumber,
             'production' => $this->_production
         );
