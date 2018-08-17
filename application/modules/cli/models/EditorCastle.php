@@ -4,6 +4,13 @@ class Cli_Model_EditorCastle extends Cli_Model_Castle
 {
     protected $_capital;
 
+    public function __construct($playerCastle, $mapCastle)
+    {
+        parent::__construct($playerCastle, $mapCastle);
+
+        $this->_capital = $mapCastle['capital'];
+    }
+
     public function initProduction($production)
     {
         foreach ($production as $unitId => $row) {
