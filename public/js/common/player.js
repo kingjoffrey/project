@@ -52,6 +52,9 @@ var Player = function (player, color) {
     this.isCapital = function (castleId) {
         return (player.capitalId == castleId)
     }
+    this.setCapitalId = function (castleId) {
+        player.capitalId = castleId
+    }
     this.getCapitalId = function () {
         return player.capitalId
     }
