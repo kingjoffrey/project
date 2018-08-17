@@ -16,17 +16,6 @@ var EditorCastleWindow = new function () {
             if (Players.get(color).getCastles().has(id)) {
                 playerColor = color
 
-                for (var castleId in Players.get(color).getCastles().toArray()) {
-                    if (id == castleId) {
-                        continue
-                    }
-                    var castle = Players.get(color).getCastles().get(castleId)
-                    if (castle.getCapital()) {
-                        hasCapital = true
-                        break
-                    }
-                }
-
                 selectColor.append($('<option>').attr({'value': color, 'selected': 'selected'}).html(color))
                 var castle = Players.get(color).getCastles().get(id)
 
@@ -109,17 +98,23 @@ var EditorCastleWindow = new function () {
             }
         }
 
-        if (hasCapital || playerColor == 'neutral') {
+        if ((Players.get(playerColor).getCapitalId() && Players.get(playerColor).getCapitalId() != id) || playerColor == 'neutral') {
             var capitalCheckbox = $('<input>').attr({
                 'name': 'capital',
                 'type': 'checkbox',
                 'disabled': true
             }).prop('checked', 0)
         } else {
+            if (Players.get(playerColor).getCapitalId() == id) {
+                var isCapital = true
+            } else {
+                var isCapital = false
+            }
             var capitalCheckbox = $('<input>').attr({
                 'name': 'capital',
                 'type': 'checkbox'
-            }).prop('checked', castle.getCapital())
+            }).prop('checked', isCapital)
+            console.log(isCapital)
         }
 
         var html = $('<div>').addClass('editorCastleWindow')
@@ -139,6 +134,7 @@ var EditorCastleWindow = new function () {
                         }
 
                         if (Players.get(color).getCastles().get(castleId).getCapital()) {
+                            hasCapital = true
                             $('input[name=capital]').prop('checked', 0).attr('disabled', true)
                             break
                         }

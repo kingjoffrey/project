@@ -76,8 +76,6 @@ var WebSocketSendEditor = new function () {
             ruinId: $('select[name=type]').val(),
         }
 
-        castle.token = token
-
         ws.send(JSON.stringify(token))
     }
     this.editCastle = function (castleId) {
@@ -88,11 +86,11 @@ var WebSocketSendEditor = new function () {
 
         EditorGui.lock()
 
-        for (var color in Players.toArray()) {
-            if (Players.get(color).getCastles().has(castleId)) {
-                var castle = Players.get(color).getCastles().get(castleId)
-            }
-        }
+        // for (var color in Players.toArray()) {
+        //     if (Players.get(color).getCastles().has(castleId)) {
+        //         var castle = Players.get(color).getCastles().get(castleId)
+        //     }
+        // }
 
         var capital = Boolean($('input[name=capital]').is(':checked')),
             color = $('select[name=color]').val()
@@ -105,8 +103,8 @@ var WebSocketSendEditor = new function () {
             type: 'editCastle',
             mapId: EditorController.getMapId(),
             castleId: castleId,
-            name: $('input[name=name]').val(),
-            income: $('input[name=income]').val(),
+            // name: $('input[name=name]').val(),
+            // income: $('input[name=income]').val(),
             enclaveNumber: $('input[name=enclaveNumber]').val(),
             color: color,
             defense: $('select[name=defence]').val(),
@@ -119,7 +117,9 @@ var WebSocketSendEditor = new function () {
             }
         }
 
-        castle.token = token
+        // castle.token = token
+
+        console.log(token)
 
         ws.send(JSON.stringify(token))
     }

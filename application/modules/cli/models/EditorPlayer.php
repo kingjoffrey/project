@@ -49,4 +49,9 @@ class Cli_Model_EditorPlayer extends Cli_Model_DefaultPlayer
             'capitalId' => $this->_capitalId
         );
     }
+
+    public function setCapitalId($capitalId)
+    {
+        $this->_capitalId = $capitalId;
+    }
 }

@@ -247,15 +247,31 @@ class Cli_Model_Editor
         foreach ($this->_Players->getKeys() as $color) {
             foreach ($this->_Players->getPlayer($color)->getCastles()->getKeys() as $castleId) {
                 if ($dataIn['castleId'] == $castleId) {
+                    $player = $this->_Players->getPlayer($dataIn['color']);
+
                     $castle = $this->_Players->getPlayer($color)->getCastles()->getCastle($castleId);
 
                     if ($dataIn['color'] != $color) {
                         $this->_Players->getPlayer($color)->getCastles()->removeCastle($castleId);
-                        $this->_Players->getPlayer($dataIn['color'])->getCastles()->addCastle($castleId, $castle);
+                        $player->getCastles()->addCastle($castleId, $castle);
                         $this->_Fields->initCastle($castle->getX(), $castle->getY(), $castleId, $dataIn['color']);
                     }
 
-                    $castle->edit($this->_mapId, $dataIn, $db, $this->_Players->getPlayer($dataIn['color'])->getId());
+                    if ($dataIn['capital']) {
+                        if ($player->getCapitalId()) {
+                            if ($player->getCapitalId() != $castleId) {
+                                $dataIn['capital'] = 0;
+                            }
+                        } else {
+                            $player->setCapitalId($castleId);
+                        }
+                    } else {
+                        if ($player->getCapitalId() == $castleId) {
+                            $player->setCapitalId(0);
+                        }
+                    }
+
+                    $castle->edit($this->_mapId, $dataIn, $db, $player->getId());
 
                     return array(
                         'type' => 'editCastle',

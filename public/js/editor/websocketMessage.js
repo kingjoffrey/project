@@ -35,7 +35,9 @@ var WebSocketMessageEditor = new function () {
 
             case 'editCastle':
                 var castleId = r.castle.id
+
                 Message.remove()
+
                 for (var color in Players.toArray()) {
                     if (Players.get(color).getCastles().has(castleId)) {
                         Players.get(color).getCastles().clear(castleId)
@@ -45,16 +47,8 @@ var WebSocketMessageEditor = new function () {
 
                 if (r.castle.capital) {
                     Players.get(r.color).setCapitalId(castleId)
-                } else {
-                    var hasCapital = 0
-                    for (var castleId in Players.get(r.color).getCastles().toArray()) {
-                        if (Players.get(r.color).getCastles().get(castleId).getCapital()) {
-                            hasCapital = 1
-                        }
-                    }
-                    if (!hasCapital) {
-                        Players.get(r.color).setCapitalId(0)
-                    }
+                } else if (Players.get(r.color).getCapitalId() == castleId) {
+                    Players.get(r.color).setCapitalId(0)
                 }
 
                 Players.get(r.color).getCastles().add(castleId, r.castle, Players.get(r.color).getCapitalId())
