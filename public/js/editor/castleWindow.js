@@ -123,7 +123,30 @@ var EditorCastleWindow = new function () {
         var html = $('<div>').addClass('editorCastleWindow')
             .append($('<div>').append('Name: ' + castle.getName()))
             .append($('<div>').append('Income: ' + income))
-            .append($('<div>').append('Color: ').append(selectColor))
+            .append($('<div>').append('Color: ').append(selectColor).change(function () {
+                var capital = Boolean($('input[name=capital]').is(':checked')),
+                    color = $('select[name=color]').val(),
+                    hasCapital = false
+
+                if (color == 'neutral') {
+                    $('input[name=capital]').prop('checked', 0).attr('disabled', true)
+                } else {
+                    for (var castleId in Players.get(color).getCastles().toArray()) {
+                        if (id == castleId) {
+                            continue
+                        }
+
+                        if (Players.get(color).getCastles().get(castleId).getCapital()) {
+                            $('input[name=capital]').prop('checked', 0).attr('disabled', true)
+                            break
+                        }
+                    }
+                }
+
+                if (!hasCapital) {
+                    $('input[name=capital]').attr('disabled', false)
+                }
+            }))
             .append($('<div>').append('Defence: ').append(selectDefence))
             .append($('<div>').append('Capital: ').append(capitalCheckbox))
             .append($('<div>').append('Production unit 1: ').append(selectProductionUnit0).append(' Production time 1: ').append(selectProductionTime0))
