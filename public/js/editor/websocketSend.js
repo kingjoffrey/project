@@ -93,6 +93,14 @@ var WebSocketSendEditor = new function () {
                 var castle = Players.get(color).getCastles().get(castleId)
             }
         }
+
+        var capital = Boolean($('input[name=capital]').is(':checked')),
+            color = $('select[name=color]').val()
+
+        if (color == 'neutral' && capital) {
+            capital = false
+        }
+
         var token = {
             type: 'editCastle',
             mapId: EditorController.getMapId(),
@@ -100,9 +108,9 @@ var WebSocketSendEditor = new function () {
             name: $('input[name=name]').val(),
             income: $('input[name=income]').val(),
             enclaveNumber: $('input[name=enclaveNumber]').val(),
-            color: $('select[name=color]').val(),
+            color: color,
             defense: $('select[name=defence]').val(),
-            capital: Boolean($('input[name=capital]').is(':checked')),
+            capital: capital,
             production: {
                 0: {'unitId': $('select[name=unitId0]').val(), 'time': $('select[name=time0]').val()},
                 1: {'unitId': $('select[name=unitId1]').val(), 'time': $('select[name=time1]').val()},

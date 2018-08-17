@@ -46,6 +46,11 @@ class Cli_Model_EditorCastle extends Cli_Model_Castle
         }
     }
 
+    public function getCapital()
+    {
+        return $this->_capital;
+    }
+
     private function arrayForDb($sideId)
     {
         return array(
@@ -69,7 +74,7 @@ class Cli_Model_EditorCastle extends Cli_Model_Castle
             'defense' => $this->getDefense(),
             'name' => $this->_name,
             'income' => intval($this->_income),
-            'capital' => $this->_capital,
+//            'capital' => $this->_capital,
             'enclaveNumber' => $this->_enclaveNumber,
             'production' => $this->_production
         );

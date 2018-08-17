@@ -44,6 +44,9 @@ var WebSocketMessageEditor = new function () {
                 }
 
                 Players.get(r.color).getCastles().add(castleId, r.castle)
+
+
+
                 EditorGui.unlock()
                 break
 

@@ -30,6 +30,9 @@ class Cli_Model_EditorPlayer extends Cli_Model_DefaultPlayer
                 $castle = new Cli_Model_EditorCastle(null, $c);
                 $castle->initProduction($mCastleProduction->getCastleProduction($castleId));
                 $this->_castles->addCastle($castleId, $castle);
+                if ($castle->getCapital()) {
+                    $this->_capitalId = $castleId;
+                }
             }
         }
     }
@@ -42,7 +45,8 @@ class Cli_Model_EditorPlayer extends Cli_Model_DefaultPlayer
             'textColor' => $this->_textColor,
             'armies' => $this->_armies->toArray(),
             'castles' => $this->_castles->toArray(),
-            'towers' => $this->_towers->toArray()
+            'towers' => $this->_towers->toArray(),
+            'capitalId' => $this->_capitalId
         );
     }
 }

@@ -8,10 +8,20 @@ var EditorCastleWindow = new function () {
             selectProductionUnit2 = $('<select>').attr('name', 'unitId2').append($('<option>').attr('value', 0)),
             selectProductionTime0 = $('<select>').attr('name', 'time0').append($('<option>').attr('value', 0)),
             selectProductionTime1 = $('<select>').attr('name', 'time1').append($('<option>').attr('value', 0)),
-            selectProductionTime2 = $('<select>').attr('name', 'time2').append($('<option>').attr('value', 0))
+            selectProductionTime2 = $('<select>').attr('name', 'time2').append($('<option>').attr('value', 0)),
+            hasCapital = false
 
         for (var color in Players.toArray()) {
             if (Players.get(color).getCastles().has(id)) {
+
+                for (var castleId in Players.get(color).getCastles().toArray()) {
+                    var castle = Players.get(color).getCastles().get(castleId)
+                    if (castle.getCapital()) {
+                        hasCapital = true
+                        break
+                    }
+                }
+
                 selectColor.append($('<option>').attr({'value': color, 'selected': 'selected'}).html(color))
                 var castle = Players.get(color).getCastles().get(id)
 
@@ -94,15 +104,25 @@ var EditorCastleWindow = new function () {
             }
         }
 
+        if (hasCapital) {
+            var capitalCheckbox = $('<input>').attr({
+                'name': 'capital',
+                'type': 'checkbox',
+                'disabled': true
+            }).prop('checked', castle.getCapital())
+        } else {
+            var capitalCheckbox = $('<input>').attr({
+                'name': 'capital',
+                'type': 'checkbox'
+            }).prop('checked', castle.getCapital())
+        }
+
         var html = $('<div>').addClass('editorCastleWindow')
             .append($('<div>').append('Name: ' + castle.getName()))
             .append($('<div>').append('Income: ' + income))
             .append($('<div>').append('Color: ').append(selectColor))
             .append($('<div>').append('Defence: ').append(selectDefence))
-            .append($('<div>').append('Capital: ').append($('<input>').attr({
-                'name': 'capital',
-                'type': 'checkbox'
-            }).prop('checked', castle.getCapital())))
+            .append($('<div>').append('Capital: ').append(capitalCheckbox))
             .append($('<div>').append('Production unit 1: ').append(selectProductionUnit0).append(' Production time 1: ').append(selectProductionTime0))
             .append($('<div>').append('Production unit 2: ').append(selectProductionUnit1).append(' Production time 2: ').append(selectProductionTime1))
             .append($('<div>').append('Production unit 3: ').append(selectProductionUnit2).append(' Production time 3: ').append(selectProductionTime2))
