@@ -141,10 +141,10 @@ var EditorCastleWindow = new function () {
                             break
                         }
                     }
-                }
 
-                if (!hasCapital) {
-                    $('input[name=capital]').attr('disabled', false)
+                    if (!hasCapital) {
+                        $('input[name=capital]').attr('disabled', false)
+                    }
                 }
             }))
             .append($('<div>').append('Defence: ').append(selectDefence))
