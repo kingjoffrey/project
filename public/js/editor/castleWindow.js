@@ -112,7 +112,7 @@ var EditorCastleWindow = new function () {
                 'name': 'capital',
                 'type': 'checkbox',
                 'disabled': true
-            }).prop('checked', castle.getCapital())
+            }).prop('checked', 0)
         } else {
             var capitalCheckbox = $('<input>').attr({
                 'name': 'capital',

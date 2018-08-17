@@ -47,7 +47,7 @@ var WebSocketMessageEditor = new function () {
                     Players.get(r.color).setCapitalId(castleId)
                 }
 
-                Players.get(r.color).getCastles().add(castleId, r.castle)
+                Players.get(r.color).getCastles().add(castleId, r.castle, Players.get(r.color).getCapitalId())
 
                 EditorGui.unlock()
                 break
