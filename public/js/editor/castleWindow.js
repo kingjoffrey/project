@@ -9,10 +9,12 @@ var EditorCastleWindow = new function () {
             selectProductionTime0 = $('<select>').attr('name', 'time0').append($('<option>').attr('value', 0)),
             selectProductionTime1 = $('<select>').attr('name', 'time1').append($('<option>').attr('value', 0)),
             selectProductionTime2 = $('<select>').attr('name', 'time2').append($('<option>').attr('value', 0)),
-            hasCapital = false
+            hasCapital = false,
+            playerColor
 
         for (var color in Players.toArray()) {
             if (Players.get(color).getCastles().has(id)) {
+                playerColor = color
 
                 for (var castleId in Players.get(color).getCastles().toArray()) {
                     if (id == castleId) {
@@ -107,7 +109,7 @@ var EditorCastleWindow = new function () {
             }
         }
 
-        if (hasCapital) {
+        if (hasCapital || playerColor == 'neutral') {
             var capitalCheckbox = $('<input>').attr({
                 'name': 'capital',
                 'type': 'checkbox',
