@@ -42,7 +42,7 @@ var WebSocketMessageEditor = new function () {
                         break
                     }
                 }
-console.log(r.castle)
+
                 if (r.castle.capital) {
                     Players.get(r.color).setCapitalId(castleId)
                 }

@@ -15,6 +15,9 @@ var EditorCastleWindow = new function () {
             if (Players.get(color).getCastles().has(id)) {
 
                 for (var castleId in Players.get(color).getCastles().toArray()) {
+                    if (id == castleId) {
+                        continue
+                    }
                     var castle = Players.get(color).getCastles().get(castleId)
                     if (castle.getCapital()) {
                         hasCapital = true
