@@ -257,17 +257,21 @@ class Cli_Model_Editor
                         $this->_Fields->initCastle($castle->getX(), $castle->getY(), $castleId, $dataIn['color']);
                     }
 
-                    if ($dataIn['capital']) {
-                        if ($player->getCapitalId()) {
-                            if ($player->getCapitalId() != $castleId) {
-                                $dataIn['capital'] = 0;
+                    if ($dataIn['color'] == 'neutral') {
+                        $dataIn['capital'] = 0;
+                    } else {
+                        if ($dataIn['capital']) {
+                            if ($player->getCapitalId()) {
+                                if ($player->getCapitalId() != $castleId) {
+                                    $dataIn['capital'] = 0;
+                                }
+                            } else {
+                                $player->setCapitalId($castleId);
                             }
                         } else {
-                            $player->setCapitalId($castleId);
-                        }
-                    } else {
-                        if ($player->getCapitalId() == $castleId) {
-                            $player->setCapitalId(0);
+                            if ($player->getCapitalId() == $castleId) {
+                                $player->setCapitalId(0);
+                            }
                         }
                     }
 
@@ -302,6 +306,10 @@ class Cli_Model_Editor
                     $castleColor = $field->getCastleColor();
                     $mMapCastles = new Application_Model_MapCastles($dataIn['mapId'], $db);
                     $mMapCastles->remove($castleId);
+
+                    if ($this->_Players->getPlayer($castleColor)->getCapitalId() == $castleId) {
+                        $this->_Players->getPlayer($castleColor)->setCapitalId(0);
+                    }
 
                     $castle = $this->_Players->getPlayer($castleColor)->getCastles()->getCastle($castleId);
                     $this->_Players->getPlayer($castleColor)->getCastles()->removeCastle($castleId);

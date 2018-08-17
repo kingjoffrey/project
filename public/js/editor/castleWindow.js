@@ -114,7 +114,6 @@ var EditorCastleWindow = new function () {
                 'name': 'capital',
                 'type': 'checkbox'
             }).prop('checked', isCapital)
-            console.log(isCapital)
         }
 
         var html = $('<div>').addClass('editorCastleWindow')

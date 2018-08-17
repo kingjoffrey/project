@@ -86,12 +86,6 @@ var WebSocketSendEditor = new function () {
 
         EditorGui.lock()
 
-        // for (var color in Players.toArray()) {
-        //     if (Players.get(color).getCastles().has(castleId)) {
-        //         var castle = Players.get(color).getCastles().get(castleId)
-        //     }
-        // }
-
         var capital = Boolean($('input[name=capital]').is(':checked')),
             color = $('select[name=color]').val()
 
@@ -116,10 +110,6 @@ var WebSocketSendEditor = new function () {
                 3: {'unitId': $('select[name=unitId3]').val(), 'time': $('select[name=time3]').val()}
             }
         }
-
-        // castle.token = token
-
-        console.log(token)
 
         ws.send(JSON.stringify(token))
     }

@@ -76,4 +76,9 @@ abstract class Cli_Model_DefaultPlayer
     {
         return $castleId == $this->_capitalId;
     }
+
+    public function getCapitalId()
+    {
+        return $this->_capitalId;
+    }
 }
