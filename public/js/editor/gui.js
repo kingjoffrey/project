@@ -1,26 +1,26 @@
 var EditorGui = new function () {
     var doKey = function (event) {
-            var key = event.keyCode || event.charCode;
-            switch (key) {
-                case 27: //ESC
-                    Message.remove()
-                    break
-                case 37://left
-                    GameScene.moveCameraLeft()
-                    break
-                case 38://up
-                    GameScene.moveCameraUp()
-                    break
-                case 39://right
-                    GameScene.moveCameraRight()
-                    break
-                case 40://down
-                    GameScene.moveCameraDown()
-                    break
+        var key = event.keyCode || event.charCode;
+        switch (key) {
+            case 27: //ESC
+                Message.remove()
+                break
+            case 37://left
+                GameScene.moveCameraLeft()
+                break
+            case 38://up
+                GameScene.moveCameraUp()
+                break
+            case 39://right
+                GameScene.moveCameraRight()
+                break
+            case 40://down
+                GameScene.moveCameraDown()
+                break
 //            default
 //                console.log(key)
-            }
         }
+    }
 
     this.unlock = function () {
         lock = false
@@ -36,6 +36,15 @@ var EditorGui = new function () {
         GameScene.resize($(window).innerWidth(), $(window).innerHeight())
         GameRenderer.setSize($(window).innerWidth(), $(window).innerHeight())
     }
+    this.handleButtons = function () {
+        if (Editor.mapIsReady()) {
+            $('#rightMenu #publish').removeClass('buttonOff')
+            $('#rightMenu #test').removeClass('buttonOff')
+        } else {
+            $('#rightMenu #publish').addClass('buttonOff')
+            $('#rightMenu #test').addClass('buttonOff')
+        }
+    }
     this.init = function () {
         $(window).resize(function () {
             EditorGui.adjust()
@@ -47,6 +56,7 @@ var EditorGui = new function () {
             doKey(event)
         })
 
+        this.handleButtons()
         this.adjust()
 
         $('#wait').hide()
