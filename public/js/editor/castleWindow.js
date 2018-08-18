@@ -98,14 +98,21 @@ var EditorCastleWindow = new function () {
             }
         }
 
-        if ((Players.get(playerColor).getCapitalId() && Players.get(playerColor).getCapitalId() != id) || playerColor == 'neutral') {
+        if (playerColor == 'neutral')
+            var capitalCheckbox = $('<input>').attr({
+                'name': 'capital',
+                'type': 'checkbox',
+                'disabled': true
+            }).prop('checked', 0)
+        else if (Players.get(playerColor).getCapitalId() && !Players.get(playerColor).isCapital(id)) {
+            console.log('aassdd')
             var capitalCheckbox = $('<input>').attr({
                 'name': 'capital',
                 'type': 'checkbox',
                 'disabled': true
             }).prop('checked', 0)
         } else {
-            if (Players.get(playerColor).getCapitalId() == id) {
+            if (Players.get(playerColor).isCapital(id)) {
                 var isCapital = true
             } else {
                 var isCapital = false

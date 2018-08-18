@@ -252,6 +252,9 @@ class Cli_Model_Editor
                     $castle = $this->_Players->getPlayer($color)->getCastles()->getCastle($castleId);
 
                     if ($dataIn['color'] != $color) {
+                        if ($this->_Players->getPlayer($color)->getCapitalId() == $castleId) {
+                            $this->_Players->getPlayer($color)->setCapitalId(0);
+                        }
                         $this->_Players->getPlayer($color)->getCastles()->removeCastle($castleId);
                         $player->getCastles()->addCastle($castleId, $castle);
                         $this->_Fields->initCastle($castle->getX(), $castle->getY(), $castleId, $dataIn['color']);

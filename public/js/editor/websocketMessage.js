@@ -40,6 +40,9 @@ var WebSocketMessageEditor = new function () {
 
                 for (var color in Players.toArray()) {
                     if (Players.get(color).getCastles().has(castleId)) {
+                        if (Players.get(color).isCapital(castleId)) {
+                            Players.get(color).setCapitalId(0)
+                        }
                         Players.get(color).getCastles().clear(castleId)
                         break
                     }
