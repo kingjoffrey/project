@@ -23,8 +23,8 @@ body {
 }
 
 input[type="checkbox"] {
-    width: 1vw;
-    height: 1vw;
+    width: 3vw;
+    height: 3vw;
 }
 
 input, select, body {

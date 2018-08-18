@@ -105,7 +105,6 @@ var EditorCastleWindow = new function () {
                 'disabled': true
             }).prop('checked', 0)
         else if (Players.get(playerColor).getCapitalId() && !Players.get(playerColor).isCapital(id)) {
-            console.log('aassdd')
             var capitalCheckbox = $('<input>').attr({
                 'name': 'capital',
                 'type': 'checkbox',
@@ -153,10 +152,10 @@ var EditorCastleWindow = new function () {
             }))
             .append($('<div>').append('Defence: ').append(selectDefence))
             .append($('<div>').append('Capital: ').append(capitalCheckbox))
-            .append($('<div>').append('Production unit 1: ').append(selectProductionUnit0).append(' Production time 1: ').append(selectProductionTime0))
-            .append($('<div>').append('Production unit 2: ').append(selectProductionUnit1).append(' Production time 2: ').append(selectProductionTime1))
-            .append($('<div>').append('Production unit 3: ').append(selectProductionUnit2).append(' Production time 3: ').append(selectProductionTime2))
-            .append($('<div>').append('Enclave number:').append($('<input>').attr({
+            .append($('<div>').append('Unit 1: ').append(selectProductionUnit0).append(' Time 1: ').append(selectProductionTime0))
+            .append($('<div>').append('Unit 2: ').append(selectProductionUnit1).append(' Time 2: ').append(selectProductionTime1))
+            .append($('<div>').append('Unit 3: ').append(selectProductionUnit2).append(' Time 3: ').append(selectProductionTime2))
+            .append($('<div>').append('Enclave number: ').append($('<input>').attr({
                 'name': 'enclaveNumber',
                 'value': castle.getEnclaveNumber()
             })))

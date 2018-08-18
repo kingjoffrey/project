@@ -110,6 +110,11 @@ var Main = new function () {
                 Sound.play('click')
                 EditorModels.createMesh('down')
             })
+            $('.editor #cancel').click(function () {
+                Sound.play('click')
+                Message.remove()
+                PickerEditor.clearDraggedMesh()
+            })
             $('.editor #exit').click(function () {
                 Sound.play('click')
                 IndexController.index()
