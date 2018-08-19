@@ -4,14 +4,13 @@ $().ready(function () {
     Main.init()
 
     Models.init()
-    
+
     HelpScene.init()
     HelpRenderer.init()
     HelpModels.init()
 
-    // GameScene.init()
-    // GameRenderer.init()
-    // GameModels.init()
+    GameScene.init()
+    GameRenderer.init()
 
     Terrain.init(terrain)
 

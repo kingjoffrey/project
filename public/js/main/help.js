@@ -1,7 +1,21 @@
 "use strict"
 var HelpController = new function () {
     this.index = function (r) {
-        $('#content').html(r.data)
+        $('#menu').hide()
+
+        $('#content')
+            .html(r.data)
+            .append($('<div>')
+                .append(
+                    $('<div>').attr('id', 'back').addClass('button buttonColors').html(translations.Mainmenu).click(function () {
+                        Sound.play('click')
+                        IndexController.index()
+                        $('#menu').show()
+                    })
+                ).css({
+                    'text-align': 'right'
+                })
+            )
 
         $('.table').css({
             'padding': 0
