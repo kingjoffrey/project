@@ -66,7 +66,7 @@ class Application_Model_Game extends Coret_Db_Table_Abstract
             ->join(array('c' => 'map'), 'a."mapId" = c."mapId"', 'name')
             ->where('"isOpen" = false')
             ->where('"isActive" = true')
-//            ->where('c."tutorial" = false')
+            ->where('c."tutorial" = false')
             ->where('a."gameId" IN ?', $mPlayersInGame->getSelectForMyGames($playerId))
             ->where('b."playerId" = ?', $playerId)
             ->where('a."type" = ?', $type)

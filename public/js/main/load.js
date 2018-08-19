@@ -29,9 +29,9 @@ var LoadController = new function () {
                 )
         }
 
-        WebSocketSendMain.controller('load', 'content', {'m': 3})
+        WebSocketSendMain.controller('load', 'content', {'m': 2})
 
-        $('#loadMenu div#3').addClass('active')
+        $('#loadMenu div#2').addClass('active')
 
     }
 
