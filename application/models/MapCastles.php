@@ -100,6 +100,9 @@ class Application_Model_MapCastles extends Coret_Db_Table_Abstract
             if (isset($castle['enclaveNumber'])) {
                 $data['enclaveNumber'] = $castle['enclaveNumber'];
             }
+            if (isset($castle['sideId'])) {
+                $data['sideId'] = $castle['sideId'];
+            }
         }
 
         return $this->insert($data);
