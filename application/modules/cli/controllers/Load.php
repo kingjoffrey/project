@@ -10,7 +10,7 @@ class LoadController
         $menu = array();
 
         foreach (Zend_Registry::get('config')->gameType as $key => $val) {
-            if ($key == 0) {
+            if ($val == 0) {
                 continue;
             }
             $menu[$val] = $key;
