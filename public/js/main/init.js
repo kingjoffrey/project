@@ -3,18 +3,19 @@ $().ready(function () {
     Page.init()
     Main.init()
 
+    Models.init()
+    
     HelpScene.init()
     HelpRenderer.init()
     HelpModels.init()
 
-    GameScene.init()
-    GameRenderer.init()
-    GameModels.init()
+    // GameScene.init()
+    // GameRenderer.init()
+    // GameModels.init()
 
     Terrain.init(terrain)
 
     WebSocketChat.init()
-    WebSocketEditor.init()
     WebSocketMapgenerator.init()
 })
 $(window).resize(function () {

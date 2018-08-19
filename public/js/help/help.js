@@ -417,10 +417,11 @@ var Help = new function () {
 
         if (mesh) {
             HelpRenderer.setMesh(mesh)
+            $('#graphics').css('display', 'block')
             if (!HelpRenderer.isRunning()) {
                 HelpRenderer.start()
+                HelpRenderer.animate()
             }
-            $('#graphics').css('display', 'block')
         } else {
             $('#graphics').css('display', 'none')
         }

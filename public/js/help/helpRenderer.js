@@ -18,6 +18,8 @@ var HelpRenderer = new function () {
         renderer.setSize(w, w)
     }
     this.animate = function () {
+        console.log('b')
+        console.log(timeOut)
         if (stop) {
             return
         }
@@ -37,11 +39,10 @@ var HelpRenderer = new function () {
     }
     this.start = function () {
         if (!Main.getEnv()) {
-            timeOut = 0
+            // timeOut = 0
         }
         stop = 0
         $('#graphics').append(renderer.domElement)
-        this.animate()
     }
     this.isRunning = function () {
         return !stop

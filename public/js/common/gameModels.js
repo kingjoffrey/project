@@ -7,10 +7,6 @@ var GameModels = new function () {
         cursorColor = 'white',
         cursorMesh
 
-    this.init = function () {
-        Models.init()
-    }
-
     this.getCastle = function (castle, color, isCapital) {
         var mesh = Models.getCastle(castle.toArray(), color)
 
