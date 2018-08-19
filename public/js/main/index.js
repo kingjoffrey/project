@@ -25,14 +25,10 @@ var IndexController = new function () {
         }
 
         $(window).off('resize')
-        $(document).off('keydown')
+        // $(document).off('keydown')
 
-        $('.message').remove()
-
-        $('#turnInfo').hide()
         $('#game').hide()
         $('#gameMenu').hide()
-        $('#wait').hide()
 
         $('#menu .active').removeClass('active')
 

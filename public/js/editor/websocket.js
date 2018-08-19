@@ -27,6 +27,8 @@ var WebSocketEditor = new function () {
     this.isOpen = function () {
         if (ws) {
             return 1
+        } else {
+            return 0
         }
     }
 }

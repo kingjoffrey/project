@@ -16,6 +16,9 @@ var WebSocketMessageMapgenerator = new function () {
                 break
 
             case 'publish':
+                GameRenderer.stop()
+                $('#game').hide()
+                $('#gameMenu').hide()
                 WebSocketSendMain.controller('single', 'index')
                 break
         }
