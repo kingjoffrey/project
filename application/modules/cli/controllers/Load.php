@@ -6,14 +6,36 @@ class LoadController
     function index(WebSocketTransportInterface $user, Cli_MainHandler $handler, $dataIn)
     {
         $view = new Zend_View();
+
+        $menu = array();
+
+        foreach (Zend_Registry::get('config')->gameType as $key => $val) {
+            $menu[$val] = $key;
+        }
+
+        $view->addScriptPath(APPLICATION_PATH . '/views/scripts');
+
+        $token = array(
+            'type' => 'load',
+            'action' => 'index',
+            'data' => $view->render('load/index.phtml'),
+            'menu' => $menu
+        );
+        $handler->sendToUser($user, $token);
+    }
+
+    public function content(WebSocketTransportInterface $user, Cli_MainHandler $handler, $dataIn)
+    {
+        if (!isset($dataIn['m'])) {
+            $dataIn['m'] = 3;
+        }
+
         $db = $handler->getDb();
 
         $mGame = new Application_Model_Game(0, $db);
-        $myGames = $mGame->getMyGames($user->parameters['playerId'], new Application_Model_PlayersInGame(0, $db));
+        $myGames = $mGame->getMyGames($user->parameters['playerId'], new Application_Model_PlayersInGame(0, $db), $dataIn['m']);
 
         $mPlayer = new Application_Model_Player($db);
-
-
         foreach ($myGames as &$game) {
             $mPlayersInGame = new Application_Model_PlayersInGame($game['gameId'], $db);
             $game['players'] = $mPlayersInGame->getGamePlayers();
@@ -34,12 +56,9 @@ class LoadController
             $game['end'] = Coret_View_Helper_Formatuj::date($game['end'], 'Ymd H:i');
         }
 
-        $view->addScriptPath(APPLICATION_PATH . '/views/scripts');
-
         $token = array(
             'type' => 'load',
-            'action' => 'index',
-            'data' => $view->render('load/index.phtml'),
+            'action' => 'content',
             'games' => $myGames
         );
         $handler->sendToUser($user, $token);

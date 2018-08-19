@@ -58,7 +58,7 @@ class Application_Model_Game extends Coret_Db_Table_Abstract
         return $this->selectRow($select);
     }
 
-    public function getMyGames($playerId, $mPlayersInGame)
+    public function getMyGames($playerId, Application_Model_PlayersInGame $mPlayersInGame, $type)
     {
         $select = $this->_db->select()
             ->from(array('a' => $this->_name), array('turnNumber', $this->_primary, 'numberOfPlayers', 'end', 'turnPlayerId', 'mapId'))
@@ -66,9 +66,10 @@ class Application_Model_Game extends Coret_Db_Table_Abstract
             ->join(array('c' => 'map'), 'a."mapId" = c."mapId"', 'name')
             ->where('"isOpen" = false')
             ->where('"isActive" = true')
-            ->where('c."tutorial" = false')
+//            ->where('c."tutorial" = false')
             ->where('a."gameId" IN ?', $mPlayersInGame->getSelectForMyGames($playerId))
             ->where('b."playerId" = ?', $playerId)
+            ->where('a."type" = ?', $type)
             ->order('begin DESC');
 
         return $this->selectAll($select);

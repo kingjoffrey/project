@@ -103,6 +103,7 @@ input, select {
     background: #fff;
     color: #000;
     cursor: default;
+    text-shadow: none;
 }
 
 .button.active:hover {

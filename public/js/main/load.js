@@ -1,7 +1,42 @@
 "use strict"
 var LoadController = new function () {
+    var gameListHeader = ''
+
     this.index = function (r) {
         $('#content').html(r.data)
+
+        gameListHeader = $('#gameList').html()
+
+        for (var id in r.menu) {
+            $('#loadMenu')
+                .append($('<div>')
+                    .attr('id', id)
+                    .html(translations[r.menu[id]])
+                    .addClass('button buttonColors')
+                    .click(function () {
+                        Sound.play('click')
+
+                        var id = $(this).attr('id')
+
+                        $('#loadMenu div').each(function () {
+                            $(this).removeClass('active')
+                        })
+
+                        $('#loadMenu div#' + id).addClass('active')
+
+                        WebSocketSendMain.controller('load', 'content', {'m': id})
+                    })
+                )
+        }
+
+        WebSocketSendMain.controller('load', 'content', {'m': 3})
+
+        $('#loadMenu div#3').addClass('active')
+
+    }
+
+    this.content = function (r) {
+        $('#gameList').html(gameListHeader)
 
         var teams = {
             1: 'A',
@@ -72,6 +107,7 @@ var LoadController = new function () {
                 )
         }
     }
+
     this.delete = function (r) {
         WebSocketSendMain.controller('over', 'index', {'id': r.id})
     }
