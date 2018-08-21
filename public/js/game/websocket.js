@@ -40,7 +40,8 @@ var WebSocketExecGame = new function () {
     var ws
 
     this.init = function () {
-        ws = new WebSocket(wsURL + ':' + wsPort + '/exec')
+        var port = wsPort * 1 + 4
+        ws = new WebSocket(wsURL + ':' + port + '/exec')
 
         ws.onopen = function () {
             var token = {
