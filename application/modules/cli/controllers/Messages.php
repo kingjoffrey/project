@@ -44,9 +44,9 @@ class MessagesController
                         $row['read'] = 0;
                     }
                 } else {
-                    if (isset($recipients[$row['playerId']])) {
-                        continue;
-                    }
+//                    if (isset($recipients[$row['playerId']])) {
+//                        continue;
+//                    }
                     $row['name'] = $players[$row['playerId']];
                     $row['id'] = $row['playerId'];
                 }
