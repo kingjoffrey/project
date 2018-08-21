@@ -30,25 +30,19 @@ class MessagesController
             }
         }
 
+        $threads = array();
+
         if ($ids) {
             $mPlayer = new Application_Model_Player($db);
             $players = $mPlayer->getPlayersNames($ids);
-            foreach ($paginator as &$row) {
+            foreach ($paginator as $row) {
+
                 if ($row['playerId'] == $user->parameters['playerId']) {
-                    $row['name'] = $players[$row['recipientId']];
-                    $row['id'] = $row['recipientId'];
-                    if (isset($recipients[$row['recipientId']])) {
-                        $row['messages'] += $recipients[$row['recipientId']]['messages'];
-                        $row['read'] = $recipients[$row['recipientId']]['read'];
-                    } else {
-                        $row['read'] = 0;
-                    }
+                    $threads['name'] = $players[$row['recipientId']];
+                    $threads['id'] = $row['recipientId'];
                 } else {
-//                    if (isset($recipients[$row['playerId']])) {
-//                        continue;
-//                    }
-                    $row['name'] = $players[$row['playerId']];
-                    $row['id'] = $row['playerId'];
+                    $threads['name'] = $players[$row['playerId']];
+                    $threads['id'] = $row['playerId'];
                 }
             }
         }
@@ -60,7 +54,8 @@ class MessagesController
         $token = array(
             'type' => 'messages',
             'action' => 'index',
-            'data' => $view->render('messages/index.phtml')
+            'data' => $view->render('messages/index.phtml'),
+            'threads' => $threads
         );
         $handler->sendToUser($user, $token);
     }

@@ -21,17 +21,12 @@ class Application_Model_PrivateChat extends Coret_Db_Table_Abstract
     public function getChatHistoryThreads($pageNumber)
     {
         $select = $this->_db->select()
-            ->from($this->_name, array(
-                'max(date)',
-                'playerId',
-                'recipientId',
-                new Zend_Db_Expr('count(nullif(read, true)) as read'),
-                new Zend_Db_Expr('count(message) as messages'
-                )))
-            ->where($this->_db->quoteIdentifier('recipientId') . '  = ? OR ' . $this->_db->quoteIdentifier('playerId') . ' = ?', $this->_playerId)
-            ->group('playerId')
-            ->group('recipientId')
-            ->order('max DESC');
+            ->from($this->_name, array('playerId', 'recipientId'))
+            ->distinct()
+            ->where($this->_db->quoteIdentifier('recipientId') . '  = ? OR ' . $this->_db->quoteIdentifier('playerId') . ' = ?', $this->_playerId);
+
+        $select = $select->__toString();
+        $select = str_replace('DISTINCT', 'DISTINCT ON ("recipientId"+"playerId")', $select);
 
         $paginator = new Zend_Paginator(new Zend_Paginator_Adapter_DbSelect($select));
         $paginator->setCurrentPageNumber($pageNumber);

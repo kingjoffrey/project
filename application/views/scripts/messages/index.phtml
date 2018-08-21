@@ -6,15 +6,5 @@
             <th><?php echo $this->translate('Date') ?></th>
             <th><?php echo $this->translate('Messages') ?></th>
         </tr>
-        <?php if (count($this->threads)): ?>
-            <?php foreach ($this->threads as $row): ?>
-                <?php if (!isset($row['id'])) continue ?>
-                <tr class="trlink<?php if ($row['read']): echo ' read'; endif ?>" id="<?php echo $row['id'] ?>">
-                    <td><?php echo $row['name'] ?></td>
-                    <td><?php echo Coret_View_Helper_Formatuj::date($row['max']) ?></td>
-                    <td><?php echo $row['read'] . '/' . $row['messages'] ?></td>
-                </tr>
-            <?php endforeach ?>
-        <?php endif ?>
     </table>
 </div>
