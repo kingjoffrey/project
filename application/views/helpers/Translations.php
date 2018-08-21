@@ -118,7 +118,7 @@ class Zend_View_Helper_Translations extends Zend_View_Helper_Abstract
                 'defencePoints' => $this->view->translate('Defence points'),
                 'start' => $this->view->translate('Start'),
                 'startProduction' => $this->view->translate('Start production'),
-                'close' => $this->view->translate('Close'),
+                'close' => $this->view->translate('close'),
                 'castle' => $this->view->translate('Castle'),
                 'incomeFromCastle' => $this->view->translate('Income from castle'),
                 'maximumCastleDefenceReached' => $this->view->translate('Maximum castle defence reached'),
@@ -126,7 +126,6 @@ class Zend_View_Helper_Translations extends Zend_View_Helper_Abstract
                 'profit' => $this->view->translate('Profit'),
                 'units' => $this->view->translate('units'),
                 'Units' => $this->view->translate('Units'),
-                'close' => $this->view->translate('Close'),
                 'to' => $this->view->translate('To'),
                 'from' => $this->view->translate('From'),
                 'Players' => $this->view->translate('players'),
@@ -203,6 +202,7 @@ class Zend_View_Helper_Translations extends Zend_View_Helper_Abstract
                 'Mapnotready' => $this->view->translate('Map not ready'),
                 'Numberofplayershastomatchnumberofcapitals' => $this->view->translate('Number of players has to match number of capitals'),
                 '' => $this->view->translate(''),
+
             )));
     }
 }

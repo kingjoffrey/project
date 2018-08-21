@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: WOF\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-08-16 21:15+0200\n"
-"PO-Revision-Date: 2018-08-16 21:17+0200\n"
+"POT-Creation-Date: 2018-08-21 09:40+0200\n"
+"PO-Revision-Date: 2018-08-21 09:40+0200\n"
 "Last-Translator: Bartosz Krzeszewski <bartek@core-t.pl>\n"
 "Language-Team: \n"
 "Language: pl_PL\n"
@@ -55,7 +55,7 @@ msgstr "Utwórz grę"
 
 #: forms/Createmap.php:17 views/scripts/editor/index.phtml:4
 #: views/scripts/halloffame/index.phtml:9 views/scripts/join/index.phtml:4
-#: views/scripts/load/index.phtml:6 views/scripts/profile/show.phtml:6
+#: views/scripts/load/index.phtml:7 views/scripts/profile/show.phtml:6
 #: views/scripts/tournament/index.phtml:9
 msgid "Map name"
 msgstr "Nazwa mapy"
@@ -178,7 +178,7 @@ msgid ""
 msgstr ""
 "Usunięcie elementu wymaga potwierdzenia. Czy na pewno chcesz go usunąć?"
 
-#: modules/admin/views/helpers/Delete.php:12 views/helpers/Translations.php:168
+#: modules/admin/views/helpers/Delete.php:12 views/helpers/Translations.php:167
 msgid "Yes"
 msgstr "Tak"
 
@@ -190,7 +190,7 @@ msgstr "Opłata za uczestnictwo w turnieju"
 msgid "Play"
 msgstr "Graj"
 
-#: modules/cli/models/MainOpen.php:38 views/helpers/Translations.php:198
+#: modules/cli/models/MainOpen.php:38 views/helpers/Translations.php:197
 #: views/scripts/tournament/full.phtml:2
 msgid "Tournament"
 msgstr "Turniej"
@@ -347,7 +347,7 @@ msgstr "Zmień sekwencję obrony poprzez przesuwanie jednostek"
 msgid "Ok"
 msgstr "Tak"
 
-#: views/helpers/Translations.php:39
+#: views/helpers/Translations.php:39 layouts/scripts/default.phtml:113
 msgid "Cancel"
 msgstr "Anuluj"
 
@@ -355,8 +355,8 @@ msgstr "Anuluj"
 msgid "Error"
 msgstr "Błąd"
 
-#: views/helpers/Translations.php:41 layouts/scripts/default.phtml:135
-#: layouts/scripts/default.phtml:137
+#: views/helpers/Translations.php:41 layouts/scripts/default.phtml:136
+#: layouts/scripts/default.phtml:138
 msgid "Surrender"
 msgstr "Poddaj się"
 
@@ -652,7 +652,7 @@ msgstr "Dostępne jednostki"
 msgid "Production time"
 msgstr "Czas produkcji"
 
-#: views/helpers/Translations.php:115 views/helpers/Translations.php:190
+#: views/helpers/Translations.php:115 views/helpers/Translations.php:189
 msgid "Cost of living"
 msgstr "Koszt utrzymania"
 
@@ -676,9 +676,8 @@ msgstr "Start"
 msgid "Start production"
 msgstr "Rozpocznij produkcję"
 
-#: views/helpers/Translations.php:121 views/helpers/Translations.php:129
-#: layouts/scripts/default.phtml:90 layouts/scripts/default.phtml:160
-msgid "Close"
+#: views/helpers/Translations.php:121
+msgid "close"
 msgstr "Zamknij"
 
 #: views/helpers/Translations.php:122 layouts/scripts/default.phtml:104
@@ -709,294 +708,294 @@ msgstr "jednostki"
 msgid "Units"
 msgstr "Jednostki"
 
-#: views/helpers/Translations.php:130
+#: views/helpers/Translations.php:129
 msgid "To"
 msgstr "Do"
 
-#: views/helpers/Translations.php:131
+#: views/helpers/Translations.php:130
 msgid "From"
 msgstr "Od"
 
-#: views/helpers/Translations.php:132
+#: views/helpers/Translations.php:131
 msgid "players"
 msgstr "gracze"
 
-#: views/helpers/Translations.php:133
+#: views/helpers/Translations.php:132
 msgid "Select friend from friends list"
 msgstr "Wybierz znajomego z listy znajomych"
 
-#: views/helpers/Translations.php:134
+#: views/helpers/Translations.php:133
 msgid "connected"
 msgstr "połączony"
 
-#: views/helpers/Translations.php:135
+#: views/helpers/Translations.php:134
 msgid "disconnected"
 msgstr "rozłączony"
 
-#: views/helpers/Translations.php:136
+#: views/helpers/Translations.php:135
 msgid "Your turn!"
 msgstr "Twoja tura!"
 
-#: views/helpers/Translations.php:137
+#: views/helpers/Translations.php:136
 msgid "Incoming chat!"
 msgstr "Przychodzący czat!"
 
-#: views/helpers/Translations.php:138
+#: views/helpers/Translations.php:137
 msgid "Configuration"
 msgstr "Konfiguracja"
 
-#: views/helpers/Translations.php:139 views/scripts/heroes/show.phtml:2
+#: views/helpers/Translations.php:138 views/scripts/heroes/show.phtml:2
 msgid "Hero"
 msgstr "Bohater"
 
-#: views/helpers/Translations.php:140
+#: views/helpers/Translations.php:139
 msgid "Resurrect Hero"
 msgstr "Wskrześ herosa"
 
-#: views/helpers/Translations.php:141
+#: views/helpers/Translations.php:140
 msgid "Hire Hero"
 msgstr "Najmij herosa"
 
-#: views/helpers/Translations.php:142
+#: views/helpers/Translations.php:141
 msgid "Goal"
 msgstr "Cel"
 
-#: views/helpers/Translations.php:143
+#: views/helpers/Translations.php:142
 msgid "find some friends"
 msgstr "wyszukaj znajomych"
 
-#: views/helpers/Translations.php:144
+#: views/helpers/Translations.php:143
 msgid "You don't have friends"
 msgstr "Nie masz znajomych"
 
-#: views/helpers/Translations.php:145
+#: views/helpers/Translations.php:144
 msgid "Send"
 msgstr "Wyślij"
 
-#: views/helpers/Translations.php:146
+#: views/helpers/Translations.php:145
 msgid "Write"
 msgstr "Napisz"
 
-#: views/helpers/Translations.php:147
+#: views/helpers/Translations.php:146
 msgid "Add to friends"
 msgstr "Dodaj do znajomych"
 
-#: views/helpers/Translations.php:148
+#: views/helpers/Translations.php:147
 msgid "No search results"
 msgstr "Brak wyników wyszukiwania"
 
-#: views/helpers/Translations.php:149
+#: views/helpers/Translations.php:148
 msgid "There are no open games"
 msgstr "Brak otwartych gier"
 
-#: views/helpers/Translations.php:150
+#: views/helpers/Translations.php:149
 #: modules/admin/views/scripts/pagination_control.phtml:7
 msgid "Back"
 msgstr "Cofnij"
 
-#: views/helpers/Translations.php:151
+#: views/helpers/Translations.php:150
 msgid "Special unit"
 msgstr "Jednostka specjalna"
 
-#: views/helpers/Translations.php:152 layouts/scripts/default.phtml:96
+#: views/helpers/Translations.php:151 layouts/scripts/default.phtml:96
 msgid "Defense"
 msgstr "Obrona"
 
-#: views/helpers/Translations.php:153
+#: views/helpers/Translations.php:152
 msgid "Swim"
 msgstr "Pływa"
 
-#: views/helpers/Translations.php:154
+#: views/helpers/Translations.php:153
 msgid "Fly"
 msgstr "Lata"
 
-#: views/helpers/Translations.php:155
+#: views/helpers/Translations.php:154
 msgid "Walk"
 msgstr "Chodzi"
 
-#: views/helpers/Translations.php:156 layouts/scripts/default.phtml:107
+#: views/helpers/Translations.php:155 layouts/scripts/default.phtml:107
 msgid "Road"
 msgstr "Droga"
 
-#: views/helpers/Translations.php:157
+#: views/helpers/Translations.php:156
 msgid "Grass"
 msgstr "Łąka"
 
-#: views/helpers/Translations.php:158 layouts/scripts/default.phtml:108
+#: views/helpers/Translations.php:157 layouts/scripts/default.phtml:108
 msgid "Forest"
 msgstr "Las"
 
-#: views/helpers/Translations.php:159
+#: views/helpers/Translations.php:158
 msgid "Hill"
 msgstr "Wzgórze"
 
-#: views/helpers/Translations.php:160
+#: views/helpers/Translations.php:159
 msgid "Hills"
 msgstr "Wzgórza"
 
-#: views/helpers/Translations.php:161
+#: views/helpers/Translations.php:160
 msgid "Mountain"
 msgstr "Góra"
 
-#: views/helpers/Translations.php:162
+#: views/helpers/Translations.php:161
 msgid "Water"
 msgstr "Woda"
 
-#: views/helpers/Translations.php:163 layouts/scripts/default.phtml:109
+#: views/helpers/Translations.php:162 layouts/scripts/default.phtml:109
 msgid "Swamp"
 msgstr "Bagno"
 
-#: views/helpers/Translations.php:164
+#: views/helpers/Translations.php:163
 msgid "Edit"
 msgstr "Edycja"
 
-#: views/helpers/Translations.php:165 layouts/scripts/default.phtml:122
+#: views/helpers/Translations.php:164 layouts/scripts/default.phtml:123
 msgid "Test"
 msgstr "Test"
 
-#: views/helpers/Translations.php:166 views/scripts/editor/index.phtml:8
+#: views/helpers/Translations.php:165 views/scripts/editor/index.phtml:8
 msgid "Actions"
 msgstr "Akcje"
 
-#: views/helpers/Translations.php:167
+#: views/helpers/Translations.php:166
 msgid "Save"
 msgstr "Zapisz"
 
-#: views/helpers/Translations.php:169
+#: views/helpers/Translations.php:168
 msgid "No"
 msgstr "Nie"
 
-#: views/helpers/Translations.php:170
+#: views/helpers/Translations.php:169
 msgid "Find army"
 msgstr "Znajdź armię"
 
-#: views/helpers/Translations.php:171
+#: views/helpers/Translations.php:170
 msgid "Switch to FullScreen?"
 msgstr "Przełączyć się na pełen ekran?"
 
-#: views/helpers/Translations.php:172
+#: views/helpers/Translations.php:171
 msgid "Heros has not enough moves!"
 msgstr "Heros ma za mało ruchów!"
 
-#: views/helpers/Translations.php:173
+#: views/helpers/Translations.php:172
 msgid "Only Heroes can search the ruins!"
 msgstr "Tylko Herosi mogą przeszukiwać ruiny!"
 
-#: views/helpers/Translations.php:174
+#: views/helpers/Translations.php:173
 msgid "The ruins are already searched"
 msgstr "Ruiny są już przeszukane"
 
-#: views/helpers/Translations.php:175
+#: views/helpers/Translations.php:174
 msgid "Waiting for:"
 msgstr "Czekam na:"
 
-#: views/helpers/Translations.php:176
+#: views/helpers/Translations.php:175
 msgid "There are no games to load"
 msgstr "Brak gry do załadowania"
 
-#: views/helpers/Translations.php:177
+#: views/helpers/Translations.php:176
 msgid "Game"
 msgstr "Gra"
 
-#: views/helpers/Translations.php:178
+#: views/helpers/Translations.php:177
 msgid "Terrain"
 msgstr "Teren"
 
-#: views/helpers/Translations.php:179
+#: views/helpers/Translations.php:178
 msgid "Nothing to show"
 msgstr "Nic do pokazania"
 
-#: views/helpers/Translations.php:180
+#: views/helpers/Translations.php:179
 msgid "Stage"
 msgstr "Etap"
 
-#: views/helpers/Translations.php:181 views/scripts/halloffame/index.phtml:7
+#: views/helpers/Translations.php:180 views/scripts/halloffame/index.phtml:7
 #: views/scripts/messages/index.phtml:5 views/scripts/players/index.phtml:8
 msgid "Player name"
 msgstr "Nazwa gracza"
 
-#: views/helpers/Translations.php:182 views/scripts/heroes/index.phtml:6
+#: views/helpers/Translations.php:181 views/scripts/heroes/index.phtml:6
 msgid "Experience"
 msgstr "Doświadczenie"
 
-#: views/helpers/Translations.php:183
+#: views/helpers/Translations.php:182
 msgid "Level"
 msgstr "Poziom"
 
-#: views/helpers/Translations.php:184
+#: views/helpers/Translations.php:183
 msgid "Life"
 msgstr "Życie"
 
-#: views/helpers/Translations.php:185
+#: views/helpers/Translations.php:184
 msgid "Regeneration speed"
 msgstr "Prędkość regeneracji"
 
-#: views/helpers/Translations.php:186
+#: views/helpers/Translations.php:185
 msgid "Default attack points"
 msgstr "Podstawowe punkty ataku"
 
-#: views/helpers/Translations.php:187
+#: views/helpers/Translations.php:186
 msgid "Default defense points"
 msgstr "Podstawowe punkty obrony"
 
-#: views/helpers/Translations.php:188
+#: views/helpers/Translations.php:187
 msgid "Default life points"
 msgstr "Podstawowe punkty życia"
 
-#: views/helpers/Translations.php:189
+#: views/helpers/Translations.php:188
 msgid "Default number of moves"
 msgstr "Podstawowa ilość ruchów"
 
-#: views/helpers/Translations.php:191
+#: views/helpers/Translations.php:190
 msgid "soldiers"
 msgstr "żołnierze"
 
-#: views/helpers/Translations.php:192
+#: views/helpers/Translations.php:191
 msgid "Bonus"
 msgstr "Bonus"
 
-#: views/helpers/Translations.php:193
+#: views/helpers/Translations.php:192
 msgid "Your ship sank"
 msgstr "Twój statek zatonął"
 
-#: views/helpers/Translations.php:194
+#: views/helpers/Translations.php:193
 msgid "Main menu"
 msgstr "Menu główne"
 
-#: views/helpers/Translations.php:195 views/scripts/play/index.phtml:10
+#: views/helpers/Translations.php:194 views/scripts/play/index.phtml:10
 msgid "Tutorial"
 msgstr "Samouczek"
 
-#: views/helpers/Translations.php:196 views/scripts/play/index.phtml:18
+#: views/helpers/Translations.php:195 views/scripts/play/index.phtml:18
 #: views/scripts/play/index.phtml:21
 msgid "Single player"
 msgstr "Rozgrywka jednoosobowa"
 
-#: views/helpers/Translations.php:197 views/scripts/play/index.phtml:26
+#: views/helpers/Translations.php:196 views/scripts/play/index.phtml:26
 msgid "Multiplayer"
 msgstr "Rozgrywka wieloosobowa"
 
-#: views/helpers/Translations.php:199
+#: views/helpers/Translations.php:198
 msgid "There are no scores to show"
 msgstr "Nie ma wyników do pokazania"
 
-#: views/helpers/Translations.php:200
+#: views/helpers/Translations.php:199
 msgid "It is Sunday"
 msgstr "Nadszedł dzień Słońca"
 
-#: views/helpers/Translations.php:201
+#: views/helpers/Translations.php:200
 msgid "All ruins are full"
 msgstr "Wszystkie ruiny są pełne"
 
-#: views/helpers/Translations.php:202 layouts/scripts/default.phtml:119
+#: views/helpers/Translations.php:201 layouts/scripts/default.phtml:120
 msgid "Publish"
 msgstr "Publikuj"
 
-#: views/helpers/Translations.php:203
+#: views/helpers/Translations.php:202
 msgid "Map not ready"
 msgstr "Mapa nie jest gotowa"
 
-#: views/helpers/Translations.php:204
+#: views/helpers/Translations.php:203
 msgid "Number of players has to match number of capitals"
 msgstr "Ilość graczy musi odpowiadać ilości stolic"
 
@@ -1040,6 +1039,10 @@ msgstr "Następny zamek"
 msgid "Previous castle"
 msgstr "Poprzedni zamek"
 
+#: layouts/scripts/default.phtml:90 layouts/scripts/default.phtml:161
+msgid "Close"
+msgstr "Zamknij"
+
 #: layouts/scripts/default.phtml:110
 msgid "Eraser"
 msgstr "Gumka"
@@ -1052,27 +1055,27 @@ msgstr "Góra"
 msgid "Down"
 msgstr "Dół"
 
-#: layouts/scripts/default.phtml:116
+#: layouts/scripts/default.phtml:117
 msgid "Exit editor"
 msgstr "Opuść edytor"
 
-#: layouts/scripts/default.phtml:129 layouts/scripts/default.phtml:131
+#: layouts/scripts/default.phtml:130 layouts/scripts/default.phtml:132
 msgid "Exit game"
 msgstr "Opuść grę"
 
-#: layouts/scripts/default.phtml:148
+#: layouts/scripts/default.phtml:149
 msgid "Turn sound on/off"
 msgstr "Włącz/wyłącz dźwięk"
 
-#: layouts/scripts/default.phtml:150
+#: layouts/scripts/default.phtml:151
 msgid "Sound"
 msgstr "Dźwięk"
 
-#: layouts/scripts/default.phtml:154
+#: layouts/scripts/default.phtml:155
 msgid "Toggle full screen"
 msgstr "Przełącz na pełen ekran"
 
-#: layouts/scripts/default.phtml:156
+#: layouts/scripts/default.phtml:157
 msgid "Full screen"
 msgstr "Pełen ekran"
 
@@ -1164,36 +1167,40 @@ msgstr "Mistrz gry"
 msgid "Date"
 msgstr "Data"
 
-#: views/scripts/load/index.phtml:2
+#: views/scripts/load/index.phtml:3
 msgid "Games list"
 msgstr "Lista gier"
 
-#: views/scripts/load/index.phtml:7
+#: views/scripts/load/index.phtml:8
 msgid "Pause date"
 msgstr "Data wstrzymania"
 
-#: views/scripts/load/index.phtml:10
+#: views/scripts/load/index.phtml:11
 msgid "Name"
 msgstr "Nazwa"
 
-#: views/scripts/load/index.phtml:11
+#: views/scripts/load/index.phtml:12
 msgid "Color"
 msgstr "Kolor"
 
-#: views/scripts/load/index.phtml:12 views/scripts/setup/index.phtml:3
+#: views/scripts/load/index.phtml:13 views/scripts/setup/index.phtml:3
 #: views/scripts/setup/index.phtml:11
 msgid "Team"
 msgstr "Drużyna"
 
-#: views/scripts/load/index.phtml:15
+#: views/scripts/load/index.phtml:16
 msgid "Turn nr"
 msgstr "Numer tury"
 
-#: views/scripts/load/index.phtml:16
+#: views/scripts/load/index.phtml:17
 msgid "Player turn"
 msgstr "Tura gracza"
 
-#: views/scripts/load/index.phtml:18
+#: views/scripts/load/index.phtml:19
+msgid "Finish"
+msgstr "Zakończ"
+
+#: views/scripts/load/index.phtml:19
 msgid "Delete"
 msgstr "Usuń"
 

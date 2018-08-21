@@ -24,10 +24,11 @@ var EditorRuinWindow = new function () {
         var html = $('<div>').addClass('editorRuinWindow')
             .append($('<div>').html('Ruin type'))
             .append($('<div>').append(select))
-            .append($('<div>').append($('<input>').attr({'value': 'Ok', 'type': 'submit'}).click(function () {
-                WebSocketSendEditor.editRuin(id)
-            })))
 
-        return html
+        var msgId = Message.show(translations.ruin, html)
+        Message.addButton(msgId, 'Save', function () {
+            WebSocketSendEditor.editRuin(id)
+        })
+        Message.addButton(msgId, 'close')
     }
 }

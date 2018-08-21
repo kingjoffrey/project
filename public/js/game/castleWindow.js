@@ -114,95 +114,6 @@ var CastleWindow = new function () {
 
         $('.gameButtons').fadeIn(300)
     }
-
-    this.aaa = function (castle) {
-        var time = '',
-            checked,
-            messageId,
-            castleWindow = $('<div>').addClass('showCastle'),
-            createProductionTD = function () {
-                var array = $('<div>')
-
-                for (var unitId in castle.getProduction()) {
-                    var travelBy = '',
-                        unit = Units.get(unitId)
-
-                    if (unitId == castle.getProductionId()) {
-                        checked = ' checked'
-                        time = castle.getProductionTurn() + '/';
-                    } else {
-                        checked = ''
-                        time = ''
-                    }
-
-                    if (unit.canFly) {
-                        travelBy = translations.ground + ' / ' + translations.air;
-                    } else if (unit.canSwim) {
-                        travelBy = translations.water;
-                    } else {
-                        travelBy = translations.ground;
-                    }
-
-                    if (unit.name_lang) {
-                        var unitName = unit.name_lang;
-                    } else {
-                        var unitName = unit.name;
-                    }
-
-                    var unitElement = $('<div>')
-                        .addClass('unit' + checked)
-                        .attr('id', unitId)
-                        .append(
-                            $('<div>').addClass('name').html('<b>' + unitName + '</b>' + '<br/> (' + travelBy + ')')
-                        )
-                        .append(
-                            $('<div>')
-                                .append($('<div>').addClass('buttons'))
-                                .append($('<div>').addClass('attributes')
-                                    .append($('<div>').html(translations.productionTime + ': ' + time + '<span>' + castle.getProduction()[unitId].time + '</span>'))
-                                    .append($('<div>').html(translations.costOfLiving + ': ' + '<span>' + unit.cost + '</span>'))
-                                )
-                        )
-
-                    if (checked) { // jest produkcja
-
-                        unitElement.find('.buttons')
-                            .append(
-                                $('<div>') // stop
-                                    .html(translations.stop)
-                                    .addClass('button buttonColors')
-                                    .attr('id', 'stop')
-                                    .click(function () {
-                                        castle.handle($(this).parent().parent().parent().attr('id'), 1, 0)
-                                        Message.remove(messageId)
-                                    }))
-                    } else { // nie ma produkcji
-                        unitElement.find('.buttons')
-                            .append(
-                                $('<div>') // start
-                                    .addClass('button buttonColors')
-                                    .attr('id', 'go')
-                                    .html(translations.start)
-                                    .click(function () {
-                                        castle.handle($(this).parent().parent().parent().attr('id'))
-                                        Message.remove(messageId)
-                                    }))
-                    }
-                    array.append(unitElement)
-                }
-                return array
-            }
-
-        if (castle.getCastleId() == Me.getCapitalId()) {
-            var title = castle.getName() + '&nbsp;(' + translations.capitalCity + ')'
-
-        } else {
-            var title = castle.getName()
-        }
-
-        messageId = Message.show(title, castleWindow)
-        Message.adjust(messageId)
-    }
     this.raze = function () {
         if (!Me.getSelectedArmyId()) {
             return;
@@ -234,7 +145,7 @@ var CastleWindow = new function () {
                 .append($('<div>').html(translations.newDefense + ': ' + newDefense))
                 .append($('<div>').html(translations.Cost + ': ' + costBuildDefense + ' ' + translations.gold))
             var id = Message.show(translations.buildCastleDefense, div);
-            Message.addButton(id, 'buildCastleDefense', WebSocketSendGame.defense);
+            Message.addButton(id, 'buildCastleDefense', WebSocketSendGame.defense)
         }
         Message.addButton(id, 'cancel')
     }

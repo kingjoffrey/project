@@ -8,7 +8,7 @@ class IndexController extends Coret_Controller_AuthorizedFrontend
 
     public function indexAction()
     {
-        if (!$this->_request->getParam('version')) {
+        if (!$this->_request->getParam('version') || $this->_request->getParam('version') != Zend_Registry::get('config')->version) {
             $this->redirect('/' . Zend_Registry::get('lang') . '/index/index/version/' . Zend_Registry::get('config')->version);
             return;
         }

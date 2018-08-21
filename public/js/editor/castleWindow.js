@@ -159,10 +159,11 @@ var EditorCastleWindow = new function () {
                 'name': 'enclaveNumber',
                 'value': castle.getEnclaveNumber()
             })))
-            .append($('<div>').append($('<input>').attr({'value': 'Ok', 'type': 'submit'}).click(function () {
-                WebSocketSendEditor.editCastle(id)
-            })))
 
-        return html
+        var msgId = Message.show(translations.castle, html)
+        Message.addButton(msgId, 'Save', function () {
+            WebSocketSendEditor.editCastle(id)
+        })
+        Message.addButton(msgId, 'close')
     }
 }

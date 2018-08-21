@@ -42,9 +42,9 @@ var PickerEditor = new function () {
                 } else {
                     var id = 0
                     if (id = field.getCastleId()) {
-                        Message.show('Castle', EditorCastleWindow.form(id))
+                        EditorCastleWindow.form(id)
                     } else if (id = field.getRuinId()) {
-                        Message.show('Ruin', EditorRuinWindow.form(id))
+                        EditorRuinWindow.form(id)
                     }
                 }
             }
