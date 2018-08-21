@@ -2,7 +2,8 @@
 var WebSocketNew = new function () {
     var ws = 0
     this.init = function () {
-        ws = new WebSocket(wsURL + ':' + wsPort + '/new')
+        var port = wsPort * 1 + 3
+        ws = new WebSocket(wsURL + ':' + port + '/games')
 
         ws.onopen = function () {
             WebSocketSendNew.setClosed(0)

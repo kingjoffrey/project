@@ -2,7 +2,8 @@
 var WebSocketChat = new function () {
     var ws = 0
     this.init = function () {
-        ws = new WebSocket(wsURL + ':' + wsPort + '/chat')
+        var port = wsPort * 1 + 2
+        ws = new WebSocket(wsURL + ':' + port + '/chat')
 
         ws.onopen = function () {
             WebSocketSendChat.setClosed(0)
