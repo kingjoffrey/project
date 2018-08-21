@@ -201,6 +201,23 @@ var Main = new function () {
                 $('#menuTop').hide()
                 $('#menu .active').removeClass('active')
                 $('#menu #' + r.type).addClass('active')
+
+                if ($('#back').length) {
+                    return
+                }
+
+                $('#content')
+                    .append($('<div>')
+                        .append(
+                            $('<div>').attr('id', 'back').addClass('button buttonColors').html(translations.Mainmenu).click(function () {
+                                Sound.play('click')
+                                IndexController.index()
+                                $('#menu').show()
+                            })
+                        ).css({
+                            'text-align': 'right'
+                        })
+                    )
             } else {
                 console.log('Method ' + methodName + ' in class ' + className + ' !exists')
             }

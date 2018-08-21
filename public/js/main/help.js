@@ -3,19 +3,7 @@ var HelpController = new function () {
     this.index = function (r) {
         $('#menu').hide()
 
-        $('#content')
-            .html(r.data)
-            .append($('<div>')
-                .append(
-                    $('<div>').attr('id', 'back').addClass('button buttonColors').html(translations.Mainmenu).click(function () {
-                        Sound.play('click')
-                        IndexController.index()
-                        $('#menu').show()
-                    })
-                ).css({
-                    'text-align': 'right'
-                })
-            )
+        $('#content').html(r.data)
 
         $('.table').css({
             'padding': 0
