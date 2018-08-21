@@ -6,9 +6,9 @@ class Cli_Model_NewOpen
      * Cli_Model_NewOpen constructor.
      * @param $dataIn
      * @param WebSocketTransportInterface $user
-     * @param Cli_NewHandler $handler
+     * @param Cli_OpenGamesHandler $handler
      */
-    public function __construct($dataIn, WebSocketTransportInterface $user, Cli_NewHandler $handler)
+    public function __construct($dataIn, WebSocketTransportInterface $user, Cli_OpenGamesHandler $handler)
     {
         if (!isset($dataIn['playerId'])) {
             echo('Brak "playerId"');

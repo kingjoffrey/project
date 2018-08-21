@@ -1,23 +1,23 @@
 <?php
 use Devristo\Phpws\Protocol\WebSocketTransportInterface;
 
-class Cli_Model_SetupStart
+class Cli_Model_MultiplayerStart
 {
     /**
      * Cli_Model_SetupStart constructor.
      * @param $dataIn
      * @param WebSocketTransportInterface $user
-     * @param Cli_NewHandler $handler
+     * @param Cli_OpenGamesHandler $handler
      */
-    public function __construct($dataIn, WebSocketTransportInterface $user, Cli_NewHandler $handler)
+    public function __construct($dataIn, WebSocketTransportInterface $user, Cli_OpenGamesHandler $handler)
     {
-        $setup = SetupGame::getSetup($user);
-        if (!$setup->isGameMaster($user->parameters['playerId'])) {
+        $openGame = OpenGame::getGame($user);
+        if (!$openGame->isGameMaster($user->parameters['playerId'])) {
             echo('Not game master!');
             return;
         }
 
-        $players = $setup->getPlayers();
+        $players = $openGame->getPlayers();
         $inGame = false;
         foreach ($players as $player) {
             if ($player['sideId']) {
@@ -29,10 +29,10 @@ class Cli_Model_SetupStart
             return;
         }
 
-        $setup->setIsOpen(false);
+        $openGame->setIsOpen(false);
         $db = $handler->getDb();
-        $mPlayersInGame = new Application_Model_PlayersInGame($setup->getGameId(), $db);
-        $mGame = new Application_Model_Game($setup->getGameId(), $db);
+        $mPlayersInGame = new Application_Model_PlayersInGame($openGame->getGameId(), $db);
+        $mGame = new Application_Model_Game($openGame->getGameId(), $db);
 
         $mapId = $mGame->getMapId();
 
@@ -45,13 +45,13 @@ class Cli_Model_SetupStart
         $i = 0;
 
         foreach (array_keys($startPositions) as $sideId) {
-            $playerId = $setup->getPlayerIdBySideId($sideId);
+            $playerId = $openGame->getPlayerIdBySideId($sideId);
             if (empty($playerId)) {
                 echo('brak wszystkich graczy' . "\n");
                 return;
             }
             if ($first) {
-                $mTurn = new Application_Model_TurnHistory($setup->getGameId(), $db);
+                $mTurn = new Application_Model_TurnHistory($openGame->getGameId(), $db);
                 $mTurn->add($playerId, 1);
                 $mGame->startGame($playerId);
                 $first = false;
@@ -66,18 +66,18 @@ class Cli_Model_SetupStart
             $mPlayersInGame->joinGame($playerId, $sideId, $teamId);
 
             $mHero = new Application_Model_Hero($playerId, $db);
-            $mArmy = new Application_Model_Army($setup->getGameId(), $db);
+            $mArmy = new Application_Model_Army($openGame->getGameId(), $db);
 
             $armyId = $mArmy->createArmy($startPositions[$sideId], $playerId);
 
-            $mHeroesInGame = new Application_Model_HeroesInGame($setup->getGameId(), $db);
+            $mHeroesInGame = new Application_Model_HeroesInGame($openGame->getGameId(), $db);
             $mHeroesInGame->add($armyId, $mHero->getFirstHeroId());
 
-            $mCastlesInGame = new Application_Model_CastlesInGame($setup->getGameId(), $db);
+            $mCastlesInGame = new Application_Model_CastlesInGame($openGame->getGameId(), $db);
             $mCastlesInGame->addCastle($startPositions[$sideId]['mapCastleId'], $playerId);
         }
 
         $token = array('type' => 'start');
-        $handler->sendToChannel($setup, $token);
+        $handler->sendToChannel($openGame, $token);
     }
 }

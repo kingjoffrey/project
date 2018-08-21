@@ -3,7 +3,7 @@ use Devristo\Phpws\Messaging\WebSocketMessageInterface;
 use Devristo\Phpws\Protocol\WebSocketTransportInterface;
 use Devristo\Phpws\Server\UriHandler\WebSocketUriHandler;
 
-class Cli_NewHandler extends WebSocketUriHandler
+class Cli_OpenGamesHandler extends WebSocketUriHandler
 {
     private $_db;
     private $_new;
@@ -39,7 +39,7 @@ class Cli_NewHandler extends WebSocketUriHandler
     }
 
 
-    public function addSetupGame($gameId, SetupGame $game)
+    public function addSetupGame($gameId, OpenGame $game)
     {
         $this->_setupGames[$gameId] = $game;
     }
@@ -52,7 +52,7 @@ class Cli_NewHandler extends WebSocketUriHandler
 
     /**
      * @param $gameId
-     * @return SetupGame
+     * @return OpenGame
      */
     public function getSetupGame($gameId)
     {
@@ -84,14 +84,14 @@ class Cli_NewHandler extends WebSocketUriHandler
 
         switch ($dataIn['type']) {
             case 'setup':
-                new Cli_Model_SetupInit($dataIn, $user, $this);
+                new Cli_Model_MultiplayerInit($dataIn, $user, $this);
                 break;
             case 'start':
-                new Cli_Model_SetupStart($dataIn, $user, $this);
+                new Cli_Model_MultiplayerStart($dataIn, $user, $this);
                 break;
 
             case 'change':
-                new Cli_Model_SetupChange($dataIn, $user, $this);
+                new Cli_Model_MultiplayerChange($dataIn, $user, $this);
                 break;
 
             case 'remove':
@@ -148,13 +148,13 @@ class Cli_NewHandler extends WebSocketUriHandler
             }
         }
 
-        $setup = SetupGame::getSetup($user);
-        if ($setup) {
-            $setup->removeUser($user->parameters['playerId']);
+        $openGame = OpenGame::getGame($user);
+        if ($openGame) {
+            $openGame->removeUser($user->parameters['playerId']);
 
-            if ($setup->getGameMasterId() == $user->parameters['playerId']) {
-                $setup->update($user->parameters['playerId'], $this, 1);
-                $this->removeSetupGame($setup->getGameId());
+            if ($openGame->getGameMasterId() == $user->parameters['playerId']) {
+                $openGame->update($user->parameters['playerId'], $this, 1);
+                $this->removeSetupGame($openGame->getGameId());
             }
         }
     }

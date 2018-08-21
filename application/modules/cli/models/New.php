@@ -67,12 +67,12 @@ class Cli_Model_New
 class NewGame
 {
     /**
-     * @var SetupGame
+     * @var OpenGame
      */
     private $_game;
     private $_players = array();
 
-    public function __construct(SetupGame $game, $gameMasterName)
+    public function __construct(OpenGame $game, $gameMasterName)
     {
         $this->_game = $game;
     }
@@ -110,7 +110,7 @@ class NewGame
     }
 }
 
-class SetupGame
+class OpenGame
 {
     private $_gameId;
     private $_mapName;
@@ -119,10 +119,6 @@ class SetupGame
     private $_gameMasterId;
     private $_gameMasterName;
     private $_isOpen = true;
-
-    private $_turnsLimit;
-    private $_turnTimeLimit;
-    private $_timeLimit;
 
     private $_users = array();
     private $_players = array();
@@ -146,7 +142,7 @@ class SetupGame
         $this->_gameMasterName = $name;
     }
 
-    public function update($playerId, Cli_NewHandler $handler, $close = false)
+    public function update($playerId, Cli_OpenGamesHandler $handler, $close = false)
     {
         if ($close) {
             $token = array(
@@ -264,9 +260,9 @@ class SetupGame
 
     /**
      * @param WebSocketTransportInterface $user
-     * @return SetupGame
+     * @return OpenGame
      */
-    static public function getSetup(WebSocketTransportInterface $user)
+    static public function getGame(WebSocketTransportInterface $user)
     {
         if (isset($user->parameters['game'])) {
             return $user->parameters['game'];
