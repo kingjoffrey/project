@@ -43,7 +43,9 @@ class Admin_TournamentController extends Coret_Controller_Backend
             $gameId = $mGame->createGame(array(
                 'numberOfPlayers' => 2,
                 'mapId' => $tournament['mapId'],
-                'type' => Zend_Registry::get('config')->gameType->tournament
+                'type' => Zend_Registry::get('config')->gameType->tournament,
+                'turnTimeLimit' => 60,
+                'turnsLimit' => 50
             ), $playerId);
 
             $mTournamentGames->addGame($tournament['tournamentId'], $gameId);

@@ -1,8 +1,15 @@
 <?php
 use Devristo\Phpws\Protocol\WebSocketTransportInterface;
 
+
+/**
+ * Create multiplayer game
+ */
 class CreateController
 {
+    private $_turnTimeLimit = 43200;
+    private $_turnsLimit = 100;
+
     function index(WebSocketTransportInterface $user, Cli_MainHandler $handler, $dataIn)
     {
         $view = new Zend_View();
@@ -24,6 +31,8 @@ class CreateController
             $mMap = new Application_Model_Map($mapId, $db);
             $dataIn['numberOfPlayers'] = $mMap->getMaxPlayers();
             $dataIn['type'] = Zend_Registry::get('config')->gameType->multiplayer;
+            $dataIn['turnTimeLimit'] = $this->_turnTimeLimit;
+            $dataIn['turnsLimit'] = $this->_turnsLimit;
 
             $mGame = new Application_Model_Game (0, $db);
             $gameId = $mGame->createGame($dataIn, $user->parameters['playerId']);
@@ -36,7 +45,11 @@ class CreateController
             $token = array(
                 'type' => 'create',
                 'action' => 'index',
-                'data' => $view->render('create/index.phtml')
+                'data' => $view->render('create/index.phtml'),
+                'info' => array(
+                    'turnTimeLimit' => $this->_turnTimeLimit,
+                    'turnsLimit' => $this->_turnsLimit
+                )
             );
             $handler->sendToUser($user, $token);
         }
