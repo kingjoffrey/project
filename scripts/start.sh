@@ -20,5 +20,5 @@ else
     /usr/bin/php -f ./wsEditorServer.php &>../log/_editor.log &
     /usr/bin/php -f ./wsOpenGamesServer.php &>../log/_openGames.log &
     /usr/bin/php -f ./wsPrivateChatServer.php &>../log/_privateChat.log &
-    /usr/bin/php -f ./wsExecServer.php &>../log/_execChat.log &
+    /usr/bin/php -f ./wsExecServer.php &>../log/_exec.log &
 fi

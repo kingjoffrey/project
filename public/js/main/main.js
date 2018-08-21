@@ -1,7 +1,6 @@
 "use strict"
 var Main = new function () {
     var development = 0,
-        serverDisconnectedMessage = '',
         addButtonsClicks = function () {
             $('#game #gold').off().click(function () {
                 Sound.play('click')
@@ -155,8 +154,6 @@ var Main = new function () {
         return development
     }
     this.createMenu = function (menu) {
-        serverDisconnectedMessage = $('#menu').html()
-
         $('#menu').html('')
 
         for (var controller in menu) {
@@ -233,8 +230,5 @@ var Main = new function () {
     this.init = function () {
         WebSocketMain.init()
         addButtonsClicks()
-    }
-    this.serverDisconnect = function () {
-        $('#menu').html(serverDisconnectedMessage)
     }
 }

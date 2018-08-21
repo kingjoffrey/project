@@ -1,5 +1,7 @@
 "use strict"
 var WebSocketMain = new function () {
+    var serverDisconnectedMessage = $('#menu').html()
+
     this.init = function () {
         var ws = new WebSocket(wsURL + ':' + wsPort + '/main')
 
@@ -11,7 +13,7 @@ var WebSocketMain = new function () {
             WebSocketMessageMain.switch($.parseJSON(e.data))
         }
         ws.onclose = function () {
-            Main.serverDisconnect()
+            $('#menu').html(serverDisconnectedMessage)
             WebSocketSendMain.setClosed(1)
             setTimeout('WebSocketMain.init()', 1000);
         }
