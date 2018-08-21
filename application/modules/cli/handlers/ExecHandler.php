@@ -89,15 +89,15 @@ class Cli_ExecHandler extends WebSocketUriHandler
 {
     private $_games = array();
     private $_ports = array();
-    private $_editorPort;
+    private $_portMin;
     private $_portMax = 65535;
     private $_projectDirName;
 
     public function __construct($logger)
     {
         parent::__construct($logger);
-        $this->_editorPort = Zend_Registry::get('config')->websockets->aPort + 1;
-        $this->_portMax = $this->_portMax - $this->_editorPort;
+        $this->_portMin = Zend_Registry::get('config')->websockets->aPort + 10;
+        $this->_portMax = $this->_portMax - $this->_portMin;
         $this->_projectDirName = Zend_Registry::get('config')->projectDir->name;
     }
 
@@ -129,7 +129,7 @@ class Cli_ExecHandler extends WebSocketUriHandler
                 $Game->addPlayer($Player);
             }
 
-            $execPort = $this->_editorPort + $Game->getPort();
+            $execPort = $this->_portMin + $Game->getPort();
 
             $token = array(
                 'type' => 'port',
@@ -140,7 +140,7 @@ class Cli_ExecHandler extends WebSocketUriHandler
         } else {
             if (isset($dataIn['gameId']) && (is_string($dataIn['gameId']) || is_int($dataIn['gameId']))) {
                 $port = $this->initPort();
-                $execPort = $this->_editorPort + $port;
+                $execPort = $this->_portMin + $port;
                 $gameId = (int)$dataIn['gameId'];
 
                 if ($gameId != $dataIn['gameId'] * 1) {

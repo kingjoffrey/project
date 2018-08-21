@@ -6,19 +6,19 @@ then
 else
     data=`date +%Y%m%d`
     czas=`date +%H.%M.%S`
-    path=`pwd`
-
 
     export APPLICATION_ENV=cli
 
     echo "Starting..."
-    /bin/cp $path/../log/1_main.log $path/../log/$data-$czas.wsMainServer.log
-    /bin/cp $path/../log/1_editor.log $path/../log/$data-$czas.wsEditorServer.log
+    /bin/cp ../log/_main.log ../log/$data-$czas.wsMainServer.log
+    /bin/cp ../log/_editor.log ../log/$data-$czas.wsEditorServer.log
+    /bin/cp ../log/_privateChat.log ../log/$data-$czas.wsPrivateChatServer.log
+    /bin/cp ../log/_openGames.log ../log/$data-$czas.wsOpenGamesServer.log
+    /bin/cp ../log/_exec.log ../log/$data-$czas.wsExecServer.log
 
-    cd $path
-    
-    /usr/bin/php -f ./wsMainServer.php &>$path/../log/1_main.log &
-    /usr/bin/php -f ./wsEditorServer.php &>$path/../log/1_editor.log &
-
-    #/usr/bin/php -c /etc/php-cli/ -f $path/wsMainServer.php &>$path/1_.log &
+    /usr/bin/php -f ./wsMainServer.php &>../log/_main.log &
+    /usr/bin/php -f ./wsEditorServer.php &>../log/_editor.log &
+    /usr/bin/php -f ./wsOpenGamesServer.php &>../log/_openGames.log &
+    /usr/bin/php -f ./wsPrivateChatServer.php &>../log/_privateChat.log &
+    /usr/bin/php -f ./wsExecServer.php &>../log/_execChat.log &
 fi

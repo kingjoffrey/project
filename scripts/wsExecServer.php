@@ -31,7 +31,7 @@ $application = new Zend_Application(
 
 $application->getBootstrap()->bootstrap(array('date', 'config', 'modules'));
 
-include_once(APPLICATION_PATH . '/modules/cli/handlers/MainHandler.php');
+include_once(APPLICATION_PATH . '/modules/cli/handlers/ExecHandler.php');
 
 $loop = \React\EventLoop\Factory::create();
 
@@ -42,7 +42,8 @@ $logger->addWriter($writer);
 
 // Create a WebSocket server
 $configWS = Zend_Registry::get('config')->websockets;
-$address = $configWS->aSchema . '://' . $configWS->aHost . ':' . $configWS->aPort;
+$port = $configWS->aPort + 4;
+$address = $configWS->aSchema . '://' . $configWS->aHost . ':' . $port;
 $server = new WebSocketServer($address, $loop, $logger);
 
 if ($configWS->aSchema == 'wss') {
@@ -56,7 +57,7 @@ if ($configWS->aSchema == 'wss') {
 
 // Create a router which transfers all connections to the suitable Handler class
 $router = new \Devristo\Phpws\Server\UriHandler\ClientRouter($server, $logger);
-$router->addRoute('#^/main$#i', new Cli_MainHandler($logger));
+$router->addRoute('#^/exec$#i', new Cli_ExecHandler($logger));
 
 
 // Bind the server
