@@ -28,7 +28,9 @@ class Application_Model_PrivateChat extends Coret_Db_Table_Abstract
         $select = $select->__toString();
         $select = str_replace('DISTINCT', 'DISTINCT ON ("recipientId"+"playerId")', $select);
 
-        $paginator = new Zend_Paginator(new Zend_Paginator_Adapter_DbSelect($select));
+        $select = $this->_db->query($select);
+
+        $paginator = new Zend_Paginator(new Zend_Paginator_Adapter_DbSelect($select->fetchAll()));
         $paginator->setCurrentPageNumber($pageNumber);
         $paginator->setItemCountPerPage(20);
 
