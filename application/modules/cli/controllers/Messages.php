@@ -16,38 +16,20 @@ class MessagesController
 
         $paginator = $mPrivateChat->getChatHistoryThreads($dataIn['page']);
 
-        $ids = '';
-        $recipients = array();
-        foreach ($paginator as $row) {
-            if ($ids) {
-                $ids .= ',';
-            }
-            if ($row['playerId'] == $user->parameters['playerId']) {
-                $ids .= $row['recipientId'];
-            } else {
-                $recipients[$row['playerId']] = $row;
-                $ids .= $row['playerId'];
-            }
-        }
-
         $threads = array();
 
-        if ($ids) {
-            $mPlayer = new Application_Model_Player($db);
-            $players = $mPlayer->getPlayersNames($ids);
-            foreach ($paginator as $row) {
+        $mPlayer = new Application_Model_Player($db);
+        $players = $mPlayer->getPlayersNames($ids);
+        foreach ($paginator as $row) {
 
-                if ($row['playerId'] == $user->parameters['playerId']) {
-                    $threads['name'] = $players[$row['recipientId']];
-                    $threads['id'] = $row['recipientId'];
-                } else {
-                    $threads['name'] = $players[$row['playerId']];
-                    $threads['id'] = $row['playerId'];
-                }
+            if ($row['playerId'] == $user->parameters['playerId']) {
+                $threads['name'] = $players[$row['recipientId']];
+                $threads['id'] = $row['recipientId'];
+            } else {
+                $threads['name'] = $players[$row['playerId']];
+                $threads['id'] = $row['playerId'];
             }
         }
-
-        $view->threads = $paginator;
 
         $view->addScriptPath(APPLICATION_PATH . '/views/scripts');
 
