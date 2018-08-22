@@ -107,8 +107,6 @@ class Application_Model_Player extends Coret_Db_Table_Abstract
             ->where($this->_db->quoteIdentifier('playerId') . ' IN (?)', new Zend_Db_Expr($subselect))
             ->where($this->_db->quoteIdentifier('playerId') . ' != ?', $playerId);
 
-        echo $select->__toString();
-
         $paginator = new Zend_Paginator(new Zend_Paginator_Adapter_DbSelect($select));
         $paginator->setCurrentPageNumber($pageNumber);
         $paginator->setItemCountPerPage(20);

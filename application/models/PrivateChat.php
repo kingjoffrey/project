@@ -18,7 +18,7 @@ class Application_Model_PrivateChat extends Coret_Db_Table_Abstract
         }
     }
 
-    public function getChatHistoryThreads()
+    public function getThreads()
     {
         $select1 = $this->_db->select()
             ->from($this->_name, 'recipientId')
@@ -32,6 +32,21 @@ class Application_Model_PrivateChat extends Coret_Db_Table_Abstract
             ->union(array($select1, $select2));
 
         return $select;
+    }
+
+    public function getThreadUnreadMessageCount($playerId)
+    {
+        $select = $this->_db->select()
+            ->from($this->_name, 'count(message)')
+            ->where(
+                $this->_db->quoteInto($this->_db->quoteIdentifier('recipientId') . '  = ?', $playerId) .
+                $this->_db->quoteInto(' AND ' . $this->_db->quoteIdentifier('playerId') . ' = ?', $this->_playerId) .
+                ' OR ' .
+                $this->_db->quoteInto($this->_db->quoteIdentifier('recipientId') . '  = ?', $this->_playerId) .
+                $this->_db->quoteInto(' AND ' . $this->_db->quoteIdentifier('playerId') . ' = ?', $playerId)
+            );
+
+        echo $select->__toString();
     }
 
     public function getChatHistoryMessages($playerId)

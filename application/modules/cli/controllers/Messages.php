@@ -17,10 +17,13 @@ class MessagesController
         $threads = array();
 
         $mPlayer = new Application_Model_Player($db);
-        $paginator = $mPlayer->getPlayersNames($mPrivateChat->getChatHistoryThreads(), $dataIn['page'], $user->parameters['playerId']);
+        $paginator = $mPlayer->getPlayersNames($mPrivateChat->getThreads(), $dataIn['page'], $user->parameters['playerId']);
 
-        foreach ($paginator as $key => $row) {
-            $threads[$row['playerId']] = $row['name'];
+        foreach ($paginator as $row) {
+            $threads[$row['playerId']] = array(
+                'name' => $row['name'],
+                'unread' => $mPrivateChat->getThreadUnreadMessageCount($row['playerId'])
+            );
         }
 
         $view->addScriptPath(APPLICATION_PATH . '/views/scripts');
