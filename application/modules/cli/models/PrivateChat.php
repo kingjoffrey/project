@@ -1,8 +1,9 @@
 <?php
+use Devristo\Phpws\Protocol\WebSocketTransportInterface;
 
 class Cli_Model_PrivateChat
 {
-    public function __construct($dataIn, Devristo\Phpws\Protocol\WebSocketTransportInterface $user, Cli_PrivateChatHandler $handler)
+    public function __construct($dataIn, WebSocketTransportInterface $user, Cli_PrivateChatHandler $handler)
     {
         if (!isset($user->parameters['playerId'])) {
             throw new Exception('No playerId');

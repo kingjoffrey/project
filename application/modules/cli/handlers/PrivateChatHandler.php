@@ -67,13 +67,55 @@ class Cli_PrivateChatHandler extends WebSocketUriHandler
     public function onMessage(WebSocketTransportInterface $user, WebSocketMessageInterface $msg)
     {
         $dataIn = Zend_Json::decode($msg->getData());
+        if (Zend_Registry::get('config')->debug) {
+            echo(get_class($this) . ' ZAPYTANIE ');
+            print_r($dataIn);
+        }
+
+        if ($dataIn['type'] == 'open') {
+            new Cli_Model_PrivateChatOpen($dataIn, $user, $this);
+            return;
+        }
+
+        if (!Zend_Validate::is($user->parameters['playerId'], 'Digits')) {
+            $l = new Coret_Model_Logger(get_class($this));
+            $l->log('Brak autoryzacji.');
+            return;
+        }
 
         switch ($dataIn['type']) {
-            case 'open':
-                new Cli_Model_PrivateChatOpen($dataIn, $user, $this);
-                break;
             case 'chat':
                 new Cli_Model_PrivateChat($dataIn, $user, $this);
+                break;
+            case 'threads':
+                $db = $this->getDb();
+
+                if (!isset($dataIn['page'])) {
+                    $dataIn['page'] = 1;
+                }
+
+                $mPrivateChat = new Application_Model_PrivateChat($user->parameters['playerId'], $db);
+
+                $threads = array();
+
+                $mPlayer = new Application_Model_Player($db);
+                $paginator = $mPlayer->getPlayersNames($mPrivateChat->getThreads(), $dataIn['page'], $user->parameters['playerId']);
+
+                foreach ($paginator as $row) {
+                    $threads[$row['playerId']] = array(
+                        'name' => $row['name'],
+                        'unread' => $mPrivateChat->getThreadUnreadMessageCount($row['playerId'])
+                    );
+                }
+
+                $token = array(
+                    'type' => 'threads',
+                    'threads' => $threads
+                );
+
+                $this->sendToUser($user, $token);
+                break;
+            case 'conversation':
                 break;
         }
     }

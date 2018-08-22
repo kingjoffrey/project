@@ -6,13 +6,37 @@ var WebSocketMessageChat = new function () {
                 if (!parseInt(r.count)) {
                     return
                 }
-                // $('#messages').html($('<span>').html(r.count))
+                $('#messages').css('background-color', 'red')
                 break
             case 'chat':
-                $('#messages').append(
-                    $('<tr>').addClass('trlink')
-                        .append($('<td>').addClass('date').html(r.name))
-                        .append($('<td>').addClass('msg').html(r.message))
+                $('#chat input').val('')
+                Chat.addMessage()
+                break
+            case 'threads':
+                for (var id in r.threads) {
+                    Chat.addThread(id, r.threads[id])
+                }
+                break
+            case 'conversation':
+
+                for (var i in r.messages) {
+                    Chat.addMessage(r.messages[i])
+                }
+
+                $('.table').append(
+                    $('<div>').attr('id', 'chat')
+                        .append($('<input>'))
+                        .append($('<div>')
+                            .addClass('button buttonColors')
+                            .html(translations.send)
+                            .click(function () {
+                                var message = $('#chat input').val()
+
+                                if (message) {
+                                    WebSocketSendChat.send(message)
+                                }
+                            })
+                        )
                 )
                 break
             default:

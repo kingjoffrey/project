@@ -1,3 +1,5 @@
 <div class="table">
-    <table class="messages"></table>
+    <h2><?php echo $this->translate('Conversation with') ?> <?php echo $this->name ?></h2>
+    <table id="conversation"></table>
+    <input type="hidden" name="id" value="<?php echo $this->id ?>">
 </div>

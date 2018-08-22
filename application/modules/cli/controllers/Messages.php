@@ -6,33 +6,12 @@ class MessagesController
     function index(WebSocketTransportInterface $user, Cli_MainHandler $handler, $dataIn)
     {
         $view = new Zend_View();
-        $db = $handler->getDb();
-
-        if (!isset($dataIn['page'])) {
-            $dataIn['page'] = 1;
-        }
-
-        $mPrivateChat = new Application_Model_PrivateChat($user->parameters['playerId'], $db);
-
-        $threads = array();
-
-        $mPlayer = new Application_Model_Player($db);
-        $paginator = $mPlayer->getPlayersNames($mPrivateChat->getThreads(), $dataIn['page'], $user->parameters['playerId']);
-
-        foreach ($paginator as $row) {
-            $threads[$row['playerId']] = array(
-                'name' => $row['name'],
-                'unread' => $mPrivateChat->getThreadUnreadMessageCount($row['playerId'])
-            );
-        }
-
         $view->addScriptPath(APPLICATION_PATH . '/views/scripts');
 
         $token = array(
             'type' => 'messages',
             'action' => 'index',
-            'data' => $view->render('messages/index.phtml'),
-            'threads' => $threads
+            'data' => $view->render('messages/index.phtml')
         );
         $handler->sendToUser($user, $token);
     }

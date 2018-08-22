@@ -16,27 +16,42 @@ var WebSocketSendChat = new function () {
 
         ws.send(JSON.stringify(token));
     }
-    this.send = function (msg, friendId) {
+    this.send = function (msg) {
         if (closed) {
             Message.error(translations.sorryServerIsDisconnected)
             return
         }
 
-        if (!msg) {
-            return
-        }
-
-        if (!friendId) {
-            return
-        }
-
         var token = {
             type: 'chat',
-            friendId: friendId,
+            friendId: $('input:hidden[name=id]').val(),
             msg: msg
         }
 
         ws.send(JSON.stringify(token))
+    }
+    this.threads = function () {
+        if (closed) {
+            Message.error(translations.sorryServerIsDisconnected)
+            return
+        }
+
+        var token = {
+            type: 'threads',
+            page: 1
+        }
+    }
+    this.conversation = function () {
+        if (closed) {
+            Message.error(translations.sorryServerIsDisconnected)
+            return
+        }
+
+        var token = {
+            type: 'conversation',
+            playerId: $('input:hidden[name=id]').val(),
+            page: 1
+        }
     }
     this.init = function (param) {
         ws = param
