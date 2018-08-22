@@ -116,6 +116,33 @@ class Cli_PrivateChatHandler extends WebSocketUriHandler
                 $this->sendToUser($user, $token);
                 break;
             case 'conversation':
+                $playerId = $dataIn['id'];
+
+                if (!$playerId) {
+                    return;
+                }
+
+                $db = $this->getDb();
+
+                $mPrivateChat = new Application_Model_PrivateChat($user->parameters['playerId'], $db);
+                $chatHistory = $mPrivateChat->getChatHistoryMessages($playerId);
+
+                $messages = array();
+                foreach ($chatHistory as $row) {
+                    $messages[] = array(
+                        'date' => Coret_View_Helper_Formatuj::date($row['date']),
+                        'name' => $row['firstName'] . ' ' . $row['lastName'],
+                        'message' => $row['message']
+                    );
+                }
+
+                $messages = array_reverse($messages);
+                $token = array(
+                    'type' => 'conversation',
+                    'messages' => $messages
+                );
+
+                $this->sendToUser($user, $token);
                 break;
         }
     }

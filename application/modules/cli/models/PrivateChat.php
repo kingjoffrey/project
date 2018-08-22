@@ -25,6 +25,8 @@ class Cli_Model_PrivateChat
             $read = 'true';
         }
 
+        $handler->sendToUser($user, $token);
+
         $mChat = new Application_Model_PrivateChat($user->parameters['playerId'], $db);
         $mChat->insertChatMessage($dataIn['friendId'], $dataIn['msg'], $read);
     }

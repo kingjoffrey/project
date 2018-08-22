@@ -18,28 +18,4 @@ var Chat = new function () {
                 })
         )
     }
-
-    this.switch = function (r) {
-        console.log(r)
-        switch (r.type) {
-            case 'notification':
-                if (!parseInt(r.count)) {
-                    return
-                }
-                $('#messages').css('background-color', 'red')
-                break
-            case 'chat':
-                $('#conversation').append(
-                    $('<tr>').addClass('trlink')
-                        .append($('<td>').addClass('date').html(r.name))
-                        .append($('<td>').addClass('msg').html(r.message))
-                )
-                break
-            case 'threads':
-                for (var id in r.threads) {
-                    this.addThread(id, r.threads[id])
-                }
-                break
-        }
-    }
 }
