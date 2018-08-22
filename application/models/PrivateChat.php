@@ -18,7 +18,7 @@ class Application_Model_PrivateChat extends Coret_Db_Table_Abstract
         }
     }
 
-    public function getChatHistoryThreads($pageNumber)
+    public function getChatHistoryThreads()
     {
         $select1 = $this->_db->select()
             ->from($this->_name, 'recipientId')
@@ -31,13 +31,7 @@ class Application_Model_PrivateChat extends Coret_Db_Table_Abstract
         $select = $this->_db->select()
             ->union(array($select1, $select2));
 
-        echo $select->__toString();
-
-        $paginator = new Zend_Paginator(new Zend_Paginator_Adapter_DbSelect($select));
-        $paginator->setCurrentPageNumber($pageNumber);
-        $paginator->setItemCountPerPage(20);
-
-        return $paginator;
+        return $select;
     }
 
     public function getChatHistoryMessages($playerId)

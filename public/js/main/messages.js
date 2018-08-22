@@ -1,24 +1,26 @@
 "use strict"
 var MessagesController = new function () {
     var playerId = 0
-        this.addThread = function (thread) {
-            $('table').append(
-                $('<tr>').attr('id', thread.id).addClass('trlink')
-                    .append($('<td>').html(thread.name))
-                    .click(function () {
-                        playerId = $(this).attr('id')
-                        WebSocketSendMain.controller('messages', 'thread', {'id': playerId})
-                    })
-            )
-        }
+    this.addThread = function (id, thread) {
+        $('table').append(
+            $('<tr>').attr('id', id).addClass('trlink')
+                .append($('<td>').html(thread.name))
+                .click(function () {
+                    playerId = $(this).attr('id')
+                    WebSocketSendMain.controller('messages', 'thread', {'id': playerId})
+                })
+        )
+    }
     this.index = function (r) {
         var content = $('#content'),
             data = r.data
 
         content.html(data)
 
-        for (var i in r.threads) {
-            this.addThread(r.threads[i])
+        console.log(r.threads)
+
+        for (var id in r.threads) {
+            this.addThread(id, r.threads[id])
         }
     }
     this.thread = function (r) {

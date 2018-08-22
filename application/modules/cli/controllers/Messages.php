@@ -14,21 +14,13 @@ class MessagesController
 
         $mPrivateChat = new Application_Model_PrivateChat($user->parameters['playerId'], $db);
 
-        $paginator = $mPrivateChat->getChatHistoryThreads($dataIn['page']);
-
         $threads = array();
 
         $mPlayer = new Application_Model_Player($db);
-        $players = $mPlayer->getPlayersNames($ids);
-        foreach ($paginator as $row) {
+        $paginator = $mPlayer->getPlayersNames($mPrivateChat->getChatHistoryThreads(), $dataIn['page'], $user->parameters['playerId']);
 
-            if ($row['playerId'] == $user->parameters['playerId']) {
-                $threads['name'] = $players[$row['recipientId']];
-                $threads['id'] = $row['recipientId'];
-            } else {
-                $threads['name'] = $players[$row['playerId']];
-                $threads['id'] = $row['playerId'];
-            }
+        foreach ($paginator as $key => $row) {
+            $threads[$row['playerId']] = $row['name'];
         }
 
         $view->addScriptPath(APPLICATION_PATH . '/views/scripts');

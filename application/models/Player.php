@@ -100,20 +100,20 @@ class Application_Model_Player extends Coret_Db_Table_Abstract
         return $paginator;
     }
 
-    public function getPlayersNames($in, $a = false)
+    public function getPlayersNames($subselect, $pageNumber, $playerId)
     {
         $select = $this->_db->select()
-            ->from($this->_name, array('firstName', 'lastName', 'playerId'))
-            ->where($this->_db->quoteIdentifier('playerId') . ' IN (?)', new Zend_Db_Expr($in))
-            ->order(array('firstName', 'lastName'));
+            ->from($this->_name, array('name' => new Zend_Db_Expr('CONCAT("firstName", \' \', "lastName")'), 'playerId'))
+            ->where($this->_db->quoteIdentifier('playerId') . ' IN (?)', new Zend_Db_Expr($subselect))
+            ->where($this->_db->quoteIdentifier('playerId') . ' != ?', $playerId);
 
-        $array = array();
+        echo $select->__toString();
 
-        foreach ($this->selectAll($select) as $row) {
-            $array[$row['playerId']] = $row['firstName'] . ' ' . $row['lastName'];
-        }
+        $paginator = new Zend_Paginator(new Zend_Paginator_Adapter_DbSelect($select));
+        $paginator->setCurrentPageNumber($pageNumber);
+        $paginator->setItemCountPerPage(20);
 
-        return $array;
+        return $paginator;
     }
 
     public function getPlayers()
