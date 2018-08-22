@@ -20,10 +20,16 @@ class Application_Model_PrivateChat extends Coret_Db_Table_Abstract
 
     public function getChatHistoryThreads($pageNumber)
     {
-        $select = $this->_db->select()
-            ->distinct()
-            ->from($this->_name, array('playerId' => 'least("playerId", "recipientId")', 'recipientId' => 'greatest("playerId", "recipientId")'))
+        $select1 = $this->_db->select()
+            ->from($this->_name, 'recipientId')
             ->where($this->_db->quoteIdentifier('recipientId') . '  = ? OR ' . $this->_db->quoteIdentifier('playerId') . ' = ?', $this->_playerId);
+
+        $select2 = $this->_db->select()
+            ->from($this->_name, 'playerId')
+            ->where($this->_db->quoteIdentifier('recipientId') . '  = ? OR ' . $this->_db->quoteIdentifier('playerId') . ' = ?', $this->_playerId);
+
+        $select = $this->_db->select()
+            ->union(array($select1, $select2));
 
         echo $select->__toString();
 
