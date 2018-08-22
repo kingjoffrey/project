@@ -46,7 +46,7 @@ class Application_Model_PrivateChat extends Coret_Db_Table_Abstract
                 $this->_db->quoteInto(' AND ' . $this->_db->quoteIdentifier('playerId') . ' = ?', $playerId)
             );
 
-        echo $select->__toString();
+        return $this->selectOne($select);
     }
 
     public function getChatHistoryMessages($playerId)

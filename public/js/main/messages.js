@@ -5,6 +5,7 @@ var MessagesController = new function () {
         $('table').append(
             $('<tr>').attr('id', id).addClass('trlink')
                 .append($('<td>').html(thread.name))
+                .append($('<td>').html(thread.unread))
                 .click(function () {
                     playerId = $(this).attr('id')
                     WebSocketSendMain.controller('messages', 'thread', {'id': playerId})
@@ -16,8 +17,6 @@ var MessagesController = new function () {
             data = r.data
 
         content.html(data)
-
-        console.log(r.threads)
 
         for (var id in r.threads) {
             this.addThread(id, r.threads[id])
