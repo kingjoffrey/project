@@ -14,7 +14,7 @@ var Main = new function () {
 
             $('#game #nextTurn').off().click(function () {
                 Sound.play('click')
-                Turn.next()
+                WebSocketSendGame.nextTurn()
             })
             $('#game #showMenu').off().click(function () {
                 Sound.play('click')

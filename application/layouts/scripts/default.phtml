@@ -37,9 +37,19 @@
                 <span id="loading3"><?php echo $this->translate('Conquare all castles!') ?></span>
             </div>
         </div>
-        <div id="turnInfo"></div>
         <div id="terrain"></div>
-        <div id="tutorial" class="game"></div>
+        <div id="leftMenu" class="editor">
+            <a class="button buttonColors" id="castle"><?php echo $this->translate('Castle') ?></a>
+            <a class="button buttonColors" id="ruin"><?php echo $this->translate('Ruin') ?></a>
+            <a class="button buttonColors" id="tower"><?php echo $this->translate('Tower') ?></a>
+            <a class="button buttonColors" id="road"><?php echo $this->translate('Road') ?></a>
+            <a class="button buttonColors" id="forest"><?php echo $this->translate('Forest') ?></a>
+            <a class="button buttonColors" id="swamp"><?php echo $this->translate('Swamp') ?></a>
+            <a class="button buttonColors" id="eraser"><?php echo $this->translate('Eraser') ?></a>
+            <a class="button buttonColors" id="up"><?php echo $this->translate('Up') ?></a>
+            <a class="button buttonColors" id="down"><?php echo $this->translate('Down') ?></a>
+            <a class="button buttonColors" id="cancel"><?php echo $this->translate('Cancel') ?></a>
+        </div>
         <div id="goldAndStats" class="game gameButtons">
             <div id="statistics" class="iconButton buttonColors">
                 <div title="<?php echo $this->translate('Statistics') ?>">&nbsp;</div>
@@ -47,14 +57,26 @@
             <div id="gold" class="iconButton buttonColors">
                 <div title="<?php echo $this->translate('Gold') ?>">0</div>
             </div>
+            <div id="showMenu" class="iconButton buttonColors">
+                <div title="<?php echo $this->translate('Show menu') ?> (m) "> </div>
+            </div>
         </div>
 
         <div id="menuButtons" class="game gameButtons">
             <div id="nextTurn" class="iconButton buttonColors">
                 <div title="<?php echo $this->translate('Next turn') ?> (t) "></div>
             </div>
-            <div id="showMenu" class="iconButton buttonColors">
-                <div title="<?php echo $this->translate('Show menu') ?> (m) "></div>
+        </div>
+
+        <div id="rightMenu" class="editor">
+            <div id="exit" class="iconButton buttonColors">
+                <div class="varchar" title="<?php echo $this->translate('Exit editor') ?>">&nbsp;&nbsp;&nbsp;</div>
+            </div>
+            <div id="publish" class="iconButton buttonColors buttonOff">
+                <div class="varchar"><?php echo $this->translate('Publish') ?></div>
+            </div>
+            <div id="test" class="iconButton buttonColors buttonOff">
+                <div class="varchar"><?php echo $this->translate('Test') ?></div>
             </div>
         </div>
 
@@ -69,6 +91,7 @@
                 <div title="<?php echo $this->translate('Quit army') ?> (f) "></div>
             </div>
         </div>
+        <div id="tutorial" class="game"></div>
 
         <div id="castleButtons" class="game">
             <div id="nextCastle" class="iconButton buttonColors buttonOff">
@@ -100,29 +123,6 @@
             </div>
         </div>
 
-        <div id="leftMenu" class="editor">
-            <a class="button buttonColors" id="castle"><?php echo $this->translate('Castle') ?></a>
-            <a class="button buttonColors" id="ruin"><?php echo $this->translate('Ruin') ?></a>
-            <a class="button buttonColors" id="tower"><?php echo $this->translate('Tower') ?></a>
-            <a class="button buttonColors" id="road"><?php echo $this->translate('Road') ?></a>
-            <a class="button buttonColors" id="forest"><?php echo $this->translate('Forest') ?></a>
-            <a class="button buttonColors" id="swamp"><?php echo $this->translate('Swamp') ?></a>
-            <a class="button buttonColors" id="eraser"><?php echo $this->translate('Eraser') ?></a>
-            <a class="button buttonColors" id="up"><?php echo $this->translate('Up') ?></a>
-            <a class="button buttonColors" id="down"><?php echo $this->translate('Down') ?></a>
-            <a class="button buttonColors" id="cancel"><?php echo $this->translate('Cancel') ?></a>
-        </div>
-        <div id="rightMenu" class="editor">
-            <div id="exit" class="iconButton buttonColors">
-                <div class="varchar" title="<?php echo $this->translate('Exit editor') ?>">&nbsp;&nbsp;&nbsp;</div>
-            </div>
-            <div id="publish" class="iconButton buttonColors buttonOff">
-                <div class="varchar"><?php echo $this->translate('Publish') ?></div>
-            </div>
-            <div id="test" class="iconButton buttonColors buttonOff">
-                <div class="varchar"><?php echo $this->translate('Test') ?></div>
-            </div>
-        </div>
     </div>
     <div id="gameMenu">
         <div class="settings">

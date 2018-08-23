@@ -59,8 +59,4 @@ var Turn = new function () {
     this.getNumber = function () {
         return number
     }
-    this.next = function () {
-        var id = Message.simple(translations.nextTurn, translations.areYouSure)
-        Message.addButton(id, 'Yes', WebSocketSendGame.nextTurn)
-    }
 }
