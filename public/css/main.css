@@ -1095,7 +1095,7 @@ div.table table.unitTable td:first {
     bottom: 0.5vw;
     left: 0.5vw;
     color: black;
-    box-shadow: 0 0 0.2vw #fff;
+    box-shadow: 0 0 0.2vw #000;
     background: #fff;
     text-shadow: none;
     padding: 1vw;
@@ -1104,20 +1104,15 @@ div.table table.unitTable td:first {
 
 #game #tutorial:hover {
     color: white;
-    box-shadow: 0 0 0.7vw #f00;
-    background: #f00;
+    background: green;
 }
 
 #game #tutorial.blink {
-    color: white;
-    box-shadow: 0 0 0.7vw #f00;
     background: #f00;
 }
 
 #game #tutorial.blink:hover {
-    color: white;
-    box-shadow: 0 0 0.7vw #f00;
-    background: #f00;
+    background: green;
 }
 
 .showCastle .relocatingTo {

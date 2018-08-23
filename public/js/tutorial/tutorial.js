@@ -10,8 +10,8 @@ var Tutorial = new function () {
         steps = s
     }
     this.showDescription = function () {
-        var stepPlus = step * 1 + 1,
-            numberPlus = number * 1 + 1
+        var stepPlus = step + 1,
+            numberPlus = number + 1
 
         Message.tutorial(
             'Tutorial ' + numberPlus + '/' + steps.length,
@@ -23,9 +23,9 @@ var Tutorial = new function () {
         $('#game #tutorial').removeClass('blink')
     }
     this.changeStep = function (s) {
-        step = s
+        step = s * 1
 
-        var goal = translations.Goal + ': ' + steps[number][step].goal
+        var goal = steps[number][step].goal
 
         $('#game #tutorial').html(goal)
         this.blink()
@@ -46,8 +46,7 @@ var Tutorial = new function () {
         }, 1000)
     }
     this.init = function (t) {
-        console.log(t)
-        number = t.number
+        number = t.number * 1
 
         $('#game #tutorial').click(function () {
             Tutorial.showDescription()
