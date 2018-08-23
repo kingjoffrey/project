@@ -40,6 +40,8 @@ var WebSocketSendChat = new function () {
             type: 'threads',
             page: 1
         }
+
+        ws.send(JSON.stringify(token))
     }
     this.conversation = function () {
         if (closed) {
@@ -49,9 +51,11 @@ var WebSocketSendChat = new function () {
 
         var token = {
             type: 'conversation',
-            playerId: $('input:hidden[name=id]').val(),
+            id: $('input:hidden[name=id]').val(),
             page: 1
         }
+
+        ws.send(JSON.stringify(token))
     }
     this.init = function (param) {
         ws = param

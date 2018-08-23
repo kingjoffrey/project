@@ -19,8 +19,9 @@ class MessagesController
     public function thread(WebSocketTransportInterface $user, Cli_MainHandler $handler, $dataIn)
     {
         $view = new Zend_View();
-
         $view->addScriptPath(APPLICATION_PATH . '/views/scripts');
+
+        $view->id = $dataIn['id'];
 
         $token = array(
             'type' => 'messages',

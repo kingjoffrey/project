@@ -116,16 +116,15 @@ class Cli_PrivateChatHandler extends WebSocketUriHandler
                 $this->sendToUser($user, $token);
                 break;
             case 'conversation':
-                $playerId = $dataIn['id'];
-
-                if (!$playerId) {
+                if (!isset($dataIn['id'])) {
+                    echo 'brak id';
                     return;
                 }
 
                 $db = $this->getDb();
 
                 $mPrivateChat = new Application_Model_PrivateChat($user->parameters['playerId'], $db);
-                $chatHistory = $mPrivateChat->getChatHistoryMessages($playerId);
+                $chatHistory = $mPrivateChat->getChatHistoryMessages($dataIn['id']);
 
                 $messages = array();
                 foreach ($chatHistory as $row) {
